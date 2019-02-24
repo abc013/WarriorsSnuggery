@@ -26,11 +26,8 @@ namespace WarriorsSnuggery
 	public class Game : ITick, IDisposable
 	{
 		public Random SharedRandom = new Random();
-
-		public Screen CurrentScreen;
-		public ScreenType ScreenType;
-		readonly Dictionary<ScreenType, Screen> screens = new Dictionary<ScreenType, Screen>();
-		Screen defaultScreen;
+		
+		public readonly ScreenControl ScreenControl;
 
 		public uint LocalTick;
 		public uint LocalRender;
@@ -79,6 +76,8 @@ namespace WarriorsSnuggery
 			if (Type == GameType.EDITOR)
 				Editor = true;
 
+			ScreenControl = new ScreenControl(this);
+
 			World = new World(this, seed, Statistics.Level, Statistics.Difficulty);
 
 			MasterRenderer.ResetRenderer(this);
@@ -87,9 +86,11 @@ namespace WarriorsSnuggery
 			version = new Text(new CPos(corner, 6192,0), IFont.Pixel16, Text.OffsetType.RIGHT);
 			version.SetColor(Color.Yellow);
 			version.SetText(Settings.Version);
+
 			memory = new Text(new CPos(corner, 6692,0), IFont.Pixel16, Text.OffsetType.RIGHT);
 			tick = new Text(new CPos(corner, 7692,0), IFont.Pixel16, Text.OffsetType.RIGHT);
 			render = new Text(new CPos(corner, 7192,0), IFont.Pixel16, Text.OffsetType.RIGHT);
+
 			camToPlayer = ButtonCreator.Create("wooden", new CPos(0, (int) (WindowInfo.UnitHeight * 512) - 512, 0), "Cam to Player", () => { Camera.LockedToPlayer = !Camera.LockedToPlayer; });
 			infoText = new Text(new CPos(-corner + 1024, 7192, 0), IFont.Pixel16);
 
@@ -117,30 +118,12 @@ namespace WarriorsSnuggery
 
 			World.Load();
 
-			switch(Type)
-			{
-				case GameType.EDITOR:
-					defaultScreen = new EditorScreen(this);
-					break;
-				case GameType.TUTORIAL:
-				case GameType.NORMAL:
-					defaultScreen = new DefaultScreen(this);
-					break;
-			}
-			screens.Add(ScreenType.MENU, new MenuScreen(this));
-			screens.Add(ScreenType.DEATH, new DeathScreen(this));
-			screens.Add(ScreenType.KEYSETTINGS, new KeyboardScreen(this));
-			screens.Add(ScreenType.SETTINGS, new SettingsScreen(this));
-			screens.Add(ScreenType.PAUSED, new PausedScreen(this));
-			screens.Add(ScreenType.START, new StartScreen(this));
-			screens.Add(ScreenType.EDITORSELECTION, new PieceScreen(this));
-			screens.Add(ScreenType.SAVE, new SaveGameScreen(this));
-			screens.Add(ScreenType.LOAD, new LoadGameScreen(this));
+			ScreenControl.Load();
 
 			watch.Stop();
 			Log.WritePerformance(watch.ElapsedMilliseconds, "Loading Game");
 
-			if (Window.FirstTick)
+			if (Window.FirstTick && Settings.FirstStarted)
 			{
 				ChangeScreen(ScreenType.START);
 			}
@@ -181,7 +164,7 @@ namespace WarriorsSnuggery
 			if (!Paused)
 			{
 				camToPlayer.Tick();
-				if (ScreenType != ScreenType.DEATH)
+				if (ScreenControl.FocusedType != ScreenType.DEATH)
 				{
 					if (KeyInput.IsKeyDown(Settings.Key("Pause"), 10))
 					{
@@ -195,10 +178,11 @@ namespace WarriorsSnuggery
 					}
 					if (KeyInput.IsKeyDown("altleft", 0) && KeyInput.IsKeyDown("m", 10))
 					{
-						if(defaultScreen is EditorScreen)
+						Screen defaultScreen;
+						if(Editor)
 						{
 							Editor = false;
-							if (Type == GameType.MENU)
+							if (Type == GameType.MENU || Type == GameType.MAINMENU)
 								defaultScreen = null;
 							else
 								defaultScreen = new DefaultScreen(this);
@@ -208,6 +192,9 @@ namespace WarriorsSnuggery
 							Editor = true;
 							defaultScreen = new EditorScreen(this);
 						}
+
+						ScreenControl.NewDefaultScreen(defaultScreen);
+
 						ChangeScreen(ScreenType.DEFAULT);
 					}
 				}
@@ -300,7 +287,7 @@ namespace WarriorsSnuggery
 				infoText.Position -= new CPos(48, 0, 0);
 			}
 
-			if (CurrentScreen != null) CurrentScreen.Tick();
+			ScreenControl.Tick();
 
 			if (Settings.EnableDebug)
 				MousePosition.Position = MouseInput.WindowPosition;
@@ -312,29 +299,19 @@ namespace WarriorsSnuggery
 			UI = UI.OrderBy(o => o.GraphicPosition.Z).ToList();
 			UI.RemoveAll(o => o.Disposed);
 
-			if (ScreenType == ScreenType.START)
+			if (ScreenControl.FocusedType == ScreenType.START)
 				Pause(true);
 		}
 
 		public void ChangeScreen(ScreenType screen)
 		{
-			ScreenType = screen;
-
-			if (ScreenType == ScreenType.DEATH)
-				Pause(true);
-
-			if (screens.ContainsKey(screen))
-				CurrentScreen = screens[screen];
-			else
-				CurrentScreen = null;
+			ScreenControl.ShowScreen(screen);
 
 			switch (screen)
 			{
 				case ScreenType.DEATH:
-					defaultScreen = CurrentScreen;
-					break;
-				case ScreenType.DEFAULT:
-					CurrentScreen = defaultScreen;
+					Pause(true);
+					ScreenControl.NewDefaultScreen(ScreenControl.Focused);
 					break;
 			}
 		}
@@ -361,12 +338,7 @@ namespace WarriorsSnuggery
 
 			World.Dispose();
 
-			foreach (var screen in screens.Values)
-				screen.Dispose();
-			screens.Clear();
-
-			if (defaultScreen != null)
-				defaultScreen.Dispose();
+			ScreenControl.DisposeScreens();
 
 			if(Settings.DeveloperMode)
 			{
@@ -387,12 +359,13 @@ namespace WarriorsSnuggery
 			UIRenderer.ClearRenderLists();
 			UI.ForEach((o) => o.Dispose());
 			UI.Clear();
+
+			GC.Collect();
 		}
 
 		public void RefreshSaveGameScreens()
 		{
-			((LoadGameScreen) screens[ScreenType.LOAD]).UpdateList();
-			((SaveGameScreen) screens[ScreenType.SAVE]).UpdateList();
+			ScreenControl.RefreshSaveGameScreens();
 		}
 	}
 }

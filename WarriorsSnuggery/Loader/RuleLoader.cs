@@ -39,6 +39,11 @@ namespace WarriorsSnuggery
 						foreach (var wall in walls)
 							WallCreator.LoadTypes(FileExplorer.FindIn(FileExplorer.Rules, wall, ".yaml"));
 						break;
+					case "TechTree":
+						var trees = rule.ToArray();
+						foreach (var tree in trees)
+							TechTreeLoader.LoadTechTree(tree);
+						break;
 				}
 			}
 		}

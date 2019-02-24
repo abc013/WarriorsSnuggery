@@ -32,6 +32,7 @@ namespace WarriorsSnuggery.UI
 		{
 			background.Dispose();
 			Title.Dispose();
+			GC.SuppressFinalize(this);
 		}
 	}
 }

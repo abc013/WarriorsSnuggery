@@ -56,7 +56,7 @@ namespace WarriorsSnuggery.Objects
 				WorldRenderer.RenderAfter(renderable);
 		}
 
-		public bool Intersects(Physics other)
+		public bool Intersects(Physics other, bool ignoreHeight)
 		{
 			if (other == null)
 				return false;
@@ -64,7 +64,7 @@ namespace WarriorsSnuggery.Objects
 			if (Shape == Shape.NONE || other.Shape == Shape.NONE)
 				return false;
 
-			if (Math.Abs(other.Height - Height) >= other.HeightRadius + HeightRadius)
+			if (!ignoreHeight && Math.Abs(other.Height - Height) >= other.HeightRadius + HeightRadius)
 				return false;
 
 			if (other.Shape != Shape.LINE_HORIZONTAL && Shape != Shape.LINE_HORIZONTAL && other.Shape != Shape.LINE_VERTICAL && Shape != Shape.LINE_VERTICAL)
