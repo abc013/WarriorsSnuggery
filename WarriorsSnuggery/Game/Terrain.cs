@@ -1,0 +1,196 @@
+﻿/*
+ * User: Andreas
+ * Date: 30.09.2017
+ * 
+ */
+using System;
+
+namespace WarriorsSnuggery.Objects
+{
+	public class Terrain : IRenderable, ICheckVisible, IDisposable
+	{
+		readonly TerrainRenderable renderable;
+		readonly ImageRenderable[] edges, corners;
+		readonly bool[] edgesVisible = new bool[4];
+		readonly CPos[] edgePositions = new CPos[4]
+		{
+			new CPos(0, -1024, 0),
+			new CPos(1024, 0, 0),
+			new CPos(0, 1024, 0),
+			new CPos(-1024, 0, 0)
+		};
+		readonly bool[] cornersVisible = new bool[4];
+		readonly CPos[] cornerPositions = new CPos[4]
+		{
+			new CPos(1024, -1024, 0),
+			new CPos(1024, 1024, 0),
+			new CPos(-1024, 1024, 0),
+			new CPos(-1024, -1024, 0)
+		};
+
+		readonly World world;
+		public readonly WPos Position;
+		public readonly TerrainType Type;
+		bool firstChecked;
+
+		public Terrain(World world, WPos position, TerrainType type)
+		{
+			this.world = world;
+			Position = position;
+			Type = type;
+
+			renderable = new TerrainRenderable(type);
+			if (Type.Overlaps)
+			{
+				edges = new ImageRenderable[4];
+				for (int i = 0; i < 4; i++)
+				{
+					edgesVisible[i] = true;
+					if (i % 2 != 0 && Type.Texture_Edge2 != null)
+						edges[i] = new ImageRenderable(Type.Texture_Edge2);
+					else
+						edges[i] = new ImageRenderable(Type.Texture_Edge);
+					edges[i].setRotation(new CPos(0,0,i*-90).ToAngle());
+				}
+
+				corners = new ImageRenderable[4];
+				for (int i = 0; i < 4; i++)
+				{
+					cornersVisible[i] = true;
+					corners[i] = new ImageRenderable(Type.Texture_Corner);
+					corners[i].setRotation(new CPos(0,0,i*-90).ToAngle());
+				}
+			}
+		}
+
+		public void Render()
+		{
+			if (Type.Overlaps && renderable.Visible)
+			{
+				for (int i = 0; i < 4; i++)
+				{
+					if (!edgesVisible[i])
+						continue;
+
+					edges[i].setPosition(Position.ToCPos() + edgePositions[i]);
+					edges[i].Render();
+				}
+
+				for (int i = 0; i < 4; i++)
+				{
+					if (!cornersVisible[i])
+						continue;
+
+					corners[i].setPosition(Position.ToCPos() + cornerPositions[i]);
+					corners[i].Render();
+				}
+			}
+			renderable.setPosition(Position.ToCPos());
+			renderable.Render();
+		}
+
+		public void CheckVisibility()
+		{
+			CheckVisibility(false);
+		}
+
+		public void CheckVisibility(bool checkEdges = false)
+		{
+			renderable.CheckVisibility(Position.ToCPos());
+			if (!firstChecked || checkEdges)
+			{
+				CheckEdgeVisibility();
+				firstChecked = true;
+			}
+		}
+
+		public void CheckEdgeVisibility()
+		{
+			if (!Type.Overlaps)
+				return;
+
+			for (int i = 0; i < 4; i++)
+			{
+				edgesVisible[i] = true;
+				cornersVisible[i] = true;
+			}
+
+			bool isEdgeLeft = Position.X == 0;
+			bool isEdgeRight = Position.X >= world.Map.Size.X - 1;
+			bool isEdgeTop = Position.Y == 0;
+			bool isEdgeBottom = Position.Y >= world.Map.Size.Y - 1;
+			if (isEdgeRight)
+			{
+				edgesVisible[1] = false;
+				cornersVisible[0] = false;
+				cornersVisible[1] = false;
+			}
+			else if (isEdgeLeft)
+			{
+				edgesVisible[3] = false;
+				cornersVisible[2] = false;
+				cornersVisible[3] = false;
+			}
+			else
+			{
+				var terrainLeft = world.TerrainLayer.Terrain[Position.X - 1, Position.Y].Type;
+				edgesVisible[3] = !(terrainLeft.ID == Type.ID || terrainLeft.OverlapHeight > Type.OverlapHeight);
+				var terrainRight = world.TerrainLayer.Terrain[Position.X - 1, Position.Y].Type;
+				edgesVisible[1] = !(world.TerrainLayer.Terrain[Position.X + 1, Position.Y].Type.ID == Type.ID || world.TerrainLayer.Terrain[Position.X + 1, Position.Y].Type.OverlapHeight > Type.OverlapHeight);
+			}
+
+			if (isEdgeBottom)
+			{
+				edgesVisible[2] = false;
+				cornersVisible[1] = false;
+				cornersVisible[2] = false;
+				var terrainTop = world.TerrainLayer.Terrain[Position.X, Position.Y - 1].Type;
+				edgesVisible[0] = !(terrainTop.ID == Type.ID || terrainTop.OverlapHeight > Type.OverlapHeight);
+			}
+			else if (isEdgeTop)
+			{
+				edgesVisible[0] = false;
+				cornersVisible[0] = false;
+				cornersVisible[3] = false;
+				var terrainBottom = world.TerrainLayer.Terrain[Position.X, Position.Y + 1].Type;
+				edgesVisible[2] = !(terrainBottom.ID == Type.ID || terrainBottom.OverlapHeight > Type.OverlapHeight);
+			}
+			else
+			{
+				var terrainTop = world.TerrainLayer.Terrain[Position.X, Position.Y - 1].Type;
+				edgesVisible[0] = !(terrainTop.ID == Type.ID || terrainTop.OverlapHeight > Type.OverlapHeight);
+				var terrainBottom = world.TerrainLayer.Terrain[Position.X, Position.Y + 1].Type;
+				edgesVisible[2] = !(terrainBottom.ID == Type.ID || terrainBottom.OverlapHeight > Type.OverlapHeight);
+			}
+
+			if (!isEdgeRight && !isEdgeTop)
+			{
+				var terrainRightUp = world.TerrainLayer.Terrain[Position.X + 1, Position.Y - 1].Type;
+				cornersVisible[0] = !(terrainRightUp.ID == Type.ID || terrainRightUp.OverlapHeight > Type.OverlapHeight);
+			}
+
+			if (!isEdgeRight && !isEdgeBottom)
+			{
+				var terrainRightBottom = world.TerrainLayer.Terrain[Position.X + 1, Position.Y + 1].Type;
+				cornersVisible[1] = !(terrainRightBottom.ID == Type.ID || terrainRightBottom.OverlapHeight > Type.OverlapHeight);
+			}
+
+			if (!isEdgeLeft && !isEdgeBottom)
+			{
+				var terrainLeftBottom = world.TerrainLayer.Terrain[Position.X - 1, Position.Y + 1].Type;
+				cornersVisible[2] = !(terrainLeftBottom.ID == Type.ID || terrainLeftBottom.OverlapHeight > Type.OverlapHeight);
+			}
+
+			if (!isEdgeLeft && !isEdgeTop)
+			{
+				var terrainLeftUp = world.TerrainLayer.Terrain[Position.X - 1, Position.Y - 1].Type;
+				cornersVisible[3] = !(terrainLeftUp.ID == Type.ID || terrainLeftUp.OverlapHeight > Type.OverlapHeight);
+			}
+		}
+
+		public void Dispose()
+		{
+			renderable.Dispose();
+		}
+	}
+}

@@ -1,0 +1,31 @@
+﻿- see discord
+
+- source control for all renderables
+
+- PERF: Make more events!
+- Collision: e.g. circles: If you move against it, then look if youre over or under the circle. Then move in that direction.
+
+- Walls visibility: add uniform for mouse position/any position. Calculate alpha from this point;
+- Shadow shader: height float still missing
+- Walls: Add walldamage
+- Weapons: reform weapons, add 3D collision
+- Menus: Add PAGES to containers (list)
+
+- Different gamemodes:
+	- tower defense,
+	- kill all enemies,
+	- find the exit;
+
+when textures begin to bug after adding new textures, please look here <- ISprite
+
+----------------------------------------------------------------------------------------------
+IT IS TIME
+TO SET AN AIM
+
+Release: Winter 2019, Dec
+Plan of Game:
+	You are a creature capable of changing your appearance. You don't know who did this to you. But you know where to go.
+	It is time to face the evil wizard. Fight your way through the levels. Gather new creatures and money. Unlock new abilities.
+
+	At the end, big parts of the game should be made customizable.
+Side Note: Art has never an end. This is the final date. After it, no features should be added anymore.

@@ -1,0 +1,63 @@
+0=
+	Image=grass
+	Overlaps=10
+		Edge=grass_edges_h
+		VerticalEdge=grass_edges_v
+		Corner=grass_corners
+	Speed=1,0
+
+1=
+	Image=way
+	Overlaps=7
+		Edge=way_edges
+		Corner=way_corners
+	Speed=1,1
+
+2=
+	Image=water
+	Speed=0
+	SpawnSmudge=false
+
+3=
+	Image=wood
+	Overlaps=20
+	Speed=1,1
+
+4=
+	Image=stone
+	Speed=1,1
+5=
+	Image=stone2
+	Speed=1,1
+	Overlaps=5
+		Edge=stone2_edges
+		Corner=stone2_corners
+6=
+	Image=brickstone1
+	Overlaps=4
+		Edge=brickstone1_edges
+		Corner=brickstone1_corners
+	Speed=1,2
+7=
+	Image=farmland
+	Speed=0,7
+8=
+	Image=grass2
+	Overlaps=9
+		Edge=grass2_edges_h
+		VerticalEdge=grass2_edges_v
+		Corner=grass2_corners
+	Speed=0,9
+9=
+	Image=snow
+	Overlaps=11
+		Edge=snow_edges
+		Corner=snow_corners
+	Speed=0,8
+
+10=
+	Image=ice
+	Overlaps=10
+		Edge=ice_edges
+		Corner=ice_corners
+	Speed=1,4

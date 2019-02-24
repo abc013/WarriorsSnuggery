@@ -1,0 +1,11 @@
+Name=Ahasave
+Level=8
+Difficulty=0
+Money=126
+LevelAim=10
+MaxMana=1000
+Deaths=1
+Kills=7
+Actor=heal
+	Health=688
+	Mana=12

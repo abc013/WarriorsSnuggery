@@ -1,0 +1,65 @@
+0=
+	Image=walls1
+		Size=48,24
+# size unused
+	Blocks=true
+	Height=1024
+	Destroyable=false
+1=
+	Image=walls0
+		Size=48,24
+# size unused
+	Blocks=true
+	Height=1024
+	Destroyable=false
+2=
+	Image=handrails
+		Size=48,24
+# size unused
+	Blocks=true
+	Height=256
+	Destroyable=false
+3=
+	Image=fence1
+		Size=48,24
+# size unused
+	Blocks=true
+	Height=256
+	Destroyable=false
+4=
+	Image=walls0_damaged0
+		Size=48,24
+# size unused
+	Blocks=true
+	Height=1024
+	Destroyable=false
+5=
+	Image=walls0_damaged1
+		Size=48,24
+# size unused
+	Blocks=true
+	Height=1024
+	Destroyable=false
+6=
+	Image=walls1_damaged0
+		Size=48,24
+# size unused
+	Blocks=true
+	Height=1024
+	Destroyable=false
+7=
+	Image=walls1_damaged1
+		Size=48,24
+# size unused
+	Blocks=true
+	Height=1024
+	Destroyable=false
+8=
+	Image=walls0_gate
+		Size=48,24
+# size unused
+	Blocks=false
+	Height=1024
+	Destroyable=false
+
+

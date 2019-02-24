@@ -1,0 +1,80 @@
+First_hit=
+	Before=
+	Unlocked=true
+	Cost=0
+	Effect=Damage
+		Value=0,1
+		String=First
+
+Warm_up=
+	Before=
+	Unlocked=false
+	Cost=25
+	Effect=Damage
+		Value=1,337
+		String=Always_Adding
+
+Anger=
+	Before=First_hit
+	Unlocked=false
+	Cost=100
+	Effect=Cooldown
+		Value=1,18
+		String=Always
+
+Strength=
+	Before=Warm_up,First_hit
+	Unlocked=false
+	Cost=125
+	Effect=Damage
+		Value=1,337
+		String=Always
+
+Bloodlust=
+	Before=Anger, Strength
+	Unlocked=false
+	Cost=150
+	Effect=SPEED_ONDAMAGE
+		Value=100
+		String=Always
+
+Blood_thirstiness=
+	Before=Anger, Strength
+	Unlocked=false
+	Cost=200
+	Effect=HEALTH_ONDAMAGE
+		Value=100
+		String=Always
+
+Precision=
+	Before=Bloodlust
+	Unlocked=false
+	Cost=100
+	Effect=INACCURACY
+		Value=0,1
+		String=Always_Dividing
+
+Range=
+	Before=Blood_thirstiness
+	Unlocked=false
+	Cost=100
+	Effect=RANGE
+		Value=100
+		String=Always
+
+Blood_pact=
+	Before=Precision, Range
+	Unlocked=false
+	Cost=200
+	Effect=ENEMY_COSTUM_EXPLOSION_DAMAGE
+		Value=250
+		String=Random
+
+Blood_armor=
+	Before=Precision, Range
+	Unlocked=false
+	Cost=300
+	Effect=SHIELD
+		Value=200
+		String=First
+	

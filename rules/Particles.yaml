@@ -1,0 +1,73 @@
+glitter=
+	Image=particle2
+		Size=12,12
+	Tick=10
+	DissolveTick=20
+	Force=0,0,0
+		Random=40,40,0
+	Rotation=90
+	Scale=1,0
+		Random=0,3
+
+rain=
+	Image=particle2
+		Size=12,12
+	Tick=100
+	Force=0,9,0
+		Random=0,70,0
+	Scale=0,8
+
+bullet=
+	Image=bullet
+		Size=12,24
+	Tick=100
+	Force=0,9,0
+		Random=0,70,0
+	Scale=0,8
+
+woodPiece=
+	Image=woodPiece
+		Size=1,2
+		Random=true
+	Tick=40
+	DissolveTick=20
+	Force=0,6,0
+		Random=50,50,0
+	Rotation=20
+
+nebula1=
+	Image=Light_Big_Y
+		Size=96,96
+	Tick=50
+	DissolveTick=150
+	Force=0,0,0
+		Random=10,10,0
+	Scale=0,75
+
+small_star=
+	Image=small_star
+		Size=4,4
+		Tick=5
+	Tick=15
+	DissolveTick=15
+	Force=0,0,0
+		Random=10,10,0
+
+beam=
+	Image=beam
+		Size=12,24
+	Tick=0
+	DissolveTick=30
+	Force=0,-4,0
+		Random=10,10,20
+
+
+puff1=
+	Image=puff1
+		Size=6,6
+		Tick=5
+	Tick=50
+	DissolveTick=10
+	Force=0,0,0
+		Random=10,10,20
+

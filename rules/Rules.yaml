@@ -1,0 +1,7 @@
+# Important: do NOT change the queue of the following rules. If you do so, the game is going to crash.
+Particles=Particles
+Weapons=Weapons,ManaWeapons
+Actors=Actors,TutorialActors,Triggers
+Terrain=Terrain
+Walls=Walls
+TechTree=Techtree

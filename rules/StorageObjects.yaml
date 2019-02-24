@@ -1,0 +1,27 @@
+BarrelExploded=
+	Image=barrelexplode
+		Size=48,48
+	Offset=0,0,-1024
+	Collectable=Health
+		Value=-4
+		MultipleActivations=yes
+			Duration=2
+		OnlyByPlayer=false
+	Physics=
+		Size=1024
+
+b_bookshelf=
+	Image=bookshelf
+		Size=24,48
+	Offset=0,-512,0
+	Physics=
+		Shape=Rectangle
+		Size=512
+
+table1=
+	Image=table1
+		Size=24,24
+	Offset=0,100,0
+	Physics=
+		Shape=Circle
+		Size=400
