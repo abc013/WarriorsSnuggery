@@ -33,24 +33,24 @@ namespace WarriorsSnuggery.UI
 			switch(game.Type)
 			{
 				case GameType.EDITOR:
-					restart = ButtonCreator.Create("wooden", new CPos(2048, height, 0), "Play Piece", () => Window.Current.NewGame(game.Stats, GameType.NORMAL, true, Maps.MapType.ConvertGameType(game.MapType, GameType.NORMAL)));
-					menu = ButtonCreator.Create("wooden", new CPos(-2048, height, 0), "Main Menu", () => Window.Current.NewGame(game.Stats, GameType.MAINMENU));
+					restart = ButtonCreator.Create("wooden", new CPos(2048, height, 0), "Play Piece", () => Window.Current.NewGame(game.Statistics, GameType.NORMAL, true, Maps.MapType.ConvertGameType(game.MapType, GameType.NORMAL)));
+					menu = ButtonCreator.Create("wooden", new CPos(-2048, height, 0), "Main Menu", () => Window.Current.NewGame(game.Statistics, GameType.MAINMENU));
 					break;
 				case GameType.MAINMENU:
 					restart = ButtonCreator.Create("wooden", new CPos(2048, height, 0), "I Do Nothing", () => { });
 					menu = ButtonCreator.Create("wooden", new CPos(-2048, height, 0), "I Do Nothing", () => { });
 					break;
 				case GameType.TUTORIAL:
-					restart = ButtonCreator.Create("wooden", new CPos(2048, height, 0), "Restart Tutorial", () => Window.Current.NewGame(game.Stats, GameType.TUTORIAL, true));
-					menu = ButtonCreator.Create("wooden", new CPos(-2048, height, 0), "Main Menu", () => Window.Current.NewGame(game.Stats, GameType.MAINMENU));
+					restart = ButtonCreator.Create("wooden", new CPos(2048, height, 0), "Restart Tutorial", () => Window.Current.NewGame(game.Statistics, GameType.TUTORIAL, true));
+					menu = ButtonCreator.Create("wooden", new CPos(-2048, height, 0), "Main Menu", () => Window.Current.NewGame(game.Statistics, GameType.MAINMENU));
 					break;
 				case GameType.MENU:
 					restart = ButtonCreator.Create("wooden", new CPos(2048, height, 0), "I Do Nothing", () => { });
-					menu = ButtonCreator.Create("wooden", new CPos(-2048, height, 0), "Main Menu", () => Window.Current.NewGame(game.Stats, GameType.MAINMENU));
+					menu = ButtonCreator.Create("wooden", new CPos(-2048, height, 0), "Main Menu", () => Window.Current.NewGame(game.Statistics, GameType.MAINMENU));
 					break;
 				default:
-					restart = ButtonCreator.Create("wooden", new CPos(2048, height, 0), "Restart Level", () => Window.Current.NewGame(game.Stats, GameType.NORMAL, true));
-					menu = ButtonCreator.Create("wooden", new CPos(-2048, height, 0), "Evacuate", () => Window.Current.NewGame(game.Stats, GameType.MENU));
+					restart = ButtonCreator.Create("wooden", new CPos(2048, height, 0), "Restart Level", () => Window.Current.NewGame(game.Statistics, GameType.NORMAL, true));
+					menu = ButtonCreator.Create("wooden", new CPos(-2048, height, 0), "Evacuate", () => Window.Current.NewGame(game.Statistics, GameType.MENU));
 					break;
 			}
 

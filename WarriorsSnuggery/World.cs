@@ -45,12 +45,12 @@ namespace WarriorsSnuggery
 			{
 				var start = Map.PlayerStart != new CPos(-1024,-1024,0) ? Map.PlayerStart : new MPos(Map.Size.X / 2, Map.Size.Y / 2).ToCPos();
 
-				LocalPlayer = ActorCreator.Create(this, Game.Stats.Actor, start, 2, isPlayer: true);
+				LocalPlayer = ActorCreator.Create(this, Game.Statistics.Actor, start, 2, isPlayer: true);
 				Add(LocalPlayer);
 
 				Camera.Position(LocalPlayer.Position, true);
 				if (Game.Type == GameType.NORMAL)
-					Add(new ActionText(LocalPlayer.Position + new CPos(0,0,1024), @"Level" + Game.Stats.Level, Color.White, IFont.Papyrus24, new CPos(0, -15, 30), 300));
+					Add(new ActionText(LocalPlayer.Position + new CPos(0,0,1024), @"Level" + Game.Statistics.Level, Color.White, IFont.Papyrus24, new CPos(0, -15, 30), 300));
 			}
 			else
 			{
@@ -122,8 +122,8 @@ namespace WarriorsSnuggery
 			if (PlayerAlive)
 			{
 				PlayerAlive = false;
-				Game.Stats.Deaths++;
-				Game.Stats.Money = 0;
+				Game.Statistics.Deaths++;
+				Game.Statistics.Money = 0;
 
 				Game.Pause();
 				Game.ChangeScreen(UI.ScreenType.DEATH);

@@ -104,14 +104,14 @@ namespace WarriorsSnuggery
 
 		public void SetValues(Game game)
 		{
-			Level = game.Stats.Level;
-			Money = game.Stats.Money;
-			Difficulty = game.Stats.Difficulty;
-			Actor = game.Stats.Actor;
-			Kills = game.Stats.Kills;
-			Deaths = game.Stats.Deaths;
-			MaxMana = game.Stats.MaxMana;
-			Mana = game.Stats.Mana;
+			Level = game.Statistics.Level;
+			Money = game.Statistics.Money;
+			Difficulty = game.Statistics.Difficulty;
+			Actor = game.Statistics.Actor;
+			Kills = game.Statistics.Kills;
+			Deaths = game.Statistics.Deaths;
+			MaxMana = game.Statistics.MaxMana;
+			Mana = game.Statistics.Mana;
 			if (game.World.LocalPlayer != null)
 			{
 				Health = game.World.LocalPlayer.Health.HP;

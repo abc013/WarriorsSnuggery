@@ -26,11 +26,11 @@ namespace WarriorsSnuggery.UI
 		int healthCooldown;
 		int lastHealth;
 
-		public DefaultScreen(Game game) : base("Level " + game.Stats.Level + "/" + game.Stats.LevelToReach, 0)
+		public DefaultScreen(Game game) : base("Level " + game.Statistics.Level + "/" + game.Statistics.LevelToReach, 0)
 		{
 			this.game = game;
 			Title.Position += new CPos(0,-7120,0);
-			if (game.Stats.Level >= game.Stats.LevelToReach)
+			if (game.Statistics.Level >= game.Statistics.LevelToReach)
 				Title.SetColor(Color.Green);
 
 			var corner = (int) (WindowInfo.UnitWidth / 2 * 1024);
@@ -50,7 +50,7 @@ namespace WarriorsSnuggery.UI
 
 			money = new GameObject(new CPos(-corner + 1024, 7192,0), new ImageRenderable(TextureManager.Texture("UI_money")));
 			moneyText = new Text(new CPos(-corner + 2048,7192,0), IFont.Papyrus24);
-			moneyText.SetText(game.Stats.Money);
+			moneyText.SetText(game.Statistics.Money);
 
 			pause = new Text(new CPos(5000,(int) (mid + WindowInfo.UnitWidth * 512) + 512,0), IFont.Pixel16);
 			pause.WriteText("Pause: '" + Color.Blue + "P" + Color.White + "'");
@@ -129,9 +129,9 @@ namespace WarriorsSnuggery.UI
 						healthBar.Scale = (healthCooldown / 100f) + 1f;
 				}
 
-				mana.SetText(game.Stats.Mana);
+				mana.SetText(game.Statistics.Mana);
 
-				var b = game.Stats.MaxMana <= 0 ? 0 : (game.Stats.Mana / (float) game.Stats.MaxMana * 256) - 1;
+				var b = game.Statistics.MaxMana <= 0 ? 0 : (game.Statistics.Mana / (float) game.Statistics.MaxMana * 256) - 1;
 				manaComb.setColor(new Color(0,0,b,240));
 				manaComb.Rotation = new CPos(0,0,Convert.ToInt32(game.LocalTick) / 8);
 
@@ -147,10 +147,10 @@ namespace WarriorsSnuggery.UI
 				}
 			}
 
-			if (lastCash != game.Stats.Money)
+			if (lastCash != game.Statistics.Money)
 			{
-				lastCash = game.Stats.Money;
-				moneyText.SetText(game.Stats.Money);
+				lastCash = game.Statistics.Money;
+				moneyText.SetText(game.Statistics.Money);
 				cashCooldown = 10;
 			}
 			if (cashCooldown-- > 0)
@@ -162,13 +162,13 @@ namespace WarriorsSnuggery.UI
 
 		void changePlayer(Actor player, ActorType type)
 		{
-			if (game.Stats.Money < type.Playable.ChangeCost)
+			if (game.Statistics.Money < type.Playable.ChangeCost)
 				return;
 
-			game.Stats.Money -= type.Playable.ChangeCost;
+			game.Statistics.Money -= type.Playable.ChangeCost;
 
 			var oldHP = player.Health != null ? player.Health.HP / (float) player.Health.MaxHP : 1;
-			var oldMana = game.Stats.Mana;
+			var oldMana = game.Statistics.Mana;
 			var newActor = ActorCreator.Create(game.World, type, player.Position, player.Team, isPlayer: true);
 
 			player.Dispose();
@@ -178,7 +178,7 @@ namespace WarriorsSnuggery.UI
 			if (newActor.Health != null)
 				newActor.Health.HP = (int) (oldHP * newActor.Health.MaxHP);
 
-			game.Stats.Actor = ActorCreator.GetName(type);
+			game.Statistics.Actor = ActorCreator.GetName(type);
 			if (game.World.LocalPlayer.Type.ManaWeapon != null)
 			{
 				foreach(var o in manaPanel.Container)

@@ -39,9 +39,9 @@ namespace WarriorsSnuggery.Objects.Parts
 			}
 
 			//TODO: you know SUPERPOWERS? then do them properly.
-			if (self.Type.ManaWeapon != null && self.World.Game.Stats.Mana >= self.Type.ManaCost && KeyInput.IsKeyDown("E", 5))
+			if (self.Type.ManaWeapon != null && self.World.Game.Statistics.Mana >= self.Type.ManaCost && KeyInput.IsKeyDown("E", 5))
 			{
-				self.World.Game.Stats.Mana -= self.Type.ManaCost;
+				self.World.Game.Statistics.Mana -= self.Type.ManaCost;
 				var weapon = WeaponCreator.Create(self.World, self.Type.ManaWeapon, self, MouseInput.GamePosition);
 				weapon.Position = MouseInput.GamePosition;
 				self.World.Add(weapon);
@@ -59,7 +59,7 @@ namespace WarriorsSnuggery.Objects.Parts
 
 		public override void OnKill(Actor killed)
 		{
-			self.World.Game.Stats.Kills++;
+			self.World.Game.Statistics.Kills++;
 		}
 	}
 }

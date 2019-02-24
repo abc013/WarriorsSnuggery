@@ -49,7 +49,7 @@ namespace WarriorsSnuggery
 
 		public readonly Window Window;
 
-		public readonly GameStatistics Stats;
+		public readonly GameStatistics Statistics;
 		public readonly MapType MapType;
 		public readonly GameType Type;
 		public readonly int Seed;
@@ -65,7 +65,7 @@ namespace WarriorsSnuggery
 
 		readonly Button camToPlayer;
 
-		public Game(GameStatistics saveStats, MapType map, int seed = -1)
+		public Game(GameStatistics statistics, MapType map, int seed = -1)
 		{
 			Window = Window.Current;
 
@@ -73,13 +73,13 @@ namespace WarriorsSnuggery
 				seed = SharedRandom.Next();
 			Seed = seed;
 			MapType = map;
-			Stats = saveStats;
+			Statistics = statistics;
 
-			Type = map.Type;
+			Type = MapType.DefaultType;
 			if (Type == GameType.EDITOR)
 				Editor = true;
 
-			World = new World(this, seed, Stats.Level, Stats.Difficulty);
+			World = new World(this, seed, Statistics.Level, Statistics.Difficulty);
 
 			MasterRenderer.ResetRenderer(this);
 
@@ -167,7 +167,7 @@ namespace WarriorsSnuggery
 		{
 			if (End)
 			{
-				Window.NewGame(Stats, NewGameType);
+				Window.NewGame(Statistics, NewGameType);
 				return;
 			}
 			var watch = new StopWatch();
@@ -264,7 +264,7 @@ namespace WarriorsSnuggery
 				{
 					if (KeyInput.IsKeyDown("n", 10))
 					{
-						World.Game.Stats.Mana += 100;
+						World.Game.Statistics.Mana += 100;
 					}
 					if (KeyInput.IsKeyDown("b", 10))
 					{
@@ -272,7 +272,7 @@ namespace WarriorsSnuggery
 					}
 					if (KeyInput.IsKeyDown("v", 10))
 					{
-						Stats.Money += 100;
+						Statistics.Money += 100;
 					}
 				}
 
@@ -356,7 +356,7 @@ namespace WarriorsSnuggery
 			Pause(true);
 			if (World.LocalPlayer != null && World.LocalPlayer.Health != null)
 			{
-				Stats.Health = World.LocalPlayer.Health.HP;
+				Statistics.Health = World.LocalPlayer.Health.HP;
 			}
 
 			World.Dispose();

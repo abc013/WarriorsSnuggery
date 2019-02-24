@@ -8,7 +8,7 @@ namespace WarriorsSnuggery.Maps
 	public class MapType
 	{
 		public readonly int FromLevel;
-		public readonly GameType Type;
+		public readonly GameType DefaultType;
 		public readonly string[] Parts;
 		public readonly string[] Entrances;
 		public readonly string[] Exits;
@@ -21,9 +21,9 @@ namespace WarriorsSnuggery.Maps
 		public readonly Dictionary<ActorType, int[]> SpawnActors;
 		public readonly MPos SpawnPoint;
 
-		public MapType(string[] parts, string[] entrances, string[] exits, Dictionary<string, MPos> importantParts, int wall, MPos customSize, Color ambient, GameType playType, int fromLevel, Dictionary<ActorType, int[]> spawnActors, TerrainGenerationType baseTerrainGeneration, TerrainGenerationType[] terrainGeneration, MPos spawnPoint)
+		public MapType(string[] parts, string[] entrances, string[] exits, Dictionary<string, MPos> importantParts, int wall, MPos customSize, Color ambient, GameType defaultType, int fromLevel, Dictionary<ActorType, int[]> spawnActors, TerrainGenerationType baseTerrainGeneration, TerrainGenerationType[] terrainGeneration, MPos spawnPoint)
 		{
-			Type = playType;
+			DefaultType = defaultType;
 			FromLevel = fromLevel;
 			Parts = parts;
 			Entrances = entrances;
@@ -252,7 +252,7 @@ namespace WarriorsSnuggery.Maps
 
 		public static MapType FindMainMenuMap(int level)
 		{
-			var mainTypes = types.Values.Where(a => a.Type == GameType.MAINMENU && level >= a.FromLevel).ToList();
+			var mainTypes = types.Values.Where(a => a.DefaultType == GameType.MAINMENU && level >= a.FromLevel).ToList();
 
 			if (mainTypes.Count == 0)
 				throw new MissingFieldException(string.Format("There are no available Main Maps (Level:{0}).", level));
@@ -262,7 +262,7 @@ namespace WarriorsSnuggery.Maps
 
 		public static MapType FindMainMap(int level)
 		{
-			var mainTypes = types.Values.Where(a => a.Type == GameType.MENU && level >= a.FromLevel).ToList();
+			var mainTypes = types.Values.Where(a => a.DefaultType == GameType.MENU && level >= a.FromLevel).ToList();
 
 			if (mainTypes.Count == 0)
 				throw new MissingFieldException(string.Format("There are no available Main Maps (Level:{0}).", level));
@@ -272,7 +272,7 @@ namespace WarriorsSnuggery.Maps
 
 		public static MapType FindMap(int level)
 		{
-			var mainTypes = types.Values.Where(a => a.Type == GameType.NORMAL && level >= a.FromLevel).ToList();
+			var mainTypes = types.Values.Where(a => a.DefaultType == GameType.NORMAL && level >= a.FromLevel).ToList();
 
 			if (mainTypes.Count == 0)
 				throw new MissingFieldException(string.Format("There are no Normal Maps."));
@@ -282,7 +282,7 @@ namespace WarriorsSnuggery.Maps
 
 		public static MapType FindTutorial()
 		{
-			var mainTypes = types.Values.Where(a => a.Type == GameType.TUTORIAL).ToList();
+			var mainTypes = types.Values.Where(a => a.DefaultType == GameType.TUTORIAL).ToList();
 
 			if (mainTypes.Count == 0)
 				throw new MissingFieldException(string.Format("There are no Tutorial Maps."));
