@@ -1,0 +1,116 @@
+#######################
+#   Default Weapons   #
+#######################
+
+arrow=
+	Type=Rocket
+	Image=arrow
+		Size=2,6
+	Damage=30
+	Speed=150
+	Reload=15
+	ExplodeParticles=woodPiece
+		Count=3
+	RotateToTarget=yes
+
+cannon=
+	Type=Rocket
+	MaximalRange=15360
+	MinimalRange=4096
+	Image=cannonball
+		Size=2,2
+	Smudge=smudge2
+		Size=80,80
+	Damage=300
+	Speed=140
+	Reload=200
+	Inaccuracy=1536
+	ExplodeParticles=nebula1
+		Count=3
+
+slime=
+	Image=slime_mini
+		Size=2,2
+		Random=true
+	Smudge=slime_splash
+		Size=8,8
+		Random=true
+	Damage=7
+	Speed=120
+		Acceleration=2
+	Reload=12
+	RotateToTarget=no
+	Inaccuracy=1024
+
+voidweapon=
+	Image=void
+		Size=12,12
+	Smudge=color
+		Size=24,24
+		Random=true
+	Damage=70
+	Speed=256
+		Acceleration=30
+	Reload=20
+	ExplodeParticles=nebula1
+		Count=10
+	Inaccuracy=512
+
+web=
+	Image=arrow
+		Size=2,6
+	RotateToTarget=true
+	Smudge=smudge2
+		Size=80,80
+	Damage=300
+	Speed=256
+		Acceleration=30
+	Reload=100
+	ExplodeParticles=nebula1
+		Count=20
+	Inaccuracy=512
+
+blade=
+	Image=blade
+		Size=12,6
+	Scale=0,5
+#	Falloff=EXPONENTIAL
+	Damage=150
+	MaximalRange=1536
+	MinimalRange=256
+	RotateToTarget=yes
+	Speed=180
+	Physics=
+		Size=0
+	Reload=10
+
+lazer=
+#	Type=Beam
+	Image=particle2
+		Size=12,12
+	Smudge=smudge1
+		Size=12,12
+		Random=true
+	Damage=100
+	MaximalRange=12144
+	MinimalRange=512
+	RotateToTarget=no
+	Speed=130
+	Reload=7
+	ExplodeParticles=glitter
+		Count=5
+	Inaccuracy=1536
+
+color=
+	Image=particle2
+		Size=40,40
+	Smudge=color
+		Size=24,24
+		Random=true
+	Damage=4
+	MaximalRange=16384
+	MinimalRange=256
+	Speed=256
+		Acceleration=10
+	Reload=2
+	Inaccuracy=0

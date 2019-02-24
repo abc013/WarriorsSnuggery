@@ -1,0 +1,206 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" DefaultTargets="Build">
+  <PropertyGroup>
+    <ProjectGuid>{D8BAC54F-9CF7-45FD-9CBA-1240643C26FF}</ProjectGuid>
+    <ProjectTypeGuids>{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <OutputType>Exe</OutputType>
+    <RootNamespace>WarriorsSnuggery</RootNamespace>
+    <AssemblyName>WarriorsSnuggery</AssemblyName>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <NoWin32Manifest>False</NoWin32Manifest>
+    <ApplicationIcon>..\misc\warsnu.ico</ApplicationIcon>
+    <SignAssembly>False</SignAssembly>
+    <DelaySign>False</DelaySign>
+    <RunPostBuildEvent>OnBuildSuccess</RunPostBuildEvent>
+    <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
+    <NoStdLib>False</NoStdLib>
+    <TreatWarningsAsErrors>False</TreatWarningsAsErrors>
+    <IntermediateOutputPath>obj\$(Configuration)\</IntermediateOutputPath>
+    <WarningLevel>4</WarningLevel>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Platform)' == 'AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <Prefer32Bit>True</Prefer32Bit>
+    <BaseAddress>4194304</BaseAddress>
+    <RegisterForComInterop>False</RegisterForComInterop>
+    <GenerateSerializationAssemblies>Auto</GenerateSerializationAssemblies>
+    <FileAlignment>4096</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
+    <OutputPath>bin\Debug\</OutputPath>
+    <DebugSymbols>True</DebugSymbols>
+    <DebugType>Full</DebugType>
+    <Optimize>False</Optimize>
+    <CheckForOverflowUnderflow>True</CheckForOverflowUnderflow>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <BaseIntermediateOutputPath>obj\</BaseIntermediateOutputPath>
+    <StartAction>Project</StartAction>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
+    <OutputPath>bin\Release\</OutputPath>
+    <DebugSymbols>False</DebugSymbols>
+    <DebugType>None</DebugType>
+    <Optimize>True</Optimize>
+    <CheckForOverflowUnderflow>False</CheckForOverflowUnderflow>
+    <DefineConstants>TRACE</DefineConstants>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="OpenTK">
+      <HintPath>..\OpenTK.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms">
+      <RequiredTargetFramework>4.0</RequiredTargetFramework>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="EvolutionNode.cs" />
+    <Compile Include="Game\Actor\Parts\ActorPart.cs" />
+    <Compile Include="Game\Actor\IActor.cs" />
+    <Compile Include="Game\Actor\Parts\BotPart.cs" />
+    <Compile Include="Game\Actor\Parts\CollectablePart.cs" />
+    <Compile Include="Game\Actor\Parts\DebugPart.cs" />
+    <Compile Include="Game\Actor\Parts\HealthPart.cs" />
+    <Compile Include="Game\Actor\Parts\MobilityPart.cs" />
+    <Compile Include="Game\Actor\Parts\PhysicsPart.cs" />
+    <Compile Include="Game\Actor\Parts\PlayablePart.cs" />
+    <Compile Include="Game\Actor\Parts\PlayerPart.cs" />
+    <Compile Include="Game\Actor\Parts\RegenerationPart.cs" />
+    <Compile Include="Game\Actor\Parts\SpawnOnDeathPart.cs" />
+    <Compile Include="Game\Actor\Parts\WeaponPart.cs" />
+    <Compile Include="Game\Actor\Parts\WorldPart.cs" />
+    <Compile Include="Game\Particles\ParticleSpawner.cs" />
+    <Compile Include="Game\UI\Objects\Button.cs" />
+    <Compile Include="Game\UI\Objects\CheckBox.cs" />
+    <Compile Include="Game\UI\Objects\GameSaveItem.cs" />
+    <Compile Include="Game\UI\Objects\GameSaveList.cs" />
+    <Compile Include="Game\UI\Objects\Panel.cs" />
+    <Compile Include="Game\UI\Objects\PanelItem.cs" />
+    <Compile Include="Game\UI\Objects\PanelList.cs" />
+    <Compile Include="Game\UI\Objects\TextBox.cs" />
+    <Compile Include="Game\UI\Screens\Editor\EditorScreen.cs" />
+    <Compile Include="Game\UI\Screens\Editor\PieceScreen.cs" />
+    <Compile Include="Game\UI\Screens\Game\DeathScreen.cs" />
+    <Compile Include="Game\UI\Screens\Game\DefaultScreen.cs" />
+    <Compile Include="Game\UI\Screens\Game\StoreScreen.cs" />
+    <Compile Include="Game\UI\Screens\LoadGameScreen.cs" />
+    <Compile Include="Game\UI\Screens\LoadingScreen.cs" />
+    <Compile Include="Game\UI\Screens\MenuScreen.cs" />
+    <Compile Include="Game\UI\Screens\PausedScreen.cs" />
+    <Compile Include="Game\UI\Screens\SaveGameScreen.cs" />
+    <Compile Include="Game\UI\Screens\Screen.cs" />
+    <Compile Include="Game\UI\Screens\ScreenType.cs" />
+    <Compile Include="Game\UI\Screens\Settings\KeyboardScreen.cs" />
+    <Compile Include="Game\UI\Screens\Settings\SettingsScreen.cs" />
+    <Compile Include="Game\UI\Screens\StartScreen.cs" />
+    <Compile Include="Generation\Maze.cs" />
+    <Compile Include="Generation\Noise.cs" />
+    <Compile Include="GameSaveManager.cs" />
+    <Compile Include="Loader\MiniTextNode.cs" />
+    <Compile Include="Loader\NodeExceptions.cs" />
+    <Compile Include="Loader\PartLoader.cs" />
+    <Compile Include="Loader\RuleLoader.cs" />
+    <Compile Include="Loader\RuleReader.cs" />
+    <Compile Include="Map\Map.cs" />
+    <Compile Include="Game\Creators\ObjectCreator.cs" />
+    <Compile Include="Map\MapType.cs" />
+    <Compile Include="Map\PhysicsLayer.cs" />
+    <Compile Include="Map\TerrainGenerationType.cs" />
+    <Compile Include="Map\TerrainLayer.cs" />
+    <Compile Include="Map\WallLayer.cs" />
+    <Compile Include="Game\Actor\Actor.cs" />
+    <Compile Include="Camera.cs" />
+    <Compile Include="Input\FileExplorer.cs" />
+    <Compile Include="Game.cs" />
+    <Compile Include="Graphics\Color.cs" />
+    <Compile Include="Log.cs" />
+    <Compile Include="Game\Actor\IActorBody.cs" />
+    <Compile Include="Game\Weapons\Smudge.cs" />
+    <Compile Include="Game\Creators\UICreator.cs" />
+    <Compile Include="Game\RenderableType.cs" />
+    <Compile Include="Game\Actor\ActorType.cs" />
+    <Compile Include="Game\Types\ButtonType.cs" />
+    <Compile Include="Game\Types\CheckBoxType.cs" />
+    <Compile Include="Game\Particles\ParticleType.cs" />
+    <Compile Include="Game\Types\TerrainType.cs" />
+    <Compile Include="Game\Color\ColoredCircle.cs" />
+    <Compile Include="Game\Color\ColoredRect.cs" />
+    <Compile Include="Game\Color\ColoredLine.cs" />
+    <Compile Include="Game\UI\Objects\Keyboardbutton.cs" />
+    <Compile Include="Game\Particles\Particle.cs" />
+    <Compile Include="Game\Physics.cs" />
+    <Compile Include="Game\Types\WallType.cs" />
+    <Compile Include="Game\Types\WeaponType.cs" />
+    <Compile Include="Game\Types\WriteBoxType.cs" />
+    <Compile Include="Game\Wall.cs" />
+    <Compile Include="Game\Weapons\BeamWeapon.cs" />
+    <Compile Include="Game\Weapons\BulletWeapon.cs" />
+    <Compile Include="Game\Weapons\RocketWeapon.cs" />
+    <Compile Include="Statistics.cs" />
+    <Compile Include="Position\Vector.cs" />
+    <Compile Include="Graphics\DrawMethod.cs" />
+    <Compile Include="Graphics\GraphicsObject.cs" />
+    <Compile Include="Graphics\Objects\IChar.cs" />
+    <Compile Include="Graphics\Objects\IFont.cs" />
+    <Compile Include="Graphics\Objects\ISprite.cs" />
+    <Compile Include="Graphics\ITexture.cs" />
+    <Compile Include="Graphics\TextureManager.cs" />
+    <Compile Include="Input\KeyInput.cs" />
+    <Compile Include="Input\MouseInput.cs" />
+    <Compile Include="Game\GameObject.cs" />
+    <Compile Include="Game\Renderables.cs" />
+    <Compile Include="Game\Terrain.cs" />
+    <Compile Include="Graphics\Objects\IColor.cs" />
+    <Compile Include="Graphics\Objects\IRenderable.cs" />
+    <Compile Include="Graphics\Objects\IImage.cs" />
+    <Compile Include="Graphics\ShaderProgram.cs" />
+    <Compile Include="Interfaces.cs" />
+    <Compile Include="Renderer\MasterRenderer.cs" />
+    <Compile Include="Graphics\Mesh\Mesh.cs" />
+    <Compile Include="Graphics\Mesh\Vertex.cs" />
+    <Compile Include="Game\Text\ActionText.cs" />
+    <Compile Include="Game\Text\Text.cs" />
+    <Compile Include="Position\CPos.cs" />
+    <Compile Include="Position\MPos.cs" />
+    <Compile Include="Position\WPos.cs" />
+    <Compile Include="Program.cs" />
+    <Compile Include="Settings.cs" />
+    <Compile Include="Timer.cs" />
+    <Compile Include="Renderer\UIRenderer.cs" />
+    <Compile Include="Game\Weapons\Weapon.cs" />
+    <Compile Include="Window.cs" />
+    <Compile Include="World.cs" />
+    <Compile Include="Renderer\WorldRenderer.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="ProfilingSessions\Session20180403_161103.sdps" />
+    <Content Include="ProfilingSessions\Session20180413_205951.sdps" />
+    <Content Include="ProfilingSessions\Session20180418_190902.sdps" />
+    <Content Include="ProfilingSessions\Session20180422_155205.sdps" />
+    <Content Include="ProfilingSessions\Session20180513_001704.sdps" />
+    <Content Include="ProfilingSessions\Session20180530_145837.sdps" />
+    <Content Include="ProfilingSessions\Session20180711_182805.sdps" />
+    <Content Include="ProfilingSessions\Session20180715_215240.sdps" />
+    <Content Include="ProfilingSessions\Session20181019_194444.sdps" />
+    <Content Include="ProfilingSessions\Session20181019_200001.sdps" />
+    <Content Include="ProfilingSessions\Session20181030_035939.sdps" />
+    <Content Include="ProfilingSessions\Session20181030_063506.sdps" />
+    <Content Include="ProfilingSessions\Session20181030_071027.sdps" />
+    <Content Include="Where%27sWSgoing.txt" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

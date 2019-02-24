@@ -1,0 +1,11 @@
+Name=Test
+Level=0
+Difficulty=0
+Money=0
+LevelAim=0
+MaxMana=500
+Kills=0
+Deaths=0
+Actor=heal
+	Health=903
+	Mana=50

@@ -1,0 +1,11 @@
+Name=DEFAULT
+Level=0
+Difficulty=1
+Money=0
+LevelAim=10
+MaxMana=500
+Deaths=0
+Kills=0
+Actor=heal
+	Health=900
+	Mana=50
