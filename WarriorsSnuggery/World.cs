@@ -141,7 +141,7 @@ namespace WarriorsSnuggery
 				return false;
 
 			foreach(var p in obj.PhysicsSectors)
-				if (p.Check(obj, ignoreTypes, ignoreObjects))
+				if (p.Check(obj, ignoreHeight, ignoreTypes, ignoreObjects))
 					return true;
 
 			if (ignoreTypes == null || !ignoreTypes.Contains(typeof(Wall)))
@@ -153,7 +153,7 @@ namespace WarriorsSnuggery
 					if(ignoreObjects != null && ignoreObjects.Contains(wall))
 						continue;
 
-					if (obj.Physics.Intersects(wall.Physics))
+					if (obj.Physics.Intersects(wall.Physics, ignoreHeight))
 						return true;
 				}
 			}

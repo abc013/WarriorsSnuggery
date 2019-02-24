@@ -62,7 +62,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="EvolutionNode.cs" />
+    <Compile Include="Effect.cs" />
     <Compile Include="Game\Actor\Parts\ActorPart.cs" />
     <Compile Include="Game\Actor\IActor.cs" />
     <Compile Include="Game\Actor\Parts\BotPart.cs" />
@@ -90,13 +90,14 @@
     <Compile Include="Game\UI\Screens\Editor\PieceScreen.cs" />
     <Compile Include="Game\UI\Screens\Game\DeathScreen.cs" />
     <Compile Include="Game\UI\Screens\Game\DefaultScreen.cs" />
-    <Compile Include="Game\UI\Screens\Game\StoreScreen.cs" />
+    <Compile Include="Game\UI\Screens\Game\TechTreeScreen.cs" />
     <Compile Include="Game\UI\Screens\LoadGameScreen.cs" />
     <Compile Include="Game\UI\Screens\LoadingScreen.cs" />
     <Compile Include="Game\UI\Screens\MenuScreen.cs" />
     <Compile Include="Game\UI\Screens\PausedScreen.cs" />
     <Compile Include="Game\UI\Screens\SaveGameScreen.cs" />
     <Compile Include="Game\UI\Screens\Screen.cs" />
+    <Compile Include="Game\UI\Screens\ScreenControl.cs" />
     <Compile Include="Game\UI\Screens\ScreenType.cs" />
     <Compile Include="Game\UI\Screens\Settings\KeyboardScreen.cs" />
     <Compile Include="Game\UI\Screens\Settings\SettingsScreen.cs" />
@@ -173,6 +174,8 @@
     <Compile Include="Position\WPos.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Settings.cs" />
+    <Compile Include="TechTree\TechTreeLoader.cs" />
+    <Compile Include="TechTree\TechTreeNode.cs" />
     <Compile Include="Timer.cs" />
     <Compile Include="Renderer\UIRenderer.cs" />
     <Compile Include="Game\Weapons\Weapon.cs" />

@@ -13,7 +13,7 @@ namespace WarriorsSnuggery.UI
 		EDITORSELECTION = 6,
 		KEYSETTINGS = 7,
 		SETTINGS = 8,
-		INVENTORY = 9,
+		TECHTREE = 9,
 		START = 10,
 		SAVE = 11,
 		LOAD = 12

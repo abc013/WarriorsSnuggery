@@ -17,6 +17,10 @@
 	- find the exit;
 
 when textures begin to bug after adding new textures, please look here <- ISprite
+----------------------------------------------------------------------------------------------
+CONFIRMED MEMORY LEAKS
+
+- Screens
 
 ----------------------------------------------------------------------------------------------
 IT IS TIME

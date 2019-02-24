@@ -99,12 +99,12 @@ namespace WarriorsSnuggery
 			Objects.Remove(obj);
 		}
 
-		public bool Check(GameObject obj, Type[] ignoreTypes = null, GameObject[] ignoreObjects = null)
+		public bool Check(GameObject obj, bool ignoreHeight = false, Type[] ignoreTypes = null, GameObject[] ignoreObjects = null)
 		{
 			if(!Objects.Contains(obj))
 				return true;
 
-			return Objects.Any((o) => o.Physics != obj.Physics && o.Physics.Intersects(obj.Physics) && (ignoreObjects == null || !ignoreObjects.Contains(o)) && (ignoreTypes == null || !ignoreTypes.Contains(o.GetType())) );
+			return Objects.Any((o) => o.Physics != obj.Physics && o.Physics.Intersects(obj.Physics, ignoreHeight) && (ignoreObjects == null || !ignoreObjects.Contains(o)) && (ignoreTypes == null || !ignoreTypes.Contains(o.GetType())) );
 		}
 	}
 }
