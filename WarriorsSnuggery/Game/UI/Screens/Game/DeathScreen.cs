@@ -26,8 +26,8 @@ namespace WarriorsSnuggery.UI
 			score = new Text(new CPos(0,1024,0), IFont.Pixel16, Text.OffsetType.MIDDLE);
 			deaths = new Text(new CPos(0, 2048, 0), IFont.Pixel16, Text.OffsetType.MIDDLE);
 
-			restart = ButtonCreator.Create("wooden", new CPos(-2048, 5120,0), "Restart Map", () => Window.Current.NewGame(game.Stats, sameSeed: true));
-			menu = ButtonCreator.Create("wooden", new CPos(2048, 5120, 0), "Main Menu", () => Window.Current.NewGame(game.Stats, GameType.MENU));
+			restart = ButtonCreator.Create("wooden", new CPos(-2048, 5120,0), "Restart Map", () => Window.Current.NewGame(game.Statistics, sameSeed: true));
+			menu = ButtonCreator.Create("wooden", new CPos(2048, 5120, 0), "Main Menu", () => Window.Current.NewGame(game.Statistics, GameType.MENU));
 		}
 
 		public override void Render()
@@ -50,8 +50,8 @@ namespace WarriorsSnuggery.UI
 			if (firsttick)
 			{
 				firsttick = false;
-				score.WriteText("Score: " + Color.Blue + (game.Stats.Level * game.Stats.LevelToReach + game.Stats.Mana * 3 - game.Stats.Deaths * 7 + game.Stats.Kills * 4));
-				deaths.WriteText(Color.Red + "Deaths: " + game.Stats.Deaths);
+				score.WriteText("Score: " + Color.Blue + (game.Statistics.Level * game.Statistics.LevelToReach + game.Statistics.Mana * 3 - game.Statistics.Deaths * 7 + game.Statistics.Kills * 4));
+				deaths.WriteText(Color.Red + "Deaths: " + game.Statistics.Deaths);
 			}
 			score.Tick();
 			deaths.Tick();
