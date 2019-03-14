@@ -67,9 +67,9 @@ namespace WarriorsSnuggery
 
 			foreach (var r in beforeRender)
 				r.Render();
-
-			//if (game.CurrentScreen != null) game.CurrentScreen.Render();
+			
 			game.ScreenControl.Render();
+
 			if (!Game.Paused)
 			{
 				foreach (GameObject o in game.UI)

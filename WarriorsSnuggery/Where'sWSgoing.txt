@@ -9,7 +9,6 @@
 - Shadow shader: height float still missing
 - Walls: Add walldamage
 - Weapons: reform weapons, add 3D collision
-- Menus: Add PAGES to containers (list)
 
 - Different gamemodes:
 	- tower defense,

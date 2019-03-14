@@ -7,7 +7,7 @@ using System;
 
 namespace WarriorsSnuggery.Objects
 {
-	public class ButtonType
+	public class PanelType
 	{
 		public readonly string DefaultString;
 		public readonly string ActiveString;
@@ -17,7 +17,7 @@ namespace WarriorsSnuggery.Objects
 		public readonly int Height;
 		public readonly int Width;
 
-		public ButtonType(float height, float width, string defaultString, string activeString, string borderString, int border)
+		public PanelType(float height, float width, string defaultString, string activeString, string borderString, int border)
 		{
 			Height = (int) (height * 512);
 			Width = (int) (width * 512);

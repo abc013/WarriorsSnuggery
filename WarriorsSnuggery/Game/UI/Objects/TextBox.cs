@@ -17,10 +17,10 @@ namespace WarriorsSnuggery.UI
 
 		bool mouseOnBox;
 		readonly Text text;
-		readonly TextBoxType type;
+		readonly PanelType type;
 		readonly Action onEnter;
 
-		public TextBox(CPos pos, string text, int maximumLength, bool onlyNumbers, TextBoxType type, Action onEnter) : base(pos, new MPos(8 * maximumLength + 2, 12), type.Border, type.DefaultString, type.BorderString, type.ActiveString)
+		public TextBox(CPos pos, string text, int maximumLength, bool onlyNumbers, PanelType type, Action onEnter) : base(pos, new MPos(8 * maximumLength + 2, 12), type)
 		{
 			Text = text;
 			MaximumLength = maximumLength;

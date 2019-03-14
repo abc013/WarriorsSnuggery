@@ -6,14 +6,14 @@ namespace WarriorsSnuggery.UI
 {
 	public static class ButtonCreator
 	{
-		static readonly Dictionary<string, ButtonType> types = new Dictionary<string, ButtonType>();
+		static readonly Dictionary<string, PanelType> types = new Dictionary<string, PanelType>();
 
-		public static void AddType(ButtonType info, string name)
+		public static void AddType(PanelType info, string name)
 		{
 			types.Add(name, info);
 		}
 
-		public static ButtonType GetType(string name)
+		public static PanelType GetType(string name)
 		{
 			if (!types.ContainsKey(name))
 				throw new MissingInfoException(name);
@@ -52,14 +52,14 @@ namespace WarriorsSnuggery.UI
 
 	public static class TextBoxCreator
 	{
-		static readonly Dictionary<string, TextBoxType> types = new Dictionary<string, TextBoxType>();
+		static readonly Dictionary<string, PanelType> types = new Dictionary<string, PanelType>();
 
-		public static void AddType(TextBoxType info, string name)
+		public static void AddType(PanelType info, string name)
 		{
 			types.Add(name, info);
 		}
 
-		public static TextBoxType GetType(string name)
+		public static PanelType GetType(string name)
 		{
 			if (!types.ContainsKey(name))
 				throw new MissingInfoException(name);

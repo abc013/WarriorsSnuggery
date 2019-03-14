@@ -16,10 +16,7 @@ namespace WarriorsSnuggery.Objects
 		public readonly float Height;
 		public readonly float Width;
 
-		public readonly int Particles;
-		public readonly ParticleType Particle;
-
-		public CheckBoxType(GraphicsObject @default, GraphicsObject @checked, GraphicsObject click, float height, float width, int particles = 0, ParticleType particle = null)
+		public CheckBoxType(GraphicsObject @default, GraphicsObject @checked, GraphicsObject click, float height, float width)
 		{
 			Default = @default;
 			Checked = @checked;
@@ -27,9 +24,6 @@ namespace WarriorsSnuggery.Objects
 
 			Height = height * 512;
 			Width = width * 512;
-
-			Particles = particles;
-			Particle = particle;
 		}
 	}
 }
