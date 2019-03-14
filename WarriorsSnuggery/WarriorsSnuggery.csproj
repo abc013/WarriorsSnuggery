@@ -128,7 +128,7 @@
     <Compile Include="Game\Creators\UICreator.cs" />
     <Compile Include="Game\RenderableType.cs" />
     <Compile Include="Game\Actor\ActorType.cs" />
-    <Compile Include="Game\Types\ButtonType.cs" />
+    <Compile Include="Game\Types\PanelType.cs" />
     <Compile Include="Game\Types\CheckBoxType.cs" />
     <Compile Include="Game\Particles\ParticleType.cs" />
     <Compile Include="Game\Types\TerrainType.cs" />
@@ -140,7 +140,6 @@
     <Compile Include="Game\Physics.cs" />
     <Compile Include="Game\Types\WallType.cs" />
     <Compile Include="Game\Types\WeaponType.cs" />
-    <Compile Include="Game\Types\WriteBoxType.cs" />
     <Compile Include="Game\Wall.cs" />
     <Compile Include="Game\Weapons\BeamWeapon.cs" />
     <Compile Include="Game\Weapons\BulletWeapon.cs" />

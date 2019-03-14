@@ -53,6 +53,9 @@ namespace WarriorsSnuggery.UI
 
 		public bool HighlightVisible;
 
+		public Panel(CPos position, MPos size, PanelType type) : this(position, size, type.Border, type.DefaultString, type.BorderString, type.ActiveString)
+		{
+		}
 		public Panel(CPos position, MPos size, int border, string inner, string outer, string highlight) : this(position, size, border, inner, outer, highlight != "" ? new ImageRenderable(TextureManager.Texture(highlight), size) : null)
 		{
 		}

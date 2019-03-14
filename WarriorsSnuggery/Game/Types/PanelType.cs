@@ -2,19 +2,25 @@
 
 namespace WarriorsSnuggery.Objects
 {
-	public class TextBoxType
+	public class PanelType
 	{
 		public readonly string DefaultString;
 		public readonly string ActiveString;
 		public readonly string BorderString;
 		public readonly int Border;
 
-		public TextBoxType(string defaultString, string activeString, string borderString, int border)
+		public readonly int Height;
+		public readonly int Width;
+
+		public PanelType(float height, float width, string defaultString, string activeString, string borderString, int border)
 		{
+			Height = (int) (height * 512);
+			Width = (int) (width * 512);
+
 			DefaultString = defaultString;
-			ActiveString = activeString;
 			BorderString = borderString;
 			Border = border;
+			ActiveString = activeString;
 		}
 	}
 }
