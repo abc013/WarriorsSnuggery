@@ -28,7 +28,7 @@ namespace WarriorsSnuggery.UI
 			}
 		}
 
-		public SaveStatistics GetStatistic()
+		public GameStatistics GetStatistic()
 		{
 			for (int i = 0; i < Container.Count; i++)
 			{

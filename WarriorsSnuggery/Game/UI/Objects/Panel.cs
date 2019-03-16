@@ -10,11 +10,11 @@ namespace WarriorsSnuggery.UI
 			get { return position; }
 			set
 			{
-				inner.setPosition(value);
-				outer.setPosition(value);
-				if (Highlight != null)
-					Highlight.setPosition(value);
 				position = value;
+				inner.setPosition(position);
+				outer.setPosition(position);
+				if (Highlight != null)
+					Highlight.setPosition(position);
 			}
 		}
 		CPos position;

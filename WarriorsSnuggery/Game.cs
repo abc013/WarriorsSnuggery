@@ -18,7 +18,8 @@ namespace WarriorsSnuggery
 		EDITOR,
 		MENU,
 		MAINMENU,
-		TUTORIAL
+		TUTORIAL,
+		TEST
 	}
 
 	public enum GameMode

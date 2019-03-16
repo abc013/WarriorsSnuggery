@@ -38,20 +38,22 @@ namespace WarriorsSnuggery.UI
 			switch(game.Type)
 			{
 				case GameType.EDITOR:
-					restart = ButtonCreator.Create("wooden", new CPos(2048, height, 0), "Play Piece", () => Window.Current.NewGame(game.Statistics, GameType.NORMAL, true, Maps.MapType.ConvertGameType(game.MapType, GameType.NORMAL)));
+					restart = ButtonCreator.Create("wooden", new CPos(2048, height, 0), "Play Piece", () => Window.Current.NewGame(game.Statistics, GameType.NORMAL, true, Maps.MapType.ConvertGameType(game.MapType, GameType.TEST)));
 					menu = ButtonCreator.Create("wooden", new CPos(-2048, height, 0), "Main Menu", () => Window.Current.NewGame(game.Statistics, GameType.MAINMENU));
 					break;
 				case GameType.MAINMENU:
-					restart = ButtonCreator.Create("wooden", new CPos(2048, height, 0), "I Do Nothing", () => { });
-					menu = ButtonCreator.Create("wooden", new CPos(-2048, height, 0), "I Do Nothing", () => { });
+					height -= 1024;
 					break;
 				case GameType.TUTORIAL:
 					restart = ButtonCreator.Create("wooden", new CPos(2048, height, 0), "Restart Tutorial", () => Window.Current.NewGame(game.Statistics, GameType.TUTORIAL, true));
 					menu = ButtonCreator.Create("wooden", new CPos(-2048, height, 0), "Main Menu", () => Window.Current.NewGame(game.Statistics, GameType.MAINMENU));
 					break;
 				case GameType.MENU:
-					restart = ButtonCreator.Create("wooden", new CPos(2048, height, 0), "I Do Nothing", () => { });
-					menu = ButtonCreator.Create("wooden", new CPos(-2048, height, 0), "Main Menu", () => Window.Current.NewGame(game.Statistics, GameType.MAINMENU));
+					menu = ButtonCreator.Create("wooden", new CPos(0, height, 0), "Main Menu", () => Window.Current.NewGame(game.Statistics, GameType.MAINMENU));
+					break;
+				case GameType.TEST:
+					restart = ButtonCreator.Create("wooden", new CPos(2048, height, 0), "Restart", () => Window.Current.NewGame(game.Statistics, GameType.NORMAL, true));
+					menu = ButtonCreator.Create("wooden", new CPos(-2048, height, 0), "Main Menu", () => Window.Current.NewGame(game.Statistics, GameType.MAINMENU)); // TODO: back to editing
 					break;
 				default:
 					restart = ButtonCreator.Create("wooden", new CPos(2048, height, 0), "Restart Level", () => Window.Current.NewGame(game.Statistics, GameType.NORMAL, true));
@@ -64,11 +66,12 @@ namespace WarriorsSnuggery.UI
 			{
 				Rotation = new CPos(0, 0, 90)
 			};
-			if (game.Type != GameType.EDITOR)
+			if (game.Type != GameType.EDITOR && game.Type != GameType.TUTORIAL && game.Type != GameType.TEST)
 			{
 				height += 512;
-				load = ButtonCreator.Create("wooden", new CPos(-2048, height, 0), "Load Game", () => game.ChangeScreen(ScreenType.LOAD));
-				save = ButtonCreator.Create("wooden", new CPos(2048, height, 0), "Save Game", () => game.ChangeScreen(ScreenType.SAVE));
+				load = ButtonCreator.Create("wooden", new CPos(game.Type == GameType.MAINMENU ? 0 : -2048, height, 0), "Load Game", () => game.ChangeScreen(ScreenType.LOAD));
+				if (game.Type != GameType.MAINMENU)
+					save = ButtonCreator.Create("wooden", new CPos(2048, height, 0), "Save Game", () => game.ChangeScreen(ScreenType.SAVE));
 
 				height += 512;
 				cut2 = new ColoredLine(new CPos(4096, height, 0), Color.White, 8f)
@@ -79,8 +82,11 @@ namespace WarriorsSnuggery.UI
 			height += 512;
 			settings = ButtonCreator.Create("wooden", new CPos(0, height, 0), "Settings", () => game.ChangeScreen(ScreenType.SETTINGS));
 
-			height += 1024;
-			editor = ButtonCreator.Create("wooden", new CPos(0, height, 0), "Editor", () => game.ChangeScreen(ScreenType.EDITORSELECTION));
+			if (game.Type == GameType.MAINMENU)
+			{
+				height += 1024;
+				editor = ButtonCreator.Create("wooden", new CPos(0, height, 0), "Editor", () => game.ChangeScreen(ScreenType.EDITORSELECTION));
+			}
 
 			height += 512;
 			cut3 = new ColoredLine(new CPos(4096, height, 0), Color.White, 8f)
@@ -94,19 +100,28 @@ namespace WarriorsSnuggery.UI
 		public override void Render()
 		{
 			base.Render();
-
+			
 			resume.Render();
-			restart.Render();
-			menu.Render();
+
+			if (restart != null)
+				restart.Render();
+
+			if (menu != null)
+				menu.Render();
+
 			cut1.Render();
-			if (game.Type != GameType.EDITOR)
+			if (game.Type != GameType.EDITOR && game.Type != GameType.TUTORIAL && game.Type != GameType.TEST)
 			{
 				load.Render();
-				save.Render();
+				if (game.Type != GameType.MAINMENU)
+					save.Render();
 				cut2.Render();
 			}
 			settings.Render();
-			editor.Render();
+
+			if (game.Type == GameType.MAINMENU)
+				editor.Render();
+
 			cut3.Render();
 			leave.Render();
 		}
@@ -116,15 +131,24 @@ namespace WarriorsSnuggery.UI
 			base.Tick();
 
 			resume.Tick();
-			restart.Tick();
-			menu.Tick();
-			if (game.Type != GameType.EDITOR)
+
+			if (restart != null)
+				restart.Tick();
+
+			if (menu != null)
+				menu.Tick();
+
+			if (game.Type != GameType.EDITOR && game.Type != GameType.TUTORIAL && game.Type != GameType.TEST)
 			{
 				load.Tick();
-				save.Tick();
+				if (game.Type != GameType.MAINMENU)
+					save.Tick();
 			}
 			settings.Tick();
-			editor.Tick();
+
+			if (game.Type == GameType.MAINMENU)
+				editor.Tick();
+
 			leave.Tick();
 
 			if (KeyInput.IsKeyDown("escape", 10))
@@ -139,18 +163,27 @@ namespace WarriorsSnuggery.UI
 			base.Dispose();
 
 			resume.Dispose();
-			restart.Dispose();
-			menu.Dispose();
+
+			if (restart != null)
+				restart.Dispose();
+
+			if (menu != null)
+				menu.Dispose();
+
 			cut1.Dispose();
 
-			if (game.Type != GameType.EDITOR)
+			if (game.Type != GameType.EDITOR && game.Type != GameType.TUTORIAL && game.Type != GameType.TEST)
 			{
 				load.Dispose();
-				save.Dispose();
+				if (game.Type != GameType.MAINMENU)
+					save.Dispose();
 				cut2.Dispose();
 			}
 			settings.Dispose();
-			editor.Dispose();
+
+			if (game.Type == GameType.MAINMENU)
+				editor.Dispose();
+
 			cut3.Dispose();
 			leave.Dispose();
 		}

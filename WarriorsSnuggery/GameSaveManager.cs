@@ -6,16 +6,15 @@ namespace WarriorsSnuggery
 {
 	public static class GameSaveManager
 	{
-		public static SaveStatistics CurrentStatistic;
-		public static SaveStatistics DefaultStatistic;
+		public static GameStatistics DefaultStatistic;
 
-		public static List<SaveStatistics> Statistics = new List<SaveStatistics>();
+		public static List<GameStatistics> Statistics = new List<GameStatistics>();
 
 		public static void Load()
 		{
 			foreach (var file in Directory.GetFiles(FileExplorer.Saves))
 			{
-				Statistics.Add(new SaveStatistics(file.Remove(0,file.LastIndexOf('\\') + 1).Replace(".yaml", "")));
+				Statistics.Add(GameStatistics.LoadGameStatistic(file.Remove(0,file.LastIndexOf('\\') + 1).Replace(".yaml", "")));
 			}
 		}
 
@@ -25,27 +24,26 @@ namespace WarriorsSnuggery
 			Load();
 		}
 
-		public static void Delete(SaveStatistics save)
+		public static void Delete(GameStatistics save)
 		{
 			save.Delete();
 			Reload();
 		}
 
-		public static void NewStats(string name)
+		public static void SaveOnNewName(GameStatistics statistic, string name, Game game)
 		{
-			var stats = new SaveStatistics(name, true)
-			{
-				Name = name
-			};
+			statistic.Update(game);
+			var stats = statistic.Copy();
+
+			stats.SetName(name);
 			stats.Save();
+
 			Reload();
 		}
 
-		public static void Save(SaveStatistics save)
+		public static void Save(GameStatistics save, Game game)
 		{
-			const string illegal = "\\\"\t?!;,|<>";
-			foreach (var c in illegal)
-				save.Name = save.Name.Replace(c.ToString(), "");
+			save.Update(game);
 			save.Save();
 		}
 	}

@@ -16,6 +16,8 @@ namespace WarriorsSnuggery.UI
 		TECHTREE = 9,
 		START = 10,
 		SAVE = 11,
-		LOAD = 12
+		LOAD = 12,
+		NEW_STORY_GAME = 13,
+		NEW_CUSTOM_GAME = 14
 	}
 }

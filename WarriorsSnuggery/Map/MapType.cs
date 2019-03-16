@@ -7,6 +7,7 @@ namespace WarriorsSnuggery.Maps
 {
 	public class MapType
 	{
+		public readonly int Level;
 		public readonly int FromLevel;
 		public readonly GameType DefaultType;
 		public readonly string[] Parts;
@@ -21,9 +22,10 @@ namespace WarriorsSnuggery.Maps
 		public readonly Dictionary<ActorType, int[]> SpawnActors;
 		public readonly MPos SpawnPoint;
 
-		public MapType(string[] parts, string[] entrances, string[] exits, Dictionary<string, MPos> importantParts, int wall, MPos customSize, Color ambient, GameType defaultType, int fromLevel, Dictionary<ActorType, int[]> spawnActors, TerrainGenerationType baseTerrainGeneration, TerrainGenerationType[] terrainGeneration, MPos spawnPoint)
+		public MapType(string[] parts, string[] entrances, string[] exits, Dictionary<string, MPos> importantParts, int wall, MPos customSize, Color ambient, GameType defaultType, int level, int fromLevel, Dictionary<ActorType, int[]> spawnActors, TerrainGenerationType baseTerrainGeneration, TerrainGenerationType[] terrainGeneration, MPos spawnPoint)
 		{
 			DefaultType = defaultType;
+			Level = level;
 			FromLevel = fromLevel;
 			Parts = parts;
 			Entrances = entrances;
@@ -58,12 +60,12 @@ namespace WarriorsSnuggery.Maps
 			var dict = new Dictionary<string, MPos>
 			{ { piece, MPos.Zero } };
 			var gen = new TerrainGenerationType(NoiseType.NONE, 2, 1f, 1f, new[] { 0 }, true, new int[] { }, 0, new Dictionary<ActorType, int>());
-			return new MapType(new string[] { }, new string[] { }, new string[] { }, dict, 0, size, Color.White, GameType.EDITOR, 0, new Dictionary<ActorType, int[]>(), gen, new TerrainGenerationType[0], MPos.Zero);
+			return new MapType(new string[] { }, new string[] { }, new string[] { }, dict, 0, size, Color.White, GameType.EDITOR, -1, 0, new Dictionary<ActorType, int[]>(), gen, new TerrainGenerationType[0], MPos.Zero);
 		}
 
 		public static MapType ConvertGameType(MapType map, GameType type)
 		{
-			return new MapType(map.Parts, map.Entrances, map.Exits, map.ImportantParts, map.Wall, map.CustomSize, map.Ambient, type, map.FromLevel, map.SpawnActors, map.BaseTerrainGeneration, map.TerrainGeneration, map.SpawnPoint);
+			return new MapType(map.Parts, map.Entrances, map.Exits, map.ImportantParts, map.Wall, map.CustomSize, map.Ambient, type, map.Level, map.FromLevel, map.SpawnActors, map.BaseTerrainGeneration, map.TerrainGeneration, map.SpawnPoint);
 		}
 	}
 
@@ -76,6 +78,7 @@ namespace WarriorsSnuggery.Maps
 			foreach (var terrain in terrains)
 			{
 				var playType = GameType.NORMAL;
+				var level = -1;
 				var fromLevel = 0;
 				var name = terrain.Key;
 				var parts = new string[0];
@@ -100,6 +103,10 @@ namespace WarriorsSnuggery.Maps
 							break;
 						case "ActiveFromLevel":
 							fromLevel = child.ToInt();
+
+							break;
+						case "Level":
+							level = child.ToInt();
 
 							break;
 						case "SpawnActor":
@@ -234,7 +241,7 @@ namespace WarriorsSnuggery.Maps
 				if (baseterrain == null)
 					throw new YamlMissingNodeException(terrain.Key, "BaseTerrainGeneration");
 
-				AddType(new MapType(parts, entrances, exits, importantParts, wall, customSize, ambient, playType, fromLevel, spawnActors, baseterrain, terrainGen.ToArray(), spawnPoint), name);
+				AddType(new MapType(parts, entrances, exits, importantParts, wall, customSize, ambient, playType, level, fromLevel, spawnActors, baseterrain, terrainGen.ToArray(), spawnPoint), name);
 			}
 		}
 
@@ -252,7 +259,12 @@ namespace WarriorsSnuggery.Maps
 
 		public static MapType FindMainMenuMap(int level)
 		{
-			var mainTypes = types.Values.Where(a => a.DefaultType == GameType.MAINMENU && level >= a.FromLevel).ToList();
+			var mainLevels = types.Values.Where(a => a.DefaultType == GameType.MAINMENU && level == a.Level).ToList();
+
+			if (mainLevels.Any())
+				return mainLevels[Program.SharedRandom.Next(mainLevels.Count())];
+
+			var mainTypes = types.Values.Where(a => a.DefaultType == GameType.MAINMENU && level >= a.FromLevel && a.FromLevel >= 0).ToList();
 
 			if (mainTypes.Count == 0)
 				throw new MissingFieldException(string.Format("There are no available Main Maps (Level:{0}).", level));
@@ -262,7 +274,12 @@ namespace WarriorsSnuggery.Maps
 
 		public static MapType FindMainMap(int level)
 		{
-			var mainTypes = types.Values.Where(a => a.DefaultType == GameType.MENU && level >= a.FromLevel).ToList();
+			var mainLevels = types.Values.Where(a => a.DefaultType == GameType.MENU && level == a.Level).ToList();
+
+			if (mainLevels.Any())
+				return mainLevels[Program.SharedRandom.Next(mainLevels.Count())];
+
+			var mainTypes = types.Values.Where(a => a.DefaultType == GameType.MENU && level >= a.FromLevel && a.FromLevel >= 0).ToList();
 
 			if (mainTypes.Count == 0)
 				throw new MissingFieldException(string.Format("There are no available Main Maps (Level:{0}).", level));
@@ -272,7 +289,12 @@ namespace WarriorsSnuggery.Maps
 
 		public static MapType FindMap(int level)
 		{
-			var mainTypes = types.Values.Where(a => a.DefaultType == GameType.NORMAL && level >= a.FromLevel).ToList();
+			var mainLevels = types.Values.Where(a => a.DefaultType == GameType.NORMAL && level == a.Level).ToList();
+
+			if (mainLevels.Any())
+				return mainLevels[Program.SharedRandom.Next(mainLevels.Count())];
+
+			var mainTypes = types.Values.Where(a => a.DefaultType == GameType.NORMAL && level >= a.FromLevel && a.FromLevel >= 0).ToList();
 
 			if (mainTypes.Count == 0)
 				throw new MissingFieldException(string.Format("There are no Normal Maps."));

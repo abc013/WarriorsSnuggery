@@ -50,7 +50,7 @@ namespace WarriorsSnuggery.UI
 			if (firsttick)
 			{
 				firsttick = false;
-				score.WriteText("Score: " + Color.Blue + (game.Statistics.Level * game.Statistics.LevelToReach + game.Statistics.Mana * 3 - game.Statistics.Deaths * 7 + game.Statistics.Kills * 4));
+				score.WriteText("Score: " + Color.Blue + (game.Statistics.Level * game.Statistics.FinalLevel + game.Statistics.Mana * 3 - game.Statistics.Deaths * 7 + game.Statistics.Kills * 4));
 				deaths.WriteText(Color.Red + "Deaths: " + game.Statistics.Deaths);
 			}
 			score.Tick();

@@ -34,8 +34,9 @@ namespace WarriorsSnuggery.UI
 			if (stats == null)
 				return;
 
-			stats.SetValues(game);
-			GameSaveManager.Save(stats);
+			var @new = game.Statistics.Copy();
+			GameSaveManager.SaveOnNewName(@new, stats.Name, game); // TODO add are you sure if names are not equal
+
 			game.AddInfoMessage(150, "Game Saved!");
 		}
 
@@ -123,6 +124,11 @@ namespace WarriorsSnuggery.UI
 			create.Tick();
 			@new.Tick();
 			warning.Tick();
+
+			if (KeyInput.IsKeyDown("escape", 10))
+			{
+				game.ChangeScreen(ScreenType.MENU);
+			}
 		}
 
 		public override void Render()
@@ -148,7 +154,8 @@ namespace WarriorsSnuggery.UI
 		void save()
 		{
 			ActiveScreen = false;
-			GameSaveManager.NewStats(@new.Text);
+			GameSaveManager.SaveOnNewName(game.Statistics, @new.Text, game);
+
 			game.RefreshSaveGameScreens();
 		}
 	}

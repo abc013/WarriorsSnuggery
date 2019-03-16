@@ -5,12 +5,27 @@ namespace WarriorsSnuggery.UI
 {
 	class GameSaveItem : PanelItem
 	{
-		public override CPos Position { get { return base.Position; } set { base.Position = value; name.Position = value - new CPos(2048, 400,0); level.Position = value - new CPos(2560, 0, 0); } }
+		public override CPos Position
+		{
+			get
+			{
+				return base.Position;
+			}
+			set
+			{
+				base.Position = value;
+				name.Position = value - new CPos(2048, 400,0);
+				level.Position = value - new CPos(2560, 0, 0);
+			}
+		}
+
 		public bool Selected;
 		readonly Text name;
 		readonly Text level;
-		public readonly SaveStatistics Stats;
-		public GameSaveItem(CPos pos, SaveStatistics stats, string renderable, int width, Action action) : base(pos, stats.Name, new ImageRenderable(TextureManager.Texture(renderable), 2f), new MPos(width, 1024), action)
+
+		public readonly GameStatistics Stats;
+
+		public GameSaveItem(CPos pos, GameStatistics stats, string renderable, int width, Action action) : base(pos, stats.Name, new ImageRenderable(TextureManager.Texture(renderable), 2f), new MPos(width, 1024), action)
 		{
 			Stats = stats;
 			name = new Text(pos - new CPos(2048, 512, 0), IFont.Pixel16);
@@ -18,7 +33,7 @@ namespace WarriorsSnuggery.UI
 			name.SetText(stats.Name);
 			level = new Text(pos - new CPos(2560, 0, 0), IFont.Pixel16);
 			level.SetColor(Color.Black);
-			if (stats.Level >= stats.LevelToReach) level.SetColor(new Color(0,200,0));
+			if (stats.Level >= stats.FinalLevel) level.SetColor(new Color(0,200,0));
 			level.SetText(stats.Level);
 			level.Scale = 2f;
 		}
@@ -27,10 +42,13 @@ namespace WarriorsSnuggery.UI
 		{
 			base.Render();
 			name.Scale += mouseOnItem ? 0.04f : -0.04f;
+
 			if (name.Scale > 1.28f)
 				name.Scale = 1.28f;
+
 			if (name.Scale < 1f)
 				name.Scale = 1f;
+
 			name.Render();
 			level.Render();
 		}
@@ -38,8 +56,10 @@ namespace WarriorsSnuggery.UI
 		public override void Tick()
 		{
 			base.Tick();
+
 			if (mouseOnItem && MouseInput.isLeftClicked)
 				Selected = true;
+
 			else if (MouseInput.isLeftClicked)
 				Selected = false;
 		}

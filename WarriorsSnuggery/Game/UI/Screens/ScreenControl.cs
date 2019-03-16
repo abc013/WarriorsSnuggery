@@ -25,6 +25,7 @@ namespace WarriorsSnuggery.UI
 				case GameType.EDITOR:
 					defaultScreen = new EditorScreen(Game);
 					break;
+				case GameType.TEST:
 				case GameType.TUTORIAL:
 				case GameType.NORMAL:
 					defaultScreen = new DefaultScreen(Game);
@@ -47,6 +48,9 @@ namespace WarriorsSnuggery.UI
 			screens.Add(ScreenType.LOAD, new LoadGameScreen(Game));
 
 			screens.Add(ScreenType.TECHTREE, new TechTreeScreen(Game));
+
+			screens.Add(ScreenType.NEW_STORY_GAME, new NewGameScreen(Game));
+			screens.Add(ScreenType.NEW_CUSTOM_GAME, new NewGameScreen(Game));
 		}
 
 		public void NewDefaultScreen(Screen screen)

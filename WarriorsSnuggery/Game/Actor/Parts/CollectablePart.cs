@@ -13,7 +13,10 @@ namespace WarriorsSnuggery.Objects.Parts
 		MAIN_LEVEL = 6,
 		MAINMENU_LEVEL = 7,
 		TEXT = 8,
-		SPAWNOBJECT = 9
+		SPAWNOBJECT = 9,
+		NEW_GAME = 10,
+		NEW_STORY_GAME = 11,
+		NEW_CUSTOM_GAME = 12
 	}
 
 	public class CollectablePartInfo : PartInfo
@@ -154,21 +157,74 @@ namespace WarriorsSnuggery.Objects.Parts
 				switch (info.Type)
 				{
 					case CollectableType.HEALTH:
-						return (a) => { if (a.Health != null) a.Health.HP += info.Value; };
+						return (a) =>
+						{
+							if (a.Health != null)
+								a.Health.HP += info.Value;
+						};
+
 					case CollectableType.MANA:
 						return (a) => a.World.Game.Statistics.Mana += info.Value;
+
 					case CollectableType.MONEY:
 						return (a) => a.World.Game.Statistics.Money += info.Value;
+
 					case CollectableType.NEXT_LEVEL:
-						return (a) => { a.World.Game.End = true; a.World.Game.Statistics.Money += info.Value; a.World.Game.NewGameType = GameType.NORMAL; };
+						return (a) =>
+						{
+							a.World.Game.End = true;
+							if (a.World.Game.Type == GameType.TEST)
+							{
+								a.World.Game.NewGameType = GameType.MAINMENU;
+							}
+							else
+							{
+								a.World.Game.Statistics.Money += info.Value;
+								a.World.Game.NewGameType = GameType.NORMAL;
+							}
+						};
+
 					case CollectableType.TUTORIAL_LEVEL:
-						return (a) => { a.World.Game.End = true; a.World.Game.Statistics.Money += info.Value; a.World.Game.NewGameType = GameType.TUTORIAL; };
+						return (a) =>
+						{
+							a.World.Game.End = true;
+							a.World.Game.Statistics.Money += info.Value;
+							a.World.Game.NewGameType = GameType.TUTORIAL;
+						};
+
 					case CollectableType.MAIN_LEVEL:
-						return (a) => { a.World.Game.End = true; a.World.Game.Statistics.Money += info.Value; a.World.Game.NewGameType = GameType.MENU; };
+						return (a) =>
+						{
+							a.World.Game.End = true;
+							a.World.Game.Statistics.Money += info.Value;
+							a.World.Game.NewGameType = GameType.MENU;
+						};
+
 					case CollectableType.MAINMENU_LEVEL:
-						return (a) => { a.World.Game.End = true; a.World.Game.Statistics.Money += info.Value; a.World.Game.NewGameType = GameType.MAINMENU; };
+						return (a) =>
+						{
+							a.World.Game.End = true;
+							a.World.Game.Statistics.Money += info.Value;
+							a.World.Game.NewGameType = GameType.MAINMENU;
+						};
+
+					case CollectableType.NEW_STORY_GAME:
+						return (a) =>
+						{
+							a.World.Game.Pause(true);
+							a.World.Game.ScreenControl.ShowScreen(UI.ScreenType.NEW_STORY_GAME);
+						};
+
+					case CollectableType.NEW_CUSTOM_GAME:
+						return (a) =>
+						{
+							a.World.Game.Pause(true);
+							a.World.Game.ScreenControl.ShowScreen(UI.ScreenType.NEW_CUSTOM_GAME);
+						};
+
 					case CollectableType.TEXT:
 						return (a) => a.World.Add(new ActionText(a.Position + new CPos(0, 0, 1024), info.Text, Color.White, IFont.Pixel16, new CPos(0, -15, 30)));
+
 					default:
 						return (a) => { };
 				}
