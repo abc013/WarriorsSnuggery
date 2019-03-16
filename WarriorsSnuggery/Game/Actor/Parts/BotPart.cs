@@ -42,7 +42,7 @@ namespace WarriorsSnuggery.Objects.Parts
 
 		public override void Tick()
 		{
-			if (target == null || !target.IsAlive)
+			if (target == null || !target.IsAlive || target.Disposed)
 			{
 				searchTarget();
 			}
@@ -82,7 +82,7 @@ namespace WarriorsSnuggery.Objects.Parts
 		{
 			inRage -= damage * 5;
 
-			if (damager.Health == null)
+			if (damager == null || damager.Health == null)
 				return;
 
 			checkTarget(damager);
@@ -131,9 +131,11 @@ namespace WarriorsSnuggery.Objects.Parts
 
 			var newFavor = 0f;
 
-			newFavor += (actor.Health.HP - target.Health.HP) * 256;
+			newFavor += (actor.Health.HP - target.Health.HP) / 32;
 
-			newFavor += distToTarget - target.Position.GetDistToXY(actor.Position);
+			newFavor += distToTarget - target.Position.GetDistToXY(actor.Position) / 512;
+
+			newFavor += actor.IsPlayer ? 10 : 0;
 
 			if (targetfavor < newFavor)
 			{

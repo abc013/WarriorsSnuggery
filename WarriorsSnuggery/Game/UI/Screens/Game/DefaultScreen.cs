@@ -26,11 +26,11 @@ namespace WarriorsSnuggery.UI
 		int healthCooldown;
 		int lastHealth;
 
-		public DefaultScreen(Game game) : base("Level " + game.Statistics.Level + "/" + game.Statistics.LevelToReach, 0)
+		public DefaultScreen(Game game) : base("Level " + game.Statistics.Level + "/" + game.Statistics.FinalLevel, 0)
 		{
 			this.game = game;
 			Title.Position += new CPos(0,-7120,0);
-			if (game.Statistics.Level >= game.Statistics.LevelToReach)
+			if (game.Statistics.Level >= game.Statistics.FinalLevel)
 				Title.SetColor(Color.Green);
 
 			var corner = (int) (WindowInfo.UnitWidth / 2 * 1024);

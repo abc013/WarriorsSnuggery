@@ -94,6 +94,7 @@
     <Compile Include="Game\UI\Screens\LoadGameScreen.cs" />
     <Compile Include="Game\UI\Screens\LoadingScreen.cs" />
     <Compile Include="Game\UI\Screens\MenuScreen.cs" />
+    <Compile Include="Game\UI\Screens\NewGameScreen.cs" />
     <Compile Include="Game\UI\Screens\PausedScreen.cs" />
     <Compile Include="Game\UI\Screens\SaveGameScreen.cs" />
     <Compile Include="Game\UI\Screens\Screen.cs" />

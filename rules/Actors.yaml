@@ -9,7 +9,7 @@ heal=
 		Type=lazer
 	Part@Mobility=
 		Speed=100
-		Acceleration=5
+		Acceleration=2
 		Deceleration=3
 		Particles=puff1
 			Count=1
@@ -102,8 +102,68 @@ blackspider_small=
 		Cost=10
 
 #############################
-# SLIME FAMILY
+#       SLIME FAMILY        #
 #############################
+
+slime_block=
+	Offset=0,-200,0
+	Image=slime_block
+		Size=24,32
+	Part@World=
+		CanTrigger=no
+		ShowDamage=no
+	Part@Health=
+		MaxHealth=30
+	Physics=
+		Shape=Rectangle
+		Size=504
+	Part@Regeneration=
+		Amount=2
+		Time=2
+	Part@SpawnOnDeath=
+		Count=5
+		Name=slime_small2
+		Type=ACTOR
+		InheritsTeam=true
+		InheritsBot=true
+	Part@SpawnOnDeath=
+		Count=1
+		Name=slime_medium
+		Type=ACTOR
+		InheritsTeam=true
+		InheritsBot=true
+	Part@SpawnOnDeath=
+		Count=1
+		Name=cannon
+		Type=WEAPON
+
+slime_big_block=
+	Offset=0,-400,0
+	Image=slime_big_block
+		Size=48,64
+	Part@World=
+		CanTrigger=no
+		ShowDamage=no
+	Part@Health=
+		MaxHealth=120
+	Physics=
+		Shape=Rectangle
+		Size=1016
+	Part@Regeneration=
+		Amount=2
+		Time=2
+	Part@SpawnOnDeath=
+		Count=5
+		Name=slime_small2
+		Type=ACTOR
+		InheritsTeam=true
+		InheritsBot=true
+	Part@SpawnOnDeath=
+		Count=3
+		Name=slime_medium
+		Type=ACTOR
+		InheritsTeam=true
+		InheritsBot=true
 
 slime_small=
 	Image=slime_mini
@@ -113,7 +173,7 @@ slime_small=
 		ShowDamage=yes
 	Part@Mobility=
 		Speed=13
-		Acceleration=2
+		Acceleration=6
 		Deceleration=3
 	Part@Health=
 		MaxHealth=200
@@ -129,7 +189,7 @@ slime_small2=
 		ShowDamage=yes
 	Part@Mobility=
 		Speed=15
-		Acceleration=2
+		Acceleration=5
 		Deceleration=4
 	Part@Health=
 		MaxHealth=200
@@ -146,7 +206,7 @@ slime_medium=
 	Part@Weapon=
 		Type=slime
 	Speed=20
-		Acceleration=2
+		Acceleration=5
 	Physics=
 		Shape=Circle
 		Size=256
@@ -157,7 +217,7 @@ slime_medium=
 		Time=8
 	Part@Mobility=
 		Speed=20
-		Acceleration=2
+		Acceleration=5
 		Deceleration=4
 	Part@SpawnOnDeath=
 		Count=2
@@ -180,7 +240,7 @@ slime_medium=
 		Cost=0
 
 #############################
-# TOWERS
+#          TOWERS           #
 #############################
 
 tower=
@@ -266,7 +326,7 @@ magictower=
 		Cost=3
 
 #############################
-# MISC
+#           MISC            #
 #############################
 
 b_stone1=
@@ -362,7 +422,7 @@ table1=
 		Shape=Circle
 		Size=400
 #############################
-# PLANTS
+#          PLANTS           #
 #############################
 
 s_tree1=

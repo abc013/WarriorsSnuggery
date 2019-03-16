@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace WarriorsSnuggery.Objects
 {
-	public class Text : GameObject
+	public class Text : GameObject // TODO: add TextLine, Text will be an array out of TextLines
 	{
 		public enum OffsetType
 		{

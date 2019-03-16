@@ -27,7 +27,6 @@ namespace WarriorsSnuggery
 		public static Vector4 ExactMousePosition;
 
 		public static Window Current;
-		public static SaveStatistics DefaultStats;
 
 		public static uint GlobalTick;
 		public static uint GlobalRender;
@@ -104,8 +103,7 @@ namespace WarriorsSnuggery
 			MapCreator.LoadTypes(FileExplorer.Maps + "pieces.yaml");
 
 			GameSaveManager.Load();
-			GameSaveManager.DefaultStatistic = new SaveStatistics("DEFAULT");
-			GameSaveManager.CurrentStatistic = DefaultStats;
+			GameSaveManager.DefaultStatistic = GameStatistics.LoadGameStatistic("DEFAULT");
 
 			NewGame(new GameStatistics(GameSaveManager.DefaultStatistic), GameType.MAINMENU);
 

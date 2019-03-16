@@ -82,6 +82,16 @@ cave=
 		SpawnActor=s_stones
 			Probability=10
 
+boss1=
+	ActiveFromLevel=-1
+	Level=10
+	MainPieces=
+		boss_slime=0,0
+	BaseTerrainGeneration=
+		Terrain=0
+	CustomSize=22,16
+	Ambient=170,170,200
+
 #snow=
 #	ActiveFromLevel=10
 #	Pieces=tower1,tower0
