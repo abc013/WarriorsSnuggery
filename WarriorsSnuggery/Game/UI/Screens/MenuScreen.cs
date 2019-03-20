@@ -57,7 +57,7 @@ namespace WarriorsSnuggery.UI
 					break;
 				default:
 					restart = ButtonCreator.Create("wooden", new CPos(2048, height, 0), "Restart Level", () => Window.Current.NewGame(game.Statistics, GameType.NORMAL, true));
-					menu = ButtonCreator.Create("wooden", new CPos(-2048, height, 0), "Evacuate", () => Window.Current.NewGame(game.Statistics, GameType.MENU));
+					menu = ButtonCreator.Create("wooden", new CPos(-2048, height, 0), "Leave Level", () => { game.Statistics.Level--; Window.Current.NewGame(game.Statistics, GameType.MENU); }); // Level is still the same as it was not finished
 					break;
 			}
 

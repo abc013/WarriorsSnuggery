@@ -170,7 +170,7 @@ namespace WarriorsSnuggery
 			if (!Paused)
 			{
 				camToPlayer.Tick();
-				if (ScreenControl.FocusedType != ScreenType.DEATH)
+				if (ScreenControl.FocusedType != ScreenType.FAILURE)
 				{
 					if (KeyInput.IsKeyDown(Settings.Key("Pause"), 10))
 					{
@@ -315,7 +315,7 @@ namespace WarriorsSnuggery
 
 			switch (screen)
 			{
-				case ScreenType.DEATH:
+				case ScreenType.FAILURE:
 					Pause(true);
 					ScreenControl.NewDefaultScreen(ScreenControl.Focused);
 					break;

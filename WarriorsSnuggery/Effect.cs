@@ -15,7 +15,10 @@ namespace WarriorsSnuggery
 
 	public enum EffectOccurTypes
 	{
-		ALWAYS
+		ALWAYS,
+		RANDOM,
+		ADDING,
+		DIVIDING
 	}
 
 	public class Effect

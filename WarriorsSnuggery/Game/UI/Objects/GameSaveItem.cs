@@ -34,7 +34,7 @@ namespace WarriorsSnuggery.UI
 			level = new Text(pos - new CPos(2560, 0, 0), IFont.Pixel16);
 			level.SetColor(Color.Black);
 			if (stats.Level >= stats.FinalLevel) level.SetColor(new Color(0,200,0));
-			level.SetText(stats.Level);
+			level.SetText(stats.Level + 1);
 			level.Scale = 2f;
 		}
 

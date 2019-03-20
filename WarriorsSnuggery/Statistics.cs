@@ -4,7 +4,7 @@
  * Time: 18:24
  */
 using System;
-using System.Linq;
+using System.Collections.Generic;
 
 namespace WarriorsSnuggery
 {
@@ -21,26 +21,14 @@ namespace WarriorsSnuggery
 		public int Mana;
 		public int Kills;
 		public int Deaths;
+
+		public readonly Dictionary<string, bool> UnlockedNodes = new Dictionary<string, bool>();
+
 		// Static Values
 		public int FinalLevel;
 		public int Difficulty;
 		public int MaxMana;
 		public bool Hardcore;
-
-		public GameStatistics(SaveStatistics save)
-		{
-			Level = save.Level;
-			Money = save.Money;
-			Actor = save.Actor;
-			Health = save.Health;
-			Mana = save.Mana;
-			Kills = save.Kills;
-			Deaths = save.Deaths;
-
-			FinalLevel = save.LevelToReach;
-			Difficulty = save.Difficulty;
-			MaxMana = save.MaxMana;
-		}
 
 		public GameStatistics(GameStatistics save)
 		{
@@ -54,6 +42,9 @@ namespace WarriorsSnuggery
 			Mana = save.Mana;
 			Kills = save.Kills;
 			Deaths = save.Deaths;
+
+			foreach (var unlock in save.UnlockedNodes)
+				UnlockedNodes.Add(unlock.Key, unlock.Value);
 
 			FinalLevel = save.FinalLevel;
 			Difficulty = save.Difficulty;
@@ -93,6 +84,12 @@ namespace WarriorsSnuggery
 				writer.WriteLine("Actor=" + Actor);
 				writer.WriteLine("\tHealth=" + Health);
 				writer.WriteLine("\tMana=" + Mana);
+				writer.WriteLine("Unlocks=");
+				foreach (var unlock in UnlockedNodes)
+					writer.WriteLine("\t" + unlock.Key + "=" + unlock.Value);
+
+				writer.Flush();
+				writer.Close();
 			}
 		}
 
@@ -186,119 +183,17 @@ namespace WarriorsSnuggery
 							}
 						}
 						break;
-				}
-			}
-
-			return statistic;
-		}
-	}
-
-	public class SaveStatistics
-	{
-		readonly string saveName;
-		public string Name;
-		public int Level;
-		public int Money;
-		public string Actor;
-		public int Health;
-		public int Mana;
-		public int Kills;
-		public int Deaths;
-
-		public int LevelToReach;
-		public int Difficulty;
-		public int MaxMana;
-
-		public SaveStatistics(string saveName, bool @new = false)
-		{
-			this.saveName = saveName;
-			if (@new)
-				return;
-			foreach(var node in RuleReader.Read(FileExplorer.FindIn(FileExplorer.Saves, saveName, ".yaml")))
-			{
-				switch(node.Key)
-				{
-					case "Name":
-						Name = node.Value;
-						break;
-					case "Level":
-						Level = node.ToInt();
-						break;
-					case "Difficulty":
-						Difficulty = node.ToInt();
-						break;
-					case "Money":
-						Money = node.ToInt();
-						break;
-					case "LevelAim":
-						LevelToReach = node.ToInt();
-						break;
-					case "MaxMana":
-						MaxMana = node.ToInt();
-						break;
-					case "Kills":
-						Kills = node.ToInt();
-						break;
-					case "Deaths":
-						Deaths = node.ToInt();
-						break;
-					case "Actor":
-						Actor = node.Value;
+					case "Unlocks":
 
 						foreach(var node2 in node.Children)
 						{
-							switch(node2.Key)
-							{
-								case "Health":
-									Health = node2.ToInt();
-									break;
-								case "Mana":
-									Mana = node2.ToInt();
-									break;
-							}
+							statistic.UnlockedNodes.Add(node2.Key, node2.ToBoolean());
 						}
 						break;
 				}
 			}
-		}
 
-		public void SetValues(Game game)
-		{
-			Level = game.Statistics.Level;
-			Money = game.Statistics.Money;
-			Difficulty = game.Statistics.Difficulty;
-			Actor = game.Statistics.Actor;
-			Kills = game.Statistics.Kills;
-			Deaths = game.Statistics.Deaths;
-			MaxMana = game.Statistics.MaxMana;
-			Mana = game.Statistics.Mana;
-			if (game.World.LocalPlayer != null)
-			{
-				Health = game.World.LocalPlayer.Health.HP;
-			}
-		}
-
-		public void Save()
-		{
-			using (var writer = new System.IO.StreamWriter(FileExplorer.Saves + saveName + ".yaml", false))
-			{
-				writer.WriteLine("Name=" + Name);
-				writer.WriteLine("Level=" + Level);
-				writer.WriteLine("Difficulty=" + Difficulty);
-				writer.WriteLine("Money=" + Money);
-				writer.WriteLine("LevelAim=" + LevelToReach);
-				writer.WriteLine("MaxMana=" + MaxMana);
-				writer.WriteLine("Kills=" + Kills);
-				writer.WriteLine("Deaths=" + Deaths);
-				writer.WriteLine("Actor=" + Actor);
-				writer.WriteLine("\tHealth=" + Health);
-				writer.WriteLine("\tMana=" + Mana);
-			}
-		}
-
-		public void Delete()
-		{
-			System.IO.File.Delete(FileExplorer.Saves + saveName + ".yaml");
+			return statistic;
 		}
 	}
 }

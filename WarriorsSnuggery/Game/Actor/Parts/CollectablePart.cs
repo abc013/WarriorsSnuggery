@@ -4,19 +4,21 @@ namespace WarriorsSnuggery.Objects.Parts
 {
 	public enum CollectableType
 	{
-		NONE = 0,
-		MONEY = 1,
-		HEALTH = 2,
-		MANA = 3,
-		NEXT_LEVEL = 4,
-		TUTORIAL_LEVEL = 5,
-		MAIN_LEVEL = 6,
-		MAINMENU_LEVEL = 7,
-		TEXT = 8,
-		SPAWNOBJECT = 9,
-		NEW_GAME = 10,
-		NEW_STORY_GAME = 11,
-		NEW_CUSTOM_GAME = 12
+		NONE,
+		MONEY,
+		HEALTH,
+		MANA,
+		NEXT_LEVEL,
+		NEXT_LEVEL_INSTANT,
+		TUTORIAL_LEVEL,
+		MAIN_LEVEL,
+		MAINMENU_LEVEL,
+		TEXT,
+		SPAWNOBJECT,
+		NEW_GAME,
+		NEW_STORY_GAME,
+		NEW_CUSTOM_GAME,
+		TECH_TREE
 	}
 
 	public class CollectablePartInfo : PartInfo
@@ -172,6 +174,21 @@ namespace WarriorsSnuggery.Objects.Parts
 					case CollectableType.NEXT_LEVEL:
 						return (a) =>
 						{
+							if (a.World.Game.Type == GameType.TEST)
+							{
+								a.World.Game.End = true;
+								a.World.Game.NewGameType = GameType.MAINMENU;
+							}
+							else
+							{
+								a.World.Game.Statistics.Money += info.Value;
+								a.World.Game.ScreenControl.ShowScreen(UI.ScreenType.WIN);
+								a.World.Game.Pause(true);
+							}
+						};
+					case CollectableType.NEXT_LEVEL_INSTANT:
+						return (a) =>
+						{
 							a.World.Game.End = true;
 							if (a.World.Game.Type == GameType.TEST)
 							{
@@ -224,6 +241,13 @@ namespace WarriorsSnuggery.Objects.Parts
 
 					case CollectableType.TEXT:
 						return (a) => a.World.Add(new ActionText(a.Position + new CPos(0, 0, 1024), info.Text, Color.White, IFont.Pixel16, new CPos(0, -15, 30)));
+
+					case CollectableType.TECH_TREE:
+						return (a) =>
+						{
+							a.World.Game.Pause(true);
+							a.World.Game.ScreenControl.ShowScreen(UI.ScreenType.TECHTREE);
+						};
 
 					default:
 						return (a) => { };

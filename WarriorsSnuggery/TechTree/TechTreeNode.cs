@@ -5,14 +5,17 @@ namespace WarriorsSnuggery
 	public class ITechTreeNode
 	{
 		public readonly string[] Before;
+		public readonly MPos Position;
 		public readonly int Cost;
 		public readonly bool Unlocked;
 
+		public readonly string InnerName;
 		public readonly string Name;
 		public readonly Effect Effect;
 
 		public ITechTreeNode(MiniTextNode[] nodes, string name)
 		{
+			InnerName = name;
 			Name = name.Replace('_',' ');
 			foreach(var node in nodes)
 			{
@@ -26,6 +29,9 @@ namespace WarriorsSnuggery
 						break;
 					case "Unlocked":
 						Unlocked = node.ToBoolean();
+						break;
+					case "Position":
+						Position = node.ToMPos();
 						break;
 					case "Effect":
 						break;

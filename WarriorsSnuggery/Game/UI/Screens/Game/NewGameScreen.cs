@@ -23,23 +23,23 @@ namespace WarriorsSnuggery.UI
 			create = new Text(new CPos(-2048, -2048, 0), IFont.Pixel16, Text.OffsetType.MIDDLE);
 			create.SetText("Please adjust the parameters as you wish.");
 
-			name = new Text(new CPos(-2048, -1024, 0), IFont.Pixel16, Text.OffsetType.RIGHT);
+			name = new Text(new CPos(-2048, 0, 0), IFont.Pixel16, Text.OffsetType.RIGHT);
 			name.SetText("Name: ");
 
-			nameInput = TextBoxCreator.Create("wooden", new CPos(1024, -1024, 0), "Name", 20);
+			nameInput = TextBoxCreator.Create("wooden", new CPos(1024, 0, 0), "Name", 15);
 
-			difficulty = new Text(new CPos(-2048, 0, 0), IFont.Pixel16, Text.OffsetType.RIGHT);
+			difficulty = new Text(new CPos(-2048, 1024, 0), IFont.Pixel16, Text.OffsetType.RIGHT);
 			difficulty.SetText("Difficulty: ");
 
-			difficultyInput = TextBoxCreator.Create("wooden", new CPos(1024, 0, 0), "1", 1, true);
+			difficultyInput = TextBoxCreator.Create("wooden", new CPos(1024, 1024, 0), "1", 1, true);
 
-			hardcore = new Text(new CPos(-2048, 1024, 0), IFont.Pixel16, Text.OffsetType.RIGHT);
+			hardcore = new Text(new CPos(-2048, 2048, 0), IFont.Pixel16, Text.OffsetType.RIGHT);
 			hardcore.SetText("Hardcore: ");
 
-			hardcoreInput = CheckBoxCreator.Create("wooden", new CPos(1024, 1024, 0), false);
+			hardcoreInput = CheckBoxCreator.Create("wooden", new CPos(1024, 2048, 0), false);
 
-			cancel = ButtonCreator.Create("wooden", new CPos(4096, 6144, 0), "Cancel", () => { game.ChangeScreen(ScreenType.DEFAULT); game.Pause(false); });
-			proceed = ButtonCreator.Create("wooden", new CPos(-4096, 6144, 0), "Proceed", () => { Window.Current.NewGame(GameStatistics.CreateGameStatistic(int.Parse(difficultyInput.Text), hardcoreInput.Checked, nameInput.Text)); });
+			cancel = ButtonCreator.Create("wooden", new CPos(-4096, 6144, 0), "Cancel", () => { game.ChangeScreen(ScreenType.DEFAULT); game.Pause(false); });
+			proceed = ButtonCreator.Create("wooden", new CPos(4096, 6144, 0), "Proceed", () => { Window.Current.NewGame(GameStatistics.CreateGameStatistic(int.Parse(difficultyInput.Text), hardcoreInput.Checked, nameInput.Text)); });
 		}
 
 		public override void Tick()
