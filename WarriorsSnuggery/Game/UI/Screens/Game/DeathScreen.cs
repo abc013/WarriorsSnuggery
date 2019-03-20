@@ -3,7 +3,7 @@ using WarriorsSnuggery.Objects;
 
 namespace WarriorsSnuggery.UI
 {
-	public class DeathScreen : Screen
+	public class FailureScreen : Screen
 	{
 		readonly Button restart;
 		readonly Button menu;
@@ -12,7 +12,7 @@ namespace WarriorsSnuggery.UI
 		readonly Game game;
 		bool firsttick = true;
 
-		public DeathScreen(Game game) : base("Your Death was Inevitable.")
+		public FailureScreen(Game game) : base("You Failed.")
 		{
 			this.game = game;
 			Title.SetColor(Color.Red);

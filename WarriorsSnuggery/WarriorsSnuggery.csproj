@@ -91,12 +91,13 @@
     <Compile Include="Game\UI\Screens\Game\DeathScreen.cs" />
     <Compile Include="Game\UI\Screens\Game\DefaultScreen.cs" />
     <Compile Include="Game\UI\Screens\Game\TechTreeScreen.cs" />
-    <Compile Include="Game\UI\Screens\LoadGameScreen.cs" />
+    <Compile Include="Game\UI\Screens\Game\LoadGameScreen.cs" />
+    <Compile Include="Game\UI\Screens\Game\WinScreen.cs" />
     <Compile Include="Game\UI\Screens\LoadingScreen.cs" />
     <Compile Include="Game\UI\Screens\MenuScreen.cs" />
-    <Compile Include="Game\UI\Screens\NewGameScreen.cs" />
+    <Compile Include="Game\UI\Screens\Game\NewGameScreen.cs" />
     <Compile Include="Game\UI\Screens\PausedScreen.cs" />
-    <Compile Include="Game\UI\Screens\SaveGameScreen.cs" />
+    <Compile Include="Game\UI\Screens\Game\SaveGameScreen.cs" />
     <Compile Include="Game\UI\Screens\Screen.cs" />
     <Compile Include="Game\UI\Screens\ScreenControl.cs" />
     <Compile Include="Game\UI\Screens\ScreenType.cs" />

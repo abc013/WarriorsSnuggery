@@ -14,9 +14,14 @@ namespace WarriorsSnuggery
 		static readonly List<IRenderable> beforeRender = new List<IRenderable>();
 		static readonly List<IRenderable> afterRender = new List<IRenderable>();
 
+		static ImageRenderable cursor;
+
 		public static void Reset(Game game)
 		{
-
+			if (cursor == null)
+			{
+				cursor = new ImageRenderable(TextureManager.Texture("cursor"));
+			}
 			UIRenderer.game = game;
 			Update();
 			ClearRenderLists();
@@ -74,6 +79,12 @@ namespace WarriorsSnuggery
 
 			foreach (var r in afterRender)
 				r.Render();
+
+			if (!Settings.EnableDebug)
+			{
+				cursor.setPosition(MouseInput.WindowPosition + new CPos(240, 240, 0));
+				cursor.Render();
+			}
 		}
 	}
 }

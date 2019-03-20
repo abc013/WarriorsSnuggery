@@ -126,7 +126,7 @@ namespace WarriorsSnuggery
 				Game.Statistics.Money = 0;
 
 				Game.Pause();
-				Game.ChangeScreen(UI.ScreenType.DEATH);
+				Game.ChangeScreen(UI.ScreenType.FAILURE);
 			}
 		}
 

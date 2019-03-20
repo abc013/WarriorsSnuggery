@@ -34,7 +34,8 @@ namespace WarriorsSnuggery.UI
 			screens.Add(ScreenType.DEFAULT, defaultScreen);
 
 			screens.Add(ScreenType.MENU, new MenuScreen(Game));
-			screens.Add(ScreenType.DEATH, new DeathScreen(Game));
+			screens.Add(ScreenType.FAILURE, new FailureScreen(Game));
+			screens.Add(ScreenType.WIN, new WinScreen(Game));
 
 			screens.Add(ScreenType.KEYSETTINGS, new KeyboardScreen(Game));
 			screens.Add(ScreenType.SETTINGS, new SettingsScreen(Game));

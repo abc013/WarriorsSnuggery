@@ -4,20 +4,21 @@ namespace WarriorsSnuggery.UI
 {
 	public enum ScreenType
 	{
-		NONE = 0,
-		PAUSED = 1,
-		MENU = 2,
-		DEFAULT = 3,
-		DEATH = 4,
-		EDITOR = 5,
-		EDITORSELECTION = 6,
-		KEYSETTINGS = 7,
-		SETTINGS = 8,
-		TECHTREE = 9,
-		START = 10,
-		SAVE = 11,
-		LOAD = 12,
-		NEW_STORY_GAME = 13,
-		NEW_CUSTOM_GAME = 14
+		NONE,
+		PAUSED,
+		MENU,
+		DEFAULT,
+		WIN,
+		FAILURE,
+		EDITOR,
+		EDITORSELECTION,
+		KEYSETTINGS,
+		SETTINGS,
+		TECHTREE,
+		START,
+		SAVE,
+		LOAD,
+		NEW_STORY_GAME,
+		NEW_CUSTOM_GAME
 	}
 }

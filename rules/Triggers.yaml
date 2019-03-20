@@ -19,12 +19,32 @@ new_game_pad=
 		Radius=512
 		OnlyByPlayer=yes
 
+tech_pad=
+	Image=tech_pad
+		Size=24,24
+	Offset=0,0,-2048
+	Part@Collectable=
+		Type=TECH_TREE
+		MultipleActivations=yes
+			Duration=10
+		Radius=512
+		OnlyByPlayer=yes
+
 exit_pad=
 	Image=exit
 		Size=24,24
 	Offset=0,0,-2048
 	Part@Collectable=
 		Type=NEXT_LEVEL
+		Radius=512
+		OnlyByPlayer=yes
+
+instant_exit_pad=
+	Image=exit
+		Size=24,24
+	Offset=0,0,-2048
+	Part@Collectable=
+		Type=NEXT_LEVEL_INSTANT
 		Radius=512
 		OnlyByPlayer=yes
 
