@@ -21,8 +21,8 @@ namespace WarriorsSnuggery.UI
 			score = new Text(new CPos(0,1024,0), IFont.Pixel16, Text.OffsetType.MIDDLE);
 			deaths = new Text(new CPos(0, 2048, 0), IFont.Pixel16, Text.OffsetType.MIDDLE);
 
-			restart = ButtonCreator.Create("wooden", new CPos(-2048, 5120,0), "Restart Map", () => Window.Current.NewGame(game.Statistics, sameSeed: true));
-			menu = ButtonCreator.Create("wooden", new CPos(2048, 5120, 0), "Main Menu", () => Window.Current.NewGame(game.Statistics, GameType.MENU));
+			restart = ButtonCreator.Create("wooden", new CPos(-2048, 5120,0), "Restart Map", () => Window.Current.NewGame(game.OldStatistics, sameSeed: true));
+			menu = game.Type == GameType.TEST ? ButtonCreator.Create("wooden", new CPos(2048, 5120, 0), "Main Menu", () => Window.Current.NewGame(game.OldStatistics, GameType.MAINMENU)) : ButtonCreator.Create("wooden", new CPos(2048, 5120, 0), "Menu", () => Window.Current.NewGame(game.OldStatistics, GameType.MENU));
 		}
 
 		public override void Render()

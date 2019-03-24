@@ -444,6 +444,22 @@ s_tree1=
 		Type=ACTOR
 	ShowDamage=false
 
+m_tree1=
+	Offset=0,-728,0
+	Image=medium_tree1
+		Random=true
+		Size=48,48
+	Part@Health=
+		MaxHealth=1900
+	Physics=
+		Shape=Circle
+		Size=150
+	Part@SpawnOnDeath=
+		Count=1
+		Name=apple
+		Type=ACTOR
+	ShowDamage=false
+
 conifer1=
 	Image=conifer1
 		Size=24,48

@@ -12,7 +12,7 @@ namespace WarriorsSnuggery.UI
 
 		readonly Game game;
 
-		public WinScreen(Game game) : base("You Won!")
+		public WinScreen(Game game) : base("Congratulations!")
 		{
 			this.game = game;
 			Title.Position = new CPos(0, -2048, 0);
