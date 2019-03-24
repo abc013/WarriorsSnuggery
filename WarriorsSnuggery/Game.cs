@@ -52,6 +52,7 @@ namespace WarriorsSnuggery
 
 		public readonly Window Window;
 
+		public readonly GameStatistics OldStatistics;
 		public readonly GameStatistics Statistics;
 		public readonly MapType MapType;
 		public readonly GameType Type;
@@ -76,6 +77,7 @@ namespace WarriorsSnuggery
 				seed = SharedRandom.Next();
 			Seed = seed;
 			MapType = map;
+			OldStatistics = statistics.Copy();
 			Statistics = statistics;
 
 			Type = MapType.DefaultType;
