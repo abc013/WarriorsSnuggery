@@ -7,7 +7,7 @@ namespace WarriorsSnuggery.Objects
 	{
 		protected readonly World World;
 		protected readonly Actor Origin;
-		protected CPos Target;
+		public CPos Target;
 		protected Actor TargetActor;
 		protected readonly WeaponType Type;
 		protected float DistanceMoved;

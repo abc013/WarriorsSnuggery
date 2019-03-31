@@ -68,6 +68,7 @@
     <Compile Include="Game\Actor\Parts\BotPart.cs" />
     <Compile Include="Game\Actor\Parts\CollectablePart.cs" />
     <Compile Include="Game\Actor\Parts\DebugPart.cs" />
+    <Compile Include="Game\Actor\Parts\EffectPart.cs" />
     <Compile Include="Game\Actor\Parts\HealthPart.cs" />
     <Compile Include="Game\Actor\Parts\MobilityPart.cs" />
     <Compile Include="Game\Actor\Parts\PhysicsPart.cs" />
