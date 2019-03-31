@@ -92,7 +92,15 @@ namespace WarriorsSnuggery.Objects
 				parts.Add(new Parts.DebugPart(this));
 
 			if (isPlayer)
+			{
+				foreach (var node in TechTreeLoader.TechTree)
+				{
+					if (node.Unlocked || world.Game.Statistics.UnlockedNodes.ContainsKey(node.InnerName) && world.Game.Statistics.UnlockedNodes[node.InnerName])
+						parts.Add(new Parts.EffectPart(this, node.Effect));
+				}
+
 				parts.Add(new Parts.PlayerPart(this));
+			}
 
 			if (isBot)
 				parts.Add(new Parts.BotPart(this));

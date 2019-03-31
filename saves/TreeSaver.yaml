@@ -12,3 +12,4 @@ Actor=heal
 	Mana=0
 Unlocks=
 	Anger=True
+	Blood_armor=True

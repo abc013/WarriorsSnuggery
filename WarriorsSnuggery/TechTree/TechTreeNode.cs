@@ -34,6 +34,33 @@ namespace WarriorsSnuggery
 						Position = node.ToMPos();
 						break;
 					case "Effect":
+						var effect = EffectType.NONE;
+						var value = 0f;
+						var duration = 0;
+						var occurence = EffectOccurTypes.FIRST;
+						var cooldown = 0;
+
+						effect = (EffectType) node.ToEnum(typeof(EffectType));
+
+						foreach (var child in node.Children)
+						{
+							switch(child.Key)
+							{
+								case "Value":
+									value = child.ToFloat();
+									break;
+								case "Duration":
+									duration = child.ToInt();
+									break;
+								case "Occurence":
+									occurence = (EffectOccurTypes)child.ToEnum(typeof(EffectOccurTypes));
+									break;
+								case "Cooldown":
+									cooldown = child.ToInt();
+									break;
+							}
+						}
+						Effect = new Effect(effect, value, duration, occurence, cooldown);
 						break;
 					default:
 						throw new YamlUnknownNodeException(node.Key);
