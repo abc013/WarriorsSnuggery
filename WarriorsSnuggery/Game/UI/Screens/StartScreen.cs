@@ -40,10 +40,10 @@ namespace WarriorsSnuggery.UI
 			attack.WriteText("Attack: " + Color.Yellow + "Left mouse button");
 
 			aim = new Text(CPos.Zero, IFont.Pixel16, Text.OffsetType.MIDDLE);
-			aim.SetText("Goal is to reach the " + game.Statistics.FinalLevel + "th Level without dying. If you happen to achieve that, you'll get an ice cream.");
+			aim.SetText("Go up, and you'll get to the story mode. Go down for the tutorial.");
 
 			how = new Text(new CPos(0, 1024, 0), IFont.Pixel16, Text.OffsetType.MIDDLE);
-			how.SetText("You will start with 4 friendly towers. To reach the next level, find the exit!");
+			how.SetText("");
 
 			@switch = new Text(new CPos(0, 4096, 0), IFont.Pixel16, Text.OffsetType.MIDDLE);
 			@switch.WriteText("Switch through characters: " + Color.Cyan + "Mouse scroll" + Color.White + " (Requires Money)");

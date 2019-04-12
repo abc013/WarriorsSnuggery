@@ -23,7 +23,7 @@ namespace WarriorsSnuggery
 			textures.Clear();
 		}
 
-		static Dictionary<string, ITexture[]> textures = new Dictionary<string, ITexture[]>();
+		static readonly Dictionary<string, ITexture[]> textures = new Dictionary<string, ITexture[]>();
 
 		public static ITexture Texture(string filename, bool search = true)
 		{
@@ -44,15 +44,27 @@ namespace WarriorsSnuggery
 			var data = loadTexture(filename, out int width, out int height);
 
 			texture = createTexture(data, new TextureInfo(filename, TextureType.IMAGE, 10, width, height, false), filename);
-
+			
 			textures.Add(filename, new [] { texture });
 
 			return texture;
 		}
 
-		public static ITexture NoiseTexture(MPos size, int depth = 8, bool colored = false, bool withAlpha = false)
+		public static ITexture NoiseTexture(MPos size, int depth = 8, int method = 0, bool colored = false, bool withAlpha = false)
 		{
-			var raw = Noise.GenerateClouds(size, Program.SharedRandom, depth);
+			var raw = new float[0];
+			switch(method)
+			{
+				default:
+					raw = Noise.GenerateClouds(size, Program.SharedRandom, depth);
+					break;
+				case 1:
+					raw = Noise.GenerateNoise(size, Program.SharedRandom);
+					break;
+				//case 2:
+				//	raw = Maze.GenerateMaze(size, Program.SharedRandom, MPos.Zero);
+				//	break;
+			}
 			var data = new float[raw.Length * 4];
 
 			for (int i = 0; i < raw.Length; i++)

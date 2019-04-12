@@ -10,6 +10,7 @@ namespace WarriorsSnuggery
 {
 	public static class TexturedMesh
 	{
+		// Text character
 		public static TexturedVertex[] Character(IFont font)
         {
             var w = font.MaxSize.X;
@@ -28,6 +29,7 @@ namespace WarriorsSnuggery
             return vertices;
 		}
 
+		// Terrain
 		const float halfTerrain = GLPos.PixelMultiplier * 24 / 2 + 0.001f;
 
 		static readonly TexturedVertex[] terrain =
@@ -45,6 +47,7 @@ namespace WarriorsSnuggery
 			return terrain;
 		}
 
+		// Frame, used for pixelated rendering
 		public static TexturedVertex[] Frame()
 		{
 			var scale = 1;
@@ -62,6 +65,7 @@ namespace WarriorsSnuggery
 			return vertices;
 		}
 
+		// Simple plane
 		public static TexturedVertex[] Plane(float scale, float w, float h)
 		{
 			scale /= 2;
@@ -96,20 +100,6 @@ namespace WarriorsSnuggery
 				new TexturedVertex(new Vector4(sizeX * scale,  sizeY * scale,  0, 1.0f), new Vector2(sizeX, 0)),
 			};
 
-			return vertices;
-		}
-
-		public static TexturedVertex[] Circle(float size, float w, float h, int resolution = 180)
-		{
-			size /= 2;
-
-			var vertices = new TexturedVertex[resolution];
-			for (int i = 0; i < resolution; i++)
-			{
-				var x = ((float) Math.Cos(i * Math.PI / resolution * 2)) * size;
-				var y = ((float) Math.Sin(i * Math.PI / resolution * 2)) * size;
-				vertices[i] = new TexturedVertex(new Vector4(x, y, 0f, 1f), new Vector2((int) x,(int) y));
-			}
 			return vertices;
 		}
 	}
@@ -191,59 +181,6 @@ namespace WarriorsSnuggery
 				var y = ((float) Math.Sin(i * Math.PI / resolution * 2)) * size;
 				vertices[i] = new ColoredVertex(new Vector4(x, y, 0f, 1f), color4);
 			}
-			return vertices;
-		}
-
-		public static ColoredVertex[] Cube(float size, Color color)
-		{
-			size /= 2;
-			var color4 = color.toColor4();
-
-			ColoredVertex[] vertices =
-			{
-				new ColoredVertex(new Vector4(-size, -size, -size, 1.0f), color4),
-				new ColoredVertex(new Vector4(-size, -size, size, 1.0f), color4),
-				new ColoredVertex(new Vector4(-size, size, -size, 1.0f), color4),
-				new ColoredVertex(new Vector4(-size, size, -size, 1.0f), color4),
-				new ColoredVertex(new Vector4(-size, -size, size, 1.0f), color4),
-				new ColoredVertex(new Vector4(-size, size, size, 1.0f), color4),
-
-				new ColoredVertex(new Vector4(size, -size, -size, 1.0f), color4),
-				new ColoredVertex(new Vector4(size, size, -size, 1.0f), color4),
-				new ColoredVertex(new Vector4(size, -size, size, 1.0f), color4),
-				new ColoredVertex(new Vector4(size, -size, size, 1.0f), color4),
-				new ColoredVertex(new Vector4(size, size, -size, 1.0f), color4),
-				new ColoredVertex(new Vector4(size, size, size, 1.0f), color4),
-
-				new ColoredVertex(new Vector4(-size, -size, -size, 1.0f), color4),
-				new ColoredVertex(new Vector4(size, -size, -size, 1.0f), color4),
-				new ColoredVertex(new Vector4(-size, -size, size, 1.0f), color4),
-				new ColoredVertex(new Vector4(-size, -size, size, 1.0f), color4),
-				new ColoredVertex(new Vector4(size, -size, -size, 1.0f), color4),
-				new ColoredVertex(new Vector4(size, -size, size, 1.0f), color4),
-
-				new ColoredVertex(new Vector4(-size, size, -size, 1.0f), color4),
-				new ColoredVertex(new Vector4(-size, size, size, 1.0f), color4),
-				new ColoredVertex(new Vector4(size, size, -size, 1.0f), color4),
-				new ColoredVertex(new Vector4(size, size, -size, 1.0f), color4),
-				new ColoredVertex(new Vector4(-size, size, size, 1.0f), color4),
-				new ColoredVertex(new Vector4(size, size, size, 1.0f), color4),
-
-				new ColoredVertex(new Vector4(-size, -size, -size, 1.0f), color4),
-				new ColoredVertex(new Vector4(-size, size, -size, 1.0f), color4),
-				new ColoredVertex(new Vector4(size, -size, -size, 1.0f), color4),
-				new ColoredVertex(new Vector4(size, -size, -size, 1.0f), color4),
-				new ColoredVertex(new Vector4(-size, size, -size, 1.0f), color4),
-				new ColoredVertex(new Vector4(size, size, -size, 1.0f), color4),
-
-				new ColoredVertex(new Vector4(-size, -size, size, 1.0f), color4),
-				new ColoredVertex(new Vector4(size, -size, size, 1.0f), color4),
-				new ColoredVertex(new Vector4(-size, size, size, 1.0f), color4),
-				new ColoredVertex(new Vector4(-size, size, size, 1.0f), color4),
-				new ColoredVertex(new Vector4(size, -size, size, 1.0f), color4),
-				new ColoredVertex(new Vector4(size, size, size, 1.0f), color4),
-			};
-
 			return vertices;
 		}
 	}

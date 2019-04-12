@@ -108,6 +108,7 @@
     <Compile Include="Generation\Maze.cs" />
     <Compile Include="Generation\Noise.cs" />
     <Compile Include="GameSaveManager.cs" />
+    <Compile Include="Graphics\ColorManager.cs" />
     <Compile Include="Loader\MiniTextNode.cs" />
     <Compile Include="Loader\NodeExceptions.cs" />
     <Compile Include="Loader\PartLoader.cs" />
