@@ -50,6 +50,7 @@ namespace WarriorsSnuggery
 
 			initializeShaders();
 			initializeGL();
+			ColorManager.Initialize();
 			LoadingScreen = new LoadingScreen();
 
 			watch.Stop();

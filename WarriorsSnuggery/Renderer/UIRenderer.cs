@@ -80,6 +80,7 @@ namespace WarriorsSnuggery
 			foreach (var r in afterRender)
 				r.Render();
 
+			//Graphics.ColorManager.DrawLine(CPos.Zero, MouseInput.WindowPosition, Color.Red);
 			if (!Settings.EnableDebug)
 			{
 				cursor.setPosition(MouseInput.WindowPosition + new CPos(240, 240, 0));
