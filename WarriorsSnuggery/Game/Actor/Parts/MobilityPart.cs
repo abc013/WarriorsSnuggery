@@ -38,7 +38,7 @@ namespace WarriorsSnuggery.Objects.Parts
 						Particles = node.ToParticleSpawner();
 						break;
 					default:
-						throw new YamlUnknownNodeException(node.Key);
+						throw new YamlUnknownNodeException(node.Key, "MobilityPart");
 				}
 			}
 		}
@@ -99,7 +99,7 @@ namespace WarriorsSnuggery.Objects.Parts
 
 		CPos randomPosition()
 		{
-			var size = self.Physics.Radius;
+			var size = self.Physics != null ? self.Physics.Radius : 40;
 			var x = Program.SharedRandom.Next(size) - size / 2;
 			var y = Program.SharedRandom.Next(size) - size / 2;
 			return self.Position + new CPos(x, y, 0);

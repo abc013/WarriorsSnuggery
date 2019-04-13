@@ -8,7 +8,7 @@ using WarriorsSnuggery.Objects;
 
 namespace WarriorsSnuggery.UI
 {
-	public class CheckBox : GameObject, IRenderable, ITick
+	public class CheckBox : PhysicsObject, IRenderable, ITick
 	{
 		public bool Checked;
 

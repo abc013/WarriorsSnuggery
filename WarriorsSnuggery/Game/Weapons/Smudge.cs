@@ -7,7 +7,7 @@ using System;
 
 namespace WarriorsSnuggery.Objects
 {
-	public class Smudge : GameObject
+	public class Smudge : PhysicsObject
 	{
 		int dissolveTime;
 		public Smudge(CPos pos, GraphicsObject renderable, int dissolve = 100) : base(pos, renderable)

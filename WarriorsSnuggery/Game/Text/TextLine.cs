@@ -8,7 +8,7 @@ using System.Collections.Generic;
 
 namespace WarriorsSnuggery.Objects
 {
-	public class TextLine : GameObject
+	public class TextLine : PhysicsObject, IPositionable
 	{
 		public enum OffsetType
 		{

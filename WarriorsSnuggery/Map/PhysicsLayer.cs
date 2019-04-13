@@ -33,7 +33,7 @@ namespace WarriorsSnuggery
 			}
 		}
 
-		public void UpdateSectors(GameObject obj, bool @new = false)
+		public void UpdateSectors(PhysicsObject obj, bool @new = false)
 		{
 			if (obj.Physics == null || obj.Physics.Shape == Shape.NONE)
 				return;
@@ -81,25 +81,25 @@ namespace WarriorsSnuggery
 	{
 		public readonly MPos Position;
 
-		readonly List<GameObject> Objects = new List<GameObject>();
+		readonly List<PhysicsObject> Objects = new List<PhysicsObject>();
 
 		public PhysicsSector(MPos position)
 		{
 			Position = position;
 		}
 
-		public void Enter(GameObject obj)
+		public void Enter(PhysicsObject obj)
 		{
 			if (!Objects.Contains(obj))
 				Objects.Add(obj);
 		}
 
-		public void Leave(GameObject obj)
+		public void Leave(PhysicsObject obj)
 		{
 			Objects.Remove(obj);
 		}
 
-		public bool Check(GameObject obj, bool ignoreHeight = false, Type[] ignoreTypes = null, GameObject[] ignoreObjects = null)
+		public bool Check(PhysicsObject obj, bool ignoreHeight = false, Type[] ignoreTypes = null, PhysicsObject[] ignoreObjects = null)
 		{
 			if(!Objects.Contains(obj))
 				return true;

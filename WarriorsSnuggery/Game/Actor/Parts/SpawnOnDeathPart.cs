@@ -41,7 +41,7 @@ namespace WarriorsSnuggery.Objects.Parts
 						InheritsBot = node.ToBoolean();
 						break;
 					default:
-						throw new YamlUnknownNodeException(node.Key);
+						throw new YamlUnknownNodeException(node.Key, "SpawnOnDeathPart");
 				}
 			}
 		}
@@ -69,7 +69,7 @@ namespace WarriorsSnuggery.Objects.Parts
 
 		void create()
 		{
-			GameObject @object = null;
+			PhysicsObject @object = null;
 			switch(info.Type)
 			{
 				case "ACTOR":
@@ -89,7 +89,7 @@ namespace WarriorsSnuggery.Objects.Parts
 
 		CPos randomPosition()
 		{
-			var size = self.Physics.Radius;
+			var size = self.Physics != null ? self.Physics.Radius : 40;
 			var x = Program.SharedRandom.Next(size) - size / 2;
 			var y = Program.SharedRandom.Next(size) - size / 2;
 			return self.Position + new CPos(x, y, 0);

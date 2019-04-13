@@ -3,7 +3,7 @@ using System.Linq;
 
 namespace WarriorsSnuggery.Objects
 {
-	public class Weapon : GameObject
+	public class Weapon : PhysicsObject
 	{
 		protected readonly World World;
 		protected readonly Actor Origin;

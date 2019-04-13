@@ -3,7 +3,7 @@ using WarriorsSnuggery.Objects;
 
 namespace WarriorsSnuggery.UI
 {
-	public class Panel : IRenderable, ITick, IDisposable
+	public class Panel : IPositionable, IRenderable, ITick, IDisposable
 	{
 		public virtual CPos Position
 		{

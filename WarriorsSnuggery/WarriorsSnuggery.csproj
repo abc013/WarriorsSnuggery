@@ -78,6 +78,7 @@
     <Compile Include="Game\Actor\Parts\SpawnOnDeathPart.cs" />
     <Compile Include="Game\Actor\Parts\WeaponPart.cs" />
     <Compile Include="Game\Actor\Parts\WorldPart.cs" />
+    <Compile Include="Game\IPositionable.cs" />
     <Compile Include="Game\Particles\ParticleSpawner.cs" />
     <Compile Include="Game\Text\Text.cs" />
     <Compile Include="Game\UI\Objects\Button.cs" />
@@ -159,7 +160,7 @@
     <Compile Include="Graphics\TextureManager.cs" />
     <Compile Include="Input\KeyInput.cs" />
     <Compile Include="Input\MouseInput.cs" />
-    <Compile Include="Game\GameObject.cs" />
+    <Compile Include="Game\PhysicsObject.cs" />
     <Compile Include="Game\Renderables.cs" />
     <Compile Include="Game\Terrain.cs" />
     <Compile Include="Graphics\Objects\IColor.cs" />

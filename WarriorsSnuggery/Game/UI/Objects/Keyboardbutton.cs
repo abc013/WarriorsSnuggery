@@ -7,7 +7,7 @@ using System;
 
 namespace WarriorsSnuggery.Objects
 {
-	public class KeyboardButton : GameObject
+	public class KeyboardButton : PhysicsObject
 	{
 		readonly ImageRenderable released;
 		readonly ImageRenderable pressed;

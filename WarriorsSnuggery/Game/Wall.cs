@@ -7,7 +7,7 @@ using System;
 
 namespace WarriorsSnuggery.Objects
 {
-	public class Wall : GameObject
+	public class Wall : PhysicsObject
 	{
 		public readonly WPos LayerPosition;
 		readonly CPos renderPosition;

@@ -27,7 +27,7 @@ namespace WarriorsSnuggery.Objects.Parts
 						StartHealth = node.ToInt();
 						break;
 					default:
-						throw new YamlUnknownNodeException(node.Key);
+						throw new YamlUnknownNodeException(node.Key, "HealthPart");
 				}
 			}
 			if (StartHealth == 0)

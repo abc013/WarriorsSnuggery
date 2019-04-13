@@ -38,7 +38,7 @@ namespace WarriorsSnuggery.Objects.Parts
 
 						break;
 					default:
-						throw new YamlUnknownNodeException(node.Key);
+						throw new YamlUnknownNodeException(node.Key, "PlayablePart");
 				}
 			}
 		}

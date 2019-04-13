@@ -27,7 +27,7 @@ namespace WarriorsSnuggery.Objects.Parts
 
 						break;
 					default:
-						throw new YamlUnknownNodeException(node.Key);
+						throw new YamlUnknownNodeException(node.Key, "PhysicsPart");
 				}
 			}
 		}
@@ -36,14 +36,28 @@ namespace WarriorsSnuggery.Objects.Parts
 	public class PhysicsPart : ActorPart
 	{
 		readonly PhysicsPartInfo info;
+		
+		public Shape Shape
+		{
+			get { return info.Shape; }
+			set { }
+		}
 
-		public readonly Physics Physics;
+		public int Height
+		{
+			get { return info.Size.Z; }
+			set { }
+		}
+
+		public MPos Size
+		{
+			get { return new MPos(info.Size.X, info.Size.Y); }
+			set { }
+		}
 
 		public PhysicsPart(Actor self, PhysicsPartInfo info) : base(self)
 		{
 			this.info = info;
-
-			Physics = new Physics(self.Position, self.Height, info.Shape, (info.Size.X + info.Size.Y) / 2, info.Size.Z);
 		}
 	}
 }

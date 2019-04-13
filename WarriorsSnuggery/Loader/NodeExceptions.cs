@@ -145,14 +145,14 @@ using System.Runtime.Serialization;
 	{
 		public YamlUnknownNodeException() { }
 
-		public YamlUnknownNodeException(string rule)
-			: base(string.Format(@"The rule '{0}' does not exist.", rule))
+		public YamlUnknownNodeException(string rule, string parent)
+			: base(string.Format(@"The properties '{0}' in '{1}' does not exist.", rule, parent))
 		{
 
 		}
 
-		public YamlUnknownNodeException(string rule, Exception innerException)
-			: base(string.Format(@"The rule '{0}' does not exist.", rule), innerException)
+		public YamlUnknownNodeException(string rule, string parent, Exception innerException)
+			: base(string.Format(@"The properties '{0}' in '{1}' does not exist.", rule, parent), innerException)
 		{
 
 		}

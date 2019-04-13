@@ -9,7 +9,6 @@
 - Shadow shader: height float still missing
 - Walls: Add walldamage
 - Weapons: reform weapons, add 3D collision
-- Mana & effects: use thing on the side
 
 - Different gamemodes:
 	- tower defense,
@@ -17,6 +16,12 @@
 	- find the exit;
 
 when textures begin to bug after adding new textures, please look here <- ISprite
+----------------------------------------------------------------------------------------------
+EFFECTS
+
+- Add possibility for multiple effects
+- Make like traits
+- Add mana consumption value
 ----------------------------------------------------------------------------------------------
 MAP GENERATOR
 
