@@ -85,7 +85,7 @@ blade=
 	Reload=10
 
 lazer=
-#	Type=Beam
+	Type=Beam
 	Image=particle2
 		Size=12,12
 	Smudge=smudge1

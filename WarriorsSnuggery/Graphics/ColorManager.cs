@@ -5,37 +5,70 @@ namespace WarriorsSnuggery.Graphics
 {
 	public static class ColorManager
 	{
+		public static float LineWidth
+		{
+			get
+			{
+				return lineWidth;
+			}
+			set
+			{
+				lineWidth = value;
+				MasterRenderer.SetLineWidth(lineWidth);
+			}
+		}
+		static float lineWidth;
+		public const float DefaultLineWidth = 2.5f;
+
+		public static void ResetLineWidth()
+		{
+			LineWidth = DefaultLineWidth;
+		}
 
 		public static void Initialize()
 		{
 			line = new ColoredLineRenderable(Color.White, 1f);
-			fullscreenrect = new ColoredRectRenderable(Color.White, WindowInfo.UnitWidth, DrawMethod.TRIANGLE);
+			fullscreen_rect = new ColoredRectRenderable(Color.White, WindowInfo.UnitWidth, DrawMethod.TRIANGLE);
+			filled_rect = new ColoredRectRenderable(Color.White, 1f, DrawMethod.TRIANGLE);
+		}
+
+		public static void Dispose()
+		{
+			line.Dispose();
+			fullscreen_rect.Dispose();
+			filled_rect.Dispose();
 		}
 
 		static ColoredLineRenderable line;
 
 		public static void DrawLine(CPos start, CPos end, Color color)
 		{
-			line.setScale(end.GetDistToXY(start) / 1024f);
-			line.setRotation(new CPos(0, 0, (int) -start.GetAngleToXY(end) + 90).ToAngle());
-			line.setPosition(start);
-			line.setColor(Color.Red);
+			line.SetScale(end.GetDistToXY(start) / 1024f);
+			line.SetRotation(new CPos(0, 0, (int) -start.GetAngleToXY(end) + 90).ToAngle());
+			line.SetPosition(start);
+			line.setColor(color);
 
 			line.Render();
 		}
 
-		static ColoredRectRenderable fullscreenrect;
+		static ColoredRectRenderable fullscreen_rect;
 
 		public static void DrawFullscreenRect(Color color)
 		{
-			fullscreenrect.setColor(color);
+			fullscreen_rect.setColor(color);
 
-			fullscreenrect.Render();
+			fullscreen_rect.Render();
 		}
 
-		public static void DrawRect()
-		{
+		static ColoredRectRenderable filled_rect;
 
+		public static void DrawRect(CPos bottomleft, CPos topright, Color color)
+		{
+			filled_rect.SetScale(new CPos(Math.Abs(bottomleft.X - topright.X), Math.Abs(bottomleft.Y - topright.Y), 0));
+			filled_rect.SetPosition(new CPos((bottomleft.X + topright.X) / 2, (bottomleft.Y + topright.Y) / 2, 0));
+			filled_rect.setColor(color);
+
+			filled_rect.Render();
 		}
 	}
 }

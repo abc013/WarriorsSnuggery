@@ -6,6 +6,7 @@
 using System;
 using System.Collections.Generic;
 using WarriorsSnuggery.Objects;
+using WarriorsSnuggery.Graphics;
 
 namespace WarriorsSnuggery.UI
 {
@@ -17,8 +18,7 @@ namespace WarriorsSnuggery.UI
 		ColoredRect healthBar;
 		readonly Text mana;
 		readonly ColoredCircle manaComb;
-		readonly ColoredRect topLine;
-		readonly ColoredLine topLineDeco;
+		readonly CPos topLineDeco;
 
 		readonly GameObject money;
 		readonly Text moneyText;
@@ -40,12 +40,8 @@ namespace WarriorsSnuggery.UI
 
 			var corner = (int) (WindowInfo.UnitWidth / 2 * 1024);
 
-			var mid = (int) -(WindowInfo.UnitWidth * 512 + WindowInfo.UnitHeight * 400);
-			topLine = new ColoredRect(new CPos(0, mid, 0), new Color(0,0,0,128), WindowInfo.UnitWidth);
-			topLineDeco = new ColoredLine(new CPos((int)(WindowInfo.UnitWidth * 512), (int)(mid + WindowInfo.UnitWidth * 512), 0), Color.White, WindowInfo.UnitWidth)
-			{
-				Rotation = new CPos(0, 0, 90)
-			};
+			var mid = (int) -WindowInfo.UnitHeight * 400;
+			topLineDeco = new CPos((int)(WindowInfo.UnitWidth * 512), mid, 0);
 
 			health = new Text(new CPos(-(int) (WindowInfo.UnitWidth * 300) - 1536,-7120,0), IFont.Papyrus24, Text.OffsetType.MIDDLE);
 			healthBar = new ColoredRect(new CPos(-(int)(WindowInfo.UnitWidth * 300) + 1024, -7120, 0), Color.Red, 5f, 1f);
@@ -57,10 +53,10 @@ namespace WarriorsSnuggery.UI
 			moneyText = new Text(new CPos(-corner + 2048,7192,0), IFont.Papyrus24);
 			moneyText.SetText(game.Statistics.Money);
 
-			pause = new Text(new CPos(5000,(int) (mid + WindowInfo.UnitWidth * 512) + 512,0), IFont.Pixel16);
+			pause = new Text(new CPos(5000,(int) mid + 512,0), IFont.Pixel16);
 			pause.WriteText("Pause: '" + Color.Blue + "P" + Color.White + "'");
 
-			menu = new Text(new CPos(-8000,(int) (mid + WindowInfo.UnitWidth * 512) + 512,0), IFont.Pixel16);
+			menu = new Text(new CPos(-8000,(int) mid + 512,0), IFont.Pixel16);
 			menu.WriteText("Menu: '" + Color.Blue + "Escape" + Color.White + "'");
 
 			panel = new PanelList(new CPos(0,(int)(WindowInfo.UnitHeight * 512 - 1536), 0), new MPos(8192,512), new MPos(512, 512), 6, "UI_wood1", "UI_wood3", "UI_wood2");
@@ -88,8 +84,8 @@ namespace WarriorsSnuggery.UI
 
 		public override void Render()
 		{
-			topLine.Render();
-			topLineDeco.Render();
+			ColorManager.DrawRect(topLineDeco, new CPos(-topLineDeco.X, topLineDeco.Y - (int) (WindowInfo.UnitHeight * 112), 0), new Color(0,0,0,128));
+			ColorManager.DrawLine(topLineDeco, new CPos(-topLineDeco.X, topLineDeco.Y, 0), Color.White);
 			base.Render();
 
 			hollow.Render();
@@ -198,9 +194,6 @@ namespace WarriorsSnuggery.UI
 		public override void Dispose()
 		{
 			base.Dispose();
-
-			topLine.Dispose();
-			topLineDeco.Dispose();
 
 			health.Dispose();
 			healthBar.Dispose();

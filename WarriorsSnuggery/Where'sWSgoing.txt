@@ -4,7 +4,7 @@
 
 - PERF: Make more events!
 - Collision: e.g. circles: If you move against it, then look if youre over or under the circle. Then move in that direction.
-
+- MAPPING: Add Voronoi Noise and Perlin Noise
 - Walls visibility: add uniform for mouse position/any position. Calculate alpha from this point;
 - Shadow shader: height float still missing
 - Walls: Add walldamage

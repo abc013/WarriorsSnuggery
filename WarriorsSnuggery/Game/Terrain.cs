@@ -50,7 +50,7 @@ namespace WarriorsSnuggery.Objects
 						edges[i] = new ImageRenderable(Type.Texture_Edge2);
 					else
 						edges[i] = new ImageRenderable(Type.Texture_Edge);
-					edges[i].setRotation(new CPos(0,0,i*-90).ToAngle());
+					edges[i].SetRotation(new CPos(0,0,i*-90).ToAngle());
 				}
 
 				corners = new ImageRenderable[4];
@@ -58,7 +58,7 @@ namespace WarriorsSnuggery.Objects
 				{
 					cornersVisible[i] = true;
 					corners[i] = new ImageRenderable(Type.Texture_Corner);
-					corners[i].setRotation(new CPos(0,0,i*-90).ToAngle());
+					corners[i].SetRotation(new CPos(0,0,i*-90).ToAngle());
 				}
 			}
 		}
@@ -72,7 +72,7 @@ namespace WarriorsSnuggery.Objects
 					if (!edgesVisible[i])
 						continue;
 
-					edges[i].setPosition(Position.ToCPos() + edgePositions[i]);
+					edges[i].SetPosition(Position.ToCPos() + edgePositions[i]);
 					edges[i].Render();
 				}
 
@@ -81,11 +81,11 @@ namespace WarriorsSnuggery.Objects
 					if (!cornersVisible[i])
 						continue;
 
-					corners[i].setPosition(Position.ToCPos() + cornerPositions[i]);
+					corners[i].SetPosition(Position.ToCPos() + cornerPositions[i]);
 					corners[i].Render();
 				}
 			}
-			renderable.setPosition(Position.ToCPos());
+			renderable.SetPosition(Position.ToCPos());
 			renderable.Render();
 		}
 

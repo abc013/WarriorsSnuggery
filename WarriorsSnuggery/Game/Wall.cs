@@ -26,7 +26,7 @@ namespace WarriorsSnuggery.Objects
 
 		public override void Render()
 		{
-			Renderable.setPosition(renderPosition);
+			Renderable.SetPosition(renderPosition);
 			base.Render();
 		}
 

@@ -68,7 +68,7 @@ namespace WarriorsSnuggery
 			//Mana = game.World.LocalPlayer. TODO
 		}
 
-		public void Save()
+		public void Save(World world, bool withMap = true)
 		{
 			using (var writer = new System.IO.StreamWriter(FileExplorer.Saves + SaveName + ".yaml", false))
 			{
@@ -87,6 +87,49 @@ namespace WarriorsSnuggery
 				writer.WriteLine("Unlocks=");
 				foreach (var unlock in UnlockedNodes)
 					writer.WriteLine("\t" + unlock.Key + "=" + unlock.Value);
+
+				writer.Flush();
+				writer.Close();
+			}
+			if (withMap)
+				saveMap(world);
+		}
+
+		void saveMap(World world)
+		{
+			var map = world.Map;
+			using (var writer = new System.IO.StreamWriter(FileExplorer.Saves + SaveName + "_map.yaml", false))
+			{
+				writer.WriteLine("Name=" + Name);
+				writer.WriteLine("Size=" + map.Size.X + "," + map.Size.Y);
+
+				var terrain = "Terrain=";
+				for (int y = 0; y < world.TerrainLayer.Size.Y; y++)
+				{
+					for (int x = 0; x < world.TerrainLayer.Size.X; x++)
+					{
+						terrain += world.TerrainLayer.Terrain[x, y].Type.ID + ",";
+					}
+				}
+
+				terrain = terrain.Substring(0, terrain.Length - 1);
+				writer.WriteLine(terrain);
+
+				writer.WriteLine("Actors=");
+				foreach (var a in world.Actors)
+					writer.WriteLine("\t" + ActorCreator.GetName(a.Type) + ";" + a.Team + ";" + (a.IsBot + "").ToLower() + "=" + a.Position.X + "," + a.Position.Y + "," + a.Position.Z);
+
+				var walls = "Walls=";
+				for (int y = 0; y < world.WallLayer.Size.Y - 1; y++)
+				{
+					for (int x = 0; x < world.WallLayer.Size.X - 1; x++)
+					{
+						walls += (world.WallLayer.Walls[x, y] == null ? -1 : world.WallLayer.Walls[x, y].Type.ID) + ",";
+					}
+				}
+
+				walls = walls.Substring(0, walls.Length - 1);
+				writer.WriteLine(walls);
 
 				writer.Flush();
 				writer.Close();

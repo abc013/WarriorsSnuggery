@@ -27,9 +27,9 @@ namespace WarriorsSnuggery.Objects
 			this.changeable = changeable;
 			var textures = buttons.GetTextures();
 			released = new ImageRenderable(textures[0]);
-			released.setPosition(position);
+			released.SetPosition(position);
 			pressed = new ImageRenderable(textures[1]);
-			pressed.setPosition(position);
+			pressed.SetPosition(position);
 			KeyOn = new TextRenderable(position, font, key, color);
 		}
 
@@ -37,12 +37,12 @@ namespace WarriorsSnuggery.Objects
 		{
 			if(KeyInput.IsKeyDown(Key + ""))
 			{
-				KeyOn.setPosition(Position + new CPos(50,50,0));
+				KeyOn.SetPosition(Position + new CPos(50,50,0));
 				pressed.Render();
 			}
 			else
 			{
-				KeyOn.setPosition(Position + new CPos(50,-100,0));
+				KeyOn.SetPosition(Position + new CPos(50,-100,0));
 				released.Render();
 			}
 			if (blinkTick < 10)

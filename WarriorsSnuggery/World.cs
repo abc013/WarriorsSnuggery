@@ -63,8 +63,19 @@ namespace WarriorsSnuggery
 				Camera.Position(new MPos(Map.Size.X / 2, Map.Size.Y / 2).ToCPos(), true);
 			}
 
-			Add(new GameObject(new CPos(0, 0, 1024), new ImageRenderable(TextureManager.NoiseTexture(new MPos(128, 128), 5), 1f)));
-			Add(new GameObject(new CPos(0, 6000, 1024), new ImageRenderable(TextureManager.NoiseTexture(new MPos(128, 128), 5, 1), 1f)));
+			Add(new GameObject(new CPos(0, 0, 1024), new ImageRenderable(TextureManager.NoiseTexture(
+				new MPos(128, 128),
+				6,
+				intensity: -0.1f,
+				contrast: 5f
+				), 1f)));
+			Add(new GameObject(new CPos(0, 6000, 1024), new ImageRenderable(TextureManager.NoiseTexture(
+				new MPos(128, 128),
+				2,
+				1,
+				intensity: -0.3f,
+				contrast: 1.5f
+				), 1f)));
 			// WallLayer.Set(WallCreator.Create(new WPos(4,6,0), 0));
 			// Add(new Trigger(new CPos(1024, 1024, 100), this, 768, (Actor a) => { Game.End = true; }, true, true, 60, renderable: new ColoredCircleRenderable(Color.Black, 1f, 45, WarriorsSnuggery.Graphics.DrawMethod.LINELOOP)));
 		}

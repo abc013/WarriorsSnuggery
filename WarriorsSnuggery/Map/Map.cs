@@ -246,6 +246,8 @@ namespace WarriorsSnuggery
 				for (int x = 0; x < Size.X; x++)
 				{
 					var single = noise[y * Size.X + x];
+					single += Type.BaseTerrainGeneration.Intensity;
+					single = (single - 0.5f) * Type.BaseTerrainGeneration.Contrast + 0.5f;
 
 					if (single > 1f)
 						single = 1f;
@@ -274,7 +276,7 @@ namespace WarriorsSnuggery
 					noise = Noise.GenerateClouds(Size, random, type.Strength);
 					break;
 				case NoiseType.NOISE:
-					noise = Noise.GenerateNoise(Size, random, type.Strength);
+					noise = Noise.GenerateNoise(Size, random, type.Strength); // TODO: apparently, this is scale here. same in textureManager
 					break;
 				case NoiseType.MAZE:
 					noise = new float[Size.X * Size.Y];

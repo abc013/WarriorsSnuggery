@@ -23,7 +23,7 @@ namespace WarriorsSnuggery.Objects
 				height = value;
 
 				if (Renderable != null)
-					Renderable.setPosition(GraphicPosition);
+					Renderable.SetPosition(GraphicPosition);
 
 				if (Physics != null)
 					Physics.Height = height;
@@ -38,7 +38,7 @@ namespace WarriorsSnuggery.Objects
 				position = value; 
 
 				if (Renderable != null)
-					Renderable.setPosition(GraphicPosition);
+					Renderable.SetPosition(GraphicPosition);
 
 				if (Physics != null)
 					Physics.Position = position;
@@ -53,7 +53,7 @@ namespace WarriorsSnuggery.Objects
 				offset = value; 
 
 				if (Renderable != null)
-					Renderable.setPosition(GraphicPosition);
+					Renderable.SetPosition(GraphicPosition);
 			}
 		}
 		CPos offset;
@@ -77,7 +77,7 @@ namespace WarriorsSnuggery.Objects
 				rotation = value;
 
 				if (Renderable != null) // int is degree
-					Renderable.setRotation(rotation.ToAngle());
+					Renderable.SetRotation(rotation.ToAngle());
 			}
 		}
 		CPos rotation;
@@ -89,7 +89,7 @@ namespace WarriorsSnuggery.Objects
 				scale = value;
 
 				if (Renderable != null)
-					Renderable.setScale(scale);
+					Renderable.SetScale(scale);
 			}
 		}
 		float scale = 1f;

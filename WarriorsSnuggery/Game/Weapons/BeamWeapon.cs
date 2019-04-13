@@ -4,17 +4,17 @@
  * 
  */
 using System;
+using WarriorsSnuggery.Graphics;
 
 namespace WarriorsSnuggery.Objects
 {
 	class BeamWeapon : Weapon
 	{
-		readonly ColoredLineRenderable beam;
-		readonly ColoredLineRenderable beam2;
 		readonly ColoredCircleRenderable point;
 		CPos originPos;
 		readonly Color color;
 		readonly Color color2;
+
 		public BeamWeapon(World world, WeaponType type, CPos origin, CPos target) : base(world, type, origin, target)
 		{
 			if (Type.Inaccuracy > 0)
@@ -24,13 +24,8 @@ namespace WarriorsSnuggery.Objects
 				Target += new CPos(ranX, ranY, 0);
 			}
 			originPos = origin;
-			color = decideColor();
-			color2 = decideColor(64);
-			var length = (float)originPos.GetDistToXY(Target) / 1024f;
-			beam = new ColoredLineRenderable(color, 1f);
-			beam.setScale(length);
-			beam2 = new ColoredLineRenderable(color2, 1f);
-			beam2.setScale(length);
+			color = Color.Red;
+			color2 = Color.White;
 			point = new ColoredCircleRenderable(color, 1f, 8, Graphics.DrawMethod.TRIANGLEFAN);
 		}
 
@@ -44,13 +39,8 @@ namespace WarriorsSnuggery.Objects
 				Target += new CPos(ranX, ranY, 0);
 			}
 			originPos = origin.ActiveWeapon.WeaponOffsetPosition;
-			color = decideColor();
-			color2 = decideColor(127);
-			var length = (float)originPos.GetDistToXY(Target) / 1024f;
-			beam = new ColoredLineRenderable(color, 1f);
-			beam.setScale(length);
-			beam2 = new ColoredLineRenderable(color2, 1f);
-			beam2.setScale(length);
+			color = Color.Red;
+			color2 = Color.White;
 			point = new ColoredCircleRenderable(color, 1f, 8, Graphics.DrawMethod.TRIANGLEFAN);
 		}
 
@@ -62,25 +52,18 @@ namespace WarriorsSnuggery.Objects
 
 		public override void Render()
 		{
-			var length = (float) originPos.GetDistToXY(Target) / 1024f;
-			var rotation = new OpenTK.Vector4(0, 0, (-originPos.GetAngleToXY(Target) - 90) / 180f * (float)Math.PI, 0);
+			ColorManager.LineWidth = 10f;
+			ColorManager.DrawLine(originPos, Target, color);
+			ColorManager.LineWidth = 5f;
+			ColorManager.DrawLine(originPos, Target, color2);
+			ColorManager.ResetLineWidth();
 
-			point.setScale(0.5f + (float) Math.Sin(World.Game.LocalTick/4f) / 16f);
-			point.setPosition(Target);
+			point.SetPosition(Target);
 			point.Render();
-			point.setPosition(originPos);
+
+			point.SetPosition(originPos);
 			point.Render();
-			beam.setScale(length);
-			beam.setPosition(Target);
-			beam.setRotation(rotation);
-			beam2.setScale(length);
-			beam2.setPosition(Target);
-			beam2.setRotation(rotation);
-			OpenTK.Graphics.ES30.GL.LineWidth(15f);
-			beam2.Render();
-			OpenTK.Graphics.ES30.GL.LineWidth(5f);
-			beam.Render();
-			OpenTK.Graphics.ES30.GL.LineWidth(2.5f);
+
 			Program.CheckGraphicsError("Code bug", true);
 			base.RenderPhysics();
 		}
@@ -89,6 +72,8 @@ namespace WarriorsSnuggery.Objects
 		{
 			if (Origin != null)
 				originPos = Origin.ActiveWeapon.WeaponOffsetPosition;
+
+			point.SetScale(0.5f + (float)Math.Sin(World.Game.LocalTick / 4f) / 16f);
 
 			if (Program.CheckGraphicsError("Code bug", false))
 			{
@@ -99,8 +84,6 @@ namespace WarriorsSnuggery.Objects
 
 		public override void Dispose()
 		{
-			beam.Dispose();
-			beam2.Dispose();
 			point.Dispose();
 			base.Dispose();
 		}

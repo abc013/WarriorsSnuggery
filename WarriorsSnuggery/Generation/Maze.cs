@@ -20,6 +20,7 @@ namespace WarriorsSnuggery
 			Position = position;
 		}
 	}
+
 	public static class Maze
 	{
 		public static bool[,] GenerateMaze(MPos size, Random random, MPos start, int multiplePossibilities = 0)

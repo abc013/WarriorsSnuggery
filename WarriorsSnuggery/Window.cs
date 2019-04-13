@@ -89,7 +89,6 @@ namespace WarriorsSnuggery
 			Console.Write("Loading...");
 
 			MasterRenderer.Initialize();
-			MasterRenderer.ShowLoadingScreen = true;
 
 			base.OnLoad(e);
 
@@ -119,7 +118,6 @@ namespace WarriorsSnuggery
 			Log.WritePerformance(watch.ElapsedMilliseconds, "Loading Rules .. GAME START");
 
 			Loaded = true;
-			MasterRenderer.ShowLoadingScreen = false;
 			//}).Start();
    			//IGraphicsContext context2 = new GraphicsContext(GraphicsMode.Default, this.WindowInfo);
    			//context2.MakeCurrent(WindowInfo);
@@ -228,7 +226,6 @@ namespace WarriorsSnuggery
 		public void NewGame(GameStatistics stats, GameType type = GameType.NORMAL, bool sameSeed = false, MapType custom = null)
 		{
 			Camera.Reset();
-			MasterRenderer.ShowLoadingScreen = true;
 			if (Game != null)
 				Game.Dispose();
 
@@ -263,7 +260,6 @@ namespace WarriorsSnuggery
 				Game.World.LocalPlayer.Health.HP = stats.Health;
 
 			MasterRenderer.UpdateView();
-			MasterRenderer.ShowLoadingScreen = false;
 		}
 
 		public override void Exit()

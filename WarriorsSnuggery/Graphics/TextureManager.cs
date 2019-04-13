@@ -50,7 +50,7 @@ namespace WarriorsSnuggery
 			return texture;
 		}
 
-		public static ITexture NoiseTexture(MPos size, int depth = 8, int method = 0, bool colored = false, bool withAlpha = false)
+		public static ITexture NoiseTexture(MPos size, int depth = 8, int method = 0, bool colored = false, bool withAlpha = false, float intensity = 0, float contrast = 1)
 		{
 			var raw = new float[0];
 			switch(method)
@@ -59,12 +59,16 @@ namespace WarriorsSnuggery
 					raw = Noise.GenerateClouds(size, Program.SharedRandom, depth);
 					break;
 				case 1:
-					raw = Noise.GenerateNoise(size, Program.SharedRandom);
+					raw = Noise.GenerateNoise(size, Program.SharedRandom, depth); //TODO: this apparently is not depth but scale
 					break;
-				//case 2:
-				//	raw = Maze.GenerateMaze(size, Program.SharedRandom, MPos.Zero);
-				//	break;
 			}
+			// Apply brightness and contrast
+			for (int i = 0; i < raw.Length; i++)
+			{
+				raw[i] += intensity;
+				raw[i] = (raw[i] - 0.5f) * contrast + 0.5f;
+			}
+
 			var data = new float[raw.Length * 4];
 
 			for (int i = 0; i < raw.Length; i++)

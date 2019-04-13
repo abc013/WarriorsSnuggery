@@ -74,12 +74,7 @@ namespace WarriorsSnuggery
 				r.Render();
 			
 			game.ScreenControl.Render();
-
-			if (!Game.Paused)
-			{
-				foreach (GameObject o in game.UI)
-					o.Render();
-			}
+			
 			game.RenderDebug();
 
 			foreach (var r in afterRender)
@@ -88,8 +83,13 @@ namespace WarriorsSnuggery
 			//Graphics.ColorManager.DrawLine(CPos.Zero, MouseInput.WindowPosition, Color.Red);
 			if (!Settings.EnableDebug)
 			{
-				cursor.setPosition(MouseInput.WindowPosition + new CPos(240, 240, 0));
+				cursor.SetPosition(MouseInput.WindowPosition + new CPos(240, 240, 0));
 				cursor.Render();
+			}
+			else
+			{
+				Graphics.ColorManager.DrawRect(new CPos(-64, -64, 0), new CPos(64, 64, 0), Color.Cyan);
+				Graphics.ColorManager.DrawRect(MouseInput.WindowPosition + new CPos(-64, -64, 0), MouseInput.WindowPosition + new CPos(64, 64, 0), Color.Blue);
 			}
 		}
 	}
