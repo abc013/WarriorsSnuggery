@@ -23,19 +23,19 @@ namespace WarriorsSnuggery.UI
 		{
 			if (mouseOnBox && MouseInput.isLeftDown)
 			{
-				type.Click.setPosition(Position);
+				type.Click.SetPosition(Position);
 				type.Click.Render();
 			}
 			else
 			{
 				if (!Checked)
 				{
-					Renderable.setPosition(Position);
+					Renderable.SetPosition(Position);
 					base.Render();
 				}
 				else
 				{
-					type.Checked.setPosition(Position);
+					type.Checked.SetPosition(Position);
 					type.Checked.Render();
 				}
 			}

@@ -1,0 +1,13 @@
+Name=Name
+Level=1
+Difficulty=1
+Hardcore=False
+Money=75
+LevelAim=10
+MaxMana=500
+Kills=1
+Deaths=0
+Actor=shadowrunner
+	Health=1148
+	Mana=0
+Unlocks=

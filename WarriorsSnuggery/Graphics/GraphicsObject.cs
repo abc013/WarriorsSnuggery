@@ -25,12 +25,12 @@ namespace WarriorsSnuggery.Objects
 			matrixChanged = true;
 		}
 
-		public void setPosition(CPos position)
+		public void SetPosition(CPos position)
 		{
-			setPosition(position.ToVector());
+			SetPosition(position.ToVector());
 		}
 
-		public void setPosition(Vector4 position)
+		public void SetPosition(Vector4 position)
 		{
 			if (this.position == position)
 				return;
@@ -39,7 +39,7 @@ namespace WarriorsSnuggery.Objects
 			matrixChanged = true;
 		}
 
-		public void setScale(float scale)
+		public void SetScale(float scale)
 		{
 			if (this.scale.Equals(new Vector3(scale)))
 				return;
@@ -48,7 +48,21 @@ namespace WarriorsSnuggery.Objects
 			matrixChanged = true;
 		}
 
-		public void setRotation(Vector4 rotation)
+		public void SetScale(CPos scale)
+		{
+			SetScale(scale.ToVector().Xyz);
+		}
+
+		public void SetScale(Vector3 scale)
+		{
+			if (this.scale.Equals(scale))
+				return;
+
+			this.scale = scale;
+			matrixChanged = true;
+		}
+
+		public void SetRotation(Vector4 rotation)
 		{
 			if (this.rotation == rotation)
 				return;
@@ -60,7 +74,7 @@ namespace WarriorsSnuggery.Objects
 		public virtual void setColor(Color color)
 		{
 			//if (this.color == color)
-			//	return;
+			//	return; //TODO: does not work red <-> white
 
 			this.color = color;
 		}

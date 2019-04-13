@@ -65,7 +65,7 @@ namespace WarriorsSnuggery.UI
 				var x = (int) Math.Floor(position.X / (float) itemSize.X / 2);
 				var y = (int) Math.Floor(position.Y / (float) itemSize.Y / 2);
 
-				Highlight.setPosition(Position + new CPos(-intSize.X + x * 2 * itemSize.X + itemSize.X, -intSize.Y + y * 2 * itemSize.Y + itemSize.Y, 0));
+				Highlight.SetPosition(Position + new CPos(-intSize.X + x * 2 * itemSize.X + itemSize.X, -intSize.Y + y * 2 * itemSize.Y + itemSize.Y, 0));
 			}
 			if (mouseOnPanel)
 			{

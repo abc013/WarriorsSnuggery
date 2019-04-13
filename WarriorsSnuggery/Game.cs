@@ -43,8 +43,6 @@ namespace WarriorsSnuggery
 
 		public readonly World World;
 
-		public List<GameObject> UI = new List<GameObject>();
-
 		public readonly Window Window;
 
 		public readonly GameStatistics OldStatistics;
@@ -52,8 +50,7 @@ namespace WarriorsSnuggery
 		public readonly MapType MapType;
 		public readonly GameType Type;
 		public readonly int Seed;
-
-		readonly GameObject MousePosition, CenterPosition;
+		
 		readonly Text tick;
 		readonly Text render;
 		readonly Text memory;
@@ -96,15 +93,6 @@ namespace WarriorsSnuggery
 
 			camToPlayer = ButtonCreator.Create("wooden", new CPos(0, (int) (WindowInfo.UnitHeight * 512) - 512, 0), "Cam to Player", () => { Camera.LockedToPlayer = !Camera.LockedToPlayer; });
 			infoText = new Text(new CPos(-corner + 1024, 7192, 0), IFont.Pixel16);
-
-			if (Settings.EnableDebug)
-			{
-				var height = new CPos(0, 0, 1000);
-				MousePosition = new ColoredRect(height, Color.Red, 0.1f);
-				CenterPosition = new ColoredRect(height, Color.Blue, 0.1f);
-				UI.Add(MousePosition);
-				UI.Add(CenterPosition);
-			}
 		}
 
 		public void AddInfoMessage(int duration, string text)
@@ -160,9 +148,6 @@ namespace WarriorsSnuggery
 			watch.Start();
 
 			LocalTick++;
-
-			foreach(var obj in UI)
-				obj.Tick();
 
 			if (!Paused)
 			{
@@ -292,15 +277,10 @@ namespace WarriorsSnuggery
 
 			ScreenControl.Tick();
 
-			if (Settings.EnableDebug)
-				MousePosition.Position = MouseInput.WindowPosition;
-
 			watch.Stop();
 			if (LocalTick % 4 == 0)
 				Log.WritePerformance(watch.ElapsedMilliseconds, " Tick " + LocalTick);
-
-			UI = UI.OrderBy(o => o.GraphicPosition.Z).ToList();
-			UI.RemoveAll(o => o.Disposed);
+			
 
 			if (ScreenControl.FocusedType == ScreenType.START)
 				Pause(true);
@@ -343,12 +323,6 @@ namespace WarriorsSnuggery
 
 			ScreenControl.DisposeScreens();
 
-			if(Settings.DeveloperMode)
-			{
-				CenterPosition.Dispose();
-				MousePosition.Dispose();
-			}
-
 			version.Dispose();
 			memory.Dispose();
 			tick.Dispose();
@@ -360,8 +334,6 @@ namespace WarriorsSnuggery
 
 			WorldRenderer.ClearRenderLists();
 			UIRenderer.ClearRenderLists();
-			UI.ForEach((o) => o.Dispose());
-			UI.Clear();
 
 			GC.Collect();
 		}

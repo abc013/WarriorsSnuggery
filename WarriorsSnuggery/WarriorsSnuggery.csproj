@@ -92,13 +92,12 @@
     <Compile Include="Game\UI\Screens\Game\DeathScreen.cs" />
     <Compile Include="Game\UI\Screens\Game\DefaultScreen.cs" />
     <Compile Include="Game\UI\Screens\Game\TechTreeScreen.cs" />
-    <Compile Include="Game\UI\Screens\Game\LoadGameScreen.cs" />
+    <Compile Include="Game\UI\Screens\Statistics\LoadGameScreen.cs" />
     <Compile Include="Game\UI\Screens\Game\WinScreen.cs" />
-    <Compile Include="Game\UI\Screens\LoadingScreen.cs" />
     <Compile Include="Game\UI\Screens\MenuScreen.cs" />
-    <Compile Include="Game\UI\Screens\Game\NewGameScreen.cs" />
+    <Compile Include="Game\UI\Screens\Statistics\NewGameScreen.cs" />
     <Compile Include="Game\UI\Screens\PausedScreen.cs" />
-    <Compile Include="Game\UI\Screens\Game\SaveGameScreen.cs" />
+    <Compile Include="Game\UI\Screens\Statistics\SaveGameScreen.cs" />
     <Compile Include="Game\UI\Screens\Screen.cs" />
     <Compile Include="Game\UI\Screens\ScreenControl.cs" />
     <Compile Include="Game\UI\Screens\ScreenType.cs" />
@@ -193,20 +192,10 @@
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="ProfilingSessions\Session20180403_161103.sdps" />
-    <Content Include="ProfilingSessions\Session20180413_205951.sdps" />
-    <Content Include="ProfilingSessions\Session20180418_190902.sdps" />
-    <Content Include="ProfilingSessions\Session20180422_155205.sdps" />
-    <Content Include="ProfilingSessions\Session20180513_001704.sdps" />
-    <Content Include="ProfilingSessions\Session20180530_145837.sdps" />
-    <Content Include="ProfilingSessions\Session20180711_182805.sdps" />
-    <Content Include="ProfilingSessions\Session20180715_215240.sdps" />
-    <Content Include="ProfilingSessions\Session20181019_194444.sdps" />
-    <Content Include="ProfilingSessions\Session20181019_200001.sdps" />
-    <Content Include="ProfilingSessions\Session20181030_035939.sdps" />
-    <Content Include="ProfilingSessions\Session20181030_063506.sdps" />
-    <Content Include="ProfilingSessions\Session20181030_071027.sdps" />
     <Content Include="Where%27sWSgoing.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="ProfilingSessions\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

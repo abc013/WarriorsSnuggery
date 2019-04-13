@@ -218,12 +218,12 @@ namespace WarriorsSnuggery.Objects
 				MasterRenderer.RenderShadow = true;
 				MasterRenderer.UniformHeight(Height);
 
-				renderable.setPosition(GraphicPositionWithoutHeight);
+				renderable.SetPosition(GraphicPositionWithoutHeight);
 				renderable.Render();
 
 				MasterRenderer.RenderShadow = false;
 
-				renderable.setPosition(GraphicPosition);
+				renderable.SetPosition(GraphicPosition);
 				renderable.Render();
 			}
 			base.Render();

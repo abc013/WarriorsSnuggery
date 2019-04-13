@@ -10,7 +10,7 @@ namespace WarriorsSnuggery.Objects
 		public TextRenderable(CPos position, IFont font, char @char, Color color, int curTextWidth = 0) :
 			base(new IChar(font, @char, color, font.Mesh))
 		{
-			setPosition(position.ToVector() + new OpenTK.Vector4(curTextWidth * SizeMultiplier, 0,0,0));
+			SetPosition(position.ToVector() + new OpenTK.Vector4(curTextWidth * SizeMultiplier, 0,0,0));
 		}
 
 		public override void setColor(Color color)

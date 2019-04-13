@@ -11,10 +11,10 @@ namespace WarriorsSnuggery.UI
 			set
 			{
 				position = value;
-				inner.setPosition(position);
-				outer.setPosition(position);
+				inner.SetPosition(position);
+				outer.SetPosition(position);
 				if (Highlight != null)
-					Highlight.setPosition(position);
+					Highlight.SetPosition(position);
 			}
 		}
 		CPos position;
@@ -25,10 +25,10 @@ namespace WarriorsSnuggery.UI
 			set
 			{
 				rotation = value;
-				inner.setRotation(rotation.ToAngle());
-				outer.setRotation(rotation.ToAngle());
+				inner.SetRotation(rotation.ToAngle());
+				outer.SetRotation(rotation.ToAngle());
 				if (Highlight != null) // int is degree
-					Highlight.setRotation(rotation.ToAngle());
+					Highlight.SetRotation(rotation.ToAngle());
 			}
 		}
 		CPos rotation;
@@ -39,10 +39,10 @@ namespace WarriorsSnuggery.UI
 			set
 			{
 				scale = value;
-				inner.setScale(scale);
-				outer.setScale(scale);
+				inner.SetScale(scale);
+				outer.SetScale(scale);
 				if (Highlight != null)
-					Highlight.setScale(scale);
+					Highlight.SetScale(scale);
 			}
 		}
 		float scale = 1f;

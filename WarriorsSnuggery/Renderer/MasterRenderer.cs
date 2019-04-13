@@ -33,10 +33,6 @@ namespace WarriorsSnuggery
 
 		static readonly ShaderProgram[] shaders = new ShaderProgram[4];
 
-		public static LoadingScreen LoadingScreen;
-
-		public static bool ShowLoadingScreen;
-
 		public static void ResetRenderer(Game game)
 		{
 			WorldRenderer.Reset(game);
@@ -51,7 +47,6 @@ namespace WarriorsSnuggery
 			initializeShaders();
 			initializeGL();
 			ColorManager.Initialize();
-			LoadingScreen = new LoadingScreen();
 
 			watch.Stop();
 			Log.WritePerformance(watch.ElapsedMilliseconds, "Configuring GL");
@@ -111,7 +106,7 @@ namespace WarriorsSnuggery
 			{
 				GL.ClearColor(Color4.Black);
 
-				GL.LineWidth(2.5f);
+				GL.LineWidth(ColorManager.DefaultLineWidth);
 
 				if (Settings.AntiAliasing)
 				{
@@ -161,7 +156,7 @@ namespace WarriorsSnuggery
 				GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
 			}
 
-			if (Window.Loaded && !ShowLoadingScreen)
+			if (Window.Loaded)
 			{
 				if (Settings.EnablePixeling)
 				{
@@ -194,16 +189,6 @@ namespace WarriorsSnuggery
 				}
 				Program.CheckGraphicsError("GLRendering");
 			}
-			else
-			{
-				var matrix = Matrix4.CreateOrthographic(Camera.DefaultZoom * WindowInfo.Ratio, Camera.DefaultZoom, 10000f, -1f);
-				var ambient = Color4.White;
-				Uniform(TextureShader, ref matrix, ambient);
-				Uniform(ColorShader, ref matrix, ambient);
-				Uniform(ShadowShader, ref matrix, ambient);
-				Uniform(FontShader, ref matrix, ambient);
-				LoadingScreen.Render();
-			}
 		}
 
 		public static void EnableAliasing()
@@ -221,6 +206,14 @@ namespace WarriorsSnuggery
 			{
 				GL.Disable(EnableCap.LineSmooth);
 				GL.Disable(EnableCap.PointSmooth);
+			}
+		}
+
+		public static void SetLineWidth(float width)
+		{
+			lock (GLLock)
+			{
+				GL.LineWidth(width);
 			}
 		}
 
@@ -245,6 +238,8 @@ namespace WarriorsSnuggery
 			}
 			GL.DeleteFramebuffer(frameBuffer);
 			GL.DeleteTexture(frameTexture);
+
+			ColorManager.Dispose();
 		}
 
 		public static bool RenderShadow;

@@ -7,10 +7,10 @@ namespace WarriorsSnuggery
 	{
 		public static float[] GenerateNoise(MPos size, Random random, float scale = 1f)
 		{
-			return generateNoise(size.X, size.Y, random, scale);
+			return GenerateNoise(size.X, size.Y, random, scale);
 		}
 
-		public static float[] generateNoise(int sizeX, int sizeY, Random random, float scale = 1f)
+		public static float[] GenerateNoise(int sizeX, int sizeY, Random random, float scale = 1f)
 		{
 			var raw = new float[sizeX * sizeY];
 
@@ -61,7 +61,7 @@ namespace WarriorsSnuggery
 
 			for (float i = depth; i >= 1; i++)
 			{
-				noises.Add(generateNoise(size.X, size.Y, random, i));
+				noises.Add(GenerateNoise(size.X, size.Y, random, i));
 				i /= 2f;
 				i--;
 			}

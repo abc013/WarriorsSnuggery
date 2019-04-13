@@ -16,7 +16,7 @@ namespace WarriorsSnuggery.UI
 			get { return position; }
 			set
 			{
-				renderable.setPosition(value);
+				renderable.SetPosition(value);
 				position = value;
 			}
 		}
@@ -28,7 +28,7 @@ namespace WarriorsSnuggery.UI
 			set
 			{
 				rotation = value;
-				renderable.setRotation(rotation.ToAngle());
+				renderable.SetRotation(rotation.ToAngle());
 			}
 		}
 		CPos rotation;
@@ -39,7 +39,7 @@ namespace WarriorsSnuggery.UI
 			set
 			{
 				scale = value;
-				renderable.setScale(scale);
+				renderable.SetScale(scale);
 			}
 		}
 		float scale = 1f;

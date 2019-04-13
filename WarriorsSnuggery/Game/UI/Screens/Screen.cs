@@ -8,13 +8,14 @@ namespace WarriorsSnuggery.UI
 		public readonly Text Title;
 		public int Speed = 32;
 		int scale;
-		readonly ColoredRect background;
+		readonly Color darkness;
 
 		public Screen(string title, int darkness = 128)
 		{
 			Title = new Text(CPos.Zero, IFont.Papyrus24, Text.OffsetType.MIDDLE);
 			Title.SetText(title);
-			background = new ColoredRect(CPos.Zero, new Color(0,0,0,darkness), WindowInfo.UnitWidth);
+
+			this.darkness = new Color(0,0,0, darkness);
 		}
 
 		public virtual void Tick()
@@ -24,15 +25,13 @@ namespace WarriorsSnuggery.UI
 
 		public virtual void Render()
 		{
-			background.Render();
+			Graphics.ColorManager.DrawFullscreenRect(darkness);
 			Title.Render();
 		}
 
 		public virtual void Dispose()
 		{
-			background.Dispose();
 			Title.Dispose();
-			GC.SuppressFinalize(this);
 		}
 	}
 }

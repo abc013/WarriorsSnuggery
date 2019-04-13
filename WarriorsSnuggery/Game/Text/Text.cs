@@ -47,7 +47,7 @@ namespace WarriorsSnuggery.Objects
 
 				for(int i = 0; i < chars.Count; i++)
 				{
-					chars[i].setRotation(value.ToAngle());
+					chars[i].SetRotation(value.ToAngle());
 				}
 			}
 		}
@@ -63,7 +63,7 @@ namespace WarriorsSnuggery.Objects
 
 				for(int i = 0; i < chars.Count; i++)
 				{
-					chars[i].setScale(value);
+					chars[i].SetScale(value);
 				}
 			}
 		}
@@ -241,7 +241,7 @@ namespace WarriorsSnuggery.Objects
 			}
 			for(int i = 0; i < chars.Count; i++)
 			{
-				chars[i].setPosition(base.Position.ToVector() + new OpenTK.Vector4((width + 1) * TextRenderable.SizeMultiplier, 0,0,0));
+				chars[i].SetPosition(base.Position.ToVector() + new OpenTK.Vector4((width + 1) * TextRenderable.SizeMultiplier, 0,0,0));
 				width += charWidth(String[i]) + 1;
 			}
 		}

@@ -18,8 +18,7 @@ namespace WarriorsSnuggery.Objects
 		public readonly CPos Offset;
 		public readonly float Scale;
 		public readonly int Height;
-
-		public readonly int Mana;
+		
 		public readonly WeaponType ManaWeapon;
 		public readonly int ManaCost;
 		
@@ -43,8 +42,7 @@ namespace WarriorsSnuggery.Objects
 
 			PhysicalSize = physicalSize;
 			PhysicalShape = physicalShape;
-
-			Mana = mana;
+			
 			ManaCost = manaCost;
 			ManaWeapon = manaWeapon;
 

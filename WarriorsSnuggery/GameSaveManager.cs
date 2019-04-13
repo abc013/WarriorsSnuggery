@@ -36,7 +36,7 @@ namespace WarriorsSnuggery
 			var stats = statistic.Copy();
 
 			stats.SetName(name);
-			stats.Save();
+			stats.Save(game.World);
 
 			Reload();
 		}
@@ -44,7 +44,7 @@ namespace WarriorsSnuggery
 		public static void Save(GameStatistics save, Game game)
 		{
 			save.Update(game);
-			save.Save();
+			save.Save(game.World);
 		}
 	}
 }
