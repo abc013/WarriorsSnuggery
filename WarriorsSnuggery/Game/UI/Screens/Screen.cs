@@ -5,14 +5,14 @@ namespace WarriorsSnuggery.UI
 {
 	public class Screen : ITick, IRenderable, IDisposable
 	{
-		public readonly Text Title;
+		public readonly TextLine Title;
 		public int Speed = 32;
 		int scale;
 		readonly Color darkness;
 
 		public Screen(string title, int darkness = 128)
 		{
-			Title = new Text(CPos.Zero, IFont.Papyrus24, Text.OffsetType.MIDDLE);
+			Title = new TextLine(CPos.Zero, IFont.Papyrus24, TextLine.OffsetType.MIDDLE);
 			Title.SetText(title);
 
 			this.darkness = new Color(0,0,0, darkness);

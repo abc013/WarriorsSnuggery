@@ -44,7 +44,7 @@ namespace WarriorsSnuggery.UI
 		}
 		float scale = 1f;
 
-		readonly Text hoverText;
+		readonly TextLine hoverText;
 		readonly GraphicsObject renderable;
 		readonly Action action;
 		protected readonly MPos size;
@@ -53,7 +53,7 @@ namespace WarriorsSnuggery.UI
 		 
 		public PanelItem(CPos pos, string hoverText, GraphicsObject renderable, MPos size, Action action)
 		{
-			this.hoverText = new Text(pos, IFont.Pixel16, Text.OffsetType.MIDDLE);
+			this.hoverText = new TextLine(pos, IFont.Pixel16, TextLine.OffsetType.MIDDLE);
 			this.hoverText.SetText(hoverText);
 			this.hoverText.Visible = false;
 			UIRenderer.RenderAfter(this.hoverText);

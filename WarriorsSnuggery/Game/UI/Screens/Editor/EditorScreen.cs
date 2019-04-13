@@ -18,9 +18,9 @@ namespace WarriorsSnuggery.UI
 		readonly CheckBox isBot;
 		readonly TextBox team;
 
-		readonly Text mousePosition;
+		readonly TextLine mousePosition;
 		readonly Button save;
-		readonly Text saved;
+		readonly TextLine saved;
 		int savedTick;
 
 		readonly Game game;
@@ -44,9 +44,9 @@ namespace WarriorsSnuggery.UI
 			this.game = game;
 			Title.Position += new CPos(0,-7120,0);
 
-			mousePosition = new Text(new CPos((int)(WindowInfo.UnitWidth * 512 - 2560), -7172, 0), IFont.Pixel16);
+			mousePosition = new TextLine(new CPos((int)(WindowInfo.UnitWidth * 512 - 2560), -7172, 0), IFont.Pixel16);
 			save = ButtonCreator.Create("wooden", new CPos((int) (WindowInfo.UnitWidth * 512 - 2048), -5120, 0), "Save", savePiece);
-			saved = new Text(new CPos((int)(WindowInfo.UnitWidth * 512 - 2048), -5120, 0), IFont.Pixel16, Text.OffsetType.MIDDLE);
+			saved = new TextLine(new CPos((int)(WindowInfo.UnitWidth * 512 - 2048), -5120, 0), IFont.Pixel16, TextLine.OffsetType.MIDDLE);
 			saved.SetText("Save");
 
 			showTiles = CheckBoxCreator.Create("terrain_editor", new CPos((int) (WindowInfo.UnitWidth * 512 - 2496),-2536,0), false, (b) =>

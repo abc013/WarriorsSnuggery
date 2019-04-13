@@ -51,12 +51,12 @@ namespace WarriorsSnuggery
 		public readonly GameType Type;
 		public readonly int Seed;
 		
-		readonly Text tick;
-		readonly Text render;
-		readonly Text memory;
-		readonly Text version;
+		readonly TextLine tick;
+		readonly TextLine render;
+		readonly TextLine memory;
+		readonly TextLine version;
 
-		readonly Text infoText;
+		readonly TextLine infoText;
 		int infoTextDuration;
 
 		readonly Button camToPlayer;
@@ -83,16 +83,16 @@ namespace WarriorsSnuggery
 			MasterRenderer.ResetRenderer(this);
 
 			var corner = (int) (WindowInfo.UnitWidth / 2 * 1024);
-			version = new Text(new CPos(corner, 6192,0), IFont.Pixel16, Text.OffsetType.RIGHT);
+			version = new TextLine(new CPos(corner, 6192,0), IFont.Pixel16, TextLine.OffsetType.RIGHT);
 			version.SetColor(Color.Yellow);
 			version.SetText(Settings.Version);
 
-			memory = new Text(new CPos(corner, 6692,0), IFont.Pixel16, Text.OffsetType.RIGHT);
-			tick = new Text(new CPos(corner, 7692,0), IFont.Pixel16, Text.OffsetType.RIGHT);
-			render = new Text(new CPos(corner, 7192,0), IFont.Pixel16, Text.OffsetType.RIGHT);
+			memory = new TextLine(new CPos(corner, 6692,0), IFont.Pixel16, TextLine.OffsetType.RIGHT);
+			tick = new TextLine(new CPos(corner, 7692,0), IFont.Pixel16, TextLine.OffsetType.RIGHT);
+			render = new TextLine(new CPos(corner, 7192,0), IFont.Pixel16, TextLine.OffsetType.RIGHT);
 
 			camToPlayer = ButtonCreator.Create("wooden", new CPos(0, (int) (WindowInfo.UnitHeight * 512) - 512, 0), "Cam to Player", () => { Camera.LockedToPlayer = !Camera.LockedToPlayer; });
-			infoText = new Text(new CPos(-corner + 1024, 7192, 0), IFont.Pixel16);
+			infoText = new TextLine(new CPos(-corner + 1024, 7192, 0), IFont.Pixel16);
 		}
 
 		public void AddInfoMessage(int duration, string text)

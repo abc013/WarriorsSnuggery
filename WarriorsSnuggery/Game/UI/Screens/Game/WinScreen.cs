@@ -7,8 +7,8 @@ namespace WarriorsSnuggery.UI
 	{
 		readonly Button menu;
 		readonly Button next;
-		readonly Text score;
-		readonly Text won;
+		readonly TextLine score;
+		readonly TextLine won;
 
 		readonly Game game;
 
@@ -17,9 +17,9 @@ namespace WarriorsSnuggery.UI
 			this.game = game;
 			Title.Position = new CPos(0, -2048, 0);
 
-			won = new Text(new CPos(0, 0, 0), IFont.Pixel16, Text.OffsetType.MIDDLE);
+			won = new TextLine(new CPos(0, 0, 0), IFont.Pixel16, TextLine.OffsetType.MIDDLE);
 			won.WriteText(Color.Blue + "Y" + Color.Yellow + "O" + Color.Green + "U " + Color.Magenta + "W" + Color.Blue + "O" + Color.Cyan + "N" + Color.Green + "!");
-			score = new Text(new CPos(0, 1024, 0), IFont.Pixel16, Text.OffsetType.MIDDLE);
+			score = new TextLine(new CPos(0, 1024, 0), IFont.Pixel16, TextLine.OffsetType.MIDDLE);
 			score.WriteText("Score: " + Color.Blue + (game.Statistics.Level * game.Statistics.FinalLevel + game.Statistics.Mana * 3 - game.Statistics.Deaths * 7 + game.Statistics.Kills * 4));
 
 			menu = ButtonCreator.Create("wooden", new CPos(-2048, 5120, 0), "Headquarters", () => Window.Current.NewGame(game.Statistics, GameType.MENU));

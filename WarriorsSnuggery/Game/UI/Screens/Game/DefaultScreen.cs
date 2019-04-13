@@ -8,16 +8,16 @@ namespace WarriorsSnuggery.UI
 	public class DefaultScreen : Screen
 	{
 		readonly Game game;
-		readonly Text health;
+		readonly TextLine health;
 		readonly ColoredRect hollow;
 		ColoredRect healthBar;
-		readonly Text mana;
+		readonly TextLine mana;
 		readonly ColoredCircle manaComb;
 		readonly CPos topLineDeco;
 
 		readonly GameObject money;
-		readonly Text moneyText;
-		readonly Text menu, pause;
+		readonly TextLine moneyText;
+		readonly TextLine menu, pause;
 		readonly PanelList panel;
 		readonly PanelList manaPanel;
 		readonly ActorType[] panelContent;
@@ -38,20 +38,20 @@ namespace WarriorsSnuggery.UI
 			var mid = (int) -WindowInfo.UnitHeight * 400;
 			topLineDeco = new CPos((int)(WindowInfo.UnitWidth * 512), mid, 0);
 
-			health = new Text(new CPos(-(int) (WindowInfo.UnitWidth * 300) - 1536,-7120,0), IFont.Papyrus24, Text.OffsetType.MIDDLE);
+			health = new TextLine(new CPos(-(int) (WindowInfo.UnitWidth * 300) - 1536,-7120,0), IFont.Papyrus24, TextLine.OffsetType.MIDDLE);
 			healthBar = new ColoredRect(new CPos(-(int)(WindowInfo.UnitWidth * 300) + 1024, -7120, 0), Color.Red, 5f, 1f);
 			hollow = new ColoredRect(new CPos(-(int)(WindowInfo.UnitWidth * 300) - 2048, -7120, 0), Color.White, 5.2f, 1.2f, isFilled: false);
-			mana = new Text(new CPos((int) (WindowInfo.UnitWidth * 300),-7120,0), IFont.Papyrus24);
+			mana = new TextLine(new CPos((int) (WindowInfo.UnitWidth * 300),-7120,0), IFont.Papyrus24);
 			manaComb = new ColoredCircle(new CPos((int) (WindowInfo.UnitWidth * 300) + 2048,-7120, 0), Color.White, resolution: 6);
 
 			money = new GameObject(new CPos(-corner + 1024, 7192,0), new ImageRenderable(TextureManager.Texture("UI_money")));
-			moneyText = new Text(new CPos(-corner + 2048,7192,0), IFont.Papyrus24);
+			moneyText = new TextLine(new CPos(-corner + 2048,7192,0), IFont.Papyrus24);
 			moneyText.SetText(game.Statistics.Money);
 
-			pause = new Text(new CPos(5000,(int) mid + 512,0), IFont.Pixel16);
+			pause = new TextLine(new CPos(5000,(int) mid + 512,0), IFont.Pixel16);
 			pause.WriteText("Pause: '" + Color.Blue + "P" + Color.White + "'");
 
-			menu = new Text(new CPos(-8000,(int) mid + 512,0), IFont.Pixel16);
+			menu = new TextLine(new CPos(-8000,(int) mid + 512,0), IFont.Pixel16);
 			menu.WriteText("Menu: '" + Color.Blue + "Escape" + Color.White + "'");
 
 			panel = new PanelList(new CPos(0,(int)(WindowInfo.UnitHeight * 512 - 1536), 0), new MPos(8192,512), new MPos(512, 512), 6, "UI_wood1", "UI_wood3", "UI_wood2");

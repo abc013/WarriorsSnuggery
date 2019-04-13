@@ -2,7 +2,7 @@
 
 namespace WarriorsSnuggery.Objects
 {
-	public class ActionText : Text
+	public class ActionText : TextLine
 	{
 		int current;
 		readonly int start;

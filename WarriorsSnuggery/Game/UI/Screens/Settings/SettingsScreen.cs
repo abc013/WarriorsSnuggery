@@ -9,13 +9,13 @@ namespace WarriorsSnuggery.UI
 
 		readonly Button back;
 		readonly Button save;
-		readonly Text saved;
+		readonly TextLine saved;
 		int savedTick;
 		readonly Button keys;
 
 		readonly CheckBox fullscreenCheck, antiAliasingCheck, developerModeCheck, pixelingCheck;
 		readonly TextBox widthWrite, heightWrite, frameLimiterWrite, scrollWrite, edgeScrollWrite;
-		readonly Text frameLimiter, scrollSpeed, edgeScrolling, developerMode, fullscreen, width, height, antiAliasing, pixeling, warning;
+		readonly TextLine frameLimiter, scrollSpeed, edgeScrolling, developerMode, fullscreen, width, height, antiAliasing, pixeling, warning;
 
 		public bool Visible { get; private set;}
 
@@ -23,7 +23,7 @@ namespace WarriorsSnuggery.UI
 		{
 			this.game = game;
 			Title.Position = new CPos(0,-4096, 0);
-			saved = new Text(new CPos(0,6210, 0), IFont.Pixel16, Text.OffsetType.MIDDLE);
+			saved = new TextLine(new CPos(0,6210, 0), IFont.Pixel16, TextLine.OffsetType.MIDDLE);
 			saved.SetText("Save");
 
 			back = ButtonCreator.Create("wooden", new CPos(4096, 6144, 0), "Back", () => game.ChangeScreen(ScreenType.MENU));
@@ -41,30 +41,30 @@ namespace WarriorsSnuggery.UI
 			scrollWrite = TextBoxCreator.Create("wooden", new CPos(4000, 1000, 0), Settings.ScrollSpeed + "", 1, true);
 			edgeScrollWrite = TextBoxCreator.Create("wooden", new CPos(4000, 1800, 0), Settings.EdgeScrolling + "", 1, true);
 
-			frameLimiter = new Text(new CPos(-5096, 2700, 0), IFont.Pixel16);
+			frameLimiter = new TextLine(new CPos(-5096, 2700, 0), IFont.Pixel16);
 			frameLimiter.SetText("Framelimiter (0 when disabled):");
-			scrollSpeed = new Text(new CPos(-5096, 1000, 0), IFont.Pixel16);
+			scrollSpeed = new TextLine(new CPos(-5096, 1000, 0), IFont.Pixel16);
 			scrollSpeed.SetText("Scroll Speed:");
-			edgeScrolling = new Text(new CPos(-5096, 1800, 0), IFont.Pixel16);
+			edgeScrolling = new TextLine(new CPos(-5096, 1800, 0), IFont.Pixel16);
 			edgeScrolling.SetText("Edge Scrolling (0 when disabled):");
-			developerMode = new Text(new CPos(-5096, 3500, 0), IFont.Pixel16);
+			developerMode = new TextLine(new CPos(-5096, 3500, 0), IFont.Pixel16);
 			developerMode.SetText("Enable Developermode:");
 
-			fullscreen = new Text(new CPos(-5096, -3000, 0), IFont.Pixel16);
+			fullscreen = new TextLine(new CPos(-5096, -3000, 0), IFont.Pixel16);
 			fullscreen.SetText("Fullscreen:");
-			width = new Text(new CPos(-5096, -2300, 0), IFont.Pixel16);
+			width = new TextLine(new CPos(-5096, -2300, 0), IFont.Pixel16);
 			if (Settings.Fullscreen)
 				width.SetColor(new Color(128,128,128));
 			width.SetText("Width:");
-			height = new Text(new CPos(-5096, -1600, 0), IFont.Pixel16);
+			height = new TextLine(new CPos(-5096, -1600, 0), IFont.Pixel16);
 			if (Settings.Fullscreen)
 				height.SetColor(new Color(128,128,128));
 			height.SetText("Height:");
-			antiAliasing = new Text(new CPos(-5096, 4200, 0), IFont.Pixel16);
+			antiAliasing = new TextLine(new CPos(-5096, 4200, 0), IFont.Pixel16);
 			antiAliasing.SetText("Enable Antialising:");
-			pixeling = new Text(new CPos(-5096, 4900, 0), IFont.Pixel16);
+			pixeling = new TextLine(new CPos(-5096, 4900, 0), IFont.Pixel16);
 			pixeling.SetText("Enable Pixeling:");
-			warning = new Text(new CPos(0, 5550, 0), IFont.Pixel16, Text.OffsetType.MIDDLE);
+			warning = new TextLine(new CPos(0, 5550, 0), IFont.Pixel16, TextLine.OffsetType.MIDDLE);
 			warning.SetColor(Color.Red);
 			warning.SetText("Some changes may only take effect after restarting and can cause visual bugs.");
 		}

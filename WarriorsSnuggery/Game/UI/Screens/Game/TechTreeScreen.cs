@@ -13,7 +13,7 @@ namespace WarriorsSnuggery.UI
 		readonly Panel @base;
 
 		readonly GameObject money;
-		readonly Text moneyText;
+		readonly TextLine moneyText;
 		int cashCooldown;
 		int lastCash;
 
@@ -28,7 +28,7 @@ namespace WarriorsSnuggery.UI
 			@base = new Panel(new CPos(0, 1024, 0), new MPos(8192 / 64 * 3, 4096 / 64 * 3), 4, "UI_wood1", "UI_wood3", "UI_wood2");
 
 			money = new GameObject(new CPos(-(int)(WindowInfo.UnitWidth / 2 * 1024) + 1024, 7192, 0), new ImageRenderable(TextureManager.Texture("UI_money")));
-			moneyText = new Text(new CPos(-(int)(WindowInfo.UnitWidth / 2 * 1024) + 2048, 7192, 0), IFont.Papyrus24);
+			moneyText = new TextLine(new CPos(-(int)(WindowInfo.UnitWidth / 2 * 1024) + 2048, 7192, 0), IFont.Papyrus24);
 			moneyText.SetText(game.Statistics.Money);
 
 			foreach (var e in TechTreeLoader.TechTree)
@@ -102,19 +102,19 @@ namespace WarriorsSnuggery.UI
 		readonly ITechTreeNode node;
 		readonly Game game;
 
-		readonly Text onHover;
-		readonly Text onHover2;
+		readonly TextLine onHover;
+		readonly TextLine onHover2;
 		bool mouseOnItem;
 
 		public TechNode(CPos position, ITechTreeNode node, Game game) : base(position, new MPos(16, 16), 3, "UI_stone1", "UI_stone2", "UI_wood2")
 		{
 			this.node = node;
 			this.game = game;
-			onHover = new Text(position, IFont.Pixel16);
+			onHover = new TextLine(position, IFont.Pixel16);
 			onHover.SetText(node.Name + " : " + node.Cost);
 			onHover.Visible = false;
 			UIRenderer.RenderAfter(onHover);
-			onHover2 = new Text(position + new CPos(0,712,0), IFont.Pixel16);
+			onHover2 = new TextLine(position + new CPos(0,712,0), IFont.Pixel16);
 			if (node.Before.Length > 0 || node.Before[0].Trim() == "") // TODO does not work
 			{
 				onHover2.SetText("Pre: ");

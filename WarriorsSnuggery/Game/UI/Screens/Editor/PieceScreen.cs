@@ -120,11 +120,11 @@ namespace WarriorsSnuggery.UI
 		readonly Button cancel;
 		readonly Button okay;
 
-		readonly Text size;
+		readonly TextLine size;
 		readonly TextBox sizeX;
 		readonly TextBox sizeY;
 
-		readonly Text warning;
+		readonly TextLine warning;
 		readonly TextBox name;
 
 		public CreatePieceScreen(PieceScreen screen, Game game) : base("Create Piece")
@@ -136,12 +136,12 @@ namespace WarriorsSnuggery.UI
 			cancel = ButtonCreator.Create("wooden", new CPos(4096, 6144, 0), "Cancel", () => { ActiveScreen = false; });
 			okay = ButtonCreator.Create("wooden", new CPos(-4096, 6144, 0), "Create", () => { Create(); });
 
-			size = new Text(new CPos(0, -1024, 0), IFont.Pixel16, Text.OffsetType.MIDDLE);
+			size = new TextLine(new CPos(0, -1024, 0), IFont.Pixel16, TextLine.OffsetType.MIDDLE);
 			size.SetText("Size of Piece");
 			sizeX = TextBoxCreator.Create("wooden", new CPos(1024, 0, 0), "16", 2, true);
 			sizeY = TextBoxCreator.Create("wooden", new CPos(-1024, 0, 0), "16", 2, true);
 			name = TextBoxCreator.Create("wooden", new CPos(0, 1536, 0), "unnamed piece", 20, false);
-			warning = new Text(new CPos(0, 2548, 0), IFont.Pixel16, Text.OffsetType.MIDDLE);
+			warning = new TextLine(new CPos(0, 2548, 0), IFont.Pixel16, TextLine.OffsetType.MIDDLE);
 			warning.SetColor(Color.Red);
 			warning.SetText("Warning: by using an name for an already existing map, you override it!");
 		}

@@ -7,7 +7,7 @@ namespace WarriorsSnuggery.UI
 	{
 		readonly Game game;
 
-		readonly Text create, name, difficulty, hardcore;
+		readonly TextLine create, name, difficulty, hardcore;
 		readonly TextBox nameInput;
 		readonly TextBox difficultyInput;
 		readonly CheckBox hardcoreInput;
@@ -20,20 +20,20 @@ namespace WarriorsSnuggery.UI
 			this.game = game;
 			Title.Position = new CPos(0, -4096, 0);
 
-			create = new Text(new CPos(-2048, -2048, 0), IFont.Pixel16, Text.OffsetType.MIDDLE);
+			create = new TextLine(new CPos(-2048, -2048, 0), IFont.Pixel16, TextLine.OffsetType.MIDDLE);
 			create.SetText("Please adjust the parameters as you wish.");
 
-			name = new Text(new CPos(-2048, 0, 0), IFont.Pixel16, Text.OffsetType.RIGHT);
+			name = new TextLine(new CPos(-2048, 0, 0), IFont.Pixel16, TextLine.OffsetType.RIGHT);
 			name.SetText("Name: ");
 
 			nameInput = TextBoxCreator.Create("wooden", new CPos(1024, 0, 0), "Name", 15);
 
-			difficulty = new Text(new CPos(-2048, 1024, 0), IFont.Pixel16, Text.OffsetType.RIGHT);
+			difficulty = new TextLine(new CPos(-2048, 1024, 0), IFont.Pixel16, TextLine.OffsetType.RIGHT);
 			difficulty.SetText("Difficulty: ");
 
 			difficultyInput = TextBoxCreator.Create("wooden", new CPos(1024, 1024, 0), "1", 1, true);
 
-			hardcore = new Text(new CPos(-2048, 2048, 0), IFont.Pixel16, Text.OffsetType.RIGHT);
+			hardcore = new TextLine(new CPos(-2048, 2048, 0), IFont.Pixel16, TextLine.OffsetType.RIGHT);
 			hardcore.SetText("Hardcore: ");
 
 			hardcoreInput = CheckBoxCreator.Create("wooden", new CPos(1024, 2048, 0), false);

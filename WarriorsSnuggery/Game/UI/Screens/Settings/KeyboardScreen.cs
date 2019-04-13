@@ -11,7 +11,7 @@ namespace WarriorsSnuggery.UI
 		readonly Button back;
 
 		public KeyboardButton Up, Down, Right, Left, Pause, CamUp, CamDown, CamRight, CamLeft, Lock;
-		readonly Text saved;
+		readonly TextLine saved;
 		int savedTick;
 
 		public KeyboardScreen(Game game) : base("Keyboard") // TODO
@@ -19,7 +19,7 @@ namespace WarriorsSnuggery.UI
 			this.game = game;
 
 			Title.Position = new CPos(0, -4096, 0);
-			saved = new Text(new CPos(-2048, 6210, 0), IFont.Pixel16, Text.OffsetType.MIDDLE);
+			saved = new TextLine(new CPos(-2048, 6210, 0), IFont.Pixel16, TextLine.OffsetType.MIDDLE);
 			saved.SetText("Save");
 
 			back = ButtonCreator.Create("wooden", new CPos(2048, 6144, 0), "Back", () => game.ChangeScreen(ScreenType.SETTINGS));
