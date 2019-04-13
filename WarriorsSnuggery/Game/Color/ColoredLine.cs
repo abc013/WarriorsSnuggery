@@ -3,7 +3,7 @@ using WarriorsSnuggery.Graphics;
 
 namespace WarriorsSnuggery.Objects
 {
-	public class ColoredLine : GameObject
+	public class ColoredLine : PhysicsObject
 	{
 		public ColoredLine(CPos pos, Color color, float size = 1f) : 
 			base(pos, new ColoredLineRenderable(color, size))

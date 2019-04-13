@@ -2,7 +2,7 @@
 
 namespace WarriorsSnuggery.Objects
 {
-	public class Particle : GameObject, ITick
+	public class Particle : PhysicsObject, ITick
 	{
 		int current;
 		int dissolve;

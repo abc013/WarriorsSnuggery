@@ -2,7 +2,7 @@
 
 namespace WarriorsSnuggery.Objects
 {
-	public class GameObject : IDisposable, ITickRenderable, ICheckVisible
+	public class PhysicsObject : IDisposable, ITickRenderable, ICheckVisible, IPositionable
 	{
 		protected readonly GraphicsObject Renderable;
 		//TODO: move to actor. This class is now the main class for all ingame objects. UI things should not use this class.
@@ -89,12 +89,12 @@ namespace WarriorsSnuggery.Objects
 		}
 		float scale = 1f;
 		
-		public GameObject(CPos pos)
+		public PhysicsObject(CPos pos)
 		{
 			Position = pos;
 		}
 
-		public GameObject(CPos pos, GraphicsObject renderable, Physics physics = null) // TODO remove physics
+		public PhysicsObject(CPos pos, GraphicsObject renderable, Physics physics = null) // TODO remove physics
 		{
 			Physics = physics;
 			Renderable = renderable;

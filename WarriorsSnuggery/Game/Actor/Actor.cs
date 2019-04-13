@@ -10,7 +10,7 @@ namespace WarriorsSnuggery.Objects
 		MOVING
 	}
 
-	public class Actor : GameObject
+	public class Actor : PhysicsObject
 	{
 		public readonly World World;
 
@@ -28,8 +28,6 @@ namespace WarriorsSnuggery.Objects
 
 		public readonly Parts.MobilityPart Mobility;
 		public readonly Parts.HealthPart Health;
-
-		public Parts.PhysicsPart ActivePhysics;
 
 		public Parts.WeaponPart ActiveWeapon;
 
@@ -53,7 +51,7 @@ namespace WarriorsSnuggery.Objects
 		}
 		protected ActorAction CurrentAction;
 
-		public Actor(World world, ActorType type, CPos position, ushort team, bool isBot, bool isPlayer = false) : base(position, null, new Physics(position, 0, type.PhysicalShape, type.PhysicalSize, type.PhysicalSize))
+		public Actor(World world, ActorType type, CPos position, ushort team, bool isBot, bool isPlayer = false) : base(position, null, type.Physics == null ? null : new Physics(position, 0, type.Physics.Shape, type.Physics.Size.X, type.Physics.Size.Z))
 		{
 			World = world;
 			Offset = type.Offset;
@@ -62,7 +60,6 @@ namespace WarriorsSnuggery.Objects
 			IsPlayer = isPlayer;
 			CurrentAction = ActorAction.IDLING;
 			body = new ActorBody(this, type);
-			Scale *= type.Scale;
 			Height = type.Height;
 			IsBot = isBot;
 
@@ -78,8 +75,6 @@ namespace WarriorsSnuggery.Objects
 			Health = (Parts.HealthPart) parts.Find(p => p is Parts.HealthPart);
 
 			ActiveWeapon = (Parts.WeaponPart) parts.Find(p => p is Parts.WeaponPart);
-
-			ActivePhysics = (Parts.PhysicsPart) parts.Find(p => p is Parts.PhysicsPart);
 
 			WorldPart = (Parts.WorldPart) parts.Find(p => p is Parts.WorldPart);
 
@@ -180,10 +175,8 @@ namespace WarriorsSnuggery.Objects
 		{
 			var old = Position;
 			Position = position;
-			Physics.Position = position;
-
-			if (ActivePhysics != null)
-				ActivePhysics.Physics.Position = position;
+			if (Physics != null)
+				Physics.Position = position;
 
 			CheckVisibility();
 			CurrentAction = ActorAction.MOVING;
@@ -196,7 +189,7 @@ namespace WarriorsSnuggery.Objects
 
 		void denyMove()
 		{
-			Physics.Position = Position;
+			base.Physics.Position = base.Position;
 			Velocity = CPos.Zero;
 
 			parts.ForEach(p => p.OnStop());
@@ -215,13 +208,16 @@ namespace WarriorsSnuggery.Objects
 			var renderable = body.CurrentRenderable;
 			if (renderable != null)
 			{
-				MasterRenderer.RenderShadow = true;
-				MasterRenderer.UniformHeight(Height);
+				if (Height > 0)
+				{
+					MasterRenderer.RenderShadow = true;
+					MasterRenderer.UniformHeight(Height);
 
-				renderable.SetPosition(GraphicPositionWithoutHeight);
-				renderable.Render();
+					renderable.SetPosition(GraphicPositionWithoutHeight);
+					renderable.Render();
 
-				MasterRenderer.RenderShadow = false;
+					MasterRenderer.RenderShadow = false;
+				}
 
 				renderable.SetPosition(GraphicPosition);
 				renderable.Render();
@@ -366,7 +362,9 @@ namespace WarriorsSnuggery.Objects
 				var anim = new ITexture[frameCountPerIdleAnim];
 				for (int x = 0; x < frameCountPerIdleAnim; x++)
 					anim[x] = idleFrames[i * frameCountPerIdleAnim + x];
-				idle[i] = new SpriteRenderable(anim, type.Scale, type.Idle.Tick);
+
+				//var scale = anim[0].Width / 24f;
+				idle[i] = new SpriteRenderable(anim, 1f, type.Idle.Tick);
 			}
 
 			CurrentRenderable = idle[0];

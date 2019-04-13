@@ -38,16 +38,6 @@ namespace WarriorsSnuggery.Objects.Parts
 				self.Accelerate(180);
 			}
 
-			//TODO: you know SUPERPOWERS? then do them properly.
-			if (self.Type.ManaWeapon != null && self.World.Game.Statistics.Mana >= self.Type.ManaCost && KeyInput.IsKeyDown("E", 5))
-			{
-				self.World.Game.Statistics.Mana -= self.Type.ManaCost;
-				var weapon = WeaponCreator.Create(self.World, self.Type.ManaWeapon, self, MouseInput.GamePosition);
-				weapon.Position = MouseInput.GamePosition;
-				self.World.Add(weapon);
-				weapon.Detonate();
-			}
-
 			if (MouseInput.isLeftDown)
 				self.Attack(MouseInput.GamePosition);
 		}

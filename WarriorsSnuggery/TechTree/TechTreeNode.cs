@@ -13,6 +13,8 @@ namespace WarriorsSnuggery
 		public readonly string Name;
 		public readonly Effect Effect;
 
+		public readonly string Icon;
+
 		public ITechTreeNode(MiniTextNode[] nodes, string name)
 		{
 			InnerName = name;
@@ -62,8 +64,12 @@ namespace WarriorsSnuggery
 						}
 						Effect = new Effect(effect, value, duration, occurence, cooldown);
 						break;
+					case "Icon":
+						Icon = node.Value;
+
+						break;
 					default:
-						throw new YamlUnknownNodeException(node.Key);
+						throw new YamlUnknownNodeException(node.Key, "TechTreeNode");
 				}
 			}
 		}

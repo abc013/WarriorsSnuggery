@@ -12,7 +12,7 @@ namespace WarriorsSnuggery.UI
 
 		readonly Panel @base;
 
-		readonly GameObject money;
+		readonly PhysicsObject money;
 		readonly TextLine moneyText;
 		int cashCooldown;
 		int lastCash;
@@ -27,7 +27,7 @@ namespace WarriorsSnuggery.UI
 			back = ButtonCreator.Create("wooden", new CPos(0, 6144, 0), "Resume", () => { game.ScreenControl.ShowScreen(ScreenType.DEFAULT); game.Pause(false); });
 			@base = new Panel(new CPos(0, 1024, 0), new MPos(8192 / 64 * 3, 4096 / 64 * 3), 4, "UI_wood1", "UI_wood3", "UI_wood2");
 
-			money = new GameObject(new CPos(-(int)(WindowInfo.UnitWidth / 2 * 1024) + 1024, 7192, 0), new ImageRenderable(TextureManager.Texture("UI_money")));
+			money = new PhysicsObject(new CPos(-(int)(WindowInfo.UnitWidth / 2 * 1024) + 1024, 7192, 0), new ImageRenderable(TextureManager.Texture("UI_money")));
 			moneyText = new TextLine(new CPos(-(int)(WindowInfo.UnitWidth / 2 * 1024) + 2048, 7192, 0), IFont.Papyrus24);
 			moneyText.SetText(game.Statistics.Money);
 
@@ -102,6 +102,7 @@ namespace WarriorsSnuggery.UI
 		readonly ITechTreeNode node;
 		readonly Game game;
 
+		readonly ImageRenderable image;
 		readonly TextLine onHover;
 		readonly TextLine onHover2;
 		bool mouseOnItem;
@@ -110,6 +111,8 @@ namespace WarriorsSnuggery.UI
 		{
 			this.node = node;
 			this.game = game;
+			image = new ImageRenderable(TextureManager.Texture(node.Icon));
+			image.SetPosition(position);
 			onHover = new TextLine(position, IFont.Pixel16);
 			onHover.SetText(node.Name + " : " + node.Cost);
 			onHover.Visible = false;
@@ -141,6 +144,13 @@ namespace WarriorsSnuggery.UI
 				onHover.Position = Position;
 				onHover2.Position = Position + new CPos(0, 712, 0);
 			}
+		}
+
+		public override void Render()
+		{
+			base.Render();
+
+			image.Render();
 		}
 
 		void checkMouse()
@@ -198,6 +208,7 @@ namespace WarriorsSnuggery.UI
 		{
 			base.Dispose();
 
+			//image.Dispose();
 			UIRenderer.RemoveRenderAfter(onHover);
 			onHover.Dispose();
 			UIRenderer.RemoveRenderAfter(onHover2);

@@ -65,17 +65,35 @@ namespace WarriorsSnuggery
 		public static TexturedVertex[] Plane(float scale, float w, float h)
 		{
 			scale /= 2;
-			var correction = w/h;
+			var correction = w < h ? w/h : h/w;
 
-			TexturedVertex[] vertices =
+			TexturedVertex[] vertices = new TexturedVertex[6];
+			if (w < h)
 			{
-				new TexturedVertex(new Vector4(scale * correction,  scale,  0, 1.0f), new Vector2(1, 0)),
-				new TexturedVertex(new Vector4(-scale * correction, -scale, 0, 1.0f), new Vector2(0, 1)),
-				new TexturedVertex(new Vector4(scale * correction,  -scale, 0, 1.0f), new Vector2(1, 1)),
-				new TexturedVertex(new Vector4(-scale * correction, scale,  0, 1.0f), new Vector2(0, 0)),
-				new TexturedVertex(new Vector4(-scale * correction, -scale, 0, 1.0f), new Vector2(0, 1)),
-				new TexturedVertex(new Vector4(scale * correction,  scale,  0, 1.0f), new Vector2(1, 0)),
-			};
+				TexturedVertex[] vertices1 =
+				{
+					new TexturedVertex(new Vector4(scale * correction, scale, 0, 1.0f), new Vector2(1, 0)),
+					new TexturedVertex(new Vector4(-scale * correction, -scale, 0, 1.0f), new Vector2(0, 1)),
+					new TexturedVertex(new Vector4(scale * correction, -scale, 0, 1.0f), new Vector2(1, 1)),
+					new TexturedVertex(new Vector4(-scale * correction, scale, 0, 1.0f), new Vector2(0, 0)),
+					new TexturedVertex(new Vector4(-scale * correction, -scale, 0, 1.0f), new Vector2(0, 1)),
+					new TexturedVertex(new Vector4(scale * correction, scale, 0, 1.0f), new Vector2(1, 0)),
+				};
+				vertices = vertices1;
+			}
+			else
+			{
+				TexturedVertex[] vertices1 =
+				{
+					new TexturedVertex(new Vector4(scale, scale * correction, 0, 1.0f), new Vector2(1, 0)),
+					new TexturedVertex(new Vector4(-scale, -scale * correction, 0, 1.0f), new Vector2(0, 1)),
+					new TexturedVertex(new Vector4(scale, -scale * correction, 0, 1.0f), new Vector2(1, 1)),
+					new TexturedVertex(new Vector4(-scale, scale * correction, 0, 1.0f), new Vector2(0, 0)),
+					new TexturedVertex(new Vector4(-scale, -scale * correction, 0, 1.0f), new Vector2(0, 1)),
+					new TexturedVertex(new Vector4(scale, scale * correction, 0, 1.0f), new Vector2(1, 0)),
+				};
+				vertices = vertices1;
+			}
 			
 			return vertices;
 		}

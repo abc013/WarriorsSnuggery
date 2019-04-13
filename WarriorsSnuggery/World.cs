@@ -12,10 +12,10 @@ namespace WarriorsSnuggery
 		public readonly PhysicsLayer PhysicsLayer;
 
 		public readonly List<Actor> Actors = new List<Actor>();
-		public readonly List<GameObject> Objects = new List<GameObject>();
-		public List<GameObject> ToRender;
+		public readonly List<PhysicsObject> Objects = new List<PhysicsObject>();
+		public List<PhysicsObject> ToRender;
 
-		readonly List<GameObject> objectsToAdd = new List<GameObject>();
+		readonly List<PhysicsObject> objectsToAdd = new List<PhysicsObject>();
 		readonly List<Actor> actorsToAdd = new List<Actor>();
 
 		public readonly Map Map;
@@ -58,13 +58,13 @@ namespace WarriorsSnuggery
 				Camera.Position(new MPos(Map.Size.X / 2, Map.Size.Y / 2).ToCPos(), true);
 			}
 
-			Add(new GameObject(new CPos(0, 0, 1024), new ImageRenderable(TextureManager.NoiseTexture(
+			Add(new PhysicsObject(new CPos(0, 0, 1024), new ImageRenderable(TextureManager.NoiseTexture(
 				new MPos(128, 128),
 				6,
 				intensity: -0.1f,
 				contrast: 5f
 				), 1f)));
-			Add(new GameObject(new CPos(0, 6000, 1024), new ImageRenderable(TextureManager.NoiseTexture(
+			Add(new PhysicsObject(new CPos(0, 6000, 1024), new ImageRenderable(TextureManager.NoiseTexture(
 				new MPos(128, 128),
 				2,
 				1,
@@ -142,7 +142,7 @@ namespace WarriorsSnuggery
 			}
 		}
 
-		public bool CheckCollision(GameObject obj, bool ignoreHeight, Type[] ignoreTypes = null, GameObject[] ignoreObjects = null)
+		public bool CheckCollision(PhysicsObject obj, bool ignoreHeight, Type[] ignoreTypes = null, PhysicsObject[] ignoreObjects = null)
 		{
 			if (obj.Physics == null || obj.Physics.Radius == 0 || obj.Physics.Shape == Shape.NONE)
 				return false;
@@ -168,7 +168,7 @@ namespace WarriorsSnuggery
 			return false;
 		}
 
-		public void Add(GameObject @object)
+		public void Add(PhysicsObject @object)
 		{
 			if (@object == null)
 				return;
@@ -212,7 +212,7 @@ namespace WarriorsSnuggery
 				a.Dispose();
 			Actors.Clear();
 
-			foreach(GameObject o in Objects)
+			foreach(PhysicsObject o in Objects)
 				o.Dispose();
 			Objects.Clear();
 

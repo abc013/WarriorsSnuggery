@@ -17,7 +17,7 @@ namespace WarriorsSnuggery.Objects
 		public readonly int Radius;
 		public readonly int HeightRadius;
 
-		readonly GameObject renderable;
+		readonly PhysicsObject renderable;
 
 		public CPos Position;
 		public int Height;

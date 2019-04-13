@@ -16,17 +16,14 @@ namespace WarriorsSnuggery.Objects
 		public readonly TextureInfo Shadow;
 
 		public readonly CPos Offset;
-		public readonly float Scale;
 		public readonly int Height;
 		
-		public readonly WeaponType ManaWeapon;
-		public readonly int ManaCost;
-		
+		public readonly Parts.PhysicsPartInfo Physics;
 		public readonly Parts.PlayablePartInfo Playable;
 
 		public readonly PartInfo[] PartInfos;
 
-		public ActorType(TextureInfo idle, int idleFacings, TextureInfo walk, int walkFacings, TextureInfo attack, int attackFacings, TextureInfo shadow, CPos offset, float scale, int height, int mana, int physicalSize, Shape physicalShape, WeaponType manaWeapon, int manaCost, Parts.PlayablePartInfo playable, PartInfo[] partInfos)
+		public ActorType(TextureInfo idle, int idleFacings, TextureInfo walk, int walkFacings, TextureInfo attack, int attackFacings, TextureInfo shadow, CPos offset, int height, Parts.PhysicsPartInfo physics, Parts.PlayablePartInfo playable, PartInfo[] partInfos)
 		{
 			Idle = idle;
 			IdleFacings = idleFacings;
@@ -37,16 +34,10 @@ namespace WarriorsSnuggery.Objects
 			Shadow = shadow;
 
 			Offset = offset;
-			Scale = scale;
 			Height = height;
 
-			PhysicalSize = physicalSize;
-			PhysicalShape = physicalShape;
-			
-			ManaCost = manaCost;
-			ManaWeapon = manaWeapon;
-
 			Playable = playable;
+			Physics = physics;
 			PartInfos = partInfos;
 		}
 	}

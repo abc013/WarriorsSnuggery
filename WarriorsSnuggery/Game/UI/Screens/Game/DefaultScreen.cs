@@ -15,11 +15,11 @@ namespace WarriorsSnuggery.UI
 		readonly ColoredCircle manaComb;
 		readonly CPos topLineDeco;
 
-		readonly GameObject money;
+		readonly PhysicsObject money;
 		readonly TextLine moneyText;
 		readonly TextLine menu, pause;
 		readonly PanelList panel;
-		readonly PanelList manaPanel;
+		readonly PanelList effectPanel;
 		readonly ActorType[] panelContent;
 		int cashCooldown;
 		int lastCash;
@@ -41,10 +41,11 @@ namespace WarriorsSnuggery.UI
 			health = new TextLine(new CPos(-(int) (WindowInfo.UnitWidth * 300) - 1536,-7120,0), IFont.Papyrus24, TextLine.OffsetType.MIDDLE);
 			healthBar = new ColoredRect(new CPos(-(int)(WindowInfo.UnitWidth * 300) + 1024, -7120, 0), Color.Red, 5f, 1f);
 			hollow = new ColoredRect(new CPos(-(int)(WindowInfo.UnitWidth * 300) - 2048, -7120, 0), Color.White, 5.2f, 1.2f, isFilled: false);
+
 			mana = new TextLine(new CPos((int) (WindowInfo.UnitWidth * 300),-7120,0), IFont.Papyrus24);
 			manaComb = new ColoredCircle(new CPos((int) (WindowInfo.UnitWidth * 300) + 2048,-7120, 0), Color.White, resolution: 6);
 
-			money = new GameObject(new CPos(-corner + 1024, 7192,0), new ImageRenderable(TextureManager.Texture("UI_money")));
+			money = new PhysicsObject(new CPos(-corner + 1024, 7192,0), new ImageRenderable(TextureManager.Texture("UI_money")));
 			moneyText = new TextLine(new CPos(-corner + 2048,7192,0), IFont.Papyrus24);
 			moneyText.SetText(game.Statistics.Money);
 
@@ -70,10 +71,13 @@ namespace WarriorsSnuggery.UI
 			}
 			panelContent = list.ToArray();
 
-			manaPanel = new PanelList(new CPos((int) (WindowInfo.UnitWidth * 512 - 1024), (int)-(WindowInfo.UnitHeight * 128), 0), new MPos(512, 4096), new MPos(512, 512), 6, "UI_stone1", "UI_stone2");
-			if (game.World.LocalPlayer.Type.ManaWeapon != null)
+			effectPanel = new PanelList(new CPos((int) (WindowInfo.UnitWidth * 512 - 1024), (int)-(WindowInfo.UnitHeight * 128), 0), new MPos(512, 4096), new MPos(256, 256), 6, "UI_stone1", "UI_stone2");
+			foreach(var effect in TechTreeLoader.TechTree)
 			{
-				manaPanel.Add(new PanelItem(CPos.Zero, "Cost:" + game.World.LocalPlayer.Type.ManaCost, new ImageRenderable(game.World.LocalPlayer.Type.ManaWeapon.Textures.GetTextures()[0], 0.5f), new MPos(512, 512), () => { }));
+				var item = new PanelItem(CPos.Zero, effect.Name, new ImageRenderable(TextureManager.Texture(effect.Icon)), new MPos(256, 256), () => { });
+				if (!(effect.Unlocked || game.Statistics.UnlockedNodes.ContainsKey(effect.InnerName) && game.Statistics.UnlockedNodes[effect.InnerName]))
+					item.Scale = 0.8f;
+				effectPanel.Add(item);
 			}
 		}
 
@@ -96,7 +100,7 @@ namespace WarriorsSnuggery.UI
 			pause.Render();
 
 			panel.Render();
-			manaPanel.Render();
+			effectPanel.Render();
 		}
 
 		public override void Tick()
@@ -122,7 +126,10 @@ namespace WarriorsSnuggery.UI
 					}
 					lastHealth = cur;
 					if (healthCooldown-- >= 0)
-						healthBar.Scale = (healthCooldown / 100f) + 1f;
+					{
+						healthBar.Scale = (healthCooldown / 50f) + 1f;
+						//ColorManager.DrawFullscreenRect(new Color(1f, 0f, 0f, healthCooldown / 10f));
+					}
 				}
 
 				mana.SetText(game.Statistics.Mana);
@@ -153,7 +160,7 @@ namespace WarriorsSnuggery.UI
 				moneyText.Scale = (cashCooldown / 10f) + 1f;
 
 			panel.Tick();
-			manaPanel.Tick();
+			effectPanel.Tick();
 		}
 
 		void changePlayer(Actor player, ActorType type)
@@ -175,15 +182,6 @@ namespace WarriorsSnuggery.UI
 				newActor.Health.HP = (int) (oldHP * newActor.Health.MaxHP);
 
 			game.Statistics.Actor = ActorCreator.GetName(type);
-			if (game.World.LocalPlayer.Type.ManaWeapon != null)
-			{
-				foreach(var o in manaPanel.Container)
-				{
-					o.Dispose();
-				}
-				manaPanel.Container.Clear();
-				manaPanel.Add(new PanelItem(CPos.Zero, "Cost:" + game.World.LocalPlayer.Type.ManaCost, new ImageRenderable(game.World.LocalPlayer.Type.ManaWeapon.Textures.GetTextures()[0], 0.5f), new MPos(512, 512), () => { }));
-			}
 		}
 
 		public override void Dispose()

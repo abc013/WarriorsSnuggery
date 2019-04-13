@@ -2,7 +2,7 @@
 
 namespace WarriorsSnuggery.Objects
 {
-	public class Text : GameObject //TODO: remove GameObject
+	public class Text : PhysicsObject //TODO: remove GameObject
 	{
 		readonly TextLine[] lines;
 

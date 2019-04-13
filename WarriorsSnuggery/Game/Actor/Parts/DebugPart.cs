@@ -8,8 +8,8 @@ namespace WarriorsSnuggery.Objects.Parts
 	class DebugPart : ActorPart
 	{
 		//readonly GameObject renderable;
-		readonly GameObject center;
-		readonly GameObject weaponRange;
+		readonly PhysicsObject center;
+		readonly PhysicsObject weaponRange;
 
 		public DebugPart(Actor self) : base(self)
 		{

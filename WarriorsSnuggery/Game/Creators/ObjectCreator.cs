@@ -23,14 +23,7 @@ namespace WarriorsSnuggery
 				TextureInfo shadow = null;
 
 				var offset = CPos.Zero;
-				var scale = 1f;
 				var height = 0;
-				var startMana = 0;
-				var physicalSize = 0;
-				var physicalShape = Shape.NONE;
-				
-				WeaponType manaWeapon = null;
-				var manaCost = 0;
 
 				var partinfos = new List<PartInfo>();
 
@@ -71,60 +64,22 @@ namespace WarriorsSnuggery
 							offset = child.ToCPos();
 
 							break;
-						case "Scale":
-							scale = child.ToFloat();
-
-							break;
 						case "Height":
 							height = child.ToInt();
 
 							break;
-						case "Mana":
-							startMana = child.ToInt();
-
-							foreach (var mana in child.Children)
-							{
-								switch (mana.Key)
-								{
-									case "Cost":
-										manaCost = mana.ToInt();
-
-										break;
-									case "Weapon":
-										manaWeapon = WeaponCreator.GetType(mana.Value);
-
-										break;
-								}
-							}
-
-							break;
-						case "Physics":
-							if (child.Children.Count > 0)
-							{
-								foreach(var physics in child.Children)
-								{
-									switch(physics.Key)
-									{
-										case "Shape":
-											physicalShape = (Shape) physics.ToEnum(typeof(Shape));
-
-											break;
-										case "Size":
-											physicalSize = physics.ToInt();
-
-											break;
-									}
-								}
-							}
-
-							break;
+						default:
+							throw new YamlUnknownNodeException(child.Key, name);
 					}
 				}
 
 				if (idle == null)
 					throw new YamlMissingNodeException(actor.Key, "Image");
 
-				AddType(new ActorType(idle, idleFrames, walk, walkFrames, attack, attackFrames, shadow, offset, scale, height, startMana, physicalSize, physicalShape, manaWeapon, manaCost, (Objects.Parts.PlayablePartInfo) partinfos.Find(p => p is Objects.Parts.PlayablePartInfo), partinfos.ToArray()), name);
+				var physics = (Objects.Parts.PhysicsPartInfo)partinfos.Find(p => p is Objects.Parts.PhysicsPartInfo);
+				var playable = (Objects.Parts.PlayablePartInfo)partinfos.Find(p => p is Objects.Parts.PlayablePartInfo);
+
+			   AddType(new ActorType(idle, idleFrames, walk, walkFrames, attack, attackFrames, shadow, offset, height, physics, playable, partinfos.ToArray()), name);
 			}
 		}
 
@@ -274,6 +229,8 @@ namespace WarriorsSnuggery
 							}
 
 							break;
+						default:
+							throw new YamlUnknownNodeException(child.Key, name);
 					}
 				}
 

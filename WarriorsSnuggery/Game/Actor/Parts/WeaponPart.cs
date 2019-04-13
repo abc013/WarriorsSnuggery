@@ -25,7 +25,7 @@ namespace WarriorsSnuggery.Objects.Parts
 						Offset = node.ToCPos();
 						break;
 					default:
-						throw new YamlUnknownNodeException(node.Key);
+						throw new YamlUnknownNodeException(node.Key, "WeaponPart");
 				}
 			}
 		}

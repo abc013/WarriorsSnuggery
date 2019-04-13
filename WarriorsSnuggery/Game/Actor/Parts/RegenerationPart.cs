@@ -29,7 +29,7 @@ namespace WarriorsSnuggery.Objects.Parts
 						TimeAfterHit = node.ToInt();
 						break;
 					default:
-						throw new YamlUnknownNodeException(node.Key);
+						throw new YamlUnknownNodeException(node.Key, "RegenerationPart");
 				}
 			}
 		}
