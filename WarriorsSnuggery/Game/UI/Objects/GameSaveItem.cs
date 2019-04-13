@@ -20,18 +20,18 @@ namespace WarriorsSnuggery.UI
 		}
 
 		public bool Selected;
-		readonly Text name;
-		readonly Text level;
+		readonly TextLine name;
+		readonly TextLine level;
 
 		public readonly GameStatistics Stats;
 
 		public GameSaveItem(CPos pos, GameStatistics stats, string renderable, int width, Action action) : base(pos, stats.Name, new ImageRenderable(TextureManager.Texture(renderable), 2f), new MPos(width, 1024), action)
 		{
 			Stats = stats;
-			name = new Text(pos - new CPos(2048, 512, 0), IFont.Pixel16);
+			name = new TextLine(pos - new CPos(2048, 512, 0), IFont.Pixel16);
 			name.SetColor(Color.Black);
 			name.SetText(stats.Name);
-			level = new Text(pos - new CPos(2560, 0, 0), IFont.Pixel16);
+			level = new TextLine(pos - new CPos(2560, 0, 0), IFont.Pixel16);
 			level.SetColor(Color.Black);
 			if (stats.Level >= stats.FinalLevel) level.SetColor(new Color(0,200,0));
 			level.SetText(stats.Level + 1);

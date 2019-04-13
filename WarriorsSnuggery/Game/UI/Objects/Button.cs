@@ -10,7 +10,7 @@ namespace WarriorsSnuggery.UI
 {
 	public class Button : Panel
 	{
-		readonly Text text;
+		readonly TextLine text;
 		readonly PanelType type;
 		readonly Action action;
 
@@ -18,7 +18,7 @@ namespace WarriorsSnuggery.UI
 
 		public Button(CPos pos, string text, PanelType type, Action action) : base(pos, new MPos(8 * text.Length + 2, 12), type)
 		{
-			this.text = new Text(pos + new CPos(256,0,0), IFont.Pixel16, Text.OffsetType.MIDDLE);
+			this.text = new TextLine(pos + new CPos(256,0,0), IFont.Pixel16, TextLine.OffsetType.MIDDLE);
 			this.text.WriteText(text);
 			this.type = type;
 			this.action = action;

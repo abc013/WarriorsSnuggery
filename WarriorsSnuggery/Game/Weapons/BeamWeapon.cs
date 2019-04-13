@@ -54,9 +54,12 @@ namespace WarriorsSnuggery.Objects
 		{
 			ColorManager.LineWidth = 10f;
 			ColorManager.DrawLine(originPos, Target, color);
+			Program.CheckGraphicsError("Code bug", true);
 			ColorManager.LineWidth = 5f;
 			ColorManager.DrawLine(originPos, Target, color2);
+			Program.CheckGraphicsError("Code bug2", true);
 			ColorManager.ResetLineWidth();
+			Program.CheckGraphicsError("Code bug3", true);
 
 			point.SetPosition(Target);
 			point.Render();
@@ -64,7 +67,6 @@ namespace WarriorsSnuggery.Objects
 			point.SetPosition(originPos);
 			point.Render();
 
-			Program.CheckGraphicsError("Code bug", true);
 			base.RenderPhysics();
 		}
 

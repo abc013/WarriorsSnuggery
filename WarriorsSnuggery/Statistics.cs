@@ -65,7 +65,6 @@ namespace WarriorsSnuggery
 		public void Update(Game game)
 		{
 			Health = game.World.LocalPlayer.Health == null ? 1 : game.World.LocalPlayer.Health.HP;
-			//Mana = game.World.LocalPlayer. TODO
 		}
 
 		public void Save(World world, bool withMap = true)

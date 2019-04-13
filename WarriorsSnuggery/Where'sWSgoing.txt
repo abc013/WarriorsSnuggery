@@ -9,6 +9,7 @@
 - Shadow shader: height float still missing
 - Walls: Add walldamage
 - Weapons: reform weapons, add 3D collision
+- Mana & effects: use thing on the side
 
 - Different gamemodes:
 	- tower defense,
@@ -16,6 +17,14 @@
 	- find the exit;
 
 when textures begin to bug after adding new textures, please look here <- ISprite
+----------------------------------------------------------------------------------------------
+MAP GENERATOR
+
+- Spawn of enemy waves
+- Implement the three gamemodes
+- Generate towns/flocks of fields
+- Pieces in blokcs and only on certain terrains
+- Labelling of generator blocks (like part system)
 ----------------------------------------------------------------------------------------------
 CONFIRMED MEMORY LEAKS
 

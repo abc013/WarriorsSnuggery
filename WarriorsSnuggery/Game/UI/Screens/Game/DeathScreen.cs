@@ -12,8 +12,8 @@ namespace WarriorsSnuggery.UI
 	{
 		readonly Button restart;
 		readonly Button menu;
-		readonly Text score;
-		readonly Text deaths;
+		readonly TextLine score;
+		readonly TextLine deaths;
 		readonly Game game;
 		bool firsttick = true;
 
@@ -23,8 +23,8 @@ namespace WarriorsSnuggery.UI
 			Title.SetColor(Color.Red);
 			Speed = 64;
 
-			score = new Text(new CPos(0,1024,0), IFont.Pixel16, Text.OffsetType.MIDDLE);
-			deaths = new Text(new CPos(0, 2048, 0), IFont.Pixel16, Text.OffsetType.MIDDLE);
+			score = new TextLine(new CPos(0,1024,0), IFont.Pixel16, TextLine.OffsetType.MIDDLE);
+			deaths = new TextLine(new CPos(0, 2048, 0), IFont.Pixel16, TextLine.OffsetType.MIDDLE);
 
 			restart = ButtonCreator.Create("wooden", new CPos(-2048, 5120,0), "Restart Map", () => Window.Current.NewGame(game.OldStatistics, sameSeed: true));
 			menu = game.Type == GameType.TEST ? ButtonCreator.Create("wooden", new CPos(2048, 5120, 0), "Main Menu", () => Window.Current.NewGame(game.OldStatistics, GameType.MAINMENU)) : ButtonCreator.Create("wooden", new CPos(2048, 5120, 0), "Menu", () => Window.Current.NewGame(game.OldStatistics, GameType.MENU));

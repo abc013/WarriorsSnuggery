@@ -16,7 +16,7 @@ namespace WarriorsSnuggery.UI
 		public readonly bool OnlyNumbers;
 
 		bool mouseOnBox;
-		readonly Text text;
+		readonly TextLine text;
 		readonly PanelType type;
 		readonly Action onEnter;
 
@@ -25,7 +25,7 @@ namespace WarriorsSnuggery.UI
 			Text = text;
 			MaximumLength = maximumLength;
 			OnlyNumbers = onlyNumbers;
-			this.text = new Text(pos + new CPos(128,0,0), IFont.Pixel16, Objects.Text.OffsetType.MIDDLE);
+			this.text = new TextLine(pos + new CPos(128,0,0), IFont.Pixel16, Objects.TextLine.OffsetType.MIDDLE);
 			this.text.SetText(text);
 			this.type = type;
 			this.onEnter = onEnter;
