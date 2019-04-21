@@ -50,7 +50,7 @@ namespace WarriorsSnuggery.Graphics
 
 		public virtual void Render()
 		{
-			lock(MasterRenderer.GLLock)
+			lock (MasterRenderer.GLLock)
 			{
 				GL.DrawArrays(PrimitiveType.Triangles, 0, VerticeCount);
 			}

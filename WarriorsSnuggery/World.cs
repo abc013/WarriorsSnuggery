@@ -12,7 +12,7 @@ namespace WarriorsSnuggery
 		public readonly PhysicsLayer PhysicsLayer;
 
 		public readonly List<Actor> Actors = new List<Actor>();
-		public readonly List<PhysicsObject> Objects = new List<PhysicsObject>();
+		public readonly List<PhysicsObject> Objects = new List<PhysicsObject>(); // TODO: make this list new and not dependent on PhysicsObject as not everything needs physics. Interfaces: ITick, IRender, IDisposable, IPositionable, ICheckVisible
 		public List<PhysicsObject> ToRender;
 
 		readonly List<PhysicsObject> objectsToAdd = new List<PhysicsObject>();

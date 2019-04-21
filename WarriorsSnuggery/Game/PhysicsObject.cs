@@ -94,7 +94,11 @@ namespace WarriorsSnuggery.Objects
 			Position = pos;
 		}
 
-		public PhysicsObject(CPos pos, GraphicsObject renderable, Physics physics = null) // TODO remove physics
+		/// <summary>
+		/// Used to create renderables with physical shape.
+		/// Used by: Actors, Weapons, Walls, Particles
+		/// </summary>
+		public PhysicsObject(CPos pos, GraphicsObject renderable, Physics physics = null)
 		{
 			Physics = physics;
 			Renderable = renderable;

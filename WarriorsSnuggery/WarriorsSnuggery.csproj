@@ -109,6 +109,7 @@
     <Compile Include="Generation\Maze.cs" />
     <Compile Include="Generation\Noise.cs" />
     <Compile Include="GameSaveManager.cs" />
+    <Compile Include="Graphics\CharManager.cs" />
     <Compile Include="Graphics\ColorManager.cs" />
     <Compile Include="Loader\MiniTextNode.cs" />
     <Compile Include="Loader\NodeExceptions.cs" />
@@ -131,7 +132,6 @@
     <Compile Include="Game\Actor\IActorBody.cs" />
     <Compile Include="Game\Weapons\Smudge.cs" />
     <Compile Include="Game\Creators\UICreator.cs" />
-    <Compile Include="Game\RenderableType.cs" />
     <Compile Include="Game\Actor\ActorType.cs" />
     <Compile Include="Game\Types\PanelType.cs" />
     <Compile Include="Game\Types\CheckBoxType.cs" />

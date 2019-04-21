@@ -46,7 +46,7 @@ namespace WarriorsSnuggery.Graphics
 			line.SetScale(end.GetDistToXY(start) / 1024f);
 			line.SetRotation(new CPos(0, 0, (int) -start.GetAngleToXY(end) + 90).ToAngle());
 			line.SetPosition(start);
-			line.setColor(color);
+			line.SetColor(color);
 
 			line.Render();
 		}
@@ -55,7 +55,7 @@ namespace WarriorsSnuggery.Graphics
 
 		public static void DrawFullscreenRect(Color color)
 		{
-			fullscreen_rect.setColor(color);
+			fullscreen_rect.SetColor(color);
 
 			fullscreen_rect.Render();
 		}
@@ -66,7 +66,7 @@ namespace WarriorsSnuggery.Graphics
 		{
 			filled_rect.SetScale(new CPos(Math.Abs(bottomleft.X - topright.X), Math.Abs(bottomleft.Y - topright.Y), 0));
 			filled_rect.SetPosition(new CPos((bottomleft.X + topright.X) / 2, (bottomleft.Y + topright.Y) / 2, 0));
-			filled_rect.setColor(color);
+			filled_rect.SetColor(color);
 
 			filled_rect.Render();
 		}

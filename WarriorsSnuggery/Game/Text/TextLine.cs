@@ -83,7 +83,7 @@ namespace WarriorsSnuggery.Objects
 			{
 				foreach(TextRenderable @char in chars)
 				{
-					@char.setColor(color);
+					@char.SetColor(color);
 				}
 			}
 		}
@@ -124,8 +124,8 @@ namespace WarriorsSnuggery.Objects
 					else
 					{
 						var localchar = chars[i];
-						localchar.setColor(color);
-						localchar.setChar(text[i]);
+						localchar.Color = color;
+						localchar.Char = text[i];
 					}
 					width += charWidth(text[i]);
 				}
@@ -192,8 +192,8 @@ namespace WarriorsSnuggery.Objects
 				else
 				{
 					var localchar = chars[i];
-					localchar.setColor(color);
-					localchar.setChar(String[i]);
+					localchar.Color = color;
+					localchar.Char = String[i];
 				}
 				width += charWidth(String[i]);
 			}
@@ -256,7 +256,7 @@ namespace WarriorsSnuggery.Objects
 
 		public override void Render()
 		{
-			if (!Visible)
+			if (!Visible || Disposed)
 				return;
 
 			foreach(TextRenderable @char in chars)

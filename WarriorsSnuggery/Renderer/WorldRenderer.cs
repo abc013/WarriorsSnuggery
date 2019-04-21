@@ -28,7 +28,7 @@ namespace WarriorsSnuggery
 
 			foreach (var o in beforeRender)
 				o.Render();
-			
+
 			MasterRenderer.Uniform(MasterRenderer.TextureShader, ref Camera.Matrix, Ambient);
 			MasterRenderer.Uniform(MasterRenderer.ColorShader, ref Camera.Matrix, Ambient);
 			MasterRenderer.Uniform(MasterRenderer.FontShader, ref Camera.Matrix, Ambient);

@@ -4,9 +4,6 @@ namespace WarriorsSnuggery.Objects
 {
 	public class ActorType
 	{
-		public readonly int PhysicalSize;
-		public readonly Shape PhysicalShape;
-
 		public readonly TextureInfo Idle;
 		public readonly int IdleFacings;
 		public readonly TextureInfo Walk;

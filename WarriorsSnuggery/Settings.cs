@@ -5,7 +5,7 @@ namespace WarriorsSnuggery
 {
 	public static class Settings
 	{
-		public const string Version = "(Playtest) 1.3";
+		public const string Version = "(Playtest) 1.4";
 
 		public static int FrameLimiter;
 
@@ -15,6 +15,8 @@ namespace WarriorsSnuggery
 		public static bool DeveloperMode;
 
 		public static bool EnableDebug { get { return DeveloperMode; } private set { } }
+
+		public static bool EnableInfoScreen;
 
 		public static bool Fullscreen;
 

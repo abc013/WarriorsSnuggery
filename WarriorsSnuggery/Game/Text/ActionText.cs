@@ -20,6 +20,9 @@ namespace WarriorsSnuggery.Objects
 
 		public override void Tick()
 		{
+			if (Disposed)
+				return;
+
 			if (current-- <= 0)
 			{
 				Dispose();

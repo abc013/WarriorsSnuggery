@@ -66,7 +66,7 @@ namespace WarriorsSnuggery.Objects
 					if (KeyInput.IsKeyDown(key,0))
 					{
 						Key = key[0];
-						KeyOn.setChar(Key);
+						KeyOn.Char = Key;
 						Selected = false;
 						blinkTick = 0;
 					}

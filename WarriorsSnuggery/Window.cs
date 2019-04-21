@@ -92,6 +92,7 @@ namespace WarriorsSnuggery
 			IFont.LoadFonts();
 			IFont.InitializeFonts();
 			font.Stop();
+			CharManager.Initialize();
 			Log.WritePerformance(font.ElapsedMilliseconds, "Loading Fonts");
 			var watch = new StopWatch();
 			watch.Start();
@@ -194,7 +195,9 @@ namespace WarriorsSnuggery
 			var watch = System.Diagnostics.Stopwatch.StartNew();
 
 			if (!Exiting)
+			{
 				MasterRenderer.Render();
+			}
 
 			watch.Stop();
 
@@ -265,8 +268,13 @@ namespace WarriorsSnuggery
 				GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
 			}
 			Game.Dispose();
+
 			TextureManager.DeleteTextures();
+			ColorManager.Dispose();
+			CharManager.Dispose();
+
 			MasterRenderer.Dispose();
+
 			ISprite.DisposeSprites();
 			IImage.DisposeImages();
 			IFont.DisposeFonts();

@@ -34,7 +34,7 @@ namespace WarriorsSnuggery.Objects.Parts
 	/// <summary>
 	/// Adds a Weapon to the Actor.
 	/// </summary>
-	public class WeaponPart : ActorPart // TODO unused
+	public class WeaponPart : ActorPart
 	{
 		readonly WeaponPartInfo info;
 		public readonly WeaponType Type;
