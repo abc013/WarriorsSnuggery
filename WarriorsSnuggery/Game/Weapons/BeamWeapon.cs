@@ -27,6 +27,7 @@ namespace WarriorsSnuggery.Objects
 			color = Color.Red;
 			color2 = Color.White;
 			point = new ColoredCircleRenderable(color, 1f, 8, Graphics.DrawMethod.TRIANGLEFAN);
+			point.SetScale(0.5f);
 		}
 
 		public BeamWeapon(World world, WeaponType type, Actor origin, CPos target) : base(world, type, origin, target)
@@ -42,6 +43,7 @@ namespace WarriorsSnuggery.Objects
 			color = Color.Red;
 			color2 = Color.White;
 			point = new ColoredCircleRenderable(color, 1f, 8, Graphics.DrawMethod.TRIANGLEFAN);
+			point.SetScale(0.5f);
 		}
 
 		Color decideColor(int add = 187)
@@ -52,20 +54,22 @@ namespace WarriorsSnuggery.Objects
 
 		public override void Render()
 		{
-			ColorManager.LineWidth = 10f;
+			ColorManager.LineWidth = 8f + (float)Math.Sin(World.Game.LocalTick / 4f) * 2f;
 			ColorManager.DrawLine(originPos, Target, color);
-			Program.CheckGraphicsError("Code bug", true);
-			ColorManager.LineWidth = 5f;
-			ColorManager.DrawLine(originPos, Target, color2);
-			Program.CheckGraphicsError("Code bug2", true);
+			ColorManager.LineWidth = 4f + (float)Math.Sin(World.Game.LocalTick / 4f) * 2f;
+			ColorManager.DrawLine(originPos, Target, color2); //TODO: maximal line size is 10.
 			ColorManager.ResetLineWidth();
-			Program.CheckGraphicsError("Code bug3", true);
 
 			point.SetPosition(Target);
 			point.Render();
 
 			point.SetPosition(originPos);
 			point.Render();
+
+			if (Program.CheckGraphicsError("Code bug", false))
+			{
+				Log.WriteDebug("GL Bug has been detected. This Method is for counting only."); // TODO: error has something to do with the beam weapon and text.
+			}
 
 			base.RenderPhysics();
 		}
@@ -76,11 +80,6 @@ namespace WarriorsSnuggery.Objects
 				originPos = Origin.ActiveWeapon.WeaponOffsetPosition;
 
 			point.SetScale(0.5f + (float)Math.Sin(World.Game.LocalTick / 4f) / 16f);
-
-			if (Program.CheckGraphicsError("Code bug", false))
-			{
-				Log.WriteDebug("GL Bug has been detected. This Method is for counting only."); // TODO: error has something to do with the beam weapon. maybe its not disposed properly.
-			}
 			base.Tick();
 		}
 

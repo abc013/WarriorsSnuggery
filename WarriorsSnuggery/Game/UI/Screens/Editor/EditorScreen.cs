@@ -80,8 +80,7 @@ namespace WarriorsSnuggery.UI
 			foreach(var n in ActorCreator.GetNames())
 			{
 				var a = ActorCreator.GetType(n);
-				if ((a.Playable != null && a.Playable.Playable) || game.Type == GameType.EDITOR)
-					actors.Add(new PanelItem(CPos.Zero, n, new ImageRenderable(a.Idle.GetTextures()[0], 0.4f), new MPos(512,512), () => actorSelected = a));
+				actors.Add(new PanelItem(CPos.Zero, n, new ImageRenderable(a.Idle.GetTextures()[0], 0.4f), new MPos(512,512), () => actorSelected = a));
 			}
 
 			walls = new PanelList(new CPos((int) (WindowInfo.UnitWidth * 512 - 2048), 2048, 0), new MPos(2048, 4096), new MPos(512,512), 4, "UI_wood1", "UI_wood3", "UI_wood2");
@@ -148,8 +147,12 @@ namespace WarriorsSnuggery.UI
 		{
 			base.Tick();
 
+			// Zoom function
+			if (MouseInput.WindowPosition.X < WindowInfo.UnitWidth * 512 - 4096)
+				Camera.Zoom(MouseInput.WheelState * 1.5f);
+
 			// place something
-			if(MouseInput.isLeftClicked)
+			if (MouseInput.isLeftClicked)
 				place();
 
 			if(MouseInput.isLeftDown && (currentSelected == Selected.TILE || currentSelected == Selected.WALL))
@@ -189,31 +192,28 @@ namespace WarriorsSnuggery.UI
 
 		void remove()
 		{
-			if (game.Type == GameType.EDITOR)
+			var remove = game.World.Actors.Find(a => a.Position.GetDistToXY(MouseInput.GamePosition) < 512);
+			if (remove != null)
 			{
-				var remove = game.World.Actors.Find(a => a.Position.GetDistToXY(MouseInput.GamePosition) < 512);
-				if (remove != null)
+				remove.Dispose();
+			}
+			else
+			{
+				var remove2 = game.World.Objects.Find(a => a.Position.GetDistToXY(MouseInput.GamePosition) < 512);
+				if (remove2 != null)
 				{
-					remove.Dispose();
+					remove2.Dispose();
 				}
 				else
 				{
-					var remove2 = game.World.Objects.Find(a => a.Position.GetDistToXY(MouseInput.GamePosition) < 512);
-					if (remove2 != null)
-					{
-						remove2.Dispose();
-					}
-					else
-					{
-						var pos4 = MouseInput.GamePosition.ToMPos();
-						pos4 = new MPos(pos4.X < 0 ? 0 : pos4.X, pos4.Y < 0 ? 0 : pos4.Y);
-						pos4 = new MPos(pos4.X > game.World.Map.Size.X ? game.World.Map.Size.X : pos4.X, pos4.Y > game.World.Map.Size.Y ? game.World.Map.Size.Y : pos4.Y);
-						pos4 = new MPos(pos4.X * 2 + (horizontal ? 0 : 1), pos4.Y);
+					var pos4 = MouseInput.GamePosition.ToMPos();
+					pos4 = new MPos(pos4.X < 0 ? 0 : pos4.X, pos4.Y < 0 ? 0 : pos4.Y);
+					pos4 = new MPos(pos4.X > game.World.Map.Size.X ? game.World.Map.Size.X : pos4.X, pos4.Y > game.World.Map.Size.Y ? game.World.Map.Size.Y : pos4.Y);
+					pos4 = new MPos(pos4.X * 2 + (horizontal ? 0 : 1), pos4.Y);
 
-						if (pos4.X >= game.World.WallLayer.Size.X) pos4 = new MPos(game.World.WallLayer.Size.X - 1, pos4.Y);
-						if (pos4.Y >= game.World.WallLayer.Size.Y) pos4 = new MPos(pos4.X, game.World.WallLayer.Size.Y - 1);
-						game.World.WallLayer.Remove(pos4);
-					}
+					if (pos4.X >= game.World.WallLayer.Size.X) pos4 = new MPos(game.World.WallLayer.Size.X - 1, pos4.Y);
+					if (pos4.Y >= game.World.WallLayer.Size.Y) pos4 = new MPos(pos4.X, game.World.WallLayer.Size.Y - 1);
+					game.World.WallLayer.Remove(pos4);
 				}
 			}
 		}

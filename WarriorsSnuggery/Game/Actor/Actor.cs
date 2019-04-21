@@ -367,9 +367,8 @@ namespace WarriorsSnuggery.Objects
 				var anim = new ITexture[frameCountPerIdleAnim];
 				for (int x = 0; x < frameCountPerIdleAnim; x++)
 					anim[x] = idleFrames[i * frameCountPerIdleAnim + x];
-
-				//var scale = anim[0].Width / 24f;
-				idle[i] = new SpriteRenderable(anim, 1f, type.Idle.Tick);
+				
+				idle[i] = new SpriteRenderable(anim, tick: type.Idle.Tick);
 			}
 
 			CurrentRenderable = idle[0];

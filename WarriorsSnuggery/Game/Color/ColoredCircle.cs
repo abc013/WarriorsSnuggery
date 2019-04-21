@@ -16,7 +16,7 @@ namespace WarriorsSnuggery.Objects
 
 		public void setColor(Color color)
 		{
-			Renderable.setColor(color);
+			Renderable.SetColor(color);
 		}
 	}
 	

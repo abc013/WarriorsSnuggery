@@ -64,14 +64,11 @@ namespace WarriorsSnuggery
 		readonly TextLine infoText;
 		int infoTextDuration;
 
-		readonly Button camToPlayer;
-
 		public Game(GameStatistics statistics, MapType map, int seed = -1)
 		{
 			Window = Window.Current;
 
-			if (seed < 0)
-				seed = SharedRandom.Next();
+			if (seed < 0) seed = SharedRandom.Next();
 			Seed = seed;
 			MapType = map;
 			OldStatistics = statistics.Copy();
@@ -96,7 +93,6 @@ namespace WarriorsSnuggery
 			tick = new TextLine(new CPos(corner, 7692,0), IFont.Pixel16, TextLine.OffsetType.RIGHT);
 			render = new TextLine(new CPos(corner, 7192,0), IFont.Pixel16, TextLine.OffsetType.RIGHT);
 
-			camToPlayer = ButtonCreator.Create("wooden", new CPos(0, (int) (WindowInfo.UnitHeight * 512) - 512, 0), "Cam to Player", () => { Camera.LockedToPlayer = !Camera.LockedToPlayer; });
 			infoText = new TextLine(new CPos(-corner + 1024, 7192, 0), IFont.Pixel16);
 		}
 
@@ -156,7 +152,6 @@ namespace WarriorsSnuggery
 
 			if (!Paused)
 			{
-				camToPlayer.Tick();
 				if (ScreenControl.FocusedType != ScreenType.FAILURE)
 				{
 					if (KeyInput.IsKeyDown(Settings.Key("Pause"), 10))
@@ -202,7 +197,7 @@ namespace WarriorsSnuggery
 					if (sin2 < 0) sin2 = 0;
 					if (sin3 < 0) sin3 = 0;
 
-					WorldRenderer.Ambient = new Color(sin1, sin2, sin3);
+					WorldRenderer.Ambient = new Color(sin1 * WorldRenderer.Ambient.R, sin2 * WorldRenderer.Ambient.R, sin3 * WorldRenderer.Ambient.R);
 				}
 
 				var mouse = MouseInput.WindowPosition;
@@ -254,26 +249,36 @@ namespace WarriorsSnuggery
 					{
 						Statistics.Money += 100;
 					}
+					if (KeyInput.IsKeyDown("comma", 10))
+					{
+						Settings.EnableInfoScreen = !Settings.EnableInfoScreen;
+					}
 				}
 
-				if (MouseInput.isRightDown && Type != GameType.EDITOR)
+				if (!Editor && Type != GameType.EDITOR)
 				{
-					Camera.Zoom(Settings.ScrollSpeed / 5 * (4 - (Camera.CurrentZoom - Camera.DefaultZoom) / 2));
-				}
-				else
-				{
-					Camera.Zoom(Settings.ScrollSpeed / 5 * (-(Camera.CurrentZoom - Camera.DefaultZoom) / 2));
+					if (MouseInput.isRightDown)
+					{
+						Camera.Zoom(Settings.ScrollSpeed / 5 * (4 - (Camera.CurrentZoom - Camera.DefaultZoom) / 2));
+					}
+					else
+					{
+						Camera.Zoom(Settings.ScrollSpeed / 5 * (-(Camera.CurrentZoom - Camera.DefaultZoom) / 2));
+					}
 				}
 				World.Tick();
 			}
-			
-			//memory.SetText("Memory " + (int) (System.Diagnostics.Process.GetCurrentProcess().PrivateMemorySize64 / 1024f) + " KB");
-			memory.SetText("Public Memory " + (int)(GC.GetTotalMemory(false) / 1024f) + " KB");
-			tick.SetColor(Window.Current.TPS < 50 ? Color.Red : Color.White);
-			tick.SetText("Tick " + LocalTick + " @ " + Window.Current.TPS);
-			
-			tick.SetColor(Window.Current.FPS < Settings.FrameLimiter - 10 ? Color.Red : Color.White);
-			render.SetText("Render " + LocalTick + " @ " + Window.Current.FPS);
+
+			if (Settings.EnableInfoScreen)
+			{
+				//memory.SetText("Memory " + (int) (System.Diagnostics.Process.GetCurrentProcess().PrivateMemorySize64 / 1024f) + " KB");
+				memory.SetText("Public Memory " + (int)(GC.GetTotalMemory(false) / 1024f) + " KB");
+				tick.SetColor(Window.Current.TPS < 50 ? Color.Red : Color.White);
+				tick.SetText("Tick " + LocalTick + " @ " + Window.Current.TPS);
+
+				tick.SetColor(Window.Current.FPS < Settings.FrameLimiter - 10 ? Color.Red : Color.White);
+				render.SetText("Render " + LocalTick + " @ " + Window.Current.FPS);
+			}
 
 			if (infoTextDuration-- < 90)
 			{
@@ -306,14 +311,15 @@ namespace WarriorsSnuggery
 
 		public void RenderDebug()
 		{
-			version.Render();
-			memory.Render();
-			tick.Render();
-			render.Render();
+			if (Settings.EnableInfoScreen)
+			{
+				version.Render();
+				memory.Render();
+				tick.Render();
+				render.Render();
+			}
 
 			if (infoTextDuration > 0) infoText.Render();
-
-			if (!Paused) camToPlayer.Render();
 		}
 
 		public void Dispose()
@@ -334,8 +340,6 @@ namespace WarriorsSnuggery
 			render.Dispose();
 
 			infoText.Dispose();
-
-			camToPlayer.Dispose();
 
 			WorldRenderer.ClearRenderLists();
 			UIRenderer.ClearRenderLists();

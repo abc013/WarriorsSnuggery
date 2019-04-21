@@ -14,22 +14,19 @@ namespace WarriorsSnuggery.UI
 	{
 		readonly Game game;
 		readonly TextLine health;
-		readonly ColoredRect hollow;
-		ColoredRect healthBar;
 		readonly TextLine mana;
-		readonly ColoredCircle manaComb;
-		readonly CPos topLineDeco;
 
 		readonly PhysicsObject money;
 		readonly TextLine moneyText;
 		readonly TextLine menu, pause;
-		readonly PanelList panel;
+		readonly Panel background;
+		readonly PanelList actorPanel;
 		readonly PanelList effectPanel;
-		readonly ActorType[] panelContent;
+		readonly ActorType[] actorPanelContent;
 		int cashCooldown;
 		int lastCash;
-		int healthCooldown;
-		int lastHealth;
+		float healthPercentage;
+		float manaPercentage;
 
 		public DefaultScreen(Game game) : base("Level " + game.Statistics.Level + "/" + game.Statistics.FinalLevel, 0)
 		{
@@ -38,73 +35,92 @@ namespace WarriorsSnuggery.UI
 			if (game.Statistics.Level >= game.Statistics.FinalLevel)
 				Title.SetColor(Color.Green);
 
-			var corner = (int) (WindowInfo.UnitWidth / 2 * 1024);
-
-			var mid = (int) -WindowInfo.UnitHeight * 400;
-			topLineDeco = new CPos((int)(WindowInfo.UnitWidth * 512), mid, 0);
-
-			health = new TextLine(new CPos(-(int) (WindowInfo.UnitWidth * 300) - 1536,-7120,0), IFont.Papyrus24, TextLine.OffsetType.MIDDLE);
-			healthBar = new ColoredRect(new CPos(-(int)(WindowInfo.UnitWidth * 300) + 1024, -7120, 0), Color.Red, 5f, 1f);
-			hollow = new ColoredRect(new CPos(-(int)(WindowInfo.UnitWidth * 300) - 2048, -7120, 0), Color.White, 5.2f, 1.2f, isFilled: false);
-
-			mana = new TextLine(new CPos((int) (WindowInfo.UnitWidth * 300),-7120,0), IFont.Papyrus24);
-			manaComb = new ColoredCircle(new CPos((int) (WindowInfo.UnitWidth * 300) + 2048,-7120, 0), Color.White, resolution: 6);
-
-			money = new PhysicsObject(new CPos(-corner + 1024, 7192,0), new ImageRenderable(TextureManager.Texture("UI_money")));
-			moneyText = new TextLine(new CPos(-corner + 2048,7192,0), IFont.Papyrus24);
-			moneyText.SetText(game.Statistics.Money);
-
-			pause = new TextLine(new CPos(5000,(int) mid + 512,0), IFont.Pixel16);
-			pause.WriteText("Pause: '" + Color.Blue + "P" + Color.White + "'");
-
-			menu = new TextLine(new CPos(-8000,(int) mid + 512,0), IFont.Pixel16);
-			menu.WriteText("Menu: '" + Color.Blue + "Escape" + Color.White + "'");
-
-			panel = new PanelList(new CPos(0,(int)(WindowInfo.UnitHeight * 512 - 1536), 0), new MPos(8192,512), new MPos(512, 512), 6, "UI_wood1", "UI_wood3", "UI_wood2");
+			// SECTION ACTORS
+			actorPanel = new PanelList(new CPos((int) (WindowInfo.UnitWidth * 512) - 1080, -3072/2,0), new MPos(1024, 8192 - 3072/2), new MPos(512, 512), 6, "UI_wood1", "UI_wood3", "UI_wood2");
 			var list = new List<ActorType>();
-			foreach(var n in ActorCreator.GetNames())
+			foreach (var n in ActorCreator.GetNames())
 			{
 				var a = ActorCreator.GetType(n);
 				if (a.Playable != null && a.Playable.Playable)
 				{
-					panel.Add(new PanelItem(CPos.Zero, n + ": " + a.Playable.ChangeCost, new ImageRenderable(TextureManager.Sprite(a.Idle)[0], 0.5f), new MPos(512,512),
+					actorPanel.Add(new PanelItem(CPos.Zero, a.Playable.ChangeCost.ToString(), new ImageRenderable(TextureManager.Sprite(a.Idle)[0], 0.5f), new MPos(512, 512),
 						() => {
-								changePlayer(game.World.LocalPlayer, a);
+							changePlayer(game.World.LocalPlayer, a);
 						}));
 					list.Add(a);
 				}
 			}
-			panelContent = list.ToArray();
+			actorPanelContent = list.ToArray();
 
-			effectPanel = new PanelList(new CPos((int) (WindowInfo.UnitWidth * 512 - 1024), (int)-(WindowInfo.UnitHeight * 128), 0), new MPos(512, 4096), new MPos(256, 256), 6, "UI_stone1", "UI_stone2");
-			foreach(var effect in TechTreeLoader.TechTree)
+			// SECTION EFFECTS
+			effectPanel = new PanelList(new CPos(0, (int)(WindowInfo.UnitHeight * 512) - 3072 - 128, 0), new MPos(8192, 256), new MPos(256, 256), 6, "UI_stone1", "UI_stone2");
+			foreach (var effect in TechTreeLoader.TechTree)
 			{
 				var item = new PanelItem(CPos.Zero, effect.Name, new ImageRenderable(TextureManager.Texture(effect.Icon)), new MPos(256, 256), () => { });
+
 				if (!(effect.Unlocked || game.Statistics.UnlockedNodes.ContainsKey(effect.InnerName) && game.Statistics.UnlockedNodes[effect.InnerName]))
-					item.Scale = 0.8f;
+					item.SetColor(new Color(0, 0, 0, 1f));
+
 				effectPanel.Add(item);
 			}
+
+			background = new Panel(new CPos(0, (int)(WindowInfo.UnitHeight * 512) - 3072/2 + 64, 0), new MPos(8192 / 64 * 6, (3072 - 64) / 64 / 2 * 3), 6, "UI_wood1", "UI_wood3", "UI_wood2");
+
+			// SECTION MONEY
+			money = new PhysicsObject(new CPos((int)(WindowInfo.UnitWidth * 512) - 8120 + 512, 8192 - 1024, 0), new ImageRenderable(TextureManager.Texture("UI_money")));
+			moneyText = new TextLine(new CPos((int)(WindowInfo.UnitWidth * 512) - 7096 + 512, 8192 - 1024, 0), IFont.Papyrus24);
+			moneyText.SetText(game.Statistics.Money);
+
+			// SECTION MENUS
+			pause = new TextLine(new CPos((int)(WindowInfo.UnitWidth * 512) - 4096, 8192 - 1536, 0), IFont.Pixel16);
+			pause.WriteText("Pause: '" + new Color(0.5f,0.5f,1f) + "P" + Color.White + "'");
+
+			menu = new TextLine(new CPos((int)(WindowInfo.UnitWidth * 512) - 4096, 8192 - 512, 0), IFont.Pixel16);
+			menu.WriteText("Menu: '" + new Color(0.5f, 0.5f, 1f) + "Escape" + Color.White + "'");
+
+			// SECTION HEALTH
+			health = new TextLine(new CPos(0, 8192 - 2048, 0), IFont.Papyrus24, TextLine.OffsetType.MIDDLE);
+
+			// SECTION MANA
+			mana = new TextLine(new CPos(0, 8192 - 772, 0), IFont.Papyrus24, TextLine.OffsetType.MIDDLE);
 		}
 
 		public override void Render()
 		{
-			ColorManager.DrawRect(topLineDeco, new CPos(-topLineDeco.X, topLineDeco.Y - (int) (WindowInfo.UnitHeight * 112), 0), new Color(0,0,0,128));
-			ColorManager.DrawLine(topLineDeco, new CPos(-topLineDeco.X, topLineDeco.Y, 0), Color.White);
 			base.Render();
 
-			hollow.Render();
-			healthBar.Render();
-			health.Render();
-			manaComb.Render();
-			mana.Render();
+			// SECTION BASE
+			background.Render();
 
+			// SECTION MONEY
+			ColorManager.DrawRect(new CPos((int)(WindowInfo.UnitWidth * 512) - 8120, 8192, 0), new CPos((int)(WindowInfo.UnitWidth * 512) - 8120 + 3120, 8192 - 2560, 0), new Color(0, 0, 0, 128));
 			money.Render();
 			moneyText.Render();
 
-			menu.Render();
-			pause.Render();
+			// SECTION MENUS
+			if (!Settings.EnableInfoScreen)
+			{
+				ColorManager.DrawRect(new CPos((int)(WindowInfo.UnitWidth * 512) - 4096 - 512, 8192, 0), new CPos((int)(WindowInfo.UnitWidth * 512) - 1024 + 512, 8192 - 2560, 0), new Color(0, 0, 0, 128));
+				menu.Render();
+				pause.Render();
+			}
 
-			panel.Render();
+			// SECTION HEALTH
+			ColorManager.DrawRect(new CPos(-6120, 8192 - 1536, 0), new CPos(6120, 8192 - 2560, 0), new Color(0, 0, 0, 128));
+			// draw line
+			ColorManager.DrawRect(new CPos(-6120 + 128, 8192 - 1536 - 128, 0), new CPos(-6120 + 256 + (int) (11856 * healthPercentage), 8192 - 2560 + 128, 0), new Color(255, 0, 0, 128));
+			health.Render();
+
+			// SECTION MANA
+			ColorManager.DrawRect(new CPos(-6120, 8192 - 256, 0), new CPos(6120, 8192 - 1280, 0), new Color(0, 0, 0, 128));
+			//draw line
+			ColorManager.DrawRect(new CPos(-6120 + 128, 8192 - 256 - 128, 0), new CPos(-6120 + 256 + (int)(11856 * manaPercentage), 8192 - 1280 + 128, 0), new Color(0, 0, 255, 128));
+			mana.Render();
+
+			// SECTION ACTORS
+			actorPanel.Render();
+
+			// SECTION EFFECTS
 			effectPanel.Render();
 		}
 
@@ -121,37 +137,21 @@ namespace WarriorsSnuggery.UI
 					var cur = player.Health.HP;
 
 					health.SetText(cur + "/" + max);
-
-					if (cur != lastHealth)
-					{
-						healthBar.Dispose();
-						healthBar = new ColoredRect(new CPos(-(int)(WindowInfo.UnitWidth * 300) - 2048, -7120, 0), Color.Red, (cur / (float)max) * 5f, 1f);
-						if (cur < lastHealth) // To avoid scaling when regenerating
-							healthCooldown = 10;
-					}
-					lastHealth = cur;
-					if (healthCooldown-- >= 0)
-					{
-						healthBar.Scale = (healthCooldown / 50f) + 1f;
-						//ColorManager.DrawFullscreenRect(new Color(1f, 0f, 0f, healthCooldown / 10f));
-					}
+					healthPercentage = (cur / (float)max);
 				}
 
-				mana.SetText(game.Statistics.Mana);
-
-				var b = game.Statistics.MaxMana <= 0 ? 0 : (game.Statistics.Mana / (float) game.Statistics.MaxMana * 256) - 1;
-				manaComb.setColor(new Color(0,0,b,240));
-				manaComb.Rotation = new CPos(0,0,Convert.ToInt32(game.LocalTick) / 8);
+				mana.SetText(game.Statistics.Mana + "/" + game.Statistics.MaxMana);
+				manaPercentage = game.Statistics.Mana / (float)game.Statistics.MaxMana;
 
 				if (MouseInput.WheelState != 0)
 				{
-					var current = Array.FindIndex(panelContent, (a) => a == player.Type);
+					var current = Array.FindIndex(actorPanelContent, (a) => a == player.Type);
 					current += MouseInput.WheelState;
 					if (current < 0)
-						current = panelContent.Length - 1;
-					if (current >= panelContent.Length)
+						current = actorPanelContent.Length - 1;
+					if (current >= actorPanelContent.Length)
 						current = 0;
-					changePlayer(player, panelContent[current]);
+					changePlayer(player, actorPanelContent[current]);
 				}
 			}
 
@@ -164,7 +164,7 @@ namespace WarriorsSnuggery.UI
 			if (cashCooldown-- > 0)
 				moneyText.Scale = (cashCooldown / 10f) + 1f;
 
-			panel.Tick();
+			actorPanel.Tick();
 			effectPanel.Tick();
 		}
 
@@ -193,17 +193,18 @@ namespace WarriorsSnuggery.UI
 		{
 			base.Dispose();
 
+			background.Dispose();
 			health.Dispose();
-			healthBar.Dispose();
-			hollow.Dispose();
 			mana.Dispose();
-			manaComb.Dispose();
 
 			money.Dispose();
 			moneyText.Dispose();
 
 			menu.Dispose();
 			pause.Dispose();
+
+			actorPanel.Dispose();
+			effectPanel.Dispose();
 		}
 	}
 }

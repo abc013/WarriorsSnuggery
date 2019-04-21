@@ -183,16 +183,19 @@ namespace WarriorsSnuggery
 					Uniform(TextureShader, ref iden, Color.White);
 
 					renderable.Render();
+					Program.CheckGraphicsError("GLRendering_World");
 
 					UIRenderer.Render();
+					Program.CheckGraphicsError("GLRendering_UI");
 				}
 				else
 				{
 					GL.BindFramebuffer(FramebufferTarget.Framebuffer, 0);
 					WorldRenderer.Render();
+					Program.CheckGraphicsError("GLRendering_World");
 					UIRenderer.Render();
+					Program.CheckGraphicsError("GLRendering_UI");
 				}
-				Program.CheckGraphicsError("GLRendering");
 			}
 		}
 
@@ -243,8 +246,6 @@ namespace WarriorsSnuggery
 			}
 			GL.DeleteFramebuffer(frameBuffer);
 			GL.DeleteTexture(frameTexture);
-
-			ColorManager.Dispose();
 		}
 
 		public static bool RenderShadow;

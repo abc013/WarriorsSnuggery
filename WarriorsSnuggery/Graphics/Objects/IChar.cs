@@ -8,7 +8,7 @@ using OpenTK.Graphics.ES30;
 
 namespace WarriorsSnuggery.Graphics
 {
-	public class IChar : Renderable
+	public class IChar : Renderable // TODO memory leak
 	{
 		public readonly IFont Font;
 		public const string Characters = TextureManager.Characters;
@@ -42,17 +42,25 @@ namespace WarriorsSnuggery.Graphics
 			{
 				lock (MasterRenderer.GLLock)
 				{
+					//var x = GL.IsVertexArray(VertexArrayID);
+					//if (!x)
+					//	return; // TODO HACK
 					GL.UseProgram(ProgramID);
 					GL.VertexAttrib4(2, color.toVector4());
 					GL.VertexAttrib4(3, new OpenTK.Vector4(offset * Font.MaxSize.X, 0,0,0));
+					GL.BindVertexArray(0);
 					GL.BindVertexArray(VertexArrayID);
 					GL.BindTexture(TextureTarget.Texture2D, Font.Font.ID);
+					Program.CheckGraphicsError("renderText");
 				}
 			}
 		}
 
 		public override void Render()
 		{
+			//var x = GL.IsVertexArray(VertexArrayID);
+			//if (!x)
+			//	return;
 			if (offset > 0) base.Render();
 		}
 	}

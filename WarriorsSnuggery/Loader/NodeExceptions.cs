@@ -122,7 +122,7 @@ using System.Runtime.Serialization;
 		}
 
 		public YamlInvalidRuleExeption(string rule, int tabs)
-		  : base(string.Format(@"unable to convert '{0}' to a valid rule.", rule))
+		  : base(string.Format(@"'{0}' has wrong spacing (difference: {1}).", rule, tabs))
 		{
 			
 		}

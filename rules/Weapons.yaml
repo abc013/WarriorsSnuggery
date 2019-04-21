@@ -99,7 +99,7 @@ lazer=
 	Reload=13
 	ExplodeParticles=glitter
 		Count=5
-	Inaccuracy=1536
+#	Inaccuracy=128
 
 color=
 	Image=particle2

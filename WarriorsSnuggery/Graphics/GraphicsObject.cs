@@ -76,7 +76,7 @@ namespace WarriorsSnuggery.Objects
 			matrixChanged = true;
 		}
 
-		public virtual void setColor(Color color)
+		public virtual void SetColor(Color color)
 		{
 			//if (this.color == color)
 			//	return; //TODO: does not work red <-> white

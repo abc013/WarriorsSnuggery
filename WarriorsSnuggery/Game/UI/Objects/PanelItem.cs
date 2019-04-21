@@ -67,6 +67,11 @@ namespace WarriorsSnuggery.UI
 			position = pos;
 		}
 
+		public virtual void SetColor(Color color)
+		{
+			renderable.SetColor(color);
+		}
+
 		public virtual void Render()
 		{
 			renderable.Render();

@@ -36,6 +36,10 @@ CONFIRMED MEMORY LEAKS
 - Screens
 
 ----------------------------------------------------------------------------------------------
+CONFIRMED BUGS
+
+- Beam Weapon: When a floatingText directly follows after its render, the whole thing crashes somehow
+----------------------------------------------------------------------------------------------
 IT IS TIME
 TO SET AN AIM
 

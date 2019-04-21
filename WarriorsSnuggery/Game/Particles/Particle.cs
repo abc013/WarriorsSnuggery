@@ -50,7 +50,7 @@ namespace WarriorsSnuggery.Objects
 				}
 				else
 				{
-					Renderable.setColor(new Color(1f,1f,1f,((float) dissolve)/info.DissolveTick));
+					Renderable.SetColor(new Color(1f,1f,1f,((float) dissolve)/info.DissolveTick));
 				}
 			}
 		}

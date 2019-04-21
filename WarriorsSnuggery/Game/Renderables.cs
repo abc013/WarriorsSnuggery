@@ -11,21 +11,37 @@ namespace WarriorsSnuggery.Objects
 	public class TextRenderable : GraphicsObject
 	{
 		public const float SizeMultiplier = GLPos.PixelMultiplier / 4;
+		public Color Color;
+		public char @Char;
 
 		public TextRenderable(CPos position, IFont font, char @char, Color color, int curTextWidth = 0) :
-			base(new IChar(font, @char, color, font.Mesh))
+			base(font == IFont.Pixel16 ? CharManager.Pixel16 : CharManager.Papyrus24)
 		{
 			SetPosition(position.ToVector() + new OpenTK.Vector4(curTextWidth * SizeMultiplier, 0,0,0));
+			Color = color;
+			@Char = @char;
 		}
 
-		public override void setColor(Color color)
+		void setColor(Color color)
 		{
 			((IChar) renderable).SetColor(color);
 		}
 
-		public void setChar(char @char)
+		void setChar(char @char)
 		{
 			((IChar) renderable).SetChar(@char);
+		}
+
+		public override void Render()
+		{
+			setColor(Color);
+			setChar(@Char);
+			base.Render();
+		}
+
+		public override void Dispose()
+		{
+			Visible = false;
 		}
 	}
 
