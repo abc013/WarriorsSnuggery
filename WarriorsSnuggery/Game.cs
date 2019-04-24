@@ -21,7 +21,9 @@ namespace WarriorsSnuggery
 	{
 		TOWER_DEFENSE,
 		WIPE_OUT_ENEMIES,
-		FIND_EXIT
+		FIND_EXIT,
+		TUTORIAL,
+		NONE
 	}
 
 	public class Game : ITick, IDisposable
@@ -49,6 +51,7 @@ namespace WarriorsSnuggery
 		public readonly GameStatistics Statistics;
 		public readonly MapType MapType;
 		public readonly GameType Type;
+		public readonly GameMode Mode;
 		public readonly int Seed;
 		
 		readonly TextLine tick;

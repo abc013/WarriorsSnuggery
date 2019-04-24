@@ -11,9 +11,10 @@ namespace WarriorsSnuggery.UI
 		readonly TextLine health;
 		readonly TextLine mana;
 
-		readonly PhysicsObject money;
+		readonly ImageRenderable money;
 		readonly TextLine moneyText;
 		readonly TextLine menu, pause;
+		readonly TextLine missionText;
 		readonly Panel background;
 		readonly PanelList actorPanel;
 		readonly PanelList effectPanel;
@@ -62,7 +63,8 @@ namespace WarriorsSnuggery.UI
 			background = new Panel(new CPos(0, (int)(WindowInfo.UnitHeight * 512) - 3072/2 + 64, 0), new MPos(8192 / 64 * 6, (3072 - 64) / 64 / 2 * 3), 6, "UI_wood1", "UI_wood3", "UI_wood2");
 
 			// SECTION MONEY
-			money = new PhysicsObject(new CPos((int)(WindowInfo.UnitWidth * 512) - 8120 + 512, 8192 - 1024, 0), new ImageRenderable(TextureManager.Texture("UI_money")));
+			money = new ImageRenderable(TextureManager.Texture("UI_money"));
+			money.SetPosition(new CPos((int)(WindowInfo.UnitWidth * 512) - 8120 + 512, 8192 - 1024, 0));
 			moneyText = new TextLine(new CPos((int)(WindowInfo.UnitWidth * 512) - 7096 + 512, 8192 - 1024, 0), IFont.Papyrus24);
 			moneyText.SetText(game.Statistics.Money);
 
@@ -78,6 +80,28 @@ namespace WarriorsSnuggery.UI
 
 			// SECTION MANA
 			mana = new TextLine(new CPos(0, 8192 - 772, 0), IFont.Papyrus24, TextLine.OffsetType.MIDDLE);
+
+			// SECTION MISSION
+			missionText = new TextLine(new CPos((int)(-WindowInfo.UnitWidth * 512) + 1024, 8192 - 2048, 0), IFont.Pixel16);
+			switch(game.Mode)
+			{
+				case GameMode.NONE:
+					missionText.SetText("No mission");
+					break;
+				case GameMode.TUTORIAL:
+					missionText.SetText("Follow the blue panels!");
+					break;
+				case GameMode.FIND_EXIT:
+					missionText.SetText("Search for the exit!");
+					break;
+				case GameMode.TOWER_DEFENSE:
+					missionText.SetText("Defend your position!");
+					break;
+				case GameMode.WIPE_OUT_ENEMIES:
+					missionText.SetText("Wipe out all enemies!");
+					break;
+			}
+
 		}
 
 		public override void Render()
@@ -111,6 +135,10 @@ namespace WarriorsSnuggery.UI
 			//draw line
 			ColorManager.DrawRect(new CPos(-6120 + 128, 8192 - 256 - 128, 0), new CPos(-6120 + 256 + (int)(11856 * manaPercentage), 8192 - 1280 + 128, 0), new Color(0, 0, 255, 128));
 			mana.Render();
+
+			// SECTION MISSION
+			ColorManager.DrawRect(new CPos((int)-(WindowInfo.UnitWidth * 512) + 256, 8192, 0), new CPos(-6120 - 128, 8192 - 2560, 0), new Color(0, 0, 0, 128));
+			missionText.Render();
 
 			// SECTION ACTORS
 			actorPanel.Render();
@@ -197,6 +225,8 @@ namespace WarriorsSnuggery.UI
 
 			menu.Dispose();
 			pause.Dispose();
+			
+			missionText.Dispose();
 
 			actorPanel.Dispose();
 			effectPanel.Dispose();

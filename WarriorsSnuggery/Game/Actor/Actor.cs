@@ -241,7 +241,7 @@ namespace WarriorsSnuggery.Objects
 			if (ReloadTicks < 0) ReloadTicks = 0;
 
 			if (Height > 128)
-				Height += (int) (Math.Sin(LocalTick/32f) * 8);
+				Height += (int) (Math.Sin(LocalTick/32f) * 4);
 
 			if (Mobility != null)
 			{
