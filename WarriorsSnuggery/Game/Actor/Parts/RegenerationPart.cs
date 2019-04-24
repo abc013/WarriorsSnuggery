@@ -53,7 +53,7 @@ namespace WarriorsSnuggery.Objects.Parts
 		{
 			if (tick-- <= 0)
 			{
-				if (self.Health == null) //TODO move elsewhere?
+				if (self.Health == null)
 					throw new YamlInvalidNodeException("RegenerationPart needs HealthPart to operate.");
 
 				self.Health.HP += info.Amount;
