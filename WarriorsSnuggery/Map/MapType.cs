@@ -59,7 +59,7 @@ namespace WarriorsSnuggery.Maps
 		{
 			var dict = new Dictionary<string, MPos>
 			{ { piece, MPos.Zero } };
-			var gen = new TerrainGenerationType(NoiseType.NONE, 2, 1f, 1f, new[] { 0 }, true, new int[] { }, 0, new Dictionary<ActorType, int>());
+			var gen = new TerrainGenerationType(0, GenerationType.NONE, 2, 1f, 1f, 1f, new[] { 0 }, true, new int[] { }, 0, new Dictionary<ActorType, int>());
 			return new MapType(new string[] { }, new string[] { }, new string[] { }, dict, 0, size, Color.White, GameType.EDITOR, -1, 0, new Dictionary<ActorType, int[]>(), gen, new TerrainGenerationType[0], MPos.Zero);
 		}
 
@@ -159,8 +159,10 @@ namespace WarriorsSnuggery.Maps
 							break;
 						case "BaseTerrainGeneration":
 						case "TerrainGeneration":
-							var noise = NoiseType.NONE;
+							var id = child.ToInt();
+							var noise = GenerationType.NONE;
 							var strength = 8;
+							var scale = 2f;
 							var intensity = 0f;
 							var contrast = 1f;
 							var terrainTypes = new int[0];
@@ -174,7 +176,7 @@ namespace WarriorsSnuggery.Maps
 								switch (generation.Key)
 								{
 									case "Type":
-										noise = (NoiseType)generation.ToEnum(typeof(NoiseType));
+										noise = (GenerationType)generation.ToEnum(typeof(GenerationType));
 
 										foreach (var noiseChild in generation.Children)
 										{
@@ -182,6 +184,9 @@ namespace WarriorsSnuggery.Maps
 											{
 												case "Strength":
 													strength = noiseChild.ToInt();
+													break;
+												case "Scale":
+													scale = noiseChild.ToFloat();
 													break;
 												case "Contrast":
 													contrast = noiseChild.ToFloat();
@@ -195,14 +200,17 @@ namespace WarriorsSnuggery.Maps
 									case "Terrain":
 										var rawTerrain = generation.ToArray();
 										terrainTypes = new int[rawTerrain.Length];
+
 										for (int i = 0; i < rawTerrain.Length; i++)
 											terrainTypes[i] = int.Parse(rawTerrain[i]);
+
 										break;
 									case "Border":
 										border = generation.ToInt();
 
 										var rawBorder = generation.Children.FindAll(n => n.Key == "Terrain").ToArray();
 										borderTerrain = new int[rawBorder.Length];
+
 										for (int i = 0; i < rawBorder.Length; i++)
 											borderTerrain[i] = int.Parse(rawBorder[i].Value);
 
@@ -223,9 +231,9 @@ namespace WarriorsSnuggery.Maps
 							}
 
 							if (child.Key == "TerrainGeneration")
-								terrainGen.Add(new TerrainGenerationType(noise, strength, intensity, contrast, terrainTypes, spawnPieces, borderTerrain, border, spawnActorBlob));
+								terrainGen.Add(new TerrainGenerationType(id, noise, strength, scale, intensity, contrast, terrainTypes, spawnPieces, borderTerrain, border, spawnActorBlob));
 							else
-								baseterrain = new TerrainGenerationType(noise, strength, intensity, contrast, terrainTypes, spawnPieces, borderTerrain, border, spawnActorBlob);
+								baseterrain = new TerrainGenerationType(0, noise, strength, scale, intensity, contrast, terrainTypes, spawnPieces, borderTerrain, border, spawnActorBlob);
 							break;
 						case "CustomSize":
 							customSize = child.ToMPos();

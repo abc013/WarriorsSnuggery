@@ -26,7 +26,7 @@ tech_pad=
 	Part@Collectable=
 		Type=TECH_TREE
 		MultipleActivations=yes
-			Duration=10
+			Duration=60
 		Radius=512
 		OnlyByPlayer=yes
 

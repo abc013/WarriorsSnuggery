@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace WarriorsSnuggery.Graphics
 {
@@ -13,8 +9,8 @@ namespace WarriorsSnuggery.Graphics
 
 		public static void Initialize()
 		{
-			Pixel16 = new IChar(IFont.Pixel16, ' ', Color.White, IFont.Pixel16.Mesh);
-			Papyrus24 = new IChar(IFont.Papyrus24, ' ', Color.White, IFont.Papyrus24.Mesh);
+			Pixel16 = new IChar(IFont.Pixel16);
+			Papyrus24 = new IChar(IFont.Papyrus24);
 		}
 
 		public static void Dispose()

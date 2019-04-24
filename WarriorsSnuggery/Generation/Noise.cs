@@ -60,13 +60,13 @@ namespace WarriorsSnuggery
 			return noise;
 		}
 
-		public static float[] GenerateClouds(MPos size, Random random, int depth = 2)
+		public static float[] GenerateClouds(MPos size, Random random, int depth = 2, float scale = 1f)
 		{
 			var noises = new List<float[]>();
 
 			for (float i = depth; i >= 1; i++)
 			{
-				noises.Add(GenerateNoise(size.X, size.Y, random, i));
+				noises.Add(GenerateNoise(size.X, size.Y, random, i + (scale - 1)));
 				i /= 2f;
 				i--;
 			}

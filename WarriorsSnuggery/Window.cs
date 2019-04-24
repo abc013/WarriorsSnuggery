@@ -47,7 +47,6 @@ namespace WarriorsSnuggery
 		{
 			Current = this;
 			SetScreen();
-			//TODO in mouse: create different cursors, currently in UIRenderer
 			CursorVisible = Settings.EnableDebug;
 		}
 

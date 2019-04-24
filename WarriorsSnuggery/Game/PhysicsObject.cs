@@ -10,7 +10,6 @@ namespace WarriorsSnuggery.Objects
 	public class PhysicsObject : IDisposable, ITickRenderable, ICheckVisible, IPositionable
 	{
 		protected readonly GraphicsObject Renderable;
-		//TODO: move to actor. This class is now the main class for all ingame objects. UI things should not use this class.
 		public PhysicsSector[] PhysicsSectors = new PhysicsSector[0];
 		public readonly Physics Physics;
 		public bool Disposed;

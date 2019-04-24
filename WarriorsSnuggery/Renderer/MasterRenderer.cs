@@ -15,6 +15,7 @@ namespace WarriorsSnuggery
 	{
 		public static object GLLock = new object();
 		public static int ColorShader, TextureShader, FontShader, ShadowShader;
+		static int heightLocation;
 		static readonly int[] locations = new int[16];
 
 		public static int GetLocation(int shader, string name)
@@ -78,6 +79,8 @@ namespace WarriorsSnuggery
 
 					Log.WriteDebug("SHADER " + shader + " locations: " + locations[num] + ", " + locations[num + 1] + ", " + locations[num + 2] + ", " + locations[num + 3] + ";");
 				}
+
+				heightLocation = GL.GetUniformLocation(ShadowShader, "height");
 
 				GL.BindAttribLocation(ColorShader, 1, "color"); 
 				GL.BindAttribLocation(TextureShader, 1, "textureCoordinate");
@@ -255,7 +258,8 @@ namespace WarriorsSnuggery
 			lock (GLLock)
 			{
 				GL.UseProgram(ShadowShader);
-				GL.Uniform4(GetLocation(ShadowShader, "proximityColor"), new Vector4(height == 0 ? 0 : 1/(float) Math.Sqrt(height / 64f)));
+				GL.Uniform1(heightLocation, height == 0 ? 0f : 1 / (float)Math.Sqrt(height / 64f));
+				//GL.Uniform4(GetLocation(ShadowShader, "proximityColor"), new Vector4(height == 0 ? 0 : 1/(float) Math.Sqrt(height / 64f))); // TODO unused
 			}
 		}
 

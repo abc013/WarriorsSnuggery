@@ -8,7 +8,7 @@ using System.Collections.Generic;
 
 namespace WarriorsSnuggery.Objects
 {
-	public class TextLine : PhysicsObject, IPositionable
+	public class TextLine : IDisposable, ITickRenderable, IPositionable
 	{
 		public enum OffsetType
 		{
@@ -24,58 +24,51 @@ namespace WarriorsSnuggery.Objects
 		public string String;
 		protected Color color = Color.White;
 
-		public override CPos Position {
-			get
-			{
-				return base.Position;
-			}
+		public virtual CPos Position
+		{
+			get { return position; }
 			set
 			{
-				base.Position = value;
-				if (font == null)
-					return;
+				position = value;
 
 				setCharPositions();
 			}
 		}
+		CPos position;
 
-		public override CPos Rotation {
-			get
-			{
-				return base.Rotation;
-			}
+		public virtual CPos Rotation
+		{
+			get { return rotation; }
 			set
 			{
-				base.Rotation = value;
-				if (font == null)
-					return;
+				rotation = value;
 
-				for(int i = 0; i < chars.Count; i++)
+				foreach (var c in chars)
 				{
-					chars[i].SetRotation(value.ToAngle());
+					c.SetRotation(rotation.ToAngle());
 				}
 			}
 		}
+		CPos rotation;
 
-		public override float Scale {
-			get {
-				return base.Scale;
-			}
-			set {
-				base.Scale = value;
-				if (font == null)
-					return;
-
-				for(int i = 0; i < chars.Count; i++)
-				{
-					chars[i].SetScale(value);
-				}
-			}
-		}
-
-		public TextLine(CPos pos, IFont font, OffsetType type = OffsetType.LEFT) : base(pos)
+		public virtual float Scale
 		{
-			Position += new CPos(0,64,0);
+			get { return scale; }
+			set
+			{
+				scale = value;
+
+				foreach(var c in chars)
+				{
+					c.SetScale(scale);
+				}
+			}
+		}
+		float scale = 1f;
+
+		public TextLine(CPos pos, IFont font, OffsetType type = OffsetType.LEFT)
+		{
+			Position = pos + new CPos(0,64,0);
 			this.font = font;
 			offset = type;
 		}
@@ -246,7 +239,7 @@ namespace WarriorsSnuggery.Objects
 			}
 			for(int i = 0; i < chars.Count; i++)
 			{
-				chars[i].SetPosition(base.Position.ToVector() + new OpenTK.Vector4((width + 1) * TextRenderable.SizeMultiplier, 0,0,0));
+				chars[i].SetPosition(Position.ToVector() + new OpenTK.Vector4((width + 1) * TextRenderable.SizeMultiplier, 0,0,0));
 				width += charWidth(String[i]) + 1;
 			}
 		}
@@ -259,9 +252,9 @@ namespace WarriorsSnuggery.Objects
 			return font.MaxSize.X / 2;
 		}
 
-		public override void Render()
+		public virtual void Render()
 		{
-			if (!Visible || Disposed)
+			if (!Visible)
 				return;
 
 			foreach(TextRenderable @char in chars)
@@ -270,9 +263,14 @@ namespace WarriorsSnuggery.Objects
 			}
 		}
 
-		public override void Dispose()
+		public virtual void Tick()
 		{
-			base.Dispose();
+
+		}
+
+		public void Dispose()
+		{
+			Visible = false;
 			foreach(TextRenderable @char in chars)
 				@char.Dispose();
 		}
