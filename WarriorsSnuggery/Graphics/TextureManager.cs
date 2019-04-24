@@ -45,16 +45,16 @@ namespace WarriorsSnuggery
 			return texture;
 		}
 
-		public static ITexture NoiseTexture(MPos size, int depth = 8, int method = 0, bool colored = false, bool withAlpha = false, float intensity = 0, float contrast = 1)
+		public static ITexture NoiseTexture(MPos size, int depth = 8, float scale = 1f, int method = 0, bool colored = false, bool withAlpha = false, float intensity = 0, float contrast = 1)
 		{
 			var raw = new float[0];
 			switch(method)
 			{
 				default:
-					raw = Noise.GenerateClouds(size, Program.SharedRandom, depth);
+					raw = Noise.GenerateClouds(size, Program.SharedRandom, depth, scale);
 					break;
 				case 1:
-					raw = Noise.GenerateNoise(size, Program.SharedRandom, depth); //TODO: this apparently is not depth but scale
+					raw = Noise.GenerateNoise(size, Program.SharedRandom, 1f);
 					break;
 			}
 			// Apply brightness and contrast

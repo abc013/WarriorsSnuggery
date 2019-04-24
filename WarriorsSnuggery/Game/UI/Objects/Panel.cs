@@ -85,7 +85,7 @@ namespace WarriorsSnuggery.UI
 
 		public virtual void Dispose()
 		{
-			// TODO: needs dispose?
+			// Does not need any dispose
 		}
 	}
 }

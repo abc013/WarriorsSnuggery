@@ -75,6 +75,7 @@
     <Compile Include="Game\Actor\Parts\PlayablePart.cs" />
     <Compile Include="Game\Actor\Parts\PlayerPart.cs" />
     <Compile Include="Game\Actor\Parts\RegenerationPart.cs" />
+    <Compile Include="Game\Actor\Parts\SpawnOnDamagePart.cs" />
     <Compile Include="Game\Actor\Parts\SpawnOnDeathPart.cs" />
     <Compile Include="Game\Actor\Parts\WeaponPart.cs" />
     <Compile Include="Game\Actor\Parts\WorldPart.cs" />
@@ -118,8 +119,10 @@
     <Compile Include="Loader\RuleReader.cs" />
     <Compile Include="Map\Map.cs" />
     <Compile Include="Game\Creators\ObjectCreator.cs" />
+    <Compile Include="Map\MapPrinter.cs" />
     <Compile Include="Map\MapType.cs" />
     <Compile Include="Map\PhysicsLayer.cs" />
+    <Compile Include="Map\StructureGenerationType.cs" />
     <Compile Include="Map\TerrainGenerationType.cs" />
     <Compile Include="Map\TerrainLayer.cs" />
     <Compile Include="Map\WallLayer.cs" />

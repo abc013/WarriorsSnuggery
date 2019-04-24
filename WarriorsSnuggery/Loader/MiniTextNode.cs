@@ -188,6 +188,9 @@ namespace WarriorsSnuggery
 
 		public int ToInt()
 		{
+			if (Value == "")
+				return 0;
+
 			if (!int.TryParse(Value, out int i))
 				throw new YamlInvalidFormatException(ToString(), typeof(int));
 

@@ -14,7 +14,7 @@ namespace WarriorsSnuggery.UI
 		readonly TextLine saved;
 		int savedTick;
 
-		public KeyboardScreen(Game game) : base("Keyboard") // TODO
+		public KeyboardScreen(Game game) : base("Keyboard")
 		{
 			this.game = game;
 

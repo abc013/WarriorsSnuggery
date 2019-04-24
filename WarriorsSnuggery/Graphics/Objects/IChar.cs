@@ -3,22 +3,22 @@ using OpenTK.Graphics.ES30;
 
 namespace WarriorsSnuggery.Graphics
 {
-	public class IChar : Renderable // TODO memory leak
+	public class IChar : Renderable
 	{
 		public readonly IFont Font;
 		public const string Characters = TextureManager.Characters;
 
 		public int offset { get; private set; }
 
-		public Color color { get; private set; } // TODO: aim is to replace all chars with a single char object which then uses the color space and the offset to render the char.
+		public Color color { get; private set; }
 
-		public IChar(IFont font, char @char, Color color, TexturedVertex[] vertices/* already replaced*/) : base(MasterRenderer.FontShader, vertices.Length)
+		public IChar(IFont font) : base(MasterRenderer.FontShader, font.Mesh.Length)
 		{
-			IImage.CreateTextureBuffer(vertices, BufferID, VertexArrayID);
+			IImage.CreateTextureBuffer(font.Mesh, BufferID, VertexArrayID);
 
-			offset = Characters.IndexOf(@char);
+			offset = Characters.IndexOf(' ');
+			color = Color.White;
 			Font = font;
-			this.color = color;
 		}
 
 		public void SetColor(Color color)

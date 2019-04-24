@@ -12,8 +12,8 @@ out vec4 color;
 
 void main(void)
 {
-    color = texture(textureObj, vec2(vs_textureCoordinate.x, vs_textureCoordinate.y)) * objectColor;
+    color = texture(textureObj, vec2(vs_textureCoordinate.x, vs_textureCoordinate.y)) * proximityColor * objectColor;
     if (color.a < 0.5)
         discard;
-    color = vec4(0,0,0,proximityColor.w);
+	color = vec4(0,0,0,height);
 }

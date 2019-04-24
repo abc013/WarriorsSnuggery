@@ -1,8 +1,12 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace WarriorsSnuggery.Objects.Parts
 {
-	public class SpawnOnDeathPartInfo : PartInfo
+	public class SpawnOnDamagePartInfo : PartInfo
 	{
 		public readonly float Probability = 1f;
 		public readonly int Count;
@@ -14,14 +18,14 @@ namespace WarriorsSnuggery.Objects.Parts
 
 		public override ActorPart Create(Actor self)
 		{
-			return new SpawnOnDeathPart(self, this);
+			return new SpawnOnDamagePart(self, this);
 		}
 
-		public SpawnOnDeathPartInfo(MiniTextNode[] nodes) : base(nodes)
+		public SpawnOnDamagePartInfo(MiniTextNode[] nodes) : base(nodes)
 		{
-			foreach(var node in nodes)
+			foreach (var node in nodes)
 			{
-				switch(node.Key)
+				switch (node.Key)
 				{
 					case "Probability":
 						Probability = node.ToFloat();
@@ -52,23 +56,15 @@ namespace WarriorsSnuggery.Objects.Parts
 	}
 
 	/// <summary>
-	/// Spawns objects after death of the player.
+	/// Spawns objects when the player takes damage.
 	/// </summary>
-	public class SpawnOnDeathPart : ActorPart
+	public class SpawnOnDamagePart : ActorPart
 	{
-		readonly SpawnOnDeathPartInfo info;
+		readonly SpawnOnDamagePartInfo info;
 
-		public SpawnOnDeathPart(Actor self, SpawnOnDeathPartInfo info) : base(self)
+		public SpawnOnDamagePart(Actor self, SpawnOnDamagePartInfo info) : base(self)
 		{
 			this.info = info;
-		}
-
-		public override void OnKilled(Actor killer)
-		{
-			for(int i = 0; i < info.Count; i++)
-			{
-				create();
-			}
 		}
 
 		void create()
@@ -77,7 +73,7 @@ namespace WarriorsSnuggery.Objects.Parts
 				return;
 
 			PhysicsObject @object = null;
-			switch(info.Type)
+			switch (info.Type)
 			{
 				case "ACTOR":
 					@object = ActorCreator.Create(self.World, info.Name, randomPosition(), info.InheritsTeam ? self.Team : 0, info.InheritsBot ? self.IsBot : false);
@@ -100,6 +96,14 @@ namespace WarriorsSnuggery.Objects.Parts
 			var x = Program.SharedRandom.Next(size) - size / 2;
 			var y = Program.SharedRandom.Next(size) - size / 2;
 			return self.Position + new CPos(x, y, 0);
+		}
+
+		public override void OnDamage(Actor damager, int damage)
+		{
+			if (damage > 0)
+			{
+				create();
+			}
 		}
 	}
 }

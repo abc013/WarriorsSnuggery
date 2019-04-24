@@ -50,7 +50,7 @@ namespace WarriorsSnuggery
 
 				Camera.Position(LocalPlayer.Position, true);
 				if (Game.Type == GameType.NORMAL)
-					Add(new ActionText(LocalPlayer.Position + new CPos(0,0,1024), @"Level" + Game.Statistics.Level, Color.White, IFont.Papyrus24, new CPos(0, -15, 30), 300));
+					Add(new ActionText(LocalPlayer.Position + new CPos(0,0,1024), IFont.Papyrus24, new CPos(0, -15, 30), 300, @"Level" + Game.Statistics.Level));
 			}
 			else
 			{
@@ -61,12 +61,14 @@ namespace WarriorsSnuggery
 			Add(new PhysicsObject(new CPos(0, 0, 1024), new ImageRenderable(TextureManager.NoiseTexture(
 				new MPos(128, 128),
 				6,
+				scale: 1f,
 				intensity: -0.1f,
 				contrast: 5f
 				), 1f)));
 			Add(new PhysicsObject(new CPos(0, 6000, 1024), new ImageRenderable(TextureManager.NoiseTexture(
 				new MPos(128, 128),
 				2,
+				8f,
 				1,
 				intensity: -0.3f,
 				contrast: 1.5f
@@ -123,7 +125,7 @@ namespace WarriorsSnuggery
 				if (selected != null)
 				{
 					Selected = selected;
-					Add(new ActionText(selected.Position, selected.Health + " HP", Color.Cyan, IFont.Pixel16, new CPos(0, -15, 30)));
+					Add(new ActionText(selected.Position, IFont.Pixel16, new CPos(0, -15, 30), 100, Color.Cyan + "" +selected.Health + " HP"));
 					healthdisplaycooldown = 30;
 				}
 			}

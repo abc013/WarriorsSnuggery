@@ -29,7 +29,10 @@ namespace WarriorsSnuggery
 		{
 			var position = terrain.Position;
 			if (Terrain[position.X, position.Y] != null)
+			{
+				//Terrain[position.X, position.Y].Dispose();
 				renderList.Remove(Terrain[position.X, position.Y]);
+			}
 
 			Terrain[position.X, position.Y] = terrain;
 			renderList.Add(terrain);

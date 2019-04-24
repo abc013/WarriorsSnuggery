@@ -113,7 +113,7 @@ namespace WarriorsSnuggery.Objects
 					continue;
 
 				if (actor.WorldPart != null && actor.WorldPart.ShowDamage)
-					World.Add(new ActionText(actor.Position + new CPos(0,0,1024), damage.ToString(), new Color(1f, 1 - (damage / (Type.Damage * 1.5f)), 0), IFont.Pixel16, new CPos(0, -15, 30), 50)); // TODO: add in foreground?
+					World.Add(new ActionText(actor.Position + new CPos(0,0,1024), IFont.Pixel16, new CPos(0, -15, 30), 50, new Color(1f, 1 - (damage / (Type.Damage * 1.5f)), 0).ToString() + damage.ToString()));
 
 				if (Origin != null)
 					actor.Damage(Origin, damage);

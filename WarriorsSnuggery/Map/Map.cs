@@ -6,7 +6,7 @@ using WarriorsSnuggery.Maps;
 
 namespace WarriorsSnuggery
 {
-	public enum NoiseType
+	public enum GenerationType
 	{
 		NONE,
 		NOISE,
@@ -201,15 +201,15 @@ namespace WarriorsSnuggery
 			var random = new Random(Seed);
 
 			float[] noise = null;
-			switch (Type.BaseTerrainGeneration.Noise)
+			switch (Type.BaseTerrainGeneration.GenerationType)
 			{
-				case NoiseType.CLOUDS:
-					noise = Noise.GenerateClouds(Size, random, Type.BaseTerrainGeneration.Strength);
+				case GenerationType.CLOUDS:
+					noise = Noise.GenerateClouds(Size, random, Type.BaseTerrainGeneration.Strength, Type.BaseTerrainGeneration.Scale);
 					break;
-				case NoiseType.NOISE:
-					noise = Noise.GenerateNoise(Size, random, Type.BaseTerrainGeneration.Strength);
+				case GenerationType.NOISE:
+					noise = Noise.GenerateNoise(Size, random, Type.BaseTerrainGeneration.Scale);
 					break;
-				case NoiseType.MAZE:
+				case GenerationType.MAZE:
 					noise = new float[Size.X * Size.Y];
 					var maze = Maze.GenerateMaze(Size * new MPos(2, 2) + new MPos(1, 1), random, new MPos(1, 1), Type.BaseTerrainGeneration.Strength);
 
@@ -255,25 +255,27 @@ namespace WarriorsSnuggery
 			}
 
 			TerrainGenerationArray = new int[Size.X, Size.Y];
-			var generation = 1;
 			foreach (var type in Type.TerrainGeneration)
-				createGround(type, generation++, ref TerrainGenerationArray);
+			{
+				createGround(type, ref TerrainGenerationArray);
+				MapPrinter.PrintMapGeneration("debug", type.ID, TerrainGenerationArray);
+			}
 		}
 
-		void createGround(TerrainGenerationType type, int generation, ref int[,] terrainGenerationArray)
+		void createGround(TerrainGenerationType type, ref int[,] terrainGenerationArray)
 		{
 			var random = new Random(Seed);
 
 			float[] noise = null;
-			switch (type.Noise)
+			switch (type.GenerationType)
 			{
-				case NoiseType.CLOUDS:
-					noise = Noise.GenerateClouds(Size, random, type.Strength);
+				case GenerationType.CLOUDS:
+					noise = Noise.GenerateClouds(Size, random, type.Strength, type.Scale);
 					break;
-				case NoiseType.NOISE:
-					noise = Noise.GenerateNoise(Size, random, type.Strength); // TODO: apparently, this is scale here. same in textureManager
+				case GenerationType.NOISE:
+					noise = Noise.GenerateNoise(Size, random, type.Scale);
 					break;
-				case NoiseType.MAZE:
+				case GenerationType.MAZE:
 					noise = new float[Size.X * Size.Y];
 					var maze = Maze.GenerateMaze(Size * new MPos(2, 2) + new MPos(1, 1), random, new MPos(1, 1), Type.BaseTerrainGeneration.Strength);
 
@@ -291,17 +293,20 @@ namespace WarriorsSnuggery
 			{
 				for (int x = 0; x < Size.X; x++)
 				{
+					// Intensity and contrast
 					var single = noise[y * Size.X + x];
 					single += type.Intensity;
 					single = (single - 0.5f) * type.Contrast + 0.5f;
 
+					// Fit to area of 0 to 1.
 					if (single > 1f) single = 1f;
 					if (single < 0f) single = 0f;
 
-					if (single < 0.5f)
+					// If less than half, don't change terrain
+					if (single < 0.5f) // TODO add value and noise (for grainy things)
 						continue;
 
-					terrainGenerationArray[x, y] = generation;
+					terrainGenerationArray[x, y] = type.ID;
 					var number = (int)Math.Floor(single * (type.Terrain.Length - 1));
 					world.TerrainLayer.Set(TerrainCreator.Create(world, new WPos(x, y, 0), type.Terrain[number]));
 
@@ -318,9 +323,9 @@ namespace WarriorsSnuggery
 								if (p.X >= Size.X || p.Y >= Size.Y)
 									continue;
 
-								if (terrainGenerationArray[p.X, p.Y] != generation)
+								if (terrainGenerationArray[p.X, p.Y] != type.ID)
 								{
-									terrainGenerationArray[p.X, p.Y] = generation;
+									terrainGenerationArray[p.X, p.Y] = type.ID;
 									world.TerrainLayer.Set(TerrainCreator.Create(world, new WPos(p.X, p.Y, 0), type.BorderTerrain[0]));
 								}
 							}

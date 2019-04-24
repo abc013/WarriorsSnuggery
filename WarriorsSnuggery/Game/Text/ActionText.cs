@@ -2,20 +2,20 @@
 
 namespace WarriorsSnuggery.Objects
 {
-	public class ActionText : TextLine
+	public class ActionText : PhysicsObject
 	{
 		int current;
 		readonly int start;
 		readonly CPos velocity;
+		readonly Text text;
 
-		public ActionText(CPos pos, string text, Color color, IFont font, CPos velocity, int tick = 100) : base(pos, font, OffsetType.MIDDLE)
+		public ActionText(CPos pos, IFont font, CPos velocity, int tick, params string[] lines) : base(pos)
 		{
 			current = tick;
 			start = tick;
 			this.velocity = velocity;
 
-			SetColor(color);
-			SetText(text);
+			text = new Text(pos, IFont.Pixel16, TextLine.OffsetType.MIDDLE, lines);
 		}
 
 		public override void Tick()
@@ -28,11 +28,15 @@ namespace WarriorsSnuggery.Objects
 				Dispose();
 				return;
 			}
+			
+			//text.SetColor(new Color(color.R, color.G, color.B, (float) Math.Sqrt(current / (float) start))); TODO
 
-			SetColor(new Color(color.R, color.G, color.B, (float) Math.Sqrt(current / (float) start)));
-			SetText(String);
+			text.Position += velocity;
+		}
 
-			Position += velocity;
+		public override void Render()
+		{
+			text.Render();
 		}
 	}
 }

@@ -2,11 +2,53 @@
 
 namespace WarriorsSnuggery.Objects
 {
-	public class KeyboardButton : PhysicsObject
+	public class KeyboardButton : IDisposable, ITickRenderable, IPositionable
 	{
+		public virtual CPos Position
+		{
+			get { return position; }
+			set
+			{
+				position = value;
+
+				released.SetPosition(position);
+				pressed.SetPosition(position);
+				keyDisplay.SetPosition(position);
+			}
+		}
+		CPos position;
+
+		public virtual CPos Rotation
+		{
+			get { return rotation; }
+			set
+			{
+				rotation = value;
+
+				released.SetRotation(rotation.ToAngle());
+				pressed.SetRotation(rotation.ToAngle());
+				keyDisplay.SetRotation(rotation.ToAngle());
+			}
+		}
+		CPos rotation;
+
+		public virtual float Scale
+		{
+			get { return scale; }
+			set
+			{
+				scale = value;
+
+				released.SetScale(scale);
+				pressed.SetScale(scale);
+				keyDisplay.SetScale(scale);
+			}
+		}
+		float scale = 1f;
+
 		readonly ImageRenderable released;
 		readonly ImageRenderable pressed;
-		readonly TextRenderable KeyOn;
+		readonly TextRenderable keyDisplay;
 
 		readonly bool changeable;
 		int blinkTick;
@@ -16,37 +58,39 @@ namespace WarriorsSnuggery.Objects
 
 		public char Key;
 
-		public KeyboardButton(CPos position, char key, TextureInfo buttons, IFont font, Color color, bool changeable = true) : base(position)
+		public KeyboardButton(CPos position, char key, TextureInfo buttons, IFont font, Color color, bool changeable = true)
 		{
 			Key = key;
 			this.changeable = changeable;
 			var textures = buttons.GetTextures();
+
 			released = new ImageRenderable(textures[0]);
 			released.SetPosition(position);
 			pressed = new ImageRenderable(textures[1]);
 			pressed.SetPosition(position);
-			KeyOn = new TextRenderable(position, font, key, color);
+			keyDisplay = new TextRenderable(position, font, key, color);
+
+			Position = position;
 		}
 
-		public override void Render()
+		public void Render()
 		{
 			if(KeyInput.IsKeyDown(Key + ""))
 			{
-				KeyOn.SetPosition(Position + new CPos(50,50,0));
+				keyDisplay.SetPosition(Position + new CPos(50,50,0));
 				pressed.Render();
 			}
 			else
 			{
-				KeyOn.SetPosition(Position + new CPos(50,-100,0));
+				keyDisplay.SetPosition(Position + new CPos(50,-100,0));
 				released.Render();
 			}
 			if (blinkTick < 10)
-				KeyOn.Render();
+				keyDisplay.Render();
 		}
 
-		public override void Tick()
+		public void Tick()
 		{
-			base.Tick();
 			checkMouse();
 			if (mouseOnBox && MouseInput.isLeftClicked)
 				Selected = true;
@@ -66,7 +110,7 @@ namespace WarriorsSnuggery.Objects
 					if (KeyInput.IsKeyDown(key,0))
 					{
 						Key = key[0];
-						KeyOn.Char = Key;
+						keyDisplay.Char = Key;
 						Selected = false;
 						blinkTick = 0;
 					}
@@ -83,10 +127,9 @@ namespace WarriorsSnuggery.Objects
 			mouseOnBox = mousePosition.X > Position.X - width && mousePosition.X < Position.X + width && mousePosition.Y > Position.Y - height && mousePosition.Y < Position.Y + height;
 		}
 
-		public override void Dispose()
+		public void Dispose()
 		{
-			base.Dispose();
-			KeyOn.Dispose();
+			keyDisplay.Dispose();
 		}
 	}
 }

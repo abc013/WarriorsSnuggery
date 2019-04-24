@@ -113,12 +113,15 @@ namespace WarriorsSnuggery.UI
 			this.game = game;
 			image = new ImageRenderable(TextureManager.Texture(node.Icon));
 			image.SetPosition(position);
+
 			onHover = new TextLine(position, IFont.Pixel16);
 			onHover.SetText(node.Name + " : " + node.Cost);
 			onHover.Visible = false;
 			UIRenderer.RenderAfter(onHover);
+
 			onHover2 = new TextLine(position + new CPos(0,712,0), IFont.Pixel16);
-			if (node.Before.Length > 0 || node.Before[0].Trim() == "") // TODO does not work
+
+			if (node.Before.Length > 0 || node.Before[0].Trim() != "")
 			{
 				onHover2.SetText("Pre: ");
 				for (int i = 0; i < node.Before.Length; i++)

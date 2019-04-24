@@ -25,6 +25,11 @@ heal=
 	Part@Playable=
 		Playable=yes
 		Cost=20
+	Part@SpawnOnDamage=
+		Probability=0,7
+		Count=10
+		Name=blood1
+		Type=PARTICLE
 
 shadowrunner=
 	Image=shadowrunner

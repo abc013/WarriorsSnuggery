@@ -4,7 +4,51 @@ namespace WarriorsSnuggery.Objects
 {
 	public class Text : PhysicsObject //TODO: remove GameObject
 	{
-		readonly TextLine[] lines;
+		public override CPos Position
+		{
+			get { return position; }
+			set
+			{
+				position = value;
+
+				for (int i = 0; i < lines.Length; i++)
+				{
+					lines[i].Position = position + new CPos(0, 1024 * i, 0);
+				}
+			}
+		}
+		CPos position;
+
+		public override CPos Rotation
+		{
+			get { return rotation; }
+			set
+			{
+				rotation = value;
+
+				for (int i = 0; i < lines.Length; i++)
+				{
+					lines[i].Rotation = rotation;
+				}
+			}
+		}
+		CPos rotation;
+
+		public override float Scale
+		{
+			get { return scale; }
+			set
+			{
+				scale = value;
+				
+				for(int i = 0; i < lines.Length; i++)
+				{
+					lines[i].Scale = scale;
+				}
+			}
+		}
+		float scale = 1f;
+		readonly TextLine[] lines = new TextLine[0];
 
 		public Text(CPos position, IFont font, TextLine.OffsetType type, params string[] args) : base(position)
 		{
