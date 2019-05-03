@@ -20,7 +20,7 @@ namespace WarriorsSnuggery
 			Log.InitLogs();
 			Console.SetError(Log.Exeption);
 
-			if (!isDebug)
+			if (isDebug)
 			{
 				try
 				{
@@ -40,12 +40,14 @@ namespace WarriorsSnuggery
 						Process.Start("explorer.exe", "/select, \"" + FileExplorer.Logs + "\"");
 					}
 				}
-		}
+			}
 			else
 			{
 				run();
-	}
-}
+			}
+
+			Log.Close();
+		}
 
 		static void run()
 		{

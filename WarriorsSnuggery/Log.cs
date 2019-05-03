@@ -28,6 +28,7 @@ namespace WarriorsSnuggery
 			if (isClosed)
 				return;
 
+			Exeption.WriteLine(exception.Message);
 			Exeption.WriteLine(exception);
 			Exeption.Flush();
 		}

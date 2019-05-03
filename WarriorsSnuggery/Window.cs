@@ -279,8 +279,6 @@ namespace WarriorsSnuggery
 			IFont.DisposeFonts();
 
 			base.Exit();
-
-			Log.Close();
 		}
 
 		void activateKeys() 
