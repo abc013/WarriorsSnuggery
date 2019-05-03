@@ -79,3 +79,21 @@ blood1=
 	DissolveTick=12
 	Force=0,1,0
 		Random=30,30,0
+
+
+leaf=
+	Image=leaf
+		Size=5,5
+		Tick=10
+	Tick=40
+	DissolveTick=15
+	Force=0,0,-1
+		Random=5,5,0
+
+fire=
+	Image=fire
+		Size=4,4
+	Tick=25
+	DissolveTick=5
+	Force=0,0,1
+		Random=3,3,0

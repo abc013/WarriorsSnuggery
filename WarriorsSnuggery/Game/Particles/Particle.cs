@@ -19,6 +19,7 @@ namespace WarriorsSnuggery.Objects
 
 		public Particle(CPos pos, ParticleType info) : base(pos, new SpriteRenderable(info.Texture.GetTextures(), tick: info.Texture.Tick))
 		{
+			Height = pos.Z;
 			this.info = info;
 			current = info.Start;
 			dissolve = info.DissolveTick;
@@ -36,6 +37,7 @@ namespace WarriorsSnuggery.Objects
 
 			Rotation += new CPos(0, 0, info.Rotation);
 			Position += velocity;
+			Height += velocity.Z;
 			velocity += info.Force;
 
 			if (!info.RanScale.Equals(0f))
