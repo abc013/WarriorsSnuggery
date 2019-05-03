@@ -81,6 +81,7 @@ namespace WarriorsSnuggery
 				}
 
 				heightLocation = GL.GetUniformLocation(ShadowShader, "height");
+				Log.WriteDebug("SHADER " + ShadowShader + " shadowloc: " + heightLocation);
 
 				GL.BindAttribLocation(ColorShader, 1, "color"); 
 				GL.BindAttribLocation(TextureShader, 1, "textureCoordinate");
@@ -264,7 +265,10 @@ namespace WarriorsSnuggery
 			{
 				GL.UseProgram(ShadowShader);
 				Program.CheckGraphicsError("UniformHeight_Program");
-				GL.Uniform1(heightLocation, height / 150f);
+				var height2 = (1024 - height ^ 2) / 2048f;
+				if (height2 > 1) height2 = 1;
+				if (height2 < 0) height2 = 0;
+				GL.Uniform1(heightLocation, height2);
 				Program.CheckGraphicsError("UniformHeight_Uniform");
 				GL.UseProgram(0);
 				Program.CheckGraphicsError("UniformHeight_Reset");
