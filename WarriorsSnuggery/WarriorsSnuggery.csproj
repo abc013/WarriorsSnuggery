@@ -77,6 +77,7 @@
     <Compile Include="Game\Actor\Parts\RegenerationPart.cs" />
     <Compile Include="Game\Actor\Parts\SpawnOnDamagePart.cs" />
     <Compile Include="Game\Actor\Parts\SpawnOnDeathPart.cs" />
+    <Compile Include="Game\Actor\Parts\SpawnOnIdlePart.cs" />
     <Compile Include="Game\Actor\Parts\WeaponPart.cs" />
     <Compile Include="Game\Actor\Parts\WorldPart.cs" />
     <Compile Include="Game\IPositionable.cs" />

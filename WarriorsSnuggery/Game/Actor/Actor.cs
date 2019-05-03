@@ -10,7 +10,7 @@ namespace WarriorsSnuggery.Objects
 		MOVING
 	}
 
-	public class Actor : PhysicsObject
+	public sealed class Actor : PhysicsObject
 	{
 		public readonly World World;
 
@@ -34,11 +34,10 @@ namespace WarriorsSnuggery.Objects
 		public readonly Parts.WorldPart WorldPart;
 
 		public readonly ActorType Type;
-
-		protected int TickSinceHit;
-		protected int LocalTick;
-		protected int ReloadTicks;
-		protected CPos Velocity {
+		
+		int LocalTick;
+		int ReloadTicks;
+		CPos Velocity {
 			get
 			{
 				return Mobility == null ? CPos.Zero : Mobility.Velocity;
@@ -49,7 +48,7 @@ namespace WarriorsSnuggery.Objects
 					Mobility.Velocity = value;
 			}
 		}
-		protected ActorAction CurrentAction;
+		public ActorAction CurrentAction;
 
 		public Actor(World world, ActorType type, CPos position, ushort team, bool isBot, bool isPlayer = false) : base(position, null, type.Physics == null ? null : new Physics(position, 0, type.Physics.Shape, type.Physics.Size.X, type.Physics.Size.Z))
 		{
@@ -236,8 +235,7 @@ namespace WarriorsSnuggery.Objects
 
 			if(!IsAlive)
 				return;
-
-			TickSinceHit++;
+			
 			ReloadTicks--;
 			if (ReloadTicks < 0) ReloadTicks = 0;
 
@@ -298,8 +296,7 @@ namespace WarriorsSnuggery.Objects
 		{
 			if (Health == null || Health.HP <= 0)
 				return;
-
-			TickSinceHit = 0;
+			
 			Health.HP -= damage;
 
 			parts.ForEach(p => p.OnDamage(attacker, damage));
