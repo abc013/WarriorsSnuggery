@@ -8,8 +8,47 @@ using WarriorsSnuggery.Objects;
 
 namespace WarriorsSnuggery.UI
 {
-	public class CheckBox : PhysicsObject, IRenderable, ITick
+	public class CheckBox : IDisposable, IPositionable, ITickRenderable
 	{
+		public virtual CPos Position
+		{
+			get { return position; }
+			set
+			{
+				position = value;
+				type.Click.SetPosition(position);
+				type.Default.SetPosition(position);
+				type.Checked.SetPosition(position);
+			}
+		}
+		CPos position;
+
+		public virtual CPos Rotation
+		{
+			get { return rotation; }
+			set
+			{
+				rotation = value;
+				type.Click.SetRotation(rotation.ToAngle());
+				type.Default.SetRotation(rotation.ToAngle());
+				type.Checked.SetRotation(rotation.ToAngle());
+			}
+		}
+		CPos rotation;
+
+		public virtual float Scale
+		{
+			get { return scale; }
+			set
+			{
+				scale = value;
+				type.Click.SetScale(scale);
+				type.Default.SetScale(scale);
+				type.Checked.SetScale(scale);
+			}
+		}
+		float scale = 1f;
+
 		public bool Checked;
 
 		readonly CheckBoxType type;
@@ -17,14 +56,15 @@ namespace WarriorsSnuggery.UI
 
 		bool mouseOnBox;
 
-		public CheckBox(CPos pos, bool @checked, CheckBoxType type, Action<bool> onTicked) : base(pos, type.Default)
+		public CheckBox(CPos pos, bool @checked, CheckBoxType type, Action<bool> onTicked)
 		{
 			Checked = @checked;
 			this.type = type;
 			action = onTicked;
+			Position = pos;
 		}
 
-		public override void Render()
+		public void Render()
 		{
 			if (mouseOnBox && MouseInput.isLeftDown)
 			{
@@ -35,8 +75,8 @@ namespace WarriorsSnuggery.UI
 			{
 				if (!Checked)
 				{
-					Renderable.SetPosition(Position);
-					base.Render();
+					type.Default.SetPosition(Position);
+					type.Default.Render();
 				}
 				else
 				{
@@ -46,10 +86,8 @@ namespace WarriorsSnuggery.UI
 			}
 		}
 
-		public override void Tick()
+		public void Tick()
 		{
-			base.Tick();
-
 			checkMouse();
 		}
 
@@ -64,6 +102,11 @@ namespace WarriorsSnuggery.UI
 				Checked = !Checked;
 				action?.Invoke(Checked);
 			}
+		}
+
+		public void Dispose()
+		{
+
 		}
 	}
 }
