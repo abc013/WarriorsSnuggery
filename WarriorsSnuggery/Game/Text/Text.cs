@@ -2,9 +2,9 @@
 
 namespace WarriorsSnuggery.Objects
 {
-	public class Text : PhysicsObject //TODO: remove GameObject
+	public class Text : ITickRenderable, IPositionable, IDisposable
 	{
-		public override CPos Position
+		public CPos Position
 		{
 			get { return position; }
 			set
@@ -19,7 +19,7 @@ namespace WarriorsSnuggery.Objects
 		}
 		CPos position;
 
-		public override CPos Rotation
+		public CPos Rotation
 		{
 			get { return rotation; }
 			set
@@ -34,7 +34,7 @@ namespace WarriorsSnuggery.Objects
 		}
 		CPos rotation;
 
-		public override float Scale
+		public float Scale
 		{
 			get { return scale; }
 			set
@@ -50,8 +50,9 @@ namespace WarriorsSnuggery.Objects
 		float scale = 1f;
 		readonly TextLine[] lines = new TextLine[0];
 
-		public Text(CPos position, IFont font, TextLine.OffsetType type, params string[] args) : base(position)
+		public Text(CPos position, IFont font, TextLine.OffsetType type, params string[] args)
 		{
+			Position = position;
 			lines = new TextLine[args.Length];
 
 			for(int i = 0; i < args.Length; i++)
@@ -61,19 +62,19 @@ namespace WarriorsSnuggery.Objects
 			}
 		}
 
-		public override void Render()
+		public void Render()
 		{
 			foreach (var line in lines)
 				line.Render();
 		}
 
-		public override void Tick()
+		public void Tick()
 		{
 			foreach (var line in lines)
 				line.Tick();
 		}
 
-		public override void Dispose()
+		public void Dispose()
 		{
 			foreach (var line in lines)
 				line.Dispose();

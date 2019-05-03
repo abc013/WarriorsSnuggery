@@ -3,10 +3,10 @@ using WarriorsSnuggery.Objects;
 
 namespace WarriorsSnuggery.UI
 {
-	public class Screen : ITick, IRenderable, IDisposable
+	public class Screen : ITickRenderable, IDisposable
 	{
-		public readonly TextLine Title;
-		public int Speed = 32;
+		protected readonly TextLine Title;
+		protected int Speed = 32;
 		int scale;
 		readonly Color darkness;
 

@@ -36,7 +36,8 @@ namespace WarriorsSnuggery.Objects
 		public readonly ActorType Type;
 		
 		int LocalTick;
-		int ReloadTicks;
+		int ReloadDelay;
+
 		CPos Velocity {
 			get
 			{
@@ -236,8 +237,8 @@ namespace WarriorsSnuggery.Objects
 			if(!IsAlive)
 				return;
 			
-			ReloadTicks--;
-			if (ReloadTicks < 0) ReloadTicks = 0;
+			ReloadDelay--;
+			if (ReloadDelay < 0) ReloadDelay = 0;
 
 			if (Height > 128)
 				Height += (int) (Math.Sin(LocalTick/32f) * 4);
@@ -261,7 +262,7 @@ namespace WarriorsSnuggery.Objects
 
 		public void Attack(CPos target)
 		{
-			if (ReloadTicks != 0 || ActiveWeapon == null || !IsAlive || !World.IsInWorld(target))
+			if (ReloadDelay != 0 || ActiveWeapon == null || !IsAlive || !World.IsInWorld(target))
 				return;
 
 			if (World.Game.Type == GameType.EDITOR || World.Game.Editor && IsPlayer)
@@ -276,7 +277,7 @@ namespace WarriorsSnuggery.Objects
 
 			parts.ForEach(p => p.OnAttack(target, weapon));
 
-			ReloadTicks = ActiveWeapon.Type.Reload;
+			ReloadDelay = ActiveWeapon.Type.Reload;
 			CurrentAction = ActorAction.ATTACKING;
 
 			body.NotifyChange();
