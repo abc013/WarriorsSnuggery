@@ -45,12 +45,12 @@ namespace WarriorsSnuggery
 						Process.Start("explorer.exe", "/select, \"" + FileExplorer.Logs + "\"");
 					}
 				}
-			}
+		}
 			else
 			{
 				run();
-			}
-		}
+	}
+}
 
 		static void run()
 		{
@@ -71,9 +71,9 @@ namespace WarriorsSnuggery
 			{
 				Console.WriteLine("Shader Language Version (OpenGL version) is under 3.00.");
 				Console.WriteLine("Please try to run the program with a graphics card that supports this Version.");
-				Console.WriteLine("Press 'j' to start the game anyways or press any key to leave.");
+				Console.WriteLine("Press 'y' to start the game anyways or press any key to leave.");
 				var info = Console.ReadKey(true).KeyChar;
-				if (info != 'j')
+				if (info != 'y')
 					return;
 			}
 
@@ -113,19 +113,17 @@ namespace WarriorsSnuggery
 			return version >= 300;
 		}
 
-		public static bool CheckGraphicsError(string code, bool throwError = true)
+		[Conditional("DEBUG")]
+		[DebuggerStepThrough]
+		//[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		public static void CheckGraphicsError(string code)
 		{
 			var error = GL.GetError();
 
 			if (error != ErrorCode.NoError)
 			{
-				if (throwError)
-					throw new OpenTK.Graphics.GraphicsErrorException("GraphicError in '" + code + "' :" + error);
-
-				return true;
+				throw new OpenTK.Graphics.GraphicsErrorException("GraphicError in '" + code + "' :" + error);
 			}
-
-			return false;
 		}
 	}
 }

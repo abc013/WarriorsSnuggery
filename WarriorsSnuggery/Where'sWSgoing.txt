@@ -14,7 +14,7 @@
 	- find the exit;
 
 Add DrawMode: Draw on Sand!
-
+btw I tried out `GL.Uniform1(heightLocation, 1f)`, fetched it with `getUniform` and received back the 1f
 when textures begin to bug after adding new textures, please look here <- ISprite
 ----------------------------------------------------------------------------------------------
 EFFECTS

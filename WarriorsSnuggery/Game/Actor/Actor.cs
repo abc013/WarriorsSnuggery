@@ -222,6 +222,7 @@ namespace WarriorsSnuggery.Objects
 					renderable.Render();
 
 					MasterRenderer.RenderShadow = false;
+					Program.CheckGraphicsError("bla");
 				}
 
 				renderable.SetPosition(GraphicPosition);

@@ -24,9 +24,11 @@ namespace WarriorsSnuggery.Graphics
 			{
 				VertexArrayID = GL.GenVertexArray();
 				BufferID = GL.GenBuffer();
+				Program.CheckGraphicsError("RenderableCreate_Generation");
 
 				GL.BindVertexArray(VertexArrayID);
 				GL.BindBuffer(BufferTarget.ArrayBuffer, BufferID);
+				Program.CheckGraphicsError("RenderableCreate_Bind");
 			}
 		}
 
@@ -42,6 +44,7 @@ namespace WarriorsSnuggery.Graphics
 			{
 				UseProgram();
 				GL.BindVertexArray(VertexArrayID);
+				Program.CheckGraphicsError("Renderable_Bind");
 			}
 		}
 
@@ -51,6 +54,7 @@ namespace WarriorsSnuggery.Graphics
 				GL.UseProgram(MasterRenderer.ShadowShader);
 			else
 				GL.UseProgram(ProgramID);
+			Program.CheckGraphicsError("Renderable_Program");
 		}
 
 		public virtual void Render()
@@ -58,6 +62,7 @@ namespace WarriorsSnuggery.Graphics
 			lock (MasterRenderer.GLLock)
 			{
 				GL.DrawArrays(PrimitiveType.Triangles, 0, VerticeCount);
+				Program.CheckGraphicsError("Renderable_Draw");
 			}
 		}
 
@@ -69,6 +74,7 @@ namespace WarriorsSnuggery.Graphics
 				{
 					GL.DeleteVertexArray(VertexArrayID);
 					GL.DeleteBuffer(BufferID);
+					Program.CheckGraphicsError("Renderable_Delete");
 				}
 			}
 		}

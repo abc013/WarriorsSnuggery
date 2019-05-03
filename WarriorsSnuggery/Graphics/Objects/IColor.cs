@@ -19,12 +19,15 @@ namespace WarriorsSnuggery.Graphics
 			lock(MasterRenderer.GLLock)
 			{
 				GL.BufferData(BufferTarget.ArrayBuffer, ColoredVertex.Size * vertices.Length, vertices, BufferUsageHint.StaticDraw);
+				Program.CheckGraphicsError("ColorCreate_Buffer");
 
 				GL.EnableVertexAttribArray(0);
 				GL.VertexAttribPointer(0, 4, VertexAttribPointerType.Float, true, ColoredVertex.Size, 0);
+				Program.CheckGraphicsError("ColorCreate_VertexArray1");
 
 				GL.EnableVertexAttribArray(1);
 				GL.VertexAttribPointer(1, 4, VertexAttribPointerType.Float, true, ColoredVertex.Size, 16);
+				Program.CheckGraphicsError("ColorCreate_VertexArray2");
 			}
 		}
 
@@ -34,6 +37,7 @@ namespace WarriorsSnuggery.Graphics
 			{
 				UseProgram();
 				GL.BindVertexArray(VertexArrayID);
+				Program.CheckGraphicsError("Color_Bind");
 			}
 		}
 
@@ -42,6 +46,7 @@ namespace WarriorsSnuggery.Graphics
 			lock(MasterRenderer.GLLock)
 			{
 				GL.DrawArrays(renderType, 0, VerticeCount);
+				Program.CheckGraphicsError("Color_Draw");
 			}
 		}
 	}

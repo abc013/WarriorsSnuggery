@@ -42,25 +42,22 @@ namespace WarriorsSnuggery.Graphics
 			{
 				lock (MasterRenderer.GLLock)
 				{
-					//var x = GL.IsVertexArray(VertexArrayID);
-					//if (!x)
-					//	return; // TODO HACK
 					GL.UseProgram(ProgramID);
+					Program.CheckGraphicsError("CharBind_UseProgram");
 					GL.VertexAttrib4(2, color.toVector4());
+					Program.CheckGraphicsError("CharBind_ColorAttrib");
 					GL.VertexAttrib4(3, new OpenTK.Vector4(offset * Font.MaxSize.X, 0,0,0));
-					GL.BindVertexArray(0);
+					Program.CheckGraphicsError("CharBind_OffsetAttrib");
 					GL.BindVertexArray(VertexArrayID);
+					Program.CheckGraphicsError("CharBind_VertexArray");
 					GL.BindTexture(TextureTarget.Texture2D, Font.Font.ID);
-					Program.CheckGraphicsError("renderText");
+					Program.CheckGraphicsError("CharBind_Texture");
 				}
 			}
 		}
 
 		public override void Render()
 		{
-			//var x = GL.IsVertexArray(VertexArrayID);
-			//if (!x)
-			//	return;
 			if (offset > 0) base.Render();
 		}
 	}
