@@ -220,7 +220,7 @@ namespace WarriorsSnuggery.UI
 			health.Dispose();
 			mana.Dispose();
 
-			money.Dispose();
+			//money.Dispose();
 			moneyText.Dispose();
 
 			menu.Dispose();

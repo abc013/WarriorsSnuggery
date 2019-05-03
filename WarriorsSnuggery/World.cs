@@ -49,6 +49,7 @@ namespace WarriorsSnuggery
 				Add(LocalPlayer);
 
 				Camera.Position(LocalPlayer.Position, true);
+
 				if (Game.Type == GameType.NORMAL)
 					Add(new ActionText(LocalPlayer.Position + new CPos(0,0,1024), IFont.Papyrus24, new CPos(0, -15, 30), 300, @"Level" + Game.Statistics.Level));
 			}

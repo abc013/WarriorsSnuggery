@@ -335,7 +335,7 @@ namespace WarriorsSnuggery
 			}
 		}
 
-		bool loadPiece(List<MiniTextNode> nodes, MPos position, bool important = false, bool playerSpawn = false)
+		bool loadPiece(List<MiniTextNode> nodes, MPos position, bool important = false, bool playerSpawn = false) //TODO move into single class named PieceLoader, create Piece class
 		{
 			MPos size = MPos.Zero;
 
