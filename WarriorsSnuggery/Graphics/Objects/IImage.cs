@@ -42,12 +42,15 @@ namespace WarriorsSnuggery.Graphics
 			lock(MasterRenderer.GLLock)
 			{
 				GL.BufferData(BufferTarget.ArrayBuffer, TexturedVertex.Size * vertices.Length, vertices, BufferUsageHint.StaticDraw);
+				Program.CheckGraphicsError("CreateTexture_Buffer");
 
 				GL.EnableVertexAttribArray(0);
 				GL.VertexAttribPointer(0, 4, VertexAttribPointerType.Float, true, TexturedVertex.Size, 0);
+				Program.CheckGraphicsError("CreateTexture_VertexArray1");
 
 				GL.EnableVertexAttribArray(1);
 				GL.VertexAttribPointer(1, 4, VertexAttribPointerType.Float, true, TexturedVertex.Size, 16);
+				Program.CheckGraphicsError("CreateTexture_VertexArray2");
 			}
 		}
 
@@ -64,9 +67,10 @@ namespace WarriorsSnuggery.Graphics
 			lock(MasterRenderer.GLLock)
 			{
 				UseProgram();
-				GL.ActiveTexture(TextureUnit.Texture0);
 				GL.BindVertexArray(VertexArrayID);
+				Program.CheckGraphicsError("ImageBind_Array");
 				GL.BindTexture(TextureTarget.Texture2D, Texture.ID);
+				Program.CheckGraphicsError("ImageBind_Texture");
 			}
 		}
 	}

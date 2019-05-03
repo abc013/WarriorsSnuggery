@@ -67,7 +67,9 @@ namespace WarriorsSnuggery.Graphics
 			{
 				UseProgram();
 				GL.BindVertexArray(VertexArrayID);
+				Program.CheckGraphicsError("ImageBind_Array");
 				GL.BindTexture(TextureTarget.Texture2D, textures[CurTexture].ID);
+				Program.CheckGraphicsError("ImageBind_Texture");
 			}
 		}
 	}

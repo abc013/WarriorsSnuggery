@@ -61,11 +61,6 @@ namespace WarriorsSnuggery.Objects
 			point.SetPosition(originPos);
 			point.Render();
 
-			if (Program.CheckGraphicsError("Code bug", false))
-			{
-				Log.WriteDebug("GL Bug has been detected. This Method is for counting only."); // error had something to do with the beam weapon and text.
-			}
-
 			base.RenderPhysics();
 		}
 

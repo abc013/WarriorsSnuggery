@@ -56,12 +56,16 @@ namespace WarriorsSnuggery
 			{
 				UseProgram();
 				GL.VertexAttrib2(GL.GetAttribLocation(MasterRenderer.FontShader, "textureOffset"), OpenTK.Vector2.Zero);
+				Program.CheckGraphicsError("FontBind_Offset");
 
 				var color = Color.White.toColor4();
 				GL.VertexAttrib4(GL.GetAttribLocation(MasterRenderer.FontShader, "color"), color.R, color.G, color.B, color.A);
+				Program.CheckGraphicsError("FontBind_Color");
 
 				GL.BindVertexArray(VertexArrayID);
+				Program.CheckGraphicsError("FontBind_Array");
 				GL.BindTexture(TextureTarget.Texture2D, Font.ID);
+				Program.CheckGraphicsError("FontBind_Texture");
 			}
 		}
 	}

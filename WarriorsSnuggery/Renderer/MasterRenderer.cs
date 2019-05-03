@@ -204,6 +204,7 @@ namespace WarriorsSnuggery
 				GL.Enable(EnableCap.LineSmooth);
 				GL.Enable(EnableCap.PointSmooth);
 			}
+			Program.CheckGraphicsError("Aliasing_On");
 		}
 
 		public static void DisableAliasing()
@@ -213,6 +214,7 @@ namespace WarriorsSnuggery
 				GL.Disable(EnableCap.LineSmooth);
 				GL.Disable(EnableCap.PointSmooth);
 			}
+			Program.CheckGraphicsError("Aliasing_Off");
 		}
 
 		public static void SetLineWidth(float width)
@@ -220,6 +222,7 @@ namespace WarriorsSnuggery
 			lock (GLLock)
 			{
 				GL.LineWidth(width);
+				Program.CheckGraphicsError("LineWidth");
 			}
 		}
 
@@ -228,7 +231,9 @@ namespace WarriorsSnuggery
 			lock (GLLock)
 			{
 				GL.Viewport(0, 0, WindowInfo.Width, WindowInfo.Height);
+				Program.CheckGraphicsError("View_Viewport");
 				GL.Scissor(0, 0, WindowInfo.Width, WindowInfo.Height);
+				Program.CheckGraphicsError("View_Scissor");
 			}
 
 			Camera.Zoom(0);
@@ -253,8 +258,11 @@ namespace WarriorsSnuggery
 			lock (GLLock)
 			{
 				GL.UseProgram(ShadowShader);
-				GL.Uniform1(heightLocation, height == 0 ? 0f : 1 / (float)Math.Sqrt(height / 64f));
-				//GL.Uniform4(GetLocation(ShadowShader, "proximityColor"), new Vector4(height == 0 ? 0 : 1/(float) Math.Sqrt(height / 64f))); // TODO unused
+				Program.CheckGraphicsError("UniformHeight_Program");
+				GL.Uniform1(heightLocation, height / 150f);
+				Program.CheckGraphicsError("UniformHeight_Uniform");
+				GL.UseProgram(0);
+				Program.CheckGraphicsError("UniformHeight_Reset");
 			}
 		}
 
@@ -267,5 +275,10 @@ namespace WarriorsSnuggery
 				GL.Uniform4(GetLocation(shader, "proximityColor"), ambient.toColor4());
 			}
 		}
+	}
+
+	public static class GLCommands
+	{
+
 	}
 }

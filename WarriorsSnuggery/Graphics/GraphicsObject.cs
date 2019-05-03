@@ -103,6 +103,7 @@ namespace WarriorsSnuggery.Objects
 			{
 				GL.UniformMatrix4(MasterRenderer.GetLocation(renderable.ProgramID, "modelView"), false, ref matrix);
 				GL.Uniform4(MasterRenderer.GetLocation(renderable.ProgramID, "objectColor"), color.toVector4());
+				Program.CheckGraphicsError("GraphicsObject_Uniform");
 			}
 			renderable.Render();
 		}
