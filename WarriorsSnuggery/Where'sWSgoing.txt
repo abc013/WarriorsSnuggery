@@ -1,12 +1,10 @@
 ﻿- see discord
 
-- source control for all renderables
-
 - PERF: Make more events!
 - Collision: e.g. circles: If you move against it, then look if youre over or under the circle. Then move in that direction.
+- Physics: Add mass, when pushing away objects you have to calculate that as well
 - MAPPING: Add Voronoi Noise and Perlin Noise
 - Walls visibility: add uniform for mouse position/any position. Calculate alpha from this point;
-- Shadow shader: height float still missing
 - Walls: Add walldamage
 - Weapons: reform weapons, add 3D collision
 
@@ -14,6 +12,8 @@
 	- tower defense,
 	- kill all enemies,
 	- find the exit;
+
+Add DrawMode: Draw on Sand!
 
 when textures begin to bug after adding new textures, please look here <- ISprite
 ----------------------------------------------------------------------------------------------

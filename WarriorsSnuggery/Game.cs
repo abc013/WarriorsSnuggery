@@ -78,6 +78,7 @@ namespace WarriorsSnuggery
 			Statistics = statistics;
 
 			Type = MapType.DefaultType;
+			Mode = MapType.DefaultModes[new Random(seed).Next(MapType.DefaultModes.Length)];
 			if (Type == GameType.EDITOR)
 				Editor = true;
 

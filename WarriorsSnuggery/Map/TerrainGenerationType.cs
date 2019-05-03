@@ -34,5 +34,79 @@ namespace WarriorsSnuggery.Maps
 			Border = border;
 			SpawnActors = spawnActors;
 		}
+
+		public static TerrainGenerationType GetType(int id, MiniTextNode[] nodes)
+		{
+			var noise = GenerationType.NONE;
+			var strength = 8;
+			var scale = 2f;
+			var intensity = 0f;
+			var contrast = 1f;
+			var terrainTypes = new int[0];
+			var spawnPieces = true;
+			var borderTerrain = new int[0];
+			var border = 0;
+			var spawnActorBlob = new Dictionary<ActorType, int>();
+
+			foreach (var generation in nodes)
+			{
+				switch (generation.Key)
+				{
+					case "Type":
+						noise = (GenerationType)generation.ToEnum(typeof(GenerationType));
+
+						foreach (var noiseChild in generation.Children)
+						{
+							switch (noiseChild.Key)
+							{
+								case "Strength":
+									strength = noiseChild.ToInt();
+									break;
+								case "Scale":
+									scale = noiseChild.ToFloat();
+									break;
+								case "Contrast":
+									contrast = noiseChild.ToFloat();
+									break;
+								case "Intensity":
+									intensity = noiseChild.ToFloat();
+									break;
+							}
+						}
+						break;
+					case "Terrain":
+						var rawTerrain = generation.ToArray();
+						terrainTypes = new int[rawTerrain.Length];
+
+						for (int i = 0; i < rawTerrain.Length; i++)
+							terrainTypes[i] = int.Parse(rawTerrain[i]);
+
+						break;
+					case "Border":
+						border = generation.ToInt();
+
+						var rawBorder = generation.Children.FindAll(n => n.Key == "Terrain").ToArray();
+						borderTerrain = new int[rawBorder.Length];
+
+						for (int i = 0; i < rawBorder.Length; i++)
+							borderTerrain[i] = int.Parse(rawBorder[i].Value);
+
+						break;
+					case "SpawnPieces":
+						spawnPieces = generation.ToBoolean();
+
+						break;
+					case "SpawnActor":
+						var type = ActorCreator.GetType(generation.Value);
+						var probability = 50;
+
+						probability = generation.Children.Find(n => n.Key == "Probability").ToInt();
+
+						spawnActorBlob.Add(type, probability);
+						break;
+				}
+			}
+			return new TerrainGenerationType(id, noise, strength, scale, intensity, contrast, terrainTypes, spawnPieces, borderTerrain, border, spawnActorBlob);
+		}
 	}
 }
