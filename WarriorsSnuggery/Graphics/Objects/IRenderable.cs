@@ -3,7 +3,7 @@ using OpenTK.Graphics.ES30;
 
 namespace WarriorsSnuggery.Graphics
 {
-	public class Renderable : IDisposable
+	public abstract class Renderable : IDisposable
 	{
 		public readonly int ProgramID;
 		protected readonly int VertexArrayID;

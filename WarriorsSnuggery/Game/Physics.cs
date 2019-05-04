@@ -11,7 +11,7 @@ namespace WarriorsSnuggery.Objects
 		NONE
 	}
 
-	public class Physics : IDisposable
+	public sealed class Physics : IDisposable
 	{
 		public readonly Shape Shape;
 		public readonly int Radius;

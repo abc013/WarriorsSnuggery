@@ -10,7 +10,7 @@ namespace WarriorsSnuggery
 		RANDOM
 	}
 
-	public class TextureInfo
+	public sealed class TextureInfo
 	{
 		public readonly string File;
 

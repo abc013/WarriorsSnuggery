@@ -97,9 +97,8 @@ namespace WarriorsSnuggery
 			watch.Start();
 
 			RuleLoader.LoadRules();
-
 			RuleLoader.LoadUIRules();
-
+			
 			MapCreator.LoadTypes(FileExplorer.Maps + "pieces.yaml");
 
 			GameSaveManager.Load();
@@ -261,6 +260,7 @@ namespace WarriorsSnuggery
 
 		public override void Exit()
 		{
+			var watch = StopWatch.StartNew();
 			Exiting = true;
 			lock (MasterRenderer.GLLock)
 			{
@@ -279,6 +279,9 @@ namespace WarriorsSnuggery
 			IFont.DisposeFonts();
 
 			base.Exit();
+
+			watch.Stop();
+			Log.WritePerformance(watch.ElapsedMilliseconds, "Exiting");
 		}
 
 		void activateKeys() 

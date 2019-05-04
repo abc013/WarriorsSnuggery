@@ -106,6 +106,7 @@ namespace WarriorsSnuggery.Objects
 
 		public virtual void Tick()
 		{
+
 		}
 
 		public virtual void Render()

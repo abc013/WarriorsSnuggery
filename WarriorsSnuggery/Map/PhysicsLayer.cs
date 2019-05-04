@@ -5,7 +5,7 @@ using WarriorsSnuggery.Objects;
 
 namespace WarriorsSnuggery
 {
-	public class PhysicsLayer
+	public sealed class PhysicsLayer
 	{
 		public PhysicsSector[,] Sectors;
 		public MPos Size;

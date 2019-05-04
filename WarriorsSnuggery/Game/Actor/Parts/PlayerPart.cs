@@ -39,7 +39,9 @@ namespace WarriorsSnuggery.Objects.Parts
 			}
 
 			if (MouseInput.isLeftDown)
+			{
 				self.Attack(MouseInput.GamePosition);
+			}
 		}
 
 		public override void OnKilled(Actor killer)

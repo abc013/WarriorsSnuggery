@@ -5,7 +5,7 @@ using WarriorsSnuggery.Objects;
 
 namespace WarriorsSnuggery
 {
-	public class TerrainLayer : IRenderable, IDisposable
+	public sealed class TerrainLayer : IRenderable, IDisposable
 	{
 		public Terrain[,] Terrain { get; private set; }
 		List<Terrain> renderList = new List<Terrain>();

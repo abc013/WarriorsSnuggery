@@ -3,7 +3,7 @@ using WarriorsSnuggery.Objects;
 
 namespace WarriorsSnuggery
 {
-	public class WallLayer : IRenderable, IDisposable
+	public sealed class WallLayer : IRenderable, IDisposable
 	{
 		public Wall[,] Walls { get; private set; }
 		public MPos Size { get; private set; }

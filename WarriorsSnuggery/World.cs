@@ -5,15 +5,15 @@ using WarriorsSnuggery.Objects;
 
 namespace WarriorsSnuggery
 {
-	public class World : ITick, IDisposable
+	public sealed class World : ITick, IDisposable
 	{
 		public readonly TerrainLayer TerrainLayer;
 		public readonly WallLayer WallLayer;
 		public readonly PhysicsLayer PhysicsLayer;
 
 		public readonly List<Actor> Actors = new List<Actor>();
-		public readonly List<PhysicsObject> Objects = new List<PhysicsObject>(); // TODO: make this list new and not dependent on PhysicsObject as not everything needs physics. Interfaces: ITick, IRender, IDisposable, IPositionable, ICheckVisible
-		public List<PhysicsObject> ToRender;
+		public readonly List<PhysicsObject> Objects = new List<PhysicsObject>();
+		public List<PhysicsObject> ToRender { get; private set; }
 
 		readonly List<PhysicsObject> objectsToAdd = new List<PhysicsObject>();
 		readonly List<Actor> actorsToAdd = new List<Actor>();

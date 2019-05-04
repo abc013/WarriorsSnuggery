@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace WarriorsSnuggery
 {
-	public class GameStatistics
+	public sealed class GameStatistics
 	{
 		// Paths
 		public string Name { get; private set; }
