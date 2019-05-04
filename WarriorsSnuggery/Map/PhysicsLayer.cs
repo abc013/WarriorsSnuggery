@@ -43,7 +43,7 @@ namespace WarriorsSnuggery
 			var shape = obj.Physics.Shape;
 			var points = new MPos[4];
 
-			points[0] = new MPos(position.X + radius, position.Y + radius);
+			points[0] = new MPos(position.X + radius, position.Y + radius); // TODO: also add points in between
 			points[1] = new MPos(position.X - radius, position.Y - radius);
 			points[2] = new MPos(position.X - radius, position.Y + radius);
 			points[3] = new MPos(position.X + radius, position.Y - radius);

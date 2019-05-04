@@ -123,6 +123,7 @@
     <Compile Include="Map\MapPrinter.cs" />
     <Compile Include="Map\MapType.cs" />
     <Compile Include="Map\PhysicsLayer.cs" />
+    <Compile Include="Map\Piece.cs" />
     <Compile Include="Map\StructureGenerationType.cs" />
     <Compile Include="Map\TerrainGenerationType.cs" />
     <Compile Include="Map\TerrainLayer.cs" />

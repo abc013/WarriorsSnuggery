@@ -48,7 +48,7 @@ namespace WarriorsSnuggery
 
 			if (Game.Type != GameType.EDITOR)
 			{
-				var start = Map.PlayerStart != new CPos(-1024,-1024,0) ? Map.PlayerStart : new MPos(Map.Size.X / 2, Map.Size.Y / 2).ToCPos();
+				var start = Map.PlayerSpawn != new CPos(-1024,-1024,0) ? Map.PlayerSpawn : new MPos(Map.Size.X / 2, Map.Size.Y / 2).ToCPos();
 
 				LocalPlayer = ActorCreator.Create(this, Game.Statistics.Actor, start, 2, isPlayer: true);
 				Add(LocalPlayer);
