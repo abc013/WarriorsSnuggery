@@ -2,7 +2,7 @@
 using OpenTK;
 using WarriorsSnuggery.Objects;
 
-namespace WarriorsSnuggery
+namespace WarriorsSnuggery.Graphics
 {
 	public static class TexturedMesh
 	{

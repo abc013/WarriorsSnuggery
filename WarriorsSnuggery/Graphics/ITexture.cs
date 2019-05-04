@@ -1,7 +1,7 @@
 ﻿using System;
 using OpenTK.Graphics.ES30;
 
-namespace WarriorsSnuggery
+namespace WarriorsSnuggery.Graphics
 {
 	public enum TextureType
 	{
@@ -71,6 +71,7 @@ namespace WarriorsSnuggery
 			lock(MasterRenderer.GLLock)
 			{
 				GL.DeleteTexture(ID);
+				Program.CheckGraphicsError("Texture_Dispose");
 			}
 		}
 

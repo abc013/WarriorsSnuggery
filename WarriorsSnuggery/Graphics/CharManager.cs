@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace WarriorsSnuggery.Graphics
+﻿namespace WarriorsSnuggery.Graphics
 {
 	public static class CharManager
 	{

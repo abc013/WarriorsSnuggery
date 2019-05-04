@@ -1,9 +1,8 @@
 ﻿using System;
 using OpenTK;
 using OpenTK.Graphics.ES30;
-using WarriorsSnuggery.Graphics;
 
-namespace WarriorsSnuggery.Objects
+namespace WarriorsSnuggery.Graphics
 {
 	public abstract class GraphicsObject : IDisposable, IRenderable
 	{

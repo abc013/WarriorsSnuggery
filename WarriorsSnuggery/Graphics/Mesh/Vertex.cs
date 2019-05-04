@@ -1,8 +1,7 @@
-﻿using System;
 using OpenTK;
 using OpenTK.Graphics;
 
-namespace WarriorsSnuggery
+namespace WarriorsSnuggery.Graphics
 {
 	public struct ColoredVertex
 	{

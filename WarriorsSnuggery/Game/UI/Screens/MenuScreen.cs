@@ -1,4 +1,3 @@
-﻿using System;
 using WarriorsSnuggery.Objects;
 
 namespace WarriorsSnuggery.UI

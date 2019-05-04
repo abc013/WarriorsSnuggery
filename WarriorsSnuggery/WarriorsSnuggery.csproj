@@ -132,7 +132,7 @@
     <Compile Include="Camera.cs" />
     <Compile Include="Input\FileExplorer.cs" />
     <Compile Include="Game.cs" />
-    <Compile Include="Graphics\Color.cs" />
+    <Compile Include="Position\Color.cs" />
     <Compile Include="Log.cs" />
     <Compile Include="Game\Actor\IActorBody.cs" />
     <Compile Include="Game\Weapons\Smudge.cs" />

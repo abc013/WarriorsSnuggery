@@ -1,4 +1,5 @@
-﻿
+using WarriorsSnuggery.Graphics;
+
 namespace WarriorsSnuggery
 {
 	public class TerrainType

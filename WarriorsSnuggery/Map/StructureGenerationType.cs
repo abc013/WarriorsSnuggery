@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace WarriorsSnuggery.Maps
+﻿namespace WarriorsSnuggery.Maps
 {
 	public enum StructureGenerationMode
 	{

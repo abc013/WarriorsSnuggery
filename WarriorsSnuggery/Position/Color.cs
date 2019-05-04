@@ -1,4 +1,3 @@
-﻿using System;
 
 namespace WarriorsSnuggery
 {
@@ -27,7 +26,7 @@ namespace WarriorsSnuggery
 			return new Color(color.R, color.G, color.B, color.A);
 		}
 
-		public static explicit operator System.Drawing.Color(Color color) {
+		public static implicit operator System.Drawing.Color(Color color) {
 			return System.Drawing.Color.FromArgb((int)(color.A * 255f), (int)(color.R * 255f), (int)(color.G * 255f), (int)(color.B * 255f));
 		}
 
@@ -35,11 +34,11 @@ namespace WarriorsSnuggery
 			return new Color(color.R, color.G, color.B, color.A);
 		}
 
-		public static explicit operator OpenTK.Vector4(Color color) {
+		public static implicit operator OpenTK.Vector4(Color color) {
 			return new OpenTK.Vector4(color.R, color.G, color.B, color.A);
 		}
 
-		public static explicit operator OpenTK.Graphics.Color4(Color color) {
+		public static implicit operator OpenTK.Graphics.Color4(Color color) {
 			return new OpenTK.Graphics.Color4(color.R, color.G, color.B, color.A);
 		}
 
