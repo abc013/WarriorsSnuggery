@@ -3,13 +3,10 @@
  * Date: 03.11.2017
  * 
  */
-using System;
 using System.Drawing.Text;
 using OpenTK.Graphics.ES30;
-using OpenTK.Graphics;
-using WarriorsSnuggery.Graphics;
 
-namespace WarriorsSnuggery
+namespace WarriorsSnuggery.Graphics
 {
 	public class IFont : Renderable
 	{

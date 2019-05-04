@@ -9,6 +9,7 @@ using System.IO;
 using System.Linq;
 using WarriorsSnuggery.Objects;
 using WarriorsSnuggery.Maps;
+using WarriorsSnuggery.Graphics;
 
 namespace WarriorsSnuggery.UI
 {

@@ -2,7 +2,6 @@
  * User: Andreas
  * Date: 11.08.2017
  */
-using System;
 using System.Collections.Generic;
 using OpenTK.Graphics.ES30;
 

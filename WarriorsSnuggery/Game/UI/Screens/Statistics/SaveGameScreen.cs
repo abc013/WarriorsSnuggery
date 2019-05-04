@@ -1,5 +1,5 @@
-﻿using System;
-using WarriorsSnuggery.Objects;
+﻿using WarriorsSnuggery.Objects;
+using WarriorsSnuggery.Graphics;
 
 namespace WarriorsSnuggery.UI
 {

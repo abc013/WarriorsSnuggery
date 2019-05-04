@@ -3,7 +3,6 @@
  * Date: 05.10.2017
  * 
  */
-using System;
 
 namespace WarriorsSnuggery
 {

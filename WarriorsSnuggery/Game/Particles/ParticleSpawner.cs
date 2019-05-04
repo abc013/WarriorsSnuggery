@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace WarriorsSnuggery.Objects
+﻿namespace WarriorsSnuggery.Objects
 {
 	public class ParticleSpawner
 	{

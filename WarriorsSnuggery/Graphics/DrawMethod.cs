@@ -3,7 +3,6 @@
  * Date: 29.10.2017
  * 
  */
-using System;
 using OpenTK.Graphics.ES30;
 
 namespace WarriorsSnuggery.Graphics

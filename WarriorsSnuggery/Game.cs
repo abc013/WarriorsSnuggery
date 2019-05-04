@@ -7,6 +7,7 @@ using System;
 using WarriorsSnuggery.Objects;
 using WarriorsSnuggery.UI;
 using WarriorsSnuggery.Maps;
+using WarriorsSnuggery.Graphics;
 
 namespace WarriorsSnuggery
 {

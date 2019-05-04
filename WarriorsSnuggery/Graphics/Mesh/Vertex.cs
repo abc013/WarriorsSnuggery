@@ -2,11 +2,10 @@
  * User: Andreas
  * Date: 09.08.2017
  */
-using System;
 using OpenTK;
 using OpenTK.Graphics;
 
-namespace WarriorsSnuggery
+namespace WarriorsSnuggery.Graphics
 {
 	public struct ColoredVertex
 	{

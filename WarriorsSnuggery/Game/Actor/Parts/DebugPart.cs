@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace WarriorsSnuggery.Objects.Parts
+﻿namespace WarriorsSnuggery.Objects.Parts
 {
 	/// <summary>
 	/// Shows shape of physics.

@@ -3,8 +3,8 @@
  * Date: 28.04.2018
  * Time: 01:48
  */
-using System;
 using WarriorsSnuggery.Objects;
+using WarriorsSnuggery.Graphics;
 
 namespace WarriorsSnuggery.UI
 {

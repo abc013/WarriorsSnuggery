@@ -3,7 +3,7 @@
  * Date: 30.09.2018
  * Time: 13:34
  */
-using System;
+using WarriorsSnuggery.Graphics;
 
 namespace WarriorsSnuggery.Objects
 {

@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace WarriorsSnuggery
+﻿namespace WarriorsSnuggery
 {
 	public class ITechTreeNode
 	{

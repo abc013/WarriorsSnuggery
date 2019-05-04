@@ -3,7 +3,6 @@
  * Date: 11.10.2017
  * 
  */
-using System;
 using OpenTK;
 
 namespace WarriorsSnuggery

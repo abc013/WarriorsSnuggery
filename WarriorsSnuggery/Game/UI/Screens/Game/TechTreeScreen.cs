@@ -3,9 +3,9 @@
  * Date: 01.11.2018
  * Time: 16:26
  */
-using System;
 using System.Collections.Generic;
 using WarriorsSnuggery.Objects;
+using WarriorsSnuggery.Graphics;
 
 namespace WarriorsSnuggery.UI
 {

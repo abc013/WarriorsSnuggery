@@ -4,6 +4,7 @@
  * Time: 15:19
  */
 using System;
+using WarriorsSnuggery.Graphics;
 
 namespace WarriorsSnuggery.Objects
 {

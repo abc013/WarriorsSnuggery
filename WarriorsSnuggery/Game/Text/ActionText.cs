@@ -3,7 +3,7 @@
  * Date: 04.12.2017
  * 
  */
-using System;
+using WarriorsSnuggery.Graphics;
 
 namespace WarriorsSnuggery.Objects
 {

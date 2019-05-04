@@ -10,7 +10,7 @@ using System.Linq;
 using System.Collections.Generic;
 using OpenTK.Graphics.ES30;
 
-namespace WarriorsSnuggery
+namespace WarriorsSnuggery.Graphics
 {
 	public static class TextureManager
 	{

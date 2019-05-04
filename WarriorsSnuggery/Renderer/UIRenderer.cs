@@ -3,10 +3,10 @@
  * Date: 25.11.2017
  * 
  */
-using System;
 using System.Collections.Generic;
 using OpenTK;
 using WarriorsSnuggery.Objects;
+using WarriorsSnuggery.Graphics;
 
 namespace WarriorsSnuggery
 {
