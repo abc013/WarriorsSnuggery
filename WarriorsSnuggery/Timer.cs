@@ -7,7 +7,7 @@ using System;
 
 namespace WarriorsSnuggery
 {
-	public class StopWatch : System.Diagnostics.Stopwatch
+	public sealed class StopWatch : System.Diagnostics.Stopwatch
 	{
 	}
 }

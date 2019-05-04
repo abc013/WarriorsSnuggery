@@ -29,7 +29,7 @@ namespace WarriorsSnuggery
 		NONE
 	}
 
-	public class Game : ITick, IDisposable
+	public sealed class Game : ITick, IDisposable
 	{
 		public Random SharedRandom = new Random();
 		

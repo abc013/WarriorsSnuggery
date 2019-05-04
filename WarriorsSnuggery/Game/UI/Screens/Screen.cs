@@ -8,7 +8,7 @@ using WarriorsSnuggery.Objects;
 
 namespace WarriorsSnuggery.UI
 {
-	public class Screen : ITickRenderable, IDisposable
+	public abstract class Screen : ITickRenderable, IDisposable
 	{
 		protected readonly TextLine Title;
 		protected int Speed = 32;

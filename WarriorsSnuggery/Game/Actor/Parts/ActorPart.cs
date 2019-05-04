@@ -2,20 +2,14 @@
 
 namespace WarriorsSnuggery.Objects
 {
-	public class PartInfo
+	public abstract class PartInfo
 	{
-		public virtual ActorPart Create(Actor self)
-		{
-			return new ActorPart(self);
-		}
+		public abstract ActorPart Create(Actor self);
 
-		public PartInfo(MiniTextNode[] nodes)
-		{
-
-		}
+		public PartInfo(MiniTextNode[] nodes) { }
 	}
 
-	public class ActorPart
+	public abstract class ActorPart
 	{
 		protected readonly Actor self;
 
