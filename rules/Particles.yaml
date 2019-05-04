@@ -29,9 +29,9 @@ woodPiece=
 	Image=woodPiece
 		Size=1,2
 		Random=true
-	Tick=40
+	Tick=30
 	DissolveTick=20
-	Force=0,6,0
+	Force=0,3,0
 		Random=50,50,0
 	Rotation=20
 

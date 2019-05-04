@@ -21,6 +21,8 @@ namespace WarriorsSnuggery.Maps
 		public readonly TerrainGenerationType[] TerrainGeneration;
 		public readonly TerrainGenerationType BaseTerrainGeneration;
 
+		public readonly StructureGenerationType[] StructureGeneration;
+
 		public readonly int Wall;
 
 		public readonly MPos CustomSize;
@@ -28,7 +30,7 @@ namespace WarriorsSnuggery.Maps
 		
 		public readonly MPos SpawnPoint;
 
-		public MapType(string[] parts, string[] entrances, string[] exits, Dictionary<string, MPos> importantParts, int wall, MPos customSize, Color ambient, GameType defaultType, GameMode[] defaultModes, int level, int fromLevel, TerrainGenerationType baseTerrainGeneration, TerrainGenerationType[] terrainGeneration, MPos spawnPoint)
+		public MapType(string[] parts, string[] entrances, string[] exits, Dictionary<string, MPos> importantParts, int wall, MPos customSize, Color ambient, GameType defaultType, GameMode[] defaultModes, int level, int fromLevel, TerrainGenerationType baseTerrainGeneration, TerrainGenerationType[] terrainGeneration, StructureGenerationType[] structureGeneration, MPos spawnPoint)
 		{
 			DefaultType = defaultType;
 			DefaultModes = defaultModes;
@@ -43,6 +45,7 @@ namespace WarriorsSnuggery.Maps
 			Ambient = ambient;
 			BaseTerrainGeneration = baseTerrainGeneration;
 			TerrainGeneration = terrainGeneration;
+			StructureGeneration = structureGeneration;
 			SpawnPoint = spawnPoint;
 		}
 
@@ -65,12 +68,12 @@ namespace WarriorsSnuggery.Maps
 		{
 			var dict = new Dictionary<string, MPos>
 			{ { piece, MPos.Zero } };
-			return new MapType(new string[] { }, new string[] { }, new string[] { }, dict, 0, size, Color.White, GameType.EDITOR, new[] { GameMode.NONE }, -1, 0, TerrainGenerationType.Empty(), new TerrainGenerationType[0], MPos.Zero);
+			return new MapType(new string[] { }, new string[] { }, new string[] { }, dict, 0, size, Color.White, GameType.EDITOR, new[] { GameMode.NONE }, -1, 0, TerrainGenerationType.Empty(), new TerrainGenerationType[0], new StructureGenerationType[0], MPos.Zero);
 		}
 
 		public static MapType ConvertGameType(MapType map, GameType type)
 		{
-			return new MapType(map.Parts, map.Entrances, map.Exits, map.ImportantParts, map.Wall, map.CustomSize, map.Ambient, type, map.DefaultModes, map.Level, map.FromLevel, map.BaseTerrainGeneration, map.TerrainGeneration, map.SpawnPoint);
+			return new MapType(map.Parts, map.Entrances, map.Exits, map.ImportantParts, map.Wall, map.CustomSize, map.Ambient, type, map.DefaultModes, map.Level, map.FromLevel, map.BaseTerrainGeneration, map.TerrainGeneration, map.StructureGeneration, map.SpawnPoint);
 		}
 	}
 
@@ -95,6 +98,7 @@ namespace WarriorsSnuggery.Maps
 				var ambient = Color.White;
 				var customSize = MPos.Zero;
 				var terrainGen = new List<TerrainGenerationType>();
+				var structureGen = new List<StructureGenerationType>();
 				var spawnPoint = new MPos(-1, -1);
 				TerrainGenerationType baseterrain = null;
 
@@ -103,7 +107,7 @@ namespace WarriorsSnuggery.Maps
 					switch (child.Key)
 					{
 						case "PlayType":
-							playType = (GameType)child.ToEnum(typeof(GameType));
+							playType = (GameType) child.ToEnum(typeof(GameType));
 
 							break;
 						case "PlayModes":
@@ -158,6 +162,10 @@ namespace WarriorsSnuggery.Maps
 							terrainGen.Add(TerrainGenerationType.GetType(child.ToInt(), child.Children.ToArray()));
 
 							break;
+						case "StructureGeneration":
+							structureGen.Add(StructureGenerationType.GetType(child.ToInt(), child.Children.ToArray()));
+
+							break;
 						case "CustomSize":
 							customSize = child.ToMPos();
 
@@ -172,7 +180,7 @@ namespace WarriorsSnuggery.Maps
 				if (baseterrain == null)
 					throw new YamlMissingNodeException(terrain.Key, "BaseTerrainGeneration");
 
-				AddType(new MapType(parts, entrances, exits, importantParts, wall, customSize, ambient, playType, playModes, level, fromLevel, baseterrain, terrainGen.ToArray(), spawnPoint), name);
+				AddType(new MapType(parts, entrances, exits, importantParts, wall, customSize, ambient, playType, playModes, level, fromLevel, baseterrain, terrainGen.ToArray(), structureGen.ToArray(), spawnPoint), name);
 			}
 		}
 

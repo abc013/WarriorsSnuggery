@@ -6,7 +6,7 @@ namespace WarriorsSnuggery
 {
 	public static class RuleReader
 	{
-		public static List<MiniTextNode> Read(string file)
+		public static List<MiniTextNode> Read(string file) //TODO: Add @INCLUDE %file% possibility in this file that adds new files to the list as well
 		{
 			List<MiniTextNode> list;
 

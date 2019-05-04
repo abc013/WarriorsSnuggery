@@ -127,7 +127,7 @@ namespace WarriorsSnuggery.Objects
 			if (Type.ParticlesWhenExplode != null)
 			{
 				for (int i = 0; i < Type.ParticleCountWhenExplode; i++)
-					World.Add(new Particle(Position + new CPos(0, 0, 1024), Type.ParticlesWhenExplode));
+					World.Add(new Particle(Position, Type.ParticlesWhenExplode));
 			}
 
 			Dispose();
