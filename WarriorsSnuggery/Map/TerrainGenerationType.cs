@@ -20,7 +20,7 @@ namespace WarriorsSnuggery.Maps
 		public readonly int Border;
 		public readonly Dictionary<ActorType, int> SpawnActors;
 
-		public TerrainGenerationType(int id, GenerationType generationType, int strength, float scale, float intensity, float contrast, int[] terrain, bool spawnPieces, int[] borderTerrain, int border, Dictionary<ActorType, int> spawnActors)
+		TerrainGenerationType(int id, GenerationType generationType, int strength, float scale, float intensity, float contrast, int[] terrain, bool spawnPieces, int[] borderTerrain, int border, Dictionary<ActorType, int> spawnActors)
 		{
 			ID = id;
 			GenerationType = generationType;
@@ -33,6 +33,11 @@ namespace WarriorsSnuggery.Maps
 			BorderTerrain = borderTerrain;
 			Border = border;
 			SpawnActors = spawnActors;
+		}
+
+		public static TerrainGenerationType Empty()
+		{
+			return new TerrainGenerationType(0, GenerationType.NONE, 1, 1f, 1f, 1f, new[] { 0 }, true, new int[] { }, 0, new Dictionary<ActorType, int>());
 		}
 
 		public static TerrainGenerationType GetType(int id, MiniTextNode[] nodes)

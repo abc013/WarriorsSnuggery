@@ -259,3 +259,6 @@ paket-files/
 # Python Tools for Visual Studio (PTVS)
 __pycache__/
 *.pyc
+/logs/debugMaps/debug_3.png
+/logs/debugMaps/debug_2.png
+/logs/debugMaps/debug_1.png

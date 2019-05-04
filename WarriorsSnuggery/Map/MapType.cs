@@ -61,8 +61,7 @@ namespace WarriorsSnuggery.Maps
 		{
 			var dict = new Dictionary<string, MPos>
 			{ { piece, MPos.Zero } };
-			var gen = new TerrainGenerationType(0, GenerationType.NONE, 2, 1f, 1f, 1f, new[] { 0 }, true, new int[] { }, 0, new Dictionary<ActorType, int>());
-			return new MapType(new string[] { }, new string[] { }, new string[] { }, dict, 0, size, Color.White, GameType.EDITOR, new[] { GameMode.NONE }, -1, 0, new Dictionary<ActorType, int[]>(), gen, new TerrainGenerationType[0], MPos.Zero);
+			return new MapType(new string[] { }, new string[] { }, new string[] { }, dict, 0, size, Color.White, GameType.EDITOR, new[] { GameMode.NONE }, -1, 0, new Dictionary<ActorType, int[]>(), TerrainGenerationType.Empty(), new TerrainGenerationType[0], MPos.Zero);
 		}
 
 		public static MapType ConvertGameType(MapType map, GameType type)
@@ -122,9 +121,9 @@ namespace WarriorsSnuggery.Maps
 
 							break;
 						case "SpawnActor":
+							int[] tiles = null;
 							if (child.Children.Count != 0)
 							{
-								int[] tiles = null;
 								foreach (var ground in child.Children)
 								{
 									var array = ground.ToArray();
@@ -134,13 +133,9 @@ namespace WarriorsSnuggery.Maps
 										int.TryParse(array[i], out tiles[i]);
 									}
 								}
-								spawnActors.Add(ActorCreator.GetType(child.Value), tiles);
-							}
-							else
-							{
-								spawnActors.Add(ActorCreator.GetType(child.Value), null);
 							}
 
+							spawnActors.Add(ActorCreator.GetType(child.Value), tiles);
 							break;
 						case "MainPieces":
 							foreach (var piece in child.Children)
@@ -170,82 +165,12 @@ namespace WarriorsSnuggery.Maps
 
 							break;
 						case "BaseTerrainGeneration":
+							baseterrain = TerrainGenerationType.GetType(0, child.Children.ToArray());
+
+							break;
 						case "TerrainGeneration":
-							var id = child.ToInt();
-							var noise = GenerationType.NONE;
-							var strength = 8;
-							var scale = 2f;
-							var intensity = 0f;
-							var contrast = 1f;
-							var terrainTypes = new int[0];
-							var spawnPieces = true;
-							var borderTerrain = new int[0];
-							var border = 0;
-							var spawnActorBlob = new Dictionary<ActorType, int>();
+							terrainGen.Add(TerrainGenerationType.GetType(child.ToInt(), child.Children.ToArray()));
 
-							foreach (var generation in child.Children)
-							{
-								switch (generation.Key)
-								{
-									case "Type":
-										noise = (GenerationType)generation.ToEnum(typeof(GenerationType));
-
-										foreach (var noiseChild in generation.Children)
-										{
-											switch (noiseChild.Key)
-											{
-												case "Strength":
-													strength = noiseChild.ToInt();
-													break;
-												case "Scale":
-													scale = noiseChild.ToFloat();
-													break;
-												case "Contrast":
-													contrast = noiseChild.ToFloat();
-													break;
-												case "Intensity":
-													intensity = noiseChild.ToFloat();
-													break;
-											}
-										}
-										break;
-									case "Terrain":
-										var rawTerrain = generation.ToArray();
-										terrainTypes = new int[rawTerrain.Length];
-
-										for (int i = 0; i < rawTerrain.Length; i++)
-											terrainTypes[i] = int.Parse(rawTerrain[i]);
-
-										break;
-									case "Border":
-										border = generation.ToInt();
-
-										var rawBorder = generation.Children.FindAll(n => n.Key == "Terrain").ToArray();
-										borderTerrain = new int[rawBorder.Length];
-
-										for (int i = 0; i < rawBorder.Length; i++)
-											borderTerrain[i] = int.Parse(rawBorder[i].Value);
-
-										break;
-									case "SpawnPieces":
-										spawnPieces = generation.ToBoolean();
-
-										break;
-									case "SpawnActor":
-										var type = ActorCreator.GetType(generation.Value);
-										var probability = 50;
-
-										probability = generation.Children.Find(n => n.Key == "Probability").ToInt();
-
-										spawnActorBlob.Add(type, probability);
-										break;
-								}
-							}
-
-							if (child.Key == "TerrainGeneration")
-								terrainGen.Add(new TerrainGenerationType(id, noise, strength, scale, intensity, contrast, terrainTypes, spawnPieces, borderTerrain, border, spawnActorBlob));
-							else
-								baseterrain = new TerrainGenerationType(0, noise, strength, scale, intensity, contrast, terrainTypes, spawnPieces, borderTerrain, border, spawnActorBlob);
 							break;
 						case "CustomSize":
 							customSize = child.ToMPos();
