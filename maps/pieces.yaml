@@ -1,3 +1,6 @@
+@INCLUDE bosses.yaml
+@INCLUDE miscpieces.yaml
+
 isles=
 	Pieces=tower0,acre1,acre2,acre3,acre4,acre5,acre6,house1,house2,house3
 	PlayModes=FIND_EXIT,WIPE_OUT_ENEMIES
@@ -139,60 +142,3 @@ cave=
 		MaximumSize=4
 		Distance=3
 		SpawnFrequency=100
-
-# bosses
-
-boss1=
-	ActiveFromLevel=-1
-	PlayModes=WIPE_OUT_ENEMIES
-	Level=10
-	MainPieces=
-		boss_slime=0,0
-	BaseTerrainGeneration=
-		Terrain=0
-	CustomSize=22,16
-	Ambient=170,170,200
-	SpawnPoint=0,7
-
-boss2=
-	ActiveFromLevel=-1
-	PlayModes=WIPE_OUT_ENEMIES
-	Level=20
-	MainPieces=
-		boss_forest=0,0
-	BaseTerrainGeneration=
-		Terrain=0
-	CustomSize=16,16
-	Ambient=120,120,100
-	SpawnPoint=12,12
-
-# mainmenu, ingamemenu, tutorial
-
-main1=
-	PlayType=MENU
-	MainPieces=
-		mainmap2=0,0
-	BaseTerrainGeneration=
-		Terrain=0
-	CustomSize=50,50
-	Ambient=170,170,200
-
-main2=
-	PlayType=MAINMENU
-	MainPieces=
-		mainmap1=0,0
-	BaseTerrainGeneration=
-		Terrain=0
-	CustomSize=16,16
-	Ambient=150,150,180
-
-tutorial=
-	PlayType=TUTORIAL
-	PlayModes=TUTORIAL
-	SpawnPoint=5,8
-	MainPieces=
-		tutorial=0,0
-	BaseTerrainGeneration=
-		Terrain=0
-	CustomSize=48,16
-	Ambient=255,255,200

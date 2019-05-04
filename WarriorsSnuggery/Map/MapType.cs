@@ -79,9 +79,9 @@ namespace WarriorsSnuggery.Maps
 
 	public class MapCreator
 	{
-		public static void LoadTypes(string file)
+		public static void LoadTypes(string directory, string file)
 		{
-			var terrains = RuleReader.Read(file);
+			var terrains = RuleReader.Read(directory, file);
 
 			foreach (var terrain in terrains)
 			{

@@ -35,7 +35,7 @@ namespace WarriorsSnuggery.UI
 					var name = dir.Remove(0,dir.LastIndexOf('\\') + 1);
 					parts.Add(name, MPos.Zero);
 
-					var size = loadPieceSize(RuleReader.Read(FileExplorer.Maps + name + @"\map.yaml"));
+					var size = loadPieceSize(RuleReader.Read(FileExplorer.Maps + name + @"\", "map.yaml"));
 
 					mapSelection.Add(new PanelItem(CPos.Zero, name, new ImageRenderable(TextureManager.Texture("UI_map")), new MPos(512,512), () => Window.Current.NewGame(new GameStatistics(GameSaveManager.DefaultStatistic), GameType.EDITOR, custom: MapType.MapTypeFromPiece(name, size))));
 				}

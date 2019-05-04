@@ -8,9 +8,9 @@ namespace WarriorsSnuggery
 {
 	public static class ActorCreator
 	{
-		public static void LoadTypes(string file)
+		public static void LoadTypes(string directory, string file)
 		{
-			var actors = RuleReader.Read(file);
+			var actors = RuleReader.Read(directory, file);
 
 			foreach(var actor in actors)
 			{
@@ -123,9 +123,9 @@ namespace WarriorsSnuggery
 
 	public static class WeaponCreator
 	{
-		public static void LoadTypes(string file)
+		public static void LoadTypes(string directory, string file)
 		{
-			var weapons = RuleReader.Read(file);
+			var weapons = RuleReader.Read(directory, file);
 
 			foreach(var weapon in weapons)
 			{
@@ -316,9 +316,9 @@ namespace WarriorsSnuggery
 
 	public static class ParticleCreator
 	{
-		public static void LoadTypes(string file)
+		public static void LoadTypes(string directory, string file)
 		{
-			var particles = RuleReader.Read(file);
+			var particles = RuleReader.Read(directory, file);
 
 			foreach(var particle in particles)
 			{
@@ -414,9 +414,9 @@ namespace WarriorsSnuggery
 
 	public static class TerrainCreator
 	{
-		public static void LoadTypes(string file)
+		public static void LoadTypes(string directory, string file)
 		{
-			var terrains = RuleReader.Read(file);
+			var terrains = RuleReader.Read(directory, file);
 
 			foreach(var terrain in terrains)
 			{
@@ -511,9 +511,9 @@ namespace WarriorsSnuggery
 
 	public static class WallCreator
 	{
-		public static void LoadTypes(string file)
+		public static void LoadTypes(string directory, string file)
 		{
-			var walls = RuleReader.Read(file);
+			var walls = RuleReader.Read(directory, file);
 
 			foreach(var wall in walls)
 			{

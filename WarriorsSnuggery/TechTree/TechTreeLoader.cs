@@ -8,7 +8,7 @@ namespace WarriorsSnuggery
 
 		public static void LoadTechTree(string file)
 		{
-			var nodes = RuleReader.Read(FileExplorer.Rules + file + ".yaml");
+			var nodes = RuleReader.Read(FileExplorer.Rules, file + ".yaml");
 
 			List<ITechTreeNode> techtree = new List<ITechTreeNode>();
 
