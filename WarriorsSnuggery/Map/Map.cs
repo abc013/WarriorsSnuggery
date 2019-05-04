@@ -25,7 +25,7 @@ namespace WarriorsSnuggery
 		public MPos Size { get; private set; }
 		public MPos Mid { get { return Size / new MPos(2, 2); } }
 		public MPos DefaultEdgeDistance { get { return Size / new MPos(8, 8); } }
-		public CPos PlayerStart;
+		public CPos PlayerSpawn;
 
 		bool[,] ActorSpawnPositions;
 		bool[,] Used;
@@ -35,7 +35,7 @@ namespace WarriorsSnuggery
 		{
 			this.world = world;
 
-			PlayerStart = type.SpawnPoint.ToCPos();
+			PlayerSpawn = type.SpawnPoint.ToCPos();
 			Type = type;
 			Seed = seed;
 
@@ -73,7 +73,7 @@ namespace WarriorsSnuggery
 			{
 				var input = RuleReader.Read(FileExplorer.Maps + node.Key + @"\map.yaml");
 
-				loadPiece(input, node.Value, true);
+				loadPiece(input.ToArray(), node.Value, true);
 			}
 
 			// Entrances
@@ -88,7 +88,7 @@ namespace WarriorsSnuggery
 				var quarter = spawnArea / new MPos(4, 4);
 				var pos = half + new MPos(random.Next(quarter.X) - quarter.X / 2, random.Next(quarter.Y) - quarter.Y / 2);
 
-				loadPiece(piece, pos, playerSpawn: true);
+				loadPiece(piece.ToArray(), pos, playerSpawn: true);
 			}
 
 			for (int x = 0; x < Size.X; x++)
@@ -128,7 +128,7 @@ namespace WarriorsSnuggery
 						break;
 				}
 
-				while(!loadPiece(piece, pos))
+				while(!loadPiece(piece.ToArray(), pos))
 				{
 					piece = RuleReader.Read(FileExplorer.Maps + Type.RandomExit(random) + @"\map.yaml");
 					size = pieceSize(piece);
@@ -159,7 +159,7 @@ namespace WarriorsSnuggery
 			if (Type.Parts.Any())
 			{
 				// We are using a higher value because we don't know how much of the buildings apparently are going to spawn.
-				var piecesToUse = (int) Math.Pow((Size.X + Size.Y) / 10, 2) * 2;
+				var piecesToUse = (Size.X + Size.Y) / 4;
 
 				for (int i = 0; i < piecesToUse; i++)
 				{
@@ -168,8 +168,7 @@ namespace WarriorsSnuggery
 
 					var spawnArea = Size - size;
 
-
-					loadPiece(piece, new MPos(random.Next(spawnArea.X), random.Next(spawnArea.Y)));
+					loadPiece(piece.ToArray(), new MPos(random.Next(spawnArea.X), random.Next(spawnArea.Y)));
 				}
 			}
 
@@ -190,6 +189,7 @@ namespace WarriorsSnuggery
 					}
 				}
 			}
+			MapPrinter.PrintMapGeneration("debug", 8, TerrainGenerationArray, Used);
 		}
 
 		void createGroundBase()
@@ -335,127 +335,44 @@ namespace WarriorsSnuggery
 			}
 		}
 
-		bool loadPiece(List<MiniTextNode> nodes, MPos position, bool important = false, bool playerSpawn = false) //TODO move into single class named PieceLoader, create Piece class
+		bool loadPiece(MiniTextNode[] nodes, MPos position, bool important = false, bool playerSpawn = false)
 		{
-			MPos size = MPos.Zero;
-
-			string[] groundData = null;
-			string[] wallData = new string[0];
-
-			string name = "unnamed piece";
-			List<MiniTextNode> actors = null;
-
-			foreach(var rule in nodes)
+			var piece = Piece.LoadPiece(nodes);
+			
+			if (!piece.IsInMap(position, Size))
 			{
-				switch(rule.Key)
-				{
-					case "Size":
-						size = rule.ToMPos();
-
-						break;
-					case "Terrain":
-						groundData = rule.ToArray();
-
-						break;
-					case "Walls":
-						wallData = rule.ToArray();
-
-						break;
-					case "Name":
-						name = rule.Value;
-
-						break;
-					case "Actors":
-						actors = rule.Children;
-
-						break;
-				}
-			}
-			var endPosition = size + position;
-			if (endPosition.X > Size.X || endPosition.Y > Size.Y)
-			{
-				Log.WriteDebug(string.Format("Piece '{0}' at Position '{1}' could not be created because it overlaps to the world's edge.", name, position));
+				Log.WriteDebug(string.Format("Piece '{0}' at Position '{1}' could not be created because it overlaps to the world's edge.", piece.Name, position));
 				return false;
 			}
+
 			if (!important)
 			{
-				for (int y = position.Y; y < (size.Y + position.Y); y++)
+				for (int y = position.Y; y < (piece.Size.Y + position.Y); y++)
 				{
-					for (int x = position.X; x < (size.X + position.X); x++)
+					for (int x = position.X; x < (piece.Size.X + position.X); x++)
 					{
 						if (Used[x, y])
 						{
-							Log.WriteDebug(string.Format("Piece '{0}' at Position '{1}': Position is already occupied.", name, position));
+							Log.WriteDebug(string.Format("Piece '{0}' at Position '{1}': Position is already occupied.", piece.Name, position));
 							return false;
 						}
 					}
 				}
 			}
 
-			if (groundData.Length < size.X * size.Y)
-				throw new YamlInvalidNodeException(string.Format(@"The count of given terrains ({0}) is not the same as the size ({1}) on the piece '{2}'", groundData.Length, Size.X * Size.Y, name));
-
-			if (wallData.Length != 0 && wallData.Length < size.X * size.Y)
-				throw new YamlInvalidNodeException(string.Format(@"The count of given walls ({0}) is not the same as the size ({1}) on the piece '{2}'", groundData.Length, Size.X * 2 * Size.Y, name));
-
-			var terrain = new int[groundData.Length];
-			for(int i = 0; i < groundData.Length; i++)
+			for (int y = position.Y; y < (piece.Size.Y + position.Y); y++)
 			{
-				if (!int.TryParse(groundData[i], out terrain[i]))
-					throw new YamlInvalidNodeException(string.Format(@"unable to load terrain-ID '{0}' in piece '{1}'.", terrain[i], name));
-			}
-
-			for(int y = position.Y; y < (size.Y + position.Y); y++)
-			{
-				for(int x = position.X; x < (size.X + position.X); x++)
+				for (int x = position.X; x < (piece.Size.X + position.X); x++)
 				{
-					Used[x,y] = true;
+					Used[x, y] = true;
 					ActorSpawnPositions[x, y] = true;
-					world.TerrainLayer.Set(TerrainCreator.Create(world, new WPos(x,y,0), terrain[(y - position.Y) * size.X + (x - position.X)]));
 				}
 			}
 
-			if (wallData.Length > 0)
-			{
-				var walls = new int[wallData.Length];
-				for(int i = 0; i < wallData.Length; i++)
-				{
-					if (!int.TryParse(wallData[i], out walls[i]))
-						throw new YamlInvalidNodeException(string.Format(@"unable to load wall-ID '{0}' in piece '{1}'.", terrain[i], name));
-				}
-				for(int y = position.Y; y < (size.Y + position.Y); y++)
-				{
-					for(int x = position.X * 2; x < (size.X + position.X) * 2; x++)
-					{
-						if (walls[(y - position.Y) * size.X*2 + (x - position.X * 2)] >= 0)
-							world.WallLayer.Set(WallCreator.Create(new WPos(x,y,0), walls[(y - position.Y) * size.X*2 + (x - position.X * 2)]));
-						else
-							world.WallLayer.Remove(new MPos(x,y));
-					}
-				}
-			}
-
-			if (actors != null)
-			{
-				foreach(var actor in actors)
-				{
-					try
-					{
-						var split = actor.Key.Split(';');
-						var type = split[0];
-						var team = split.Length > 1 ? int.Parse(split[1]) : 0;
-						var bot = split.Length > 1 ? split[2].Equals("true") : false;
-						world.Add(ActorCreator.Create(world, type, actor.ToCPos() + position.ToCPos(), team, bot));
-					}
-					catch (Exception e)
-					{
-						throw new YamlInvalidNodeException(string.Format("Could not create Actor from '{0}' on piece '{1}'", actor.Key + "=" + actor.Value, name), e);
-					}
-				}
-			}
+			piece.PlacePiece(position, world);
 
 			if (playerSpawn)
-				PlayerStart = new CPos(position.X * 1024 + size.X * 512, position.Y * 1024 + size.Y * 512, 0);
+				PlayerSpawn = new CPos(position.X * 1024 + piece.Size.X * 512, position.Y * 1024 + piece.Size.Y * 512, 0);
 
 			return true;
 		}

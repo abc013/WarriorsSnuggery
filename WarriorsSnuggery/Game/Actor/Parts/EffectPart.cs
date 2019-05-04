@@ -12,7 +12,7 @@ namespace WarriorsSnuggery.Objects.Parts
 		bool firstTick = true;
 		bool isReady;
 		int Cooldown;
-		bool isActive;
+		//bool isActive;
 		int Duration;
 
 		public EffectPart(Actor self, Effect effect) : base(self)
@@ -34,7 +34,7 @@ namespace WarriorsSnuggery.Objects.Parts
 			}
 			else
 			{
-				isActive = false;
+				//isActive = false;
 			}
 
 			if (effect.Occurence == EffectOccurTypes.ALWAYS)
@@ -100,7 +100,7 @@ namespace WarriorsSnuggery.Objects.Parts
 
 			isReady = false;
 			Cooldown = effect.Cooldown;
-			isActive = true;
+			//isActive = true;
 			Duration = effect.Duration;
 
 			//Console.WriteLine(effect.Type + "-Effect has happened! Duration: " + Duration / 30f);

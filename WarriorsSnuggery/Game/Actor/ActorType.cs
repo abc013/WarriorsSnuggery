@@ -4,7 +4,7 @@ namespace WarriorsSnuggery.Objects
 {
 	public class ActorType
 	{
-		public readonly TextureInfo Idle;
+		public readonly TextureInfo Idle; //TODO: replace through separate class
 		public readonly int IdleFacings;
 		public readonly TextureInfo Walk;
 		public readonly int WalkFacings;

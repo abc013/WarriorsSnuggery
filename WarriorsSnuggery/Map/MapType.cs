@@ -9,21 +9,27 @@ namespace WarriorsSnuggery.Maps
 	{
 		public readonly int Level;
 		public readonly int FromLevel;
+
 		public readonly GameType DefaultType;
 		public readonly GameMode[] DefaultModes;
+
 		public readonly string[] Parts;
 		public readonly string[] Entrances;
 		public readonly string[] Exits;
+
 		public readonly Dictionary<string, MPos> ImportantParts = new Dictionary<string, MPos>();
+
 		public readonly TerrainGenerationType[] TerrainGeneration;
 		public readonly TerrainGenerationType BaseTerrainGeneration;
+
 		public readonly int Wall;
+
 		public readonly MPos CustomSize;
 		public readonly Color Ambient;
-		public readonly Dictionary<ActorType, int[]> SpawnActors;
+		
 		public readonly MPos SpawnPoint;
 
-		public MapType(string[] parts, string[] entrances, string[] exits, Dictionary<string, MPos> importantParts, int wall, MPos customSize, Color ambient, GameType defaultType, GameMode[] defaultModes, int level, int fromLevel, Dictionary<ActorType, int[]> spawnActors, TerrainGenerationType baseTerrainGeneration, TerrainGenerationType[] terrainGeneration, MPos spawnPoint)
+		public MapType(string[] parts, string[] entrances, string[] exits, Dictionary<string, MPos> importantParts, int wall, MPos customSize, Color ambient, GameType defaultType, GameMode[] defaultModes, int level, int fromLevel, TerrainGenerationType baseTerrainGeneration, TerrainGenerationType[] terrainGeneration, MPos spawnPoint)
 		{
 			DefaultType = defaultType;
 			DefaultModes = defaultModes;
@@ -36,7 +42,6 @@ namespace WarriorsSnuggery.Maps
 			Wall = wall;
 			CustomSize = customSize;
 			Ambient = ambient;
-			SpawnActors = spawnActors;
 			BaseTerrainGeneration = baseTerrainGeneration;
 			TerrainGeneration = terrainGeneration;
 			SpawnPoint = spawnPoint;
@@ -61,12 +66,12 @@ namespace WarriorsSnuggery.Maps
 		{
 			var dict = new Dictionary<string, MPos>
 			{ { piece, MPos.Zero } };
-			return new MapType(new string[] { }, new string[] { }, new string[] { }, dict, 0, size, Color.White, GameType.EDITOR, new[] { GameMode.NONE }, -1, 0, new Dictionary<ActorType, int[]>(), TerrainGenerationType.Empty(), new TerrainGenerationType[0], MPos.Zero);
+			return new MapType(new string[] { }, new string[] { }, new string[] { }, dict, 0, size, Color.White, GameType.EDITOR, new[] { GameMode.NONE }, -1, 0, TerrainGenerationType.Empty(), new TerrainGenerationType[0], MPos.Zero);
 		}
 
 		public static MapType ConvertGameType(MapType map, GameType type)
 		{
-			return new MapType(map.Parts, map.Entrances, map.Exits, map.ImportantParts, map.Wall, map.CustomSize, map.Ambient, type, map.DefaultModes, map.Level, map.FromLevel, map.SpawnActors, map.BaseTerrainGeneration, map.TerrainGeneration, map.SpawnPoint);
+			return new MapType(map.Parts, map.Entrances, map.Exits, map.ImportantParts, map.Wall, map.CustomSize, map.Ambient, type, map.DefaultModes, map.Level, map.FromLevel, map.BaseTerrainGeneration, map.TerrainGeneration, map.SpawnPoint);
 		}
 	}
 
@@ -90,7 +95,6 @@ namespace WarriorsSnuggery.Maps
 				var wall = 0;
 				var ambient = Color.White;
 				var customSize = MPos.Zero;
-				var spawnActors = new Dictionary<ActorType, int[]>();
 				var terrainGen = new List<TerrainGenerationType>();
 				var spawnPoint = new MPos(-1, -1);
 				TerrainGenerationType baseterrain = null;
@@ -119,23 +123,6 @@ namespace WarriorsSnuggery.Maps
 						case "Level":
 							level = child.ToInt();
 
-							break;
-						case "SpawnActor":
-							int[] tiles = null;
-							if (child.Children.Count != 0)
-							{
-								foreach (var ground in child.Children)
-								{
-									var array = ground.ToArray();
-									tiles = new int[array.Length];
-									for (int i = 0; i < array.Length; i++)
-									{
-										int.TryParse(array[i], out tiles[i]);
-									}
-								}
-							}
-
-							spawnActors.Add(ActorCreator.GetType(child.Value), tiles);
 							break;
 						case "MainPieces":
 							foreach (var piece in child.Children)
@@ -186,7 +173,7 @@ namespace WarriorsSnuggery.Maps
 				if (baseterrain == null)
 					throw new YamlMissingNodeException(terrain.Key, "BaseTerrainGeneration");
 
-				AddType(new MapType(parts, entrances, exits, importantParts, wall, customSize, ambient, playType, playModes, level, fromLevel, spawnActors, baseterrain, terrainGen.ToArray(), spawnPoint), name);
+				AddType(new MapType(parts, entrances, exits, importantParts, wall, customSize, ambient, playType, playModes, level, fromLevel, baseterrain, terrainGen.ToArray(), spawnPoint), name);
 			}
 		}
 
