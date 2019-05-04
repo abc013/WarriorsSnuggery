@@ -76,7 +76,7 @@ namespace WarriorsSnuggery
 			// Important Parts
 			foreach(var node in Type.ImportantParts)
 			{
-				var input = RuleReader.Read(FileExplorer.Maps + node.Key + @"\map.yaml");
+				var input = RuleReader.Read(FileExplorer.Maps, node.Key + @"\map.yaml");
 
 				loadPiece(input.ToArray(), node.Value, true);
 			}
@@ -85,7 +85,7 @@ namespace WarriorsSnuggery
 			if (Type.Entrances.Any())
 			{
 				// We are estimating here that the entrance tile won't be larger than 8x8.
-				var piece = RuleReader.Read(FileExplorer.Maps + Type.RandomEntrance(random) + @"\map.yaml");
+				var piece = RuleReader.Read(FileExplorer.Maps, Type.RandomEntrance(random) + @"\map.yaml");
 				var size = pieceSize(piece);
 
 				var spawnArea = Size - size;
@@ -110,7 +110,7 @@ namespace WarriorsSnuggery
 			if (Type.Exits.Any())
 			{
 				// We are estimating here that the exit tile won't be larger than 8x8.
-				var piece = RuleReader.Read(FileExplorer.Maps + Type.RandomExit(random) + @"\map.yaml");
+				var piece = RuleReader.Read(FileExplorer.Maps, Type.RandomExit(random) + @"\map.yaml");
 				var size = pieceSize(piece);
 
 				var spawnArea = Size - size;
@@ -135,7 +135,7 @@ namespace WarriorsSnuggery
 
 				while(!loadPiece(piece.ToArray(), pos))
 				{
-					piece = RuleReader.Read(FileExplorer.Maps + Type.RandomExit(random) + @"\map.yaml");
+					piece = RuleReader.Read(FileExplorer.Maps, Type.RandomExit(random) + @"\map.yaml");
 					size = pieceSize(piece);
 
 					spawnArea = Size - size;
@@ -168,7 +168,7 @@ namespace WarriorsSnuggery
 
 				for (int i = 0; i < piecesToUse; i++)
 				{
-					var piece = RuleReader.Read(FileExplorer.Maps + Type.RandomPiece(random) + @"\map.yaml");
+					var piece = RuleReader.Read(FileExplorer.Maps, Type.RandomPiece(random) + @"\map.yaml");
 					var size = pieceSize(piece);
 
 					var spawnArea = Size - size;

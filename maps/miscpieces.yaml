@@ -1,0 +1,28 @@
+main1=
+	PlayType=MENU
+	MainPieces=
+		mainmap2=0,0
+	BaseTerrainGeneration=
+		Terrain=0
+	CustomSize=50,50
+	Ambient=170,170,200
+
+main2=
+	PlayType=MAINMENU
+	MainPieces=
+		mainmap1=0,0
+	BaseTerrainGeneration=
+		Terrain=0
+	CustomSize=16,16
+	Ambient=150,150,180
+
+tutorial=
+	PlayType=TUTORIAL
+	PlayModes=TUTORIAL
+	SpawnPoint=5,8
+	MainPieces=
+		tutorial=0,0
+	BaseTerrainGeneration=
+		Terrain=0
+	CustomSize=48,16
+	Ambient=255,255,200

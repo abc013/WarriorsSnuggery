@@ -8,7 +8,7 @@ namespace WarriorsSnuggery
 	{
 		public static void LoadRules()
 		{
-			var rules = RuleReader.Read(FileExplorer.Rules + "Rules.yaml");
+			var rules = RuleReader.Read(FileExplorer.Rules, "Rules.yaml"); //TODO remove
 
 			foreach (var rule in rules)
 			{
@@ -17,27 +17,27 @@ namespace WarriorsSnuggery
 					case "Particles":
 						var particles = rule.ToArray();
 						foreach (var particle in particles)
-							ParticleCreator.LoadTypes(FileExplorer.FindIn(FileExplorer.Rules, particle, ".yaml"));
+							ParticleCreator.LoadTypes(FileExplorer.FindPath(FileExplorer.Rules, particle, ".yaml"), particle + ".yaml");
 						break;
 					case "Weapons":
 						var weapons = rule.ToArray();
 						foreach (var weapon in weapons)
-							WeaponCreator.LoadTypes(FileExplorer.FindIn(FileExplorer.Rules, weapon, ".yaml"));
+							WeaponCreator.LoadTypes(FileExplorer.FindPath(FileExplorer.Rules, weapon, ".yaml"), weapon + ".yaml");
 						break;
 					case "Actors":
 						var actors = rule.ToArray();
 						foreach (var actor in actors)
-							ActorCreator.LoadTypes(FileExplorer.FindIn(FileExplorer.Rules, actor, ".yaml"));
+							ActorCreator.LoadTypes(FileExplorer.FindPath(FileExplorer.Rules, actor, ".yaml"), actor + ".yaml");
 						break;
 					case "Terrain":
 						var terrain = rule.ToArray();
 						foreach (var terrain2 in terrain)
-							TerrainCreator.LoadTypes(FileExplorer.FindIn(FileExplorer.Rules, terrain2, ".yaml"));
+							TerrainCreator.LoadTypes(FileExplorer.FindPath(FileExplorer.Rules, terrain2, ".yaml"), terrain2 + ".yaml");
 						break;
 					case "Walls":
 						var walls = rule.ToArray();
 						foreach (var wall in walls)
-							WallCreator.LoadTypes(FileExplorer.FindIn(FileExplorer.Rules, wall, ".yaml"));
+							WallCreator.LoadTypes(FileExplorer.FindPath(FileExplorer.Rules, wall, ".yaml"), wall + ".yaml");
 						break;
 					case "TechTree":
 						var trees = rule.ToArray();

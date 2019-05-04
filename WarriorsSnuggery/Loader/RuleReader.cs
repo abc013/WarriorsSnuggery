@@ -6,30 +6,48 @@ namespace WarriorsSnuggery
 {
 	public static class RuleReader
 	{
-		public static List<MiniTextNode> Read(string file) //TODO: Add @INCLUDE %file% possibility in this file that adds new files to the list as well
+		public static List<MiniTextNode> Read(string directory, string file)
 		{
 			List<MiniTextNode> list;
+			List<string> filesToInclude;
 
-			using(var input = new StreamReader(file, true))
+			using(var input = new StreamReader(directory + file, true))
 			{
-				Loop(input, out list);
+				Loop(input, out list, out filesToInclude);
 				input.Close();
+			}
+			// Read included files as well and add them to the list
+			foreach(var fileToInclude in filesToInclude)
+			{
+				list.AddRange(Read(directory, fileToInclude));
 			}
 
 			return list;
 		}
 
-		static void Loop(StreamReader input, out List<MiniTextNode> list)
+		static void Loop(StreamReader input, out List<MiniTextNode> list, out List<string> filesToInclude)
 		{
+			var startOfFile = true;
 			MiniTextNode before = null;
 
 			list = new List<MiniTextNode>();
+			filesToInclude = new List<string>();
 			while(!input.EndOfStream)
 			{
 				var @in = input.ReadLine();
 
 				if (@in.Trim().Equals(string.Empty) || @in.StartsWith("#", StringComparison.CurrentCulture))
 					continue;
+
+				if (startOfFile && @in.StartsWith("@INCLUDE"))
+				{
+					filesToInclude.Add(@in.Remove(0, 8).Trim());
+					continue;
+				}
+				else
+				{
+					startOfFile = false;
+				}
 
 				var now = ReadLine(@in, before);
 				if (now.Parent == null)

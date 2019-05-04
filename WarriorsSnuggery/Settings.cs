@@ -43,7 +43,7 @@ namespace WarriorsSnuggery
 
 		public static void Initialize()
 		{
-			foreach(var node in RuleReader.Read(FileExplorer.FindIn(FileExplorer.MainDirectory, "WS", ".yaml")))
+			foreach(var node in RuleReader.Read(FileExplorer.FindPath(FileExplorer.MainDirectory, "WS", ".yaml"), "WS.yaml"))
 			{
 				switch(node.Key)
 				{

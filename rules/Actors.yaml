@@ -1,3 +1,7 @@
+@INCLUDE Triggers.yaml
+
+@INCLUDE TutorialActors.yaml
+
 heal=
 	Image=crab
 		Size=24,24

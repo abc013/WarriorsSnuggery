@@ -67,7 +67,30 @@ namespace WarriorsSnuggery
 			return false;
 		}
 
+		/// <summary>
+		/// Finds the directory in which the given file is.
+		/// </summary>
+		/// <returns>Returns the filepath.</returns>
 		public static string FindIn(string path, string name, string suffix = ".png")
+		{
+			if (name == string.Empty)
+				return string.Empty;
+
+			name += suffix;
+
+			var found = findUntil(path, name, suffix);
+
+			if (found == string.Empty)
+				throw new FileNotFoundException("The file " + name + " has not been found");
+
+			return found + name;
+		}
+
+		/// <summary>
+		/// Finds the directory in which the given file is.
+		/// </summary>
+		/// <returns>Returns the directory.</returns>
+		public static string FindPath(string path, string name, string suffix = ".png")
 		{
 			if (name == string.Empty)
 				return string.Empty;
@@ -92,7 +115,7 @@ namespace WarriorsSnuggery
 					continue;
 
 				if (file == pathName)
-					return pathName;
+					return path;
 			}
 
 			var directories = Directory.EnumerateDirectories(path);

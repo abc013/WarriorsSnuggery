@@ -180,7 +180,7 @@ namespace WarriorsSnuggery
 				SaveName = name
 			};
 
-			foreach (var node in RuleReader.Read(FileExplorer.FindIn(FileExplorer.Saves, name, ".yaml")))
+			foreach (var node in RuleReader.Read(FileExplorer.FindPath(FileExplorer.Saves, name, ".yaml"), name + ".yaml"))
 			{
 				switch (node.Key)
 				{
