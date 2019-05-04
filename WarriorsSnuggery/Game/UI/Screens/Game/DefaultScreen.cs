@@ -104,6 +104,23 @@ namespace WarriorsSnuggery.UI
 
 		}
 
+		public override bool CursorOnUI()
+		{
+			var mouse = MouseInput.WindowPosition;
+
+			// Info Panel
+			if (mouse.Y > 4992)
+				return true;
+			// Effects Panel
+			if (Math.Abs(mouse.X) < 8120 && mouse.Y > 4992 - 64 - 256)
+				return true;
+			// Actor Panel
+			if (mouse.X > WindowInfo.Ratio * 6.9f * 1024)
+				return true;
+
+			return false;
+		}
+
 		public override void Render()
 		{
 			base.Render();
