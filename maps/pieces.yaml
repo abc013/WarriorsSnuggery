@@ -1,6 +1,6 @@
 isles=
 	Pieces=tower0,acre1,acre2,acre3,acre4,acre5,acre6,house1,house2,house3
-	PlayModes=FIND_EXIT
+	PlayModes=FIND_EXIT,WIPE_OUT_ENEMIES
 	Exits=exit1,exit2
 	Entrances=entrance1
 	BaseTerrainGeneration=
@@ -31,7 +31,7 @@ isles=
 continent=
 	ActiveFromLevel=2
 	Pieces=tower0,tower1,house1,house2,house3,acre1,acre2,acre3,acre4,acre5,acre6
-	PlayModes=TOWER_DEFENSE,FIND_EXIT
+	PlayModes=TOWER_DEFENSE,FIND_EXIT,WIPE_OUT_ENEMIES
 	Exits=exit1,exit2
 	Entrances=entrance1
 	BaseTerrainGeneration=
@@ -97,7 +97,7 @@ cave=
 
 boss1=
 	ActiveFromLevel=-1
-	PlayModes=FIND_EXIT
+	PlayModes=WIPE_OUT_ENEMIES
 	Level=10
 	MainPieces=
 		boss_slime=0,0
@@ -106,6 +106,18 @@ boss1=
 	CustomSize=22,16
 	Ambient=170,170,200
 	SpawnPoint=0,7
+
+boss2=
+	ActiveFromLevel=-1
+	PlayModes=WIPE_OUT_ENEMIES
+	Level=20
+	MainPieces=
+		boss_forest=0,0
+	BaseTerrainGeneration=
+		Terrain=0
+	CustomSize=16,16
+	Ambient=120,120,100
+	SpawnPoint=12,12
 
 #dungeon=
 #	ActiveFromLevel=10

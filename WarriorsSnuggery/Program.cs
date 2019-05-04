@@ -25,7 +25,7 @@ namespace WarriorsSnuggery
 			Log.InitLogs();
 			Console.SetError(Log.Exeption);
 
-			if (isDebug)
+			if (!isDebug)
 			{
 				try
 				{

@@ -91,7 +91,7 @@ namespace WarriorsSnuggery.UI
 			switch(game.Mode)
 			{
 				case GameMode.NONE:
-					missionText.SetText("No mission");
+					missionText.SetText("No mission.");
 					break;
 				case GameMode.TUTORIAL:
 					missionText.SetText("Follow the blue panels!");
