@@ -1,6 +1,4 @@
-﻿using System;
-using System.Linq;
-using System.Collections.Generic;
+using System;
 using WarriorsSnuggery.Objects;
 using WarriorsSnuggery.UI;
 using WarriorsSnuggery.Maps;
@@ -51,7 +49,7 @@ namespace WarriorsSnuggery
 		public readonly GameStatistics Statistics;
 		public readonly MapType MapType;
 		public readonly GameType Type;
-		public readonly GameMode Mode;
+		public readonly GameMode Mode; // TODO: add victory conditions
 		public readonly int Seed;
 		
 		readonly TextLine tick;
@@ -74,6 +72,7 @@ namespace WarriorsSnuggery
 
 			Type = MapType.DefaultType;
 			Mode = MapType.DefaultModes[new Random(seed).Next(MapType.DefaultModes.Length)];
+
 			if (Type == GameType.EDITOR)
 				Editor = true;
 

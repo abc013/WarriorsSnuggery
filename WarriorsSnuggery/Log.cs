@@ -13,8 +13,8 @@ namespace WarriorsSnuggery
 
 		public static void InitLogs()
 		{
-			FileExplorer.CreateFile(FileExplorer.Logs, "exeption", ".log");
-			Exeption = new StreamWriter(FileExplorer.Logs + "exeption.log");
+			FileExplorer.CreateFile(FileExplorer.Logs, "exception", ".log");
+			Exeption = new StreamWriter(FileExplorer.Logs + "exception.log");
 
 			FileExplorer.CreateFile(FileExplorer.Logs, "performance", ".log");
 			Performance = new StreamWriter(FileExplorer.Logs + "performance.log");
