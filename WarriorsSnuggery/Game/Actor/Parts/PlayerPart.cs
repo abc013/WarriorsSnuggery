@@ -38,7 +38,7 @@ namespace WarriorsSnuggery.Objects.Parts
 				self.Accelerate(180);
 			}
 
-			if (MouseInput.isLeftDown)
+			if (MouseInput.isLeftDown && !self.World.Game.ScreenControl.CursorOnUI())
 			{
 				self.Attack(MouseInput.GamePosition);
 			}

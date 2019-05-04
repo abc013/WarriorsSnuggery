@@ -80,6 +80,14 @@ namespace WarriorsSnuggery.UI
 			FocusedType = ScreenType.NONE;
 		}
 
+		public bool CursorOnUI()
+		{
+			if (Focused == null)
+				return false;
+
+			return Focused.CursorOnUI();
+		}
+
 		public void Render()
 		{
 			if (Focused == null)

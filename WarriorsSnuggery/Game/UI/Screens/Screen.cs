@@ -23,6 +23,11 @@ namespace WarriorsSnuggery.UI
 			this.darkness = new Color(0,0,0, darkness);
 		}
 
+		public virtual bool CursorOnUI()
+		{
+			return false;
+		}
+
 		public virtual void Tick()
 		{
 			Title.Scale = (float) (Math.Pow(Math.Sin(scale++ / (float) Speed), 2) + 2f) / 4;

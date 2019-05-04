@@ -104,6 +104,12 @@ namespace WarriorsSnuggery.UI
 			currentSelected = selected;
 		}
 
+		public override bool CursorOnUI()
+		{
+			var mouse = MouseInput.WindowPosition;
+			return mouse.X < WindowInfo.UnitWidth * 512 - 4096 - 128;
+		}
+
 		public override void Render()
 		{
 			base.Render();
@@ -148,7 +154,7 @@ namespace WarriorsSnuggery.UI
 			base.Tick();
 
 			// Zoom function
-			if (MouseInput.WindowPosition.X < WindowInfo.UnitWidth * 512 - 4096)
+			if (!CursorOnUI())
 				Camera.Zoom(MouseInput.WheelState * 1.5f);
 
 			// place something
@@ -223,7 +229,7 @@ namespace WarriorsSnuggery.UI
 			if (!game.World.IsInWorld(MouseInput.GamePosition))
 				return;
 
-			if (MouseInput.WindowPosition.X > WindowInfo.UnitWidth * 512 - 4096)
+			if (!CursorOnUI())
 				return;
 
 			var pos  = MouseInput.GamePosition;
