@@ -3,7 +3,7 @@ using WarriorsSnuggery.Objects;
 
 namespace WarriorsSnuggery.Maps
 {
-	public class TerrainGenerationType
+	public sealed class TerrainGenerationType
 	{
 		public readonly int ID;
 

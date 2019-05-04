@@ -27,6 +27,21 @@ isles=
 		Terrain=2
 		Border=1
 			Terrain=1
+	StructureGeneration=1
+		Pieces=acre1,acre2,acre3,acre4,acre5,acre6
+		SpawnsOn=0,1
+		GenerationMode=FLOCK
+		MinimumSize=3
+		MaximumSize=6
+		SpawnFrequency=50
+	StructureGeneration=2
+		Pieces=house1,house2,house3
+		SpawnsOn=0,1
+		GenerationMode=BLOCK
+		MinimumSize=0
+		MaximumSize=4
+		Distance=4
+		SpawnFrequency=80
 
 continent=
 	ActiveFromLevel=2
@@ -68,6 +83,21 @@ continent=
 		Terrain=2
 		Border=1
 			Terrain=1
+	StructureGeneration=1
+		Pieces=acre1,acre2,acre3,acre4,acre5,acre6
+		SpawnsOn=0,1
+		GenerationMode=FLOCK
+		MinimumSize=3
+		MaximumSize=6
+		SpawnFrequency=50
+	StructureGeneration=2
+		Pieces=house1,house2,house3
+		SpawnsOn=0,1
+		GenerationMode=BLOCK
+		MinimumSize=0
+		MaximumSize=4
+		Distance=4
+		SpawnFrequency=80
 
 cave=
 	ActiveFromLevel=3
@@ -94,6 +124,23 @@ cave=
 			Terrain=5
 		SpawnActor=s_stones
 			Probability=10
+	StructureGeneration=1
+		Pieces=cavewalls1,cavewalls2,cavewalls3
+		SpawnsOn=0,1
+		GenerationMode=BLOCK
+		MinimumSize=3
+		MaximumSize=6
+		SpawnFrequency=50
+	StructureGeneration=2
+		Pieces=cave_dungeon,cave_spiderplace,cave_slimeplace, tower0
+		SpawnsOn=0,1
+		GenerationMode=RANDOM
+		MinimumSize=1
+		MaximumSize=4
+		Distance=3
+		SpawnFrequency=100
+
+# bosses
 
 boss1=
 	ActiveFromLevel=-1
@@ -118,21 +165,6 @@ boss2=
 	CustomSize=16,16
 	Ambient=120,120,100
 	SpawnPoint=12,12
-
-#dungeon=
-#	ActiveFromLevel=10
-#	Pieces=cave_dungeon
-#	Exits=exit2
-#	Entrances=entrance1
-#	BaseTerrainGeneration=
-#		Type=MAZE
-#			Noisiness=8
-#		Terrain=6,5
-#		Wall=1
-#	Ambient=200,200,170
-#inside=
-#	Pieces=house1,house2
-#	Ground=3
 
 # mainmenu, ingamemenu, tutorial
 
@@ -161,9 +193,6 @@ tutorial=
 	MainPieces=
 		tutorial=0,0
 	BaseTerrainGeneration=
-		Type=CLOUDS
-			Strength=1
 		Terrain=0
 	CustomSize=48,16
 	Ambient=255,255,200
-
