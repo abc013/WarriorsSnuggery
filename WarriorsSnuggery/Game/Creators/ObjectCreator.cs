@@ -109,15 +109,20 @@ namespace WarriorsSnuggery
 			return types[name];
 		}
 
-		public static Actor Create(World world, string name, CPos position, int team = 0, bool isBot = false, bool isPlayer = false)
+		public static Actor Create(World world, string name, CPos position, int team = 0, bool isBot = false, bool isPlayer = false, float health = 1f)
 		{
 			var type = GetType(name);
-			return Create(world, type, position, team, isBot, isPlayer);
+			return Create(world, type, position, team, isBot, isPlayer, health);
 		}
 
-		public static Actor Create(World world, ActorType type, CPos position, int team = 0, bool isBot = false, bool isPlayer = false)
+		public static Actor Create(World world, ActorType type, CPos position, int team = 0, bool isBot = false, bool isPlayer = false, float health = 1f)
 		{
-			return new Actor(world, type, position, Convert.ToUInt16(team), isBot, isPlayer);
+			var actor = new Actor(world, type, position, Convert.ToUInt16(team), isBot, isPlayer);
+			if(actor.Health != null)
+			{
+				actor.Health.HP = (int) (actor.Health.HP * health);
+			}
+			return actor;
 		}
 	}
 

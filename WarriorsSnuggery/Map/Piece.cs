@@ -139,7 +139,7 @@ namespace WarriorsSnuggery.Maps
 			// generate Actors
 			foreach (var actor in actors)
 			{
-				world.Add(ActorCreator.Create(world, actor.Type, actor.Position + position.ToCPos(), actor.Team, actor.IsBot));
+				world.Add(ActorCreator.Create(world, actor.Type, actor.Position + position.ToCPos(), actor.Team, actor.IsBot, actor.Health));
 			}
 		}
 
