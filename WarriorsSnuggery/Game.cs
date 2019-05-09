@@ -199,29 +199,32 @@ namespace WarriorsSnuggery
 					WorldRenderer.Ambient = new Color(sin1 * WorldRenderer.Ambient.R, sin2 * WorldRenderer.Ambient.R, sin3 * WorldRenderer.Ambient.R);
 				}
 
-				var mouse = MouseInput.WindowPosition;
+				if (Editor && !ScreenControl.CursorOnUI())
+				{
+					var mouse = MouseInput.WindowPosition;
 
-				var add = CPos.Zero;
-				if (KeyInput.IsKeyDown(Settings.Key("CameraUp"), 0) || (mouse.Y < 0 && mouse.Y < -Camera.DefaultZoom * 512 + 64 * Settings.EdgeScrolling))
-				{
-					add = new CPos(add.X, add.Y - 1, 0);
-				}
-				if (KeyInput.IsKeyDown(Settings.Key("CameraDown"), 0) || (mouse.Y > 0 && mouse.Y > Camera.DefaultZoom * 512 - 64 * Settings.EdgeScrolling))
-				{
-					add = new CPos(add.X, add.Y + 1, 0);
-				}
-				if (KeyInput.IsKeyDown(Settings.Key("CameraRight"), 0) || (mouse.X > 0 && mouse.X > Camera.DefaultZoom * WindowInfo.Ratio * 512 - 64 * Settings.EdgeScrolling))
-				{
-					add = new CPos(add.X + (int) 1, add.Y, 0);
-				}
-				if (KeyInput.IsKeyDown(Settings.Key("CameraLeft"), 0) || (mouse.X < 0 && mouse.X < -Camera.DefaultZoom * WindowInfo.Ratio * 512 + 64 * Settings.EdgeScrolling))
-				{
-					add = new CPos(add.X - (int) 1, add.Y, 0);
-				}
+					var add = CPos.Zero;
+					if (KeyInput.IsKeyDown(Settings.Key("CameraUp"), 0) || (mouse.Y < 0 && mouse.Y < -Camera.DefaultZoom * 512 + 64 * Settings.EdgeScrolling))
+					{
+						add = new CPos(add.X, add.Y - 1, 0);
+					}
+					if (KeyInput.IsKeyDown(Settings.Key("CameraDown"), 0) || (mouse.Y > 0 && mouse.Y > Camera.DefaultZoom * 512 - 64 * Settings.EdgeScrolling))
+					{
+						add = new CPos(add.X, add.Y + 1, 0);
+					}
+					if (KeyInput.IsKeyDown(Settings.Key("CameraRight"), 0) || (mouse.X > 0 && mouse.X > Camera.DefaultZoom * WindowInfo.Ratio * 512 - 64 * Settings.EdgeScrolling))
+					{
+						add = new CPos(add.X + (int)1, add.Y, 0);
+					}
+					if (KeyInput.IsKeyDown(Settings.Key("CameraLeft"), 0) || (mouse.X < 0 && mouse.X < -Camera.DefaultZoom * WindowInfo.Ratio * 512 + 64 * Settings.EdgeScrolling))
+					{
+						add = new CPos(add.X - (int)1, add.Y, 0);
+					}
 
-				if (add != CPos.Zero)
-				{
-					Camera.Move(add);
+					if (add != CPos.Zero)
+					{
+						Camera.Move(add);
+					}
 				}
 
 				if (KeyInput.IsKeyDown(Settings.Key("CameraLock"), 10))
