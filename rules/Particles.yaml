@@ -17,6 +17,13 @@ rain=
 		Random=0,70,0
 	Scale=0,8
 
+slime_splash=
+	Image=slime_splash
+		Size=8,8
+		Random=true
+	Tick=100
+	DissolveTick=500
+	
 bullet=
 	Image=bullet
 		Size=12,24

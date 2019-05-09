@@ -92,7 +92,7 @@
 			switch (info.Type)
 			{
 				case "ACTOR":
-					@object = ActorCreator.Create(self.World, info.Name, randomPosition(), info.InheritsTeam ? self.Team : 0, info.InheritsBot ? self.IsBot : false);
+					@object = ActorCreator.Create(self.World, info.Name, randomPosition(), info.InheritsTeam ? self.Team : Actor.NeutralTeam, info.InheritsBot ? self.IsBot : false);
 					break;
 				case "PARTICLE":
 					@object = ParticleCreator.Create(info.Name, randomPosition());
