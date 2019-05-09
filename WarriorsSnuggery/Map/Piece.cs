@@ -74,14 +74,14 @@ namespace WarriorsSnuggery.Maps
 						{
 							try
 							{
-								if (actor.Children.Count > 0)
+								if (actor.Children.Count > 0) // New Actor System
 								{
 									var id = int.Parse(actor.Key);
 									var position = actor.ToCPos();
 
 									actorList.Add(new ActorNode(id, position, actor.Children.ToArray()));
 								}
-								else
+								else // Old Actor System
 								{
 									var split = actor.Key.Split(';');
 									var type = split[0];

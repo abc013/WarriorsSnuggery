@@ -435,12 +435,11 @@ namespace WarriorsSnuggery
 				for(int i = 0; i < world.Actors.Count; i++)
 				{
 					var a = world.Actors[i];
-					//writer.WriteLine("\t" + ActorCreator.GetName(a.Type) + ";" + a.Team + ";" + (a.IsBot + "").ToLower() + "=" + a.Position.X + "," + a.Position.Y + "," + a.Position.Z);
 					writer.WriteLine("\t" + i + "=" + a.Position.X + "," + a.Position.Y + "," + a.Position.Z);
 					writer.WriteLine("\t\t" + "Type=" + ActorCreator.GetName(a.Type));
 					if (a.Team != Objects.Actor.NeutralTeam)
 						writer.WriteLine("\t\t" + "Team=" + a.Team);
-					if (a.Health != null && a.Health.HP == a.Health.MaxHP)
+					if (a.Health != null && a.Health.HP != a.Health.MaxHP)
 						writer.WriteLine("\t\t" + "Health=" + a.Health.HP / (float) a.Health.MaxHP);
 					if (a.IsBot)
 						writer.WriteLine("\t\t" + "IsBot=" + a.IsBot);

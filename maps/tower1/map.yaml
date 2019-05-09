@@ -1,5 +1,9 @@
-Name=Tower0
+Name=tower1
 Size=3,3
 Terrain=5,5,5,5,5,5,5,5,5
 Actors=
-	magictower;1;true=1024,1024,0
+	0=1024,1024,0
+		Type=magictower
+		Team=1
+		IsBot=True
+Walls=-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1
