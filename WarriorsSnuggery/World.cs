@@ -46,7 +46,7 @@ namespace WarriorsSnuggery
 			{
 				var start = Map.PlayerSpawn != new CPos(-1024,-1024,0) ? Map.PlayerSpawn : new MPos(Map.Size.X / 2, Map.Size.Y / 2).ToCPos();
 
-				LocalPlayer = ActorCreator.Create(this, Game.Statistics.Actor, start, 2, isPlayer: true);
+				LocalPlayer = ActorCreator.Create(this, Game.Statistics.Actor, start, Actor.PlayerTeam, isPlayer: true);
 				Add(LocalPlayer);
 
 				Camera.Position(LocalPlayer.Position, true);

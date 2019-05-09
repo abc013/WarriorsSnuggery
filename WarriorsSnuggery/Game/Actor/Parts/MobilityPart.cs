@@ -9,8 +9,6 @@ namespace WarriorsSnuggery.Objects.Parts
 		public readonly int Deceleration;
 		public readonly int Gravity;
 
-		public readonly ParticleSpawner Particles;
-
 		public override ActorPart Create(Actor self)
 		{
 			return new MobilityPart(self, this);
@@ -33,9 +31,6 @@ namespace WarriorsSnuggery.Objects.Parts
 						break;
 					case "Gravity":
 						Gravity = node.ToInt();
-						break;
-					case "Particles":
-						Particles = node.ToParticleSpawner();
 						break;
 					default:
 						throw new YamlUnknownNodeException(node.Key, "MobilityPart");
@@ -73,12 +68,6 @@ namespace WarriorsSnuggery.Objects.Parts
 					Velocity = new CPos(0, Velocity.Y, 0);
 				if (Math.Sign(Velocity.Y) != signY)
 					Velocity = new CPos(Velocity.X, 0, 0);
-
-				if (info.Particles != null)
-				{
-					foreach (var particle in info.Particles.Create(self.Position))
-						self.World.Add(particle);
-				}
 			}
 		}
 

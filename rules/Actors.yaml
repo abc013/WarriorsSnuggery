@@ -15,8 +15,6 @@ heal=
 		Speed=100
 		Acceleration=2
 		Deceleration=3
-		Particles=puff1
-			Count=1
 	Part@Health=
 		MaxHealth=1000
 	Part@Regeneration=
@@ -34,6 +32,11 @@ heal=
 		Count=10
 		Name=blood1
 		Type=PARTICLE
+	Part@SpawnOnMove=
+		Count=1
+		Name=puff1
+		Type=PARTICLE
+		Tick=2
 
 shadowrunner=
 	Image=shadowrunner
@@ -234,6 +237,11 @@ slime_medium=
 	Part@Playable=
 		Playable=yes
 		Cost=0
+	Part@SpawnOnMove=
+		Count=1
+		Name=slime_splash
+		Type=PARTICLE
+		Tick=2
 
 #############################
 #          TOWERS           #

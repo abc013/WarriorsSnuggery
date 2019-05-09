@@ -21,6 +21,9 @@ namespace WarriorsSnuggery.Objects
 
 		public bool IsAlive = true;
 
+		public const ushort PlayerTeam = 2;
+		public const ushort NeutralTeam = 0;
+
 		public ushort Team;
 		public float Angle;
 

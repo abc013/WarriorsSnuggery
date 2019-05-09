@@ -103,7 +103,7 @@ namespace WarriorsSnuggery.Objects.Parts
 				range = self.ActiveWeapon.Type.MaxRange * (canMove ? 1.5f : 1f);
 
 			// Find all possible targets in range
-			var targets = world.Actors.FindAll(a => a.Team != 0 && a.Team != self.Team && a.Position.GetDistToXY(self.Position) <= range);
+			var targets = world.Actors.FindAll(a => a.Team != Actor.NeutralTeam && a.Team != self.Team && a.Position.GetDistToXY(self.Position) <= range);
 
 			if (!targets.Any())
 				return;

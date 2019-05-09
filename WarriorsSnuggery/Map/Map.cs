@@ -62,7 +62,9 @@ namespace WarriorsSnuggery
 				Size = Type.CustomSize;
 
 			Camera.SetBounds(Size.ToCPos());
+
 			createGroundBase();
+
 			Used = new bool[Size.X,Size.Y];
 			ActorSpawnPositions = new bool[Size.X, Size.Y];
 
@@ -156,21 +158,43 @@ namespace WarriorsSnuggery
 			}
 
 			// Normal Parts
-			if (Type.Parts.Any())
+			foreach (var structureGeneration in Type.StructureGeneration)
 			{
-				// We are using a higher value because we don't know how much of the buildings apparently are going to spawn.
-				var piecesToUse = (Size.X + Size.Y) / 4;
-
-				for (int i = 0; i < piecesToUse; i++)
+				var count = Size.X * Size.Y / structureGeneration.SpawnFrequency;
+				for (int i = 0; i < count; i++)
 				{
-					var piece = RuleReader.Read(FileExplorer.Maps, Type.RandomPiece(random) + @"\map.yaml");
-					var size = pieceSize(piece);
+					var position1 = MapUtils.RandomPositionInMap(random, 10, Size);
+					var position2 = MapUtils.FindValuesInArea(position1, 10, structureGeneration.SpawnsOn, TerrainGenerationArray, Size);
+					if (position2.Length == 0)
+					{
+						continue;
+					}
+					var position3 = position2[random.Next(position2.Length)];
 
-					var spawnArea = Size - size;
+					var pieceCount = structureGeneration.MinimumSize + random.Next(structureGeneration.MaximumSize - structureGeneration.MinimumSize);
+					for (int p = 0; p < pieceCount; p++)
+					{
 
-					loadPiece(piece.ToArray(), new MPos(random.Next(spawnArea.X), random.Next(spawnArea.Y)));
+					}
+					var piece = RuleReader.Read(FileExplorer.Maps, structureGeneration.Pieces[random.Next(structureGeneration.Pieces.Length)] + @"\map.yaml");
+					loadPiece(piece.ToArray(), position3);
 				}
 			}
+			//if (Type.Parts.Any())
+			//{
+			//	// We are using a higher value because we don't know how much of the buildings apparently are going to spawn.
+			//	var piecesToUse = (Size.X + Size.Y) / 4;
+
+			//	for (int i = 0; i < piecesToUse; i++)
+			//	{
+			//		var piece = RuleReader.Read(FileExplorer.Maps, Type.RandomPiece(random) + @"\map.yaml");
+			//		var size = pieceSize(piece);
+
+			//		var spawnArea = Size - size;
+
+			//		loadPiece(piece.ToArray(), new MPos(random.Next(spawnArea.X), random.Next(spawnArea.Y)));
+			//	}
+			//}
 
 			for (int y = 0; y < Size.Y; y++)
 			{
@@ -408,8 +432,19 @@ namespace WarriorsSnuggery
 				writer.WriteLine(terrain);
 
 				writer.WriteLine("Actors=");
-				foreach(var a in world.Actors)
-					writer.WriteLine("\t" + ActorCreator.GetName(a.Type) + ";" + a.Team + ";" + (a.IsBot + "").ToLower() + "=" + a.Position.X + "," + a.Position.Y + "," + a.Position.Z);
+				for(int i = 0; i < world.Actors.Count; i++)
+				{
+					var a = world.Actors[i];
+					//writer.WriteLine("\t" + ActorCreator.GetName(a.Type) + ";" + a.Team + ";" + (a.IsBot + "").ToLower() + "=" + a.Position.X + "," + a.Position.Y + "," + a.Position.Z);
+					writer.WriteLine("\t" + i + "=" + a.Position.X + "," + a.Position.Y + "," + a.Position.Z);
+					writer.WriteLine("\t\t" + "Type=" + ActorCreator.GetName(a.Type));
+					if (a.Team != Objects.Actor.NeutralTeam)
+						writer.WriteLine("\t\t" + "Team=" + a.Team);
+					if (a.Health != null && a.Health.HP == a.Health.MaxHP)
+						writer.WriteLine("\t\t" + "Health=" + a.Health.HP / (float) a.Health.MaxHP);
+					if (a.IsBot)
+						writer.WriteLine("\t\t" + "IsBot=" + a.IsBot);
+				}
 
 				var walls = "Walls=";
 				for(int y = 0; y < world.WallLayer.Size.Y - 1; y++)
