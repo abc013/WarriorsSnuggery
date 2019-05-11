@@ -27,8 +27,8 @@ namespace WarriorsSnuggery
 			{
 				var coords = Value.Split(',');
 
-				var x = int.Parse(coords[0]);
-				var y = int.Parse(coords[1]);
+				var x = int.Parse(coords[0].Trim());
+				var y = int.Parse(coords[1].Trim());
 				return new MPos(x,y);
 			}
 			catch (Exception e)
@@ -43,11 +43,11 @@ namespace WarriorsSnuggery
 			{
 				var coords = Value.Split(',');
 
-				var x = int.Parse(coords[0]);
-				var y = int.Parse(coords[1]);
+				var x = int.Parse(coords[0].Trim());
+				var y = int.Parse(coords[1].Trim());
 				int z = 0;
 				if (coords.Length > 2)
-					z = int.Parse(coords[2]);
+					z = int.Parse(coords[2].Trim());
 				return new CPos(x,y,z);
 			}
 			catch (Exception e)
@@ -145,7 +145,7 @@ namespace WarriorsSnuggery
 		{
 			try
 			{
-				var value = Value.ToLower();
+				var value = Value.ToLower().Trim();
 				return value == "1" || value == "true" || value == "yes";
 			}
 			catch (Exception e)
@@ -158,7 +158,12 @@ namespace WarriorsSnuggery
 		{
 			try
 			{
-				return Value.Split(',');
+				var split = Value.Split(',');
+				for(int i = 0; i < split.Length; i++)
+				{
+					split[i] = split[i].Trim();
+				}
+				return split;
 			}
 			catch (Exception e)
 			{
@@ -172,9 +177,9 @@ namespace WarriorsSnuggery
 			{
 				var split = Value.Split(',');
 
-				var r = int.Parse(split[0]);
-				var g = int.Parse(split[1]);
-				var b = int.Parse(split[2]);
+				var r = int.Parse(split[0].Trim());
+				var g = int.Parse(split[1].Trim());
+				var b = int.Parse(split[2].Trim());
 				var a = 255;
 				if (split.Length > 3)
 					a = int.Parse(split[3]);
@@ -192,7 +197,7 @@ namespace WarriorsSnuggery
 			if (Value == "")
 				return 0;
 
-			if (!int.TryParse(Value, out int i))
+			if (!int.TryParse(Value.Trim(), out int i))
 				throw new YamlInvalidFormatException(ToString(), typeof(int));
 
 			return i;
@@ -200,7 +205,7 @@ namespace WarriorsSnuggery
 
 		public float ToFloat()
 		{
-			if (!float.TryParse(Value, out float f))
+			if (!float.TryParse(Value.Trim(), out float f))
 				throw new YamlInvalidFormatException(ToString(), typeof(float));
 
 			return f;
@@ -208,7 +213,7 @@ namespace WarriorsSnuggery
 
 		public object ToEnum(Type type)
 		{
-			return Enum.Parse(type, Value, true);
+			return Enum.Parse(type, Value.Trim(), true);
 		}
 
 		public override string ToString()

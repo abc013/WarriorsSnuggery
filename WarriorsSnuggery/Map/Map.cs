@@ -79,21 +79,7 @@ namespace WarriorsSnuggery
 				loadPiece(input.ToArray(), node.Value, true);
 			}
 
-			// Entrances
-			if (Type.Entrances.Any())
-			{
-				// We are estimating here that the entrance tile won't be larger than 8x8.
-				var piece = RuleReader.Read(FileExplorer.Maps, Type.RandomEntrance(random) + @"\map.yaml");
-				var size = pieceSize(piece);
-
-				var spawnArea = Size - size;
-				var half = spawnArea / new MPos(2, 2);
-				var quarter = spawnArea / new MPos(4, 4);
-				var pos = half + new MPos(random.Next(quarter.X) - quarter.X / 2, random.Next(quarter.Y) - quarter.Y / 2);
-
-				loadPiece(piece.ToArray(), pos, playerSpawn: true);
-			}
-
+			// mark tiles that don't allow placing pieces
 			for (int x = 0; x < Size.X; x++)
 			{
 				for (int y = 0; y < Size.Y; y++)
@@ -104,58 +90,18 @@ namespace WarriorsSnuggery
 				}
 			}
 
+			// Entrances
+			createEntry(random);
+
 			// Exits
 			if (world.Game.Mode == GameMode.FIND_EXIT && Type.Exits.Any())
 			{
-				// We are estimating here that the exit tile won't be larger than 8x8.
-				var piece = RuleReader.Read(FileExplorer.Maps, Type.RandomExit(random) + @"\map.yaml");
-				var size = pieceSize(piece);
+				createExit(random);
+			}
 
-				var spawnArea = Size - size;
-				var pos = MPos.Zero;
-				// Picking a random side, 0 = x, 1 = y, 2 = -x, 3 = -y;
-				var side = (byte) random.Next(4);
-				switch(side)
-				{
-					case 0:
-						pos = new MPos(random.Next(2), random.Next(spawnArea.X));
-						break;
-					case 1:
-						pos = new MPos(random.Next(spawnArea.Y), random.Next(2));
-						break;
-					case 2:
-						pos = new MPos(spawnArea.X - random.Next(2), random.Next(spawnArea.X));
-						break;
-					case 3:
-						pos = new MPos(random.Next(spawnArea.X), spawnArea.Y - random.Next(2));
-						break;
-				}
-
-				while(!loadPiece(piece.ToArray(), pos))
-				{
-					piece = RuleReader.Read(FileExplorer.Maps, Type.RandomExit(random) + @"\map.yaml");
-					size = pieceSize(piece);
-
-					spawnArea = Size - size;
-					pos = MPos.Zero;
-					// Picking a random side, 0 = x, 1 = y, 2 = -x, 3 = -y;
-					side = (byte)random.Next(4);
-					switch (side)
-					{
-						case 0:
-							pos = new MPos(random.Next(2), random.Next(spawnArea.X));
-							break;
-						case 1:
-							pos = new MPos(random.Next(spawnArea.Y), random.Next(2));
-							break;
-						case 2:
-							pos = new MPos(spawnArea.X - random.Next(2), random.Next(spawnArea.X));
-							break;
-						case 3:
-							pos = new MPos(random.Next(spawnArea.X), spawnArea.Y - random.Next(2));
-							break;
-					}
-				}
+			foreach (var waveGeneration in Type.WaveGeneration)
+			{
+				createEnemyWave(random, waveGeneration);
 			}
 
 			// Normal Parts
@@ -181,21 +127,6 @@ namespace WarriorsSnuggery
 					loadPiece(piece.ToArray(), position3);
 				}
 			}
-			//if (Type.Parts.Any())
-			//{
-			//	// We are using a higher value because we don't know how much of the buildings apparently are going to spawn.
-			//	var piecesToUse = (Size.X + Size.Y) / 4;
-
-			//	for (int i = 0; i < piecesToUse; i++)
-			//	{
-			//		var piece = RuleReader.Read(FileExplorer.Maps, Type.RandomPiece(random) + @"\map.yaml");
-			//		var size = pieceSize(piece);
-
-			//		var spawnArea = Size - size;
-
-			//		loadPiece(piece.ToArray(), new MPos(random.Next(spawnArea.X), random.Next(spawnArea.Y)));
-			//	}
-			//}
 
 			for (int y = 0; y < Size.Y; y++)
 			{
@@ -210,11 +141,91 @@ namespace WarriorsSnuggery
 					{
 						var ran = random.Next(100);
 						if (ran <= a.Value)
-							world.Add(ActorCreator.Create(world, a.Key, new CPos(1024 * x + random.Next(1024) - 512, 1024 * y + random.Next(1024) - 512, 0)));
+							world.Add(ActorCreator.Create(world, a.Key, new CPos(1024 * x + random.Next(896) - 448, 1024 * y + random.Next(896) - 448, 0)));
 					}
 				}
 			}
 			MapPrinter.PrintMapGeneration("debug", 8, TerrainGenerationArray, Used);
+		}
+
+		void createEnemyWave(Random random, EnemyWaveGenerationType type)
+		{
+			var position = MapUtils.RandomPositionInMap(random, 5, Size);
+			for (int i = 0; i < type.Types.Length; i++)
+			{
+				world.Add(ActorCreator.Create(world, type.Types[i], position.ToCPos() + new CPos(0, i * 1024, 0), 1, true));
+			}
+		}
+
+		void createEntry(Random random)
+		{
+			if (Type.Entrances.Any())
+			{
+				// We are estimating here that the entrance tile won't be larger than 8x8.
+
+				var piece = RuleReader.Read(FileExplorer.Maps, Type.RandomEntrance(random) + @"\map.yaml");
+				var size = pieceSize(piece);
+
+				var spawnArea = Size - size;
+				var half = spawnArea / new MPos(2, 2);
+				var quarter = spawnArea / new MPos(4, 4);
+				var pos = half + new MPos(random.Next(quarter.X) - quarter.X / 2, random.Next(quarter.Y) - quarter.Y / 2);
+
+				loadPiece(piece.ToArray(), pos, true, true);
+			}
+		}
+
+		void createExit(Random random)
+		{
+			// We are estimating here that the exit tile won't be larger than 8x8.
+			var piece = RuleReader.Read(FileExplorer.Maps, Type.RandomExit(random) + @"\map.yaml");
+			var size = pieceSize(piece);
+
+			var spawnArea = Size - size;
+			var pos = MPos.Zero;
+			// Picking a random side, 0 = x, 1 = y, 2 = -x, 3 = -y;
+			var side = (byte)random.Next(4);
+			switch (side)
+			{
+				case 0:
+					pos = new MPos(random.Next(2), random.Next(spawnArea.X));
+					break;
+				case 1:
+					pos = new MPos(random.Next(spawnArea.Y), random.Next(2));
+					break;
+				case 2:
+					pos = new MPos(spawnArea.X - random.Next(2), random.Next(spawnArea.X));
+					break;
+				case 3:
+					pos = new MPos(random.Next(spawnArea.X), spawnArea.Y - random.Next(2));
+					break;
+			}
+
+			while (!loadPiece(piece.ToArray(), pos))
+			{
+				piece = RuleReader.Read(FileExplorer.Maps, Type.RandomExit(random) + @"\map.yaml");
+				size = pieceSize(piece);
+
+				spawnArea = Size - size;
+				pos = MPos.Zero;
+				// Picking a random side, 0 = x, 1 = y, 2 = -x, 3 = -y;
+				side = (byte)random.Next(4);
+				switch (side)
+				{
+					case 0:
+						pos = new MPos(random.Next(2), random.Next(spawnArea.X));
+						break;
+					case 1:
+						pos = new MPos(random.Next(spawnArea.Y), random.Next(2));
+						break;
+					case 2:
+						pos = new MPos(spawnArea.X - random.Next(2), random.Next(spawnArea.X));
+						break;
+					case 3:
+						pos = new MPos(random.Next(spawnArea.X), spawnArea.Y - random.Next(2));
+						break;
+				}
+			}
 		}
 
 		void createGroundBase()
