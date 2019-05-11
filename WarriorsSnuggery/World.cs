@@ -60,23 +60,22 @@ namespace WarriorsSnuggery
 				Camera.Position(new MPos(Map.Size.X / 2, Map.Size.Y / 2).ToCPos(), true);
 			}
 
-			Add(new PhysicsObject(new CPos(0, 0, 1024), new ImageRenderable(TextureManager.NoiseTexture(
-				new MPos(128, 128),
-				6,
-				scale: 1f,
-				intensity: -0.1f,
-				contrast: 5f
-				), 1f)));
-			Add(new PhysicsObject(new CPos(0, 6000, 1024), new ImageRenderable(TextureManager.NoiseTexture(
-				new MPos(128, 128),
-				2,
-				8f,
-				1,
-				intensity: -0.3f,
-				contrast: 1.5f
-				), 1f)));
-			// WallLayer.Set(WallCreator.Create(new WPos(4,6,0), 0));
-			// Add(new Trigger(new CPos(1024, 1024, 100), this, 768, (Actor a) => { Game.End = true; }, true, true, 60, renderable: new ColoredCircleRenderable(Color.Black, 1f, 45, WarriorsSnuggery.Graphics.DrawMethod.LINELOOP)));
+			//Add(new PhysicsObject(new CPos(0, 0, 1024), new ImageRenderable(TextureManager.NoiseTexture(
+			//	new MPos(128, 128),
+			//	6,
+			//	scale: 1f,
+			//	intensity: -0.1f,
+			//	contrast: 5f
+			//	), 1f)));
+			//Add(new PhysicsObject(new CPos(0, 6000, 1024), new ImageRenderable(TextureManager.NoiseTexture(
+			//	new MPos(128, 128),
+			//	2,
+			//	8f,
+			//	1,
+			//	intensity: -0.3f,
+			//	contrast: 1.5f
+			//	), 1f)));
+			//Add(ActorCreator.Create(this, "heal", CPos.Zero, 1, true));
 		}
 
 		public void Tick()
@@ -87,6 +86,11 @@ namespace WarriorsSnuggery
 
 			internalTick();
 
+			AddObjects();
+		}
+
+		public void AddObjects()
+		{
 			int removed = 0;
 			removed += Actors.RemoveAll(a => a.Disposed);
 			removed += Objects.RemoveAll(o => o.Disposed);
@@ -103,9 +107,9 @@ namespace WarriorsSnuggery
 				objectsToAdd.Clear();
 			}
 
-			var toRender= Objects.ToList(); // Copy array
+			var toRender = Objects.ToList(); // Copy array
 			toRender.AddRange(Actors); // Add actors
-			foreach(var wall in WallLayer.Walls)
+			foreach (var wall in WallLayer.Walls)
 				if (wall != null)
 					toRender.Add(wall);
 			toRender = toRender.OrderBy(e => (e.GraphicPosition.Z + (e.Position.Y - 512) * 2)).ToList();

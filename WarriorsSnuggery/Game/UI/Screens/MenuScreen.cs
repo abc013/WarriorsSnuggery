@@ -76,7 +76,7 @@ namespace WarriorsSnuggery.UI
 			height += 512;
 			settings = ButtonCreator.Create("wooden", new CPos(0, height, 0), "Settings", () => game.ChangeScreen(ScreenType.SETTINGS));
 
-			if (game.Type == GameType.MAINMENU)
+			if (game.Type == GameType.MAINMENU || game.Type == GameType.EDITOR)
 			{
 				height += 1024;
 				editor = ButtonCreator.Create("wooden", new CPos(0, height, 0), "Editor", () => game.ChangeScreen(ScreenType.EDITORSELECTION));
@@ -113,7 +113,7 @@ namespace WarriorsSnuggery.UI
 			}
 			settings.Render();
 
-			if (game.Type == GameType.MAINMENU)
+			if (game.Type == GameType.MAINMENU || game.Type == GameType.EDITOR)
 				editor.Render();
 
 			cut3.Render();
@@ -140,7 +140,7 @@ namespace WarriorsSnuggery.UI
 			}
 			settings.Tick();
 
-			if (game.Type == GameType.MAINMENU)
+			if (game.Type == GameType.MAINMENU || game.Type == GameType.EDITOR || game.Type == GameType.TEST)
 				editor.Tick();
 
 			leave.Tick();
@@ -175,7 +175,7 @@ namespace WarriorsSnuggery.UI
 			}
 			settings.Dispose();
 
-			if (game.Type == GameType.MAINMENU)
+			if (game.Type == GameType.MAINMENU || game.Type == GameType.EDITOR)
 				editor.Dispose();
 
 			cut3.Dispose();

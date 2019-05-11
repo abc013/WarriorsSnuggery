@@ -2,7 +2,7 @@ using System.Collections.Generic;
 
 namespace WarriorsSnuggery
 {
-	public sealed class GameStatistics
+	public sealed class GameStatistics // TODO: add seed
 	{
 		// Paths
 		public string Name { get; private set; }

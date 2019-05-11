@@ -167,7 +167,12 @@ namespace WarriorsSnuggery.Objects.Parts
 						};
 
 					case CollectableType.MANA:
-						return (a) => a.World.Game.Statistics.Mana += info.Value;
+						return (a) =>
+						{
+							a.World.Game.Statistics.Mana += info.Value;
+							if (a.World.Game.Statistics.Mana > a.World.Game.Statistics.MaxMana)
+								a.World.Game.Statistics.Mana = a.World.Game.Statistics.MaxMana;
+						};
 
 					case CollectableType.MONEY:
 						return (a) => a.World.Game.Statistics.Money += info.Value;

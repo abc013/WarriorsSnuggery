@@ -44,16 +44,17 @@ namespace WarriorsSnuggery
 
 		void generateMapSize(int seed, int level, int difficulty)
 		{
-			float calc1 = 10 * ((level + 1) + (1 - 1f/(difficulty + 1)));
-			float calc2 = (float) new Random(seed).NextDouble() + 0.1f;
+			float calc1 = 0.2f * (level ^ 2) + 2 * difficulty + 24;
+			float calc2 = (float) new Random(seed).NextDouble() + 1f;
+			float calc3 = (float)new Random(seed).NextDouble() + 1f;
 
-			Size = new MPos((int) (calc1 * 2 * calc2), (int) (calc1 * 2 * calc2));
+			Size = new MPos((int) (calc1 * calc2), (int) (calc1 * calc3));
 
-			if (Size.X < 16)
-				Size = new MPos(16,16);
+			if (Size.X < 24)
+				Size = new MPos(24,24);
 
-			if (Size.X > 64)
-				Size = new MPos(64, 64);
+			if (Size.X > 96)
+				Size = new MPos(96, 96);
 		}
 
 		public void Load()
@@ -104,7 +105,7 @@ namespace WarriorsSnuggery
 			}
 
 			// Exits
-			if (Type.Exits.Any())
+			if (world.Game.Mode == GameMode.FIND_EXIT && Type.Exits.Any())
 			{
 				// We are estimating here that the exit tile won't be larger than 8x8.
 				var piece = RuleReader.Read(FileExplorer.Maps, Type.RandomExit(random) + @"\map.yaml");
