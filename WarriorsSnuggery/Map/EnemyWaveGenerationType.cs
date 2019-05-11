@@ -4,39 +4,67 @@
 	{
 		public readonly int ID;
 
-		public readonly string[] types;
-		public readonly int[] counts;
+		public readonly string[] Types;
+		public readonly int[] Counts;
 
-		EnemyWaveGenerationType(int id, string[] pieces, int[] spawnsOn, int spawnFrequency, StructureGenerationMode mode, int minimumSize, int maximumSize, int distance, bool overrideable)
+		public readonly float SpawnProbability;
+		public readonly int MaximumWaves;
+		public readonly int Difficulty;
+
+		public readonly int[] SpawnsOn;
+
+		EnemyWaveGenerationType(int id, string[] types, int[] counts, float spawnProbability, int maximumWaves, int difficulty, int[] spawnsOn)
 		{
 			ID = id;
-		}
 
-		public static EnemyWaveGenerationType Empty()
-		{
-			return new EnemyWaveGenerationType(0, new string[0], new int[0], 0, StructureGenerationMode.NONE, 0, 0, 0, true);
+			Types = types;
+			Counts = counts;
+			SpawnProbability = spawnProbability;
+			MaximumWaves = maximumWaves;
+			Difficulty = difficulty;
+
+			SpawnsOn = spawnsOn;
 		}
 
 		public static EnemyWaveGenerationType GetType(int id, MiniTextNode[] nodes)
 		{
-			var pieces = new string[0];
+			var types = new string[0];
+			var counts = new int[0];
+
+			var spawnProbability = 1f;
+			var maximumWaves = 2;
+			var difficulty = 1;
+
 			var spawnsOn = new int[0];
-			var spawnFrequency = 100;
-			var generationMode = StructureGenerationMode.NONE;
-
-			var minimumSize = 0;
-			var maximumSize = 10;
-
-			var distance = 2;
-
-			var overrideable = false;
 
 			foreach (var node in nodes)
 			{
 				switch (node.Key)
 				{
-					case "Pieces":
-						pieces = node.ToArray();
+					case "Types":
+						types = node.ToArray();
+
+						break;
+					case "Counts":
+						var countStrings = node.ToArray();
+
+						counts = new int[countStrings.Length];
+						for (int i = 0; i < counts.Length; i++)
+						{
+							counts[i] = int.Parse(countStrings[i]);
+						}
+
+						break;
+					case "Probability":
+						spawnProbability = node.ToFloat();
+
+						break;
+					case "MaximumWaves":
+						maximumWaves = node.ToInt();
+
+						break;
+					case "Difficulty":
+						difficulty = node.ToInt();
 
 						break;
 					case "SpawnsOn":
@@ -48,36 +76,13 @@
 							spawnsOn[i] = int.Parse(spawnsOnStrings[i]);
 						}
 
-						break;
-					case "SpawnFrequency":
-						spawnFrequency = node.ToInt();
-
-						break;
-					case "GenerationMode":
-						generationMode = (StructureGenerationMode)node.ToEnum(typeof(StructureGenerationMode));
-
-						break;
-					case "MinimumSize":
-						minimumSize = node.ToInt();
-
-						break;
-					case "MaximumSize":
-						maximumSize = node.ToInt();
-
-						break;
-					case "Distance":
-						distance = node.ToInt();
-
-						break;
-					case "Overrideable":
-						overrideable = node.ToBoolean();
 
 						break;
 
 				}
 			}
 
-			return new EnemyWaveGenerationType(id, pieces, spawnsOn, spawnFrequency, generationMode, minimumSize, maximumSize, distance, overrideable);
+			return new EnemyWaveGenerationType(id, types, counts, spawnProbability, maximumWaves, difficulty, spawnsOn);
 		}
 	}
 }

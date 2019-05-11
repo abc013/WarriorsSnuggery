@@ -55,7 +55,7 @@ namespace WarriorsSnuggery
 		public readonly GameStatistics Statistics;
 		public readonly MapType MapType;
 		public readonly GameType Type;
-		public readonly GameMode Mode; // TODO: add victory conditions
+		public readonly GameMode Mode;
 		public readonly int Seed;
 		
 		readonly TextLine tick;
@@ -66,7 +66,7 @@ namespace WarriorsSnuggery
 		readonly TextLine infoText;
 		int infoTextDuration;
 
-		public Game(GameStatistics statistics, MapType map, int seed = -1)
+		public Game(GameStatistics statistics, MapType map, int seed = -1) //TODO add GameSettings, move some things from MapType to it
 		{
 			Window = Window.Current;
 
@@ -113,6 +113,7 @@ namespace WarriorsSnuggery
 			var watch = StopWatch.StartNew();
 
 			World.Load();
+			World.AddObjects();
 
 			ScreenControl.Load();
 
@@ -156,6 +157,7 @@ namespace WarriorsSnuggery
 
 			if (!Paused)
 			{
+				// screen control
 				if (ScreenControl.FocusedType != ScreenType.FAILURE)
 				{
 					if (KeyInput.IsKeyDown(Settings.Key("Pause"), 10))
@@ -189,8 +191,14 @@ namespace WarriorsSnuggery
 
 						ChangeScreen(ScreenType.DEFAULT);
 					}
+					if (WinConditionsMet())
+					{
+						Pause();
+						ChangeScreen(ScreenType.WIN);
+					}
 				}
 
+				// party mode
 				if (Settings.PartyMode)
 				{
 					var sin1 = (float) Math.Sin(LocalTick / 8f);
@@ -204,6 +212,7 @@ namespace WarriorsSnuggery
 					WorldRenderer.Ambient = new Color(sin1 * WorldRenderer.Ambient.R, sin2 * WorldRenderer.Ambient.R, sin3 * WorldRenderer.Ambient.R);
 				}
 
+				// camera input
 				if (Editor && !ScreenControl.CursorOnUI())
 				{
 					var mouse = MouseInput.WindowPosition;
@@ -232,6 +241,7 @@ namespace WarriorsSnuggery
 					}
 				}
 
+				// Key input
 				if (KeyInput.IsKeyDown(Settings.Key("CameraLock"), 10))
 				{
 					Camera.LockedToPlayer = !Camera.LockedToPlayer;
@@ -247,6 +257,8 @@ namespace WarriorsSnuggery
 					if (KeyInput.IsKeyDown("n", 10))
 					{
 						World.Game.Statistics.Mana += 100;
+						if (World.Game.Statistics.Mana > World.Game.Statistics.MaxMana)
+							World.Game.Statistics.Mana = World.Game.Statistics.MaxMana;
 					}
 					if (KeyInput.IsKeyDown("b", 10))
 					{
@@ -262,6 +274,7 @@ namespace WarriorsSnuggery
 					}
 				}
 
+				// Zooming
 				if (!Editor && Type != GameType.EDITOR)
 				{
 					if (MouseInput.isRightDown)
@@ -273,6 +286,7 @@ namespace WarriorsSnuggery
 						Camera.Zoom(Settings.ScrollSpeed / 5 * (-(Camera.CurrentZoom - Camera.DefaultZoom) / 2));
 					}
 				}
+
 				World.Tick();
 			}
 
@@ -301,6 +315,24 @@ namespace WarriorsSnuggery
 
 			if (ScreenControl.FocusedType == ScreenType.START)
 				Pause(true);
+		}
+
+		public bool WinConditionsMet()
+		{
+			switch(Mode)
+			{
+				// FIND_EXIT and TUTORIAL will meet conditions when entering the exit
+				default:
+					return false;
+				// TODO not yet implemented.
+				case GameMode.TOWER_DEFENSE:
+					var actor = World.Actors.Find(a => !(a.Team == Actor.PlayerTeam || a.Team == Actor.NeutralTeam));
+					return actor == null;
+				// When no enemies are present, won
+				case GameMode.WIPE_OUT_ENEMIES:
+					var actor2 = World.Actors.Find(a => !(a.Team == Actor.PlayerTeam || a.Team == Actor.NeutralTeam));
+					return actor2 == null;
+			}
 		}
 
 		public void ChangeScreen(ScreenType screen)
