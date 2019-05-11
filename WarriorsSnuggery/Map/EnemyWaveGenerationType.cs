@@ -5,7 +5,6 @@
 		public readonly int ID;
 
 		public readonly string[] Types;
-		public readonly int[] Counts;
 
 		public readonly float SpawnProbability;
 		public readonly int MaximumWaves;
@@ -13,12 +12,11 @@
 
 		public readonly int[] SpawnsOn;
 
-		EnemyWaveGenerationType(int id, string[] types, int[] counts, float spawnProbability, int maximumWaves, int difficulty, int[] spawnsOn)
+		EnemyWaveGenerationType(int id, string[] types, float spawnProbability, int maximumWaves, int difficulty, int[] spawnsOn)
 		{
 			ID = id;
 
 			Types = types;
-			Counts = counts;
 			SpawnProbability = spawnProbability;
 			MaximumWaves = maximumWaves;
 			Difficulty = difficulty;
@@ -29,7 +27,6 @@
 		public static EnemyWaveGenerationType GetType(int id, MiniTextNode[] nodes)
 		{
 			var types = new string[0];
-			var counts = new int[0];
 
 			var spawnProbability = 1f;
 			var maximumWaves = 2;
@@ -43,16 +40,6 @@
 				{
 					case "Types":
 						types = node.ToArray();
-
-						break;
-					case "Counts":
-						var countStrings = node.ToArray();
-
-						counts = new int[countStrings.Length];
-						for (int i = 0; i < counts.Length; i++)
-						{
-							counts[i] = int.Parse(countStrings[i]);
-						}
 
 						break;
 					case "Probability":
@@ -82,7 +69,7 @@
 				}
 			}
 
-			return new EnemyWaveGenerationType(id, types, counts, spawnProbability, maximumWaves, difficulty, spawnsOn);
+			return new EnemyWaveGenerationType(id, types, spawnProbability, maximumWaves, difficulty, spawnsOn);
 		}
 	}
 }

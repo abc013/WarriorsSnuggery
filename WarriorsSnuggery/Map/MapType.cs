@@ -232,7 +232,7 @@ namespace WarriorsSnuggery.Maps
 			var mainTypes = types.Values.Where(a => a.DefaultType == GameType.NORMAL && level >= a.FromLevel && a.FromLevel >= 0).ToList();
 
 			if (mainTypes.Count == 0)
-				throw new MissingFieldException(string.Format("There are no Normal Maps."));
+				throw new MissingFieldException(string.Format("There are no Maps available."));
 
 			return mainTypes[Program.SharedRandom.Next(mainTypes.Count())];
 		}
@@ -242,7 +242,7 @@ namespace WarriorsSnuggery.Maps
 			var mainTypes = types.Values.Where(a => a.DefaultType == GameType.TUTORIAL).ToList();
 
 			if (mainTypes.Count == 0)
-				throw new MissingFieldException(string.Format("There are no Tutorial Maps."));
+				throw new MissingFieldException(string.Format("There are no Tutorial Maps available."));
 
 			return mainTypes[Program.SharedRandom.Next(mainTypes.Count())];
 		}
