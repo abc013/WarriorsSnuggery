@@ -219,11 +219,24 @@ namespace WarriorsSnuggery
 			}
 		}
 
-		public void NewGame(GameStatistics stats, GameType type = GameType.NORMAL, bool sameSeed = false, MapType custom = null)
+		public void NewGame(GameStatistics stats, GameType type = GameType.NORMAL, bool sameSeed = false, MapType custom = null, bool loadStatsMap = false)
 		{
 			Camera.Reset();
 			if (Game != null)
 				Game.Dispose();
+
+			if (loadStatsMap)
+			{
+				try
+				{
+					var size = loadPieceSize(RuleReader.Read(FileExplorer.Saves, stats.SaveName + "_map.yaml"));
+					custom = MapType.MapTypeFromPiece(stats.SaveName + "_map", size, true);
+				}
+				catch (System.IO.FileNotFoundException)
+				{
+					Log.WriteDebug(string.Format("Unable to load saved map of save '{0}'. Using a random map.", stats.SaveName));
+				}
+			}
 
 			if (!sameSeed)
 			{
@@ -256,6 +269,18 @@ namespace WarriorsSnuggery
 				Game.World.LocalPlayer.Health.HP = stats.Health;
 
 			MasterRenderer.UpdateView();
+		}
+
+		MPos loadPieceSize(System.Collections.Generic.List<MiniTextNode> nodes)
+		{
+			foreach (var node in nodes)
+			{
+				if (node.Key == "Size")
+				{
+					return node.ToMPos();
+				}
+			}
+			return MPos.Zero;
 		}
 
 		public override void Exit()

@@ -140,7 +140,7 @@ namespace WarriorsSnuggery.UI
 			}
 			settings.Tick();
 
-			if (game.Type == GameType.MAINMENU || game.Type == GameType.EDITOR || game.Type == GameType.TEST)
+			if (game.Type == GameType.MAINMENU || game.Type == GameType.EDITOR)
 				editor.Tick();
 
 			leave.Tick();

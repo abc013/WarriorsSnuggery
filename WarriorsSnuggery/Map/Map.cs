@@ -74,7 +74,11 @@ namespace WarriorsSnuggery
 			// Important Parts
 			foreach(var node in Type.ImportantParts)
 			{
-				var input = RuleReader.Read(FileExplorer.Maps, node.Key + @"\map.yaml");
+				List<MiniTextNode> input;
+				if (Type.FromSave)
+					input = RuleReader.Read(FileExplorer.Saves, node.Key + ".yaml");
+				else
+					input = RuleReader.Read(FileExplorer.Maps, node.Key + @"\map.yaml");
 
 				loadPiece(input.ToArray(), node.Value, true);
 			}

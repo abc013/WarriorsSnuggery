@@ -1,5 +1,5 @@
 Name=Ahasave
-Level=8
+Level=9
 Difficulty=0
 Hardcore=False
 Money=126
@@ -8,5 +8,6 @@ MaxMana=1000
 Kills=7
 Deaths=1
 Actor=heal
-	Health=915
+	Health=960
 	Mana=12
+Unlocks=
