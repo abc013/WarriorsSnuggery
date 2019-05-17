@@ -16,6 +16,8 @@ namespace WarriorsSnuggery
 		public int Kills;
 		public int Deaths;
 
+		public GameMode Mode;
+
 		public readonly Dictionary<string, bool> UnlockedNodes = new Dictionary<string, bool>();
 
 		// Static Values
@@ -36,6 +38,8 @@ namespace WarriorsSnuggery
 			Mana = save.Mana;
 			Kills = save.Kills;
 			Deaths = save.Deaths;
+
+			Mode = save.Mode;
 
 			foreach (var unlock in save.UnlockedNodes)
 				UnlockedNodes.Add(unlock.Key, unlock.Value);
@@ -63,6 +67,7 @@ namespace WarriorsSnuggery
 
 		public void Save(World world, bool withMap = true)
 		{
+			Mode = world.Game.Mode;
 			using (var writer = new System.IO.StreamWriter(FileExplorer.Saves + SaveName + ".yaml", false))
 			{
 				writer.WriteLine("Name=" + Name);
@@ -74,6 +79,7 @@ namespace WarriorsSnuggery
 				writer.WriteLine("MaxMana=" + MaxMana);
 				writer.WriteLine("Kills=" + Kills);
 				writer.WriteLine("Deaths=" + Deaths);
+				writer.WriteLine("CurrentMode=" + Mode);
 				writer.WriteLine("Actor=" + Actor);
 				writer.WriteLine("\tHealth=" + Health);
 				writer.WriteLine("\tMana=" + Mana);
@@ -214,6 +220,9 @@ namespace WarriorsSnuggery
 						break;
 					case "Deaths":
 						statistic.Deaths = node.ToInt();
+						break;
+					case "CurrentMode":
+						statistic.Mode = (GameMode) node.ToEnum(typeof(GameMode));
 						break;
 					case "Actor":
 						statistic.Actor = node.Value;

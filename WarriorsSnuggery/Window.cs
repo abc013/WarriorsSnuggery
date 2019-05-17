@@ -229,8 +229,7 @@ namespace WarriorsSnuggery
 			{
 				try
 				{
-					var size = loadPieceSize(RuleReader.Read(FileExplorer.Saves, stats.SaveName + "_map.yaml"));
-					custom = MapType.MapTypeFromPiece(stats.SaveName + "_map", size, true);
+					custom = MapType.MapTypeFromSave(stats);
 				}
 				catch (System.IO.FileNotFoundException)
 				{
@@ -252,7 +251,7 @@ namespace WarriorsSnuggery
 						Game = new Game(stats, custom ?? MapCreator.FindMainMenuMap(stats.Level));
 						break;
 					default:
-						if (!(type == GameType.EDITOR))
+						if (!(type == GameType.EDITOR) && !loadStatsMap)
 							stats.Level++;
 						Game = new Game(stats, custom ?? MapCreator.FindMap(stats.Level));
 						GamesLoaded++;
@@ -269,18 +268,6 @@ namespace WarriorsSnuggery
 				Game.World.LocalPlayer.Health.HP = stats.Health;
 
 			MasterRenderer.UpdateView();
-		}
-
-		MPos loadPieceSize(System.Collections.Generic.List<MiniTextNode> nodes)
-		{
-			foreach (var node in nodes)
-			{
-				if (node.Key == "Size")
-				{
-					return node.ToMPos();
-				}
-			}
-			return MPos.Zero;
 		}
 
 		public override void Exit()

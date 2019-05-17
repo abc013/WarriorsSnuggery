@@ -1,5 +1,5 @@
 Name=Name
-Level=2
+Level=5
 Difficulty=1
 Hardcore=False
 Money=107
@@ -7,6 +7,7 @@ LevelAim=10
 MaxMana=500
 Kills=0
 Deaths=0
+CurrentMode=FIND_EXIT
 Actor=heal
 	Health=1000
 	Mana=0

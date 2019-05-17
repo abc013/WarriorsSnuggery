@@ -63,16 +63,39 @@ namespace WarriorsSnuggery.Maps
 			return Exits[random.Next(Exits.Length)];
 		}
 
-		public static MapType MapTypeFromPiece(string piece, MPos size, bool fromSave = false)
+		public static MapType MapTypeFromSave(GameStatistics stats)
+		{
+			var piece = stats.SaveName + "_map";
+			var size = loadPieceSize(RuleReader.Read(FileExplorer.Saves, stats.SaveName + "_map.yaml"));
+
+			var dict = new Dictionary<string, MPos>
+			{ { piece, MPos.Zero } };
+
+			return new MapType(new string[] { }, new string[] { }, dict, 0, size, Color.White, GameType.NORMAL, new[] { stats.Mode }, -1, 0, TerrainGenerationType.Empty(), new TerrainGenerationType[0], new StructureGenerationType[0], new EnemyWaveGenerationType[0], MPos.Zero, true);
+		}
+
+		public static MapType EditorMapTypeFromPiece(string piece, MPos size)
 		{
 			var dict = new Dictionary<string, MPos>
 			{ { piece, MPos.Zero } };
-			return new MapType(new string[] { }, new string[] { }, dict, 0, size, Color.White, fromSave ? GameType.NORMAL : GameType.EDITOR, new[] { GameMode.NONE }, -1, 0, TerrainGenerationType.Empty(), new TerrainGenerationType[0], new StructureGenerationType[0], new EnemyWaveGenerationType[0], MPos.Zero, fromSave);
+			return new MapType(new string[] { }, new string[] { }, dict, 0, size, Color.White, GameType.EDITOR, new[] { GameMode.NONE }, -1, 0, TerrainGenerationType.Empty(), new TerrainGenerationType[0], new StructureGenerationType[0], new EnemyWaveGenerationType[0], MPos.Zero, false);
 		}
 
 		public static MapType ConvertGameType(MapType map, GameType type)
 		{
 			return new MapType(map.Entrances, map.Exits, map.ImportantParts, map.Wall, map.CustomSize, map.Ambient, type, map.DefaultModes, map.Level, map.FromLevel, map.BaseTerrainGeneration, map.TerrainGeneration, map.StructureGeneration, map.WaveGeneration, map.SpawnPoint, map.FromSave);
+		}
+
+		static MPos loadPieceSize(System.Collections.Generic.List<MiniTextNode> nodes)
+		{
+			foreach (var node in nodes)
+			{
+				if (node.Key == "Size")
+				{
+					return node.ToMPos();
+				}
+			}
+			return MPos.Zero;
 		}
 	}
 
