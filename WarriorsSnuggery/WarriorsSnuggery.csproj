@@ -63,6 +63,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Effect.cs" />
+    <Compile Include="GameSettings.cs" />
     <Compile Include="Game\Actor\Parts\ActorPart.cs" />
     <Compile Include="Game\Actor\IActor.cs" />
     <Compile Include="Game\Actor\Parts\BotPart.cs" />

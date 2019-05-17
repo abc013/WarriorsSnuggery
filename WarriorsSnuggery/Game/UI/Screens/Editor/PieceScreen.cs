@@ -42,7 +42,7 @@ namespace WarriorsSnuggery.UI
 
 					var size = loadPieceSize(RuleReader.Read(FileExplorer.Maps + name + @"\", "map.yaml"));
 
-					mapSelection.Add(new PanelItem(CPos.Zero, name, new ImageRenderable(TextureManager.Texture("UI_map")), new MPos(512,512), () => Window.Current.NewGame(new GameStatistics(GameSaveManager.DefaultStatistic), GameType.EDITOR, custom: MapType.MapTypeFromPiece(name, size))));
+					mapSelection.Add(new PanelItem(CPos.Zero, name, new ImageRenderable(TextureManager.Texture("UI_map")), new MPos(512,512), () => Window.Current.NewGame(new GameStatistics(GameSaveManager.DefaultStatistic), GameType.EDITOR, custom: MapType.EditorMapTypeFromPiece(name, size))));
 				}
 			}
 			back = ButtonCreator.Create("wooden", new CPos(4096, 6144, 0), "Back", () => game.ChangeScreen(ScreenType.MENU));
@@ -222,7 +222,7 @@ namespace WarriorsSnuggery.UI
 				stream.WriteLine("Walls=" + walls);
 			}
 
-			Window.Current.NewGame(new GameStatistics(GameSaveManager.DefaultStatistic), GameType.EDITOR, custom: MapType.MapTypeFromPiece(name.Text, size));
+			Window.Current.NewGame(new GameStatistics(GameSaveManager.DefaultStatistic), GameType.EDITOR, custom: MapType.EditorMapTypeFromPiece(name.Text, size));
 		}
 	}
 }

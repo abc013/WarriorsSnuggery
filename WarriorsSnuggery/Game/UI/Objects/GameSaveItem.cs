@@ -35,23 +35,34 @@ namespace WarriorsSnuggery.UI
 			level = new TextLine(pos - new CPos(2560, 0, 0), IFont.Pixel16);
 			level.SetColor(Color.Black);
 			if (stats.Level >= stats.FinalLevel) level.SetColor(new Color(0,200,0));
-			level.SetText(stats.Level + 1);
+			level.SetText(stats.Level);
 			level.Scale = 2f;
 		}
 
 		public override void Render()
 		{
 			base.Render();
-			name.Scale += mouseOnItem ? 0.04f : -0.04f;
+			if (Visible)
+			{
+				name.Scale += mouseOnItem ? 0.04f : -0.04f;
 
-			if (name.Scale > 1.28f)
-				name.Scale = 1.28f;
+				if (name.Scale > 1.28f)
+					name.Scale = 1.28f;
 
-			if (name.Scale < 1f)
-				name.Scale = 1f;
+				if (name.Scale < 1f)
+					name.Scale = 1f;
 
-			name.Render();
-			level.Render();
+				name.Render();
+				level.Render();
+			}
+			if (Selected)
+			{
+				base.SetColor(new Color(1.5f, 1.5f, 1.5f));
+			}
+			else
+			{
+				base.SetColor(Color.White);
+			}
 		}
 
 		public override void Tick()

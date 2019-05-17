@@ -13,11 +13,11 @@ namespace WarriorsSnuggery.UI
 	public class PanelList : Panel, IDisposable
 	{
 		public readonly MPos Size;
-		readonly MPos intSize;
-		readonly MPos itemSize;
+		protected readonly MPos intSize;
+		protected readonly MPos itemSize;
 		public MPos selected;
 		public readonly List<PanelItem> Container = new List<PanelItem>();
-		bool mouseOnPanel;
+		protected bool mouseOnPanel;
 		int scrolled;
 
 		public PanelList(CPos pos, MPos size, MPos itemSize, int bordersize, string texture, string border = "", string highlight = "") : base(pos, new MPos(size.X / 64 * 3, size.Y / 64 * 3), bordersize, texture, border, highlight != "" ? new ImageRenderable(TextureManager.Texture(highlight), new MPos(itemSize.X / 64 * 3, itemSize.Y / 64 * 3)) : null)

@@ -1,0 +1,9 @@
+﻿
+
+namespace WarriorsSnuggery
+{
+	class GameSettings
+	{
+
+	}
+}
