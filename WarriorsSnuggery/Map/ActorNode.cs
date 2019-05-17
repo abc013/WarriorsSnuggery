@@ -9,6 +9,7 @@
 		public readonly float Health = 1f;
 		public readonly int Team = Objects.Actor.NeutralTeam;
 		public readonly bool IsBot = false;
+		public readonly bool IsPlayer = false;
 
 		public ActorNode(int id, CPos position, MiniTextNode[] nodes)
 		{
@@ -33,6 +34,10 @@
 						break;
 					case "IsBot":
 						IsBot = node.ToBoolean();
+
+						break;
+					case "IsPlayer":
+						IsPlayer = node.ToBoolean();
 
 						break;
 				}

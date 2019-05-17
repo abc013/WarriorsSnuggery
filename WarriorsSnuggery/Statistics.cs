@@ -93,7 +93,7 @@ namespace WarriorsSnuggery
 				saveMap(world);
 		}
 
-		void saveMap(World world)
+		void saveMap(World world) // TODO unify with map into one function
 		{
 			var map = world.Map;
 			using (var writer = new System.IO.StreamWriter(FileExplorer.Saves + SaveName + "_map.yaml", false))
@@ -114,8 +114,20 @@ namespace WarriorsSnuggery
 				writer.WriteLine(terrain);
 
 				writer.WriteLine("Actors=");
-				foreach (var a in world.Actors)
-					writer.WriteLine("\t" + ActorCreator.GetName(a.Type) + ";" + a.Team + ";" + (a.IsBot + "").ToLower() + "=" + a.Position.X + "," + a.Position.Y + "," + a.Position.Z);
+				for (int i = 0; i < world.Actors.Count; i++)
+				{
+					var a = world.Actors[i];
+					writer.WriteLine("\t" + i + "=" + a.Position.X + "," + a.Position.Y + "," + a.Position.Z);
+					writer.WriteLine("\t\t" + "Type=" + ActorCreator.GetName(a.Type));
+					if (a.Team != Objects.Actor.NeutralTeam)
+						writer.WriteLine("\t\t" + "Team=" + a.Team);
+					if (a.Health != null && a.Health.HP != a.Health.MaxHP)
+						writer.WriteLine("\t\t" + "Health=" + a.Health.HP / (float)a.Health.MaxHP);
+					if (a.IsBot)
+						writer.WriteLine("\t\t" + "IsBot=" + a.IsBot);
+					if (a.IsPlayer)
+						writer.WriteLine("\t\t" + "IsPlayer=" + a.IsPlayer);
+				}
 
 				var walls = "Walls=";
 				for (int y = 0; y < world.WallLayer.Size.Y - 1; y++)
