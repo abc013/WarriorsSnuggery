@@ -537,3 +537,9 @@ s_plant1=
 		Size=8,8
 		Random=true
 	Offset=0,0,-512
+
+s_plant2=
+	Image=small_plant2
+		Size=5,8
+		Random=true
+	Offset=0,0,-512

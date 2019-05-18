@@ -50,7 +50,7 @@ namespace WarriorsSnuggery
 			Hardcore = save.Hardcore;
 		}
 
-		public GameStatistics()
+		GameStatistics()
 		{
 
 		}
@@ -94,62 +94,17 @@ namespace WarriorsSnuggery
 				saveMap(world);
 		}
 
-		void saveMap(World world) // TODO unify with map into one function
+		void saveMap(World world)
 		{
-			var map = world.Map;
-			using (var writer = new System.IO.StreamWriter(FileExplorer.Saves + SaveName + "_map.yaml", false))
-			{
-				writer.WriteLine("Name=" + Name);
-				writer.WriteLine("Size=" + map.Size.X + "," + map.Size.Y);
-
-				var terrain = "Terrain=";
-				for (int y = 0; y < world.TerrainLayer.Size.Y; y++)
-				{
-					for (int x = 0; x < world.TerrainLayer.Size.X; x++)
-					{
-						terrain += world.TerrainLayer.Terrain[x, y].Type.ID + ",";
-					}
-				}
-
-				terrain = terrain.Substring(0, terrain.Length - 1);
-				writer.WriteLine(terrain);
-
-				writer.WriteLine("Actors=");
-				for (int i = 0; i < world.Actors.Count; i++)
-				{
-					var a = world.Actors[i];
-					writer.WriteLine("\t" + i + "=" + a.Position.X + "," + a.Position.Y + "," + a.Position.Z);
-					writer.WriteLine("\t\t" + "Type=" + ActorCreator.GetName(a.Type));
-					if (a.Team != Objects.Actor.NeutralTeam)
-						writer.WriteLine("\t\t" + "Team=" + a.Team);
-					if (a.Health != null && a.Health.HP != a.Health.MaxHP)
-						writer.WriteLine("\t\t" + "Health=" + a.Health.HP / (float)a.Health.MaxHP);
-					if (a.IsBot)
-						writer.WriteLine("\t\t" + "IsBot=" + a.IsBot);
-					if (a.IsPlayer)
-						writer.WriteLine("\t\t" + "IsPlayer=" + a.IsPlayer);
-				}
-
-				var walls = "Walls=";
-				for (int y = 0; y < world.WallLayer.Size.Y - 1; y++)
-				{
-					for (int x = 0; x < world.WallLayer.Size.X - 1; x++)
-					{
-						walls += (world.WallLayer.Walls[x, y] == null ? -1 : world.WallLayer.Walls[x, y].Type.ID) + ",";
-					}
-				}
-
-				walls = walls.Substring(0, walls.Length - 1);
-				writer.WriteLine(walls);
-
-				writer.Flush();
-				writer.Close();
-			}
+			world.Map.Save(FileExplorer.Saves, SaveName + "_map");
 		}
 
 		public void Delete()
 		{
 			System.IO.File.Delete(FileExplorer.Saves + SaveName + ".yaml");
+
+			if (System.IO.File.Exists(FileExplorer.Saves + SaveName + "_map.yaml"))
+				System.IO.File.Delete(FileExplorer.Saves + SaveName + "_map.yaml");
 		}
 
 		public void SetName(string name)
