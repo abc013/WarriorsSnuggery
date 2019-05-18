@@ -110,7 +110,9 @@ namespace WarriorsSnuggery
 
 			foreach (var waveGeneration in Type.WaveGeneration)
 			{
-				createEnemyWave(random, waveGeneration);
+				var count = random.Next(waveGeneration.MaximumWaves) + 1;
+				for (int i = 0; i < count; i++)
+					createEnemyWave(random, waveGeneration);
 			}
 
 			// Normal Parts
@@ -435,7 +437,12 @@ namespace WarriorsSnuggery
 
 		public void Save(string name)
 		{
-			using(var writer = new StreamWriter(FileExplorer.Maps + name + @"\map.yaml", false))
+			Save(FileExplorer.Maps, name);
+		}
+
+		public void Save(string directory, string name)
+		{
+			using(var writer = new StreamWriter(directory + name + @"\map.yaml", false))
 			{
 				writer.WriteLine("Name=" + name);
 				writer.WriteLine("Size=" + Size.X + "," + Size.Y);
@@ -464,6 +471,8 @@ namespace WarriorsSnuggery
 						writer.WriteLine("\t\t" + "Health=" + a.Health.HP / (float) a.Health.MaxHP);
 					if (a.IsBot)
 						writer.WriteLine("\t\t" + "IsBot=" + a.IsBot);
+					if (a.IsPlayer)
+						writer.WriteLine("\t\t" + "IsPlayer=" + a.IsPlayer);
 				}
 
 				var walls = "Walls=";
