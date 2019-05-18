@@ -76,6 +76,7 @@
     <Compile Include="Game\Actor\Parts\PlayablePart.cs" />
     <Compile Include="Game\Actor\Parts\PlayerPart.cs" />
     <Compile Include="Game\Actor\Parts\RegenerationPart.cs" />
+    <Compile Include="Game\Actor\Parts\RenderablePart.cs" />
     <Compile Include="Game\Actor\Parts\SpawnOnDamagePart.cs" />
     <Compile Include="Game\Actor\Parts\SpawnOnDeathPart.cs" />
     <Compile Include="Game\Actor\Parts\SpawnOnIdlePart.cs" />

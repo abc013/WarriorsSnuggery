@@ -220,7 +220,7 @@ namespace WarriorsSnuggery.UI
 
 			game.Statistics.Money -= type.Playable.ChangeCost;
 
-			var oldHP = player.Health != null ? player.Health.HP / (float) player.Health.MaxHP : 1;
+			var oldHP = player.Health != null ? player.Health.HPRelativeToMax : 1;
 			var oldMana = game.Statistics.Mana;
 			var newActor = ActorCreator.Create(game.World, type, player.Position, player.Team, isPlayer: true);
 

@@ -32,7 +32,7 @@ namespace WarriorsSnuggery.Objects.Parts
 		int inRage;
 
 		Actor target;
-		float targetfavor;
+		float targetFavor;
 
 		public BotPart(Actor self) : base(self)
 		{
@@ -120,8 +120,6 @@ namespace WarriorsSnuggery.Objects.Parts
 
 		void checkTarget(Actor actor)
 		{
-			// We determine why we should use this actor as a target. Currently, the only factors are health and distance.
-			// TODO: to add: Damage, Speed; use a float to determine whether this is better as the last target or not.
 			if (target == null || !target.IsAlive)
 			{
 				target = actor;
@@ -130,16 +128,22 @@ namespace WarriorsSnuggery.Objects.Parts
 
 			var newFavor = 0f;
 
-			newFavor += (actor.Health.HP - target.Health.HP) / 32;
+			// Factor: Health. from 0 to 1
+			// If target has less health, then keep attacking it
+			newFavor += target.Health.HPRelativeToMax - actor.Health.HPRelativeToMax;
 
-			newFavor += distToTarget - target.Position.GetDistToXY(actor.Position) / 512;
+			// Factor: Distance.
+			// If target is closer, then keep attacking it
+			newFavor += 1 - self.Position.GetDistToXY(actor.Position)/distToTarget;
 
-			newFavor += actor.IsPlayer ? 10 : 0;
+			// Factor: Player. from 0 to 1
+			// If target is player, then keep attacking it
+			newFavor += actor.IsPlayer ? 1 : 0;
 
-			if (targetfavor < newFavor)
+			if (newFavor > targetFavor)
 			{
 				target = actor;
-				targetfavor = newFavor;
+				targetFavor = newFavor;
 			}
 		}
 	}
