@@ -42,6 +42,7 @@
 
 		public readonly int MaxHP;
 		public readonly int StartHealth;
+		public float HPRelativeToMax => health / (float)MaxHP;
 		public int HP
 		{
 			get

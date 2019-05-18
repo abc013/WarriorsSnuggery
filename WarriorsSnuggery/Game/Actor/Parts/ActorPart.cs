@@ -4,14 +4,14 @@
 	{
 		public abstract ActorPart Create(Actor self);
 
-		public PartInfo(MiniTextNode[] nodes) { }
+		protected PartInfo(MiniTextNode[] nodes) { }
 	}
 
 	public abstract class ActorPart
 	{
 		protected readonly Actor self;
 
-		public ActorPart(Actor self)
+		protected ActorPart(Actor self)
 		{
 			this.self = self;
 		}

@@ -1,8 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2012
-# SharpDevelop 5.1
-VisualStudioVersion = 12.0.20827.3
+# Visual Studio 15
+VisualStudioVersion = 15.0.28307.572
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WarriorsSnuggery", "WarriorsSnuggery\WarriorsSnuggery.csproj", "{D8BAC54F-9CF7-45FD-9CBA-1240643C26FF}"
 EndProject
@@ -16,5 +15,11 @@ Global
 		{D8BAC54F-9CF7-45FD-9CBA-1240643C26FF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D8BAC54F-9CF7-45FD-9CBA-1240643C26FF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D8BAC54F-9CF7-45FD-9CBA-1240643C26FF}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {4A2F4C14-8DDC-4E51-8483-AC225DFBD28E}
 	EndGlobalSection
 EndGlobal
