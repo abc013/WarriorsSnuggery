@@ -32,7 +32,7 @@ tut_1=
 		Text=green arrows show the direction.
 		Value=240
 		MultipleActivations=true
-			Duration=90
+		Duration=90
 
 tut_2=
 	Image=waypointplate
@@ -44,7 +44,7 @@ tut_2=
 		Text=Above you are apples which regenerate your health.
 		Value=240
 		MultipleActivations=true
-			Duration=90
+		Duration=90
 
 tut_3=
 	Image=waypointplate
@@ -56,7 +56,7 @@ tut_3=
 		Text=There's mana, used for special actions, in these bottles.
 		Value=240
 		MultipleActivations=true
-			Duration=90
+		Duration=90
 
 tut_4=
 	Image=waypointplate
@@ -68,7 +68,7 @@ tut_4=
 		Text=Kill the targets above you.
 		Value=240
 		MultipleActivations=true
-			Duration=90
+		Duration=90
 
 tut_5=
 	Image=waypointplate
@@ -80,7 +80,7 @@ tut_5=
 		Text=With money, you can switch creature or buy stuff.
 		Value=240
 		MultipleActivations=true
-			Duration=90
+		Duration=90
 
 tut_6=
 	Image=waypointplate
@@ -92,4 +92,4 @@ tut_6=
 		Text=Congrats! You completed the tutorial.
 		Value=240
 		MultipleActivations=true
-			Duration=90
+		Duration=90

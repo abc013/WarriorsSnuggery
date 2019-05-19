@@ -1,15 +1,25 @@
 ﻿namespace WarriorsSnuggery.Objects.Parts
 {
+	[Desc("Spawns objects when the object moves.", "Without the mobility rule, this rule is useless.")]
 	public class SpawnOnMovePartInfo : PartInfo
 	{
+		[Desc("Probability that the object will be spawned.")]
 		public readonly float Probability = 1f;
+		[Desc("Count of spawned objects.")]
 		public readonly int Count;
+		[Desc("Time distance between spawn of the objects in ticks.")]
 		public readonly int Tick;
+		[Desc("Name of the object.")]
 		public readonly string Name;
+		[Desc("Object will inherit Team from the dead object.")]
 		public readonly bool InheritsTeam;
+		[Desc("Object will inherit Bot from the dead object.")]
 		public readonly bool InheritsBot;
+		[Desc("Type of the object.")]
 		public readonly string Type;
+		[Desc("Condition to spawn. Unused.")]
 		public readonly string Condition;
+		[Desc("Offset from the center of idling object where the objects spawn.")]
 		public readonly CPos Offset;
 
 		public override ActorPart Create(Actor self)
@@ -57,9 +67,6 @@
 		}
 	}
 
-	/// <summary>
-	/// Spawns objects while the player is moving.
-	/// </summary>
 	public class SpawnOnMovePart : ActorPart
 	{
 		readonly SpawnOnMovePartInfo info;

@@ -22,20 +22,30 @@ namespace WarriorsSnuggery.Objects.Parts
 		TECH_TREE
 	}
 
+	[Desc("Attach to an actor to make it trigger an effect when an actor gets near.")]
 	public class CollectablePartInfo : PartInfo
 	{
+		[Desc("Type of the effect on triggering.")]
 		public readonly CollectableType Type;
+		[Desc("Scanradius for triggering.")]
 		public readonly int Radius;
 
+		[Desc("Allow multiple activations.")]
 		public readonly bool MultipleActivations;
+		[Desc("Trigger kills itself upon collection.")]
 		public readonly bool KillSelf;
-		public readonly int ActivationDuration;
+		[Desc("Time until the trigger can be reactivated again.")]
+		public readonly int Duration;
 
-		public readonly bool ActivateByPlayer;
+		[Desc("Activate only by Player.")]
+		public readonly bool OnlyByPlayer;
 
-		public readonly ParticleSpawner Particles;
+		[Desc("Spawn particles when triggered.")]
+		public readonly ParticleSpawner ParticleSpawner;
 
+		[Desc("Value field for the effect.")]
 		public readonly int Value;
+		[Desc("Text field for the effect.")]
 		public readonly string Text;
 
 		public override ActorPart Create(Actor self)
@@ -58,7 +68,7 @@ namespace WarriorsSnuggery.Objects.Parts
 
 						break;
 					case "OnlyByPlayer":
-						ActivateByPlayer = node.ToBoolean();
+						OnlyByPlayer = node.ToBoolean();
 
 						break;
 					case "KillsSelf":
@@ -68,10 +78,10 @@ namespace WarriorsSnuggery.Objects.Parts
 					case "MultipleActivations":
 						MultipleActivations = node.ToBoolean();
 
-						if (node.Children.Exists(c => c.Key == "Duration"))
-						{
-							ActivationDuration = node.Children.Find(c => c.Key == "Duration").ToInt();
-						}
+						break;
+					case "Duration":
+						Duration = node.ToInt();
+
 						break;
 					case "Value":
 						Value = node.ToInt();
@@ -82,7 +92,7 @@ namespace WarriorsSnuggery.Objects.Parts
 
 						break;
 					case "ParticleSpawner":
-						Particles = node.ToParticleSpawner();
+						ParticleSpawner = node.ToParticleSpawner();
 
 						break;
 					default:
@@ -118,7 +128,7 @@ namespace WarriorsSnuggery.Objects.Parts
 				return;
 			}
 
-			if (info.ActivateByPlayer)
+			if (info.OnlyByPlayer)
 			{
 				var localPlayer = self.World.LocalPlayer;
 
@@ -143,11 +153,11 @@ namespace WarriorsSnuggery.Objects.Parts
 				getFunction().Invoke(actor);
 
 				activated = true;
-				cooldown = info.ActivationDuration;
+				cooldown = info.Duration;
 
-				if (info.Particles != null)
+				if (info.ParticleSpawner != null)
 				{
-					foreach(var particle in info.Particles.Create(self.Position))
+					foreach(var particle in info.ParticleSpawner.Create(self.Position))
 						self.World.Add(particle);
 				}
 

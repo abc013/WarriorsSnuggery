@@ -5,6 +5,8 @@ VisualStudioVersion = 15.0.28307.572
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WarriorsSnuggery", "WarriorsSnuggery\WarriorsSnuggery.csproj", "{D8BAC54F-9CF7-45FD-9CBA-1240643C26FF}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DocWriter", "DocWriter\DocWriter.csproj", "{FFAFC94E-537C-40A1-8998-022E3628C0FE}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{D8BAC54F-9CF7-45FD-9CBA-1240643C26FF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D8BAC54F-9CF7-45FD-9CBA-1240643C26FF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D8BAC54F-9CF7-45FD-9CBA-1240643C26FF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FFAFC94E-537C-40A1-8998-022E3628C0FE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FFAFC94E-537C-40A1-8998-022E3628C0FE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FFAFC94E-537C-40A1-8998-022E3628C0FE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FFAFC94E-537C-40A1-8998-022E3628C0FE}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -4,14 +4,15 @@
  * Time: 16:55
  */
 using WarriorsSnuggery.Graphics;
+using WarriorsSnuggery.Objects.Parts;
 
-namespace WarriorsSnuggery
+namespace WarriorsSnuggery.Objects
 {
 	public class TerrainType
 	{
 		public readonly int ID;
 
-		public ITexture Texture
+		public ITexture Texture //TODO add desc here as well somehow
 		{
 			get { return textures[Program.SharedRandom.Next(textures.Length)]; }
 		}
@@ -34,9 +35,13 @@ namespace WarriorsSnuggery
 		}
 		readonly ITexture[] textures_corner;
 
+		[Desc("If not 1, this will modify the speed of the player.")]
 		public readonly float SpeedModifier;
+		[Desc("If yes, this tile can overlap other tiles.")]
 		public readonly bool Overlaps;
+		[Desc("Overlap height. The higher the value, the more tiles with smaller numbers will be overlapped.", "This rule is defined under Overlaps.")]
 		public readonly int OverlapHeight;
+		[Desc("If true, weapons will leave behind smudge on impact.")]
 		public readonly bool SpawnSmudge;
 
 		public TerrainType(int id, string texture, float speedModifier, bool overlaps, bool spawnSmudge, int overlapHeight, string texture_edge, string texture_corner, string texture_edge2)

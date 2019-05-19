@@ -1,13 +1,21 @@
 ﻿namespace WarriorsSnuggery.Objects.Parts
 {
+	[Desc("Spawns objects when the object dies.", "Without the health rule, this rule is useless.")]
 	public class SpawnOnDeathPartInfo : PartInfo
 	{
+		[Desc("Probability that the object will be spawned.")]
 		public readonly float Probability = 1f;
+		[Desc("Count of spawned objects.")]
 		public readonly int Count;
+		[Desc("Name of the object.")]
 		public readonly string Name;
+		[Desc("Object will inherit Team from the dead object.")]
 		public readonly bool InheritsTeam;
+		[Desc("Object will inherit Bot from the dead object.")]
 		public readonly bool InheritsBot;
+		[Desc("Type of the object.")]
 		public readonly string Type;
+		[Desc("Condition to spawn. Unused.")]
 		public readonly string Condition;
 
 		public override ActorPart Create(Actor self)
@@ -49,9 +57,6 @@
 		}
 	}
 
-	/// <summary>
-	/// Spawns objects after death of the player.
-	/// </summary>
 	public class SpawnOnDeathPart : ActorPart
 	{
 		readonly SpawnOnDeathPartInfo info;

@@ -423,7 +423,7 @@ BarrelExploded=
 		Type=HEALTH
 		Value=-2
 		MultipleActivations=yes
-			Duration=2
+		Duration=2
 		OnlyByPlayer=false
 
 b_bookshelf=

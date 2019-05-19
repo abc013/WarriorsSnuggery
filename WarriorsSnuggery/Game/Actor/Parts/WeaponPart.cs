@@ -1,8 +1,11 @@
 ﻿namespace WarriorsSnuggery.Objects.Parts
 {
+	[Desc("Adds a weapon to the object.")]
 	public class WeaponPartInfo : PartInfo
 	{
-		public readonly WeaponType WeaponType;
+		[Desc("Name of the weapon.")]
+		public readonly WeaponType Type;
+		[Desc("Offset of the shoot point relative to the object's center.")]
 		public readonly CPos Offset;
 
 		public override ActorPart Create(Actor self)
@@ -17,7 +20,7 @@
 				switch (node.Key)
 				{
 					case "Type":
-						WeaponType = WeaponCreator.GetType(node.Value);
+						Type = WeaponCreator.GetType(node.Value);
 						break;
 					case "Offset":
 						Offset = node.ToCPos();
@@ -28,10 +31,7 @@
 			}
 		}
 	}
-
-	/// <summary>
-	/// Adds a Weapon to the Actor.
-	/// </summary>
+	
 	public class WeaponPart : ActorPart
 	{
 		readonly WeaponPartInfo info;
@@ -46,12 +46,12 @@
 		public WeaponPart(Actor self, WeaponPartInfo info) : base(self)
 		{
 			this.info = info;
-			Type = info.WeaponType;
+			Type = info.Type;
 		}
 
 		public Weapon OnAttack(CPos target)
 		{
-			var weapon = WeaponCreator.Create(self.World, info.WeaponType, self, target);
+			var weapon = WeaponCreator.Create(self.World, info.Type, self, target);
 			//weapon.Height = Height; // TODO
 			self.World.Add(weapon);
 

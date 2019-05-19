@@ -1,8 +1,11 @@
 ﻿namespace WarriorsSnuggery.Objects.Parts
 {
+	[Desc("Basic information about the object.")]
 	public class WorldPartInfo : PartInfo
 	{
+		[Desc("When true, the actor will show a damage text.")]
 		public readonly bool ShowDamage;
+		[Desc("When true, the actor will be able to trigger other objects.")]
 		public readonly bool CanTrigger;
 
 		public override ActorPart Create(Actor self)

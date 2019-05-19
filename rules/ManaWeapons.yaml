@@ -13,7 +13,6 @@ playermanaweapon=
 #	Type=Beam
 	Image=particle2
 		Size=12,12
-	Scale=1
 	Smudge=smudge2
 		Size=80,80
 	Damage=700
