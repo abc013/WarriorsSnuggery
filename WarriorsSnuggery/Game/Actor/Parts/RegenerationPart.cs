@@ -1,9 +1,13 @@
 ﻿namespace WarriorsSnuggery.Objects.Parts
 {
+	[Desc("Activates health regeneration features.", "The health rule is required for this.")]
 	public class RegenerationPartInfo : PartInfo
 	{
+		[Desc("Amount of HP the player gets.")]
 		public readonly int Amount;
+		[Desc("Time between the regeneration steps.")]
 		public readonly int Time;
+		[Desc("Time between the regeneration step after a hit.")]
 		public readonly int TimeAfterHit;
 
 		public override ActorPart Create(Actor self)
@@ -32,11 +36,7 @@
 			}
 		}
 	}
-
-	/// <summary>
-	/// Activates regeneration features.
-	/// Crashes if theres no Health.
-	/// </summary>
+	
 	public class RegenerationPart : ActorPart
 	{
 		readonly RegenerationPartInfo info;

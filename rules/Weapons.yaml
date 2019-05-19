@@ -75,7 +75,6 @@ web=
 blade=
 	Image=blade
 		Size=12,6
-	Scale=0,5
 #	Falloff=EXPONENTIAL
 	Damage=150
 	MaximalRange=1536

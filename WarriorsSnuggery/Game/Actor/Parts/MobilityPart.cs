@@ -2,11 +2,16 @@
 
 namespace WarriorsSnuggery.Objects.Parts
 {
+	[Desc("Attach this to an actor to activate mobility features.")]
 	public class MobilityPartInfo : PartInfo
 	{
+		[Desc("Speed of the Actor.")]
 		public readonly int Speed;
+		[Desc("Acceleration of the Actor.")]
 		public readonly int Acceleration;
+		[Desc("Deceleration of the Actor.")]
 		public readonly int Deceleration;
+		[Desc("Gravity. Unused.")]
 		public readonly int Gravity;
 
 		public override ActorPart Create(Actor self)
@@ -38,10 +43,7 @@ namespace WarriorsSnuggery.Objects.Parts
 			}
 		}
 	}
-
-	/// <summary>
-	/// Activates mobility features.
-	/// </summary>
+	
 	public class MobilityPart : ActorPart
 	{
 		readonly MobilityPartInfo info;

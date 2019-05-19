@@ -39,7 +39,7 @@ namespace WarriorsSnuggery.UI
 				var a = ActorCreator.GetType(n);
 				if (a.Playable != null && a.Playable.Playable)
 				{
-					actorPanel.Add(new PanelItem(CPos.Zero, a.Playable.ChangeCost.ToString(), new ImageRenderable(TextureManager.Sprite(a.Idle)[0], 0.5f), new MPos(512, 512),
+					actorPanel.Add(new PanelItem(CPos.Zero, a.Playable.Cost.ToString(), new ImageRenderable(TextureManager.Sprite(a.Idle)[0], 0.5f), new MPos(512, 512),
 						() => {
 							changePlayer(game.World.LocalPlayer, a);
 						}));
@@ -210,10 +210,10 @@ namespace WarriorsSnuggery.UI
 
 		void changePlayer(Actor player, ActorType type)
 		{
-			if (game.Statistics.Money < type.Playable.ChangeCost)
+			if (game.Statistics.Money < type.Playable.Cost)
 				return;
 
-			game.Statistics.Money -= type.Playable.ChangeCost;
+			game.Statistics.Money -= type.Playable.Cost;
 
 			var oldHP = player.Health != null ? player.Health.HPRelativeToMax : 1;
 			var oldMana = game.Statistics.Mana;

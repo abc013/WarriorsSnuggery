@@ -16,7 +16,7 @@ namespace WarriorsSnuggery.Objects
 		{
 			Height = pos.Z;
 			this.info = info;
-			current = info.Start;
+			current = info.Tick;
 			dissolve = info.DissolveTick;
 			scale = (Program.SharedRandom.Next(2) - 1) * info.RanScale * info.Scale + info.Scale;
 			Scale = scale;

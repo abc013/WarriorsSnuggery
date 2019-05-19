@@ -1,8 +1,11 @@
 ﻿namespace WarriorsSnuggery.Objects.Parts
 {
+	[Desc("Attach this to an actor to make it vulnerable and to have health.")]
 	public class HealthPartInfo : PartInfo
 	{
+		[Desc("Maximal Health to archive.", "\"MaxHP\" is also possible.")]
 		public readonly int MaxHealth;
+		[Desc("Health when the actor is spawned.", "\"HP\" is also possible.")]
 		public readonly int StartHealth;
 
 		public override ActorPart Create(Actor self)
@@ -32,10 +35,7 @@
 				StartHealth = MaxHealth;
 		}
 	}
-
-	/// <summary>
-	/// Activates health features.
-	/// </summary>
+	
 	public class HealthPart : ActorPart
 	{
 		readonly HealthPartInfo info;

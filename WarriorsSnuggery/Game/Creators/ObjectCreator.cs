@@ -137,7 +137,6 @@ namespace WarriorsSnuggery
 				var name = weapon.Key;
 				TextureInfo info = null;
 				TextureInfo smudge = null;
-				var scale = 1f;
 				var damage = 0;
 				var speed = 0;
 				var acceleration = 0;
@@ -167,10 +166,6 @@ namespace WarriorsSnuggery
 							break;
 						case "Smudge":
 							smudge = child.ToTextureInfo();
-
-							break;
-						case "Scale":
-							scale = child.ToFloat();
 
 							break;
 						case "Damage":
@@ -243,7 +238,7 @@ namespace WarriorsSnuggery
 				if (info == null)
 					throw new YamlMissingNodeException(weapon.Key, "Image");
 
-				AddTypes(new WeaponType(info, smudge, scale, damage, speed, acceleration, reload, particleWhenExplode, particleCountWhenExplode, inaccuracy, maxRange, minRange, damageFalloff, type, turnToTarget, physicalShape, physicalSize), name);
+				AddTypes(new WeaponType(info, smudge, damage, speed, acceleration, reload, particleWhenExplode, particleCountWhenExplode, inaccuracy, maxRange, minRange, damageFalloff, type, turnToTarget, physicalShape, physicalSize), name);
 			}
 		}
 
@@ -294,7 +289,6 @@ namespace WarriorsSnuggery
 					weapon = new BulletWeapon(world, type, position, target);
 					break;
 			}
-			weapon.Scale *= type.Scale;
 			return weapon;
 		}
 
@@ -314,7 +308,6 @@ namespace WarriorsSnuggery
 					weapon = new BulletWeapon(world, type, origin, target);
 					break;
 			}
-			weapon.Scale *= type.Scale;
 			return weapon;
 		}
 	}

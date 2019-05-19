@@ -1,12 +1,17 @@
 ﻿namespace WarriorsSnuggery.Objects.Parts
 {
+	[Desc("Attach this to an actor to make it playable by the player.")]
 	public class PlayablePartInfo : PartInfo
 	{
+		[Desc("When true, this actor is playable.")]
 		public readonly bool Playable;
+		[Desc("When true, this actor is unlocked from the beginning of the Game. Unused.")]
 		public readonly bool Unlocked;
 
+		[Desc("Cost to unlock this actor. Unused.")]
 		public readonly int UnlockCost;
-		public readonly int ChangeCost;
+		[Desc("Cost to change to this actor.")]
+		public readonly int Cost;
 
 		public override ActorPart Create(Actor self)
 		{
@@ -32,7 +37,7 @@
 
 						break;
 					case "Cost":
-						ChangeCost = node.ToInt();
+						Cost = node.ToInt();
 
 						break;
 					default:
@@ -66,7 +71,7 @@
 
 		public int ChangeCost
 		{
-			get { return info.ChangeCost; }
+			get { return info.Cost; }
 			set { }
 		}
 
