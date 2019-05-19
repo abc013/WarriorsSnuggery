@@ -22,6 +22,7 @@ namespace WarriorsSnuggery
 			writer.WriteLine("\t\t<style>");
 			writer.WriteLine("table { margin: 10px; box-shadow: 1px 0px 10px #EEEEEE; width: 50%; border-collapse: collapse; }");
 			writer.WriteLine("td { border: 1px solid #DDDDDD; padding: 8px; }");
+			writer.WriteLine("th { border: 1px solid #DDDDDD; padding: 8px; }");
 			writer.WriteLine("tr:nth-child(even) { background-color: #EEEEEE; }");
 			writer.WriteLine("h1 { margin-bottom: 0px; }");
 			writer.WriteLine("h2 { margin-bottom: 0px; }");
@@ -103,6 +104,7 @@ namespace WarriorsSnuggery
 
 		public static void WriteEnd(StreamWriter writer)
 		{
+			writer.WriteLine("\t<p>Warrior's Snuggery Rules Document. Generated for " + Settings.Version + " at " + DateTime.Now + ".</p>");
 			writer.WriteLine("\t</body>");
 			writer.WriteLine("</html>");
 		}
