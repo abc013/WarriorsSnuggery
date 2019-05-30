@@ -16,8 +16,6 @@ namespace WarriorsSnuggery
 			foreach(var actor in actors)
 			{
 				var name = actor.Key;
-				
-				var height = 0;
 
 				var partinfos = new List<PartInfo>();
 
@@ -32,24 +30,14 @@ namespace WarriorsSnuggery
 					}
 					else
 					{
-						//throw new YamlUnknownNodeException(child.Key, name);
-					}
-
-					switch(child.Key)
-					{
-						case "Height":
-							height = child.ToInt();
-
-							break;
-						default:
-							throw new YamlUnknownNodeException(child.Key, name);
+						throw new YamlUnknownNodeException(child.Key, name);
 					}
 				}
 
 				var physics = (PhysicsPartInfo)partinfos.Find(p => p is PhysicsPartInfo);
 				var playable = (PlayablePartInfo)partinfos.Find(p => p is PlayablePartInfo);
 
-			   AddType(new ActorType(height, physics, playable, partinfos.ToArray()), name);
+			   AddType(new ActorType(physics, playable, partinfos.ToArray()), name);
 			}
 		}
 
