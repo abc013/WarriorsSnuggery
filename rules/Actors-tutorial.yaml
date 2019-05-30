@@ -3,14 +3,18 @@ arrow_bot=
 		Name=waypoint
 		Dimensions=12,12
 		Condition=ALL
-	Height=150
+	Part@World=
+		Height=256
+		Hover=8
 
 arrow_right=
 	Part@Sprite=
 		Name=waypoint_right
 		Dimensions=12,12
 		Condition=ALL
-	Height=150
+	Part@World=
+		Height=256
+		Hover=8
 
 dummy=
 	Part@Sprite=

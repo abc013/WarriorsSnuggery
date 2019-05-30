@@ -68,7 +68,6 @@ namespace WarriorsSnuggery.Objects
 			Team = team;
 			IsPlayer = isPlayer;
 			CurrentAction = ActorAction.IDLING;
-			Height = type.Height;
 			IsBot = isBot;
 
 			ObjectID = world.Game.NextObjectID;
@@ -85,6 +84,8 @@ namespace WarriorsSnuggery.Objects
 			ActiveWeapon = (WeaponPart) parts.Find(p => p is WeaponPart);
 
 			WorldPart = (WorldPart) parts.Find(p => p is WorldPart);
+			if (WorldPart != null)
+				Height = WorldPart.Height;
 
 			if (Settings.DeveloperMode)
 				parts.Add(new DebugPart(this));
@@ -220,9 +221,11 @@ namespace WarriorsSnuggery.Objects
 			
 			ReloadDelay--;
 			if (ReloadDelay < 0) ReloadDelay = 0;
-
-			if (Height > 128)
-				Height += (int) (Math.Sin(LocalTick/32f) * 4);
+			
+			if (WorldPart != null && WorldPart.Hover > 0)
+			{
+				Height += (int) (Math.Sin(LocalTick / 32f) * WorldPart.Hover * 0.5f);
+			}
 
 			if (Mobility != null)
 			{

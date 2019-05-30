@@ -7,7 +7,7 @@ namespace WarriorsSnuggery.Loader
 	{
 		public static bool IsPart(string name)
 		{
-			return name.StartsWith("Part@"); //TODO change so anything can stand in front of the @, as kind of ID
+			return name.Contains("@");
 		}
 
 		public static PartInfo GetPart(string name, MiniTextNode[] nodes)
