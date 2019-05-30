@@ -62,7 +62,7 @@ namespace WarriorsSnuggery
 			CurrentZoom = newzoom;
 			var window = Window.Current;
 
-			Projection = Matrix4.CreateScale(1/ newzoom * 2 / WindowInfo.Ratio, 1 / newzoom * 2, 0f); //HACK: we use 0f to stop things glitching out of sight
+			Projection = Matrix4.CreateScale(1/ newzoom * 2 / WindowInfo.Ratio, 1 / newzoom * 2, 0f); //we use 0f to stop things glitching out of sight
 			//Matrix4.CreateOrthographic(newzoom / 2 * WindowInfo.Ratio, newzoom / 2, 100f,0, out Projection);
 			if (!add.Equals(0))
 				UpdateView();

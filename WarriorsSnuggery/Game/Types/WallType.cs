@@ -12,7 +12,8 @@ namespace WarriorsSnuggery.Objects
 	{
 		public readonly int ID;
 
-		readonly ITexture[] textures; //TODO add to Desc as well
+		[Desc("Texture of the wall", "Use \"Image\" as rule.")]
+		readonly ITexture[] textures;
 
 		[Desc("If yes, this wall will block objects with physics")]
 		public readonly bool Blocks;

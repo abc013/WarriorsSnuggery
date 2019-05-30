@@ -37,10 +37,8 @@ namespace WarriorsSnuggery.Objects
 		[Desc("Time until the weapon has been reloaded.")]
 		public readonly int Reload;
 
-		[Desc("Particles when the weapon impacts.")]
-		public readonly ParticleType ParticlesWhenExplode; //TODO replace through particleSpawner
-		[Desc("Count of the particles.")]
-		public readonly int ParticleCountWhenExplode;
+		[Desc("Particles that will be emitted when the weapon impacts.")]
+		public readonly ParticleSpawner ParticlesOnImpact;
 
 		[Desc("Inaccuracy of the weapon.")]
 		public readonly int Inaccuracy;
@@ -63,7 +61,7 @@ namespace WarriorsSnuggery.Objects
 		[Desc("Size of the collision boundary.")]
 		public readonly int PhysicalSize;
 
-		public WeaponType(TextureInfo textures, TextureInfo smudge, int damage, int speed, int acceleration, int reload, ParticleType particlesWhenExplode, int particleCountWhenExplode, int inaccuracy, int maxRange, int minRange, FalloffType damageFalloff, WeaponFireType weaponFireType, bool orientateToTarget, Shape physicalShape, int physicalSize)
+		public WeaponType(TextureInfo textures, TextureInfo smudge, int damage, int speed, int acceleration, int reload, ParticleSpawner particlesOnImpact, int inaccuracy, int maxRange, int minRange, FalloffType damageFalloff, WeaponFireType weaponFireType, bool orientateToTarget, Shape physicalShape, int physicalSize)
 		{
 			Textures = textures;
 			Smudge = smudge;
@@ -71,8 +69,7 @@ namespace WarriorsSnuggery.Objects
 			Speed = speed;
 			Acceleration = acceleration;
 			Reload = reload;
-			ParticlesWhenExplode = particlesWhenExplode;
-			ParticleCountWhenExplode = particleCountWhenExplode;
+			ParticlesOnImpact = particlesOnImpact;
 			Inaccuracy = inaccuracy;
 			MaxRange = maxRange;
 			MinRange = minRange;

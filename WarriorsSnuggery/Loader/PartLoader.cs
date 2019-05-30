@@ -1,5 +1,5 @@
 ﻿using System;
-using WarriorsSnuggery.Objects;
+using WarriorsSnuggery.Objects.Parts;
 
 namespace WarriorsSnuggery.Loader
 {

@@ -66,6 +66,7 @@
     <Compile Include="GameSettings.cs" />
     <Compile Include="Game\Actor\Parts\ActorPart.cs" />
     <Compile Include="Game\Actor\IActor.cs" />
+    <Compile Include="Game\Actor\Parts\AnimatedSpritePart.cs" />
     <Compile Include="Game\Actor\Parts\BotPart.cs" />
     <Compile Include="Game\Actor\Parts\CollectablePart.cs" />
     <Compile Include="Game\Actor\Parts\DebugPart.cs" />
@@ -82,6 +83,7 @@
     <Compile Include="Game\Actor\Parts\SpawnOnDeathPart.cs" />
     <Compile Include="Game\Actor\Parts\SpawnOnIdlePart.cs" />
     <Compile Include="Game\Actor\Parts\SpawnOnMovePart.cs" />
+    <Compile Include="Game\Actor\Parts\SpritePart.cs" />
     <Compile Include="Game\Actor\Parts\WeaponPart.cs" />
     <Compile Include="Game\Actor\Parts\WorldPart.cs" />
     <Compile Include="Game\IPositionable.cs" />

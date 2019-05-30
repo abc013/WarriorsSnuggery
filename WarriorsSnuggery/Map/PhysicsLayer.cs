@@ -39,7 +39,7 @@ namespace WarriorsSnuggery
 				return;
 
 			var position = obj.Position;
-			var radius = obj.Physics.Radius;
+			var radius = obj.Physics.RadiusX;
 			var shape = obj.Physics.Shape;
 			var points = new MPos[4];
 

@@ -1,9 +1,3 @@
-@INCLUDE ManaWeapons.yaml
-
-#######################
-#   Default Weapons   #
-#######################
-
 arrow=
 	Type=Rocket
 	Image=arrow
@@ -11,7 +5,7 @@ arrow=
 	Damage=30
 	Speed=150
 	Reload=15
-	ExplodeParticles=woodPiece
+	ParticlesOnImpact=woodPiece
 		Count=3
 	RotateToTarget=yes
 
@@ -27,7 +21,7 @@ cannon=
 	Speed=140
 	Reload=190
 	Inaccuracy=1536
-	ExplodeParticles=nebula1
+	ParticlesOnImpact=nebula1
 		Count=3
 
 slime=
@@ -54,7 +48,7 @@ voidweapon=
 	Speed=256
 		Acceleration=30
 	Reload=20
-	ExplodeParticles=nebula1
+	ParticlesOnImpact=nebula1
 		Count=10
 	Inaccuracy=512
 
@@ -68,7 +62,7 @@ web=
 	Speed=256
 		Acceleration=30
 	Reload=100
-	ExplodeParticles=nebula1
+	ParticlesOnImpact=nebula1
 		Count=20
 	Inaccuracy=512
 
@@ -98,7 +92,7 @@ lazer=
 	RotateToTarget=no
 	Speed=130
 	Reload=13
-	ExplodeParticles=glitter
+	ParticlesOnImpact=glitter
 		Count=5
 #	Inaccuracy=128
 

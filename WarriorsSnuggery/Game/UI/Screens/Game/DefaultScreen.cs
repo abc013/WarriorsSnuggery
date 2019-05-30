@@ -44,7 +44,7 @@ namespace WarriorsSnuggery.UI
 				var a = ActorCreator.GetType(n);
 				if (a.Playable != null && a.Playable.Playable)
 				{
-					actorPanel.Add(new PanelItem(CPos.Zero, a.Playable.Cost.ToString(), new ImageRenderable(TextureManager.Sprite(a.Idle)[0], 0.5f), new MPos(512, 512),
+					actorPanel.Add(new PanelItem(CPos.Zero, a.Playable.Cost.ToString(), new ImageRenderable(TextureManager.Sprite(new TextureInfo("questionmark", TextureType.IMAGE, 10, 12,12))[0], 0.5f), new MPos(512, 512),
 						() => {
 							changePlayer(game.World.LocalPlayer, a);
 						}));

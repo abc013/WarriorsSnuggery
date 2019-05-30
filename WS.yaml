@@ -1,12 +1,12 @@
 FrameLimiter=30
 ScrollSpeed=7
 EdgeScrolling=4
-DeveloperMode=0
+DeveloperMode=1
 Fullscreen=1
 Width=1920
 Height=1080
 AntiAliasing=1
-EnablePixeling=1
+EnablePixeling=0
 FirstStarted=0
 Keys=
 	Pause=p

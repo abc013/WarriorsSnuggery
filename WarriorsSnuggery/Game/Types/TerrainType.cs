@@ -12,27 +12,31 @@ namespace WarriorsSnuggery.Objects
 	{
 		public readonly int ID;
 
-		public ITexture Texture //TODO add desc here as well somehow
+		public ITexture Texture
 		{
 			get { return textures[Program.SharedRandom.Next(textures.Length)]; }
 		}
+		[Desc("Random base texture.", "Use \"Image\" as rule.")] // TODO: make better
 		readonly ITexture[] textures;
 
 		public ITexture Texture_Edge
 		{
 			get { return textures_edge[Program.SharedRandom.Next(textures_edge.Length)]; }
 		}
+		[Desc("Edge of the tile.", "use \"Edge\" beneath the rule \"Image\" as rule.")]
 		readonly ITexture[] textures_edge;
 		public ITexture Texture_Edge2 // For vertical edges
 		{
 			get { return textures_edge2?[Program.SharedRandom.Next(textures_edge2.Length)]; }
 		}
+		[Desc("(possible) Vertical Edge of the tile.", "use \"Edge_Vertical\" beneath the rule \"Image\" as rule.")]
 		readonly ITexture[] textures_edge2;
 
 		public ITexture Texture_Corner
 		{
 			get { return textures_corner[Program.SharedRandom.Next(textures_corner.Length)]; }
 		}
+		[Desc("Corner of the tile.", "use \"Corner\" beneath the rule \"Image\" as rule.")]
 		readonly ITexture[] textures_corner;
 
 		[Desc("If not 1, this will modify the speed of the player.")]
