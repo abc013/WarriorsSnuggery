@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using WarriorsSnuggery.Objects;
 using WarriorsSnuggery.Graphics;
+using WarriorsSnuggery.Objects.Parts;
 
 namespace WarriorsSnuggery
 {
@@ -15,15 +16,7 @@ namespace WarriorsSnuggery
 			foreach(var actor in actors)
 			{
 				var name = actor.Key;
-				TextureInfo idle = null;
-				int idleFrames = 1;
-				TextureInfo walk = null;
-				int walkFrames = 0;
-				TextureInfo attack = null;
-				int attackFrames = 0;
-				TextureInfo shadow = null;
-
-				var offset = CPos.Zero;
+				
 				var height = 0;
 
 				var partinfos = new List<PartInfo>();
@@ -37,34 +30,13 @@ namespace WarriorsSnuggery
 						partinfos.Add(part);
 						continue;
 					}
+					else
+					{
+						//throw new YamlUnknownNodeException(child.Key, name);
+					}
 
 					switch(child.Key)
 					{
-						case "Image":
-							int frames;
-							string type;
-							var info = child.ToTextureInfoAnim(out frames, out type);
-
-							switch(type)
-							{
-								default:
-									idle = info;
-									idleFrames = frames;
-									break;
-								case "walk":
-									walk = info;
-									walkFrames = frames;
-									break;
-								case "attack":
-									attack = info;
-									attackFrames = frames;
-									break;
-							}
-							break;
-						case "Offset":
-							offset = child.ToCPos();
-
-							break;
 						case "Height":
 							height = child.ToInt();
 
@@ -74,13 +46,10 @@ namespace WarriorsSnuggery
 					}
 				}
 
-				if (idle == null)
-					throw new YamlMissingNodeException(actor.Key, "Image");
+				var physics = (PhysicsPartInfo)partinfos.Find(p => p is PhysicsPartInfo);
+				var playable = (PlayablePartInfo)partinfos.Find(p => p is PlayablePartInfo);
 
-				var physics = (Objects.Parts.PhysicsPartInfo)partinfos.Find(p => p is Objects.Parts.PhysicsPartInfo);
-				var playable = (Objects.Parts.PlayablePartInfo)partinfos.Find(p => p is Objects.Parts.PlayablePartInfo);
-
-			   AddType(new ActorType(idle, idleFrames, walk, walkFrames, attack, attackFrames, shadow, offset, height, physics, playable, partinfos.ToArray()), name);
+			   AddType(new ActorType(height, physics, playable, partinfos.ToArray()), name);
 			}
 		}
 
@@ -142,8 +111,7 @@ namespace WarriorsSnuggery
 				var acceleration = 0;
 				var reload = 0;
 				WeaponFireType type = WeaponFireType.BULLET;
-				ParticleType particleWhenExplode = null;
-				var particleCountWhenExplode = 5;
+				ParticleSpawner particlesOnImpact = null;
 				var inaccuracy = 0;
 				var maxRange = 8192;
 				var minRange = 512;
@@ -183,11 +151,8 @@ namespace WarriorsSnuggery
 								acceleration = child.Children.Find(c => c.Key == "Acceleration").ToInt();
 
 							break;
-						case "ExplodeParticles":
-							particleWhenExplode = ParticleCreator.GetType(child.Value);
-
-							if (child.Children.Count > 0 && child.Children.Exists(c => c.Key == "Count"))
-								particleCountWhenExplode = child.Children.Find(c => c.Key == "Count").ToInt();
+						case "ParticlesOnImpact":
+							particlesOnImpact = child.ToParticleSpawner();
 
 							break;
 						case "Inaccuracy":
@@ -238,7 +203,7 @@ namespace WarriorsSnuggery
 				if (info == null)
 					throw new YamlMissingNodeException(weapon.Key, "Image");
 
-				AddTypes(new WeaponType(info, smudge, damage, speed, acceleration, reload, particleWhenExplode, particleCountWhenExplode, inaccuracy, maxRange, minRange, damageFalloff, type, turnToTarget, physicalShape, physicalSize), name);
+				AddTypes(new WeaponType(info, smudge, damage, speed, acceleration, reload, particlesOnImpact, inaccuracy, maxRange, minRange, damageFalloff, type, turnToTarget, physicalShape, physicalSize), name);
 			}
 		}
 

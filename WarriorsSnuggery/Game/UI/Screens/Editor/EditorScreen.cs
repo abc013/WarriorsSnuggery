@@ -75,7 +75,7 @@ namespace WarriorsSnuggery.UI
 			foreach(var n in ActorCreator.GetNames())
 			{
 				var a = ActorCreator.GetType(n);
-				actors.Add(new PanelItem(CPos.Zero, n, new ImageRenderable(a.Idle.GetTextures()[0], 0.4f), new MPos(512,512), () => actorSelected = a));
+				actors.Add(new PanelItem(CPos.Zero, n, new ImageRenderable(new TextureInfo("questionmark", TextureType.IMAGE, 10, 12, 12, false).GetTextures()[0], 0.4f), new MPos(512,512), () => actorSelected = a));
 			}
 
 			walls = new PanelList(new CPos((int) (WindowInfo.UnitWidth * 512 - 2048), 2048, 0), new MPos(2048, 4096), new MPos(512,512), 4, "UI_wood1", "UI_wood3", "UI_wood2");

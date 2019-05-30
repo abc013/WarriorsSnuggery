@@ -90,7 +90,7 @@ namespace WarriorsSnuggery.Objects.Parts
 
 		CPos randomPosition()
 		{
-			var size = self.Physics != null ? self.Physics.Radius : 40;
+			var size = self.Physics != null ? self.Physics.RadiusX : 40;
 			var x = Program.SharedRandom.Next(size) - size / 2;
 			var y = Program.SharedRandom.Next(size) - size / 2;
 			return self.Position + new CPos(x, y, 0);

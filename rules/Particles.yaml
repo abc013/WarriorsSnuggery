@@ -23,7 +23,7 @@ slime_splash=
 		Random=true
 	Tick=100
 	DissolveTick=500
-	
+
 bullet=
 	Image=bullet
 		Size=12,24
@@ -31,6 +31,14 @@ bullet=
 	Force=0,9,0
 		Random=0,70,0
 	Scale=0,8
+
+grey=
+	Image=grey
+		Size=1,1
+	Tick=30
+	DissolveTick=15
+	Force=0,0,0
+		Random=10,10,0
 
 woodPiece=
 	Image=woodPiece

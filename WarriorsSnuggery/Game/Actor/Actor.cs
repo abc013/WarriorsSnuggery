@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using WarriorsSnuggery.Graphics;
+using WarriorsSnuggery.Objects.Parts;
 
 namespace WarriorsSnuggery.Objects
 {
@@ -8,7 +9,8 @@ namespace WarriorsSnuggery.Objects
 	{
 		IDLING,
 		ATTACKING,
-		MOVING
+		MOVING,
+		ALL
 	}
 
 	public sealed class Actor : PhysicsObject
@@ -26,16 +28,15 @@ namespace WarriorsSnuggery.Objects
 
 		public ushort Team;
 		public float Angle;
-
-		readonly ActorBody body;
+		
 		readonly List<ActorPart> parts = new List<ActorPart>();
 
-		public readonly Parts.MobilityPart Mobility;
-		public readonly Parts.HealthPart Health;
+		public readonly MobilityPart Mobility;
+		public readonly HealthPart Health;
 
-		public Parts.WeaponPart ActiveWeapon;
+		public WeaponPart ActiveWeapon;
 
-		public readonly Parts.WorldPart WorldPart;
+		public readonly WorldPart WorldPart;
 
 		public readonly ActorType Type;
 		
@@ -55,15 +56,13 @@ namespace WarriorsSnuggery.Objects
 		}
 		public ActorAction CurrentAction;
 
-		public Actor(World world, ActorType type, CPos position, ushort team, bool isBot, bool isPlayer = false) : base(position, null, type.Physics == null ? null : new Physics(position, 0, type.Physics.Shape, type.Physics.Size.X, type.Physics.Size.Z))
+		public Actor(World world, ActorType type, CPos position, ushort team, bool isBot, bool isPlayer = false) : base(position, null, type.Physics == null ? null : new Physics(position, 0, type.Physics.Shape, type.Physics.Size.X, type.Physics.Size.Y, type.Physics.Size.Z))
 		{
 			World = world;
-			Offset = type.Offset;
 			Type = type;
 			Team = team;
 			IsPlayer = isPlayer;
 			CurrentAction = ActorAction.IDLING;
-			body = new ActorBody(this, type);
 			Height = type.Height;
 			IsBot = isBot;
 
@@ -75,29 +74,29 @@ namespace WarriorsSnuggery.Objects
 				parts.Add(partinfo.Create(this));
 			}
 
-			Mobility = (Parts.MobilityPart) parts.Find(p => p is Parts.MobilityPart);
-			Health = (Parts.HealthPart) parts.Find(p => p is Parts.HealthPart);
+			Mobility = (MobilityPart) parts.Find(p => p is MobilityPart);
+			Health = (HealthPart) parts.Find(p => p is HealthPart);
 
-			ActiveWeapon = (Parts.WeaponPart) parts.Find(p => p is Parts.WeaponPart);
+			ActiveWeapon = (WeaponPart) parts.Find(p => p is WeaponPart);
 
-			WorldPart = (Parts.WorldPart) parts.Find(p => p is Parts.WorldPart);
+			WorldPart = (WorldPart) parts.Find(p => p is WorldPart);
 
 			if (Settings.DeveloperMode)
-				parts.Add(new Parts.DebugPart(this));
+				parts.Add(new DebugPart(this));
 
 			if (isPlayer)
 			{
 				foreach (var node in TechTreeLoader.TechTree)
 				{
 					if (node.Unlocked || world.Game.Statistics.UnlockedNodes.ContainsKey(node.InnerName) && world.Game.Statistics.UnlockedNodes[node.InnerName])
-						parts.Add(new Parts.EffectPart(this, node.Effect));
+						parts.Add(new EffectPart(this, node.Effect));
 				}
 
-				parts.Add(new Parts.PlayerPart(this));
+				parts.Add(new PlayerPart(this));
 			}
 
 			if (isBot)
-				parts.Add(new Parts.BotPart(this));
+				parts.Add(new BotPart(this));
 		}
 
 		public void Accelerate(CPos target, int customAcceleration = 0)
@@ -185,7 +184,6 @@ namespace WarriorsSnuggery.Objects
 			CheckVisibility();
 			CurrentAction = ActorAction.MOVING;
 			Angle = Position.GetAngleToXY(old);
-			body.NotifyChange();
 			World.PhysicsLayer.UpdateSectors(this);
 
 			parts.ForEach(p => p.OnMove(old, Velocity));
@@ -193,42 +191,16 @@ namespace WarriorsSnuggery.Objects
 
 		void denyMove()
 		{
-			base.Physics.Position = base.Position;
+			Physics.Position = Position;
 			Velocity = CPos.Zero;
 
 			parts.ForEach(p => p.OnStop());
 		}
 
-		public override void CheckVisibility()
-		{
-			//if (body.CurrentRenderable != null) // TODO: this creates graphical bugs
-			//{
-			//	var visible = body.CurrentRenderable.CheckVisibility();
-			//}
-		}
-
 		public override void Render()
 		{
-			var renderable = body.CurrentRenderable;
-			if (renderable != null)
-			{
-				if (Height > 0)
-				{
-					MasterRenderer.RenderShadow = true;
-					MasterRenderer.UniformHeight(Height);
-
-					renderable.SetPosition(GraphicPositionWithoutHeight);
-					renderable.Render();
-
-					MasterRenderer.RenderShadow = false;
-					Program.CheckGraphicsError("bla");
-				}
-
-				renderable.SetPosition(GraphicPosition);
-				renderable.Render();
-			}
 			base.Render();
-
+			
 			parts.ForEach(p => p.Render());
 		}
 
@@ -260,8 +232,6 @@ namespace WarriorsSnuggery.Objects
 			}
 
 			parts.ForEach(p => p.Tick());
-
-			body.Tick();
 		}
 
 		public void Attack(CPos target)
@@ -283,8 +253,6 @@ namespace WarriorsSnuggery.Objects
 
 			ReloadDelay = ActiveWeapon.Type.Reload;
 			CurrentAction = ActorAction.ATTACKING;
-
-			body.NotifyChange();
 		}
 
 		public void Attack(Actor target)
@@ -331,86 +299,8 @@ namespace WarriorsSnuggery.Objects
 		{
 			base.Dispose();
 
-			body.Dispose();
-
 			parts.ForEach(p => p.OnDispose());
-		}
-	}
-
-	class ActorBody : ITick, IDisposable, IActorBody
-	{
-		public SpriteRenderable CurrentRenderable;
-
-		readonly SpriteRenderable[] idle;
-		readonly SpriteRenderable[] walk;
-		readonly SpriteRenderable[] attack;
-
-		readonly Actor actor;
-
-		int currentTick;
-		ActorAction currentAnim;
-
-		public ActorBody(Actor a, ActorType type)
-		{
-			actor = a;
-			var idleFrames = type.Idle.GetTextures();
-			idle = new SpriteRenderable[type.IdleFacings];
-			var frameCountPerIdleAnim = idleFrames.Length / type.IdleFacings;
-
-			if (frameCountPerIdleAnim * type.IdleFacings != idleFrames.Length)
-				throw new YamlInvalidNodeException(string.Format(@"Idle Frame '{0}' count cannot be matched with the given Facings '{1}'.", idleFrames.Length, type.IdleFacings));
-
-			for (int i = 0; i < idle.Length; i++)
-			{
-				var anim = new ITexture[frameCountPerIdleAnim];
-				for (int x = 0; x < frameCountPerIdleAnim; x++)
-					anim[x] = idleFrames[i * frameCountPerIdleAnim + x];
-				
-				idle[i] = new SpriteRenderable(anim, tick: type.Idle.Tick);
-			}
-
-			CurrentRenderable = idle[0];
-			walk = new SpriteRenderable[type.WalkFacings];
-			attack = new SpriteRenderable[type.AttackFacings];
-		}
-
-		public void NotifyChange()
-		{
-			float part = 360f / idle.Length;
-			int facing = (int) Math.Round(actor.Angle / part);
-			if (facing >= idle.Length)
-				facing = 0;
-			CurrentRenderable = idle[facing];
-		}
-
-		public void NotifyAttack()
-		{
-			
-		}
-
-		public void NotifyMove()
-		{
-			if(currentAnim == ActorAction.ATTACKING)
-				return;
-		}
-
-		public void Tick()
-		{
-			if (currentTick-- <= 0)
-				currentAnim = ActorAction.IDLING;
-		}
-
-		public void Dispose()
-		{
-			// TODO unused
-			//foreach (var i in idle)
-			//	i.Dispose();
-
-			//foreach (var w in walk)
-			//	w.Dispose();
-
-			//foreach (var a in attack)
-			//	a.Dispose();
+			//parts.Clear(); TODO?
 		}
 	}
 }
