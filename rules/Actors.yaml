@@ -421,9 +421,9 @@ statue1=
 firepot=
 	Part@Sprite=
 		Name=firepot
-		Dimensions=12,24
+		Dimensions=24,24
 		Condition=ALL
-		Offset=0,-512,0
+		Offset=256,-512,0
 	Part@Physics=
 		Shape=Rectangle
 		Size=200,200,500
@@ -456,13 +456,22 @@ b_bookshelf=
 table1=
 	Part@Sprite=
 		Name=table1
-		Dimensions=24,24
+		Dimensions=30,24
 		Condition=ALL
-		Offset=0,100,0
+		Offset=88,100,0
 	Part@Physics=
 		Shape=Circle
 		Size=400,400,300
 
+painting=
+	Part@Sprite=
+		Name=painting
+		Dimensions=24,24
+		Condition=ALL
+		Offset=177,-177,0
+	Part@Physics=
+		Shape=Rectangle
+		Size=332,332,400
 #############################
 #          PLANTS           #
 #############################
