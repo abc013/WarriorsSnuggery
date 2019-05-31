@@ -65,7 +65,7 @@ namespace WarriorsSnuggery
 		{
 			Window = Window.Current;
 
-			if (seed < 0) seed = SharedRandom.Next();
+			if (seed < 0) seed = statistics.Seed + statistics.Level;
 			Seed = seed;
 			MapType = map;
 			OldStatistics = statistics.Copy();

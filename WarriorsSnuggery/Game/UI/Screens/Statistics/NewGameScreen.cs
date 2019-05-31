@@ -7,10 +7,12 @@ namespace WarriorsSnuggery.UI
 	{
 		readonly Game game;
 
-		readonly TextLine create, name, difficulty, hardcore;
+		readonly TextLine create, name, difficulty, hardcore, seed;
 		readonly TextBox nameInput;
 		readonly TextBox difficultyInput;
 		readonly CheckBox hardcoreInput;
+		readonly TextBox seedInput;
+		readonly Button seedGenerate;
 
 		readonly Button cancel;
 		readonly Button proceed;
@@ -38,8 +40,23 @@ namespace WarriorsSnuggery.UI
 
 			hardcoreInput = CheckBoxCreator.Create("wooden", new CPos(1024, 2048, 0), false);
 
+			seed = new TextLine(new CPos(-2048, 3072, 0), IFont.Pixel16, TextLine.OffsetType.RIGHT);
+			seed.SetText("Seed: ");
+
+			seedInput = TextBoxCreator.Create("wooden", new CPos(1024, 3072, 0), getSeed(), 7, true);
+			seedGenerate = ButtonCreator.Create("wooden", new CPos(6144, 3072, 0), "Generate", () => { seedInput.Text = getSeed(); });
+
 			cancel = ButtonCreator.Create("wooden", new CPos(-4096, 6144, 0), "Cancel", () => { game.ChangeScreen(ScreenType.DEFAULT); game.Pause(false); });
-			proceed = ButtonCreator.Create("wooden", new CPos(4096, 6144, 0), "Proceed", () => { Window.Current.NewGame(GameStatistics.CreateGameStatistic(int.Parse(difficultyInput.Text), hardcoreInput.Checked, nameInput.Text)); });
+			proceed = ButtonCreator.Create("wooden", new CPos(4096, 6144, 0), "Proceed", () => { Window.Current.NewGame(GameStatistics.CreateGameStatistic(int.Parse(difficultyInput.Text), hardcoreInput.Checked, nameInput.Text, int.Parse(seedInput.Text))); });
+		}
+
+		string getSeed()
+		{
+			var ran = game.SharedRandom.Next() + "";
+			if (ran.Length > 8)
+				ran = ran.Remove(8);
+
+			return ran;
 		}
 
 		public override void Tick()
@@ -50,10 +67,13 @@ namespace WarriorsSnuggery.UI
 			name.Tick();
 			difficulty.Tick();
 			hardcore.Tick();
+			seed.Tick();
 
 			nameInput.Tick();
 			difficultyInput.Tick();
 			hardcoreInput.Tick();
+			seedInput.Tick();
+			seedGenerate.Tick();
 
 			cancel.Tick();
 			proceed.Tick();
@@ -73,10 +93,13 @@ namespace WarriorsSnuggery.UI
 			name.Render();
 			difficulty.Render();
 			hardcore.Render();
+			seed.Render();
 
 			nameInput.Render();
 			difficultyInput.Render();
 			hardcoreInput.Render();
+			seedInput.Render();
+			seedGenerate.Render();
 
 			cancel.Render();
 			proceed.Render();
@@ -90,10 +113,13 @@ namespace WarriorsSnuggery.UI
 			name.Dispose();
 			difficulty.Dispose();
 			hardcore.Dispose();
+			seed.Dispose();
 
 			nameInput.Dispose();
 			difficultyInput.Dispose();
 			hardcoreInput.Dispose();
+			seedInput.Dispose();
+			seedGenerate.Dispose();
 
 			cancel.Dispose();
 		}

@@ -7,7 +7,19 @@ namespace WarriorsSnuggery.UI
 	public class TextBox : Panel
 	{
 		public bool Selected;
-		public string Text;
+		public string Text
+		{
+			get
+			{
+				return realText;
+			}
+			set
+			{
+				realText = value;
+				text.SetText(realText);
+			}
+		}
+		string realText;
 		public readonly int MaximumLength;
 		public readonly bool OnlyNumbers;
 
@@ -18,7 +30,7 @@ namespace WarriorsSnuggery.UI
 
 		public TextBox(CPos pos, string text, int maximumLength, bool onlyNumbers, PanelType type, Action onEnter) : base(pos, new MPos(8 * maximumLength + 2, 12), type)
 		{
-			Text = text;
+			realText = text;
 			MaximumLength = maximumLength;
 			OnlyNumbers = onlyNumbers;
 			this.text = new TextLine(pos + new CPos(128,0,0), IFont.Pixel16, Objects.TextLine.OffsetType.MIDDLE);
@@ -54,7 +66,7 @@ namespace WarriorsSnuggery.UI
 				{
 					foreach(var key in KeyInput.AlphabetKeys)
 					{
-						if (Text.Length <= MaximumLength)
+						if (realText.Length <= MaximumLength)
 						{
 							if (KeyInput.IsKeyDown(key + "", 0))
 							{
@@ -62,7 +74,7 @@ namespace WarriorsSnuggery.UI
 								if (KeyInput.IsKeyDown("ShiftLeft", 0) || KeyInput.IsKeyDown("ShiftRight", 0))
 									@case = @case.ToUpper();
 								text.AddText(@case);
-								Text += @case;
+								realText += @case;
 								KeyInput.IsKeyDown(key + "", 7); // To get the delay
 							}
 						}
@@ -72,7 +84,7 @@ namespace WarriorsSnuggery.UI
 				{
 					if (Text.Length != 0)
 					{
-						Text = Text.Substring(0, Text.Length - 1);
+						realText = Text.Substring(0, Text.Length - 1);
 						text.SetText(Text);
 					}
 				}
@@ -83,7 +95,7 @@ namespace WarriorsSnuggery.UI
 						if (Text.Length <= MaximumLength)
 						{
 							text.AddText(i + "");
-							Text += i + "";
+							realText += i + "";
 						}
 					}
 				}				
