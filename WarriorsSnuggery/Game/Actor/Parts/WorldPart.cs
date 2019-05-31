@@ -15,6 +15,9 @@
 		[Desc("Hovering of the actor.", "This will create a hover-effect for flying actors.")]
 		public readonly int Hover;
 
+		[Desc("Hides the actor when the cursor/player is behind it so the player can see more.")]
+		public readonly bool Hideable;
+
 		public override ActorPart Create(Actor self)
 		{
 			return new WorldPart(self, this);
@@ -40,6 +43,10 @@
 						break;
 					case "Hover":
 						Hover = node.ToInt();
+
+						break;
+					case "Hideable":
+						Hideable = node.ToBoolean();
 
 						break;
 					default:
@@ -74,6 +81,12 @@
 		public int Hover
 		{
 			get { return info.Hover; }
+			set { }
+		}
+
+		public bool Hideable
+		{
+			get { return info.Hideable; }
 			set { }
 		}
 

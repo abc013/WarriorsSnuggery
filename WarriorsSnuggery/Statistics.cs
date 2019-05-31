@@ -7,7 +7,7 @@ using System.Collections.Generic;
 
 namespace WarriorsSnuggery
 {
-	public sealed class GameStatistics // TODO: add seed
+	public sealed class GameStatistics
 	{
 		// Paths
 		public string Name { get; private set; }
@@ -29,6 +29,7 @@ namespace WarriorsSnuggery
 		public int FinalLevel;
 		public int Difficulty;
 		public int MaxMana;
+		public int Seed;
 		public bool Hardcore;
 
 		public GameStatistics(GameStatistics save)
@@ -52,6 +53,7 @@ namespace WarriorsSnuggery
 			FinalLevel = save.FinalLevel;
 			Difficulty = save.Difficulty;
 			MaxMana = save.MaxMana;
+			Seed = save.Seed;
 			Hardcore = save.Hardcore;
 		}
 
@@ -85,6 +87,7 @@ namespace WarriorsSnuggery
 				writer.WriteLine("Kills=" + Kills);
 				writer.WriteLine("Deaths=" + Deaths);
 				writer.WriteLine("CurrentMode=" + Mode);
+				writer.WriteLine("Seed=" + Seed);
 				writer.WriteLine("Actor=" + Actor);
 				writer.WriteLine("\tHealth=" + Health);
 				writer.WriteLine("\tMana=" + Mana);
@@ -123,7 +126,7 @@ namespace WarriorsSnuggery
 			SaveName = name;
 		}
 
-		public static GameStatistics CreateGameStatistic(int difficulty, bool hardcore, string name)
+		public static GameStatistics CreateGameStatistic(int difficulty, bool hardcore, string name, int seed)
 		{
 			var statistic = new GameStatistics
 			{
@@ -142,6 +145,7 @@ namespace WarriorsSnuggery
 			statistic.Money = 100 - difficulty * 20;
 			statistic.MaxMana = GameSaveManager.DefaultStatistic.MaxMana;
 			statistic.Actor = GameSaveManager.DefaultStatistic.Actor;
+			statistic.Seed = seed;
 
 			return statistic;
 		}
@@ -183,6 +187,9 @@ namespace WarriorsSnuggery
 						break;
 					case "CurrentMode":
 						statistic.Mode = (GameMode) node.ToEnum(typeof(GameMode));
+						break;
+					case "Seed":
+						statistic.Seed = node.ToInt();
 						break;
 					case "Actor":
 						statistic.Actor = node.Value;

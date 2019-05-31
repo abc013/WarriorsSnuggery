@@ -380,6 +380,8 @@ b_stone1=
 	Part@Physics=
 		Shape=Circle
 		Size=256,256,2048
+	Part@World=
+		Hideable=true
 
 web=
 	Part@Sprite=
@@ -448,6 +450,8 @@ b_bookshelf=
 	Part@Physics=
 		Shape=Rectangle
 		Size=512,512,1024
+	Part@World=
+		Hideable=true
 
 table1=
 	Part@Sprite=
@@ -516,6 +520,8 @@ m_tree1=
 		Count=5
 		Name=woodPiece
 		Type=PARTICLE
+	Part@World=
+		Hideable=true
 
 conifer1=
 	Part@Sprite=
@@ -536,6 +542,8 @@ conifer1=
 		Count=1
 		Name=apple
 		Type=ACTOR
+	Part@World=
+		Hideable=true
 
 s_plant1=
 	Part@Sprite=
