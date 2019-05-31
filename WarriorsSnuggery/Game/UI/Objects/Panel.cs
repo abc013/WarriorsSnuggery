@@ -8,7 +8,10 @@ namespace WarriorsSnuggery.UI
 	{
 		public virtual CPos Position
 		{
-			get { return position; }
+			get
+			{
+				return position;
+			}
 			set
 			{
 				position = value;
@@ -22,7 +25,10 @@ namespace WarriorsSnuggery.UI
 
 		public virtual CPos Rotation
 		{
-			get { return rotation; }
+			get
+			{
+				return rotation;
+			}
 			set
 			{
 				rotation = value;
@@ -36,7 +42,10 @@ namespace WarriorsSnuggery.UI
 
 		public virtual float Scale
 		{
-			get { return scale; }
+			get
+			{
+				return scale;
+			}
 			set
 			{
 				scale = value;
@@ -47,6 +56,23 @@ namespace WarriorsSnuggery.UI
 			}
 		}
 		float scale = 1f;
+
+		public virtual Color Color
+		{
+			get
+			{
+				return color;
+			}
+			set
+			{
+				color = value;
+				inner.SetColor(color);
+				outer.SetColor(color);
+				if (Highlight != null)
+					Highlight.SetColor(color);
+			}
+		}
+		Color color = Color.White;
 
 		readonly GraphicsObject inner;
 		readonly GraphicsObject outer;

@@ -14,19 +14,6 @@ namespace WarriorsSnuggery.Graphics
 			// textures always come from the same filename, so generate the hash just once
 			// and then xor with the amount of textures (avoids same ID for animations with different lengths)
 			var key = textures[0].GetHashCode() ^ textures.Length;
-			
-			// Leftover code:
-			//TODO: when textures begin to bug after adding new textures, please look here
-			/*foreach (var texture in textures)
-			{
-				var hash = texture.GetHashCode();
-				if (key != hash)
-					key ^= hash;
-			}*/
-			//foreach (var texture in textures)
-			//	key += texture.ID;
-			//foreach(var vertex in vertices)
-			//	key ^= vertex.GetHashCode();
 
 			if (Sprites.ContainsKey(key))
 			{

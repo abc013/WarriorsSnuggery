@@ -20,12 +20,17 @@ namespace WarriorsSnuggery
 		{
 			FileExplorer.InitPaths();
 			Console.ForegroundColor = ConsoleColor.White;
+
 			Console.WriteLine("Welcome to the WarriorsSnuggery DocWriter. This program will search through the installation and create a documentation of the modding rules.");
 			Console.WriteLine("Available is: ALL, ACTORS, PARTICLES, WEAPONS, TERRAIN and WALLS");
+
 			Console.ForegroundColor = ConsoleColor.Yellow;
+
 			Console.Write("Please enter what content should be created (e.g. ACTORS, TERRAIN): ");
 			Console.ResetColor();
+
 			var input = Console.ReadLine();
+
 			Console.ForegroundColor = ConsoleColor.White;
 			Console.WriteLine("--------------------------------------------------------------");
 

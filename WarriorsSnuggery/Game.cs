@@ -61,7 +61,7 @@ namespace WarriorsSnuggery
 		readonly TextLine infoText;
 		int infoTextDuration;
 
-		public Game(GameStatistics statistics, MapType map, int seed = -1) //TODO add GameSettings, move some things from MapType to it
+		public Game(GameStatistics statistics, MapType map, int seed = -1)
 		{
 			Window = Window.Current;
 

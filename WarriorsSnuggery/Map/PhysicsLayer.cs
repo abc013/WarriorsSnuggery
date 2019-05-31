@@ -34,14 +34,15 @@ namespace WarriorsSnuggery
 				return;
 
 			var position = obj.Position;
-			var radius = obj.Physics.RadiusX;
+			var radiusX = obj.Physics.RadiusX;
+			var radiusY = obj.Physics.RadiusY;
 			var shape = obj.Physics.Shape;
 			var points = new MPos[4];
 
-			points[0] = new MPos(position.X + radius, position.Y + radius); // TODO: also add points in between
-			points[1] = new MPos(position.X - radius, position.Y - radius);
-			points[2] = new MPos(position.X - radius, position.Y + radius);
-			points[3] = new MPos(position.X + radius, position.Y - radius);
+			points[0] = new MPos(position.X + radiusX, position.Y + radiusY); // TODO: also add points in between
+			points[1] = new MPos(position.X - radiusX, position.Y - radiusY);
+			points[2] = new MPos(position.X - radiusX, position.Y + radiusY);
+			points[3] = new MPos(position.X + radiusX, position.Y - radiusY);
 
 			var sectors = new List<PhysicsSector>();
 
@@ -58,6 +59,7 @@ namespace WarriorsSnuggery
 				var x = point.X / 2048f;
 				if (x < 0) x = 0;
 				if (x >= Size.X) x = Size.X - 1;
+
 				var y = point.Y / 2048f;
 				if (y < 0) y = 0;
 				if (y >= Size.Y) y = Size.Y - 1;

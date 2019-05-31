@@ -28,7 +28,7 @@ namespace WarriorsSnuggery.Graphics
 		public const int Size = (4 + 4) * 4;
 
 		readonly Vector4 position;
-		readonly Vector4 textureCoordinate; // TODO: change to vector2?
+		readonly Vector4 textureCoordinate;
 
 		public TexturedVertex(Vector4 position, Vector2 textureCoordinate)
 		{

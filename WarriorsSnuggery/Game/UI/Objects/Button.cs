@@ -26,15 +26,17 @@ namespace WarriorsSnuggery.UI
 			{
 				if (MouseInput.isLeftDown)
 				{
-					// TODO: add click here.
+					Color = new Color(0.5f, 0.5f, 0.5f);
 				}
 				else
 				{
+					Color = Color.White;
 					HighlightVisible = true;
 				}
 			}
 			else
 			{
+				Color = Color.White;
 				HighlightVisible = false;
 			}
 
@@ -53,7 +55,7 @@ namespace WarriorsSnuggery.UI
 		{
 			var mousePosition = MouseInput.WindowPosition;
 
-			mouseOnButton = mousePosition.X > Position.X - type.Width && mousePosition.X < Position.X + type.Width && mousePosition.Y > Position.Y - type.Height && mousePosition.Y < Position.Y + type.Height; // TODO: remove
+			mouseOnButton = mousePosition.X > Position.X - type.Width && mousePosition.X < Position.X + type.Width && mousePosition.Y > Position.Y - type.Height && mousePosition.Y < Position.Y + type.Height; // TODO: remove, replace by Physicsaction whatever
 
 			if (MouseInput.isLeftClicked && mouseOnButton && action != null)
 				action();
