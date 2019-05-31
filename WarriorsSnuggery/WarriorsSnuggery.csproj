@@ -156,7 +156,7 @@
     <Compile Include="Game\Color\ColoredLine.cs" />
     <Compile Include="Game\UI\Objects\Keyboardbutton.cs" />
     <Compile Include="Game\Particles\Particle.cs" />
-    <Compile Include="Game\Physics.cs" />
+    <Compile Include="Physics\Physics.cs" />
     <Compile Include="Game\Types\WallType.cs" />
     <Compile Include="Game\Types\WeaponType.cs" />
     <Compile Include="Game\Wall.cs" />
