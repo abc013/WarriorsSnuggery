@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 
 namespace WarriorsSnuggery.Objects.Parts
 {
@@ -75,15 +76,21 @@ namespace WarriorsSnuggery.Objects.Parts
 
 		public new int OnAccelerate(float angle, int customAcceleration)
 		{
+			var speedFactor = 1f;
+			foreach(var effect in self.Effects.Where(e => e.Effect.Type == EffectType.SPEED && e.Active))
+			{
+				speedFactor *= effect.Effect.Value;
+			}
+
 			var acceleration = customAcceleration == 0 ? info.Acceleration * 2 : customAcceleration;
 			var x = (int)Math.Round(Math.Cos((angle * Math.PI) / 180) * acceleration);
 			var y = (int)Math.Round(Math.Sin((angle * Math.PI) / 180) * acceleration);
 
 			Velocity += new CPos(x, y, 0);
-			if (Math.Abs(Velocity.X) >= info.Speed)
-				Velocity = new CPos(Math.Sign(Velocity.X) * info.Speed, Velocity.Y, 0);
+			if (Math.Abs(Velocity.X) >= info.Speed * speedFactor)
+				Velocity = new CPos((int) (Math.Sign(Velocity.X) * info.Speed * speedFactor), Velocity.Y, 0);
 			if (Math.Abs(Velocity.Y) >= info.Speed)
-				Velocity = new CPos(Velocity.X, Math.Sign(Velocity.Y) * info.Speed, 0);
+				Velocity = new CPos(Velocity.X, (int) (Math.Sign(Velocity.Y) * info.Speed * speedFactor), 0);
 
 			return acceleration;
 		}

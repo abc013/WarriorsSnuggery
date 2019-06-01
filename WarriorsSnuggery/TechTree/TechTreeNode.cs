@@ -72,16 +72,4 @@
 			}
 		}
 	}
-
-	public class TechTreeNode
-	{
-		public readonly ITechTreeNode Info;
-		public bool Unlocked;
-
-		public TechTreeNode(ITechTreeNode info, bool unlocked)
-		{
-			Info = info;
-			Unlocked = unlocked || info.Unlocked;
-		}
-	}
 }

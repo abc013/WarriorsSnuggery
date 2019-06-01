@@ -1,3 +1,14 @@
+Boost=
+	Before=
+	Unlocked=true
+	Cost=0
+	Position=0,3
+	Effect=Speed
+		Value=2
+		Duration=200
+		Cooldown=200
+	Icon=boost
+
 First_hit=
 	Before=
 	Unlocked=true
@@ -27,7 +38,7 @@ Anger=
 	Cost=100
 	Position=2,0
 	Effect=Cooldown
-		Value=1,18
+		Value=0,5
 		Duration=20000
 		Cooldown=20000
 		Occurence=Always

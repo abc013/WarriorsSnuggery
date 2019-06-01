@@ -62,8 +62,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Effect.cs" />
+    <Compile Include="Game\Actor\Effects\Effect.cs" />
     <Compile Include="GameSettings.cs" />
+    <Compile Include="Game\Actor\Effects\EffectPart.cs" />
     <Compile Include="Game\Actor\Parts\ActorPart.cs" />
     <Compile Include="Game\Actor\IActor.cs" />
     <Compile Include="Game\Actor\Parts\AnimatedSpritePart.cs" />
@@ -71,7 +72,6 @@
     <Compile Include="Game\Actor\Parts\CollectablePart.cs" />
     <Compile Include="Game\Actor\Parts\DebugPart.cs" />
     <Compile Include="Game\Actor\Parts\Description.cs" />
-    <Compile Include="Game\Actor\Parts\EffectPart.cs" />
     <Compile Include="Game\Actor\Parts\HealthPart.cs" />
     <Compile Include="Game\Actor\Parts\MobilityPart.cs" />
     <Compile Include="Game\Actor\Parts\PhysicsPart.cs" />
