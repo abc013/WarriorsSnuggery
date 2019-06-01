@@ -4,8 +4,9 @@
  * 
  */
 using System;
+using System.Linq;
 using System.Collections.Generic;
-using WarriorsSnuggery.Graphics;
+using WarriorsSnuggery.Objects.Effects;
 using WarriorsSnuggery.Objects.Parts;
 
 namespace WarriorsSnuggery.Objects
@@ -35,6 +36,7 @@ namespace WarriorsSnuggery.Objects
 		public float Angle;
 		
 		readonly List<ActorPart> parts = new List<ActorPart>();
+		public readonly List<EffectPart> Effects = new List<EffectPart>();
 
 		public readonly MobilityPart Mobility;
 		public readonly HealthPart Health;
@@ -92,12 +94,6 @@ namespace WarriorsSnuggery.Objects
 
 			if (isPlayer)
 			{
-				foreach (var node in TechTreeLoader.TechTree)
-				{
-					if (node.Unlocked || world.Game.Statistics.UnlockedNodes.ContainsKey(node.InnerName) && world.Game.Statistics.UnlockedNodes[node.InnerName])
-						parts.Add(new EffectPart(this, node.Effect));
-				}
-
 				parts.Add(new PlayerPart(this));
 			}
 
@@ -240,6 +236,9 @@ namespace WarriorsSnuggery.Objects
 			}
 
 			parts.ForEach(p => p.Tick());
+
+			Effects.ForEach(e => e.Tick());
+			Effects.RemoveAll(e => !e.Active);
 		}
 
 		public void Attack(CPos target)
@@ -259,7 +258,13 @@ namespace WarriorsSnuggery.Objects
 
 			parts.ForEach(p => p.OnAttack(target, weapon));
 
-			ReloadDelay = ActiveWeapon.Type.Reload;
+			var reloadModifier = 1f;
+			foreach(var effect in Effects.Where(e => e.Active && e.Effect.Type == EffectType.COOLDOWN))
+			{
+				reloadModifier *= effect.Effect.Value;
+			}
+
+			ReloadDelay = (int) (ActiveWeapon.Type.Reload * reloadModifier);
 			CurrentAction = ActorAction.ATTACKING;
 		}
 
@@ -277,7 +282,10 @@ namespace WarriorsSnuggery.Objects
 		{
 			if (Health == null || Health.HP <= 0)
 				return;
-			
+
+			if (Effects.Any(e => e.Active && e.Effect.Type == EffectType.SHIELD))
+				return;
+
 			Health.HP -= damage;
 
 			parts.ForEach(p => p.OnDamage(attacker, damage));
