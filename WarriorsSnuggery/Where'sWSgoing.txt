@@ -32,12 +32,9 @@ MAP GENERATOR
 ----------------------------------------------------------------------------------------------
 CONFIRMED MEMORY LEAKS
 
-- Screens
-
 ----------------------------------------------------------------------------------------------
 CONFIRMED BUGS
 
-- Beam Weapon: When a floatingText directly follows after its render, the whole thing crashes somehow
 ----------------------------------------------------------------------------------------------
 IT IS TIME
 TO SET AN AIM
@@ -48,4 +45,4 @@ Plan of Game:
 	It is time to face the evil wizard. Fight your way through the levels. Gather new creatures and money. Unlock new abilities.
 
 	At the end, big parts of the game should be made customizable.
-Side Note: Art has never an end. This is the final date. After it, no features should be added anymore.
+Side Note: Art has never an end. This is the final date. After it, no features should be added anymore. Not a single one.

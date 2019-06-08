@@ -16,7 +16,7 @@ namespace WarriorsSnuggery.Objects
 		{
 			get { return Sprite[Program.SharedRandom.Next(Sprite.Length)]; }
 		}
-		[Desc("Random base texture.")] // TODO: make better
+		[Desc("Random base texture.")]
 		readonly ITexture[] Sprite;
 
 		public ITexture Texture_Edge

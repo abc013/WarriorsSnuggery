@@ -97,6 +97,7 @@
     <Compile Include="Game\UI\Objects\PanelItem.cs" />
     <Compile Include="Game\UI\Objects\PanelList.cs" />
     <Compile Include="Game\UI\Objects\TextBox.cs" />
+    <Compile Include="Game\UI\Screens\DecisionScreen.cs" />
     <Compile Include="Game\UI\Screens\Editor\EditorScreen.cs" />
     <Compile Include="Game\UI\Screens\Editor\PieceScreen.cs" />
     <Compile Include="Game\UI\Screens\Game\DeathScreen.cs" />

@@ -19,7 +19,7 @@ new_game_pad=
 	Part@Collectable=
 		Type=NEW_STORY_GAME
 		MultipleActivations=yes
-			Duration=10
+		Duration=90
 		Radius=512
 		OnlyByPlayer=yes
 
@@ -32,7 +32,7 @@ tech_pad=
 	Part@Collectable=
 		Type=TECH_TREE
 		MultipleActivations=yes
-			Duration=60
+		Duration=90
 		Radius=512
 		OnlyByPlayer=yes
 
@@ -91,7 +91,7 @@ heal_pad=
 		Radius=512
 		Value=2
 		MultipleActivations=yes
-			Duration=5
+		Duration=5
 		ParticleSpawner=beam
 			Count=10
 

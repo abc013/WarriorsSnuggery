@@ -1,4 +1,5 @@
-﻿using WarriorsSnuggery.Objects;
+﻿using System;
+using WarriorsSnuggery.Objects;
 using WarriorsSnuggery.Graphics;
 
 namespace WarriorsSnuggery.UI
@@ -35,9 +36,19 @@ namespace WarriorsSnuggery.UI
 				return;
 
 			var @new = game.Statistics.Copy();
-			GameSaveManager.SaveOnNewName(@new, stats.Name, game); // TODO add are you sure if names are not equal
 
-			game.AddInfoMessage(150, "Game Saved!");
+			void action1()
+			{
+				game.ScreenControl.ShowScreen(ScreenType.SAVE);
+			}
+			void action2()
+			{
+				game.ScreenControl.ShowScreen(ScreenType.MENU);
+				GameSaveManager.SaveOnNewName(@new, stats.Name, game);
+				game.AddInfoMessage(150, "Game Saved!");
+			}
+			game.ScreenControl.SetDecision(action1, action2, "Are you sure you want to override?");
+			game.ScreenControl.ShowScreen(ScreenType.DECISION);
 		}
 
 		public void UpdateList()

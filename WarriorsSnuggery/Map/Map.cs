@@ -442,7 +442,12 @@ namespace WarriorsSnuggery
 
 		public void Save(string directory, string name)
 		{
-			using(var writer = new StreamWriter(directory + name + @"\map.yaml", false))
+			SaveFile(directory + name + @"/map.yaml", name);
+		}
+
+		public void SaveFile(string file, string name)
+		{
+			using(var writer = new StreamWriter(file, false))
 			{
 				writer.WriteLine("Name=" + name);
 				writer.WriteLine("Size=" + Size.X + "," + Size.Y);
