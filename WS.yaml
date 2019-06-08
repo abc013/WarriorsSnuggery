@@ -1,7 +1,7 @@
 FrameLimiter=30
 ScrollSpeed=7
 EdgeScrolling=4
-DeveloperMode=0
+DeveloperMode=1
 Fullscreen=1
 Width=1920
 Height=1080

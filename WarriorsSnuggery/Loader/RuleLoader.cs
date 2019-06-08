@@ -8,7 +8,7 @@ namespace WarriorsSnuggery
 	{
 		public static void LoadRules()
 		{
-			var rules = RuleReader.Read(FileExplorer.Rules, "Rules.yaml"); //TODO remove OR use for mods?
+			var rules = RuleReader.Read(FileExplorer.Rules, "Rules.yaml"); //TODO for future: use for mods
 
 			foreach (var rule in rules)
 			{
