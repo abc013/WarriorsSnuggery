@@ -185,7 +185,7 @@ namespace WarriorsSnuggery.Objects
 
 		public void Dispose()
 		{
-			renderable.Dispose();
+
 		}
 	}
 }

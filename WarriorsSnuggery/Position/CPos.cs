@@ -18,6 +18,8 @@ namespace WarriorsSnuggery
 
 		public static CPos operator /(CPos lhs, CPos rhs) { return new CPos(lhs.X / rhs.X, lhs.Y / rhs.Y, lhs.Z / rhs.Z); }
 
+		public static CPos operator -(CPos pos) { return new CPos(-pos.X, -pos.Y, -pos.Z); }
+
 		public static bool operator ==(CPos lhs, CPos rhs) { return lhs.X == rhs.X && lhs.Y == rhs.Y && lhs.Z == rhs.Z; }
 
 		public static bool operator !=(CPos lhs, CPos rhs) { return !(lhs == rhs); }
@@ -29,14 +31,14 @@ namespace WarriorsSnuggery
 
 		public override string ToString() { return X + "," + Y + "," + Z; }
 
-		public float GetDistToXY(CPos pos)
+		public float DistToXY(CPos pos)
 		{
 			var x = (double) X - pos.X;
 			var y = (double) Y - pos.Y;
 			return (float) Math.Sqrt(x * x  + y * y);
 		}
 
-		public float GetAngleToXY(CPos pos)
+		public float AngleToXY(CPos pos)
 		{
 			var diff = pos - this;
 			var diffX = -diff.X;

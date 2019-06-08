@@ -33,7 +33,7 @@ namespace WarriorsSnuggery.Objects
 			Target = target;
 
 			if (Type.OrientateToTarget)
-				Rotation = new CPos(0,0, (int) -Position.GetAngleToXY(Target) + 90);
+				Rotation = new CPos(0,0, (int) -Position.AngleToXY(Target) + 90);
 
 			if (originActor != null)
 			{
@@ -68,7 +68,7 @@ namespace WarriorsSnuggery.Objects
 			Move(Target);
 
 			if (Type.OrientateToTarget)
-				Rotation = new CPos(0,0, (int) -Position.GetAngleToXY(Target) + 90);
+				Rotation = new CPos(0,0, (int) -Position.AngleToXY(Target) + 90);
 
 			if (InRange(Target))
 				Detonate();
@@ -76,27 +76,28 @@ namespace WarriorsSnuggery.Objects
 
 		public virtual void Move(CPos target)
 		{
-			var angle = target.GetAngleToXY(Position);
+			var angle = target.AngleToXY(Position);
 
 			var x = Math.Cos((angle * Math.PI) / 180) * Speed;
 			var y = Math.Sin((angle * Math.PI) / 180) * Speed;
 
 			var old = Position;
-			Position = new CPos(Position.X + (int) x, Position.Y + (int) y, Position.Z); // Note: we made sure that a weapon's target can't be out of world. (Actor.cs#87(Attack))
+			// Note: we made sure that a weapon's target can't be out of world. (Actor.cs#87(Attack))
+			Position = new CPos(Position.X + (int) x, Position.Y + (int) y, Position.Z);
 			Physics.Position = Position;
 			World.PhysicsLayer.UpdateSectors(this);
 
 			if (World.CheckCollision(this, true, new [] { typeof(Weapon), typeof(BeamWeapon), typeof(BulletWeapon), typeof(RocketWeapon) }, new[] { Origin }))
 				Detonate();
 
-			DistanceMoved += Position.GetDistToXY(old);
+			DistanceMoved += Position.DistToXY(old);
 			if (DistanceMoved > Type.MaxRange * rangeModifier || !World.IsInWorld(Position))
 				Detonate();
 		}
 
 		public virtual bool InRange(CPos position, int range = 256)
 		{
-			return Position.GetDistToXY(position) <= range;
+			return Position.DistToXY(position) <= range;
 		}
 
 		public virtual void Detonate()
@@ -106,7 +107,7 @@ namespace WarriorsSnuggery.Objects
 				if (Origin != null && Origin.Team == actor.Team)
 					continue;
 
-				var dist = Position.GetDistToXY(actor.Position) / 512;
+				var dist = Position.DistToXY(actor.Position) / 512;
 				if (dist > 512f) continue;
 				if (dist < 1f) dist = 1;
 
