@@ -88,9 +88,16 @@ namespace WarriorsSnuggery
 
 		public void Tick()
 		{
+			if (LocalPlayer != null)
+			{
+				if (Camera.LockedToPlayer)
+					Camera.Position(LocalPlayer.Position);
 
-			if (Camera.LockedToPlayer && LocalPlayer != null)
-				Camera.Position(LocalPlayer.Position);
+				foreach(var effect in LocalPlayer.Effects.Where(e => e.Active && e.Effect.Type == EffectType.MANA))
+				{
+					Game.Statistics.Mana += (int) effect.Effect.Value;
+				}
+			}
 
 			internalTick();
 

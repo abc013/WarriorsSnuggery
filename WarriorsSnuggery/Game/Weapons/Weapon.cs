@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using WarriorsSnuggery.Graphics;
 
 namespace WarriorsSnuggery.Objects
@@ -12,6 +13,10 @@ namespace WarriorsSnuggery.Objects
 		protected readonly WeaponType Type;
 		protected float DistanceMoved;
 		protected int Speed;
+
+		readonly float inaccuracyModifier = 1f;
+		readonly float damageModifier = 1f;
+		readonly float rangeModifier = 1f;
 
 		public Weapon(World world, WeaponType type, Actor origin, CPos target) : this(world, type, origin.ActiveWeapon.WeaponOffsetPosition, target, origin)
 		{
@@ -29,6 +34,24 @@ namespace WarriorsSnuggery.Objects
 
 			if (Type.OrientateToTarget)
 				Rotation = new CPos(0,0, (int) -Position.GetAngleToXY(Target) + 90);
+
+			if (originActor != null)
+			{
+				foreach (var effect in originActor.Effects.Where(e => e.Active && e.Effect.Type == EffectType.INACCURACY))
+				{
+					inaccuracyModifier *= effect.Effect.Value;
+				}
+
+				foreach (var effect in originActor.Effects.Where(e => e.Active && e.Effect.Type == EffectType.DAMAGE))
+				{
+					damageModifier *= effect.Effect.Value;
+				}
+
+				foreach (var effect in originActor.Effects.Where(e => e.Active && e.Effect.Type == EffectType.RANGE))
+				{
+					rangeModifier *= effect.Effect.Value;
+				}
+			}
 		}
 
 		public override void Tick()
@@ -66,8 +89,8 @@ namespace WarriorsSnuggery.Objects
 			if (World.CheckCollision(this, true, new [] { typeof(Weapon), typeof(BeamWeapon), typeof(BulletWeapon), typeof(RocketWeapon) }, new[] { Origin }))
 				Detonate();
 
-			DistanceMoved += (float) Position.GetDistToXY(old);
-			if (DistanceMoved > Type.MaxRange || !World.IsInWorld(Position))
+			DistanceMoved += Position.GetDistToXY(old);
+			if (DistanceMoved > Type.MaxRange * rangeModifier || !World.IsInWorld(Position))
 				Detonate();
 		}
 
@@ -98,7 +121,7 @@ namespace WarriorsSnuggery.Objects
 						damagemultiplier = 1 / (float) (dist * dist * dist);
 						break;
 					case FalloffType.EXPONENTIAL:
-						damagemultiplier = 1 / (float) Math.Pow(2, dist);
+						damagemultiplier = 1 / (float) Math.Pow(5, dist);
 						break;
 					case FalloffType.LINEAR:
 						damagemultiplier = 1 / (float) dist;
@@ -107,7 +130,7 @@ namespace WarriorsSnuggery.Objects
 						damagemultiplier = 1 / (float) Math.Sqrt(dist);
 						break;
 				}
-				var damage = (int) Math.Floor(damagemultiplier * Type.Damage);
+				var damage = (int) Math.Floor(damagemultiplier * Type.Damage * damageModifier);
 
 				if (damage < 2 || !actor.IsAlive)
 					continue;
@@ -133,6 +156,19 @@ namespace WarriorsSnuggery.Objects
 			}
 
 			Dispose();
+		}
+
+		protected CPos getInaccuracy()
+		{
+			if (Type.Inaccuracy > 0)
+			{
+				var ranX = (Program.SharedRandom.Next(Type.Inaccuracy) - Type.Inaccuracy / 2) * inaccuracyModifier;
+				var ranY = (Program.SharedRandom.Next(Type.Inaccuracy) - Type.Inaccuracy / 2) * inaccuracyModifier;
+
+				return new CPos((int) ranX, (int) ranY, 0);
+			}
+
+			return CPos.Zero;
 		}
 	}
 }

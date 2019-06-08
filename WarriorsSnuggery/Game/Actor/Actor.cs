@@ -232,7 +232,14 @@ namespace WarriorsSnuggery.Objects
 
 			if (Health != null && Health.HP <= 0)
 			{
-				Killed(null);
+				if (Health.HP <= 0)
+				{
+					Killed(null);
+				}
+				foreach(var effect in Effects.Where(e => e.Active && e.Effect.Type == EffectType.HEALTH))
+				{
+					Health.HP += (int) effect.Effect.Value;
+				}
 			}
 
 			parts.ForEach(p => p.Tick());
@@ -243,7 +250,7 @@ namespace WarriorsSnuggery.Objects
 
 		public void Attack(CPos target)
 		{
-			if (ReloadDelay != 0 || ActiveWeapon == null || !IsAlive || !World.IsInWorld(target))
+			if (ReloadDelay != 0 || ActiveWeapon == null || !IsAlive)
 				return;
 
 			if (World.Game.Type == GameType.EDITOR || World.Game.Editor && IsPlayer)

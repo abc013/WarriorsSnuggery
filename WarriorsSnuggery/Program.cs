@@ -12,7 +12,6 @@ namespace WarriorsSnuggery
 	class Program
 	{
 		public static Random SharedRandom = new Random();
-
 		public static bool isDebug;
 
 		static Window window;
@@ -38,7 +37,7 @@ namespace WarriorsSnuggery
 					Console.ForegroundColor = ConsoleColor.Red;
 					Console.WriteLine("Ouch! An error occurred. Damn.");
 					Console.ForegroundColor = ConsoleColor.White;
-					Console.WriteLine("For more details, check the logs (Press 'o' on Windows). Please report the files to the developers.");
+					Console.WriteLine("For more details, check the logs (Press 'o' on Windows). Please report the files to abc013 (See authors.html for contact).");
 					var key = Console.ReadKey(true).KeyChar;
 					if (key == 'o')
 					{

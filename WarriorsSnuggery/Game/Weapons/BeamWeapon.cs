@@ -17,32 +17,21 @@ namespace WarriorsSnuggery.Objects
 
 		public BeamWeapon(World world, WeaponType type, CPos origin, CPos target) : base(world, type, origin, target)
 		{
-			if (Type.Inaccuracy > 0)
-			{
-				var ranX = Program.SharedRandom.Next(Type.Inaccuracy) - Type.Inaccuracy / 2;
-				var ranY = Program.SharedRandom.Next(Type.Inaccuracy) - Type.Inaccuracy / 2;
-				Target += new CPos(ranX, ranY, 0);
-			}
+			Target += getInaccuracy();
 			originPos = origin;
 			color = Color.Red;
 			color2 = Color.White;
-			point = new ColoredCircleRenderable(color, 1f, 8, Graphics.DrawMethod.TRIANGLEFAN);
+			point = new ColoredCircleRenderable(color, 1f, 8, DrawMethod.TRIANGLEFAN);
 			point.SetScale(0.5f);
 		}
 
 		public BeamWeapon(World world, WeaponType type, Actor origin, CPos target) : base(world, type, origin, target)
 		{
-			if (Type.Inaccuracy > 0)
-			{
-				var ranX = Program.SharedRandom.Next(Type.Inaccuracy) - Type.Inaccuracy / 2;
-				var ranY = Program.SharedRandom.Next(Type.Inaccuracy) - Type.Inaccuracy / 2;
-
-				Target += new CPos(ranX, ranY, 0);
-			}
+			Target += getInaccuracy();
 			originPos = origin.ActiveWeapon.WeaponOffsetPosition;
 			color = Color.Red;
 			color2 = Color.White;
-			point = new ColoredCircleRenderable(color, 1f, 8, Graphics.DrawMethod.TRIANGLEFAN);
+			point = new ColoredCircleRenderable(color, 1f, 8, DrawMethod.TRIANGLEFAN);
 			point.SetScale(0.5f);
 		}
 

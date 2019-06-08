@@ -33,7 +33,7 @@ dummy=
 		Name=silver
 
 tut_1=
-	Part@Sprite=
+	Part@AnimatedSprite=
 		Name=waypointplate
 		Dimensions=24,12
 		Condition=ALL
@@ -47,7 +47,7 @@ tut_1=
 		Duration=90
 
 tut_2=
-	Part@Sprite=
+	Part@AnimatedSprite=
 		Name=waypointplate
 		Dimensions=24,12
 		Condition=ALL
@@ -61,7 +61,7 @@ tut_2=
 		Duration=90
 
 tut_3=
-	Part@Sprite=
+	Part@AnimatedSprite=
 		Name=waypointplate
 		Dimensions=24,12
 		Condition=ALL
@@ -75,7 +75,7 @@ tut_3=
 		Duration=90
 
 tut_4=
-	Part@Sprite=
+	Part@AnimatedSprite=
 		Name=waypointplate
 		Dimensions=24,12
 		Condition=ALL
@@ -89,7 +89,7 @@ tut_4=
 		Duration=90
 
 tut_5=
-	Part@Sprite=
+	Part@AnimatedSprite=
 		Name=waypointplate
 		Dimensions=24,12
 		Condition=ALL
@@ -103,7 +103,7 @@ tut_5=
 		Duration=90
 
 tut_6=
-	Part@Sprite=
+	Part@AnimatedSprite=
 		Name=waypointplate
 		Dimensions=24,12
 		Condition=ALL

@@ -52,7 +52,6 @@ namespace WarriorsSnuggery.Graphics
 
 		public override void Bind()
 		{
-
 			lock(MasterRenderer.GLLock)
 			{
 				UseProgram();
