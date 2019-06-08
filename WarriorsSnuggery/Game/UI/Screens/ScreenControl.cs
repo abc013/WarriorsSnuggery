@@ -31,26 +31,65 @@ namespace WarriorsSnuggery.UI
 					break;
 			}
 			screens.Add(ScreenType.DEFAULT, defaultScreen);
+		}
 
-			screens.Add(ScreenType.MENU, new MenuScreen(Game));
-			screens.Add(ScreenType.FAILURE, new FailureScreen(Game));
-			screens.Add(ScreenType.WIN, new WinScreen(Game));
+		bool createScreen(ScreenType type)
+		{
+			if (screens.ContainsKey(type))
+				return true;
 
-			screens.Add(ScreenType.KEYSETTINGS, new KeyboardScreen(Game));
-			screens.Add(ScreenType.SETTINGS, new SettingsScreen(Game));
+			Screen screen = null;
+			switch (type)
+			{
+				case ScreenType.MENU:
+					screen = new MenuScreen(Game);
+					break;
+				case ScreenType.FAILURE:
+					screen = new FailureScreen(Game);
+					break;
+				case ScreenType.WIN:
+					screen = new WinScreen(Game);
+					break;
+				case ScreenType.KEYSETTINGS:
+					screen = new KeyboardScreen(Game);
+					break;
+				case ScreenType.SETTINGS:
+					screen = new SettingsScreen(Game);
+					break;
+				case ScreenType.PAUSED:
+					screen = new PausedScreen(Game);
+					break;
+				case ScreenType.START:
+					screen = new StartScreen(Game);
+					break;
+				case ScreenType.EDITORSELECTION:
+					screen = new PieceScreen(Game);
+					break;
+				case ScreenType.SAVE:
+					screen = new SaveGameScreen(Game);
+					break;
+				case ScreenType.LOAD:
+					screen = new LoadGameScreen(Game);
+					break;
+				case ScreenType.TECHTREE:
+					screen = new TechTreeScreen(Game);
+					break;
+				case ScreenType.NEW_STORY_GAME:
+					screen = new NewGameScreen(Game);
+					break;
+				case ScreenType.NEW_CUSTOM_GAME:
+					screen = new NewGameScreen(Game);
+					break;
+			}
 
-			screens.Add(ScreenType.PAUSED, new PausedScreen(Game));
-			screens.Add(ScreenType.START, new StartScreen(Game));
+			if (screen != null)
+			{
+				screens.Add(type, screen);
 
-			screens.Add(ScreenType.EDITORSELECTION, new PieceScreen(Game));
+				return true;
+			}
 
-			screens.Add(ScreenType.SAVE, new SaveGameScreen(Game));
-			screens.Add(ScreenType.LOAD, new LoadGameScreen(Game));
-
-			screens.Add(ScreenType.TECHTREE, new TechTreeScreen(Game));
-
-			screens.Add(ScreenType.NEW_STORY_GAME, new NewGameScreen(Game));
-			screens.Add(ScreenType.NEW_CUSTOM_GAME, new NewGameScreen(Game));
+			return false;
 		}
 
 		public void NewDefaultScreen(Screen screen)
@@ -68,7 +107,10 @@ namespace WarriorsSnuggery.UI
 			}
 			else
 			{
-				Focused = null;
+				if (createScreen(screen))
+					Focused = screens[screen];
+				else
+					Focused = null;
 			}
 			FocusedType = screen;
 		}

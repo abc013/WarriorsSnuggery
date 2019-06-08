@@ -60,8 +60,8 @@ namespace WarriorsSnuggery.UI
 		{
 			var mousePosition = MouseInput.WindowPosition;
 
-			mouseOnButton = mousePosition.X > Position.X - type.Width && mousePosition.X < Position.X + type.Width && mousePosition.Y > Position.Y - type.Height && mousePosition.Y < Position.Y + type.Height; // TODO: remove, replace by Physicsaction whatever
-
+			mouseOnButton = mousePosition.X > Position.X - type.Width && mousePosition.X < Position.X + type.Width && mousePosition.Y > Position.Y - type.Height && mousePosition.Y < Position.Y + type.Height;
+			
 			if (MouseInput.isLeftClicked && mouseOnButton && action != null)
 				action();
 		}
