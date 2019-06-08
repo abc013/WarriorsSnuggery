@@ -17,12 +17,16 @@ namespace WarriorsSnuggery.Loader
 
 			name = name.Remove(0, name.IndexOf('@') + 1);
 
-			var type = Type.GetType("WarriorsSnuggery.Objects.Parts." + name + "PartInfo", true, true);
+			try
+			{
+				var type = Type.GetType("WarriorsSnuggery.Objects.Parts." + name + "PartInfo", true, true);
 
-			if (type == null)
-				throw new YamlUnknownPartException(name);
-
-			return (PartInfo) Activator.CreateInstance(type, new[] { nodes });
+				return (PartInfo)Activator.CreateInstance(type, new[] { nodes });
+			}
+			catch (Exception e)
+			{
+				throw new YamlUnknownPartException(name, e);
+			}
 		}
 	}
 }

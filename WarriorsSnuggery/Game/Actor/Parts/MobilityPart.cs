@@ -77,7 +77,7 @@ namespace WarriorsSnuggery.Objects.Parts
 		public new int OnAccelerate(float angle, int customAcceleration)
 		{
 			var speedFactor = 1f;
-			foreach(var effect in self.Effects.Where(e => e.Effect.Type == EffectType.SPEED && e.Active))
+			foreach(var effect in self.Effects.Where(e => e.Active && e.Effect.Type == EffectType.SPEED))
 			{
 				speedFactor *= effect.Effect.Value;
 			}
