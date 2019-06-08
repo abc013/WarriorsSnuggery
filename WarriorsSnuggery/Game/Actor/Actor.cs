@@ -103,7 +103,7 @@ namespace WarriorsSnuggery.Objects
 
 		public void Accelerate(CPos target, int customAcceleration = 0)
 		{
-			Accelerate(target.GetAngleToXY(Position), customAcceleration);
+			Accelerate(target.AngleToXY(Position), customAcceleration);
 		}
 
 		public void Accelerate(float angle, int customAcceleration = 0)
@@ -185,7 +185,7 @@ namespace WarriorsSnuggery.Objects
 
 			CheckVisibility();
 			CurrentAction = ActorAction.MOVING;
-			Angle = Position.GetAngleToXY(old);
+			Angle = Position.AngleToXY(old);
 			World.PhysicsLayer.UpdateSectors(this);
 
 			parts.ForEach(p => p.OnMove(old, Velocity));
@@ -256,10 +256,10 @@ namespace WarriorsSnuggery.Objects
 			if (World.Game.Type == GameType.EDITOR || World.Game.Editor && IsPlayer)
 				return;
 
-			if (Position.GetDistToXY(target) < ActiveWeapon.Type.MinRange)
+			if (Position.DistToXY(target) < ActiveWeapon.Type.MinRange)
 				return;
 
-			Angle = target.GetAngleToXY(Position);
+			Angle = target.AngleToXY(Position);
 
 			var weapon = ActiveWeapon.OnAttack(target);
 

@@ -142,7 +142,7 @@ namespace WarriorsSnuggery
 			{
 				Add(ParticleCreator.Create("glitter", MouseInput.GamePosition));
 
-				var selected = Actors.Find(a => a.Position.GetDistToXY(MouseInput.GamePosition) < 512);
+				var selected = Actors.Find(a => a.Position.DistToXY(MouseInput.GamePosition) < 512);
 				if (selected != null)
 				{
 					Selected = selected;

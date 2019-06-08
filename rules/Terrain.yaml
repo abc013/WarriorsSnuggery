@@ -1,72 +1,72 @@
 0=
-	Image=grass2
-	Overlaps=10
-		Edge=grass2_edges_h
-		VerticalEdge=grass2_edges_v
-		Corner=grass2_corners
+	Sprite=grass2
+	OverlapHeight=10
+	EdgeSprite=grass2_edges_h
+	VerticalEdgeSprite=grass2_edges_v
+	CornerSprite=grass2_corners
 	Speed=1,0
 
 1=
-	Image=way
-	Overlaps=7
-		Edge=way_edges
-		Corner=way_corners
+	Sprite=way
+	OverlapHeight=7
+	EdgeSprite=way_edges
+	CornerSprite=way_corners
 	Speed=1,1
 
 2=
-	Image=water
+	Sprite=water
 	Speed=0
 	SpawnSmudge=false
 
 3=
-	Image=wood
-	Overlaps=20
+	Sprite=wood
+	OverlapHeight=20
 	Speed=1,1
 
 4=
-	Image=stone
+	Sprite=stone
 	Speed=1,1
 
 5=
-	Image=stone2
+	Sprite=stone2
 	Speed=1,1
-	Overlaps=5
-		Edge=stone2_edges
-		Corner=stone2_corners
+	OverlapHeight=5
+	EdgeSprite=stone2_edges
+	CornerSprite=stone2_corners
 
 6=
-	Image=brickstone1
-	Overlaps=4
-		Edge=brickstone1_edges
-		Corner=brickstone1_corners
+	Sprite=brickstone1
+	OverlapHeight=4
+	EdgeSprite=brickstone1_edges
+	CornerSprite=brickstone1_corners
 	Speed=1,2
 
 7=
-	Image=farmland
+	Sprite=farmland
 	Speed=0,7
 
 8=
-	Image=grass
-	Overlaps=9
-		Edge=grass_edges_h
-		VerticalEdge=grass_edges_v
-		Corner=grass_corners
+	Sprite=grass
+	OverlapHeight=9
+	EdgeSprite=grass_edges_h
+	VerticalEdgeSprite=grass_edges_v
+	CornerSprite=grass_corners
 	Speed=0,9
 
 9=
-	Image=dark_stone
-	Overlaps=6
-		Edge=dark_stone_edges
-		Corner=dark_stone_corners
+	Sprite=dark_stone
+	OverlapHeight=6
+	EdgeSprite=dark_stone_edges
+	CornerSprite=dark_stone_corners
 	Speed=1,0
 
 10=
-	Image=light_stone
-	Overlaps=3
-		Edge=light_stone_edges
-		Corner=light_stone_corners
+	Sprite=light_stone
+	OverlapHeight=3
+	EdgeSprite=light_stone_edges
+	CornerSprite=light_stone_corners
 	Speed=1,0
 
 11=
-	Image=lava_stone
+	Sprite=lava_stone
 	Speed=0,3

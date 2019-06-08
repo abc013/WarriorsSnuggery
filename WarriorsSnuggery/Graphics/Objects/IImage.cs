@@ -34,8 +34,8 @@ namespace WarriorsSnuggery.Graphics
 
 		public static void DisposeImages()
 		{
-			foreach (var sprite in Images.Values)
-				sprite.Dispose();
+			foreach (var image in Images.Values)
+				image.Dispose();
 
 			Images.Clear();
 		}

@@ -132,7 +132,7 @@ namespace WarriorsSnuggery.Objects.Parts
 			{
 				var localPlayer = self.World.LocalPlayer;
 
-				if (localPlayer != null && self.World.PlayerAlive && localPlayer.WorldPart != null && localPlayer.WorldPart.CanTrigger && localPlayer.Position.GetDistToXY(self.Position) < info.Radius)
+				if (localPlayer != null && self.World.PlayerAlive && localPlayer.WorldPart != null && localPlayer.WorldPart.CanTrigger && localPlayer.Position.DistToXY(self.Position) < info.Radius)
 				{
 					activate(localPlayer);
 				}
@@ -141,7 +141,7 @@ namespace WarriorsSnuggery.Objects.Parts
 			{
 				foreach (var actor in self.World.Actors)
 				{
-					if (actor != self && actor.IsAlive && actor.WorldPart != null && actor.WorldPart.CanTrigger && actor.Position.GetDistToXY(self.Position) < info.Radius)
+					if (actor != self && actor.IsAlive && actor.WorldPart != null && actor.WorldPart.CanTrigger && actor.Position.DistToXY(self.Position) < info.Radius)
 					{
 						activate(actor);
 					}

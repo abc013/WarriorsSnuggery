@@ -317,6 +317,8 @@ namespace WarriorsSnuggery
 								ranScale = child.Children.Find(c => c.Key == "Random").ToFloat();
 
 							break;
+						default:
+							throw new YamlUnknownNodeException(child.Key, name);
 					}
 				}
 
@@ -371,6 +373,8 @@ namespace WarriorsSnuggery
 
 			foreach(var terrain in terrains)
 			{
+				var id = int.Parse(terrain.Key);
+
 				var image = string.Empty;
 				var speedModifier = 1f;
 				var overlapHeight = -1;
@@ -383,47 +387,34 @@ namespace WarriorsSnuggery
 				{
 					switch(child.Key)
 					{
-						case "Image":
+						case "Sprite":
 							image = child.Value;
-
 							break;
 						case "Speed":
 							speedModifier = child.ToFloat();
-
 							break;
-						case "Overlaps":
+						case "OverlapHeight":
 							overlapHeight = child.ToInt();
-							foreach(var rule in child.Children)
-							{
-								switch(rule.Key)
-								{
-									case "Edge":
-										edge_Image = rule.Value;
-
-										break;
-									case "VerticalEdge":
-										edge_Image2 = rule.Value;
-
-										break;
-									case "Corner":
-										corner_Image = rule.Value;
-
-										break;
-								}
-							}
-
+							break;
+						case "EdgeSprite":
+							edge_Image = child.Value;
+							break;
+						case "VerticalEdgeSprite":
+							edge_Image2 = child.Value;
+							break;
+						case "CornerSprite":
+							corner_Image = child.Value;
 							break;
 						case "SpawnSmudge":
 							spawnSmudge = child.ToBoolean();
-
 							break;
+						default:
+							throw new YamlUnknownNodeException(child.Key, "Terrain " + id);
 					}
 				}
 
 				if (image == string.Empty)
 					throw new YamlMissingNodeException(terrain.Key, "Image");
-
-				var id = int.Parse(terrain.Key);
 
 				AddType(new TerrainType(id, image, speedModifier, edge_Image != "", spawnSmudge, overlapHeight, edge_Image, corner_Image, edge_Image2));
 			}

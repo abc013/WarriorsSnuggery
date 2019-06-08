@@ -20,7 +20,7 @@ namespace WarriorsSnuggery.Objects
 	{
 		public readonly Shape Shape;
 		public readonly int RadiusX;
-		public readonly int RadiusY;// TODO only works for box now
+		public readonly int RadiusY;// only for box
 		public readonly int HeightRadius;
 
 		readonly PhysicsObject renderable;
@@ -85,7 +85,7 @@ namespace WarriorsSnuggery.Objects
 
 			if (Shape == Shape.CIRCLE && other.Shape == Shape.CIRCLE)
 			{
-				return Position.GetDistToXY(other.Position) <= RadiusX + other.RadiusX;
+				return Position.DistToXY(other.Position) <= RadiusX + other.RadiusX;
 			}
 			if (Shape == Shape.RECTANGLE && other.Shape == Shape.RECTANGLE)
 			{

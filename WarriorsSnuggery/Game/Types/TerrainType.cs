@@ -14,36 +14,36 @@ namespace WarriorsSnuggery.Objects
 
 		public ITexture Texture
 		{
-			get { return textures[Program.SharedRandom.Next(textures.Length)]; }
+			get { return Sprite[Program.SharedRandom.Next(Sprite.Length)]; }
 		}
-		[Desc("Random base texture.", "Use \"Image\" as rule.")] // TODO: make better
-		readonly ITexture[] textures;
+		[Desc("Random base texture.")] // TODO: make better
+		readonly ITexture[] Sprite;
 
 		public ITexture Texture_Edge
 		{
-			get { return textures_edge[Program.SharedRandom.Next(textures_edge.Length)]; }
+			get { return EdgeSprite[Program.SharedRandom.Next(EdgeSprite.Length)]; }
 		}
-		[Desc("Edge of the tile.", "use \"Edge\" beneath the rule \"Image\" as rule.")]
-		readonly ITexture[] textures_edge;
+		[Desc("Edge of the tile.")]
+		readonly ITexture[] EdgeSprite;
 		public ITexture Texture_Edge2 // For vertical edges
 		{
-			get { return textures_edge2?[Program.SharedRandom.Next(textures_edge2.Length)]; }
+			get { return VerticalEdgeSprite?[Program.SharedRandom.Next(VerticalEdgeSprite.Length)]; }
 		}
-		[Desc("(possible) Vertical Edge of the tile.", "use \"Edge_Vertical\" beneath the rule \"Image\" as rule.")]
-		readonly ITexture[] textures_edge2;
+		[Desc("(possible) Vertical Edge of the tile.")]
+		readonly ITexture[] VerticalEdgeSprite;
 
 		public ITexture Texture_Corner
 		{
-			get { return textures_corner[Program.SharedRandom.Next(textures_corner.Length)]; }
+			get { return CornerSprite[Program.SharedRandom.Next(CornerSprite.Length)]; }
 		}
-		[Desc("Corner of the tile.", "use \"Corner\" beneath the rule \"Image\" as rule.")]
-		readonly ITexture[] textures_corner;
+		[Desc("Corner of the tile.")]
+		readonly ITexture[] CornerSprite;
 
 		[Desc("If not 1, this will modify the speed of the player.")]
 		public readonly float SpeedModifier;
-		[Desc("If yes, this tile can overlap other tiles.")]
+
 		public readonly bool Overlaps;
-		[Desc("Overlap height. The higher the value, the more tiles with smaller numbers will be overlapped.", "This rule is defined under Overlaps.")]
+		[Desc("Overlap height. The higher the value, the more tiles with smaller numbers will be overlapped.")]
 		public readonly int OverlapHeight;
 		[Desc("If true, weapons will leave behind smudge on impact.")]
 		public readonly bool SpawnSmudge;
@@ -51,16 +51,16 @@ namespace WarriorsSnuggery.Objects
 		public TerrainType(int id, string texture, float speedModifier, bool overlaps, bool spawnSmudge, int overlapHeight, string texture_edge, string texture_corner, string texture_edge2)
 		{
 			ID = id;
-			textures = new TextureInfo(texture, TextureType.ANIMATION, 10, 24, 24).GetTextures();
+			Sprite = new TextureInfo(texture, TextureType.ANIMATION, 10, 24, 24).GetTextures();
 			Overlaps = overlaps;
 			OverlapHeight = overlapHeight;
 			SpawnSmudge = spawnSmudge;
 			if (overlaps)
 			{
-				textures_edge = new TextureInfo(texture_edge, TextureType.ANIMATION, 10, 24, 24).GetTextures();
-				textures_corner = new TextureInfo(texture_corner, TextureType.ANIMATION, 10, 24, 24).GetTextures();
+				EdgeSprite = new TextureInfo(texture_edge, TextureType.ANIMATION, 10, 24, 24).GetTextures();
+				CornerSprite = new TextureInfo(texture_corner, TextureType.ANIMATION, 10, 24, 24).GetTextures();
 				if (texture_edge2 != "")
-					textures_edge2 = new TextureInfo(texture_edge2, TextureType.ANIMATION, 10, 24, 24).GetTextures();
+					VerticalEdgeSprite = new TextureInfo(texture_edge2, TextureType.ANIMATION, 10, 24, 24).GetTextures();
 			}
 
 			SpeedModifier = speedModifier;

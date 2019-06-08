@@ -80,9 +80,15 @@ blade=
 	Reload=10
 
 lazer=
-#	Type=Beam
-	Image=particle2
-		Size=12,12
+	Type=Beam
+#	Image=particle2
+#		Size=12,12
+	Image=beam_blue
+		Size=12,3
+		Tick=3
+#	Image=beam_red
+#		Size=6,2
+#		Tick=1
 	Smudge=smudge1
 		Size=12,12
 		Random=true
@@ -94,7 +100,7 @@ lazer=
 	Reload=13
 	ParticlesOnImpact=glitter
 		Count=5
-	Inaccuracy=1024
+#	Inaccuracy=1024
 
 color=
 	Image=particle2
