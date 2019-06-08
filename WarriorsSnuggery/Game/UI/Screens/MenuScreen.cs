@@ -1,3 +1,4 @@
+using System;
 using WarriorsSnuggery.Objects;
 
 namespace WarriorsSnuggery.UI
@@ -32,8 +33,8 @@ namespace WarriorsSnuggery.UI
 			switch(game.Type)
 			{
 				case GameType.EDITOR:
-					restart = ButtonCreator.Create("wooden", new CPos(2048, height, 0), "Play", () => Window.Current.NewGame(game.Statistics, GameType.NORMAL, true, Maps.MapType.ConvertGameType(game.MapType, GameType.TEST)));
-					menu = ButtonCreator.Create("wooden", new CPos(-2048, height, 0), "Main Menu", () => Window.Current.NewGame(game.Statistics, GameType.MAINMENU));
+					restart = ButtonCreator.Create("wooden", new CPos(2048, height, 0), "Play", () => humanAgree(() => { Window.Current.NewGame(game.Statistics, GameType.NORMAL, true, Maps.MapType.ConvertGameType(game.MapType, GameType.TEST)); }, "Make sure you have saved the map!"));
+					menu = ButtonCreator.Create("wooden", new CPos(-2048, height, 0), "Main Menu", () => humanAgree(() => { Window.Current.NewGame(game.Statistics, GameType.MAINMENU); }, "Are you sure to return? Unsaved progress will be lost!") );
 					break;
 				case GameType.MAINMENU:
 					height -= 1024;
@@ -43,15 +44,15 @@ namespace WarriorsSnuggery.UI
 					menu = ButtonCreator.Create("wooden", new CPos(-2048, height, 0), "Main Menu", () => Window.Current.NewGame(game.Statistics, GameType.MAINMENU));
 					break;
 				case GameType.MENU:
-					menu = ButtonCreator.Create("wooden", new CPos(0, height, 0), "Main Menu", () => Window.Current.NewGame(game.Statistics, GameType.MAINMENU));
+					menu = ButtonCreator.Create("wooden", new CPos(0, height, 0), "Main Menu", () => humanAgree(() => { Window.Current.NewGame(game.Statistics, GameType.MAINMENU); }, "Are you sure to leave this game? Unsaved progress will be lost!"));
 					break;
 				case GameType.TEST:
 					restart = ButtonCreator.Create("wooden", new CPos(2048, height, 0), "Editor", () => Window.Current.NewGame(game.Statistics, GameType.EDITOR, true, Maps.MapType.ConvertGameType(game.MapType, GameType.EDITOR)));
 					menu = ButtonCreator.Create("wooden", new CPos(-2048, height, 0), "Main Menu", () => Window.Current.NewGame(game.Statistics, GameType.MAINMENU));
 					break;
 				default:
-					restart = ButtonCreator.Create("wooden", new CPos(2048, height, 0), "Restart", () => Window.Current.NewGame(game.Statistics, GameType.NORMAL, true));
-					menu = ButtonCreator.Create("wooden", new CPos(-2048, height, 0), "Headquarters", () => { game.Statistics.Level--; Window.Current.NewGame(game.Statistics, GameType.MENU); }); // Level is still the same as it was not finished
+					restart = ButtonCreator.Create("wooden", new CPos(2048, height, 0), "Restart", () => humanAgree(() => { Window.Current.NewGame(game.Statistics, GameType.NORMAL, true); }, "Are you sure you want to restart? Current progress in this level will be lost!"));
+					menu = ButtonCreator.Create("wooden", new CPos(-2048, height, 0), "Headquarters", () => humanAgree(() => { game.Statistics.Level--; Window.Current.NewGame(game.Statistics, GameType.MENU); }, "Are you sure to return? All progress in this level will be lost!")); // Level is still the same as it was not finished
 					break;
 			}
 
@@ -89,6 +90,16 @@ namespace WarriorsSnuggery.UI
 			};
 			height += 512;
 			leave = ButtonCreator.Create("wooden", new CPos(0, height, 0), "Exit Game", Window.Current.Exit);
+		}
+
+		void humanAgree(Action onAgree, string text)
+		{
+			void onDecline()
+			{
+				game.ScreenControl.ShowScreen(ScreenType.MENU);
+			}
+			game.ScreenControl.SetDecision(onDecline, onAgree, text);
+			game.ScreenControl.ShowScreen(ScreenType.DECISION);
 		}
 
 		public override void Render()

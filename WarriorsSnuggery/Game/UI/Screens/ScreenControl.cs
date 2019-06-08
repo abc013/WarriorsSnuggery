@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace WarriorsSnuggery.UI
 {
@@ -80,6 +81,9 @@ namespace WarriorsSnuggery.UI
 				case ScreenType.NEW_CUSTOM_GAME:
 					screen = new NewGameScreen(Game);
 					break;
+				case ScreenType.DECISION:
+					screen = new DecisionScreen(Game);
+					break;
 			}
 
 			if (screen != null)
@@ -97,6 +101,16 @@ namespace WarriorsSnuggery.UI
 			if (screens[ScreenType.DEFAULT] != null)
 				screens[ScreenType.DEFAULT].Dispose();
 			screens[ScreenType.DEFAULT] = screen;
+		}
+
+		public void SetDecision(Action OnDecline, Action OnAgree, string text)
+		{
+			if (!screens.ContainsKey(ScreenType.DECISION))
+			{
+				createScreen(ScreenType.DECISION);
+			}
+			// Should not crash as the decisionScreen should always be a decisionScreen
+			(screens[ScreenType.DECISION] as DecisionScreen).SetAction(OnDecline, OnAgree, text);
 		}
 
 		public void ShowScreen(ScreenType screen)
@@ -156,8 +170,10 @@ namespace WarriorsSnuggery.UI
 
 		public void RefreshSaveGameScreens()
 		{
-			((LoadGameScreen)screens[ScreenType.LOAD]).UpdateList();
-			((SaveGameScreen)screens[ScreenType.SAVE]).UpdateList();
+			if (screens.ContainsKey(ScreenType.LOAD))
+				((LoadGameScreen)screens[ScreenType.LOAD]).UpdateList();
+			if (screens.ContainsKey(ScreenType.SAVE))
+				((SaveGameScreen)screens[ScreenType.SAVE]).UpdateList();
 		}
 	}
 }

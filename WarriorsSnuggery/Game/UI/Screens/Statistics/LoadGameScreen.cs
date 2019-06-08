@@ -1,4 +1,6 @@
-﻿namespace WarriorsSnuggery.UI
+﻿using System;
+
+namespace WarriorsSnuggery.UI
 {
 	class LoadGameScreen : Screen
 	{
@@ -17,8 +19,55 @@
 			list = new GameSaveList(new CPos(0, 1024, 0), new MPos((int)(WindowInfo.UnitWidth * 128), 4096), 5, "UI_wood1", "UI_save", "UI_wood3", "UI_wood2");
 
 			back = ButtonCreator.Create("wooden", new CPos(4096, 6144, 0), "Back", () => game.ChangeScreen(ScreenType.MENU));
-			load = ButtonCreator.Create("wooden", new CPos(0, 6144, 0), "Load", () => { if(list.GetStatistic() != null) Window.Current.NewGame(new GameStatistics(list.GetStatistic()), loadStatsMap: true); });
-			delete = ButtonCreator.Create("wooden", new CPos(-4096, 6144, 0), "Delete", () => { if (list.GetStatistic() != null) { GameSaveManager.Delete(list.GetStatistic()); game.RefreshSaveGameScreens(); } });
+			void loadAction()
+			{
+				var stats = list.GetStatistic();
+				if (stats != null)
+				{
+					humanAgreeOnLoad(() =>
+					{
+						Window.Current.NewGame(new GameStatistics(stats), loadStatsMap: true);
+					}, "Are you sure to leave this game? Unsaved progress will be lost!");
+				}
+			}
+			load = ButtonCreator.Create("wooden", new CPos(0, 6144, 0), "Load", loadAction);
+			void deleteAction()
+			{
+				var stats = list.GetStatistic();
+				if (stats != null)
+				{
+					humanAgreeOnDelete(() =>
+					{
+						GameSaveManager.Delete(stats);
+						game.RefreshSaveGameScreens();
+						game.ScreenControl.ShowScreen(ScreenType.LOAD);
+					}, "Are you sure to delete this save?");
+				}
+			}
+			delete = ButtonCreator.Create("wooden", new CPos(-4096, 6144, 0), "Delete", deleteAction);
+		}
+
+		void humanAgreeOnLoad(Action onAgree, string text)
+		{
+			if (game.Type == GameType.MAINMENU)
+				onAgree();
+
+			void onDecline()
+			{
+				game.ScreenControl.ShowScreen(ScreenType.LOAD);
+			}
+			game.ScreenControl.SetDecision(onDecline, onAgree, text);
+			game.ScreenControl.ShowScreen(ScreenType.DECISION);
+		}
+
+		void humanAgreeOnDelete(Action onAgree, string text)
+		{
+			void onDecline()
+			{
+				game.ScreenControl.ShowScreen(ScreenType.LOAD);
+			}
+			game.ScreenControl.SetDecision(onDecline, onAgree, text);
+			game.ScreenControl.ShowScreen(ScreenType.DECISION);
 		}
 
 		public void UpdateList()
