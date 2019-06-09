@@ -40,6 +40,9 @@ heal=
 		Name=puff1
 		Type=PARTICLE
 		Tick=3
+	Part@RevealsShroud=
+		Range=6
+		Interval=0
 
 shadowrunner=
 	Part@AnimatedSprite=
@@ -84,6 +87,9 @@ shadowrunner=
 		Name=grey
 		Type=PARTICLE
 		Offset=0,-512,0
+	Part@RevealsShroud=
+		Range=6
+		Interval=0
 
 blackspider_small=
 	Part@AnimatedSprite=
@@ -115,6 +121,9 @@ blackspider_small=
 	Part@Playable=
 		Playable=yes
 		Cost=10
+	Part@RevealsShroud=
+		Range=6
+		Interval=0
 
 #############################
 #       SLIME FAMILY        #
@@ -153,6 +162,9 @@ slime_block=
 		Count=1
 		Name=cannon
 		Type=WEAPON
+	Part@RevealsShroud=
+		Range=2
+		Interval=0
 
 slime_big_block=
 	Part@Sprite=
@@ -183,6 +195,9 @@ slime_big_block=
 		Type=ACTOR
 		InheritsTeam=true
 		InheritsBot=true
+	Part@RevealsShroud=
+		Range=2
+		Interval=0
 
 slime_small=
 	Part@Sprite=
@@ -202,6 +217,9 @@ slime_small=
 	Part@Regeneration=
 		Amount=2
 		Time=5
+	Part@RevealsShroud=
+		Range=1
+		Interval=0
 
 slime_small2=
 	Part@Sprite=
@@ -221,6 +239,9 @@ slime_small2=
 	Part@Regeneration=
 		Amount=2
 		Time=5
+	Part@RevealsShroud=
+		Range=1
+		Interval=0
 
 slime_medium=
 	Part@AnimatedSprite=
@@ -268,6 +289,9 @@ slime_medium=
 		Name=slime_splash
 		Type=PARTICLE
 		Tick=2
+	Part@RevealsShroud=
+		Range=3
+		Interval=0
 
 #############################
 #          TOWERS           #
@@ -301,6 +325,9 @@ tower=
 	Part@Playable=
 		Playable=yes
 		Cost=5
+	Part@RevealsShroud=
+		Range=12
+		Interval=0
 
 cannontower=
 	Part@AnimatedSprite=
@@ -331,6 +358,9 @@ cannontower=
 	Part@Playable=
 		Playable=yes
 		Cost=5
+	Part@RevealsShroud=
+		Range=12
+		Interval=0
 
 magictower=
 	Part@AnimatedSprite=
@@ -365,6 +395,9 @@ magictower=
 		Name=nebula1
 		Type=PARTICLE
 		Tick=2
+	Part@RevealsShroud=
+		Range=12
+		Interval=0
 
 #############################
 #           MISC            #

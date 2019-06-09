@@ -3,7 +3,7 @@ using WarriorsSnuggery.Objects;
 
 namespace WarriorsSnuggery.UI
 {
-	public class DecisionScreen : Screen
+	public class ConfirmationScreen : Screen
 	{
 		readonly Game game;
 		readonly TextLine text;
@@ -13,7 +13,7 @@ namespace WarriorsSnuggery.UI
 		Button decline;
 		Button agree;
 
-		public DecisionScreen(Game game) : base("Are you sure?")
+		public ConfirmationScreen(Game game) : base("Are you sure?")
 		{
 			this.game = game;
 			Title.Position = new CPos(0, -2048, 0);

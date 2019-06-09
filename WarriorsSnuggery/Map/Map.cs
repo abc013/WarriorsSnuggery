@@ -239,6 +239,7 @@ namespace WarriorsSnuggery
 			world.TerrainLayer.SetMapSize(Size);
 			world.WallLayer.SetMapSize(Size);
 			world.PhysicsLayer.SetMapSize(Size);
+			world.ShroudLayer.SetMapSize(Size, 10, Type.DefaultType == GameType.MAINMENU || Type.DefaultType == GameType.MENU || Type.DefaultType == GameType.EDITOR || Type.DefaultType == GameType.TUTORIAL); //TODO: detect number of teams
 
 			var random = new Random(Seed);
 
@@ -448,9 +449,9 @@ namespace WarriorsSnuggery
 				writer.WriteLine("Size=" + Size.X + "," + Size.Y);
 
 				var terrain = "Terrain=";
-				for(int y = 0; y < world.TerrainLayer.Size.Y; y++)
+				for(int y = 0; y < Size.Y; y++)
 				{
-					for(int x = 0; x < world.TerrainLayer.Size.X; x++)
+					for(int x = 0; x < Size.X; x++)
 					{
 						terrain += world.TerrainLayer.Terrain[x,y].Type.ID + ",";
 					}

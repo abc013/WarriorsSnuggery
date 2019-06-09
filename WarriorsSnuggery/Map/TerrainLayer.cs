@@ -10,18 +10,18 @@ namespace WarriorsSnuggery
 		public Terrain[,] Terrain { get; private set; }
 		List<Terrain> renderList = new List<Terrain>();
 		bool listChanged = false;
-		public MPos Size { get; private set; }
+		MPos size;
 
 		public TerrainLayer()
 		{
 			Terrain = new Terrain[0,0];
-			Size = MPos.Zero;
+			size = MPos.Zero;
 		}
 
 		public void SetMapSize(MPos size)
 		{
 			Dispose();
-			Size = size;
+			this.size = size;
 			Terrain = new Terrain[size.X,size.Y];
 		}
 
