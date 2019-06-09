@@ -82,7 +82,7 @@ namespace WarriorsSnuggery.UI
 					screen = new NewGameScreen(Game);
 					break;
 				case ScreenType.DECISION:
-					screen = new DecisionScreen(Game);
+					screen = new ConfirmationScreen(Game);
 					break;
 			}
 
@@ -110,7 +110,7 @@ namespace WarriorsSnuggery.UI
 				createScreen(ScreenType.DECISION);
 			}
 			// Should not crash as the decisionScreen should always be a decisionScreen
-			(screens[ScreenType.DECISION] as DecisionScreen).SetAction(OnDecline, OnAgree, text);
+			(screens[ScreenType.DECISION] as ConfirmationScreen).SetAction(OnDecline, OnAgree, text);
 		}
 
 		public void ShowScreen(ScreenType screen)

@@ -5,6 +5,7 @@
  */
 using System;
 using System.Collections.Generic;
+using WarriorsSnuggery.Graphics;
 using WarriorsSnuggery.Objects;
 
 namespace WarriorsSnuggery
@@ -13,7 +14,9 @@ namespace WarriorsSnuggery
 	{
 		static Game game;
 		static World world;
-		
+
+		static ImageRenderable shroud;
+
 		public static Color Ambient = Color.White;
 
 		static readonly List<IRenderable> beforeRender = new List<IRenderable>();
@@ -21,6 +24,8 @@ namespace WarriorsSnuggery
 
 		public static void Reset(Game @new)
 		{
+			if (shroud == null)
+				shroud = new ImageRenderable(TextureManager.Texture("shroud"));
 			game = @new;
 			world = game.World;
 			Camera.Reset();
@@ -75,6 +80,18 @@ namespace WarriorsSnuggery
 
 			foreach (var o in afterRender)
 				o.Render();
+
+			for (int x = 0; x < world.ShroudLayer.Size.X; x++)
+			{
+				for (int y = 0; y < world.ShroudLayer.Size.Y; y++)
+				{
+					if (!world.ShroudLayer.ShroudRevealed(Actor.PlayerTeam, x, y))
+					{
+						shroud.SetPosition(new CPos(x * 512 - 256, y * 512 - 256, 0));
+						shroud.Render();
+					}
+				}
+			}
 
 			Ambient = world.Map.Type.Ambient;
 		}

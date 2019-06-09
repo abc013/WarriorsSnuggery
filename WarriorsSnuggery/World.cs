@@ -16,6 +16,7 @@ namespace WarriorsSnuggery
 		public readonly TerrainLayer TerrainLayer;
 		public readonly WallLayer WallLayer;
 		public readonly PhysicsLayer PhysicsLayer;
+		public readonly ShroudLayer ShroudLayer;
 
 		public readonly List<Actor> Actors = new List<Actor>();
 		public readonly List<PhysicsObject> Objects = new List<PhysicsObject>();
@@ -39,6 +40,7 @@ namespace WarriorsSnuggery
 			TerrainLayer = new TerrainLayer();
 			WallLayer = new WallLayer();
 			PhysicsLayer = new PhysicsLayer();
+			ShroudLayer = new ShroudLayer();
 
 			Map = new Map(this, game.MapType, seed, level, difficulty);
 		}
