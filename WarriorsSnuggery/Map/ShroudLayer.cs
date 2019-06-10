@@ -14,7 +14,7 @@ namespace WarriorsSnuggery
 			Size = MPos.Zero;
 		}
 
-		public void SetMapSize(MPos size, int teams, bool allShroudRevealed)
+		public void SetMapDimensions(MPos size, int teams, bool allShroudRevealed)
 		{
 			Dispose();
 			Size = size * new MPos(2,2);
@@ -39,17 +39,19 @@ namespace WarriorsSnuggery
 
 			for (int x = position.X - radius; x < position.X + radius; x++)
 			{
-				if (x > 0)
+				if (x >= 0 && x < Size.X)
 				{
 					for (int y = position.Y - radius; y < position.Y + radius; y++)
 					{
-						if (y > 0)
+						if (y >= 0 && y < Size.Y)
 						{
 							shroudRevealed[team, x, y] = true;
 						}
 					}
 				}
 			}
+
+			VisibilitySolver.ShroudUpdated(this);
 		}
 
 		public void RevealShroudCircular(int team, MPos position, int radius)
@@ -70,6 +72,8 @@ namespace WarriorsSnuggery
 					}
 				}
 			}
+
+			VisibilitySolver.ShroudUpdated(this);
 		}
 
 		public void Dispose()

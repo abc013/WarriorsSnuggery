@@ -236,10 +236,12 @@ namespace WarriorsSnuggery
 
 		void createGroundBase()
 		{
-			world.TerrainLayer.SetMapSize(Size);
+			world.TerrainLayer.SetMapDimensions(Size);
 			world.WallLayer.SetMapSize(Size);
-			world.PhysicsLayer.SetMapSize(Size);
-			world.ShroudLayer.SetMapSize(Size, 10, Type.DefaultType == GameType.MAINMENU || Type.DefaultType == GameType.MENU || Type.DefaultType == GameType.EDITOR || Type.DefaultType == GameType.TUTORIAL); //TODO: detect number of teams
+			world.PhysicsLayer.SetMapDimensions(Size);
+			world.ShroudLayer.SetMapDimensions(Size, 10, Type.DefaultType == GameType.MAINMENU || Type.DefaultType == GameType.MENU || Type.DefaultType == GameType.EDITOR || Type.DefaultType == GameType.TUTORIAL); //TODO: detect number of teams
+
+			VisibilitySolver.SetMapDimensions(Size);
 
 			var random = new Random(Seed);
 

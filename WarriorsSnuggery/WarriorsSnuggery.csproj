@@ -139,6 +139,7 @@
     <Compile Include="Map\StructureGenerationType.cs" />
     <Compile Include="Map\TerrainGenerationType.cs" />
     <Compile Include="Map\TerrainLayer.cs" />
+    <Compile Include="VisibilitySolver.cs" />
     <Compile Include="Map\WallLayer.cs" />
     <Compile Include="Game\Actor\Actor.cs" />
     <Compile Include="Camera.cs" />

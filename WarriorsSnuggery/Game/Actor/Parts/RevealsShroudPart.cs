@@ -51,7 +51,8 @@ namespace WarriorsSnuggery.Objects.Parts
 		{
 			if (tick < 0)
 			{
-				self.World.ShroudLayer.RevealShroudCircular(self.Team, self.Position.ToMPos() * new MPos(2, 2), info.Range);
+				// Use Rectangular as Circular is sill unperformant
+				self.World.ShroudLayer.RevealShroudRectangular(self.Team, self.Position.ToMPos() * new MPos(2, 2), info.Range);
 				tick = info.Interval;
 			}
 		}
@@ -61,7 +62,7 @@ namespace WarriorsSnuggery.Objects.Parts
 			tick--;
 			if (firstActive)
 			{
-				self.World.ShroudLayer.RevealShroudCircular(self.Team, self.Position.ToMPos() * new MPos(2, 2), info.Range);
+				self.World.ShroudLayer.RevealShroudRectangular(self.Team, self.Position.ToMPos() * new MPos(2, 2), info.Range);
 				firstActive = false;
 			}
 		}

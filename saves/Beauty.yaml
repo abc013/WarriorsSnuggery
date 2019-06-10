@@ -1,0 +1,15 @@
+Name=Beauty
+Level=1
+Difficulty=1
+Hardcore=False
+Money=178
+LevelAim=10
+MaxMana=500
+Kills=24
+Deaths=0
+CurrentMode=FIND_EXIT
+Seed=95872641
+Actor=heal
+	Health=841
+	Mana=0
+Unlocks=
