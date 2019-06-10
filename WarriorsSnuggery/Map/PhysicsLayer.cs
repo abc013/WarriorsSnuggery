@@ -20,7 +20,7 @@ namespace WarriorsSnuggery
 			Sectors = new PhysicsSector[0,0];
 		}
 
-		public void SetMapSize(MPos size)
+		public void SetMapDimensions(MPos size)
 		{
 			Size = new MPos((int) Math.Ceiling(size.X / 2f), (int) Math.Ceiling(size.Y / 2f));
 			Sectors = new PhysicsSector[Size.X,Size.Y];

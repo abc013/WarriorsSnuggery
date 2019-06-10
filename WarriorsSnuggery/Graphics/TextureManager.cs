@@ -144,17 +144,20 @@ namespace WarriorsSnuggery.Graphics
 			ITexture texture;
 			string name = font + size;
 
-			if (textures.ContainsKey(name))
-			{
-				textures.TryGetValue(name, out ITexture[] textureArray);
-				texture = textureArray[0];
-				maxSize = new MPos(texture.Width / Characters.Length, texture.Height);
-				return texture;
-			}
+			// We don't need this as this method gets only called twice with different font.
+			//if (textures.ContainsKey(name))
+			//{
+			//	textures.TryGetValue(name, out ITexture[] textureArray);
+			//	texture = textureArray[0];
+			//	maxSize = new MPos(texture.Width / Characters.Length, texture.Height);
+			//	return texture;
+			//}
 
 			var bitmap = GenerateCharacters(size, font, out maxSize, out sizes);
 
 			texture = createTexture(bitmap, name);
+
+			// For dispose
 			textures.Add(name, new [] { texture });
 
 			return texture;
@@ -238,7 +241,8 @@ namespace WarriorsSnuggery.Graphics
 
 		static SizeF getFontSize(Font font, char c)
 		{
-			using (var bmp = new Bitmap(512, 512))
+			// If bugs start with font spacing, increase number of pixels here
+			using (var bmp = new Bitmap(64, 64))
 			{
 				using (var gfx = System.Drawing.Graphics.FromImage(bmp))
 				{
@@ -247,6 +251,7 @@ namespace WarriorsSnuggery.Graphics
 			}
 		}
 
+		// https://stackoverflow.com/questions/4747428/getting-rgb-array-from-image-in-c-sharp TODO
 		static float[] loadTexture(Bitmap bmp)
 		{
 			float[] r;
@@ -255,6 +260,7 @@ namespace WarriorsSnuggery.Graphics
 			var height = bmp.Height;
 			r = new float[width * height * 4];
 			int index = 0;
+
 			for (int y = 0; y < height; y++)
 			{
 				for (int x = 0; x < width; x++)

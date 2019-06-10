@@ -36,7 +36,7 @@ namespace WarriorsSnuggery.Objects
 
 		public override void CheckVisibility()
 		{
-			Renderable.CheckVisibility();
+			Renderable.Visible = VisibilitySolver.IsVisible(new WPos(LayerPosition.X / 2, LayerPosition.Y, 0));
 		}
 	}
 }

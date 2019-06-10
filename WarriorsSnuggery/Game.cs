@@ -293,8 +293,9 @@ namespace WarriorsSnuggery
 			if (Settings.EnableInfoScreen)
 			{
 				//memory.SetText("Memory " + (int) (System.Diagnostics.Process.GetCurrentProcess().PrivateMemorySize64 / 1024f) + " KB");
-				memory.SetText("Public Memory " + (int)(GC.GetTotalMemory(false) / 1024f) + " KB");
-				tick.SetColor(Window.Current.TPS < 50 ? Color.Red : Color.White);
+				//memory.SetText("Public Memory " + (int)(GC.GetTotalMemory(false) / 1024f) + " KB");
+				memory.SetText("Fields visible " + VisibilitySolver.FieldsVisible() + " Tiles");
+				tick.SetColor(Window.Current.TPS < 59 ? new Color(1f, 0.2f, 0.2f) : Color.White);
 				tick.SetText("Tick " + LocalTick + " @ " + Window.Current.TPS);
 
 				tick.SetColor(Window.Current.FPS < Settings.FrameLimiter - 10 ? Color.Red : Color.White);
@@ -382,6 +383,8 @@ namespace WarriorsSnuggery
 
 			WorldRenderer.ClearRenderLists();
 			UIRenderer.ClearRenderLists();
+
+			VisibilitySolver.Reset();
 
 			GC.Collect();
 		}

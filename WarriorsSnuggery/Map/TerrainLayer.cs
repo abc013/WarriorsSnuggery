@@ -24,7 +24,7 @@ namespace WarriorsSnuggery
 			size = MPos.Zero;
 		}
 
-		public void SetMapSize(MPos size)
+		public void SetMapDimensions(MPos size)
 		{
 			Dispose();
 			this.size = size;

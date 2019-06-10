@@ -94,7 +94,7 @@ namespace WarriorsSnuggery.UI
 				Rotation = new CPos(0, 0, 90)
 			};
 			height += 512;
-			leave = ButtonCreator.Create("wooden", new CPos(0, height, 0), "Exit Game", Window.Current.Exit);
+			leave = ButtonCreator.Create("wooden", new CPos(0, height, 0), "Exit Game", () => humanAgree(Window.Current.Exit, "Are you sure you want to exit the game?"));
 		}
 
 		void humanAgree(Action onAgree, string text)

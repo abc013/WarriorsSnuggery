@@ -81,7 +81,7 @@ namespace WarriorsSnuggery
 			foreach (var o in afterRender)
 				o.Render();
 
-			for (int x = 0; x < world.ShroudLayer.Size.X; x++)
+			for (int x = 0; x < world.ShroudLayer.Size.X; x++) //TODO not performant. also combine with visibility.
 			{
 				for (int y = 0; y < world.ShroudLayer.Size.Y; y++)
 				{
@@ -124,7 +124,7 @@ namespace WarriorsSnuggery
 
 		public static void CheckObjectVisibility()
 		{
-			CheckTerrainVisibility(game.Editor);
+			CheckTerrainVisibility();
 			CheckActorVisibility();
 			CheckWallVisibility();
 		}
@@ -151,6 +151,7 @@ namespace WarriorsSnuggery
 		{
 			foreach(Actor a in world.Actors)
 				a.CheckVisibility();
+
 			foreach(PhysicsObject o in world.Objects)
 				o.CheckVisibility();
 		}

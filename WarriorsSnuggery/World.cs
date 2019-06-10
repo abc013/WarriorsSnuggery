@@ -13,6 +13,9 @@ namespace WarriorsSnuggery
 {
 	public sealed class World : ITick, IDisposable
 	{
+		public readonly Map Map;
+		public readonly Game Game;
+
 		public readonly TerrainLayer TerrainLayer;
 		public readonly WallLayer WallLayer;
 		public readonly PhysicsLayer PhysicsLayer;
@@ -24,9 +27,6 @@ namespace WarriorsSnuggery
 
 		readonly List<PhysicsObject> objectsToAdd = new List<PhysicsObject>();
 		readonly List<Actor> actorsToAdd = new List<Actor>();
-
-		public readonly Map Map;
-		public readonly Game Game;
 
 		public Actor LocalPlayer;
 		public bool PlayerAlive = true;
@@ -104,6 +104,8 @@ namespace WarriorsSnuggery
 			internalTick();
 
 			AddObjects();
+
+			VisibilitySolver.CameraUpdated();
 		}
 
 		public void AddObjects()
@@ -243,6 +245,7 @@ namespace WarriorsSnuggery
 
 			TerrainLayer.Dispose();
 			WallLayer.Dispose();
+			ShroudLayer.Dispose();
 		}
 	}
 }

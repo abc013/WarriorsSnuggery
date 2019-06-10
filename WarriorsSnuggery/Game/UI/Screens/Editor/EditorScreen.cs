@@ -251,6 +251,7 @@ namespace WarriorsSnuggery.UI
 					wpos = new WPos(wpos.X < 0 ? 0 : wpos.X, wpos.Y < 0 ? 0 : wpos.Y,0);
 					var terrain = TerrainCreator.Create(game.World, wpos, terrainSelected.ID);
 					Camera.UpdateView();
+					WorldRenderer.CheckTerrainVisibility(true);
 
 					game.World.TerrainLayer.Set(terrain);
 					break;

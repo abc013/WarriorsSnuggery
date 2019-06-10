@@ -96,7 +96,7 @@ namespace WarriorsSnuggery.Objects
 
 		public void CheckVisibility(bool checkEdges = false)
 		{
-			renderable.CheckVisibility(Position.ToCPos());
+			renderable.Visible = VisibilitySolver.IsVisible(Position);
 			if (!firstChecked || checkEdges)
 			{
 				CheckEdgeVisibility();
