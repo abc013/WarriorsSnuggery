@@ -30,6 +30,11 @@ MAP GENERATOR
 - Pieces in blokcs and only on certain terrains
 - Labelling of generator blocks (like part system)
 ----------------------------------------------------------------------------------------------
+RULE SYSTEM
+
+- Default value in table
+
+----------------------------------------------------------------------------------------------
 CONFIRMED MEMORY LEAKS
 
 ----------------------------------------------------------------------------------------------
