@@ -76,14 +76,20 @@ namespace WarriorsSnuggery
 			foreach (var o in afterRender)
 				o.Render();
 
-			for (int x = 0; x < world.ShroudLayer.Size.X; x++) //TODO not performant. also combine with visibility.
+			if (!world.ShroudLayer.AllRevealed)
 			{
-				for (int y = 0; y < world.ShroudLayer.Size.Y; y++)
+				for (int x = (VisibilitySolver.lastCameraPosition.X) * 2; x < (VisibilitySolver.lastCameraPosition.X + VisibilitySolver.lastCameraZoom.X) * 2; x++) //TODO not performant. also combine with visibility.
 				{
-					if (!world.ShroudLayer.ShroudRevealed(Actor.PlayerTeam, x, y))
+					if (x >= 0 && x < world.ShroudLayer.Size.X)
 					{
-						shroud.SetPosition(new CPos(x * 512 - 256, y * 512 - 256, 0));
-						shroud.Render();
+						for (int y = (VisibilitySolver.lastCameraPosition.Y) * 2; y < (VisibilitySolver.lastCameraPosition.Y + VisibilitySolver.lastCameraZoom.Y) * 2; y++)
+						{
+							if (y >= 0 && y < world.ShroudLayer.Size.Y && !world.ShroudLayer.ShroudRevealed(Actor.PlayerTeam, x, y))
+							{
+								shroud.SetPosition(new CPos(x * 512 - 256, y * 512 - 256, 0));
+								shroud.Render();
+							}
+						}
 					}
 				}
 			}
