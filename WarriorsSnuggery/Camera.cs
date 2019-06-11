@@ -32,7 +32,7 @@ namespace WarriorsSnuggery
 		public static bool IsVisible(CPos pos, float scaleX, float scaleY)
 		{
 			var diff = pos - LookAt;
-			var halfzoomY = ((int)CurrentZoom * 1024) / 2 + 1024;
+			var halfzoomY = (int)(CurrentZoom * 512) + 1024;
 			var halfzoomX = halfzoomY * WindowInfo.Ratio;
 
 			return diff.X - scaleX < halfzoomX && diff.X + scaleX > -halfzoomX && diff.Y - scaleY < halfzoomY && diff.Y + scaleY > -halfzoomY;

@@ -130,7 +130,7 @@ namespace WarriorsSnuggery
 				return;
 
 			foreach (Wall w in world.WallLayer.Walls)
-				if (w != null) w.CheckVisibility();
+				w?.CheckVisibility();
 		}
 
 		public static void CheckTerrainVisibility(bool checkEdges = false)

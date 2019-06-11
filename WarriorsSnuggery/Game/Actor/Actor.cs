@@ -42,8 +42,10 @@ namespace WarriorsSnuggery.Objects
 
 		public readonly ActorType Type;
 		
-		int LocalTick;
-		int ReloadDelay;
+		int localTick;
+		int reloadDelay;
+
+		bool visible;
 
 		CPos Velocity {
 			get
@@ -194,28 +196,37 @@ namespace WarriorsSnuggery.Objects
 			parts.ForEach(p => p.OnStop());
 		}
 
+		public override void CheckVisibility()
+		{
+			// TODO solve detection scale + make fluid visibility change
+			visible = VisibilitySolver.IsVisible(GraphicPosition, new MPos(1024, 1024));
+		}
+
 		public override void Render()
 		{
-			base.Render();
-			
-			parts.ForEach(p => p.Render());
+			if (visible)
+			{
+				base.Render();
+
+				parts.ForEach(p => p.Render());
+			}
 		}
 
 		public override void Tick()
 		{
 			base.Tick();
-			LocalTick++;
+			localTick++;
 			CurrentAction = ActorAction.IDLING;
 
 			if(!IsAlive)
 				return;
 			
-			ReloadDelay--;
-			if (ReloadDelay < 0) ReloadDelay = 0;
+			reloadDelay--;
+			if (reloadDelay < 0) reloadDelay = 0;
 			
 			if (WorldPart != null && WorldPart.Hover > 0)
 			{
-				Height += (int) (Math.Sin(LocalTick / 32f) * WorldPart.Hover * 0.5f);
+				Height += (int) (Math.Sin(localTick / 32f) * WorldPart.Hover * 0.5f);
 			}
 
 			if (Mobility != null)
@@ -245,7 +256,7 @@ namespace WarriorsSnuggery.Objects
 
 		public void Attack(CPos target)
 		{
-			if (ReloadDelay != 0 || ActiveWeapon == null || !IsAlive)
+			if (reloadDelay != 0 || ActiveWeapon == null || !IsAlive)
 				return;
 
 			if (World.Game.Type == GameType.EDITOR || World.Game.Editor && IsPlayer)
@@ -266,7 +277,7 @@ namespace WarriorsSnuggery.Objects
 				reloadModifier *= effect.Effect.Value;
 			}
 
-			ReloadDelay = (int) (ActiveWeapon.Type.Reload * reloadModifier);
+			reloadDelay = (int) (ActiveWeapon.Type.Reload * reloadModifier);
 			CurrentAction = ActorAction.ATTACKING;
 		}
 
