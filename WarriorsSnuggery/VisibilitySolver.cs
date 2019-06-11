@@ -7,8 +7,8 @@ namespace WarriorsSnuggery
 		static bool[,] visible = new bool[0,0];
 		static MPos size = MPos.Zero;
 
-		static MPos lastCameraPosition;
-		static MPos lastCameraZoom;
+		public static MPos lastCameraPosition;
+		public static MPos lastCameraZoom;
 
 		static ShroudLayer shroud;
 
