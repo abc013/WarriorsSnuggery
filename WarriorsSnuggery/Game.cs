@@ -213,7 +213,7 @@ namespace WarriorsSnuggery
 				}
 
 				// camera input
-				if (Editor && !ScreenControl.CursorOnUI())
+				if (!ScreenControl.CursorOnUI())
 				{
 					var mouse = MouseInput.WindowPosition;
 
@@ -294,7 +294,7 @@ namespace WarriorsSnuggery
 			{
 				//memory.SetText("Memory " + (int) (System.Diagnostics.Process.GetCurrentProcess().PrivateMemorySize64 / 1024f) + " KB");
 				//memory.SetText("Public Memory " + (int)(GC.GetTotalMemory(false) / 1024f) + " KB");
-				memory.SetText("Fields visible " + VisibilitySolver.FieldsVisible() + " Tiles");
+				memory.SetText(VisibilitySolver.FieldsVisible() + " Tiles visible");
 				tick.SetColor(Window.Current.TPS < 59 ? new Color(1f, 0.2f, 0.2f) : Color.White);
 				tick.SetText("Tick " + LocalTick + " @ " + Window.Current.TPS);
 

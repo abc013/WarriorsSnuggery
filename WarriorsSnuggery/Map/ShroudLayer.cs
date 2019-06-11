@@ -5,7 +5,7 @@ namespace WarriorsSnuggery
 	public sealed class ShroudLayer : IDisposable
 	{
 		bool[,,] shroudRevealed; // First: Team Second: X Third: Y
-		bool allShroudRevealed;
+		public bool AllRevealed;
 		public MPos Size;
 
 		public ShroudLayer()
@@ -19,12 +19,12 @@ namespace WarriorsSnuggery
 			Dispose();
 			Size = size * new MPos(2,2);
 			shroudRevealed = new bool[teams, size.X * 2, size.Y * 2];
-			this.allShroudRevealed = allShroudRevealed;
+			AllRevealed = allShroudRevealed;
 		}
 
 		public bool ShroudRevealed(int team, int x, int y)
 		{
-			return allShroudRevealed || shroudRevealed[team, x, y];
+			return AllRevealed || shroudRevealed[team, x, y];
 		}
 
 		public bool ShroudRevealed(int team, MPos position)
@@ -34,7 +34,7 @@ namespace WarriorsSnuggery
 
 		public void RevealShroudRectangular(int team, MPos position, int radius)
 		{
-			if (allShroudRevealed)
+			if (AllRevealed)
 				return;
 
 			for (int x = position.X - radius; x < position.X + radius; x++)
@@ -51,12 +51,15 @@ namespace WarriorsSnuggery
 				}
 			}
 
-			VisibilitySolver.ShroudUpdated(this);
+			VisibilitySolver.ShroudUpdated();
+			// Camera automatically updates shroud, so we don't want to do that if we move anyways TODO how about other actors?
+			if(!Camera.LockedToPlayer)
+				WorldRenderer.CheckObjectVisibility();
 		}
 
 		public void RevealShroudCircular(int team, MPos position, int radius)
 		{
-			if (allShroudRevealed)
+			if (AllRevealed)
 				return;
 
 			for (int x = position.X - radius; x < position.X + radius; x++)
@@ -73,7 +76,10 @@ namespace WarriorsSnuggery
 				}
 			}
 
-			VisibilitySolver.ShroudUpdated(this);
+			VisibilitySolver.ShroudUpdated();
+			// Camera automatically updates shroud, so we don't want to do that if we move anyways 
+			if (!Camera.LockedToPlayer)
+				WorldRenderer.CheckObjectVisibility();
 		}
 
 		public void Dispose()

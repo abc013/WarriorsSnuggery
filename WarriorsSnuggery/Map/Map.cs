@@ -246,7 +246,7 @@ namespace WarriorsSnuggery
 			world.PhysicsLayer.SetMapDimensions(Size);
 			world.ShroudLayer.SetMapDimensions(Size, 10, Type.DefaultType == GameType.MAINMENU || Type.DefaultType == GameType.MENU || Type.DefaultType == GameType.EDITOR || Type.DefaultType == GameType.TUTORIAL); //TODO: detect number of teams
 
-			VisibilitySolver.SetMapDimensions(Size);
+			VisibilitySolver.SetMapDimensions(Size, world.ShroudLayer);
 
 			var random = new Random(Seed);
 
