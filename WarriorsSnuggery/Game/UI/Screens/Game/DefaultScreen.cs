@@ -62,6 +62,7 @@ namespace WarriorsSnuggery.UI
 					if (effect.Unlocked || game.Statistics.UnlockedNodes.ContainsKey(effect.InnerName) && game.Statistics.UnlockedNodes[effect.InnerName])
 					{
 						game.World.LocalPlayer.Effects.Add(new Objects.Effects.EffectPart(game.World.LocalPlayer, effect.Effect));
+						game.Statistics.Mana -= effect.Cost;
 					}
 				}
 				);

@@ -117,16 +117,5 @@ namespace WarriorsSnuggery.Graphics
 			Visible = false;
 			renderable.Dispose();
 		}
-
-		public bool CheckVisibility(CPos pos)
-		{
-			// TODO change through CameraSolver? is in-game tho
-			return Visible = Camera.IsVisible(pos, scale.X, scale.Y);
-		}
-
-		public bool CheckVisibility()
-		{
-			return Visible = Camera.IsVisible(position, scale.X, scale.Y);
-		}
 	}
 }

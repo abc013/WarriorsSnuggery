@@ -7,7 +7,7 @@
 
 		public readonly string Type = "";
 		public readonly float Health = 1f;
-		public readonly int Team = Objects.Actor.NeutralTeam;
+		public readonly byte Team = Objects.Actor.NeutralTeam;
 		public readonly bool IsBot = false;
 		public readonly bool IsPlayer = false;
 
@@ -25,8 +25,11 @@
 
 						break;
 					case "Team":
-						Team = node.ToInt();
+						var pre = node.ToInt();
+						if (pre >= Settings.MaxTeams || pre < 0)
+							throw new YamlInvalidNodeException(string.Format("Actors can not be assigned to a negative team or a team value greater than {0}.", Settings.MaxTeams - 1));
 
+						Team = (byte)pre;
 						break;
 					case "Health":
 						Health = node.ToFloat();
@@ -44,7 +47,7 @@
 			}
 		}
 
-		public ActorNode(int id, CPos position, string type, int team, float health, bool isBot)
+		public ActorNode(int id, CPos position, string type, byte team, float health, bool isBot)
 		{
 			ID = id;
 			Position = position;

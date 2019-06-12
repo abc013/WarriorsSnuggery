@@ -10,6 +10,8 @@ namespace WarriorsSnuggery
 {
 	public static class Settings
 	{
+		public const int MaxTeams = 8;
+
 		public const string Version = "(Playtest) 1.4";
 
 		public static int FrameLimiter;
