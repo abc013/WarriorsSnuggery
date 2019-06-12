@@ -78,7 +78,7 @@ namespace WarriorsSnuggery
 
 			if (!world.ShroudLayer.AllRevealed)
 			{
-				for (int x = (VisibilitySolver.lastCameraPosition.X) * 2; x < (VisibilitySolver.lastCameraPosition.X + VisibilitySolver.lastCameraZoom.X) * 2; x++) //TODO not performant. also combine with visibility.
+				for (int x = (VisibilitySolver.lastCameraPosition.X) * 2; x < (VisibilitySolver.lastCameraPosition.X + VisibilitySolver.lastCameraZoom.X) * 2; x++)
 				{
 					if (x >= 0 && x < world.ShroudLayer.Size.X)
 					{

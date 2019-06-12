@@ -31,6 +31,7 @@ namespace WarriorsSnuggery
 
 		public static void CameraUpdated()
 		{
+			Console.WriteLine("CamUpdate");
 			var pos = Camera.LookAt;
 			var zoomX = Camera.CurrentZoom * WindowInfo.Ratio;
 			var zoomY = Camera.CurrentZoom;
@@ -72,7 +73,7 @@ namespace WarriorsSnuggery
 			var con2 = shroud.ShroudRevealed(Objects.Actor.PlayerTeam, x * 2 + 1, y * 2);
 			var con3 = shroud.ShroudRevealed(Objects.Actor.PlayerTeam, x * 2 + 1, y * 2 + 1);
 			var con4 = shroud.ShroudRevealed(Objects.Actor.PlayerTeam, x * 2, y * 2 + 1);
-			return con1 && con2 && con3 && con4;
+			return con1 || con2 || con3 || con4;
 		}
 
 		public static bool IsVisible(WPos position)
@@ -110,7 +111,7 @@ namespace WarriorsSnuggery
 			visible = new bool[size.X, size.Y];
 		}
 
-		public static int FieldsVisible()
+		public static int TilesVisible()
 		{
 			var count = 0;
 			foreach (var value in visible)

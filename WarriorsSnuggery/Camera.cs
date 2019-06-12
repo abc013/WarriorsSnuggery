@@ -24,11 +24,6 @@ namespace WarriorsSnuggery
 			bounds = size + new CPos(-1024, -1024,0);
 		}
 
-		public static bool IsVisible(Vector4 pos, float scaleX, float scaleY)
-		{
-			return IsVisible(GLPos.ToCPos(pos), scaleX, scaleY);
-		}
-
 		public static bool IsVisible(CPos pos, float scaleX, float scaleY)
 		{
 			var diff = pos - LookAt;
@@ -89,7 +84,7 @@ namespace WarriorsSnuggery
 
 		public static void Position(CPos pos, bool ignoreLock = false)
 		{
-			if(!ignoreLock && Locked)
+			if(!ignoreLock && Locked || LookAt == pos)
 				return;
 
 			LookAt = pos;

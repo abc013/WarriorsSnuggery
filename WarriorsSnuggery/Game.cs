@@ -38,6 +38,7 @@ namespace WarriorsSnuggery
 		public bool End;
 		public GameType NewGameType;
 		public bool Editor;
+		public int Teams;
 
 		public uint NextObjectID { get { return nextObjectID++; } }
 		uint nextObjectID;
@@ -147,6 +148,11 @@ namespace WarriorsSnuggery
 			}
 			var watch = new StopWatch();
 			watch.Start();
+			if (LocalTick == 1)
+			{
+				// Check visibility the first time, one tick after because we have to check for shroud first
+				WorldRenderer.CheckObjectVisibility();
+			}
 
 			LocalTick++;
 
@@ -289,7 +295,7 @@ namespace WarriorsSnuggery
 			{
 				//memory.SetText("Memory " + (int) (System.Diagnostics.Process.GetCurrentProcess().PrivateMemorySize64 / 1024f) + " KB");
 				//memory.SetText("Public Memory " + (int)(GC.GetTotalMemory(false) / 1024f) + " KB");
-				memory.SetText(VisibilitySolver.FieldsVisible() + " Tiles visible");
+				memory.SetText(VisibilitySolver.TilesVisible() + " Tiles visible");
 				tick.SetColor(Window.Current.TPS < 59 ? new Color(1f, 0.2f, 0.2f) : Color.White);
 				tick.SetText("Tick " + LocalTick + " @ " + Window.Current.TPS);
 

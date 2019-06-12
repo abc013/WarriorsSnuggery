@@ -88,7 +88,14 @@ namespace WarriorsSnuggery.UI
 			wallBox = CheckBoxCreator.Create("wooden", new CPos((int) (WindowInfo.UnitWidth * 512 - 2048), 6244, 0), false, (b) => horizontal = b);
 			rasterizationBox = CheckBoxCreator.Create("wooden", new CPos((int) (WindowInfo.UnitWidth * 512 - 2048), 6244, 0), false, (b) => {});
 			isBot = CheckBoxCreator.Create("wooden", new CPos((int) (WindowInfo.UnitWidth * 512 - 1024), -4196, 0), false, (b) => {});
-			team = TextBoxCreator.Create("wooden", new CPos((int) (WindowInfo.UnitWidth * 512 - 1024), -3372, 0), "0", 1, true);
+			team = TextBoxCreator.Create("wooden", new CPos((int) (WindowInfo.UnitWidth * 512 - 1024), -3372, 0), "0", 1, true, () =>
+			{
+				var num = byte.Parse(team.Text);
+				if (num >= Settings.MaxTeams)
+				{
+					team.Text = "" + (Settings.MaxTeams - 1);
+				}
+			});
 		}
 
 		void deselectBoxes(Selected selected)
@@ -237,7 +244,7 @@ namespace WarriorsSnuggery.UI
 					if (actorSelected == null)
 						return;
 
-					game.World.Add(ActorCreator.Create(game.World, actorSelected, pos, int.Parse(team.Text), isBot.Checked));
+					game.World.Add(ActorCreator.Create(game.World, actorSelected, pos, byte.Parse(team.Text), isBot.Checked));
 					break;
 				case Selected.TILE:
 					if (terrainSelected == null)
@@ -245,9 +252,8 @@ namespace WarriorsSnuggery.UI
 
 					wpos = new WPos(wpos.X < 0 ? 0 : wpos.X, wpos.Y < 0 ? 0 : wpos.Y,0);
 					var terrain = TerrainCreator.Create(game.World, wpos, terrainSelected.ID);
-					Camera.UpdateView();
-					WorldRenderer.CheckTerrainVisibility(true);
 
+					WorldRenderer.CheckTerrainVisibility(true);
 					game.World.TerrainLayer.Set(terrain);
 					break;
 				case Selected.WALL:
@@ -258,6 +264,7 @@ namespace WarriorsSnuggery.UI
 					wpos = new WPos(wpos.X > game.World.Map.Size.X ? game.World.Map.Size.X : wpos.X, wpos.Y > game.World.Map.Size.Y ? game.World.Map.Size.Y : wpos.Y,0);
 					wpos = new WPos(wpos.X * 2 + (horizontal ? 0 : 1), wpos.Y, 0);
 
+					WorldRenderer.CheckWallVisibility();
 					game.World.WallLayer.Set(WallCreator.Create(wpos, wallSelected.ID));
 					break;
 			}

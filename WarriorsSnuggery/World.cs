@@ -81,6 +81,7 @@ namespace WarriorsSnuggery
 			//	contrast: 1.5f
 			//	), 1f)));
 			//Add(ActorCreator.Create(this, "heal", CPos.Zero, 1, true));
+			Game.Teams = actorsToAdd.Max(a => a.Team);
 		}
 
 		public void Tick()
@@ -99,8 +100,6 @@ namespace WarriorsSnuggery
 			internalTick();
 
 			AddObjects();
-
-			VisibilitySolver.CameraUpdated();
 		}
 
 		public void AddObjects()
@@ -111,12 +110,20 @@ namespace WarriorsSnuggery
 
 			if (actorsToAdd.Any())
 			{
+				foreach (var actor in actorsToAdd)
+				{
+					actor.CheckVisibility();
+				}
 				Actors.AddRange(actorsToAdd);
 				actorsToAdd.Clear();
 			}
 
 			if (objectsToAdd.Any())
 			{
+				foreach (var @object in objectsToAdd)
+				{
+					@object.CheckVisibility();
+				}
 				Objects.AddRange(objectsToAdd);
 				objectsToAdd.Clear();
 			}

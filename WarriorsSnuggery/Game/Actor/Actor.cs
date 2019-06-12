@@ -24,10 +24,10 @@ namespace WarriorsSnuggery.Objects
 
 		public bool IsAlive = true;
 
-		public const ushort PlayerTeam = 2;
-		public const ushort NeutralTeam = 0;
+		public const byte PlayerTeam = 2;
+		public const byte NeutralTeam = 0;
 
-		public ushort Team;
+		public byte Team;
 		public float Angle;
 		
 		readonly List<ActorPart> parts = new List<ActorPart>();
@@ -60,7 +60,7 @@ namespace WarriorsSnuggery.Objects
 		}
 		public ActorAction CurrentAction;
 
-		public Actor(World world, ActorType type, CPos position, ushort team, bool isBot, bool isPlayer = false) : base(position, null, type.Physics == null ? null : new Physics(position, 0, type.Physics.Shape, type.Physics.Size.X, type.Physics.Size.Y, type.Physics.Size.Z))
+		public Actor(World world, ActorType type, CPos position, byte team, bool isBot, bool isPlayer = false) : base(position, null, type.Physics == null ? null : new Physics(position, 0, type.Physics.Shape, type.Physics.Size.X, type.Physics.Size.Y, type.Physics.Size.Z))
 		{
 			World = world;
 			Type = type;
