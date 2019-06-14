@@ -5,6 +5,6 @@
 		CPos Position { get; set; }
 
 		float Scale { get; set; }
-		CPos Rotation { get; set; }
+		VAngle Rotation { get; set; }
 	}
 }

@@ -20,7 +20,7 @@ namespace WarriorsSnuggery.Objects
 		}
 		CPos position;
 
-		public CPos Rotation
+		public VAngle Rotation
 		{
 			get { return rotation; }
 			set
@@ -33,7 +33,7 @@ namespace WarriorsSnuggery.Objects
 				}
 			}
 		}
-		CPos rotation;
+		VAngle rotation;
 
 		public float Scale
 		{

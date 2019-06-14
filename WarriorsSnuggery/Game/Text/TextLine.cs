@@ -32,7 +32,7 @@ namespace WarriorsSnuggery.Objects
 		}
 		CPos position;
 
-		public virtual CPos Rotation
+		public virtual VAngle Rotation
 		{
 			get { return rotation; }
 			set
@@ -41,11 +41,11 @@ namespace WarriorsSnuggery.Objects
 
 				foreach (var c in chars)
 				{
-					c.SetRotation(rotation.ToAngle());
+					c.SetRotation(rotation);
 				}
 			}
 		}
-		CPos rotation;
+		VAngle rotation;
 
 		public virtual float Scale
 		{

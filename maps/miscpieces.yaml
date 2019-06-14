@@ -6,6 +6,7 @@ main1=
 		Terrain=0
 	CustomSize=50,50
 	Ambient=170,170,200
+	AllowWeapons=false
 
 main2=
 	PlayType=MAINMENU
@@ -15,6 +16,7 @@ main2=
 		Terrain=0
 	CustomSize=16,16
 	Ambient=150,150,180
+	AllowWeapons=false
 
 tutorial=
 	PlayType=TUTORIAL

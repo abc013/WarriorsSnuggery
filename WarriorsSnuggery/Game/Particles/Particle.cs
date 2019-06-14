@@ -29,8 +29,8 @@ namespace WarriorsSnuggery.Objects
 		public override void Tick()
 		{
 			base.Tick();
-
-			Rotation += new CPos(0, 0, info.Rotation);
+			
+			Rotation += new VAngle(0, 0, info.Rotation);
 			Position += velocity;
 			Height += velocity.Z;
 			velocity += info.Force;

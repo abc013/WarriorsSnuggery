@@ -65,17 +65,17 @@ namespace WarriorsSnuggery.Objects
 			private set { }
 		}
 
-		public virtual CPos Rotation {
+		public virtual VAngle Rotation {
 			get { return rotation; }
 			set
 			{
 				rotation = value;
 
-				if (Renderable != null) // int is degree
-					Renderable.SetRotation(rotation.ToAngle());
+				if (Renderable != null)
+					Renderable.SetRotation(rotation);
 			}
 		}
-		CPos rotation;
+		VAngle rotation;
 
 		public virtual float Scale {
 			get { return scale; }
@@ -113,8 +113,26 @@ namespace WarriorsSnuggery.Objects
 		public virtual void Render()
 		{
 			if (Renderable != null)
+			{
 				Renderable.Render();
+			}
 			RenderPhysics();
+		}
+
+		public void RenderShadow()
+		{
+			if (Height != 0 && Renderable != null)
+			{
+				MasterRenderer.RenderShadow = true;
+				MasterRenderer.UniformHeight(Height);
+
+				Renderable.SetPosition(GraphicPositionWithoutHeight);
+				Renderable.Render();
+				Renderable.SetPosition(GraphicPosition);
+
+				MasterRenderer.RenderShadow = false;
+				Program.CheckGraphicsError("RenderShadow");
+			}
 		}
 
 		protected virtual void RenderPhysics()

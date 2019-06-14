@@ -83,8 +83,8 @@ namespace WarriorsSnuggery.Objects.Parts
 			}
 
 			var acceleration = customAcceleration == 0 ? info.Acceleration * 2 : customAcceleration;
-			var x = (int)Math.Round(Math.Cos((angle * Math.PI) / 180) * acceleration);
-			var y = (int)Math.Round(Math.Sin((angle * Math.PI) / 180) * acceleration);
+			var x = (int)Math.Round(Math.Cos(angle) * acceleration);
+			var y = (int)Math.Round(Math.Sin(angle) * acceleration);
 
 			Velocity += new CPos(x, y, 0);
 			if (Math.Abs(Velocity.X) >= info.Speed * speedFactor)

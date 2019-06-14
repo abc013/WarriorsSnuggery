@@ -23,7 +23,7 @@ namespace WarriorsSnuggery.UI
 		}
 		CPos position;
 
-		public virtual CPos Rotation
+		public virtual VAngle Rotation
 		{
 			get
 			{
@@ -32,13 +32,13 @@ namespace WarriorsSnuggery.UI
 			set
 			{
 				rotation = value;
-				inner.SetRotation(rotation.ToAngle());
-				outer.SetRotation(rotation.ToAngle());
-				if (Highlight != null) // int is degree
-					Highlight.SetRotation(rotation.ToAngle());
+				inner.SetRotation(rotation);
+				outer.SetRotation(rotation);
+				if (Highlight != null)
+					Highlight.SetRotation(rotation);
 			}
 		}
-		CPos rotation;
+		VAngle rotation;
 
 		public virtual float Scale
 		{

@@ -46,7 +46,7 @@ namespace WarriorsSnuggery.Objects
 				case Shape.LINE_HORIZONTAL:
 					var debugLine = new ColoredLine(Position - new CPos(0, RadiusX, -10240), Color.Cyan, RadiusX * 2 / 1024f)
 					{
-						Rotation = new CPos(0, 0, 90)
+						Rotation = new VAngle(0, 0, 90)
 					};
 					renderable = debugLine;
 					break;

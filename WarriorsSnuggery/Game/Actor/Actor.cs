@@ -259,7 +259,7 @@ namespace WarriorsSnuggery.Objects
 			if (reloadDelay != 0 || ActiveWeapon == null || !IsAlive)
 				return;
 
-			if (World.Game.Type == GameType.EDITOR || World.Game.Editor && IsPlayer)
+			if (World.Game.Type == GameType.EDITOR || World.Game.Editor && IsPlayer || !World.Map.Type.AllowWeapons)
 				return;
 
 			if (Position.DistToXY(target) < ActiveWeapon.Type.MinRange)

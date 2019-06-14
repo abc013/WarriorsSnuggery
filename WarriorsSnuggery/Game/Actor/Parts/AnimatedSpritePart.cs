@@ -65,6 +65,7 @@ namespace WarriorsSnuggery.Objects.Parts
 		readonly AnimatedSpritePartInfo info;
 
 		readonly SpriteRenderable[] renderables;
+		int currentFacing;
 
 		public AnimatedSpritePart(Actor self, AnimatedSpritePartInfo info) : base(self)
 		{
@@ -88,7 +89,7 @@ namespace WarriorsSnuggery.Objects.Parts
 
 		public override int FacingFromAngle(float angle)
 		{
-			float part = 360f / info.Facings;
+			float part = (float)(2f * Math.PI) / info.Facings;
 
 			int facing = (int)Math.Round(angle / part);
 			if (facing >= info.Facings)
@@ -105,9 +106,19 @@ namespace WarriorsSnuggery.Objects.Parts
 			return renderables[facing];
 		}
 
+		public override void OnMove(CPos old, CPos speed)
+		{
+			currentFacing = FacingFromAngle(self.Angle);
+		}
+
+		public override void OnAttack(CPos target, Weapon weapon)
+		{
+			currentFacing = FacingFromAngle(self.Angle);
+		}
+
 		public override void Render()
 		{
-			var renderable = GetRenderable(self.CurrentAction, FacingFromAngle(self.Angle));
+			var renderable = GetRenderable(self.CurrentAction, currentFacing);
 			if (renderable != null)
 			{
 				if (self.Height > 0)

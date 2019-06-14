@@ -7,6 +7,8 @@
 		public readonly WeaponType Type;
 		[Desc("Offset of the shoot point relative to the object's center.")]
 		public readonly CPos Offset;
+		[Desc("Height of the shoot point.")]
+		public readonly int Height;
 
 		public override ActorPart Create(Actor self)
 		{
@@ -25,6 +27,9 @@
 					case "Offset":
 						Offset = node.ToCPos();
 						break;
+					case "Height":
+						Height = node.ToInt();
+						break;
 					default:
 						throw new YamlUnknownNodeException(node.Key, "WeaponPart");
 				}
@@ -39,7 +44,7 @@
 
 		public CPos WeaponOffsetPosition
 		{
-			get { return self.GraphicPosition + info.Offset; }
+			get { return self.GraphicPositionWithoutHeight + info.Offset; }
 			set { }
 		}
 
@@ -52,7 +57,7 @@
 		public Weapon OnAttack(CPos target)
 		{
 			var weapon = WeaponCreator.Create(self.World, info.Type, self, target);
-			//weapon.Height = Height; // TODO
+			weapon.Height = info.Height;
 			self.World.Add(weapon);
 
 			return weapon;
