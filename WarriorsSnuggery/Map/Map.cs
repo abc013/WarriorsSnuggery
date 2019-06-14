@@ -348,7 +348,7 @@ namespace WarriorsSnuggery
 					if (single < 0f) single = 0f;
 
 					// If less than half, don't change terrain
-					if (single < 0.5f) // TODO add value and noise (for grainy things)
+					if (single < (float) random.NextDouble() * type.EdgeNoise + (1 - type.EdgeNoise) * 0.5f)
 						continue;
 
 					terrainGenerationArray[x, y] = type.ID;

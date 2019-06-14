@@ -31,7 +31,6 @@ namespace WarriorsSnuggery
 
 		public static void CameraUpdated()
 		{
-			Console.WriteLine("CamUpdate");
 			var pos = Camera.LookAt;
 			var zoomX = Camera.CurrentZoom * WindowInfo.Ratio;
 			var zoomY = Camera.CurrentZoom;

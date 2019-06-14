@@ -28,8 +28,6 @@ namespace WarriorsSnuggery.Objects
 				Dispose();
 				return;
 			}
-			
-			//text.SetColor(new Color(color.R, color.G, color.B, (float) Math.Sqrt(current / (float) start))); TODO
 
 			text.Position += velocity;
 		}
