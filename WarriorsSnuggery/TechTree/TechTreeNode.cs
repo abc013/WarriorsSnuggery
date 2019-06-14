@@ -36,8 +36,8 @@
 					case "Effect":
 						var effect = EffectType.NONE;
 						var value = 0f;
+						var manaCost = 0;
 						var duration = 0;
-						var occurence = EffectOccurTypes.FIRST;
 						var cooldown = 0;
 
 						effect = (EffectType) node.ToEnum(typeof(EffectType));
@@ -49,18 +49,18 @@
 								case "Value":
 									value = child.ToFloat();
 									break;
+								case "ManaCost":
+									manaCost = child.ToInt();
+									break;
 								case "Duration":
 									duration = child.ToInt();
-									break;
-								case "Occurence":
-									occurence = (EffectOccurTypes)child.ToEnum(typeof(EffectOccurTypes));
 									break;
 								case "Cooldown":
 									cooldown = child.ToInt();
 									break;
 							}
 						}
-						Effect = new Effect(effect, value, duration, occurence, cooldown);
+						Effect = new Effect(effect, value, manaCost, duration, cooldown);
 						break;
 					case "Icon":
 						Icon = node.Value;

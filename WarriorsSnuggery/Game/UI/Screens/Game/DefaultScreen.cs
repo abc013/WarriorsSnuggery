@@ -52,15 +52,7 @@ namespace WarriorsSnuggery.UI
 			effectPanel = new PanelList(new CPos(0, (int)(WindowInfo.UnitHeight * 512) - 3072 - 128, 0), new MPos(8192, 256), new MPos(256, 256), 6, "UI_stone1", "UI_stone2");
 			foreach (var effect in TechTreeLoader.TechTree)
 			{
-				var item = new PanelItem(CPos.Zero, effect.Name, new ImageRenderable(TextureManager.Texture(effect.Icon)), new MPos(256, 256), () => 
-				{
-					if (effect.Unlocked || game.Statistics.UnlockedNodes.ContainsKey(effect.InnerName) && game.Statistics.UnlockedNodes[effect.InnerName])
-					{
-						game.World.LocalPlayer.Effects.Add(new Objects.Effects.EffectPart(game.World.LocalPlayer, effect.Effect));
-						game.Statistics.Mana -= effect.Cost;
-					}
-				}
-				);
+				var item = new EffectListItem(CPos.Zero, new MPos(256, 256), effect, game);
 
 				if (!(effect.Unlocked || game.Statistics.UnlockedNodes.ContainsKey(effect.InnerName) && game.Statistics.UnlockedNodes[effect.InnerName]))
 					item.SetColor(new Color(0, 0, 0, 1f));
