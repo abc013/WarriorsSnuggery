@@ -88,6 +88,9 @@ namespace WarriorsSnuggery.Objects.Parts
 				for (int x = 0; x < frameCountPerIdleAnim; x++)
 					anim[x] = textures[i * frameCountPerIdleAnim + x];
 
+				if (anim.Length == 0)
+					throw new YamlInvalidNodeException(string.Format(@"Animation Frame count is zero. Make sure you set the bounds properly."));
+
 				if (info.Random)
 				{
 					var ran = self.World.Game.SharedRandom.Next(anim.Length);

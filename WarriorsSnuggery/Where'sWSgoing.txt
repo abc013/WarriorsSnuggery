@@ -47,7 +47,8 @@ TO SET AN AIM
 Release: Winter 2019, Dec
 Plan of Game:
 	You are a creature capable of changing your appearance. You don't know who did this to you. But you know where to go.
-	It is time to face the evil wizard. Fight your way through the levels. Gather new creatures and money. Unlock new abilities.
+	It is time to face the evil wizard. Fight your way through the the evil lands. Gather new creatures and money. Learn new abilities.
 
 	At the end, big parts of the game should be made customizable.
+	The Levels should have a secret message each: A fear of humanity. E.g. Vulcano eruption, Computer dictatorship, ...
 Side Note: Art has never an end. This is the final date. After it, no features should be added anymore. Not a single one.

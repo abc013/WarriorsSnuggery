@@ -399,6 +399,50 @@ magictower=
 		Range=12
 		Interval=0
 
+machine=
+	Part@Sprite=
+		Name=machineBase
+		Dimensions=72,48
+		Condition=ALL
+		Offset=0,-248,0
+	Part@Sprite=
+		Name=machineTech
+		Dimensions=72,48
+		Condition=ALL
+		Offset=0,-1024,0
+	Part@AnimatedSprite=
+		Name=machineZap
+		Dimensions=20, 20
+		Condition=ALL
+		Offset=96,-1216,0
+		Tick=1
+	Part@World=
+		CanTrigger=yes
+		ShowDamage=yes
+	Part@Weapon=
+		Type=voidweapon
+		Offset=-512,-512,0
+	Part@Health=
+		MaxHealth=1000
+	Part@Physics=
+		Shape=Rectangle
+		Size=1536,768,2048
+	Part@SpawnOnDeath=
+		Count=100
+		Name=gold
+		Type=ACTOR
+	Part@SpawnOnDeath=
+		Count=50
+		Name=silver
+		Type=ACTOR
+	Part@Playable=
+		Playable=yes
+		Cost=3
+	Part@RevealsShroud=
+		Range=24
+		Interval=0
+	
+
 #############################
 #           MISC            #
 #############################

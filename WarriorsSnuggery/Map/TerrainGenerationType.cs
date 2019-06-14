@@ -14,13 +14,15 @@ namespace WarriorsSnuggery.Maps
 		public readonly float Intensity;
 		public readonly float Contrast;
 
+		public readonly float EdgeNoise;
+
 		public readonly int[] Terrain;
 		public readonly bool SpawnPieces;
 		public readonly int[] BorderTerrain;
 		public readonly int Border;
 		public readonly Dictionary<ActorType, int> SpawnActors;
 
-		TerrainGenerationType(int id, GenerationType generationType, int strength, float scale, float intensity, float contrast, int[] terrain, bool spawnPieces, int[] borderTerrain, int border, Dictionary<ActorType, int> spawnActors)
+		TerrainGenerationType(int id, GenerationType generationType, int strength, float scale, float intensity, float contrast, float edgeNoise, int[] terrain, bool spawnPieces, int[] borderTerrain, int border, Dictionary<ActorType, int> spawnActors)
 		{
 			ID = id;
 			GenerationType = generationType;
@@ -28,6 +30,7 @@ namespace WarriorsSnuggery.Maps
 			Scale = scale;
 			Intensity = intensity;
 			Contrast = contrast;
+			EdgeNoise = edgeNoise;
 			Terrain = terrain;
 			SpawnPieces = spawnPieces;
 			BorderTerrain = borderTerrain;
@@ -37,7 +40,7 @@ namespace WarriorsSnuggery.Maps
 
 		public static TerrainGenerationType Empty()
 		{
-			return new TerrainGenerationType(0, GenerationType.NONE, 1, 1f, 1f, 1f, new[] { 0 }, true, new int[] { }, 0, new Dictionary<ActorType, int>());
+			return new TerrainGenerationType(0, GenerationType.NONE, 1, 1f, 1f, 1f, 0f, new[] { 0 }, true, new int[] { }, 0, new Dictionary<ActorType, int>());
 		}
 
 		public static TerrainGenerationType GetType(int id, MiniTextNode[] nodes)
@@ -47,6 +50,7 @@ namespace WarriorsSnuggery.Maps
 			var scale = 2f;
 			var intensity = 0f;
 			var contrast = 1f;
+			var edgeNoise = 0f;
 			var terrainTypes = new int[0];
 			var spawnPieces = true;
 			var borderTerrain = new int[0];
@@ -97,6 +101,10 @@ namespace WarriorsSnuggery.Maps
 							borderTerrain[i] = int.Parse(rawBorder[i].Value);
 
 						break;
+					case "EdgeNoise":
+						edgeNoise = generation.ToFloat();
+
+						break;
 					case "SpawnPieces":
 						spawnPieces = generation.ToBoolean();
 
@@ -111,7 +119,7 @@ namespace WarriorsSnuggery.Maps
 						break;
 				}
 			}
-			return new TerrainGenerationType(id, noise, strength, scale, intensity, contrast, terrainTypes, spawnPieces, borderTerrain, border, spawnActorBlob);
+			return new TerrainGenerationType(id, noise, strength, scale, intensity, contrast, edgeNoise, terrainTypes, spawnPieces, borderTerrain, border, spawnActorBlob);
 		}
 	}
 }
