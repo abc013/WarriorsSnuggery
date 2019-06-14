@@ -13,33 +13,25 @@
 		SHIELD
 	}
 
-	public enum EffectOccurTypes
-	{
-		ALWAYS,
-		RANDOM,
-		FIRST,
-		ON_DAMAGE,
-		ON_MOVE,
-		ON_ATTACK,
-		ON_KILLED
-	}
-
 	public class Effect
 	{
 		public readonly EffectType Type;
 		public readonly float Value;
+
+		public readonly int ManaCost;
+
 		public readonly int Duration;
+		public readonly int RechargeDuration;
 
-		public readonly EffectOccurTypes Occurence;
-		public readonly int Cooldown;
-
-		public Effect(EffectType type, float value, int duration, EffectOccurTypes occurence, int reloadTick)
+		public Effect(EffectType type, float value, int manaCost, int duration, int rechargeDuration)
 		{
 			Type = type;
 			Value = value;
+
+			ManaCost = manaCost;
+
 			Duration = duration;
-			Occurence = occurence;
-			Cooldown = reloadTick;
+			RechargeDuration = rechargeDuration;
 		}
 	}
 }

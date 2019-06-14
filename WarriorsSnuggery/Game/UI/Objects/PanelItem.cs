@@ -102,8 +102,13 @@ namespace WarriorsSnuggery.UI
 
 			mouseOnItem = mousePosition.X > position.X - size.X && mousePosition.X < position.X + size.X && mousePosition.Y > position.Y - size.Y && mousePosition.Y < position.Y + size.Y;
 
-			if (MouseInput.isLeftClicked && mouseOnItem && action != null)
-				action();
+			if (MouseInput.isLeftClicked && mouseOnItem)
+				takeAction();
+		}
+
+		protected virtual void takeAction()
+		{
+			action?.Invoke();
 		}
 	}
 }

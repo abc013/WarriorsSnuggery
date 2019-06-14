@@ -305,7 +305,7 @@ namespace WarriorsSnuggery
 				tick.SetText("Tick " + LocalTick + " @ " + Window.Current.TPS);
 
 				tick.SetColor(Window.Current.FPS < Settings.FrameLimiter - 10 ? Color.Red : Color.White);
-				render.SetText("Render " + LocalTick + " @ " + Window.Current.FPS);
+				render.SetText("Render " + LocalRender + " @ " + Window.Current.FPS);
 			}
 
 			if (infoTextDuration-- < 90)
