@@ -64,7 +64,7 @@ namespace WarriorsSnuggery.UI
 			height += 512;
 			cut1 = new ColoredLine(new CPos(4096, height, 0), Color.White, 8f)
 			{
-				Rotation = new CPos(0, 0, 90)
+				Rotation = new VAngle(0, 0, 90)
 			};
 			if (game.Type != GameType.EDITOR && game.Type != GameType.TUTORIAL && game.Type != GameType.TEST)
 			{
@@ -76,7 +76,7 @@ namespace WarriorsSnuggery.UI
 				height += 512;
 				cut2 = new ColoredLine(new CPos(4096, height, 0), Color.White, 8f)
 				{
-					Rotation = new CPos(0, 0, 90)
+					Rotation = new VAngle(0, 0, 90)
 				};
 			}
 			height += 512;
@@ -91,7 +91,7 @@ namespace WarriorsSnuggery.UI
 			height += 512;
 			cut3 = new ColoredLine(new CPos(4096, height, 0), Color.White, 8f)
 			{
-				Rotation = new CPos(0, 0, 90)
+				Rotation = new VAngle(0, 0, 90)
 			};
 			height += 512;
 			leave = ButtonCreator.Create("wooden", new CPos(0, height, 0), "Exit Game", () => humanAgree(Window.Current.Exit, "Are you sure you want to exit the game?"));

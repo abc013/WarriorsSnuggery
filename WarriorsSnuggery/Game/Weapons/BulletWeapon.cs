@@ -23,7 +23,7 @@ namespace WarriorsSnuggery.Objects
 		void setNewTarget()
 		{
 			var angle = Target.AngleToXY(Position);
-			Target = Position + new CPos((int)(Math.Cos((angle * Math.PI) / 180) * Type.MaxRange), (int)(Math.Sin((angle * Math.PI) / 180) * Type.MaxRange), 0);
+			Target = Position + new CPos((int)(Math.Cos(angle) * Type.MaxRange), (int)(Math.Sin(angle) * Type.MaxRange), 0);
 
 			Target += getInaccuracy();
 		}

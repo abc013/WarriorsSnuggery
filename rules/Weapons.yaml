@@ -3,7 +3,7 @@ arrow=
 	Image=arrow
 		Size=2,6
 	Damage=25
-	Speed=150
+	Speed=140
 	Reload=20
 	ParticlesOnImpact=woodPiece
 		Count=3
@@ -37,6 +37,7 @@ slime=
 	Reload=12
 	RotateToTarget=no
 	Inaccuracy=1024
+	Gravity=0
 
 voidweapon=
 	Type=Beam
@@ -58,6 +59,7 @@ voidweapon=
 	ParticlesOnImpact=nebula1
 		Count=10
 	Inaccuracy=512
+	Gravity=0
 
 web=
 	Image=arrow
@@ -72,6 +74,7 @@ web=
 	ParticlesOnImpact=nebula1
 		Count=20
 	Inaccuracy=512
+	Gravity=1
 
 blade=
 	Image=blade
@@ -85,6 +88,7 @@ blade=
 	Physics=
 		Size=0
 	Reload=10
+	Gravity=0
 
 lazer=
 	Type=Beam
@@ -108,6 +112,7 @@ lazer=
 	ParticlesOnImpact=glitter
 		Count=5
 #	Inaccuracy=1024
+	Gravity=0
 
 color=
 	Image=particle2
@@ -122,3 +127,4 @@ color=
 		Acceleration=10
 	Reload=2
 	Inaccuracy=0
+	Gravity=0

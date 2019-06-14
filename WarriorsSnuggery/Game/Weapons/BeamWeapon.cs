@@ -64,10 +64,10 @@ namespace WarriorsSnuggery.Objects
 			{
 				var renderable = renderables[curFrame];
 
-				var posX = (int)(Math.Cos((angle * Math.PI) / 180) * i * renderabledistance);
-				var posY = (int)(Math.Sin((angle * Math.PI) / 180) * i * renderabledistance);
+				var posX = (int)(Math.Cos(angle) * i * renderabledistance);
+				var posY = (int)(Math.Sin(angle) * i * renderabledistance);
 
-				renderable.SetRotation(new OpenTK.Vector4(0, 0, (float) ((270 - angle) * Math.PI) / 180, 0));
+				renderable.SetRotation(new VAngle(0, 0, -angle) + new VAngle(0,0,270));
 				renderable.SetPosition(originPos + new CPos(posX, posY, 0));
 				renderable.Render();
 

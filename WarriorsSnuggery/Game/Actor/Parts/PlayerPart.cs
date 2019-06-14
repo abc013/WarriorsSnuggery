@@ -1,4 +1,6 @@
-﻿namespace WarriorsSnuggery.Objects.Parts
+﻿using System;
+
+namespace WarriorsSnuggery.Objects.Parts
 {
 	/// <summary>
 	/// Controls player input.
@@ -14,12 +16,12 @@
 		{
 			if (KeyInput.IsKeyDown(Settings.Key("MoveUp")))
 			{
-				self.Accelerate(270);
+				self.Accelerate((float)Math.PI * 1.5f);
 			}
 
 			if (KeyInput.IsKeyDown(Settings.Key("MoveDown")))
 			{
-				self.Accelerate(90);
+				self.Accelerate((float)Math.PI * 0.5f);
 			}
 
 			if (KeyInput.IsKeyDown(Settings.Key("MoveRight")))
@@ -29,7 +31,7 @@
 
 			if (KeyInput.IsKeyDown(Settings.Key("MoveLeft")))
 			{
-				self.Accelerate(180);
+				self.Accelerate((float) Math.PI);
 			}
 
 			if (MouseInput.isLeftDown && !self.World.Game.ScreenControl.CursorOnUI())

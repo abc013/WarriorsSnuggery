@@ -61,7 +61,10 @@ namespace WarriorsSnuggery.Objects
 		[Desc("Size of the collision boundary.")]
 		public readonly int PhysicalSize;
 
-		public WeaponType(TextureInfo textures, TextureInfo smudge, int damage, int speed, int acceleration, int reload, ParticleSpawner particlesOnImpact, int inaccuracy, int maxRange, int minRange, FalloffType damageFalloff, WeaponFireType weaponFireType, bool orientateToTarget, Shape physicalShape, int physicalSize)
+		[Desc("Gravity applied to the weapon.")]
+		public readonly int Gravity;
+
+		public WeaponType(TextureInfo textures, TextureInfo smudge, int damage, int speed, int acceleration, int reload, ParticleSpawner particlesOnImpact, int inaccuracy, int maxRange, int minRange, FalloffType damageFalloff, WeaponFireType weaponFireType, bool orientateToTarget, Shape physicalShape, int physicalSize, int gravity)
 		{
 			Textures = textures;
 			Smudge = smudge;
@@ -78,6 +81,7 @@ namespace WarriorsSnuggery.Objects
 			OrientateToTarget = orientateToTarget;
 			PhysicalShape = physicalShape;
 			PhysicalSize = physicalSize;
+			Gravity = gravity;
 		}
 	}
 }

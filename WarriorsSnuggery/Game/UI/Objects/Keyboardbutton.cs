@@ -24,19 +24,19 @@ namespace WarriorsSnuggery.Objects
 		}
 		CPos position;
 
-		public virtual CPos Rotation
+		public virtual VAngle Rotation
 		{
 			get { return rotation; }
 			set
 			{
 				rotation = value;
 
-				released.SetRotation(rotation.ToAngle());
-				pressed.SetRotation(rotation.ToAngle());
-				keyDisplay.SetRotation(rotation.ToAngle());
+				released.SetRotation(rotation);
+				pressed.SetRotation(rotation);
+				keyDisplay.SetRotation(rotation);
 			}
 		}
-		CPos rotation;
+		VAngle rotation;
 
 		public virtual float Scale
 		{

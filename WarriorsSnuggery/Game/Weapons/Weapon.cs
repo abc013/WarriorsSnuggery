@@ -33,7 +33,7 @@ namespace WarriorsSnuggery.Objects
 			Target = target;
 
 			if (Type.OrientateToTarget)
-				Rotation = new CPos(0,0, (int) -Position.AngleToXY(Target) + 90);
+				Rotation = new VAngle(0,0, -Position.AngleToXY(Target)) + new VAngle(0, 0, (int) 90);
 
 			if (originActor != null)
 			{
@@ -68,23 +68,57 @@ namespace WarriorsSnuggery.Objects
 			Move(Target);
 
 			if (Type.OrientateToTarget)
-				Rotation = new CPos(0,0, (int) -Position.AngleToXY(Target) + 90);
+				Rotation = new VAngle(0,0,-Position.AngleToXY(Target)) + new VAngle(0, 0, (int) 90);
 
 			if (InRange(Target))
 				Detonate();
+		}
+
+		public override void Render()
+		{
+			base.RenderShadow();
+			base.Render();
 		}
 
 		public virtual void Move(CPos target)
 		{
 			var angle = target.AngleToXY(Position);
 
-			var x = Math.Cos((angle * Math.PI) / 180) * Speed;
-			var y = Math.Sin((angle * Math.PI) / 180) * Speed;
+			var x = Math.Cos(angle) * Speed;
+			var y = Math.Sin(angle) * Speed;
+			double z;
+			if (Type.WeaponFireType == WeaponFireType.ROCKET)
+			{
+				int zDiff;
+				int dDiff;
+				float angle2;
+				if (TargetActor != null)
+				{
+					zDiff = Height - TargetActor.Height;
+					dDiff = (int) Position.DistToXY(TargetActor.Position);
+				}
+				else
+				{
+					zDiff = Height;
+					dDiff = (int) Position.DistToXY(Target);
+				}
+				angle2 = new CPos(dDiff, zDiff, 0).AngleToXY(CPos.Zero);
+				z = Math.Sin(angle2) * Speed;
+			}
+			else
+			{
+				z = Type.Gravity;
+			}
 
 			var old = Position;
 			// Note: we made sure that a weapon's target can't be out of world. (Actor.cs#87(Attack))
 			Position = new CPos(Position.X + (int) x, Position.Y + (int) y, Position.Z);
 			Physics.Position = Position;
+
+			Height -= (int) z;
+			if (Height < 0)
+				Detonate();
+
 			World.PhysicsLayer.UpdateSectors(this);
 
 			if (World.CheckCollision(this, true, new [] { typeof(Weapon), typeof(BeamWeapon), typeof(BulletWeapon), typeof(RocketWeapon) }, new[] { Origin }))

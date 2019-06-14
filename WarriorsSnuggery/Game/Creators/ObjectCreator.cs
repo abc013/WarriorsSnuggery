@@ -107,6 +107,7 @@ namespace WarriorsSnuggery
 				var turnToTarget = true;
 				var physicalShape = Shape.CIRCLE;
 				var physicalSize = 100;
+				var gravity = 9;
 
 				foreach(var child in weapon.Children)
 				{
@@ -114,54 +115,42 @@ namespace WarriorsSnuggery
 					{
 						case "Image":
 							info = child.ToTextureInfo();
-
 							break;
 						case "Type":
 							type = (WeaponFireType) child.ToEnum(typeof(WeaponFireType));
-
 							break;
 						case "Smudge":
 							smudge = child.ToTextureInfo();
-
 							break;
 						case "Damage":
 							damage = child.ToInt();
-
 							break;
 						case "Reload":
 							reload = child.ToInt();
-
 							break;
 						case "Speed":
 							speed = child.ToInt();
 
 							if (child.Children.Count > 0 && child.Children.Exists(c => c.Key == "Acceleration"))
 								acceleration = child.Children.Find(c => c.Key == "Acceleration").ToInt();
-
 							break;
 						case "ParticlesOnImpact":
 							particlesOnImpact = child.ToParticleSpawner();
-
 							break;
 						case "Inaccuracy":
 							inaccuracy = child.ToInt();
-
 							break;
 						case "MaximalRange":
 							maxRange = child.ToInt();
-
 							break;
 						case "MinimalRange":
 							minRange = child.ToInt();
-
 							break;
 						case "Falloff":
 							damageFalloff = (FalloffType) child.ToEnum(typeof(FalloffType));
-
 							break;
 						case "RotateToTarget":
 							turnToTarget = child.ToBoolean();
-
 							break;
 						case "Physics":
 							if (child.Children.Count > 0)
@@ -181,7 +170,9 @@ namespace WarriorsSnuggery
 									}
 								}
 							}
-
+							break;
+						case "Gravity":
+							gravity = child.ToInt();
 							break;
 						default:
 							throw new YamlUnknownNodeException(child.Key, name);
@@ -191,7 +182,7 @@ namespace WarriorsSnuggery
 				if (info == null)
 					throw new YamlMissingNodeException(weapon.Key, "Image");
 
-				AddTypes(new WeaponType(info, smudge, damage, speed, acceleration, reload, particlesOnImpact, inaccuracy, maxRange, minRange, damageFalloff, type, turnToTarget, physicalShape, physicalSize), name);
+				AddTypes(new WeaponType(info, smudge, damage, speed, acceleration, reload, particlesOnImpact, inaccuracy, maxRange, minRange, damageFalloff, type, turnToTarget, physicalShape, physicalSize, gravity), name);
 			}
 		}
 
@@ -289,33 +280,27 @@ namespace WarriorsSnuggery
 					{
 						case "Image":
 							info = child.ToTextureInfo();
-
 							break;
 						case "Tick":
 							tick = child.ToInt();
-
 							break;
 						case "DissolveTick":
 							dissolveTick = child.ToInt();
-
 							break;
 						case "Force":
 							force = child.ToCPos();
 
 							if (child.Children.Count > 0)
 								ranVelocity = child.Children.Find(c => c.Key == "Random").ToCPos();
-
 							break;
 						case "Rotation":
 							rotation = child.ToInt();
-
 							break;
 						case "Scale":
 							scale = child.ToFloat();
 
 							if (child.Children.Count > 0)
 								ranScale = child.Children.Find(c => c.Key == "Random").ToFloat();
-
 							break;
 						default:
 							throw new YamlUnknownNodeException(child.Key, name);

@@ -11,9 +11,16 @@ namespace WarriorsSnuggery
 	{
 		public static readonly CPos Zero = new CPos();
 
-		public readonly int X, Y, Z;
+		public readonly int X;
+		public readonly int Y;
+		public readonly int Z;
 
-		public CPos(int x, int y, int z) { X = x; Y = y; Z = z; }
+		public CPos(int x, int y, int z)
+		{
+			X = x;
+			Y = y;
+			Z = z;
+		}
 
 		public static CPos operator +(CPos lhs, CPos rhs) { return new CPos(lhs.X + rhs.X, lhs.Y + rhs.Y, lhs.Z + rhs.Z); }
 
@@ -43,22 +50,17 @@ namespace WarriorsSnuggery
 			return (float) Math.Sqrt(x * x  + y * y);
 		}
 
-		public float AngleToXY(CPos pos)
+		public float AngleToXY(CPos pos) //TODO delete degrees, we dont need them
 		{
 			var diff = pos - this;
 			var diffX = -diff.X;
 			var diffY = diff.Y;
 			float angle = (float)-Math.Atan2(diffY, diffX);
-			float degrees = (180 / (float)Math.PI) * angle;
-			degrees = degrees > 0 ? degrees : degrees + 360f;
-			return degrees;
-		}
 
-		public OpenTK.Vector4 ToAngle()
-		{
-			const float degree = 1 / 180f * (float) Math.PI;
+			if (angle < 0f)
+				angle += (float) (2 * Math.PI);
 
-			return new OpenTK.Vector4(X * degree, Y *degree, Z*degree, 0f);
+			return angle;
 		}
 
 		public OpenTK.Vector4 ToVector()

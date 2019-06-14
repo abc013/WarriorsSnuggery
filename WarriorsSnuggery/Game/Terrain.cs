@@ -50,7 +50,7 @@ namespace WarriorsSnuggery.Objects
 						edges[i] = new ImageRenderable(Type.Texture_Edge2);
 					else
 						edges[i] = new ImageRenderable(Type.Texture_Edge);
-					edges[i].SetRotation(new CPos(0,0,i*-90).ToAngle());
+					edges[i].SetRotation(new VAngle(0,0,i*-90));
 				}
 
 				corners = new ImageRenderable[4];
@@ -58,7 +58,7 @@ namespace WarriorsSnuggery.Objects
 				{
 					cornersVisible[i] = true;
 					corners[i] = new ImageRenderable(Type.Texture_Corner);
-					corners[i].SetRotation(new CPos(0,0,i*-90).ToAngle());
+					corners[i].SetRotation(new VAngle(0,0,i*-90));
 				}
 			}
 		}

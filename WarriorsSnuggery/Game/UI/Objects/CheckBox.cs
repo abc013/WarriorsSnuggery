@@ -23,18 +23,18 @@ namespace WarriorsSnuggery.UI
 		}
 		CPos position;
 
-		public virtual CPos Rotation
+		public virtual VAngle Rotation
 		{
 			get { return rotation; }
 			set
 			{
 				rotation = value;
-				type.Click.SetRotation(rotation.ToAngle());
-				type.Default.SetRotation(rotation.ToAngle());
-				type.Checked.SetRotation(rotation.ToAngle());
+				type.Click.SetRotation(rotation);
+				type.Default.SetRotation(rotation);
+				type.Checked.SetRotation(rotation);
 			}
 		}
-		CPos rotation;
+		VAngle rotation;
 
 		public virtual float Scale
 		{
