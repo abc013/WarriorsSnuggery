@@ -99,7 +99,7 @@ namespace WarriorsSnuggery
 
 		public static void UpdateView()
 		{
-			var look = new Vector3(-LookAt.ToVector() / CurrentZoom) * 2;
+			var look = new Vector3(-LookAt.ToVector() / new Vector(CurrentZoom, CurrentZoom, CurrentZoom, CurrentZoom)) * 2;
 			look.X /= WindowInfo.Ratio;
 			look.Z = 0;
 

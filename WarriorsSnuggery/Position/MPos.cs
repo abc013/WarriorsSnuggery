@@ -10,9 +10,14 @@ namespace WarriorsSnuggery
 	{
 		public static readonly MPos Zero = new MPos();
 
-		public readonly int X,Y;
+		public readonly int X;
+		public readonly int Y;
 
-		public MPos(int x, int y) { X = x; Y = y; }
+		public MPos(int x, int y)
+		{
+			X = x;
+			Y = y;
+		}
 
 		public static MPos operator +(MPos lhs, MPos rhs) { return new MPos(lhs.X + rhs.X, lhs.Y + rhs.Y); }
 
@@ -33,7 +38,7 @@ namespace WarriorsSnuggery
 
 		public override string ToString() { return X + "," + Y; }
 
-		public OpenTK.Vector4 ToVector()
+		public Vector ToVector()
 		{
 			return GLPos.ToVector(this);
 		}

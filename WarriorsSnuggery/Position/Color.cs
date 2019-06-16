@@ -8,16 +8,16 @@ namespace WarriorsSnuggery
 {
 	public struct Color
 	{
-		public static Color White = new Color(1f,1f,1f);
-		public static Color Black = new Color(0f,0f,0f);
+		public static readonly Color White = new Color(1f,1f,1f);
+		public static readonly Color Black = new Color(0f,0f,0f);
 
-		public static Color Blue = new Color(0f,0f,1f);
-		public static Color Red = new Color(1f,0f,0f);
-		public static Color Green = new Color(0f,1f,0f);
+		public static readonly Color Blue = new Color(0f,0f,1f);
+		public static readonly Color Red = new Color(1f,0f,0f);
+		public static readonly Color Green = new Color(0f,1f,0f);
 
-		public static Color Magenta = new Color(1f,0f,1f);
-		public static Color Yellow = new Color(1f,1f,0f);
-		public static Color Cyan = new Color(0f,1f,1f);
+		public static readonly Color Magenta = new Color(1f,0f,1f);
+		public static readonly Color Yellow = new Color(1f,1f,0f);
+		public static readonly Color Cyan = new Color(0f,1f,1f);
 		
 		public readonly float R;
 
@@ -43,8 +43,8 @@ namespace WarriorsSnuggery
 			return new Color(color.R, color.G, color.B, color.A);
 		}
 
-		public static implicit operator OpenTK.Vector4(Color color) {
-			return new OpenTK.Vector4(color.R, color.G, color.B, color.A);
+		public static implicit operator Vector(Color color) {
+			return new Vector(color.R, color.G, color.B, color.A);
 		}
 
 		public static implicit operator OpenTK.Graphics.Color4(Color color) {

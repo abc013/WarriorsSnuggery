@@ -240,7 +240,7 @@ namespace WarriorsSnuggery.Objects
 			}
 			for(int i = 0; i < chars.Count; i++)
 			{
-				chars[i].SetPosition(Position.ToVector() + new OpenTK.Vector4((width + 1) * TextRenderable.SizeMultiplier, 0,0,0));
+				chars[i].SetPosition(Position.ToVector() + new Vector((width + 1) * TextRenderable.SizeMultiplier, 0,0,0));
 				width += charWidth(String[i]) + 1;
 			}
 		}

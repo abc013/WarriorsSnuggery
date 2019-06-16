@@ -317,7 +317,7 @@ namespace WarriorsSnuggery
 			var pos = e.Position;
 			ExactMousePosition = GLPos.FromScreen(pos.X, pos.Y);
 
-			MouseInput.WindowPosition = GLPos.ToCPos(GLPos.FromScreen(pos.X, pos.Y) * new Vector4(Camera.DefaultZoom, Camera.DefaultZoom, 1, 1));
+			MouseInput.WindowPosition = GLPos.ToCPos(GLPos.FromScreen(pos.X, pos.Y) * new Vector(Camera.DefaultZoom, Camera.DefaultZoom, 1, 1));
 		}
 	}
 }
