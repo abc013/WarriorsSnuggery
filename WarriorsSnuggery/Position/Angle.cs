@@ -4,11 +4,11 @@ namespace WarriorsSnuggery
 {
 	public struct VAngle
 	{
+		public static readonly VAngle Zero = new VAngle();
+
 		public readonly float X;
 		public readonly float Y;
 		public readonly float Z;
-
-		public static readonly VAngle Zero = new VAngle();
 
 		public VAngle(float x, float y, float z)
 		{

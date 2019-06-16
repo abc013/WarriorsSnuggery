@@ -49,7 +49,12 @@ namespace WarriorsSnuggery.Graphics
 
 		public void SetScale(CPos scale)
 		{
-			SetScale(scale.ToVector().Xyz);
+			SetScale(scale.ToVector());
+		}
+
+		public void SetScale(Vector scale)
+		{
+			SetScale(new Vector3(scale.X, scale.Y, scale.Z));
 		}
 
 		public void SetScale(Vector3 scale)

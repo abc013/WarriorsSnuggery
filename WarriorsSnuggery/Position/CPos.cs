@@ -45,7 +45,7 @@ namespace WarriorsSnuggery
 			return (float) Math.Sqrt(x * x  + y * y);
 		}
 
-		public float AngleToXY(CPos pos) //TODO delete degrees, we dont need them
+		public float AngleToXY(CPos pos)
 		{
 			var diff = pos - this;
 			var diffX = -diff.X;
@@ -58,7 +58,7 @@ namespace WarriorsSnuggery
 			return angle;
 		}
 
-		public OpenTK.Vector4 ToVector()
+		public Vector ToVector()
 		{
 			return GLPos.ToVector(this);
 		}

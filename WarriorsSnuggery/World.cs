@@ -81,7 +81,8 @@ namespace WarriorsSnuggery
 			//	contrast: 1.5f
 			//	), 1f)));
 			//Add(ActorCreator.Create(this, "heal", CPos.Zero, 1, true));
-			Game.Teams = actorsToAdd.Max(a => a.Team);
+			if (actorsToAdd.Any())
+				Game.Teams = actorsToAdd.Max(a => a.Team);
 		}
 
 		public void Tick()

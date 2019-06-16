@@ -39,7 +39,10 @@ namespace WarriorsSnuggery
 			Type = type;
 			Seed = seed;
 
-			generateMapSize(seed, level, difficulty);
+			if (Type.CustomSize != MPos.Zero)
+				Size = Type.CustomSize;
+			else
+				generateMapSize(seed, level, difficulty);
 		}
 
 		void generateMapSize(int seed, int level, int difficulty)
@@ -59,8 +62,6 @@ namespace WarriorsSnuggery
 
 		public void Load()
 		{
-			if (Type.CustomSize != MPos.Zero)
-				Size = Type.CustomSize;
 
 			Camera.SetBounds(Size.ToCPos());
 

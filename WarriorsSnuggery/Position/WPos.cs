@@ -4,10 +4,17 @@ namespace WarriorsSnuggery
 	public struct WPos
 	{
 		public static readonly WPos Zero = new WPos();
-		
-		public readonly int X, Y, Z;
-		
-		public WPos(int x, int y, int z) { X = x; Y = y; Z = z; }
+
+		public readonly int X;
+		public readonly int Y;
+		public readonly int Z;
+
+		public WPos(int x, int y, int z)
+		{
+			X = x;
+			Y = y;
+			Z = z;
+		}
 		
 		public static WPos operator +(WPos lhs, WPos rhs) { return new WPos(lhs.X + rhs.X, lhs.Y + rhs.Y, lhs.Z + rhs.Z); }
 		
@@ -24,7 +31,7 @@ namespace WarriorsSnuggery
 		
 		public override string ToString() { return X + "," + Y + "," + Z; }
 		
-		public OpenTK.Vector4 ToVector()
+		public Vector ToVector()
 		{
 			return GLPos.ToVector(this);
 		}

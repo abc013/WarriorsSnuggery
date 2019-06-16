@@ -11,7 +11,7 @@ namespace WarriorsSnuggery.Objects
 		public TextRenderable(CPos position, IFont font, char @char, Color color, int curTextWidth = 0) :
 			base(font == IFont.Pixel16 ? CharManager.Pixel16 : CharManager.Papyrus24)
 		{
-			SetPosition(position.ToVector() + new OpenTK.Vector4(curTextWidth * SizeMultiplier, 0,0,0));
+			SetPosition(position.ToVector() + new Vector(curTextWidth * SizeMultiplier, 0,0,0));
 			Color = color;
 			@Char = @char;
 		}
