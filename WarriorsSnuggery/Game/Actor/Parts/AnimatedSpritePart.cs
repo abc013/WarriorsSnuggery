@@ -24,6 +24,9 @@ namespace WarriorsSnuggery.Objects.Parts
 		[Desc("Offset of the sprite.")]
 		public readonly CPos Offset;
 
+		[Desc("Use Sürote as preview in e.g. the editor.")]
+		public readonly bool UseAsPreview;
+
 		public override ActorPart Create(Actor self)
 		{
 			return new AnimatedSpritePart(self, this);
@@ -52,6 +55,9 @@ namespace WarriorsSnuggery.Objects.Parts
 						break;
 					case "Offset":
 						Offset = node.ToCPos();
+						break;
+					case "UseAsPreview":
+						UseAsPreview = node.ToBoolean();
 						break;
 					default:
 						throw new YamlUnknownNodeException(node.Key, "RegenerationPart");

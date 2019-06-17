@@ -153,6 +153,25 @@ namespace WarriorsSnuggery
 				t.CheckVisibility(checkEdges);
 		}
 
+		public static void CheckTerrainAround(WPos pos, bool checkEdges = false)
+		{
+			int calls = 0;
+			for (int x = pos.X - 1; x < pos.X + 2; x++)
+			{
+				if (x >= 0 && x < world.Map.Size.X)
+				{
+					for (int y = pos.Y - 1; y < pos.Y + 2; y++)
+					{
+						if (y >= 0 && y < world.Map.Size.Y)
+						{
+							calls++;
+							world.TerrainLayer.Terrain[x,y].CheckVisibility(checkEdges);
+						}
+					}
+				}
+			}
+		}
+
 		public static void CheckActorVisibility()
 		{
 			foreach(Actor a in world.Actors)

@@ -67,7 +67,6 @@ namespace WarriorsSnuggery
 
 		public void Load()
 		{
-
 			Camera.SetBounds(Size.ToCPos());
 
 			createGroundBase();
