@@ -27,6 +27,9 @@ namespace WarriorsSnuggery.Objects.Parts
 		[Desc("Use the n-th image in the sprite sequence.", "crashes if there are less images in the sequence than the offset size.")]
 		public readonly int SpriteOffset;
 
+		[Desc("Use Sürote as preview in e.g. the editor.")]
+		public readonly bool UseAsPreview;
+
 		public override ActorPart Create(Actor self)
 		{
 			return new SpritePart(self, this);
@@ -58,6 +61,9 @@ namespace WarriorsSnuggery.Objects.Parts
 						break;
 					case "SpriteOffset":
 						SpriteOffset = node.ToInt();
+						break;
+					case "UseAsPreview":
+						UseAsPreview = node.ToBoolean();
 						break;
 					default:
 						throw new YamlUnknownNodeException(node.Key, "RegenerationPart");

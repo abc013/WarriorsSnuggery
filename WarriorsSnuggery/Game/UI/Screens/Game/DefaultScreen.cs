@@ -1,4 +1,5 @@
-﻿using System;
+using System;
+using System.Linq;
 using System.Collections.Generic;
 using WarriorsSnuggery.Objects;
 using WarriorsSnuggery.Graphics;
@@ -39,10 +40,12 @@ namespace WarriorsSnuggery.UI
 				var a = ActorCreator.GetType(n);
 				if (a.Playable != null && a.Playable.Playable)
 				{
-					actorPanel.Add(new PanelItem(CPos.Zero, a.Playable.Cost.ToString(), new ImageRenderable(TextureManager.Sprite(new TextureInfo("questionmark", TextureType.IMAGE, 10, 12,12))[0], 0.5f), new MPos(512, 512),
-						() => {
-							changePlayer(game.World.LocalPlayer, a);
-						}));
+					var sprite = a.GetPreviewSprite();
+					var scale = (sprite.Width > sprite.Height ? 24f / sprite.Width : 24f / sprite.Height) - 0.1f;
+					actorPanel.Add(new PanelItem(CPos.Zero, a.Playable.Cost.ToString(), new ImageRenderable(sprite), new MPos(512, 512), () => { changePlayer(game.World.LocalPlayer, a); })
+						{
+							Scale = scale
+						});
 					list.Add(a);
 				}
 			}

@@ -75,7 +75,12 @@ namespace WarriorsSnuggery.UI
 			foreach(var n in ActorCreator.GetNames())
 			{
 				var a = ActorCreator.GetType(n);
-				actors.Add(new PanelItem(CPos.Zero, n, new ImageRenderable(new TextureInfo("questionmark", TextureType.IMAGE, 10, 12, 12, false).GetTextures()[0], 0.4f), new MPos(512,512), () => actorSelected = a));
+				var sprite = a.GetPreviewSprite();
+				var scale = (sprite.Width > sprite.Height ? 24f/sprite.Width : 24f/sprite.Height) - 0.1f;
+				actors.Add(new PanelItem(CPos.Zero, n, new ImageRenderable(sprite), new MPos(512,512), () => actorSelected = a)
+				{
+					Scale = scale
+				});
 			}
 
 			walls = new PanelList(new CPos((int) (WindowInfo.UnitWidth * 512 - 2048), 2048, 0), new MPos(2048, 4096), new MPos(512,512), 4, "UI_wood1", "UI_wood3", "UI_wood2");
@@ -252,9 +257,11 @@ namespace WarriorsSnuggery.UI
 
 					wpos = new WPos(wpos.X < 0 ? 0 : wpos.X, wpos.Y < 0 ? 0 : wpos.Y,0);
 					var terrain = TerrainCreator.Create(game.World, wpos, terrainSelected.ID);
-
-					WorldRenderer.CheckTerrainVisibility(true);
 					game.World.TerrainLayer.Set(terrain);
+
+					WorldRenderer.CheckTerrainAround(wpos, true);
+					//WorldRenderer.CheckTerrainVisibility(true);
+
 					break;
 				case Selected.WALL:
 					if (wallSelected == null)
