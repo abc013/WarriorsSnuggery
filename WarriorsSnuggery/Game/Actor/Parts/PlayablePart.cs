@@ -25,19 +25,19 @@
 				switch (node.Key)
 				{
 					case "Playable":
-						Playable = node.ToBoolean();
+						Playable = node.Convert<bool>();
 
 						break;
 					case "Unlocked":
-						Unlocked = node.ToBoolean();
+						Unlocked = node.Convert<bool>();
 
 						break;
 					case "UnlockCost":
-						UnlockCost = node.ToInt();
+						UnlockCost = node.Convert<int>();
 
 						break;
 					case "Cost":
-						Cost = node.ToInt();
+						Cost = node.Convert<int>();
 
 						break;
 					default:

@@ -13,7 +13,7 @@ namespace WarriorsSnuggery
 
 			using(var input = new StreamReader(directory + file, true))
 			{
-				Loop(input, out list, out filesToInclude);
+				Loop(file, input, out list, out filesToInclude);
 				input.Close();
 			}
 			// Read included files as well and add them to the list
@@ -25,7 +25,7 @@ namespace WarriorsSnuggery
 			return list;
 		}
 
-		static void Loop(StreamReader input, out List<MiniTextNode> list, out List<string> filesToInclude)
+		static void Loop(string file, StreamReader input, out List<MiniTextNode> list, out List<string> filesToInclude)
 		{
 			var startOfFile = true;
 			MiniTextNode before = null;
@@ -49,7 +49,7 @@ namespace WarriorsSnuggery
 					startOfFile = false;
 				}
 
-				var now = ReadLine(@in, before);
+				var now = ReadLine(file, @in, before);
 				if (now.Parent == null)
 					list.Add(now);
 
@@ -57,7 +57,7 @@ namespace WarriorsSnuggery
 			}
 		}
 
-		static MiniTextNode ReadLine(string line, MiniTextNode before)
+		static MiniTextNode ReadLine(string file, string line, MiniTextNode before)
 		{
 			var @order = (short) line.LastIndexOf("\t", StringComparison.CurrentCulture);
 			var strings = line.Split('=');
@@ -67,7 +67,7 @@ namespace WarriorsSnuggery
 
 			var key = strings[0].Trim();
 			var value = strings[1].Trim();
-			var yamlnode = new MiniTextNode(@order, key, value);
+			var yamlnode = new MiniTextNode(file, @order, key, value);
 
 			if (before == null)
 			{

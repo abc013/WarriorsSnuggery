@@ -25,13 +25,13 @@
 						Before = node.ToArray();
 						break;
 					case "Cost":
-						Cost = node.ToInt();
+						Cost = node.Convert<int>();
 						break;
 					case "Unlocked":
-						Unlocked = node.ToBoolean();
+						Unlocked = node.Convert<bool>();
 						break;
 					case "Position":
-						Position = node.ToMPos();
+						Position = node.Convert<MPos>();
 						break;
 					case "Effect":
 						var effect = EffectType.NONE;
@@ -47,23 +47,23 @@
 							switch(child.Key)
 							{
 								case "Value":
-									value = child.ToFloat();
+									value = child.Convert<float>();
 									break;
 								case "ManaCost":
-									manaCost = child.ToInt();
+									manaCost = child.Convert<int>();
 									break;
 								case "Duration":
-									duration = child.ToInt();
+									duration = child.Convert<int>();
 									break;
 								case "Cooldown":
-									cooldown = child.ToInt();
+									cooldown = child.Convert<int>();
 									break;
 							}
 						}
 						Effect = new Effect(effect, value, manaCost, duration, cooldown);
 						break;
 					case "Icon":
-						Icon = node.Value;
+						Icon = node.Convert<string>();
 
 						break;
 					default:

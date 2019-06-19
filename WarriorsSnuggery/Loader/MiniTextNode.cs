@@ -11,6 +11,7 @@ namespace WarriorsSnuggery
 {
 	public class MiniTextNode
 	{
+		readonly string file;
 		public readonly short Order;
 
 		public MiniTextNode Parent;
@@ -19,11 +20,22 @@ namespace WarriorsSnuggery
 		public readonly string Key;
 		public readonly string Value;
 
-		public MiniTextNode(short order, string key, string value)
+		public MiniTextNode(string file, short order, string key, string value)
 		{
+			this.file = file;
 			Order = order;
 			Key = key;
 			Value = value;
+		}
+
+		public T Convert<T>()
+		{
+			return Loader.NodeConverter.Convert<T>(file, this); // TODO
+		}
+
+		public object Convert(Type type)
+		{
+			return Loader.NodeConverter.Convert(file, this, type);
 		}
 
 		public MPos ToMPos()
