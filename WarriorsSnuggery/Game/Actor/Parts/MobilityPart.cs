@@ -27,16 +27,16 @@ namespace WarriorsSnuggery.Objects.Parts
 				switch (node.Key)
 				{
 					case "Speed":
-						Speed = node.ToInt();
+						Speed = node.Convert<int>();
 						break;
 					case "Acceleration":
-						Acceleration = node.ToInt();
+						Acceleration = node.Convert<int>();
 						break;
 					case "Deceleration":
-						Deceleration = node.ToInt();
+						Deceleration = node.Convert<int>();
 						break;
 					case "Gravity":
-						Gravity = node.ToInt();
+						Gravity = node.Convert<int>();
 						break;
 					default:
 						throw new YamlUnknownNodeException(node.Key, "MobilityPart");

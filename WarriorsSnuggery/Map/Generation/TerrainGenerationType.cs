@@ -69,16 +69,16 @@ namespace WarriorsSnuggery.Maps
 							switch (noiseChild.Key)
 							{
 								case "Strength":
-									strength = noiseChild.ToInt();
+									strength = noiseChild.Convert<int>();
 									break;
 								case "Scale":
-									scale = noiseChild.ToFloat();
+									scale = noiseChild.Convert<float>();
 									break;
 								case "Contrast":
-									contrast = noiseChild.ToFloat();
+									contrast = noiseChild.Convert<float>();
 									break;
 								case "Intensity":
-									intensity = noiseChild.ToFloat();
+									intensity = noiseChild.Convert<float>();
 									break;
 							}
 						}
@@ -92,7 +92,7 @@ namespace WarriorsSnuggery.Maps
 
 						break;
 					case "Border":
-						border = generation.ToInt();
+						border = generation.Convert<int>();
 
 						var rawBorder = generation.Children.FindAll(n => n.Key == "Terrain").ToArray();
 						borderTerrain = new int[rawBorder.Length];
@@ -102,18 +102,18 @@ namespace WarriorsSnuggery.Maps
 
 						break;
 					case "EdgeNoise":
-						edgeNoise = generation.ToFloat();
+						edgeNoise = generation.Convert<float>();
 
 						break;
 					case "SpawnPieces":
-						spawnPieces = generation.ToBoolean();
+						spawnPieces = generation.Convert<bool>();
 
 						break;
 					case "SpawnActor":
 						var type = ActorCreator.GetType(generation.Value);
 						var probability = 50;
 
-						probability = generation.Children.Find(n => n.Key == "Probability").ToInt();
+						probability = generation.Children.Find(n => n.Key == "Probability").Convert<int>();
 
 						spawnActorBlob.Add(type, probability);
 						break;

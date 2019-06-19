@@ -2,14 +2,14 @@
 
 namespace WarriorsSnuggery.Objects.Parts
 {
-	[Desc("Adds a weapon to the object.", "IMPORTANT NOTE: Currently, shroud is only supported for teams 0-9. If you use higher teams, the game will crash!")]
+	[Desc("Adds a weapon to the object.", "IMPORTANT NOTE: Currently, shroud is only supported for teams 0-9. If you use higher team values, the game will crash!")]
 	public class RevealsShroudPartInfo : PartInfo
 	{
-		[Desc("Range of shroudreveal.", "Given in half terrain dimension. (2 = 1 terrain size)")]
-		public readonly int Range;
+		[Desc("Range of revealing shroud.", "Given in half terrain dimension. (2 = 1 terrain size)")]
+		public readonly int Range = 0;
 
-		[Desc("Offset of the shoot point relative to the object's center.")]
-		public readonly int Interval;
+		[Desc("Interval in which the game should check for revealled shroud by this actor.")]
+		public readonly int Interval = 0;
 
 		public override ActorPart Create(Actor self)
 		{
@@ -23,10 +23,10 @@ namespace WarriorsSnuggery.Objects.Parts
 				switch (node.Key)
 				{
 					case "Range":
-						Range = node.ToInt();
+						Range = node.Convert<int>();
 						break;
 					case "Interval":
-						Interval = node.ToInt();
+						Interval = node.Convert<int>();
 						break;
 					default:
 						throw new YamlUnknownNodeException(node.Key, "WeaponPart");

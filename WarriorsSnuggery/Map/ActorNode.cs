@@ -1,4 +1,6 @@
-﻿namespace WarriorsSnuggery.Maps
+﻿using System.Linq;
+
+namespace WarriorsSnuggery.Maps
 {
 	public class ActorNode
 	{
@@ -16,35 +18,44 @@
 			ID = id;
 			Position = position;
 
-			foreach (var node in nodes)
+			// TODO: apply for everything?
+			foreach(var attrib in typeof(ActorNode).GetFields().Where(f => f.IsInitOnly))
 			{
-				switch (node.Key)
-				{
-					case "Type":
-						Type = node.Value;
+				var type = attrib.FieldType;
+				var node = nodes.FirstOrDefault(n => n.Key == attrib.Name);
 
-						break;
-					case "Team":
-						var pre = node.ToInt();
-						if (pre >= Settings.MaxTeams || pre < 0)
-							throw new YamlInvalidNodeException(string.Format("Actors can not be assigned to a negative team or a team value greater than {0}.", Settings.MaxTeams - 1));
-
-						Team = (byte)pre;
-						break;
-					case "Health":
-						Health = node.ToFloat();
-
-						break;
-					case "IsBot":
-						IsBot = node.ToBoolean();
-
-						break;
-					case "IsPlayer":
-						IsPlayer = node.ToBoolean();
-
-						break;
-				}
+				if (node != null)
+					attrib.SetValue(this, node.Convert(type));
 			}
+			//foreach (var node in nodes)
+			//{
+			//	switch (node.Key)
+			//	{
+			//		case "Type":
+			//			Type = node.Value;
+
+			//			break;
+			//		case "Team":
+			//			var pre = node.Convert<int>();
+			//			if (pre >= Settings.MaxTeams || pre < 0)
+			//				throw new YamlInvalidNodeException(string.Format("Actors can not be assigned to a negative team or a team value greater than {0}.", Settings.MaxTeams - 1));
+
+			//			Team = (byte)pre;
+			//			break;
+			//		case "Health":
+			//			Health = node.ToFloat();
+
+			//			break;
+			//		case "IsBot":
+			//			IsBot = node.ToBoolean();
+
+			//			break;
+			//		case "IsPlayer":
+			//			IsPlayer = node.ToBoolean();
+
+			//			break;
+			//	}
+			//}
 		}
 
 		public ActorNode(int id, CPos position, string type, byte team, float health, bool isBot)
