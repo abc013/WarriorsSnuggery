@@ -273,6 +273,10 @@ namespace WarriorsSnuggery
 					{
 						Settings.EnableInfoScreen = !Settings.EnableInfoScreen;
 					}
+					if (KeyInput.IsKeyDown("period", 10))
+					{
+						World.ShroudLayer.AllRevealed = true;
+					}
 				}
 
 				// Zooming
