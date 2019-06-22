@@ -17,23 +17,7 @@
 
 		public WeaponPartInfo(MiniTextNode[] nodes) : base(nodes)
 		{
-			foreach (var node in nodes)
-			{
-				switch (node.Key)
-				{
-					case "Type":
-						Type = WeaponCreator.GetType(node.Value);
-						break;
-					case "Offset":
-						Offset = node.ToCPos();
-						break;
-					case "Height":
-						Height = node.ToInt();
-						break;
-					default:
-						throw new YamlUnknownNodeException(node.Key, "WeaponPart");
-				}
-			}
+
 		}
 	}
 	

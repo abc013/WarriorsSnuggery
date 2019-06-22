@@ -15,22 +15,7 @@
 
 		public PhysicsPartInfo(MiniTextNode[] nodes) : base(nodes)
 		{
-			foreach (var node in nodes)
-			{
-				switch (node.Key)
-				{
-					case "Shape":
-						Shape = (Shape) node.ToEnum(typeof(Shape));
 
-						break;
-					case "Size":
-						Size = node.ToCPos();
-
-						break;
-					default:
-						throw new YamlUnknownNodeException(node.Key, "PhysicsPart");
-				}
-			}
 		}
 	}
 

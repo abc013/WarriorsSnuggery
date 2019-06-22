@@ -15,32 +15,32 @@ namespace WarriorsSnuggery
 				switch (rule.Key)
 				{
 					case "Particles":
-						var particles = rule.ToArray();
+						var particles = rule.Convert<string[]>();
 						foreach (var particle in particles)
 							ParticleCreator.LoadTypes(FileExplorer.FindPath(FileExplorer.Rules, particle, ".yaml"), particle + ".yaml");
 						break;
 					case "Weapons":
-						var weapons = rule.ToArray();
+						var weapons = rule.Convert<string[]>();
 						foreach (var weapon in weapons)
 							WeaponCreator.LoadTypes(FileExplorer.FindPath(FileExplorer.Rules, weapon, ".yaml"), weapon + ".yaml");
 						break;
 					case "Actors":
-						var actors = rule.ToArray();
+						var actors = rule.Convert<string[]>();
 						foreach (var actor in actors)
 							ActorCreator.LoadTypes(FileExplorer.FindPath(FileExplorer.Rules, actor, ".yaml"), actor + ".yaml");
 						break;
 					case "Terrain":
-						var terrain = rule.ToArray();
+						var terrain = rule.Convert<string[]>();
 						foreach (var terrain2 in terrain)
 							TerrainCreator.LoadTypes(FileExplorer.FindPath(FileExplorer.Rules, terrain2, ".yaml"), terrain2 + ".yaml");
 						break;
 					case "Walls":
-						var walls = rule.ToArray();
+						var walls = rule.Convert<string[]>();
 						foreach (var wall in walls)
 							WallCreator.LoadTypes(FileExplorer.FindPath(FileExplorer.Rules, wall, ".yaml"), wall + ".yaml");
 						break;
 					case "TechTree":
-						var trees = rule.ToArray();
+						var trees = rule.Convert<string[]>();
 						foreach (var tree in trees)
 							TechTreeLoader.LoadTechTree(tree);
 						break;

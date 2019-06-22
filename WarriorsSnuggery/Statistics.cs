@@ -162,47 +162,47 @@ namespace WarriorsSnuggery
 				switch (node.Key)
 				{
 					case "Name":
-						statistic.Name = node.Value;
+						statistic.Name = node.Convert<string>();
 						break;
 					case "Level":
-						statistic.Level = node.ToInt();
+						statistic.Level = node.Convert<int>();
 						break;
 					case "Difficulty":
-						statistic.Difficulty = node.ToInt();
+						statistic.Difficulty = node.Convert<int>();
 						break;
 					case "Money":
-						statistic.Money = node.ToInt();
+						statistic.Money = node.Convert<int>();
 						break;
 					case "LevelAim":
-						statistic.FinalLevel = node.ToInt();
+						statistic.FinalLevel = node.Convert<int>();
 						break;
 					case "MaxMana":
-						statistic.MaxMana = node.ToInt();
+						statistic.MaxMana = node.Convert<int>();
 						break;
 					case "Kills":
-						statistic.Kills = node.ToInt();
+						statistic.Kills = node.Convert<int>();
 						break;
 					case "Deaths":
-						statistic.Deaths = node.ToInt();
+						statistic.Deaths = node.Convert<int>();
 						break;
 					case "CurrentMode":
-						statistic.Mode = (GameMode) node.ToEnum(typeof(GameMode));
+						statistic.Mode = node.Convert<GameMode>();
 						break;
 					case "Seed":
-						statistic.Seed = node.ToInt();
+						statistic.Seed = node.Convert<int>();
 						break;
 					case "Actor":
-						statistic.Actor = node.Value;
+						statistic.Actor = node.Convert<string>();
 
 						foreach (var node2 in node.Children)
 						{
 							switch (node2.Key)
 							{
 								case "Health":
-									statistic.Health = node2.ToInt();
+									statistic.Health = node2.Convert<int>();
 									break;
 								case "Mana":
-									statistic.Mana = node2.ToInt();
+									statistic.Mana = node2.Convert<int>();
 									break;
 							}
 						}
@@ -211,7 +211,7 @@ namespace WarriorsSnuggery
 
 						foreach(var node2 in node.Children)
 						{
-							statistic.UnlockedNodes.Add(node2.Key, node2.ToBoolean());
+							statistic.UnlockedNodes.Add(node2.Key, node2.Convert<bool>());
 						}
 						break;
 				}

@@ -39,30 +39,23 @@
 				switch (node.Key)
 				{
 					case "Types":
-						types = node.ToArray();
+						types = node.Convert<string[]>();
 
 						break;
 					case "Probability":
-						spawnProbability = node.ToFloat();
+						spawnProbability = node.Convert<float>();
 
 						break;
 					case "MaximumWaves":
-						maximumWaves = node.ToInt();
+						maximumWaves = node.Convert<int>();
 
 						break;
 					case "Difficulty":
-						difficulty = node.ToInt();
+						difficulty = node.Convert<int>();
 
 						break;
 					case "SpawnsOn":
-						var spawnsOnStrings = node.ToArray();
-
-						spawnsOn = new int[spawnsOnStrings.Length];
-						for (int i = 0; i < spawnsOn.Length; i++)
-						{
-							spawnsOn[i] = int.Parse(spawnsOnStrings[i]);
-						}
-
+						spawnsOn = node.Convert<int[]>();
 
 						break;
 

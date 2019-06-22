@@ -37,33 +37,19 @@ namespace WarriorsSnuggery.Maps
 				switch (rule.Key)
 				{
 					case "Size":
-						size = rule.ToMPos();
+						size = rule.Convert<MPos>();
 
 						break;
 					case "Terrain":
-						var groundDataStrings = rule.ToArray();
-						groundData = new int[groundDataStrings.Length];
-
-						for (int i = 0; i < groundData.Length; i++)
-						{
-							if (!int.TryParse(groundDataStrings[i], out groundData[i]))
-								throw new YamlInvalidNodeException(string.Format(@"unable to load terrain-ID '{0}' in piece '{1}'.", groundDataStrings[i], name));
-						}
+						groundData = rule.Convert<int[]>();
 
 						break;
 					case "Walls":
-						var wallDataStrings = rule.ToArray();
-						wallData = new int[wallDataStrings.Length];
-
-						for (int i = 0; i < wallData.Length; i++)
-						{
-							if (!int.TryParse(wallDataStrings[i], out wallData[i]))
-								throw new YamlInvalidNodeException(string.Format(@"unable to load terrain-ID '{0}' in piece '{1}'.", wallDataStrings[i], name));
-						}
+						wallData = rule.Convert<int[]>();
 
 						break;
 					case "Name":
-						name = rule.Value;
+						name = rule.Convert<string>();
 
 						break;
 					case "Actors":
@@ -77,7 +63,7 @@ namespace WarriorsSnuggery.Maps
 								if (actor.Children.Count > 0) // New Actor System
 								{
 									var id = int.Parse(actor.Key);
-									var position = actor.ToCPos();
+									var position = actor.Convert<CPos>();
 
 									actorList.Add(new ActorNode(id, position, actor.Children.ToArray()));
 								}
@@ -87,7 +73,7 @@ namespace WarriorsSnuggery.Maps
 									var type = split[0];
 									var team = split.Length > 1 ? byte.Parse(split[1]) : (byte) 0;
 									var bot = split.Length > 1 ? split[2].Equals("true") : false;
-									actorList.Add(new ActorNode(0, actor.ToCPos(), type, team, 1f, bot));
+									actorList.Add(new ActorNode(0, actor.Convert<CPos>(), type, team, 1f, bot));
 								}
 							}
 							catch (Exception e)

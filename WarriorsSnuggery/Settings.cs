@@ -50,40 +50,40 @@ namespace WarriorsSnuggery
 				switch(node.Key)
 				{
 					case "FrameLimiter":
-						FrameLimiter = node.ToInt();
+						FrameLimiter = node.Convert<int>();
 						if (FrameLimiter == 0) FrameLimiter = (int) OpenTK.DisplayDevice.Default.RefreshRate;
 						break;
 					case "ScrollSpeed":
-						ScrollSpeed = node.ToFloat();
+						ScrollSpeed = node.Convert<float>();
 						break;
 					case "EdgeScrolling":
-						EdgeScrolling = node.ToInt();
+						EdgeScrolling = node.Convert<int>();
 						break;
 					case "DeveloperMode":
-						DeveloperMode = node.ToBoolean();
+						DeveloperMode = node.Convert<bool>();
 						break;
 					case "Fullscreen":
-						Fullscreen = node.ToBoolean();
+						Fullscreen = node.Convert<bool>();
 						break;
 					case "Width":
-						Width = node.ToInt();
+						Width = node.Convert<int>();
 						break;
 					case "Height":
-						Height = node.ToInt();
+						Height = node.Convert<int>();
 						break;
 					case "AntiAliasing":
-						AntiAliasing = node.ToBoolean();
+						AntiAliasing = node.Convert<bool>();
 						break;
 					case "EnablePixeling":
-						EnablePixeling = node.ToBoolean();
+						EnablePixeling = node.Convert<bool>();
 						break;
 					case "FirstStarted":
-						FirstStarted = node.ToBoolean();
+						FirstStarted = node.Convert<bool>();
 						break;
 					case "Keys":
 						foreach(var key in node.Children)
 						{
-							KeyDictionary.Add(key.Key, key.Value);
+							KeyDictionary.Add(key.Key, key.Value); // TODO: make just simple Pair list?
 						}
 						break;
 				}

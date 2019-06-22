@@ -114,43 +114,43 @@ namespace WarriorsSnuggery
 					switch(child.Key)
 					{
 						case "Image":
-							info = child.ToTextureInfo();
+							info = child.Convert<TextureInfo>();
 							break;
 						case "Type":
-							type = (WeaponFireType) child.ToEnum(typeof(WeaponFireType));
+							type = child.Convert<WeaponFireType>();
 							break;
 						case "Smudge":
-							smudge = child.ToTextureInfo();
+							smudge = child.Convert<TextureInfo>();
 							break;
 						case "Damage":
-							damage = child.ToInt();
+							damage = child.Convert<int>();
 							break;
 						case "Reload":
-							reload = child.ToInt();
+							reload = child.Convert<int>();
 							break;
 						case "Speed":
-							speed = child.ToInt();
+							speed = child.Convert<int>();
 
 							if (child.Children.Count > 0 && child.Children.Exists(c => c.Key == "Acceleration"))
-								acceleration = child.Children.Find(c => c.Key == "Acceleration").ToInt();
+								acceleration = child.Children.Find(c => c.Key == "Acceleration").Convert<int>();
 							break;
 						case "ParticlesOnImpact":
-							particlesOnImpact = child.ToParticleSpawner();
+							particlesOnImpact = child.Convert<ParticleSpawner>();
 							break;
 						case "Inaccuracy":
-							inaccuracy = child.ToInt();
+							inaccuracy = child.Convert<int>();
 							break;
 						case "MaximalRange":
-							maxRange = child.ToInt();
+							maxRange = child.Convert<int>();
 							break;
 						case "MinimalRange":
-							minRange = child.ToInt();
+							minRange = child.Convert<int>();
 							break;
 						case "Falloff":
-							damageFalloff = (FalloffType) child.ToEnum(typeof(FalloffType));
+							damageFalloff = child.Convert<FalloffType>();
 							break;
 						case "RotateToTarget":
-							turnToTarget = child.ToBoolean();
+							turnToTarget = child.Convert<bool>();
 							break;
 						case "Physics":
 							if (child.Children.Count > 0)
@@ -160,11 +160,11 @@ namespace WarriorsSnuggery
 									switch(physics.Key)
 									{
 										case "Shape":
-											physicalShape = (Shape) physics.ToEnum(typeof(Shape));
+											physicalShape = child.Convert<Shape>();
 
 											break;
 										case "Size":
-											physicalSize = physics.ToInt();
+											physicalSize = physics.Convert<int>();
 
 											break;
 									}
@@ -172,7 +172,7 @@ namespace WarriorsSnuggery
 							}
 							break;
 						case "Gravity":
-							gravity = child.ToInt();
+							gravity = child.Convert<int>();
 							break;
 						default:
 							throw new YamlUnknownNodeException(child.Key, name);
@@ -279,28 +279,28 @@ namespace WarriorsSnuggery
 					switch(child.Key)
 					{
 						case "Image":
-							info = child.ToTextureInfo();
+							info = child.Convert<TextureInfo>();
 							break;
 						case "Tick":
-							tick = child.ToInt();
+							tick = child.Convert<int>();
 							break;
 						case "DissolveTick":
-							dissolveTick = child.ToInt();
+							dissolveTick = child.Convert<int>();
 							break;
 						case "Force":
-							force = child.ToCPos();
+							force = child.Convert<CPos>();
 
 							if (child.Children.Count > 0)
-								ranVelocity = child.Children.Find(c => c.Key == "Random").ToCPos();
+								ranVelocity = child.Children.Find(c => c.Key == "Random").Convert<CPos>();
 							break;
 						case "Rotation":
-							rotation = child.ToInt();
+							rotation = child.Convert<int>();
 							break;
 						case "Scale":
-							scale = child.ToFloat();
+							scale = child.Convert<float>();
 
 							if (child.Children.Count > 0)
-								ranScale = child.Children.Find(c => c.Key == "Random").ToFloat();
+								ranScale = child.Children.Find(c => c.Key == "Random").Convert<float>();
 							break;
 						default:
 							throw new YamlUnknownNodeException(child.Key, name);
@@ -373,25 +373,25 @@ namespace WarriorsSnuggery
 					switch(child.Key)
 					{
 						case "Sprite":
-							image = child.Value;
+							image = child.Convert<string>();
 							break;
 						case "Speed":
-							speedModifier = child.ToFloat();
+							speedModifier = child.Convert<float>();
 							break;
 						case "OverlapHeight":
-							overlapHeight = child.ToInt();
+							overlapHeight = child.Convert<int>();
 							break;
 						case "EdgeSprite":
-							edge_Image = child.Value;
+							edge_Image = child.Convert<string>();
 							break;
 						case "VerticalEdgeSprite":
-							edge_Image2 = child.Value;
+							edge_Image2 = child.Convert<string>();
 							break;
 						case "CornerSprite":
-							corner_Image = child.Value;
+							corner_Image = child.Convert<string>();
 							break;
 						case "SpawnSmudge":
-							spawnSmudge = child.ToBoolean();
+							spawnSmudge = child.Convert<bool>();
 							break;
 						default:
 							throw new YamlUnknownNodeException(child.Key, "Terrain " + id);
@@ -454,19 +454,19 @@ namespace WarriorsSnuggery
 					switch(child.Key)
 					{
 						case "Image":
-							texture = child.Value;
+							texture = child.Convert<string>();
 
 							break;
 						case "Blocks":
-							blocks = child.ToBoolean();
+							blocks = child.Convert<bool>();
 
 							break;
 						case "Destroyable":
-							destroyable = child.ToBoolean();
+							destroyable = child.Convert<bool>();
 
 							break;
 						case "Height":
-							height = child.ToInt();
+							height = child.Convert<int>();
 
 							break;
 					}
