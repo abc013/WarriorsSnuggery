@@ -18,20 +18,7 @@ namespace WarriorsSnuggery.Objects.Parts
 
 		public RevealsShroudPartInfo(MiniTextNode[] nodes) : base(nodes)
 		{
-			foreach (var node in nodes)
-			{
-				switch (node.Key)
-				{
-					case "Range":
-						Range = node.Convert<int>();
-						break;
-					case "Interval":
-						Interval = node.Convert<int>();
-						break;
-					default:
-						throw new YamlUnknownNodeException(node.Key, "WeaponPart");
-				}
-			}
+
 		}
 	}
 

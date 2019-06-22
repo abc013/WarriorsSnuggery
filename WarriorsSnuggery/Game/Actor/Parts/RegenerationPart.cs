@@ -17,23 +17,7 @@
 
 		public RegenerationPartInfo(MiniTextNode[] nodes) : base(nodes)
 		{
-			foreach (var node in nodes)
-			{
-				switch (node.Key)
-				{
-					case "Amount":
-						Amount = node.ToInt();
-						break;
-					case "Time":
-						Time = node.ToInt();
-						break;
-					case "TimeAfterHit":
-						TimeAfterHit = node.ToInt();
-						break;
-					default:
-						throw new YamlUnknownNodeException(node.Key, "RegenerationPart");
-				}
-			}
+
 		}
 	}
 	

@@ -34,35 +34,7 @@ namespace WarriorsSnuggery.Objects.Parts
 
 		public AnimatedSpritePartInfo(MiniTextNode[] nodes) : base(nodes)
 		{
-			foreach (var node in nodes)
-			{
-				switch (node.Key)
-				{
-					case "Name":
-						Name = node.Value;
-						break;
-					case "Dimensions":
-						Dimensions = node.ToMPos();
-						break;
-					case "Facings":
-						Facings = node.ToInt();
-						break;
-					case "Tick":
-						Tick = node.ToInt();
-						break;
-					case "Condition":
-						Condition = (ActorAction) node.ToEnum(typeof(ActorAction));
-						break;
-					case "Offset":
-						Offset = node.ToCPos();
-						break;
-					case "UseAsPreview":
-						UseAsPreview = node.ToBoolean();
-						break;
-					default:
-						throw new YamlUnknownNodeException(node.Key, "RegenerationPart");
-				}
-			}
+
 		}
 	}
 

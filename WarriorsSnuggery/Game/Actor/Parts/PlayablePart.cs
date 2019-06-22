@@ -20,30 +20,7 @@
 
 		public PlayablePartInfo(MiniTextNode[] nodes) : base(nodes)
 		{
-			foreach (var node in nodes)
-			{
-				switch (node.Key)
-				{
-					case "Playable":
-						Playable = node.Convert<bool>();
 
-						break;
-					case "Unlocked":
-						Unlocked = node.Convert<bool>();
-
-						break;
-					case "UnlockCost":
-						UnlockCost = node.Convert<int>();
-
-						break;
-					case "Cost":
-						Cost = node.Convert<int>();
-
-						break;
-					default:
-						throw new YamlUnknownNodeException(node.Key, "PlayablePart");
-				}
-			}
 		}
 	}
 

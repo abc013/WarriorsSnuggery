@@ -3,9 +3,9 @@
 	[Desc("Attach this to an actor to make it vulnerable and to have health.")]
 	public class HealthPartInfo : PartInfo
 	{
-		[Desc("Maximal Health to archive.", "\"MaxHP\" is also possible.")]
+		[Desc("Maximal Health to archive.")]
 		public readonly int MaxHealth;
-		[Desc("Health when the actor is spawned.", "\"HP\" is also possible.")]
+		[Desc("Health when the actor is spawned.")]
 		public readonly int StartHealth;
 
 		public override ActorPart Create(Actor self)
@@ -15,22 +15,6 @@
 
 		public HealthPartInfo(MiniTextNode[] nodes) : base(nodes)
 		{
-			foreach (var node in nodes)
-			{
-				switch (node.Key)
-				{
-					case "MaxHP":
-					case "MaxHealth":
-						MaxHealth = node.ToInt();
-						break;
-					case "HP":
-					case "StartHealth":
-						StartHealth = node.ToInt();
-						break;
-					default:
-						throw new YamlUnknownNodeException(node.Key, "HealthPart");
-				}
-			}
 			if (StartHealth == 0)
 				StartHealth = MaxHealth;
 		}

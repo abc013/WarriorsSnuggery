@@ -62,7 +62,7 @@ namespace WarriorsSnuggery.Maps
 				switch (generation.Key)
 				{
 					case "Type":
-						noise = (GenerationType)generation.ToEnum(typeof(GenerationType));
+						noise = generation.Convert<GenerationType>();
 
 						foreach (var noiseChild in generation.Children)
 						{
@@ -84,21 +84,13 @@ namespace WarriorsSnuggery.Maps
 						}
 						break;
 					case "Terrain":
-						var rawTerrain = generation.ToArray();
-						terrainTypes = new int[rawTerrain.Length];
-
-						for (int i = 0; i < rawTerrain.Length; i++)
-							terrainTypes[i] = int.Parse(rawTerrain[i]);
+						terrainTypes = generation.Convert<int[]>();
 
 						break;
 					case "Border":
 						border = generation.Convert<int>();
 
-						var rawBorder = generation.Children.FindAll(n => n.Key == "Terrain").ToArray();
-						borderTerrain = new int[rawBorder.Length];
-
-						for (int i = 0; i < rawBorder.Length; i++)
-							borderTerrain[i] = int.Parse(rawBorder[i].Value);
+						borderTerrain = generation.Children.Find(n => n.Key == "Terrain").Convert<int[]>();
 
 						break;
 					case "EdgeNoise":

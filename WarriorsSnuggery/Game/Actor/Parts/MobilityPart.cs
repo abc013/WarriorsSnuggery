@@ -22,26 +22,7 @@ namespace WarriorsSnuggery.Objects.Parts
 
 		public MobilityPartInfo(MiniTextNode[] nodes) : base(nodes)
 		{
-			foreach (var node in nodes)
-			{
-				switch (node.Key)
-				{
-					case "Speed":
-						Speed = node.Convert<int>();
-						break;
-					case "Acceleration":
-						Acceleration = node.Convert<int>();
-						break;
-					case "Deceleration":
-						Deceleration = node.Convert<int>();
-						break;
-					case "Gravity":
-						Gravity = node.Convert<int>();
-						break;
-					default:
-						throw new YamlUnknownNodeException(node.Key, "MobilityPart");
-				}
-			}
+			
 		}
 	}
 	

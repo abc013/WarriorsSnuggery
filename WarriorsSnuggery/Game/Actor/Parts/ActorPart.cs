@@ -4,7 +4,10 @@
 	{
 		public abstract ActorPart Create(Actor self);
 
-		protected PartInfo(MiniTextNode[] nodes) { }
+		protected PartInfo(MiniTextNode[] nodes)
+		{
+			Loader.PartLoader.SetValues(this, nodes);
+		}
 	}
 
 	public abstract class ActorPart

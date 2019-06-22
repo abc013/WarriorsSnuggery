@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using WarriorsSnuggery.Graphics;
 
 namespace WarriorsSnuggery.Objects.Parts
@@ -33,7 +34,7 @@ namespace WarriorsSnuggery.Objects.Parts
 		[Desc("Allow multiple activations.")]
 		public readonly bool MultipleActivations;
 		[Desc("Trigger kills itself upon collection.")]
-		public readonly bool KillSelf;
+		public readonly bool KillsSelf;
 		[Desc("Time until the trigger can be reactivated again.")]
 		public readonly int Duration;
 
@@ -55,50 +56,7 @@ namespace WarriorsSnuggery.Objects.Parts
 
 		public CollectablePartInfo(MiniTextNode[] nodes) : base(nodes)
 		{
-			foreach (var node in nodes)
-			{
-				switch (node.Key)
-				{
-					case "Type":
-						Type = (CollectableType) node.ToEnum(typeof(CollectableType));
 
-						break;
-					case "Radius":
-						Radius = node.ToInt();
-
-						break;
-					case "OnlyByPlayer":
-						OnlyByPlayer = node.ToBoolean();
-
-						break;
-					case "KillsSelf":
-						KillSelf = node.ToBoolean();
-
-						break;
-					case "MultipleActivations":
-						MultipleActivations = node.ToBoolean();
-
-						break;
-					case "Duration":
-						Duration = node.ToInt();
-
-						break;
-					case "Value":
-						Value = node.ToInt();
-
-						break;
-					case "Text":
-						Text = node.Value;
-
-						break;
-					case "ParticleSpawner":
-						ParticleSpawner = node.ToParticleSpawner();
-
-						break;
-					default:
-						throw new YamlUnknownNodeException(node.Key, "CollectablePart");
-				}
-			}
 		}
 	}
 
@@ -161,7 +119,7 @@ namespace WarriorsSnuggery.Objects.Parts
 						self.World.Add(particle);
 				}
 
-				if (info.KillSelf)
+				if (info.KillsSelf)
 					self.Killed(null);
 			}
 

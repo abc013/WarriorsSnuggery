@@ -29,41 +29,7 @@
 
 		public SpawnOnMovePartInfo(MiniTextNode[] nodes) : base(nodes)
 		{
-			foreach (var node in nodes)
-			{
-				switch (node.Key)
-				{
-					case "Probability":
-						Probability = node.ToFloat();
-						break;
-					case "Count":
-						Count = node.ToInt();
-						break;
-					case "Tick":
-						Tick = node.ToInt();
-						break;
-					case "Name":
-						Name = node.Value;
-						break;
-					case "Type":
-						Type = node.Value;
-						break;
-					case "Condition":
-						Condition = node.Value;
-						break;
-					case "InheritsTeam":
-						InheritsTeam = node.ToBoolean();
-						break;
-					case "InheritsBot":
-						InheritsBot = node.ToBoolean();
-						break;
-					case "Offset":
-						Offset = node.ToCPos();
-						break;
-					default:
-						throw new YamlUnknownNodeException(node.Key, "SpawnOnIdlePart");
-				}
-			}
+
 		}
 	}
 

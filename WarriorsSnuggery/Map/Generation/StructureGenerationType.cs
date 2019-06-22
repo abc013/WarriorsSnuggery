@@ -65,41 +65,35 @@
 				switch(node.Key)
 				{
 					case "Pieces":
-						pieces = node.ToArray();
+						pieces = node.Convert<string[]>();
 
 						break;
 					case "SpawnsOn":
-						var spawnsOnStrings = node.ToArray();
-
-						spawnsOn = new int[spawnsOnStrings.Length];
-						for(int i = 0; i < spawnsOn.Length; i++)
-						{
-							spawnsOn[i] = int.Parse(spawnsOnStrings[i]);
-						}
+						spawnsOn = node.Convert<int[]>();
 
 						break;
 					case "SpawnFrequency":
-						spawnFrequency = node.ToInt();
+						spawnFrequency = node.Convert<int>();
 
 						break;
 					case "GenerationMode":
-						generationMode = (StructureGenerationMode) node.ToEnum(typeof(StructureGenerationMode));
+						generationMode = node.Convert<StructureGenerationMode>();
 
 						break;
 					case "MinimumSize":
-						minimumSize = node.ToInt();
+						minimumSize = node.Convert<int>();
 
 						break;
 					case "MaximumSize":
-						maximumSize = node.ToInt();
+						maximumSize = node.Convert<int>();
 
 						break;
 					case "Distance":
-						distance = node.ToInt();
+						distance = node.Convert<int>();
 
 						break;
 					case "Overrideable":
-						overrideable = node.ToBoolean();
+						overrideable = node.Convert<bool>();
 
 						break;
 

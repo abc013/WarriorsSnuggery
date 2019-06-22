@@ -22,7 +22,7 @@
 				switch(node.Key)
 				{
 					case "Before":
-						Before = node.ToArray();
+						Before = node.Convert<string[]>();
 						break;
 					case "Cost":
 						Cost = node.Convert<int>();
@@ -40,7 +40,7 @@
 						var duration = 0;
 						var cooldown = 0;
 
-						effect = (EffectType) node.ToEnum(typeof(EffectType));
+						effect = node.Convert<EffectType>();
 
 						foreach (var child in node.Children)
 						{

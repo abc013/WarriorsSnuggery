@@ -25,34 +25,7 @@
 
 		public WorldPartInfo(MiniTextNode[] nodes) : base(nodes)
 		{
-			foreach (var node in nodes)
-			{
-				switch (node.Key)
-				{
-					case "ShowDamage":
-						ShowDamage = node.ToBoolean();
 
-						break;
-					case "CanTrigger":
-						CanTrigger = node.ToBoolean();
-
-						break;
-					case "Height":
-						Height = node.ToInt();
-
-						break;
-					case "Hover":
-						Hover = node.ToInt();
-
-						break;
-					case "Hideable":
-						Hideable = node.ToBoolean();
-
-						break;
-					default:
-						throw new YamlUnknownNodeException(node.Key, "WorldPart");
-				}
-			}
 		}
 	}
 

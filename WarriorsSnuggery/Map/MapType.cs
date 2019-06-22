@@ -95,7 +95,7 @@ namespace WarriorsSnuggery.Maps
 		{
 			var node = nodes.FirstOrDefault(n => n.Key == "Size");
 
-			return node != null ? node.ToMPos() : MPos.Zero;
+			return node != null ? node.Convert<MPos>() : MPos.Zero;
 		}
 	}
 
@@ -131,47 +131,47 @@ namespace WarriorsSnuggery.Maps
 					switch (child.Key)
 					{
 						case "PlayType":
-							playType = (GameType) child.ToEnum(typeof(GameType));
+							playType = child.Convert<GameType>();
 
 							break;
 						case "PlayModes":
-							var modeArray = child.ToArray();
-							playModes = new GameMode[modeArray.Length];
+							var modeArray = child.Convert<string[]>();
 
+							playModes = new GameMode[modeArray.Length];
 							for(int i = 0; i < playModes.Length; i++)
 							{
 								playModes[i] = (GameMode) Enum.Parse(typeof(GameMode), modeArray[i]);
 							}
 							break;
 						case "ActiveFromLevel":
-							fromLevel = child.ToInt();
+							fromLevel = child.Convert<int>();
 
 							break;
 						case "Level":
-							level = child.ToInt();
+							level = child.Convert<int>();
 
 							break;
 						case "MainPieces":
 							foreach (var piece in child.Children)
 							{
-								importantParts.Add(piece.Key, piece.ToMPos());
+								importantParts.Add(piece.Key, piece.Convert<MPos>());
 							}
 
 							break;
 						case "Exits":
-							exits = child.ToArray();
+							exits = child.Convert<string[]>();
 
 							break;
 						case "SpawnPoint":
-							spawnPoint = child.ToMPos();
+							spawnPoint = child.Convert<MPos>();
 
 							break;
 						case "Entrances":
-							entrances = child.ToArray();
+							entrances = child.Convert<string[]>();
 
 							break;
 						case "Wall":
-							wall = child.ToInt();
+							wall = child.Convert<int>();
 
 							break;
 						case "BaseTerrainGeneration":
@@ -179,31 +179,31 @@ namespace WarriorsSnuggery.Maps
 
 							break;
 						case "TerrainGeneration":
-							terrainGen.Add(TerrainGenerationType.GetType(child.ToInt(), child.Children.ToArray()));
+							terrainGen.Add(TerrainGenerationType.GetType(child.Convert<int>(), child.Children.ToArray()));
 
 							break;
 						case "PathGeneration":
-							pathGen.Add(PathGenerationType.GetType(child.ToInt(), child.Children.ToArray()));
+							pathGen.Add(PathGenerationType.GetType(child.Convert<int>(), child.Children.ToArray()));
 
 							break;
 						case "StructureGeneration":
-							structureGen.Add(StructureGenerationType.GetType(child.ToInt(), child.Children.ToArray()));
+							structureGen.Add(StructureGenerationType.GetType(child.Convert<int>(), child.Children.ToArray()));
 
 							break;
 						case "WaveGeneration":
-							waveGen.Add(EnemyWaveGenerationType.GetType(child.ToInt(), child.Children.ToArray()));
+							waveGen.Add(EnemyWaveGenerationType.GetType(child.Convert<int>(), child.Children.ToArray()));
 
 							break;
 						case "CustomSize":
-							customSize = child.ToMPos();
+							customSize = child.Convert<MPos>();
 
 							break;
 						case "Ambient":
-							ambient = child.ToColor();
+							ambient = child.Convert<Color>();
 
 							break;
 						case "AllowWeapons":
-							allowWeapons = child.ToBoolean();
+							allowWeapons = child.Convert<bool>();
 
 							break;
 						default:

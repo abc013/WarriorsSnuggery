@@ -35,9 +35,9 @@ namespace WarriorsSnuggery.UI
 					var name = dir.Remove(0,dir.LastIndexOf('\\') + 1);
 					parts.Add(name, MPos.Zero);
 
-					var size = loadPieceSize(RuleReader.Read(FileExplorer.Maps + name + @"\", "map.yaml"));
+					var size = loadPieceSize(RuleReader.Read(FileExplorer.FindPath(FileExplorer.Maps, name, ".yaml"), name + ".yaml"));
 
-					mapSelection.Add(new PanelItem(CPos.Zero, name, new ImageRenderable(TextureManager.Texture("UI_map")), new MPos(512,512), () => Window.Current.NewGame(new GameStatistics(GameSaveManager.DefaultStatistic), GameType.EDITOR, custom: MapType.EditorMapTypeFromPiece(name, size))));
+					mapSelection.Add(new PanelItem(CPos.Zero, name + " [" + size.X + "," + size.Y + "]", new ImageRenderable(TextureManager.Texture("UI_map")), new MPos(512,512), () => Window.Current.NewGame(new GameStatistics(GameSaveManager.DefaultStatistic), GameType.EDITOR, custom: MapType.EditorMapTypeFromPiece(name, size))));
 				}
 			}
 			back = ButtonCreator.Create("wooden", new CPos(4096, 6144, 0), "Back", () => game.ChangeScreen(ScreenType.MENU));
@@ -49,14 +49,8 @@ namespace WarriorsSnuggery.UI
 
 		MPos loadPieceSize(List<MiniTextNode> nodes)
 		{
-			foreach(var node in nodes)
-			{
-				if (node.Key == "Size")
-				{
-					return node.ToMPos();
-				}
-			}
-			return MPos.Zero;
+			// Size has to exist.
+			return nodes.First(n => n.Key == "Size").Convert<MPos>();
 		}
 
 		public override void Render()
