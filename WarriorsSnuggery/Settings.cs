@@ -78,7 +78,7 @@ namespace WarriorsSnuggery
 					case "Keys":
 						foreach(var key in node.Children)
 						{
-							KeyDictionary.Add(key.Key, key.Value); // TODO: make just simple Pair list?
+							KeyDictionary.Add(key.Key, key.Value);
 						}
 						break;
 				}

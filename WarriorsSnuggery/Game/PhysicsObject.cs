@@ -92,6 +92,7 @@ namespace WarriorsSnuggery.Objects
 		public PhysicsObject(CPos pos)
 		{
 			Position = pos;
+			Physics = Physics.Empty;
 		}
 
 		/// <summary>
@@ -100,7 +101,7 @@ namespace WarriorsSnuggery.Objects
 		/// </summary>
 		public PhysicsObject(CPos pos, GraphicsObject renderable, Physics physics = null)
 		{
-			Physics = physics;
+			Physics = physics ?? Physics.Empty;
 			Renderable = renderable;
 			Position = pos;
 		}
@@ -137,7 +138,7 @@ namespace WarriorsSnuggery.Objects
 
 		protected virtual void RenderPhysics()
 		{
-			if (Settings.DeveloperMode && Physics != null)
+			if (Settings.DeveloperMode)
 			{
 				Physics.RenderShape();
 			}

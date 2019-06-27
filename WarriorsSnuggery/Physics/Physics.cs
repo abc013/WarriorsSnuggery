@@ -1,4 +1,5 @@
-﻿using System;
+using System;
+using WarriorsSnuggery.Graphics;
 
 namespace WarriorsSnuggery.Objects
 {
@@ -13,12 +14,14 @@ namespace WarriorsSnuggery.Objects
 
 	public sealed class Physics : IDisposable
 	{
+		public static readonly Physics Empty = new Physics(CPos.Zero, 0, Shape.NONE, 0, 0, 0);
+
 		public readonly Shape Shape;
 		public readonly int RadiusX;
-		public readonly int RadiusY;// only for box
+		public readonly int RadiusY;// only for box and drawing
 		public readonly int HeightRadius;
 
-		readonly PhysicsObject renderable;
+		readonly GraphicsObject renderable;
 
 		public CPos Position;
 		public int Height;
@@ -38,24 +41,27 @@ namespace WarriorsSnuggery.Objects
 			switch (Shape)
 			{
 				case Shape.CIRCLE:
-					renderable = new ColoredCircle(Position, Color.Cyan, RadiusX * 2 / 1024f, 16, isFilled: false);
+					renderable = new ColoredCircleRenderable(Color.Cyan, RadiusX * 2 / 1024f, 16, DrawMethod.LINELOOP);
+					renderable.SetPosition(Position);
 					break;
 				case Shape.RECTANGLE:
-					renderable = new ColoredRect(Position, Color.Cyan, RadiusX * 2 / 1024f, RadiusY * 2 / 1024f, isFilled: false);
+					renderable = new ColoredRectRenderable(Color.Cyan, RadiusX * 2 / 1024f, RadiusY * 2 / 1024f, DrawMethod.LINELOOP);
+					renderable.SetPosition(Position);
 					break;
 				case Shape.LINE_HORIZONTAL:
-					var debugLine = new ColoredLine(Position - new CPos(0, RadiusX, -10240), Color.Cyan, RadiusX * 2 / 1024f)
-					{
-						Rotation = new VAngle(0, 0, 90)
-					};
-					renderable = debugLine;
+					renderable = new ColoredLineRenderable(Color.Cyan, RadiusX * 2 / 1024f);
+					renderable.SetPosition(Position - new CPos(0, RadiusY, -10240));
+					renderable.SetRotation(new VAngle(0, 0, 90));
 					break;
 				case Shape.LINE_VERTICAL:
-					renderable = new ColoredLine(Position - new CPos(RadiusX, 0, 0), Color.Cyan, RadiusX * 2 / 1024f);
+					renderable = new ColoredLineRenderable(Color.Cyan, RadiusX * 2 / 1024f);
+					renderable.SetPosition(Position - new CPos(RadiusX, 0, 0));
 					break;
 			}
 			if (renderable != null)
+			{
 				WorldRenderer.RenderAfter(renderable);
+			}
 		}
 
 		public bool Intersects(Physics other, bool ignoreHeight)
@@ -165,13 +171,13 @@ namespace WarriorsSnuggery.Objects
 			switch (Shape)
 			{
 				default:
-					renderable.Position = Position;
+					renderable.SetPosition(Position);
 					break;
 				case Shape.LINE_HORIZONTAL:
-					renderable.Position = Position - new CPos(0,RadiusX,0);
+					renderable.SetPosition(Position - new CPos(0, RadiusY, 0));
 					break;
 				case Shape.LINE_VERTICAL:
-					renderable.Position = Position - new CPos(RadiusX,0,0);
+					renderable.SetPosition(Position - new CPos(RadiusX, 0, 0));
 					break;
 			}
 		}
