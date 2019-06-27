@@ -28,11 +28,12 @@ namespace WarriorsSnuggery.UI
 			mapSelection = new PanelList(new CPos(0,1024,0), new MPos(4096,4096),new MPos(512,512), 4, "UI_wood1", "UI_wood3", "UI_wood2");
 			foreach(var dir in Directory.GetDirectories(FileExplorer.Maps))
 			{
-				var file = Directory.GetFiles(dir).Where(s => s.EndsWith("map.yaml", StringComparison.CurrentCulture));
-				if (file != null)
+				var file = Directory.GetFiles(dir).Where(s => s.EndsWith(".yaml", StringComparison.CurrentCulture));
+				foreach(var map in file)
 				{
 					var parts = new Dictionary<string, MPos>();
-					var name = dir.Remove(0,dir.LastIndexOf('\\') + 1);
+					var name = map.Remove(0, map.LastIndexOf('\\') + 1);
+					name = name.Remove(name.Length - 5);
 					parts.Add(name, MPos.Zero);
 
 					var size = loadPieceSize(RuleReader.Read(FileExplorer.FindPath(FileExplorer.Maps, name, ".yaml"), name + ".yaml"));
