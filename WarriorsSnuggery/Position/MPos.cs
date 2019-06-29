@@ -3,6 +3,7 @@
  * Date: 05.10.2017
  * 
  */
+using System;
 
 namespace WarriorsSnuggery
 {
@@ -37,6 +38,36 @@ namespace WarriorsSnuggery
 		public override int GetHashCode() { return X ^ Y; }
 
 		public override string ToString() { return X + "," + Y; }
+
+		public float DistTo(MPos pos)
+		{
+			var x = (double)X - pos.X;
+			var y = (double)Y - pos.Y;
+			return (float)Math.Sqrt(x * x + y * y);
+		}
+
+		public float AngleTo(MPos pos)
+		{
+			var diff = pos - this;
+			var diffX = -diff.X;
+			var diffY = diff.Y;
+			float angle = (float)-Math.Atan2(diffY, diffX);
+
+			if (angle < 0f)
+				angle += (float)(2 * Math.PI);
+
+			return angle;
+		}
+		
+		public bool IsInRange(MPos minimum, MPos range)
+		{
+			if (X < minimum.X) return false;
+			if (Y < minimum.Y) return false;
+			if (X > range.X) return false;
+			if (Y > range.Y) return false;
+
+			return true;
+		}
 
 		public Vector ToVector()
 		{

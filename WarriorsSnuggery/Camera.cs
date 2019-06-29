@@ -24,9 +24,9 @@ namespace WarriorsSnuggery
 
 		static CPos bounds = CPos.Zero;
 
-		public static void SetBounds(CPos size)
+		public static void SetBounds(MPos bounds)
 		{
-			bounds = size + new CPos(-1024, -1024,0);
+			Camera.bounds = bounds.ToCPos() + new CPos(-1024, -1024,0);
 		}
 
 		public static bool IsVisible(CPos pos, float scaleX, float scaleY)

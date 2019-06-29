@@ -9,41 +9,41 @@ namespace WarriorsSnuggery.Maps
 		public readonly int Size;
 		public readonly int[] Types;
 
-		public readonly bool InGrid;
-		public readonly MPos GridDimensions;
-
-		public readonly bool FromCenter;
+		public readonly bool FromEntrance;
+		public readonly bool ToExit;
 		public readonly int MaxCount;
 		public readonly int MinCount;
 
 		public readonly float Ruinous;
-		public readonly float[] RuinousFallOff;
+		public readonly float[] RuinousFalloff;
 
-		PathGenerationType(int id, int size, int[] types, bool inGrid, MPos gridDimensions, bool fromCenter, int maxCount, int minCount, float ruinous, float[] ruinousFallOff)
+		public readonly bool Curvy;
+
+		PathGenerationType(int id, int size, int[] types, bool fromCenter, bool toExit, int maxCount, int minCount, float ruinous, float[] ruinousFallOff, bool curvy)
 		{
 			ID = id;
 			Size = size;
 			Types = types;
-			InGrid = inGrid;
-			GridDimensions = gridDimensions;
-			FromCenter = fromCenter;
+			FromEntrance = fromCenter;
+			ToExit = toExit;
 			MaxCount = maxCount;
 			MinCount = minCount;
 			Ruinous = ruinous;
-			RuinousFallOff = ruinousFallOff;
+			RuinousFalloff = ruinousFallOff;
+			Curvy = curvy;
 		}
 
 		public static PathGenerationType GetType(int id, MiniTextNode[] nodes)
 		{
 			var size = 2;
 			var types = new[] { 0 };
-			var inGrid = false;
-			var gridDimensions = MPos.Zero;
 			var fromCenter = true;
+			var toExit = true;
 			var maxCount = 5;
 			var minCount = 1;
 			var ruinous = 0f;
-			var ruinousFallOff = new[] { 0f, 0f, 0f, 0.5f, 0.9f };
+			var ruinousFalloff = new[] { 0f, 0f, 0.1f, 0.2f, 0.3f, 0.8f };
+			var curvy = true;
 
 			foreach (var node in nodes)
 			{
@@ -54,31 +54,15 @@ namespace WarriorsSnuggery.Maps
 
 						break;
 					case "Types":
-						var rawType = node.Convert<string>().Split(',');
-						types = new int[rawType.Length];
-						for(int i = 0; i < types.Length; i++)
-						{
-							if (int.TryParse(rawType[i], out int val))
-							{
-								types[i] = val;
-							}
-							else
-							{
-								throw new YamlInvalidFormatException(node.Key, typeof(int[]));
-							}
-						}
+						types = node.Convert<int[]>();
 
 						break;
-					case "InGrid":
-						inGrid = node.Convert<bool>();
-
-						break;
-					case "GridDimensions":
-						gridDimensions = node.Convert<MPos>();
-
-						break;
-					case "FromCenter":
+					case "FromEntrance":
 						fromCenter = node.Convert<bool>();
+
+						break;
+					case "ToExit":
+						toExit = node.Convert<bool>();
 
 						break;
 					case "MaxCount":
@@ -93,26 +77,18 @@ namespace WarriorsSnuggery.Maps
 						ruinous = node.Convert<float>();
 
 						break;
-					case "RuinousFallOff":
-						var rawFallOff = node.ToString().Split(',');
-						ruinousFallOff = new float[rawFallOff.Length];
-						for (int i = 0; i < types.Length; i++)
-						{
-							if (int.TryParse(rawFallOff[i], out int val))
-							{
-								types[i] = val;
-							}
-							else
-							{
-								throw new YamlInvalidFormatException(node.Key, typeof(float[]));
-							}
-						}
+					case "RuinousFalloff":
+						ruinousFalloff = node.Convert<float[]>();
+
+						break;
+					case "Curviness":
+						curvy = node.Convert<bool>();
 
 						break;
 				}
 			}
 
-			return new PathGenerationType(id, size, types, inGrid, gridDimensions, fromCenter, maxCount, minCount, ruinous, ruinousFallOff);
+			return new PathGenerationType(id, size, types, fromCenter, toExit, maxCount, minCount, ruinous, ruinousFalloff, curvy);
 		}
 	}
 }
