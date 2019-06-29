@@ -48,6 +48,9 @@
     <CheckForOverflowUnderflow>False</CheckForOverflowUnderflow>
     <DefineConstants>TRACE</DefineConstants>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|AnyCPU'">
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="OpenTK">
       <HintPath>..\OpenTK.dll</HintPath>
@@ -69,7 +72,7 @@
     <Compile Include="Game\Actor\Parts\BotPart.cs" />
     <Compile Include="Game\Actor\Parts\CollectablePart.cs" />
     <Compile Include="Game\Actor\Parts\DebugPart.cs" />
-    <Compile Include="Game\Actor\Parts\Description.cs" />
+    <Compile Include="Description.cs" />
     <Compile Include="Game\Actor\Parts\HealthPart.cs" />
     <Compile Include="Game\Actor\Parts\MobilityPart.cs" />
     <Compile Include="Game\Actor\Parts\PhysicsPart.cs" />
@@ -130,8 +133,9 @@
     <Compile Include="Loader\RuleReader.cs" />
     <Compile Include="Map\ActorNode.cs" />
     <Compile Include="Map\EnemyWaveGenerationType.cs" />
-    <Compile Include="Map\Generation\PathGenerationType.cs" />
-    <Compile Include="Map\Generators.cs" />
+    <Compile Include="Map\Generation\GridGenerator.cs" />
+    <Compile Include="Map\Generation\PathGenerator.cs" />
+    <Compile Include="Map\Generation\Generator.cs" />
     <Compile Include="Map\Map.cs" />
     <Compile Include="Game\Creators\ObjectCreator.cs" />
     <Compile Include="Map\MapPrinter.cs" />
@@ -140,8 +144,8 @@
     <Compile Include="Map\PhysicsLayer.cs" />
     <Compile Include="Map\Piece.cs" />
     <Compile Include="Map\ShroudLayer.cs" />
-    <Compile Include="Map\Generation\StructureGenerationType.cs" />
-    <Compile Include="Map\Generation\TerrainGenerationType.cs" />
+    <Compile Include="Map\Generation\StructureGenerator.cs" />
+    <Compile Include="Map\Generation\TerrainGenerator.cs" />
     <Compile Include="Map\TerrainLayer.cs" />
     <Compile Include="Position\Angle.cs" />
     <Compile Include="VisibilitySolver.cs" />
@@ -220,6 +224,7 @@
     <Content Include="Where%27sWSgoing.txt" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="Map\Generator\" />
     <Folder Include="ProfilingSessions\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

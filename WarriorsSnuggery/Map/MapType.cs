@@ -20,7 +20,7 @@ namespace WarriorsSnuggery.Maps
 		public readonly TerrainGenerationType[] TerrainGeneration;
 		public readonly TerrainGenerationType BaseTerrainGeneration;
 
-		public readonly PathGenerationType[] PathGeneration;
+		public readonly PathGeneratorInfo[] PathGeneration;
 
 		public readonly StructureGenerationType[] StructureGeneration;
 
@@ -36,7 +36,7 @@ namespace WarriorsSnuggery.Maps
 		public readonly bool FromSave;
 		public readonly bool AllowWeapons;
 
-		public MapType(string[] entrances, string[] exits, Dictionary<string, MPos> importantParts, int wall, MPos customSize, Color ambient, GameType defaultType, GameMode[] defaultModes, int level, int fromLevel, TerrainGenerationType baseTerrainGeneration, TerrainGenerationType[] terrainGeneration, PathGenerationType[] pathGeneration, StructureGenerationType[] structureGeneration, EnemyWaveGenerationType[] waveGeneration, MPos spawnPoint, bool fromSave, bool allowWeapons)
+		public MapType(string[] entrances, string[] exits, Dictionary<string, MPos> importantParts, int wall, MPos customSize, Color ambient, GameType defaultType, GameMode[] defaultModes, int level, int fromLevel, TerrainGenerationType baseTerrainGeneration, TerrainGenerationType[] terrainGeneration, PathGeneratorInfo[] pathGeneration, StructureGenerationType[] structureGeneration, EnemyWaveGenerationType[] waveGeneration, MPos spawnPoint, bool fromSave, bool allowWeapons)
 		{
 			DefaultType = defaultType;
 			DefaultModes = defaultModes;
@@ -76,14 +76,14 @@ namespace WarriorsSnuggery.Maps
 			var dict = new Dictionary<string, MPos>
 			{ { piece, MPos.Zero } };
 
-			return new MapType(new string[] { }, new string[] { }, dict, 0, size, Color.White, GameType.NORMAL, new[] { stats.Mode }, -1, 0, TerrainGenerationType.Empty(), new TerrainGenerationType[0], new PathGenerationType[0], new StructureGenerationType[0], new EnemyWaveGenerationType[0], MPos.Zero, true, true);
+			return new MapType(new string[] { }, new string[] { }, dict, 0, size, Color.White, GameType.NORMAL, new[] { stats.Mode }, -1, 0, TerrainGenerationType.Empty(), new TerrainGenerationType[0], new PathGeneratorInfo[0], new StructureGenerationType[0], new EnemyWaveGenerationType[0], MPos.Zero, true, true);
 		}
 
 		public static MapType EditorMapTypeFromPiece(string piece, MPos size)
 		{
 			var dict = new Dictionary<string, MPos>
 			{ { piece, MPos.Zero } };
-			return new MapType(new string[] { }, new string[] { }, dict, 0, size, Color.White, GameType.EDITOR, new[] { GameMode.NONE }, -1, 0, TerrainGenerationType.Empty(), new TerrainGenerationType[0], new PathGenerationType[0], new StructureGenerationType[0], new EnemyWaveGenerationType[0], MPos.Zero, false, true);
+			return new MapType(new string[] { }, new string[] { }, dict, 0, size, Color.White, GameType.EDITOR, new[] { GameMode.NONE }, -1, 0, TerrainGenerationType.Empty(), new TerrainGenerationType[0], new PathGeneratorInfo[0], new StructureGenerationType[0], new EnemyWaveGenerationType[0], MPos.Zero, false, true);
 		}
 
 		public static MapType ConvertGameType(MapType map, GameType type)
@@ -120,7 +120,7 @@ namespace WarriorsSnuggery.Maps
 				var customSize = MPos.Zero;
 				var terrainGen = new List<TerrainGenerationType>();
 				var structureGen = new List<StructureGenerationType>();
-				var pathGen = new List<PathGenerationType>();
+				var pathGen = new List<PathGeneratorInfo>();
 				var waveGen = new List<EnemyWaveGenerationType>();
 				var spawnPoint = new MPos(-1, -1);
 				TerrainGenerationType baseterrain = null;
@@ -183,7 +183,7 @@ namespace WarriorsSnuggery.Maps
 
 							break;
 						case "PathGeneration":
-							pathGen.Add(PathGenerationType.GetType(child.Convert<int>(), child.Children.ToArray()));
+							pathGen.Add(new PathGeneratorInfo(child.Convert<int>(), child.Children.ToArray()));
 
 							break;
 						case "StructureGeneration":
