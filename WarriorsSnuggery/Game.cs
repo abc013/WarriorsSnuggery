@@ -61,7 +61,7 @@ namespace WarriorsSnuggery
 		
 		readonly TextLine tick;
 		readonly TextLine render;
-		readonly TextLine memory;
+		readonly TextLine visibility;
 		readonly TextLine version;
 
 		readonly TextLine infoText;
@@ -94,7 +94,7 @@ namespace WarriorsSnuggery
 			version.SetColor(Color.Yellow);
 			version.SetText(Settings.Version);
 
-			memory = new TextLine(new CPos(corner, 6692,0), IFont.Pixel16, TextLine.OffsetType.RIGHT);
+			visibility = new TextLine(new CPos(corner, 6692,0), IFont.Pixel16, TextLine.OffsetType.RIGHT);
 			tick = new TextLine(new CPos(corner, 7692,0), IFont.Pixel16, TextLine.OffsetType.RIGHT);
 			render = new TextLine(new CPos(corner, 7192,0), IFont.Pixel16, TextLine.OffsetType.RIGHT);
 
@@ -304,7 +304,7 @@ namespace WarriorsSnuggery
 			{
 				//memory.SetText("Memory " + (int) (System.Diagnostics.Process.GetCurrentProcess().PrivateMemorySize64 / 1024f) + " KB");
 				//memory.SetText("Public Memory " + (int)(GC.GetTotalMemory(false) / 1024f) + " KB");
-				memory.SetText(VisibilitySolver.TilesVisible() + " Tiles visible");
+				visibility.SetText(VisibilitySolver.TilesVisible() + " Tiles visible");
 				tick.SetColor(Window.Current.TPS < 59 ? new Color(1f, 0.2f, 0.2f) : Color.White);
 				tick.SetText("Tick " + LocalTick + " @ " + Window.Current.TPS);
 
@@ -364,7 +364,7 @@ namespace WarriorsSnuggery
 			if (Settings.EnableInfoScreen)
 			{
 				version.Render();
-				memory.Render();
+				visibility.Render();
 				tick.Render();
 				render.Render();
 			}
@@ -385,7 +385,7 @@ namespace WarriorsSnuggery
 			ScreenControl.DisposeScreens();
 
 			version.Dispose();
-			memory.Dispose();
+			visibility.Dispose();
 			tick.Dispose();
 			render.Dispose();
 

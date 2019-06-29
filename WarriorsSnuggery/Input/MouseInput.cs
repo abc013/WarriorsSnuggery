@@ -39,7 +39,7 @@ namespace WarriorsSnuggery
 			isMiddleClicked = !isMiddleDown && midwaspres;
 			isRightClicked = !isRightDown && rigwaspres;
 
-			GamePosition = GLPos.ToCPos(Window.ExactMousePosition * new Vector4(Camera.CurrentZoom, Camera.CurrentZoom, 1, 1)) + Camera.LookAt;
+			GamePosition = VectorConvert.ToCPos(Window.ExactMousePosition * new Vector(Camera.CurrentZoom, Camera.CurrentZoom, 1, 1)) + Camera.LookAt;
 
 			lefwaspres = isLeftDown;
 			midwaspres = isMiddleDown;

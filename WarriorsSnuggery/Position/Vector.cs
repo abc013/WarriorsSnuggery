@@ -55,7 +55,7 @@ namespace WarriorsSnuggery
 		public override string ToString() { return X + "," + Y + "," + Z + "," + W; }
 	}
 
-	public static class GLPos
+	public static class VectorConvert
 	{
 		public const float PixelMultiplier = 1f / 24f;
 
