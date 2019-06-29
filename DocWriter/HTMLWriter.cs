@@ -116,14 +116,17 @@ namespace WarriorsSnuggery
 		{
 			var infos = Assembly.Load("WarriorsSnuggery").GetTypes().Where(t => t.Name.EndsWith("Info") && t.Namespace == "WarriorsSnuggery.Objects.Parts" && !t.IsAbstract);
 
+			bool first = true;
 			foreach(var info in infos)
 			{
-				var attrib = info.GetCustomAttribute(typeof(Objects.Parts.DescAttribute));
-				HTMLWriter.WriteRuleHead(writer, info.Name.Replace("PartInfo", ""), attrib == null ? new string[] { "No Description." } : ((Objects.Parts.DescAttribute)attrib).Desc);
+				var attrib = info.GetCustomAttribute(typeof(DescAttribute));
+				HTMLWriter.WriteRuleHead(writer, info.Name.Replace("PartInfo", ""), attrib == null ? new string[] { "No Description." } : ((DescAttribute)attrib).Desc);
 
 				WriteWithType(writer, info);
 
-				Console.Write(info.Name.Replace("PartInfo", "") + ", ");
+				Console.Write((first ? "" : ", ") + info.Name.Replace("PartInfo", ""));
+				if (first)
+					first = false;
 			}
 			Console.WriteLine();
 		}
@@ -168,14 +171,14 @@ namespace WarriorsSnuggery
 
 		static void WriteWithType(StreamWriter writer, Type info)
 		{
-			var variables = info.GetFields().Where(f => f.IsInitOnly && f.GetCustomAttribute(typeof(Objects.Parts.DescAttribute)) != null).ToArray();
+			var variables = info.GetFields().Where(f => f.IsInitOnly && f.GetCustomAttribute(typeof(DescAttribute)) != null).ToArray();
 			var cells = new TableCell[variables.Length];
 			for (int i = 0; i < variables.Length; i++)
 			{
 				var variable = variables[i];
 				var name = variable.Name;
 				var type = getNameOfType(variable.FieldType.Name);
-				var desc = ((Objects.Parts.DescAttribute)variable.GetCustomAttribute(typeof(Objects.Parts.DescAttribute))).Desc;
+				var desc = ((DescAttribute)variable.GetCustomAttribute(typeof(DescAttribute))).Desc;
 				cells[i] = new TableCell(name, type, desc);
 			}
 			HTMLWriter.WriteTable(writer, cells);

@@ -1,40 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
+using WarriorsSnuggery;
 
 namespace WarriorsSnuggery.Maps
 {
-	public abstract class MapGenerator
-	{
-		protected readonly Random random;
-
-		protected readonly Map map;
-		protected readonly World world;
-
-		protected readonly bool[,] dirtyCells;
-
-		protected MapGenerator(Random random, Map map, World world)
-		{
-			this.random = random;
-			this.map = map;
-			this.world = world;
-			dirtyCells = new bool[map.Bounds.X, map.Bounds.Y];
-		}
-
-		public abstract void Generate();
-
-		protected abstract void MarkDirty();
-		protected abstract void DrawDirty();
-	}
-
 	public class PathGenerator : MapGenerator
 	{
-		readonly PathGenerationType type;
+		readonly PathGeneratorInfo type;
 
 		readonly float[,] noise;
 
 		readonly List<MPos> points = new List<MPos>();
 
-		public PathGenerator(Random random, Map map, World world, PathGenerationType type) : base(random, map, world)
+		public PathGenerator(Random random, Map map, World world, PathGeneratorInfo type) : base(random, map, world)
 		{
 			this.type = type;
 
@@ -67,7 +45,7 @@ namespace WarriorsSnuggery.Maps
 		void generateSingle(MPos start, MPos end)
 		{
 			var currentPosition = start;
-			while(currentPosition != end)
+			while (currentPosition != end)
 			{
 				var angle = end.AngleTo(currentPosition);
 				var optX = Math.Cos(angle);
@@ -100,7 +78,7 @@ namespace WarriorsSnuggery.Maps
 					MPos preferred = new MPos(x, y) + currentPosition;
 
 					// If out of bounds, make the value high af so the field can't be taken
-					var val1 = preferred.IsInRange(MPos.Zero, map.Bounds - new MPos(1,1)) ? noise[preferred.X, preferred.Y] : 10f;
+					var val1 = preferred.IsInRange(MPos.Zero, map.Bounds - new MPos(1, 1)) ? noise[preferred.X, preferred.Y] : 10f;
 					var val2 = a1.IsInRange(MPos.Zero, map.Bounds - new MPos(1, 1)) ? noise[a1.X, a1.Y] : 10f;
 					var val3 = a2.IsInRange(MPos.Zero, map.Bounds - new MPos(1, 1)) ? noise[a2.X, a2.Y] : 10f;
 
@@ -124,13 +102,13 @@ namespace WarriorsSnuggery.Maps
 
 		protected override void MarkDirty()
 		{
-			foreach(var point in points)
+			foreach (var point in points)
 			{
-				for (int x = point.X - type.Size; x < point.X + type.Size; x++)
+				for (int x = point.X - type.Width + 1; x < point.X + type.Width - 1; x++)
 				{
 					if (x >= 0 && x < map.Bounds.X)
 					{
-						for (int y = point.Y - type.Size; y < point.Y + type.Size; y++)
+						for (int y = point.Y - type.Width + 1; y < point.Y + type.Width - 1; y++)
 						{
 							if (y >= 0 && y < map.Bounds.Y)
 							{
@@ -158,7 +136,7 @@ namespace WarriorsSnuggery.Maps
 					{
 						var dist = new MPos(x, y).DistTo(map.Mid);
 
-						var low = (int) Math.Floor(dist / distBetween);
+						var low = (int)Math.Floor(dist / distBetween);
 						var high = (int)Math.Ceiling(dist / distBetween);
 						if (high >= ruinousLength)
 							high = ruinousLength - 1;
@@ -179,6 +157,42 @@ namespace WarriorsSnuggery.Maps
 					}
 				}
 			}
+		}
+	}
+
+	[Desc("Generator used for making paths.")]
+	public sealed class PathGeneratorInfo
+	{
+		[Desc("Unique ID for the generator.")]
+		public readonly int ID;
+
+		[Desc("Width of the path.")]
+		public readonly int Width = 2;
+
+		[Desc("Unique ID for the generator.")]
+		public readonly int[] Types = new[] { 0 };
+
+		[Desc("Uses the entrance as start point for the paths.", "If false, random points at the map edges will be used.")]
+		public readonly bool FromEntrance = true;
+		[Desc("Uses the exit as end point for the paths.", "If false, random points at the map edges will be used.")]
+		public readonly bool ToExit = false;
+		[Desc("Maximum count of paths.")]
+		public readonly int MaxCount = 5;
+		[Desc("Minimum count of paths.")]
+		public readonly int MinCount = 1;
+
+		[Desc("Defines to what percentage the road should be overgrown.")]
+		public readonly float Ruinous = 0.1f;
+		[Desc("Defines to what percentage the road should be overgrown.", "The first value will be used in the mid, the last at the edges of the map. Those in between will be used on linear scale.")]
+		public readonly float[] RuinousFalloff = new[] { 0f, 0f, 0.1f, 0.2f, 0.3f, 0.8f };
+
+		[Desc("If true, the road will not go as straight line but a curvy one.")]
+		public readonly bool Curvy = true;
+
+		public PathGeneratorInfo(int id, MiniTextNode[] nodes)
+		{
+			ID = id;
+			Loader.PartLoader.SetValues(this, nodes);
 		}
 	}
 }

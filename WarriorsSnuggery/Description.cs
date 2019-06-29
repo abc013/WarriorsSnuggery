@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace WarriorsSnuggery.Objects.Parts
+namespace WarriorsSnuggery
 {
 	[AttributeUsage(AttributeTargets.Class | AttributeTargets.Field)]
 	public class DescAttribute : Attribute
@@ -9,7 +9,7 @@ namespace WarriorsSnuggery.Objects.Parts
 
 		public DescAttribute(params string[] desc)
 		{
-			this.Desc = desc;
+			Desc = desc;
 		}
 	}
 }
