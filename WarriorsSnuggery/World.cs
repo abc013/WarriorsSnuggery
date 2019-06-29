@@ -48,7 +48,7 @@ namespace WarriorsSnuggery
 			{
 				if (!Map.Type.FromSave)
 				{
-					var start = Map.PlayerSpawn != new CPos(-1024, -1024, 0) ? Map.PlayerSpawn : new MPos(Map.Size.X / 2, Map.Size.Y / 2).ToCPos();
+					var start = Map.PlayerSpawn != new CPos(-1024, -1024, 0) ? Map.PlayerSpawn : new MPos(Map.Bounds.X / 2, Map.Bounds.Y / 2).ToCPos();
 
 					LocalPlayer = ActorCreator.Create(this, Game.Statistics.Actor, start, Actor.PlayerTeam, isPlayer: true);
 					Add(LocalPlayer);
@@ -62,7 +62,7 @@ namespace WarriorsSnuggery
 			else
 			{
 				PlayerAlive = false;
-				Camera.Position(new MPos(Map.Size.X / 2, Map.Size.Y / 2).ToCPos(), true);
+				Camera.Position(new MPos(Map.Bounds.X / 2, Map.Bounds.Y / 2).ToCPos(), true);
 			}
 
 			//Add(new PhysicsObject(new CPos(0, 0, 1024), new ImageRenderable(TextureManager.NoiseTexture(
@@ -223,7 +223,7 @@ namespace WarriorsSnuggery
 
 		public Terrain TerrainAt(WPos position)
 		{
-			if (position.X < 0 || position.Y < 0 || position.X > Map.Size.X || position.Y > Map.Size.Y)
+			if (position.X < 0 || position.Y < 0 || position.X > Map.Bounds.X || position.Y > Map.Bounds.Y)
 				return null;
 
 			return TerrainLayer.Terrain[position.X, position.Y];
@@ -231,7 +231,7 @@ namespace WarriorsSnuggery
 
 		public bool IsInWorld(CPos pos)
 		{
-			var size = Map.Size.ToCPos();
+			var size = Map.Bounds.ToCPos();
 
 			return pos.X >= -512 && pos.X < size.X - 512 && pos.Y >= -512 && pos.Y < size.Y - 512;
 		}

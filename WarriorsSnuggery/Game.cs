@@ -53,7 +53,7 @@ namespace WarriorsSnuggery
 		public readonly GameType Type;
 		public readonly GameMode Mode;
 		public readonly int Seed;
-		
+
 		readonly TextLine tick;
 		readonly TextLine render;
 		readonly TextLine visibility;

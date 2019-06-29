@@ -36,6 +36,7 @@ namespace WarriorsSnuggery.UI
 					name = name.Remove(name.Length - 5);
 					parts.Add(name, MPos.Zero);
 
+					// TODO: read all maps in in the begin? BUT: would need a big amount of memory 
 					var size = loadPieceSize(RuleReader.Read(FileExplorer.FindPath(FileExplorer.Maps, name, ".yaml"), name + ".yaml"));
 
 					mapSelection.Add(new PanelItem(CPos.Zero, name + " [" + size.X + "," + size.Y + "]", new ImageRenderable(TextureManager.Texture("UI_map")), new MPos(512,512), () => Window.Current.NewGame(new GameStatistics(GameSaveManager.DefaultStatistic), GameType.EDITOR, custom: MapType.EditorMapTypeFromPiece(name, size))));
@@ -192,12 +193,12 @@ namespace WarriorsSnuggery.UI
 		void Create()
 		{
 			var size = new MPos(int.Parse(sizeX.Text), int.Parse(sizeY.Text));
-			var path = FileExplorer.Maps + name.Text;
-			if (Directory.Exists(path))
-				Directory.Delete(path, true);
+			var path = FileExplorer.Maps + @"\maps";
 
-			Directory.CreateDirectory(path);
-			FileExplorer.CreateFile(path + "\\", "map", ".yaml");
+			if (!Directory.Exists(path))
+				Directory.CreateDirectory(path);
+
+			FileExplorer.CreateFile(path + "\\", name.Text, ".yaml");
 			using (var stream = new StreamWriter(path + "\\map.yaml"))
 			{
 				stream.WriteLine("Name=" + name.Text);

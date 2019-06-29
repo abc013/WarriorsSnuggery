@@ -111,9 +111,9 @@ namespace WarriorsSnuggery.Objects
 			}
 
 			bool isEdgeLeft = Position.X == 0;
-			bool isEdgeRight = Position.X >= world.Map.Size.X - 1;
+			bool isEdgeRight = Position.X >= world.Map.Bounds.X - 1;
 			bool isEdgeTop = Position.Y == 0;
-			bool isEdgeBottom = Position.Y >= world.Map.Size.Y - 1;
+			bool isEdgeBottom = Position.Y >= world.Map.Bounds.Y - 1;
 			if (isEdgeRight)
 			{
 				edgesVisible[1] = false;

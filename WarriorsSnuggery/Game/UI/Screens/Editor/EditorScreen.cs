@@ -221,7 +221,7 @@ namespace WarriorsSnuggery.UI
 				{
 					var pos4 = MouseInput.GamePosition.ToMPos();
 					pos4 = new MPos(pos4.X < 0 ? 0 : pos4.X, pos4.Y < 0 ? 0 : pos4.Y);
-					pos4 = new MPos(pos4.X > game.World.Map.Size.X ? game.World.Map.Size.X : pos4.X, pos4.Y > game.World.Map.Size.Y ? game.World.Map.Size.Y : pos4.Y);
+					pos4 = new MPos(pos4.X > game.World.Map.Bounds.X ? game.World.Map.Bounds.X : pos4.X, pos4.Y > game.World.Map.Bounds.Y ? game.World.Map.Bounds.Y : pos4.Y);
 					pos4 = new MPos(pos4.X * 2 + (horizontal ? 0 : 1), pos4.Y);
 
 					if (pos4.X >= game.World.WallLayer.Size.X) pos4 = new MPos(game.World.WallLayer.Size.X - 1, pos4.Y);
@@ -268,7 +268,7 @@ namespace WarriorsSnuggery.UI
 						return;
 
 					wpos = new WPos(wpos.X < 0 ? 0 : wpos.X, wpos.Y < 0 ? 0 : wpos.Y,0);
-					wpos = new WPos(wpos.X > game.World.Map.Size.X ? game.World.Map.Size.X : wpos.X, wpos.Y > game.World.Map.Size.Y ? game.World.Map.Size.Y : wpos.Y,0);
+					wpos = new WPos(wpos.X > game.World.Map.Bounds.X ? game.World.Map.Bounds.X : wpos.X, wpos.Y > game.World.Map.Bounds.Y ? game.World.Map.Bounds.Y : wpos.Y,0);
 					wpos = new WPos(wpos.X * 2 + (horizontal ? 0 : 1), wpos.Y, 0);
 
 					WorldRenderer.CheckWallVisibility();

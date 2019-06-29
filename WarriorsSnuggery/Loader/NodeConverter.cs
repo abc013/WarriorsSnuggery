@@ -83,6 +83,28 @@ namespace WarriorsSnuggery.Loader
 
 				return res;
 			}
+			else if (t == typeof(float[]))
+			{
+				var parts = s.Split(',').ToArray();
+				var res = new float[parts.Length];
+
+				for (int i = 0; i < parts.Length; i++)
+				{
+					var part = parts[i].Trim();
+					var convert = 0.0f;
+
+					if (float.TryParse(part, out convert))
+					{
+						res[i] = convert;
+					}
+					else
+					{
+						throw new InvalidConversionException(file, node, t);
+					}
+				}
+
+				return res;
+			}
 			else if (t == typeof(string[]))
 			{
 				var parts = s.Split(',').ToArray();
