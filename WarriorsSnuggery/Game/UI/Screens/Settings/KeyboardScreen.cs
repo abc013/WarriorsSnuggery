@@ -10,7 +10,8 @@ namespace WarriorsSnuggery.UI
 		readonly Button save;
 		readonly Button back;
 
-		public KeyboardButton Up, Down, Right, Left, Pause, CamUp, CamDown, CamRight, CamLeft, Lock;
+		readonly KeyboardButton up, down, right, left, pause, camUp, camDown, camRight, camLeft, @lock;
+		readonly TextLine tMove, tPause, tCam, tLock;
 		readonly TextLine saved;
 		int savedTick;
 
@@ -27,18 +28,26 @@ namespace WarriorsSnuggery.UI
 
 			var texture = new TextureInfo("keyboard", TextureType.ANIMATION, 10, 24, 24);
 
-			Pause = new KeyboardButton(new CPos(2048, -3072, 0), Settings.KeyDictionary["Pause"][0], texture, IFont.Pixel16, Color.Black);
-			Lock = new KeyboardButton(new CPos(2048, -2048, 0), Settings.KeyDictionary["CameraLock"][0], texture, IFont.Pixel16, Color.Black);
+			tPause = new TextLine(new CPos(-2048, -3072, 0), IFont.Pixel16);
+			tPause.SetText("Pause/unpause");
+			pause = new KeyboardButton(new CPos(2048, -3072, 0), Settings.KeyDictionary["Pause"][0], texture, IFont.Pixel16, Color.Black);
+			tLock = new TextLine(new CPos(-2048, -2048, 0), IFont.Pixel16);
+			tLock.SetText("Toggle cam lock");
+			@lock = new KeyboardButton(new CPos(2048, -2048, 0), Settings.KeyDictionary["CameraLock"][0], texture, IFont.Pixel16, Color.Black);
 
-			Up = new KeyboardButton(new CPos(2048, -576, 0), Settings.KeyDictionary["MoveUp"][0], texture, IFont.Pixel16, Color.Black);
-			Down = new KeyboardButton(new CPos(2048, 0, 1), Settings.KeyDictionary["MoveDown"][0], texture, IFont.Pixel16, Color.Black);
-			Left = new KeyboardButton(new CPos(1276, 0, 1), Settings.KeyDictionary["MoveLeft"][0], texture, IFont.Pixel16, Color.Black);
-			Right = new KeyboardButton(new CPos(2806, 0, 1), Settings.KeyDictionary["MoveRight"][0], texture, IFont.Pixel16, Color.Black);
+			tMove = new TextLine(new CPos(-2048, -256, 0), IFont.Pixel16);
+			tMove.SetText("Movement");
+			up = new KeyboardButton(new CPos(2048, -576, 0), Settings.KeyDictionary["MoveUp"][0], texture, IFont.Pixel16, Color.Black);
+			down = new KeyboardButton(new CPos(2048, 0, 1), Settings.KeyDictionary["MoveDown"][0], texture, IFont.Pixel16, Color.Black);
+			left = new KeyboardButton(new CPos(1276, 0, 1), Settings.KeyDictionary["MoveLeft"][0], texture, IFont.Pixel16, Color.Black);
+			right = new KeyboardButton(new CPos(2806, 0, 1), Settings.KeyDictionary["MoveRight"][0], texture, IFont.Pixel16, Color.Black);
 
-			CamUp = new KeyboardButton(new CPos(2048, 1448, 0), Settings.KeyDictionary["CameraUp"][0], texture, IFont.Pixel16, Color.Black);
-			CamDown = new KeyboardButton(new CPos(2048, 2048, 1), Settings.KeyDictionary["CameraDown"][0], texture, IFont.Pixel16, Color.Black);
-			CamLeft = new KeyboardButton(new CPos(1276, 2048, 1), Settings.KeyDictionary["CameraLeft"][0], texture, IFont.Pixel16, Color.Black);
-			CamRight = new KeyboardButton(new CPos(2806, 2048, 1), Settings.KeyDictionary["CameraRight"][0], texture, IFont.Pixel16, Color.Black);
+			tCam = new TextLine(new CPos(-2048, 1748, 0), IFont.Pixel16);
+			tCam.SetText("Camera");
+			camUp = new KeyboardButton(new CPos(2048, 1448, 0), Settings.KeyDictionary["CameraUp"][0], texture, IFont.Pixel16, Color.Black);
+			camDown = new KeyboardButton(new CPos(2048, 2048, 1), Settings.KeyDictionary["CameraDown"][0], texture, IFont.Pixel16, Color.Black);
+			camLeft = new KeyboardButton(new CPos(1276, 2048, 1), Settings.KeyDictionary["CameraLeft"][0], texture, IFont.Pixel16, Color.Black);
+			camRight = new KeyboardButton(new CPos(2806, 2048, 1), Settings.KeyDictionary["CameraRight"][0], texture, IFont.Pixel16, Color.Black);
 		}
 
 		void Save()
@@ -59,16 +68,16 @@ namespace WarriorsSnuggery.UI
 				writer.WriteLine("FirstStarted=" + 0);
 
 				Settings.KeyDictionary.Clear();
-				Settings.KeyDictionary.Add("Pause", Pause.Key + "");
-				Settings.KeyDictionary.Add("CameraLock", Lock.Key + "");
-				Settings.KeyDictionary.Add("MoveUp", Up.Key + "");
-				Settings.KeyDictionary.Add("MoveDown", Down.Key + "");
-				Settings.KeyDictionary.Add("MoveLeft", Left.Key + "");
-				Settings.KeyDictionary.Add("MoveRight", Right.Key + "");
-				Settings.KeyDictionary.Add("CameraUp", CamUp.Key + "");
-				Settings.KeyDictionary.Add("CameraDown", CamDown.Key + "");
-				Settings.KeyDictionary.Add("CameraLeft", CamLeft.Key + "");
-				Settings.KeyDictionary.Add("CameraRight", CamRight.Key + "");
+				Settings.KeyDictionary.Add("Pause", pause.Key + "");
+				Settings.KeyDictionary.Add("CameraLock", @lock.Key + "");
+				Settings.KeyDictionary.Add("MoveUp", up.Key + "");
+				Settings.KeyDictionary.Add("MoveDown", down.Key + "");
+				Settings.KeyDictionary.Add("MoveLeft", left.Key + "");
+				Settings.KeyDictionary.Add("MoveRight", right.Key + "");
+				Settings.KeyDictionary.Add("CameraUp", camUp.Key + "");
+				Settings.KeyDictionary.Add("CameraDown", camDown.Key + "");
+				Settings.KeyDictionary.Add("CameraLeft", camLeft.Key + "");
+				Settings.KeyDictionary.Add("CameraRight", camRight.Key + "");
 
 				writer.WriteLine("Keys=");
 				foreach (var key in Settings.KeyDictionary)
@@ -86,18 +95,22 @@ namespace WarriorsSnuggery.UI
 		public override void Tick()
 		{
 			base.Tick();
-			Pause.Tick();
-			Lock.Tick();
+			tPause.Tick();
+			pause.Tick();
+			tLock.Tick();
+			@lock.Tick();
 
-			Up.Tick();
-			Down.Tick();
-			Left.Tick();
-			Right.Tick();
+			tMove.Tick();
+			up.Tick();
+			down.Tick();
+			left.Tick();
+			right.Tick();
 
-			CamUp.Tick();
-			CamDown.Tick();
-			CamLeft.Tick();
-			CamRight.Tick();
+			tCam.Tick();
+			camUp.Tick();
+			camDown.Tick();
+			camLeft.Tick();
+			camRight.Tick();
 
 			save.Tick();
 			back.Tick();
@@ -111,18 +124,22 @@ namespace WarriorsSnuggery.UI
 		public override void Render()
 		{
 			base.Render();
-			Pause.Render();
-			Lock.Render();
+			tPause.Render();
+			pause.Render();
+			tLock.Render();
+			@lock.Render();
 
-			Up.Render();
-			Down.Render();
-			Left.Render();
-			Right.Render();
+			tMove.Render();
+			up.Render();
+			down.Render();
+			left.Render();
+			right.Render();
 
-			CamUp.Render();
-			CamDown.Render();
-			CamLeft.Render();
-			CamRight.Render();
+			tCam.Render();
+			camUp.Render();
+			camDown.Render();
+			camLeft.Render();
+			camRight.Render();
 
 			save.Render();
 			if (savedTick > 0)
@@ -138,18 +155,22 @@ namespace WarriorsSnuggery.UI
 		public override void Dispose()
 		{
 			base.Dispose();
-			Pause.Dispose();
-			Lock.Dispose();
+			tPause.Dispose();
+			pause.Dispose();
+			tLock.Dispose();
+			@lock.Dispose();
 
-			Up.Dispose();
-			Down.Dispose();
-			Left.Dispose();
-			Right.Dispose();
+			tMove.Dispose();
+			up.Dispose();
+			down.Dispose();
+			left.Dispose();
+			right.Dispose();
 
-			CamUp.Dispose();
-			CamDown.Dispose();
-			CamLeft.Dispose();
-			CamRight.Dispose();
+			tCam.Dispose();
+			camUp.Dispose();
+			camDown.Dispose();
+			camLeft.Dispose();
+			camRight.Dispose();
 
 			save.Dispose();
 			back.Dispose();

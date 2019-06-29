@@ -24,7 +24,7 @@ namespace WarriorsSnuggery
 
 	public class Window : GameWindow
 	{
-		public static Vector4 ExactMousePosition;
+		public static Vector ExactMousePosition;
 
 		public static Window Current;
 
@@ -310,9 +310,9 @@ namespace WarriorsSnuggery
 		{
 			base.OnMouseMove(e);
 			var pos = e.Position;
-			ExactMousePosition = GLPos.FromScreen(pos.X, pos.Y);
+			ExactMousePosition = VectorConvert.FromScreen(pos.X, pos.Y);
 
-			MouseInput.WindowPosition = GLPos.ToCPos(GLPos.FromScreen(pos.X, pos.Y) * new Vector(Camera.DefaultZoom, Camera.DefaultZoom, 1, 1));
+			MouseInput.WindowPosition = VectorConvert.ToCPos(VectorConvert.FromScreen(pos.X, pos.Y) * new Vector(Camera.DefaultZoom, Camera.DefaultZoom, 1, 1));
 		}
 	}
 }

@@ -60,7 +60,7 @@ namespace WarriorsSnuggery
 
 		public Vector ToVector()
 		{
-			return GLPos.ToVector(this);
+			return VectorConvert.ToVector(this);
 		}
 
 		public WPos ToWPos()

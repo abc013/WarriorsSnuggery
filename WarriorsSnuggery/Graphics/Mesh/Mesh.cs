@@ -15,27 +15,27 @@ namespace WarriorsSnuggery.Graphics
 
             TexturedVertex[] vertices =
             {
-                new TexturedVertex(new Vector4(-size, -size, 0, 1.0f), new Vector2(0, h)),
-                new TexturedVertex(new Vector4(size,  -size, 0, 1.0f), new Vector2(w, h)),
-                new TexturedVertex(new Vector4(-size, size,  0, 1.0f), new Vector2(0, 0)),
-                new TexturedVertex(new Vector4(-size, size,  0, 1.0f), new Vector2(0, 0)),
-                new TexturedVertex(new Vector4(size,  -size, 0, 1.0f), new Vector2(w, h)),
-                new TexturedVertex(new Vector4(size,  size,  0, 1.0f), new Vector2(w, 0)),
+                new TexturedVertex(new Vector(-size, -size, 0, 1.0f), new Vector2(0, h)),
+                new TexturedVertex(new Vector(size,  -size, 0, 1.0f), new Vector2(w, h)),
+                new TexturedVertex(new Vector(-size, size,  0, 1.0f), new Vector2(0, 0)),
+                new TexturedVertex(new Vector(-size, size,  0, 1.0f), new Vector2(0, 0)),
+                new TexturedVertex(new Vector(size,  -size, 0, 1.0f), new Vector2(w, h)),
+                new TexturedVertex(new Vector(size,  size,  0, 1.0f), new Vector2(w, 0)),
             };
             return vertices;
 		}
 
 		// Terrain
-		const float halfTerrain = GLPos.PixelMultiplier * 24 / 2 + 0.001f;
+		const float halfTerrain = VectorConvert.PixelMultiplier * 24 / 2 + 0.001f;
 
 		static readonly TexturedVertex[] terrain =
 		{
-				new TexturedVertex(new Vector4(halfTerrain,  halfTerrain,  0, 1.0f), new Vector2(1, 0)),
-				new TexturedVertex(new Vector4(-halfTerrain, -halfTerrain, 0, 1.0f), new Vector2(0, 1)),
-				new TexturedVertex(new Vector4(halfTerrain,  -halfTerrain, 0, 1.0f), new Vector2(1, 1)),
-				new TexturedVertex(new Vector4(-halfTerrain, halfTerrain,  0, 1.0f), new Vector2(0, 0)),
-				new TexturedVertex(new Vector4(-halfTerrain, -halfTerrain, 0, 1.0f), new Vector2(0, 1)),
-				new TexturedVertex(new Vector4(halfTerrain,  halfTerrain,  0, 1.0f), new Vector2(1, 0)),
+				new TexturedVertex(new Vector(halfTerrain,  halfTerrain,  0, 1.0f), new Vector2(1, 0)),
+				new TexturedVertex(new Vector(-halfTerrain, -halfTerrain, 0, 1.0f), new Vector2(0, 1)),
+				new TexturedVertex(new Vector(halfTerrain,  -halfTerrain, 0, 1.0f), new Vector2(1, 1)),
+				new TexturedVertex(new Vector(-halfTerrain, halfTerrain,  0, 1.0f), new Vector2(0, 0)),
+				new TexturedVertex(new Vector(-halfTerrain, -halfTerrain, 0, 1.0f), new Vector2(0, 1)),
+				new TexturedVertex(new Vector(halfTerrain,  halfTerrain,  0, 1.0f), new Vector2(1, 0)),
 		};
 
 		public static TexturedVertex[] Terrain()
@@ -50,12 +50,12 @@ namespace WarriorsSnuggery.Graphics
 
 			TexturedVertex[] vertices =
 			{
-				new TexturedVertex(new Vector4(scale,  -scale,  0, 1.0f), new Vector2(1, 0)),
-				new TexturedVertex(new Vector4(-scale, scale, 0, 1.0f), new Vector2(0, 1)),
-				new TexturedVertex(new Vector4(scale,  scale, 0, 1.0f), new Vector2(1, 1)),
-				new TexturedVertex(new Vector4(-scale, -scale,  0, 1.0f), new Vector2(0, 0)),
-				new TexturedVertex(new Vector4(-scale, scale, 0, 1.0f), new Vector2(0, 1)),
-				new TexturedVertex(new Vector4(scale,  -scale,  0, 1.0f), new Vector2(1, 0)),
+				new TexturedVertex(new Vector(scale,  -scale,  0, 1.0f), new Vector2(1, 0)),
+				new TexturedVertex(new Vector(-scale, scale, 0, 1.0f), new Vector2(0, 1)),
+				new TexturedVertex(new Vector(scale,  scale, 0, 1.0f), new Vector2(1, 1)),
+				new TexturedVertex(new Vector(-scale, -scale,  0, 1.0f), new Vector2(0, 0)),
+				new TexturedVertex(new Vector(-scale, scale, 0, 1.0f), new Vector2(0, 1)),
+				new TexturedVertex(new Vector(scale,  -scale,  0, 1.0f), new Vector2(1, 0)),
 			};
 
 			return vertices;
@@ -72,12 +72,12 @@ namespace WarriorsSnuggery.Graphics
 			{
 				TexturedVertex[] vertices1 =
 				{
-					new TexturedVertex(new Vector4(scale * correction, scale, 0, 1.0f), new Vector2(1, 0)),
-					new TexturedVertex(new Vector4(-scale * correction, -scale, 0, 1.0f), new Vector2(0, 1)),
-					new TexturedVertex(new Vector4(scale * correction, -scale, 0, 1.0f), new Vector2(1, 1)),
-					new TexturedVertex(new Vector4(-scale * correction, scale, 0, 1.0f), new Vector2(0, 0)),
-					new TexturedVertex(new Vector4(-scale * correction, -scale, 0, 1.0f), new Vector2(0, 1)),
-					new TexturedVertex(new Vector4(scale * correction, scale, 0, 1.0f), new Vector2(1, 0)),
+					new TexturedVertex(new Vector(scale * correction, scale, 0, 1.0f), new Vector2(1, 0)),
+					new TexturedVertex(new Vector(-scale * correction, -scale, 0, 1.0f), new Vector2(0, 1)),
+					new TexturedVertex(new Vector(scale * correction, -scale, 0, 1.0f), new Vector2(1, 1)),
+					new TexturedVertex(new Vector(-scale * correction, scale, 0, 1.0f), new Vector2(0, 0)),
+					new TexturedVertex(new Vector(-scale * correction, -scale, 0, 1.0f), new Vector2(0, 1)),
+					new TexturedVertex(new Vector(scale * correction, scale, 0, 1.0f), new Vector2(1, 0)),
 				};
 				vertices = vertices1;
 			}
@@ -85,12 +85,12 @@ namespace WarriorsSnuggery.Graphics
 			{
 				TexturedVertex[] vertices1 =
 				{
-					new TexturedVertex(new Vector4(scale, scale * correction, 0, 1.0f), new Vector2(1, 0)),
-					new TexturedVertex(new Vector4(-scale, -scale * correction, 0, 1.0f), new Vector2(0, 1)),
-					new TexturedVertex(new Vector4(scale, -scale * correction, 0, 1.0f), new Vector2(1, 1)),
-					new TexturedVertex(new Vector4(-scale, scale * correction, 0, 1.0f), new Vector2(0, 0)),
-					new TexturedVertex(new Vector4(-scale, -scale * correction, 0, 1.0f), new Vector2(0, 1)),
-					new TexturedVertex(new Vector4(scale, scale * correction, 0, 1.0f), new Vector2(1, 0)),
+					new TexturedVertex(new Vector(scale, scale * correction, 0, 1.0f), new Vector2(1, 0)),
+					new TexturedVertex(new Vector(-scale, -scale * correction, 0, 1.0f), new Vector2(0, 1)),
+					new TexturedVertex(new Vector(scale, -scale * correction, 0, 1.0f), new Vector2(1, 1)),
+					new TexturedVertex(new Vector(-scale, scale * correction, 0, 1.0f), new Vector2(0, 0)),
+					new TexturedVertex(new Vector(-scale, -scale * correction, 0, 1.0f), new Vector2(0, 1)),
+					new TexturedVertex(new Vector(scale, scale * correction, 0, 1.0f), new Vector2(1, 0)),
 				};
 				vertices = vertices1;
 			}
@@ -101,17 +101,17 @@ namespace WarriorsSnuggery.Graphics
 		public static TexturedVertex[] PixelOrientedPlane(float scale, int width, int height)
 		{
 			scale /= 2;
-			var sizeX = width * GLPos.PixelMultiplier;
-			var sizeY = height * GLPos.PixelMultiplier;
+			var sizeX = width * VectorConvert.PixelMultiplier;
+			var sizeY = height * VectorConvert.PixelMultiplier;
 
 			TexturedVertex[] vertices =
 			{
-				new TexturedVertex(new Vector4(sizeX * scale,  sizeY * scale,  0, 1.0f), new Vector2(sizeX, 0)),
-				new TexturedVertex(new Vector4(-sizeX * scale, -sizeY * scale, 0, 1.0f), new Vector2(0, sizeY)),
-				new TexturedVertex(new Vector4(sizeX * scale,  -sizeY * scale, 0, 1.0f), new Vector2(sizeX, sizeY)),
-				new TexturedVertex(new Vector4(-sizeX * scale, sizeY * scale,  0, 1.0f), new Vector2(0, 0)),
-				new TexturedVertex(new Vector4(-sizeX * scale, -sizeY * scale, 0, 1.0f), new Vector2(0, sizeY)),
-				new TexturedVertex(new Vector4(sizeX * scale,  sizeY * scale,  0, 1.0f), new Vector2(sizeX, 0)),
+				new TexturedVertex(new Vector(sizeX * scale,  sizeY * scale,  0, 1.0f), new Vector2(sizeX, 0)),
+				new TexturedVertex(new Vector(-sizeX * scale, -sizeY * scale, 0, 1.0f), new Vector2(0, sizeY)),
+				new TexturedVertex(new Vector(sizeX * scale,  -sizeY * scale, 0, 1.0f), new Vector2(sizeX, sizeY)),
+				new TexturedVertex(new Vector(-sizeX * scale, sizeY * scale,  0, 1.0f), new Vector2(0, 0)),
+				new TexturedVertex(new Vector(-sizeX * scale, -sizeY * scale, 0, 1.0f), new Vector2(0, sizeY)),
+				new TexturedVertex(new Vector(sizeX * scale,  sizeY * scale,  0, 1.0f), new Vector2(sizeX, 0)),
 			};
 
 			return vertices;
@@ -126,8 +126,8 @@ namespace WarriorsSnuggery.Graphics
 			
 			ColoredVertex[] vertices =
 			{
-				new ColoredVertex(new Vector4(0,0,0,1.0f), color4),
-				new ColoredVertex(new Vector4(0,size,0,1.0f), color4),
+				new ColoredVertex(new Vector(0,0,0,1.0f), color4),
+				new ColoredVertex(new Vector(0,size,0,1.0f), color4),
 			};
 
 			return vertices;
@@ -146,14 +146,14 @@ namespace WarriorsSnuggery.Graphics
 
 			ColoredVertex[] vertices =
 			{
-				new ColoredVertex(new Vector4(x,  y,  0, 1.0f), color4),
-				new ColoredVertex(new Vector4(-x, y, 0, 1.0f), color4),
-				new ColoredVertex(new Vector4(-x,  y, 0, 1.0f), color4),
-				new ColoredVertex(new Vector4(-x, -y,  0, 1.0f), color4),
-				new ColoredVertex(new Vector4(-x, -y, 0, 1.0f), color4),
-				new ColoredVertex(new Vector4(x,  -y,  0, 1.0f), color4),
-				new ColoredVertex(new Vector4(x,  -y,  0, 1.0f), color4),
-				new ColoredVertex(new Vector4(x,  y,  0, 1.0f), color4),
+				new ColoredVertex(new Vector(x,  y,  0, 1.0f), color4),
+				new ColoredVertex(new Vector(-x, y, 0, 1.0f), color4),
+				new ColoredVertex(new Vector(-x,  y, 0, 1.0f), color4),
+				new ColoredVertex(new Vector(-x, -y,  0, 1.0f), color4),
+				new ColoredVertex(new Vector(-x, -y, 0, 1.0f), color4),
+				new ColoredVertex(new Vector(x,  -y,  0, 1.0f), color4),
+				new ColoredVertex(new Vector(x,  -y,  0, 1.0f), color4),
+				new ColoredVertex(new Vector(x,  y,  0, 1.0f), color4),
 			};
 
 			return vertices;
@@ -172,12 +172,12 @@ namespace WarriorsSnuggery.Graphics
 
 			ColoredVertex[] vertices =
 			{
-				new ColoredVertex(new Vector4(x,  y,  0, 1.0f), color4),
-				new ColoredVertex(new Vector4(-x, -y, 0, 1.0f), color4),
-				new ColoredVertex(new Vector4(x,  -y, 0, 1.0f), color4),
-				new ColoredVertex(new Vector4(-x, y,  0, 1.0f), color4),
-				new ColoredVertex(new Vector4(-x, -y, 0, 1.0f), color4),
-				new ColoredVertex(new Vector4(x,  y,  0, 1.0f), color4),
+				new ColoredVertex(new Vector(x,  y,  0, 1.0f), color4),
+				new ColoredVertex(new Vector(-x, -y, 0, 1.0f), color4),
+				new ColoredVertex(new Vector(x,  -y, 0, 1.0f), color4),
+				new ColoredVertex(new Vector(-x, y,  0, 1.0f), color4),
+				new ColoredVertex(new Vector(-x, -y, 0, 1.0f), color4),
+				new ColoredVertex(new Vector(x,  y,  0, 1.0f), color4),
 			};
 
 			return vertices;
@@ -193,7 +193,7 @@ namespace WarriorsSnuggery.Graphics
 			{
 				var x = ((float) Math.Cos(i * Math.PI / resolution * 2)) * size;
 				var y = ((float) Math.Sin(i * Math.PI / resolution * 2)) * size;
-				vertices[i] = new ColoredVertex(new Vector4(x, y, 0f, 1f), color4);
+				vertices[i] = new ColoredVertex(new Vector(x, y, 0f, 1f), color4);
 			}
 			return vertices;
 		}

@@ -4,7 +4,7 @@ namespace WarriorsSnuggery.Objects
 {
 	public class TextRenderable : GraphicsObject
 	{
-		public const float SizeMultiplier = GLPos.PixelMultiplier / 4;
+		public const float SizeMultiplier = VectorConvert.PixelMultiplier / 4;
 		public Color Color;
 		public char @Char;
 
