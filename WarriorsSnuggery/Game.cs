@@ -1,8 +1,8 @@
 using System;
+using WarriorsSnuggery.Graphics;
+using WarriorsSnuggery.Maps;
 using WarriorsSnuggery.Objects;
 using WarriorsSnuggery.UI;
-using WarriorsSnuggery.Maps;
-using WarriorsSnuggery.Graphics;
 
 namespace WarriorsSnuggery
 {
@@ -28,7 +28,7 @@ namespace WarriorsSnuggery
 	public sealed class Game : ITick, IDisposable
 	{
 		public Random SharedRandom = new Random();
-		
+
 		public readonly ScreenControl ScreenControl;
 
 		public uint LocalTick;
@@ -84,14 +84,14 @@ namespace WarriorsSnuggery
 
 			MasterRenderer.ResetRenderer(this);
 
-			var corner = (int) (WindowInfo.UnitWidth / 2 * 1024);
-			version = new TextLine(new CPos(corner, 6192,0), IFont.Pixel16, TextLine.OffsetType.RIGHT);
+			var corner = (int)(WindowInfo.UnitWidth / 2 * 1024);
+			version = new TextLine(new CPos(corner, 6192, 0), IFont.Pixel16, TextLine.OffsetType.RIGHT);
 			version.SetColor(Color.Yellow);
 			version.SetText(Settings.Version);
 
-			visibility = new TextLine(new CPos(corner, 6692,0), IFont.Pixel16, TextLine.OffsetType.RIGHT);
-			tick = new TextLine(new CPos(corner, 7692,0), IFont.Pixel16, TextLine.OffsetType.RIGHT);
-			render = new TextLine(new CPos(corner, 7192,0), IFont.Pixel16, TextLine.OffsetType.RIGHT);
+			visibility = new TextLine(new CPos(corner, 6692, 0), IFont.Pixel16, TextLine.OffsetType.RIGHT);
+			tick = new TextLine(new CPos(corner, 7692, 0), IFont.Pixel16, TextLine.OffsetType.RIGHT);
+			render = new TextLine(new CPos(corner, 7192, 0), IFont.Pixel16, TextLine.OffsetType.RIGHT);
 
 			infoText = new TextLine(new CPos(-corner + 1024, 7192, 0), IFont.Pixel16);
 		}
@@ -174,7 +174,7 @@ namespace WarriorsSnuggery
 					if (KeyInput.IsKeyDown("altleft", 0) && KeyInput.IsKeyDown("m", 10))
 					{
 						Screen defaultScreen;
-						if(Editor)
+						if (Editor)
 						{
 							Editor = false;
 							if (Type == GameType.MENU || Type == GameType.MAINMENU)
@@ -202,9 +202,9 @@ namespace WarriorsSnuggery
 				// party mode
 				if (Settings.PartyMode)
 				{
-					var sin1 = (float) Math.Sin(LocalTick / 8f);
-					var sin2 = (float) Math.Sin(LocalTick / 8f + 2 * Math.PI / 3);
-					var sin3 = (float) Math.Sin(LocalTick / 8f + 4 * Math.PI / 3);
+					var sin1 = (float)Math.Sin(LocalTick / 8f);
+					var sin2 = (float)Math.Sin(LocalTick / 8f + 2 * Math.PI / 3);
+					var sin3 = (float)Math.Sin(LocalTick / 8f + 4 * Math.PI / 3);
 
 					if (sin1 < 0) sin1 = 0;
 					if (sin2 < 0) sin2 = 0;
@@ -317,7 +317,7 @@ namespace WarriorsSnuggery
 			watch.Stop();
 			if (LocalTick % 4 == 0)
 				Log.WritePerformance(watch.ElapsedMilliseconds, " Tick " + LocalTick);
-			
+
 
 			if (ScreenControl.FocusedType == ScreenType.START)
 				Pause(true);
@@ -325,7 +325,7 @@ namespace WarriorsSnuggery
 
 		public bool WinConditionsMet()
 		{
-			switch(Mode)
+			switch (Mode)
 			{
 				// FIND_EXIT and TUTORIAL will meet conditions when entering the exit
 				default:

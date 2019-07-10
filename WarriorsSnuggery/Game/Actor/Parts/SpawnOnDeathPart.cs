@@ -40,7 +40,7 @@
 
 		public override void OnKilled(Actor killer)
 		{
-			for(int i = 0; i < info.Count; i++)
+			for (int i = 0; i < info.Count; i++)
 			{
 				create();
 			}
@@ -52,7 +52,7 @@
 				return;
 
 			PhysicsObject @object = null;
-			switch(info.Type)
+			switch (info.Type)
 			{
 				case "ACTOR":
 					@object = ActorCreator.Create(self.World, info.Name, randomPosition(), info.InheritsTeam ? self.Team : Actor.NeutralTeam, info.InheritsBot ? self.IsBot : false);

@@ -12,7 +12,7 @@ namespace WarriorsSnuggery.Maps
 		public static MPos[] FindValuesInArea(MPos position, int searchRadius, int[] value, int[,] array, MPos size)
 		{
 			var positions = new List<MPos>();
-			for(var x = position.X - searchRadius; x < position.X + searchRadius; x++)
+			for (var x = position.X - searchRadius; x < position.X + searchRadius; x++)
 			{
 				if (x < 0 || x >= size.X)
 					continue;

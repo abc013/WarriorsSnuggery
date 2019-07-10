@@ -22,7 +22,7 @@
 	public class PhysicsPart : ActorPart
 	{
 		readonly PhysicsPartInfo info;
-		
+
 		public Shape Shape
 		{
 			get { return info.Shape; }

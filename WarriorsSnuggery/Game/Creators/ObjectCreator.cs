@@ -1,8 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using WarriorsSnuggery.Objects;
 using WarriorsSnuggery.Graphics;
+using WarriorsSnuggery.Objects;
 using WarriorsSnuggery.Objects.Parts;
 
 namespace WarriorsSnuggery
@@ -13,13 +12,13 @@ namespace WarriorsSnuggery
 		{
 			var actors = RuleReader.Read(directory, file);
 
-			foreach(var actor in actors)
+			foreach (var actor in actors)
 			{
 				var name = actor.Key;
 
 				var partinfos = new List<PartInfo>();
 
-				foreach(var child in actor.Children)
+				foreach (var child in actor.Children)
 				{
 					if (Loader.PartLoader.IsPart(child.Key))
 					{
@@ -37,7 +36,7 @@ namespace WarriorsSnuggery
 				var physics = (PhysicsPartInfo)partinfos.Find(p => p is PhysicsPartInfo);
 				var playable = (PlayablePartInfo)partinfos.Find(p => p is PlayablePartInfo);
 
-			   AddType(new ActorType(physics, playable, partinfos.ToArray()), name);
+				AddType(new ActorType(physics, playable, partinfos.ToArray()), name);
 			}
 		}
 
@@ -75,9 +74,9 @@ namespace WarriorsSnuggery
 		public static Actor Create(World world, ActorType type, CPos position, byte team = 0, bool isBot = false, bool isPlayer = false, float health = 1f)
 		{
 			var actor = new Actor(world, type, position, team, isBot, isPlayer);
-			if(actor.Health != null)
+			if (actor.Health != null)
 			{
-				actor.Health.HP = (int) (actor.Health.HP * health);
+				actor.Health.HP = (int)(actor.Health.HP * health);
 			}
 			return actor;
 		}
@@ -89,7 +88,7 @@ namespace WarriorsSnuggery
 		{
 			var weapons = RuleReader.Read(directory, file);
 
-			foreach(var weapon in weapons)
+			foreach (var weapon in weapons)
 			{
 				var name = weapon.Key;
 				TextureInfo info = null;
@@ -109,9 +108,9 @@ namespace WarriorsSnuggery
 				var physicalSize = 100;
 				var gravity = 9;
 
-				foreach(var child in weapon.Children)
+				foreach (var child in weapon.Children)
 				{
-					switch(child.Key)
+					switch (child.Key)
 					{
 						case "Image":
 							info = child.Convert<TextureInfo>();
@@ -155,9 +154,9 @@ namespace WarriorsSnuggery
 						case "Physics":
 							if (child.Children.Count > 0)
 							{
-								foreach(var physics in child.Children)
+								foreach (var physics in child.Children)
 								{
-									switch(physics.Key)
+									switch (physics.Key)
 									{
 										case "Shape":
 											physicalShape = child.Convert<Shape>();
@@ -262,7 +261,7 @@ namespace WarriorsSnuggery
 		{
 			var particles = RuleReader.Read(directory, file);
 
-			foreach(var particle in particles)
+			foreach (var particle in particles)
 			{
 				var name = particle.Key;
 				TextureInfo info = null;
@@ -274,9 +273,9 @@ namespace WarriorsSnuggery
 				var scale = 1.0f;
 				var ranScale = 0f;
 
-				foreach(var child in particle.Children)
+				foreach (var child in particle.Children)
 				{
-					switch(child.Key)
+					switch (child.Key)
 					{
 						case "Image":
 							info = child.Convert<TextureInfo>();
@@ -356,7 +355,7 @@ namespace WarriorsSnuggery
 		{
 			var terrains = RuleReader.Read(directory, file);
 
-			foreach(var terrain in terrains)
+			foreach (var terrain in terrains)
 			{
 				var id = int.Parse(terrain.Key);
 
@@ -368,9 +367,9 @@ namespace WarriorsSnuggery
 				var edge_Image2 = "";
 				var corner_Image = "";
 
-				foreach(var child in terrain.Children)
+				foreach (var child in terrain.Children)
 				{
-					switch(child.Key)
+					switch (child.Key)
 					{
 						case "Sprite":
 							image = child.Convert<string>();
@@ -442,16 +441,16 @@ namespace WarriorsSnuggery
 		{
 			var walls = RuleReader.Read(directory, file);
 
-			foreach(var wall in walls)
+			foreach (var wall in walls)
 			{
 				string texture = string.Empty;
 				bool blocks = true;
 				bool destroyable = false;
 				int height = 512;
 
-				foreach(var child in wall.Children)
+				foreach (var child in wall.Children)
 				{
-					switch(child.Key)
+					switch (child.Key)
 					{
 						case "Image":
 							texture = child.Convert<string>();

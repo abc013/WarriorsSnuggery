@@ -32,7 +32,7 @@ namespace WarriorsSnuggery
 		public static bool operator !=(CPos lhs, CPos rhs) { return !(lhs == rhs); }
 
 		public bool Equals(CPos pos) { return pos == this; }
-		public override bool Equals(object obj) { return obj is CPos && Equals((CPos) obj); }
+		public override bool Equals(object obj) { return obj is CPos && Equals((CPos)obj); }
 
 		public override int GetHashCode() { return X ^ Y ^ Z; }
 
@@ -40,9 +40,9 @@ namespace WarriorsSnuggery
 
 		public float DistToXY(CPos pos)
 		{
-			var x = (double) X - pos.X;
-			var y = (double) Y - pos.Y;
-			return (float) Math.Sqrt(x * x  + y * y);
+			var x = (double)X - pos.X;
+			var y = (double)Y - pos.Y;
+			return (float)Math.Sqrt(x * x + y * y);
 		}
 
 		public float AngleToXY(CPos pos)
@@ -53,7 +53,7 @@ namespace WarriorsSnuggery
 			float angle = (float)-Math.Atan2(diffY, diffX);
 
 			if (angle < 0f)
-				angle += (float) (2 * Math.PI);
+				angle += (float)(2 * Math.PI);
 
 			return angle;
 		}
@@ -65,17 +65,17 @@ namespace WarriorsSnuggery
 
 		public WPos ToWPos()
 		{
-			return new WPos(roundCorrect(X),roundCorrect(Y),roundCorrect(Z));
+			return new WPos(roundCorrect(X), roundCorrect(Y), roundCorrect(Z));
 		}
 
 		public MPos ToMPos()
 		{
-			return new MPos(roundCorrect(X),roundCorrect(Y));
+			return new MPos(roundCorrect(X), roundCorrect(Y));
 		}
 
 		int roundCorrect(int value)
 		{
-			return value % 1024 > 512 ? (int) Math.Ceiling(value / 1024f) : (int) Math.Floor(value / 1024f);
+			return value % 1024 > 512 ? (int)Math.Ceiling(value / 1024f) : (int)Math.Floor(value / 1024f);
 		}
 	}
 }

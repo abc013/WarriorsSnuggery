@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Linq;
 using WarriorsSnuggery.Graphics;
 
 namespace WarriorsSnuggery.Objects.Parts
@@ -115,7 +114,7 @@ namespace WarriorsSnuggery.Objects.Parts
 
 				if (info.ParticleSpawner != null)
 				{
-					foreach(var particle in info.ParticleSpawner.Create(self.Position))
+					foreach (var particle in info.ParticleSpawner.Create(self.Position))
 						self.World.Add(particle);
 				}
 

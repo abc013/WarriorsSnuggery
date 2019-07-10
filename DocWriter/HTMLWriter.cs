@@ -1,7 +1,7 @@
 ﻿using System;
-using System.Reflection;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 
 namespace WarriorsSnuggery
 {
@@ -92,7 +92,7 @@ namespace WarriorsSnuggery
 
 			writer.WriteLine("\t\t\t\t<" + style + ">" + cell.Name + "</td>");
 
-			writer.WriteLine("\t\t\t\t<" + style +">" + cell.Type + "</td>");
+			writer.WriteLine("\t\t\t\t<" + style + ">" + cell.Type + "</td>");
 
 			var desc = "";
 			foreach (var desc1 in cell.Desc)
@@ -117,7 +117,7 @@ namespace WarriorsSnuggery
 			var infos = Assembly.Load("WarriorsSnuggery").GetTypes().Where(t => t.Name.EndsWith("Info") && t.Namespace == "WarriorsSnuggery.Objects.Parts" && !t.IsAbstract);
 
 			bool first = true;
-			foreach(var info in infos)
+			foreach (var info in infos)
 			{
 				var attrib = info.GetCustomAttribute(typeof(DescAttribute));
 				HTMLWriter.WriteRuleHead(writer, info.Name.Replace("PartInfo", ""), attrib == null ? new string[] { "No Description." } : ((DescAttribute)attrib).Desc);

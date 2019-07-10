@@ -14,29 +14,29 @@ namespace WarriorsSnuggery
 		{
 			var raw = new float[sizeX * sizeY];
 
-			for(int y = 0; y < sizeY; y++)
+			for (int y = 0; y < sizeY; y++)
 			{
-				for(int x = 0; x < sizeX; x++)
+				for (int x = 0; x < sizeX; x++)
 				{
-					raw[y * sizeX + x] = (float) random.NextDouble();
+					raw[y * sizeX + x] = (float)random.NextDouble();
 				}
 			}
 
 			var noise = new float[sizeX * sizeY];
-			for(int y = 0; y < sizeY; y++)
+			for (int y = 0; y < sizeY; y++)
 			{
-				for(int x = 0; x < sizeX; x++)
+				for (int x = 0; x < sizeX; x++)
 				{
 					float superX = x / scale;
 					float superY = y / scale;
 
 					//get fractional part of x and y
-					float fractX = superX - (int) superX;
-					float fractY = superY - (int) superY;
+					float fractX = superX - (int)superX;
+					float fractY = superY - (int)superY;
 
 					//wrap around
-					int x1 = ((int) superX + sizeX) % sizeX;
-					int y1 = ((int) superY + sizeY) % sizeY;
+					int x1 = ((int)superX + sizeX) % sizeX;
+					int y1 = ((int)superY + sizeY) % sizeY;
 
 					//neighbor values
 					int x2 = (x1 + sizeX - 1) % sizeX;
@@ -44,9 +44,9 @@ namespace WarriorsSnuggery
 
 					//smooth the noise with bilinear interpolation
 					float value = 0.0f;
-					value += fractX		  * fractY		 * raw[y1 * sizeX + x1];
-					value += (1 - fractX) * fractY		 * raw[y1 * sizeX + x2];
-					value += fractX		  * (1 - fractY) * raw[y2 * sizeX + x1];
+					value += fractX * fractY * raw[y1 * sizeX + x1];
+					value += (1 - fractX) * fractY * raw[y1 * sizeX + x2];
+					value += fractX * (1 - fractY) * raw[y2 * sizeX + x1];
 					value += (1 - fractX) * (1 - fractY) * raw[y2 * sizeX + x2];
 					noise[y * sizeX + x] = value;
 				}
@@ -70,7 +70,7 @@ namespace WarriorsSnuggery
 
 			for (int i = 0; i < noise.Length; i++)
 			{
-				foreach(var n in noises)
+				foreach (var n in noises)
 					noise[i] += n[i];
 
 				noise[i] /= noises.Count;

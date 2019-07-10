@@ -10,7 +10,7 @@ namespace WarriorsSnuggery
 
 		public WallLayer()
 		{
-			Walls = new Wall[0,0];
+			Walls = new Wall[0, 0];
 			Size = MPos.Zero;
 		}
 
@@ -34,14 +34,14 @@ namespace WarriorsSnuggery
 
 		public void Render()
 		{
-			foreach(var wall in Walls)
-					wall?.Render();
+			foreach (var wall in Walls)
+				wall?.Render();
 		}
 
 		public void Dispose()
 		{
-			foreach(var wall in Walls)
-					wall?.Dispose();
+			foreach (var wall in Walls)
+				wall?.Dispose();
 		}
 	}
 }

@@ -28,7 +28,7 @@
 
 		}
 	}
-	
+
 	public class SpawnOnDamagePart : ActorPart
 	{
 		readonly SpawnOnDamagePartInfo info;

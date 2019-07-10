@@ -5,7 +5,7 @@ namespace WarriorsSnuggery.Loader
 {
 	public static class NodeConverter
 	{
-		public static readonly string[] trueBooleans = new []
+		public static readonly string[] trueBooleans = new[]
 		{
 			"1",
 			"true",
@@ -20,7 +20,7 @@ namespace WarriorsSnuggery.Loader
 
 		public static T Convert<T>(string file, MiniTextNode node)
 		{
-			return (T) Convert(file, node, typeof(T));
+			return (T)Convert(file, node, typeof(T));
 		}
 
 		public static object Convert(string file, MiniTextNode node, Type t)
@@ -168,7 +168,7 @@ namespace WarriorsSnuggery.Loader
 				var radius = 256;
 
 				var children = node.Children;
-				foreach(var child in children)
+				foreach (var child in children)
 				{
 					if (child.Key == "Count")
 					{

@@ -10,7 +10,7 @@ namespace WarriorsSnuggery.UI
 		public Screen Focused;
 		public ScreenType FocusedType;
 
-		readonly Dictionary<ScreenType, Screen> screens = new Dictionary<ScreenType, Screen>(); 
+		readonly Dictionary<ScreenType, Screen> screens = new Dictionary<ScreenType, Screen>();
 
 		public ScreenControl(Game game)
 		{

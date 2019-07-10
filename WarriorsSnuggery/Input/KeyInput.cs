@@ -1,5 +1,5 @@
-﻿using System;
 using OpenTK.Input;
+using System;
 
 namespace WarriorsSnuggery
 {
@@ -80,9 +80,9 @@ namespace WarriorsSnuggery
 			if (HitCooldown > 0 || !state.IsAnyKeyDown || !Window.Current.Focused)
 				return false;
 
-			if (key.IndexOfAny(new[] { '↓','↑','←','→','-','+',','}) == 0)
+			if (key.IndexOfAny(new[] { '↓', '↑', '←', '→', '-', '+', ',' }) == 0)
 			{
-				switch(key)
+				switch (key)
 				{
 					case "↓":
 						key = "down";
@@ -107,7 +107,7 @@ namespace WarriorsSnuggery
 						break;
 				}
 			}
-			bool hit = state.IsKeyDown((Key) Enum.Parse(typeof(Key), key, true));
+			bool hit = state.IsKeyDown((Key)Enum.Parse(typeof(Key), key, true));
 			if (hit) HitCooldown = coolDownWhenHit;
 
 			return hit;

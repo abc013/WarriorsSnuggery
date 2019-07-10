@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using WarriorsSnuggery.Objects;
 using WarriorsSnuggery.Graphics;
+using WarriorsSnuggery.Objects;
 
 namespace WarriorsSnuggery.UI
 {
@@ -19,7 +19,7 @@ namespace WarriorsSnuggery.UI
 		{
 			intSize = size;
 			this.itemSize = itemSize;
-			Size = new MPos((int) Math.Floor(size.X / itemSize.X + 0f), (int) Math.Floor(size.Y / itemSize.Y + 0f));
+			Size = new MPos((int)Math.Floor(size.X / itemSize.X + 0f), (int)Math.Floor(size.Y / itemSize.Y + 0f));
 		}
 
 		public void Add(PanelItem o)
@@ -55,22 +55,22 @@ namespace WarriorsSnuggery.UI
 		public override void Tick()
 		{
 			base.Tick();
-			foreach(var o in Container)
+			foreach (var o in Container)
 				o.Tick();
 
 			checkMouse();
 			if (mouseOnPanel && Highlight != null)
 			{
-				var position = MouseInput.WindowPosition - Position + new CPos(intSize.X,intSize.Y,0);
+				var position = MouseInput.WindowPosition - Position + new CPos(intSize.X, intSize.Y, 0);
 
-				var x = (int) Math.Floor(position.X / (float) itemSize.X / 2);
-				var y = (int) Math.Floor(position.Y / (float) itemSize.Y / 2);
+				var x = (int)Math.Floor(position.X / (float)itemSize.X / 2);
+				var y = (int)Math.Floor(position.Y / (float)itemSize.Y / 2);
 
 				Highlight.SetPosition(Position + new CPos(-intSize.X + x * 2 * itemSize.X + itemSize.X, -intSize.Y + y * 2 * itemSize.Y + itemSize.Y, 0));
 			}
 			if (mouseOnPanel)
 			{
-				if ((scrolled < Math.Round(Container.Count / (float) Size.X - Size.Y) + 1) && (KeyInput.IsKeyDown("down", 5) || MouseInput.WheelState > 0))
+				if ((scrolled < Math.Round(Container.Count / (float)Size.X - Size.Y) + 1) && (KeyInput.IsKeyDown("down", 5) || MouseInput.WheelState > 0))
 				{
 					scrolled++;
 					UpdatePositions();

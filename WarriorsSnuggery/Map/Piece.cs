@@ -56,7 +56,7 @@ namespace WarriorsSnuggery.Maps
 						var actorNodes = rule.Children.ToArray();
 						var actorList = new List<ActorNode>();
 
-						foreach(var actor in actorNodes)
+						foreach (var actor in actorNodes)
 						{
 							try
 							{
@@ -71,7 +71,7 @@ namespace WarriorsSnuggery.Maps
 								{
 									var split = actor.Key.Split(';');
 									var type = split[0];
-									var team = split.Length > 1 ? byte.Parse(split[1]) : (byte) 0;
+									var team = split.Length > 1 ? byte.Parse(split[1]) : (byte)0;
 									var bot = split.Length > 1 ? split[2].Equals("true") : false;
 									actorList.Add(new ActorNode(0, actor.Convert<CPos>(), type, team, 1f, bot));
 								}

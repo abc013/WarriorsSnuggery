@@ -1,5 +1,4 @@
 ﻿using WarriorsSnuggery.Graphics;
-using WarriorsSnuggery.Objects.Parts;
 
 namespace WarriorsSnuggery.Objects
 {

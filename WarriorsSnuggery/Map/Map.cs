@@ -1,7 +1,7 @@
-﻿using System;
-using System.Linq;
+using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using WarriorsSnuggery.Maps;
 
 namespace WarriorsSnuggery
@@ -51,11 +51,11 @@ namespace WarriorsSnuggery
 
 			createGroundBase();
 
-			Used = new bool[Bounds.X,Bounds.Y];
+			Used = new bool[Bounds.X, Bounds.Y];
 			ActorSpawnPositions = new bool[Bounds.X, Bounds.Y];
 
 			// Important Parts
-			foreach(var node in Type.ImportantParts)
+			foreach (var node in Type.ImportantParts)
 			{
 				var input = RuleReader.Read(!Type.FromSave ? FileExplorer.FindPath(FileExplorer.Maps, node.Key, ".yaml") : FileExplorer.Saves, node.Key + ".yaml");
 
@@ -186,7 +186,7 @@ namespace WarriorsSnuggery
 				}
 			}
 
-			Exit = pos + size / new MPos(2,2);
+			Exit = pos + size / new MPos(2, 2);
 		}
 
 		void createGroundBase()
@@ -303,7 +303,7 @@ namespace WarriorsSnuggery
 					if (single < 0f) single = 0f;
 
 					// If less than half, don't change terrain
-					if (single < (float) random.NextDouble() * type.EdgeNoise + (1 - type.EdgeNoise) * 0.5f)
+					if (single < (float)random.NextDouble() * type.EdgeNoise + (1 - type.EdgeNoise) * 0.5f)
 						continue;
 
 					terrainGenerationArray[x, y] = type.ID;
@@ -338,7 +338,7 @@ namespace WarriorsSnuggery
 		bool loadPiece(MiniTextNode[] nodes, MPos position, bool important = false, bool playerSpawn = false)
 		{
 			var piece = Piece.LoadPiece(nodes);
-			
+
 			if (!piece.IsInMap(position, Bounds))
 			{
 				Log.WriteDebug(string.Format("Piece '{0}' at Position '{1}' could not be created because it overlaps to the world's edge.", piece.Name, position));
@@ -394,17 +394,17 @@ namespace WarriorsSnuggery
 
 		public void SaveFile(string file, string name)
 		{
-			using(var writer = new StreamWriter(file, false))
+			using (var writer = new StreamWriter(file, false))
 			{
 				writer.WriteLine("Name=" + name);
 				writer.WriteLine("Size=" + Bounds.X + "," + Bounds.Y);
 
 				var terrain = "Terrain=";
-				for(int y = 0; y < Bounds.Y; y++)
+				for (int y = 0; y < Bounds.Y; y++)
 				{
-					for(int x = 0; x < Bounds.X; x++)
+					for (int x = 0; x < Bounds.X; x++)
 					{
-						terrain += world.TerrainLayer.Terrain[x,y].Type.ID + ",";
+						terrain += world.TerrainLayer.Terrain[x, y].Type.ID + ",";
 					}
 				}
 
@@ -412,7 +412,7 @@ namespace WarriorsSnuggery
 				writer.WriteLine(terrain);
 
 				writer.WriteLine("Actors=");
-				for(int i = 0; i < world.Actors.Count; i++)
+				for (int i = 0; i < world.Actors.Count; i++)
 				{
 					var a = world.Actors[i];
 					writer.WriteLine("\t" + i + "=" + a.Position.X + "," + a.Position.Y + "," + a.Position.Z);
@@ -428,11 +428,11 @@ namespace WarriorsSnuggery
 				}
 
 				var walls = "Walls=";
-				for(int y = 0; y < world.WallLayer.Size.Y - 1; y++)
+				for (int y = 0; y < world.WallLayer.Size.Y - 1; y++)
 				{
-					for(int x = 0; x < world.WallLayer.Size.X - 1; x++)
+					for (int x = 0; x < world.WallLayer.Size.X - 1; x++)
 					{
-						walls += (world.WallLayer.Walls[x,y] == null ? -1 : world.WallLayer.Walls[x,y].Type.ID) + ",";
+						walls += (world.WallLayer.Walls[x, y] == null ? -1 : world.WallLayer.Walls[x, y].Type.ID) + ",";
 					}
 				}
 

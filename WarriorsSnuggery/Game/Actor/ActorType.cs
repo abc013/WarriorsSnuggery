@@ -1,6 +1,5 @@
-﻿using WarriorsSnuggery.Graphics;
-using System.Linq;
-using System.Collections.Generic;
+﻿using System.Linq;
+using WarriorsSnuggery.Graphics;
 using WarriorsSnuggery.Objects.Parts;
 
 namespace WarriorsSnuggery.Objects

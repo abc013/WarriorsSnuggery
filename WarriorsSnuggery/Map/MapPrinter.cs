@@ -6,7 +6,7 @@ namespace WarriorsSnuggery.Maps
 	{
 		public static void PrintMapGeneration(string map, int evolution, int[,] generatedTerrain)
 		{
-			using(var image = new Bitmap(generatedTerrain.GetLength(0), generatedTerrain.GetLength(1)))
+			using (var image = new Bitmap(generatedTerrain.GetLength(0), generatedTerrain.GetLength(1)))
 			{
 				for (int x = 0; x < image.Width; x++)
 				{

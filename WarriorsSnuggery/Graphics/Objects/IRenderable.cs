@@ -1,5 +1,5 @@
-﻿using System;
 using OpenTK.Graphics.ES30;
+using System;
 
 namespace WarriorsSnuggery.Graphics
 {
@@ -15,7 +15,7 @@ namespace WarriorsSnuggery.Graphics
 			ProgramID = program;
 			VerticeCount = vertexCount;
 
-			lock(MasterRenderer.GLLock)
+			lock (MasterRenderer.GLLock)
 			{
 				VertexArrayID = GL.GenVertexArray();
 				BufferID = GL.GenBuffer();
@@ -35,7 +35,7 @@ namespace WarriorsSnuggery.Graphics
 
 		public virtual void Bind()
 		{
-			lock(MasterRenderer.GLLock)
+			lock (MasterRenderer.GLLock)
 			{
 				UseProgram();
 				GL.BindVertexArray(VertexArrayID);
@@ -65,7 +65,7 @@ namespace WarriorsSnuggery.Graphics
 		{
 			if (disposing)
 			{
-				lock(MasterRenderer.GLLock)
+				lock (MasterRenderer.GLLock)
 				{
 					GL.DeleteVertexArray(VertexArrayID);
 					GL.DeleteBuffer(BufferID);

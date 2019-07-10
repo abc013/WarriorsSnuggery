@@ -1,6 +1,6 @@
 using System.Collections.Generic;
-using WarriorsSnuggery.Objects;
 using WarriorsSnuggery.Graphics;
+using WarriorsSnuggery.Objects;
 
 namespace WarriorsSnuggery.UI
 {
@@ -45,7 +45,7 @@ namespace WarriorsSnuggery.UI
 
 			back.Render();
 
-			foreach(var panel in tree)
+			foreach (var panel in tree)
 			{
 				panel.Render();
 			}
@@ -119,7 +119,7 @@ namespace WarriorsSnuggery.UI
 			onHover.Visible = false;
 			UIRenderer.RenderAfter(onHover);
 
-			onHover2 = new TextLine(position + new CPos(0,712,0), IFont.Pixel16);
+			onHover2 = new TextLine(position + new CPos(0, 712, 0), IFont.Pixel16);
 
 			if (node.Before.Length > 0 || node.Before[0].Trim() != "")
 			{
@@ -169,7 +169,7 @@ namespace WarriorsSnuggery.UI
 
 				var prerequisitesMet = true;
 
-				foreach(var before in node.Before)
+				foreach (var before in node.Before)
 				{
 					if (before.Trim() == "")
 						continue;

@@ -1,6 +1,6 @@
 ﻿using System;
-using WarriorsSnuggery.Objects;
 using WarriorsSnuggery.Graphics;
+using WarriorsSnuggery.Objects;
 
 namespace WarriorsSnuggery.UI
 {
@@ -51,7 +51,7 @@ namespace WarriorsSnuggery.UI
 		protected readonly MPos size;
 
 		protected bool mouseOnItem;
-		 
+
 		public PanelItem(CPos pos, string hoverText, GraphicsObject renderable, MPos size, Action action)
 		{
 			this.hoverText = new TextLine(pos, IFont.Pixel16, TextLine.OffsetType.MIDDLE);

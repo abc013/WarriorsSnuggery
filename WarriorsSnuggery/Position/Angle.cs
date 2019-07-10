@@ -19,7 +19,7 @@ namespace WarriorsSnuggery
 
 		public VAngle(int xDeg, int yDeg, int zDeg)
 		{
-			const float u = (float) (Math.PI / 180);
+			const float u = (float)(Math.PI / 180);
 			X = u * xDeg;
 			Y = u * yDeg;
 			Z = u * zDeg;

@@ -16,10 +16,10 @@
 		public ITechTreeNode(MiniTextNode[] nodes, string name)
 		{
 			InnerName = name;
-			Name = name.Replace('_',' ');
-			foreach(var node in nodes)
+			Name = name.Replace('_', ' ');
+			foreach (var node in nodes)
 			{
-				switch(node.Key)
+				switch (node.Key)
 				{
 					case "Before":
 						Before = node.Convert<string[]>();
@@ -44,7 +44,7 @@
 
 						foreach (var child in node.Children)
 						{
-							switch(child.Key)
+							switch (child.Key)
 							{
 								case "Value":
 									value = child.Convert<float>();

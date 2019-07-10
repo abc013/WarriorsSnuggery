@@ -107,13 +107,13 @@ namespace WarriorsSnuggery.Objects.Parts
 
 			if (!targets.Any())
 				return;
-			
+
 			// Loop through and find the best target
-			foreach(var actor in targets)
+			foreach (var actor in targets)
 			{
 				if (actor.Health == null || !actor.IsAlive)
 					continue;
-				
+
 				checkTarget(actor);
 			}
 		}
@@ -134,7 +134,7 @@ namespace WarriorsSnuggery.Objects.Parts
 
 			// Factor: Distance.
 			// If target is closer, then keep attacking it
-			newFavor += 1 - self.Position.DistToXY(actor.Position)/distToTarget;
+			newFavor += 1 - self.Position.DistToXY(actor.Position) / distToTarget;
 
 			// Factor: Player. from 0 to 1
 			// If target is player, then keep attacking it

@@ -1,5 +1,5 @@
-﻿using System;
 using OpenTK.Graphics.ES30;
+using System;
 
 namespace WarriorsSnuggery.Graphics
 {
@@ -37,7 +37,7 @@ namespace WarriorsSnuggery.Graphics
 		//if the type is random or image, it is certain that in this array there's only one texture.
 		public ITexture[] GetTextures()
 		{
-			switch(Type)
+			switch (Type)
 			{
 				case TextureType.ANIMATION:
 					return TextureManager.Sprite(this);
@@ -68,7 +68,7 @@ namespace WarriorsSnuggery.Graphics
 
 		public void Dispose()
 		{
-			lock(MasterRenderer.GLLock)
+			lock (MasterRenderer.GLLock)
 			{
 				GL.DeleteTexture(ID);
 				Program.CheckGraphicsError("Texture_Dispose");

@@ -1,5 +1,5 @@
-using WarriorsSnuggery.Objects;
 using WarriorsSnuggery.Graphics;
+using WarriorsSnuggery.Objects;
 
 namespace WarriorsSnuggery.UI
 {
@@ -18,10 +18,10 @@ namespace WarriorsSnuggery.UI
 			Title.SetColor(Color.Red);
 			Speed = 64;
 
-			score = new TextLine(new CPos(0,1024,0), IFont.Pixel16, TextLine.OffsetType.MIDDLE);
+			score = new TextLine(new CPos(0, 1024, 0), IFont.Pixel16, TextLine.OffsetType.MIDDLE);
 			deaths = new TextLine(new CPos(0, 2048, 0), IFont.Pixel16, TextLine.OffsetType.MIDDLE);
 
-			restart = ButtonCreator.Create("wooden", new CPos(-2048, 5120,0), "Restart Map", () => Window.Current.NewGame(game.OldStatistics, sameSeed: true));
+			restart = ButtonCreator.Create("wooden", new CPos(-2048, 5120, 0), "Restart Map", () => Window.Current.NewGame(game.OldStatistics, sameSeed: true));
 			menu = game.Type == GameType.TEST ? ButtonCreator.Create("wooden", new CPos(2048, 5120, 0), "Main Menu", () => Window.Current.NewGame(game.OldStatistics, GameType.MAINMENU)) : ButtonCreator.Create("wooden", new CPos(2048, 5120, 0), "Menu", () => Window.Current.NewGame(game.OldStatistics, GameType.MENU));
 		}
 

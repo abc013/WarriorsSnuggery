@@ -1,6 +1,6 @@
 ﻿using System;
-using System.IO;
 using System.Collections.Generic;
+using System.IO;
 
 namespace WarriorsSnuggery
 {
@@ -11,13 +11,13 @@ namespace WarriorsSnuggery
 			List<MiniTextNode> list;
 			List<string> filesToInclude;
 
-			using(var input = new StreamReader(directory + file, true))
+			using (var input = new StreamReader(directory + file, true))
 			{
 				Loop(file, input, out list, out filesToInclude);
 				input.Close();
 			}
 			// Read included files as well and add them to the list
-			foreach(var fileToInclude in filesToInclude)
+			foreach (var fileToInclude in filesToInclude)
 			{
 				list.AddRange(Read(directory, fileToInclude));
 			}
@@ -32,7 +32,7 @@ namespace WarriorsSnuggery
 
 			list = new List<MiniTextNode>();
 			filesToInclude = new List<string>();
-			while(!input.EndOfStream)
+			while (!input.EndOfStream)
 			{
 				var @in = input.ReadLine();
 
@@ -59,7 +59,7 @@ namespace WarriorsSnuggery
 
 		static MiniTextNode ReadLine(string file, string line, MiniTextNode before)
 		{
-			var @order = (short) line.LastIndexOf("\t", StringComparison.CurrentCulture);
+			var @order = (short)line.LastIndexOf("\t", StringComparison.CurrentCulture);
 			var strings = line.Split('=');
 
 			if (strings.Length != 2)
@@ -87,7 +87,7 @@ namespace WarriorsSnuggery
 			if (@order - before.Order <= 0)
 			{
 				var parent = before;
-				for(short i = (short) (@order - before.Order); i <= 0; i++)
+				for (short i = (short)(@order - before.Order); i <= 0; i++)
 				{
 					parent = parent.Parent;
 				}

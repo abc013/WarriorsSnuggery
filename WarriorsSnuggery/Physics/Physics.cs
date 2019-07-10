@@ -103,7 +103,7 @@ namespace WarriorsSnuggery.Objects
 				var circle = Shape == Shape.CIRCLE ? this : other;
 				var box = circle == this ? other : this;
 				var pos = circle.Position - box.Position;
-				pos = new CPos(Math.Abs(pos.X),Math.Abs(pos.Y),Math.Abs(pos.Z));
+				pos = new CPos(Math.Abs(pos.X), Math.Abs(pos.Y), Math.Abs(pos.Z));
 
 				if (pos.X > (box.RadiusX + circle.RadiusX)) return false;
 				if (pos.Y > (box.RadiusY + circle.RadiusY)) return false;
@@ -112,9 +112,9 @@ namespace WarriorsSnuggery.Objects
 				if (pos.Y <= box.RadiusY) return true;
 
 				// Pythagorean theorem: We calculate X and Y in order to get the circle distance; Added error margin "box.Radius/8".
-				var corner = (pos.X - box.RadiusX) ^ 2 + (pos.Y - box.RadiusY) ^ 2 - box.RadiusX/8;
+				var corner = (pos.X - box.RadiusX) ^ 2 + (pos.Y - box.RadiusY) ^ 2 - box.RadiusX / 8;
 
-				return corner <= (circle.RadiusX^2);
+				return corner <= (circle.RadiusX ^ 2);
 			}
 
 			// CIRCLE <-> LINE

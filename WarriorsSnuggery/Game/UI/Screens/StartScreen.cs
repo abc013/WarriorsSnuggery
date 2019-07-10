@@ -1,5 +1,5 @@
-using WarriorsSnuggery.Objects;
 using WarriorsSnuggery.Graphics;
+using WarriorsSnuggery.Objects;
 
 namespace WarriorsSnuggery.UI
 {
@@ -20,7 +20,7 @@ namespace WarriorsSnuggery.UI
 		public StartScreen(Game game) : base("Welcome!")
 		{
 			this.game = game;
-			Title.Position = new CPos(0,-4096, 0);
+			Title.Position = new CPos(0, -4096, 0);
 
 			back = ButtonCreator.Create("wooden", new CPos(4096, 6144, 0), "Okay", game.Pause);
 			exit = ButtonCreator.Create("wooden", new CPos(-4096, 6144, 0), "Exit", Window.Current.Exit);

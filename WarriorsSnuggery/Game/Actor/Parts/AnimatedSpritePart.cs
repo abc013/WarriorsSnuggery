@@ -20,7 +20,7 @@ namespace WarriorsSnuggery.Objects.Parts
 
 		[Desc("Condition when the sprite is rendered.", "Possible: ATTACKING, MOVING, IDLING, ALL")]
 		public readonly ActorAction Condition;
-		
+
 		[Desc("Offset of the sprite.")]
 		public readonly CPos Offset;
 

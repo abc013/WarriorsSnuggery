@@ -60,9 +60,9 @@
 
 			var overrideable = false;
 
-			foreach(var node in nodes)
+			foreach (var node in nodes)
 			{
-				switch(node.Key)
+				switch (node.Key)
 				{
 					case "Pieces":
 						pieces = node.Convert<string[]>();

@@ -40,13 +40,13 @@ namespace WarriorsSnuggery
 
 		public static void Initialize()
 		{
-			foreach(var node in RuleReader.Read(FileExplorer.FindPath(FileExplorer.MainDirectory, "WS", ".yaml"), "WS.yaml"))
+			foreach (var node in RuleReader.Read(FileExplorer.FindPath(FileExplorer.MainDirectory, "WS", ".yaml"), "WS.yaml"))
 			{
-				switch(node.Key)
+				switch (node.Key)
 				{
 					case "FrameLimiter":
 						FrameLimiter = node.Convert<int>();
-						if (FrameLimiter == 0) FrameLimiter = (int) OpenTK.DisplayDevice.Default.RefreshRate;
+						if (FrameLimiter == 0) FrameLimiter = (int)OpenTK.DisplayDevice.Default.RefreshRate;
 						break;
 					case "ScrollSpeed":
 						ScrollSpeed = node.Convert<float>();
@@ -76,7 +76,7 @@ namespace WarriorsSnuggery
 						FirstStarted = node.Convert<bool>();
 						break;
 					case "Keys":
-						foreach(var key in node.Children)
+						foreach (var key in node.Children)
 						{
 							KeyDictionary.Add(key.Key, key.Value);
 						}
@@ -91,7 +91,7 @@ namespace WarriorsSnuggery
 			{
 				return KeyDictionary[value];
 			}
-			catch(Exception e)
+			catch (Exception e)
 			{
 				throw new YamlInvalidNodeException(string.Format("Unable to find key {0}.", value), e);
 			}

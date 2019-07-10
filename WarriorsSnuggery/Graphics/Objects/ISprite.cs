@@ -1,5 +1,5 @@
-using System.Collections.Generic;
 using OpenTK.Graphics.ES30;
+using System.Collections.Generic;
 
 namespace WarriorsSnuggery.Graphics
 {
@@ -10,7 +10,7 @@ namespace WarriorsSnuggery.Graphics
 		public static ISprite Create(TexturedVertex[] vertices, ITexture[] textures, int tick)
 		{
 			ISprite sprite;
-			
+
 			// textures always come from the same filename, so generate the hash just once
 			// and then xor with the amount of textures (avoids same ID for animations with different lengths)
 			var key = textures[0].GetHashCode() ^ textures.Length;
@@ -37,7 +37,7 @@ namespace WarriorsSnuggery.Graphics
 		}
 
 		public readonly ITexture[] textures;
-		
+
 		public int CurTexture;
 
 		ISprite(TexturedVertex[] vertices, ITexture[] textures) : base(MasterRenderer.TextureShader, vertices.Length)
@@ -48,7 +48,7 @@ namespace WarriorsSnuggery.Graphics
 
 		public override void Bind()
 		{
-			lock(MasterRenderer.GLLock)
+			lock (MasterRenderer.GLLock)
 			{
 				UseProgram();
 				GL.BindVertexArray(VertexArrayID);

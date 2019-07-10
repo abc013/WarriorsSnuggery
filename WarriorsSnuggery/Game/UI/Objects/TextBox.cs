@@ -1,6 +1,6 @@
 ﻿using System;
-using WarriorsSnuggery.Objects;
 using WarriorsSnuggery.Graphics;
+using WarriorsSnuggery.Objects;
 
 namespace WarriorsSnuggery.UI
 {
@@ -33,7 +33,7 @@ namespace WarriorsSnuggery.UI
 			realText = text;
 			MaximumLength = maximumLength;
 			OnlyNumbers = onlyNumbers;
-			this.text = new TextLine(pos + new CPos(128,0,0), IFont.Pixel16, Objects.TextLine.OffsetType.MIDDLE);
+			this.text = new TextLine(pos + new CPos(128, 0, 0), IFont.Pixel16, Objects.TextLine.OffsetType.MIDDLE);
 			this.text.SetText(text);
 			this.type = type;
 			this.onEnter = onEnter;
@@ -64,7 +64,7 @@ namespace WarriorsSnuggery.UI
 				}
 				if (!OnlyNumbers)
 				{
-					foreach(var key in KeyInput.AlphabetKeys)
+					foreach (var key in KeyInput.AlphabetKeys)
 					{
 						if (realText.Length <= MaximumLength)
 						{
@@ -88,7 +88,7 @@ namespace WarriorsSnuggery.UI
 						text.SetText(Text);
 					}
 				}
-				for(int i = 0; i < 10; i++)
+				for (int i = 0; i < 10; i++)
 				{
 					if (KeyInput.IsKeyDown("number" + i, 7))
 					{
@@ -98,7 +98,7 @@ namespace WarriorsSnuggery.UI
 							realText += i + "";
 						}
 					}
-				}				
+				}
 			}
 		}
 
@@ -106,7 +106,7 @@ namespace WarriorsSnuggery.UI
 		{
 			var mousePosition = MouseInput.WindowPosition;
 
-			var width = (int) ((8 * MaximumLength + 2) / 24f * 512);
+			var width = (int)((8 * MaximumLength + 2) / 24f * 512);
 			var height = 512 / 2;
 			mouseOnBox = mousePosition.X > Position.X - width && mousePosition.X < Position.X + width && mousePosition.Y > Position.Y - height && mousePosition.Y < Position.Y + height;
 		}

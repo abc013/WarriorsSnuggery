@@ -1,5 +1,5 @@
-using System.Collections.Generic;
 using OpenTK.Graphics.ES30;
+using System.Collections.Generic;
 
 namespace WarriorsSnuggery.Graphics
 {
@@ -12,7 +12,7 @@ namespace WarriorsSnuggery.Graphics
 			IImage image;
 
 			int key = info.GetHashCode();
-			foreach(var vertex in vertices)
+			foreach (var vertex in vertices)
 				key ^= vertex.GetHashCode();
 
 			if (Images.ContainsKey(key))
@@ -38,7 +38,7 @@ namespace WarriorsSnuggery.Graphics
 
 		public static void CreateTextureBuffer(TexturedVertex[] vertices, int buffer, int vertexArray)
 		{
-			lock(MasterRenderer.GLLock)
+			lock (MasterRenderer.GLLock)
 			{
 				GL.BufferData(BufferTarget.ArrayBuffer, TexturedVertex.Size * vertices.Length, vertices, BufferUsageHint.StaticDraw);
 				Program.CheckGraphicsError("CreateTexture_Buffer");
@@ -63,7 +63,7 @@ namespace WarriorsSnuggery.Graphics
 
 		public override void Bind()
 		{
-			lock(MasterRenderer.GLLock)
+			lock (MasterRenderer.GLLock)
 			{
 				UseProgram();
 				GL.BindVertexArray(VertexArrayID);

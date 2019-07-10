@@ -76,14 +76,14 @@ namespace WarriorsSnuggery.Objects
 
 		public void Render()
 		{
-			if(KeyInput.IsKeyDown(Key + ""))
+			if (KeyInput.IsKeyDown(Key + ""))
 			{
-				keyDisplay.SetPosition(Position + new CPos(50,50,0));
+				keyDisplay.SetPosition(Position + new CPos(50, 50, 0));
 				pressed.Render();
 			}
 			else
 			{
-				keyDisplay.SetPosition(Position + new CPos(50,-100,0));
+				keyDisplay.SetPosition(Position + new CPos(50, -100, 0));
 				released.Render();
 			}
 			if (blinkTick < 10)
@@ -106,9 +106,9 @@ namespace WarriorsSnuggery.Objects
 				if (blinkTick-- < 0)
 					blinkTick = 20;
 
-				foreach(var key in KeyInput.AllKeys)
+				foreach (var key in KeyInput.AllKeys)
 				{
-					if (KeyInput.IsKeyDown(key,0))
+					if (KeyInput.IsKeyDown(key, 0))
 					{
 						Key = key[0];
 						keyDisplay.Char = Key;

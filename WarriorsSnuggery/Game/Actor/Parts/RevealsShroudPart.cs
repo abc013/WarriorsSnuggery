@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace WarriorsSnuggery.Objects.Parts
+﻿namespace WarriorsSnuggery.Objects.Parts
 {
 	[Desc("Adds a weapon to the object.", "IMPORTANT NOTE: Currently, shroud is only supported for teams 0-9. If you use higher team values, the game will crash!")]
 	public class RevealsShroudPartInfo : PartInfo

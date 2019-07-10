@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace WarriorsSnuggery.Objects.Effects
+﻿namespace WarriorsSnuggery.Objects.Effects
 {
 	public class EffectPart : ITick
 	{

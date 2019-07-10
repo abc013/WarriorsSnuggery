@@ -1,6 +1,6 @@
-﻿using System;
-using WarriorsSnuggery.Objects;
+using System;
 using WarriorsSnuggery.Graphics;
+using WarriorsSnuggery.Objects;
 
 namespace WarriorsSnuggery.UI
 {
@@ -14,7 +14,7 @@ namespace WarriorsSnuggery.UI
 
 		public Button(CPos pos, string text, PanelType type, Action action) : base(pos, new MPos(8 * text.Length + 2, 12), type)
 		{
-			this.text = new TextLine(pos + new CPos(256,0,0), IFont.Pixel16, TextLine.OffsetType.MIDDLE);
+			this.text = new TextLine(pos + new CPos(256, 0, 0), IFont.Pixel16, TextLine.OffsetType.MIDDLE);
 			this.text.WriteText(text);
 			this.type = type;
 			this.action = action;
@@ -56,7 +56,7 @@ namespace WarriorsSnuggery.UI
 			var mousePosition = MouseInput.WindowPosition;
 
 			mouseOnButton = mousePosition.X > Position.X - type.Width && mousePosition.X < Position.X + type.Width && mousePosition.Y > Position.Y - type.Height && mousePosition.Y < Position.Y + type.Height;
-			
+
 			if (MouseInput.isLeftClicked && mouseOnButton && action != null)
 				action();
 		}

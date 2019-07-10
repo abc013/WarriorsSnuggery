@@ -11,7 +11,7 @@ namespace WarriorsSnuggery.Maps
 
 		public readonly GameType DefaultType;
 		public readonly GameMode[] DefaultModes;
-		
+
 		public readonly string[] Entrances;
 		public readonly string[] Exits;
 
@@ -30,7 +30,7 @@ namespace WarriorsSnuggery.Maps
 
 		public readonly MPos CustomSize;
 		public readonly Color Ambient;
-		
+
 		public readonly MPos SpawnPoint;
 
 		public readonly bool FromSave;
@@ -138,9 +138,9 @@ namespace WarriorsSnuggery.Maps
 							var modeArray = child.Convert<string[]>();
 
 							playModes = new GameMode[modeArray.Length];
-							for(int i = 0; i < playModes.Length; i++)
+							for (int i = 0; i < playModes.Length; i++)
 							{
-								playModes[i] = (GameMode) Enum.Parse(typeof(GameMode), modeArray[i]);
+								playModes[i] = (GameMode)Enum.Parse(typeof(GameMode), modeArray[i]);
 							}
 							break;
 						case "ActiveFromLevel":

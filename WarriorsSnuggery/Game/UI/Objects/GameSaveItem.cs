@@ -1,6 +1,6 @@
 ﻿using System;
-using WarriorsSnuggery.Objects;
 using WarriorsSnuggery.Graphics;
+using WarriorsSnuggery.Objects;
 
 namespace WarriorsSnuggery.UI
 {
@@ -15,7 +15,7 @@ namespace WarriorsSnuggery.UI
 			set
 			{
 				base.Position = value;
-				name.Position = value - new CPos(2048, 400,0);
+				name.Position = value - new CPos(2048, 400, 0);
 				level.Position = value - new CPos(2560, 0, 0);
 			}
 		}
@@ -34,7 +34,7 @@ namespace WarriorsSnuggery.UI
 			name.SetText(stats.Name);
 			level = new TextLine(pos - new CPos(2560, 0, 0), IFont.Pixel16);
 			level.SetColor(Color.Black);
-			if (stats.Level >= stats.FinalLevel) level.SetColor(new Color(0,200,0));
+			if (stats.Level >= stats.FinalLevel) level.SetColor(new Color(0, 200, 0));
 			level.SetText(stats.Level);
 			level.Scale = 2f;
 		}

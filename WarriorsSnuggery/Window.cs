@@ -1,8 +1,8 @@
-﻿using System;
 using OpenTK;
-using OpenTK.Input;
 using OpenTK.Graphics;
 using OpenTK.Graphics.ES30;
+using OpenTK.Input;
+using System;
 using System.Drawing;
 using WarriorsSnuggery.Graphics;
 using WarriorsSnuggery.Maps;
@@ -15,7 +15,7 @@ namespace WarriorsSnuggery
 
 		public static int Width;
 
-		public static float Ratio { get { return Width / (float) Height; } }
+		public static float Ratio { get { return Width / (float)Height; } }
 
 		public const float UnitHeight = Camera.DefaultZoom;
 
@@ -98,7 +98,7 @@ namespace WarriorsSnuggery
 
 			RuleLoader.LoadRules();
 			RuleLoader.LoadUIRules();
-			
+
 			MapCreator.LoadTypes(FileExplorer.Maps, "pieces.yaml");
 
 			GameSaveManager.Load();
@@ -113,14 +113,14 @@ namespace WarriorsSnuggery
 
 			Loaded = true;
 			//}).Start();
-   			//IGraphicsContext context2 = new GraphicsContext(GraphicsMode.Default, this.WindowInfo);
-   			//context2.MakeCurrent(WindowInfo);
+			//IGraphicsContext context2 = new GraphicsContext(GraphicsMode.Default, this.WindowInfo);
+			//context2.MakeCurrent(WindowInfo);
 		}
 
 		public float TPS;
 		protected override void OnUpdateFrame(FrameEventArgs e)
 		{
-			lock(MasterRenderer.GLLock)
+			lock (MasterRenderer.GLLock)
 			{
 				base.OnUpdateFrame(e);
 			}
@@ -131,7 +131,7 @@ namespace WarriorsSnuggery
 			if (GlobalTick % 20 == 0)
 			{
 				time += e.Time;
-				try 
+				try
 				{
 					time /= 20;
 
@@ -162,7 +162,7 @@ namespace WarriorsSnuggery
 		double time;
 		protected override void OnRenderFrame(FrameEventArgs e)
 		{
-			lock(MasterRenderer.GLLock)
+			lock (MasterRenderer.GLLock)
 			{
 				base.OnRenderFrame(e);
 			}
@@ -296,7 +296,7 @@ namespace WarriorsSnuggery
 			Log.WritePerformance(watch.ElapsedMilliseconds, "Exiting");
 		}
 
-		void activateKeys() 
+		void activateKeys()
 		{
 			var keystate = OpenTK.Input.Keyboard.GetState();
 

@@ -1,9 +1,9 @@
-﻿using System;
-using System.IO;
-using System.Drawing;
-using System.Linq;
-using System.Collections.Generic;
 using OpenTK.Graphics.ES30;
+using System;
+using System.Collections.Generic;
+using System.Drawing;
+using System.IO;
+using System.Linq;
 
 namespace WarriorsSnuggery.Graphics
 {
@@ -11,8 +11,8 @@ namespace WarriorsSnuggery.Graphics
 	{
 		public static void DeleteTextures()
 		{
-			foreach(ITexture[] textureArray in textures.Values)
-				foreach(ITexture texture in textureArray)
+			foreach (ITexture[] textureArray in textures.Values)
+				foreach (ITexture texture in textureArray)
 					texture.Dispose();
 
 			textures.Clear();
@@ -39,8 +39,8 @@ namespace WarriorsSnuggery.Graphics
 			var data = loadTexture(filename, out int width, out int height);
 
 			texture = createTexture(data, new TextureInfo(filename, TextureType.IMAGE, 10, width, height, false), filename);
-			
-			textures.Add(filename, new [] { texture });
+
+			textures.Add(filename, new[] { texture });
 
 			return texture;
 		}
@@ -48,7 +48,7 @@ namespace WarriorsSnuggery.Graphics
 		public static ITexture NoiseTexture(MPos size, int depth = 8, float scale = 1f, int method = 0, bool colored = false, bool withAlpha = false, float intensity = 0, float contrast = 1)
 		{
 			var raw = new float[0];
-			switch(method)
+			switch (method)
 			{
 				default:
 					raw = Noise.GenerateClouds(size, Program.SharedRandom, depth, scale);
@@ -114,7 +114,7 @@ namespace WarriorsSnuggery.Graphics
 
 			var datas = loadSprite(filename, info.Width, info.Height);
 			texture = new ITexture[datas.Count];
-			for(int i = 0; i < datas.Count; i++)
+			for (int i = 0; i < datas.Count; i++)
 			{
 				var data = datas[i];
 				//for (int x = 0; x < data.Length; x++) data[x] = (float) Math.Sin(x * i); // HACK: just for fun
@@ -153,7 +153,7 @@ namespace WarriorsSnuggery.Graphics
 			texture = createTexture(bitmap, name);
 
 			// For dispose
-			textures.Add(name, new [] { texture });
+			textures.Add(name, new[] { texture });
 
 			return texture;
 		}
@@ -165,7 +165,7 @@ namespace WarriorsSnuggery.Graphics
 
 		static ITexture createTexture(float[] data, TextureInfo info, string name)
 		{
-			lock(MasterRenderer.GLLock)
+			lock (MasterRenderer.GLLock)
 			{
 				int id = GL.GenTexture();
 
@@ -176,10 +176,10 @@ namespace WarriorsSnuggery.Graphics
 				GL.BindTexture(TextureTarget.Texture2D, id);
 				GL.TexImage2D(TextureTarget2d.Texture2D, 0, TextureComponentCount.Rgba32fExt, info.Width, info.Height, 0, PixelFormat.Rgba, PixelType.Float, data);
 
-				GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMinFilter, (int) All.Nearest);
-				GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMagFilter, (int) All.Nearest);
-				GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureWrapS, (int) All.Repeat);
-				GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureWrapT, (int) All.Repeat);
+				GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMinFilter, (int)All.Nearest);
+				GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMagFilter, (int)All.Nearest);
+				GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureWrapS, (int)All.Repeat);
+				GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureWrapT, (int)All.Repeat);
 
 				Program.CheckGraphicsError("createTexture_2");
 
@@ -225,7 +225,7 @@ namespace WarriorsSnuggery.Graphics
 		static Bitmap generateFontChar(Font font, char c)
 		{
 			var size = getFontSize(font, c);
-			var bmp = new Bitmap((int) Math.Ceiling(size.Width), (int) Math.Ceiling(size.Height));
+			var bmp = new Bitmap((int)Math.Ceiling(size.Width), (int)Math.Ceiling(size.Height));
 
 			using (var gfx = System.Drawing.Graphics.FromImage(bmp))
 			{
@@ -273,7 +273,7 @@ namespace WarriorsSnuggery.Graphics
 
 		static float[] loadTexture(string filename, out int width, out int height)
 		{
-			if(!File.Exists(filename))
+			if (!File.Exists(filename))
 				throw new FileNotFoundException("The file `" + filename + "` has not been found.");
 
 			float[] r;
@@ -290,15 +290,15 @@ namespace WarriorsSnuggery.Graphics
 
 		static List<float[]> loadSprite(string filename, int width, int height)
 		{
-			if(!File.Exists(filename))
+			if (!File.Exists(filename))
 				throw new FileNotFoundException("The file `" + filename + "` has not been found.", filename);
 
 			var result = new List<float[]>();
 
-			using(var bmp = (Bitmap)Image.FromFile(filename))
+			using (var bmp = (Bitmap)Image.FromFile(filename))
 			{
-				var cWidth =  (int) Math.Floor((float)  bmp.Width/ (float) width );
-				var cHeight = (int) Math.Floor((float) bmp.Height/ (float) height);
+				var cWidth = (int)Math.Floor((float)bmp.Width / (float)width);
+				var cHeight = (int)Math.Floor((float)bmp.Height / (float)height);
 
 				var count = cWidth * cHeight;
 				for (int c = 0; c < count; c++)
@@ -320,7 +320,7 @@ namespace WarriorsSnuggery.Graphics
 							r[index++] = pixel.A / 255f;
 						}
 					}
-					result.Add((float[]) r.Clone());
+					result.Add((float[])r.Clone());
 				}
 			}
 			return result;

@@ -1,6 +1,6 @@
-﻿using System;
-using System.Linq;
+using System;
 using System.Collections.Generic;
+using System.Linq;
 using WarriorsSnuggery.Objects;
 
 namespace WarriorsSnuggery
@@ -12,18 +12,18 @@ namespace WarriorsSnuggery
 
 		public PhysicsLayer()
 		{
-			Sectors = new PhysicsSector[0,0];
+			Sectors = new PhysicsSector[0, 0];
 		}
 
 		public void SetMapDimensions(MPos size)
 		{
-			Size = new MPos((int) Math.Ceiling(size.X / 2f), (int) Math.Ceiling(size.Y / 2f));
-			Sectors = new PhysicsSector[Size.X,Size.Y];
-			for(int x = 0; x < Size.X; x++)
+			Size = new MPos((int)Math.Ceiling(size.X / 2f), (int)Math.Ceiling(size.Y / 2f));
+			Sectors = new PhysicsSector[Size.X, Size.Y];
+			for (int x = 0; x < Size.X; x++)
 			{
-				for(int y = 0; y < Size.Y; y++)
+				for (int y = 0; y < Size.Y; y++)
 				{
-					Sectors[x,y] = new PhysicsSector(new MPos(x,y));
+					Sectors[x, y] = new PhysicsSector(new MPos(x, y));
 				}
 			}
 		}
@@ -58,7 +58,7 @@ namespace WarriorsSnuggery
 			// Corner sectors
 
 			var sectorPositions = new MPos[4];
-			for(int i = 0; i < 4; i++)
+			for (int i = 0; i < 4; i++)
 			{
 				var point = points[i];
 
@@ -70,7 +70,7 @@ namespace WarriorsSnuggery
 				if (y < 0) y = 0;
 				if (y >= Size.Y) y = Size.Y - 1;
 
-				sectorPositions[i] = new MPos((int) Math.Floor(x), (int) Math.Floor(y));
+				sectorPositions[i] = new MPos((int)Math.Floor(x), (int)Math.Floor(y));
 			}
 
 			// Determine Size of the Sector field to enter and the sector with the smallest value (sector 3)
@@ -120,10 +120,10 @@ namespace WarriorsSnuggery
 
 		public bool Check(PhysicsObject obj, bool ignoreHeight = false, Type[] ignoreTypes = null, PhysicsObject[] ignoreObjects = null)
 		{
-			if(!Objects.Contains(obj))
+			if (!Objects.Contains(obj))
 				return true;
 
-			return Objects.Any((o) => o.Physics != obj.Physics && o.Physics.Intersects(obj.Physics, ignoreHeight) && (ignoreObjects == null || !ignoreObjects.Contains(o)) && (ignoreTypes == null || !ignoreTypes.Contains(o.GetType())) );
+			return Objects.Any((o) => o.Physics != obj.Physics && o.Physics.Intersects(obj.Physics, ignoreHeight) && (ignoreObjects == null || !ignoreObjects.Contains(o)) && (ignoreTypes == null || !ignoreTypes.Contains(o.GetType())));
 		}
 	}
 }
