@@ -7,9 +7,9 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using WarriorsSnuggery.Objects;
-using WarriorsSnuggery.Maps;
 using WarriorsSnuggery.Graphics;
+using WarriorsSnuggery.Maps;
+using WarriorsSnuggery.Objects;
 
 namespace WarriorsSnuggery.UI
 {
@@ -28,13 +28,13 @@ namespace WarriorsSnuggery.UI
 		public PieceScreen(Game game) : base("Piece Selection")
 		{
 			this.game = game;
-			Title.Position = new CPos(0,-4096, 0);
+			Title.Position = new CPos(0, -4096, 0);
 
-			mapSelection = new PanelList(new CPos(0,1024,0), new MPos(4096,4096),new MPos(512,512), 4, "UI_wood1", "UI_wood3", "UI_wood2");
-			foreach(var dir in Directory.GetDirectories(FileExplorer.Maps))
+			mapSelection = new PanelList(new CPos(0, 1024, 0), new MPos(4096, 4096), new MPos(512, 512), 4, "UI_wood1", "UI_wood3", "UI_wood2");
+			foreach (var dir in Directory.GetDirectories(FileExplorer.Maps))
 			{
 				var file = Directory.GetFiles(dir).Where(s => s.EndsWith(".yaml", StringComparison.CurrentCulture));
-				foreach(var map in file)
+				foreach (var map in file)
 				{
 					var parts = new Dictionary<string, MPos>();
 					var name = map.Remove(0, map.LastIndexOf('\\') + 1);
@@ -44,12 +44,12 @@ namespace WarriorsSnuggery.UI
 					// TODO: read all maps in in the begin? BUT: would need a big amount of memory 
 					var size = loadPieceSize(RuleReader.Read(FileExplorer.FindPath(FileExplorer.Maps, name, ".yaml"), name + ".yaml"));
 
-					mapSelection.Add(new PanelItem(CPos.Zero, name + " [" + size.X + "," + size.Y + "]", new ImageRenderable(TextureManager.Texture("UI_map")), new MPos(512,512), () => Window.Current.NewGame(new GameStatistics(GameSaveManager.DefaultStatistic), GameType.EDITOR, custom: MapType.EditorMapTypeFromPiece(name, size))));
+					mapSelection.Add(new PanelItem(CPos.Zero, name + " [" + size.X + "," + size.Y + "]", new ImageRenderable(TextureManager.Texture("UI_map")), new MPos(512, 512), () => Window.Current.NewGame(new GameStatistics(GameSaveManager.DefaultStatistic), GameType.EDITOR, custom: MapType.EditorMapTypeFromPiece(name, size))));
 				}
 			}
 			back = ButtonCreator.Create("wooden", new CPos(4096, 6144, 0), "Back", () => game.ChangeScreen(ScreenType.MENU));
 			@new = ButtonCreator.Create("wooden", new CPos(0, 6144, 0), "New Piece", () => { createPieceScreen.ActiveScreen = true; });
-			delete = ButtonCreator.Create("wooden", new CPos(-4096, 6144, 0), "Delete Piece", () => {});
+			delete = ButtonCreator.Create("wooden", new CPos(-4096, 6144, 0), "Delete Piece", () => { });
 
 			createPieceScreen = new CreatePieceScreen(this, game);
 		}
@@ -88,7 +88,7 @@ namespace WarriorsSnuggery.UI
 
 			mapSelection.Tick();
 
-			if(KeyInput.IsKeyDown("escape", 10))
+			if (KeyInput.IsKeyDown("escape", 10))
 			{
 				game.ChangeScreen(ScreenType.MENU);
 			}

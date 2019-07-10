@@ -3,10 +3,10 @@
  * Date: 30.09.2017
  * 
  */
-using System;
 using OpenTK;
-using OpenTK.Graphics.ES30;
 using OpenTK.Graphics;
+using OpenTK.Graphics.ES30;
+using System;
 using WarriorsSnuggery.Graphics;
 
 namespace WarriorsSnuggery
@@ -22,7 +22,7 @@ namespace WarriorsSnuggery
 		{
 			var shadernum = 4 * (shader - 1);
 			int num = 0;
-			switch(name)
+			switch (name)
 			{
 				case "modelView":
 					num = 1;
@@ -60,14 +60,14 @@ namespace WarriorsSnuggery
 
 		static void initializeShaders()
 		{
-			lock(GLLock)
+			lock (GLLock)
 			{
 				ColorShader = createShader("Col");
 				TextureShader = createShader("Tex");
 				FontShader = createShader("Fon");
 				ShadowShader = createShader("Sha");
 
-				foreach (int shader in new [] { ColorShader, TextureShader, FontShader, ShadowShader })
+				foreach (int shader in new[] { ColorShader, TextureShader, FontShader, ShadowShader })
 				{
 					var num = 4 * (shader - 1);
 					locations[num] = GL.GetUniformLocation(shader, "projection");
@@ -83,7 +83,7 @@ namespace WarriorsSnuggery
 				heightLocation = GL.GetUniformLocation(ShadowShader, "height");
 				Log.WriteDebug("SHADER " + ShadowShader + " shadowloc: " + heightLocation);
 
-				GL.BindAttribLocation(ColorShader, 1, "color"); 
+				GL.BindAttribLocation(ColorShader, 1, "color");
 				GL.BindAttribLocation(TextureShader, 1, "textureCoordinate");
 				GL.BindAttribLocation(FontShader, 3, "textureOffset");
 				GL.BindAttribLocation(ShadowShader, 1, "textureCoordinate");
@@ -96,7 +96,7 @@ namespace WarriorsSnuggery
 		static int createShader(string name)
 		{
 			var program = new ShaderProgram();
-			program.AddShader(ShaderType.VertexShader, FileExplorer.Shaders +   @"\" + name + ".vert");
+			program.AddShader(ShaderType.VertexShader, FileExplorer.Shaders + @"\" + name + ".vert");
 			program.AddShader(ShaderType.FragmentShader, FileExplorer.Shaders + @"\" + name + ".frag");
 			program.Link();
 
@@ -111,7 +111,7 @@ namespace WarriorsSnuggery
 
 		static void initializeGL()
 		{
-			lock(GLLock)
+			lock (GLLock)
 			{
 				GL.ClearColor(Color4.Black);
 
@@ -141,7 +141,7 @@ namespace WarriorsSnuggery
 
 				frameTexture = GL.GenTexture();
 				GL.BindTexture(TextureTarget.Texture2D, frameTexture);
-				GL.TexImage2D(TextureTarget2d.Texture2D,0,TextureComponentCount.Rgb32f, width, height, 0, PixelFormat.Rgb, PixelType.Float, (IntPtr) null);
+				GL.TexImage2D(TextureTarget2d.Texture2D, 0, TextureComponentCount.Rgb32f, width, height, 0, PixelFormat.Rgb, PixelType.Float, (IntPtr)null);
 
 				frameBuffer = GL.GenFramebuffer();
 				GL.BindFramebuffer(FramebufferTarget.Framebuffer, frameBuffer);
@@ -149,8 +149,8 @@ namespace WarriorsSnuggery
 				renderable = new Objects.FrameRenderable(new ITexture("FramebufferTexture", width, height, frameTexture));
 				Program.CheckGraphicsError("GLFrameBuffer");
 
-				GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMinFilter, (int) TextureMinFilter.Nearest);
-				GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMagFilter, (int) TextureMagFilter.Nearest);
+				GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMinFilter, (int)TextureMinFilter.Nearest);
+				GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMagFilter, (int)TextureMagFilter.Nearest);
 				Program.CheckGraphicsError("GLTextures");
 
 				GL.Scissor(0, 0, WindowInfo.Width, WindowInfo.Height);
@@ -160,7 +160,7 @@ namespace WarriorsSnuggery
 
 		public static void Render()
 		{
-			lock(GLLock)
+			lock (GLLock)
 			{
 				GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
 			}
@@ -248,7 +248,7 @@ namespace WarriorsSnuggery
 
 		public static void Dispose()
 		{
-			lock(GLLock)
+			lock (GLLock)
 			{
 				foreach (var shader in shaders)
 					shader.Dispose();
@@ -277,7 +277,7 @@ namespace WarriorsSnuggery
 
 		public static void Uniform(int shader, ref Matrix4 projection, Color ambient)
 		{
-			lock(GLLock)
+			lock (GLLock)
 			{
 				GL.UseProgram(shader);
 				GL.UniformMatrix4(GetLocation(shader, "projection"), false, ref projection);

@@ -4,10 +4,10 @@
  * 
  */
 using System;
-using System.Linq;
 using System.Collections.Generic;
-using WarriorsSnuggery.Objects;
+using System.Linq;
 using WarriorsSnuggery.Graphics;
+using WarriorsSnuggery.Objects;
 
 namespace WarriorsSnuggery
 {
@@ -62,7 +62,7 @@ namespace WarriorsSnuggery
 				Camera.Position(LocalPlayer.Position, true);
 
 				if (Game.Type == GameType.NORMAL)
-					Add(new ActionText(LocalPlayer.Position + new CPos(0,0,1024), IFont.Papyrus24, new CPos(0, -15, 30), 300, @"Level" + Game.Statistics.Level));
+					Add(new ActionText(LocalPlayer.Position + new CPos(0, 0, 1024), IFont.Papyrus24, new CPos(0, -15, 30), 300, @"Level" + Game.Statistics.Level));
 			}
 			else
 			{
@@ -97,9 +97,9 @@ namespace WarriorsSnuggery
 				if (Camera.LockedToPlayer)
 					Camera.Position(LocalPlayer.Position);
 
-				foreach(var effect in LocalPlayer.Effects.Where(e => e.Active && e.Effect.Type == EffectType.MANA))
+				foreach (var effect in LocalPlayer.Effects.Where(e => e.Active && e.Effect.Type == EffectType.MANA))
 				{
-					Game.Statistics.Mana += (int) effect.Effect.Value;
+					Game.Statistics.Mana += (int)effect.Effect.Value;
 				}
 			}
 
@@ -158,7 +158,7 @@ namespace WarriorsSnuggery
 				if (selected != null)
 				{
 					Selected = selected;
-					Add(new ActionText(selected.Position, IFont.Pixel16, new CPos(0, -15, 30), 100, Color.Cyan + "" +selected.Health + " HP"));
+					Add(new ActionText(selected.Position, IFont.Pixel16, new CPos(0, -15, 30), 100, Color.Cyan + "" + selected.Health + " HP"));
 					healthdisplaycooldown = 30;
 				}
 			}
@@ -182,17 +182,17 @@ namespace WarriorsSnuggery
 			if (obj.Physics == null || obj.Physics.RadiusX == 0 || obj.Physics.Shape == Shape.NONE)
 				return false;
 
-			foreach(var p in obj.PhysicsSectors)
+			foreach (var p in obj.PhysicsSectors)
 				if (p.Check(obj, ignoreHeight, ignoreTypes, ignoreObjects))
 					return true;
 
 			if (ignoreTypes == null || !ignoreTypes.Contains(typeof(Wall)))
 			{
-				foreach(var wall in WallLayer.Walls)
+				foreach (var wall in WallLayer.Walls)
 				{
 					if (wall == null/* || obj.Physics == wall.Physics*/) continue;
 
-					if(ignoreObjects != null && ignoreObjects.Contains(wall))
+					if (ignoreObjects != null && ignoreObjects.Contains(wall))
 						continue;
 
 					if (obj.Physics.Intersects(wall.Physics, ignoreHeight))
@@ -208,7 +208,7 @@ namespace WarriorsSnuggery
 			if (@object == null)
 				return;
 
-			if(@object as Actor != null)
+			if (@object as Actor != null)
 				actorsToAdd.Add(@object as Actor);
 			else
 				objectsToAdd.Add(@object);
@@ -243,11 +243,11 @@ namespace WarriorsSnuggery
 
 		public void Dispose()
 		{
-			foreach(Actor a in Actors)
+			foreach (Actor a in Actors)
 				a.Dispose();
 			Actors.Clear();
 
-			foreach(PhysicsObject o in Objects)
+			foreach (PhysicsObject o in Objects)
 				o.Dispose();
 			Objects.Clear();
 

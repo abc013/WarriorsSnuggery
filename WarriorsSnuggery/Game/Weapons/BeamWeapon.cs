@@ -67,7 +67,7 @@ namespace WarriorsSnuggery.Objects
 				var posX = (int)(Math.Cos(angle) * i * renderabledistance);
 				var posY = (int)(Math.Sin(angle) * i * renderabledistance);
 
-				renderable.SetRotation(new VAngle(0, 0, -angle) + new VAngle(0,0,270));
+				renderable.SetRotation(new VAngle(0, 0, -angle) + new VAngle(0, 0, 270));
 				renderable.SetPosition(originPos + new CPos(posX, posY, 0));
 				renderable.Render();
 
@@ -89,7 +89,7 @@ namespace WarriorsSnuggery.Objects
 
 				curTick = tick;
 			}
-			
+
 			if (Origin != null)
 			{
 				originPos = Origin.ActiveWeapon.WeaponOffsetPosition;
@@ -99,7 +99,7 @@ namespace WarriorsSnuggery.Objects
 		public override void Dispose()
 		{
 			//foreach (var renderable in renderables)
-				//renderable.Dispose();
+			//renderable.Dispose();
 
 			base.Dispose();
 		}

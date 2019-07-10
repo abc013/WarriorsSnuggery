@@ -61,23 +61,23 @@ namespace WarriorsSnuggery
 
 		public static Vector FromPixel(int pxX, int pxY)
 		{
-			var x = (pxX / (float) WindowInfo.Width) * Camera.DefaultZoom * WindowInfo.Ratio;
-			var y = (pxY / (float) WindowInfo.Height) * Camera.DefaultZoom;
-			return new Vector(x,-y,0,0);
+			var x = (pxX / (float)WindowInfo.Width) * Camera.DefaultZoom * WindowInfo.Ratio;
+			var y = (pxY / (float)WindowInfo.Height) * Camera.DefaultZoom;
+			return new Vector(x, -y, 0, 0);
 		}
 
 		public static Vector FromScreen(int pxX, int pxY)
 		{
 			pxX -= WindowInfo.Width / 2;
 			pxY -= WindowInfo.Height / 2;
-			var x = (pxX / (float) WindowInfo.Width) * WindowInfo.Ratio;
-			var y = (pxY / (float) WindowInfo.Height);
-			return new Vector(x,-y,0,0);
+			var x = (pxX / (float)WindowInfo.Width) * WindowInfo.Ratio;
+			var y = (pxY / (float)WindowInfo.Height);
+			return new Vector(x, -y, 0, 0);
 		}
 
 		public static CPos ToCPos(Vector pos)
 		{
-			return new CPos((int) (pos.X * 1024), (int) (-pos.Y * 1024), (int) (-pos.Z * 1024));
+			return new CPos((int)(pos.X * 1024), (int)(-pos.Y * 1024), (int)(-pos.Z * 1024));
 		}
 
 		public static Vector ToVector(CPos pos)

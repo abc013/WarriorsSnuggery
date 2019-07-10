@@ -41,8 +41,8 @@ namespace WarriorsSnuggery.Objects
 			set
 			{
 				scale = value;
-				
-				for(int i = 0; i < lines.Length; i++)
+
+				for (int i = 0; i < lines.Length; i++)
 				{
 					lines[i].Scale = scale;
 				}
@@ -56,7 +56,7 @@ namespace WarriorsSnuggery.Objects
 			Position = position;
 			lines = new TextLine[args.Length];
 
-			for(int i = 0; i < args.Length; i++)
+			for (int i = 0; i < args.Length; i++)
 			{
 				lines[i] = new TextLine(position + new CPos(0, 1024 * i, 0), font, type);
 				lines[i].WriteText(args[i]);

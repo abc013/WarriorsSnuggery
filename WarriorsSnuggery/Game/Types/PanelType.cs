@@ -18,8 +18,8 @@ namespace WarriorsSnuggery.Objects
 
 		public PanelType(float height, float width, string defaultString, string activeString, string borderString, int border)
 		{
-			Height = (int) (height * 512);
-			Width = (int) (width * 512);
+			Height = (int)(height * 512);
+			Width = (int)(width * 512);
 
 			DefaultString = defaultString;
 			BorderString = borderString;

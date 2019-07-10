@@ -135,12 +135,12 @@ namespace WarriorsSnuggery
 				Difficulty = difficulty
 			};
 			const string invalidChars = "#*+'?=!.:;,";
-			foreach(var c in invalidChars)
+			foreach (var c in invalidChars)
 			{
 				name = name.Replace(c, '-');
 			}
 			statistic.SaveName = name;
-			
+
 			statistic.FinalLevel = difficulty * 10;
 			statistic.Money = 100 - difficulty * 20;
 			statistic.MaxMana = GameSaveManager.DefaultStatistic.MaxMana;
@@ -209,7 +209,7 @@ namespace WarriorsSnuggery
 						break;
 					case "Unlocks":
 
-						foreach(var node2 in node.Children)
+						foreach (var node2 in node.Children)
 						{
 							statistic.UnlockedNodes.Add(node2.Key, node2.Convert<bool>());
 						}

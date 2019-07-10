@@ -20,7 +20,7 @@
 
 		}
 	}
-	
+
 	public class RegenerationPart : ActorPart
 	{
 		readonly RegenerationPartInfo info;

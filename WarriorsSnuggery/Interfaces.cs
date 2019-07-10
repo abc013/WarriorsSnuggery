@@ -10,12 +10,12 @@ namespace WarriorsSnuggery
 	{
 		void Tick();
 	}
-	
+
 	public interface IRenderable
 	{
 		void Render();
 	}
-	
+
 	public interface ICheckVisible
 	{
 		void CheckVisibility();

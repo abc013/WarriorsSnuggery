@@ -5,8 +5,8 @@
  * Croatia is loosing =( 4:1 for the frenchies wait the shot a goal 4:2 !!! Damn they lost :(((( but still, the first two goals of the french where just sh**. nevermind.
  */
 using System;
-using System.Linq;
 using System.Collections.Generic;
+using System.Linq;
 using WarriorsSnuggery.Objects;
 
 namespace WarriorsSnuggery
@@ -20,7 +20,7 @@ namespace WarriorsSnuggery
 
 		public TerrainLayer()
 		{
-			Terrain = new Terrain[0,0];
+			Terrain = new Terrain[0, 0];
 			size = MPos.Zero;
 		}
 
@@ -28,7 +28,7 @@ namespace WarriorsSnuggery
 		{
 			Dispose();
 			this.size = size;
-			Terrain = new Terrain[size.X,size.Y];
+			Terrain = new Terrain[size.X, size.Y];
 		}
 
 		public void Set(Terrain terrain)
@@ -51,7 +51,7 @@ namespace WarriorsSnuggery
 				renderList = renderList.OrderBy(t => t.Type.OverlapHeight).ToList();
 			listChanged = false;
 
-			foreach(var terrain in renderList)
+			foreach (var terrain in renderList)
 				terrain.Render();
 		}
 

@@ -4,8 +4,8 @@
  * 
  */
 using System;
-using System.Linq;
 using System.Collections.Generic;
+using System.Linq;
 using WarriorsSnuggery.Objects.Effects;
 using WarriorsSnuggery.Objects.Parts;
 
@@ -34,7 +34,7 @@ namespace WarriorsSnuggery.Objects
 
 		public byte Team;
 		public float Angle;
-		
+
 		readonly List<ActorPart> parts = new List<ActorPart>();
 		public readonly List<EffectPart> Effects = new List<EffectPart>();
 
@@ -46,13 +46,14 @@ namespace WarriorsSnuggery.Objects
 		public readonly WorldPart WorldPart;
 
 		public readonly ActorType Type;
-		
+
 		int localTick;
 		int reloadDelay;
 
 		bool visible;
 
-		CPos Velocity {
+		CPos Velocity
+		{
 			get
 			{
 				return Mobility == null ? CPos.Zero : Mobility.Velocity;
@@ -82,12 +83,12 @@ namespace WarriorsSnuggery.Objects
 				parts.Add(partinfo.Create(this));
 			}
 
-			Mobility = (MobilityPart) parts.Find(p => p is MobilityPart);
-			Health = (HealthPart) parts.Find(p => p is HealthPart);
+			Mobility = (MobilityPart)parts.Find(p => p is MobilityPart);
+			Health = (HealthPart)parts.Find(p => p is HealthPart);
 
-			ActiveWeapon = (WeaponPart) parts.Find(p => p is WeaponPart);
+			ActiveWeapon = (WeaponPart)parts.Find(p => p is WeaponPart);
 
-			WorldPart = (WorldPart) parts.Find(p => p is WorldPart);
+			WorldPart = (WorldPart)parts.Find(p => p is WorldPart);
 			if (WorldPart != null)
 				Height = WorldPart.Height;
 
@@ -129,7 +130,7 @@ namespace WarriorsSnuggery.Objects
 			var speedModifier = Height == 0 ? currentTerrain.Type.SpeedModifier : 1f;
 			if (speedModifier.Equals(0)) return;
 
-			var movement = new MPos((int) Math.Round(Velocity.X * speedModifier),(int) Math.Round(Velocity.Y * speedModifier));
+			var movement = new MPos((int)Math.Round(Velocity.X * speedModifier), (int)Math.Round(Velocity.Y * speedModifier));
 			if (movement == MPos.Zero) return;
 
 			var pos = new CPos(Position.X + movement.X, Position.Y + movement.Y, Position.Z);
@@ -141,7 +142,7 @@ namespace WarriorsSnuggery.Objects
 			Position = oldpos;
 			var terrain = World.TerrainAt(pos);
 
-			if(World.IsInWorld(pos) && !intersects && !(terrain == null || (terrain.Type.SpeedModifier.Equals(0) && Height == 0)))
+			if (World.IsInWorld(pos) && !intersects && !(terrain == null || (terrain.Type.SpeedModifier.Equals(0) && Height == 0)))
 			{
 				acceptMove(pos);
 				return;
@@ -154,11 +155,11 @@ namespace WarriorsSnuggery.Objects
 			Position = oldpos;
 			terrain = World.TerrainAt(posX);
 
-			if(World.IsInWorld(posX) && !intersects && !(terrain == null || (terrain.Type.SpeedModifier.Equals(0) && Height == 0)))
+			if (World.IsInWorld(posX) && !intersects && !(terrain == null || (terrain.Type.SpeedModifier.Equals(0) && Height == 0)))
 			{
-			   acceptMove(posX);
-			   Velocity = new CPos(Velocity.X, 0, 0);
-			   return;
+				acceptMove(posX);
+				Velocity = new CPos(Velocity.X, 0, 0);
+				return;
 			}
 
 			var posY = new CPos(Position.X, Position.Y + movement.Y, Position.Z);
@@ -168,11 +169,11 @@ namespace WarriorsSnuggery.Objects
 			Position = oldpos;
 			terrain = World.TerrainAt(posY);
 
-			if(World.IsInWorld(posY) && !intersects && !(terrain == null || (terrain.Type.SpeedModifier.Equals(0) && Height == 0)))
+			if (World.IsInWorld(posY) && !intersects && !(terrain == null || (terrain.Type.SpeedModifier.Equals(0) && Height == 0)))
 			{
-			   acceptMove(posY);
-			   Velocity = new CPos(0, Velocity.Y, 0);
-			   return;
+				acceptMove(posY);
+				Velocity = new CPos(0, Velocity.Y, 0);
+				return;
 			}
 
 			denyMove();
@@ -223,15 +224,15 @@ namespace WarriorsSnuggery.Objects
 			localTick++;
 			CurrentAction = ActorAction.IDLING;
 
-			if(!IsAlive)
+			if (!IsAlive)
 				return;
-			
+
 			reloadDelay--;
 			if (reloadDelay < 0) reloadDelay = 0;
-			
+
 			if (WorldPart != null && WorldPart.Hover > 0)
 			{
-				Height += (int) (Math.Sin(localTick / 32f) * WorldPart.Hover * 0.5f);
+				Height += (int)(Math.Sin(localTick / 32f) * WorldPart.Hover * 0.5f);
 			}
 
 			if (Mobility != null)
@@ -247,9 +248,9 @@ namespace WarriorsSnuggery.Objects
 				{
 					Killed(null);
 				}
-				foreach(var effect in Effects.Where(e => e.Active && e.Effect.Type == EffectType.HEALTH))
+				foreach (var effect in Effects.Where(e => e.Active && e.Effect.Type == EffectType.HEALTH))
 				{
-					Health.HP += (int) effect.Effect.Value;
+					Health.HP += (int)effect.Effect.Value;
 				}
 			}
 
@@ -277,12 +278,12 @@ namespace WarriorsSnuggery.Objects
 			parts.ForEach(p => p.OnAttack(target, weapon));
 
 			var reloadModifier = 1f;
-			foreach(var effect in Effects.Where(e => e.Active && e.Effect.Type == EffectType.COOLDOWN))
+			foreach (var effect in Effects.Where(e => e.Active && e.Effect.Type == EffectType.COOLDOWN))
 			{
 				reloadModifier *= effect.Effect.Value;
 			}
 
-			reloadDelay = (int) (ActiveWeapon.Type.Reload * reloadModifier);
+			reloadDelay = (int)(ActiveWeapon.Type.Reload * reloadModifier);
 			CurrentAction = ActorAction.ATTACKING;
 		}
 

@@ -3,9 +3,9 @@
  * Date: 09.08.2017
  * 
  */
+using OpenTK.Graphics.ES30;
 using System;
 using System.Diagnostics;
-using OpenTK.Graphics.ES30;
 
 namespace WarriorsSnuggery
 {
@@ -15,7 +15,7 @@ namespace WarriorsSnuggery
 		public static bool isDebug;
 
 		static Window window;
- 
+
 		public static void Main(string[] args)
 		{
 			isDebug = Debugger.IsAttached;
@@ -109,7 +109,7 @@ namespace WarriorsSnuggery
 
 		static bool checkGLVersion()
 		{
-			var version = float.Parse(GL.GetString(StringName.ShadingLanguageVersion).Substring(0,4));
+			var version = float.Parse(GL.GetString(StringName.ShadingLanguageVersion).Substring(0, 4));
 
 			return version >= 300;
 		}

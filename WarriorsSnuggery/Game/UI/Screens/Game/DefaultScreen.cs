@@ -4,10 +4,9 @@
  * Time: 17:28
  */
 using System;
-using System.Linq;
 using System.Collections.Generic;
-using WarriorsSnuggery.Objects;
 using WarriorsSnuggery.Graphics;
+using WarriorsSnuggery.Objects;
 
 namespace WarriorsSnuggery.UI
 {
@@ -33,12 +32,12 @@ namespace WarriorsSnuggery.UI
 		public DefaultScreen(Game game) : base("Level " + game.Statistics.Level + "/" + game.Statistics.FinalLevel, 0)
 		{
 			this.game = game;
-			Title.Position += new CPos(0,-7120,0);
+			Title.Position += new CPos(0, -7120, 0);
 			if (game.Statistics.Level >= game.Statistics.FinalLevel)
 				Title.SetColor(Color.Green);
 
 			// SECTION ACTORS
-			actorPanel = new PanelList(new CPos((int) (WindowInfo.UnitWidth * 512) - 1080, -3072/2,0), new MPos(1024, 8192 - 3072/2), new MPos(512, 512), 6, "UI_wood1", "UI_wood3", "UI_wood2");
+			actorPanel = new PanelList(new CPos((int)(WindowInfo.UnitWidth * 512) - 1080, -3072 / 2, 0), new MPos(1024, 8192 - 3072 / 2), new MPos(512, 512), 6, "UI_wood1", "UI_wood3", "UI_wood2");
 			var list = new List<ActorType>();
 			foreach (var n in ActorCreator.GetNames())
 			{
@@ -48,9 +47,9 @@ namespace WarriorsSnuggery.UI
 					var sprite = a.GetPreviewSprite();
 					var scale = (sprite.Width > sprite.Height ? 24f / sprite.Width : 24f / sprite.Height) - 0.1f;
 					actorPanel.Add(new PanelItem(CPos.Zero, a.Playable.Cost.ToString(), new ImageRenderable(sprite), new MPos(512, 512), () => { changePlayer(game.World.LocalPlayer, a); })
-						{
-							Scale = scale
-						});
+					{
+						Scale = scale
+					});
 					list.Add(a);
 				}
 			}
@@ -68,7 +67,7 @@ namespace WarriorsSnuggery.UI
 				effectPanel.Add(item);
 			}
 
-			background = new Panel(new CPos(0, (int)(WindowInfo.UnitHeight * 512) - 3072/2 + 64, 0), new MPos(8192 / 64 * 6, (3072 - 64) / 64 / 2 * 3), 6, "UI_wood1", "UI_wood3", "UI_wood2");
+			background = new Panel(new CPos(0, (int)(WindowInfo.UnitHeight * 512) - 3072 / 2 + 64, 0), new MPos(8192 / 64 * 6, (3072 - 64) / 64 / 2 * 3), 6, "UI_wood1", "UI_wood3", "UI_wood2");
 
 			// SECTION MONEY
 			money = new ImageRenderable(TextureManager.Texture("UI_money"));
@@ -78,7 +77,7 @@ namespace WarriorsSnuggery.UI
 
 			// SECTION MENUS
 			pause = new TextLine(new CPos((int)(WindowInfo.UnitWidth * 512) - 4096, 8192 - 1536, 0), IFont.Pixel16);
-			pause.WriteText("Pause: '" + new Color(0.5f,0.5f,1f) + "P" + Color.White + "'");
+			pause.WriteText("Pause: '" + new Color(0.5f, 0.5f, 1f) + "P" + Color.White + "'");
 
 			menu = new TextLine(new CPos((int)(WindowInfo.UnitWidth * 512) - 4096, 8192 - 512, 0), IFont.Pixel16);
 			menu.WriteText("Menu: '" + new Color(0.5f, 0.5f, 1f) + "Escape" + Color.White + "'");
@@ -91,7 +90,7 @@ namespace WarriorsSnuggery.UI
 
 			// SECTION MISSION
 			missionText = new TextLine(new CPos((int)(-WindowInfo.UnitWidth * 512) + 1024, 8192 - 2048, 0), IFont.Pixel16);
-			switch(game.Mode)
+			switch (game.Mode)
 			{
 				case GameMode.NONE:
 					missionText.SetText("No mission.");
@@ -152,7 +151,7 @@ namespace WarriorsSnuggery.UI
 			// SECTION HEALTH
 			ColorManager.DrawRect(new CPos(-6120, 8192 - 1536, 0), new CPos(6120, 8192 - 2560, 0), new Color(0, 0, 0, 128));
 			// draw line
-			ColorManager.DrawRect(new CPos(-6120 + 128, 8192 - 1536 - 128, 0), new CPos(-6120 + 256 + (int) (11856 * healthPercentage), 8192 - 2560 + 128, 0), new Color(255, 0, 0, 128));
+			ColorManager.DrawRect(new CPos(-6120 + 128, 8192 - 1536 - 128, 0), new CPos(-6120 + 256 + (int)(11856 * healthPercentage), 8192 - 2560 + 128, 0), new Color(255, 0, 0, 128));
 			health.Render();
 
 			// SECTION MANA
@@ -232,7 +231,7 @@ namespace WarriorsSnuggery.UI
 			game.World.Add(newActor);
 
 			if (newActor.Health != null)
-				newActor.Health.HP = (int) (oldHP * newActor.Health.MaxHP);
+				newActor.Health.HP = (int)(oldHP * newActor.Health.MaxHP);
 
 			game.Statistics.Actor = ActorCreator.GetName(type);
 		}
@@ -250,7 +249,7 @@ namespace WarriorsSnuggery.UI
 
 			menu.Dispose();
 			pause.Dispose();
-			
+
 			missionText.Dispose();
 
 			actorPanel.Dispose();

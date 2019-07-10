@@ -17,7 +17,7 @@ namespace WarriorsSnuggery.Objects
 		public override void Tick()
 		{
 			base.Tick();
-			
+
 			if (TargetActor != null)
 				Target = TargetActor.Position;
 		}

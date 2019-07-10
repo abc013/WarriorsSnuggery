@@ -3,8 +3,8 @@
  * Date: 21.10.2018
  * Time: 21:18
  */
-using WarriorsSnuggery.Objects;
 using WarriorsSnuggery.Graphics;
+using WarriorsSnuggery.Objects;
 
 namespace WarriorsSnuggery.UI
 {
@@ -37,7 +37,7 @@ namespace WarriorsSnuggery.UI
 			WALL,
 			NONE
 		}
-		
+
 		Selected currentSelected = Selected.NONE;
 		TerrainType terrainSelected;
 		ActorType actorSelected;
@@ -47,65 +47,65 @@ namespace WarriorsSnuggery.UI
 		public EditorScreen(Game game) : base("Editor", 0)
 		{
 			this.game = game;
-			Title.Position += new CPos(0,-7120,0);
+			Title.Position += new CPos(0, -7120, 0);
 
 			mousePosition = new TextLine(new CPos((int)(WindowInfo.UnitWidth * 512 - 2560), -7172, 0), IFont.Pixel16);
-			save = ButtonCreator.Create("wooden", new CPos((int) (WindowInfo.UnitWidth * 512 - 2048), -5120, 0), "Save", savePiece);
+			save = ButtonCreator.Create("wooden", new CPos((int)(WindowInfo.UnitWidth * 512 - 2048), -5120, 0), "Save", savePiece);
 			saved = new TextLine(new CPos((int)(WindowInfo.UnitWidth * 512 - 2048), -5120, 0), IFont.Pixel16, TextLine.OffsetType.MIDDLE);
 			saved.SetText("Save");
 
-			showTiles = CheckBoxCreator.Create("terrain_editor", new CPos((int) (WindowInfo.UnitWidth * 512 - 2496),-2536,0), false, (b) =>
-			{
-				deselectBoxes(Selected.TILE);
-			});
+			showTiles = CheckBoxCreator.Create("terrain_editor", new CPos((int)(WindowInfo.UnitWidth * 512 - 2496), -2536, 0), false, (b) =>
+			 {
+				 deselectBoxes(Selected.TILE);
+			 });
 
-			showActors = CheckBoxCreator.Create("actor_editor", new CPos((int) (WindowInfo.UnitWidth * 512 - 1760),-2536,0), false, (b) =>
-			{
-				deselectBoxes(Selected.ACTOR);
-			});
+			showActors = CheckBoxCreator.Create("actor_editor", new CPos((int)(WindowInfo.UnitWidth * 512 - 1760), -2536, 0), false, (b) =>
+			 {
+				 deselectBoxes(Selected.ACTOR);
+			 });
 
-			showWalls = CheckBoxCreator.Create("wall_editor", new CPos((int) (WindowInfo.UnitWidth * 512 - 1024),-2536,0), false, (b) =>
-			{
-				deselectBoxes(Selected.WALL);
-			});
+			showWalls = CheckBoxCreator.Create("wall_editor", new CPos((int)(WindowInfo.UnitWidth * 512 - 1024), -2536, 0), false, (b) =>
+			 {
+				 deselectBoxes(Selected.WALL);
+			 });
 
-			tiles = new PanelList(new CPos((int) (WindowInfo.UnitWidth * 512 - 2048), 2048, 0), new MPos(2048, 4096), new MPos(512,512), 4, "UI_wood1", "UI_wood3", "UI_wood2");
-			foreach(var n in TerrainCreator.GetIDs())
+			tiles = new PanelList(new CPos((int)(WindowInfo.UnitWidth * 512 - 2048), 2048, 0), new MPos(2048, 4096), new MPos(512, 512), 4, "UI_wood1", "UI_wood3", "UI_wood2");
+			foreach (var n in TerrainCreator.GetIDs())
 			{
 				var a = TerrainCreator.GetType(n);
-				tiles.Add(new PanelItem(CPos.Zero, n + "", new ImageRenderable(a.Texture, 1f), new MPos(512,512), () => terrainSelected = a));
+				tiles.Add(new PanelItem(CPos.Zero, n + "", new ImageRenderable(a.Texture, 1f), new MPos(512, 512), () => terrainSelected = a));
 			}
 
-			actors = new PanelList(new CPos((int) (WindowInfo.UnitWidth * 512 - 2048), 2048, 0), new MPos(2048,4096), new MPos(512,512), 4, "UI_wood1", "UI_wood3", "UI_wood2");
-			foreach(var n in ActorCreator.GetNames())
+			actors = new PanelList(new CPos((int)(WindowInfo.UnitWidth * 512 - 2048), 2048, 0), new MPos(2048, 4096), new MPos(512, 512), 4, "UI_wood1", "UI_wood3", "UI_wood2");
+			foreach (var n in ActorCreator.GetNames())
 			{
 				var a = ActorCreator.GetType(n);
 				var sprite = a.GetPreviewSprite();
-				var scale = (sprite.Width > sprite.Height ? 24f/sprite.Width : 24f/sprite.Height) - 0.1f;
-				actors.Add(new PanelItem(CPos.Zero, n, new ImageRenderable(sprite), new MPos(512,512), () => actorSelected = a)
+				var scale = (sprite.Width > sprite.Height ? 24f / sprite.Width : 24f / sprite.Height) - 0.1f;
+				actors.Add(new PanelItem(CPos.Zero, n, new ImageRenderable(sprite), new MPos(512, 512), () => actorSelected = a)
 				{
 					Scale = scale
 				});
 			}
 
-			walls = new PanelList(new CPos((int) (WindowInfo.UnitWidth * 512 - 2048), 2048, 0), new MPos(2048, 4096), new MPos(512,512), 4, "UI_wood1", "UI_wood3", "UI_wood2");
-			foreach(var n in WallCreator.GetIDs())
+			walls = new PanelList(new CPos((int)(WindowInfo.UnitWidth * 512 - 2048), 2048, 0), new MPos(2048, 4096), new MPos(512, 512), 4, "UI_wood1", "UI_wood3", "UI_wood2");
+			foreach (var n in WallCreator.GetIDs())
 			{
 				var a = WallCreator.GetType(n);
-				walls.Add(new PanelItem(CPos.Zero, n + "", new ImageRenderable(a.GetTexture(true)), new MPos(512,512), () => wallSelected = a));
+				walls.Add(new PanelItem(CPos.Zero, n + "", new ImageRenderable(a.GetTexture(true)), new MPos(512, 512), () => wallSelected = a));
 			}
 
-			wallBox = CheckBoxCreator.Create("wooden", new CPos((int) (WindowInfo.UnitWidth * 512 - 2048), 6244, 0), false, (b) => horizontal = b);
-			rasterizationBox = CheckBoxCreator.Create("wooden", new CPos((int) (WindowInfo.UnitWidth * 512 - 2048), 6244, 0), false, (b) => {});
-			isBot = CheckBoxCreator.Create("wooden", new CPos((int) (WindowInfo.UnitWidth * 512 - 1024), -4196, 0), false, (b) => {});
-			team = TextBoxCreator.Create("wooden", new CPos((int) (WindowInfo.UnitWidth * 512 - 1024), -3372, 0), "0", 1, true, () =>
-			{
-				var num = byte.Parse(team.Text);
-				if (num >= Settings.MaxTeams)
-				{
-					team.Text = "" + (Settings.MaxTeams - 1);
-				}
-			});
+			wallBox = CheckBoxCreator.Create("wooden", new CPos((int)(WindowInfo.UnitWidth * 512 - 2048), 6244, 0), false, (b) => horizontal = b);
+			rasterizationBox = CheckBoxCreator.Create("wooden", new CPos((int)(WindowInfo.UnitWidth * 512 - 2048), 6244, 0), false, (b) => { });
+			isBot = CheckBoxCreator.Create("wooden", new CPos((int)(WindowInfo.UnitWidth * 512 - 1024), -4196, 0), false, (b) => { });
+			team = TextBoxCreator.Create("wooden", new CPos((int)(WindowInfo.UnitWidth * 512 - 1024), -3372, 0), "0", 1, true, () =>
+		   {
+			   var num = byte.Parse(team.Text);
+			   if (num >= Settings.MaxTeams)
+			   {
+				   team.Text = "" + (Settings.MaxTeams - 1);
+			   }
+		   });
 		}
 
 		void deselectBoxes(Selected selected)
@@ -126,7 +126,7 @@ namespace WarriorsSnuggery.UI
 		{
 			base.Render();
 
-			if(game.Type == GameType.EDITOR)
+			if (game.Type == GameType.EDITOR)
 				save.Render();
 
 			if (savedTick > 0)
@@ -173,7 +173,7 @@ namespace WarriorsSnuggery.UI
 			if (MouseInput.isLeftClicked)
 				place();
 
-			if(MouseInput.isLeftDown && (currentSelected == Selected.TILE || currentSelected == Selected.WALL))
+			if (MouseInput.isLeftDown && (currentSelected == Selected.TILE || currentSelected == Selected.WALL))
 				place();
 
 			// Delete something
@@ -190,7 +190,7 @@ namespace WarriorsSnuggery.UI
 			showActors.Tick();
 			showWalls.Tick();
 
-			switch(currentSelected)
+			switch (currentSelected)
 			{
 				case Selected.ACTOR:
 					actors.Tick();
@@ -244,7 +244,7 @@ namespace WarriorsSnuggery.UI
 			if (CursorOnUI())
 				return;
 
-			var pos  = MouseInput.GamePosition;
+			var pos = MouseInput.GamePosition;
 			pos = rasterizationBox.Checked ? new CPos(pos.X - pos.X % 512, pos.Y - pos.Y % 512, 0) : pos;
 			var wpos = MouseInput.GamePosition.ToWPos();
 
@@ -260,7 +260,7 @@ namespace WarriorsSnuggery.UI
 					if (terrainSelected == null)
 						return;
 
-					wpos = new WPos(wpos.X < 0 ? 0 : wpos.X, wpos.Y < 0 ? 0 : wpos.Y,0);
+					wpos = new WPos(wpos.X < 0 ? 0 : wpos.X, wpos.Y < 0 ? 0 : wpos.Y, 0);
 					var terrain = TerrainCreator.Create(game.World, wpos, terrainSelected.ID);
 					game.World.TerrainLayer.Set(terrain);
 
@@ -272,8 +272,8 @@ namespace WarriorsSnuggery.UI
 					if (wallSelected == null)
 						return;
 
-					wpos = new WPos(wpos.X < 0 ? 0 : wpos.X, wpos.Y < 0 ? 0 : wpos.Y,0);
-					wpos = new WPos(wpos.X > game.World.Map.Bounds.X ? game.World.Map.Bounds.X : wpos.X, wpos.Y > game.World.Map.Bounds.Y ? game.World.Map.Bounds.Y : wpos.Y,0);
+					wpos = new WPos(wpos.X < 0 ? 0 : wpos.X, wpos.Y < 0 ? 0 : wpos.Y, 0);
+					wpos = new WPos(wpos.X > game.World.Map.Bounds.X ? game.World.Map.Bounds.X : wpos.X, wpos.Y > game.World.Map.Bounds.Y ? game.World.Map.Bounds.Y : wpos.Y, 0);
 					wpos = new WPos(wpos.X * 2 + (horizontal ? 0 : 1), wpos.Y, 0);
 
 					WorldRenderer.CheckWallVisibility();
@@ -286,7 +286,7 @@ namespace WarriorsSnuggery.UI
 		{
 			savedTick = 15;
 			var keys = game.MapType.ImportantParts.Keys;
-			foreach(var key in keys)
+			foreach (var key in keys)
 			{
 				game.World.Map.Save(key);
 				break;

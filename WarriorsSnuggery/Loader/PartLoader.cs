@@ -9,7 +9,7 @@ namespace WarriorsSnuggery.Loader
 		public static void SetValues(object info, MiniTextNode[] nodes)
 		{
 			var fields = info.GetType().GetFields().Where(f => f.IsInitOnly);
-			foreach(var node in nodes)
+			foreach (var node in nodes)
 			{
 				var field = fields.FirstOrDefault(f => f.Name == node.Key);
 				if (field != null)

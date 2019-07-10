@@ -59,7 +59,7 @@ namespace WarriorsSnuggery.Objects
 			{
 				scale = value;
 
-				foreach(var c in chars)
+				foreach (var c in chars)
 				{
 					c.SetScale(scale);
 				}
@@ -69,7 +69,7 @@ namespace WarriorsSnuggery.Objects
 
 		public TextLine(CPos pos, IFont font, OffsetType type = OffsetType.LEFT)
 		{
-			Position = pos + new CPos(0,64,0);
+			Position = pos + new CPos(0, 64, 0);
 			this.font = font;
 			offset = type;
 		}
@@ -80,7 +80,7 @@ namespace WarriorsSnuggery.Objects
 			this.color = color;
 			if (updateText)
 			{
-				foreach(TextRenderable @char in chars)
+				foreach (TextRenderable @char in chars)
 				{
 					@char.SetColor(color);
 				}
@@ -96,7 +96,7 @@ namespace WarriorsSnuggery.Objects
 
 			Dictionary<int, Color> colorPairs = new Dictionary<int, Color>();
 
-			while(text.IndexOf("COLOR(") >= 0 && colored)
+			while (text.IndexOf("COLOR(") >= 0 && colored)
 			{
 				var index = text.IndexOf("COLOR(");
 				var endindex = text.Remove(0, index).IndexOf(')');
@@ -183,7 +183,7 @@ namespace WarriorsSnuggery.Objects
 			String = @new.ToString();
 
 			int width = 0;
-			for(int i = 0; i < String.Length; i++)
+			for (int i = 0; i < String.Length; i++)
 			{
 				var @char = String[i];
 				if (chars.Count <= i)
@@ -214,7 +214,7 @@ namespace WarriorsSnuggery.Objects
 			for (int i = 0; i < chars.Count; i++)
 				width += charWidth(String[i]);
 
-			for(int i = chars.Count; i < String.Length; i++)
+			for (int i = chars.Count; i < String.Length; i++)
 			{
 				chars.Add(new TextRenderable(Position, font, String[i], color, width));
 				width += charWidth(String[i]) + 1;
@@ -226,7 +226,7 @@ namespace WarriorsSnuggery.Objects
 		void setCharPositions()
 		{
 			int width = 0;
-			switch(offset)
+			switch (offset)
 			{
 				case OffsetType.MIDDLE:
 					for (int i = 0; i < (chars.Count - 1); i++)
@@ -238,9 +238,9 @@ namespace WarriorsSnuggery.Objects
 						width += -(charWidth(String[i]) + 1);
 					break;
 			}
-			for(int i = 0; i < chars.Count; i++)
+			for (int i = 0; i < chars.Count; i++)
 			{
-				chars[i].SetPosition(Position.ToVector() + new Vector((width + 1) * TextRenderable.SizeMultiplier, 0,0,0));
+				chars[i].SetPosition(Position.ToVector() + new Vector((width + 1) * TextRenderable.SizeMultiplier, 0, 0, 0));
 				width += charWidth(String[i]) + 1;
 			}
 		}
@@ -258,7 +258,7 @@ namespace WarriorsSnuggery.Objects
 			if (!Visible)
 				return;
 
-			foreach(TextRenderable @char in chars)
+			foreach (TextRenderable @char in chars)
 			{
 				@char.Render();
 			}
@@ -272,7 +272,7 @@ namespace WarriorsSnuggery.Objects
 		public void Dispose()
 		{
 			Visible = false;
-			foreach(TextRenderable @char in chars)
+			foreach (TextRenderable @char in chars)
 				@char.Dispose();
 		}
 	}

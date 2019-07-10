@@ -33,7 +33,7 @@ namespace WarriorsSnuggery
 		public static bool operator !=(MPos lhs, MPos rhs) { return !(lhs == rhs); }
 
 		public bool Equals(MPos pos) { return pos == this; }
-		public override bool Equals(object obj) { return obj is MPos && Equals((MPos) obj); }
+		public override bool Equals(object obj) { return obj is MPos && Equals((MPos)obj); }
 
 		public override int GetHashCode() { return X ^ Y; }
 
@@ -58,7 +58,7 @@ namespace WarriorsSnuggery
 
 			return angle;
 		}
-		
+
 		public bool IsInRange(MPos minimum, MPos range)
 		{
 			if (X < minimum.X) return false;

@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace WarriorsSnuggery.UI
+﻿namespace WarriorsSnuggery.UI
 {
 	class GameSaveList : PanelList
 	{

@@ -13,9 +13,9 @@ namespace WarriorsSnuggery.Graphics
 
 		public IColor(ColoredVertex[] vertices, DrawMethod type = DrawMethod.TRIANGLE) : base(MasterRenderer.ColorShader, vertices.Length)
 		{
-			renderType = (PrimitiveType) type;
+			renderType = (PrimitiveType)type;
 
-			lock(MasterRenderer.GLLock)
+			lock (MasterRenderer.GLLock)
 			{
 				GL.BufferData(BufferTarget.ArrayBuffer, ColoredVertex.Size * vertices.Length, vertices, BufferUsageHint.StaticDraw);
 				Program.CheckGraphicsError("ColorCreate_Buffer");
@@ -32,7 +32,7 @@ namespace WarriorsSnuggery.Graphics
 
 		public override void Bind()
 		{
-			lock(MasterRenderer.GLLock)
+			lock (MasterRenderer.GLLock)
 			{
 				UseProgram();
 				GL.BindVertexArray(VertexArrayID);
@@ -42,7 +42,7 @@ namespace WarriorsSnuggery.Graphics
 
 		public override void Render()
 		{
-			lock(MasterRenderer.GLLock)
+			lock (MasterRenderer.GLLock)
 			{
 				GL.DrawArrays(renderType, 0, VerticeCount);
 				Program.CheckGraphicsError("Color_Draw");

@@ -8,17 +8,17 @@ namespace WarriorsSnuggery
 {
 	public struct Color
 	{
-		public static readonly Color White = new Color(1f,1f,1f);
-		public static readonly Color Black = new Color(0f,0f,0f);
+		public static readonly Color White = new Color(1f, 1f, 1f);
+		public static readonly Color Black = new Color(0f, 0f, 0f);
 
-		public static readonly Color Blue = new Color(0f,0f,1f);
-		public static readonly Color Red = new Color(1f,0f,0f);
-		public static readonly Color Green = new Color(0f,1f,0f);
+		public static readonly Color Blue = new Color(0f, 0f, 1f);
+		public static readonly Color Red = new Color(1f, 0f, 0f);
+		public static readonly Color Green = new Color(0f, 1f, 0f);
 
-		public static readonly Color Magenta = new Color(1f,0f,1f);
-		public static readonly Color Yellow = new Color(1f,1f,0f);
-		public static readonly Color Cyan = new Color(0f,1f,1f);
-		
+		public static readonly Color Magenta = new Color(1f, 0f, 1f);
+		public static readonly Color Yellow = new Color(1f, 1f, 0f);
+		public static readonly Color Cyan = new Color(0f, 1f, 1f);
+
 		public readonly float R;
 
 		public readonly float G;
@@ -31,23 +31,28 @@ namespace WarriorsSnuggery
 
 		public static Color operator -(Color lhs, Color rhs) { return new Color(lhs.R - rhs.R, lhs.G - rhs.G, lhs.B - rhs.B, lhs.A - rhs.A); }
 
-		public static implicit operator Color(System.Drawing.Color color) {
+		public static implicit operator Color(System.Drawing.Color color)
+		{
 			return new Color(color.R, color.G, color.B, color.A);
 		}
 
-		public static implicit operator System.Drawing.Color(Color color) {
+		public static implicit operator System.Drawing.Color(Color color)
+		{
 			return System.Drawing.Color.FromArgb((int)(color.A * 255f), (int)(color.R * 255f), (int)(color.G * 255f), (int)(color.B * 255f));
 		}
 
-		public static implicit operator Color(OpenTK.Graphics.Color4 color) {
+		public static implicit operator Color(OpenTK.Graphics.Color4 color)
+		{
 			return new Color(color.R, color.G, color.B, color.A);
 		}
 
-		public static implicit operator Vector(Color color) {
+		public static implicit operator Vector(Color color)
+		{
 			return new Vector(color.R, color.G, color.B, color.A);
 		}
 
-		public static implicit operator OpenTK.Graphics.Color4(Color color) {
+		public static implicit operator OpenTK.Graphics.Color4(Color color)
+		{
 			return new OpenTK.Graphics.Color4(color.R, color.G, color.B, color.A);
 		}
 
@@ -73,7 +78,7 @@ namespace WarriorsSnuggery
 
 		public System.Drawing.Color toSysColor()
 		{
-			return System.Drawing.Color.FromArgb((int) (A * 255f), (int) (R * 255f), (int) (G * 255f), (int) (B * 255f));
+			return System.Drawing.Color.FromArgb((int)(A * 255f), (int)(R * 255f), (int)(G * 255f), (int)(B * 255f));
 		}
 
 		public override string ToString()
@@ -83,12 +88,12 @@ namespace WarriorsSnuggery
 
 		public override bool Equals(object obj)
 		{
-			return obj is Color && (Color) obj == this;
+			return obj is Color && (Color)obj == this;
 		}
 
 		public override int GetHashCode()
 		{
-			return (int) (R * 255) ^ (int) (G * 255) ^ (int) (B * 255) ^ (int) (A * 255);
+			return (int)(R * 255) ^ (int)(G * 255) ^ (int)(B * 255) ^ (int)(A * 255);
 		}
 
 		public Color(int r, int g, int b, int a = 255)

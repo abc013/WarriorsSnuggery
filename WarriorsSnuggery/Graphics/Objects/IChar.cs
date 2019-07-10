@@ -45,7 +45,7 @@ namespace WarriorsSnuggery.Graphics
 					Program.CheckGraphicsError("CharBind_UseProgram");
 					GL.VertexAttrib4(2, color.toVector4());
 					Program.CheckGraphicsError("CharBind_ColorAttrib");
-					GL.VertexAttrib4(3, new OpenTK.Vector4(offset * Font.MaxSize.X, 0,0,0));
+					GL.VertexAttrib4(3, new OpenTK.Vector4(offset * Font.MaxSize.X, 0, 0, 0));
 					Program.CheckGraphicsError("CharBind_OffsetAttrib");
 					GL.BindVertexArray(VertexArrayID);
 					Program.CheckGraphicsError("CharBind_VertexArray");

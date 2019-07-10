@@ -4,8 +4,8 @@
  * Time: 16:33
  */
 using System;
-using WarriorsSnuggery.Objects;
 using WarriorsSnuggery.Graphics;
+using WarriorsSnuggery.Objects;
 
 namespace WarriorsSnuggery.UI
 {
@@ -21,7 +21,7 @@ namespace WarriorsSnuggery.UI
 			Title = new TextLine(CPos.Zero, IFont.Papyrus24, TextLine.OffsetType.MIDDLE);
 			Title.SetText(title);
 
-			this.darkness = new Color(0,0,0, darkness);
+			this.darkness = new Color(0, 0, 0, darkness);
 		}
 
 		public virtual bool CursorOnUI()
@@ -31,7 +31,7 @@ namespace WarriorsSnuggery.UI
 
 		public virtual void Tick()
 		{
-			Title.Scale = (float) (Math.Pow(Math.Sin(scale++ / (float) Speed), 2) + 2f) / 4;
+			Title.Scale = (float)(Math.Pow(Math.Sin(scale++ / (float)Speed), 2) + 2f) / 4;
 		}
 
 		public virtual void Render()

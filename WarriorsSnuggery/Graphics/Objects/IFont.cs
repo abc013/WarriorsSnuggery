@@ -3,8 +3,8 @@
  * Date: 03.11.2017
  * 
  */
-using System.Drawing.Text;
 using OpenTK.Graphics.ES30;
+using System.Drawing.Text;
 
 namespace WarriorsSnuggery.Graphics
 {
@@ -54,7 +54,7 @@ namespace WarriorsSnuggery.Graphics
 
 		public override void Bind()
 		{
-			lock(MasterRenderer.GLLock)
+			lock (MasterRenderer.GLLock)
 			{
 				UseProgram();
 				GL.VertexAttrib2(GL.GetAttribLocation(MasterRenderer.FontShader, "textureOffset"), OpenTK.Vector2.Zero);

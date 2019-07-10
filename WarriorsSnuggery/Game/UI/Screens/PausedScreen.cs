@@ -3,8 +3,8 @@
  * Date: 28.04.2018
  * Time: 01:48
  */
-using WarriorsSnuggery.Objects;
 using WarriorsSnuggery.Graphics;
+using WarriorsSnuggery.Objects;
 
 namespace WarriorsSnuggery.UI
 {
@@ -15,7 +15,7 @@ namespace WarriorsSnuggery.UI
 		public PausedScreen(Game game) : base("Paused")
 		{
 			this.game = game;
-			paused = new TextLine(new CPos(0,2048, 0), IFont.Pixel16, TextLine.OffsetType.MIDDLE);
+			paused = new TextLine(new CPos(0, 2048, 0), IFont.Pixel16, TextLine.OffsetType.MIDDLE);
 			paused.WriteText(new Color(128, 128, 255) + "To unpause, press '" + Color.Yellow + "P" + new Color(128, 128, 255) + "'");
 		}
 
@@ -32,7 +32,7 @@ namespace WarriorsSnuggery.UI
 
 			paused.Tick();
 
-			if(KeyInput.IsKeyDown("p", 10))
+			if (KeyInput.IsKeyDown("p", 10))
 			{
 				game.Pause(false);
 				game.ChangeScreen(ScreenType.DEFAULT);

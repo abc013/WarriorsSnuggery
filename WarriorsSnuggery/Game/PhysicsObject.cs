@@ -31,11 +31,12 @@ namespace WarriorsSnuggery.Objects
 		}
 		int height;
 
-		public virtual CPos Position {
+		public virtual CPos Position
+		{
 			get { return position; }
 			set
 			{
-				position = value; 
+				position = value;
 
 				if (Renderable != null)
 					Renderable.SetPosition(GraphicPosition);
@@ -46,11 +47,12 @@ namespace WarriorsSnuggery.Objects
 		}
 		CPos position;
 
-		public virtual CPos Offset {
+		public virtual CPos Offset
+		{
 			get { return offset; }
 			set
 			{
-				offset = value; 
+				offset = value;
 
 				if (Renderable != null)
 					Renderable.SetPosition(GraphicPosition);
@@ -70,7 +72,8 @@ namespace WarriorsSnuggery.Objects
 			private set { }
 		}
 
-		public virtual VAngle Rotation {
+		public virtual VAngle Rotation
+		{
 			get { return rotation; }
 			set
 			{
@@ -82,7 +85,8 @@ namespace WarriorsSnuggery.Objects
 		}
 		VAngle rotation;
 
-		public virtual float Scale {
+		public virtual float Scale
+		{
 			get { return scale; }
 			set
 			{
@@ -93,7 +97,7 @@ namespace WarriorsSnuggery.Objects
 			}
 		}
 		float scale = 1f;
-		
+
 		public PhysicsObject(CPos pos)
 		{
 			Position = pos;
@@ -164,7 +168,7 @@ namespace WarriorsSnuggery.Objects
 		{
 			if (Physics != null)
 				Physics.Dispose();
-			foreach(var sector in PhysicsSectors)
+			foreach (var sector in PhysicsSectors)
 				sector.Leave(this);
 
 			Disposed = true;

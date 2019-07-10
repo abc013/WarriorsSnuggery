@@ -3,9 +3,8 @@
  * Date: 07.10.2017
  * 
  */
-using System;
-using OpenTK;
 using OpenTK.Input;
+using System;
 
 namespace WarriorsSnuggery
 {

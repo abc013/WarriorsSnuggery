@@ -19,7 +19,7 @@
 				StartHealth = MaxHealth;
 		}
 	}
-	
+
 	public class HealthPart : ActorPart
 	{
 		readonly HealthPartInfo info;

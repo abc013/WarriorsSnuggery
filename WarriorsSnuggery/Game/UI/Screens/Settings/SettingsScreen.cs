@@ -3,8 +3,8 @@
  * Date: 21.07.2018
  * Time: 16:13
  */
-using WarriorsSnuggery.Objects;
 using WarriorsSnuggery.Graphics;
+using WarriorsSnuggery.Objects;
 
 namespace WarriorsSnuggery.UI
 {
@@ -22,20 +22,20 @@ namespace WarriorsSnuggery.UI
 		readonly TextBox widthWrite, heightWrite, frameLimiterWrite, scrollWrite, edgeScrollWrite;
 		readonly TextLine frameLimiter, scrollSpeed, edgeScrolling, developerMode, fullscreen, width, height, antiAliasing, pixeling, warning;
 
-		public bool Visible { get; private set;}
+		public bool Visible { get; private set; }
 
 		public SettingsScreen(Game game) : base("Settings")
 		{
 			this.game = game;
-			Title.Position = new CPos(0,-4096, 0);
-			saved = new TextLine(new CPos(0,6210, 0), IFont.Pixel16, TextLine.OffsetType.MIDDLE);
+			Title.Position = new CPos(0, -4096, 0);
+			saved = new TextLine(new CPos(0, 6210, 0), IFont.Pixel16, TextLine.OffsetType.MIDDLE);
 			saved.SetText("Save");
 
 			back = ButtonCreator.Create("wooden", new CPos(4096, 6144, 0), "Back", () => game.ChangeScreen(ScreenType.MENU));
 			save = ButtonCreator.Create("wooden", new CPos(0, 6144, 0), "Save", Save);
 			keys = ButtonCreator.Create("wooden", new CPos(-4096, 6144, 0), "Key Bindings", () => game.ChangeScreen(ScreenType.KEYSETTINGS));
 
-			fullscreenCheck = CheckBoxCreator.Create("wooden", new CPos(4000, -3000, 0),  Settings.Fullscreen, (ticked) => { width.SetColor(ticked ? new Color(128,128,128) : Color.White); height.SetColor(ticked ? new Color(128,128,128) : Color.White); });
+			fullscreenCheck = CheckBoxCreator.Create("wooden", new CPos(4000, -3000, 0), Settings.Fullscreen, (ticked) => { width.SetColor(ticked ? new Color(128, 128, 128) : Color.White); height.SetColor(ticked ? new Color(128, 128, 128) : Color.White); });
 			pixelingCheck = CheckBoxCreator.Create("wooden", new CPos(4000, 4900, 0), Settings.EnablePixeling);
 			antiAliasingCheck = CheckBoxCreator.Create("wooden", new CPos(4000, 4200, 0), Settings.AntiAliasing);
 			developerModeCheck = CheckBoxCreator.Create("wooden", new CPos(4000, 3500, 0), Settings.DeveloperMode);
@@ -59,11 +59,11 @@ namespace WarriorsSnuggery.UI
 			fullscreen.SetText("Fullscreen:");
 			width = new TextLine(new CPos(-5096, -2300, 0), IFont.Pixel16);
 			if (Settings.Fullscreen)
-				width.SetColor(new Color(128,128,128));
+				width.SetColor(new Color(128, 128, 128));
 			width.SetText("Width:");
 			height = new TextLine(new CPos(-5096, -1600, 0), IFont.Pixel16);
 			if (Settings.Fullscreen)
-				height.SetColor(new Color(128,128,128));
+				height.SetColor(new Color(128, 128, 128));
 			height.SetText("Height:");
 			antiAliasing = new TextLine(new CPos(-5096, 4200, 0), IFont.Pixel16);
 			antiAliasing.SetText("Enable Antialising:");
@@ -122,7 +122,7 @@ namespace WarriorsSnuggery.UI
 				writer.WriteLine("FirstStarted=0");
 
 				writer.WriteLine("Keys=");
-				foreach(var key in Settings.KeyDictionary)
+				foreach (var key in Settings.KeyDictionary)
 				{
 					writer.WriteLine("\t" + key.Key + "=" + key.Value);
 				}

@@ -3,10 +3,10 @@
  * Date: 25.11.2017
  * 
  */
-using System.Collections.Generic;
 using OpenTK;
-using WarriorsSnuggery.Objects;
+using System.Collections.Generic;
 using WarriorsSnuggery.Graphics;
+using WarriorsSnuggery.Objects;
 
 namespace WarriorsSnuggery
 {
@@ -72,9 +72,9 @@ namespace WarriorsSnuggery
 
 			foreach (var r in beforeRender)
 				r.Render();
-			
+
 			game.ScreenControl.Render();
-			
+
 			game.RenderDebug();
 
 			foreach (var r in afterRender)

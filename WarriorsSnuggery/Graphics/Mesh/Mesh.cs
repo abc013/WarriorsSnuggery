@@ -2,8 +2,8 @@
  * User: Andreas
  * Date: 10.08.2017
  */
-using System;
 using OpenTK;
+using System;
 using WarriorsSnuggery.Objects;
 
 namespace WarriorsSnuggery.Graphics
@@ -12,21 +12,21 @@ namespace WarriorsSnuggery.Graphics
 	{
 		// Text character
 		public static TexturedVertex[] Character(IFont font)
-        {
-            var w = font.MaxSize.X;
-            var h = font.MaxSize.Y;
-            var size = w * TextRenderable.SizeMultiplier;
+		{
+			var w = font.MaxSize.X;
+			var h = font.MaxSize.Y;
+			var size = w * TextRenderable.SizeMultiplier;
 
-            TexturedVertex[] vertices =
-            {
-                new TexturedVertex(new Vector(-size, -size, 0, 1.0f), new Vector2(0, h)),
-                new TexturedVertex(new Vector(size,  -size, 0, 1.0f), new Vector2(w, h)),
-                new TexturedVertex(new Vector(-size, size,  0, 1.0f), new Vector2(0, 0)),
-                new TexturedVertex(new Vector(-size, size,  0, 1.0f), new Vector2(0, 0)),
-                new TexturedVertex(new Vector(size,  -size, 0, 1.0f), new Vector2(w, h)),
-                new TexturedVertex(new Vector(size,  size,  0, 1.0f), new Vector2(w, 0)),
-            };
-            return vertices;
+			TexturedVertex[] vertices =
+			{
+				new TexturedVertex(new Vector(-size, -size, 0, 1.0f), new Vector2(0, h)),
+				new TexturedVertex(new Vector(size,  -size, 0, 1.0f), new Vector2(w, h)),
+				new TexturedVertex(new Vector(-size, size,  0, 1.0f), new Vector2(0, 0)),
+				new TexturedVertex(new Vector(-size, size,  0, 1.0f), new Vector2(0, 0)),
+				new TexturedVertex(new Vector(size,  -size, 0, 1.0f), new Vector2(w, h)),
+				new TexturedVertex(new Vector(size,  size,  0, 1.0f), new Vector2(w, 0)),
+			};
+			return vertices;
 		}
 
 		// Terrain
@@ -69,7 +69,7 @@ namespace WarriorsSnuggery.Graphics
 		public static TexturedVertex[] Plane(float scale, float w, float h)
 		{
 			scale /= 2;
-			var correction = w < h ? w/h : h/w;
+			var correction = w < h ? w / h : h / w;
 
 			TexturedVertex[] vertices = new TexturedVertex[6];
 			if (w < h)
@@ -98,7 +98,7 @@ namespace WarriorsSnuggery.Graphics
 				};
 				vertices = vertices1;
 			}
-			
+
 			return vertices;
 		}
 
@@ -127,7 +127,7 @@ namespace WarriorsSnuggery.Graphics
 		public static ColoredVertex[] Line(float size, Color color)
 		{
 			var color4 = color.toColor4();
-			
+
 			ColoredVertex[] vertices =
 			{
 				new ColoredVertex(new Vector(0,0,0,1.0f), color4),
@@ -195,8 +195,8 @@ namespace WarriorsSnuggery.Graphics
 			var vertices = new ColoredVertex[resolution];
 			for (int i = 0; i < resolution; i++)
 			{
-				var x = ((float) Math.Cos(i * Math.PI / resolution * 2)) * size;
-				var y = ((float) Math.Sin(i * Math.PI / resolution * 2)) * size;
+				var x = ((float)Math.Cos(i * Math.PI / resolution * 2)) * size;
+				var y = ((float)Math.Sin(i * Math.PI / resolution * 2)) * size;
 				vertices[i] = new ColoredVertex(new Vector(x, y, 0f, 1f), color4);
 			}
 			return vertices;

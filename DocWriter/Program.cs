@@ -1,6 +1,6 @@
 ﻿using System;
-using System.Linq;
 using System.IO;
+using System.Linq;
 
 namespace WarriorsSnuggery
 {
@@ -39,7 +39,7 @@ namespace WarriorsSnuggery
 			{
 				types = getTypes(input);
 			}
-			catch(Exception)
+			catch (Exception)
 			{
 				Console.ForegroundColor = ConsoleColor.Red;
 				Console.WriteLine("Invalid input.");
@@ -87,9 +87,9 @@ namespace WarriorsSnuggery
 			var strings = input.Split(',');
 
 			var types = new ObjectType[strings.Length];
-			for(int i = 0; i < types.Length; i++)
+			for (int i = 0; i < types.Length; i++)
 			{
-				types[i] = (ObjectType) Enum.Parse(typeof(ObjectType), strings[i].Trim(), true);
+				types[i] = (ObjectType)Enum.Parse(typeof(ObjectType), strings[i].Trim(), true);
 			}
 			if (types.Contains(ObjectType.ALL))
 				types = new ObjectType[] { ObjectType.ACTORS, ObjectType.PARTICLES, ObjectType.WEAPONS, ObjectType.WALLS, ObjectType.TERRAIN };

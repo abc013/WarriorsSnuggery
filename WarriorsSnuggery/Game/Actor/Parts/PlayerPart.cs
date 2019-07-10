@@ -31,7 +31,7 @@ namespace WarriorsSnuggery.Objects.Parts
 
 			if (KeyInput.IsKeyDown(Settings.Key("MoveLeft")))
 			{
-				self.Accelerate((float) Math.PI);
+				self.Accelerate((float)Math.PI);
 			}
 
 			if (MouseInput.isLeftDown && !self.World.Game.ScreenControl.CursorOnUI())

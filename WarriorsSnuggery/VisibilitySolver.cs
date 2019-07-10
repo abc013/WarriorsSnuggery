@@ -4,7 +4,7 @@ namespace WarriorsSnuggery
 {
 	public sealed class VisibilitySolver
 	{
-		static bool[,] visible = new bool[0,0];
+		static bool[,] visible = new bool[0, 0];
 		static MPos size = MPos.Zero;
 
 		public static MPos lastCameraPosition;
@@ -38,7 +38,7 @@ namespace WarriorsSnuggery
 			var xPos = (int)Math.Floor(pos.X / 1024f - (zoomX / 2));
 			var yPos = (int)Math.Floor(pos.Y / 1024f - (zoomY / 2));
 			lastCameraPosition = new MPos(xPos, yPos);
-			lastCameraZoom = new MPos((int) Math.Ceiling(zoomX) + 1, (int) Math.Ceiling(zoomY + WindowInfo.Ratio));
+			lastCameraZoom = new MPos((int)Math.Ceiling(zoomX) + 1, (int)Math.Ceiling(zoomY + WindowInfo.Ratio));
 
 			clear();
 			// Is the same as we would use here

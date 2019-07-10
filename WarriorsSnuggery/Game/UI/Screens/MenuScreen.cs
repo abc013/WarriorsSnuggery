@@ -24,22 +24,22 @@ namespace WarriorsSnuggery.UI
 		readonly ColoredLine cut3;
 		readonly Button leave;
 
-		public bool Visible { get; private set;}
+		public bool Visible { get; private set; }
 
 		public MenuScreen(Game game) : base("Menu")
 		{
 			this.game = game;
-			Title.Position = new CPos(0,-2048, 0);
+			Title.Position = new CPos(0, -2048, 0);
 
 			var height = -1024;
 			resume = ButtonCreator.Create("wooden", new CPos(0, height, 0), "Resume", () => game.Pause(false));
 
 			height += 1024;
-			switch(game.Type)
+			switch (game.Type)
 			{
 				case GameType.EDITOR:
 					restart = ButtonCreator.Create("wooden", new CPos(2048, height, 0), "Play", () => humanAgree(() => { Window.Current.NewGame(game.Statistics, GameType.NORMAL, true, Maps.MapType.ConvertGameType(game.MapType, GameType.TEST)); }, "Make sure you have saved the map!"));
-					menu = ButtonCreator.Create("wooden", new CPos(-2048, height, 0), "Main Menu", () => humanAgree(() => { Window.Current.NewGame(game.Statistics, GameType.MAINMENU); }, "Are you sure to return? Unsaved progress will be lost!") );
+					menu = ButtonCreator.Create("wooden", new CPos(-2048, height, 0), "Main Menu", () => humanAgree(() => { Window.Current.NewGame(game.Statistics, GameType.MAINMENU); }, "Are you sure to return? Unsaved progress will be lost!"));
 					break;
 				case GameType.MAINMENU:
 					height -= 1024;
@@ -110,7 +110,7 @@ namespace WarriorsSnuggery.UI
 		public override void Render()
 		{
 			base.Render();
-			
+
 			resume.Render();
 
 			if (restart != null)

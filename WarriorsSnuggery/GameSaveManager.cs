@@ -14,7 +14,7 @@ namespace WarriorsSnuggery
 			foreach (var file in Directory.GetFiles(FileExplorer.Saves))
 			{
 				if (!file.Replace(".yaml", "").EndsWith("_map")) //make sure that we don't add any maps
-					Statistics.Add(GameStatistics.LoadGameStatistic(file.Remove(0,file.LastIndexOf('\\') + 1).Replace(".yaml", "")));
+					Statistics.Add(GameStatistics.LoadGameStatistic(file.Remove(0, file.LastIndexOf('\\') + 1).Replace(".yaml", "")));
 			}
 		}
 

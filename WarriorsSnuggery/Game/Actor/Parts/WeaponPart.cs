@@ -20,7 +20,7 @@
 
 		}
 	}
-	
+
 	public class WeaponPart : ActorPart
 	{
 		readonly WeaponPartInfo info;

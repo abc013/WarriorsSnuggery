@@ -26,7 +26,7 @@ namespace WarriorsSnuggery
 
 		public static void SetBounds(MPos bounds)
 		{
-			Camera.bounds = bounds.ToCPos() + new CPos(-1024, -1024,0);
+			Camera.bounds = bounds.ToCPos() + new CPos(-1024, -1024, 0);
 		}
 
 		public static bool IsVisible(CPos pos, float scaleX, float scaleY)
@@ -47,7 +47,7 @@ namespace WarriorsSnuggery
 
 		public static void Zoom(float add, bool ignoreLock = false)
 		{
-			if(!ignoreLock && Locked)
+			if (!ignoreLock && Locked)
 				return;
 
 			var newzoom = CurrentZoom + (add / 4f);
@@ -56,18 +56,18 @@ namespace WarriorsSnuggery
 
 			CurrentZoom = newzoom;
 
-			Projection = Matrix4.CreateScale(1/ newzoom * 2 / WindowInfo.Ratio, 1 / newzoom * 2, 0f); //we use 0f to stop things glitching out of sight
-			//Matrix4.CreateOrthographic(newzoom / 2 * WindowInfo.Ratio, newzoom / 2, 100f,0, out Projection);
+			Projection = Matrix4.CreateScale(1 / newzoom * 2 / WindowInfo.Ratio, 1 / newzoom * 2, 0f); //we use 0f to stop things glitching out of sight
+																									   //Matrix4.CreateOrthographic(newzoom / 2 * WindowInfo.Ratio, newzoom / 2, 100f,0, out Projection);
 			if (!add.Equals(0))
 				UpdateView();
 		}
-		
+
 		public static void Move(CPos add, bool ignoreLock = false)
 		{
-			if(!ignoreLock && (Locked || add == CPos.Zero))
+			if (!ignoreLock && (Locked || add == CPos.Zero))
 				return;
 
-			LookAt = new CPos(LookAt.X + (int) (Settings.ScrollSpeed * 20 * add.X), LookAt.Y + (int) (Settings.ScrollSpeed * 20 * add.Y), 0);
+			LookAt = new CPos(LookAt.X + (int)(Settings.ScrollSpeed * 20 * add.X), LookAt.Y + (int)(Settings.ScrollSpeed * 20 * add.Y), 0);
 
 			if (bounds != CPos.Zero)
 			{
@@ -89,7 +89,7 @@ namespace WarriorsSnuggery
 
 		public static void Position(CPos pos, bool ignoreLock = false)
 		{
-			if(!ignoreLock && Locked || LookAt == pos)
+			if (!ignoreLock && Locked || LookAt == pos)
 				return;
 
 			LookAt = pos;

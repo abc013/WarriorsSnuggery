@@ -16,19 +16,19 @@ namespace WarriorsSnuggery.Objects
 		public TextRenderable(CPos position, IFont font, char @char, Color color, int curTextWidth = 0) :
 			base(font == IFont.Pixel16 ? CharManager.Pixel16 : CharManager.Papyrus24)
 		{
-			SetPosition(position.ToVector() + new Vector(curTextWidth * SizeMultiplier, 0,0,0));
+			SetPosition(position.ToVector() + new Vector(curTextWidth * SizeMultiplier, 0, 0, 0));
 			Color = color;
 			@Char = @char;
 		}
 
 		void setColor(Color color)
 		{
-			((IChar) renderable).SetColor(color);
+			((IChar)renderable).SetColor(color);
 		}
 
 		void setChar(char @char)
 		{
-			((IChar) renderable).SetChar(@char);
+			((IChar)renderable).SetChar(@char);
 		}
 
 		public override void Render()
@@ -54,7 +54,7 @@ namespace WarriorsSnuggery.Objects
 	public class ImageRenderable : GraphicsObject
 	{
 		public ImageRenderable(ITexture texture, float scale = 1f) :
-			base(IImage.Create(TexturedMesh.Plane(scale * (texture.Width > texture.Height ? texture.Width/24f : texture.Height/24f), texture.Width, texture.Height), texture))
+			base(IImage.Create(TexturedMesh.Plane(scale * (texture.Width > texture.Height ? texture.Width / 24f : texture.Height / 24f), texture.Width, texture.Height), texture))
 		{ }
 
 		public ImageRenderable(ITexture texture, MPos size, float scale = 1f) :
@@ -69,7 +69,7 @@ namespace WarriorsSnuggery.Objects
 		int curTexture;
 
 		public SpriteRenderable(ITexture[] textures, float scale = 1f, int tick = 10) :
-			base(ISprite.Create(TexturedMesh.Plane(scale * (textures[0].Width > textures[0].Height ? textures[0].Width/24f : textures[0].Height/24f), textures[0].Width, textures[0].Height), textures, tick))
+			base(ISprite.Create(TexturedMesh.Plane(scale * (textures[0].Width > textures[0].Height ? textures[0].Width / 24f : textures[0].Height / 24f), textures[0].Width, textures[0].Height), textures, tick))
 		{
 			this.tick = tick;
 			curTick = tick;
@@ -92,12 +92,14 @@ namespace WarriorsSnuggery.Objects
 	public class TerrainRenderable : GraphicsObject
 	{
 		public TerrainRenderable(TerrainType type) :
-			base(IImage.Create(TexturedMesh.Terrain(), type.Texture)) { }
+			base(IImage.Create(TexturedMesh.Terrain(), type.Texture))
+		{ }
 	}
 
 	public class WallRenderable : GraphicsObject
 	{
 		public WallRenderable(bool horizontal, WallType type) :
-			base(IImage.Create(TexturedMesh.Plane(2f, 24, 48), type.GetTexture(horizontal))) { }
+			base(IImage.Create(TexturedMesh.Plane(2f, 24, 48), type.GetTexture(horizontal)))
+		{ }
 	}
 }

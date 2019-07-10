@@ -33,7 +33,7 @@ namespace WarriorsSnuggery.Objects
 			Target = target;
 
 			if (Type.OrientateToTarget)
-				Rotation = new VAngle(0,0, -Position.AngleToXY(Target)) + new VAngle(0, 0, (int) 90);
+				Rotation = new VAngle(0, 0, -Position.AngleToXY(Target)) + new VAngle(0, 0, (int)90);
 
 			if (originActor != null)
 			{
@@ -68,7 +68,7 @@ namespace WarriorsSnuggery.Objects
 			Move(Target);
 
 			if (Type.OrientateToTarget)
-				Rotation = new VAngle(0,0,-Position.AngleToXY(Target)) + new VAngle(0, 0, (int) 90);
+				Rotation = new VAngle(0, 0, -Position.AngleToXY(Target)) + new VAngle(0, 0, (int)90);
 
 			if (InRange(Target))
 				Detonate();
@@ -95,12 +95,12 @@ namespace WarriorsSnuggery.Objects
 				if (TargetActor != null)
 				{
 					zDiff = Height - TargetActor.Height;
-					dDiff = (int) Position.DistToXY(TargetActor.Position);
+					dDiff = (int)Position.DistToXY(TargetActor.Position);
 				}
 				else
 				{
 					zDiff = Height;
-					dDiff = (int) Position.DistToXY(Target);
+					dDiff = (int)Position.DistToXY(Target);
 				}
 				angle2 = new CPos(dDiff, zDiff, 0).AngleToXY(CPos.Zero);
 				z = Math.Sin(angle2) * Speed;
@@ -112,16 +112,16 @@ namespace WarriorsSnuggery.Objects
 
 			var old = Position;
 			// Note: we made sure that a weapon's target can't be out of world. (Actor.cs#87(Attack))
-			Position = new CPos(Position.X + (int) x, Position.Y + (int) y, Position.Z);
+			Position = new CPos(Position.X + (int)x, Position.Y + (int)y, Position.Z);
 			Physics.Position = Position;
 
-			Height -= (int) z;
+			Height -= (int)z;
 			if (Height < 0)
 				Detonate();
 
 			World.PhysicsLayer.UpdateSectors(this);
 
-			if (World.CheckCollision(this, true, new [] { typeof(Weapon), typeof(BeamWeapon), typeof(BulletWeapon), typeof(RocketWeapon) }, new[] { Origin }))
+			if (World.CheckCollision(this, true, new[] { typeof(Weapon), typeof(BeamWeapon), typeof(BulletWeapon), typeof(RocketWeapon) }, new[] { Origin }))
 				Detonate();
 
 			DistanceMoved += Position.DistToXY(old);
@@ -136,7 +136,7 @@ namespace WarriorsSnuggery.Objects
 
 		public virtual void Detonate()
 		{
-			foreach(var actor in World.Actors)
+			foreach (var actor in World.Actors)
 			{
 				if (Origin != null && Origin.Team == actor.Team)
 					continue;
@@ -147,31 +147,31 @@ namespace WarriorsSnuggery.Objects
 
 				float damagemultiplier = 0f;
 
-				switch(Type.DamageFalloff)
+				switch (Type.DamageFalloff)
 				{
 					case FalloffType.QUADRATIC:
-						damagemultiplier = 1 / (float) (dist * dist);
+						damagemultiplier = 1 / (float)(dist * dist);
 						break;
 					case FalloffType.CUBIC:
-						damagemultiplier = 1 / (float) (dist * dist * dist);
+						damagemultiplier = 1 / (float)(dist * dist * dist);
 						break;
 					case FalloffType.EXPONENTIAL:
-						damagemultiplier = 1 / (float) Math.Pow(5, dist);
+						damagemultiplier = 1 / (float)Math.Pow(5, dist);
 						break;
 					case FalloffType.LINEAR:
-						damagemultiplier = 1 / (float) dist;
+						damagemultiplier = 1 / (float)dist;
 						break;
 					case FalloffType.ROOT:
-						damagemultiplier = 1 / (float) Math.Sqrt(dist);
+						damagemultiplier = 1 / (float)Math.Sqrt(dist);
 						break;
 				}
-				var damage = (int) Math.Floor(damagemultiplier * Type.Damage * damageModifier);
+				var damage = (int)Math.Floor(damagemultiplier * Type.Damage * damageModifier);
 
 				if (damage < 2 || !actor.IsAlive)
 					continue;
 
 				if (actor.WorldPart != null && actor.WorldPart.ShowDamage)
-					World.Add(new ActionText(actor.Position + new CPos(0,0,1024), IFont.Pixel16, new CPos(0, -15, 30), 50, new Color(1f, 1 - (damage / (Type.Damage * 1.5f)), 0).ToString() + damage.ToString()));
+					World.Add(new ActionText(actor.Position + new CPos(0, 0, 1024), IFont.Pixel16, new CPos(0, -15, 30), 50, new Color(1f, 1 - (damage / (Type.Damage * 1.5f)), 0).ToString() + damage.ToString()));
 
 				if (Origin != null)
 					actor.Damage(Origin, damage);
@@ -184,7 +184,7 @@ namespace WarriorsSnuggery.Objects
 
 			if (Type.ParticlesOnImpact != null)
 			{
-				foreach(var particle in Type.ParticlesOnImpact.Create(Position))
+				foreach (var particle in Type.ParticlesOnImpact.Create(Position))
 				{
 					World.Add(particle);
 				}
@@ -200,7 +200,7 @@ namespace WarriorsSnuggery.Objects
 				var ranX = (Program.SharedRandom.Next(Type.Inaccuracy) - Type.Inaccuracy / 2) * inaccuracyModifier;
 				var ranY = (Program.SharedRandom.Next(Type.Inaccuracy) - Type.Inaccuracy / 2) * inaccuracyModifier;
 
-				return new CPos((int) ranX, (int) ranY, 0);
+				return new CPos((int)ranX, (int)ranY, 0);
 			}
 
 			return CPos.Zero;

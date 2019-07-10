@@ -17,7 +17,7 @@ namespace WarriorsSnuggery
 		public void SetMapDimensions(MPos size, int teams, bool allShroudRevealed)
 		{
 			Dispose();
-			Size = size * new MPos(2,2);
+			Size = size * new MPos(2, 2);
 			shroudRevealed = new bool[teams, size.X * 2, size.Y * 2];
 			AllRevealed = allShroudRevealed;
 		}
@@ -53,7 +53,7 @@ namespace WarriorsSnuggery
 
 			VisibilitySolver.ShroudUpdated();
 			// Camera automatically updates shroud, so we don't want to do that if we move anyways TODO how about other actors?
-			if(!Camera.LockedToPlayer)
+			if (!Camera.LockedToPlayer)
 				WorldRenderer.CheckObjectVisibility();
 		}
 

@@ -5,30 +5,30 @@
  */
 using System;
 using System.Runtime.Serialization;
- 
- namespace WarriorsSnuggery
- {
+
+namespace WarriorsSnuggery
+{
 	[Serializable]
 	public class MissingInfoException : Exception
 	{
 		public MissingInfoException() { }
 
 		public MissingInfoException(string type)
-		  : base(string.Format(@"The type '{0}' does not exist.", type)) 
+		  : base(string.Format(@"The type '{0}' does not exist.", type))
 		{
-			
+
 		}
 
 		public MissingInfoException(string type, Exception innerException)
 			: base(string.Format(@"The type '{0}' does not exist.", type), innerException)
 		{
-			
+
 		}
 
 		protected MissingInfoException(SerializationInfo info, StreamingContext context)
 		  : base(info, context)
 		{
-			
+
 		}
 	}
 
@@ -38,21 +38,21 @@ using System.Runtime.Serialization;
 		public YamlMissingNodeException() { }
 
 		public YamlMissingNodeException(string rule, string missing)
-		  : base(string.Format(@"The rule '{0}' is missing the required field '{1}'", rule, missing)) 
+		  : base(string.Format(@"The rule '{0}' is missing the required field '{1}'", rule, missing))
 		{
-			
+
 		}
 
 		public YamlMissingNodeException(string rule, string missing, Exception innerException)
 			: base(string.Format(@"The rule '{0}' is missing the required field '{1}'", rule, missing), innerException)
 		{
-			
+
 		}
 
 		protected YamlMissingNodeException(SerializationInfo info, StreamingContext context)
 		  : base(info, context)
 		{
-			
+
 		}
 	}
 
@@ -62,21 +62,21 @@ using System.Runtime.Serialization;
 		public YamlInvalidNodeException() { }
 
 		public YamlInvalidNodeException(string text)
-		  : base(text) 
+		  : base(text)
 		{
-			
+
 		}
 
 		public YamlInvalidNodeException(string text, Exception innerException)
 			: base(text, innerException)
 		{
-			
+
 		}
 
 		protected YamlInvalidNodeException(SerializationInfo info, StreamingContext context)
 		  : base(info, context)
 		{
-			
+
 		}
 	}
 
@@ -86,21 +86,21 @@ using System.Runtime.Serialization;
 		public YamlInvalidFormatException() { }
 
 		public YamlInvalidFormatException(string rule, Type convertTo)
-		  : base(string.Format(@"unable to convert '{0}' to the type '{1}' .", rule, convertTo.Name)) 
+		  : base(string.Format(@"unable to convert '{0}' to the type '{1}' .", rule, convertTo.Name))
 		{
-			
+
 		}
 
 		public YamlInvalidFormatException(string rule, Type convertTo, Exception innerException)
 			: base(string.Format(@"unable to convert '{0}' to the type '{1}' .", rule, convertTo.Name), innerException)
 		{
-			
+
 		}
 
 		protected YamlInvalidFormatException(SerializationInfo info, StreamingContext context)
 		  : base(info, context)
 		{
-			
+
 		}
 	}
 
@@ -112,31 +112,31 @@ using System.Runtime.Serialization;
 		public YamlInvalidRuleExeption(string rule)
 		  : base(string.Format(@"unable to convert '{0}' to a valid rule.", rule))
 		{
-			
+
 		}
 
 		public YamlInvalidRuleExeption(string rule, Exception innerException)
 		  : base(string.Format(@"unable to convert '{0}' to a valid rule.", rule), innerException)
 		{
-			
+
 		}
 
 		public YamlInvalidRuleExeption(string rule, int tabs)
 		  : base(string.Format(@"'{0}' has wrong spacing (difference: {1}).", rule, tabs))
 		{
-			
+
 		}
 
 		public YamlInvalidRuleExeption(string rule, int tabs, Exception innerException)
 		  : base(string.Format(@"'{0}' has wrong spacing (difference: {1}).", rule, tabs), innerException)
 		{
-			
+
 		}
 
 		protected YamlInvalidRuleExeption(SerializationInfo info, StreamingContext context)
 		  : base(info, context)
 		{
-			
+
 		}
 	}
 

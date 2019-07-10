@@ -5,7 +5,7 @@
  */
 using System;
 using System.IO;
- 
+
 namespace WarriorsSnuggery
 {
 	public static class FileExplorer
@@ -23,7 +23,7 @@ namespace WarriorsSnuggery
 		public static void InitPaths()
 		{
 			string path = Directory.GetCurrentDirectory();
-			while(MainDirectory == null)
+			while (MainDirectory == null)
 			{
 				if (!Directory.Exists(path))
 					throw new DirectoryNotFoundException(path);
@@ -44,7 +44,7 @@ namespace WarriorsSnuggery
 
 		static bool find(string path, string file)
 		{
-			foreach(string str in Directory.GetFiles(path))
+			foreach (string str in Directory.GetFiles(path))
 			{
 				if (str == path + file)
 					return true;
@@ -57,7 +57,7 @@ namespace WarriorsSnuggery
 		{
 			var files = Directory.GetFiles(Path);
 
-			foreach(var raw in files)
+			foreach (var raw in files)
 			{
 				var file = raw.Substring(raw.LastIndexOf('\\') + 1);
 				if (file == "OpenTK.dll")
@@ -109,7 +109,7 @@ namespace WarriorsSnuggery
 		{
 			var pathName = path + name;
 
-			foreach(var file in Directory.EnumerateFiles(path))
+			foreach (var file in Directory.EnumerateFiles(path))
 			{
 				if (!file.EndsWith(suffix, StringComparison.CurrentCulture))
 					continue;
@@ -120,7 +120,7 @@ namespace WarriorsSnuggery
 
 			var directories = Directory.EnumerateDirectories(path);
 
-			foreach(var directory in directories)
+			foreach (var directory in directories)
 			{
 				var found = findUntil(directory + @"\", name, suffix);
 

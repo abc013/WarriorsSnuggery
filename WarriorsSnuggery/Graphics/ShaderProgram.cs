@@ -2,10 +2,10 @@
  * User: Andreas
  * Date: 11.08.2017
  */
-using System;
-using System.IO;
 using OpenTK.Graphics.ES30;
+using System;
 using System.Collections.Generic;
+using System.IO;
 
 namespace WarriorsSnuggery.Graphics
 {
@@ -16,7 +16,7 @@ namespace WarriorsSnuggery.Graphics
 
 		public ShaderProgram()
 		{
-			lock(MasterRenderer.GLLock)
+			lock (MasterRenderer.GLLock)
 			{
 				ID = GL.CreateProgram();
 			}
@@ -24,7 +24,7 @@ namespace WarriorsSnuggery.Graphics
 
 		public void AddShader(ShaderType type, string path)
 		{
-			lock(MasterRenderer.GLLock)
+			lock (MasterRenderer.GLLock)
 			{
 				var shader = GL.CreateShader(type);
 				GL.ShaderSource(shader, File.ReadAllText(path));
@@ -40,7 +40,7 @@ namespace WarriorsSnuggery.Graphics
 
 		public void Link()
 		{
-			lock(MasterRenderer.GLLock)
+			lock (MasterRenderer.GLLock)
 			{
 				foreach (var shader in shaders)
 					GL.AttachShader(ID, shader);
@@ -73,7 +73,7 @@ namespace WarriorsSnuggery.Graphics
 		{
 			if (disposing)
 			{
-				lock(MasterRenderer.GLLock)
+				lock (MasterRenderer.GLLock)
 				{
 					GL.DeleteProgram(ID);
 				}
