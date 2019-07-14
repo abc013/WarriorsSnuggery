@@ -82,6 +82,27 @@ namespace WarriorsSnuggery
 
 			return visible[position.X, position.Y];
 		}
+		public static bool IsVisibleIgnoringBounds(WPos position)
+		{
+			if (position.X < 0)
+			{
+				position = new WPos(0, position.Y, 0);
+			}
+			else if (position.X >= size.X)
+			{
+				position = new WPos(size.X - 1, position.Y, 0);
+			}
+			if (position.Y < 0)
+			{
+				position = new WPos(position.X, 0, 0);
+			}
+			else if (position.Y >= size.Y)
+			{
+				position = new WPos(position.X, size.Y - 1, 0);
+			}
+
+			return visible[position.X, position.Y];
+		}
 
 		public static bool IsVisible(CPos position)
 		{

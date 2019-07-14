@@ -24,7 +24,7 @@ namespace WarriorsSnuggery
 
 		// Map Information
 		public MPos Bounds { get; private set; }
-		public MPos Mid { get { return Bounds / new MPos(2, 2); } }
+		public MPos Center { get { return Bounds / new MPos(2, 2); } }
 		public MPos DefaultEdgeDistance { get { return Bounds / new MPos(8, 8); } }
 		public CPos PlayerSpawn;
 		public MPos Exit { get; private set; }
@@ -32,6 +32,8 @@ namespace WarriorsSnuggery
 		bool[,] ActorSpawnPositions;
 		bool[,] Used;
 		int[,] TerrainGenerationArray;
+
+		int[,] TilesWithAssignedGenerator;
 
 		public Map(World world, MapType type, int seed, int level, int difficulty)
 		{
@@ -52,6 +54,7 @@ namespace WarriorsSnuggery
 			createGroundBase();
 
 			Used = new bool[Bounds.X, Bounds.Y];
+			TilesWithAssignedGenerator = new int[Bounds.X, Bounds.Y];
 			ActorSpawnPositions = new bool[Bounds.X, Bounds.Y];
 
 			// Important Parts
@@ -59,7 +62,7 @@ namespace WarriorsSnuggery
 			{
 				var input = RuleReader.Read(!Type.FromSave ? FileExplorer.FindPath(FileExplorer.Maps, node.Key, ".yaml") : FileExplorer.Saves, node.Key + ".yaml");
 
-				loadPiece(input.ToArray(), node.Value, true);
+				LoadPiece(input.ToArray(), node.Value, true);
 			}
 
 			// mark tiles that don't allow placing pieces
@@ -82,9 +85,14 @@ namespace WarriorsSnuggery
 				createExit(random);
 			}
 
-			foreach (var path in Type.PathGeneration)
+			foreach (var path in Type.PathGeneration) // TODO use ID order
 			{
 				var generator = new PathGenerator(random, this, world, path);
+				generator.Generate();
+			}
+			foreach (var grid in Type.GridGeneration)
+			{
+				var generator = new GridGenerator(random, this, world, grid);
 				generator.Generate();
 			}
 
@@ -106,15 +114,7 @@ namespace WarriorsSnuggery
 			//	}
 			//}
 			MapPrinter.PrintMapGeneration("debug", 8, TerrainGenerationArray, Used);
-		}
-
-		void createEnemyWave(Random random, EnemyWaveGenerationType type)
-		{
-			var position = MapUtils.RandomPositionInMap(random, 5, Bounds);
-			for (int i = 0; i < type.Types.Length; i++)
-			{
-				world.Add(ActorCreator.Create(world, type.Types[i], position.ToCPos() + new CPos(0, i * 1024, 0), 1, true));
-			}
+			// TODO dispose all unneeded elements from map generation (like the arrays)
 		}
 
 		void createEntry(Random random)
@@ -132,7 +132,7 @@ namespace WarriorsSnuggery
 				var quarter = spawnArea / new MPos(4, 4);
 				var pos = half + new MPos(random.Next(quarter.X) - quarter.X / 2, random.Next(quarter.Y) - quarter.Y / 2);
 
-				loadPiece(piece.ToArray(), pos, true, true);
+				LoadPiece(piece.ToArray(), pos, true, true);
 			}
 		}
 
@@ -163,7 +163,7 @@ namespace WarriorsSnuggery
 					break;
 			}
 
-			while (!loadPiece(piece.ToArray(), pos))
+			while (!LoadPiece(piece.ToArray(), pos))
 			{
 				spawnArea = Bounds - size;
 				pos = MPos.Zero;
@@ -200,7 +200,7 @@ namespace WarriorsSnuggery
 
 			var random = new Random(Seed);
 
-			float[] noise = null;
+			float[] noise;
 			switch (Type.BaseTerrainGeneration.GenerationType)
 			{
 				case GenerationType.CLOUDS:
@@ -335,7 +335,7 @@ namespace WarriorsSnuggery
 			}
 		}
 
-		bool loadPiece(MiniTextNode[] nodes, MPos position, bool important = false, bool playerSpawn = false)
+		public bool LoadPiece(MiniTextNode[] nodes, MPos position, bool important = false, bool playerSpawn = false)
 		{
 			var piece = Piece.LoadPiece(nodes);
 
@@ -389,7 +389,7 @@ namespace WarriorsSnuggery
 
 		public void Save(string directory, string name)
 		{
-			SaveFile(directory + name + @"/map.yaml", name);
+			SaveFile(directory + @"maps/"+ name + ".yaml", name);
 		}
 
 		public void SaveFile(string file, string name)

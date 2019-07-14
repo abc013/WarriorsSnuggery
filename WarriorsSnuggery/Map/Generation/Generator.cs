@@ -9,7 +9,7 @@ namespace WarriorsSnuggery.Maps
 		protected readonly Map map;
 		protected readonly World world;
 
-		protected readonly bool[,] dirtyCells;
+		protected bool[,] dirtyCells;
 
 		protected MapGenerator(Random random, Map map, World world)
 		{
@@ -23,5 +23,6 @@ namespace WarriorsSnuggery.Maps
 
 		protected abstract void MarkDirty();
 		protected abstract void DrawDirty();
+		protected abstract void ClearDirty();
 	}
 }

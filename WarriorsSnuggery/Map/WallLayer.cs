@@ -16,8 +16,8 @@ namespace WarriorsSnuggery
 
 		public void SetMapSize(MPos size)
 		{
-			Size = new MPos(size.X * 2 + 1, size.Y + 1);
 			Dispose();
+			Size = new MPos((size.X + 1) * 2 + 1, (size.Y + 1) + 1);
 			Walls = new Wall[Size.X, Size.Y];
 		}
 
