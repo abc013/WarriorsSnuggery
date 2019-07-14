@@ -21,7 +21,7 @@ namespace WarriorsSnuggery.Maps
 
 		public override void Generate()
 		{
-			var spawn = map.Center - new MPos(info.MinimumDimensions, info.MinimumDimensions);
+			var spawn = info.FillMap ? MPos.Zero : map.Center - new MPos(info.MinimumDimensions, info.MinimumDimensions);
 			if (spawn.X < 0)
 			{
 				spawn = new MPos(0, spawn.Y);
@@ -31,7 +31,7 @@ namespace WarriorsSnuggery.Maps
 				spawn = new MPos(spawn.X, 0);
 			}
 			// TODO use Minimum and Maximum
-			var bounds = new MPos(random.Next(info.MaximumDimensions - info.MinimumDimensions) + info.MinimumDimensions, random.Next(info.MaximumDimensions - info.MinimumDimensions) + info.MinimumDimensions);
+			var bounds = info.FillMap ? map.Bounds : new MPos(random.Next(info.MaximumDimensions - info.MinimumDimensions) + info.MinimumDimensions, random.Next(info.MaximumDimensions - info.MinimumDimensions) + info.MinimumDimensions);
 			if (spawn.X + bounds.X >= map.Bounds.X)
 			{
 				bounds = new MPos(map.Bounds.X - spawn.X, bounds.Y);
@@ -204,6 +204,9 @@ namespace WarriorsSnuggery.Maps
 		[Desc("Maximum dimensions of the grid in tiles.")]
 		public readonly int MaximumDimensions = 64;
 
+		[Desc("Dimensions fit the map dimensions.")]
+		public readonly bool FillMap = false;
+
 		[Desc("Sets the Generator used for generating roads.", "Does not generate any roads when the ID is incorrect.")]
 		public readonly int PathGeneratorID = 0;
 
@@ -223,7 +226,7 @@ namespace WarriorsSnuggery.Maps
 		}
 	}
 
-	class PieceCell
+	struct PieceCell
 	{
 		public readonly MPos Position;
 		public readonly MPos Size;
@@ -285,7 +288,7 @@ namespace WarriorsSnuggery.Maps
 		}
 	}
 
-	class Cell
+	struct Cell
 	{
 		public readonly int Depth;
 

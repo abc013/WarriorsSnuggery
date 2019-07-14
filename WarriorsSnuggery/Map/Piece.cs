@@ -110,12 +110,13 @@ namespace WarriorsSnuggery.Maps
 			// generate Walls TODO
 			if (wallData.Length != 0)
 			{
-				for (int y = position.Y; y < (Size.Y + position.Y); y++)
+				for (int y = position.Y; y < (Size.Y + 1 + position.Y); y++)
 				{
-					for (int x = position.X * 2; x < (Size.X + position.X) * 2; x++)
+					for (int x = position.X * 2; x < (Size.X + 1 + position.X) * 2; x++)
 					{
-						if (wallData[(y - position.Y) * Size.X * 2 + (x - position.X * 2)] >= 0)
-							world.WallLayer.Set(WallCreator.Create(new WPos(x, y, 0), wallData[(y - position.Y) * Size.X * 2 + (x - position.X * 2)]));
+						var dataPos = (y - position.Y) * (Size.X + 1) * 2 + (x - position.X * 2);
+						if (wallData[dataPos] >= 0)
+							world.WallLayer.Set(WallCreator.Create(new WPos(x, y, 0), wallData[dataPos]));
 						else
 							world.WallLayer.Remove(new MPos(x, y));
 					}
