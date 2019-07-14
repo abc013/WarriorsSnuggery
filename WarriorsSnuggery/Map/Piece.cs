@@ -107,7 +107,7 @@ namespace WarriorsSnuggery.Maps
 				}
 			}
 
-			// generate Walls
+			// generate Walls TODO
 			if (wallData.Length != 0)
 			{
 				for (int y = position.Y; y < (Size.Y + position.Y); y++)

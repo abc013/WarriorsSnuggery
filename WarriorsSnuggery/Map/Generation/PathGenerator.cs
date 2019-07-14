@@ -39,6 +39,14 @@ namespace WarriorsSnuggery.Maps
 
 			MarkDirty();
 			DrawDirty();
+			ClearDirty();
+		}
+
+		public void Generate(bool[,] dirt)
+		{
+			dirtyCells = dirt;
+			DrawDirty();
+			ClearDirty();
 		}
 
 		void generateSingle(MPos start, MPos end)
@@ -101,13 +109,15 @@ namespace WarriorsSnuggery.Maps
 
 		protected override void MarkDirty()
 		{
+			var width = (int) Math.Floor(type.Width / 2f);
+			var width2 = type.Width - width;
 			foreach (var point in points)
 			{
-				for (int x = point.X - type.Width + 1; x < point.X + type.Width - 1; x++)
+				for (int x = point.X - width; x < point.X + width2; x++)
 				{
 					if (x >= 0 && x < map.Bounds.X)
 					{
-						for (int y = point.Y - type.Width + 1; y < point.Y + type.Width - 1; y++)
+						for (int y = point.Y - width; y < point.Y + width2; y++)
 						{
 							if (y >= 0 && y < map.Bounds.Y)
 							{
@@ -121,7 +131,7 @@ namespace WarriorsSnuggery.Maps
 
 		protected override void DrawDirty()
 		{
-			float distBetween = MPos.Zero.DistTo(map.Mid) / type.RuinousFalloff.Length;
+			float distBetween = MPos.Zero.DistTo(map.Center) / type.RuinousFalloff.Length;
 			for (int x = 0; x < map.Bounds.X; x++)
 			{
 				for (int y = 0; y < map.Bounds.Y; y++)
@@ -133,7 +143,7 @@ namespace WarriorsSnuggery.Maps
 					var ruinousLength = type.RuinousFalloff.Length;
 					if (ruinousLength > 1)
 					{
-						var dist = new MPos(x, y).DistTo(map.Mid);
+						var dist = new MPos(x, y).DistTo(map.Center);
 
 						var low = (int)Math.Floor(dist / distBetween);
 						var high = (int)Math.Ceiling(dist / distBetween);
@@ -156,6 +166,11 @@ namespace WarriorsSnuggery.Maps
 					}
 				}
 			}
+		}
+
+		protected override void ClearDirty()
+		{
+			dirtyCells = new bool[map.Bounds.X, map.Bounds.Y];
 		}
 	}
 
