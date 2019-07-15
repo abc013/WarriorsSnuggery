@@ -5,7 +5,7 @@ namespace WarriorsSnuggery.Maps
 {
 	public class PathGenerator : MapGenerator
 	{
-		readonly PathGeneratorInfo type;
+		readonly PathGeneratorInfo info;
 
 		readonly float[,] noise;
 
@@ -13,7 +13,7 @@ namespace WarriorsSnuggery.Maps
 
 		public PathGenerator(Random random, Map map, World world, PathGeneratorInfo type) : base(random, map, world)
 		{
-			this.type = type;
+			this.info = type;
 
 			noise = new float[map.Bounds.X, map.Bounds.Y];
 		}
@@ -28,11 +28,11 @@ namespace WarriorsSnuggery.Maps
 					noise[x, y] = rawnoise[y * map.Bounds.X + x];
 				}
 			}
-			var count = random.Next(type.MaxCount - type.MinCount) + type.MinCount;
+			var count = random.Next(info.MaxCount - info.MinCount) + info.MinCount;
 			for (int i = 0; i < count; i++)
 			{
-				MPos start = type.FromEntrance ? map.PlayerSpawn.ToMPos() : MapUtils.RandomPositionInMap(random, 1, map.Bounds);
-				MPos end = type.ToExit ? map.Exit : MapUtils.RandomPositionFromEdge(random, 1, map.Bounds);
+				MPos start = info.FromEntrance ? map.PlayerSpawn.ToMPos() : MapUtils.RandomPositionInMap(random, 1, map.Bounds);
+				MPos end = info.ToExit ? map.Exit : MapUtils.RandomPositionFromEdge(random, 1, map.Bounds);
 
 				generateSingle(start, end);
 			}
@@ -62,7 +62,7 @@ namespace WarriorsSnuggery.Maps
 				var y = (Math.Abs(optY) > 0.25f ? 1 : 0) * Math.Sign(optY);
 
 				// Maximal abeviation of +-45°
-				if (type.Curvy)
+				if (info.Curvy)
 				{
 					MPos a1 = MPos.Zero;
 					MPos a2 = MPos.Zero;
@@ -109,8 +109,8 @@ namespace WarriorsSnuggery.Maps
 
 		protected override void MarkDirty()
 		{
-			var width = (int) Math.Floor(type.Width / 2f);
-			var width2 = type.Width - width;
+			var width = (int) Math.Floor(info.Width / 2f);
+			var width2 = info.Width - width;
 			foreach (var point in points)
 			{
 				for (int x = point.X - width; x < point.X + width2; x++)
@@ -121,7 +121,10 @@ namespace WarriorsSnuggery.Maps
 						{
 							if (y >= 0 && y < map.Bounds.Y)
 							{
-								dirtyCells[x, y] = true;
+								if (map.AcquireCell(new MPos(x, y), info.ID))
+								{
+									dirtyCells[x, y] = true;
+								}
 							}
 						}
 					}
@@ -131,7 +134,7 @@ namespace WarriorsSnuggery.Maps
 
 		protected override void DrawDirty()
 		{
-			float distBetween = MPos.Zero.DistTo(map.Center) / type.RuinousFalloff.Length;
+			float distBetween = MPos.Zero.DistTo(map.Center) / info.RuinousFalloff.Length;
 			for (int x = 0; x < map.Bounds.X; x++)
 			{
 				for (int y = 0; y < map.Bounds.Y; y++)
@@ -139,8 +142,8 @@ namespace WarriorsSnuggery.Maps
 					if (!dirtyCells[x, y])
 						continue;
 
-					var ruinous = type.Ruinous;
-					var ruinousLength = type.RuinousFalloff.Length;
+					var ruinous = info.Ruinous;
+					var ruinousLength = info.RuinousFalloff.Length;
 					if (ruinousLength > 1)
 					{
 						var dist = new MPos(x, y).DistTo(map.Center);
@@ -152,17 +155,17 @@ namespace WarriorsSnuggery.Maps
 
 						var percent = (dist - low) / dist;
 
-						ruinous += type.RuinousFalloff[low] * (1 - percent) + type.RuinousFalloff[high] * percent;
+						ruinous += info.RuinousFalloff[low] * (1 - percent) + info.RuinousFalloff[high] * percent;
 					}
 					else
 					{
-						ruinous += type.RuinousFalloff[0];
+						ruinous += info.RuinousFalloff[0];
 					}
 
 					if (random.NextDouble() > ruinous)
 					{
-						var ran = random.Next(type.Types.Length);
-						world.TerrainLayer.Set(TerrainCreator.Create(world, new WPos(x, y, 0), type.Types[ran]));
+						var ran = random.Next(info.Types.Length);
+						world.TerrainLayer.Set(TerrainCreator.Create(world, new WPos(x, y, 0), info.Types[ran]));
 					}
 				}
 			}
@@ -175,10 +178,10 @@ namespace WarriorsSnuggery.Maps
 	}
 
 	[Desc("Generator used for making paths.")]
-	public sealed class PathGeneratorInfo
+	public sealed class PathGeneratorInfo : MapGeneratorInfo
 	{
 		[Desc("Unique ID for the generator.")]
-		public readonly int ID;
+		public readonly new int ID;
 
 		[Desc("Width of the path.")]
 		public readonly int Width = 2;
@@ -203,10 +206,15 @@ namespace WarriorsSnuggery.Maps
 		[Desc("If true, the road will not go as straight line but a curvy one.")]
 		public readonly bool Curvy = true;
 
-		public PathGeneratorInfo(int id, MiniTextNode[] nodes)
+		public PathGeneratorInfo(int id, MiniTextNode[] nodes) : base(id)
 		{
 			ID = id;
 			Loader.PartLoader.SetValues(this, nodes);
+		}
+
+		public override MapGenerator GetGenerator(Random random, Map map, World world)
+		{
+			return new PathGenerator(random, map, world, this);
 		}
 	}
 }

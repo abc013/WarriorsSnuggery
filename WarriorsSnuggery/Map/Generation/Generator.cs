@@ -25,4 +25,16 @@ namespace WarriorsSnuggery.Maps
 		protected abstract void DrawDirty();
 		protected abstract void ClearDirty();
 	}
+
+	public abstract class MapGeneratorInfo
+	{
+		public readonly int ID;
+		
+		public MapGeneratorInfo(int id)
+		{
+			ID = id;
+		}
+
+		public abstract MapGenerator GetGenerator(Random random, Map map, World world);
+	}
 }
