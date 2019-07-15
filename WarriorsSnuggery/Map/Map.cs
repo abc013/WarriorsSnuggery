@@ -62,7 +62,7 @@ namespace WarriorsSnuggery
 			{
 				var input = RuleReader.Read(!Type.FromSave ? FileExplorer.FindPath(FileExplorer.Maps, node.Key, ".yaml") : FileExplorer.Saves, node.Key + ".yaml");
 
-				LoadPiece(input.ToArray(), node.Value, true);
+				LoadPiece(input.ToArray(), node.Value, 100, true);
 			}
 
 			// mark tiles that don't allow placing pieces
@@ -85,14 +85,9 @@ namespace WarriorsSnuggery
 				createExit(random);
 			}
 
-			foreach (var path in Type.PathGeneration) // TODO use ID order
+			foreach (var info in Type.GeneratorInfos)
 			{
-				var generator = new PathGenerator(random, this, world, path);
-				generator.Generate();
-			}
-			foreach (var grid in Type.GridGeneration)
-			{
-				var generator = new GridGenerator(random, this, world, grid);
+				var generator = info.GetGenerator(random, this, world);
 				generator.Generate();
 			}
 
@@ -117,6 +112,15 @@ namespace WarriorsSnuggery
 			// TODO dispose all unneeded elements from map generation (like the arrays)
 		}
 
+		public bool AcquireCell(MPos pos, int id) // TODO
+		{
+			if (TilesWithAssignedGenerator[pos.X, pos.Y] > id)
+				return false;
+
+			TilesWithAssignedGenerator[pos.X, pos.Y] = id;
+			return true;
+		}
+
 		void createEntry(Random random)
 		{
 			if (Type.Entrances.Any())
@@ -132,7 +136,7 @@ namespace WarriorsSnuggery
 				var quarter = spawnArea / new MPos(4, 4);
 				var pos = half + new MPos(random.Next(quarter.X) - quarter.X / 2, random.Next(quarter.Y) - quarter.Y / 2);
 
-				LoadPiece(piece.ToArray(), pos, true, true);
+				LoadPiece(piece.ToArray(), pos, 100, true, true);
 			}
 		}
 
@@ -163,7 +167,7 @@ namespace WarriorsSnuggery
 					break;
 			}
 
-			while (!LoadPiece(piece.ToArray(), pos))
+			while (!LoadPiece(piece.ToArray(), pos, 0, true))
 			{
 				spawnArea = Bounds - size;
 				pos = MPos.Zero;
@@ -335,7 +339,7 @@ namespace WarriorsSnuggery
 			}
 		}
 
-		public bool LoadPiece(MiniTextNode[] nodes, MPos position, bool important = false, bool playerSpawn = false)
+		public bool LoadPiece(MiniTextNode[] nodes, MPos position, int ID, bool important = false, bool playerSpawn = false)
 		{
 			var piece = Piece.LoadPiece(nodes);
 
@@ -351,7 +355,7 @@ namespace WarriorsSnuggery
 				{
 					for (int x = position.X; x < (piece.Size.X + position.X); x++)
 					{
-						if (Used[x, y])
+						if (Used[x, y] || !AcquireCell(new MPos(x, y), ID))
 						{
 							Log.WriteDebug(string.Format("Piece '{0}' at Position '{1}': Position is already occupied.", piece.Name, position));
 							return false;

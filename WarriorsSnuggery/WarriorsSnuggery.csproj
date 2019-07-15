@@ -224,7 +224,6 @@
     <Content Include="Where%27sWSgoing.txt" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Map\Generator\" />
     <Folder Include="ProfilingSessions\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

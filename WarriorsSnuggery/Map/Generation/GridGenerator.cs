@@ -120,7 +120,10 @@ namespace WarriorsSnuggery.Maps
 				{
 					for (int y = cell.Position.Y; y < cell.Position.Y + cell.Size.Y; y++)
 					{
-						dirtyCells[x, y] = true;
+						if (map.AcquireCell(new MPos(x, y), info.ID))
+						{
+							dirtyCells[x, y] = true;
+						}
 						road[x, y] = false;
 					}
 				}
@@ -130,10 +133,10 @@ namespace WarriorsSnuggery.Maps
 		protected override void DrawDirty()
 		{
 			// Roads
-			var type = map.Type.PathGeneration.FirstOrDefault(i => i.ID == info.PathGeneratorID);
+			var type = map.Type.GeneratorInfos.Where(i => i.ID == info.PathGeneratorID && i is PathGeneratorInfo).FirstOrDefault();
 			if (type != null)
 			{
-				var generator = new PathGenerator(random, map, world, type);
+				var generator = new PathGenerator(random, map, world, type as PathGeneratorInfo);
 				generator.Generate(road);
 			}
 			// Pieces
@@ -153,7 +156,7 @@ namespace WarriorsSnuggery.Maps
 				else
 					toUse = getPiece(info.Tile2x2);
 
-				map.LoadPiece(toUse, piece.Position);
+				map.LoadPiece(toUse, piece.Position, info.ID);
 			}
 		}
 
@@ -175,10 +178,10 @@ namespace WarriorsSnuggery.Maps
 	}
 
 	[Desc("Generator used for generating grid-based towns or structures.")]
-	public sealed class GridGeneratorInfo
+	public sealed class GridGeneratorInfo : MapGeneratorInfo
 	{
 		[Desc("Unique ID for the generator.")]
-		public readonly int ID;
+		public readonly new int ID;
 
 		[Desc("Size of the Cells in the grid.", "Must be a multiplex of GridSize.")]
 		public readonly int CellSize = 4;
@@ -219,10 +222,15 @@ namespace WarriorsSnuggery.Maps
 		[Desc("2x2 Dimension tiles.")]
 		public readonly string[] Tile2x2;
 
-		public GridGeneratorInfo(int id, MiniTextNode[] nodes)
+		public GridGeneratorInfo(int id, MiniTextNode[] nodes) : base(id)
 		{
 			ID = id;
 			Loader.PartLoader.SetValues(this, nodes);
+		}
+
+		public override MapGenerator GetGenerator(Random random, Map map, World world)
+		{
+			return new GridGenerator(random, map, world, this);
 		}
 	}
 
