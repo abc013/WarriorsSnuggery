@@ -60,21 +60,10 @@ namespace WarriorsSnuggery.Maps
 						{
 							try
 							{
-								if (actor.Children.Count > 0) // New Actor System
-								{
-									var id = int.Parse(actor.Key);
-									var position = actor.Convert<CPos>();
+								var id = int.Parse(actor.Key);
+								var position = actor.Convert<CPos>();
 
-									actorList.Add(new ActorNode(id, position, actor.Children.ToArray()));
-								}
-								else // Old Actor System
-								{
-									var split = actor.Key.Split(';');
-									var type = split[0];
-									var team = split.Length > 1 ? byte.Parse(split[1]) : (byte)0;
-									var bot = split.Length > 1 ? split[2].Equals("true") : false;
-									actorList.Add(new ActorNode(0, actor.Convert<CPos>(), type, team, 1f, bot));
-								}
+								actorList.Add(new ActorNode(id, position, actor.Children.ToArray()));
 							}
 							catch (Exception e)
 							{
@@ -119,7 +108,7 @@ namespace WarriorsSnuggery.Maps
 						var dataPos = (y - position.Y) * (Size.X + 1) * 2 + (x - position.X * 2);
 						if (wallData[dataPos] >= 0)
 							world.WallLayer.Set(WallCreator.Create(new WPos(x, y, 0), wallData[dataPos]));
-						else if (x != position.X * 2 && y != position.Y && y != maxY - 1 && x != maxX - 1)
+						else if (world.WallLayer.Walls[x, y] != null && x != position.X * 2 && y != position.Y && y != maxY - 1 && !(x >= maxX - 2))
 							world.WallLayer.Remove(new MPos(x, y));
 					}
 				}

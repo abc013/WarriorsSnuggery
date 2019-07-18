@@ -134,6 +134,7 @@
     <Compile Include="Map\ActorNode.cs" />
     <Compile Include="Map\EnemyWaveGenerationType.cs" />
     <Compile Include="Map\Generation\GridGenerator.cs" />
+    <Compile Include="Map\Generation\ImportantPieceGenerator.cs" />
     <Compile Include="Map\Generation\PathGenerator.cs" />
     <Compile Include="Map\Generation\Generator.cs" />
     <Compile Include="Map\Generation\PieceGenerator.cs" />

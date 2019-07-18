@@ -27,7 +27,7 @@ namespace WarriorsSnuggery
 		public MPos Center { get { return Bounds / new MPos(2, 2); } }
 		public MPos DefaultEdgeDistance { get { return Bounds / new MPos(8, 8); } }
 		public CPos PlayerSpawn;
-		public MPos Exit { get; private set; }
+		public MPos Exit;
 
 		bool[,] ActorSpawnPositions;
 		bool[,] Used;
@@ -50,6 +50,12 @@ namespace WarriorsSnuggery
 		public void Load()
 		{
 			Camera.SetBounds(Bounds);
+			world.TerrainLayer.SetMapDimensions(Bounds);
+			world.WallLayer.SetMapSize(Bounds);
+			world.PhysicsLayer.SetMapDimensions(Bounds);
+			world.ShroudLayer.SetMapDimensions(Bounds, Settings.MaxTeams, Type.DefaultType == GameType.MAINMENU || Type.DefaultType == GameType.MENU || Type.DefaultType == GameType.EDITOR || Type.DefaultType == GameType.TUTORIAL);
+
+			VisibilitySolver.SetMapDimensions(Bounds, world.ShroudLayer);
 
 			createGroundBase();
 
@@ -76,38 +82,29 @@ namespace WarriorsSnuggery
 				}
 			}
 
-			// Entrances
-			createEntry(random);
-
-			// Exits
-			if (world.Game.Mode == GameMode.FIND_EXIT && Type.Exits.Any())
-			{
-				createExit(random);
-			}
-
 			foreach (var info in Type.GeneratorInfos)
 			{
 				var generator = info.GetGenerator(random, this, world);
 				generator.Generate();
 			}
 
-			//for (int y = 0; y < Size.Y; y++)
-			//{
-			//	for (int x = 0; x < Size.X; x++)
-			//	{
-			//		if (ActorSpawnPositions[x, y])
-			//			continue;
+			for (int x = 0; x < Bounds.X; x++)
+			{
+				for (int y = 0; y < Bounds.Y; y++)
+				{
+					if (ActorSpawnPositions[x, y])
+						continue;
 
-			//		var gen = TerrainGenerationArray[x, y];
-			//		var actors = gen == 0 ? Type.BaseTerrainGeneration.SpawnActors : Type.TerrainGeneration[gen - 1].SpawnActors;
-			//		foreach (var a in actors)
-			//		{
-			//			var ran = random.Next(100);
-			//			if (ran <= a.Value)
-			//				world.Add(ActorCreator.Create(world, a.Key, new CPos(1024 * x + random.Next(896) - 448, 1024 * y + random.Next(896) - 448, 0)));
-			//		}
-			//	}
-			//}
+					var gen = TerrainGenerationArray[x, y];
+					var actors = gen == 0 ? Type.BaseTerrainGeneration.SpawnActors : Type.TerrainGeneration[gen - 1].SpawnActors;
+					foreach (var a in actors)
+					{
+						var ran = random.Next(100);
+						if (ran <= a.Value)
+							world.Add(ActorCreator.Create(world, a.Key, new CPos(1024 * x + random.Next(896) - 448, 1024 * y + random.Next(896) - 448, 0)));
+					}
+				}
+			}
 			MapPrinter.PrintMapGeneration("debug", 8, TerrainGenerationArray, Used);
 			// TODO dispose all unneeded elements from map generation (like the arrays)
 		}
@@ -117,91 +114,13 @@ namespace WarriorsSnuggery
 			if (TilesWithAssignedGenerator[pos.X, pos.Y] > id)
 				return false;
 
+			ActorSpawnPositions[pos.X, pos.Y] = true; // TODO
 			TilesWithAssignedGenerator[pos.X, pos.Y] = id;
 			return true;
 		}
 
-		void createEntry(Random random)
-		{
-			if (Type.Entrances.Any())
-			{
-				// We are estimating here that the entrance tile won't be larger than 8x8.
-
-				var name = Type.RandomEntrance(random);
-				var piece = RuleReader.Read(FileExplorer.FindPath(FileExplorer.Maps, name, ".yaml"), name + ".yaml");
-				var size = pieceSize(piece);
-
-				var spawnArea = Bounds - size;
-				var half = spawnArea / new MPos(2, 2);
-				var quarter = spawnArea / new MPos(4, 4);
-				var pos = half + new MPos(random.Next(quarter.X) - quarter.X / 2, random.Next(quarter.Y) - quarter.Y / 2);
-
-				LoadPiece(piece.ToArray(), pos, 100, true, true);
-			}
-		}
-
-		void createExit(Random random)
-		{
-			// We are estimating here that the exit tile won't be larger than 8x8.
-			var name = Type.RandomExit(random);
-			var piece = RuleReader.Read(FileExplorer.FindPath(FileExplorer.Maps, name, ".yaml"), name + ".yaml");
-			var size = pieceSize(piece);
-
-			var spawnArea = Bounds - size;
-			var pos = MPos.Zero;
-			// Picking a random side, 0 = x, 1 = y, 2 = -x, 3 = -y;
-			var side = (byte)random.Next(4);
-			switch (side)
-			{
-				case 0:
-					pos = new MPos(random.Next(2), random.Next(spawnArea.X));
-					break;
-				case 1:
-					pos = new MPos(random.Next(spawnArea.Y), random.Next(2));
-					break;
-				case 2:
-					pos = new MPos(spawnArea.X - random.Next(2), random.Next(spawnArea.X));
-					break;
-				case 3:
-					pos = new MPos(random.Next(spawnArea.X), spawnArea.Y - random.Next(2));
-					break;
-			}
-
-			while (!LoadPiece(piece.ToArray(), pos, 0, true))
-			{
-				spawnArea = Bounds - size;
-				pos = MPos.Zero;
-				// Picking a random side, 0 = x, 1 = y, 2 = -x, 3 = -y;
-				side = (byte)random.Next(4);
-				switch (side)
-				{
-					case 0:
-						pos = new MPos(random.Next(2), random.Next(spawnArea.X));
-						break;
-					case 1:
-						pos = new MPos(random.Next(spawnArea.Y), random.Next(2));
-						break;
-					case 2:
-						pos = new MPos(spawnArea.X - random.Next(2), random.Next(spawnArea.X));
-						break;
-					case 3:
-						pos = new MPos(random.Next(spawnArea.X), spawnArea.Y - random.Next(2));
-						break;
-				}
-			}
-
-			Exit = pos + size / new MPos(2, 2);
-		}
-
 		void createGroundBase()
 		{
-			world.TerrainLayer.SetMapDimensions(Bounds);
-			world.WallLayer.SetMapSize(Bounds);
-			world.PhysicsLayer.SetMapDimensions(Bounds);
-			world.ShroudLayer.SetMapDimensions(Bounds, Settings.MaxTeams, Type.DefaultType == GameType.MAINMENU || Type.DefaultType == GameType.MENU || Type.DefaultType == GameType.EDITOR || Type.DefaultType == GameType.TUTORIAL);
-
-			VisibilitySolver.SetMapDimensions(Bounds, world.ShroudLayer);
-
 			var random = new Random(Seed);
 
 			float[] noise;
@@ -341,8 +260,11 @@ namespace WarriorsSnuggery
 
 		public bool LoadPiece(MiniTextNode[] nodes, MPos position, int ID, bool important = false, bool playerSpawn = false)
 		{
-			var piece = Piece.LoadPiece(nodes);
+			return GeneratePiece(Piece.LoadPiece(nodes), position, ID, important, playerSpawn);
+		}
 
+		public bool GeneratePiece(Piece piece, MPos position, int ID, bool important = false, bool playerSpawn = false)
+		{
 			if (!piece.IsInMap(position, Bounds))
 			{
 				Log.WriteDebug(string.Format("Piece '{0}' at Position '{1}' could not be created because it overlaps to the world's edge.", piece.Name, position));
@@ -357,7 +279,7 @@ namespace WarriorsSnuggery
 					{
 						if (Used[x, y] || !AcquireCell(new MPos(x, y), ID))
 						{
-							Log.WriteDebug(string.Format("Piece '{0}' at Position '{1}': Position is already occupied.", piece.Name, position));
+							Log.WriteDebug(string.Format("Tried to spawn piece '{0}' at position '{1}', but was already occupied.", piece.Name, position));
 							return false;
 						}
 					}
