@@ -26,9 +26,9 @@ MAP GENERATOR
 
 - Spawn of enemy waves
 - Implement the three gamemodes
-- Generate towns/flocks of fields
-- Pieces in blokcs and only on certain terrains
-- Labelling of generator blocks (like part system)
+- Generate towns/flocks of fields (DONE)
+- Pieces in blocks and only on certain terrains (DONE)
+- Labelling of generator blocks (like part system) (DONE)
 ----------------------------------------------------------------------------------------------
 RULE SYSTEM
 

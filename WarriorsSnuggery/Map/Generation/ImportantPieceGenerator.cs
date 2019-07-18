@@ -5,6 +5,8 @@ namespace WarriorsSnuggery.Maps
 	public class ImportantPieceGenerator : MapGenerator
 	{
 		readonly ImportantPieceGeneratorInfo info;
+
+		public Piece Piece;
 		public ImportantPieceGenerator(Random random, Map map, World world, ImportantPieceGeneratorInfo info) : base(random, map, world)
 		{
 			this.info = info;
@@ -13,37 +15,37 @@ namespace WarriorsSnuggery.Maps
 		public override void Generate()
 		{
 			var pieceIndex = info.Pieces[random.Next(info.Pieces.Length)];
-			var piece = Piece.LoadPiece(RuleReader.Read(FileExplorer.FindPath(FileExplorer.Maps, pieceIndex, ".yaml"), pieceIndex + ".yaml").ToArray());
+			Piece = Piece.LoadPiece(RuleReader.Read(FileExplorer.FindPath(FileExplorer.Maps, pieceIndex, ".yaml"), pieceIndex + ".yaml").ToArray());
 			switch(info.PositionType)
 			{
 				case PositionType.POSITION:
-					map.GeneratePiece(piece, info.Position, info.ID, true);
+					map.GeneratePiece(Piece, info.Position, info.ID, true);
 					break;
 				case PositionType.SPAWN:
-					spawnSpawn(piece);
+					spawnSpawn();
 					break;
 				case PositionType.EXIT:
-					exitSpawn(piece);
+					exitSpawn();
 					break;
 			}
 		}
 
-		void spawnSpawn(Piece piece)
+		void spawnSpawn()
 		{
-			var spawnArea = map.Bounds - piece.Size;
+			var spawnArea = map.Bounds - Piece.Size;
 			var half = spawnArea / new MPos(2, 2);
 			var eigth = spawnArea / new MPos(8, 8);
 			var pos = half + new MPos(random.Next(eigth.X) - eigth.X / 2, random.Next(eigth.Y) - eigth.Y / 2);
 
-			map.GeneratePiece(piece, pos, 100, true, true);
+			map.GeneratePiece(Piece, pos, 100, true, true);
 		}
 
-		void exitSpawn(Piece piece)
+		void exitSpawn()
 		{
-			var spawnArea = map.Bounds - piece.Size;
+			var spawnArea = map.Bounds - Piece.Size;
 			var pos = new MPos(-1, -1);
 
-			while (pos.X < 0 || !map.GeneratePiece(piece, pos, 0, true))
+			while (pos.X < 0 || !map.GeneratePiece(Piece, pos, 0, true))
 			{
 				// Picking a random side, 0 = x, 1 = y, 2 = -x, 3 = -y;
 				var side = (byte)random.Next(4);
@@ -64,7 +66,7 @@ namespace WarriorsSnuggery.Maps
 				}
 			}
 
-			map.Exit = pos + piece.Size / new MPos(2, 2);
+			map.Exit = pos + Piece.Size / new MPos(2, 2);
 		}
 
 		protected override void MarkDirty()
