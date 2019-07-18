@@ -9,17 +9,17 @@ namespace WarriorsSnuggery.Maps
 		public static readonly MPos MinimumMapBounds = new MPos(16, 16);
 		public static readonly MPos MaximumMapBounds = new MPos(64, 64);
 
-		public static MPos[] FindValuesInArea(MPos position, int searchRadius, int[] value, int[,] array, MPos size)
+		public static MPos[] FindValuesInArea(MPos position, int searchRadius, int[] value, int[,] array, MPos bounds)
 		{
 			var positions = new List<MPos>();
 			for (var x = position.X - searchRadius; x < position.X + searchRadius; x++)
 			{
-				if (x < 0 || x >= size.X)
+				if (x < 0 || x >= bounds.X)
 					continue;
 
 				for (var y = position.Y - searchRadius; y < position.Y + searchRadius; y++)
 				{
-					if (y < 0 || y >= size.Y)
+					if (y < 0 || y >= bounds.Y)
 						continue;
 
 					if (value.Contains(array[x, y]))
@@ -30,15 +30,15 @@ namespace WarriorsSnuggery.Maps
 			return positions.ToArray();
 		}
 
-		public static MPos RandomPositionInMap(Random random, int distanceToMapEdge, MPos size)
+		public static MPos RandomPositionInMap(Random random, int distanceToMapEdge, MPos bounds)
 		{
-			var x = distanceToMapEdge + random.Next(size.X - distanceToMapEdge * 2);
-			var y = distanceToMapEdge + random.Next(size.Y - distanceToMapEdge * 2);
+			var x = distanceToMapEdge + random.Next(bounds.X - distanceToMapEdge * 2);
+			var y = distanceToMapEdge + random.Next(bounds.Y - distanceToMapEdge * 2);
 
 			return new MPos(x, y);
 		}
 
-		public static MPos RandomPositionFromEdge(Random random, int distanceFromMapEdge, MPos size)
+		public static MPos RandomPositionFromEdge(Random random, int distanceFromMapEdge, MPos bounds)
 		{
 			MPos pos = MPos.Zero;
 
@@ -46,16 +46,16 @@ namespace WarriorsSnuggery.Maps
 			switch (side)
 			{
 				case 0:
-					pos = new MPos(distanceFromMapEdge, distanceFromMapEdge + random.Next(size.Y - distanceFromMapEdge * 2));
+					pos = new MPos(distanceFromMapEdge, distanceFromMapEdge + random.Next(bounds.Y - distanceFromMapEdge * 2));
 					break;
 				case 1:
-					pos = new MPos(distanceFromMapEdge + random.Next(size.X - distanceFromMapEdge * 2), distanceFromMapEdge);
+					pos = new MPos(distanceFromMapEdge + random.Next(bounds.X - distanceFromMapEdge * 2), distanceFromMapEdge);
 					break;
 				case 2:
-					pos = new MPos(size.X - distanceFromMapEdge - 1, distanceFromMapEdge + random.Next(size.Y - distanceFromMapEdge * 2));
+					pos = new MPos(bounds.X - distanceFromMapEdge - 1, distanceFromMapEdge + random.Next(bounds.Y - distanceFromMapEdge * 2));
 					break;
 				case 3:
-					pos = new MPos(distanceFromMapEdge + random.Next(size.X - distanceFromMapEdge * 2), size.Y - distanceFromMapEdge - 1);
+					pos = new MPos(distanceFromMapEdge + random.Next(bounds.X - distanceFromMapEdge * 2), bounds.Y - distanceFromMapEdge - 1);
 					break;
 			}
 

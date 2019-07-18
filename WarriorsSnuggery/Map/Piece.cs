@@ -107,17 +107,19 @@ namespace WarriorsSnuggery.Maps
 				}
 			}
 
-			// generate Walls TODO
+			// generate Walls
 			if (wallData.Length != 0)
 			{
-				for (int y = position.Y; y < (Size.Y + 1 + position.Y); y++)
+				var maxY = (Size.Y + 1 + position.Y);
+				var maxX = (Size.X + 1 + position.X) * 2;
+				for (int y = position.Y; y < maxY; y++)
 				{
-					for (int x = position.X * 2; x < (Size.X + 1 + position.X) * 2; x++)
+					for (int x = position.X * 2; x < maxX; x++)
 					{
 						var dataPos = (y - position.Y) * (Size.X + 1) * 2 + (x - position.X * 2);
 						if (wallData[dataPos] >= 0)
 							world.WallLayer.Set(WallCreator.Create(new WPos(x, y, 0), wallData[dataPos]));
-						else
+						else if (x != position.X * 2 && y != position.Y && y != maxY - 1 && x != maxX - 1)
 							world.WallLayer.Remove(new MPos(x, y));
 					}
 				}

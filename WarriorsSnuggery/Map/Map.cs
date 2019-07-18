@@ -117,7 +117,7 @@ namespace WarriorsSnuggery
 			// TODO dispose all unneeded elements from map generation (like the arrays)
 		}
 
-		public bool AcquireCell(MPos pos, int id) // TODO
+		public bool AcquireCell(MPos pos, int id)
 		{
 			if (TilesWithAssignedGenerator[pos.X, pos.Y] > id)
 				return false;
