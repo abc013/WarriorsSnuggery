@@ -30,7 +30,7 @@ namespace WarriorsSnuggery.Maps
 			{
 				spawn = new MPos(spawn.X, 0);
 			}
-			// TODO use Minimum and Maximum
+
 			var bounds = info.FillMap ? map.Bounds : new MPos(random.Next(info.MaximumDimensions - info.MinimumDimensions) + info.MinimumDimensions, random.Next(info.MaximumDimensions - info.MinimumDimensions) + info.MinimumDimensions);
 			if (spawn.X + bounds.X >= map.Bounds.X)
 			{
@@ -205,7 +205,7 @@ namespace WarriorsSnuggery.Maps
 		[Desc("Minimum dimensions of the grid in tiles.")]
 		public readonly int MinimumDimensions = 16;
 		[Desc("Maximum dimensions of the grid in tiles.")]
-		public readonly int MaximumDimensions = 64;
+		public readonly int MaximumDimensions = 48;
 
 		[Desc("Dimensions fit the map dimensions.")]
 		public readonly bool FillMap = false;

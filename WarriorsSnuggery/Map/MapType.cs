@@ -190,6 +190,10 @@ namespace WarriorsSnuggery.Maps
 							genInfos.Add(new GridGeneratorInfo(child.Convert<int>(), child.Children.ToArray()));
 
 							break;
+						case "PieceGeneration":
+							genInfos.Add(new PieceGeneratorInfo(child.Convert<int>(), child.Children.ToArray()));
+
+							break;
 						case "StructureGeneration":
 							structureGen.Add(StructureGenerationType.GetType(child.Convert<int>(), child.Children.ToArray()));
 
