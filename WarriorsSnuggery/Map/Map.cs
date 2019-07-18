@@ -29,7 +29,7 @@ namespace WarriorsSnuggery
 		public CPos PlayerSpawn;
 		public MPos Exit;
 
-		bool[,] ActorSpawnPositions;
+		bool[,] ActorSpawnPositions; // TODO remove
 		bool[,] Used;
 		int[,] TerrainGenerationArray;
 
@@ -64,11 +64,11 @@ namespace WarriorsSnuggery
 			ActorSpawnPositions = new bool[Bounds.X, Bounds.Y];
 
 			// Important Parts
-			foreach (var node in Type.ImportantParts)
+			if(!string.IsNullOrEmpty(Type.OverridePiece))
 			{
-				var input = RuleReader.Read(!Type.FromSave ? FileExplorer.FindPath(FileExplorer.Maps, node.Key, ".yaml") : FileExplorer.Saves, node.Key + ".yaml");
+				var input = RuleReader.Read(!Type.FromSave ? FileExplorer.FindPath(FileExplorer.Maps, Type.OverridePiece, ".yaml") : FileExplorer.Saves, Type.OverridePiece + ".yaml");
 
-				LoadPiece(input.ToArray(), node.Value, 100, true);
+				LoadPiece(input.ToArray(), MPos.Zero, 100, true);
 			}
 
 			// mark tiles that don't allow placing pieces
@@ -105,7 +105,7 @@ namespace WarriorsSnuggery
 					}
 				}
 			}
-			MapPrinter.PrintMapGeneration("debug", 8, TerrainGenerationArray, Used);
+			MapPrinter.PrintMapGeneration("debug", TerrainGenerationArray, TilesWithAssignedGenerator, Type.GeneratorInfos.Length);
 			// TODO dispose all unneeded elements from map generation (like the arrays)
 		}
 
@@ -181,7 +181,6 @@ namespace WarriorsSnuggery
 			foreach (var type in Type.TerrainGeneration)
 			{
 				createGround(type, ref TerrainGenerationArray);
-				MapPrinter.PrintMapGeneration("debug", type.ID, TerrainGenerationArray);
 			}
 		}
 
@@ -212,9 +211,9 @@ namespace WarriorsSnuggery
 					break;
 			}
 
-			for (int y = 0; y < Bounds.Y; y++)
+			for (int x = 0; x < Bounds.X; x++)
 			{
-				for (int x = 0; x < Bounds.X; x++)
+				for (int y = 0; y < Bounds.Y; y++)
 				{
 					// Intensity and contrast
 					var single = noise[y * Bounds.X + x];
@@ -273,22 +272,22 @@ namespace WarriorsSnuggery
 
 			if (!important)
 			{
-				for (int y = position.Y; y < (piece.Size.Y + position.Y); y++)
+				for (int x = position.X; x < (piece.Size.X + position.X); x++)
 				{
-					for (int x = position.X; x < (piece.Size.X + position.X); x++)
+					for (int y = position.Y; y < (piece.Size.Y + position.Y); y++)
 					{
 						if (Used[x, y] || !AcquireCell(new MPos(x, y), ID))
 						{
-							Log.WriteDebug(string.Format("Tried to spawn piece '{0}' at position '{1}', but was already occupied.", piece.Name, position));
+							//Log.WriteDebug(string.Format("Tried to spawn piece '{0}' at position '{1}', but was already occupied.", piece.Name, position));
 							return false;
 						}
 					}
 				}
 			}
 
-			for (int y = position.Y; y < (piece.Size.Y + position.Y); y++)
+			for (int x = position.X; x < (piece.Size.X + position.X); x++)
 			{
-				for (int x = position.X; x < (piece.Size.X + position.X); x++)
+				for (int y = position.Y; y < (piece.Size.Y + position.Y); y++)
 				{
 					Used[x, y] = true;
 					ActorSpawnPositions[x, y] = true;
@@ -301,11 +300,6 @@ namespace WarriorsSnuggery
 				PlayerSpawn = new CPos(position.X * 1024 + piece.Size.X * 512, position.Y * 1024 + piece.Size.Y * 512, 0);
 
 			return true;
-		}
-
-		MPos pieceSize(List<MiniTextNode> nodes)
-		{
-			return nodes.First(n => n.Key == "Size").Convert<MPos>();
 		}
 
 		public void Save(string name)
@@ -337,6 +331,18 @@ namespace WarriorsSnuggery
 				terrain = terrain.Substring(0, terrain.Length - 1);
 				writer.WriteLine(terrain);
 
+				var walls = "Walls=";
+				for (int y = 0; y < world.WallLayer.Size.Y - 1; y++)
+				{
+					for (int x = 0; x < world.WallLayer.Size.X - 1; x++)
+					{
+						walls += (world.WallLayer.Walls[x, y] == null ? -1 : world.WallLayer.Walls[x, y].Type.ID) + ",";
+					}
+				}
+
+				walls = walls.Substring(0, walls.Length - 1);
+				writer.WriteLine(walls);
+
 				writer.WriteLine("Actors=");
 				for (int i = 0; i < world.Actors.Count; i++)
 				{
@@ -352,18 +358,6 @@ namespace WarriorsSnuggery
 					if (a.IsPlayer)
 						writer.WriteLine("\t\t" + "IsPlayer=" + a.IsPlayer);
 				}
-
-				var walls = "Walls=";
-				for (int y = 0; y < world.WallLayer.Size.Y - 1; y++)
-				{
-					for (int x = 0; x < world.WallLayer.Size.X - 1; x++)
-					{
-						walls += (world.WallLayer.Walls[x, y] == null ? -1 : world.WallLayer.Walls[x, y].Type.ID) + ",";
-					}
-				}
-
-				walls = walls.Substring(0, walls.Length - 1);
-				writer.WriteLine(walls);
 
 				writer.Flush();
 				writer.Close();

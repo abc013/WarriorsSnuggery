@@ -12,19 +12,12 @@ namespace WarriorsSnuggery.Maps
 		public readonly GameType DefaultType;
 		public readonly GameMode[] DefaultModes;
 
-		public readonly string[] Entrances;
-		public readonly string[] Exits;
-
-		public readonly Dictionary<string, MPos> ImportantParts = new Dictionary<string, MPos>();
+		public readonly string OverridePiece;
 
 		public readonly TerrainGenerationType[] TerrainGeneration;
 		public readonly TerrainGenerationType BaseTerrainGeneration;
 
 		public readonly MapGeneratorInfo[] GeneratorInfos;
-
-		public readonly StructureGenerationType[] StructureGeneration;
-
-		public readonly EnemyWaveGenerationType[] WaveGeneration;
 
 		public readonly int Wall;
 
@@ -36,66 +29,40 @@ namespace WarriorsSnuggery.Maps
 		public readonly bool FromSave;
 		public readonly bool AllowWeapons;
 
-		public MapType(string[] entrances, string[] exits, Dictionary<string, MPos> importantParts, int wall, MPos customSize, Color ambient, GameType defaultType, GameMode[] defaultModes, int level, int fromLevel, TerrainGenerationType baseTerrainGeneration, TerrainGenerationType[] terrainGeneration, MapGeneratorInfo[] genInfos, StructureGenerationType[] structureGeneration, EnemyWaveGenerationType[] waveGeneration, MPos spawnPoint, bool fromSave, bool allowWeapons)
+		public MapType(string overridePiece, int wall, MPos customSize, Color ambient, GameType defaultType, GameMode[] defaultModes, int level, int fromLevel, TerrainGenerationType baseTerrainGeneration, TerrainGenerationType[] terrainGeneration, MapGeneratorInfo[] genInfos, MPos spawnPoint, bool fromSave, bool allowWeapons)
 		{
+			OverridePiece = overridePiece;
+			Wall = wall;
+			CustomSize = customSize;
+			Ambient = ambient;
 			DefaultType = defaultType;
 			DefaultModes = defaultModes;
 			Level = level;
 			FromLevel = fromLevel;
-			Entrances = entrances;
-			Exits = exits;
-			ImportantParts = importantParts;
-			Wall = wall;
-			CustomSize = customSize;
-			Ambient = ambient;
 			BaseTerrainGeneration = baseTerrainGeneration;
 			TerrainGeneration = terrainGeneration;
 			GeneratorInfos = genInfos;
-			StructureGeneration = structureGeneration;
-			WaveGeneration = waveGeneration;
 			SpawnPoint = spawnPoint;
 			FromSave = fromSave;
 			AllowWeapons = allowWeapons;
 		}
 
-		public string RandomEntrance(Random random)
-		{
-			return Entrances[random.Next(Entrances.Length)];
-		}
-
-		public string RandomExit(Random random)
-		{
-			return Exits[random.Next(Exits.Length)];
-		}
-
 		public static MapType MapTypeFromSave(GameStatistics stats)
 		{
 			var piece = stats.SaveName + "_map";
-			var size = loadPieceSize(RuleReader.Read(FileExplorer.Saves, stats.SaveName + "_map.yaml"));
+			var size = RuleReader.Read(FileExplorer.Saves, stats.SaveName + "_map.yaml").First(n => n.Key == "Size").Convert<MPos>();
 
-			var dict = new Dictionary<string, MPos>
-			{ { piece, MPos.Zero } };
-
-			return new MapType(new string[] { }, new string[] { }, dict, 0, size, Color.White, GameType.NORMAL, new[] { stats.Mode }, -1, 0, TerrainGenerationType.Empty(), new TerrainGenerationType[0], new MapGeneratorInfo[0], new StructureGenerationType[0], new EnemyWaveGenerationType[0], MPos.Zero, true, true);
+			return new MapType(piece, 0, size, Color.White, GameType.NORMAL, new[] { stats.Mode }, -1, 0, TerrainGenerationType.Empty(), new TerrainGenerationType[0], new MapGeneratorInfo[0], MPos.Zero, true, true);
 		}
 
 		public static MapType EditorMapTypeFromPiece(string piece, MPos size)
 		{
-			var dict = new Dictionary<string, MPos>
-			{ { piece, MPos.Zero } };
-			return new MapType(new string[] { }, new string[] { }, dict, 0, size, Color.White, GameType.EDITOR, new[] { GameMode.NONE }, -1, 0, TerrainGenerationType.Empty(), new TerrainGenerationType[0], new MapGeneratorInfo[0], new StructureGenerationType[0], new EnemyWaveGenerationType[0], MPos.Zero, false, true);
+			return new MapType(piece, 0, size, Color.White, GameType.EDITOR, new[] { GameMode.NONE }, -1, 0, TerrainGenerationType.Empty(), new TerrainGenerationType[0], new MapGeneratorInfo[0], MPos.Zero, false, true);
 		}
 
 		public static MapType ConvertGameType(MapType map, GameType type)
 		{
-			return new MapType(map.Entrances, map.Exits, map.ImportantParts, map.Wall, map.CustomSize, map.Ambient, type, map.DefaultModes, map.Level, map.FromLevel, map.BaseTerrainGeneration, map.TerrainGeneration, map.GeneratorInfos, map.StructureGeneration, map.WaveGeneration, map.SpawnPoint, map.FromSave, map.AllowWeapons);
-		}
-
-		static MPos loadPieceSize(List<MiniTextNode> nodes)
-		{
-			var node = nodes.FirstOrDefault(n => n.Key == "Size");
-
-			return node != null ? node.Convert<MPos>() : MPos.Zero;
+			return new MapType(map.OverridePiece, map.Wall, map.CustomSize, map.Ambient, type, map.DefaultModes, map.Level, map.FromLevel, map.BaseTerrainGeneration, map.TerrainGeneration, map.GeneratorInfos, map.SpawnPoint, map.FromSave, map.AllowWeapons);
 		}
 	}
 
@@ -112,16 +79,11 @@ namespace WarriorsSnuggery.Maps
 				var level = -1;
 				var fromLevel = 0;
 				var name = terrain.Key;
-				var exits = new string[0];
-				var entrances = new string[0];
-				var importantParts = new Dictionary<string, MPos>();
 				var wall = 0;
 				var ambient = Color.White;
 				var customSize = MPos.Zero;
 				var terrainGen = new List<TerrainGenerationType>();
-				var structureGen = new List<StructureGenerationType>();
 				var genInfos = new List<MapGeneratorInfo>();
-				var waveGen = new List<EnemyWaveGenerationType>();
 				var spawnPoint = new MPos(-1, -1);
 				TerrainGenerationType baseterrain = null;
 				var allowWeapons = true;
@@ -151,23 +113,8 @@ namespace WarriorsSnuggery.Maps
 							level = child.Convert<int>();
 
 							break;
-						case "MainPieces":
-							foreach (var piece in child.Children)
-							{
-								importantParts.Add(piece.Key, piece.Convert<MPos>());
-							}
-
-							break;
-						case "Exits":
-							exits = child.Convert<string[]>();
-
-							break;
 						case "SpawnPoint":
 							spawnPoint = child.Convert<MPos>();
-
-							break;
-						case "Entrances":
-							entrances = child.Convert<string[]>();
 
 							break;
 						case "Wall":
@@ -198,14 +145,6 @@ namespace WarriorsSnuggery.Maps
 							genInfos.Add(new ImportantPieceGeneratorInfo(child.Convert<int>(), child.Children.ToArray()));
 
 							break;
-						case "StructureGeneration":
-							structureGen.Add(StructureGenerationType.GetType(child.Convert<int>(), child.Children.ToArray()));
-
-							break;
-						case "WaveGeneration":
-							waveGen.Add(EnemyWaveGenerationType.GetType(child.Convert<int>(), child.Children.ToArray()));
-
-							break;
 						case "CustomSize":
 							customSize = child.Convert<MPos>();
 
@@ -229,7 +168,7 @@ namespace WarriorsSnuggery.Maps
 				if (baseterrain == null)
 					throw new YamlMissingNodeException(terrain.Key, "BaseTerrainGeneration");
 
-				AddType(new MapType(entrances, exits, importantParts, wall, customSize, ambient, playType, playModes, level, fromLevel, baseterrain, terrainGen.ToArray(), genInfos.ToArray(), structureGen.ToArray(), waveGen.ToArray(), spawnPoint, false, allowWeapons), name);
+				AddType(new MapType("", wall, customSize, ambient, playType, playModes, level, fromLevel, baseterrain, terrainGen.ToArray(), genInfos.ToArray(), spawnPoint, false, allowWeapons), name);
 			}
 		}
 

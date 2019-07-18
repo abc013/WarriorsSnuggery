@@ -132,7 +132,6 @@
     <Compile Include="Loader\RuleLoader.cs" />
     <Compile Include="Loader\RuleReader.cs" />
     <Compile Include="Map\ActorNode.cs" />
-    <Compile Include="Map\EnemyWaveGenerationType.cs" />
     <Compile Include="Map\Generation\GridGenerator.cs" />
     <Compile Include="Map\Generation\ImportantPieceGenerator.cs" />
     <Compile Include="Map\Generation\PathGenerator.cs" />
@@ -146,7 +145,6 @@
     <Compile Include="Map\PhysicsLayer.cs" />
     <Compile Include="Map\Piece.cs" />
     <Compile Include="Map\ShroudLayer.cs" />
-    <Compile Include="Map\Generation\StructureGenerator.cs" />
     <Compile Include="Map\Generation\TerrainGenerator.cs" />
     <Compile Include="Map\TerrainLayer.cs" />
     <Compile Include="Position\Angle.cs" />

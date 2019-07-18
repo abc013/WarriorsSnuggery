@@ -1,3 +1,4 @@
+using System.Linq;
 using WarriorsSnuggery.Graphics;
 using WarriorsSnuggery.Objects;
 
@@ -280,12 +281,7 @@ namespace WarriorsSnuggery.UI
 		void savePiece()
 		{
 			savedTick = 15;
-			var keys = game.MapType.ImportantParts.Keys;
-			foreach (var key in keys)
-			{
-				game.World.Map.Save(key);
-				break;
-			}
+			game.World.Map.Save(game.MapType.OverridePiece);
 			game.AddInfoMessage(150, "Map saved!");
 		}
 

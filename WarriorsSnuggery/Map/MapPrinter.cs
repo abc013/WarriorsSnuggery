@@ -4,46 +4,34 @@ namespace WarriorsSnuggery.Maps
 {
 	public static class MapPrinter
 	{
-		public static void PrintMapGeneration(string map, int evolution, int[,] generatedTerrain)
+		public static void PrintMapGeneration(string map, int[,] generatedTerrain, int[,] generatorTerrain, int generatorIDs)
 		{
-			using (var image = new Bitmap(generatedTerrain.GetLength(0), generatedTerrain.GetLength(1)))
+			using (var image = new Bitmap(generatorTerrain.GetLength(0), generatorTerrain.GetLength(1)))
 			{
 				for (int x = 0; x < image.Width; x++)
 				{
 					for (int y = 0; y < image.Height; y++)
 					{
-						var value = (generatedTerrain[x, y] * 255) / 8;
+						var value = (generatorTerrain[x, y] * 255) / generatorIDs;
 						var color = System.Drawing.Color.FromArgb(value, value, value);
 						image.SetPixel(x, y, color);
 					}
 				}
-				image.Save(FileExplorer.Logs + "debugMaps/" + map + "_" + evolution + ".png");
-				//Process.Start(FileExplorer.Logs + "debugMaps/" + map + "_" + evolution + ".png");
+				image.Save(FileExplorer.Logs + "debugMaps/" + map + "_generator.png");
 				image.Dispose();
 			}
-		}
-		public static void PrintMapGeneration(string map, int evolution, int[,] generatedTerrain, bool[,] usedTerrain)
-		{
 			using (var image = new Bitmap(generatedTerrain.GetLength(0), generatedTerrain.GetLength(1)))
 			{
 				for (int x = 0; x < image.Width; x++)
 				{
 					for (int y = 0; y < image.Height; y++)
 					{
-						if (!usedTerrain[x, y])
-						{
-							var value = (generatedTerrain[x, y] * 255) / 8;
-							var color = System.Drawing.Color.FromArgb(value, value, value);
-							image.SetPixel(x, y, color);
-						}
-						else
-						{
-							image.SetPixel(x, y, System.Drawing.Color.Green);
-						}
+						var value = (generatedTerrain[x, y] * 255) / TerrainCreator.GetIDs().Length;
+						var color = System.Drawing.Color.FromArgb(value, value, value);
+						image.SetPixel(x, y, color);
 					}
 				}
-				image.Save(FileExplorer.Logs + "debugMaps/" + map + "_" + evolution + ".png");
-				//Process.Start(FileExplorer.Logs + "debugMaps/" + map + "_" + evolution + ".png");
+				image.Save(FileExplorer.Logs + "debugMaps/" + map + "_terrain.png");
 				image.Dispose();
 			}
 		}
