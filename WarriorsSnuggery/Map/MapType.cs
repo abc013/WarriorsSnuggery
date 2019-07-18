@@ -194,6 +194,10 @@ namespace WarriorsSnuggery.Maps
 							genInfos.Add(new PieceGeneratorInfo(child.Convert<int>(), child.Children.ToArray()));
 
 							break;
+						case "ImportantPieceGeneration":
+							genInfos.Add(new ImportantPieceGeneratorInfo(child.Convert<int>(), child.Children.ToArray()));
+
+							break;
 						case "StructureGeneration":
 							structureGen.Add(StructureGenerationType.GetType(child.Convert<int>(), child.Children.ToArray()));
 

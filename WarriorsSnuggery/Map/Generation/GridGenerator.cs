@@ -136,6 +136,14 @@ namespace WarriorsSnuggery.Maps
 			var type = map.Type.GeneratorInfos.Where(i => i.ID == info.PathGeneratorID && i is PathGeneratorInfo).FirstOrDefault();
 			if (type != null)
 			{
+				for (int x = 0; x < map.Bounds.X; x++)
+				{
+					for (int y = 0; y < map.Bounds.Y; y++)
+					{
+						if (!(road[x, y] && map.AcquireCell(new MPos(x, y), info.PathGeneratorID)))
+							road[x, y] = false;
+					}
+				}
 				var generator = new PathGenerator(random, map, world, type as PathGeneratorInfo);
 				generator.Generate(road);
 			}
