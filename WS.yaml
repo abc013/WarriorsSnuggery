@@ -7,6 +7,7 @@ Width=1920
 Height=1080
 AntiAliasing=1
 EnablePixeling=0
+EnableTextShadowing=1
 FirstStarted=0
 Keys=
 	Pause=p

@@ -37,6 +37,8 @@ namespace WarriorsSnuggery
 
 		public static bool EnablePixeling;
 
+		public static bool EnableTextShadowing;
+
 		public static bool FirstStarted;
 
 		public static int EdgeScrolling;
@@ -76,6 +78,9 @@ namespace WarriorsSnuggery
 						break;
 					case "EnablePixeling":
 						EnablePixeling = node.Convert<bool>();
+						break;
+					case "EnableTextShadowing":
+						EnableTextShadowing = node.Convert<bool>();
 						break;
 					case "FirstStarted":
 						FirstStarted = node.Convert<bool>();

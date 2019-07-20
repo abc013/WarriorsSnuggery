@@ -10,6 +10,7 @@ namespace WarriorsSnuggery.Objects
 	public class TextRenderable : GraphicsObject
 	{
 		public const float SizeMultiplier = VectorConvert.PixelMultiplier / 4;
+		static readonly Vector shadowVector = new Vector(-0.04f / WindowInfo.Ratio, -0.04f, 0f);
 		public Color Color;
 		public char @Char;
 
@@ -33,8 +34,15 @@ namespace WarriorsSnuggery.Objects
 
 		public override void Render()
 		{
-			setColor(Color);
 			setChar(@Char);
+			if (Settings.EnableTextShadowing)
+			{
+				setColor(Color.Black);
+				SetPosition((Vector)position + shadowVector);
+				base.Render();
+				SetPosition((Vector)position - shadowVector);
+			}
+			setColor(Color);
 			base.Render();
 		}
 
