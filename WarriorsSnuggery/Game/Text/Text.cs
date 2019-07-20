@@ -3,7 +3,7 @@ using WarriorsSnuggery.Graphics;
 
 namespace WarriorsSnuggery.Objects
 {
-	public class Text : ITickRenderable, IPositionable, IDisposable
+	public class TextBlock : ITickRenderable, IPositionable, IDisposable
 	{
 		public CPos Position
 		{
@@ -14,7 +14,7 @@ namespace WarriorsSnuggery.Objects
 
 				for (int i = 0; i < lines.Length; i++)
 				{
-					lines[i].Position = position + new CPos(0, 1024 * i, 0);
+					lines[i].Position = position + new CPos(0, lineDistance * i, 0);
 				}
 			}
 		}
@@ -50,16 +50,18 @@ namespace WarriorsSnuggery.Objects
 		}
 		float scale = 1f;
 		readonly TextLine[] lines = new TextLine[0];
+		readonly int lineDistance;
 
-		public Text(CPos position, IFont font, TextLine.OffsetType type, params string[] args)
+		public TextBlock(CPos position, IFont font, TextLine.OffsetType type, params string[] text)
 		{
 			Position = position;
-			lines = new TextLine[args.Length];
+			lines = new TextLine[text.Length];
 
-			for (int i = 0; i < args.Length; i++)
+			lineDistance = font == IFont.Pixel16 ? 512 : 1024;
+			for (int i = 0; i < text.Length; i++)
 			{
-				lines[i] = new TextLine(position + new CPos(0, 1024 * i, 0), font, type);
-				lines[i].WriteText(args[i]);
+				lines[i] = new TextLine(position + new CPos(0, lineDistance * i, 0), font, type); // TODO what if other fonts will occur?
+				lines[i].WriteText(text[i]);
 			}
 		}
 

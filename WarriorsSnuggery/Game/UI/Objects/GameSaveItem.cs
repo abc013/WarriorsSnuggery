@@ -17,16 +17,20 @@ namespace WarriorsSnuggery.UI
 				base.Position = value;
 				name.Position = value - new CPos(2048, 400, 0);
 				level.Position = value - new CPos(2560, 0, 0);
+				tooltip.Position = value;
 			}
 		}
 
+		public readonly GameStatistics Stats;
 		public bool Selected;
+
 		readonly TextLine name;
 		readonly TextLine level;
 
-		public readonly GameStatistics Stats;
+		readonly Tooltip tooltip;
 
-		public GameSaveItem(CPos pos, GameStatistics stats, string renderable, int width, Action action) : base(pos, stats.Name, new ImageRenderable(TextureManager.Texture(renderable), 2f), new MPos(width, 1024), action)
+
+		public GameSaveItem(CPos pos, GameStatistics stats, string renderable, int width, Action action) : base(pos, "", new ImageRenderable(TextureManager.Texture(renderable), 2f), new MPos(width, 1024), action)
 		{
 			Stats = stats;
 			name = new TextLine(pos - new CPos(2048, 512, 0), IFont.Pixel16);
@@ -37,6 +41,7 @@ namespace WarriorsSnuggery.UI
 			if (stats.Level >= stats.FinalLevel) level.SetColor(new Color(0, 200, 0));
 			level.SetText(stats.Level);
 			level.Scale = 2f;
+			tooltip = new Tooltip(pos, stats.Name, "Difficulty: " + stats.Difficulty, "Money: " + stats.Money);
 		}
 
 		public override void Render()
@@ -68,6 +73,11 @@ namespace WarriorsSnuggery.UI
 		public override void Tick()
 		{
 			base.Tick();
+
+			if (mouseOnItem)
+				UIRenderer.SetTooltip(tooltip);
+			else
+				UIRenderer.DisableTooltip(tooltip);
 
 			if (mouseOnItem && MouseInput.isLeftClicked)
 				Selected = true;
