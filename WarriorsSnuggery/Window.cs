@@ -27,6 +27,7 @@ namespace WarriorsSnuggery
 		public static Vector ExactMousePosition;
 
 		public static Window Current;
+		public static char CharInput;
 
 		public static uint GlobalTick;
 		public static uint GlobalRender;
@@ -155,6 +156,7 @@ namespace WarriorsSnuggery
 
 			activateKeys();
 
+			CharInput = '';
 			FirstTick = false;
 		}
 
@@ -313,6 +315,11 @@ namespace WarriorsSnuggery
 			ExactMousePosition = VectorConvert.FromScreen(pos.X, pos.Y);
 
 			MouseInput.WindowPosition = VectorConvert.ToCPos(VectorConvert.FromScreen(pos.X, pos.Y) * new Vector(Camera.DefaultZoom, Camera.DefaultZoom, 1, 1));
+		}
+
+		protected override void OnKeyPress(KeyPressEventArgs e)
+		{
+			CharInput = e.KeyChar; //TODO
 		}
 	}
 }
