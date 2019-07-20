@@ -15,6 +15,7 @@ namespace WarriorsSnuggery
 		static readonly List<IRenderable> afterRender = new List<IRenderable>();
 
 		static ImageRenderable cursor;
+		static Tooltip tooltip;
 
 		public static void Reset(Game game)
 		{
@@ -36,6 +37,17 @@ namespace WarriorsSnuggery
 		{
 			beforeRender.Clear();
 			afterRender.Clear();
+			tooltip = null;
+		}
+
+		public static void SetTooltip(Tooltip tooltip)
+		{
+			UIRenderer.tooltip = tooltip;
+		}
+		public static void DisableTooltip(Tooltip tooltip)
+		{
+			if (UIRenderer.tooltip == tooltip)
+				UIRenderer.tooltip = null;
 		}
 
 		public static void RenderAfter(IRenderable renderable)
@@ -74,6 +86,8 @@ namespace WarriorsSnuggery
 
 			foreach (var r in afterRender)
 				r.Render();
+
+			tooltip?.Render();
 
 			//Graphics.ColorManager.DrawLine(CPos.Zero, MouseInput.WindowPosition, Color.Red);
 			if (!Settings.EnableDebug)

@@ -229,6 +229,7 @@ namespace WarriorsSnuggery.Graphics
 
 			using (var gfx = System.Drawing.Graphics.FromImage(bmp))
 			{
+				gfx.TextRenderingHint = System.Drawing.Text.TextRenderingHint.AntiAliasGridFit;
 				gfx.FillRectangle(Brushes.Black, 0, 0, bmp.Width, bmp.Height);
 				gfx.DrawString(c.ToString(), font, Brushes.White, 0, 0);
 			}

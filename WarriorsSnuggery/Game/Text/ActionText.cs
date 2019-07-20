@@ -7,7 +7,7 @@ namespace WarriorsSnuggery.Objects
 		int current;
 		readonly int start;
 		readonly CPos velocity;
-		readonly Text text;
+		readonly TextBlock text;
 
 		public ActionText(CPos pos, IFont font, CPos velocity, int tick, params string[] lines) : base(pos)
 		{
@@ -15,7 +15,7 @@ namespace WarriorsSnuggery.Objects
 			start = tick;
 			this.velocity = velocity;
 
-			text = new Text(pos, IFont.Pixel16, TextLine.OffsetType.MIDDLE, lines);
+			text = new TextBlock(pos, IFont.Pixel16, TextLine.OffsetType.MIDDLE, lines);
 		}
 
 		public override void Tick()
