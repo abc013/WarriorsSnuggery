@@ -30,8 +30,9 @@ namespace WarriorsSnuggery.UI
 
 		bool mouseOnBox;
 		readonly TextLine text;
-		readonly PanelType type;
 		readonly Action onEnter;
+
+		int keyDuration;
 
 		public TextBox(CPos pos, string text, int maximumLength, bool onlyNumbers, PanelType type, Action onEnter) : base(pos, new MPos(8 * maximumLength + 2, 12), type)
 		{
@@ -40,7 +41,6 @@ namespace WarriorsSnuggery.UI
 			OnlyNumbers = onlyNumbers;
 			this.text = new TextLine(pos + new CPos(128, 0, 0), IFont.Pixel16, Objects.TextLine.OffsetType.MIDDLE);
 			this.text.SetText(text);
-			this.type = type;
 			this.onEnter = onEnter;
 		}
 
@@ -71,17 +71,20 @@ namespace WarriorsSnuggery.UI
 				{
 					foreach (var key in KeyInput.AlphabetKeys)
 					{
-						if (realText.Length <= MaximumLength)
+						if (realText.Length <= MaximumLength && Window.CharInput != '' && keyDuration-- <= 0)
 						{
-							if (KeyInput.IsKeyDown(key + "", 0))
-							{
-								var @case = key;
-								if (KeyInput.IsKeyDown("ShiftLeft", 0) || KeyInput.IsKeyDown("ShiftRight", 0))
-									@case = @case.ToUpper();
-								text.AddText(@case);
-								realText += @case;
-								KeyInput.IsKeyDown(key + "", 7); // To get the delay
-							}
+							text.AddText(Window.CharInput);
+							realText += Window.CharInput;
+							keyDuration = 25;
+							//if (KeyInput.IsKeyDown(key + "", 0))
+							//{
+							//	var @case = key;
+							//	if (KeyInput.IsKeyDown("ShiftLeft", 0) || KeyInput.IsKeyDown("ShiftRight", 0))
+							//		@case = @case.ToUpper();
+							//	text.AddText(@case);
+							//	realText += @case;
+							//	KeyInput.IsKeyDown(key + "", 7); // To get the delay
+							//}
 						}
 					}
 				}
