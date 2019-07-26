@@ -12,9 +12,9 @@ namespace WarriorsSnuggery.Objects
 			{
 				position = value;
 
-				for (int i = 0; i < lines.Length; i++)
+				for (int i = 0; i < Lines.Length; i++)
 				{
-					lines[i].Position = position + new CPos(0, lineDistance * i, 0);
+					Lines[i].Position = position + new CPos(0, lineDistance * i, 0);
 				}
 			}
 		}
@@ -27,9 +27,9 @@ namespace WarriorsSnuggery.Objects
 			{
 				rotation = value;
 
-				for (int i = 0; i < lines.Length; i++)
+				for (int i = 0; i < Lines.Length; i++)
 				{
-					lines[i].Rotation = rotation;
+					Lines[i].Rotation = rotation;
 				}
 			}
 		}
@@ -42,44 +42,45 @@ namespace WarriorsSnuggery.Objects
 			{
 				scale = value;
 
-				for (int i = 0; i < lines.Length; i++)
+				for (int i = 0; i < Lines.Length; i++)
 				{
-					lines[i].Scale = scale;
+					Lines[i].Scale = scale;
 				}
 			}
 		}
 		float scale = 1f;
-		readonly TextLine[] lines = new TextLine[0];
+		
+		public readonly TextLine[] Lines = new TextLine[0];
 		readonly int lineDistance;
 
 		public TextBlock(CPos position, IFont font, TextLine.OffsetType type, params string[] text)
 		{
 			Position = position;
-			lines = new TextLine[text.Length];
+			Lines = new TextLine[text.Length];
 
 			lineDistance = font == IFont.Pixel16 ? 512 : 1024;
 			for (int i = 0; i < text.Length; i++)
 			{
-				lines[i] = new TextLine(position + new CPos(0, lineDistance * i, 0), font, type); // TODO what if other fonts will occur?
-				lines[i].WriteText(text[i]);
+				Lines[i] = new TextLine(position + new CPos(0, lineDistance * i, 0), font, type); // TODO what if other fonts will occur?
+				Lines[i].WriteText(text[i]);
 			}
 		}
 
 		public void Render()
 		{
-			foreach (var line in lines)
+			foreach (var line in Lines)
 				line.Render();
 		}
 
 		public void Tick()
 		{
-			foreach (var line in lines)
+			foreach (var line in Lines)
 				line.Tick();
 		}
 
 		public void Dispose()
 		{
-			foreach (var line in lines)
+			foreach (var line in Lines)
 				line.Dispose();
 		}
 	}

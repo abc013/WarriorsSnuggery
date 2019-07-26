@@ -113,7 +113,22 @@ namespace WarriorsSnuggery
 				}
 			}
 			bool hit = state.IsKeyDown((Key)Enum.Parse(typeof(Key), key, true));
-			if (hit) HitCooldown = coolDownWhenHit;
+
+			if (hit)
+				HitCooldown = coolDownWhenHit;
+
+			return hit;
+		}
+
+		public static bool IsKeyDown(Key key, int coolDownWhenHit = 0)
+		{
+			if (HitCooldown > 0 || !state.IsAnyKeyDown || !Window.Current.Focused)
+				return false;
+
+			bool hit = state.IsKeyDown(key);
+
+			if (hit)
+				HitCooldown = coolDownWhenHit;
 
 			return hit;
 		}

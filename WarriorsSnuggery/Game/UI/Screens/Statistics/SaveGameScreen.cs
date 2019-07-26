@@ -28,6 +28,11 @@ namespace WarriorsSnuggery.UI
 			createSaveScreen = new NewSaveGameScreen(game);
 		}
 
+		public override void Hide()
+		{
+			list.DisableTooltip();
+		}
+
 		void saveGame()
 		{
 			var stats = list.GetStatistic();

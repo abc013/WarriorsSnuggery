@@ -14,7 +14,7 @@ namespace WarriorsSnuggery.UI
 		bool activated;
 		readonly bool exists;
 
-		public EffectListItem(CPos pos, MPos size, ITechTreeNode node, Game game) : base(pos, node.Name, new ImageRenderable(TextureManager.Texture(node.Icon)), size, null)
+		public EffectListItem(CPos pos, MPos size, ITechTreeNode node, Game game) : base(pos, new ImageRenderable(TextureManager.Texture(node.Icon)), size, node.Name, new[] { Color.Grey + "Mana use: " + new Color(0.5f, 0.5f, 1f) + node.Effect.ManaCost, Color.Grey + "Reload: " + Color.Green + Math.Round(node.Effect.RechargeDuration / (float) Settings.UpdatesPerSecond, 2) + Color.Grey + " Seconds" }, null)
 		{
 			this.node = node;
 			this.game = game;
@@ -48,10 +48,12 @@ namespace WarriorsSnuggery.UI
 			{
 				if (game.Statistics.Mana >= node.Effect.ManaCost)
 				{
-					game.World.LocalPlayer.Effects.Add(new Objects.Effects.EffectPart(game.World.LocalPlayer, node.Effect));
-					game.Statistics.Mana -= node.Cost;
 					recharge = node.Effect.RechargeDuration;
 					duration = node.Effect.Duration;
+
+					game.World.LocalPlayer.Effects.Add(new Objects.Effects.EffectPart(game.World.LocalPlayer, node.Effect));
+					game.Statistics.Mana -= node.Effect.ManaCost;
+
 					activated = true;
 					SetColor(new Color(0.5f, 0.5f, 0.5f));
 				}

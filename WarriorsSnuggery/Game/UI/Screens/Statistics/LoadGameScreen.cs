@@ -47,6 +47,11 @@ namespace WarriorsSnuggery.UI
 			delete = ButtonCreator.Create("wooden", new CPos(-4096, 6144, 0), "Delete", deleteAction);
 		}
 
+		public override void Hide()
+		{
+			list.DisableTooltip();
+		}
+
 		void humanAgreeOnLoad(Action onAgree, string text)
 		{
 			if (game.Type == GameType.MAINMENU)

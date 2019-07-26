@@ -14,6 +14,8 @@ namespace WarriorsSnuggery
 
 		public const string Version = "(Playtest) 1.4";
 
+		public const int UpdatesPerSecond = 60;
+
 		public static int FrameLimiter;
 
 		// 1: very slow 2: slow 3: normal 4: high 5: legendary high

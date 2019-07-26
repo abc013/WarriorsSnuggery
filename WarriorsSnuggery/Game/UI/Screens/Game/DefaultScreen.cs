@@ -46,7 +46,7 @@ namespace WarriorsSnuggery.UI
 				{
 					var sprite = a.GetPreviewSprite();
 					var scale = (sprite.Width > sprite.Height ? 24f / sprite.Width : 24f / sprite.Height) - 0.1f;
-					actorPanel.Add(new PanelItem(CPos.Zero, a.Playable.Cost.ToString(), new ImageRenderable(sprite), new MPos(512, 512), () => { changePlayer(game.World.LocalPlayer, a); })
+					actorPanel.Add(new PanelItem(CPos.Zero, new ImageRenderable(sprite), new MPos(512, 512), n.ToLowerInvariant(), new[] { Color.Grey + "Cost: " + a.Playable.Cost.ToString() }, () => { changePlayer(game.World.LocalPlayer, a); })
 					{
 						Scale = scale
 					});
@@ -223,7 +223,6 @@ namespace WarriorsSnuggery.UI
 			game.Statistics.Money -= type.Playable.Cost;
 
 			var oldHP = player.Health != null ? player.Health.HPRelativeToMax : 1;
-			var oldMana = game.Statistics.Mana;
 			var newActor = ActorCreator.Create(game.World, type, player.Position, player.Team, isPlayer: true);
 
 			player.Dispose();

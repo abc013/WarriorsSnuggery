@@ -72,13 +72,13 @@ namespace WarriorsSnuggery
 			{
 				Console.WriteLine("Shader Language Version (OpenGL version) is under 3.00.");
 				Console.WriteLine("Please try to run the program with a graphics card that supports this Version.");
-				Console.WriteLine("Press 'y' to start the game anyways or press any key to leave.");
+				Console.WriteLine("Press 'y' to start the game anyways or press any key to exit.");
 				var info = Console.ReadKey(true).KeyChar;
 				if (info != 'y')
 					return;
 			}
 
-			window.Run(60, Settings.FrameLimiter);
+			window.Run(Settings.UpdatesPerSecond, Settings.FrameLimiter);
 		}
 
 		static void firstStarted()
@@ -94,6 +94,7 @@ namespace WarriorsSnuggery
 				writer.WriteLine("Height=" + Settings.Height);
 				writer.WriteLine("AntiAliasing=" + Settings.AntiAliasing.GetHashCode());
 				writer.WriteLine("EnablePixeling=" + Settings.EnablePixeling.GetHashCode());
+				writer.WriteLine("EnableTextShadowing=" + Settings.EnableTextShadowing.GetHashCode());
 				writer.WriteLine("FirstStarted=" + 0);
 
 				writer.WriteLine("Keys=");

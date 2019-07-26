@@ -13,6 +13,12 @@
 	- kill all enemies,
 	- find the exit;
 
+- GAMEPLAY
+	- Actor change: Is a spell, choose ~8 actors for each game; You spawn with the cheapest one
+	- Money is zero, end money will be added to score
+	- Inventory? - Numbers to choose item
+	- Spells: Key order to activate
+
 Add DrawMode: Draw on Sand!
 when textures begin to bug after adding new textures, please look here <- ISprite
 ----------------------------------------------------------------------------------------------
