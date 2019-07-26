@@ -37,9 +37,14 @@ namespace WarriorsSnuggery.UI
 					parts.Add(name, MPos.Zero);
 
 					// TODO: read all maps in in the begin? BUT: would need a big amount of memory 
-					var size = loadPieceSize(RuleReader.Read(FileExplorer.FindPath(FileExplorer.Maps, name, ".yaml"), name + ".yaml"));
+					var size = RuleReader.Read(FileExplorer.FindPath(FileExplorer.Maps, name, ".yaml"), name + ".yaml").First(n => n.Key == "Size").Convert<MPos>();
 
-					mapSelection.Add(new PanelItem(CPos.Zero, name + " [" + size.X + "," + size.Y + "]", new ImageRenderable(TextureManager.Texture("UI_map")), new MPos(512, 512), () => Window.Current.NewGame(new GameStatistics(GameSaveManager.DefaultStatistic), GameType.EDITOR, custom: MapType.EditorMapTypeFromPiece(name, size))));
+					mapSelection.Add(new PanelItem(CPos.Zero, new ImageRenderable(TextureManager.Texture("UI_map")), new MPos(512, 512), name, new[] { Color.Grey + "[" + size.X + "," + size.Y + "]" },
+						() =>
+						{
+							Window.Current.NewGame(new GameStatistics(GameSaveManager.DefaultStatistic), GameType.EDITOR, custom: MapType.EditorMapTypeFromPiece(name, size));
+							Hide();
+						}));
 				}
 			}
 			back = ButtonCreator.Create("wooden", new CPos(4096, 6144, 0), "Back", () => game.ChangeScreen(ScreenType.MENU));
@@ -49,10 +54,9 @@ namespace WarriorsSnuggery.UI
 			createPieceScreen = new CreatePieceScreen(this, game);
 		}
 
-		MPos loadPieceSize(List<MiniTextNode> nodes)
+		public override void Hide()
 		{
-			// Size has to exist.
-			return nodes.First(n => n.Key == "Size").Convert<MPos>();
+			mapSelection.DisableTooltip();
 		}
 
 		public override void Render()

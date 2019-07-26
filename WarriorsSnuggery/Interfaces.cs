@@ -20,4 +20,9 @@ namespace WarriorsSnuggery
 	{
 
 	}
+
+	public interface IDisableTooltip
+	{
+		void DisableTooltip();
+	}
 }

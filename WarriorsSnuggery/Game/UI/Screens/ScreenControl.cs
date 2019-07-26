@@ -117,20 +117,28 @@ namespace WarriorsSnuggery.UI
 		{
 			if (screens.ContainsKey(screen))
 			{
-				Focused = screens[screen];
+				setFocused(screens[screen]);
 			}
 			else
 			{
 				if (createScreen(screen))
-					Focused = screens[screen];
+					setFocused(screens[screen]);
 				else
-					Focused = null;
+					setFocused(null);
 			}
 			FocusedType = screen;
+		}
+		
+		void setFocused(Screen screen)
+		{
+			Focused?.Hide();
+			Focused = screen;
+			Focused?.Show();
 		}
 
 		public void HideScreen()
 		{
+			Focused?.Hide();
 			Focused = null;
 			FocusedType = ScreenType.NONE;
 		}

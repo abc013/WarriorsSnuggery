@@ -4,6 +4,7 @@ namespace WarriorsSnuggery
 	public struct Color
 	{
 		public static readonly Color White = new Color(1f, 1f, 1f);
+		public static readonly Color Grey = new Color(0.75f, 0.75f, 0.75f);
 		public static readonly Color Black = new Color(0f, 0f, 0f);
 
 		public static readonly Color Blue = new Color(0f, 0f, 1f);
@@ -53,12 +54,12 @@ namespace WarriorsSnuggery
 
 		public static bool operator !=(Color lhf, Color rhf)
 		{
-			return lhf != rhf;
+			return !(lhf == rhf);
 		}
 
 		public static bool operator ==(Color lhf, Color rhf)
 		{
-			return lhf.GetHashCode() == rhf.GetHashCode();
+			return lhf.R == rhf.R && lhf.G == rhf.G && lhf.B == rhf.B && lhf.A == rhf.A;
 		}
 
 		public OpenTK.Graphics.Color4 toColor4()

@@ -24,6 +24,10 @@ namespace WarriorsSnuggery.UI
 			return false;
 		}
 
+		public virtual void Show() { }
+
+		public virtual void Hide() { }
+
 		public virtual void Tick()
 		{
 			Title.Scale = (float)(Math.Pow(Math.Sin(scale++ / (float)Speed), 2) + 2f) / 4;

@@ -30,7 +30,7 @@ namespace WarriorsSnuggery.Objects
 		public override void Render()
 		{
 			setChar(@Char);
-			if (Settings.EnableTextShadowing)
+			if (Settings.EnableTextShadowing && Color != Color.Black)
 			{
 				setColor(Color.Black);
 				SetPosition((Vector)position + shadowVector);

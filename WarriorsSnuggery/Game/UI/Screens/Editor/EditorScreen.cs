@@ -69,7 +69,7 @@ namespace WarriorsSnuggery.UI
 			foreach (var n in TerrainCreator.GetIDs())
 			{
 				var a = TerrainCreator.GetType(n);
-				tiles.Add(new PanelItem(CPos.Zero, n + "", new ImageRenderable(a.Texture, 1f), new MPos(512, 512), () => terrainSelected = a));
+				tiles.Add(new PanelItem(CPos.Zero, new ImageRenderable(a.Texture, 1f), new MPos(512, 512), n + "", new string[0], () => terrainSelected = a));
 			}
 
 			actors = new PanelList(new CPos((int)(WindowInfo.UnitWidth * 512 - 2048), 2048, 0), new MPos(2048, 4096), new MPos(512, 512), 4, "UI_wood1", "UI_wood3", "UI_wood2");
@@ -78,7 +78,7 @@ namespace WarriorsSnuggery.UI
 				var a = ActorCreator.GetType(n);
 				var sprite = a.GetPreviewSprite();
 				var scale = (sprite.Width > sprite.Height ? 24f / sprite.Width : 24f / sprite.Height) - 0.1f;
-				actors.Add(new PanelItem(CPos.Zero, n, new ImageRenderable(sprite), new MPos(512, 512), () => actorSelected = a)
+				actors.Add(new PanelItem(CPos.Zero, new ImageRenderable(sprite), new MPos(512, 512), n, new string[0], () => actorSelected = a)
 				{
 					Scale = scale
 				});
@@ -88,7 +88,7 @@ namespace WarriorsSnuggery.UI
 			foreach (var n in WallCreator.GetIDs())
 			{
 				var a = WallCreator.GetType(n);
-				walls.Add(new PanelItem(CPos.Zero, n + "", new ImageRenderable(a.GetTexture(true)), new MPos(512, 512), () => wallSelected = a));
+				walls.Add(new PanelItem(CPos.Zero, new ImageRenderable(a.GetTexture(true)), new MPos(512, 512), n + "", new string[0], () => wallSelected = a));
 			}
 
 			wallBox = CheckBoxCreator.Create("wooden", new CPos((int)(WindowInfo.UnitWidth * 512 - 2048), 6244, 0), false, (b) => horizontal = b);
@@ -116,6 +116,13 @@ namespace WarriorsSnuggery.UI
 		{
 			var mouse = MouseInput.WindowPosition;
 			return mouse.X > WindowInfo.UnitWidth * 512 - 4096 - 128;
+		}
+
+		public override void Hide()
+		{
+			tiles.DisableTooltip();
+			actors.DisableTooltip();
+			walls.DisableTooltip();
 		}
 
 		public override void Render()

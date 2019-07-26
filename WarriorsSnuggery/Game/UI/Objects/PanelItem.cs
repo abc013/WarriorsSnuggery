@@ -4,7 +4,7 @@ using WarriorsSnuggery.Objects;
 
 namespace WarriorsSnuggery.UI
 {
-	public class PanelItem : ITickRenderable, IDisposable
+	public class PanelItem : ITickRenderable, IDisposable, IDisableTooltip
 	{
 		public virtual bool Visible
 		{
@@ -45,19 +45,17 @@ namespace WarriorsSnuggery.UI
 		}
 		float scale = 1f;
 
-		readonly TextLine hoverText;
 		readonly GraphicsObject renderable;
 		readonly Action action;
 		protected readonly MPos size;
 
 		protected bool mouseOnItem;
 
-		public PanelItem(CPos pos, string hoverText, GraphicsObject renderable, MPos size, Action action)
+		protected readonly Tooltip tooltip;
+
+		public PanelItem(CPos pos, GraphicsObject renderable, MPos size, string title, string[] text, Action action)
 		{
-			this.hoverText = new TextLine(pos, IFont.Pixel16, TextLine.OffsetType.MIDDLE);
-			this.hoverText.SetText(hoverText);
-			this.hoverText.Visible = false;
-			UIRenderer.RenderAfter(this.hoverText);
+			tooltip = new Tooltip(pos, title, text);
 			this.renderable = renderable;
 			this.action = action;
 			this.size = size;
@@ -80,16 +78,16 @@ namespace WarriorsSnuggery.UI
 				return;
 
 			checkMouse();
-			hoverText.Visible = mouseOnItem;
-			if (mouseOnItem)
-				hoverText.Position = MouseInput.WindowPosition;
+		}
+
+		public virtual void DisableTooltip()
+		{
+			UIRenderer.DisableTooltip(tooltip);
 		}
 
 		public virtual void Dispose()
 		{
-			UIRenderer.RemoveRenderAfter(hoverText);
-			hoverText.Dispose();
-			//renderable.Dispose();
+			tooltip.Dispose();
 		}
 
 		void checkMouse()
@@ -98,8 +96,17 @@ namespace WarriorsSnuggery.UI
 
 			mouseOnItem = mousePosition.X > position.X - size.X && mousePosition.X < position.X + size.X && mousePosition.Y > position.Y - size.Y && mousePosition.Y < position.Y + size.Y;
 
-			if (MouseInput.isLeftClicked && mouseOnItem)
-				takeAction();
+			if (mouseOnItem)
+			{
+				UIRenderer.SetTooltip(tooltip);
+
+				if (MouseInput.isLeftClicked)
+					takeAction();
+			}
+			else
+			{
+				UIRenderer.DisableTooltip(tooltip);
+			}
 		}
 
 		protected virtual void takeAction()

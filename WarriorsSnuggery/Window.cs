@@ -130,38 +130,22 @@ namespace WarriorsSnuggery
 			MouseInput.Tick();
 
 			if (GlobalTick % 20 == 0)
-			{
-				time += e.Time;
-				try
-				{
-					time /= 20;
+				TPS = (float) Math.Round(1 / e.Time, 1);
 
-					var res = (time * 1000).ToString();
-					if (res.Length - 10 > 5)
-						res = res.Remove(res.Length - 10, 10);
-
-					var tps = (1 / e.Time) + "";
-					if (tps.Length > 4)
-						tps = tps.Remove(4, tps.Length - 4);
-					TPS = float.Parse(tps);
-				}
-				finally
-				{
-					time = 0;
-				}
-			}
 			GlobalTick++;
+
 			if (Loaded)
 				Game.Tick();
 
-			activateKeys();
+			if (KeyInput.IsKeyDown(Key.F4) && (KeyInput.IsKeyDown(Key.AltLeft) || KeyInput.IsKeyDown(Key.AltRight)))
+				Exit();
 
 			CharInput = '';
 			FirstTick = false;
 		}
 
 		public float FPS;
-		double time;
+
 		protected override void OnRenderFrame(FrameEventArgs e)
 		{
 			lock (MasterRenderer.GLLock)
@@ -170,26 +154,8 @@ namespace WarriorsSnuggery
 			}
 
 			if (GlobalRender % 20 == 0)
-			{
-				time += e.Time;
-				try
-				{
-					time /= 20;
+				FPS = (float) Math.Round(1 / e.Time, 1);
 
-					var res = (time * 1000).ToString();
-					if (res.Length - 10 > 5)
-						res = res.Remove(res.Length - 10, 10);
-
-					var fps = (1 / e.Time) + "";
-					if (fps.Length > 4)
-						fps = fps.Remove(4, fps.Length - 4);
-					FPS = float.Parse(fps);
-				}
-				finally
-				{
-					time = 0;
-				}
-			}
 			GlobalRender++;
 
 			var watch = System.Diagnostics.Stopwatch.StartNew();
@@ -225,7 +191,10 @@ namespace WarriorsSnuggery
 		{
 			Camera.Reset();
 			if (Game != null)
+			{
+				Game.End = true;
 				Game.Dispose();
+			}
 
 			if (loadStatsMap)
 			{
@@ -296,16 +265,6 @@ namespace WarriorsSnuggery
 
 			watch.Stop();
 			Log.WritePerformance(watch.ElapsedMilliseconds, "Exiting");
-		}
-
-		void activateKeys()
-		{
-			var keystate = OpenTK.Input.Keyboard.GetState();
-
-			if (keystate.IsKeyDown(Key.F4) && (keystate.IsKeyDown(Key.AltLeft) || keystate.IsKeyDown(Key.AltRight)))
-			{
-				Exit();
-			}
 		}
 
 		protected override void OnMouseMove(MouseMoveEventArgs e)

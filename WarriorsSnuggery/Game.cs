@@ -82,8 +82,6 @@ namespace WarriorsSnuggery
 
 			World = new World(this, seed, Statistics.Level, Statistics.Difficulty);
 
-			MasterRenderer.ResetRenderer(this);
-
 			var corner = (int)(WindowInfo.UnitWidth / 2 * 1024);
 			version = new TextLine(new CPos(corner, 6192, 0), IFont.Pixel16, TextLine.OffsetType.RIGHT);
 			version.SetColor(Color.Yellow);
@@ -107,6 +105,8 @@ namespace WarriorsSnuggery
 		public void Load()
 		{
 			var watch = StopWatch.StartNew();
+
+			MasterRenderer.ResetRenderer(this);
 
 			World.Load();
 			World.AddObjects();
@@ -300,7 +300,7 @@ namespace WarriorsSnuggery
 				//memory.SetText("Memory " + (int) (System.Diagnostics.Process.GetCurrentProcess().PrivateMemorySize64 / 1024f) + " KB");
 				//memory.SetText("Public Memory " + (int)(GC.GetTotalMemory(false) / 1024f) + " KB");
 				visibility.SetText(VisibilitySolver.TilesVisible() + " Tiles visible");
-				tick.SetColor(Window.Current.TPS < 59 ? new Color(1f, 0.2f, 0.2f) : Color.White);
+				tick.SetColor(Window.Current.TPS < Settings.UpdatesPerSecond - 1 ? new Color(1f, 0.2f, 0.2f) : Color.White);
 				tick.SetText("Tick " + LocalTick + " @ " + Window.Current.TPS);
 
 				tick.SetColor(Window.Current.FPS < Settings.FrameLimiter - 10 ? Color.Red : Color.White);

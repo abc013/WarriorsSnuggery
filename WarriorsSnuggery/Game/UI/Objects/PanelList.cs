@@ -5,7 +5,7 @@ using WarriorsSnuggery.Objects;
 
 namespace WarriorsSnuggery.UI
 {
-	public class PanelList : Panel, IDisposable
+	public class PanelList : Panel, IDisableTooltip
 	{
 		public readonly MPos Size;
 		protected readonly MPos intSize;
@@ -50,6 +50,12 @@ namespace WarriorsSnuggery.UI
 			var posY = -intSize.Y + (y * 2 + 1) * itemSize.Y - scrolled * 2 * itemSize.Y;
 
 			return new CPos(posX, posY, 0);
+		}
+
+		public virtual void DisableTooltip()
+		{
+			foreach (var o in Container)
+				o.DisableTooltip();
 		}
 
 		public override void Tick()
