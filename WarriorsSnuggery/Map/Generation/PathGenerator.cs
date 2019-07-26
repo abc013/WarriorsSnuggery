@@ -149,6 +149,9 @@ namespace WarriorsSnuggery.Maps
 						var dist = new MPos(x, y).DistTo(map.Center);
 
 						var low = (int)Math.Floor(dist / distBetween);
+						if (low >= ruinousLength)
+							low = ruinousLength - 1;
+
 						var high = (int)Math.Ceiling(dist / distBetween);
 						if (high >= ruinousLength)
 							high = ruinousLength - 1;

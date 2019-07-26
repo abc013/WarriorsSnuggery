@@ -6,7 +6,7 @@ using WarriorsSnuggery.Maps;
 
 namespace WarriorsSnuggery
 {
-	public enum GenerationType
+	public enum NoiseType
 	{
 		NONE,
 		NOISE,
@@ -44,7 +44,7 @@ namespace WarriorsSnuggery
 			Seed = seed;
 			random = new Random(seed);
 
-			Bounds = type.CustomSize != MPos.Zero ? type.CustomSize : /*MapUtils.RandomMapBounds(random, difficulty, level, MapUtils.MinimumMapBounds, MapUtils.MaximumMapBounds)*/MapUtils.MaximumMapBounds;
+			Bounds = type.CustomSize != MPos.Zero ? type.CustomSize : MapUtils.RandomMapBounds(random, difficulty, level, MapUtils.MinimumMapBounds, MapUtils.MaximumMapBounds);
 		}
 
 		public void Load()
@@ -99,8 +99,8 @@ namespace WarriorsSnuggery
 					var actors = gen == 0 ? Type.BaseTerrainGeneration.SpawnActors : Type.TerrainGeneration[gen - 1].SpawnActors;
 					foreach (var a in actors)
 					{
-						var ran = random.Next(100);
-						if (ran <= a.Value)
+						var ran = random.NextDouble();
+						if (ran <= a.Value / 100f)
 							world.Add(ActorCreator.Create(world, a.Key, new CPos(1024 * x + random.Next(896) - 448, 1024 * y + random.Next(896) - 448, 0)));
 					}
 				}
@@ -126,13 +126,13 @@ namespace WarriorsSnuggery
 			float[] noise;
 			switch (Type.BaseTerrainGeneration.GenerationType)
 			{
-				case GenerationType.CLOUDS:
+				case NoiseType.CLOUDS:
 					noise = Noise.GenerateClouds(Bounds, random, Type.BaseTerrainGeneration.Strength, Type.BaseTerrainGeneration.Scale);
 					break;
-				case GenerationType.NOISE:
+				case NoiseType.NOISE:
 					noise = Noise.GenerateNoise(Bounds, random, Type.BaseTerrainGeneration.Scale);
 					break;
-				case GenerationType.MAZE:
+				case NoiseType.MAZE:
 					noise = new float[Bounds.X * Bounds.Y];
 					var maze = Maze.GenerateMaze(Bounds * new MPos(2, 2) + new MPos(1, 1), random, new MPos(1, 1), Type.BaseTerrainGeneration.Strength);
 
@@ -191,13 +191,13 @@ namespace WarriorsSnuggery
 			float[] noise = null;
 			switch (type.GenerationType)
 			{
-				case GenerationType.CLOUDS:
+				case NoiseType.CLOUDS:
 					noise = Noise.GenerateClouds(Bounds, random, type.Strength, type.Scale);
 					break;
-				case GenerationType.NOISE:
+				case NoiseType.NOISE:
 					noise = Noise.GenerateNoise(Bounds, random, type.Scale);
 					break;
-				case GenerationType.MAZE:
+				case NoiseType.MAZE:
 					noise = new float[Bounds.X * Bounds.Y];
 					var maze = Maze.GenerateMaze(Bounds * new MPos(2, 2) + new MPos(1, 1), random, new MPos(1, 1), Type.BaseTerrainGeneration.Strength);
 
