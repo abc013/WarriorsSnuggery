@@ -32,8 +32,16 @@ namespace WarriorsSnuggery.Maps
 
 		public static MPos RandomPositionInMap(Random random, int distanceToMapEdge, MPos bounds)
 		{
-			var x = distanceToMapEdge + random.Next(bounds.X - distanceToMapEdge * 2);
-			var y = distanceToMapEdge + random.Next(bounds.Y - distanceToMapEdge * 2);
+			var xSize = bounds.X - distanceToMapEdge * 2;
+			if (xSize < 0)
+				xSize = 0;
+
+			var ySize = bounds.X - distanceToMapEdge * 2;
+			if (ySize < 0)
+				ySize = 0;
+
+			var x = distanceToMapEdge + random.Next(xSize);
+			var y = distanceToMapEdge + random.Next(ySize);
 
 			return new MPos(x, y);
 		}
