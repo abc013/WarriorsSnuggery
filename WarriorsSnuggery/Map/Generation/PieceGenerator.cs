@@ -22,7 +22,7 @@ namespace WarriorsSnuggery.Maps
 
 				var pos = MapUtils.RandomPositionInMap(random, 10, map.Bounds);
 
-				if (map.LoadPiece(input, pos, info.ID))
+				if (map.GeneratePiece(input, pos, info.ID, cancelIfAcquiredBySameID: true))
 				{
 					count--;
 				}

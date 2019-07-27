@@ -164,7 +164,7 @@ namespace WarriorsSnuggery.Maps
 				else
 					toUse = getPiece(info.Tile2x2);
 
-				map.LoadPiece(toUse, piece.Position, info.ID);
+				map.GeneratePiece(toUse, piece.Position, info.ID);
 			}
 		}
 

@@ -130,8 +130,8 @@ namespace WarriorsSnuggery.Objects
 			{
 				var terrainLeft = world.TerrainLayer.Terrain[Position.X - 1, Position.Y].Type;
 				edgesVisible[3] = !(terrainLeft.ID == Type.ID || terrainLeft.OverlapHeight > Type.OverlapHeight);
-				var terrainRight = world.TerrainLayer.Terrain[Position.X - 1, Position.Y].Type;
-				edgesVisible[1] = !(world.TerrainLayer.Terrain[Position.X + 1, Position.Y].Type.ID == Type.ID || world.TerrainLayer.Terrain[Position.X + 1, Position.Y].Type.OverlapHeight > Type.OverlapHeight);
+				var terrainRight = world.TerrainLayer.Terrain[Position.X + 1, Position.Y].Type;
+				edgesVisible[1] = !(terrainRight.ID == Type.ID || terrainRight.OverlapHeight > Type.OverlapHeight);
 			}
 
 			if (isEdgeBottom)

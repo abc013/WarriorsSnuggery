@@ -14,9 +14,7 @@ namespace WarriorsSnuggery.Maps
 
 		public readonly string OverridePiece;
 
-		public readonly TerrainGenerationType[] TerrainGeneration;
-		public readonly TerrainGenerationType BaseTerrainGeneration;
-
+		public readonly TerrainGeneratorInfo BaseTerrainGeneration;
 		public readonly MapGeneratorInfo[] GeneratorInfos;
 
 		public readonly int Wall;
@@ -29,7 +27,7 @@ namespace WarriorsSnuggery.Maps
 		public readonly bool FromSave;
 		public readonly bool AllowWeapons;
 
-		public MapType(string overridePiece, int wall, MPos customSize, Color ambient, GameType defaultType, GameMode[] defaultModes, int level, int fromLevel, TerrainGenerationType baseTerrainGeneration, TerrainGenerationType[] terrainGeneration, MapGeneratorInfo[] genInfos, MPos spawnPoint, bool fromSave, bool allowWeapons)
+		public MapType(string overridePiece, int wall, MPos customSize, Color ambient, GameType defaultType, GameMode[] defaultModes, int level, int fromLevel, TerrainGeneratorInfo baseTerrainGeneration, MapGeneratorInfo[] genInfos, MPos spawnPoint, bool fromSave, bool allowWeapons)
 		{
 			OverridePiece = overridePiece;
 			Wall = wall;
@@ -40,7 +38,6 @@ namespace WarriorsSnuggery.Maps
 			Level = level;
 			FromLevel = fromLevel;
 			BaseTerrainGeneration = baseTerrainGeneration;
-			TerrainGeneration = terrainGeneration;
 			GeneratorInfos = genInfos;
 			SpawnPoint = spawnPoint;
 			FromSave = fromSave;
@@ -52,17 +49,17 @@ namespace WarriorsSnuggery.Maps
 			var piece = stats.SaveName + "_map";
 			var size = RuleReader.Read(FileExplorer.Saves, stats.SaveName + "_map.yaml").First(n => n.Key == "Size").Convert<MPos>();
 
-			return new MapType(piece, 0, size, Color.White, GameType.NORMAL, new[] { stats.Mode }, -1, 0, TerrainGenerationType.Empty(), new TerrainGenerationType[0], new MapGeneratorInfo[0], MPos.Zero, true, true);
+			return new MapType(piece, 0, size, Color.White, GameType.NORMAL, new[] { stats.Mode }, -1, 0, new TerrainGeneratorInfo(0, new MiniTextNode[0]), new MapGeneratorInfo[0], MPos.Zero, true, true);
 		}
 
 		public static MapType EditorMapTypeFromPiece(string piece, MPos size)
 		{
-			return new MapType(piece, 0, size, Color.White, GameType.EDITOR, new[] { GameMode.NONE }, -1, 0, TerrainGenerationType.Empty(), new TerrainGenerationType[0], new MapGeneratorInfo[0], MPos.Zero, false, true);
+			return new MapType(piece, 0, size, Color.White, GameType.EDITOR, new[] { GameMode.NONE }, -1, 0, new TerrainGeneratorInfo(0, new MiniTextNode[0]), new MapGeneratorInfo[0], MPos.Zero, false, true);
 		}
 
 		public static MapType ConvertGameType(MapType map, GameType type)
 		{
-			return new MapType(map.OverridePiece, map.Wall, map.CustomSize, map.Ambient, type, map.DefaultModes, map.Level, map.FromLevel, map.BaseTerrainGeneration, map.TerrainGeneration, map.GeneratorInfos, map.SpawnPoint, map.FromSave, map.AllowWeapons);
+			return new MapType(map.OverridePiece, map.Wall, map.CustomSize, map.Ambient, type, map.DefaultModes, map.Level, map.FromLevel, map.BaseTerrainGeneration, map.GeneratorInfos, map.SpawnPoint, map.FromSave, map.AllowWeapons);
 		}
 	}
 
@@ -82,10 +79,9 @@ namespace WarriorsSnuggery.Maps
 				var wall = 0;
 				var ambient = Color.White;
 				var customSize = MPos.Zero;
-				var terrainGen = new List<TerrainGenerationType>();
 				var genInfos = new List<MapGeneratorInfo>();
 				var spawnPoint = new MPos(-1, -1);
-				TerrainGenerationType baseterrain = null;
+				TerrainGeneratorInfo baseterrain = null;
 				var allowWeapons = true;
 
 				foreach (var child in terrain.Children)
@@ -105,7 +101,7 @@ namespace WarriorsSnuggery.Maps
 								playModes[i] = (GameMode)Enum.Parse(typeof(GameMode), modeArray[i]);
 							}
 							break;
-						case "ActiveFromLevel":
+						case "FromLevel":
 							fromLevel = child.Convert<int>();
 
 							break;
@@ -122,7 +118,7 @@ namespace WarriorsSnuggery.Maps
 
 							break;
 						case "BaseTerrainGeneration":
-							baseterrain = TerrainGenerationType.GetType(0, child.Children.ToArray());
+							baseterrain = new TerrainGeneratorInfo(child.Convert<int>(), child.Children.ToArray());
 
 							break;
 						case "PathGeneration":
@@ -168,7 +164,7 @@ namespace WarriorsSnuggery.Maps
 				if (baseterrain == null)
 					throw new YamlMissingNodeException(terrain.Key, "BaseTerrainGeneration");
 
-				AddType(new MapType("", wall, customSize, ambient, playType, playModes, level, fromLevel, baseterrain, terrainGen.ToArray(), genInfos.ToArray(), spawnPoint, false, allowWeapons), name);
+				AddType(new MapType(string.Empty, wall, customSize, ambient, playType, playModes, level, fromLevel, baseterrain, genInfos.ToArray(), spawnPoint, false, allowWeapons), name);
 			}
 		}
 

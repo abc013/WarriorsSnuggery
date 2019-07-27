@@ -103,7 +103,12 @@ namespace WarriorsSnuggery.UI
 					missionText.SetText("Wipe out all enemies!");
 					break;
 			}
+		}
 
+		public override void Hide()
+		{
+			effectPanel.DisableTooltip();
+			actorPanel.DisableTooltip();
 		}
 
 		public override bool CursorOnUI()
