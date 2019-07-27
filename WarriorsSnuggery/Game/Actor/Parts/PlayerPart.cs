@@ -42,7 +42,7 @@ namespace WarriorsSnuggery.Objects.Parts
 
 		public override void OnKilled(Actor killer)
 		{
-			self.World.PlayerKilled(killer);
+			self.World.PlayerKilled();
 		}
 
 		public override void OnKill(Actor killed)

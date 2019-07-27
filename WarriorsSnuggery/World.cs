@@ -31,8 +31,6 @@ namespace WarriorsSnuggery
 		public Actor LocalPlayer;
 		public bool PlayerAlive = true;
 
-		public Actor Selected;
-
 		public World(Game game, int seed, int level, int difficulty)
 		{
 			Game = game;
@@ -143,28 +141,13 @@ namespace WarriorsSnuggery
 			ToRender = toRender;
 		}
 
-		int healthdisplaycooldown;
 		void internalTick()
 		{
 			Actors.ForEach(a => a.Tick());
 			Objects.ForEach(o => o.Tick());
-
-			healthdisplaycooldown--;
-			if (MouseInput.isMiddleDown && healthdisplaycooldown <= 0)
-			{
-				Add(ParticleCreator.Create("glitter", MouseInput.GamePosition));
-
-				var selected = Actors.Find(a => a.Position.DistToXY(MouseInput.GamePosition) < 512);
-				if (selected != null)
-				{
-					Selected = selected;
-					Add(new ActionText(selected.Position, IFont.Pixel16, new CPos(0, -15, 30), 100, Color.Cyan + "" + selected.Health + " HP"));
-					healthdisplaycooldown = 30;
-				}
-			}
 		}
 
-		public void PlayerKilled(Actor killer)
+		public void PlayerKilled()
 		{
 			if (PlayerAlive)
 			{

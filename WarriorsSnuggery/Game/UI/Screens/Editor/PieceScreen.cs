@@ -56,7 +56,7 @@ namespace WarriorsSnuggery.UI
 			@new = ButtonCreator.Create("wooden", new CPos(0, 6144, 0), "New Piece", () => { createPieceScreen.ActiveScreen = true; });
 			delete = ButtonCreator.Create("wooden", new CPos(-4096, 6144, 0), "Delete Piece", () => { });
 
-			createPieceScreen = new CreatePieceScreen(this, game);
+			createPieceScreen = new CreatePieceScreen();
 		}
 
 		public override void Hide()
@@ -120,9 +120,6 @@ namespace WarriorsSnuggery.UI
 	{
 		public bool ActiveScreen = false;
 
-		readonly Game game;
-		readonly PieceScreen screen;
-
 		readonly Button cancel;
 		readonly Button okay;
 
@@ -133,10 +130,8 @@ namespace WarriorsSnuggery.UI
 		readonly TextLine warning;
 		readonly TextBox name;
 
-		public CreatePieceScreen(PieceScreen screen, Game game) : base("Create Piece")
+		public CreatePieceScreen() : base("Create Piece")
 		{
-			this.screen = screen;
-			this.game = game;
 			Title.Position = new CPos(0, -4096, 0);
 
 			cancel = ButtonCreator.Create("wooden", new CPos(4096, 6144, 0), "Cancel", () => { ActiveScreen = false; });

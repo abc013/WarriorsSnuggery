@@ -45,7 +45,7 @@ namespace WarriorsSnuggery.Maps
 			var spawnArea = map.Bounds - Piece.Size;
 			var pos = new MPos(-1, -1);
 
-			while (pos.X < 0 || !map.GeneratePiece(Piece, pos, 0, true))
+			while (pos.X < 0 || !map.GeneratePiece(Piece, pos, 100, true))
 			{
 				// Picking a random side, 0 = x, 1 = y, 2 = -x, 3 = -y;
 				var side = (byte)random.Next(4);

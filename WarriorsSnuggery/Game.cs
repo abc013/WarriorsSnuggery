@@ -129,6 +129,9 @@ namespace WarriorsSnuggery
 			{
 				Pause(false);
 			}
+
+			// Fixes zoom bug TODO better fix?
+			Camera.Reset();
 		}
 
 		public void Pause()
