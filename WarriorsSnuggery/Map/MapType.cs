@@ -125,10 +125,6 @@ namespace WarriorsSnuggery.Maps
 							baseterrain = TerrainGenerationType.GetType(0, child.Children.ToArray());
 
 							break;
-						case "TerrainGeneration":
-							terrainGen.Add(TerrainGenerationType.GetType(child.Convert<int>(), child.Children.ToArray()));
-
-							break;
 						case "PathGeneration":
 							genInfos.Add(new PathGeneratorInfo(child.Convert<int>(), child.Children.ToArray()));
 
@@ -145,7 +141,7 @@ namespace WarriorsSnuggery.Maps
 							genInfos.Add(new ImportantPieceGeneratorInfo(child.Convert<int>(), child.Children.ToArray()));
 
 							break;
-						case "TerrainGeneration1":
+						case "TerrainGeneration":
 							genInfos.Add(new TerrainGeneratorInfo(child.Convert<int>(), child.Children.ToArray()));
 
 							break;

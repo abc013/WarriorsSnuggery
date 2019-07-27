@@ -29,21 +29,21 @@ namespace WarriorsSnuggery.Loader
 
 			if (t == typeof(int))
 			{
-				var i = 0;
+				int i;
 
 				if (int.TryParse(s, out i) || s == "")
 					return i;
 			}
 			else if (t == typeof(byte))
 			{
-				var i = (byte)0;
+				byte i;
 
 				if (byte.TryParse(s, out i))
 					return i;
 			}
 			else if (t == typeof(float))
 			{
-				var i = 0f;
+				float i;
 
 				if (float.TryParse(s, out i))
 					return i;
@@ -69,7 +69,7 @@ namespace WarriorsSnuggery.Loader
 				for (int i = 0; i < parts.Length; i++)
 				{
 					var part = parts[i].Trim();
-					var convert = 0;
+					int convert;
 
 					if (int.TryParse(part, out convert))
 					{
@@ -91,7 +91,7 @@ namespace WarriorsSnuggery.Loader
 				for (int i = 0; i < parts.Length; i++)
 				{
 					var part = parts[i].Trim();
-					var convert = 0.0f;
+					float convert;
 
 					if (float.TryParse(part, out convert))
 					{
@@ -122,8 +122,8 @@ namespace WarriorsSnuggery.Loader
 
 				if (parts.Length == 2)
 				{
-					var x = 0;
-					var y = 0;
+					int x;
+					int y;
 
 					if (int.TryParse(parts[0], out x) && int.TryParse(parts[1], out y))
 						return new MPos(x, y);
@@ -135,9 +135,9 @@ namespace WarriorsSnuggery.Loader
 
 				if (parts.Length == 3)
 				{
-					var x = 0;
-					var y = 0;
-					var z = 0;
+					int x;
+					int y;
+					int z;
 
 					if (int.TryParse(parts[0], out x) && int.TryParse(parts[1], out y) && int.TryParse(parts[2], out z))
 						return new CPos(x, y, z);
@@ -149,9 +149,9 @@ namespace WarriorsSnuggery.Loader
 
 				if (parts.Length >= 3 && parts.Length <= 4)
 				{
-					var r = 0;
-					var g = 0;
-					var b = 0;
+					int r;
+					int b;
+					int g;
 					var a = 255;
 
 					if (int.TryParse(parts[0], out r) && int.TryParse(parts[1], out g) && int.TryParse(parts[2], out b))
@@ -228,6 +228,15 @@ namespace WarriorsSnuggery.Loader
 			{
 				// Called method handles nonexistant weapon types
 				return WeaponCreator.GetType(s.Trim());
+			}
+			else if (t == typeof(Maps.ActorGeneratorInfo[]))
+			{
+				var convert = new Maps.ActorGeneratorInfo[node.Children.Count];
+
+				for (int i = 0; i < node.Children.Count; i++)
+					convert[i] = new Maps.ActorGeneratorInfo(node.Children[i].Children.ToArray());
+
+				return convert;
 			}
 			else if (t.IsEnum)
 			{
