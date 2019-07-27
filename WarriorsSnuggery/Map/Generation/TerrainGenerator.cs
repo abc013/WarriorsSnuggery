@@ -4,19 +4,19 @@ using WarriorsSnuggery.Objects;
 
 namespace WarriorsSnuggery.Maps
 {
-    public class ActorGeneratorInfo
-    {
-        public readonly float Probability = 1f;
+	public class ActorGeneratorInfo
+	{
+		public readonly float Probability = 1f;
 
-        public readonly float Health = 1f;
-        public readonly string Type = string.Empty;
-        public readonly byte Team = Actor.NeutralTeam;
+		public readonly float Health = 1f;
+		public readonly string Type = string.Empty;
+		public readonly byte Team = Actor.NeutralTeam;
 
-        public ActorGeneratorInfo(MiniTextNode[] nodes)
-        {
-            Loader.PartLoader.SetValues(this, nodes);
-        }
-    }
+		public ActorGeneratorInfo(MiniTextNode[] nodes)
+		{
+			Loader.PartLoader.SetValues(this, nodes);
+		}
+	}
 
 	public class TerrainGenerator : MapGenerator
 	{
@@ -71,7 +71,7 @@ namespace WarriorsSnuggery.Maps
 					if (!map.AcquireCell(new MPos(x, y), info.ID))
 						continue;
 
-                    dirtyCells[x, y] = true;
+					dirtyCells[x, y] = true;
 					//terrainGenerationArray[x, y] = info.ID;
 					var number = (int)Math.Floor(single * (info.Terrain.Length - 1));
 					world.TerrainLayer.Set(TerrainCreator.Create(world, new WPos(x, y, 0), info.Terrain[number]));
@@ -99,11 +99,11 @@ namespace WarriorsSnuggery.Maps
 								if (p.X >= map.Bounds.X || p.Y >= map.Bounds.Y)
 									continue;
 
-                                if (!dirtyCells[p.X, p.Y] && map.AcquireCell(p, info.ID))
-                                {
-                                    world.TerrainLayer.Set(TerrainCreator.Create(world, new WPos(p.X, p.Y, 0), info.BorderTerrain[0]));
-                                }
-                            }
+								if (!dirtyCells[p.X, p.Y] && map.AcquireCell(p, info.ID))
+								{
+									world.TerrainLayer.Set(TerrainCreator.Create(world, new WPos(p.X, p.Y, 0), info.BorderTerrain[0]));
+								}
+							}
 						}
 					}
 				}
@@ -150,10 +150,10 @@ namespace WarriorsSnuggery.Maps
 		public readonly int[] Terrain = new int[] { 0 };
 		[Desc("Allows spawning of pieces.")]
 		public readonly bool SpawnPieces = true;
-        [Desc("Information about the actors to be spawned on that terrain.")]
-        public readonly ActorGeneratorInfo[] SpawnActors;
+		[Desc("Information about the actors to be spawned on that terrain.")]
+		public readonly ActorGeneratorInfo[] SpawnActors;
 
-        [Desc("Border thickness.")]
+		[Desc("Border thickness.")]
 		public readonly int Border = 0;
 		[Desc("Terrain to use for borders.")]
 		public readonly int[] BorderTerrain = new int[0];
