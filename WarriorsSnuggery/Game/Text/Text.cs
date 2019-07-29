@@ -49,7 +49,7 @@ namespace WarriorsSnuggery.Objects
 			}
 		}
 		float scale = 1f;
-		
+
 		public readonly TextLine[] Lines = new TextLine[0];
 		readonly int lineDistance;
 

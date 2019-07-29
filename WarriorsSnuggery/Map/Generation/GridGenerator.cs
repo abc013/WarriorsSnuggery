@@ -1,6 +1,6 @@
 ﻿using System;
-using System.Linq;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace WarriorsSnuggery.Maps
 {
@@ -57,7 +57,7 @@ namespace WarriorsSnuggery.Maps
 			}
 
 			pieceCells = new List<PieceCell>();
-			foreach(var cell in cells)
+			foreach (var cell in cells)
 			{
 				var piece = new PieceCell(cell.Position, cell.Size, info);
 				pieceCells.AddRange(pieceLoop(piece));
@@ -114,9 +114,9 @@ namespace WarriorsSnuggery.Maps
 
 		protected override void MarkDirty()
 		{
-			foreach(var cell in cells)
+			foreach (var cell in cells)
 			{
-				for(int x = cell.Position.X; x < cell.Position.X + cell.Size.X; x++)
+				for (int x = cell.Position.X; x < cell.Position.X + cell.Size.X; x++)
 				{
 					for (int y = cell.Position.Y; y < cell.Position.Y + cell.Size.Y; y++)
 					{

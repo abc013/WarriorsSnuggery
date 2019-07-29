@@ -15,7 +15,7 @@ namespace WarriorsSnuggery.Maps
 			var maxLoops = 2000;
 			var count = random.Next(info.MaximumCount - info.MinimumCount) + info.MinimumCount;
 
-			while(count > 0)
+			while (count > 0)
 			{
 				var piece = info.Pieces[random.Next(info.Pieces.Length)];
 				var input = RuleReader.Read(FileExplorer.FindPath(FileExplorer.Maps, piece, ".yaml"), piece + ".yaml").ToArray();

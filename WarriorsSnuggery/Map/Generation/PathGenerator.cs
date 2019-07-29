@@ -109,7 +109,7 @@ namespace WarriorsSnuggery.Maps
 
 		protected override void MarkDirty()
 		{
-			var width = (int) Math.Floor(info.Width / 2f);
+			var width = (int)Math.Floor(info.Width / 2f);
 			var width2 = info.Width - width;
 			foreach (var point in points)
 			{

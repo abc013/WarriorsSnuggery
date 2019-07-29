@@ -96,7 +96,8 @@ namespace WarriorsSnuggery
 				}
 			}
 
-			internalTick();
+			Actors.ForEach(a => a.Tick());
+			Objects.ForEach(o => o.Tick());
 
 			AddObjects();
 		}
@@ -134,12 +135,6 @@ namespace WarriorsSnuggery
 					toRender.Add(wall);
 			toRender = toRender.OrderBy(e => (e.GraphicPosition.Z + (e.Position.Y - 512) * 2)).ToList();
 			ToRender = toRender;
-		}
-
-		void internalTick()
-		{
-			Actors.ForEach(a => a.Tick());
-			Objects.ForEach(o => o.Tick());
 		}
 
 		public void PlayerKilled()

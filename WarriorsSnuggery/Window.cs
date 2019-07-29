@@ -130,7 +130,7 @@ namespace WarriorsSnuggery
 			MouseInput.Tick();
 
 			if (GlobalTick % 20 == 0)
-				TPS = (float) Math.Round(1 / e.Time, 1);
+				TPS = (float)Math.Round(1 / e.Time, 1);
 
 			GlobalTick++;
 
@@ -154,7 +154,7 @@ namespace WarriorsSnuggery
 			}
 
 			if (GlobalRender % 20 == 0)
-				FPS = (float) Math.Round(1 / e.Time, 1);
+				FPS = (float)Math.Round(1 / e.Time, 1);
 
 			GlobalRender++;
 

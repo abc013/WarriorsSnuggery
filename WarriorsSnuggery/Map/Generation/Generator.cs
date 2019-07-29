@@ -29,7 +29,7 @@ namespace WarriorsSnuggery.Maps
 	public abstract class MapGeneratorInfo
 	{
 		public readonly int ID;
-		
+
 		public MapGeneratorInfo(int id)
 		{
 			ID = id;
