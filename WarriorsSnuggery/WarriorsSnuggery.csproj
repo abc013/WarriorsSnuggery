@@ -63,6 +63,7 @@
     <Reference Include="System.Windows.Forms" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Cursor.cs" />
     <Compile Include="Game\Actor\Effects\Effect.cs" />
     <Compile Include="GameSettings.cs" />
     <Compile Include="Game\Actor\Effects\EffectPart.cs" />

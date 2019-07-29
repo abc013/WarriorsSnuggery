@@ -326,7 +326,6 @@ namespace WarriorsSnuggery
 			if (LocalTick % 4 == 0)
 				Log.WritePerformance(watch.ElapsedMilliseconds, " Tick " + LocalTick);
 
-
 			if (ScreenControl.FocusedType == ScreenType.START)
 				Pause(true);
 		}

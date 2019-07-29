@@ -3,7 +3,6 @@
  * Date: 21.10.2018
  * Time: 21:18
  */
-using System.Linq;
 using WarriorsSnuggery.Graphics;
 using WarriorsSnuggery.Objects;
 

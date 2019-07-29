@@ -4,9 +4,7 @@
  * 
  */
 using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using WarriorsSnuggery.Maps;
 
 namespace WarriorsSnuggery
@@ -154,7 +152,7 @@ namespace WarriorsSnuggery
 
 		public void Save(string directory, string name)
 		{
-			SaveFile(directory + @"maps/"+ name + ".yaml", name);
+			SaveFile(directory + @"maps/" + name + ".yaml", name);
 		}
 
 		public void SaveFile(string file, string name)

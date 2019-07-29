@@ -19,15 +19,15 @@ namespace WarriorsSnuggery
 		static readonly List<IRenderable> beforeRender = new List<IRenderable>();
 		static readonly List<IRenderable> afterRender = new List<IRenderable>();
 
-		static ImageRenderable cursor;
 		static Tooltip tooltip;
 
+		public static Cursor Cursor;
 		public static void Reset(Game game)
 		{
-			if (cursor == null)
-			{
-				cursor = new ImageRenderable(TextureManager.Texture("cursor"));
-			}
+			if (Cursor == null)
+				Cursor = new Cursor();
+
+			Cursor.Current = CursorType.DEFAULT;
 			UIRenderer.game = game;
 			Update();
 			ClearRenderLists();
@@ -94,16 +94,14 @@ namespace WarriorsSnuggery
 
 			tooltip?.Render();
 
-			//Graphics.ColorManager.DrawLine(CPos.Zero, MouseInput.WindowPosition, Color.Red);
-			if (!Settings.EnableDebug)
-			{
-				cursor.SetPosition(MouseInput.WindowPosition + new CPos(240, 240, 0));
-				cursor.Render();
-			}
-			else
+			if (Settings.EnableDebug)
 			{
 				Graphics.ColorManager.DrawRect(new CPos(-64, -64, 0), new CPos(64, 64, 0), Color.Cyan);
 				Graphics.ColorManager.DrawRect(MouseInput.WindowPosition + new CPos(-64, -64, 0), MouseInput.WindowPosition + new CPos(64, 64, 0), Color.Blue);
+			}
+			else
+			{
+				Cursor.Render();
 			}
 		}
 	}

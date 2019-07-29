@@ -128,7 +128,7 @@ namespace WarriorsSnuggery.UI
 			}
 			FocusedType = screen;
 		}
-		
+
 		void setFocused(Screen screen)
 		{
 			Focused?.Hide();

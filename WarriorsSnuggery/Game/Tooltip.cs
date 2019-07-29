@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Linq;
-using WarriorsSnuggery.Objects;
 using WarriorsSnuggery.Graphics;
+using WarriorsSnuggery.Objects;
 
 namespace WarriorsSnuggery
 {
