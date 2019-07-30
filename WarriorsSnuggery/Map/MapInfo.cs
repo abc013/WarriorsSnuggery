@@ -4,30 +4,43 @@ using System.Linq;
 
 namespace WarriorsSnuggery.Maps
 {
-	public class MapType
+	[Desc("These rules contain information about a map that can be generated.")]
+	public class MapInfo
 	{
-		public readonly int Level;
-		public readonly int FromLevel;
+		[Desc("Type of the map.")]
+		public readonly GameType DefaultType = GameType.NORMAL;
+		[Desc("Possible modes on this map.")]
+		public readonly GameMode[] DefaultModes = new[] { GameMode.NONE };
 
-		public readonly GameType DefaultType;
-		public readonly GameMode[] DefaultModes;
+		[Desc("Single level where this map must be generated.")]
+		public readonly int Level = -1;
+		[Desc("Level from which this map can be selected to get generated.")]
+		public readonly int FromLevel = 0;
+		[Desc("Level until this map can be selected to get generated.")]
+		public readonly int ToLevel = int.MaxValue;
 
-		public readonly string OverridePiece;
+		[Desc("Piece that has to be generated on the map at the coordinates 0,0.")]
+		public readonly string OverridePiece = string.Empty;
+		[Desc("Custom size for the map.")]
+		public readonly MPos CustomSize = MPos.Zero;
+		[Desc("Spawn point of the player.")]
+		public readonly MPos SpawnPoint = new MPos(-1, -1);
+		[Desc("Allows the use of weapons on the map.")]
+		public readonly bool AllowWeapons = true;
 
-		public readonly TerrainGeneratorInfo BaseTerrainGeneration;
-		public readonly MapGeneratorInfo[] GeneratorInfos;
+		[Desc("Ambient color of the map.")]
+		public readonly Color Ambient = Color.White;
+		[Desc("Wall type to use when surrounding the map with walls.")]
+		public readonly int Wall = 0;
 
-		public readonly int Wall;
+		[Desc("Base Terrain Generator. Required for the game to function.")]
+		public readonly TerrainGeneratorInfo BaseTerrainGeneration = null;
+		[Desc("Generators to use. To add, just do it like traits.")]
+		public readonly MapGeneratorInfo[] GeneratorInfos = new MapGeneratorInfo[0];
 
-		public readonly MPos CustomSize;
-		public readonly Color Ambient;
-
-		public readonly MPos SpawnPoint;
-
+		[Desc("Variable used to determine wether this map comes from an save. DO NOT ALTER.")]
 		public readonly bool FromSave;
-		public readonly bool AllowWeapons;
-
-		public MapType(string overridePiece, int wall, MPos customSize, Color ambient, GameType defaultType, GameMode[] defaultModes, int level, int fromLevel, TerrainGeneratorInfo baseTerrainGeneration, MapGeneratorInfo[] genInfos, MPos spawnPoint, bool fromSave, bool allowWeapons)
+		public MapInfo(string overridePiece, int wall, MPos customSize, Color ambient, GameType defaultType, GameMode[] defaultModes, int level, int fromLevel, TerrainGeneratorInfo baseTerrainGeneration, MapGeneratorInfo[] genInfos, MPos spawnPoint, bool fromSave, bool allowWeapons)
 		{
 			OverridePiece = overridePiece;
 			Wall = wall;
@@ -44,22 +57,27 @@ namespace WarriorsSnuggery.Maps
 			AllowWeapons = allowWeapons;
 		}
 
-		public static MapType MapTypeFromSave(GameStatistics stats)
+		public MapInfo(MiniTextNode[] nodes)
+		{
+			Loader.PartLoader.SetValues(this, nodes);
+		}
+
+		public static MapInfo MapTypeFromSave(GameStatistics stats)
 		{
 			var piece = stats.SaveName + "_map";
 			var size = RuleReader.Read(FileExplorer.Saves, stats.SaveName + "_map.yaml").First(n => n.Key == "Size").Convert<MPos>();
 
-			return new MapType(piece, 0, size, Color.White, GameType.NORMAL, new[] { stats.Mode }, -1, 0, new TerrainGeneratorInfo(0, new MiniTextNode[0]), new MapGeneratorInfo[0], MPos.Zero, true, true);
+			return new MapInfo(piece, 0, size, Color.White, GameType.NORMAL, new[] { stats.Mode }, -1, 0, new TerrainGeneratorInfo(0, new MiniTextNode[0]), new MapGeneratorInfo[0], MPos.Zero, true, true);
 		}
 
-		public static MapType EditorMapTypeFromPiece(string piece, MPos size)
+		public static MapInfo EditorMapTypeFromPiece(string piece, MPos size)
 		{
-			return new MapType(piece, 0, size, Color.White, GameType.EDITOR, new[] { GameMode.NONE }, -1, 0, new TerrainGeneratorInfo(0, new MiniTextNode[0]), new MapGeneratorInfo[0], MPos.Zero, false, true);
+			return new MapInfo(piece, 0, size, Color.White, GameType.EDITOR, new[] { GameMode.NONE }, -1, 0, new TerrainGeneratorInfo(0, new MiniTextNode[0]), new MapGeneratorInfo[0], MPos.Zero, false, true);
 		}
 
-		public static MapType ConvertGameType(MapType map, GameType type)
+		public static MapInfo ConvertGameType(MapInfo map, GameType type)
 		{
-			return new MapType(map.OverridePiece, map.Wall, map.CustomSize, map.Ambient, type, map.DefaultModes, map.Level, map.FromLevel, map.BaseTerrainGeneration, map.GeneratorInfos, map.SpawnPoint, map.FromSave, map.AllowWeapons);
+			return new MapInfo(map.OverridePiece, map.Wall, map.CustomSize, map.Ambient, type, map.DefaultModes, map.Level, map.FromLevel, map.BaseTerrainGeneration, map.GeneratorInfos, map.SpawnPoint, map.FromSave, map.AllowWeapons);
 		}
 	}
 
@@ -67,9 +85,9 @@ namespace WarriorsSnuggery.Maps
 	{
 		public static void LoadTypes(string directory, string file)
 		{
-			var terrains = RuleReader.Read(directory, file);
+			var infos = RuleReader.Read(directory, file);
 
-			foreach (var terrain in terrains)
+			foreach (var terrain in infos)
 			{
 				var playType = GameType.NORMAL;
 				var playModes = new[] { GameMode.NONE };
@@ -164,23 +182,23 @@ namespace WarriorsSnuggery.Maps
 				if (baseterrain == null)
 					throw new YamlMissingNodeException(terrain.Key, "BaseTerrainGeneration");
 
-				AddType(new MapType(string.Empty, wall, customSize, ambient, playType, playModes, level, fromLevel, baseterrain, genInfos.ToArray(), spawnPoint, false, allowWeapons), name);
+				AddType(new MapInfo(string.Empty, wall, customSize, ambient, playType, playModes, level, fromLevel, baseterrain, genInfos.ToArray(), spawnPoint, false, allowWeapons), name);
 			}
 		}
 
-		static readonly Dictionary<string, MapType> types = new Dictionary<string, MapType>();
+		static readonly Dictionary<string, MapInfo> types = new Dictionary<string, MapInfo>();
 
-		public static void AddType(MapType type, string name)
+		public static void AddType(MapInfo type, string name)
 		{
 			types.Add(name, type);
 		}
 
-		public static MapType GetType(string name)
+		public static MapInfo GetType(string name)
 		{
 			return types[name];
 		}
 
-		public static MapType FindMainMenuMap(int level)
+		public static MapInfo FindMainMenuMap(int level)
 		{
 			var mainLevels = types.Values.Where(a => a.DefaultType == GameType.MAINMENU && level == a.Level).ToList();
 
@@ -195,7 +213,7 @@ namespace WarriorsSnuggery.Maps
 			return mainTypes[Program.SharedRandom.Next(mainTypes.Count())];
 		}
 
-		public static MapType FindMainMap(int level)
+		public static MapInfo FindMainMap(int level)
 		{
 			var mainLevels = types.Values.Where(a => a.DefaultType == GameType.MENU && level == a.Level).ToList();
 
@@ -210,7 +228,7 @@ namespace WarriorsSnuggery.Maps
 			return mainTypes[Program.SharedRandom.Next(mainTypes.Count())];
 		}
 
-		public static MapType FindMap(int level)
+		public static MapInfo FindMap(int level)
 		{
 			var mainLevels = types.Values.Where(a => a.DefaultType == GameType.NORMAL && level == a.Level).ToList();
 
@@ -225,7 +243,7 @@ namespace WarriorsSnuggery.Maps
 			return mainTypes[Program.SharedRandom.Next(mainTypes.Count())];
 		}
 
-		public static MapType FindTutorial()
+		public static MapInfo FindTutorial()
 		{
 			var mainTypes = types.Values.Where(a => a.DefaultType == GameType.TUTORIAL).ToList();
 

@@ -22,7 +22,7 @@ namespace WarriorsSnuggery
 		readonly World world;
 		readonly Random random;
 
-		public readonly MapType Type;
+		public readonly MapInfo Type;
 		public readonly int Seed;
 
 		// Map Information
@@ -34,7 +34,7 @@ namespace WarriorsSnuggery
 
 		int[,] TilesWithAssignedGenerator;
 
-		public Map(World world, MapType type, int seed, int level, int difficulty)
+		public Map(World world, MapInfo type, int seed, int level, int difficulty)
 		{
 			this.world = world;
 

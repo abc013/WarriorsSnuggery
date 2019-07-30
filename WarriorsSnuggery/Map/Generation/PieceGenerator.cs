@@ -50,6 +50,7 @@ namespace WarriorsSnuggery.Maps
 		}
 	}
 
+	[Desc("Generator used to randomly spread pieces across the map.")]
 	public class PieceGeneratorInfo : MapGeneratorInfo
 	{
 		[Desc("Unique ID for the generator.")]

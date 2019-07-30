@@ -192,7 +192,7 @@ namespace WarriorsSnuggery
 			}
 		}
 
-		public void NewGame(GameStatistics stats, GameType type = GameType.NORMAL, bool sameSeed = false, MapType custom = null, bool loadStatsMap = false)
+		public void NewGame(GameStatistics stats, GameType type = GameType.NORMAL, bool sameSeed = false, MapInfo custom = null, bool loadStatsMap = false)
 		{
 			Camera.Reset();
 			if (Game != null)
@@ -205,7 +205,7 @@ namespace WarriorsSnuggery
 			{
 				try
 				{
-					custom = MapType.MapTypeFromSave(stats);
+					custom = MapInfo.MapTypeFromSave(stats);
 				}
 				catch (System.IO.FileNotFoundException)
 				{

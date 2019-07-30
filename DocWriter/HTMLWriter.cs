@@ -29,7 +29,7 @@ namespace WarriorsSnuggery
 			writer.WriteLine("\t\t</style>");
 		}
 
-		public static void WriteDoc(StreamWriter writer, ObjectType type)
+		public static void WriteDoc(StreamWriter writer, DocumentationType type)
 		{
 			writer.WriteLine();
 			writer.WriteLine("\t\t<h1>" + type.ToString().ToLower() + "</h1>");
@@ -38,24 +38,36 @@ namespace WarriorsSnuggery
 
 			switch (type)
 			{
-				case ObjectType.ACTORS:
+				case DocumentationType.ACTORS:
 					ObjectWriter.WriteActors(writer);
 
 					break;
-				case ObjectType.PARTICLES:
+				case DocumentationType.PARTICLES:
 					ObjectWriter.WriteParticles(writer);
 
 					break;
-				case ObjectType.TERRAIN:
+				case DocumentationType.TERRAIN:
 					ObjectWriter.WriteTerrain(writer);
 
 					break;
-				case ObjectType.WALLS:
+				case DocumentationType.WALLS:
 					ObjectWriter.WriteWalls(writer);
 
 					break;
-				case ObjectType.WEAPONS:
+				case DocumentationType.WEAPONS:
 					ObjectWriter.WriteWeapons(writer);
+
+					break;
+				case DocumentationType.MAPS:
+					writer.WriteLine("\t\t<h2> Map Information</h2>");
+					writer.WriteLine("\t\t<hr>");
+					writer.WriteLine();
+					ObjectWriter.WriteMaps(writer);
+					writer.WriteLine();
+					writer.WriteLine("\t\t<h2> Map Generators</h2>");
+					writer.WriteLine("\t\t<hr>");
+					writer.WriteLine();
+					ObjectWriter.WriteMapGenerators(writer);
 
 					break;
 			}
@@ -131,16 +143,6 @@ namespace WarriorsSnuggery
 			Console.WriteLine();
 		}
 
-		static string getNameOfType(string name)
-		{
-			if (name == "Single")
-				return "Float";
-			if (name == "Int32")
-				return "Integer";
-
-			return name;
-		}
-
 		public static void WriteParticles(StreamWriter writer)
 		{
 			var info = Assembly.Load("WarriorsSnuggery").GetType("WarriorsSnuggery.Objects.ParticleType");
@@ -169,6 +171,34 @@ namespace WarriorsSnuggery
 			WriteWithType(writer, info);
 		}
 
+		public static void WriteMaps(StreamWriter writer)
+		{
+			var info = Assembly.Load("WarriorsSnuggery").GetType("WarriorsSnuggery.Maps.MapInfo");
+
+			WriteWithType(writer, info);
+		}
+
+		public static void WriteMapGenerators(StreamWriter writer)
+		{
+			var infos = Assembly.Load("WarriorsSnuggery").GetTypes().Where(t => t.Name.EndsWith("Info") && t.Namespace == "WarriorsSnuggery.Maps" && !t.IsAbstract);
+
+			bool first = true;
+			foreach (var info in infos)
+			{
+				if (info.Name == "MapInfo")
+					continue;
+
+				var attrib = info.GetCustomAttribute(typeof(DescAttribute));
+				HTMLWriter.WriteRuleHead(writer, info.Name.Replace("Info", ""), attrib == null ? new string[] { "No Description." } : ((DescAttribute)attrib).Desc);
+
+				WriteWithType(writer, info);
+
+				Console.Write((first ? "" : ", ") + info.Name.Replace("Info", ""));
+				first = false;
+			}
+			Console.WriteLine();
+		}
+
 		static void WriteWithType(StreamWriter writer, Type info)
 		{
 			var variables = info.GetFields().Where(f => f.IsInitOnly && f.GetCustomAttribute(typeof(DescAttribute)) != null).ToArray();
@@ -182,6 +212,14 @@ namespace WarriorsSnuggery
 				cells[i] = new TableCell(name, type, desc);
 			}
 			HTMLWriter.WriteTable(writer, cells);
+		}
+
+		static string getNameOfType(string name)
+		{
+			name = name.Replace("Single", "Float");
+			name = name.Replace("Int32", "Integer");
+
+			return name;
 		}
 	}
 }

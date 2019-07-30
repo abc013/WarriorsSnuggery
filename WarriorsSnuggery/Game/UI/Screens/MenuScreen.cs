@@ -38,7 +38,7 @@ namespace WarriorsSnuggery.UI
 			switch (game.Type)
 			{
 				case GameType.EDITOR:
-					restart = ButtonCreator.Create("wooden", new CPos(2048, height, 0), "Play", () => humanAgree(() => { Window.Current.NewGame(game.Statistics, GameType.NORMAL, true, Maps.MapType.ConvertGameType(game.MapType, GameType.TEST)); }, "Make sure you have saved the map!"));
+					restart = ButtonCreator.Create("wooden", new CPos(2048, height, 0), "Play", () => humanAgree(() => { Window.Current.NewGame(game.Statistics, GameType.NORMAL, true, Maps.MapInfo.ConvertGameType(game.MapType, GameType.TEST)); }, "Make sure you have saved the map!"));
 					menu = ButtonCreator.Create("wooden", new CPos(-2048, height, 0), "Main Menu", () => humanAgree(() => { Window.Current.NewGame(game.Statistics, GameType.MAINMENU); }, "Are you sure to return? Unsaved progress will be lost!"));
 					break;
 				case GameType.MAINMENU:
@@ -52,7 +52,7 @@ namespace WarriorsSnuggery.UI
 					menu = ButtonCreator.Create("wooden", new CPos(0, height, 0), "Main Menu", () => humanAgree(() => { Window.Current.NewGame(game.Statistics, GameType.MAINMENU); }, "Are you sure to leave this game? Unsaved progress will be lost!"));
 					break;
 				case GameType.TEST:
-					restart = ButtonCreator.Create("wooden", new CPos(2048, height, 0), "Editor", () => Window.Current.NewGame(game.Statistics, GameType.EDITOR, true, Maps.MapType.ConvertGameType(game.MapType, GameType.EDITOR)));
+					restart = ButtonCreator.Create("wooden", new CPos(2048, height, 0), "Editor", () => Window.Current.NewGame(game.Statistics, GameType.EDITOR, true, Maps.MapInfo.ConvertGameType(game.MapType, GameType.EDITOR)));
 					menu = ButtonCreator.Create("wooden", new CPos(-2048, height, 0), "Main Menu", () => Window.Current.NewGame(game.Statistics, GameType.MAINMENU));
 					break;
 				default:
