@@ -4,14 +4,15 @@ using System.Linq;
 
 namespace WarriorsSnuggery
 {
-	public enum ObjectType
+	public enum DocumentationType
 	{
 		ALL,
 		ACTORS,
 		PARTICLES,
 		WEAPONS,
 		TERRAIN,
-		WALLS
+		WALLS,
+		MAPS
 	}
 
 	static class Program
@@ -22,7 +23,7 @@ namespace WarriorsSnuggery
 			Console.ForegroundColor = ConsoleColor.White;
 
 			Console.WriteLine("Welcome to the WarriorsSnuggery DocWriter. This program will search through the installation and create a documentation of the modding rules.");
-			Console.WriteLine("Available is: ALL, ACTORS, PARTICLES, WEAPONS, TERRAIN and WALLS");
+			Console.WriteLine("Available are: ALL, ACTORS, PARTICLES, WEAPONS, TERRAIN, WALLS and MAPS.");
 
 			Console.ForegroundColor = ConsoleColor.Yellow;
 
@@ -34,7 +35,7 @@ namespace WarriorsSnuggery
 			Console.ForegroundColor = ConsoleColor.White;
 			Console.WriteLine("--------------------------------------------------------------");
 
-			ObjectType[] types;
+			DocumentationType[] types;
 			try
 			{
 				types = getTypes(input);
@@ -82,17 +83,16 @@ namespace WarriorsSnuggery
 			Console.ReadKey();
 		}
 
-		static ObjectType[] getTypes(string input)
+		static DocumentationType[] getTypes(string input)
 		{
 			var strings = input.Split(',');
 
-			var types = new ObjectType[strings.Length];
+			var types = new DocumentationType[strings.Length];
 			for (int i = 0; i < types.Length; i++)
-			{
-				types[i] = (ObjectType)Enum.Parse(typeof(ObjectType), strings[i].Trim(), true);
-			}
-			if (types.Contains(ObjectType.ALL))
-				types = new ObjectType[] { ObjectType.ACTORS, ObjectType.PARTICLES, ObjectType.WEAPONS, ObjectType.WALLS, ObjectType.TERRAIN };
+				types[i] = (DocumentationType)Enum.Parse(typeof(DocumentationType), strings[i].Trim(), true);
+
+			if (types.Contains(DocumentationType.ALL))
+				types = new DocumentationType[] { DocumentationType.ACTORS, DocumentationType.PARTICLES, DocumentationType.WEAPONS, DocumentationType.WALLS, DocumentationType.TERRAIN, DocumentationType.MAPS };
 
 			return types;
 		}

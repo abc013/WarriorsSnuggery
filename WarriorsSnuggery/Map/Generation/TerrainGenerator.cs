@@ -3,13 +3,19 @@ using WarriorsSnuggery.Objects;
 
 namespace WarriorsSnuggery.Maps
 {
+	[Desc("Information about objects that can be spawned with the TerrainGenerator.")]
 	public class ActorGeneratorInfo
 	{
+		[Desc("Probability of spawning an actor on a field.")]
 		public readonly float Probability = 1f;
 
+		[Desc("Health in percentage, if the Healthpart is given in the actor's definitions.")]
 		public readonly float Health = 1f;
+		[Desc("Name of the character or object.")]
 		public readonly string Type = string.Empty;
+		[Desc("Team of the actor.")]
 		public readonly byte Team = Actor.NeutralTeam;
+		[Desc("Determines whether the actor spawned is a bot.")]
 		public readonly bool IsBot = false;
 
 		public ActorGeneratorInfo(MiniTextNode[] nodes)
@@ -143,6 +149,7 @@ namespace WarriorsSnuggery.Maps
 		}
 	}
 
+	[Desc("Generator used for generating random flocks of terrain or actors on the map.")]
 	public class TerrainGeneratorInfo : MapGeneratorInfo
 	{
 		[Desc("Unique ID for the generator.")]

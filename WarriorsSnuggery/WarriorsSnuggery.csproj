@@ -142,7 +142,7 @@
     <Compile Include="Map\Map.cs" />
     <Compile Include="Game\Creators\ObjectCreator.cs" />
     <Compile Include="Map\MapPrinter.cs" />
-    <Compile Include="Map\MapType.cs" />
+    <Compile Include="Map\MapInfo.cs" />
     <Compile Include="Map\MapUtils.cs" />
     <Compile Include="Map\PhysicsLayer.cs" />
     <Compile Include="Map\Piece.cs" />

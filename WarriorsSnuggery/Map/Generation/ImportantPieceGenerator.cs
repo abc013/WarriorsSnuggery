@@ -92,6 +92,7 @@ namespace WarriorsSnuggery.Maps
 		EXIT
 	}
 
+	[Desc("Generator used to generate pieces that must be on the map.")]
 	public class ImportantPieceGeneratorInfo : MapGeneratorInfo
 	{
 		[Desc("Unique ID for the generator.")]

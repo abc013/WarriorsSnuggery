@@ -49,7 +49,7 @@ namespace WarriorsSnuggery
 
 		public readonly GameStatistics OldStatistics;
 		public readonly GameStatistics Statistics;
-		public readonly MapType MapType;
+		public readonly MapInfo MapType;
 		public readonly GameType Type;
 		public readonly GameMode Mode;
 		public readonly int Seed;
@@ -62,7 +62,7 @@ namespace WarriorsSnuggery
 		readonly TextLine infoText;
 		int infoTextDuration;
 
-		public Game(GameStatistics statistics, MapType map, int seed = -1)
+		public Game(GameStatistics statistics, MapInfo map, int seed = -1)
 		{
 			Window = Window.Current;
 
