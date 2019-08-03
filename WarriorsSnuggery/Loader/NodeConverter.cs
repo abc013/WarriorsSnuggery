@@ -238,6 +238,15 @@ namespace WarriorsSnuggery.Loader
 
 				return convert;
 			}
+			else if (t == typeof(Maps.PatrolProbabilityGeneratorInfo[]))
+			{
+				var convert = new Maps.PatrolProbabilityGeneratorInfo[node.Children.Count];
+
+				for (int i = 0; i < node.Children.Count; i++)
+					convert[i] = new Maps.PatrolProbabilityGeneratorInfo(node.Children[i].Children.ToArray());
+
+				return convert;
+			}
 			else if (t.IsEnum)
 			{
 				object @enum;
