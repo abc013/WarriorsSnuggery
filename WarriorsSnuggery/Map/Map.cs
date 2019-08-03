@@ -85,7 +85,7 @@ namespace WarriorsSnuggery
 			return true;
 		}
 
-		bool canAcquireCell(MPos pos, int id)
+		public bool CanAcquireCell(MPos pos, int id)
 		{
 			if (TilesWithAssignedGenerator[pos.X, pos.Y] > id)
 				return false;
@@ -111,14 +111,9 @@ namespace WarriorsSnuggery
 				for (int y = position.Y; y < (piece.Size.Y + position.Y); y++)
 				{
 					if (important)
-					{
 						AcquireCell(new MPos(x, y), ID);
-					}
-					else if (!canAcquireCell(new MPos(x, y), ID) || (cancelIfAcquiredBySameID && TilesWithAssignedGenerator[x, y] == ID))
-					{
-						//Log.WriteDebug(string.Format("Tried to spawn piece '{0}' at position '{1}', but was already occupied.", piece.Name, position));
+					else if (!CanAcquireCell(new MPos(x, y), ID) || (cancelIfAcquiredBySameID && TilesWithAssignedGenerator[x, y] == ID))
 						return false;
-					}
 				}
 			}
 			if (!important)

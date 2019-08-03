@@ -138,6 +138,7 @@
     <Compile Include="Map\Generation\ImportantPieceGenerator.cs" />
     <Compile Include="Map\Generation\PathGenerator.cs" />
     <Compile Include="Map\Generation\Generator.cs" />
+    <Compile Include="Map\Generation\PatrolGenerator.cs" />
     <Compile Include="Map\Generation\PieceGenerator.cs" />
     <Compile Include="Map\Map.cs" />
     <Compile Include="Game\Creators\ObjectCreator.cs" />

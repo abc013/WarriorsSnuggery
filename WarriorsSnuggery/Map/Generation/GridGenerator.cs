@@ -116,14 +116,26 @@ namespace WarriorsSnuggery.Maps
 		{
 			foreach (var cell in cells)
 			{
+				var blocked = false;
+				for (int x = cell.Position.X; x < cell.Position.X + cell.Size.X; x++)
+				{
+					for (int y = cell.Position.Y; y < cell.Position.Y + cell.Size.Y; y++)
+					{
+						if (!map.CanAcquireCell(new MPos(x, y), info.ID))
+							blocked = true;
+					}
+				}
+
+				if (blocked)
+					continue;
+
 				for (int x = cell.Position.X; x < cell.Position.X + cell.Size.X; x++)
 				{
 					for (int y = cell.Position.Y; y < cell.Position.Y + cell.Size.Y; y++)
 					{
 						if (map.AcquireCell(new MPos(x, y), info.ID))
-						{
 							dirtyCells[x, y] = true;
-						}
+
 						road[x, y] = false;
 					}
 				}

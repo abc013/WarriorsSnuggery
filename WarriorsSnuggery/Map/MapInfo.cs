@@ -159,6 +159,10 @@ namespace WarriorsSnuggery.Maps
 							genInfos.Add(new TerrainGeneratorInfo(child.Convert<int>(), child.Children.ToArray()));
 
 							break;
+						case "PatrolGeneration":
+							genInfos.Add(new PatrolGeneratorInfo(child.Convert<int>(), child.Children.ToArray()));
+
+							break;
 						case "CustomSize":
 							customSize = child.Convert<MPos>();
 
