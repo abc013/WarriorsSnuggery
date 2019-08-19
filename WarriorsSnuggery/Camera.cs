@@ -38,6 +38,7 @@ namespace WarriorsSnuggery
 			LookAt = CPos.Zero;
 			Locked = false;
 			CurrentZoom = DefaultZoom;
+			UpdateView();
 		}
 
 		public static void Zoom(float add, bool ignoreLock = false)
@@ -102,8 +103,11 @@ namespace WarriorsSnuggery
 
 			Matrix = Projection * View;
 
-			VisibilitySolver.CameraUpdated();
-			WorldRenderer.CheckObjectVisibility();
+			if (Window.Current.Game != null)
+			{
+				VisibilitySolver.CameraUpdated();
+				WorldRenderer.CheckObjectVisibility();
+			}
 		}
 	}
 }
