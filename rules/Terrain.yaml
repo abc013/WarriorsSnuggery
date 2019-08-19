@@ -7,10 +7,10 @@
 	Speed=1,0
 
 1=
-	Sprite=way
+	Sprite=sand
 	OverlapHeight=7
-	EdgeSprite=way_edges
-	CornerSprite=way_corners
+	EdgeSprite=sand_edges
+	CornerSprite=sand_corners
 	Speed=1,1
 
 2=
