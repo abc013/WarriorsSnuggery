@@ -25,17 +25,17 @@ namespace WarriorsSnuggery.Maps
 
 		protected override void MarkDirty()
 		{
-			for(int a = 0; a < Math.Floor(map.Bounds.X / (float) info.SpawnBounds); a++)
+			for (int a = 0; a < Math.Floor(map.Bounds.X / (float)info.SpawnBounds); a++)
 			{
-				for(int b = 0; b < Math.Floor(map.Bounds.X / (float) info.SpawnBounds); b++)
+				for (int b = 0; b < Math.Floor(map.Bounds.X / (float)info.SpawnBounds); b++)
 				{
 					var blocked = false;
-					for(int x = a * info.SpawnBounds; x < a * info.SpawnBounds + info.SpawnBounds; x++)
+					for (int x = a * info.SpawnBounds; x < a * info.SpawnBounds + info.SpawnBounds; x++)
 					{
 						if (x < 0 || x >= map.Bounds.X)
 							continue;
 
-						for(int y = a * info.SpawnBounds; y < a * info.SpawnBounds + info.SpawnBounds; y++)
+						for (int y = a * info.SpawnBounds; y < a * info.SpawnBounds + info.SpawnBounds; y++)
 						{
 							if (y < 0 || y >= map.Bounds.Y)
 								continue;
@@ -56,7 +56,7 @@ namespace WarriorsSnuggery.Maps
 
 			spawns = new MPos[count];
 
-			for(int i = 0; i < count; i++)
+			for (int i = 0; i < count; i++)
 			{
 				var posIndex = random.Next(positions.Count);
 				spawns[i] = positions[posIndex];
@@ -112,7 +112,7 @@ namespace WarriorsSnuggery.Maps
 			spawns = null;
 		}
 	}
-	
+
 	[Desc("Generator used for spawning enemies on the map.")]
 	public class PatrolGeneratorInfo : MapGeneratorInfo
 	{

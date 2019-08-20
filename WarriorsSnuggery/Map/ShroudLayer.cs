@@ -39,7 +39,7 @@ namespace WarriorsSnuggery
 
 			for (int i = 0; i < values.Length; i++)
 			{
-				var x = (int) Math.Floor(i / (float)Size.X);
+				var x = (int)Math.Floor(i / (float)Size.X);
 				var y = i % Size.X;
 
 				shroudRevealed[team, x, y] = values[i];

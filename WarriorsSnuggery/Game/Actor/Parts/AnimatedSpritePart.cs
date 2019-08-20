@@ -24,7 +24,7 @@ namespace WarriorsSnuggery.Objects.Parts
 		[Desc("Offset of the sprite.")]
 		public readonly CPos Offset;
 
-		[Desc("Use Sürote as preview in e.g. the editor.")]
+		[Desc("Use Sprite as preview in e.g. the editor.")]
 		public readonly bool UseAsPreview;
 
 		public override ActorPart Create(Actor self)

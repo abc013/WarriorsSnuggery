@@ -27,7 +27,7 @@ namespace WarriorsSnuggery.Objects.Parts
 		[Desc("Use the n-th image in the sprite sequence.", "crashes if there are less images in the sequence than the offset size.")]
 		public readonly int SpriteOffset;
 
-		[Desc("Use Sürote as preview in e.g. the editor.")]
+		[Desc("Use Sprite as preview in e.g. the editor.")]
 		public readonly bool UseAsPreview;
 
 		public override ActorPart Create(Actor self)
