@@ -22,6 +22,8 @@ namespace WarriorsSnuggery
 		public int Deaths;
 
 		public GameMode Mode;
+		public GameType Type;
+		public bool[] Shroud;
 
 		public readonly Dictionary<string, bool> UnlockedNodes = new Dictionary<string, bool>();
 
@@ -46,6 +48,8 @@ namespace WarriorsSnuggery
 			Deaths = save.Deaths;
 
 			Mode = save.Mode;
+			Type = save.Type;
+			Shroud = save.Shroud;
 
 			foreach (var unlock in save.UnlockedNodes)
 				UnlockedNodes.Add(unlock.Key, unlock.Value);
@@ -57,10 +61,7 @@ namespace WarriorsSnuggery
 			Hardcore = save.Hardcore;
 		}
 
-		GameStatistics()
-		{
-
-		}
+		GameStatistics() { }
 
 		public GameStatistics Copy()
 		{
@@ -75,6 +76,16 @@ namespace WarriorsSnuggery
 		public void Save(World world, bool withMap = true)
 		{
 			Mode = world.Game.Mode;
+			Type = world.Game.Type;
+			var shroud = "Shroud=";
+			for (int x = 0; x < world.ShroudLayer.Size.X; x++)
+			{
+				for (int y = 0; y < world.ShroudLayer.Size.Y; y++)
+				{
+					// TODO: also save other shrouds
+					shroud += world.ShroudLayer.ShroudRevealed(Objects.Actor.PlayerTeam, x, y).GetHashCode() + ",";
+				}
+			}
 			using (var writer = new System.IO.StreamWriter(FileExplorer.Saves + SaveName + ".yaml", false))
 			{
 				writer.WriteLine("Name=" + Name);
@@ -87,6 +98,8 @@ namespace WarriorsSnuggery
 				writer.WriteLine("Kills=" + Kills);
 				writer.WriteLine("Deaths=" + Deaths);
 				writer.WriteLine("CurrentMode=" + Mode);
+				writer.WriteLine("CurrentType=" + Type);
+				writer.WriteLine(shroud.TrimEnd(','));
 				writer.WriteLine("Seed=" + Seed);
 				writer.WriteLine("Actor=" + Actor);
 				writer.WriteLine("\tHealth=" + Health);
@@ -104,7 +117,7 @@ namespace WarriorsSnuggery
 
 		void saveMap(World world)
 		{
-			world.Map.SaveFile(FileExplorer.Saves + SaveName + "_map.yaml", SaveName + "_map");
+			world.Map.SaveFile(FileExplorer.Saves + SaveName + "_map.yaml", SaveName + "_map", true);
 		}
 
 		public void Delete()
@@ -187,6 +200,12 @@ namespace WarriorsSnuggery
 						break;
 					case "CurrentMode":
 						statistic.Mode = node.Convert<GameMode>();
+						break;
+					case "CurrentType":
+						statistic.Type = node.Convert<GameType>();
+						break;
+					case "Shroud":
+						statistic.Shroud = node.Convert<bool[]>();
 						break;
 					case "Seed":
 						statistic.Seed = node.Convert<int>();

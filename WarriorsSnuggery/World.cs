@@ -56,6 +56,10 @@ namespace WarriorsSnuggery
 					LocalPlayer = ActorCreator.Create(this, Game.Statistics.Actor, start, Actor.PlayerTeam, isPlayer: true);
 					Add(LocalPlayer);
 				}
+				else
+				{
+					ShroudLayer.RevealShroudList(Actor.PlayerTeam, Game.Statistics.Shroud);
+				}
 
 				Camera.Position(LocalPlayer.Position, true);
 
@@ -67,7 +71,6 @@ namespace WarriorsSnuggery
 				PlayerAlive = false;
 				Camera.Position(new MPos(Map.Bounds.X / 2, Map.Bounds.Y / 2).ToCPos(), true);
 			}
-
 			//Add(new PhysicsObject(new CPos(0, 0, 1024), new ImageRenderable(TextureManager.NoiseTexture(
 			//	new MPos(128, 128),
 			//	6,
