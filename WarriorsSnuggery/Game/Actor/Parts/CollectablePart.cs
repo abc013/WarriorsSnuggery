@@ -213,7 +213,7 @@ namespace WarriorsSnuggery.Objects.Parts
 						};
 
 					case CollectableType.TEXT:
-						return (a) => a.World.Add(new ActionText(a.Position + new CPos(0, 0, 1024), IFont.Pixel16, new CPos(0, -15, 30), 100, info.Text));
+						return (a) => a.World.Add(new ActionText(a.Position + new CPos(0, 0, 1024), new CPos(0, -15, 30), 100, ActionText.ActionTextType.TRANSFORM, info.Text));
 
 					case CollectableType.TECH_TREE:
 						return (a) =>
