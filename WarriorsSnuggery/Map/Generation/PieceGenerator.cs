@@ -46,7 +46,7 @@ namespace WarriorsSnuggery.Maps
 			for (int i = 0; i < positions.Length; i++)
 			{
 				var xStart = i % searchBounds.X;
-				var yStart = (int) Math.Floor(i / (float)searchBounds.X);
+				var yStart = (int)Math.Floor(i / (float)searchBounds.X);
 
 				var canAcquire = true;
 				for (var x = xStart; x < xStart + searchBlocks.X; x++)
