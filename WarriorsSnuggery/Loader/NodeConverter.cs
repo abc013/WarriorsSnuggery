@@ -116,6 +116,27 @@ namespace WarriorsSnuggery.Loader
 
 				return parts;
 			}
+			else if (t == typeof(bool[]))
+			{
+				var parts = s.Split(',').ToArray();
+				var res = new bool[parts.Length];
+
+				for (int i = 0; i < parts.Length; i++)
+				{
+					var part = parts[i].Trim();
+
+					if (trueBooleans.Contains(part))
+						res[i] = true;
+					else if (falseBooleans.Contains(part))
+						res[i] = false;
+					else
+					{
+						throw new InvalidConversionException(file, node, t);
+					}
+				}
+
+				return res;
+			}
 			else if (t == typeof(MPos))
 			{
 				var parts = s.Split(',');

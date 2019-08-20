@@ -145,7 +145,7 @@ namespace WarriorsSnuggery
 			SaveFile(directory + @"maps/" + name + ".yaml", name);
 		}
 
-		public void SaveFile(string file, string name)
+		public void SaveFile(string file, string name, bool isSave = false)
 		{
 			using (var writer = new StreamWriter(file, false))
 			{

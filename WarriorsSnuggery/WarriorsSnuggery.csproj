@@ -159,7 +159,6 @@
     <Compile Include="Game.cs" />
     <Compile Include="Position\Color.cs" />
     <Compile Include="Log.cs" />
-    <Compile Include="Game\Actor\IActorBody.cs" />
     <Compile Include="Game\Weapons\Smudge.cs" />
     <Compile Include="Game\Creators\UICreator.cs" />
     <Compile Include="Game\Actor\ActorType.cs" />

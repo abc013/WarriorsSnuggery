@@ -32,6 +32,20 @@ namespace WarriorsSnuggery
 			return ShroudRevealed(team, position.X, position.Y);
 		}
 
+		public void RevealShroudList(int team, bool[] values)
+		{
+			if (values == null)
+				return;
+
+			for (int i = 0; i < values.Length; i++)
+			{
+				var x = (int) Math.Floor(i / (float)Size.X);
+				var y = i % Size.X;
+
+				shroudRevealed[team, x, y] = values[i];
+			}
+		}
+
 		public void RevealShroudRectangular(int team, MPos position, int radius)
 		{
 			if (AllRevealed)

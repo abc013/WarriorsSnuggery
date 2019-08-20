@@ -66,8 +66,7 @@ namespace WarriorsSnuggery.Maps
 		{
 			var piece = stats.SaveName + "_map";
 			var size = RuleReader.Read(FileExplorer.Saves, stats.SaveName + "_map.yaml").First(n => n.Key == "Size").Convert<MPos>();
-
-			return new MapInfo(piece, 0, size, Color.White, GameType.NORMAL, new[] { stats.Mode }, -1, 0, new TerrainGeneratorInfo(0, new MiniTextNode[0]), new MapGeneratorInfo[0], MPos.Zero, true, true);
+			return new MapInfo(piece, 0, size, Color.White, stats.Type, new[] { stats.Mode }, -1, 0, new TerrainGeneratorInfo(0, new MiniTextNode[0]), new MapGeneratorInfo[0], MPos.Zero, true, true);
 		}
 
 		public static MapInfo EditorMapTypeFromPiece(string piece, MPos size)
