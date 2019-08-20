@@ -3,24 +3,34 @@
  * Date: 04.12.2017
  * 
  */
+using System;
 using WarriorsSnuggery.Graphics;
 
 namespace WarriorsSnuggery.Objects
 {
 	public class ActionText : PhysicsObject
 	{
+		public enum ActionTextType
+		{
+			TRANSFORM,
+			SCALE
+		}
+
 		int current;
-		readonly int start;
+		readonly int length;
 		readonly CPos velocity;
 		readonly TextBlock text;
+		readonly ActionTextType type;
 
-		public ActionText(CPos pos, IFont font, CPos velocity, int tick, params string[] lines) : base(pos)
+		public ActionText(CPos pos, CPos velocity, int tick, ActionTextType type, params string[] lines) : base(pos)
 		{
 			current = tick;
-			start = tick;
+			length = tick;
 			this.velocity = velocity;
+			this.type = type;
 
 			text = new TextBlock(pos, IFont.Pixel16, TextLine.OffsetType.MIDDLE, lines);
+			WorldRenderer.RenderAfter(text);
 		}
 
 		public override void Tick()
@@ -31,15 +41,20 @@ namespace WarriorsSnuggery.Objects
 			if (current-- <= 0)
 			{
 				Dispose();
+				WorldRenderer.RemoveRenderAfter(text);
 				return;
 			}
 
-			text.Position += velocity;
-		}
-
-		public override void Render()
-		{
-			text.Render();
+			if (type == ActionTextType.TRANSFORM)
+			{
+				text.Position += velocity;
+			}
+			else
+			{
+				var time = current / (float)length - 0.75f;
+				var linear = Math.Sign(time) * time;
+				text.Scale = (float) Math.Pow(1 - linear, 2);
+			}
 		}
 	}
 }
