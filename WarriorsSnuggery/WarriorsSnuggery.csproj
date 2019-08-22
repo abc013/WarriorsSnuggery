@@ -105,7 +105,7 @@
     <Compile Include="Game\UI\Screens\ConfirmationScreen.cs" />
     <Compile Include="Game\UI\Screens\Editor\EditorScreen.cs" />
     <Compile Include="Game\UI\Screens\Editor\PieceScreen.cs" />
-    <Compile Include="Game\UI\Screens\Game\DeathScreen.cs" />
+    <Compile Include="Game\UI\Screens\Game\FailureScreen.cs" />
     <Compile Include="Game\UI\Screens\Game\DefaultScreen.cs" />
     <Compile Include="Game\UI\Screens\Game\TechTreeScreen.cs" />
     <Compile Include="Game\UI\Screens\Statistics\LoadGameScreen.cs" />

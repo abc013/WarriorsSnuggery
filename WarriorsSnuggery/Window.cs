@@ -222,8 +222,6 @@ namespace WarriorsSnuggery
 						Game = new Game(stats, custom ?? MapCreator.FindMainMenuMap(stats.Level));
 						break;
 					default:
-						if (!(type == GameType.EDITOR) && !loadStatsMap)
-							stats.Level++;
 						Game = new Game(stats, custom ?? MapCreator.FindMap(stats.Level));
 						GamesLoaded++;
 						break;

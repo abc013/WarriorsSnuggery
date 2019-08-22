@@ -26,7 +26,7 @@ namespace WarriorsSnuggery
 		public Actor LocalPlayer;
 		public bool PlayerAlive = true;
 
-		public World(Game game, int seed, int level, int difficulty)
+		public World(Game game, int seed, GameStatistics stats)
 		{
 			Game = game;
 
@@ -35,7 +35,7 @@ namespace WarriorsSnuggery
 			PhysicsLayer = new PhysicsLayer();
 			ShroudLayer = new ShroudLayer();
 
-			Map = new Map(this, game.MapType, seed, level, difficulty);
+			Map = new Map(this, game.MapType, seed, stats.Level, stats.Difficulty);
 		}
 
 		public void Load()
@@ -145,10 +145,9 @@ namespace WarriorsSnuggery
 			if (PlayerAlive)
 			{
 				PlayerAlive = false;
-				Game.Statistics.Deaths++;
-				Game.Statistics.Money = 0;
+				Game.OldStatistics.Deaths++;
 
-				Game.Pause();
+				Game.Pause(true);
 				Game.ChangeScreen(UI.ScreenType.FAILURE);
 			}
 		}

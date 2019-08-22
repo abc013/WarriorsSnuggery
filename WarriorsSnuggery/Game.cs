@@ -35,6 +35,7 @@ namespace WarriorsSnuggery
 		public uint LocalRender;
 
 		public static bool Paused; // used in sprites, should remove static access...?
+		// TODO get rid of end and newgametype, replace through proper exiting mechanism
 		public bool End;
 		public GameType NewGameType;
 		public bool Editor;
@@ -65,11 +66,14 @@ namespace WarriorsSnuggery
 		public Game(GameStatistics statistics, MapInfo map, int seed = -1)
 		{
 			Window = Window.Current;
-
-			if (seed < 0) seed = statistics.Seed + statistics.Level;
-			Seed = seed;
 			MapType = map;
+
+			// If seed negative, calculate it.
+			Seed = seed < 0 ? statistics.Seed + statistics.Level : seed;
+
+			// In case of death, use this statistic.
 			OldStatistics = statistics.Copy();
+			// In case of success, use this statistic.
 			Statistics = statistics;
 
 			Type = MapType.DefaultType;
@@ -80,7 +84,7 @@ namespace WarriorsSnuggery
 
 			ScreenControl = new ScreenControl(this);
 
-			World = new World(this, seed, Statistics.Level, Statistics.Difficulty);
+			World = new World(this, seed, Statistics);
 
 			var corner = (int)(WindowInfo.UnitWidth / 2 * 1024);
 			version = new TextLine(new CPos(corner, 6192, 0), IFont.Pixel16, TextLine.OffsetType.RIGHT);
@@ -195,8 +199,10 @@ namespace WarriorsSnuggery
 
 						ChangeScreen(ScreenType.DEFAULT);
 					}
+
 					if (WinConditionsMet())
 					{
+						Statistics.Level++;
 						Pause();
 						ChangeScreen(ScreenType.WIN);
 					}
@@ -258,17 +264,21 @@ namespace WarriorsSnuggery
 
 				if (KeyInput.IsKeyDown("altleft", 0))
 				{
+					if (KeyInput.IsKeyDown("v", 10))
+					{
+						World.LocalPlayer.Health.HP = 0;
+					}
+					if (KeyInput.IsKeyDown("b", 10))
+					{
+						World.LocalPlayer.Health.HP += 100;
+					}
 					if (KeyInput.IsKeyDown("n", 10))
 					{
 						World.Game.Statistics.Mana += 100;
 						if (World.Game.Statistics.Mana > World.Game.Statistics.MaxMana)
 							World.Game.Statistics.Mana = World.Game.Statistics.MaxMana;
 					}
-					if (KeyInput.IsKeyDown("b", 10))
-					{
-						World.LocalPlayer.Health.HP += 100;
-					}
-					if (KeyInput.IsKeyDown("v", 10))
+					if (KeyInput.IsKeyDown("m", 10))
 					{
 						Statistics.Money += 100;
 					}
@@ -350,7 +360,6 @@ namespace WarriorsSnuggery
 			switch (screen)
 			{
 				case ScreenType.FAILURE:
-					Pause(true);
 					ScreenControl.NewDefaultScreen(ScreenControl.Focused);
 					break;
 			}

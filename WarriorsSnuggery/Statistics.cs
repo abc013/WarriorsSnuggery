@@ -68,6 +68,17 @@ namespace WarriorsSnuggery
 			Health = game.World.LocalPlayer.Health == null ? 1 : game.World.LocalPlayer.Health.HP;
 		}
 
+		public int CalculateScore()
+		{
+			// Positive Points
+			var score = Level * 100 / FinalLevel;
+			score += Kills * 5;
+			score += Mana * 2;
+			// Negative Points
+			score -= Deaths * 25;
+			return score;
+		}
+
 		public void Save(World world, bool withMap = true)
 		{
 			Mode = world.Game.Mode;
@@ -149,6 +160,7 @@ namespace WarriorsSnuggery
 			}
 			statistic.SaveName = name;
 
+			statistic.Level = 1;
 			statistic.FinalLevel = difficulty * 10;
 			statistic.Money = 100 - difficulty * 20;
 			statistic.MaxMana = GameSaveManager.DefaultStatistic.MaxMana;
