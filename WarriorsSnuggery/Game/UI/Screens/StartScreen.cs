@@ -27,7 +27,7 @@ namespace WarriorsSnuggery.UI
 			this.game = game;
 			Title.Position = new CPos(0, -4096, 0);
 
-			back = ButtonCreator.Create("wooden", new CPos(4096, 6144, 0), "Okay", game.Pause);
+			back = ButtonCreator.Create("wooden", new CPos(4096, 6144, 0), "Okay", () => { game.Pause(false); game.ChangeScreen(ScreenType.DEFAULT);  });
 			exit = ButtonCreator.Create("wooden", new CPos(-4096, 6144, 0), "Exit", Window.Current.Exit);
 
 			warning = new TextLine(new CPos(0, 5500, 0), IFont.Pixel16, TextLine.OffsetType.MIDDLE);

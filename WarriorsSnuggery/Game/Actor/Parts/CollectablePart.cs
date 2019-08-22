@@ -1,5 +1,4 @@
 ﻿using System;
-using WarriorsSnuggery.Graphics;
 
 namespace WarriorsSnuggery.Objects.Parts
 {
@@ -151,30 +150,26 @@ namespace WarriorsSnuggery.Objects.Parts
 							var game = a.World.Game;
 							if (game.Type == GameType.TEST)
 							{
-								game.End = true;
-								game.NewGameType = GameType.MAINMENU;
+								game.InstantLevelChange(GameType.MAINMENU);
 							}
 							else
 							{
-								game.Statistics.Level++;
 								game.Statistics.Money += info.Value;
-								game.Pause(true);
-								game.ScreenControl.ShowScreen(UI.ScreenType.WIN);
+								game.VictoryConditionsMet();
 							}
 						};
 					case CollectableType.NEXT_LEVEL_INSTANT:
 						return (a) =>
 						{
 							var game = a.World.Game;
-							game.End = true;
 							if (game.Type == GameType.TEST)
 							{
-								game.NewGameType = GameType.MAINMENU;
+								game.InstantLevelChange(GameType.MAINMENU);
 							}
 							else
 							{
 								game.Statistics.Money += info.Value;
-								game.NewGameType = GameType.NORMAL;
+								game.InstantLevelChange(GameType.NORMAL);
 							}
 						};
 
@@ -182,27 +177,22 @@ namespace WarriorsSnuggery.Objects.Parts
 						return (a) =>
 						{
 							var game = a.World.Game;
-							game.End = true;
-							game.Statistics.Money += info.Value;
-							game.NewGameType = GameType.TUTORIAL;
+							game.InstantLevelChange(GameType.TUTORIAL);
 						};
 
 					case CollectableType.MAIN_LEVEL:
 						return (a) =>
 						{
 							var game = a.World.Game;
-							game.End = true;
 							game.Statistics.Money += info.Value;
-							game.NewGameType = GameType.MENU;
+							game.InstantLevelChange(GameType.MENU);
 						};
 
 					case CollectableType.MAINMENU_LEVEL:
 						return (a) =>
 						{
 							var game = a.World.Game;
-							game.End = true;
-							game.Statistics.Money += info.Value;
-							game.NewGameType = GameType.MAINMENU;
+							game.InstantLevelChange(GameType.MAINMENU);
 						};
 
 					case CollectableType.NEW_STORY_GAME:

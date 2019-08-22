@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Linq;
-using WarriorsSnuggery.Graphics;
 
 namespace WarriorsSnuggery.Objects
 {
@@ -33,7 +32,7 @@ namespace WarriorsSnuggery.Objects
 			Target = target;
 
 			if (Type.OrientateToTarget)
-				Rotation = new VAngle(0, 0, -Position.AngleToXY(Target)) + new VAngle(0, 0, (int)90);
+				Rotation = new VAngle(0, 0, -Position.AngleToXY(Target)) + new VAngle(0, 0, 90);
 
 			if (originActor != null)
 			{
@@ -68,7 +67,7 @@ namespace WarriorsSnuggery.Objects
 			Move(Target);
 
 			if (Type.OrientateToTarget)
-				Rotation = new VAngle(0, 0, -Position.AngleToXY(Target)) + new VAngle(0, 0, (int)90);
+				Rotation = new VAngle(0, 0, -Position.AngleToXY(Target)) + new VAngle(0, 0, 90);
 
 			if (InRange(Target))
 				Detonate();
@@ -150,16 +149,16 @@ namespace WarriorsSnuggery.Objects
 				switch (Type.DamageFalloff)
 				{
 					case FalloffType.QUADRATIC:
-						damagemultiplier = 1 / (float)(dist * dist);
+						damagemultiplier = 1 / (dist * dist);
 						break;
 					case FalloffType.CUBIC:
-						damagemultiplier = 1 / (float)(dist * dist * dist);
+						damagemultiplier = 1 / (dist * dist * dist);
 						break;
 					case FalloffType.EXPONENTIAL:
 						damagemultiplier = 1 / (float)Math.Pow(5, dist);
 						break;
 					case FalloffType.LINEAR:
-						damagemultiplier = 1 / (float)dist;
+						damagemultiplier = 1 / dist;
 						break;
 					case FalloffType.ROOT:
 						damagemultiplier = 1 / (float)Math.Sqrt(dist);

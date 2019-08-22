@@ -29,7 +29,7 @@ namespace WarriorsSnuggery.UI
 			this.game = game;
 			Title.Position = new CPos(0, -4096, 0);
 
-			back = ButtonCreator.Create("wooden", new CPos(0, 6144, 0), "Resume", () => { game.ScreenControl.ShowScreen(ScreenType.DEFAULT); game.Pause(false); });
+			back = ButtonCreator.Create("wooden", new CPos(0, 6144, 0), "Resume", () => { game.Pause(false); game.ScreenControl.ShowScreen(ScreenType.DEFAULT); });
 			@base = new Panel(new CPos(0, 1024, 0), new MPos(8192 / 64 * 3, 4096 / 64 * 3), 4, "UI_wood1", "UI_wood3", "UI_wood2");
 
 			money = new PhysicsObject(new CPos(-(int)(WindowInfo.UnitWidth / 2 * 1024) + 1024, 7192, 0), new ImageRenderable(TextureManager.Texture("UI_money")));

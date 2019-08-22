@@ -15,7 +15,7 @@ namespace WarriorsSnuggery
 		{
 			watch = Stopwatch.StartNew();
 		}
-		
+
 		public static Timer Start()
 		{
 			return new Timer();

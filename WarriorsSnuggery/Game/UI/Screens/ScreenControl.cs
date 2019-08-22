@@ -45,10 +45,10 @@ namespace WarriorsSnuggery.UI
 				case ScreenType.MENU:
 					screen = new MenuScreen(Game);
 					break;
-				case ScreenType.FAILURE:
+				case ScreenType.DEFEAT:
 					screen = new FailureScreen(Game);
 					break;
-				case ScreenType.WIN:
+				case ScreenType.VICTORY:
 					screen = new WinScreen(Game);
 					break;
 				case ScreenType.KEYSETTINGS:
