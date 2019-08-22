@@ -33,7 +33,10 @@ namespace WarriorsSnuggery.UI
 		{
 			this.game = game;
 			Title.Position += new CPos(0, -7120, 0);
-			if (game.Statistics.Level >= game.Statistics.FinalLevel)
+
+			if (game.Statistics.Level == game.Statistics.FinalLevel)
+				Title.SetColor(Color.Blue);
+			else if (game.Statistics.Level > game.Statistics.FinalLevel)
 				Title.SetColor(Color.Green);
 
 			// SECTION ACTORS

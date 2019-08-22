@@ -136,9 +136,10 @@ namespace WarriorsSnuggery.Objects.Parts
 					case CollectableType.MANA:
 						return (a) =>
 						{
-							a.World.Game.Statistics.Mana += info.Value;
-							if (a.World.Game.Statistics.Mana > a.World.Game.Statistics.MaxMana)
-								a.World.Game.Statistics.Mana = a.World.Game.Statistics.MaxMana;
+							var stats = a.World.Game.Statistics;
+							stats.Mana += info.Value;
+							if (stats.Mana > stats.MaxMana)
+								stats.Mana = stats.MaxMana;
 						};
 
 					case CollectableType.MONEY:
@@ -147,80 +148,89 @@ namespace WarriorsSnuggery.Objects.Parts
 					case CollectableType.NEXT_LEVEL:
 						return (a) =>
 						{
-							if (a.World.Game.Type == GameType.TEST)
+							var game = a.World.Game;
+							if (game.Type == GameType.TEST)
 							{
-								a.World.Game.End = true;
-								a.World.Game.NewGameType = GameType.MAINMENU;
+								game.End = true;
+								game.NewGameType = GameType.MAINMENU;
 							}
 							else
 							{
-								a.World.Game.Statistics.Money += info.Value;
-								a.World.Game.ScreenControl.ShowScreen(UI.ScreenType.WIN);
-								a.World.Game.Pause(true);
+								game.Statistics.Level++;
+								game.Statistics.Money += info.Value;
+								game.Pause(true);
+								game.ScreenControl.ShowScreen(UI.ScreenType.WIN);
 							}
 						};
 					case CollectableType.NEXT_LEVEL_INSTANT:
 						return (a) =>
 						{
-							a.World.Game.End = true;
-							if (a.World.Game.Type == GameType.TEST)
+							var game = a.World.Game;
+							game.End = true;
+							if (game.Type == GameType.TEST)
 							{
-								a.World.Game.NewGameType = GameType.MAINMENU;
+								game.NewGameType = GameType.MAINMENU;
 							}
 							else
 							{
-								a.World.Game.Statistics.Money += info.Value;
-								a.World.Game.NewGameType = GameType.NORMAL;
+								game.Statistics.Money += info.Value;
+								game.NewGameType = GameType.NORMAL;
 							}
 						};
 
 					case CollectableType.TUTORIAL_LEVEL:
 						return (a) =>
 						{
-							a.World.Game.End = true;
-							a.World.Game.Statistics.Money += info.Value;
-							a.World.Game.NewGameType = GameType.TUTORIAL;
+							var game = a.World.Game;
+							game.End = true;
+							game.Statistics.Money += info.Value;
+							game.NewGameType = GameType.TUTORIAL;
 						};
 
 					case CollectableType.MAIN_LEVEL:
 						return (a) =>
 						{
-							a.World.Game.End = true;
-							a.World.Game.Statistics.Money += info.Value;
-							a.World.Game.NewGameType = GameType.MENU;
+							var game = a.World.Game;
+							game.End = true;
+							game.Statistics.Money += info.Value;
+							game.NewGameType = GameType.MENU;
 						};
 
 					case CollectableType.MAINMENU_LEVEL:
 						return (a) =>
 						{
-							a.World.Game.End = true;
-							a.World.Game.Statistics.Money += info.Value;
-							a.World.Game.NewGameType = GameType.MAINMENU;
+							var game = a.World.Game;
+							game.End = true;
+							game.Statistics.Money += info.Value;
+							game.NewGameType = GameType.MAINMENU;
 						};
 
 					case CollectableType.NEW_STORY_GAME:
 						return (a) =>
 						{
-							a.World.Game.Pause(true);
-							a.World.Game.ScreenControl.ShowScreen(UI.ScreenType.NEW_STORY_GAME);
+							var game = a.World.Game;
+							game.Pause(true);
+							game.ScreenControl.ShowScreen(UI.ScreenType.NEW_STORY_GAME);
 						};
 
 					case CollectableType.NEW_CUSTOM_GAME:
 						return (a) =>
 						{
-							a.World.Game.Pause(true);
-							a.World.Game.ScreenControl.ShowScreen(UI.ScreenType.NEW_CUSTOM_GAME);
+							var game = a.World.Game;
+							game.Pause(true);
+							game.ScreenControl.ShowScreen(UI.ScreenType.NEW_CUSTOM_GAME);
 						};
-
-					case CollectableType.TEXT:
-						return (a) => a.World.Add(new ActionText(a.Position + new CPos(0, 0, 1024), new CPos(0, -15, 30), 100, ActionText.ActionTextType.TRANSFORM, info.Text));
 
 					case CollectableType.TECH_TREE:
 						return (a) =>
 						{
-							a.World.Game.Pause(true);
-							a.World.Game.ScreenControl.ShowScreen(UI.ScreenType.TECHTREE);
+							var game = a.World.Game;
+							game.Pause(true);
+							game.ScreenControl.ShowScreen(UI.ScreenType.TECHTREE);
 						};
+
+					case CollectableType.TEXT:
+						return (a) => a.World.Add(new ActionText(a.Position + new CPos(0, 0, 1024), new CPos(0, -15, 30), 100, ActionText.ActionTextType.TRANSFORM, info.Text));
 
 					default:
 						return (a) => { };
