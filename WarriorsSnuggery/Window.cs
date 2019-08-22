@@ -99,8 +99,7 @@ namespace WarriorsSnuggery
 			font.Stop();
 			CharManager.Initialize();
 			Log.WritePerformance(font.ElapsedMilliseconds, "Loading Fonts");
-			var watch = new StopWatch();
-			watch.Start();
+			var watch = Timer.Start();
 
 			RuleLoader.LoadRules();
 			RuleLoader.LoadUIRules();
@@ -112,13 +111,10 @@ namespace WarriorsSnuggery
 
 			NewGame(new GameStatistics(GameSaveManager.DefaultStatistic), GameType.MAINMENU);
 
-			Console.WriteLine(" Complete!");
-
-			watch.Stop();
-			Log.WritePerformance(watch.ElapsedMilliseconds, "Loading Rules .. GAME START");
-
 			Loaded = true;
-			//}).Start();
+
+			watch.StopAndWrite("Loading Rules");
+			Console.WriteLine(" Done!");
 			//IGraphicsContext context2 = new GraphicsContext(GraphicsMode.Default, this.WindowInfo);
 			//context2.MakeCurrent(WindowInfo);
 		}
@@ -182,12 +178,11 @@ namespace WarriorsSnuggery
 		{
 			base.OnFocusedChanged(e);
 
-			if (!Focused && Game != null && Loaded)
+			if (!Focused && !Settings.DeveloperMode && Game != null && Loaded)
 			{
 				if (!Game.Paused)
-				{
 					Game.ChangeScreen(UI.ScreenType.PAUSED);
-				}
+
 				Game.Pause(true);
 			}
 		}
@@ -246,7 +241,7 @@ namespace WarriorsSnuggery
 
 		public override void Exit()
 		{
-			var watch = StopWatch.StartNew();
+			var watch = Timer.Start();
 			Exiting = true;
 			lock (MasterRenderer.GLLock)
 			{
@@ -265,9 +260,7 @@ namespace WarriorsSnuggery
 			IFont.DisposeFonts();
 
 			base.Exit();
-
-			watch.Stop();
-			Log.WritePerformance(watch.ElapsedMilliseconds, "Exiting");
+			watch.StopAndWrite("Disposing");
 		}
 
 		protected override void OnMouseMove(MouseMoveEventArgs e)

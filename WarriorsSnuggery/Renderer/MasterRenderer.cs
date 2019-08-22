@@ -47,15 +47,13 @@ namespace WarriorsSnuggery
 
 		public static void Initialize()
 		{
-			var watch = new StopWatch();
-			watch.Start();
+			var watch = Timer.Start();
 
 			initializeShaders();
 			initializeGL();
 			ColorManager.Initialize();
 
-			watch.Stop();
-			Log.WritePerformance(watch.ElapsedMilliseconds, "Configuring GL");
+			watch.StopAndWrite("Configuring GL");
 		}
 
 		static void initializeShaders()

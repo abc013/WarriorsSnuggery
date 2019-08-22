@@ -39,7 +39,7 @@ namespace WarriorsSnuggery
 		public uint LocalTick;
 		public uint LocalRender;
 
-		public static bool Paused; // used in sprites, should remove static access...?
+		public bool Paused;
 		// TODO get rid of end and newgametype, replace through proper exiting mechanism
 		public bool End;
 		public GameType NewGameType;
@@ -113,7 +113,7 @@ namespace WarriorsSnuggery
 
 		public void Load()
 		{
-			var watch = StopWatch.StartNew();
+			var timer = Timer.Start();
 
 			MasterRenderer.ResetRenderer(this);
 
@@ -122,8 +122,7 @@ namespace WarriorsSnuggery
 
 			ScreenControl.Load();
 
-			watch.Stop();
-			Log.WritePerformance(watch.ElapsedMilliseconds, "Loading Game");
+			timer.StopAndWrite("Loading Game");
 
 			if (Window.FirstTick && Settings.FirstStarted)
 			{
@@ -147,7 +146,7 @@ namespace WarriorsSnuggery
 		{
 			Paused = paused;
 			Camera.Locked = Paused;
-			if (!Paused)
+			if (!Paused) // TODO why?
 				ChangeScreen(ScreenType.DEFAULT);
 		}
 
@@ -158,8 +157,8 @@ namespace WarriorsSnuggery
 				Window.NewGame(Statistics, NewGameType);
 				return;
 			}
-			var watch = new StopWatch();
-			watch.Start();
+			var watch = Timer.Start();
+
 			if (LocalTick == 1)
 			{
 				// Check visibility the first time, one tick after because we have to check for shroud first
@@ -332,9 +331,9 @@ namespace WarriorsSnuggery
 
 			ScreenControl.Tick();
 
-			watch.Stop();
+			var ms = watch.Stop();
 			if (LocalTick % 4 == 0)
-				Log.WritePerformance(watch.ElapsedMilliseconds, " Tick " + LocalTick);
+				Log.WritePerformance(ms, " Tick " + LocalTick);
 
 			if (ScreenControl.FocusedType == ScreenType.START)
 				Pause(true);
