@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using WarriorsSnuggery.Graphics;
 using WarriorsSnuggery.Objects;
 
 namespace WarriorsSnuggery
@@ -147,8 +146,7 @@ namespace WarriorsSnuggery
 				PlayerAlive = false;
 				Game.OldStatistics.Deaths++;
 
-				Game.Pause(true);
-				Game.ChangeScreen(UI.ScreenType.FAILURE);
+				Game.DefeatConditionsMet();
 			}
 		}
 

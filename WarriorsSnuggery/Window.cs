@@ -187,7 +187,7 @@ namespace WarriorsSnuggery
 			Camera.Reset();
 			if (Game != null)
 			{
-				Game.End = true;
+				Game.Finish();
 				Game.Dispose();
 			}
 
@@ -242,6 +242,7 @@ namespace WarriorsSnuggery
 			{
 				GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
 			}
+			Game.Finish();
 			Game.Dispose();
 
 			TextureManager.DeleteTextures();

@@ -25,27 +25,20 @@ namespace WarriorsSnuggery
 		NONE
 	}
 
+	public enum GameState
+	{
+		UNKNOWN,
+		VICTORY,
+		DEFEAT,
+		NONE
+	}
+
 	public sealed class Game : ITick, IDisposable
 	{
 		public Random SharedRandom = new Random();
 
 		public readonly ScreenControl ScreenControl;
-
-		public uint LocalTick;
-		public uint LocalRender;
-
-		public bool Paused;
-		// TODO get rid of end and newgametype, replace through proper exiting mechanism
-		public bool End;
-		public GameType NewGameType;
-		public bool Editor;
-		public int Teams;
-
-		public uint NextObjectID { get { return nextObjectID++; } }
-		uint nextObjectID;
-
 		public readonly World World;
-
 		public readonly Window Window;
 
 		public readonly GameStatistics OldStatistics;
@@ -63,6 +56,23 @@ namespace WarriorsSnuggery
 		readonly TextLine infoText;
 		int infoTextDuration;
 
+		public uint LocalTick;
+		public uint LocalRender;
+
+		public bool Paused;
+		public bool Editor;
+
+		public bool Finished;
+		public GameState State;
+
+		bool instantExit;
+		GameType instantExitType;
+
+		public int Teams;
+
+		public uint NextObjectID { get { return nextObjectID++; } }
+		uint nextObjectID;
+
 		public Game(GameStatistics statistics, MapInfo map, int seed = -1)
 		{
 			Window = Window.Current;
@@ -79,8 +89,13 @@ namespace WarriorsSnuggery
 			Type = MapType.DefaultType;
 			Mode = MapType.DefaultModes[new Random(seed).Next(MapType.DefaultModes.Length)];
 
-			if (Type == GameType.EDITOR)
-				Editor = true;
+			Editor = Type == GameType.EDITOR;
+
+			// Determine state of the game
+			if (Type != GameType.NORMAL && Type != GameType.TEST && Type != GameType.TUTORIAL)
+				State = GameState.NONE;
+			else
+				State = GameState.UNKNOWN;
 
 			ScreenControl = new ScreenControl(this);
 
@@ -121,37 +136,31 @@ namespace WarriorsSnuggery
 
 			if (Window.FirstTick && Settings.FirstStarted)
 			{
+				Pause(true);
 				ChangeScreen(ScreenType.START);
 			}
 			else
 			{
-				Pause(false);
+				ChangeScreen(ScreenType.DEFAULT);
 			}
 
-			// Fixes zoom bug TODO better fix?
 			Camera.Reset();
-		}
-
-		public void Pause()
-		{
-			Pause(!Paused);
 		}
 
 		public void Pause(bool paused)
 		{
 			Paused = paused;
 			Camera.Locked = Paused;
-			if (!Paused) // TODO why?
-				ChangeScreen(ScreenType.DEFAULT);
 		}
 
 		public void Tick()
 		{
-			if (End)
+			if (Finished && instantExit)
 			{
-				Window.NewGame(Statistics, NewGameType);
+				Window.Current.NewGame(Statistics, instantExitType);
 				return;
 			}
+
 			var watch = Timer.Start();
 
 			if (LocalTick == 1)
@@ -162,19 +171,19 @@ namespace WarriorsSnuggery
 
 			LocalTick++;
 
-			if (!Paused)
+			if (!Paused && !Finished)
 			{
 				// screen control
-				if (ScreenControl.FocusedType != ScreenType.FAILURE)
+				if (ScreenControl.FocusedType != ScreenType.DEFEAT)
 				{
 					if (KeyInput.IsKeyDown(Settings.Key("Pause"), 10))
 					{
-						Pause();
+						Pause(true);
 						ChangeScreen(ScreenType.PAUSED);
 					}
 					if (KeyInput.IsKeyDown("escape", 10))
 					{
-						Pause();
+						Pause(true);
 						ChangeScreen(ScreenType.MENU);
 					}
 					if (KeyInput.IsKeyDown("altleft", 0) && KeyInput.IsKeyDown("m", 10))
@@ -199,24 +208,15 @@ namespace WarriorsSnuggery
 						ChangeScreen(ScreenType.DEFAULT);
 					}
 
-					if (WinConditionsMet())
-					{
-						Statistics.Level++;
-						Pause();
-						ChangeScreen(ScreenType.WIN);
-					}
+					CheckVictory();
 				}
 
 				// party mode
 				if (Settings.PartyMode)
 				{
-					var sin1 = (float)Math.Sin(LocalTick / 8f);
-					var sin2 = (float)Math.Sin(LocalTick / 8f + 2 * Math.PI / 3);
-					var sin3 = (float)Math.Sin(LocalTick / 8f + 4 * Math.PI / 3);
-
-					if (sin1 < 0) sin1 = 0;
-					if (sin2 < 0) sin2 = 0;
-					if (sin3 < 0) sin3 = 0;
+					var sin1 = (float)Math.Sin(LocalTick / 8f) / 2 + 0.25f;
+					var sin2 = (float)Math.Sin(LocalTick / 8f + 2 * Math.PI / 3) / 2 + 0.25f;
+					var sin3 = (float)Math.Sin(LocalTick / 8f + 4 * Math.PI / 3) / 2 + 0.25f;
 
 					WorldRenderer.Ambient = new Color(sin1 * WorldRenderer.Ambient.R, sin2 * WorldRenderer.Ambient.R, sin3 * WorldRenderer.Ambient.R);
 				}
@@ -227,27 +227,21 @@ namespace WarriorsSnuggery
 					var mouse = MouseInput.WindowPosition;
 
 					var add = CPos.Zero;
+
 					if (KeyInput.IsKeyDown(Settings.Key("CameraUp"), 0) || (mouse.Y < 0 && mouse.Y < -Camera.DefaultZoom * 512 + 64 * Settings.EdgeScrolling))
-					{
 						add = new CPos(add.X, add.Y - 1, 0);
-					}
+
 					if (KeyInput.IsKeyDown(Settings.Key("CameraDown"), 0) || (mouse.Y > 0 && mouse.Y > Camera.DefaultZoom * 512 - 64 * Settings.EdgeScrolling))
-					{
 						add = new CPos(add.X, add.Y + 1, 0);
-					}
+
 					if (KeyInput.IsKeyDown(Settings.Key("CameraRight"), 0) || (mouse.X > 0 && mouse.X > Camera.DefaultZoom * WindowInfo.Ratio * 512 - 64 * Settings.EdgeScrolling))
-					{
-						add = new CPos(add.X + (int)1, add.Y, 0);
-					}
+						add = new CPos(add.X + 1, add.Y, 0);
+
 					if (KeyInput.IsKeyDown(Settings.Key("CameraLeft"), 0) || (mouse.X < 0 && mouse.X < -Camera.DefaultZoom * WindowInfo.Ratio * 512 + 64 * Settings.EdgeScrolling))
-					{
-						add = new CPos(add.X - (int)1, add.Y, 0);
-					}
+						add = new CPos(add.X - 1, add.Y, 0);
 
 					if (add != CPos.Zero)
-					{
 						Camera.Move(add);
-					}
 				}
 
 				// Key input
@@ -334,34 +328,71 @@ namespace WarriorsSnuggery
 				Pause(true);
 		}
 
-		public bool WinConditionsMet()
+		public void CheckVictory()
 		{
 			switch (Mode)
 			{
 				// FIND_EXIT and TUTORIAL will meet conditions when entering the exit
 				default:
-					return false;
+					break;
 				// TODO not yet implemented.
-				case GameMode.TOWER_DEFENSE:
-					var actor = World.Actors.Find(a => !(a.Team == Actor.PlayerTeam || a.Team == Actor.NeutralTeam));
-					return actor == null;
 				// When no enemies are present, won
+				case GameMode.TOWER_DEFENSE:
 				case GameMode.WIPE_OUT_ENEMIES:
-					var actor2 = World.Actors.Find(a => !(a.Team == Actor.PlayerTeam || a.Team == Actor.NeutralTeam));
-					return actor2 == null;
+					var actor = World.Actors.Find(a => !(a.Team == Actor.PlayerTeam || a.Team == Actor.NeutralTeam));
+
+					if (actor == null)
+						VictoryConditionsMet();
+					break;
 			}
+		}
+
+		public void VictoryConditionsMet()
+		{
+			State = GameState.VICTORY;
+			Finish();
+
+			Statistics.Level++;
+			if (World.PlayerAlive && World.LocalPlayer.Health != null)
+				Statistics.Health = World.LocalPlayer.Health.HP;
+
+			ChangeScreen(ScreenType.VICTORY);
+		}
+
+		public void DefeatConditionsMet()
+		{
+			State = GameState.DEFEAT;
+			Finish();
+
+			ChangeScreen(ScreenType.DEFEAT);
+		}
+
+		// Instant travel to next level
+		public void InstantLevelChange(GameType newType)
+		{
+			Finish();
+
+			instantExit = true;
+			instantExitType = newType;
+		}
+
+		public void Finish()
+		{
+			Finished = true;
+			Pause(true);
 		}
 
 		public void ChangeScreen(ScreenType screen)
 		{
 			ScreenControl.ShowScreen(screen);
 
-			switch (screen)
-			{
-				case ScreenType.FAILURE:
-					ScreenControl.NewDefaultScreen(ScreenControl.Focused);
-					break;
-			}
+			if(screen == ScreenType.DEFEAT)
+				ScreenControl.NewDefaultScreen(ScreenControl.Focused);
+		}
+
+		public void RefreshSaveGameScreens()
+		{
+			ScreenControl.RefreshSaveGameScreens();
 		}
 
 		public void RenderDebug()
@@ -379,11 +410,8 @@ namespace WarriorsSnuggery
 
 		public void Dispose()
 		{
-			Pause(true);
-			if (World.LocalPlayer != null && World.LocalPlayer.Health != null)
-			{
-				Statistics.Health = World.LocalPlayer.Health.HP;
-			}
+			if (!Finished)
+				throw new Exception("Game has not been finished before dispose call.");
 
 			World.Dispose();
 
@@ -393,7 +421,6 @@ namespace WarriorsSnuggery
 			visibility.Dispose();
 			tick.Dispose();
 			render.Dispose();
-
 			infoText.Dispose();
 
 			WorldRenderer.ClearRenderLists();
@@ -402,11 +429,6 @@ namespace WarriorsSnuggery
 			VisibilitySolver.Reset();
 
 			GC.Collect();
-		}
-
-		public void RefreshSaveGameScreens()
-		{
-			ScreenControl.RefreshSaveGameScreens();
 		}
 	}
 }

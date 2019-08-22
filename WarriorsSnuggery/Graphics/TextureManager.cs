@@ -298,8 +298,8 @@ namespace WarriorsSnuggery.Graphics
 
 			using (var bmp = (Bitmap)Image.FromFile(filename))
 			{
-				var cWidth = (int)Math.Floor((float)bmp.Width / (float)width);
-				var cHeight = (int)Math.Floor((float)bmp.Height / (float)height);
+				var cWidth = (int)Math.Floor(bmp.Width / (float)width);
+				var cHeight = (int)Math.Floor(bmp.Height / (float)height);
 
 				var count = cWidth * cHeight;
 				for (int c = 0; c < count; c++)

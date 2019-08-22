@@ -46,7 +46,7 @@ namespace WarriorsSnuggery.UI
 			seedInput = TextBoxCreator.Create("wooden", new CPos(1024, 3072, 0), getSeed(), 7, true);
 			seedGenerate = ButtonCreator.Create("wooden", new CPos(6144, 3072, 0), "Generate", () => { seedInput.Text = getSeed(); });
 
-			cancel = ButtonCreator.Create("wooden", new CPos(-4096, 6144, 0), "Cancel", () => { game.ChangeScreen(ScreenType.DEFAULT); game.Pause(false); });
+			cancel = ButtonCreator.Create("wooden", new CPos(-4096, 6144, 0), "Cancel", () => { game.Pause(false); game.ChangeScreen(ScreenType.DEFAULT); });
 			proceed = ButtonCreator.Create("wooden", new CPos(4096, 6144, 0), "Proceed", () => { Window.Current.NewGame(GameStatistics.CreateGameStatistic(int.Parse(difficultyInput.Text), hardcoreInput.Checked, nameInput.Text, int.Parse(seedInput.Text))); });
 		}
 
@@ -80,8 +80,8 @@ namespace WarriorsSnuggery.UI
 
 			if (KeyInput.IsKeyDown("escape", 10))
 			{
-				game.ChangeScreen(ScreenType.DEFAULT);
 				game.Pause(false);
+				game.ChangeScreen(ScreenType.DEFAULT);
 			}
 		}
 

@@ -84,6 +84,9 @@ namespace WarriorsSnuggery
 		}
 		public static bool IsVisibleIgnoringBounds(WPos position)
 		{
+			if (size == MPos.Zero)
+				return false;
+
 			if (position.X < 0)
 			{
 				position = new WPos(0, position.Y, 0);
@@ -92,6 +95,7 @@ namespace WarriorsSnuggery
 			{
 				position = new WPos(size.X - 1, position.Y, 0);
 			}
+
 			if (position.Y < 0)
 			{
 				position = new WPos(position.X, 0, 0);
