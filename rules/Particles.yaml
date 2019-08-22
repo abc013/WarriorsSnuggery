@@ -9,14 +9,6 @@ glitter=
 	Scale=1,0
 		Random=0,3
 
-rain=
-	Image=particle2
-		Size=12,12
-	Tick=100
-	Force=0,9,0
-		Random=0,70,0
-	Scale=0,8
-
 slime_splash=
 	Image=slime_splash
 		Size=8,8
@@ -51,7 +43,7 @@ woodPiece=
 	Rotation=20
 
 nebula1=
-	Image=Light_Big_Y
+	Image=smoke_large
 		Size=96,96
 	Tick=50
 	DissolveTick=150
@@ -94,7 +86,6 @@ blood1=
 	DissolveTick=12
 	Force=0,1,0
 		Random=30,30,0
-
 
 leaf=
 	Image=leaf

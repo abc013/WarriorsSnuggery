@@ -7,7 +7,7 @@ using System;
 
 namespace WarriorsSnuggery.Objects
 {
-	public class Particle : PhysicsObject, ITick
+	public class Particle : PhysicsObject
 	{
 		int current;
 		int dissolve;
