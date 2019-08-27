@@ -1,8 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using WarriorsSnuggery.Graphics;
 using WarriorsSnuggery.Objects;
 using WarriorsSnuggery.Objects.Parts;
+using WarriorsSnuggery.Objects.Particles;
 
 namespace WarriorsSnuggery
 {
@@ -259,57 +261,11 @@ namespace WarriorsSnuggery
 	{
 		public static void LoadTypes(string directory, string file)
 		{
-			var particles = RuleReader.Read(directory, file);
+			var nodes = RuleReader.Read(directory, file);
 
-			foreach (var particle in particles)
+			foreach (var node in nodes)
 			{
-				var name = particle.Key;
-				TextureInfo info = null;
-				var tick = 0;
-				var dissolveTick = 0;
-				var force = CPos.Zero;
-				var rotation = 0;
-				var ranVelocity = CPos.Zero;
-				var scale = 1.0f;
-				var ranScale = 0f;
-
-				foreach (var child in particle.Children)
-				{
-					switch (child.Key)
-					{
-						case "Image":
-							info = child.Convert<TextureInfo>();
-							break;
-						case "Tick":
-							tick = child.Convert<int>();
-							break;
-						case "DissolveTick":
-							dissolveTick = child.Convert<int>();
-							break;
-						case "Force":
-							force = child.Convert<CPos>();
-
-							if (child.Children.Count > 0)
-								ranVelocity = child.Children.Find(c => c.Key == "Random").Convert<CPos>();
-							break;
-						case "Rotation":
-							rotation = child.Convert<int>();
-							break;
-						case "Scale":
-							scale = child.Convert<float>();
-
-							if (child.Children.Count > 0)
-								ranScale = child.Children.Find(c => c.Key == "Random").Convert<float>();
-							break;
-						default:
-							throw new YamlUnknownNodeException(child.Key, name);
-					}
-				}
-
-				if (info == null)
-					throw new YamlMissingNodeException(particle.Key, "Image");
-
-				AddType(new ParticleType(info, tick, dissolveTick, force, rotation, ranVelocity, scale, ranScale), name);
+				AddType(new ParticleType(node.Children.ToArray()), node.Key);
 			}
 		}
 
@@ -338,14 +294,14 @@ namespace WarriorsSnuggery
 			return types[name];
 		}
 
-		public static Particle Create(string name, CPos position)
+		public static Particle Create(string name, CPos position, int height, Random random)
 		{
-			return Create(GetType(name), position);
+			return Create(GetType(name), position, height, random);
 		}
 
-		public static Particle Create(ParticleType type, CPos position)
+		public static Particle Create(ParticleType type, CPos position, int height, Random random)
 		{
-			return new Particle(position, type);
+			return new Particle(position, height, type, random);
 		}
 	}
 

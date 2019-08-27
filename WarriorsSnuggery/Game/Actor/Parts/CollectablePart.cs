@@ -1,4 +1,5 @@
 ﻿using System;
+using WarriorsSnuggery.Objects.Particles;
 
 namespace WarriorsSnuggery.Objects.Parts
 {
@@ -47,14 +48,11 @@ namespace WarriorsSnuggery.Objects.Parts
 		[Desc("Text field for the effect.")]
 		public readonly string Text;
 
+		public CollectablePartInfo(MiniTextNode[] nodes) : base(nodes) { }
+
 		public override ActorPart Create(Actor self)
 		{
 			return new CollectablePart(self, this);
-		}
-
-		public CollectablePartInfo(MiniTextNode[] nodes) : base(nodes)
-		{
-
 		}
 	}
 
@@ -113,7 +111,7 @@ namespace WarriorsSnuggery.Objects.Parts
 
 				if (info.ParticleSpawner != null)
 				{
-					foreach (var particle in info.ParticleSpawner.Create(self.Position))
+					foreach (var particle in info.ParticleSpawner.Create(self.World, self.Position, actor.Height))
 						self.World.Add(particle);
 				}
 

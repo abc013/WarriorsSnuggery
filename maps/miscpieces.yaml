@@ -18,7 +18,7 @@ main2=
 		Terrain=0
 	CustomSize=16,16
 	Ambient=150,150,180
-	AllowWeapons=false
+#	AllowWeapons=false
 
 tutorial=
 	PlayType=TUTORIAL

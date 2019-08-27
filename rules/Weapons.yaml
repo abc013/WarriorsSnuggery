@@ -98,16 +98,16 @@ lazer=
 	MaximalRange=10240
 	MinimalRange=512
 	RotateToTarget=no
-	Speed=130
+	Speed=1000
+#130
 	Reload=13
 	ParticlesOnImpact=glitter
-		Count=5
-#	Inaccuracy=1024
+		Count=10
 	Gravity=0
 
 color=
-	Image=particle2
-		Size=40,40
+	Image=glitter
+		Size=12,12
 	Smudge=color
 		Size=24,24
 		Random=true
