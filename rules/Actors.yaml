@@ -2,6 +2,30 @@
 @INCLUDE Actors-tutorial.yaml
 @INCLUDE Actors-goods.yaml
 
+testActor1=
+	Part@SpawnOnIdle=
+		Count=5
+		Tick=1
+		Name=grey
+		Type=PARTICLE
+	Part@ParticleForce=
+		AffectedTypes=grey
+		ForceType=TURBULENCE
+		Strength=0,5
+		MaxRange=5120
+		MinRange=0
+	Part@World=
+		Height=0
+
+testActor2=
+	Part@SpawnOnIdle=
+		Count=1
+		Tick=100
+		Name=bullet
+		Type=PARTICLE
+	Part@World=
+		Height=512
+
 heal=
 	Part@AnimatedSprite=
 		Name=crab
@@ -10,6 +34,12 @@ heal=
 		Condition=ALL
 		Offset=0,-128,0
 		UseAsPreview=true
+	Part@ParticleForce=
+#		AffectedTypes=fire
+		ForceType=DRAG
+		Strength=4
+		MaxRange=5120
+		MinRange=0
 	Part@World=
 		CanTrigger=yes
 		ShowDamage=yes

@@ -183,7 +183,7 @@ namespace WarriorsSnuggery.Objects
 
 			if (Type.ParticlesOnImpact != null)
 			{
-				foreach (var particle in Type.ParticlesOnImpact.Create(Position))
+				foreach (var particle in Type.ParticlesOnImpact.Create(World, Position, Height))
 				{
 					World.Add(particle);
 				}

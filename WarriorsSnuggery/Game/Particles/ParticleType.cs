@@ -1,39 +1,39 @@
 ﻿using WarriorsSnuggery.Graphics;
 
-namespace WarriorsSnuggery.Objects
+namespace WarriorsSnuggery.Objects.Particles
 {
 	public class ParticleType
 	{
+		[Desc("Texture to use for the particle.", "The game will crash when both Texture and MeshSize are not defined or zero.")]
 		public readonly TextureInfo Texture;
+		[Desc("Color to use for Texture/Monocolored particle.")]
+		public readonly Color Color = Color.White;
+		[Desc("Size of the particle when using monocolored particles in pixels.", "The game will crash when both Texture and MeshSize are not defined or zero.", "Does not work if Texture is defined.")]
+		public readonly int MeshSize;
 
-		[Desc("Force that is being applied.")]
-		public readonly CPos Force;
-		[Desc("Random Force.", "This is applied under Force with the name Random.")]
-		public readonly CPos RanVelocity;
+		[Desc("Gravitational force.")]
+		public readonly int Gravity = 2;
 
-		[Desc("Rotation.")]
-		public readonly int Rotation;
+		[Desc("Random velocity given at start.")]
+		public readonly CPos RandomVelocity = CPos.Zero;
+		[Desc("Random rotational velocity given at start.")]
+		public readonly CPos RandomRotation = CPos.Zero;
+		[Desc("Random scale added to one, given at start.")]
+		public readonly float RandomScale = 0f;
 
-		[Desc("Scale.")]
-		public readonly float Scale;
-		[Desc("Random scale over time.", "This is applied unter Scale with the name Random.")]
-		public readonly float RanScale;
+		[Desc("Time in which the particle is alive.")]
+		public readonly int Duration;
+		[Desc("Time in which the particle is dissolving.", "This time will be added on the time given in Duration.")]
+		public readonly int DissolveDuration;
 
-		[Desc("Time in which the particle will exist.")]
-		public readonly int Tick;
-		[Desc("Time in which the particle will begin to dissolve.", "This time will be added on the time given in Tick.")]
-		public readonly int DissolveTick;
+		[Desc("Show shadow of the particle.")]
+		public readonly bool ShowShadow = false;
+		[Desc("Regulates whether force can be applied on the particle from other objects.")]
+		public readonly bool AffectedByObjects = false;
 
-		public ParticleType(TextureInfo texture, int tick, int dissolveTick, CPos force, int rotation, CPos ranVelocity, float scale, float ranScale)
+		public ParticleType(MiniTextNode[] nodes)
 		{
-			Texture = texture;
-			Tick = tick;
-			DissolveTick = dissolveTick;
-			Force = force;
-			Rotation = rotation;
-			RanVelocity = ranVelocity;
-			Scale = scale;
-			RanScale = ranScale;
+			Loader.PartLoader.SetValues(this, nodes);
 		}
 	}
 }

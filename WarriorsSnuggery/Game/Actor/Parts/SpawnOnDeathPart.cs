@@ -58,7 +58,7 @@
 					@object = ActorCreator.Create(self.World, info.Name, randomPosition(), info.InheritsTeam ? self.Team : Actor.NeutralTeam, info.InheritsBot ? self.IsBot : false);
 					break;
 				case "PARTICLE":
-					@object = ParticleCreator.Create(info.Name, randomPosition());
+					@object = ParticleCreator.Create(info.Name, randomPosition(), self.Height, self.World.Game.SharedRandom);
 					break;
 				case "WEAPON":
 					@object = WeaponCreator.Create(self.World, info.Name, randomPosition(), randomPosition());

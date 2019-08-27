@@ -182,7 +182,7 @@ namespace WarriorsSnuggery.Loader
 					}
 				}
 			}
-			else if (t == typeof(Objects.ParticleSpawner))
+			else if (t == typeof(Objects.Particles.ParticleSpawner))
 			{
 				var name = s.Trim();
 				var count = 1;
@@ -205,7 +205,7 @@ namespace WarriorsSnuggery.Loader
 					}
 				}
 
-				return new Objects.ParticleSpawner(ParticleCreator.GetType(name), count, radius);
+				return new Objects.Particles.ParticleSpawner(ParticleCreator.GetType(name), count, radius);
 			}
 			else if (t == typeof(Graphics.TextureInfo))
 			{

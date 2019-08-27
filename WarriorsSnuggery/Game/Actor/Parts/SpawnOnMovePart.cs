@@ -68,7 +68,7 @@
 					@object = ActorCreator.Create(self.World, info.Name, randomPosition(), info.InheritsTeam ? self.Team : Actor.NeutralTeam, info.InheritsBot ? self.IsBot : false);
 					break;
 				case "PARTICLE":
-					@object = ParticleCreator.Create(info.Name, randomPosition());
+					@object = ParticleCreator.Create(info.Name, randomPosition(), self.Height + info.Offset.Z, self.World.Game.SharedRandom);
 					break;
 				case "WEAPON":
 					@object = WeaponCreator.Create(self.World, info.Name, randomPosition(), randomPosition());
@@ -84,7 +84,7 @@
 			var size = self.Physics != null ? self.Physics.RadiusX : 40;
 			var x = Program.SharedRandom.Next(size) - size / 2;
 			var y = Program.SharedRandom.Next(size) - size / 2;
-			return self.Position + new CPos(x, y, 0) + info.Offset;
+			return self.Position + new CPos(x, y, 0) + new CPos(info.Offset.X, info.Offset.Y, 0);
 		}
 	}
 }
