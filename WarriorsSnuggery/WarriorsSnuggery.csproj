@@ -128,6 +128,7 @@
     <Compile Include="GameSaveManager.cs" />
     <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="Graphics\CharManager.cs" />
+    <Compile Include="Graphics\ColoredRenderables.cs" />
     <Compile Include="Graphics\ColorManager.cs" />
     <Compile Include="Loader\LoaderExceptions.cs" />
     <Compile Include="Loader\MiniTextNode.cs" />
@@ -193,7 +194,7 @@
     <Compile Include="Input\KeyInput.cs" />
     <Compile Include="Input\MouseInput.cs" />
     <Compile Include="Game\PhysicsObject.cs" />
-    <Compile Include="Game\Renderables.cs" />
+    <Compile Include="Graphics\TexturedRenderables.cs" />
     <Compile Include="Game\Terrain.cs" />
     <Compile Include="Graphics\Objects\IColor.cs" />
     <Compile Include="Graphics\Objects\IRenderable.cs" />

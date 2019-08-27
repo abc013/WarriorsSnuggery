@@ -13,11 +13,4 @@ namespace WarriorsSnuggery.Objects
 			Renderable.SetColor(color);
 		}
 	}
-
-	class ColoredCircleRenderable : GraphicsObject
-	{
-		public ColoredCircleRenderable(Color color, float size, int resolution, DrawMethod method) :
-			base(new IColor(ColoredMesh.Circle(size, color, resolution), method))
-		{ }
-	}
 }

@@ -70,5 +70,14 @@ namespace WarriorsSnuggery.Graphics
 
 			filled_rect.Render();
 		}
+
+		public static void DrawQuad(CPos position, int radius, Color color)
+		{
+			filled_rect.SetScale(radius / 1024f);
+			filled_rect.SetPosition(position);
+			filled_rect.SetColor(color);
+
+			filled_rect.Render();
+		}
 	}
 }

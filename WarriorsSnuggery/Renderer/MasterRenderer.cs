@@ -100,7 +100,7 @@ namespace WarriorsSnuggery
 
 		static int frameBuffer;
 		public static int frameTexture;
-		static Objects.FrameRenderable renderable;
+		static FrameRenderable renderable;
 
 		static void initializeGL()
 		{
@@ -139,7 +139,7 @@ namespace WarriorsSnuggery
 				frameBuffer = GL.GenFramebuffer();
 				GL.BindFramebuffer(FramebufferTarget.Framebuffer, frameBuffer);
 				GL.FramebufferTexture2D(FramebufferTarget.Framebuffer, FramebufferAttachment.ColorAttachment0, TextureTarget2d.Texture2D, frameTexture, 0);
-				renderable = new Objects.FrameRenderable(new ITexture("FramebufferTexture", width, height, frameTexture));
+				renderable = new FrameRenderable(new ITexture("FramebufferTexture", width, height, frameTexture));
 				Program.CheckGraphicsError("GLFrameBuffer");
 
 				GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMinFilter, (int)TextureMinFilter.Nearest);

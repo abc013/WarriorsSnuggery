@@ -11,7 +11,7 @@ namespace WarriorsSnuggery
 
 		static Window window;
 
-		public static void Main(string[] args)
+		public static void Main()
 		{
 			isDebug = Debugger.IsAttached;
 
