@@ -4,6 +4,7 @@
  * 
  */
 using System;
+using WarriorsSnuggery.Graphics;
 
 namespace WarriorsSnuggery.Objects.Particles
 {
@@ -74,9 +75,18 @@ namespace WarriorsSnuggery.Objects.Particles
 			transform_velocity += new CPos(x, y, 0);
 		}
 
+		float xRotateLeft;
+		float yRotateLeft;
 		public void AffectRotation(ParticleForce force, float ratio, CPos origin)
 		{
-
+			var angle = origin.AngleToXY(Position);
+			var xFloat = 0f;
+			var yFloat = 0f;
+			var x = (int)Math.Round(xFloat + xRotateLeft);
+			var y = (int)Math.Round(yFloat + yRotateLeft);
+			xRotateLeft = (xFloat + xLeft) - x;
+			yRotateLeft = (yFloat + yLeft) - y;
+			transform_velocity += new CPos(x, y, 0);
 		}
 
 		public override void Tick()

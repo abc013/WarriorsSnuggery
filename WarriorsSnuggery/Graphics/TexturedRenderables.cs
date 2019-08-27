@@ -3,9 +3,9 @@
  * Date: 03.11.2017
  * 
  */
-using WarriorsSnuggery.Graphics;
+using WarriorsSnuggery.Objects;
 
-namespace WarriorsSnuggery.Objects
+namespace WarriorsSnuggery.Graphics
 {
 	public class TextRenderable : GraphicsObject
 	{
@@ -14,8 +14,7 @@ namespace WarriorsSnuggery.Objects
 		public Color Color;
 		public char @Char;
 
-		public TextRenderable(CPos position, IFont font, char @char, Color color, int curTextWidth = 0) :
-			base(font == IFont.Pixel16 ? CharManager.Pixel16 : CharManager.Papyrus24)
+		public TextRenderable(CPos position, IFont font, char @char, Color color, int curTextWidth = 0) : base(font == IFont.Pixel16 ? CharManager.Pixel16 : CharManager.Papyrus24)
 		{
 			SetPosition(position.ToVector() + new Vector(curTextWidth * SizeMultiplier, 0, 0, 0));
 			Color = color;
@@ -54,20 +53,14 @@ namespace WarriorsSnuggery.Objects
 
 	public class FrameRenderable : GraphicsObject
 	{
-		public FrameRenderable(ITexture texture) :
-			base(IImage.Create(TexturedMesh.Frame(), texture))
-		{ }
+		public FrameRenderable(ITexture texture) : base(IImage.Create(TexturedMesh.Frame(), texture)) { }
 	}
 
 	public class ImageRenderable : GraphicsObject
 	{
-		public ImageRenderable(ITexture texture, float scale = 1f) :
-			base(IImage.Create(TexturedMesh.Plane(scale * (texture.Width > texture.Height ? texture.Width / 24f : texture.Height / 24f), texture.Width, texture.Height), texture))
-		{ }
+		public ImageRenderable(ITexture texture, float scale = 1f) : base(IImage.Create(TexturedMesh.Plane(scale * (texture.Width > texture.Height ? texture.Width / 24f : texture.Height / 24f), texture.Width, texture.Height), texture)) { }
 
-		public ImageRenderable(ITexture texture, MPos size, float scale = 1f) :
-			base(IImage.Create(TexturedMesh.PixelOrientedPlane(scale, size.X, size.Y), texture))
-		{ }
+		public ImageRenderable(ITexture texture, MPos size, float scale = 1f) : base(IImage.Create(TexturedMesh.PixelOrientedPlane(scale, size.X, size.Y), texture)) { }
 	}
 
 	public class SpriteRenderable : GraphicsObject
@@ -76,8 +69,7 @@ namespace WarriorsSnuggery.Objects
 		int curTick;
 		int curTexture;
 
-		public SpriteRenderable(ITexture[] textures, float scale = 1f, int tick = 10) :
-			base(ISprite.Create(TexturedMesh.Plane(scale * (textures[0].Width > textures[0].Height ? textures[0].Width / 24f : textures[0].Height / 24f), textures[0].Width, textures[0].Height), textures, tick))
+		public SpriteRenderable(ITexture[] textures, float scale = 1f, int tick = 10) : base(ISprite.Create(TexturedMesh.Plane(scale * (textures[0].Width > textures[0].Height ? textures[0].Width / 24f : textures[0].Height / 24f), textures[0].Width, textures[0].Height), textures, tick))
 		{
 			this.tick = tick;
 			curTick = tick;
@@ -99,15 +91,11 @@ namespace WarriorsSnuggery.Objects
 
 	public class TerrainRenderable : GraphicsObject
 	{
-		public TerrainRenderable(TerrainType type) :
-			base(IImage.Create(TexturedMesh.Terrain(), type.Texture))
-		{ }
+		public TerrainRenderable(TerrainType type) : base(IImage.Create(TexturedMesh.Terrain(), type.Texture)) { }
 	}
 
 	public class WallRenderable : GraphicsObject
 	{
-		public WallRenderable(bool horizontal, WallType type) :
-			base(IImage.Create(TexturedMesh.Plane(2f, 24, 48), type.GetTexture(horizontal)))
-		{ }
+		public WallRenderable(bool horizontal, WallType type) : base(IImage.Create(TexturedMesh.Plane(2f, 24, 48), type.GetTexture(horizontal))) { }
 	}
 }

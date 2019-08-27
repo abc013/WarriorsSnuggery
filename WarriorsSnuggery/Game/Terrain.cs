@@ -4,6 +4,7 @@
  * 
  */
 using System;
+using WarriorsSnuggery.Graphics;
 
 namespace WarriorsSnuggery.Objects
 {

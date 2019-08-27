@@ -18,11 +18,4 @@ namespace WarriorsSnuggery.Objects
 			Renderable.SetColor(color);
 		}
 	}
-
-	class ColoredLineRenderable : GraphicsObject
-	{
-		public ColoredLineRenderable(Color color, float size) :
-			base(new IColor(ColoredMesh.Line(size, color), DrawMethod.LINES))
-		{ }
-	}
 }
