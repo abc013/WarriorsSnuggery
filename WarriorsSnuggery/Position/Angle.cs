@@ -4,6 +4,7 @@ namespace WarriorsSnuggery
 {
 	public struct VAngle
 	{
+		public const float MaxRange = (float)(2 * Math.PI);
 		public static readonly VAngle Zero = new VAngle();
 
 		public readonly float X;
@@ -45,6 +46,28 @@ namespace WarriorsSnuggery
 		public override int GetHashCode() { return X.GetHashCode() ^ Y.GetHashCode() ^ Z.GetHashCode(); }
 
 		public override string ToString() { return X + "," + Y + "," + Z + " [Radians]"; }
+
+		public VAngle CastToAngleRange()
+		{
+			//0 to 2 PI;
+			var xDeg = cast(X);
+			var yDeg = cast(Y);
+			var zDeg = cast(Z);
+
+			return new VAngle(xDeg, yDeg, zDeg);
+		}
+
+		float cast(float deg)
+		{
+			if (deg < 0 || deg > MaxRange)
+			{
+				deg %= MaxRange;
+
+				if (deg < 0)
+					deg += MaxRange;
+			}
+			return deg;
+		}
 
 		public CPos ToDegree()
 		{

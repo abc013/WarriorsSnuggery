@@ -52,8 +52,8 @@ namespace WarriorsSnuggery.Objects.Particles
 			switch(force.Type)
 			{
 				case ParticleForceType.FORCE:
-					xFloat = (float)(force.Strength * Math.Cos(angle)) * ratio;
-					yFloat = (float)(force.Strength * Math.Sin(angle)) * ratio;
+					//xFloat = (float)(force.Strength * Math.Cos(angle)) * ratio;
+					//yFloat = (float)(force.Strength * Math.Sin(angle)) * ratio;
 					break;
 				case ParticleForceType.TURBULENCE:
 					angle = (float)(random.NextDouble() * 2 * Math.PI);
@@ -84,9 +84,39 @@ namespace WarriorsSnuggery.Objects.Particles
 
 		public void AffectRotation(ParticleForce force, float ratio, CPos origin)
 		{
-			var angle = origin.AngleToXY(Position);
+			var angle = Position.AngleToXY(origin) - 2*(float)Math.PI + Rotation.CastToAngleRange().Z; //TODO make better
+
+			if (angle < -Math.PI)
+				angle += 2 * (float)Math.PI;
+
+			if (angle > Math.PI)
+				angle -= 2 * (float)Math.PI;
+
 			var zFloat = 0f;
-			rotate_velocity += new VAngle(0, 0, zFloat);
+
+			switch (force.Type)
+			{
+				case ParticleForceType.FORCE:
+					zFloat = Math.Sign(-angle) * force.Strength * ratio * 0.1f;
+					zFloat = Math.Min(0.628f, zFloat);
+					break;
+				case ParticleForceType.TURBULENCE:
+					angle = (float)(random.NextDouble() * 2 * Math.PI);
+					zFloat = Math.Sign(-angle) * force.Strength * ratio * 0.1f;
+					zFloat = Math.Min(0.628f, zFloat);
+					break;
+				case ParticleForceType.DRAG:
+					zFloat = -force.Strength * ratio * rotate_velocity.Z * 0.1f;
+					if (Math.Abs(zFloat) > Math.Abs(rotate_velocity.Z))
+						zFloat = -rotate_velocity.Z * ratio;
+					break;
+				case ParticleForceType.VORTEX:
+					zFloat = Math.Sign(-angle - (float)Math.PI / 2) * force.Strength * 0.1f;
+					zFloat = Math.Min(0.628f, zFloat);
+					break;
+			}
+
+			rotate_velocity = new VAngle(0, 0, zFloat);
 		}
 
 		public override void Tick()
@@ -126,9 +156,8 @@ namespace WarriorsSnuggery.Objects.Particles
 		public override void Dispose()
 		{
 			if (type.Texture == null)
-			{
 				Renderable.Dispose();
-			}
+
 			base.Dispose();
 		}
 	}
