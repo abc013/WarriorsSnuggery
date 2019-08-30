@@ -1,7 +1,7 @@
 arrow=
 	Type=Rocket
 	Image=arrow
-		Size=2,6
+		Size=6,2
 	Damage=25
 	Speed=140
 	Reload=20
@@ -74,7 +74,7 @@ web=
 
 blade=
 	Image=blade
-		Size=12,6
+		Size=6,12
 #	Falloff=EXPONENTIAL
 	Damage=120
 	MaximalRange=1536

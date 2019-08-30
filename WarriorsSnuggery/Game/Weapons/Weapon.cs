@@ -33,7 +33,7 @@ namespace WarriorsSnuggery.Objects
 			Target = target;
 
 			if (Type.OrientateToTarget)
-				Rotation = new VAngle(0, 0, -Position.AngleToXY(Target)) + new VAngle(0, 0, 90);
+				Rotation = new VAngle(0, 0, -Position.AngleToXY(Target));
 
 			if (originActor != null)
 			{
@@ -68,7 +68,7 @@ namespace WarriorsSnuggery.Objects
 			Move(Target);
 
 			if (Type.OrientateToTarget)
-				Rotation = new VAngle(0, 0, -Position.AngleToXY(Target)) + new VAngle(0, 0, 90);
+				Rotation = new VAngle(0, 0, -Position.AngleToXY(Target));
 
 			if (InRange(Target))
 				Detonate();

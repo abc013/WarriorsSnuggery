@@ -37,30 +37,37 @@ namespace WarriorsSnuggery.Objects.Particles
 
 		float xLeft;
 		float yLeft;
+		// TODO add z
 		public void AffectVelocity(ParticleForce force, float ratio, CPos origin)
 		{
 			var angle = origin.AngleToXY(Position);
 			var xFloat = 0f;
 			var yFloat = 0f;
+
 			switch(force.Type)
 			{
 				case ParticleForceType.FORCE:
-					xFloat = (float)(force.Strength * Math.Cos(angle));
-					yFloat = (float)(force.Strength * Math.Sin(angle));
+					xFloat = (float)(force.Strength * Math.Cos(angle)) * ratio;
+					yFloat = (float)(force.Strength * Math.Sin(angle)) * ratio;
 					break;
 				case ParticleForceType.TURBULENCE:
 					angle = (float)(random.NextDouble() * 2 * Math.PI);
-					xFloat = (float)(force.Strength * Math.Cos(angle));
-					yFloat = (float)(force.Strength * Math.Sin(angle));
+					xFloat = (float)(force.Strength * Math.Cos(angle)) * ratio;
+					yFloat = (float)(force.Strength * Math.Sin(angle)) * ratio;
 					break;
 				case ParticleForceType.DRAG:
-					xFloat = -force.Strength * transform_velocity.X / 256;
+					xFloat = -force.Strength * ratio * transform_velocity.X / 256;
 					if (Math.Abs(xFloat) > Math.Abs(transform_velocity.X))
-						xFloat = -transform_velocity.X;
+						xFloat = -transform_velocity.X * ratio;
 
-					yFloat = -force.Strength * transform_velocity.Y / 256;
+					yFloat = -force.Strength * ratio * transform_velocity.Y / 256;
 					if (Math.Abs(yFloat) > Math.Abs(transform_velocity.Y))
-						yFloat = -transform_velocity.Y;
+						yFloat = -transform_velocity.Y * ratio;
+					break;
+				case ParticleForceType.VORTEX:
+					angle -= (float)Math.PI / 2;
+					xFloat = (float)(force.Strength * Math.Cos(angle)) * ratio;
+					yFloat = (float)(force.Strength * Math.Sin(angle)) * ratio;
 					break;
 			}
 			var x = (int)Math.Round(xFloat + xLeft);
@@ -70,18 +77,11 @@ namespace WarriorsSnuggery.Objects.Particles
 			transform_velocity += new CPos(x, y, 0);
 		}
 
-		float xRotateLeft;
-		float yRotateLeft;
 		public void AffectRotation(ParticleForce force, float ratio, CPos origin)
 		{
 			var angle = origin.AngleToXY(Position);
-			var xFloat = 0f;
-			var yFloat = 0f;
-			var x = (int)Math.Round(xFloat + xRotateLeft);
-			var y = (int)Math.Round(yFloat + yRotateLeft);
-			xRotateLeft = (xFloat + xLeft) - x;
-			yRotateLeft = (yFloat + yLeft) - y;
-			transform_velocity += new CPos(x, y, 0);
+			var zFloat = 0f;
+			rotate_velocity += new VAngle(0, 0, zFloat);
 		}
 
 		public override void Tick()
