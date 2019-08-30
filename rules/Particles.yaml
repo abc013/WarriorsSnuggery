@@ -34,7 +34,7 @@ slime_splash=
 bullet=
 	Texture=bullet
 		Size=24,12
-	Duration=100
+	Duration=1000
 	ShowShadow=true
 	AffectedByObjects=true
 
