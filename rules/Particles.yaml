@@ -7,7 +7,9 @@ glitter=
 	RandomScale=0,5
 
 grey=
-	MeshSize=1
+	Texture=small_star
+		Size=4,4
+		Tick=5
 	Color=0,0,0,127
 	Duration=100
 	DissolveDuration=10
@@ -31,9 +33,10 @@ slime_splash=
 
 bullet=
 	Texture=bullet
-		Size=12,24
+		Size=24,12
 	Duration=100
 	ShowShadow=true
+	AffectedByObjects=true
 
 nebula1=
 	Texture=smoke_large
@@ -83,4 +86,3 @@ fire=
 	DissolveDuration=5
 	Gravity=-1
 	RandomVelocity=1,1,0
-	AffectedByObjects=true

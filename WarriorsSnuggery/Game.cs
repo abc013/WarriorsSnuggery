@@ -191,27 +191,6 @@ namespace WarriorsSnuggery
 						Pause(true);
 						ChangeScreen(ScreenType.MENU);
 					}
-					if (KeyInput.IsKeyDown("altleft", 0) && KeyInput.IsKeyDown("m", 10))
-					{
-						Screen defaultScreen;
-						if (Editor)
-						{
-							Editor = false;
-							if (Type == GameType.MENU || Type == GameType.MAINMENU)
-								defaultScreen = null;
-							else
-								defaultScreen = new DefaultScreen(this);
-						}
-						else
-						{
-							Editor = true;
-							defaultScreen = new EditorScreen(this);
-						}
-
-						ScreenControl.NewDefaultScreen(defaultScreen);
-
-						ChangeScreen(ScreenType.DEFAULT);
-					}
 
 					CheckVictory();
 				}
@@ -287,6 +266,26 @@ namespace WarriorsSnuggery
 					if (KeyInput.IsKeyDown("period", 10))
 					{
 						World.ShroudLayer.AllRevealed = true;
+					}
+					if (KeyInput.IsKeyDown("x", 10))
+					{
+						Screen defaultScreen;
+						if (Editor)
+						{
+							if (Type == GameType.MENU || Type == GameType.MAINMENU)
+								defaultScreen = null;
+							else
+								defaultScreen = new DefaultScreen(this);
+						}
+						else
+						{
+							defaultScreen = new EditorScreen(this);
+						}
+						Editor = !Editor;
+
+						ScreenControl.NewDefaultScreen(defaultScreen);
+
+						ChangeScreen(ScreenType.DEFAULT);
 					}
 				}
 

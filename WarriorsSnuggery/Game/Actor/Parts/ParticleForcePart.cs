@@ -36,10 +36,12 @@ namespace WarriorsSnuggery.Objects.Parts
 	{
 		readonly ParticleForcePartInfo info;
 		readonly ParticleForce force;
+		readonly float maxRangesquared;
 
 		public ParticleForcePart(Actor self, ParticleForcePartInfo info) : base(self)
 		{
 			this.info = info;
+			maxRangesquared = info.MaxRange; // TODO use falloff
 			force = new ParticleForce(info.ForceType, info.Strength);
 		}
 
@@ -50,9 +52,8 @@ namespace WarriorsSnuggery.Objects.Parts
 
 			foreach(var obj in self.World.Objects)
 			{
-				var particle = obj as Particle;
-				if (particle == null || !particle.AffectedByObjects)
-					continue;
+				if (!(obj is Particle particle) || !particle.AffectedByObjects)
+					continue; // TODO cache affectable particles
 
 				if (info.AffectedTypes.Length != 0 && !info.AffectedTypes.Contains(particle.Name))
 					continue;
@@ -61,7 +62,7 @@ namespace WarriorsSnuggery.Objects.Parts
 				if (dist > info.MaxRange || dist < info.MinRange)
 					continue;
 
-				var ratio = dist / info.MaxRange;
+				var ratio = 1 - dist / maxRangesquared;
 
 				particle.AffectVelocity(force, ratio, self.GraphicPosition);
 				if (info.AffectRotation)

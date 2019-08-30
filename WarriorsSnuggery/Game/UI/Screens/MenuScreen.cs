@@ -32,7 +32,7 @@ namespace WarriorsSnuggery.UI
 			Title.Position = new CPos(0, -2048, 0);
 
 			var height = -1024;
-			resume = ButtonCreator.Create("wooden", new CPos(0, height, 0), "Resume", () => game.Pause(false));
+			resume = ButtonCreator.Create("wooden", new CPos(0, height, 0), "Resume", () => { game.Pause(false); game.ScreenControl.ShowScreen(ScreenType.DEFAULT); });
 
 			height += 1024;
 			switch (game.Type)
