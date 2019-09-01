@@ -310,10 +310,23 @@ namespace WarriorsSnuggery
 				//memory.SetText("Memory " + (int) (System.Diagnostics.Process.GetCurrentProcess().PrivateMemorySize64 / 1024f) + " KB");
 				//memory.SetText("Public Memory " + (int)(GC.GetTotalMemory(false) / 1024f) + " KB");
 				visibility.SetText(VisibilitySolver.TilesVisible() + " Tiles visible");
-				tick.SetColor(Window.Current.TPS < Settings.UpdatesPerSecond - 1 ? new Color(1f, 0.2f, 0.2f) : Color.White);
-				tick.SetText("Tick " + LocalTick + " @ " + Window.Current.TPS);
 
-				tick.SetColor(Window.Current.FPS < Settings.FrameLimiter - 10 ? Color.Red : Color.White);
+				var tickColor = Color.White;
+				if (Window.Current.TPS < Settings.UpdatesPerSecond - 5)
+					tickColor = Color.Red;
+				else if (Window.Current.TPS > Settings.UpdatesPerSecond + 5)
+					tickColor = Color.Green;
+
+				tick.SetColor(tickColor);
+				tick.SetText("Tick " + LocalTick + " @ " + Window.Current.TPS);
+				
+				var renderColor = Color.White;
+				if (Window.Current.FPS < Settings.FrameLimiter - 20)
+					renderColor = Color.Red;
+				else if (Window.Current.FPS > Settings.FrameLimiter + 5)
+					renderColor = Color.Green;
+
+				render.SetColor(renderColor);
 				render.SetText("Render " + LocalRender + " @ " + Window.Current.FPS);
 			}
 
