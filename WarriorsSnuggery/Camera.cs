@@ -104,7 +104,7 @@ namespace WarriorsSnuggery
 		static void CalculatePosition()
 		{
 			var look = -LookAt.ToVector(); // TODO why negate?
-			Matrix4.CreateTranslation(look.X, look.Y, look.Z, out View);
+			Matrix4.CreateTranslation(look.X, look.Y, float.MaxValue, out View);
 
 			// TODO understand OLD CODE
 			//var look = new Vector3(-LookAt.ToVector() / new Vector(CurrentZoom, CurrentZoom, CurrentZoom, CurrentZoom)) * 2;
