@@ -289,11 +289,11 @@ namespace WarriorsSnuggery
 				{
 					if (MouseInput.isRightDown)
 					{
-						Camera.Zoom(Settings.ScrollSpeed / 5 * (4 - (Camera.CurrentZoom - Camera.DefaultZoom) / 2));
+						Camera.Zoom(Settings.ScrollSpeed / 20 * (4 - (Camera.CurrentZoom - Camera.DefaultZoom) / 2));
 					}
 					else
 					{
-						Camera.Zoom(Settings.ScrollSpeed / 5 * (-(Camera.CurrentZoom - Camera.DefaultZoom) / 2));
+						Camera.Zoom(Settings.ScrollSpeed / 20 * (-(Camera.CurrentZoom - Camera.DefaultZoom) / 2));
 					}
 				}
 
