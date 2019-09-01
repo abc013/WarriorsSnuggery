@@ -49,7 +49,7 @@ namespace WarriorsSnuggery.UI
 		public override void Tick()
 		{
 			checkMouse();
-			if (MouseInput.isLeftClicked)
+			if (MouseInput.IsLeftClicked)
 			{
 				Selected = mouseOnBox;
 			}

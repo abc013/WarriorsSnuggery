@@ -24,8 +24,6 @@ namespace WarriorsSnuggery
 
 	public class Window : GameWindow
 	{
-		public static Vector ExactMousePosition;
-
 		public static Window Current;
 		public static char CharInput;
 
@@ -117,11 +115,6 @@ namespace WarriorsSnuggery
 		public float TPS;
 		protected override void OnUpdateFrame(FrameEventArgs e)
 		{
-			lock (MasterRenderer.GLLock)
-			{
-				base.OnUpdateFrame(e);
-			}
-
 			KeyInput.Tick();
 			MouseInput.Tick();
 
@@ -133,35 +126,31 @@ namespace WarriorsSnuggery
 			if (Loaded)
 				Game.Tick();
 
-			if (KeyInput.IsKeyDown(Key.F4) && (KeyInput.IsKeyDown(Key.AltLeft) || KeyInput.IsKeyDown(Key.AltRight)))
-				Exit();
-
 			CharInput = '';
 			FirstTick = false;
+
+			if (KeyInput.IsKeyDown(Key.F4) && (KeyInput.IsKeyDown(Key.AltLeft) || KeyInput.IsKeyDown(Key.AltRight)))
+				Exit();
 		}
 
 		public float FPS;
 
 		protected override void OnRenderFrame(FrameEventArgs e)
 		{
-			lock (MasterRenderer.GLLock)
-			{
-				base.OnRenderFrame(e);
-			}
+			if (Exiting)
+				return;
 
 			if (GlobalRender % 20 == 0)
 				FPS = (float)Math.Round(1 / e.Time, 1);
 
 			GlobalRender++;
 
-			var watch = System.Diagnostics.Stopwatch.StartNew();
+			var watch = Timer.Start();
 
-			if (!Exiting)
-			{
-				MasterRenderer.Render();
-			}
+			MasterRenderer.Render();
 
-			watch.Stop();
+			if (GlobalRender % 20 == 0)
+				watch.StopAndWrite("render" + GlobalRender);
 
 			lock (MasterRenderer.GLLock)
 			{
@@ -237,6 +226,7 @@ namespace WarriorsSnuggery
 		public override void Exit()
 		{
 			var watch = Timer.Start();
+
 			Exiting = true;
 			lock (MasterRenderer.GLLock)
 			{
@@ -261,11 +251,7 @@ namespace WarriorsSnuggery
 
 		protected override void OnMouseMove(MouseMoveEventArgs e)
 		{
-			base.OnMouseMove(e);
-			var pos = e.Position;
-			ExactMousePosition = VectorConvert.FromScreen(pos.X, pos.Y);
-
-			MouseInput.WindowPosition = VectorConvert.ToCPos(VectorConvert.FromScreen(pos.X, pos.Y) * new Vector(Camera.DefaultZoom, Camera.DefaultZoom, 1, 1));
+			MouseInput.UpdateMousePosition(new MPos(e.Position.X, e.Position.Y));
 		}
 
 		protected override void OnKeyPress(KeyPressEventArgs e)

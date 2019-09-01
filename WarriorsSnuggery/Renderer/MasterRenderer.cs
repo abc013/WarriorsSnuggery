@@ -8,7 +8,10 @@ namespace WarriorsSnuggery
 {
 	public static class MasterRenderer
 	{
+		public const float PixelMultiplier = 1f / 24f;
+
 		public static object GLLock = new object();
+
 		public static int ColorShader, TextureShader, FontShader, ShadowShader;
 		static int heightLocation;
 		static readonly int[] locations = new int[16];
@@ -121,6 +124,7 @@ namespace WarriorsSnuggery
 				GL.Enable(EnableCap.ScissorTest);
 				GL.Enable(EnableCap.AlphaTest);
 				GL.Enable(EnableCap.Blend);
+				//GL.Enable(EnableCap.DepthTest);
 				//GL.Enable(EnableCap.CullFace); // GRAPHICS sth turns around (180°) and gets invisible
 				GL.CullFace(CullFaceMode.Back);
 				Program.CheckGraphicsError("GLTests");

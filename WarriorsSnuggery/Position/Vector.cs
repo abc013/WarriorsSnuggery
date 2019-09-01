@@ -48,51 +48,10 @@ namespace WarriorsSnuggery
 		public override int GetHashCode() { return X.GetHashCode() ^ Y.GetHashCode() ^ Z.GetHashCode() ^ W.GetHashCode(); }
 
 		public override string ToString() { return X + "," + Y + "," + Z + "," + W; }
-	}
 
-	public static class VectorConvert
-	{
-		public const float PixelMultiplier = 1f / 24f;
-
-		public static Vector FromPixel(int pxX, int pxY)
+		public CPos ToCPos()
 		{
-			var x = (pxX / (float)WindowInfo.Width) * Camera.DefaultZoom * WindowInfo.Ratio;
-			var y = (pxY / (float)WindowInfo.Height) * Camera.DefaultZoom;
-			return new Vector(x, -y, 0, 0);
-		}
-
-		public static Vector FromScreen(int pxX, int pxY)
-		{
-			pxX -= WindowInfo.Width / 2;
-			pxY -= WindowInfo.Height / 2;
-			var x = (pxX / (float)WindowInfo.Width) * WindowInfo.Ratio;
-			var y = (pxY / (float)WindowInfo.Height);
-			return new Vector(x, -y, 0, 0);
-		}
-
-		public static CPos ToCPos(Vector pos)
-		{
-			return new CPos((int)(pos.X * 1024), (int)(-pos.Y * 1024), (int)(pos.Z * 1024));
-		}
-
-		public static Vector ToVector(CPos pos)
-		{
-			return ToVector(pos.X / 1024f, pos.Y / 1024f, pos.Z / 1024f);
-		}
-
-		public static Vector ToVector(WPos pos)
-		{
-			return ToVector(pos.X, pos.Y, pos.Z);
-		}
-
-		public static Vector ToVector(MPos pos)
-		{
-			return ToVector(pos.X, pos.Y, 0f);
-		}
-
-		static Vector ToVector(float x, float y, float z)
-		{
-			return new Vector(x, -y, z, 1.0f);
+			return new CPos((int)(X * 1024), (int)(Y * 1024), (int)(Z * 1024));
 		}
 	}
 }

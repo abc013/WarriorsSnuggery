@@ -70,10 +70,10 @@ namespace WarriorsSnuggery.UI
 		{
 			base.Tick();
 
-			if (mouseOnItem && MouseInput.isLeftClicked)
+			if (mouseOnItem && MouseInput.IsLeftClicked)
 				Selected = true;
 
-			else if (MouseInput.isLeftClicked)
+			else if (MouseInput.IsLeftClicked)
 				Selected = false;
 		}
 

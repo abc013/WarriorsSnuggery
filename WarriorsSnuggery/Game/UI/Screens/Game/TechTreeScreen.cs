@@ -162,7 +162,7 @@ namespace WarriorsSnuggery.UI
 
 			mouseOnItem = mousePosition.X > Position.X - 512 && mousePosition.X < Position.X + 512 && mousePosition.Y > Position.Y - 512 && mousePosition.Y < Position.Y + 512;
 
-			if (mouseOnItem && !node.Unlocked && MouseInput.isLeftClicked)
+			if (mouseOnItem && !node.Unlocked && MouseInput.IsLeftClicked)
 			{
 				if (game.Statistics.UnlockedNodes.ContainsKey(node.InnerName) && game.Statistics.UnlockedNodes[node.InnerName])
 					return;

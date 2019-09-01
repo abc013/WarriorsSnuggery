@@ -172,14 +172,14 @@ namespace WarriorsSnuggery.UI
 				Camera.Zoom(MouseInput.WheelState);
 
 			// place something
-			if (MouseInput.isLeftClicked)
+			if (MouseInput.IsLeftClicked)
 				place();
 
-			if (MouseInput.isLeftDown && (currentSelected == Selected.TILE || currentSelected == Selected.WALL))
+			if (MouseInput.IsLeftDown && (currentSelected == Selected.TILE || currentSelected == Selected.WALL))
 				place();
 
 			// Delete something
-			if (MouseInput.isRightClicked)
+			if (MouseInput.IsRightClicked)
 				remove();
 
 			if (game.Type == GameType.EDITOR)

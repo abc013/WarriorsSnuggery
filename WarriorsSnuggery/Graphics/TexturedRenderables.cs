@@ -4,7 +4,7 @@ namespace WarriorsSnuggery.Graphics
 {
 	public class TextRenderable : GraphicsObject
 	{
-		public const float SizeMultiplier = VectorConvert.PixelMultiplier / 4;
+		public const float SizeMultiplier = MasterRenderer.PixelMultiplier / 4;
 		static readonly Vector shadowVector = new Vector(-0.04f / WindowInfo.Ratio, -0.04f, 0f);
 		public Color Color;
 		public char @Char;

@@ -26,7 +26,7 @@ namespace WarriorsSnuggery.Graphics
 		}
 
 		// Terrain
-		const float halfTerrain = VectorConvert.PixelMultiplier * 24 / 2 + 0.001f;
+		const float halfTerrain = MasterRenderer.PixelMultiplier * 24 / 2 + 0.001f;
 
 		static readonly TexturedVertex[] terrain =
 		{
@@ -101,8 +101,8 @@ namespace WarriorsSnuggery.Graphics
 		public static TexturedVertex[] PixelOrientedPlane(float scale, int width, int height)
 		{
 			scale /= 2;
-			var sizeX = width * VectorConvert.PixelMultiplier;
-			var sizeY = height * VectorConvert.PixelMultiplier;
+			var sizeX = width * MasterRenderer.PixelMultiplier;
+			var sizeY = height * MasterRenderer.PixelMultiplier;
 
 			TexturedVertex[] vertices =
 			{

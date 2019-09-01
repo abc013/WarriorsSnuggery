@@ -99,7 +99,7 @@ namespace WarriorsSnuggery.UI
 			{
 				UIRenderer.SetTooltip(tooltip);
 
-				if (MouseInput.isLeftClicked)
+				if (MouseInput.IsLeftClicked)
 					takeAction();
 			}
 			else
