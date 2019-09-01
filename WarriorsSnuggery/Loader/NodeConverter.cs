@@ -184,28 +184,7 @@ namespace WarriorsSnuggery.Loader
 			}
 			else if (t == typeof(Objects.Particles.ParticleSpawner))
 			{
-				var name = s.Trim();
-				var count = 1;
-				var radius = 256;
-
-				var children = node.Children;
-				foreach (var child in children)
-				{
-					if (child.Key == "Count")
-					{
-						count = child.Convert<int>();
-					}
-					else if (child.Key == "Radius")
-					{
-						radius = child.Convert<int>();
-					}
-					else
-					{
-						throw new UnexpectedConversionChild(file, node, t, child.Key);
-					}
-				}
-
-				return new Objects.Particles.ParticleSpawner(ParticleCreator.GetType(name), count, radius);
+				return new Objects.Particles.ParticleSpawner(node.Children.ToArray());
 			}
 			else if (t == typeof(Graphics.TextureInfo))
 			{
@@ -249,6 +228,11 @@ namespace WarriorsSnuggery.Loader
 			{
 				// Called method handles nonexistant weapon types
 				return WeaponCreator.GetType(s.Trim());
+			}
+			else if (t == typeof(Objects.Particles.ParticleType))
+			{
+				// Called method handles nonexistant weapon types
+				return ParticleCreator.GetType(s.Trim());
 			}
 			else if (t == typeof(Maps.ActorGeneratorInfo[]))
 			{

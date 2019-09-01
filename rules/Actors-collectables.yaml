@@ -100,7 +100,8 @@ heal_pad=
 		Value=2
 		MultipleActivations=yes
 		Duration=5
-		ParticleSpawner=beam
+		ParticleSpawner=
+			Type=beam
 			Count=10
 
 portion_red=
@@ -159,7 +160,8 @@ gold=
 		MultipleActivations=no
 		OnlyByPlayer=yes
 		KillsSelf=yes
-		ParticleSpawner=small_star
+		ParticleSpawner=
+			Type=small_star
 			Count=3
 
 silver=
@@ -176,7 +178,8 @@ silver=
 		MultipleActivations=no
 		OnlyByPlayer=yes
 		KillsSelf=yes
-		ParticleSpawner=small_star
+		ParticleSpawner=
+			Type=small_star
 			Count=2
 
 blue=
@@ -193,5 +196,6 @@ blue=
 		MultipleActivations=no
 		OnlyByPlayer=yes
 		KillsSelf=yes
-		ParticleSpawner=small_star
+		ParticleSpawner=
+			Type=small_star
 			Count=5
