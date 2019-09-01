@@ -174,7 +174,7 @@ namespace WarriorsSnuggery.UI
 
 			// Zoom function
 			if (!CursorOnUI())
-				Camera.Zoom(MouseInput.WheelState * 1.5f);
+				Camera.Zoom(MouseInput.WheelState);
 
 			// place something
 			if (MouseInput.isLeftClicked)

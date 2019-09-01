@@ -71,17 +71,17 @@ namespace WarriorsSnuggery.Graphics
 			scale /= 2;
 			var correction = w < h ? w / h : h / w;
 
-			TexturedVertex[] vertices = new TexturedVertex[6];
+			TexturedVertex[] vertices;
 			if (w < h)
 			{
 				TexturedVertex[] vertices1 =
 				{
-					new TexturedVertex(new Vector(scale * correction, scale, 0, 1.0f), new Vector2(1, 0)),
+					new TexturedVertex(new Vector(scale * correction, scale,   0, 1.0f), new Vector2(1, 0)),
 					new TexturedVertex(new Vector(-scale * correction, -scale, 0, 1.0f), new Vector2(0, 1)),
-					new TexturedVertex(new Vector(scale * correction, -scale, 0, 1.0f), new Vector2(1, 1)),
-					new TexturedVertex(new Vector(-scale * correction, scale, 0, 1.0f), new Vector2(0, 0)),
+					new TexturedVertex(new Vector(scale * correction, -scale,  0, 1.0f), new Vector2(1, 1)),
+					new TexturedVertex(new Vector(-scale * correction, scale,  0, 1.0f), new Vector2(0, 0)),
 					new TexturedVertex(new Vector(-scale * correction, -scale, 0, 1.0f), new Vector2(0, 1)),
-					new TexturedVertex(new Vector(scale * correction, scale, 0, 1.0f), new Vector2(1, 0)),
+					new TexturedVertex(new Vector(scale * correction, scale,   0, 1.0f), new Vector2(1, 0)),
 				};
 				vertices = vertices1;
 			}
@@ -89,12 +89,12 @@ namespace WarriorsSnuggery.Graphics
 			{
 				TexturedVertex[] vertices1 =
 				{
-					new TexturedVertex(new Vector(scale, scale * correction, 0, 1.0f), new Vector2(1, 0)),
+					new TexturedVertex(new Vector(scale, scale * correction,   0, 1.0f), new Vector2(1, 0)),
 					new TexturedVertex(new Vector(-scale, -scale * correction, 0, 1.0f), new Vector2(0, 1)),
-					new TexturedVertex(new Vector(scale, -scale * correction, 0, 1.0f), new Vector2(1, 1)),
-					new TexturedVertex(new Vector(-scale, scale * correction, 0, 1.0f), new Vector2(0, 0)),
+					new TexturedVertex(new Vector(scale, -scale * correction,  0, 1.0f), new Vector2(1, 1)),
+					new TexturedVertex(new Vector(-scale, scale * correction,  0, 1.0f), new Vector2(0, 0)),
 					new TexturedVertex(new Vector(-scale, -scale * correction, 0, 1.0f), new Vector2(0, 1)),
-					new TexturedVertex(new Vector(scale, scale * correction, 0, 1.0f), new Vector2(1, 0)),
+					new TexturedVertex(new Vector(scale, scale * correction,   0, 1.0f), new Vector2(1, 0)),
 				};
 				vertices = vertices1;
 			}

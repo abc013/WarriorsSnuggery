@@ -68,10 +68,10 @@ namespace WarriorsSnuggery
 				firstStarted();
 			window = new Window();
 
-			if (!checkGLVersion())
+			if (GL.GetInteger(GetPName.MajorVersion) < 3)
 			{
-				Console.WriteLine("Shader Language Version (OpenGL version) is under 3.00.");
-				Console.WriteLine("Please try to run the program with a graphics card that supports this Version.");
+				Console.WriteLine("OpenGL version is under 3.00.");
+				Console.WriteLine("Please run the program with a graphics card that supports > 3.00.");
 				Console.WriteLine("Press 'y' to start the game anyways or press any key to exit.");
 				var info = Console.ReadKey(true).KeyChar;
 				if (info != 'y')
@@ -106,13 +106,6 @@ namespace WarriorsSnuggery
 				writer.Flush();
 				writer.Close();
 			}
-		}
-
-		static bool checkGLVersion()
-		{
-			var version = float.Parse(GL.GetString(StringName.ShadingLanguageVersion).Substring(0, 4));
-
-			return version >= 300;
 		}
 
 		[Conditional("DEBUG")]
