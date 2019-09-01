@@ -145,8 +145,14 @@ namespace WarriorsSnuggery
 
 		public static void WriteParticles(StreamWriter writer)
 		{
-			var info = Assembly.Load("WarriorsSnuggery").GetType("WarriorsSnuggery.Objects.ParticleType");
+			writer.WriteLine("\t\t<h2>ParticleSpawner</h2>");
+			writer.WriteLine("\t\t<hr>");
+			var spawner = Assembly.Load("WarriorsSnuggery").GetType("WarriorsSnuggery.Objects.Particles.ParticleSpawner");
+			WriteWithType(writer, spawner);
 
+			writer.WriteLine("\t\t<h2>Particle</h2>");
+			writer.WriteLine("\t\t<hr>");
+			var info = Assembly.Load("WarriorsSnuggery").GetType("WarriorsSnuggery.Objects.Particles.ParticleType");
 			WriteWithType(writer, info);
 		}
 
