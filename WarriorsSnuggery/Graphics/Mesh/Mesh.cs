@@ -126,8 +126,8 @@ namespace WarriorsSnuggery.Graphics
 
 			ColoredVertex[] vertices =
 			{
-				new ColoredVertex(new Vector(0,0,0,1.0f), color4),
-				new ColoredVertex(new Vector(0,size,0,1.0f), color4),
+				new ColoredVertex(new Vector(0, 0, 0, 1.0f), color4),
+				new ColoredVertex(new Vector(0, size, 0, 1.0f), color4),
 			};
 
 			return vertices;
@@ -147,12 +147,12 @@ namespace WarriorsSnuggery.Graphics
 			ColoredVertex[] vertices =
 			{
 				new ColoredVertex(new Vector(x,  y,  0, 1.0f), color4),
-				new ColoredVertex(new Vector(-x, y, 0, 1.0f), color4),
+				new ColoredVertex(new Vector(-x, y,  0, 1.0f), color4),
 				new ColoredVertex(new Vector(-x,  y, 0, 1.0f), color4),
-				new ColoredVertex(new Vector(-x, -y,  0, 1.0f), color4),
 				new ColoredVertex(new Vector(-x, -y, 0, 1.0f), color4),
-				new ColoredVertex(new Vector(x,  -y,  0, 1.0f), color4),
-				new ColoredVertex(new Vector(x,  -y,  0, 1.0f), color4),
+				new ColoredVertex(new Vector(-x, -y, 0, 1.0f), color4),
+				new ColoredVertex(new Vector(x,  -y, 0, 1.0f), color4),
+				new ColoredVertex(new Vector(x,  -y, 0, 1.0f), color4),
 				new ColoredVertex(new Vector(x,  y,  0, 1.0f), color4),
 			};
 

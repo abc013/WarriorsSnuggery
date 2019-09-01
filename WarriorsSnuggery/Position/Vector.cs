@@ -72,7 +72,7 @@ namespace WarriorsSnuggery
 
 		public static CPos ToCPos(Vector pos)
 		{
-			return new CPos((int)(pos.X * 1024), (int)(-pos.Y * 1024), (int)(-pos.Z * 1024));
+			return new CPos((int)(pos.X * 1024), (int)(-pos.Y * 1024), (int)(pos.Z * 1024));
 		}
 
 		public static Vector ToVector(CPos pos)
@@ -92,7 +92,7 @@ namespace WarriorsSnuggery
 
 		static Vector ToVector(float x, float y, float z)
 		{
-			return new Vector(x, -y, -z, 1.0f); //TODO fix this mess?
+			return new Vector(x, -y, z, 1.0f);
 		}
 	}
 }
