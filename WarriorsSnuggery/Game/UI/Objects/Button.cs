@@ -29,7 +29,7 @@ namespace WarriorsSnuggery.UI
 		{
 			if (mouseOnButton)
 			{
-				if (MouseInput.isLeftDown)
+				if (MouseInput.IsLeftDown)
 				{
 					Color = new Color(0.5f, 0.5f, 0.5f);
 				}
@@ -62,7 +62,7 @@ namespace WarriorsSnuggery.UI
 
 			mouseOnButton = mousePosition.X > Position.X - type.Width && mousePosition.X < Position.X + type.Width && mousePosition.Y > Position.Y - type.Height && mousePosition.Y < Position.Y + type.Height;
 
-			if (MouseInput.isLeftClicked && mouseOnButton && action != null)
+			if (MouseInput.IsLeftClicked && mouseOnButton && action != null)
 				action();
 		}
 	}

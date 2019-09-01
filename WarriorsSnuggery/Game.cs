@@ -292,7 +292,7 @@ namespace WarriorsSnuggery
 				// Zooming
 				if (!Editor && Type != GameType.EDITOR)
 				{
-					if (MouseInput.isRightDown)
+					if (MouseInput.IsRightDown)
 					{
 						Camera.Zoom(Settings.ScrollSpeed / 20 * (4 - (Camera.CurrentZoom - Camera.DefaultZoom) / 2));
 					}

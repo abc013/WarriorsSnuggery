@@ -66,7 +66,7 @@ namespace WarriorsSnuggery.UI
 
 		public void Render()
 		{
-			if (mouseOnBox && MouseInput.isLeftDown)
+			if (mouseOnBox && MouseInput.IsLeftDown)
 			{
 				type.Click.SetPosition(Position);
 				type.Click.Render();
@@ -97,7 +97,7 @@ namespace WarriorsSnuggery.UI
 
 			mouseOnBox = mousePosition.X > Position.X - type.Width && mousePosition.X < Position.X + type.Width && mousePosition.Y > Position.Y - type.Height && mousePosition.Y < Position.Y + type.Height;
 
-			if (MouseInput.isLeftClicked && mouseOnBox)
+			if (MouseInput.IsLeftClicked && mouseOnBox)
 			{
 				Checked = !Checked;
 				action?.Invoke(Checked);

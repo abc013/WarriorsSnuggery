@@ -65,7 +65,7 @@ namespace WarriorsSnuggery
 
 		public Vector ToVector()
 		{
-			return VectorConvert.ToVector(this);
+			return new Vector(X / 1024f, -Y / 1024f, Z / 1024f, 1f);
 		}
 
 		public WPos ToWPos()

@@ -98,9 +98,9 @@ namespace WarriorsSnuggery.Objects
 		public void Tick()
 		{
 			checkMouse();
-			if (mouseOnBox && MouseInput.isLeftClicked)
+			if (mouseOnBox && MouseInput.IsLeftClicked)
 				Selected = true;
-			else if (MouseInput.isLeftClicked)
+			else if (MouseInput.IsLeftClicked)
 			{
 				Selected = false;
 				blinkTick = 0;
