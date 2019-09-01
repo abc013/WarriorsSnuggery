@@ -5,6 +5,7 @@ glitter=
 	DissolveDuration=20
 	RandomVelocity=6,6,0
 	RandomScale=0,5
+	AffectedByObjects=true
 
 grey=
 	Texture=small_star

@@ -1,28 +1,112 @@
-﻿namespace WarriorsSnuggery.Objects.Particles
+﻿using System;
+
+namespace WarriorsSnuggery.Objects.Particles
 {
+	public enum ParticleAreaSpawnType
+	{
+		RANDOM,
+		CIRCLE,
+		BOX,
+	}
+
+	[Desc("Attribute used to spawn particles.")]
 	public class ParticleSpawner
 	{
-		readonly ParticleType type;
-		readonly int count;
-		readonly int radius;
+		[Desc("Type of particle to spawn.")]
+		public readonly ParticleType Type;
 
-		public ParticleSpawner(ParticleType type, int count, int radius)
+		[Desc("Particle count.")]
+		public readonly int Count = 1;
+
+		[Desc("Radius for spawn area.")]
+		public readonly int Radius = 0;
+
+		[Desc("Type of spawning area.")]
+		public readonly ParticleAreaSpawnType AreaType = ParticleAreaSpawnType.RANDOM;
+
+		public ParticleSpawner(MiniTextNode[] nodes)
 		{
-			this.type = type;
-			this.count = count;
-			this.radius = radius;
+			Loader.PartLoader.SetValues(this, nodes);
 		}
 
 		public Particle[] Create(World world, CPos position, int height)
 		{
-			var particles = new Particle[count];
-			for (int i = 0; i < count; i++)
+			switch(AreaType)
 			{
-				var ranX = Program.SharedRandom.Next(radius * 2) - radius;
-				var ranY = Program.SharedRandom.Next(radius * 2) - radius;
-				var pos = new CPos(ranX, ranY, 0);
+				case ParticleAreaSpawnType.CIRCLE:
+					return createCircle(world.Game.SharedRandom, position, height);
+				case ParticleAreaSpawnType.BOX:
+					return createBox(world.Game.SharedRandom, position, height);
+				default:
+					return createRandom(world.Game.SharedRandom, position, height);
+			}
+		}
 
-				particles[i] = ParticleCreator.Create(type, position + pos, height, world.Game.SharedRandom);
+		Particle[] createRandom(Random random, CPos position, int height)
+		{
+			var particles = new Particle[Count];
+			for (int i = 0; i < Count; i++)
+			{
+				var ran = Program.SharedRandom.Next(Radius * 2) - Radius;
+				var angle = Program.SharedRandom.NextDouble() * Math.PI * 2;
+				var x = Math.Sin(angle) * ran;
+				var y = Math.Cos(angle) * ran;
+				var pos = new CPos((int)x, (int)y, 0);
+
+				particles[i] = ParticleCreator.Create(Type, position + pos, height, random);
+			}
+			return particles;
+		}
+
+		Particle[] createCircle(Random random, CPos position, int height)
+		{
+			var particles = new Particle[Count];
+			var step = (float)(Math.PI * 2) / Count;
+			for (int i = 0; i < Count; i++)
+			{
+				var x = Math.Sin(step * i) * Radius;
+				var y = Math.Cos(step * i) * Radius;
+				var pos = new CPos((int)x, (int)y, 0);
+
+				particles[i] = ParticleCreator.Create(Type, position + pos, height, random);
+			}
+			return particles;
+		}
+
+		Particle[] createBox(Random random, CPos position, int height)
+		{
+			var particles = new Particle[Count];
+			var step = (Radius * 2) / (Count/4);
+			var side = (byte)0;
+			for (int i = 0; i < Count; i++)
+			{
+				if (i % (Count / 4) == 0)
+					side++;
+
+				var x = 0;
+				var y = 0;
+				switch(side)
+				{
+					case 1:
+						x = -Radius;
+						y = -Radius + (i % (Count / 4)) * step;
+						break;
+					case 2:
+						x = Radius;
+						y = -Radius + (i % (Count / 4)) * step;
+						break;
+					case 3:
+						x = -Radius + (i % (Count / 4)) * step;
+						y = -Radius;
+						break;
+					case 4:
+						x = -Radius + (i % (Count / 4)) * step;
+						y = Radius;
+						break;
+				}
+				var pos = new CPos(x, y, 0);
+
+				particles[i] = ParticleCreator.Create(Type, position + pos, height, random);
 			}
 			return particles;
 		}

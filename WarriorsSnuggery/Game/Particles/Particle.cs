@@ -52,8 +52,8 @@ namespace WarriorsSnuggery.Objects.Particles
 			switch(force.Type)
 			{
 				case ParticleForceType.FORCE:
-					//xFloat = (float)(force.Strength * Math.Cos(angle)) * ratio;
-					//yFloat = (float)(force.Strength * Math.Sin(angle)) * ratio;
+					xFloat = (float)(force.Strength * Math.Cos(angle)) * ratio;
+					yFloat = (float)(force.Strength * Math.Sin(angle)) * ratio;
 					break;
 				case ParticleForceType.TURBULENCE:
 					angle = (float)(random.NextDouble() * 2 * Math.PI);
