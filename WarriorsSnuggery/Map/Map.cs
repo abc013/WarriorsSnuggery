@@ -59,7 +59,7 @@ namespace WarriorsSnuggery
 			TilesWithAssignedGenerator = new int[Bounds.X, Bounds.Y];
 
 			// Basic terrain
-			Type.BaseTerrainGeneration.GetGenerator(random, this, world).Generate();
+			Type.TerrainGenerationBase.GetGenerator(random, this, world).Generate();
 
 			// Important Parts
 			if (!string.IsNullOrEmpty(Type.OverridePiece))

@@ -33,8 +33,8 @@ namespace WarriorsSnuggery.Maps
 		[Desc("Wall type to use when surrounding the map with walls.")]
 		public readonly int Wall = 0;
 
-		[Desc("Base Terrain Generator. Required for the game to function.")]
-		public readonly TerrainGeneratorInfo BaseTerrainGeneration = null;
+		[Desc("Terrain Generator as basis. Required for the game to function.")]
+		public readonly TerrainGeneratorInfo TerrainGenerationBase = null;
 		[Desc("Generators to use. To add, just do it like traits.")]
 		public readonly MapGeneratorInfo[] GeneratorInfos = new MapGeneratorInfo[0];
 
@@ -50,7 +50,7 @@ namespace WarriorsSnuggery.Maps
 			DefaultModes = defaultModes;
 			Level = level;
 			FromLevel = fromLevel;
-			BaseTerrainGeneration = baseTerrainGeneration;
+			TerrainGenerationBase = baseTerrainGeneration;
 			GeneratorInfos = genInfos;
 			SpawnPoint = spawnPoint;
 			FromSave = fromSave;
@@ -76,7 +76,7 @@ namespace WarriorsSnuggery.Maps
 
 		public static MapInfo ConvertGameType(MapInfo map, GameType type)
 		{
-			return new MapInfo(map.OverridePiece, map.Wall, map.CustomSize, map.Ambient, type, map.DefaultModes, map.Level, map.FromLevel, map.BaseTerrainGeneration, map.GeneratorInfos, map.SpawnPoint, map.FromSave, map.AllowWeapons);
+			return new MapInfo(map.OverridePiece, map.Wall, map.CustomSize, map.Ambient, type, map.DefaultModes, map.Level, map.FromLevel, map.TerrainGenerationBase, map.GeneratorInfos, map.SpawnPoint, map.FromSave, map.AllowWeapons);
 		}
 	}
 
@@ -134,7 +134,7 @@ namespace WarriorsSnuggery.Maps
 							wall = child.Convert<int>();
 
 							break;
-						case "BaseTerrainGeneration":
+						case "TerrainGenerationBase":
 							baseterrain = new TerrainGeneratorInfo(child.Convert<int>(), child.Children.ToArray());
 
 							break;

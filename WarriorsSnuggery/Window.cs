@@ -102,7 +102,7 @@ namespace WarriorsSnuggery
 			RuleLoader.LoadRules();
 			RuleLoader.LoadUIRules();
 
-			MapCreator.LoadTypes(FileExplorer.Maps, "pieces.yaml");
+			MapCreator.LoadTypes(FileExplorer.Maps, "maps.yaml");
 
 			GameSaveManager.Load();
 			GameSaveManager.DefaultStatistic = GameStatistics.LoadGameStatistic("DEFAULT");
