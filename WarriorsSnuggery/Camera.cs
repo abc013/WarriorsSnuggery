@@ -108,6 +108,9 @@ namespace WarriorsSnuggery
 			//Matrix4.CreateTranslation(ref look, out View);
 			//  Why?
 			//Matrix = Projection * View;
+
+			if (Window.Current.Game != null)
+				VisibilitySolver.LookAtUpdated();
 		}
 
 		static void CalculateScale()
@@ -115,6 +118,9 @@ namespace WarriorsSnuggery
 			// cast to [-1;1] | we use 0f to stop things glitching out of sight
 			Projection = Matrix4.CreateScale(2 / CurrentZoom / WindowInfo.Ratio, 2 / CurrentZoom, 0f);
 			// Matrix4.CreateOrthographic(newzoom / 2 * WindowInfo.Ratio, newzoom / 2, 100f,0, out Projection);
+
+			if (Window.Current.Game != null)
+				VisibilitySolver.ZoomUpdated();
 		}
 
 		public static void UpdateView()
@@ -122,10 +128,7 @@ namespace WarriorsSnuggery
 			Matrix = View * Projection;
 
 			if (Window.Current.Game != null)
-			{
-				VisibilitySolver.CameraUpdated();
 				WorldRenderer.CheckObjectVisibility();
-			}
 		}
 	}
 }

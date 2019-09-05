@@ -30,7 +30,9 @@ namespace WarriorsSnuggery
 		public static uint GlobalTick;
 		public static uint GlobalRender;
 
-		public static bool Loaded, Exiting, FirstTick = true;
+		public static bool Ready;
+		public static bool Exiting;
+		public static bool FirstTick = true;
 
 		public Game Game;
 		public static int GamesLoaded;
@@ -63,9 +65,9 @@ namespace WarriorsSnuggery
 				Width = Settings.Width;
 				Height = Settings.Height;
 			}
-
 			WarriorsSnuggery.WindowInfo.Height = Height;
 			WarriorsSnuggery.WindowInfo.Width = Width;
+
 			MasterRenderer.UpdateView();
 		}
 
@@ -85,13 +87,14 @@ namespace WarriorsSnuggery
 
 			base.OnLoad(e);
 
-			var font = System.Diagnostics.Stopwatch.StartNew();
+			var font = Timer.Start();
+
 			Icon = new Icon(FileExplorer.Misc + "/warsnu.ico");
 			IFont.LoadFonts();
 			IFont.InitializeFonts();
-			font.Stop();
 			CharManager.Initialize();
-			Log.WritePerformance(font.ElapsedMilliseconds, "Loading Fonts");
+
+			font.StopAndWrite("Loading Fonts");
 			var watch = Timer.Start();
 
 			RuleLoader.LoadRules();
@@ -104,10 +107,12 @@ namespace WarriorsSnuggery
 
 			NewGame(new GameStatistics(GameSaveManager.DefaultStatistic), GameType.MAINMENU);
 
-			Loaded = true;
-
 			watch.StopAndWrite("Loading Rules");
+
+			Ready = true;
 			Console.WriteLine(" Done!");
+
+			// For multithreads
 			//IGraphicsContext context2 = new GraphicsContext(GraphicsMode.Default, this.WindowInfo);
 			//context2.MakeCurrent(WindowInfo);
 		}
@@ -115,37 +120,39 @@ namespace WarriorsSnuggery
 		public float TPS;
 		protected override void OnUpdateFrame(FrameEventArgs e)
 		{
+			if (!Ready)
+				return;
+
 			KeyInput.Tick();
 			MouseInput.Tick();
 
 			if (GlobalTick % 20 == 0)
 				TPS = (float)Math.Round(1 / e.Time, 1);
 
-			GlobalTick++;
-
-			if (Loaded)
-				Game.Tick();
+			Game.Tick();
 
 			CharInput = '';
 			FirstTick = false;
 
 			if (KeyInput.IsKeyDown(Key.F4) && (KeyInput.IsKeyDown(Key.AltLeft) || KeyInput.IsKeyDown(Key.AltRight)))
 				Exit();
+
+			GlobalTick++;
 		}
 
 		public float FPS;
 
 		protected override void OnRenderFrame(FrameEventArgs e)
 		{
-			if (Exiting)
+			if (!Ready || Exiting)
 				return;
 
+			Timer watch = null;
 			if (GlobalRender % 20 == 0)
+			{
 				FPS = (float)Math.Round(1 / e.Time, 1);
-
-			GlobalRender++;
-
-			var watch = Timer.Start();
+				watch = Timer.Start();
+			}
 
 			MasterRenderer.Render();
 
@@ -156,13 +163,15 @@ namespace WarriorsSnuggery
 			{
 				SwapBuffers();
 			}
+
+			GlobalRender++;
 		}
 
 		protected override void OnFocusedChanged(EventArgs e)
 		{
 			base.OnFocusedChanged(e);
 
-			if (!Focused && !Settings.DeveloperMode && Game != null && Loaded)
+			if (!Focused && !Program.isDebug && Ready)
 			{
 				if (!Game.Paused)
 					Game.ChangeScreen(UI.ScreenType.PAUSED);

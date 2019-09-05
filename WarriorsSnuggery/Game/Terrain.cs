@@ -61,7 +61,10 @@ namespace WarriorsSnuggery.Objects
 
 		public void Render()
 		{
-			if (Type.Overlaps && renderable.Visible)
+			if (!renderable.Visible)
+				return;
+
+			if (Type.Overlaps)
 			{
 				for (int i = 0; i < 4; i++)
 				{
