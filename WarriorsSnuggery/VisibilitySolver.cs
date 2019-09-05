@@ -29,17 +29,28 @@ namespace WarriorsSnuggery
 			visible = new bool[size.X, size.Y];
 		}
 
-		public static void CameraUpdated()
+		public static void LookAtUpdated()
 		{
 			var pos = Camera.LookAt;
-			var zoomX = Camera.CurrentZoom * WindowInfo.Ratio;
-			var zoomY = Camera.CurrentZoom;
+			var zoom = Camera.CurrentZoom;
 
-			var xPos = (int)Math.Floor(pos.X / 1024f - (zoomX / 2));
-			var yPos = (int)Math.Floor(pos.Y / 1024f - (zoomY / 2));
+			var xPos = (int)Math.Floor(pos.X / 1024f - (zoom * WindowInfo.Ratio / 2));
+			var yPos = (int)Math.Floor(pos.Y / 1024f - (zoom / 2));
 			lastCameraPosition = new MPos(xPos, yPos);
-			lastCameraZoom = new MPos((int)Math.Ceiling(zoomX) + 1, (int)Math.Ceiling(zoomY + WindowInfo.Ratio));
 
+			cameraUpdated();
+		}
+
+		public static void ZoomUpdated()
+		{
+			var zoom = Camera.CurrentZoom;
+			lastCameraZoom = new MPos((int)Math.Ceiling(zoom * WindowInfo.Ratio + 2), (int)Math.Ceiling(zoom + 2));
+
+			cameraUpdated();
+		}
+
+		static void cameraUpdated()
+		{
 			clear();
 			// Is the same as we would use here
 			ShroudUpdated();
@@ -82,6 +93,7 @@ namespace WarriorsSnuggery
 
 			return visible[position.X, position.Y];
 		}
+
 		public static bool IsVisibleIgnoringBounds(WPos position)
 		{
 			if (size == MPos.Zero)

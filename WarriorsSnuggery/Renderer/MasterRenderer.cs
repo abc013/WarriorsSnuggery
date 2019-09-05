@@ -167,41 +167,38 @@ namespace WarriorsSnuggery
 				GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
 			}
 
-			if (Window.Loaded)
+			if (Settings.EnablePixeling)
 			{
-				if (Settings.EnablePixeling)
-				{
-					GL.BindFramebuffer(FramebufferTarget.Framebuffer, frameBuffer);
-					GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
+				GL.BindFramebuffer(FramebufferTarget.Framebuffer, frameBuffer);
+				GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
 
-					var width = (int)(WindowInfo.UnitWidth * 24);
-					var height = (int)(WindowInfo.UnitHeight * 24);
-					GL.Viewport(0, 0, width, height);
-					GL.Scissor(0, 0, width, height);
+				var width = (int)(WindowInfo.UnitWidth * 24);
+				var height = (int)(WindowInfo.UnitHeight * 24);
+				GL.Viewport(0, 0, width, height);
+				GL.Scissor(0, 0, width, height);
 
-					WorldRenderer.Render();
+				WorldRenderer.Render();
 
-					GL.BindFramebuffer(FramebufferTarget.Framebuffer, 0);
+				GL.BindFramebuffer(FramebufferTarget.Framebuffer, 0);
 
-					UpdateView();
+				UpdateView();
 
-					Matrix4 iden = Matrix4.CreateScale(1f, 1f, 1f);
-					Uniform(TextureShader, ref iden, Color.White);
+				Matrix4 iden = Matrix4.CreateScale(1f, 1f, 1f);
+				Uniform(TextureShader, ref iden, Color.White);
 
-					renderable.Render();
-					Program.CheckGraphicsError("GLRendering_World");
+				renderable.Render();
+				Program.CheckGraphicsError("GLRendering_World");
 
-					UIRenderer.Render();
-					Program.CheckGraphicsError("GLRendering_UI");
-				}
-				else
-				{
-					GL.BindFramebuffer(FramebufferTarget.Framebuffer, 0);
-					WorldRenderer.Render();
-					Program.CheckGraphicsError("GLRendering_World");
-					UIRenderer.Render();
-					Program.CheckGraphicsError("GLRendering_UI");
-				}
+				UIRenderer.Render();
+				Program.CheckGraphicsError("GLRendering_UI");
+			}
+			else
+			{
+				GL.BindFramebuffer(FramebufferTarget.Framebuffer, 0);
+				WorldRenderer.Render();
+				Program.CheckGraphicsError("GLRendering_World");
+				UIRenderer.Render();
+				Program.CheckGraphicsError("GLRendering_UI");
 			}
 		}
 
@@ -286,10 +283,5 @@ namespace WarriorsSnuggery
 				GL.Uniform4(GetLocation(shader, "proximityColor"), ambient.toColor4());
 			}
 		}
-	}
-
-	public static class GLCommands
-	{
-
 	}
 }
