@@ -130,6 +130,8 @@
     <Compile Include="Graphics\CharManager.cs" />
     <Compile Include="Graphics\ColoredRenderables.cs" />
     <Compile Include="Graphics\ColorManager.cs" />
+    <Compile Include="Graphics\TerrainSpriteManager.cs" />
+    <Compile Include="Loader\BitmapLoader.cs" />
     <Compile Include="Loader\LoaderExceptions.cs" />
     <Compile Include="Loader\MiniTextNode.cs" />
     <Compile Include="Loader\NodeConverter.cs" />
