@@ -52,7 +52,7 @@ namespace WarriorsSnuggery.Graphics
 
 		public static ITexture NoiseTexture(MPos size, int depth = 8, float scale = 1f, int method = 0, bool colored = false, bool withAlpha = false, float intensity = 0, float contrast = 1)
 		{
-			var raw = new float[0];
+			float[] raw;
 			switch (method)
 			{
 				default:
@@ -253,28 +253,9 @@ namespace WarriorsSnuggery.Graphics
 			}
 		}
 
-		// https://stackoverflow.com/questions/4747428/getting-rgb-array-from-image-in-c-sharp TODO
 		static float[] loadTexture(Bitmap bmp)
 		{
-			float[] r;
-
-			var width = bmp.Width;
-			var height = bmp.Height;
-			r = new float[width * height * 4];
-			int index = 0;
-
-			for (int y = 0; y < height; y++)
-			{
-				for (int x = 0; x < width; x++)
-				{
-					var pixel = bmp.GetPixel(x, y);
-					r[index++] = pixel.R / 255f;
-					r[index++] = pixel.G / 255f;
-					r[index++] = pixel.B / 255f;
-					r[index++] = pixel.A / 255f;
-				}
-			}
-			return r;
+			return Loader.BitmapLoader.LoadTexture(bmp, new Rectangle(Point.Empty, bmp.Size));
 		}
 
 		static float[] loadTexture(string filename, out int width, out int height)
@@ -282,16 +263,7 @@ namespace WarriorsSnuggery.Graphics
 			if (!File.Exists(filename))
 				throw new FileNotFoundException("The file `" + filename + "` has not been found.");
 
-			float[] r;
-
-			using (var bitmap = new Bitmap(filename))
-			{
-				width = bitmap.Width;
-				height = bitmap.Height;
-				r = loadTexture(bitmap);
-			}
-
-			return r;
+			return Loader.BitmapLoader.LoadTexture(filename, out width, out height);
 		}
 
 		static List<float[]> loadSprite(string filename, int width, int height)
@@ -309,24 +281,10 @@ namespace WarriorsSnuggery.Graphics
 				var count = cWidth * cHeight;
 				for (int c = 0; c < count; c++)
 				{
-					var r = new float[width * height * 4];
-					var index = 0;
 					var ch = c / cWidth;
 					var cw = c % cWidth;
-					for (int y = ch * height; y < (ch + 1) * height; y++)
-					{
-						for (int x = cw * width; x < (cw + 1) * width; x++)
-						{
-							var test = ch * height - (ch + 1) * height;
-							var test2 = cw * width - (cw + 1) * width;
-							var pixel = bmp.GetPixel(x, y);
-							r[index++] = pixel.R / 255f;
-							r[index++] = pixel.G / 255f;
-							r[index++] = pixel.B / 255f;
-							r[index++] = pixel.A / 255f;
-						}
-					}
-					result.Add((float[])r.Clone());
+
+					result.Add(Loader.BitmapLoader.LoadTexture(bmp, new Rectangle(cw * width, ch * height, width, height)));
 				}
 			}
 			return result;
