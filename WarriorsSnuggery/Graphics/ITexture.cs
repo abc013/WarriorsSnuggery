@@ -56,33 +56,43 @@ namespace WarriorsSnuggery.Graphics
 
 	public class ITexture : IDisposable
 	{
-		public readonly int ID;
+		public readonly int SheetID;
 
 		public readonly string File;
 
+		public readonly MPos Offset;
 		public readonly int Width;
 		public readonly int Height;
+
+		public ITexture(string file, int x, int y, int width, int height, int sheetID)
+		{
+			File = file;
+			Offset = new MPos(x, y);
+			Width = width;
+			Height = height;
+			SheetID = sheetID;
+		}
 
 		public ITexture(string file, int width, int height, int id)
 		{
 			File = file;
 			Width = width;
 			Height = height;
-			ID = id;
+			SheetID = id;
 		}
 
 		public void Dispose()
 		{
 			lock (MasterRenderer.GLLock)
 			{
-				GL.DeleteTexture(ID);
+				GL.DeleteTexture(SheetID);
 				Program.CheckGraphicsError("Texture_Dispose");
 			}
 		}
 
 		public override int GetHashCode()
 		{
-			return ID ^ Width ^ Height ^ File.GetHashCode();
+			return SheetID ^ Width ^ Height ^ File.GetHashCode();
 		}
 	}
 }

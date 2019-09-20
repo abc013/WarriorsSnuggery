@@ -17,7 +17,7 @@ namespace WarriorsSnuggery.Graphics
 		protected Color color = Color.White;
 		protected Vector4 position = Vector4.Zero;
 		protected Vector4 rotation = Vector4.Zero;
-		protected Matrix4 matrix;
+		Matrix4 matrix;
 
 		protected readonly Renderable renderable;
 
