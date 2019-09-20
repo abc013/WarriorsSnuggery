@@ -113,13 +113,10 @@ namespace WarriorsSnuggery.Graphics
 			}
 
 			var datas = loadSprite(filename, info.Width, info.Height);
-			texture = new ITexture[datas.Count];
-			for (int i = 0; i < datas.Count; i++)
+			texture = new ITexture[datas.Length];
+			for (int i = 0; i < datas.Length; i++)
 			{
 				var data = datas[i];
-				//for (int x = 0; x < data.Length; x++) data[x] = (float) Math.Sin(x * i); // HACK: just for fun
-				//var noise = Noise.generateClouds(new MPos(data.Length / 4, 1), new Random());
-				//for (int x = 0; x < data.Length; x++) { data[x++] = noise[x / 4]; data[x++] = noise[x  / 4]; data[x++] = noise[x / 4]; data[x] = 1f; } // HACK: just for fun
 				texture[i] = createTexture(data, new TextureInfo(string.Empty, TextureType.ANIMATION, 10, info.Width, info.Height, false), filename);
 			}
 			textures.Add(filename, texture);
@@ -163,6 +160,14 @@ namespace WarriorsSnuggery.Graphics
 			return createTexture(loadTexture(bitmap), new TextureInfo(name, TextureType.IMAGE, 0, bitmap.Width, bitmap.Height, false), name);
 		}
 
+		static void setTextureParams()
+		{
+			GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMinFilter, (int)All.Nearest);
+			GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMagFilter, (int)All.Nearest);
+			GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureWrapS, (int)All.Repeat);
+			GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureWrapT, (int)All.Repeat);
+		}
+
 		static ITexture createTexture(float[] data, TextureInfo info, string name)
 		{
 			lock (MasterRenderer.GLLock)
@@ -176,14 +181,59 @@ namespace WarriorsSnuggery.Graphics
 				GL.BindTexture(TextureTarget.Texture2D, id);
 				GL.TexImage2D(TextureTarget2d.Texture2D, 0, TextureComponentCount.Rgba32fExt, info.Width, info.Height, 0, PixelFormat.Rgba, PixelType.Float, data);
 
-				GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMinFilter, (int)All.Nearest);
-				GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMagFilter, (int)All.Nearest);
-				GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureWrapS, (int)All.Repeat);
-				GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureWrapT, (int)All.Repeat);
+				setTextureParams();
 
 				Program.CheckGraphicsError("createTexture_2");
 
 				return new ITexture(name, info.Width, info.Height, id);
+			}
+		}
+
+		public static int CreateTexture(int x, int y)
+		{
+			lock (MasterRenderer.GLLock)
+			{
+				int id = GL.GenTexture();
+
+				GL.PixelStore(PixelStoreParameter.UnpackAlignment, 1);
+				GL.ActiveTexture(TextureUnit.Texture0);
+
+				var emptyData = new float[x * y * 4];
+				emptyData.Initialize();
+
+				GL.BindTexture(TextureTarget.Texture2D, id);
+				GL.TexImage2D(TextureTarget2d.Texture2D, 0, TextureComponentCount.Rgba32fExt, x, y, 0, PixelFormat.Rgba, PixelType.Float, emptyData);
+
+				setTextureParams();
+
+				Program.CheckGraphicsError("createTexture");
+
+				return id;
+			}
+		}
+
+		public static void WriteTexture(int id, int x, int y, int width, int height, float[] data)
+		{
+			lock (MasterRenderer.GLLock)
+			{
+				GL.PixelStore(PixelStoreParameter.UnpackAlignment, 1);
+				GL.ActiveTexture(TextureUnit.Texture0);
+				GL.BindTexture(TextureTarget.Texture2D, id);
+				GL.TexImage2D(TextureTarget2d.Texture2D, 0, TextureComponentCount.Rgba32fExt, width, height, 0, PixelFormat.Rgba, PixelType.Float, data);
+
+				setTextureParams();
+
+				Program.CheckGraphicsError("writeTexture");
+			}
+		}
+
+		public static void DisposeTexture(int id)
+		{
+			lock (MasterRenderer.GLLock)
+			{
+				GL.DeleteTexture(id);
+
+				Program.CheckGraphicsError("disposeTexture");
 			}
 		}
 
@@ -261,7 +311,7 @@ namespace WarriorsSnuggery.Graphics
 			return Loader.BitmapLoader.LoadTexture(filename, out width, out height);
 		}
 
-		static List<float[]> loadSprite(string filename, int width, int height)
+		static float[][] loadSprite(string filename, int width, int height)
 		{
 			if (!File.Exists(filename))
 				throw new FileNotFoundException("The file `" + filename + "` has not been found.", filename);
@@ -282,7 +332,7 @@ namespace WarriorsSnuggery.Graphics
 					result.Add(Loader.BitmapLoader.LoadTexture(bmp, new Rectangle(cw * width, ch * height, width, height)));
 				}
 			}
-			return result;
+			return result.ToArray();
 		}
 	}
 }

@@ -44,7 +44,7 @@ namespace WarriorsSnuggery.Graphics
 					Program.CheckGraphicsError("CharBind_OffsetAttrib");
 					GL.BindVertexArray(VertexArrayID);
 					Program.CheckGraphicsError("CharBind_VertexArray");
-					GL.BindTexture(TextureTarget.Texture2D, Font.Font.ID);
+					GL.BindTexture(TextureTarget.Texture2D, Font.Font.SheetID);
 					Program.CheckGraphicsError("CharBind_Texture");
 				}
 			}
