@@ -194,7 +194,7 @@ namespace WarriorsSnuggery.Graphics
 			}
 		}
 
-		public static int CreateTexture(int x, int y)
+		public static int Create(MPos size)
 		{
 			lock (MasterRenderer.GLLock)
 			{
@@ -203,11 +203,11 @@ namespace WarriorsSnuggery.Graphics
 				GL.PixelStore(PixelStoreParameter.UnpackAlignment, 1);
 				GL.ActiveTexture(TextureUnit.Texture0);
 
-				var emptyData = new float[x * y * 4];
+				var emptyData = new float[size.X * size.Y * 4];
 				emptyData.Initialize();
 
 				GL.BindTexture(TextureTarget.Texture2D, id);
-				GL.TexImage2D(TextureTarget2d.Texture2D, 0, TextureComponentCount.Rgba32fExt, x, y, 0, PixelFormat.Rgba, PixelType.Float, emptyData);
+				GL.TexImage2D(TextureTarget2d.Texture2D, 0, TextureComponentCount.Rgba32fExt, size.X, size.Y, 0, PixelFormat.Rgba, PixelType.Float, emptyData);
 
 				setTextureParams();
 
@@ -217,14 +217,14 @@ namespace WarriorsSnuggery.Graphics
 			}
 		}
 
-		public static void WriteTexture(int id, int x, int y, int width, int height, float[] data)
+		public static void Write(int id, float[] data, MPos size)
 		{
 			lock (MasterRenderer.GLLock)
 			{
 				GL.PixelStore(PixelStoreParameter.UnpackAlignment, 1);
 				GL.ActiveTexture(TextureUnit.Texture0);
 				GL.BindTexture(TextureTarget.Texture2D, id);
-				GL.TexImage2D(TextureTarget2d.Texture2D, 0, TextureComponentCount.Rgba32fExt, width, height, 0, PixelFormat.Rgba, PixelType.Float, data);
+				GL.TexImage2D(TextureTarget2d.Texture2D, 0, TextureComponentCount.Rgba32fExt, size.X, size.Y, 0, PixelFormat.Rgba, PixelType.Float, data);
 
 				setTextureParams();
 
@@ -232,7 +232,9 @@ namespace WarriorsSnuggery.Graphics
 			}
 		}
 
-		public static void DisposeTexture(int id)
+		// TODO read texture?
+
+		public static void Dispose(int id)
 		{
 			lock (MasterRenderer.GLLock)
 			{

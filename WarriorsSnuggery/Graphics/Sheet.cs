@@ -10,19 +10,33 @@ namespace WarriorsSnuggery.Graphics
 	{
 		public readonly MPos Size;
 
-		public int TextureID;
-		float[] data;
+		public int TextureID { get; private set; }
+
+		public float[] Data;
 
 		public Sheet(int size)
 		{
 			Size = new MPos(size, size);
-			data = new float[size * size * 4];
+			Data = new float[size * size * 4];
+			createTexture();
 		}
 
-		public void CreateTexture()
+		void createTexture()
 		{
-			// GL
-			data = null;
+			TextureID = TextureManager.Create(Size);
+		}
+
+		public void CreateTexture(bool final)
+		{
+			TextureManager.Write(TextureID, Data, Size);
+
+			if (final)
+				Data = null;
+		}
+
+		public void Dispose()
+		{
+			TextureManager.Dispose(TextureID);
 		}
 	}
 }

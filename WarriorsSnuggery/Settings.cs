@@ -10,6 +10,8 @@ namespace WarriorsSnuggery
 {
 	public static class Settings
 	{
+		public const int SheetSize = 2048;
+
 		public const int MaxTeams = 8;
 
 		public const string Version = "(Playtest) 1.5";
