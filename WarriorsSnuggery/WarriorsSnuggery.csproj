@@ -131,6 +131,7 @@
     <Compile Include="Graphics\ColoredRenderables.cs" />
     <Compile Include="Graphics\ColorManager.cs" />
     <Compile Include="Graphics\Sheet.cs" />
+    <Compile Include="Graphics\SheetBuilder.cs" />
     <Compile Include="Graphics\SpriteManager.cs" />
     <Compile Include="Graphics\TerrainSpriteManager.cs" />
     <Compile Include="Loader\BitmapLoader.cs" />
