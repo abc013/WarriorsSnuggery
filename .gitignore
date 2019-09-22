@@ -261,3 +261,4 @@ paket-files/
 __pycache__/
 *.pyc
 /Documentation.html
+/logs/terrainSheet.png

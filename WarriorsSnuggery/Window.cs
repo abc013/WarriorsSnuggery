@@ -250,6 +250,8 @@ namespace WarriorsSnuggery
 
 			MasterRenderer.Dispose();
 
+			TerrainSpriteManager.DeleteTexture();
+
 			ISprite.DisposeSprites();
 			IImage.DisposeImages();
 			IFont.DisposeFonts();

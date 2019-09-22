@@ -112,7 +112,7 @@ namespace WarriorsSnuggery.Graphics
 			renderable.Render();
 		}
 
-		public virtual void Dispose()
+		public virtual void Dispose() //TODO remove
 		{
 			Visible = false;
 			renderable.Dispose();

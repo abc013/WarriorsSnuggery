@@ -30,9 +30,13 @@ namespace WarriorsSnuggery
 							ActorCreator.LoadTypes(FileExplorer.FindPath(FileExplorer.Rules, actor, ".yaml"), actor + ".yaml");
 						break;
 					case "Terrain":
+						TerrainSpriteManager.CreateSheet();
+						
 						var terrain = rule.Convert<string[]>();
 						foreach (var terrain2 in terrain)
 							TerrainCreator.LoadTypes(FileExplorer.FindPath(FileExplorer.Rules, terrain2, ".yaml"), terrain2 + ".yaml");
+
+						TerrainSpriteManager.CreateTexture();
 						break;
 					case "Walls":
 						var walls = rule.Convert<string[]>();

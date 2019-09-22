@@ -195,16 +195,11 @@ namespace WarriorsSnuggery.Graphics
 			{
 				int id = GL.GenTexture();
 
-				GL.PixelStore(PixelStoreParameter.UnpackAlignment, 1);
-				GL.ActiveTexture(TextureUnit.Texture0);
 
 				var emptyData = new float[size.X * size.Y * 4];
 				emptyData.Initialize();
 
-				GL.BindTexture(TextureTarget.Texture2D, id);
-				GL.TexImage2D(TextureTarget2d.Texture2D, 0, TextureComponentCount.Rgba32fExt, size.X, size.Y, 0, PixelFormat.Rgba, PixelType.Float, emptyData);
-
-				setTextureParams();
+				Write(id, emptyData, size);
 
 				Program.CheckGraphicsError("createTexture");
 
@@ -313,7 +308,7 @@ namespace WarriorsSnuggery.Graphics
 			return Loader.BitmapLoader.LoadTexture(filename, out width, out height);
 		}
 
-		static float[][] loadSprite(string filename, int width, int height)
+		public static float[][] loadSprite(string filename, int width, int height)
 		{
 			if (!File.Exists(filename))
 				throw new FileNotFoundException("The file `" + filename + "` has not been found.", filename);
