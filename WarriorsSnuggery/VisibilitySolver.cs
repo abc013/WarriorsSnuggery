@@ -29,6 +29,14 @@ namespace WarriorsSnuggery
 			visible = new bool[size.X, size.Y];
 		}
 
+		public static void ZoomUpdated()
+		{
+			var zoom = Camera.CurrentZoom;
+			lastCameraZoom = new MPos((int)Math.Ceiling(zoom * WindowInfo.Ratio + 2), (int)Math.Ceiling(zoom + 2));
+
+			LookAtUpdated();
+		}
+
 		public static void LookAtUpdated()
 		{
 			var pos = Camera.LookAt;
@@ -37,14 +45,6 @@ namespace WarriorsSnuggery
 			var xPos = (int)Math.Floor(pos.X / 1024f - (zoom * WindowInfo.Ratio / 2));
 			var yPos = (int)Math.Floor(pos.Y / 1024f - (zoom / 2));
 			lastCameraPosition = new MPos(xPos, yPos);
-
-			cameraUpdated();
-		}
-
-		public static void ZoomUpdated()
-		{
-			var zoom = Camera.CurrentZoom;
-			lastCameraZoom = new MPos((int)Math.Ceiling(zoom * WindowInfo.Ratio + 2), (int)Math.Ceiling(zoom + 2));
 
 			cameraUpdated();
 		}

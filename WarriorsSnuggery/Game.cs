@@ -313,7 +313,7 @@ namespace WarriorsSnuggery
 					tickColor = Color.Green;
 
 				tick.SetColor(tickColor);
-				tick.SetText("Tick " + LocalTick + " @ " + Window.Current.TPS);
+				tick.SetText("Tick " + Window.Current.TPS + " @ " + Window.Current.TMS + " ms");
 				
 				var renderColor = Color.White;
 				if (Window.Current.FPS < Settings.FrameLimiter - 20)
@@ -322,7 +322,7 @@ namespace WarriorsSnuggery
 					renderColor = Color.Green;
 
 				render.SetColor(renderColor);
-				render.SetText("Render " + LocalRender + " @ " + Window.Current.FPS);
+				render.SetText("Render " + Window.Current.FPS + " @ " + Window.Current.FMS + " ms");
 			}
 
 			if (infoTextDuration-- < 90)

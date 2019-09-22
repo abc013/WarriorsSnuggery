@@ -52,7 +52,10 @@ namespace WarriorsSnuggery
 				{
 					case "FrameLimiter":
 						FrameLimiter = node.Convert<int>();
-						if (FrameLimiter == 0) FrameLimiter = (int)OpenTK.DisplayDevice.Default.RefreshRate;
+
+						if (FrameLimiter == 0 || FrameLimiter > OpenTK.DisplayDevice.Default.RefreshRate)
+							FrameLimiter = (int)OpenTK.DisplayDevice.Default.RefreshRate;
+
 						break;
 					case "ScrollSpeed":
 						ScrollSpeed = node.Convert<float>();
