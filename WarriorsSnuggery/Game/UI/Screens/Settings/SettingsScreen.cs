@@ -93,6 +93,9 @@ namespace WarriorsSnuggery.UI
 				writer.WriteLine("FrameLimiter=" + limiter);
 				Settings.FrameLimiter = limiter;
 
+				if (Settings.FrameLimiter == 0 || Settings.FrameLimiter > OpenTK.DisplayDevice.Default.RefreshRate)
+					Settings.FrameLimiter = (int)OpenTK.DisplayDevice.Default.RefreshRate;
+
 				var scroll = int.Parse(scrollWrite.Text);
 				writer.WriteLine("ScrollSpeed=" + scroll);
 				Settings.ScrollSpeed = scroll;

@@ -123,6 +123,7 @@ namespace WarriorsSnuggery
 		}
 
 		public float TPS;
+		public float TMS;
 		protected override void OnUpdateFrame(FrameEventArgs e)
 		{
 			if (!Ready)
@@ -132,7 +133,10 @@ namespace WarriorsSnuggery
 			MouseInput.Tick();
 
 			if (GlobalTick % 20 == 0)
+			{
 				TPS = (float)Math.Round(1 / e.Time, 1);
+				TMS = (float)Math.Round(e.Time * 1000, 1);
+			}
 
 			Game.Tick();
 
@@ -146,6 +150,7 @@ namespace WarriorsSnuggery
 		}
 
 		public float FPS;
+		public float FMS;
 
 		protected override void OnRenderFrame(FrameEventArgs e)
 		{
@@ -156,6 +161,7 @@ namespace WarriorsSnuggery
 			if (GlobalRender % 20 == 0)
 			{
 				FPS = (float)Math.Round(1 / e.Time, 1);
+				FMS = (float)Math.Round(e.Time * 1000, 1);
 				watch = Timer.Start();
 			}
 
