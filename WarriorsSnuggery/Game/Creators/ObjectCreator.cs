@@ -313,7 +313,7 @@ namespace WarriorsSnuggery
 
 			foreach (var terrain in terrains)
 			{
-				var id = int.Parse(terrain.Key);
+				var id = ushort.Parse(terrain.Key);
 
 				var image = string.Empty;
 				var speedModifier = 1f;

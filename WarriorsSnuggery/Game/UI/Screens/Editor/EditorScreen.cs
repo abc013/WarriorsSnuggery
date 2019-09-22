@@ -73,7 +73,7 @@ namespace WarriorsSnuggery.UI
 			foreach (var n in TerrainCreator.GetIDs())
 			{
 				var a = TerrainCreator.GetType(n);
-				tiles.Add(new PanelItem(CPos.Zero, new ImageRenderable(a.Texture, 1f), new MPos(512, 512), n + "", new string[0], () => terrainSelected = a));
+				tiles.Add(new PanelItem(CPos.Zero, new ImageRenderable(a.Texture), new MPos(512, 512), n + "", new string[0], () => terrainSelected = a));
 			}
 
 			actors = new PanelList(new CPos((int)(WindowInfo.UnitWidth * 512 - 2048), 2048, 0), new MPos(2048, 4096), new MPos(512, 512), 4, "UI_wood1", "UI_wood3", "UI_wood2");

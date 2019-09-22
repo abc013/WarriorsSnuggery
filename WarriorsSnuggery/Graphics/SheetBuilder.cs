@@ -19,7 +19,7 @@ namespace WarriorsSnuggery.Graphics
 			return new ITexture(info.File, position.X, position.Y, info.Width, info.Height, id);
 		}
 
-		static MPos writeTexture(float[] data, int dataOffset, MPos size)
+		static MPos writeTexture(float[] data, MPos size)
 		{
 			if (rowSpaceLeft < size.X)
 				newRow();
@@ -29,9 +29,12 @@ namespace WarriorsSnuggery.Graphics
 
 			var location = new MPos(currentSheet.Size.X - rowSpaceLeft, currentHeight);
 
-			rowSpaceLeft -= size.X;
+			for (int y = 0; y < size.Y; y++)
+			{
+				Array.Copy(data, y * size.X * 4, currentSheet.Data, ((currentHeight + y) * currentSheet.Size.X + currentSheet.Size.X - rowSpaceLeft) * 4, size.X * 4);
+			}
 
-			Array.Copy(data, dataOffset, currentSheet.Data, (currentHeight * currentSheet.Size.X + currentSheet.Size.X - rowSpaceLeft) * 4, data.Length);
+			rowSpaceLeft -= size.X;
 
 			return location;
 		}

@@ -10,8 +10,9 @@ namespace WarriorsSnuggery.Objects
 {
 	public class Terrain : IRenderable, ICheckVisible, IDisposable
 	{
-		readonly TerrainRenderable renderable;
+		readonly ImageRenderable renderable;
 		readonly ImageRenderable[] edges, corners;
+
 		readonly bool[] edgesVisible = new bool[4];
 		readonly CPos[] edgePositions = new CPos[4]
 		{
@@ -40,7 +41,7 @@ namespace WarriorsSnuggery.Objects
 			Position = position;
 			Type = type;
 
-			renderable = new TerrainRenderable(type);
+			renderable = new ImageRenderable(type.Texture);
 			if (Type.Overlaps)
 			{
 				edges = new ImageRenderable[4];
@@ -51,7 +52,7 @@ namespace WarriorsSnuggery.Objects
 						edges[i] = new ImageRenderable(Type.Texture_Edge2);
 					else
 						edges[i] = new ImageRenderable(Type.Texture_Edge);
-					edges[i].SetRotation(new VAngle(0, 0, i * -90));
+					edges[i].SetRotation(new VAngle(0, 0, 180 + i * -90));
 				}
 
 				corners = new ImageRenderable[4];
@@ -59,7 +60,7 @@ namespace WarriorsSnuggery.Objects
 				{
 					cornersVisible[i] = true;
 					corners[i] = new ImageRenderable(Type.Texture_Corner);
-					corners[i].SetRotation(new VAngle(0, 0, i * -90));
+					corners[i].SetRotation(new VAngle(0, 0, 90 + i * -90));
 				}
 			}
 		}

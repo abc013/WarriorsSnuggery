@@ -58,6 +58,8 @@ namespace WarriorsSnuggery.Graphics
 
 	public class ImageRenderable : GraphicsObject
 	{
+		public ImageRenderable(IImage image) : base(image) { }
+
 		public ImageRenderable(ITexture texture, float scale = 1f) : base(IImage.Create(TexturedMesh.Plane(scale * (texture.Width > texture.Height ? texture.Width / 24f : texture.Height / 24f), texture.Width, texture.Height), texture)) { }
 
 		public ImageRenderable(ITexture texture, MPos size, float scale = 1f) : base(IImage.Create(TexturedMesh.PixelOrientedPlane(scale, size.X, size.Y), texture)) { }
@@ -87,11 +89,6 @@ namespace WarriorsSnuggery.Graphics
 			((ISprite)renderable).CurTexture = curTexture;
 			base.Render();
 		}
-	}
-
-	public class TerrainRenderable : GraphicsObject
-	{
-		public TerrainRenderable(TerrainType type) : base(IImage.Create(TexturedMesh.Terrain(), type.Texture)) { }
 	}
 
 	public class WallRenderable : GraphicsObject

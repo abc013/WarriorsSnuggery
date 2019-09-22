@@ -1,6 +1,6 @@
 ﻿namespace WarriorsSnuggery.Graphics
 {
-	interface SpriteManager
+	interface ISpriteManager
 	{
 		
 	}
