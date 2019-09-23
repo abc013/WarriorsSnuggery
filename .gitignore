@@ -262,3 +262,4 @@ __pycache__/
 *.pyc
 /Documentation.html
 /logs/terrainSheet.png
+/logs/spritesheet_0.png

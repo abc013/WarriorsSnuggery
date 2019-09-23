@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace WarriorsSnuggery.Graphics
+﻿namespace WarriorsSnuggery.Graphics
 {
-	public class TerrainSpriteManager : ISpriteManager
+	public class TerrainSpriteManager
 	{
 		public static Sheet sheet;
 

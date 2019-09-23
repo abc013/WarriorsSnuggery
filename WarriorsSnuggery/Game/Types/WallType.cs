@@ -14,7 +14,7 @@ namespace WarriorsSnuggery.Objects
 		[Desc("Texture of the wall", "Use \"Image\" as rule.")]
 		readonly ITexture[] textures;
 
-		[Desc("If yes, this wall will block objects with physics")]
+		[Desc("If yes, this wall will block objects with physics.")]
 		public readonly bool Blocks;
 		[Desc("If yes, the wall can be destroyed. Unused.")]
 		public readonly bool Destructable;
@@ -24,13 +24,15 @@ namespace WarriorsSnuggery.Objects
 		public WallType(int id, string texture, bool blocks, bool destructable, int height)
 		{
 			ID = id;
-			textures = new TextureInfo(texture, TextureType.ANIMATION, 10, 24, 48).GetTextures();
+			textures = new TextureInfo(texture, TextureType.ANIMATION, 0, 24, 48).GetTextures();
 			if (textures.Length < 2)
 				throw new YamlInvalidNodeException(string.Format("Texture '{0}' of Wall '{1}' has not enough textures!", texture, id));
 
 			Blocks = blocks;
 			Destructable = destructable;
 			Height = height;
+
+			SpriteManager.AddTexture(new TextureInfo(texture, TextureType.ANIMATION, 0, 24, 48));
 		}
 
 		public ITexture GetTexture(bool horizontal)

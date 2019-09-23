@@ -9,7 +9,9 @@ namespace WarriorsSnuggery
 		public static void LoadRules()
 		{
 			var rules = RuleReader.Read(FileExplorer.Rules, "Rules.yaml"); //TODO for future: use for mods
+			string[] terrain = null;
 
+			SpriteManager.CreateSheet(7);
 			foreach (var rule in rules)
 			{
 				switch (rule.Key)
@@ -28,15 +30,11 @@ namespace WarriorsSnuggery
 						var actors = rule.Convert<string[]>();
 						foreach (var actor in actors)
 							ActorCreator.LoadTypes(FileExplorer.FindPath(FileExplorer.Rules, actor, ".yaml"), actor + ".yaml");
+
 						break;
 					case "Terrain":
-						TerrainSpriteManager.CreateSheet();
 						
-						var terrain = rule.Convert<string[]>();
-						foreach (var terrain2 in terrain)
-							TerrainCreator.LoadTypes(FileExplorer.FindPath(FileExplorer.Rules, terrain2, ".yaml"), terrain2 + ".yaml");
-
-						TerrainSpriteManager.CreateTexture();
+						terrain = rule.Convert<string[]>();
 						break;
 					case "Walls":
 						var walls = rule.Convert<string[]>();
@@ -50,6 +48,14 @@ namespace WarriorsSnuggery
 						break;
 				}
 			}
+			SpriteManager.CreateTextures();
+
+			TerrainSpriteManager.CreateSheet();
+
+			foreach (var terrain2 in terrain)
+				TerrainCreator.LoadTypes(FileExplorer.FindPath(FileExplorer.Rules, terrain2, ".yaml"), terrain2 + ".yaml");
+
+			TerrainSpriteManager.CreateTexture();
 		}
 
 		public static void LoadUIRules()
