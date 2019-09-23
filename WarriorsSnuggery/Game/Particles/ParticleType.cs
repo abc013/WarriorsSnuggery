@@ -34,6 +34,7 @@ namespace WarriorsSnuggery.Objects.Particles
 		public ParticleType(MiniTextNode[] nodes)
 		{
 			Loader.PartLoader.SetValues(this, nodes);
+			SpriteManager.AddTexture(Texture);
 		}
 	}
 }

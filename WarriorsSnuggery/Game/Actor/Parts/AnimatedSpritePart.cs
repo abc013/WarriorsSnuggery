@@ -6,6 +6,8 @@ namespace WarriorsSnuggery.Objects.Parts
 	[Desc("This will add a sprite to an actor which will be rendered upon call.")]
 	public class AnimatedSpritePartInfo : PartInfo
 	{
+		public readonly IImage[] Textures;
+
 		[Desc("Name of the texture file.")]
 		public readonly string Name;
 
@@ -34,7 +36,7 @@ namespace WarriorsSnuggery.Objects.Parts
 
 		public AnimatedSpritePartInfo(MiniTextNode[] nodes) : base(nodes)
 		{
-
+			Textures = SpriteManager.AddTexture(new TextureInfo(Name, TextureType.ANIMATION, Tick, Dimensions.X, Dimensions.Y));
 		}
 	}
 

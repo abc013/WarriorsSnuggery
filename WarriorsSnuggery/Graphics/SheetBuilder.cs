@@ -11,6 +11,14 @@ namespace WarriorsSnuggery.Graphics
 		static int rowHeight;
 		static int rowSpaceLeft;
 
+		public static bool IsSpaceLeft(int width, int height)
+		{
+			if (rowSpaceLeft - width >= 0 && currentHeight + height < currentSheet.Size.Y)
+				return true;
+
+			return currentHeight + height + rowHeight < currentSheet.Size.Y;
+		}
+
 		public static ITexture WriteTexture(float[] data, TextureInfo info)
 		{
 			var id = currentSheet.TextureID;
@@ -56,6 +64,7 @@ namespace WarriorsSnuggery.Graphics
 		public static void Clear()
 		{
 			currentSheet = null;
+			currentHeight = 0;
 			rowHeight = 0;
 			rowSpaceLeft = 0;
 		}

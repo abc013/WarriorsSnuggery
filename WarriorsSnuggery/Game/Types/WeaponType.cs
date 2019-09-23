@@ -82,6 +82,10 @@ namespace WarriorsSnuggery.Objects
 			PhysicalShape = physicalShape;
 			PhysicalSize = physicalSize;
 			Gravity = gravity;
+
+			SpriteManager.AddTexture(Textures);
+			if (Smudge != null)
+				SpriteManager.AddTexture(Smudge);
 		}
 	}
 }
