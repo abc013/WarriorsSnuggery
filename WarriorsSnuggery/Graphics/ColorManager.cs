@@ -28,8 +28,15 @@ namespace WarriorsSnuggery.Graphics
 		public static void Initialize()
 		{
 			line = new ColoredLineRenderable(Color.White, 1f);
-			fullscreen_rect = new ColoredRectRenderable(Color.White, WindowInfo.UnitWidth, DrawMethod.TRIANGLE);
+			fullscreen_rect = new ColoredRectRenderable(Color.White, WindowInfo.UnitHeight, DrawMethod.TRIANGLE);
+			WindowRescaled();
+
 			filled_rect = new ColoredRectRenderable(Color.White, 1f, DrawMethod.TRIANGLE);
+		}
+
+		public static void WindowRescaled()
+		{
+			fullscreen_rect.SetScale(WindowInfo.Ratio);
 		}
 
 		public static void Dispose()

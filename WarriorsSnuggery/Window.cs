@@ -81,6 +81,8 @@ namespace WarriorsSnuggery
 			WarriorsSnuggery.WindowInfo.Height = Height;
 			WarriorsSnuggery.WindowInfo.Width = Width;
 
+			ColorManager.WindowRescaled();
+
 			MasterRenderer.UpdateView();
 		}
 

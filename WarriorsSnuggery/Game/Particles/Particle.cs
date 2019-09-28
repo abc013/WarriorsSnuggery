@@ -23,7 +23,7 @@ namespace WarriorsSnuggery.Objects.Particles
 		VAngle rotate_velocity;
 
 		// TODO: make color use only one mesh or sth like that
-		public Particle(CPos pos, int height, ParticleType type, Random random) : base(pos, type.Texture != null ? (GraphicsObject)new IImageSequenceRenderable(type.Texture.GetTextures(), tick: type.Texture.Tick) : new ColoredRectRenderable(Color.White, type.MeshSize / 24f, Graphics.DrawMethod.TRIANGLE))
+		public Particle(CPos pos, int height, ParticleType type, Random random) : base(pos, type.Texture != null ? (GraphicsObject)new IImageSequenceRenderable(type.Texture.GetTextures(), tick: type.Texture.Tick) : new ColoredRectRenderable(type.ColoredRenderable))
 		{
 			Height = height;
 			this.type = type;
@@ -155,9 +155,6 @@ namespace WarriorsSnuggery.Objects.Particles
 
 		public override void Dispose()
 		{
-			if (type.Texture == null)
-				Renderable.Dispose();
-
 			base.Dispose();
 		}
 	}
