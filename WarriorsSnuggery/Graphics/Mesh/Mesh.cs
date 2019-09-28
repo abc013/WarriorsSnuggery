@@ -25,41 +25,49 @@ namespace WarriorsSnuggery.Graphics
 			return vertices;
 		}
 
+		// TODO in the both functions down here, y scale has been inverted.
 		// Terrain
-		const float halfTerrain = MasterRenderer.PixelMultiplier * 24 / 2 + 0.001f;
-
-		static readonly TexturedVertex[] terrain =
-		{
-				new TexturedVertex(new Vector(halfTerrain,  halfTerrain,  0, 1.0f), new Vector2(1, 0)),
-				new TexturedVertex(new Vector(-halfTerrain, -halfTerrain, 0, 1.0f), new Vector2(0, 1)),
-				new TexturedVertex(new Vector(halfTerrain,  -halfTerrain, 0, 1.0f), new Vector2(1, 1)),
-				new TexturedVertex(new Vector(-halfTerrain, halfTerrain,  0, 1.0f), new Vector2(0, 0)),
-				new TexturedVertex(new Vector(-halfTerrain, -halfTerrain, 0, 1.0f), new Vector2(0, 1)),
-				new TexturedVertex(new Vector(halfTerrain,  halfTerrain,  0, 1.0f), new Vector2(1, 0)),
-		};
-
-		public static TexturedVertex[] Terrain()
-		{
-			return terrain;
-		}
-
-		// Frame, used for pixelated rendering
 		public static TexturedVertex[] Terrain(int xp, int yp, int width, int height)
 		{
 			var x = xp / (float)Settings.SheetSize;
 			var y = yp / (float)Settings.SheetSize;
 			var w = (xp + width) / (float)Settings.SheetSize;
 			var h = (yp + height) / (float)Settings.SheetSize;
-			var scale = 1/2f;
+			var scale = 1/2f + 0.001f;
 
 			TexturedVertex[] vertices =
 			{
-				new TexturedVertex(new Vector(scale,  -scale,  0, 1.0f), new Vector2(w, y)),
-				new TexturedVertex(new Vector(-scale, scale, 0, 1.0f), new Vector2(x, h)),
-				new TexturedVertex(new Vector(scale,  scale, 0, 1.0f), new Vector2(w, h)),
-				new TexturedVertex(new Vector(-scale, -scale,  0, 1.0f), new Vector2(x, y)),
-				new TexturedVertex(new Vector(-scale, scale, 0, 1.0f), new Vector2(x, h)),
-				new TexturedVertex(new Vector(scale,  -scale,  0, 1.0f), new Vector2(w, y)),
+				new TexturedVertex(new Vector(scale,  scale,  0, 1.0f), new Vector2(w, y)),
+				new TexturedVertex(new Vector(-scale, -scale, 0, 1.0f), new Vector2(x, h)),
+				new TexturedVertex(new Vector(scale,  -scale, 0, 1.0f), new Vector2(w, h)),
+				new TexturedVertex(new Vector(-scale, scale,  0, 1.0f), new Vector2(x, y)),
+				new TexturedVertex(new Vector(-scale, -scale, 0, 1.0f), new Vector2(x, h)),
+				new TexturedVertex(new Vector(scale,  scale,  0, 1.0f), new Vector2(w, y)),
+			};
+
+			return vertices;
+		}
+
+		// Images
+		public static TexturedVertex[] Image(int xp, int yp, int width, int height)
+		{
+			var x = xp / (float)Settings.SheetSize;
+			var y = yp / (float)Settings.SheetSize;
+
+			var w = (xp + width) / (float)Settings.SheetSize;
+			var h = (yp + height) / (float)Settings.SheetSize;
+
+			var scale = height / 48f;
+			var correction = width / (float)height;
+
+			TexturedVertex[] vertices =
+			{
+				new TexturedVertex(new Vector(scale * correction,  scale,  0, 1.0f), new Vector2(w, y)),
+				new TexturedVertex(new Vector(-scale * correction, -scale, 0, 1.0f), new Vector2(x, h)),
+				new TexturedVertex(new Vector(scale * correction,  -scale, 0, 1.0f), new Vector2(w, h)),
+				new TexturedVertex(new Vector(-scale * correction, scale,  0, 1.0f), new Vector2(x, y)),
+				new TexturedVertex(new Vector(-scale * correction, -scale, 0, 1.0f), new Vector2(x, h)),
+				new TexturedVertex(new Vector(scale * correction,  scale,  0, 1.0f), new Vector2(w, y)),
 			};
 
 			return vertices;

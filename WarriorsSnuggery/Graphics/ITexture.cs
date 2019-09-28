@@ -19,6 +19,8 @@ namespace WarriorsSnuggery.Graphics
 
 		public readonly int Width;
 		public readonly int Height;
+		
+		// TODO add IImages here
 
 		public TextureInfo(string file, TextureType type, int tick, int width, int height, bool searchFile = true)
 		{
@@ -35,17 +37,23 @@ namespace WarriorsSnuggery.Graphics
 		}
 
 		//if the type is random or image, it is certain that in this array there's only one texture.
-		public ITexture[] GetTextures()
+		public IImage[] GetTextures()
 		{
 			switch (Type)
 			{
-				case TextureType.ANIMATION:
-					return TextureManager.Sprite(this);
 				case TextureType.RANDOM:
-					return new[] { TextureManager.RandomTexture(this) };
+					var random = Program.SharedRandom;
+					var images = SpriteManager.GetTexture(this);
+
+					return new[] { images[random.Next(images.Length)] };
 				default:
-					return new[] { TextureManager.Texture(File) };
+					return SpriteManager.GetTexture(this);
 			}
+		}
+
+		public override int GetHashCode()
+		{
+			return File.GetHashCode() ^ Width ^ Height;
 		}
 	}
 

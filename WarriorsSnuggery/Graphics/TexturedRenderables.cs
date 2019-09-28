@@ -60,34 +60,39 @@ namespace WarriorsSnuggery.Graphics
 		public ImageRenderable(ITexture texture, MPos size, float scale = 1f) : base(IImage.Create(TexturedMesh.PixelOrientedPlane(scale, size.X, size.Y), texture)) { }
 	}
 
-	public class SpriteRenderable : GraphicsObject
+	public class IImageSequenceRenderable : GraphicsObject
 	{
+		readonly IImage[] images;
 		readonly int tick;
+		readonly bool pauseable;
 		int curTick;
-		int curTexture;
+		int curImage;
 
-		public SpriteRenderable(ITexture[] textures, float scale = 1f, int tick = 10) : base(ISprite.Create(TexturedMesh.Plane(scale * (textures[0].Width > textures[0].Height ? textures[0].Width / 24f : textures[0].Height / 24f), textures[0].Width, textures[0].Height), textures, tick))
+		// Create empty GraphicsObject
+		public IImageSequenceRenderable(IImage[] images, int tick, bool pauseable = false) : base(null)
 		{
+			this.images = images;
 			this.tick = tick;
+			this.pauseable = pauseable;
 			curTick = tick;
 		}
 
 		public override void Render()
 		{
-			if (curTick-- <= 0)
+			if (!(pauseable && MasterRenderer.PauseSequences) && curTick-- <= 0)
 			{
 				curTick = tick;
-				curTexture++;
-				if (curTexture >= ((ISprite)renderable).textures.Length)
-					curTexture = 0;
+				curImage++;
+				if (curImage >= images.Length)
+					curImage = 0;
 			}
-			((ISprite)renderable).CurTexture = curTexture;
+			renderable = images[curImage];
 			base.Render();
 		}
 	}
 
 	public class WallRenderable : GraphicsObject
 	{
-		public WallRenderable(bool horizontal, WallType type) : base(IImage.Create(TexturedMesh.Plane(2f, 24, 48), type.GetTexture(horizontal))) { }
+		public WallRenderable(bool horizontal, WallType type) : base(type.GetTexture(horizontal)) { }
 	}
 }

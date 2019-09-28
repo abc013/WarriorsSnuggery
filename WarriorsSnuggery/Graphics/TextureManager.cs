@@ -9,6 +9,8 @@ namespace WarriorsSnuggery.Graphics
 {
 	public static class TextureManager
 	{
+		public static int TextureCount;
+
 		public static void DeleteTextures()
 		{
 			foreach (ITexture[] textureArray in textures.Values)
@@ -173,6 +175,7 @@ namespace WarriorsSnuggery.Graphics
 			lock (MasterRenderer.GLLock)
 			{
 				int id = GL.GenTexture();
+				TextureCount++;
 
 				Program.CheckGraphicsError("createTexture_1");
 
@@ -194,7 +197,7 @@ namespace WarriorsSnuggery.Graphics
 			lock (MasterRenderer.GLLock)
 			{
 				int id = GL.GenTexture();
-
+				TextureCount++;
 
 				var emptyData = new float[size.X * size.Y * 4];
 				emptyData.Initialize();
@@ -317,6 +320,9 @@ namespace WarriorsSnuggery.Graphics
 
 			using (var bmp = (Bitmap)Image.FromFile(filename))
 			{
+				if (bmp.Width < width || bmp.Height < height)
+					throw new Exception(string.Format("Given image bounds {0},{1} are bigger than the actual bounds {2},{3}.", width, height, bmp.Width, bmp.Height));
+
 				var cWidth = (int)Math.Floor(bmp.Width / (float)width);
 				var cHeight = (int)Math.Floor(bmp.Height / (float)height);
 

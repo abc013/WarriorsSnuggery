@@ -1,9 +1,13 @@
-﻿namespace WarriorsSnuggery.Graphics
+﻿using System.Collections.Generic;
+
+namespace WarriorsSnuggery.Graphics
 {
 	public class SpriteManager
 	{
 		public static Sheet[] sheets;
 		static int currentSheet;
+
+		static readonly Dictionary<int, IImage[]> hashedTextures = new Dictionary<int, IImage[]>();
 
 		public static void CreateSheet(int maxSheets)
 		{
@@ -27,7 +31,11 @@
 
 		public static IImage[] AddTexture(TextureInfo info)
 		{
-			// TODO cache textureInfos and lookup
+			var hash = info.GetHashCode();
+
+			if (hashedTextures.ContainsKey(hash))
+				return hashedTextures[hash];
+
 			var data = TextureManager.loadSprite(info.File, info.Width, info.Height);
 			var renderables = new IImage[data.Length];
 
@@ -37,12 +45,19 @@
 					UseNextSheet();
 
 				var texture = SheetBuilder.WriteTexture(data[i], info);
-				var renderable = IImage.Create(TexturedMesh.Terrain(texture.Offset.X, texture.Offset.Y, texture.Width, texture.Height), texture);
+				var renderable = IImage.Create(TexturedMesh.Image(texture.Offset.X, texture.Offset.Y, texture.Width, texture.Height), texture);
 
 				renderables[i] = renderable;
 			}
 
+			hashedTextures.Add(hash, renderables);
+
 			return renderables;
+		}
+
+		public static IImage[] GetTexture(TextureInfo info)
+		{
+			return hashedTextures[info.GetHashCode()];
 		}
 
 		public static void CreateTextures()

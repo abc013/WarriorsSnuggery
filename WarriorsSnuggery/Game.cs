@@ -150,6 +150,7 @@ namespace WarriorsSnuggery
 		public void Pause(bool paused)
 		{
 			Paused = paused;
+			MasterRenderer.PauseSequences = Paused;
 			Camera.Locked = Paused;
 		}
 

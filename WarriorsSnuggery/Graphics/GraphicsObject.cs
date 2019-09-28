@@ -14,7 +14,7 @@ namespace WarriorsSnuggery.Graphics
 		protected Vector4 rotation = Vector4.Zero;
 		Matrix4 matrix;
 
-		protected readonly Renderable renderable;
+		protected Renderable renderable;
 
 		bool matrixChanged;
 
