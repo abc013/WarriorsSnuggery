@@ -1,10 +1,10 @@
-FrameLimiter=60
+FrameLimiter=30
 ScrollSpeed=7
 EdgeScrolling=4
 DeveloperMode=0
 Fullscreen=1
-Width=1920
-Height=1080
+Width=1200
+Height=800
 AntiAliasing=0
 EnablePixeling=0
 EnableTextShadowing=1

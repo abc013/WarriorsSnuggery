@@ -125,10 +125,10 @@ namespace WarriorsSnuggery
 			if (position.X < 0 || position.Y < 0)
 				return false;
 
-			var mPos = position.ToMPos();
-
-			if (mPos.X >= size.X || mPos.Y >= size.Y)
+			if (position.X >= size.X * 1024 - 1024 || position.Y >= size.Y * 1024 - 1024)
 				return false;
+
+			var mPos = position.ToMPos();
 
 			return visible[mPos.X, mPos.Y];
 		}

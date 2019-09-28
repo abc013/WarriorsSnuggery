@@ -75,7 +75,12 @@ namespace WarriorsSnuggery
 
 		int roundCorrect(int value)
 		{
-			return value % 1024 > 512 ? (int)Math.Ceiling(value / 1024f) : (int)Math.Floor(value / 1024f);
+			var ans = value / 1024;
+
+			if ((value & (1024 - 1)) > 512)
+				return ans + 1;
+
+			return ans;
 		}
 	}
 }
