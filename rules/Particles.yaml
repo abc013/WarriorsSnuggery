@@ -8,9 +8,7 @@ glitter=
 	AffectedByObjects=true
 
 grey=
-	Texture=small_star
-		Size=4,4
-		Tick=5
+	MeshSize=1
 	Color=0,0,0,127
 	Duration=100
 	DissolveDuration=10

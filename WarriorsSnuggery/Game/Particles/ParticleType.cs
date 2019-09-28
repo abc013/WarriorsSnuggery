@@ -4,6 +4,8 @@ namespace WarriorsSnuggery.Objects.Particles
 {
 	public class ParticleType
 	{
+		public readonly IColor ColoredRenderable;
+
 		[Desc("Texture to use for the particle.", "The game will crash when both Texture and MeshSize are not defined or zero.")]
 		public readonly TextureInfo Texture;
 		[Desc("Color to use for Texture/Monocolored particle.")]
@@ -34,7 +36,11 @@ namespace WarriorsSnuggery.Objects.Particles
 		public ParticleType(MiniTextNode[] nodes)
 		{
 			Loader.PartLoader.SetValues(this, nodes);
-			SpriteManager.AddTexture(Texture);
+
+			if (Texture != null)
+				SpriteManager.AddTexture(Texture);
+			else
+				ColoredRenderable = new IColor(ColoredMesh.Plane(MeshSize / 24f, Color), DrawMethod.TRIANGLE);
 		}
 	}
 }
