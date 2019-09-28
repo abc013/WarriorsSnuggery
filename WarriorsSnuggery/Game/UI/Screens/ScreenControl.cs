@@ -73,7 +73,7 @@ namespace WarriorsSnuggery.UI
 					screen = new LoadGameScreen(Game);
 					break;
 				case ScreenType.TECHTREE:
-					screen = new TechTreeScreen(Game);
+					screen = new SpellTreeScreen(Game);
 					break;
 				case ScreenType.NEW_STORY_GAME:
 					screen = new NewGameScreen(Game);

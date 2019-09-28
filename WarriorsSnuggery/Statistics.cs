@@ -25,7 +25,7 @@ namespace WarriorsSnuggery
 		public GameType Type;
 		public bool[] Shroud;
 
-		public readonly Dictionary<string, bool> UnlockedNodes = new Dictionary<string, bool>();
+		public readonly Dictionary<string, bool> UnlockedSpells = new Dictionary<string, bool>();
 
 		// Static Values
 		public int FinalLevel;
@@ -51,8 +51,8 @@ namespace WarriorsSnuggery
 			Type = save.Type;
 			Shroud = save.Shroud;
 
-			foreach (var unlock in save.UnlockedNodes)
-				UnlockedNodes.Add(unlock.Key, unlock.Value);
+			foreach (var unlock in save.UnlockedSpells)
+				UnlockedSpells.Add(unlock.Key, unlock.Value);
 
 			FinalLevel = save.FinalLevel;
 			Difficulty = save.Difficulty;
@@ -116,7 +116,7 @@ namespace WarriorsSnuggery
 				writer.WriteLine("\tHealth=" + Health);
 				writer.WriteLine("\tMana=" + Mana);
 				writer.WriteLine("Unlocks=");
-				foreach (var unlock in UnlockedNodes)
+				foreach (var unlock in UnlockedSpells)
 					writer.WriteLine("\t" + unlock.Key + "=" + unlock.Value);
 
 				writer.Flush();
@@ -242,7 +242,7 @@ namespace WarriorsSnuggery
 
 						foreach (var node2 in node.Children)
 						{
-							statistic.UnlockedNodes.Add(node2.Key, node2.Convert<bool>());
+							statistic.UnlockedSpells.Add(node2.Key, node2.Convert<bool>());
 						}
 						break;
 				}

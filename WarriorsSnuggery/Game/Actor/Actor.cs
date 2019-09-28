@@ -248,9 +248,9 @@ namespace WarriorsSnuggery.Objects
 				{
 					Killed(null);
 				}
-				foreach (var effect in Effects.Where(e => e.Active && e.Effect.Type == EffectType.HEALTH))
+				foreach (var effect in Effects.Where(e => e.Active && e.Spell.Type == EffectType.HEALTH))
 				{
-					Health.HP += (int)effect.Effect.Value;
+					Health.HP += (int)effect.Spell.Value;
 				}
 			}
 
@@ -278,9 +278,9 @@ namespace WarriorsSnuggery.Objects
 			parts.ForEach(p => p.OnAttack(target, weapon));
 
 			var reloadModifier = 1f;
-			foreach (var effect in Effects.Where(e => e.Active && e.Effect.Type == EffectType.COOLDOWN))
+			foreach (var effect in Effects.Where(e => e.Active && e.Spell.Type == EffectType.COOLDOWN))
 			{
-				reloadModifier *= effect.Effect.Value;
+				reloadModifier *= effect.Spell.Value;
 			}
 
 			reloadDelay = (int)(ActiveWeapon.Type.Reload * reloadModifier);
@@ -302,7 +302,7 @@ namespace WarriorsSnuggery.Objects
 			if (Health == null || Health.HP <= 0)
 				return;
 
-			if (Effects.Any(e => e.Active && e.Effect.Type == EffectType.SHIELD))
+			if (Effects.Any(e => e.Active && e.Spell.Type == EffectType.SHIELD))
 				return;
 
 			Health.HP -= damage;

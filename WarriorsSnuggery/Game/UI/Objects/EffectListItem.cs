@@ -4,9 +4,9 @@ using WarriorsSnuggery.Objects;
 
 namespace WarriorsSnuggery.UI
 {
-	public class EffectListItem : PanelItem
+	public class SpellListItem : PanelItem
 	{
-		readonly ITechTreeNode node;
+		readonly SpellTreeNode node;
 		readonly Game game;
 
 		int recharge;
@@ -14,11 +14,11 @@ namespace WarriorsSnuggery.UI
 		bool activated;
 		readonly bool exists;
 
-		public EffectListItem(CPos pos, MPos size, ITechTreeNode node, Game game) : base(pos, new ImageRenderable(TextureManager.Texture(node.Icon)), size, node.Name, new[] { Color.Grey + "Mana use: " + new Color(0.5f, 0.5f, 1f) + node.Effect.ManaCost, Color.Grey + "Reload: " + Color.Green + Math.Round(node.Effect.RechargeDuration / (float)Settings.UpdatesPerSecond, 2) + Color.Grey + " Seconds" }, null)
+		public SpellListItem(CPos pos, MPos size, SpellTreeNode node, Game game) : base(pos, new ImageRenderable(TextureManager.Texture(node.Icon)), size, node.Name, new[] { Color.Grey + "Mana use: " + new Color(0.5f, 0.5f, 1f) + node.Spell.ManaCost, Color.Grey + "Reload: " + Color.Green + Math.Round(node.Spell.RechargeDuration / (float)Settings.UpdatesPerSecond, 2) + Color.Grey + " Seconds" }, null)
 		{
 			this.node = node;
 			this.game = game;
-			exists = game.Statistics.UnlockedNodes.ContainsKey(node.InnerName);
+			exists = game.Statistics.UnlockedSpells.ContainsKey(node.InnerName);
 		}
 
 		public override void Tick()
@@ -44,15 +44,15 @@ namespace WarriorsSnuggery.UI
 
 		protected override void takeAction()
 		{
-			if (recharge < 0 && (node.Unlocked || exists && game.Statistics.UnlockedNodes[node.InnerName]))
+			if (recharge < 0 && (node.Unlocked || exists && game.Statistics.UnlockedSpells[node.InnerName]))
 			{
-				if (game.Statistics.Mana >= node.Effect.ManaCost)
+				if (game.Statistics.Mana >= node.Spell.ManaCost)
 				{
-					recharge = node.Effect.RechargeDuration;
-					duration = node.Effect.Duration;
+					recharge = node.Spell.RechargeDuration;
+					duration = node.Spell.Duration;
 
-					game.World.LocalPlayer.Effects.Add(new Objects.Effects.EffectPart(game.World.LocalPlayer, node.Effect));
-					game.Statistics.Mana -= node.Effect.ManaCost;
+					game.World.LocalPlayer.Effects.Add(new Objects.Effects.EffectPart(game.World.LocalPlayer, node.Spell));
+					game.Statistics.Mana -= node.Spell.ManaCost;
 
 					activated = true;
 					SetColor(new Color(0.5f, 0.5f, 0.5f));
