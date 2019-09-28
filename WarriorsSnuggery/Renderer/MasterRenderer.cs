@@ -15,6 +15,7 @@ namespace WarriorsSnuggery
 	{
 		public const float PixelMultiplier = 1f / 24f;
 
+		public static bool PauseSequences;
 		public static object GLLock = new object();
 
 		public static int ColorShader, TextureShader, FontShader, ShadowShader;
@@ -44,6 +45,7 @@ namespace WarriorsSnuggery
 
 		public static void ResetRenderer(Game game)
 		{
+			PauseSequences = false;
 			WorldRenderer.Reset(game);
 			UIRenderer.Reset(game);
 		}
@@ -130,7 +132,6 @@ namespace WarriorsSnuggery
 				GL.Enable(EnableCap.AlphaTest);
 				GL.Enable(EnableCap.Blend);
 				//GL.Enable(EnableCap.DepthTest);
-				//GL.Enable(EnableCap.CullFace); // GRAPHICS sth turns around (180°) and gets invisible
 				GL.CullFace(CullFaceMode.Back);
 				Program.CheckGraphicsError("GLTests");
 
@@ -142,6 +143,7 @@ namespace WarriorsSnuggery
 				var height = (int)(WindowInfo.UnitHeight * 24);
 
 				frameTexture = GL.GenTexture();
+
 				GL.BindTexture(TextureTarget.Texture2D, frameTexture);
 				GL.TexImage2D(TextureTarget2d.Texture2D, 0, TextureComponentCount.Rgb32f, width, height, 0, PixelFormat.Rgb, PixelType.Float, (IntPtr)null);
 

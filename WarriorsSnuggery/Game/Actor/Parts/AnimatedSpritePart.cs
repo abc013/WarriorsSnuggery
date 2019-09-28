@@ -44,26 +44,25 @@ namespace WarriorsSnuggery.Objects.Parts
 	{
 		readonly AnimatedSpritePartInfo info;
 
-		readonly SpriteRenderable[] renderables;
+		readonly IImageSequenceRenderable[] renderables;
 		int currentFacing;
 
 		public AnimatedSpritePart(Actor self, AnimatedSpritePartInfo info) : base(self)
 		{
 			this.info = info;
-			var textures = TextureManager.Sprite(new TextureInfo(info.Name, TextureType.ANIMATION, info.Tick, info.Dimensions.X, info.Dimensions.Y));
-			renderables = new SpriteRenderable[info.Facings];
-			var frameCountPerIdleAnim = textures.Length / info.Facings;
+			renderables = new IImageSequenceRenderable[info.Facings];
+			var frameCountPerIdleAnim = info.Textures.Length / info.Facings;
 
-			if (frameCountPerIdleAnim * info.Facings != textures.Length)
-				throw new YamlInvalidNodeException(string.Format(@"Idle Frame '{0}' count cannot be matched with the given Facings '{1}'.", textures.Length, info.Facings));
+			if (frameCountPerIdleAnim * info.Facings != info.Textures.Length)
+				throw new YamlInvalidNodeException(string.Format(@"Idle Frame '{0}' count cannot be matched with the given Facings '{1}'.", info.Textures.Length, info.Facings));
 
 			for (int i = 0; i < renderables.Length; i++)
 			{
-				var anim = new ITexture[frameCountPerIdleAnim];
+				var anim = new IImage[frameCountPerIdleAnim];
 				for (int x = 0; x < frameCountPerIdleAnim; x++)
-					anim[x] = textures[i * frameCountPerIdleAnim + x];
+					anim[x] = info.Textures[i * frameCountPerIdleAnim + x];
 
-				renderables[i] = new SpriteRenderable(anim, tick: info.Tick);
+				renderables[i] = new IImageSequenceRenderable(anim, tick: info.Tick);
 			}
 		}
 

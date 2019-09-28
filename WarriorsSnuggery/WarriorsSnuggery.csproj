@@ -130,6 +130,7 @@
     <Compile Include="Graphics\CharManager.cs" />
     <Compile Include="Graphics\ColoredRenderables.cs" />
     <Compile Include="Graphics\ColorManager.cs" />
+    <Compile Include="Graphics\Objects\IImageSequence.cs" />
     <Compile Include="Graphics\Sheet.cs" />
     <Compile Include="Graphics\SheetBuilder.cs" />
     <Compile Include="Graphics\SpriteManager.cs" />
@@ -195,7 +196,6 @@
     <Compile Include="Graphics\GraphicsObject.cs" />
     <Compile Include="Graphics\Objects\IChar.cs" />
     <Compile Include="Graphics\Objects\IFont.cs" />
-    <Compile Include="Graphics\Objects\ISprite.cs" />
     <Compile Include="Graphics\ITexture.cs" />
     <Compile Include="Graphics\TextureManager.cs" />
     <Compile Include="Input\KeyInput.cs" />

@@ -18,7 +18,7 @@ namespace WarriorsSnuggery.Graphics
 
 		public IChar(IFont font) : base(MasterRenderer.FontShader, font.Mesh.Length)
 		{
-			IImage.CreateTextureBuffer(font.Mesh, BufferID, VertexArrayID);
+			IImage.CreateTextureBuffer(font.Mesh);
 
 			offset = Characters.IndexOf(' ');
 			color = Color.White;

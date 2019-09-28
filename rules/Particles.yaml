@@ -41,7 +41,7 @@ bullet=
 
 nebula1=
 	Texture=smoke_large
-		Size=96,96
+		Size=72,72
 	Duration=50
 	DissolveDuration=150
 

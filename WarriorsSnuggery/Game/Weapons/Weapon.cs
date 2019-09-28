@@ -22,7 +22,7 @@ namespace WarriorsSnuggery.Objects
 		{
 		}
 
-		public Weapon(World world, WeaponType type, CPos origin, CPos target, Actor originActor = null) : base(origin, new SpriteRenderable(type.Textures.GetTextures(), 1f, type.Textures.Tick), new Physics(origin, 0, type.PhysicalShape, type.PhysicalSize, type.PhysicalSize, type.PhysicalSize))
+		public Weapon(World world, WeaponType type, CPos origin, CPos target, Actor originActor = null) : base(origin, new IImageSequenceRenderable(type.Textures.GetTextures(), type.Textures.Tick), new Physics(origin, 0, type.PhysicalShape, type.PhysicalSize, type.PhysicalSize, type.PhysicalSize))
 		{
 			World = world;
 			Type = type;
@@ -180,7 +180,7 @@ namespace WarriorsSnuggery.Objects
 			}
 
 			if (Type.Smudge != null && World.TerrainAt(Position) != null && World.TerrainAt(Position).Type.SpawnSmudge)
-				World.Add(new Smudge(new CPos(Position.X, Position.Y, -512), new SpriteRenderable(Type.Smudge.GetTextures(), tick: Type.Smudge.Tick)));
+				World.Add(new Smudge(new CPos(Position.X, Position.Y, -512), new IImageSequenceRenderable(Type.Smudge.GetTextures(), Type.Smudge.Tick)));
 
 			if (Type.ParticlesOnImpact != null)
 			{

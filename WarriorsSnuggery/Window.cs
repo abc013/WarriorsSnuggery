@@ -116,6 +116,7 @@ namespace WarriorsSnuggery
 
 			Ready = true;
 			Console.WriteLine(" Done!");
+			Console.WriteLine("Textures: " + TextureManager.TextureCount);
 
 			// For multithreads
 			//IGraphicsContext context2 = new GraphicsContext(GraphicsMode.Default, this.WindowInfo);
@@ -264,7 +265,6 @@ namespace WarriorsSnuggery
 			TerrainSpriteManager.DeleteTexture();
 			SpriteManager.DeleteTextures();
 
-			ISprite.DisposeSprites();
 			IImage.DisposeImages();
 			IFont.DisposeFonts();
 

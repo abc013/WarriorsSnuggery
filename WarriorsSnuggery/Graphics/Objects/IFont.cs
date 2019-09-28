@@ -43,7 +43,7 @@ namespace WarriorsSnuggery.Graphics
 
 		public IFont(string fontname, int size) : base(MasterRenderer.FontShader, vertices.Length)
 		{
-			IImage.CreateTextureBuffer(vertices, BufferID, VertexArrayID);
+			IImage.CreateTextureBuffer(vertices);
 
 			Font = TextureManager.Font(fontname, size, out MaxSize, out CharWidth);
 			Mesh = TexturedMesh.Character(this);

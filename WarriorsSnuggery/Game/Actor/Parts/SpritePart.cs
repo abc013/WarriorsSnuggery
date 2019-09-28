@@ -6,6 +6,8 @@ namespace WarriorsSnuggery.Objects.Parts
 	[Desc("This will add a sprite to an actor which will be rendered upon call.")]
 	public class SpritePartInfo : PartInfo
 	{
+		public readonly IImage[] Textures;
+
 		[Desc("Name of the texture file.")]
 		public readonly string Name;
 
@@ -37,7 +39,7 @@ namespace WarriorsSnuggery.Objects.Parts
 
 		public SpritePartInfo(MiniTextNode[] nodes) : base(nodes)
 		{
-			SpriteManager.AddTexture(new TextureInfo(Name, TextureType.ANIMATION, 0, Dimensions.X, Dimensions.Y));
+			Textures = SpriteManager.AddTexture(new TextureInfo(Name, TextureType.ANIMATION, 0, Dimensions.X, Dimensions.Y));
 		}
 	}
 
@@ -50,18 +52,17 @@ namespace WarriorsSnuggery.Objects.Parts
 		public SpritePart(Actor self, SpritePartInfo info) : base(self)
 		{
 			this.info = info;
-			var textures = TextureManager.Sprite(new TextureInfo(info.Name, TextureType.ANIMATION, 0, info.Dimensions.X, info.Dimensions.Y));
 			renderables = new ImageRenderable[info.Facings];
-			var frameCountPerIdleAnim = textures.Length / info.Facings;
+			var frameCountPerIdleAnim = info.Textures.Length / info.Facings;
 
-			if (frameCountPerIdleAnim * info.Facings != textures.Length)
-				throw new YamlInvalidNodeException(string.Format(@"Idle Frame '{0}' count cannot be matched with the given Facings '{1}'.", textures.Length, info.Facings));
+			if (frameCountPerIdleAnim * info.Facings != info.Textures.Length)
+				throw new YamlInvalidNodeException(string.Format(@"Idle Frame '{0}' count cannot be matched with the given Facings '{1}'.", info.Textures.Length, info.Facings));
 
 			for (int i = 0; i < renderables.Length; i++)
 			{
-				var anim = new ITexture[frameCountPerIdleAnim];
+				var anim = new IImage[frameCountPerIdleAnim];
 				for (int x = 0; x < frameCountPerIdleAnim; x++)
-					anim[x] = textures[i * frameCountPerIdleAnim + x];
+					anim[x] = info.Textures[i * frameCountPerIdleAnim + x];
 
 				if (anim.Length == 0)
 					throw new YamlInvalidNodeException(string.Format(@"Animation Frame count is zero. Make sure you set the bounds properly."));

@@ -312,6 +312,10 @@ namespace WarriorsSnuggery.UI
 			rasterizationBox.Dispose();
 			isBot.Dispose();
 			team.Dispose();
+
+			mousePosition.Dispose();
+			save.Dispose();
+			saved.Dispose();
 		}
 	}
 }

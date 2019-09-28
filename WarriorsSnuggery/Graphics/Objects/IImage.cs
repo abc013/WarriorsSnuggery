@@ -40,7 +40,7 @@ namespace WarriorsSnuggery.Graphics
 			Images.Clear();
 		}
 
-		public static void CreateTextureBuffer(TexturedVertex[] vertices, int buffer, int vertexArray)
+		public static void CreateTextureBuffer(TexturedVertex[] vertices)
 		{
 			lock (MasterRenderer.GLLock)
 			{
@@ -61,7 +61,7 @@ namespace WarriorsSnuggery.Graphics
 
 		IImage(TexturedVertex[] vertices, ITexture texture) : base(MasterRenderer.TextureShader, vertices.Length)
 		{
-			CreateTextureBuffer(vertices, BufferID, VertexArrayID);
+			CreateTextureBuffer(vertices);
 			Texture = texture;
 		}
 
