@@ -64,9 +64,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Cursor.cs" />
-    <Compile Include="Game\Actor\Effects\Effect.cs" />
+    <Compile Include="SpellTree\Spell.cs" />
     <Compile Include="GameSettings.cs" />
-    <Compile Include="Game\Actor\Effects\EffectPart.cs" />
+    <Compile Include="Game\Actor\Spells\EffectPart.cs" />
     <Compile Include="Game\Actor\Parts\ActorPart.cs" />
     <Compile Include="Game\Actor\IActor.cs" />
     <Compile Include="Game\Actor\Parts\AnimatedSpritePart.cs" />
@@ -110,7 +110,7 @@
     <Compile Include="Game\UI\Screens\Editor\PieceScreen.cs" />
     <Compile Include="Game\UI\Screens\Game\FailureScreen.cs" />
     <Compile Include="Game\UI\Screens\Game\DefaultScreen.cs" />
-    <Compile Include="Game\UI\Screens\Game\TechTreeScreen.cs" />
+    <Compile Include="Game\UI\Screens\Game\SpellTreeScreen.cs" />
     <Compile Include="Game\UI\Screens\Statistics\LoadGameScreen.cs" />
     <Compile Include="Game\UI\Screens\Game\WinScreen.cs" />
     <Compile Include="Game\UI\Screens\MenuScreen.cs" />
@@ -218,8 +218,8 @@
     <Compile Include="Position\WPos.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Settings.cs" />
-    <Compile Include="TechTree\TechTreeLoader.cs" />
-    <Compile Include="TechTree\TechTreeNode.cs" />
+    <Compile Include="SpellTree\SpellTreeLoader.cs" />
+    <Compile Include="SpellTree\SpellTreeNode.cs" />
     <Compile Include="Timer.cs" />
     <Compile Include="Renderer\UIRenderer.cs" />
     <Compile Include="Game\Weapons\Weapon.cs" />

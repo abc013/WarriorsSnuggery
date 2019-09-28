@@ -4,7 +4,7 @@ using WarriorsSnuggery.Objects;
 
 namespace WarriorsSnuggery.UI
 {
-	public class TechTreeScreen : Screen
+	public class SpellTreeScreen : Screen
 	{
 		readonly Game game;
 
@@ -17,9 +17,9 @@ namespace WarriorsSnuggery.UI
 		int cashCooldown;
 		int lastCash;
 
-		readonly List<TechNode> tree = new List<TechNode>();
+		readonly List<SpellNode> tree = new List<SpellNode>();
 
-		public TechTreeScreen(Game game) : base("Tech Tree")
+		public SpellTreeScreen(Game game) : base("Spell Tree")
 		{
 			this.game = game;
 			Title.Position = new CPos(0, -4096, 0);
@@ -31,10 +31,10 @@ namespace WarriorsSnuggery.UI
 			moneyText = new TextLine(new CPos(-(int)(WindowInfo.UnitWidth / 2 * 1024) + 2048, 7192, 0), IFont.Papyrus24);
 			moneyText.SetText(game.Statistics.Money);
 
-			foreach (var e in TechTreeLoader.TechTree)
+			foreach (var e in SpellTreeLoader.SpellTree)
 			{
-				TechNode pan = new TechNode(new CPos(-4096, -2048, 0) + e.Position.ToCPos(), e, game);
-				tree.Add(pan);
+				SpellNode spell = new SpellNode(new CPos(-4096, -2048, 0) + e.Position.ToCPos(), e, game);
+				tree.Add(spell);
 			}
 		}
 
@@ -97,9 +97,9 @@ namespace WarriorsSnuggery.UI
 		}
 	}
 
-	class TechNode : Panel
+	class SpellNode : Panel
 	{
-		readonly ITechTreeNode node;
+		readonly SpellTreeNode node;
 		readonly Game game;
 
 		readonly ImageRenderable image;
@@ -107,7 +107,7 @@ namespace WarriorsSnuggery.UI
 		readonly TextLine onHover2;
 		bool mouseOnItem;
 
-		public TechNode(CPos position, ITechTreeNode node, Game game) : base(position, new MPos(16, 16), 3, "UI_stone1", "UI_stone2", "UI_wood2")
+		public SpellNode(CPos position, SpellTreeNode node, Game game) : base(position, new MPos(16, 16), 3, "UI_stone1", "UI_stone2", "UI_wood2")
 		{
 			this.node = node;
 			this.game = game;
@@ -130,7 +130,7 @@ namespace WarriorsSnuggery.UI
 			onHover2.Visible = false;
 			UIRenderer.RenderAfter(onHover2);
 
-			if (node.Unlocked || game.Statistics.UnlockedNodes.ContainsKey(node.InnerName) && game.Statistics.UnlockedNodes[node.InnerName])
+			if (node.Unlocked || game.Statistics.UnlockedSpells.ContainsKey(node.InnerName) && game.Statistics.UnlockedSpells[node.InnerName])
 				HighlightVisible = true;
 		}
 
@@ -164,7 +164,7 @@ namespace WarriorsSnuggery.UI
 
 			if (mouseOnItem && !node.Unlocked && MouseInput.IsLeftClicked)
 			{
-				if (game.Statistics.UnlockedNodes.ContainsKey(node.InnerName) && game.Statistics.UnlockedNodes[node.InnerName])
+				if (game.Statistics.UnlockedSpells.ContainsKey(node.InnerName) && game.Statistics.UnlockedSpells[node.InnerName])
 					return;
 
 				var prerequisitesMet = true;
@@ -174,11 +174,11 @@ namespace WarriorsSnuggery.UI
 					if (before.Trim() == "")
 						continue;
 
-					if (game.Statistics.UnlockedNodes.ContainsKey(before) && game.Statistics.UnlockedNodes[before])
+					if (game.Statistics.UnlockedSpells.ContainsKey(before) && game.Statistics.UnlockedSpells[before])
 						continue;
 
 					prerequisitesMet = false;
-					foreach (var node in TechTreeLoader.TechTree)
+					foreach (var node in SpellTreeLoader.SpellTree)
 					{
 						if (node.InnerName == before)
 						{
@@ -196,13 +196,13 @@ namespace WarriorsSnuggery.UI
 
 				game.Statistics.Money -= node.Cost;
 				HighlightVisible = true;
-				if (game.Statistics.UnlockedNodes.ContainsKey(node.InnerName))
+				if (game.Statistics.UnlockedSpells.ContainsKey(node.InnerName))
 				{
-					game.Statistics.UnlockedNodes[node.InnerName] = true;
+					game.Statistics.UnlockedSpells[node.InnerName] = true;
 				}
 				else
 				{
-					game.Statistics.UnlockedNodes.Add(node.InnerName, true);
+					game.Statistics.UnlockedSpells.Add(node.InnerName, true);
 				}
 			}
 		}

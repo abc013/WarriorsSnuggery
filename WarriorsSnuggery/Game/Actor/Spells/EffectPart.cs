@@ -4,18 +4,18 @@
 	{
 		readonly Actor self;
 
-		public readonly Effect Effect;
+		public readonly Spell Spell;
 
 		int tick;
 		public bool Active;
 
-		public EffectPart(Actor self, Effect effect)
+		public EffectPart(Actor self, Spell spell)
 		{
 			this.self = self;
 
-			Effect = effect;
+			Spell = spell;
 			Active = true;
-			tick = effect.Duration;
+			tick = spell.Duration;
 		}
 
 		public void Tick()

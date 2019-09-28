@@ -9,42 +9,49 @@ namespace WarriorsSnuggery
 		public static void LoadRules()
 		{
 			var rules = RuleReader.Read(FileExplorer.Rules, "Rules.yaml"); //TODO for future: use for mods
-			string[] terrain = null;
+			var terrainFiles = new string[0];
+			var terrainPaths = new string[0];
 
 			SpriteManager.CreateSheet(7);
+
 			foreach (var rule in rules)
 			{
+				var files = rule.Convert<string[]>();
+				var paths = new string[files.Length];
+				for (int i = 0; i < paths.Length; i++)
+					paths[i] = FileExplorer.FindPath(FileExplorer.Rules, files[i], ".yaml");
+
 				switch (rule.Key)
 				{
 					case "Particles":
-						var particles = rule.Convert<string[]>();
-						foreach (var particle in particles)
-							ParticleCreator.LoadTypes(FileExplorer.FindPath(FileExplorer.Rules, particle, ".yaml"), particle + ".yaml");
+						for (int j = 0; j < files.Length; j++)
+							ParticleCreator.Load(paths[j], files[j] + ".yaml");
+
 						break;
 					case "Weapons":
-						var weapons = rule.Convert<string[]>();
-						foreach (var weapon in weapons)
-							WeaponCreator.LoadTypes(FileExplorer.FindPath(FileExplorer.Rules, weapon, ".yaml"), weapon + ".yaml");
+						for (int j = 0; j < files.Length; j++)
+							WeaponCreator.Load(paths[j], files[j] + ".yaml");
+
 						break;
 					case "Actors":
-						var actors = rule.Convert<string[]>();
-						foreach (var actor in actors)
-							ActorCreator.LoadTypes(FileExplorer.FindPath(FileExplorer.Rules, actor, ".yaml"), actor + ".yaml");
+						for (int j = 0; j < files.Length; j++)
+							ActorCreator.Load(paths[j], files[j] + ".yaml");
 
 						break;
 					case "Terrain":
-						
-						terrain = rule.Convert<string[]>();
+						terrainFiles = files;
+						terrainPaths = paths;
+
 						break;
 					case "Walls":
-						var walls = rule.Convert<string[]>();
-						foreach (var wall in walls)
-							WallCreator.LoadTypes(FileExplorer.FindPath(FileExplorer.Rules, wall, ".yaml"), wall + ".yaml");
+						for (int j = 0; j < files.Length; j++)
+							WallCreator.Load(paths[j], files[j] + ".yaml");
+
 						break;
-					case "TechTree":
-						var trees = rule.Convert<string[]>();
-						foreach (var tree in trees)
-							TechTreeLoader.LoadTechTree(tree);
+					case "Spells":
+						for (int j = 0; j < files.Length; j++)
+							SpellTreeLoader.Load(paths[j], files[j] + ".yaml");
+
 						break;
 				}
 			}
@@ -52,8 +59,8 @@ namespace WarriorsSnuggery
 
 			TerrainSpriteManager.CreateSheet();
 
-			foreach (var terrain2 in terrain)
-				TerrainCreator.LoadTypes(FileExplorer.FindPath(FileExplorer.Rules, terrain2, ".yaml"), terrain2 + ".yaml");
+			for (int j = 0; j < terrainFiles.Length; j++)
+				TerrainCreator.LoadTypes(terrainPaths[j], terrainFiles[j] + ".yaml");
 
 			TerrainSpriteManager.CreateTexture();
 		}

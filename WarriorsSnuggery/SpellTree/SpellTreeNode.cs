@@ -1,6 +1,6 @@
 ﻿namespace WarriorsSnuggery
 {
-	public class ITechTreeNode
+	public class SpellTreeNode
 	{
 		public readonly string[] Before;
 		public readonly MPos Position;
@@ -9,11 +9,11 @@
 
 		public readonly string InnerName;
 		public readonly string Name;
-		public readonly Effect Effect;
+		public readonly Spell Spell;
 
 		public readonly string Icon;
 
-		public ITechTreeNode(MiniTextNode[] nodes, string name)
+		public SpellTreeNode(MiniTextNode[] nodes, string name)
 		{
 			InnerName = name;
 			Name = name.Replace('_', ' ');
@@ -33,7 +33,7 @@
 					case "Position":
 						Position = node.Convert<MPos>();
 						break;
-					case "Effect":
+					case "Spell":
 						var effect = EffectType.NONE;
 						var value = 0f;
 						var manaCost = 0;
@@ -60,7 +60,7 @@
 									break;
 							}
 						}
-						Effect = new Effect(effect, value, manaCost, duration, cooldown);
+						Spell = new Spell(effect, value, manaCost, duration, cooldown);
 						break;
 					case "Icon":
 						Icon = node.Convert<string>();

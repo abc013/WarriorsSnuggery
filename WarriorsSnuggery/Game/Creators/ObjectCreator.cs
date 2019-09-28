@@ -10,7 +10,7 @@ namespace WarriorsSnuggery
 {
 	public static class ActorCreator
 	{
-		public static void LoadTypes(string directory, string file)
+		public static void Load(string directory, string file)
 		{
 			var actors = RuleReader.Read(directory, file);
 
@@ -86,7 +86,7 @@ namespace WarriorsSnuggery
 
 	public static class WeaponCreator
 	{
-		public static void LoadTypes(string directory, string file)
+		public static void Load(string directory, string file)
 		{
 			var weapons = RuleReader.Read(directory, file);
 
@@ -259,7 +259,7 @@ namespace WarriorsSnuggery
 
 	public static class ParticleCreator
 	{
-		public static void LoadTypes(string directory, string file)
+		public static void Load(string directory, string file)
 		{
 			var nodes = RuleReader.Read(directory, file);
 
@@ -393,7 +393,7 @@ namespace WarriorsSnuggery
 
 	public static class WallCreator
 	{
-		public static void LoadTypes(string directory, string file)
+		public static void Load(string directory, string file)
 		{
 			var walls = RuleReader.Read(directory, file);
 
