@@ -204,7 +204,7 @@ namespace WarriorsSnuggery.Objects
 
 		public override void CheckVisibility()
 		{
-			// TODO solve detection scale + make fluid visibility change
+			// TODO solve detection scale
 			visible = VisibilitySolver.IsVisible(GraphicPosition, new MPos(1024, 1024));
 		}
 
