@@ -42,6 +42,11 @@ namespace WarriorsSnuggery.UI
 			}
 		}
 
+		public void Activate()
+		{
+			takeAction();
+		}
+
 		protected override void takeAction()
 		{
 			if (recharge < 0 && (node.Unlocked || exists && game.Statistics.UnlockedSpells[node.InnerName]))
