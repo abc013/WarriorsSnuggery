@@ -234,6 +234,10 @@ namespace WarriorsSnuggery.Loader
 				// Called method handles nonexistant weapon types
 				return ParticleCreator.GetType(s.Trim());
 			}
+			else if (t == typeof(Spells.Spell))
+			{
+				return new Spells.Spell(node.Children.ToArray());
+			}
 			else if (t == typeof(Maps.ActorGeneratorInfo[]))
 			{
 				var convert = new Maps.ActorGeneratorInfo[node.Children.Count];

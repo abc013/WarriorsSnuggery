@@ -8,7 +8,7 @@ namespace WarriorsSnuggery
 	{
 		public static void LoadRules()
 		{
-			var rules = RuleReader.Read(FileExplorer.Rules, "Rules.yaml"); //TODO for future: use for mods
+			var rules = RuleReader.Read(FileExplorer.Rules, "Rules.yaml");
 			var terrainFiles = new string[0];
 			var terrainPaths = new string[0];
 
@@ -50,7 +50,7 @@ namespace WarriorsSnuggery
 						break;
 					case "Spells":
 						for (int j = 0; j < files.Length; j++)
-							SpellTreeLoader.Load(paths[j], files[j] + ".yaml");
+							Spells.SpellTreeLoader.Load(paths[j], files[j] + ".yaml");
 
 						break;
 				}

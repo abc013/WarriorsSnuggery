@@ -6,6 +6,7 @@
 using System.Collections.Generic;
 using WarriorsSnuggery.Graphics;
 using WarriorsSnuggery.Objects;
+using WarriorsSnuggery.Spells;
 
 namespace WarriorsSnuggery.UI
 {
@@ -17,7 +18,7 @@ namespace WarriorsSnuggery.UI
 
 		readonly Panel @base;
 
-		readonly PhysicsObject money;
+		readonly ImageRenderable money;
 		readonly TextLine moneyText;
 		int cashCooldown;
 		int lastCash;
@@ -32,7 +33,9 @@ namespace WarriorsSnuggery.UI
 			back = ButtonCreator.Create("wooden", new CPos(0, 6144, 0), "Resume", () => { game.Pause(false); game.ScreenControl.ShowScreen(ScreenType.DEFAULT); });
 			@base = new Panel(new CPos(0, 1024, 0), new MPos(8192 / 64 * 3, 4096 / 64 * 3), 4, "UI_wood1", "UI_wood3", "UI_wood2");
 
-			money = new PhysicsObject(new CPos(-(int)(WindowInfo.UnitWidth / 2 * 1024) + 1024, 7192, 0), new ImageRenderable(TextureManager.Texture("UI_money")));
+			money = new ImageRenderable(TextureManager.Texture("UI_money"));
+			money.SetPosition(new CPos(-(int)(WindowInfo.UnitWidth / 2 * 1024) + 1024, 7192, 0));
+
 			moneyText = new TextLine(new CPos(-(int)(WindowInfo.UnitWidth / 2 * 1024) + 2048, 7192, 0), IFont.Papyrus24);
 			moneyText.SetText(game.Statistics.Money);
 
@@ -99,6 +102,8 @@ namespace WarriorsSnuggery.UI
 				panel.Dispose();
 			}
 			tree.Clear();
+			moneyText.Dispose();
+
 		}
 	}
 
@@ -107,7 +112,7 @@ namespace WarriorsSnuggery.UI
 		readonly SpellTreeNode node;
 		readonly Game game;
 
-		readonly ImageRenderable image;
+		readonly IImageSequenceRenderable image;
 		readonly TextLine onHover;
 		readonly TextLine onHover2;
 		bool mouseOnItem;
@@ -116,7 +121,7 @@ namespace WarriorsSnuggery.UI
 		{
 			this.node = node;
 			this.game = game;
-			image = new ImageRenderable(TextureManager.Texture(node.Icon));
+			image = new IImageSequenceRenderable(node.Images, node.Icon.Tick);
 			image.SetPosition(position);
 
 			onHover = new TextLine(position, IFont.Pixel16);
@@ -216,7 +221,6 @@ namespace WarriorsSnuggery.UI
 		{
 			base.Dispose();
 
-			//image.Dispose();
 			UIRenderer.RemoveRenderAfter(onHover);
 			onHover.Dispose();
 			UIRenderer.RemoveRenderAfter(onHover2);

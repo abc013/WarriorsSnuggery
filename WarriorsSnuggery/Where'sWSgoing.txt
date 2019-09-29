@@ -45,7 +45,6 @@ IMPROVEMENTS
 
 - GLDrawElements instead of GLDrawArray
 - Reduce Program call
-- Maybe: Readd depth filter?
 
 ----------------------------------------------------------------------------------------------
 CONFIRMED MEMORY LEAKS

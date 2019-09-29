@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace WarriorsSnuggery
+namespace WarriorsSnuggery.Spells
 {
 	public static class SpellTreeLoader
 	{

@@ -37,17 +37,17 @@ namespace WarriorsSnuggery.Objects
 
 			if (originActor != null)
 			{
-				foreach (var effect in originActor.Effects.Where(e => e.Active && e.Spell.Type == EffectType.INACCURACY))
+				foreach (var effect in originActor.Effects.Where(e => e.Active && e.Spell.Type == Spells.EffectType.INACCURACY))
 				{
 					inaccuracyModifier *= effect.Spell.Value;
 				}
 
-				foreach (var effect in originActor.Effects.Where(e => e.Active && e.Spell.Type == EffectType.DAMAGE))
+				foreach (var effect in originActor.Effects.Where(e => e.Active && e.Spell.Type == Spells.EffectType.DAMAGE))
 				{
 					damageModifier *= effect.Spell.Value;
 				}
 
-				foreach (var effect in originActor.Effects.Where(e => e.Active && e.Spell.Type == EffectType.RANGE))
+				foreach (var effect in originActor.Effects.Where(e => e.Active && e.Spell.Type == Spells.EffectType.RANGE))
 				{
 					rangeModifier *= effect.Spell.Value;
 				}

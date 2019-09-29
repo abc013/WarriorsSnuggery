@@ -1,4 +1,6 @@
-﻿namespace WarriorsSnuggery.Objects.Effects
+﻿using WarriorsSnuggery.Spells;
+
+namespace WarriorsSnuggery.Objects.Effects
 {
 	public class EffectPart : ITick
 	{
