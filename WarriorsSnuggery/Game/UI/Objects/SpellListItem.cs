@@ -14,7 +14,7 @@ namespace WarriorsSnuggery.UI
 		bool activated;
 		readonly bool exists;
 
-		public SpellListItem(CPos pos, MPos size, SpellTreeNode node, Game game) : base(pos, new IImageSequenceRenderable(node.Images, node.Icon.Tick), size, node.Name, new[] { Color.Grey + "Mana use: " + new Color(0.5f, 0.5f, 1f) + node.Spell.ManaCost, Color.Grey + "Reload: " + Color.Green + Math.Round(node.Spell.Cooldown / (float)Settings.UpdatesPerSecond, 2) + Color.Grey + " Seconds" }, null)
+		public SpellListItem(CPos pos, MPos size, SpellTreeNode node, Game game, bool showDesc) : base(pos, new IImageSequenceRenderable(node.Images, node.Icon.Tick), size, node.Name, node.getInformation(showDesc), null)
 		{
 			this.node = node;
 			this.game = game;
