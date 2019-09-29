@@ -8,7 +8,7 @@ namespace WarriorsSnuggery
 
 		public static void Load(string path, string file)
 		{
-			var nodes = RuleReader.Read(path, file + ".yaml");
+			var nodes = RuleReader.Read(path, file);
 
 			List<SpellTreeNode> spelltree = new List<SpellTreeNode>();
 

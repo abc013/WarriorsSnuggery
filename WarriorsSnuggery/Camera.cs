@@ -129,6 +129,8 @@ namespace WarriorsSnuggery
 
 			if (Window.Current.Game != null)
 				WorldRenderer.CheckObjectVisibility();
+
+			MouseInput.RecalculateMousePosition();
 		}
 	}
 }
