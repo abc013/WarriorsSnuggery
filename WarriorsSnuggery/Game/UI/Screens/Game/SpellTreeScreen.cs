@@ -85,6 +85,12 @@ namespace WarriorsSnuggery.UI
 				moneyText.Scale = (cashCooldown / 10f) + 1f;
 		}
 
+		public override void Hide()
+		{
+			foreach (var spell in tree)
+				spell.DisableTooltip();
+		}
+
 		public override void Dispose()
 		{
 			base.Dispose();
@@ -108,7 +114,7 @@ namespace WarriorsSnuggery.UI
 		readonly Game game;
 
 		readonly IImageSequenceRenderable image;
-		readonly TextLine onHover;
+		readonly Tooltip tooltip;
 		readonly TextLine onHover2;
 		bool mouseOnItem;
 
@@ -119,13 +125,9 @@ namespace WarriorsSnuggery.UI
 			image = new IImageSequenceRenderable(node.Images, node.Icon.Tick);
 			image.SetPosition(position);
 
-			onHover = new TextLine(position, IFont.Pixel16);
-			onHover.SetText(node.Name + " : " + node.Cost);
-			onHover.Visible = false;
-			UIRenderer.RenderAfter(onHover);
+			tooltip = new Tooltip(position, node.Name + " : " + node.Cost, node.getInformation(true));
 
 			onHover2 = new TextLine(position + new CPos(0, 712, 0), IFont.Pixel16);
-
 			if (node.Before.Length > 0 || node.Before[0].Trim() != "")
 			{
 				onHover2.SetText("Pre: ");
@@ -133,10 +135,14 @@ namespace WarriorsSnuggery.UI
 					onHover2.AddText((i != 0 ? ", " : "") + node.Before[i]);
 			}
 			onHover2.Visible = false;
-			UIRenderer.RenderAfter(onHover2);
 
 			if (node.Unlocked || game.Statistics.UnlockedSpells.ContainsKey(node.InnerName) && game.Statistics.UnlockedSpells[node.InnerName])
 				HighlightVisible = true;
+		}
+
+		public virtual void DisableTooltip()
+		{
+			UIRenderer.DisableTooltip(tooltip);
 		}
 
 		public override void Tick()
@@ -145,13 +151,10 @@ namespace WarriorsSnuggery.UI
 
 			checkMouse();
 
-			onHover.Visible = mouseOnItem;
-			onHover2.Visible = mouseOnItem;
 			if (mouseOnItem)
-			{
-				onHover.Position = Position;
-				onHover2.Position = Position + new CPos(0, 712, 0);
-			}
+				UIRenderer.SetTooltip(tooltip);
+			else
+				UIRenderer.DisableTooltip(tooltip);
 		}
 
 		public override void Render()
@@ -214,12 +217,9 @@ namespace WarriorsSnuggery.UI
 
 		public override void Dispose()
 		{
-			base.Dispose();
+			tooltip.Dispose();
 
-			UIRenderer.RemoveRenderAfter(onHover);
-			onHover.Dispose();
-			UIRenderer.RemoveRenderAfter(onHover2);
-			onHover2.Dispose();
+			base.Dispose();
 		}
 	}
 }

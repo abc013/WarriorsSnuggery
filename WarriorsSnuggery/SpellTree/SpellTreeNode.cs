@@ -1,4 +1,5 @@
-﻿using WarriorsSnuggery.Graphics;
+﻿using System;
+using WarriorsSnuggery.Graphics;
 
 namespace WarriorsSnuggery.Spells
 {
@@ -12,6 +13,8 @@ namespace WarriorsSnuggery.Spells
 		public readonly int Cost;
 		[Desc("If true, the spell is unlocked from the beginning.")]
 		public readonly bool Unlocked;
+		[Desc("Description of the spell. Shown in the spell tree window.")]
+		public readonly string Description = "";
 
 		public readonly string InnerName;
 		public readonly string Name;
@@ -31,6 +34,18 @@ namespace WarriorsSnuggery.Spells
 			InnerName = name;
 			Name = name.Replace('_', ' ');
 			Images = SpriteManager.AddTexture(Icon);
+		}
+
+		public string[] getInformation(bool showDesc)
+		{
+			var res = new string[showDesc ? 4 : 3];
+			res[0] = Color.Grey + "Mana use: " + new Color(0.5f, 0.5f, 1f) + Spell.ManaCost;
+			res[1] = Color.Grey + "Reload: " + Color.Green + Math.Round(Spell.Cooldown / (float)Settings.UpdatesPerSecond, 2) + Color.Grey + " Seconds";
+			res[2] = Color.Grey + "Keys: " + Spell.GetKeyComboString();
+			if (showDesc)
+				res[3] = Description;
+
+			return res;
 		}
 	}
 }

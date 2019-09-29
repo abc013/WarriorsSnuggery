@@ -57,7 +57,7 @@ namespace WarriorsSnuggery.UI
 			effectPanel = new PanelList(new CPos(0, (int)(WindowInfo.UnitHeight * 512) - 3072 - 128, 0), new MPos(8192, 256), new MPos(256, 256), 6, "UI_stone1", "UI_stone2");
 			foreach (var effect in Spells.SpellTreeLoader.SpellTree)
 			{
-				var item = new SpellListItem(CPos.Zero, new MPos(256, 256), effect, game);
+				var item = new SpellListItem(CPos.Zero, new MPos(256, 256), effect, game, false);
 
 				if (!(effect.Unlocked || game.Statistics.UnlockedSpells.ContainsKey(effect.InnerName) && game.Statistics.UnlockedSpells[effect.InnerName]))
 					item.SetColor(new Color(0, 0, 0, 1f));
