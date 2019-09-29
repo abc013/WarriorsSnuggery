@@ -207,7 +207,7 @@ namespace WarriorsSnuggery
 				}
 
 				// camera input
-				if (!ScreenControl.CursorOnUI())
+				if (!ScreenControl.CursorOnUI() && !Camera.LockedToPlayer)
 				{
 					var mouse = MouseInput.WindowPosition;
 
@@ -293,14 +293,10 @@ namespace WarriorsSnuggery
 				// Zooming
 				if (!Editor && Type != GameType.EDITOR)
 				{
-					if (MouseInput.IsRightDown)
-					{
+					if (KeyInput.IsKeyDown("controlleft") && MouseInput.IsRightDown)
 						Camera.Zoom(Settings.ScrollSpeed / 20 * (4 - (Camera.CurrentZoom - Camera.DefaultZoom) / 2));
-					}
 					else
-					{
 						Camera.Zoom(Settings.ScrollSpeed / 20 * (-(Camera.CurrentZoom - Camera.DefaultZoom) / 2));
-					}
 				}
 
 				World.Tick();

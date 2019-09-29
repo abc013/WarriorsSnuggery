@@ -64,6 +64,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Cursor.cs" />
+    <Compile Include="Game\UI\Objects\SpellList.cs" />
     <Compile Include="SpellTree\Spell.cs" />
     <Compile Include="GameSettings.cs" />
     <Compile Include="Game\Actor\Spells\EffectPart.cs" />

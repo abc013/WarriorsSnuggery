@@ -22,7 +22,7 @@ namespace WarriorsSnuggery.UI
 		readonly TextLine missionText;
 		readonly Panel background;
 		readonly PanelList actorPanel;
-		readonly PanelList effectPanel;
+		readonly SpellList spellList;
 		readonly ActorType[] actorPanelContent;
 		int cashCooldown;
 		int lastCash;
@@ -59,7 +59,7 @@ namespace WarriorsSnuggery.UI
 			actorPanelContent = list.ToArray();
 
 			// SECTION EFFECTS
-			effectPanel = new PanelList(new CPos(0, (int)(WindowInfo.UnitHeight * 512) - 3072 - 128, 0), new MPos(8192, 256), new MPos(256, 256), PanelManager.GetType("stone"));
+			spellList = new SpellList(new CPos(0, (int)(WindowInfo.UnitHeight * 512) - 3072 - 128, 0), new MPos(8192, 512), new MPos(512, 512), PanelManager.GetType("stone"));
 			foreach (var effect in Spells.SpellTreeLoader.SpellTree)
 			{
 				var item = new SpellListItem(CPos.Zero, new MPos(256, 256), effect, game, false);
@@ -67,7 +67,7 @@ namespace WarriorsSnuggery.UI
 				if (!(effect.Unlocked || game.Statistics.UnlockedSpells.ContainsKey(effect.InnerName) && game.Statistics.UnlockedSpells[effect.InnerName]))
 					item.SetColor(new Color(0, 0, 0, 1f));
 
-				effectPanel.Add(item);
+				spellList.Add(item);
 			}
 
 			background = new Panel(new CPos(0, (int)(WindowInfo.UnitHeight * 512) - 3072 / 2 + 64, 0), new MPos(8192 / 64 * 6, (3072 - 64) / 64 / 2 * 3), PanelManager.GetType("wooden"));
@@ -115,7 +115,7 @@ namespace WarriorsSnuggery.UI
 
 		public override void Hide()
 		{
-			effectPanel.DisableTooltip();
+			spellList.DisableTooltip();
 			actorPanel.DisableTooltip();
 		}
 
@@ -176,7 +176,7 @@ namespace WarriorsSnuggery.UI
 			actorPanel.Render();
 
 			// SECTION EFFECTS
-			effectPanel.Render();
+			spellList.Render();
 		}
 
 		public override void Tick()
@@ -198,16 +198,10 @@ namespace WarriorsSnuggery.UI
 				mana.SetText(game.Statistics.Mana + "/" + game.Statistics.MaxMana);
 				manaPercentage = game.Statistics.Mana / (float)game.Statistics.MaxMana;
 
-				if (MouseInput.WheelState != 0)
-				{
-					var current = Array.FindIndex(actorPanelContent, (a) => a == player.Type);
-					current += MouseInput.WheelState;
-					if (current < 0)
-						current = actorPanelContent.Length - 1;
-					if (current >= actorPanelContent.Length)
-						current = 0;
-					changePlayer(player, actorPanelContent[current]);
-				}
+				spellList.CurrentSpell += MouseInput.WheelState;
+
+				if (!KeyInput.IsKeyDown("controlleft") && MouseInput.IsRightClicked)
+					((SpellListItem)spellList.Container[spellList.CurrentSpell]).Activate();
 			}
 
 			if (lastCash != game.Statistics.Money)
@@ -220,7 +214,7 @@ namespace WarriorsSnuggery.UI
 				moneyText.Scale = (cashCooldown / 10f) + 1f;
 
 			actorPanel.Tick();
-			effectPanel.Tick();
+			spellList.Tick();
 		}
 
 		void changePlayer(Actor player, ActorType type)
@@ -260,7 +254,7 @@ namespace WarriorsSnuggery.UI
 			missionText.Dispose();
 
 			actorPanel.Dispose();
-			effectPanel.Dispose();
+			spellList.Dispose();
 		}
 	}
 }
