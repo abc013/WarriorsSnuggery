@@ -55,14 +55,13 @@ namespace WarriorsSnuggery.UI
 
 			// SECTION EFFECTS
 			spellList = new SpellList(new CPos(0, (int)(WindowInfo.UnitHeight * 512) - 3072 - 128, 0), new MPos(8192, 512), new MPos(512, 512), PanelManager.GetType("stone"));
+			int index = 0;
 			foreach (var effect in Spells.SpellTreeLoader.SpellTree)
 			{
-				var item = new SpellListItem(CPos.Zero, new MPos(256, 256), effect, game, false);
-
-				if (!(effect.Unlocked || game.Statistics.UnlockedSpells.ContainsKey(effect.InnerName) && game.Statistics.UnlockedSpells[effect.InnerName]))
-					item.SetColor(new Color(0, 0, 0, 1f));
+				var item = new SpellListItem(CPos.Zero, new MPos(256, 256), effect, game.SpellManager.spellCasters[index], game, false);
 
 				spellList.Add(item);
+				index++;
 			}
 
 			background = new Panel(new CPos(0, (int)(WindowInfo.UnitHeight * 512) - 3072 / 2 + 64, 0), new MPos(8192 / 64 * 6, (3072 - 64) / 64 / 2 * 3), PanelManager.GetType("wooden"));
@@ -196,7 +195,9 @@ namespace WarriorsSnuggery.UI
 				spellList.CurrentSpell += MouseInput.WheelState;
 
 				if (!KeyInput.IsKeyDown("controlleft") && MouseInput.IsRightClicked)
-					((SpellListItem)spellList.Container[spellList.CurrentSpell]).Activate();
+				{
+					game.SpellManager.Activate(spellList.CurrentSpell);
+				}
 			}
 
 			if (lastCash != game.Statistics.Money)

@@ -3,6 +3,7 @@ using WarriorsSnuggery.Graphics;
 using WarriorsSnuggery.Maps;
 using WarriorsSnuggery.Objects;
 using WarriorsSnuggery.UI;
+using WarriorsSnuggery.Spells;
 
 namespace WarriorsSnuggery
 {
@@ -48,6 +49,8 @@ namespace WarriorsSnuggery
 		public readonly GameMode Mode;
 		public readonly int Seed;
 
+		public readonly SpellManager SpellManager;
+
 		readonly TextLine tick;
 		readonly TextLine render;
 		readonly TextLine visibility;
@@ -85,6 +88,8 @@ namespace WarriorsSnuggery
 			OldStatistics = statistics.Copy();
 			// In case of success, use this statistic.
 			Statistics = statistics;
+
+			SpellManager = new SpellManager(this);
 
 			Type = MapType.DefaultType;
 			Mode = MapType.DefaultModes[new Random(seed).Next(MapType.DefaultModes.Length)];
@@ -294,6 +299,7 @@ namespace WarriorsSnuggery
 						Camera.Zoom(Settings.ScrollSpeed / 20 * (-(Camera.CurrentZoom - Camera.DefaultZoom) / 2));
 				}
 
+				SpellManager.Tick();
 				World.Tick();
 			}
 
