@@ -92,7 +92,7 @@ namespace WarriorsSnuggery
 				if (Camera.LockedToPlayer)
 					Camera.Position(LocalPlayer.Position);
 
-				foreach (var effect in LocalPlayer.Effects.Where(e => e.Active && e.Spell.Type == EffectType.MANA))
+				foreach (var effect in LocalPlayer.Effects.Where(e => e.Active && e.Spell.Type == Spells.EffectType.MANA))
 				{
 					Game.Statistics.Mana += (int)effect.Spell.Value;
 				}

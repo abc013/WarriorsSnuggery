@@ -1,6 +1,6 @@
 ﻿using System;
 using WarriorsSnuggery.Graphics;
-using WarriorsSnuggery.Objects;
+using WarriorsSnuggery.Spells;
 
 namespace WarriorsSnuggery.UI
 {
@@ -14,7 +14,7 @@ namespace WarriorsSnuggery.UI
 		bool activated;
 		readonly bool exists;
 
-		public SpellListItem(CPos pos, MPos size, SpellTreeNode node, Game game) : base(pos, new ImageRenderable(TextureManager.Texture(node.Icon)), size, node.Name, new[] { Color.Grey + "Mana use: " + new Color(0.5f, 0.5f, 1f) + node.Spell.ManaCost, Color.Grey + "Reload: " + Color.Green + Math.Round(node.Spell.RechargeDuration / (float)Settings.UpdatesPerSecond, 2) + Color.Grey + " Seconds" }, null)
+		public SpellListItem(CPos pos, MPos size, SpellTreeNode node, Game game) : base(pos, new IImageSequenceRenderable(node.Images, node.Icon.Tick), size, node.Name, new[] { Color.Grey + "Mana use: " + new Color(0.5f, 0.5f, 1f) + node.Spell.ManaCost, Color.Grey + "Reload: " + Color.Green + Math.Round(node.Spell.Cooldown / (float)Settings.UpdatesPerSecond, 2) + Color.Grey + " Seconds" }, null)
 		{
 			this.node = node;
 			this.game = game;
@@ -48,7 +48,7 @@ namespace WarriorsSnuggery.UI
 			{
 				if (game.Statistics.Mana >= node.Spell.ManaCost)
 				{
-					recharge = node.Spell.RechargeDuration;
+					recharge = node.Spell.Cooldown;
 					duration = node.Spell.Duration;
 
 					game.World.LocalPlayer.Effects.Add(new Objects.Effects.EffectPart(game.World.LocalPlayer, node.Spell));

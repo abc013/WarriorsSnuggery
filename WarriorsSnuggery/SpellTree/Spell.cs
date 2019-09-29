@@ -1,4 +1,4 @@
-﻿namespace WarriorsSnuggery
+﻿namespace WarriorsSnuggery.Spells
 {
 	public enum EffectType
 	{
@@ -15,23 +15,22 @@
 
 	public class Spell
 	{
+		[Desc("Type of the Spell.", "Available: NONE, RANGE, INACCURACY, DAMAGE, COOLDOWN, HEALTH, MANA, SPEED, SHIELD")]
 		public readonly EffectType Type;
+		[Desc("Strength/Intensity of the spell.", "Value effect depends on the effect type.")]
 		public readonly float Value;
 
+		[Desc("Determines how much mana is used up by casting this spell.")]
 		public readonly int ManaCost;
 
+		[Desc("Duration of the spell.")]
 		public readonly int Duration;
-		public readonly int RechargeDuration;
+		[Desc("Cooldown of the spell.")]
+		public readonly int Cooldown;
 
-		public Spell(EffectType type, float value, int manaCost, int duration, int rechargeDuration)
+		public Spell(MiniTextNode[] nodes)
 		{
-			Type = type;
-			Value = value;
-
-			ManaCost = manaCost;
-
-			Duration = duration;
-			RechargeDuration = rechargeDuration;
+			Loader.PartLoader.SetValues(this, nodes);
 		}
 	}
 }

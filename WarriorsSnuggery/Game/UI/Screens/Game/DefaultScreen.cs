@@ -55,7 +55,7 @@ namespace WarriorsSnuggery.UI
 
 			// SECTION EFFECTS
 			effectPanel = new PanelList(new CPos(0, (int)(WindowInfo.UnitHeight * 512) - 3072 - 128, 0), new MPos(8192, 256), new MPos(256, 256), 6, "UI_stone1", "UI_stone2");
-			foreach (var effect in SpellTreeLoader.SpellTree)
+			foreach (var effect in Spells.SpellTreeLoader.SpellTree)
 			{
 				var item = new SpellListItem(CPos.Zero, new MPos(256, 256), effect, game);
 

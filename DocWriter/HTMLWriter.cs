@@ -32,7 +32,7 @@ namespace WarriorsSnuggery
 		public static void WriteDoc(StreamWriter writer, DocumentationType type)
 		{
 			writer.WriteLine();
-			writer.WriteLine("\t\t<h1>" + type.ToString().ToLower() + "</h1>");
+			writer.WriteLine("\t\t<h1>" + type.ToString().ToLower(System.Globalization.CultureInfo.CurrentCulture) + "</h1>");
 			writer.WriteLine("\t\t<hr>");
 			writer.WriteLine();
 
@@ -69,6 +69,9 @@ namespace WarriorsSnuggery
 					writer.WriteLine();
 					ObjectWriter.WriteMapGenerators(writer);
 
+					break;
+				case DocumentationType.SPELLS:
+					ObjectWriter.WriteSpells(writer);
 					break;
 			}
 		}
@@ -203,6 +206,21 @@ namespace WarriorsSnuggery
 				first = false;
 			}
 			Console.WriteLine();
+		}
+
+		public static void WriteSpells(StreamWriter writer)
+		{
+			writer.WriteLine("\t\t<h2> Spell basic information</h2>");
+			writer.WriteLine("\t\t<hr>");
+			writer.WriteLine();
+			var info = Assembly.Load("WarriorsSnuggery").GetType("WarriorsSnuggery.Spells.SpellTreeNode");
+			WriteWithType(writer, info);
+
+			writer.WriteLine("\t\t<h2> Spell</h2>");
+			writer.WriteLine("\t\t<hr>");
+			writer.WriteLine();
+			var info2 = Assembly.Load("WarriorsSnuggery").GetType("WarriorsSnuggery.Spells.Spell");
+			WriteWithType(writer, info2);
 		}
 
 		static void WriteWithType(StreamWriter writer, Type info)

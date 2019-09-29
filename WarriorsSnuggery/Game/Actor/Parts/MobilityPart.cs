@@ -58,7 +58,7 @@ namespace WarriorsSnuggery.Objects.Parts
 		public new int OnAccelerate(float angle, int customAcceleration)
 		{
 			var speedFactor = 1f;
-			foreach (var effect in self.Effects.Where(e => e.Active && e.Spell.Type == EffectType.SPEED))
+			foreach (var effect in self.Effects.Where(e => e.Active && e.Spell.Type == Spells.EffectType.SPEED))
 			{
 				speedFactor *= effect.Spell.Value;
 			}
@@ -70,7 +70,7 @@ namespace WarriorsSnuggery.Objects.Parts
 			Velocity += new CPos(x, y, 0);
 			if (Math.Abs(Velocity.X) >= info.Speed * speedFactor)
 				Velocity = new CPos((int)(Math.Sign(Velocity.X) * info.Speed * speedFactor), Velocity.Y, 0);
-			if (Math.Abs(Velocity.Y) >= info.Speed)
+			if (Math.Abs(Velocity.Y) >= info.Speed * speedFactor)
 				Velocity = new CPos(Velocity.X, (int)(Math.Sign(Velocity.Y) * info.Speed * speedFactor), 0);
 
 			return acceleration;

@@ -98,7 +98,7 @@
     <Compile Include="Game\Tooltip.cs" />
     <Compile Include="Game\UI\Objects\Button.cs" />
     <Compile Include="Game\UI\Objects\CheckBox.cs" />
-    <Compile Include="Game\UI\Objects\EffectListItem.cs" />
+    <Compile Include="Game\UI\Objects\SpellListItem.cs" />
     <Compile Include="Game\UI\Objects\GameSaveItem.cs" />
     <Compile Include="Game\UI\Objects\GameSaveList.cs" />
     <Compile Include="Game\UI\Objects\Panel.cs" />
