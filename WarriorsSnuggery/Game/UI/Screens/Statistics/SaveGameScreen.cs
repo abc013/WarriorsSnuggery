@@ -19,7 +19,7 @@ namespace WarriorsSnuggery.UI
 			this.game = game;
 			Title.Position = new CPos(0, -4096, 0);
 
-			list = new GameSaveList(new CPos(0, 1024, 0), new MPos((int)(WindowInfo.UnitWidth * 128), 4096), 5, "UI_wood1", "UI_save", "UI_wood3", "UI_wood2");
+			list = new GameSaveList(new CPos(0, 1024, 0), new MPos((int)(WindowInfo.UnitWidth * 128), 4096), PanelManager.GetType("wooden"), "UI_save");
 
 			back = ButtonCreator.Create("wooden", new CPos(4096, 6144, 0), "Back", () => game.ChangeScreen(ScreenType.MENU));
 			save = ButtonCreator.Create("wooden", new CPos(0, 6144, 0), "Save", () => { saveGame(); game.RefreshSaveGameScreens(); });
@@ -126,7 +126,7 @@ namespace WarriorsSnuggery.UI
 
 			back = ButtonCreator.Create("wooden", new CPos(4096, 6144, 0), "Back", () => ActiveScreen = false);
 			create = ButtonCreator.Create("wooden", new CPos(0, 6144, 0), "Save", save);
-			@new = new TextBox(CPos.Zero, "Name", 20, false, TextBoxCreator.GetType("wooden"), save);
+			@new = new TextBox(CPos.Zero, "Name", 20, false, PanelManager.GetType("wooden"), save);
 			warning = new TextLine(new CPos(0, 1024, 0), IFont.Pixel16, TextLine.OffsetType.MIDDLE);
 			warning.WriteText(Color.Red + "WARNING: " + Color.White + "You have to save over the just created save!");
 		}

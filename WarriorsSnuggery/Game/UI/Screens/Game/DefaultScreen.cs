@@ -35,7 +35,7 @@ namespace WarriorsSnuggery.UI
 				Title.SetColor(Color.Green);
 
 			// SECTION ACTORS
-			actorPanel = new PanelList(new CPos((int)(WindowInfo.UnitWidth * 512) - 1080, -3072 / 2, 0), new MPos(1024, 8192 - 3072 / 2), new MPos(512, 512), 6, "UI_wood1", "UI_wood3", "UI_wood2");
+			actorPanel = new PanelList(new CPos((int)(WindowInfo.UnitWidth * 512) - 1080, -3072 / 2, 0), new MPos(1024, 8192 - 3072 / 2), new MPos(512, 512), PanelManager.GetType("wooden"));
 			var list = new List<ActorType>();
 			foreach (var n in ActorCreator.GetNames())
 			{
@@ -54,7 +54,7 @@ namespace WarriorsSnuggery.UI
 			actorPanelContent = list.ToArray();
 
 			// SECTION EFFECTS
-			effectPanel = new PanelList(new CPos(0, (int)(WindowInfo.UnitHeight * 512) - 3072 - 128, 0), new MPos(8192, 256), new MPos(256, 256), 6, "UI_stone1", "UI_stone2");
+			effectPanel = new PanelList(new CPos(0, (int)(WindowInfo.UnitHeight * 512) - 3072 - 128, 0), new MPos(8192, 256), new MPos(256, 256), PanelManager.GetType("stone"));
 			foreach (var effect in Spells.SpellTreeLoader.SpellTree)
 			{
 				var item = new SpellListItem(CPos.Zero, new MPos(256, 256), effect, game, false);
@@ -65,7 +65,7 @@ namespace WarriorsSnuggery.UI
 				effectPanel.Add(item);
 			}
 
-			background = new Panel(new CPos(0, (int)(WindowInfo.UnitHeight * 512) - 3072 / 2 + 64, 0), new MPos(8192 / 64 * 6, (3072 - 64) / 64 / 2 * 3), 6, "UI_wood1", "UI_wood3", "UI_wood2");
+			background = new Panel(new CPos(0, (int)(WindowInfo.UnitHeight * 512) - 3072 / 2 + 64, 0), new MPos(8192 / 64 * 6, (3072 - 64) / 64 / 2 * 3), PanelManager.GetType("wooden"));
 
 			// SECTION MONEY
 			money = new ImageRenderable(TextureManager.Texture("UI_money"));

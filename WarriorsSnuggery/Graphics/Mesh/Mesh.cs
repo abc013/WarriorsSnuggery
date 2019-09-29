@@ -1,6 +1,5 @@
 using OpenTK;
 using System;
-using WarriorsSnuggery.Objects;
 
 namespace WarriorsSnuggery.Graphics
 {
@@ -33,7 +32,7 @@ namespace WarriorsSnuggery.Graphics
 			var y = yp / (float)Settings.SheetSize;
 			var w = (xp + width) / (float)Settings.SheetSize;
 			var h = (yp + height) / (float)Settings.SheetSize;
-			var scale = 1/2f + 0.001f;
+			var scale = 1 / 2f + 0.001f;
 
 			TexturedVertex[] vertices =
 			{

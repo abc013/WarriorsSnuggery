@@ -67,16 +67,14 @@ namespace WarriorsSnuggery
 
 		public static void LoadUIRules()
 		{
-			// PERF: put hover, click and normal all in one file and load as sprite to save load time and copy time;
-			ButtonCreator.AddType(new PanelType(0.5f, 2.5f, "UI_wood1", "UI_wood2", "UI_wood3", 4), "wooden");
+			PanelManager.AddType(new PanelType("UI_wood1", "UI_wood2", "UI_wood3", 4), "wooden");
+			PanelManager.AddType(new PanelType("UI_stone1", "UI_wood3", "UI_stone2", 4), "stone");
 
 			CheckBoxCreator.AddType(new CheckBoxType(new ImageRenderable(TextureManager.Texture("Check"), 1.5f), new ImageRenderable(TextureManager.Texture("CheckOn"), 1.5f), new ImageRenderable(TextureManager.Texture("CheckClick"), 1.5f), 0.6f, 0.6f), "wooden");
 			CheckBoxCreator.AddType(new CheckBoxType(new ImageRenderable(TextureManager.Texture("check_terrain"), 1.5f), new ImageRenderable(TextureManager.Texture("check_terrain_hover"), 1.5f), new ImageRenderable(TextureManager.Texture("check_terrain_click"), 1.5f), 0.5f, 0.5f), "terrain_editor");
 			CheckBoxCreator.AddType(new CheckBoxType(new ImageRenderable(TextureManager.Texture("check_actor"), 1.5f), new ImageRenderable(TextureManager.Texture("check_actor_hover"), 1.5f), new ImageRenderable(TextureManager.Texture("check_actor_click"), 1.5f), 0.5f, 0.5f), "actor_editor");
 			CheckBoxCreator.AddType(new CheckBoxType(new ImageRenderable(TextureManager.Texture("check_object"), 1.5f), new ImageRenderable(TextureManager.Texture("check_object_hover"), 1.5f), new ImageRenderable(TextureManager.Texture("check_object_click"), 1.5f), 0.5f, 0.5f), "object_editor");
 			CheckBoxCreator.AddType(new CheckBoxType(new ImageRenderable(TextureManager.Texture("check_wall"), 1.5f), new ImageRenderable(TextureManager.Texture("check_wall_hover"), 1.5f), new ImageRenderable(TextureManager.Texture("check_wall_click"), 1.5f), 0.5f, 0.5f), "wall_editor");
-
-			TextBoxCreator.AddType(new PanelType(0f, 0f, "UI_wood1", "UI_wood2", "UI_wood3", 4), "wooden");
 		}
 	}
 }

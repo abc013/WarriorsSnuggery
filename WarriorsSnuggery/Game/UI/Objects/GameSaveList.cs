@@ -4,7 +4,7 @@
 	{
 		readonly string saveTexture;
 		readonly MPos size;
-		public GameSaveList(CPos pos, MPos size, int bordersize, string texture, string saveTexture, string borderTexture = "", string activeTexture = "") : base(pos, size, new MPos(size.X, 1024), bordersize, texture, borderTexture, activeTexture)
+		public GameSaveList(CPos pos, MPos size, PanelType type, string saveTexture) : base(pos, size, new MPos(size.X, 1024), type)
 		{
 			this.size = size;
 			this.saveTexture = saveTexture;

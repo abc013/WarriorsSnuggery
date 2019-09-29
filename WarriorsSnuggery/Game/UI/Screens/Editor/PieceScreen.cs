@@ -25,7 +25,7 @@ namespace WarriorsSnuggery.UI
 			this.game = game;
 			Title.Position = new CPos(0, -4096, 0);
 
-			mapSelection = new PanelList(new CPos(0, 1024, 0), new MPos(4096, 4096), new MPos(512, 512), 4, "UI_wood1", "UI_wood3", "UI_wood2");
+			mapSelection = new PanelList(new CPos(0, 1024, 0), new MPos(4096, 4096), new MPos(512, 512), PanelManager.GetType("wooden"));
 			foreach (var dir in Directory.GetDirectories(FileExplorer.Maps))
 			{
 				var file = Directory.GetFiles(dir).Where(s => s.EndsWith(".yaml", StringComparison.CurrentCulture));

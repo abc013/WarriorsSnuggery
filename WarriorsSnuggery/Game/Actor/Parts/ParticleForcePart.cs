@@ -1,5 +1,4 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using WarriorsSnuggery.Objects.Particles;
 
 namespace WarriorsSnuggery.Objects.Parts
@@ -50,7 +49,7 @@ namespace WarriorsSnuggery.Objects.Parts
 			if (info.MaxRange <= 0 || (info.AffectOnlyWhenPlayer && !self.IsPlayer))
 				return;
 
-			foreach(var obj in self.World.Objects)
+			foreach (var obj in self.World.Objects)
 			{
 				if (!(obj is Particle particle) || !particle.AffectedByObjects)
 					continue; // TODO cache affectable particles

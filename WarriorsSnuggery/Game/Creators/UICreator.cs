@@ -4,7 +4,7 @@ using WarriorsSnuggery.Objects;
 
 namespace WarriorsSnuggery.UI
 {
-	public static class ButtonCreator
+	public static class PanelManager
 	{
 		static readonly Dictionary<string, PanelType> types = new Dictionary<string, PanelType>();
 
@@ -20,10 +20,13 @@ namespace WarriorsSnuggery.UI
 
 			return types[name];
 		}
+	}
 
-		public static Button Create(string name, CPos position, string text, Action func)
+	public static class ButtonCreator
+	{
+		public static Button Create(string type, CPos position, string text, Action onClick)
 		{
-			return new Button(position, text, GetType(name), func);
+			return new Button(position, text, PanelManager.GetType(type), onClick);
 		}
 	}
 
@@ -52,24 +55,9 @@ namespace WarriorsSnuggery.UI
 
 	public static class TextBoxCreator
 	{
-		static readonly Dictionary<string, PanelType> types = new Dictionary<string, PanelType>();
-
-		public static void AddType(PanelType info, string name)
+		public static TextBox Create(string type, CPos position, string text, int maximumLength = 10, bool onlyNumbers = false, Action onEnter = null)
 		{
-			types.Add(name, info);
-		}
-
-		public static PanelType GetType(string name)
-		{
-			if (!types.ContainsKey(name))
-				throw new MissingInfoException(name);
-
-			return types[name];
-		}
-
-		public static TextBox Create(string name, CPos position, string text, int maximumLength = 10, bool onlyNumbers = false, Action onEnter = null)
-		{
-			return new TextBox(position, text, maximumLength, onlyNumbers, GetType(name), onEnter);
+			return new TextBox(position, text, maximumLength, onlyNumbers, PanelManager.GetType(type), onEnter);
 		}
 	}
 }
