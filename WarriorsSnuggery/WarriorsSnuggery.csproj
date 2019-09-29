@@ -164,6 +164,7 @@
     <Compile Include="Map\Generation\TerrainGenerator.cs" />
     <Compile Include="Map\TerrainLayer.cs" />
     <Compile Include="Position\Angle.cs" />
+    <Compile Include="SpellTree\SpellManager.cs" />
     <Compile Include="VisibilitySolver.cs" />
     <Compile Include="Map\WallLayer.cs" />
     <Compile Include="Game\Actor\Actor.cs" />
