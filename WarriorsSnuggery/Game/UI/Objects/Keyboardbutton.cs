@@ -56,7 +56,6 @@ namespace WarriorsSnuggery.Objects
 		readonly ImageRenderable pressed;
 		readonly TextRenderable keyDisplay;
 
-		readonly bool changeable;
 		int blinkTick;
 
 		bool mouseOnBox;
@@ -64,11 +63,10 @@ namespace WarriorsSnuggery.Objects
 
 		public char Key;
 
-		public KeyboardButton(CPos position, char key, TextureInfo buttons, IFont font, Color color, bool changeable = true)
+		public KeyboardButton(CPos position, char key, TextureInfo buttons, IFont font, Color color)
 		{
 			Key = key;
-			this.changeable = changeable;
-			var textures = buttons.GetTextures();
+			var textures = TextureManager.Sprite(buttons);
 
 			released = new ImageRenderable(textures[0]);
 			released.SetPosition(position);

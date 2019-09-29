@@ -31,7 +31,7 @@ namespace WarriorsSnuggery.Objects.Particles
 
 		public Particle[] Create(World world, CPos position, int height)
 		{
-			switch(AreaType)
+			switch (AreaType)
 			{
 				case ParticleAreaSpawnType.CIRCLE:
 					return createCircle(world.Game.SharedRandom, position, height);
@@ -76,7 +76,7 @@ namespace WarriorsSnuggery.Objects.Particles
 		Particle[] createBox(Random random, CPos position, int height)
 		{
 			var particles = new Particle[Count];
-			var step = (Radius * 2) / (Count/4);
+			var step = (Radius * 2) / (Count / 4);
 			var side = (byte)0;
 			for (int i = 0; i < Count; i++)
 			{
@@ -85,7 +85,7 @@ namespace WarriorsSnuggery.Objects.Particles
 
 				var x = 0;
 				var y = 0;
-				switch(side)
+				switch (side)
 				{
 					case 1:
 						x = -Radius;

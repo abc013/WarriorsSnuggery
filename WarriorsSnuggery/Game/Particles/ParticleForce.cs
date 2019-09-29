@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace WarriorsSnuggery.Objects.Particles
+﻿namespace WarriorsSnuggery.Objects.Particles
 {
 	public class ParticleForce
 	{

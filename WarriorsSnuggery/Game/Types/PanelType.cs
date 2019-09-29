@@ -4,27 +4,21 @@
  * Time: 00:21
  */
 
-namespace WarriorsSnuggery.Objects
+namespace WarriorsSnuggery.UI
 {
 	public class PanelType
 	{
-		public readonly string DefaultString;
-		public readonly string ActiveString;
-		public readonly string BorderString;
-		public readonly int Border;
+		public readonly string Background;
+		public readonly string Background2;
+		public readonly string Border;
+		public readonly int BorderWidth;
 
-		public readonly int Height;
-		public readonly int Width;
-
-		public PanelType(float height, float width, string defaultString, string activeString, string borderString, int border)
+		public PanelType(string background, string background2, string border, int borderWidth)
 		{
-			Height = (int)(height * 512);
-			Width = (int)(width * 512);
-
-			DefaultString = defaultString;
-			BorderString = borderString;
+			Background = background;
+			Background2 = background2;
 			Border = border;
-			ActiveString = activeString;
+			BorderWidth = borderWidth;
 		}
 	}
 }

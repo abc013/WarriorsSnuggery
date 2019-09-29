@@ -320,7 +320,7 @@ namespace WarriorsSnuggery
 
 				tick.SetColor(tickColor);
 				tick.SetText("Tick " + Window.Current.TPS + " @ " + Window.Current.TMS + " ms");
-				
+
 				var renderColor = Color.White;
 				if (Window.Current.FPS < Settings.FrameLimiter - 20)
 					renderColor = Color.Red;
@@ -404,7 +404,7 @@ namespace WarriorsSnuggery
 		{
 			ScreenControl.ShowScreen(screen);
 
-			if(screen == ScreenType.DEFEAT)
+			if (screen == ScreenType.DEFEAT)
 				ScreenControl.NewDefaultScreen(ScreenControl.Focused);
 		}
 

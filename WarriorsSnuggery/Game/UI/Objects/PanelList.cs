@@ -6,7 +6,6 @@
 using System;
 using System.Collections.Generic;
 using WarriorsSnuggery.Graphics;
-using WarriorsSnuggery.Objects;
 
 namespace WarriorsSnuggery.UI
 {
@@ -20,7 +19,7 @@ namespace WarriorsSnuggery.UI
 		protected bool mouseOnPanel;
 		int scrolled;
 
-		public PanelList(CPos pos, MPos size, MPos itemSize, int bordersize, string texture, string border = "", string highlight = "") : base(pos, new MPos(size.X / 64 * 3, size.Y / 64 * 3), bordersize, texture, border, highlight != "" ? new ImageRenderable(TextureManager.Texture(highlight), new MPos(itemSize.X / 64 * 3, itemSize.Y / 64 * 3)) : null)
+		public PanelList(CPos pos, MPos size, MPos itemSize, PanelType type) : base(pos, new MPos(size.X / 64 * 3, size.Y / 64 * 3), type.BorderWidth, type.Background, type.Border, type.Background2 != "" ? new ImageRenderable(TextureManager.Texture(type.Background2), new MPos(itemSize.X / 64 * 3, itemSize.Y / 64 * 3)) : null)
 		{
 			intSize = size;
 			this.itemSize = itemSize;

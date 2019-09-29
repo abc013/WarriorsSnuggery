@@ -1,6 +1,5 @@
 ﻿using System;
 using WarriorsSnuggery.Graphics;
-using WarriorsSnuggery.Objects;
 
 namespace WarriorsSnuggery.UI
 {
@@ -15,8 +14,8 @@ namespace WarriorsSnuggery.UI
 			set
 			{
 				position = value;
-				inner.SetPosition(position);
-				outer.SetPosition(position);
+				background.SetPosition(position);
+				border.SetPosition(position);
 				if (Highlight != null)
 					Highlight.SetPosition(position);
 			}
@@ -32,8 +31,8 @@ namespace WarriorsSnuggery.UI
 			set
 			{
 				rotation = value;
-				inner.SetRotation(rotation);
-				outer.SetRotation(rotation);
+				background.SetRotation(rotation);
+				border.SetRotation(rotation);
 				if (Highlight != null)
 					Highlight.SetRotation(rotation);
 			}
@@ -49,8 +48,8 @@ namespace WarriorsSnuggery.UI
 			set
 			{
 				scale = value;
-				inner.SetScale(scale);
-				outer.SetScale(scale);
+				background.SetScale(scale);
+				border.SetScale(scale);
 				if (Highlight != null)
 					Highlight.SetScale(scale);
 			}
@@ -66,53 +65,49 @@ namespace WarriorsSnuggery.UI
 			set
 			{
 				color = value;
-				inner.SetColor(color);
-				outer.SetColor(color);
+				background.SetColor(color);
+				border.SetColor(color);
 				if (Highlight != null)
 					Highlight.SetColor(color);
 			}
 		}
 		Color color = Color.White;
 
-		readonly GraphicsObject inner;
-		readonly GraphicsObject outer;
+		public virtual MPos Bounds
+		{
+			get; private set;
+		}
+
+		readonly GraphicsObject background;
+		readonly GraphicsObject border;
 		public readonly GraphicsObject Highlight;
 
 		public bool HighlightVisible;
 
-		public Panel(CPos position, MPos size, PanelType type) : this(position, size, type.Border, type.DefaultString, type.BorderString, type.ActiveString)
-		{
-		}
-		public Panel(CPos position, MPos size, int border, string inner, string outer, string highlight) : this(position, size, border, inner, outer, highlight != "" ? new ImageRenderable(TextureManager.Texture(highlight), size) : null)
-		{
-		}
+		public Panel(CPos position, MPos bounds, PanelType type) : this(position, bounds, type.BorderWidth, type.Background, type.Border, type.Background2 != "" ? new ImageRenderable(TextureManager.Texture(type.Background2), bounds) : null) { }
 
-		public Panel(CPos position, MPos size, int border, string inner, string outer, ImageRenderable highlight)
+		public Panel(CPos position, MPos bounds, int borderWidth, string background, string border, ImageRenderable background2)
 		{
-			this.inner = new ImageRenderable(TextureManager.Texture(inner), size);
-			this.outer = new ImageRenderable(TextureManager.Texture(outer), size + new MPos(border, border));
-			if (highlight != null) Highlight = highlight;
+			this.background = new ImageRenderable(TextureManager.Texture(background), bounds);
+			this.border = new ImageRenderable(TextureManager.Texture(border), bounds + new MPos(borderWidth, borderWidth));
+			if (background2 != null) Highlight = background2;
+
+			Bounds = new MPos((int)((bounds.X + borderWidth) * MasterRenderer.PixelMultiplier * 512), (int)((bounds.Y + borderWidth) * MasterRenderer.PixelMultiplier * 512));
 
 			Position = position;
 		}
 
 		public virtual void Render()
 		{
-			outer.Render();
-			inner.Render();
+			border.Render();
+			background.Render();
 
 			if (HighlightVisible && Highlight != null)
 				Highlight.Render();
 		}
 
-		public virtual void Tick()
-		{
+		public virtual void Tick() { }
 
-		}
-
-		public virtual void Dispose()
-		{
-			// Does not need any dispose
-		}
+		public virtual void Dispose() { }
 	}
 }

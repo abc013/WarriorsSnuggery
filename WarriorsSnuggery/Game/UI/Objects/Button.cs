@@ -12,7 +12,6 @@ namespace WarriorsSnuggery.UI
 	public class Button : Panel
 	{
 		readonly TextLine text;
-		readonly PanelType type;
 		readonly Action action;
 
 		bool mouseOnButton;
@@ -21,7 +20,6 @@ namespace WarriorsSnuggery.UI
 		{
 			this.text = new TextLine(pos + new CPos(256, 0, 0), IFont.Pixel16, TextLine.OffsetType.MIDDLE);
 			this.text.WriteText(text);
-			this.type = type;
 			this.action = action;
 		}
 
@@ -60,7 +58,7 @@ namespace WarriorsSnuggery.UI
 		{
 			var mousePosition = MouseInput.WindowPosition;
 
-			mouseOnButton = mousePosition.X > Position.X - type.Width && mousePosition.X < Position.X + type.Width && mousePosition.Y > Position.Y - type.Height && mousePosition.Y < Position.Y + type.Height;
+			mouseOnButton = mousePosition.X > Position.X - Bounds.X && mousePosition.X < Position.X + Bounds.X && mousePosition.Y > Position.Y - Bounds.Y && mousePosition.Y < Position.Y + Bounds.Y;
 
 			if (MouseInput.IsLeftClicked && mouseOnButton && action != null)
 				action();

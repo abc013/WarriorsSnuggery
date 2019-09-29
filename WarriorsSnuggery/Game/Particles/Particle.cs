@@ -49,7 +49,7 @@ namespace WarriorsSnuggery.Objects.Particles
 			var xFloat = 0f;
 			var yFloat = 0f;
 
-			switch(force.Type)
+			switch (force.Type)
 			{
 				case ParticleForceType.FORCE:
 					xFloat = (float)(force.Strength * Math.Cos(angle)) * ratio;
@@ -84,7 +84,7 @@ namespace WarriorsSnuggery.Objects.Particles
 
 		public void AffectRotation(ParticleForce force, float ratio, CPos origin)
 		{
-			var angle = Position.AngleToXY(origin) - 2*(float)Math.PI + Rotation.CastToAngleRange().Z; //TODO make better
+			var angle = Position.AngleToXY(origin) - 2 * (float)Math.PI + Rotation.CastToAngleRange().Z; //TODO make better
 
 			if (angle < -Math.PI)
 				angle += 2 * (float)Math.PI;
@@ -122,7 +122,7 @@ namespace WarriorsSnuggery.Objects.Particles
 		public override void Tick()
 		{
 			base.Tick();
-			
+
 			transform_velocity += new CPos(0, 0, -type.Gravity);
 			Rotation += rotate_velocity;
 

@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using WarriorsSnuggery.Graphics;
 using WarriorsSnuggery.Objects;
-using WarriorsSnuggery.Objects.Parts;
 using WarriorsSnuggery.Objects.Particles;
+using WarriorsSnuggery.Objects.Parts;
 
 namespace WarriorsSnuggery
 {

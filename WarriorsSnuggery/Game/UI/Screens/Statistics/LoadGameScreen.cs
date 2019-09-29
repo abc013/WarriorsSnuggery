@@ -16,7 +16,7 @@ namespace WarriorsSnuggery.UI
 			this.game = game;
 			Title.Position = new CPos(0, -4096, 0);
 
-			list = new GameSaveList(new CPos(0, 1024, 0), new MPos((int)(WindowInfo.UnitWidth * 128), 4096), 5, "UI_wood1", "UI_save", "UI_wood3", "UI_wood2");
+			list = new GameSaveList(new CPos(0, 1024, 0), new MPos((int)(WindowInfo.UnitWidth * 128), 4096), PanelManager.GetType("wooden"), "UI_save");
 
 			back = ButtonCreator.Create("wooden", new CPos(4096, 6144, 0), "Back", () => game.ChangeScreen(ScreenType.MENU));
 			void loadAction()

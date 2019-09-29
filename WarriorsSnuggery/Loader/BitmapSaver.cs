@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Drawing;
-using System.IO;
+﻿using System.Drawing;
 using System.Runtime.InteropServices;
 
 namespace WarriorsSnuggery.Loader
@@ -14,7 +8,7 @@ namespace WarriorsSnuggery.Loader
 		public static void Save(string filename, float[] data, MPos size)
 		{
 			byte[] data2 = new byte[data.Length];
-			for (int i = 0; i < data.Length/4; i++)
+			for (int i = 0; i < data.Length / 4; i++)
 			{
 				data2[i * 4 + 2] = (byte)(data[i * 4] * 255);
 				data2[i * 4 + 1] = (byte)(data[i * 4 + 1] * 255);
