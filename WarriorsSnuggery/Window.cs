@@ -274,9 +274,16 @@ namespace WarriorsSnuggery
 			MouseInput.UpdateMousePosition(new MPos(e.Position.X, e.Position.Y));
 		}
 
-		protected override void OnKeyPress(KeyPressEventArgs e)
+		protected override void OnKeyDown(KeyboardKeyEventArgs e)
 		{
-			CharInput = e.KeyChar; //TODO
+			KeyInput.KeyPressed(e);
+			var str = e.Key.ToString();
+			if (str.Length == 1)
+			{
+				CharInput = str[0];
+				if (!e.Shift)
+					CharInput = char.ToLower(CharInput);
+			}
 		}
 	}
 }

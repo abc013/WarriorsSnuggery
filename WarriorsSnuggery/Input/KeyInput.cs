@@ -133,5 +133,10 @@ namespace WarriorsSnuggery
 			HitCooldown--;
 			state = Keyboard.GetState();
 		}
+
+		public static void KeyPressed(KeyboardKeyEventArgs key)
+		{
+
+		}
 	}
 }
