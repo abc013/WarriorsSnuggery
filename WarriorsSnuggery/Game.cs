@@ -247,19 +247,19 @@ namespace WarriorsSnuggery
 
 				if (KeyInput.IsKeyDown("altleft", 0))
 				{
-					if (KeyInput.IsKeyDown("v", 10))
+					if (KeyInput.IsKeyDown("v", 10) && Type != GameType.EDITOR)
 					{
 						World.LocalPlayer.Health.HP = 0;
 					}
-					if (KeyInput.IsKeyDown("b", 10))
+					if (KeyInput.IsKeyDown("b", 10) && Type != GameType.EDITOR)
 					{
 						World.LocalPlayer.Health.HP += 100;
 					}
 					if (KeyInput.IsKeyDown("n", 10))
 					{
-						World.Game.Statistics.Mana += 100;
-						if (World.Game.Statistics.Mana > World.Game.Statistics.MaxMana)
-							World.Game.Statistics.Mana = World.Game.Statistics.MaxMana;
+						Statistics.Mana += 100;
+						if (Statistics.Mana > Statistics.MaxMana)
+							Statistics.Mana = Statistics.MaxMana;
 					}
 					if (KeyInput.IsKeyDown("m", 10))
 					{

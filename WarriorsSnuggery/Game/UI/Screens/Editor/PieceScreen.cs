@@ -36,13 +36,17 @@ namespace WarriorsSnuggery.UI
 				var file = Directory.GetFiles(dir).Where(s => s.EndsWith(".yaml", StringComparison.CurrentCulture));
 				foreach (var map in file)
 				{
-					var parts = new Dictionary<string, MPos>();
 					var name = map.Remove(0, map.LastIndexOf('\\') + 1);
 					name = name.Remove(name.Length - 5);
-					parts.Add(name, MPos.Zero);
 
-					// TODO: read all maps in in the begin? BUT: would need a big amount of memory 
-					var size = RuleReader.Read(FileExplorer.FindPath(FileExplorer.Maps, name, ".yaml"), name + ".yaml").First(n => n.Key == "Size").Convert<MPos>();
+					var node = RuleReader.Read(FileExplorer.FindPath(FileExplorer.Maps, name, ".yaml"), name + ".yaml").FirstOrDefault(n => n.Key == "Size");
+					if (node == null)
+					{
+						Log.WriteDebug(string.Format("Failed to load map {0}. Size is not given.", name));
+						continue;
+					}
+
+					var size = node.Convert<MPos>();
 
 					mapSelection.Add(new PanelItem(CPos.Zero, new ImageRenderable(TextureManager.Texture("UI_map")), new MPos(512, 512), name, new[] { Color.Grey + "[" + size.X + "," + size.Y + "]" },
 						() =>
