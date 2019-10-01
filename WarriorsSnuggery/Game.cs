@@ -207,7 +207,7 @@ namespace WarriorsSnuggery
 				}
 
 				// camera input
-				if (!ScreenControl.CursorOnUI() && !Camera.LockedToPlayer)
+				if (!ScreenControl.CursorOnUI() && !(Camera.LockedToPlayer && World.PlayerAlive))
 				{
 					var mouse = MouseInput.WindowPosition;
 
