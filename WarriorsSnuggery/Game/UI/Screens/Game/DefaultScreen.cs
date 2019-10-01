@@ -18,7 +18,6 @@ namespace WarriorsSnuggery.UI
 		readonly Panel background;
 		readonly PanelList actorPanel;
 		readonly SpellList spellList;
-		readonly ActorType[] actorPanelContent;
 		int cashCooldown;
 		int lastCash;
 		float healthPercentage;
@@ -36,7 +35,7 @@ namespace WarriorsSnuggery.UI
 
 			// SECTION ACTORS
 			actorPanel = new PanelList(new CPos((int)(WindowInfo.UnitWidth * 512) - 1080, -3072 / 2, 0), new MPos(1024, 8192 - 3072 / 2), new MPos(512, 512), PanelManager.GetType("wooden"));
-			var list = new List<ActorType>();
+
 			foreach (var n in ActorCreator.GetNames())
 			{
 				var a = ActorCreator.GetType(n);
@@ -48,10 +47,8 @@ namespace WarriorsSnuggery.UI
 					{
 						Scale = scale
 					});
-					list.Add(a);
 				}
 			}
-			actorPanelContent = list.ToArray();
 
 			// SECTION EFFECTS
 			spellList = new SpellList(new CPos(0, (int)(WindowInfo.UnitHeight * 512) - 3072 - 128, 0), new MPos(8192, 512), new MPos(512, 512), PanelManager.GetType("stone"));

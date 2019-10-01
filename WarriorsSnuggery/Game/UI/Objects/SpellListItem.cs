@@ -11,6 +11,7 @@ namespace WarriorsSnuggery.UI
 
 		int tick;
 		readonly bool unlocked;
+		int progress;
 
 		public SpellListItem(CPos pos, MPos size, SpellTreeNode node, SpellCaster caster, Game game, bool showDesc) : base(pos, new IImageSequenceRenderable(node.Images, node.Icon.Tick), size, node.Name, node.getInformation(showDesc), null)
 		{
@@ -25,18 +26,28 @@ namespace WarriorsSnuggery.UI
 
 			if (caster.Activated)
 			{
+				progress = (int)(caster.RemainingDuration * -1024) + 512;
 				tick++;
 				var sin = (float)Math.Sin(tick / 8f) * 0.2f + 0.2f;
 				SetColor(Color.White + new Color(sin, sin, sin));
 			}
 			else if (caster.Recharging)
 			{
-				SetColor(Color.Grey);
+				progress = (int)(caster.RechargeProgress * -1024) + 512;
+				SetColor(Color.White);
 			}
 			else
 			{
 				SetColor(unlocked ? Color.White : Color.Black);
 			}
+		}
+
+		public override void Render()
+		{
+			if (!caster.Ready)
+				ColorManager.DrawRect(Position - new CPos(512, 512, 0), Position + new CPos(512, progress, 0), caster.Recharging ? new Color(0, 0, 0, 127) : new Color(255, 255, 255, 63));
+
+			base.Render();
 		}
 
 		protected override void takeAction()

@@ -43,6 +43,16 @@ namespace WarriorsSnuggery.Spells
 
 		public bool Activated;
 		public bool Recharging;
+		public float RemainingDuration
+		{
+			get { return 1 - duration / (float)node.Spell.Duration; }
+			set { }
+		}
+		public float RechargeProgress
+		{
+			get { return 1 - recharge / (float)node.Spell.Cooldown;  }
+			set { }
+		}
 		public bool Ready
 		{
 			get { return !(Activated || Recharging); }
@@ -75,6 +85,8 @@ namespace WarriorsSnuggery.Spells
 
 			if (game.Statistics.Mana < node.Spell.ManaCost)
 				return false;
+
+			game.Statistics.Mana -= node.Spell.ManaCost;
 
 			Activated = true;
 			recharge = node.Spell.Cooldown;
