@@ -95,7 +95,7 @@
     <Compile Include="Game\Particles\ParticleForce.cs" />
     <Compile Include="Game\Particles\ParticleForceType.cs" />
     <Compile Include="Game\Particles\ParticleSpawner.cs" />
-    <Compile Include="Game\Text\Text.cs" />
+    <Compile Include="Game\Text\TextBlock.cs" />
     <Compile Include="Game\Tooltip.cs" />
     <Compile Include="Game\UI\Objects\Button.cs" />
     <Compile Include="Game\UI\Objects\CheckBox.cs" />

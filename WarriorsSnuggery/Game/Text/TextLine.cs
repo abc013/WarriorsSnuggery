@@ -64,7 +64,7 @@ namespace WarriorsSnuggery.Objects
 
 		public TextLine(CPos pos, IFont font, OffsetType type = OffsetType.LEFT)
 		{
-			Position = pos + new CPos(0, 64, 0);
+			Position = pos;
 			this.font = font;
 			offset = type;
 		}
@@ -225,17 +225,17 @@ namespace WarriorsSnuggery.Objects
 			{
 				case OffsetType.MIDDLE:
 					for (int i = 0; i < (chars.Count - 1); i++)
-						width -= (charWidth(String[i]) + 1);
+						width -= charWidth(String[i]) + 1;
 					width /= 2;
 					break;
 				case OffsetType.RIGHT:
 					for (int i = 0; i < chars.Count - 1; i++)
-						width += -(charWidth(String[i]) + 1);
+						width -= charWidth(String[i]) + 1;
 					break;
 			}
 			for (int i = 0; i < chars.Count; i++)
 			{
-				chars[i].SetPosition(Position.ToVector() + new Vector((width + 1) * TextRenderable.SizeMultiplier, 0, 0, 0));
+				chars[i].SetPosition(Position.ToVector() + new Vector((width + 1) * IFont.FontSizeMultiplier, 0, 0, 0));
 				width += charWidth(String[i]) + 1;
 			}
 		}
@@ -243,7 +243,7 @@ namespace WarriorsSnuggery.Objects
 		int charWidth(char @char)
 		{
 			if (@char != ' ')
-				return font.CharWidth[TextureManager.Characters.IndexOf(@char)];
+				return font.getCharWidth(@char);
 
 			return font.MaxSize.X / 2;
 		}
@@ -259,10 +259,7 @@ namespace WarriorsSnuggery.Objects
 			}
 		}
 
-		public virtual void Tick()
-		{
-
-		}
+		public virtual void Tick() { }
 
 		public void Dispose()
 		{

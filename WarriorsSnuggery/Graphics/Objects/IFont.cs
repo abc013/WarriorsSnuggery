@@ -31,17 +31,43 @@ namespace WarriorsSnuggery.Graphics
 			Pixel16 = new IFont("Pixel", 16);
 		}
 
+		public const float FontSizeMultiplier = MasterRenderer.PixelMultiplier / 4;
+		public int Gap
+		{
+			get { return 1 * 128 / MasterRenderer.PixelSize; }
+			set { }
+		}
+		public int Width
+		{
+			get { return MaxSize.X * 512 / MasterRenderer.PixelSize; }
+			set { }
+		}
+		public int Height
+		{
+			get { return MaxSize.X * 256 / MasterRenderer.PixelSize; }
+			set { }
+		}
+
 		public readonly ITexture Font;
 		public readonly MPos MaxSize;
-		public readonly int[] CharWidth;
+		public readonly MPos SpaceSize;
 		public readonly TexturedVertex[] Mesh;
+
+		readonly int[] charWidths;
 
 		public IFont(string fontname, int size) : base(MasterRenderer.FontShader, vertices.Length)
 		{
 			IImage.CreateTextureBuffer(vertices);
 
-			Font = TextureManager.Font(fontname, size, out MaxSize, out CharWidth);
+			Font = TextureManager.Font(fontname, size, out MaxSize, out charWidths);
+			SpaceSize = new MPos(MaxSize.X / 2, MaxSize.Y);
+
 			Mesh = TexturedMesh.Character(this);
+		}
+
+		public int getCharWidth(char c)
+		{
+			return charWidths[TextureManager.Characters.IndexOf(c)];
 		}
 
 		// Note: in case of rendering the whole font.

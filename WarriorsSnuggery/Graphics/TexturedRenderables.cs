@@ -4,14 +4,13 @@ namespace WarriorsSnuggery.Graphics
 {
 	public class TextRenderable : GraphicsObject
 	{
-		public const float SizeMultiplier = MasterRenderer.PixelMultiplier / 4;
 		static readonly Vector shadowVector = new Vector(-0.04f / WindowInfo.Ratio, -0.04f, 0f);
 		public Color Color;
 		public char @Char;
 
 		public TextRenderable(CPos position, IFont font, char @char, Color color, int curTextWidth = 0) : base(font == IFont.Pixel16 ? CharManager.Pixel16 : CharManager.Papyrus24)
 		{
-			SetPosition(position.ToVector() + new Vector(curTextWidth * SizeMultiplier, 0, 0, 0));
+			SetPosition(position.ToVector() + new Vector(curTextWidth * IFont.FontSizeMultiplier, 0, 0, 0));
 			Color = color;
 			@Char = @char;
 		}

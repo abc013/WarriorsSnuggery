@@ -10,7 +10,7 @@ namespace WarriorsSnuggery.Graphics
 		{
 			var w = font.MaxSize.X;
 			var h = font.MaxSize.Y;
-			var size = w * TextRenderable.SizeMultiplier;
+			var size = w * IFont.FontSizeMultiplier;
 
 			TexturedVertex[] vertices =
 			{
