@@ -13,7 +13,8 @@ namespace WarriorsSnuggery
 {
 	public static class MasterRenderer
 	{
-		public const float PixelMultiplier = 1f / 24f;
+		public const int PixelSize = 24;
+		public const float PixelMultiplier = 1f / PixelSize;
 
 		public static bool PauseSequences;
 		public static object GLLock = new object();
