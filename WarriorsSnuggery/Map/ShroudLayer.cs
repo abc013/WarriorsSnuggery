@@ -68,7 +68,7 @@ namespace WarriorsSnuggery
 			VisibilitySolver.ShroudUpdated();
 			// Camera automatically updates shroud, so we don't want to do that if we move anyways TODO how about other actors?
 			if (!Camera.LockedToPlayer)
-				WorldRenderer.CheckObjectVisibility();
+				WorldRenderer.CheckVisibility(Camera.LookAt, Camera.DefaultZoom);
 		}
 
 		public void RevealShroudCircular(int team, MPos position, int radius)
@@ -93,7 +93,7 @@ namespace WarriorsSnuggery
 			VisibilitySolver.ShroudUpdated();
 			// Camera automatically updates shroud, so we don't want to do that if we move anyways 
 			if (!Camera.LockedToPlayer)
-				WorldRenderer.CheckObjectVisibility();
+				WorldRenderer.CheckVisibility(Camera.LookAt, Camera.DefaultZoom);
 		}
 
 		public void Dispose()

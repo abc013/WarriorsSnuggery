@@ -12,10 +12,10 @@ namespace WarriorsSnuggery
 		public const float DefaultZoom = 16f;
 		public static float CurrentZoom = DefaultZoom;
 
-		static Matrix4 Projection = Matrix4.Zero;
-		static Matrix4 View = Matrix4.Zero;
-
 		public static Matrix4 Matrix = Matrix4.Zero;
+
+		static Matrix4 projection = Matrix4.Zero;
+		static Matrix4 view = Matrix4.Zero;
 
 		static CPos bounds = CPos.Zero;
 
@@ -39,8 +39,9 @@ namespace WarriorsSnuggery
 			LookAt = CPos.Zero;
 			Locked = false;
 			CurrentZoom = DefaultZoom;
-			CalculatePosition();
-			CalculateScale();
+
+			calculatePosition();
+			calculateScale();
 			UpdateView();
 		}
 
@@ -49,20 +50,27 @@ namespace WarriorsSnuggery
 			if (!ignoreLock && Locked || add == 0)
 				return;
 
+			var oldZoom = CurrentZoom;
+
 			CurrentZoom += add;
 			if (CurrentZoom < DefaultZoom)
 				CurrentZoom = DefaultZoom;
 			else if (CurrentZoom > DefaultZoom * 1.5f)
 				CurrentZoom = DefaultZoom * 1.5f;
 
-			CalculateScale();
+			calculateScale();
 			UpdateView();
+
+			if (Window.Current.Game != null)
+				WorldRenderer.CheckVisibility(oldZoom, CurrentZoom);
 		}
 
 		public static void Move(CPos add, bool ignoreLock = false)
 		{
 			if (!ignoreLock && Locked || add == CPos.Zero)
 				return;
+
+			var oldLookAt = LookAt;
 
 			LookAt = new CPos(LookAt.X + (int)(Settings.ScrollSpeed * 20 * add.X), LookAt.Y + (int)(Settings.ScrollSpeed * 20 * add.Y), 0);
 
@@ -81,8 +89,11 @@ namespace WarriorsSnuggery
 					LookAt = new CPos(LookAt.X, bounds.Y + 512, 0);
 			}
 
-			CalculatePosition();
+			calculatePosition();
 			UpdateView();
+
+			if (Window.Current.Game != null)
+				WorldRenderer.CheckVisibility(oldLookAt, LookAt);
 		}
 
 		public static void Position(CPos pos, bool ignoreLock = false)
@@ -90,16 +101,20 @@ namespace WarriorsSnuggery
 			if (!ignoreLock && Locked || LookAt == pos)
 				return;
 
+			var oldLookAt = LookAt;
 			LookAt = pos;
 
-			CalculatePosition();
+			calculatePosition();
 			UpdateView();
+
+			if (Window.Current.Game != null)
+				WorldRenderer.CheckVisibility(oldLookAt, LookAt);
 		}
 
-		static void CalculatePosition()
+		static void calculatePosition()
 		{
 			var look = -LookAt.ToVector(); // TODO why negate?
-			Matrix4.CreateTranslation(look.X, look.Y, float.MaxValue, out View);
+			Matrix4.CreateTranslation(look.X, look.Y, float.MaxValue, out view);
 
 			// TODO understand OLD CODE
 			//var look = new Vector3(-LookAt.ToVector() / new Vector(CurrentZoom, CurrentZoom, CurrentZoom, CurrentZoom)) * 2;
@@ -113,10 +128,10 @@ namespace WarriorsSnuggery
 				VisibilitySolver.LookAtUpdated();
 		}
 
-		static void CalculateScale()
+		static void calculateScale()
 		{
 			// cast to [-1;1] | we use 0f to stop things glitching out of sight
-			Projection = Matrix4.CreateScale(2 / CurrentZoom / WindowInfo.Ratio, 2 / CurrentZoom, 0f);
+			projection = Matrix4.CreateScale(2 / CurrentZoom / WindowInfo.Ratio, 2 / CurrentZoom, 0f);
 			// Matrix4.CreateOrthographic(newzoom / 2 * WindowInfo.Ratio, newzoom / 2, 100f,0, out Projection);
 
 			if (Window.Current.Game != null)
@@ -125,10 +140,7 @@ namespace WarriorsSnuggery
 
 		public static void UpdateView()
 		{
-			Matrix = View * Projection;
-
-			if (Window.Current.Game != null)
-				WorldRenderer.CheckObjectVisibility();
+			Matrix = view * projection;
 
 			MouseInput.RecalculateMousePosition();
 		}

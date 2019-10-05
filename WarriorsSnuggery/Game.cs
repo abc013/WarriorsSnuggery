@@ -172,7 +172,7 @@ namespace WarriorsSnuggery
 			if (LocalTick == 1)
 			{
 				// Check visibility the first time, one tick after because we have to check for shroud first
-				WorldRenderer.CheckObjectVisibility();
+				WorldRenderer.CheckVisibilityAll();
 			}
 
 			LocalTick++;
