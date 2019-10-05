@@ -124,6 +124,9 @@ namespace WarriorsSnuggery.Objects
 				edgesVisible[1] = false;
 				cornersVisible[0] = false;
 				cornersVisible[1] = false;
+
+				var terrainLeft = world.TerrainLayer.Terrain[Position.X - 1, Position.Y].Type;
+				edgesVisible[3] = !(terrainLeft.ID == Type.ID || terrainLeft.OverlapHeight > Type.OverlapHeight);
 			}
 			else if (isEdgeLeft)
 			{
