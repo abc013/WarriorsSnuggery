@@ -32,21 +32,30 @@ namespace WarriorsSnuggery
 		public static void ZoomUpdated()
 		{
 			var zoom = Camera.CurrentZoom;
-			lastCameraZoom = new MPos((int)Math.Ceiling(zoom * WindowInfo.Ratio + 2), (int)Math.Ceiling(zoom + 2));
+			lastCameraZoom = Zoom(zoom);
 
 			LookAtUpdated();
+		}
+
+		public static MPos Zoom(float zoom)
+		{
+			return new MPos((int)Math.Ceiling(zoom * WindowInfo.Ratio + 2), (int)Math.Ceiling(zoom + 2));
 		}
 
 		public static void LookAtUpdated()
 		{
 			var pos = Camera.LookAt;
 			var zoom = Camera.CurrentZoom;
-
-			var xPos = (int)Math.Floor(pos.X / 1024f - (zoom * WindowInfo.Ratio / 2));
-			var yPos = (int)Math.Floor(pos.Y / 1024f - (zoom / 2));
-			lastCameraPosition = new MPos(xPos, yPos);
+			lastCameraPosition = LookAt(pos, zoom);
 
 			cameraUpdated();
+		}
+
+		public static MPos LookAt(CPos pos, float zoom)
+		{
+			var xPos = (int)Math.Floor(pos.X / 1024f - (zoom * WindowInfo.Ratio / 2));
+			var yPos = (int)Math.Floor(pos.Y / 1024f - (zoom / 2));
+			return new MPos(xPos, yPos);
 		}
 
 		static void cameraUpdated()

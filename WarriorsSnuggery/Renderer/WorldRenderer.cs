@@ -4,6 +4,7 @@
  * 
  */
 using System;
+using System.Linq;
 using System.Collections.Generic;
 using WarriorsSnuggery.Graphics;
 using WarriorsSnuggery.Objects;
@@ -128,14 +129,52 @@ namespace WarriorsSnuggery
 			beforeRender.Remove(renderable);
 		}
 
-		public static void CheckObjectVisibility()
+		public static void CheckVisibilityAll()
 		{
-			CheckTerrainVisibility();
-			CheckActorVisibility();
-			CheckWallVisibility();
+			checkAllTerrain(true);
+			checkAllActors();
+			checkAllWalls();
 		}
 
-		public static void CheckWallVisibility()
+		public static void CheckVisibility(CPos oldPos, CPos newPos)
+		{
+			var zoom = Camera.CurrentZoom;
+
+			CheckVisibility(oldPos, zoom);
+			CheckVisibility(newPos, zoom);
+		}
+
+		public static void CheckVisibility(float oldZoom, float newZoom)
+		{
+			var zoom = Math.Max(oldZoom, newZoom);
+			CheckVisibility(Camera.LookAt, zoom);
+		}
+
+		public static void CheckVisibility(CPos pos, float zoom)
+		{
+			var zoomPos = new CPos((int)(zoom * WindowInfo.Ratio * 512), (int)(zoom * 512), 0);
+			var bottomleft = pos - zoomPos;
+			var topright = pos + zoomPos;
+			checkActors(bottomleft, topright);
+
+			var botLeft = VisibilitySolver.LookAt(pos, zoom);
+			var topRight = botLeft + VisibilitySolver.Zoom(zoom);
+
+			if (botLeft.X < 0) botLeft = new MPos(0, botLeft.Y);
+			if (botLeft.X > world.Map.Bounds.X) botLeft = new MPos(world.Map.Bounds.X, botLeft.Y);
+			if (botLeft.Y < 0) botLeft = new MPos(botLeft.X, 0);
+			if (botLeft.Y > world.Map.Bounds.Y) botLeft = new MPos(botLeft.X, world.Map.Bounds.Y);
+
+			if (topRight.X < 0) topRight = new MPos(0, topRight.Y);
+			if (topRight.X > world.Map.Bounds.X) topRight = new MPos(world.Map.Bounds.X, topRight.Y);
+			if (topRight.Y < 0) topRight = new MPos(topRight.X, 0);
+			if (topRight.Y > world.Map.Bounds.Y) topRight = new MPos(topRight.X, world.Map.Bounds.Y);
+
+			checkTerrain(botLeft, topRight);
+			checkWalls(botLeft, topRight);
+		}
+
+		static void checkAllWalls()
 		{
 			if (world.WallLayer == null)
 				return;
@@ -144,13 +183,62 @@ namespace WarriorsSnuggery
 				w?.CheckVisibility();
 		}
 
-		public static void CheckTerrainVisibility(bool checkEdges = false)
+		static void checkWalls(MPos bottomleft, MPos topright)
+		{
+			if (world.WallLayer == null)
+				return;
+
+			for (int x = bottomleft.X; x < topright.X * 2 + 1; x++)
+			{
+				for (int y = bottomleft.Y; y < topright.Y + 1; y++)
+				{
+					world.WallLayer.Walls[x, y]?.CheckVisibility();
+				}
+			}
+		}
+
+		static void checkAllActors()
+		{
+			foreach (Actor a in world.Actors)
+				a.CheckVisibility();
+
+			foreach (PhysicsObject o in world.Objects)
+				o.CheckVisibility();
+		}
+
+		static void checkActors(CPos bottomleft, CPos topright)
+		{
+			var actors = world.Actors.Where(a => a.Position.X > bottomleft.X && a.Position.X < topright.X && a.Position.Y > bottomleft.Y && a.Position.Y < topright.Y);
+			var objects = world.Objects.Where(a => a.Position.X > bottomleft.X && a.Position.X < topright.X && a.Position.Y > bottomleft.Y && a.Position.Y < topright.Y);
+
+			foreach (Actor a in actors)
+				a.CheckVisibility();
+
+			foreach (PhysicsObject o in objects)
+				o.CheckVisibility();
+		}
+
+		static void checkAllTerrain(bool checkEdges = false)
 		{
 			if (world.TerrainLayer == null)
 				return;
 
 			foreach (Terrain t in world.TerrainLayer.Terrain)
 				t.CheckVisibility(checkEdges);
+		}
+
+		static void checkTerrain(MPos bottomleft, MPos topright, bool checkEdges = false)
+		{
+			if (world.TerrainLayer == null)
+				return;
+
+			for (int x = bottomleft.X; x < topright.X; x++)
+			{
+				for (int y = bottomleft.Y; y < topright.Y; y++)
+				{
+					world.TerrainLayer.Terrain[x, y].CheckVisibility(checkEdges);
+				}
+			}
 		}
 
 		public static void CheckTerrainAround(WPos pos, bool checkEdges = false)
@@ -170,15 +258,6 @@ namespace WarriorsSnuggery
 					}
 				}
 			}
-		}
-
-		public static void CheckActorVisibility()
-		{
-			foreach (Actor a in world.Actors)
-				a.CheckVisibility();
-
-			foreach (PhysicsObject o in world.Objects)
-				o.CheckVisibility();
 		}
 	}
 }

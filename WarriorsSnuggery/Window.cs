@@ -196,7 +196,6 @@ namespace WarriorsSnuggery
 
 		public void NewGame(GameStatistics stats, GameType type = GameType.NORMAL, bool sameSeed = false, MapInfo custom = null, bool loadStatsMap = false)
 		{
-			Camera.Reset();
 			if (Game != null)
 			{
 				Game.Finish();
@@ -243,6 +242,7 @@ namespace WarriorsSnuggery
 			if (stats.Health > 0 && Game.World.LocalPlayer != null && Game.World.LocalPlayer.Health != null)
 				Game.World.LocalPlayer.Health.HP = stats.Health;
 
+			Camera.Reset();
 			MasterRenderer.UpdateView();
 		}
 

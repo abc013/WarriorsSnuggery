@@ -272,7 +272,6 @@ namespace WarriorsSnuggery.UI
 					game.World.TerrainLayer.Set(terrain);
 
 					WorldRenderer.CheckTerrainAround(wpos, true);
-					//WorldRenderer.CheckTerrainVisibility(true);
 
 					break;
 				case Selected.WALL:
@@ -283,7 +282,6 @@ namespace WarriorsSnuggery.UI
 					wpos = new WPos(wpos.X > game.World.Map.Bounds.X ? game.World.Map.Bounds.X : wpos.X, wpos.Y > game.World.Map.Bounds.Y ? game.World.Map.Bounds.Y : wpos.Y, 0);
 					wpos = new WPos(wpos.X * 2 + (horizontal ? 0 : 1), wpos.Y, 0);
 
-					WorldRenderer.CheckWallVisibility();
 					game.World.WallLayer.Set(WallCreator.Create(wpos, wallSelected.ID));
 					break;
 			}
