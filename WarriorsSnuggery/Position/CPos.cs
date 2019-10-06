@@ -78,7 +78,7 @@ namespace WarriorsSnuggery
 			var ans = value / 1024;
 
 			if ((value & (1024 - 1)) > 512)
-				return ans + 1;
+				return ans + Math.Sign(value);
 
 			return ans;
 		}
