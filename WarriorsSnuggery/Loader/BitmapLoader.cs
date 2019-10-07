@@ -56,6 +56,8 @@ namespace WarriorsSnuggery.Loader
 				{
 					if (!(Settings.LoaderWorkAround && scanline == data.Height - 1 && data.Width < 9 && data.Height < 9))
 						Marshal.Copy(data.Scan0 + scanline * stride, scan, 0, stride);
+					else
+						Marshal.Copy(data.Scan0 + scanline * stride - 16, scan, 0, stride);
 
 					for (int px = 0; px < data.Width; px++)
 					{
