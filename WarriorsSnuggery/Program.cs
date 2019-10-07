@@ -72,7 +72,7 @@ namespace WarriorsSnuggery
 			{
 				Console.WriteLine("OpenGL version is under 3.00.");
 				Console.WriteLine("Please run the program with a graphics card that supports > 3.00.");
-				Console.WriteLine("Press 'y' to start the game anyways or press any key to exit.");
+				Console.WriteLine("Press 'y' to start the game anyway or press any key to exit.");
 				var info = Console.ReadKey(true).KeyChar;
 				if (info != 'y')
 					return;
@@ -81,6 +81,7 @@ namespace WarriorsSnuggery
 			window.Run(Settings.UpdatesPerSecond, Settings.FrameLimiter);
 		}
 
+		//TODO move in settings
 		static void firstStarted()
 		{
 			using (var writer = new System.IO.StreamWriter(FileExplorer.MainDirectory + "WS.yaml"))

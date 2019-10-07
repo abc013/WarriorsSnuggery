@@ -3,7 +3,6 @@
  * Date: 30.09.2017
  * 
  */
-using System;
 using System.Collections.Generic;
 
 namespace WarriorsSnuggery
@@ -23,7 +22,6 @@ namespace WarriorsSnuggery
 
 		public static int FrameLimiter;
 
-		// 1: very slow 2: slow 3: normal 4: high 5: legendary high
 		public static float ScrollSpeed;
 
 		public static bool DeveloperMode;
@@ -107,14 +105,10 @@ namespace WarriorsSnuggery
 
 		public static string Key(string value)
 		{
-			try
-			{
-				return KeyDictionary[value];
-			}
-			catch (Exception e)
-			{
-				throw new YamlInvalidNodeException(string.Format("Unable to find key {0}.", value), e);
-			}
+			if (!KeyDictionary.ContainsKey(value))
+				throw new YamlInvalidNodeException(string.Format("Unable to find keyboard key with name {0}.", value));
+
+			return KeyDictionary[value];
 		}
 	}
 }
