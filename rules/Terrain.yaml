@@ -70,3 +70,7 @@
 11=
 	Sprite=lava_stone
 	Speed=0,3
+
+12=
+	Sprite=brickstone2
+	Speed=1,2

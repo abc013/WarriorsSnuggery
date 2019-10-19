@@ -16,6 +16,18 @@ grey=
 	Gravity=0
 	AffectedByObjects=true
 
+firefly=
+	Texture=firefly
+		Size=1,1
+		Tick=25
+	Duration=500
+	DissolveDuration=100
+	RandomVelocity=0,0,1
+	RandomScale=0,5
+	Gravity=0
+	ShowShadow=true
+	AffectedByObjects=true
+
 woodPiece=
 	Texture=woodPiece
 		Size=1,2
@@ -23,19 +35,22 @@ woodPiece=
 	Duration=30
 	DissolveDuration=20
 
+colored_star=
+	Texture=colored_star
+		Size=3,3
+		Random=true
+	Duration=500
+	DissolveDuration=100
+	Gravity=0
+	ShowShadow=true
+	AffectedByObjects=true
+
 slime_splash=
 	Texture=slime_splash
 		Size=8,8
 		Random=true
 	Duration=100
 	DissolveDuration=500
-
-bullet=
-	Texture=bullet
-		Size=24,12
-	Duration=1000
-	ShowShadow=true
-	AffectedByObjects=true
 
 nebula1=
 	Texture=smoke_large
@@ -52,9 +67,12 @@ small_star=
 
 beam=
 	Texture=beam
-		Size=12,24
-	Duration=0
-	DissolveDuration=30
+		Size=6,12
+		Tick=5
+	Duration=30
+	DissolveDuration=10
+	Gravity=-1
+	RandomVelocity=1,1,1
 
 puff1=
 	Texture=puff1

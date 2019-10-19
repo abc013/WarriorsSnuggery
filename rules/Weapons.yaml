@@ -107,8 +107,8 @@ lazer=
 	Reload=13
 	ParticlesOnImpact=
 		Type=glitter
-		Count=1000
-		Radius=1024
+		Count=10
+		Radius=25
 		AreaType=RANDOM
 	Gravity=0
 
