@@ -97,12 +97,14 @@ heal_pad=
 	Part@Collectable=
 		Type=HEALTH
 		Radius=512
-		Value=2
+		Value=4
 		MultipleActivations=yes
-		Duration=5
+		Duration=10
 		ParticleSpawner=
 			Type=beam
-			Count=10
+			Count=20
+			Radius=500
+			AreaType=BOX
 
 portion_red=
 	Part@Sprite=
