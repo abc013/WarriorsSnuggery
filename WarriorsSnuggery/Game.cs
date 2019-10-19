@@ -36,7 +36,7 @@ namespace WarriorsSnuggery
 
 	public sealed class Game : ITick, IDisposable
 	{
-		public Random SharedRandom = new Random();
+		public Random SharedRandom;
 
 		public readonly ScreenControl ScreenControl;
 		public readonly World World;
@@ -83,6 +83,7 @@ namespace WarriorsSnuggery
 
 			// If seed negative, calculate it.
 			Seed = seed < 0 ? statistics.Seed + statistics.Level : seed;
+			SharedRandom = new Random(Seed);
 
 			// In case of death, use this statistic.
 			OldStatistics = statistics.Copy();
@@ -92,7 +93,7 @@ namespace WarriorsSnuggery
 			SpellManager = new SpellManager(this);
 
 			Type = MapType.DefaultType;
-			Mode = MapType.DefaultModes[new Random(seed).Next(MapType.DefaultModes.Length)];
+			Mode = MapType.DefaultModes[SharedRandom.Next(MapType.DefaultModes.Length)];
 
 			Editor = Type == GameType.EDITOR;
 
@@ -104,7 +105,7 @@ namespace WarriorsSnuggery
 
 			ScreenControl = new ScreenControl(this);
 
-			World = new World(this, seed, Statistics);
+			World = new World(this, Seed, Statistics);
 
 			var corner = (int)(WindowInfo.UnitWidth / 2 * 1024);
 			version = new TextLine(new CPos(corner, 6192, 0), IFont.Pixel16, TextLine.OffsetType.RIGHT);
