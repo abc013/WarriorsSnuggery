@@ -53,7 +53,7 @@ namespace WarriorsSnuggery.Maps
 			var count = random.Next(info.MinimumPatrols, info.MaximumPatrols);
 			if (positions.Count < count)
 				count = positions.Count;
-
+			
 			spawns = new MPos[count];
 
 			for (int i = 0; i < count; i++)
