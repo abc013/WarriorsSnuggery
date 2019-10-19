@@ -10,7 +10,7 @@ namespace WarriorsSnuggery.Maps
 
 		MPos searchBlocks;
 		MPos searchBounds;
-		bool[] positions;
+		int positions;
 		readonly List<MPos> possiblePlaces = new List<MPos>();
 
 		public PieceGenerator(Random random, Map map, World world, PieceGeneratorInfo info) : base(random, map, world)
@@ -33,7 +33,7 @@ namespace WarriorsSnuggery.Maps
 				searchBlocks = new MPos(x, y);
 			}
 			searchBounds = new MPos((int)Math.Floor(map.Bounds.X / (float)searchBlocks.X), (int)Math.Floor(map.Bounds.Y / (float)searchBlocks.Y));
-			positions = new bool[searchBounds.X * searchBounds.Y];
+			positions = searchBounds.X * searchBounds.Y;
 
 			MarkDirty();
 			DrawDirty();
@@ -43,10 +43,13 @@ namespace WarriorsSnuggery.Maps
 		protected override void MarkDirty()
 		{
 			// usual grid
-			for (int i = 0; i < positions.Length; i++)
+			for (int i = 0; i < positions; i++)
 			{
-				var xStart = i % searchBounds.X;
-				var yStart = (int)Math.Floor(i / (float)searchBounds.X);
+				var xStart = (i % searchBounds.X) * searchBounds.X;
+				if (xStart >= map.Bounds.X)
+					break;
+
+				var yStart = (int)Math.Floor(i / (float)searchBounds.X) * searchBounds.Y;
 
 				var canAcquire = true;
 				for (var x = xStart; x < xStart + searchBlocks.X; x++)
@@ -71,13 +74,13 @@ namespace WarriorsSnuggery.Maps
 			// Additional refining using steps
 			for (int step = 0; step < searchBounds.X; step += info.ShiftStep)
 			{
-				for (int i = 0; i < positions.Length; i++)
+				for (int i = 0; i < positions; i++)
 				{
-					var xStart = i % searchBounds.X + step;
+					var xStart = (i % searchBounds.X) * searchBounds.X + step;
 					if (xStart >= map.Bounds.X)
 						break;
 
-					var yStart = (int)Math.Floor(i / (float)searchBounds.X);
+					var yStart = (int)Math.Floor(i / (float)searchBounds.X) * searchBounds.Y;
 
 					var canAcquire = true;
 					for (var x = xStart; x < xStart + searchBlocks.X; x++)
@@ -101,10 +104,10 @@ namespace WarriorsSnuggery.Maps
 			}
 			for (int step = 0; step < searchBounds.Y; step += info.ShiftStep)
 			{
-				for (int i = 0; i < positions.Length; i++)
+				for (int i = 0; i < positions; i++)
 				{
-					var xStart = i % searchBounds.X;
-					var yStart = (int)Math.Floor(i / (float)searchBounds.X) + step;
+					var xStart = (i % searchBounds.X) * searchBounds.X;
+					var yStart = (int)Math.Floor(i / (float)searchBounds.X) * searchBounds.Y + step;
 					if (yStart >= map.Bounds.Y)
 						break;
 
@@ -154,7 +157,7 @@ namespace WarriorsSnuggery.Maps
 		{
 			searchBlocks = MPos.Zero;
 			possiblePlaces.Clear();
-			positions = new bool[0];
+			positions = 0;
 		}
 	}
 
