@@ -46,11 +46,10 @@ colored_star=
 	AffectedByObjects=true
 
 slime_splash=
-	Texture=slime_splash
-		Size=8,8
-		Random=true
+	Color=63,255,63,63
+	MeshSize=8
 	Duration=100
-	DissolveDuration=500
+	DissolveDuration=1000
 
 nebula1=
 	Texture=smoke_large
