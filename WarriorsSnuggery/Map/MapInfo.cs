@@ -203,57 +203,57 @@ namespace WarriorsSnuggery.Maps
 
 		public static MapInfo FindMainMenuMap(int level)
 		{
-			var mainLevels = types.Values.Where(a => a.DefaultType == GameType.MAINMENU && level == a.Level).ToList();
+			var levels = types.Values.Where(a => a.DefaultType == GameType.MAINMENU);
 
-			if (mainLevels.Any())
-				return mainLevels[Program.SharedRandom.Next(mainLevels.Count())];
+			var explicitLevels = levels.Where(a => level == a.Level);
+			if (explicitLevels.Any())
+				return explicitLevels.ElementAt(Program.SharedRandom.Next(explicitLevels.Count()));
 
-			var mainTypes = types.Values.Where(a => a.DefaultType == GameType.MAINMENU && level >= a.FromLevel && a.FromLevel >= 0).ToList();
-
-			if (mainTypes.Count == 0)
+			var implicitLevels = levels.Where(a => level >= a.FromLevel && a.FromLevel >= 0 && a.Level == -1);
+			if (!implicitLevels.Any())
 				throw new MissingFieldException(string.Format("There are no available Main Maps (Level:{0}).", level));
 
-			return mainTypes[Program.SharedRandom.Next(mainTypes.Count())];
+			return implicitLevels.ElementAt(Program.SharedRandom.Next(implicitLevels.Count()));
 		}
 
 		public static MapInfo FindMainMap(int level)
 		{
-			var mainLevels = types.Values.Where(a => a.DefaultType == GameType.MENU && level == a.Level).ToList();
+			var levels = types.Values.Where(a => a.DefaultType == GameType.MENU);
 
+			var mainLevels = levels.Where(a => level == a.Level);
 			if (mainLevels.Any())
-				return mainLevels[Program.SharedRandom.Next(mainLevels.Count())];
+				return mainLevels.ElementAt(Program.SharedRandom.Next(mainLevels.Count()));
 
-			var mainTypes = types.Values.Where(a => a.DefaultType == GameType.MENU && level >= a.FromLevel && a.FromLevel >= 0).ToList();
-
-			if (mainTypes.Count == 0)
+			var mainTypes = levels.Where(a => level >= a.FromLevel && a.FromLevel >= 0 && a.Level == -1);
+			if (!mainTypes.Any())
 				throw new MissingFieldException(string.Format("There are no available Main Maps (Level:{0}).", level));
 
-			return mainTypes[Program.SharedRandom.Next(mainTypes.Count())];
+			return mainTypes.ElementAt(Program.SharedRandom.Next(mainTypes.Count()));
 		}
 
 		public static MapInfo FindMap(int level)
 		{
-			var mainLevels = types.Values.Where(a => a.DefaultType == GameType.NORMAL && level == a.Level).ToList();
+			var levels = types.Values.Where(a => a.DefaultType == GameType.NORMAL);
 
-			if (mainLevels.Any())
-				return mainLevels[Program.SharedRandom.Next(mainLevels.Count())];
+			var explicitLevels = levels.Where(a => level == a.Level);
+			if (explicitLevels.Any())
+				return explicitLevels.ElementAt(Program.SharedRandom.Next(explicitLevels.Count()));
 
-			var mainTypes = types.Values.Where(a => a.DefaultType == GameType.NORMAL && level >= a.FromLevel && a.FromLevel >= 0).ToList();
-
-			if (mainTypes.Count == 0)
+			var mainTypes = levels.Where(a => level >= a.FromLevel && a.FromLevel >= 0 && a.Level == -1);
+			if (!mainTypes.Any())
 				throw new MissingFieldException(string.Format("There are no Maps available."));
 
-			return mainTypes[Program.SharedRandom.Next(mainTypes.Count())];
+			return mainTypes.ElementAt(Program.SharedRandom.Next(mainTypes.Count()));
 		}
 
 		public static MapInfo FindTutorial()
 		{
-			var mainTypes = types.Values.Where(a => a.DefaultType == GameType.TUTORIAL).ToList();
+			var implicitLevels = types.Values.Where(a => a.DefaultType == GameType.TUTORIAL);
 
-			if (mainTypes.Count == 0)
+			if (!implicitLevels.Any())
 				throw new MissingFieldException(string.Format("There are no Tutorial Maps available."));
 
-			return mainTypes[Program.SharedRandom.Next(mainTypes.Count())];
+			return implicitLevels.ElementAt(Program.SharedRandom.Next(implicitLevels.Count()));
 		}
 	}
 }
