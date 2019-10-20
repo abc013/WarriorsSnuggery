@@ -140,7 +140,7 @@ namespace WarriorsSnuggery.Objects.Particles
 				}
 				else
 				{
-					Renderable.SetColor(new Color(type.Color.R, type.Color.B, type.Color.G, type.Color.A * ((float)dissolve) / type.DissolveDuration));
+					Renderable.SetColor(new Color(type.Color.R, type.Color.G, type.Color.B, type.Color.A * dissolve / type.DissolveDuration));
 				}
 			}
 		}
