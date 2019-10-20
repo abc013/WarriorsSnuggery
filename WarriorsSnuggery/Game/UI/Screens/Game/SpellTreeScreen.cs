@@ -18,7 +18,8 @@ namespace WarriorsSnuggery.UI
 		int cashCooldown;
 		int lastCash;
 
-		readonly List<SpellNode> tree = new List<SpellNode>();
+		readonly SpellNode[] tree;
+		readonly List<CPos[]> lines = new List<CPos[]>();
 
 		public SpellTreeScreen(Game game) : base("Spell Tree")
 		{
@@ -34,10 +35,21 @@ namespace WarriorsSnuggery.UI
 			moneyText = new TextLine(new CPos(-(int)(WindowInfo.UnitWidth / 2 * 1024) + 2048, 7192, 0), IFont.Papyrus24);
 			moneyText.SetText(game.Statistics.Money);
 
-			foreach (var e in SpellTreeLoader.SpellTree)
+			tree = new SpellNode[SpellTreeLoader.SpellTree.Count];
+			for (int i = 0; i < tree.Length; i++)
 			{
-				SpellNode spell = new SpellNode(new CPos(-4096, -2048, 0) + e.Position.ToCPos(), e, game);
-				tree.Add(spell);
+				var e = SpellTreeLoader.SpellTree[i];
+				var position = new CPos(-4096, -2048, 0) + e.Position.ToCPos();
+				SpellNode spell = new SpellNode(position, e, game);
+				tree[i] = spell;
+				foreach(var connection in e.Before)
+				{
+					if (connection == "")
+						continue;
+
+					var positionTo = new CPos(-4096, -2048, 0) + SpellTreeLoader.SpellTree.Find(s => s.InnerName == connection).Position.ToCPos();
+					lines.Add(new[] { position, positionTo });
+				}
 			}
 		}
 
@@ -48,6 +60,10 @@ namespace WarriorsSnuggery.UI
 
 			back.Render();
 
+			foreach (var line in lines)
+			{
+				ColorManager.DrawLine(line[0], line[1], Color.Green);
+			}
 			foreach (var panel in tree)
 			{
 				panel.Render();
@@ -99,12 +115,8 @@ namespace WarriorsSnuggery.UI
 			back.Dispose();
 
 			foreach (var panel in tree)
-			{
 				panel.Dispose();
-			}
-			tree.Clear();
 			moneyText.Dispose();
-
 		}
 	}
 
