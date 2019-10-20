@@ -236,45 +236,45 @@ namespace WarriorsSnuggery
 				}
 
 				// Key input
-				if (KeyInput.IsKeyDown(Settings.Key("CameraLock"), 10))
+				if (KeyInput.IsKeyDown(Settings.Key("CameraLock"), 5))
 				{
 					Camera.LockedToPlayer = !Camera.LockedToPlayer;
 				}
 
-				if (KeyInput.IsKeyDown("altright", 10))
+				if (KeyInput.IsKeyDown("altright", 5))
 				{
 					Settings.PartyMode = !Settings.PartyMode;
 				}
 
 				if (KeyInput.IsKeyDown("altleft", 0))
 				{
-					if (KeyInput.IsKeyDown("v", 10) && Type != GameType.EDITOR)
+					if (KeyInput.IsKeyDown("v", 5) && Type != GameType.EDITOR)
 					{
 						World.LocalPlayer.Health.HP = 0;
 					}
-					if (KeyInput.IsKeyDown("b", 10) && Type != GameType.EDITOR)
+					if (KeyInput.IsKeyDown("b", 5) && Type != GameType.EDITOR)
 					{
 						World.LocalPlayer.Health.HP += 100;
 					}
-					if (KeyInput.IsKeyDown("n", 10))
+					if (KeyInput.IsKeyDown("n", 5))
 					{
 						Statistics.Mana += 100;
 						if (Statistics.Mana > Statistics.MaxMana)
 							Statistics.Mana = Statistics.MaxMana;
 					}
-					if (KeyInput.IsKeyDown("m", 10))
+					if (KeyInput.IsKeyDown("m", 5))
 					{
 						Statistics.Money += 100;
 					}
-					if (KeyInput.IsKeyDown("comma", 10))
+					if (KeyInput.IsKeyDown("comma", 5))
 					{
 						Settings.EnableInfoScreen = !Settings.EnableInfoScreen;
 					}
-					if (KeyInput.IsKeyDown("period", 10))
+					if (KeyInput.IsKeyDown("period", 5))
 					{
 						World.ShroudLayer.AllRevealed = true;
 					}
-					if (KeyInput.IsKeyDown("x", 10))
+					if (KeyInput.IsKeyDown("x", 5))
 					{
 						Screen defaultScreen;
 						if (Editor)
