@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Collections.Generic;
 
 namespace WarriorsSnuggery.Maps
@@ -52,7 +53,10 @@ namespace WarriorsSnuggery.Maps
 
 			var count = random.Next(info.MinimumPatrols, info.MaximumPatrols);
 			if (positions.Count < count)
+			{
+				Log.WriteDebug(string.Format("Unable to spawn Patrol count ({0}) because there are not enough available spawn points ({1}).", count, positions.Count));
 				count = positions.Count;
+			}
 			
 			spawns = new MPos[count];
 
@@ -69,7 +73,7 @@ namespace WarriorsSnuggery.Maps
 			foreach (var spawn in spawns)
 			{
 				var mid = spawn.ToCPos() + new CPos(spawn.X * 512, spawn.Y * 512, 0);
-				var patrol = info.Patrols[random.Next(info.Patrols.Length)];
+				var patrol = getPatrol();
 				var unitCount = patrol.ActorTypes.Length;
 
 				for (int j = 0; j < unitCount; j++)
@@ -82,28 +86,47 @@ namespace WarriorsSnuggery.Maps
 					else if (j < 7)
 					{
 						var angle = 60 * j / 180f * Math.PI;
-						var deltaX = (int)(info.DistanceBetweenObjects * Math.Sin(angle));
-						var deltaY = (int)(info.DistanceBetweenObjects * Math.Cos(angle));
+						var deltaX = (int)(patrol.DistanceBetweenObjects * Math.Sin(angle));
+						var deltaY = (int)(patrol.DistanceBetweenObjects * Math.Cos(angle));
 
 						spawnPosition = mid + new CPos(deltaX, deltaY, 0);
 					}
 					else if (j < 19)
 					{
 						var angle = 30 * (j - 6) / 180f * Math.PI;
-						var deltaX = (int)(info.DistanceBetweenObjects * 2 * Math.Sin(angle));
-						var deltaY = (int)(info.DistanceBetweenObjects * 2 * Math.Cos(angle));
+						var deltaX = (int)(patrol.DistanceBetweenObjects * 2 * Math.Sin(angle));
+						var deltaY = (int)(patrol.DistanceBetweenObjects * 2 * Math.Cos(angle));
 
 						spawnPosition = mid + new CPos(deltaX, deltaY, 0);
 					}
 
-					if (spawnPosition.X < info.DistanceBetweenObjects / 2 || spawnPosition.X >= map.Bounds.X * 1024 - info.DistanceBetweenObjects / 2)
-						continue;
-					if (spawnPosition.Y < info.DistanceBetweenObjects / 2 || spawnPosition.Y >= map.Bounds.Y * 1024 - info.DistanceBetweenObjects / 2)
-						continue;
+					if (spawnPosition.X < patrol.DistanceBetweenObjects / 2)
+						spawnPosition = new CPos(patrol.DistanceBetweenObjects / 2, spawnPosition.Y, 0);
+					if (spawnPosition.X >= map.Bounds.X * 1024 - patrol.DistanceBetweenObjects / 2)
+						spawnPosition = new CPos(map.Bounds.X * 1024 - patrol.DistanceBetweenObjects / 2, spawnPosition.Y, 0);
+
+					if (spawnPosition.Y < patrol.DistanceBetweenObjects / 2)
+						spawnPosition = new CPos(spawnPosition.X, patrol.DistanceBetweenObjects / 2, 0);
+					if (spawnPosition.Y >= map.Bounds.Y * 1024 - patrol.DistanceBetweenObjects / 2)
+						spawnPosition = new CPos(spawnPosition.X, map.Bounds.Y * 1024 - patrol.DistanceBetweenObjects / 2, 0);
 
 					world.Add(ActorCreator.Create(world, patrol.ActorTypes[j], spawnPosition, 1, true));
 				}
 			}
+		}
+
+		PatrolProbabilityGeneratorInfo getPatrol()
+		{
+			var probability = random.NextDouble() * info.PatrolProbabilities;
+			for (int i = 0; i < info.Patrols.Length; i++)
+			{
+				probability -= info.Patrols[i].Probability;
+
+				if (probability < 0)
+					return info.Patrols[i];
+			}
+
+			return info.Patrols.FirstOrDefault();
 		}
 
 		protected override void ClearDirty()
@@ -119,20 +142,20 @@ namespace WarriorsSnuggery.Maps
 		[Desc("Unique ID for the generator.")]
 		public readonly new int ID;
 
+		[Desc("Bounds of the patrol group to determine a valid spawnlocation.")]
+		public readonly int SpawnBounds = 3;
 		[Desc("Minimum number of patrols.")]
 		public readonly int MinimumPatrols = 1;
 		[Desc("Maximum number of patrols.", "Maximum currently is 13.")]
 		public readonly int MaximumPatrols = 4;
-		[Desc("Distance between the spawned objects in CPos size.", "Should be smaller than half of the size of the SpawnBounds.")]
-		public readonly int DistanceBetweenObjects = 1024;
-		[Desc("Distance between the spawned objects in Cell size.")]
-		public readonly int SpawnBounds = 3;
 		[Desc("Patrols to possibly spawn.")]
 		public readonly PatrolProbabilityGeneratorInfo[] Patrols;
+		public readonly float PatrolProbabilities;
 
 		public PatrolGeneratorInfo(int id, MiniTextNode[] nodes) : base(id)
 		{
 			Loader.PartLoader.SetValues(this, nodes);
+			PatrolProbabilities = Patrols.Sum(p => p.Probability);
 		}
 
 		public override MapGenerator GetGenerator(Random random, Map map, World world)
@@ -144,8 +167,12 @@ namespace WarriorsSnuggery.Maps
 	[Desc("Information used for determining what actors will be spawned in the PatrolGenerator.")]
 	public class PatrolProbabilityGeneratorInfo
 	{
+		[Desc("Distance between the spawned objects in CPos size.", "Should be smaller than half of the size of the SpawnBounds.")]
+		public readonly int DistanceBetweenObjects = 1024;
 		[Desc("What the patrol consists of.")]
 		public readonly string[] ActorTypes = new string[0];
+		[Desc("Probability that this patrol will be spawned.", "This value will be set in relation with all other patrol probabilities.")]
+		public readonly float Probability = 1f;
 
 		public PatrolProbabilityGeneratorInfo(MiniTextNode[] nodes)
 		{

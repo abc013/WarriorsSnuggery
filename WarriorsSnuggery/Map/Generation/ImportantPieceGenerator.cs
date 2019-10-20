@@ -25,7 +25,8 @@ namespace WarriorsSnuggery.Maps
 					spawnSpawn();
 					break;
 				case PositionType.EXIT:
-					exitSpawn();
+					if (world.Game.Mode == GameMode.FIND_EXIT)
+						exitSpawn();
 					break;
 			}
 		}
