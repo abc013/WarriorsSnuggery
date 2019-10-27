@@ -59,8 +59,6 @@ namespace WarriorsSnuggery
 
 			Settings.DeveloperMode = isDebug;
 			Settings.Initialize();
-			if (Settings.FirstStarted)
-				firstStarted();
 			window = new Window();
 
 			if (GL.GetInteger(GetPName.MajorVersion) < 3)
@@ -74,34 +72,6 @@ namespace WarriorsSnuggery
 			}
 
 			window.Run(Settings.UpdatesPerSecond, Settings.FrameLimiter);
-		}
-
-		//TODO move in settings
-		static void firstStarted()
-		{
-			using (var writer = new System.IO.StreamWriter(FileExplorer.MainDirectory + "WS.yaml"))
-			{
-				writer.WriteLine("FrameLimiter=" + Settings.FrameLimiter);
-				writer.WriteLine("ScrollSpeed=" + Settings.ScrollSpeed);
-				writer.WriteLine("EdgeScrolling=" + Settings.EdgeScrolling);
-				writer.WriteLine("DeveloperMode=" + Settings.DeveloperMode.GetHashCode());
-				writer.WriteLine("Fullscreen=" + Settings.Fullscreen.GetHashCode());
-				writer.WriteLine("Width=" + Settings.Width);
-				writer.WriteLine("Height=" + Settings.Height);
-				writer.WriteLine("AntiAliasing=" + Settings.AntiAliasing.GetHashCode());
-				writer.WriteLine("EnablePixeling=" + Settings.EnablePixeling.GetHashCode());
-				writer.WriteLine("EnableTextShadowing=" + Settings.EnableTextShadowing.GetHashCode());
-				writer.WriteLine("FirstStarted=" + 0);
-
-				writer.WriteLine("Keys=");
-				foreach (var key in Settings.KeyDictionary)
-				{
-					writer.WriteLine("\t" + key.Key + "=" + key.Value);
-				}
-
-				writer.Flush();
-				writer.Close();
-			}
 		}
 
 		[Conditional("DEBUG")]

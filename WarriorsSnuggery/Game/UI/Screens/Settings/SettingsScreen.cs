@@ -81,67 +81,29 @@ namespace WarriorsSnuggery.UI
 
 		public void Save()
 		{
+			Settings.FrameLimiter = int.Parse(frameLimiterWrite.Text);
+			if (Settings.FrameLimiter == 0 || Settings.FrameLimiter > OpenTK.DisplayDevice.Default.RefreshRate)
+				Settings.FrameLimiter = (int)OpenTK.DisplayDevice.Default.RefreshRate;
+
+			Settings.ScrollSpeed = int.Parse(scrollWrite.Text);
+			Settings.EdgeScrolling = int.Parse(edgeScrollWrite.Text);
+			Settings.DeveloperMode = developerModeCheck.Checked;
+			Settings.Fullscreen = fullscreenCheck.Checked;
+			Settings.Width = int.Parse(widthWrite.Text);
+			Settings.Height = int.Parse(heightWrite.Text);
+			Settings.AntiAliasing = antiAliasingCheck.Checked;
+			Settings.EnablePixeling = pixelingCheck.Checked;
+			Settings.EnableTextShadowing = textshadowCheck.Checked;
+
+			Settings.Save();
+
+			Window.Current.SetScreen();
+			if (Settings.AntiAliasing)
+				MasterRenderer.EnableAliasing();
+			else
+				MasterRenderer.DisableAliasing();
+
 			savedTick = 15;
-			using (var writer = new System.IO.StreamWriter(FileExplorer.MainDirectory + "WS.yaml"))
-			{
-				var limiter = int.Parse(frameLimiterWrite.Text);
-				writer.WriteLine("FrameLimiter=" + limiter);
-				Settings.FrameLimiter = limiter;
-
-				if (Settings.FrameLimiter == 0 || Settings.FrameLimiter > OpenTK.DisplayDevice.Default.RefreshRate)
-					Settings.FrameLimiter = (int)OpenTK.DisplayDevice.Default.RefreshRate;
-
-				var scroll = int.Parse(scrollWrite.Text);
-				writer.WriteLine("ScrollSpeed=" + scroll);
-				Settings.ScrollSpeed = scroll;
-				var edgeScroll = int.Parse(edgeScrollWrite.Text);
-				writer.WriteLine("EdgeScrolling=" + edgeScroll);
-				Settings.EdgeScrolling = edgeScroll;
-
-				var developer = developerModeCheck.Checked;
-				writer.WriteLine("DeveloperMode=" + developer.GetHashCode());
-				//Settings.DeveloperMode = developer; Crashes
-
-				var isFullscreen = fullscreenCheck.Checked;
-				writer.WriteLine("Fullscreen=" + isFullscreen.GetHashCode());
-				Settings.Fullscreen = isFullscreen;
-
-				var width = int.Parse(widthWrite.Text);
-				writer.WriteLine("Width=" + width);
-				Settings.Width = width;
-
-				var height = int.Parse(heightWrite.Text);
-				writer.WriteLine("Height=" + height);
-				Settings.Height = height;
-
-				Window.Current.SetScreen();
-
-				var aliasing = antiAliasingCheck.Checked;
-				writer.WriteLine("AntiAliasing=" + aliasing.GetHashCode());
-				if (aliasing)
-					MasterRenderer.EnableAliasing();
-				else
-					MasterRenderer.DisableAliasing();
-
-				var pixeling = pixelingCheck.Checked;
-				writer.WriteLine("EnablePixeling=" + pixeling.GetHashCode());
-				Settings.EnablePixeling = pixeling;
-
-				var shadow = textshadowCheck.Checked;
-				writer.WriteLine("EnableTextShadowing=" + shadow.GetHashCode());
-				Settings.EnableTextShadowing = shadow;
-
-				writer.WriteLine("FirstStarted=0");
-
-				writer.WriteLine("Keys=");
-				foreach (var key in Settings.KeyDictionary)
-				{
-					writer.WriteLine("\t" + key.Key + "=" + key.Value);
-				}
-
-				writer.Flush();
-				writer.Close();
-			}
 			game.AddInfoMessage(150, "Settings saved!");
 		}
 
