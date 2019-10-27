@@ -50,9 +50,17 @@ namespace WarriorsSnuggery
 
 		public static Dictionary<string, string> KeyDictionary = new Dictionary<string, string>();
 
+		public static string Key(string value)
+		{
+			if (!KeyDictionary.ContainsKey(value))
+				throw new YamlInvalidNodeException(string.Format("Unable to find keyboard key with name {0}.", value));
+
+			return KeyDictionary[value];
+		}
+
 		public static void Initialize()
 		{
-			foreach (var node in RuleReader.Read(FileExplorer.FindPath(FileExplorer.MainDirectory, "WS", ".yaml"), "WS.yaml"))
+			foreach (var node in RuleReader.Read(FileExplorer.MainDirectory, "WS.yaml"))
 			{
 				switch (node.Key)
 				{
@@ -101,14 +109,37 @@ namespace WarriorsSnuggery
 						break;
 				}
 			}
+
+			// Set FirstStarted to 0.
+			if (FirstStarted)
+				Save();
 		}
 
-		public static string Key(string value)
+		public static void Save()
 		{
-			if (!KeyDictionary.ContainsKey(value))
-				throw new YamlInvalidNodeException(string.Format("Unable to find keyboard key with name {0}.", value));
+			using (var writer = new System.IO.StreamWriter(FileExplorer.MainDirectory + "WS.yaml"))
+			{
+				writer.WriteLine("FrameLimiter=" + FrameLimiter);
+				writer.WriteLine("ScrollSpeed=" + ScrollSpeed);
+				writer.WriteLine("EdgeScrolling=" + EdgeScrolling);
+				writer.WriteLine("DeveloperMode=" + DeveloperMode.GetHashCode());
+				writer.WriteLine("Fullscreen=" + Fullscreen.GetHashCode());
+				writer.WriteLine("Width=" + Width);
+				writer.WriteLine("Height=" + Height);
+				writer.WriteLine("AntiAliasing=" + AntiAliasing.GetHashCode());
+				writer.WriteLine("EnablePixeling=" + EnablePixeling.GetHashCode());
+				writer.WriteLine("EnableTextShadowing=" + EnableTextShadowing.GetHashCode());
+				writer.WriteLine("FirstStarted=" + 0);
 
-			return KeyDictionary[value];
+				writer.WriteLine("Keys=");
+				foreach (var key in KeyDictionary)
+				{
+					writer.WriteLine("\t" + key.Key + "=" + key.Value);
+				}
+
+				writer.Flush();
+				writer.Close();
+			}
 		}
 	}
 }
