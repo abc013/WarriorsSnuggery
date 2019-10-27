@@ -6,6 +6,11 @@ namespace WarriorsSnuggery
 {
 	public static class RuleReader
 	{
+		public static List<MiniTextNode> FindAndRead(string directory, string file, string suffix)
+		{
+			return Read(FileExplorer.FindPath(directory, file, suffix), file + suffix);
+		}
+
 		public static List<MiniTextNode> Read(string directory, string file)
 		{
 			List<MiniTextNode> list;

@@ -184,7 +184,7 @@ namespace WarriorsSnuggery.Maps
 		{
 			var choice = choices[random.Next(choices.Length)];
 
-			return RuleReader.Read(FileExplorer.FindPath(FileExplorer.Maps, choice, ".yaml"), choice + ".yaml").ToArray();
+			return RuleReader.FindAndRead(FileExplorer.Maps, choice, ".yaml").ToArray();
 		}
 
 		protected override void ClearDirty()
