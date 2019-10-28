@@ -9,6 +9,54 @@ using System.Runtime.Serialization;
 namespace WarriorsSnuggery
 {
 	[Serializable]
+	public class InvalidPieceException : Exception
+	{
+		public InvalidPieceException() { }
+
+		public InvalidPieceException(string text)
+		  : base(text)
+		{
+
+		}
+
+		public InvalidPieceException(string text, Exception innerException)
+			: base(text, innerException)
+		{
+
+		}
+
+		protected InvalidPieceException(SerializationInfo info, StreamingContext context)
+		  : base(info, context)
+		{
+
+		}
+	}
+
+	[Serializable]
+	public class MissingPieceException : Exception
+	{
+		public MissingPieceException() { }
+
+		public MissingPieceException(string piece)
+		  : base(string.Format(@"The piece '{0}' does not exist.", piece))
+		{
+
+		}
+
+		public MissingPieceException(string piece, Exception innerException)
+			: base(string.Format(@"The piece '{0}' does not exist.", piece), innerException)
+		{
+
+		}
+
+		protected MissingPieceException(SerializationInfo info, StreamingContext context)
+		  : base(info, context)
+		{
+
+		}
+	}
+
+	[Serializable]
 	public class MissingInfoException : Exception
 	{
 		public MissingInfoException() { }

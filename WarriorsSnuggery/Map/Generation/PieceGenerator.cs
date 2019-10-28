@@ -26,7 +26,7 @@ namespace WarriorsSnuggery.Maps
 				var blockSizes = new MPos[info.Pieces.Length];
 				for (int i = 0; i < blockSizes.Length; i++)
 				{
-					blockSizes[i] = RuleReader.FindAndRead(FileExplorer.Maps, info.Pieces[i], ".yaml").Find(n => n.Key == "Size").Convert<MPos>();
+					blockSizes[i] = PieceManager.GetPiece(info.Pieces[i]).Size;
 				}
 				var x = blockSizes.Max(b => b.X);
 				var y = blockSizes.Max(b => b.Y);
@@ -142,7 +142,7 @@ namespace WarriorsSnuggery.Maps
 					break;
 
 				var piece = info.Pieces[random.Next(info.Pieces.Length)];
-				var input = RuleReader.FindAndRead(FileExplorer.Maps, piece, ".yaml").ToArray();
+				var input = PieceManager.GetPiece(piece);
 
 				var position = random.Next(possiblePlaces.Count);
 

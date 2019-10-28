@@ -32,13 +32,11 @@ namespace WarriorsSnuggery.UI
 
 			mapSelection = new PanelList(new CPos(0, 1024, 0), new MPos(4096, 4096), new MPos(512, 512), PanelManager.GetType("wooden"));
 
-			var dictionary = searchFiles(new Dictionary<string, MPos>(), FileExplorer.Maps, false);
-			for (int i = 0; i < dictionary.Count; i++)
+			foreach (var piece in PieceManager.GetPieces())
 			{
-				var pair = dictionary.ElementAt(i);
-				mapSelection.Add(new PanelItem(CPos.Zero, new ImageRenderable(TextureManager.Texture("UI_map")), new MPos(512, 512), pair.Key, new[] { Color.Grey + "[" + pair.Value.X + "," + pair.Value.Y + "]" },
+				mapSelection.Add(new PanelItem(CPos.Zero, new ImageRenderable(TextureManager.Texture("UI_map")), new MPos(512, 512), piece.Name, new[] { Color.Grey + "[" + piece.Size.X + "," + piece.Size.Y + "]" },
 				() => {
-					GameController.CreateNew(new GameStatistics(GameSaveManager.DefaultStatistic), GameType.EDITOR, custom: MapInfo.EditorMapTypeFromPiece(pair.Key, pair.Value));
+					GameController.CreateNew(new GameStatistics(GameSaveManager.DefaultStatistic), GameType.EDITOR, custom: MapInfo.EditorMapTypeFromPiece(piece.InnerName, piece.Size));
 					Hide();
 				}));
 			}
@@ -47,38 +45,6 @@ namespace WarriorsSnuggery.UI
 			delete = ButtonCreator.Create("wooden", new CPos(-4096, 6144, 0), "Delete Piece", () => { });
 
 			createPieceScreen = new CreatePieceScreen();
-		}
-
-		Dictionary<string, MPos> searchFiles(Dictionary<string, MPos> dict, string path, bool readfiles = true)
-		{
-			foreach (var dir in Directory.GetDirectories(path))
-			{
-				var add = searchFiles(dict, dir);
-				dict = dict.Union(add).ToDictionary(k => k.Key, v => v.Value);
-			}
-
-			if (readfiles)
-			{
-				var files = Directory.GetFiles(path).Where(s => s.EndsWith(".yaml", StringComparison.CurrentCulture));
-				foreach (var file in files)
-				{
-					var name = file.Remove(0, file.LastIndexOf('\\') + 1);
-					name = name.Remove(name.Length - 5);
-
-					var node = RuleReader.Read(path + @"\", name + ".yaml").FirstOrDefault(n => n.Key == "Size");
-					if (node == null)
-					{
-						Log.WriteDebug(string.Format("Failed to load map {0}. Size is not given.", name));
-						continue;
-					}
-
-					var size = node.Convert<MPos>();
-
-					dict.Add(name, size);
-				}
-			}
-
-			return dict;
 		}
 
 		public override void Hide()
@@ -238,6 +204,8 @@ namespace WarriorsSnuggery.UI
 					walls += ",-1";
 				stream.WriteLine("Walls=" + walls);
 			}
+			// Load piece into cache
+			PieceManager.RefreshPiece(name.Text);
 
 			GameController.CreateNew(new GameStatistics(GameSaveManager.DefaultStatistic), GameType.EDITOR, custom: MapInfo.EditorMapTypeFromPiece(name.Text, size));
 		}

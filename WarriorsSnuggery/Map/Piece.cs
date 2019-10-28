@@ -7,22 +7,24 @@ namespace WarriorsSnuggery.Maps
 	{
 		public readonly MPos Size;
 		public readonly string Name;
+		public readonly string InnerName;
 
 		readonly int[] groundData;
 		readonly int[] wallData;
 
 		readonly ActorNode[] actors;
 
-		Piece(MPos size, int[] groundData, int[] wallData, string name, ActorNode[] actors)
+		Piece(MPos size, int[] groundData, int[] wallData, string name, string innerName, ActorNode[] actors)
 		{
 			Size = size;
 			Name = name;
+			InnerName = innerName;
 			this.groundData = groundData;
 			this.wallData = wallData;
 			this.actors = actors;
 		}
 
-		public static Piece LoadPiece(MiniTextNode[] nodes)
+		public static Piece LoadPiece(string innerName, MiniTextNode[] nodes)
 		{
 			MPos size = MPos.Zero;
 
@@ -67,7 +69,7 @@ namespace WarriorsSnuggery.Maps
 							}
 							catch (Exception e)
 							{
-								throw new YamlInvalidNodeException(string.Format(@"unable to load actor '{0}' in piece '{1}'.", actor.Key, name), e);
+								throw new InvalidPieceException(string.Format(@"unable to load actor '{0}' in piece '{1}'.", actor.Key, name), e);
 							}
 						}
 
@@ -77,12 +79,12 @@ namespace WarriorsSnuggery.Maps
 			}
 
 			if (groundData.Length < size.X * size.Y)
-				throw new YamlInvalidNodeException(string.Format(@"The count of given terrains ({0}) is not the same as the size ({1}) on the piece '{2}'", groundData.Length, size.X * size.Y, name));
+				throw new InvalidPieceException(string.Format(@"The count of given terrains ({0}) is not the same as the size ({1}) on the piece '{2}'", groundData.Length, size.X * size.Y, name));
 
 			if (wallData.Length != 0 && wallData.Length < size.X * size.Y)
-				throw new YamlInvalidNodeException(string.Format(@"The count of given walls ({0}) is not the same as the size ({1}) on the piece '{2}'", groundData.Length, size.X * 2 * size.Y, name));
+				throw new InvalidPieceException(string.Format(@"The count of given walls ({0}) is not the same as the size ({1}) on the piece '{2}'", groundData.Length, size.X * 2 * size.Y, name));
 
-			return new Piece(size, groundData, wallData, name, actors);
+			return new Piece(size, groundData, wallData, name, innerName, actors);
 		}
 
 		public void PlacePiece(MPos position, World world)

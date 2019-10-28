@@ -100,7 +100,7 @@ namespace WarriorsSnuggery
 
 		public bool GeneratePiece(MiniTextNode[] nodes, MPos position, int ID, bool important = false, bool playerSpawn = false, bool cancelIfAcquiredBySameID = false)
 		{
-			return GeneratePiece(Piece.LoadPiece(nodes), position, ID, important, playerSpawn, cancelIfAcquiredBySameID);
+			return GeneratePiece(Piece.LoadPiece("generated", nodes), position, ID, important, playerSpawn, cancelIfAcquiredBySameID);
 		}
 
 		public bool GeneratePiece(Piece piece, MPos position, int ID, bool important = false, bool playerSpawn = false, bool cancelIfAcquiredBySameID = false)
