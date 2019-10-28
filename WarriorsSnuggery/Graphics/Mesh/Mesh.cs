@@ -24,7 +24,7 @@ namespace WarriorsSnuggery.Graphics
 			return vertices;
 		}
 
-		// TODO in the both functions down here, y scale has been inverted.
+		// in the both functions down here, y scale has been inverted.
 		// Terrain
 		public static TexturedVertex[] Terrain(int xp, int yp, int width, int height)
 		{
