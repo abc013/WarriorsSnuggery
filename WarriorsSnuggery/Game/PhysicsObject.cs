@@ -155,7 +155,7 @@ namespace WarriorsSnuggery.Objects
 
 		public virtual void CheckVisibility()
 		{
-			if (Renderable != null) // TODO?
+			if (Renderable != null)
 				Renderable.Visible = VisibilitySolver.IsVisible(Position);
 		}
 
