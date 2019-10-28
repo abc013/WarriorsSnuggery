@@ -1,13 +1,15 @@
+using System;
 using OpenTK;
 using OpenTK.Graphics;
 using OpenTK.Graphics.ES30;
-using System;
 using WarriorsSnuggery.Graphics;
 
 namespace WarriorsSnuggery
 {
 	public static class MasterRenderer
 	{
+		public static int RenderCalls;
+
 		public const int PixelSize = 24;
 		public const float PixelMultiplier = 1f / PixelSize;
 
@@ -162,7 +164,7 @@ namespace WarriorsSnuggery
 		{
 			lock (GLLock)
 			{
-
+				RenderCalls = 0;
 				if (Settings.EnablePixeling)
 				{
 					GL.BindFramebuffer(FramebufferTarget.Framebuffer, frameBuffer);
@@ -184,9 +186,6 @@ namespace WarriorsSnuggery
 
 					renderable.Render();
 					Program.CheckGraphicsError("GLRendering_World");
-
-					UIRenderer.Render();
-					Program.CheckGraphicsError("GLRendering_UI");
 				}
 				else
 				{
@@ -195,9 +194,10 @@ namespace WarriorsSnuggery
 
 					WorldRenderer.Render();
 					Program.CheckGraphicsError("GLRendering_World");
-					UIRenderer.Render();
-					Program.CheckGraphicsError("GLRendering_UI");
 				}
+
+				UIRenderer.Render();
+				Program.CheckGraphicsError("GLRendering_UI");
 			}
 		}
 

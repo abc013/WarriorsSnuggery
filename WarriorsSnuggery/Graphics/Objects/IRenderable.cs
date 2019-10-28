@@ -59,6 +59,7 @@ namespace WarriorsSnuggery.Graphics
 				GL.DrawArrays(PrimitiveType.Triangles, 0, VerticeCount);
 				Program.CheckGraphicsError("Renderable_Draw");
 			}
+			MasterRenderer.RenderCalls++;
 		}
 
 		protected virtual void Dispose(bool disposing)

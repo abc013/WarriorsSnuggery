@@ -32,10 +32,8 @@ namespace WarriorsSnuggery
 
 		public static bool Ready;
 		public static bool Exiting;
-		public static bool FirstTick = true;
 
 		public Game Game;
-		public static int GamesLoaded;
 
 		const string title = "Warrior's Snuggery";
 
@@ -139,7 +137,6 @@ namespace WarriorsSnuggery
 			Game.Tick();
 
 			CharInput = '';
-			FirstTick = false;
 
 			if (KeyInput.IsKeyDown(Key.F4) && (KeyInput.IsKeyDown(Key.AltLeft) || KeyInput.IsKeyDown(Key.AltRight)))
 				Exit();
@@ -173,6 +170,7 @@ namespace WarriorsSnuggery
 				SwapBuffers();
 			}
 
+			Title = title + " | " + MasterRenderer.RenderCalls + " Calls";
 			GlobalRender++;
 		}
 
@@ -224,7 +222,6 @@ namespace WarriorsSnuggery
 						break;
 					default:
 						Game = new Game(stats, custom ?? MapCreator.FindMap(stats.Level));
-						GamesLoaded++;
 						break;
 				}
 			}
