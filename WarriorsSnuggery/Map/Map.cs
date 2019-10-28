@@ -32,7 +32,7 @@ namespace WarriorsSnuggery
 		public CPos PlayerSpawn;
 		public MPos Exit;
 
-		int[,] TilesWithAssignedGenerator;
+		int[,] tilesWithAssignedGenerator;
 
 		public Map(World world, MapInfo type, int seed, int level, int difficulty)
 		{
@@ -56,7 +56,7 @@ namespace WarriorsSnuggery
 
 			VisibilitySolver.SetMapDimensions(Bounds, world.ShroudLayer);
 
-			TilesWithAssignedGenerator = new int[Bounds.X, Bounds.Y];
+			tilesWithAssignedGenerator = new int[Bounds.X, Bounds.Y];
 
 			// Basic terrain
 			Type.TerrainGenerationBase.GetGenerator(random, this, world).Generate();
@@ -78,21 +78,21 @@ namespace WarriorsSnuggery
 
 			//MapPrinter.PrintMapGeneration("debug", TerrainGenerationArray, TilesWithAssignedGenerator, Type.GeneratorInfos.Length);
 			// empty data because it is not needed anymore
-			TilesWithAssignedGenerator = null;
+			tilesWithAssignedGenerator = null;
 		}
 
 		public bool AcquireCell(MPos pos, int id)
 		{
-			if (TilesWithAssignedGenerator[pos.X, pos.Y] > id)
+			if (tilesWithAssignedGenerator[pos.X, pos.Y] > id)
 				return false;
 
-			TilesWithAssignedGenerator[pos.X, pos.Y] = id;
+			tilesWithAssignedGenerator[pos.X, pos.Y] = id;
 			return true;
 		}
 
 		public bool CanAcquireCell(MPos pos, int id)
 		{
-			if (TilesWithAssignedGenerator[pos.X, pos.Y] > id)
+			if (tilesWithAssignedGenerator[pos.X, pos.Y] > id)
 				return false;
 
 			return true;
@@ -117,7 +117,7 @@ namespace WarriorsSnuggery
 				{
 					if (important)
 						AcquireCell(new MPos(x, y), ID);
-					else if (!CanAcquireCell(new MPos(x, y), ID) || (cancelIfAcquiredBySameID && TilesWithAssignedGenerator[x, y] == ID))
+					else if (!CanAcquireCell(new MPos(x, y), ID) || (cancelIfAcquiredBySameID && tilesWithAssignedGenerator[x, y] == ID))
 						return false;
 				}
 			}
@@ -150,7 +150,7 @@ namespace WarriorsSnuggery
 			SaveFile(directory + @"maps/" + name + ".yaml", name);
 		}
 
-		public void SaveFile(string file, string name, bool isSave = false)
+		public void SaveFile(string file, string name)
 		{
 			using (var writer = new StreamWriter(file, false))
 			{
