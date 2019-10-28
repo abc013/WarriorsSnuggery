@@ -4,6 +4,7 @@ using WarriorsSnuggery.Maps;
 using WarriorsSnuggery.Objects;
 using WarriorsSnuggery.UI;
 using WarriorsSnuggery.Spells;
+using WarriorsSnuggery.Objects.Conditions;
 
 namespace WarriorsSnuggery
 {
@@ -49,6 +50,7 @@ namespace WarriorsSnuggery
 		public readonly int Seed;
 
 		public readonly SpellManager SpellManager;
+		public readonly ConditionManager ConditionManager;
 
 		readonly TextLine tick;
 		readonly TextLine render;
@@ -89,6 +91,7 @@ namespace WarriorsSnuggery
 			Statistics = statistics;
 
 			SpellManager = new SpellManager(this);
+			ConditionManager = new ConditionManager(this);
 
 			Type = MapType.DefaultType;
 			Mode = MapType.DefaultModes[SharedRandom.Next(MapType.DefaultModes.Length)];
@@ -299,6 +302,7 @@ namespace WarriorsSnuggery
 				}
 
 				SpellManager.Tick();
+				ConditionManager.Tick();
 				World.Tick();
 			}
 
