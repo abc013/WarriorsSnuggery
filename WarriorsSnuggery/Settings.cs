@@ -5,7 +5,7 @@ namespace WarriorsSnuggery
 	public static class Settings
 	{
 		// HACK
-		public const bool LoaderWorkAround = true;
+		public const bool LoaderWorkAround = false;
 
 		public const int SheetSize = 512;
 
