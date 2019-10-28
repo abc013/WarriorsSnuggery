@@ -1,5 +1,6 @@
 ﻿using System;
 using WarriorsSnuggery.Objects.Particles;
+using WarriorsSnuggery.Objects.Conditions;
 
 namespace WarriorsSnuggery.Objects.Parts
 {
@@ -39,6 +40,8 @@ namespace WarriorsSnuggery.Objects.Parts
 
 		[Desc("Activate only by Player.")]
 		public readonly bool OnlyByPlayer;
+		[Desc("Activate only by the following Condition.")]
+		public readonly Condition Condition;
 
 		[Desc("Spawn particles when triggered.")]
 		public readonly ParticleSpawner ParticleSpawner;
@@ -81,6 +84,9 @@ namespace WarriorsSnuggery.Objects.Parts
 				activated &= cooldown > 0;
 				return;
 			}
+
+			if (info.Condition != null && !info.Condition.True(self))
+				return;
 
 			if (info.OnlyByPlayer)
 			{

@@ -1,5 +1,6 @@
 ﻿using System;
 using WarriorsSnuggery.Graphics;
+using WarriorsSnuggery.Objects.Conditions;
 
 namespace WarriorsSnuggery.Objects.Parts
 {
@@ -20,8 +21,11 @@ namespace WarriorsSnuggery.Objects.Parts
 		[Desc("Frame rate (Speed of animation)")]
 		public readonly int Tick = 10;
 
-		[Desc("Condition when the sprite is rendered.", "Possible: ATTACKING, MOVING, IDLING, ALL")]
-		public readonly ActorAction Condition;
+		[Desc("Actorcondition when the sprite is rendered.", "Possible: ATTACKING, MOVING, IDLING, ALL")]
+		public readonly ActorAction ActorCondition = ActorAction.ALL;
+
+		[Desc("Activate only by the following Condition.")]
+		public readonly Condition Condition;
 
 		[Desc("Offset of the sprite.")]
 		public readonly CPos Offset;
@@ -79,7 +83,10 @@ namespace WarriorsSnuggery.Objects.Parts
 
 		public override GraphicsObject GetRenderable(ActorAction action, int facing)
 		{
-			if (info.Condition != ActorAction.ALL && action != info.Condition)
+			if (info.ActorCondition != ActorAction.ALL && action != info.ActorCondition)
+				return null;
+
+			if (info.Condition != null && !info.Condition.True(self))
 				return null;
 
 			return renderables[facing];

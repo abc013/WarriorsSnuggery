@@ -182,6 +182,10 @@ namespace WarriorsSnuggery.Loader
 					}
 				}
 			}
+			else if (t == typeof(Objects.Conditions.Condition))
+			{
+				return new Objects.Conditions.Condition(node.Value);
+			}
 			else if (t == typeof(Objects.Particles.ParticleSpawner))
 			{
 				return new Objects.Particles.ParticleSpawner(node.Children.ToArray());
