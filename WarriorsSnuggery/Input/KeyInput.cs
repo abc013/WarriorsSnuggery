@@ -82,7 +82,7 @@ namespace WarriorsSnuggery
 
 		public static bool IsKeyDown(string key, int coolDownWhenHit = 0)
 		{
-			if (HitCooldown > 0 || !state.IsAnyKeyDown || !Window.Current.Focused)
+			if (HitCooldown > 0 || !state.IsAnyKeyDown || !WindowInfo.Focused)
 				return false;
 
 			if (key.IndexOfAny(new[] { '↓', '↑', '←', '→', '-', '+', ',' }) == 0)
@@ -122,7 +122,7 @@ namespace WarriorsSnuggery
 
 		public static bool IsKeyDown(Key key, int coolDownWhenHit = 0)
 		{
-			if (HitCooldown > 0 || !state.IsAnyKeyDown || !Window.Current.Focused)
+			if (HitCooldown > 0 || !state.IsAnyKeyDown || !WindowInfo.Focused)
 				return false;
 
 			bool hit = state.IsKeyDown(key);

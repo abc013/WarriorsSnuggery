@@ -66,8 +66,7 @@ namespace WarriorsSnuggery
 			calculateScale();
 			UpdateView();
 
-			if (Window.Current.Game != null)
-				WorldRenderer.CheckVisibility(oldZoom, CurrentZoom);
+			WorldRenderer.CheckVisibility(oldZoom, CurrentZoom);
 		}
 
 		public static void Move(CPos add, bool ignoreLock = false)
@@ -97,8 +96,7 @@ namespace WarriorsSnuggery
 			calculatePosition();
 			UpdateView();
 
-			if (Window.Current.Game != null)
-				WorldRenderer.CheckVisibility(oldLookAt, LookAt);
+			WorldRenderer.CheckVisibility(oldLookAt, LookAt);
 		}
 
 		public static void Position(CPos pos, bool ignoreLock = false)
@@ -112,8 +110,7 @@ namespace WarriorsSnuggery
 			calculatePosition();
 			UpdateView();
 
-			if (Window.Current.Game != null)
-				WorldRenderer.CheckVisibility(oldLookAt, LookAt);
+			WorldRenderer.CheckVisibility(oldLookAt, LookAt);
 		}
 
 		static void calculatePosition()
@@ -129,8 +126,7 @@ namespace WarriorsSnuggery
 			//  Why?
 			//Matrix = Projection * View;
 
-			if (Window.Current.Game != null)
-				VisibilitySolver.LookAtUpdated();
+			VisibilitySolver.LookAtUpdated();
 		}
 
 		static void calculateScale()
@@ -139,8 +135,7 @@ namespace WarriorsSnuggery
 			projection = Matrix4.CreateScale(2 / CurrentZoom / WindowInfo.Ratio, 2 / CurrentZoom, 0f);
 			// Matrix4.CreateOrthographic(newzoom / 2 * WindowInfo.Ratio, newzoom / 2, 100f,0, out Projection);
 
-			if (Window.Current.Game != null)
-				VisibilitySolver.ZoomUpdated();
+			VisibilitySolver.ZoomUpdated();
 		}
 
 		public static void UpdateView()

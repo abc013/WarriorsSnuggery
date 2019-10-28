@@ -102,7 +102,7 @@ namespace WarriorsSnuggery.UI
 
 			Settings.Save();
 
-			Window.Current.SetScreen();
+			Window.UpdateScreen();
 			if (Settings.AntiAliasing)
 				MasterRenderer.EnableAliasing();
 			else

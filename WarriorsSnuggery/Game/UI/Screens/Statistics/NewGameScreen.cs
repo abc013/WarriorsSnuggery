@@ -47,7 +47,7 @@ namespace WarriorsSnuggery.UI
 			seedGenerate = ButtonCreator.Create("wooden", new CPos(6144, 3072, 0), "Generate", () => { seedInput.Text = getSeed(); });
 
 			cancel = ButtonCreator.Create("wooden", new CPos(-4096, 6144, 0), "Cancel", () => { game.Pause(false); game.ChangeScreen(ScreenType.DEFAULT); });
-			proceed = ButtonCreator.Create("wooden", new CPos(4096, 6144, 0), "Proceed", () => { Window.Current.NewGame(GameStatistics.CreateGameStatistic(int.Parse(difficultyInput.Text), hardcoreInput.Checked, nameInput.Text, int.Parse(seedInput.Text))); });
+			proceed = ButtonCreator.Create("wooden", new CPos(4096, 6144, 0), "Proceed", () => { GameController.CreateNew(GameStatistics.CreateGameStatistic(int.Parse(difficultyInput.Text), hardcoreInput.Checked, nameInput.Text, int.Parse(seedInput.Text))); });
 		}
 
 		string getSeed()

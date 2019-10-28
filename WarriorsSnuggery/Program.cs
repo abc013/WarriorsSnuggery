@@ -79,6 +79,16 @@ namespace WarriorsSnuggery
 			window.Run(Settings.UpdatesPerSecond, Settings.FrameLimiter);
 		}
 
+		public static void Exit()
+		{
+			var watch = Timer.Start();
+
+			GameController.Exit();
+			Window.CloseWindow();
+
+			watch.StopAndWrite("Disposing");
+		}
+
 		[Conditional("DEBUG")]
 		[DebuggerStepThrough]
 		//[MethodImpl(MethodImplOptions.AggressiveInlining)]

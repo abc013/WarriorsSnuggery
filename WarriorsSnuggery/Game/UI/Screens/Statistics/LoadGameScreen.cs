@@ -26,7 +26,7 @@ namespace WarriorsSnuggery.UI
 				{
 					humanAgreeOnLoad(() =>
 					{
-						Window.Current.NewGame(new GameStatistics(stats), loadStatsMap: true);
+						GameController.CreateNew(new GameStatistics(stats), loadStatsMap: true);
 					}, "Are you sure to leave this game? Unsaved progress will be lost!");
 				}
 			}

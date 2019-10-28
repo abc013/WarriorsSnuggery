@@ -28,7 +28,7 @@ namespace WarriorsSnuggery.UI
 			Title.Position = new CPos(0, -4096, 0);
 
 			back = ButtonCreator.Create("wooden", new CPos(4096, 6144, 0), "Okay", () => { game.Pause(false); game.ChangeScreen(ScreenType.DEFAULT); });
-			exit = ButtonCreator.Create("wooden", new CPos(-4096, 6144, 0), "Exit", Window.Current.Exit);
+			exit = ButtonCreator.Create("wooden", new CPos(-4096, 6144, 0), "Exit", Program.Exit);
 
 			warning = new TextLine(new CPos(0, 5500, 0), IFont.Pixel16, TextLine.OffsetType.MIDDLE);
 			warning.WriteText(new Color(0.5f, 0.5f, 1f) + "WS is still under development. If you encounter any bugs, please report them. Thanks for playing!");
