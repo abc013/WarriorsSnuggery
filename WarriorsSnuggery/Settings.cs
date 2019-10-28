@@ -4,9 +4,6 @@ namespace WarriorsSnuggery
 {
 	public static class Settings
 	{
-		// HACK
-		public const bool LoaderWorkAround = false;
-
 		public const int SheetSize = 512;
 
 		public const int MaxTeams = 8;

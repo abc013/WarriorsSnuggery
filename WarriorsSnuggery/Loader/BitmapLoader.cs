@@ -54,10 +54,7 @@ namespace WarriorsSnuggery.Loader
 				var scan = new byte[stride];
 				for (int scanline = 0; scanline < data.Height; scanline++)
 				{
-					if (!(Settings.LoaderWorkAround && scanline == data.Height - 1 && data.Width < 9 && data.Height < 9))
-						Marshal.Copy(data.Scan0 + scanline * stride, scan, 0, stride);
-					else
-						Marshal.Copy(data.Scan0 + scanline * stride - 16, scan, 0, stride);
+					Marshal.Copy(data.Scan0 + scanline * stride, scan, 0, stride);
 
 					for (int px = 0; px < data.Width; px++)
 					{
