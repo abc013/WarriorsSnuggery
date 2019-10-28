@@ -79,7 +79,7 @@ namespace WarriorsSnuggery.Objects.Particles
 
 		public void AffectRotation(ParticleForce force, float ratio, CPos origin)
 		{
-			var angle = Position.AngleToXY(origin) - 2 * (float)Math.PI + Rotation.CastToAngleRange().Z; //TODO make better
+			var angle = Position.AngleToXY(origin) - 2 * (float)Math.PI + Rotation.CastToAngleRange().Z;
 
 			if (angle < -Math.PI)
 				angle += 2 * (float)Math.PI;

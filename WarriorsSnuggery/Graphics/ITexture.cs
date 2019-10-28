@@ -20,8 +20,6 @@ namespace WarriorsSnuggery.Graphics
 		public readonly int Width;
 		public readonly int Height;
 
-		// TODO add IImages here
-
 		public TextureInfo(string file, TextureType type, int tick, int width, int height, bool searchFile = true)
 		{
 			if (searchFile)

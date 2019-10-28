@@ -225,8 +225,6 @@ namespace WarriorsSnuggery.Graphics
 			}
 		}
 
-		// TODO read texture?
-
 		public static void Dispose(int id)
 		{
 			lock (MasterRenderer.GLLock)

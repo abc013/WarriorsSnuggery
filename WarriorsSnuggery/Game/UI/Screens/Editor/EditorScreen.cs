@@ -240,7 +240,7 @@ namespace WarriorsSnuggery.UI
 
 		void place()
 		{
-			if (!game.World.IsInWorld(MouseInput.GamePosition) && currentSelected != Selected.WALL) // TODO
+			if (!game.World.IsInWorld(MouseInput.GamePosition) && currentSelected != Selected.WALL)
 				return;
 
 			if (CursorOnUI())
