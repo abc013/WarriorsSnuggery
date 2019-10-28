@@ -20,6 +20,8 @@ namespace WarriorsSnuggery
 			RuleLoader.LoadRules();
 			RuleLoader.LoadUIRules();
 
+			PieceManager.RefreshPieces();
+
 			MapCreator.LoadTypes(FileExplorer.Maps, "maps.yaml");
 
 			GameSaveManager.Load();

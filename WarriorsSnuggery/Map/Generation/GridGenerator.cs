@@ -162,7 +162,7 @@ namespace WarriorsSnuggery.Maps
 			// Pieces
 			foreach (var piece in pieceCells)
 			{
-				MiniTextNode[] toUse;
+				Piece toUse;
 				var x = piece.Size.X / info.CellSize;
 				var y = piece.Size.Y / info.CellSize;
 
@@ -180,11 +180,11 @@ namespace WarriorsSnuggery.Maps
 			}
 		}
 
-		MiniTextNode[] getPiece(string[] choices)
+		Piece getPiece(string[] choices)
 		{
 			var choice = choices[random.Next(choices.Length)];
 
-			return RuleReader.FindAndRead(FileExplorer.Maps, choice, ".yaml").ToArray();
+			return PieceManager.GetPiece(choice);
 		}
 
 		protected override void ClearDirty()

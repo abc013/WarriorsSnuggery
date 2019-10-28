@@ -15,7 +15,7 @@ namespace WarriorsSnuggery.Maps
 		public override void Generate()
 		{
 			var pieceIndex = info.Pieces[random.Next(info.Pieces.Length)];
-			Piece = Piece.LoadPiece(RuleReader.FindAndRead(FileExplorer.Maps, pieceIndex, ".yaml").ToArray());
+			Piece = PieceManager.GetPiece(pieceIndex);
 			switch (info.PositionType)
 			{
 				case PositionType.POSITION:
