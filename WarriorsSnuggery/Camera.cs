@@ -115,16 +115,8 @@ namespace WarriorsSnuggery
 
 		static void calculatePosition()
 		{
-			var look = -LookAt.ToVector(); // TODO why negate?
+			var look = -LookAt.ToVector();
 			Matrix4.CreateTranslation(look.X, look.Y, float.MaxValue, out view);
-
-			// TODO understand OLD CODE
-			//var look = new Vector3(-LookAt.ToVector() / new Vector(CurrentZoom, CurrentZoom, CurrentZoom, CurrentZoom)) * 2;
-			//look.X /= WindowInfo.Ratio;
-			//look.Z = 0;
-			//Matrix4.CreateTranslation(ref look, out View);
-			//  Why?
-			//Matrix = Projection * View;
 
 			VisibilitySolver.LookAtUpdated();
 		}
@@ -133,7 +125,6 @@ namespace WarriorsSnuggery
 		{
 			// cast to [-1;1] | we use 0f to stop things glitching out of sight
 			projection = Matrix4.CreateScale(2 / CurrentZoom / WindowInfo.Ratio, 2 / CurrentZoom, 0f);
-			// Matrix4.CreateOrthographic(newzoom / 2 * WindowInfo.Ratio, newzoom / 2, 100f,0, out Projection);
 
 			VisibilitySolver.ZoomUpdated();
 		}
