@@ -33,7 +33,7 @@ namespace WarriorsSnuggery.UI
 				var pair = dictionary.ElementAt(i);
 				mapSelection.Add(new PanelItem(CPos.Zero, new ImageRenderable(TextureManager.Texture("UI_map")), new MPos(512, 512), pair.Key, new[] { Color.Grey + "[" + pair.Value.X + "," + pair.Value.Y + "]" },
 				() => {
-					Window.Current.NewGame(new GameStatistics(GameSaveManager.DefaultStatistic), GameType.EDITOR, custom: MapInfo.EditorMapTypeFromPiece(pair.Key, pair.Value));
+					GameController.CreateNew(new GameStatistics(GameSaveManager.DefaultStatistic), GameType.EDITOR, custom: MapInfo.EditorMapTypeFromPiece(pair.Key, pair.Value));
 					Hide();
 				}));
 			}
@@ -234,7 +234,7 @@ namespace WarriorsSnuggery.UI
 				stream.WriteLine("Walls=" + walls);
 			}
 
-			Window.Current.NewGame(new GameStatistics(GameSaveManager.DefaultStatistic), GameType.EDITOR, custom: MapInfo.EditorMapTypeFromPiece(name.Text, size));
+			GameController.CreateNew(new GameStatistics(GameSaveManager.DefaultStatistic), GameType.EDITOR, custom: MapInfo.EditorMapTypeFromPiece(name.Text, size));
 		}
 	}
 }

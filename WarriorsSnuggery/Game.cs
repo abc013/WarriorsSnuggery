@@ -40,7 +40,6 @@ namespace WarriorsSnuggery
 
 		public readonly ScreenControl ScreenControl;
 		public readonly World World;
-		public readonly Window Window;
 
 		public readonly GameStatistics OldStatistics;
 		public readonly GameStatistics Statistics;
@@ -78,7 +77,6 @@ namespace WarriorsSnuggery
 
 		public Game(GameStatistics statistics, MapInfo map, int seed = -1)
 		{
-			Window = Window.Current;
 			MapType = map;
 
 			// If seed negative, calculate it.
@@ -164,7 +162,7 @@ namespace WarriorsSnuggery
 		{
 			if (Finished && instantExit)
 			{
-				Window.Current.NewGame(Statistics, instantExitType);
+				GameController.CreateNew(Statistics, instantExitType);
 				return;
 			}
 
@@ -311,22 +309,22 @@ namespace WarriorsSnuggery
 				visibility.SetText(VisibilitySolver.TilesVisible() + " Tiles visible");
 
 				var tickColor = Color.White;
-				if (Window.Current.TPS < Settings.UpdatesPerSecond - 5)
+				if (Window.TPS < Settings.UpdatesPerSecond - 5)
 					tickColor = Color.Red;
-				else if (Window.Current.TPS > Settings.UpdatesPerSecond + 5)
+				else if (Window.TPS > Settings.UpdatesPerSecond + 5)
 					tickColor = Color.Green;
 
 				tick.SetColor(tickColor);
-				tick.SetText("Tick " + Window.Current.TPS + " @ " + Window.Current.TMS + " ms");
+				tick.SetText("Tick " + Window.TPS + " @ " + Window.TMS + " ms");
 
 				var renderColor = Color.White;
-				if (Window.Current.FPS < Settings.FrameLimiter - 20)
+				if (Window.FPS < Settings.FrameLimiter - 20)
 					renderColor = Color.Red;
-				else if (Window.Current.FPS > Settings.FrameLimiter + 5)
+				else if (Window.FPS > Settings.FrameLimiter + 5)
 					renderColor = Color.Green;
 
 				render.SetColor(renderColor);
-				render.SetText("Render " + Window.Current.FPS + " @ " + Window.Current.FMS + " ms");
+				render.SetText("Render " + Window.FPS + " @ " + Window.FMS + " ms");
 			}
 
 			if (infoTextDuration-- < 90)

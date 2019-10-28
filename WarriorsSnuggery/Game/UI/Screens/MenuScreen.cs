@@ -33,26 +33,26 @@ namespace WarriorsSnuggery.UI
 			switch (game.Type)
 			{
 				case GameType.EDITOR:
-					restart = ButtonCreator.Create("wooden", new CPos(2048, height, 0), "Play", () => humanAgree(() => { Window.Current.NewGame(game.Statistics, GameType.NORMAL, true, Maps.MapInfo.ConvertGameType(game.MapType, GameType.TEST)); }, "Make sure you have saved the map!"));
-					menu = ButtonCreator.Create("wooden", new CPos(-2048, height, 0), "Main Menu", () => humanAgree(() => { Window.Current.NewGame(game.Statistics, GameType.MAINMENU); }, "Are you sure to return? Unsaved progress will be lost!"));
+					restart = ButtonCreator.Create("wooden", new CPos(2048, height, 0), "Play", () => humanAgree(() => { GameController.CreateNew(game.Statistics, GameType.NORMAL, true, Maps.MapInfo.ConvertGameType(game.MapType, GameType.TEST)); }, "Make sure you have saved the map!"));
+					menu = ButtonCreator.Create("wooden", new CPos(-2048, height, 0), "Main Menu", () => humanAgree(() => { GameController.CreateNew(game.Statistics, GameType.MAINMENU); }, "Are you sure to return? Unsaved progress will be lost!"));
 					break;
 				case GameType.MAINMENU:
 					height -= 1024;
 					break;
 				case GameType.TUTORIAL:
-					restart = ButtonCreator.Create("wooden", new CPos(2048, height, 0), "Restart", () => Window.Current.NewGame(game.Statistics, GameType.TUTORIAL, true));
-					menu = ButtonCreator.Create("wooden", new CPos(-2048, height, 0), "Main Menu", () => Window.Current.NewGame(game.Statistics, GameType.MAINMENU));
+					restart = ButtonCreator.Create("wooden", new CPos(2048, height, 0), "Restart", () => GameController.CreateNew(game.Statistics, GameType.TUTORIAL, true));
+					menu = ButtonCreator.Create("wooden", new CPos(-2048, height, 0), "Main Menu", () => GameController.CreateNew(game.Statistics, GameType.MAINMENU));
 					break;
 				case GameType.MENU:
-					menu = ButtonCreator.Create("wooden", new CPos(0, height, 0), "Main Menu", () => humanAgree(() => { Window.Current.NewGame(game.Statistics, GameType.MAINMENU); }, "Are you sure to leave this game? Unsaved progress will be lost!"));
+					menu = ButtonCreator.Create("wooden", new CPos(0, height, 0), "Main Menu", () => humanAgree(() => { GameController.CreateNew(game.Statistics, GameType.MAINMENU); }, "Are you sure to leave this game? Unsaved progress will be lost!"));
 					break;
 				case GameType.TEST:
-					restart = ButtonCreator.Create("wooden", new CPos(2048, height, 0), "Editor", () => Window.Current.NewGame(game.Statistics, GameType.EDITOR, true, Maps.MapInfo.ConvertGameType(game.MapType, GameType.EDITOR)));
-					menu = ButtonCreator.Create("wooden", new CPos(-2048, height, 0), "Main Menu", () => Window.Current.NewGame(game.Statistics, GameType.MAINMENU));
+					restart = ButtonCreator.Create("wooden", new CPos(2048, height, 0), "Editor", () => GameController.CreateNew(game.Statistics, GameType.EDITOR, true, Maps.MapInfo.ConvertGameType(game.MapType, GameType.EDITOR)));
+					menu = ButtonCreator.Create("wooden", new CPos(-2048, height, 0), "Main Menu", () => GameController.CreateNew(game.Statistics, GameType.MAINMENU));
 					break;
 				default:
-					restart = ButtonCreator.Create("wooden", new CPos(2048, height, 0), "Restart", () => humanAgree(() => { Window.Current.NewGame(game.Statistics, GameType.NORMAL, true); }, "Are you sure you want to restart? Current progress in this level will be lost!"));
-					menu = ButtonCreator.Create("wooden", new CPos(-2048, height, 0), "Headquarters", () => humanAgree(() => { game.Statistics.Level--; Window.Current.NewGame(game.Statistics, GameType.MENU); }, "Are you sure to return? All progress in this level will be lost!")); // Level is still the same as it was not finished
+					restart = ButtonCreator.Create("wooden", new CPos(2048, height, 0), "Restart", () => humanAgree(() => { GameController.CreateNew(game.Statistics, GameType.NORMAL, true); }, "Are you sure you want to restart? Current progress in this level will be lost!"));
+					menu = ButtonCreator.Create("wooden", new CPos(-2048, height, 0), "Headquarters", () => humanAgree(() => { game.Statistics.Level--; GameController.CreateNew(game.Statistics, GameType.MENU); }, "Are you sure to return? All progress in this level will be lost!")); // Level is still the same as it was not finished
 					break;
 			}
 
@@ -89,7 +89,7 @@ namespace WarriorsSnuggery.UI
 				Rotation = new VAngle(0, 0, 90)
 			};
 			height += 512;
-			leave = ButtonCreator.Create("wooden", new CPos(0, height, 0), "Exit Game", () => humanAgree(Window.Current.Exit, "Are you sure you want to exit the game?"));
+			leave = ButtonCreator.Create("wooden", new CPos(0, height, 0), "Exit Game", () => humanAgree(Program.Exit, "Are you sure you want to exit the game?"));
 		}
 
 		void humanAgree(Action onAgree, string text)

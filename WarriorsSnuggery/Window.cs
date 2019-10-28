@@ -20,11 +20,15 @@ namespace WarriorsSnuggery
 		public const float UnitHeight = Camera.DefaultZoom;
 
 		public static float UnitWidth { get { return Camera.DefaultZoom * Ratio; } private set { } }
+
+		public static bool Focused = true;
 	}
 
 	public class Window : GameWindow
 	{
-		public static Window Current;
+		static Window current;
+		const string title = "Warrior's Snuggery";
+
 		public static char CharInput;
 
 		public static uint GlobalTick;
@@ -33,15 +37,21 @@ namespace WarriorsSnuggery
 		public static bool Ready;
 		public static bool Exiting;
 
-		public Game Game;
-
-		const string title = "Warrior's Snuggery";
-
 		public Window() : base(Settings.Width, Settings.Height, GraphicsMode.Default, title)
 		{
-			Current = this;
+			current = this;
 			SetScreen();
 			CursorVisible = Settings.EnableDebug;
+		}
+
+		public static void CloseWindow()
+		{
+			current.Exit();
+		}
+
+		public static void UpdateScreen()
+		{
+			current.SetScreen();
 		}
 
 		public void SetScreen()
@@ -88,24 +98,15 @@ namespace WarriorsSnuggery
 			base.OnLoad(e);
 
 			var font = Timer.Start();
-
 			Icon = new Icon(FileExplorer.Misc + "/warsnu.ico");
 			IFont.LoadFonts();
 			IFont.InitializeFonts();
 			CharManager.Initialize();
 
 			font.StopAndWrite("Loading Fonts");
+
 			var watch = Timer.Start();
-
-			RuleLoader.LoadRules();
-			RuleLoader.LoadUIRules();
-
-			MapCreator.LoadTypes(FileExplorer.Maps, "maps.yaml");
-
-			GameSaveManager.Load();
-			GameSaveManager.DefaultStatistic = GameStatistics.LoadGameStatistic("DEFAULT");
-
-			NewGame(new GameStatistics(GameSaveManager.DefaultStatistic), GameType.MAINMENU);
+			GameController.Load();
 
 			watch.StopAndWrite("Loading Rules");
 
@@ -118,15 +119,12 @@ namespace WarriorsSnuggery
 			//context2.MakeCurrent(WindowInfo);
 		}
 
-		public float TPS;
-		public float TMS;
+		public static float TPS;
+		public static float TMS;
 		protected override void OnUpdateFrame(FrameEventArgs e)
 		{
 			if (!Ready)
 				return;
-
-			KeyInput.Tick();
-			MouseInput.Tick();
 
 			if (GlobalTick % 20 == 0)
 			{
@@ -134,19 +132,18 @@ namespace WarriorsSnuggery
 				TMS = (float)Math.Round(e.Time * 1000, 1);
 			}
 
-			Game.Tick();
+			GameController.Tick();
 
 			CharInput = '';
 
 			if (KeyInput.IsKeyDown(Key.F4) && (KeyInput.IsKeyDown(Key.AltLeft) || KeyInput.IsKeyDown(Key.AltRight)))
-				Exit();
+				Program.Exit();
 
 			GlobalTick++;
 		}
 
-		public float FPS;
-		public float FMS;
-
+		public static float FPS;
+		public static float FMS;
 		protected override void OnRenderFrame(FrameEventArgs e)
 		{
 			if (!Ready || Exiting)
@@ -176,79 +173,14 @@ namespace WarriorsSnuggery
 
 		protected override void OnFocusedChanged(EventArgs e)
 		{
-			base.OnFocusedChanged(e);
-
+			WarriorsSnuggery.WindowInfo.Focused = Focused;
 			if (!Focused && !Program.isDebug && Ready)
-			{
-				if (!Game.Paused)
-					Game.ChangeScreen(UI.ScreenType.PAUSED);
-
-				Game.Pause(true);
-			}
-		}
-
-		public void NewGame(GameStatistics stats, GameType type = GameType.NORMAL, bool sameSeed = false, MapInfo custom = null, bool loadStatsMap = false)
-		{
-			if (Game != null)
-			{
-				Game.Finish();
-				Game.Dispose();
-			}
-
-			if (loadStatsMap)
-			{
-				try
-				{
-					custom = MapInfo.MapTypeFromSave(stats);
-				}
-				catch (System.IO.FileNotFoundException)
-				{
-					Log.WriteDebug(string.Format("Unable to load saved map of save '{0}'. Using a random map.", stats.SaveName));
-				}
-			}
-
-			if (!sameSeed)
-			{
-				switch (type)
-				{
-					case GameType.TUTORIAL:
-						Game = new Game(stats, custom ?? MapCreator.FindTutorial());
-						break;
-					case GameType.MENU:
-						Game = new Game(stats, custom ?? MapCreator.FindMainMap(stats.Level));
-						break;
-					case GameType.MAINMENU:
-						Game = new Game(stats, custom ?? MapCreator.FindMainMenuMap(stats.Level));
-						break;
-					default:
-						Game = new Game(stats, custom ?? MapCreator.FindMap(stats.Level));
-						break;
-				}
-			}
-			else
-			{
-				Game = new Game(stats, custom ?? Game.MapType, Game.Seed);
-			}
-
-			Game.Load();
-			if (stats.Health > 0 && Game.World.LocalPlayer != null && Game.World.LocalPlayer.Health != null)
-				Game.World.LocalPlayer.Health.HP = stats.Health;
-
-			Camera.Reset();
-			MasterRenderer.UpdateView();
+				GameController.Pause();
 		}
 
 		public override void Exit()
 		{
-			var watch = Timer.Start();
-
 			Exiting = true;
-			lock (MasterRenderer.GLLock)
-			{
-				GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
-			}
-			Game.Finish();
-			Game.Dispose();
 
 			TextureManager.DeleteTextures();
 			ColorManager.Dispose();
@@ -263,7 +195,6 @@ namespace WarriorsSnuggery
 			IFont.DisposeFonts();
 
 			base.Exit();
-			watch.StopAndWrite("Disposing");
 		}
 
 		protected override void OnMouseMove(MouseMoveEventArgs e)

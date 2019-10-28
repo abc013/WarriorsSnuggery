@@ -21,8 +21,8 @@ namespace WarriorsSnuggery.UI
 			won.WriteText(Color.Blue + "Y" + Color.Yellow + "O" + Color.Green + "U " + Color.Magenta + "W" + Color.Blue + "O" + Color.Cyan + "N" + Color.Green + "!");
 			score = new TextLine(new CPos(0, 1024, 0), IFont.Pixel16, TextLine.OffsetType.MIDDLE);
 
-			menu = ButtonCreator.Create("wooden", new CPos(-2048, 5120, 0), "Headquarters", () => Window.Current.NewGame(game.Statistics, GameType.MENU));
-			next = ButtonCreator.Create("wooden", new CPos(2048, 5120, 0), "Next Level", () => Window.Current.NewGame(game.Statistics, GameType.NORMAL));
+			menu = ButtonCreator.Create("wooden", new CPos(-2048, 5120, 0), "Headquarters", () => GameController.CreateNew(game.Statistics, GameType.MENU));
+			next = ButtonCreator.Create("wooden", new CPos(2048, 5120, 0), "Next Level", () => GameController.CreateNew(game.Statistics, GameType.NORMAL));
 		}
 
 		public override void Render()
