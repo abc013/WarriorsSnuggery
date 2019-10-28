@@ -145,7 +145,7 @@ namespace WarriorsSnuggery
 
 			timer.StopAndWrite("Loading Game");
 
-			if (Window.FirstTick && Settings.FirstStarted)
+			if (Window.GlobalTick == 0 && Settings.FirstStarted)
 			{
 				Pause(true);
 				ChangeScreen(ScreenType.START);
