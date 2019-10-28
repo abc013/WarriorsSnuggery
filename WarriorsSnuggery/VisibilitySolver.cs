@@ -88,11 +88,10 @@ namespace WarriorsSnuggery
 				return true;
 
 			// As shroud has a doubled tilesize, we have to check 4 tiles.
-			var con1 = shroud.ShroudRevealed(Objects.Actor.PlayerTeam, x * 2, y * 2);
-			var con2 = shroud.ShroudRevealed(Objects.Actor.PlayerTeam, x * 2 + 1, y * 2);
-			var con3 = shroud.ShroudRevealed(Objects.Actor.PlayerTeam, x * 2 + 1, y * 2 + 1);
-			var con4 = shroud.ShroudRevealed(Objects.Actor.PlayerTeam, x * 2, y * 2 + 1);
-			return con1 || con2 || con3 || con4;
+			return shroud.ShroudRevealed(Objects.Actor.PlayerTeam, x * 2, y * 2)
+				|| shroud.ShroudRevealed(Objects.Actor.PlayerTeam, x * 2 + 1, y * 2)
+				|| shroud.ShroudRevealed(Objects.Actor.PlayerTeam, x * 2 + 1, y * 2 + 1)
+				|| shroud.ShroudRevealed(Objects.Actor.PlayerTeam, x * 2, y * 2 + 1);
 		}
 
 		public static bool IsVisible(WPos position)

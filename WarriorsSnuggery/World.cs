@@ -181,7 +181,7 @@ namespace WarriorsSnuggery
 			if (@object == null)
 				return;
 
-			if (@object as Actor != null)
+			if (@object is Actor)
 				actorsToAdd.Add(@object as Actor);
 			else
 				objectsToAdd.Add(@object);

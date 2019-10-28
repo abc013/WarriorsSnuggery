@@ -152,7 +152,7 @@ namespace WarriorsSnuggery.UI
 			Title.Position = new CPos(0, -4096, 0);
 
 			cancel = ButtonCreator.Create("wooden", new CPos(4096, 6144, 0), "Cancel", () => { ActiveScreen = false; });
-			okay = ButtonCreator.Create("wooden", new CPos(-4096, 6144, 0), "Create", () => { Create(); });
+			okay = ButtonCreator.Create("wooden", new CPos(-4096, 6144, 0), "Create", () => { create(); });
 
 			size = new TextLine(new CPos(0, -1024, 0), IFont.Pixel16, TextLine.OffsetType.MIDDLE);
 			size.SetText("Size of Piece");
@@ -211,7 +211,7 @@ namespace WarriorsSnuggery.UI
 			warning.Dispose();
 		}
 
-		void Create()
+		void create()
 		{
 			var size = new MPos(int.Parse(sizeX.Text), int.Parse(sizeY.Text));
 			var path = FileExplorer.Maps + @"\maps";
