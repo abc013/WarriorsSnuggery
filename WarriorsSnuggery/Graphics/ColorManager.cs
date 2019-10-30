@@ -17,7 +17,7 @@ namespace WarriorsSnuggery.Graphics
 			}
 		}
 		static float lineWidth;
-		public const float DefaultLineWidth = 1.0f;
+		public const float DefaultLineWidth = 2.0f;
 
 		public static void ResetLineWidth()
 		{

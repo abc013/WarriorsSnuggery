@@ -17,7 +17,7 @@ namespace WarriorsSnuggery.Physics
 		public readonly int RadiusY;// only for box and drawing
 		public readonly int HeightRadius;
 
-		readonly GraphicsObject renderable;
+		readonly GraphicsObject circle;
 
 		public CPos Position;
 		public int Height;
@@ -31,33 +31,8 @@ namespace WarriorsSnuggery.Physics
 			RadiusY = radiusY;
 			HeightRadius = heightradius;
 
-			if (!Settings.DeveloperMode)
-				return;
-
-			switch (Shape)
-			{
-				case Shape.CIRCLE:
-					renderable = new ColoredCircleRenderable(Color.Cyan, RadiusX * 2 / 1024f, 16, DrawMethod.LINELOOP);
-					renderable.SetPosition(Position);
-					break;
-				case Shape.RECTANGLE:
-					renderable = new ColoredRectRenderable(Color.Cyan, RadiusX * 2 / 1024f, RadiusY * 2 / 1024f, DrawMethod.LINELOOP);
-					renderable.SetPosition(Position);
-					break;
-				case Shape.LINE_HORIZONTAL:
-					renderable = new ColoredLineRenderable(Color.Cyan, RadiusX * 2 / 1024f);
-					renderable.SetPosition(Position - new CPos(0, RadiusY, -10240));
-					renderable.SetRotation(new VAngle(0, 0, 90));
-					break;
-				case Shape.LINE_VERTICAL:
-					renderable = new ColoredLineRenderable(Color.Cyan, RadiusX * 2 / 1024f);
-					renderable.SetPosition(Position - new CPos(RadiusX, 0, 0));
-					break;
-			}
-			if (renderable != null)
-			{
-				WorldRenderer.RenderAfter(renderable);
-			}
+			if (Shape == Shape.CIRCLE)
+				circle = new ColoredCircleRenderable(Color.Magenta, RadiusX * 2 / 1024f, 16, DrawMethod.LINELOOP);
 		}
 
 		public bool Intersects(SimplePhysics other, bool ignoreHeight)
@@ -188,31 +163,35 @@ namespace WarriorsSnuggery.Physics
 			}
 		}
 
-		public void RenderShape()
+		public void RenderDebug()
 		{
-			if (renderable == null)
-				return;
-
 			switch (Shape)
 			{
-				default:
-					renderable.SetPosition(Position);
+				case Shape.CIRCLE:
+					circle.SetPosition(Position);
+					circle.Render();
+
+					break;
+				case Shape.RECTANGLE:
+					ColorManager.DrawLine(Position - new CPos(RadiusX, RadiusY, 0), Position + new CPos(-RadiusX, RadiusY, 0), Color.Magenta);
+					ColorManager.DrawLine(Position - new CPos(RadiusX, RadiusY, 0), Position + new CPos(RadiusX, -RadiusY, 0), Color.Magenta);
+					ColorManager.DrawLine(Position - new CPos(-RadiusX, RadiusY, 0), Position + new CPos(RadiusX, RadiusY, 0), Color.Magenta);
+					ColorManager.DrawLine(Position - new CPos(RadiusX, -RadiusY, 0), Position + new CPos(RadiusX, RadiusY, 0), Color.Magenta);
 					break;
 				case Shape.LINE_HORIZONTAL:
-					renderable.SetPosition(Position - new CPos(0, RadiusY, 0));
+					ColorManager.DrawLine(Position - new CPos(2 * RadiusX, RadiusY, 0), Position + new CPos(0, -RadiusY, 0), Color.Magenta);
 					break;
 				case Shape.LINE_VERTICAL:
-					renderable.SetPosition(Position - new CPos(RadiusX, 0, 0));
+					ColorManager.DrawLine(Position - new CPos(RadiusX, 2 * RadiusY, 0), Position + new CPos(-RadiusX, 0, 0), Color.Magenta);
 					break;
 			}
 		}
 
 		public void Dispose()
 		{
-			if (renderable != null)
+			if (circle != null)
 			{
-				WorldRenderer.RemoveRenderAfter(renderable);
-				renderable.Dispose();
+				circle.Dispose();
 			}
 		}
 	}

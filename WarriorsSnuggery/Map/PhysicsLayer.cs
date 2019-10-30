@@ -106,7 +106,7 @@ namespace WarriorsSnuggery
 	{
 		public readonly MPos Position;
 
-		readonly List<PhysicsObject> Objects = new List<PhysicsObject>();
+		readonly List<PhysicsObject> objects = new List<PhysicsObject>();
 
 		public PhysicsSector(MPos position)
 		{
@@ -115,26 +115,32 @@ namespace WarriorsSnuggery
 
 		public void Enter(PhysicsObject obj)
 		{
-			if (!Objects.Contains(obj))
-				Objects.Add(obj);
+			if (!objects.Contains(obj))
+				objects.Add(obj);
 		}
 
 		public void Leave(PhysicsObject obj)
 		{
-			Objects.Remove(obj);
+			objects.Remove(obj);
 		}
 
 		public bool Check(PhysicsObject obj, bool ignoreHeight = false, Type[] ignoreTypes = null, PhysicsObject[] ignoreObjects = null)
 		{
-			if (!Objects.Contains(obj))
+			if (!objects.Contains(obj))
 				return true;
 
-			return Objects.Any((o) => o.Physics != obj.Physics && o.Physics.Intersects(obj.Physics, ignoreHeight) && (ignoreObjects == null || !ignoreObjects.Contains(o)) && (ignoreTypes == null || !ignoreTypes.Contains(o.GetType())));
+			return objects.Any((o) => o.Physics != obj.Physics && o.Physics.Intersects(obj.Physics, ignoreHeight) && (ignoreObjects == null || !ignoreObjects.Contains(o)) && (ignoreTypes == null || !ignoreTypes.Contains(o.GetType())));
 		}
 
 		public PhysicsObject[] CheckRay(Physics.RayPhysics physics, Type[] ignoreTypes = null, PhysicsObject[] ignoreObjects = null)
 		{
-			return Objects.Where((o) => (ignoreObjects == null || !ignoreObjects.Contains(o)) && (ignoreTypes == null || !ignoreTypes.Contains(o.GetType()))).ToArray();
+			return objects.Where((o) => (ignoreObjects == null || !ignoreObjects.Contains(o)) && (ignoreTypes == null || !ignoreTypes.Contains(o.GetType()))).ToArray();
+		}
+
+		public void RenderDebug()
+		{
+			foreach (var obj in objects)
+				obj.Physics.RenderDebug();
 		}
 	}
 }
