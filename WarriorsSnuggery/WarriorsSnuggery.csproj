@@ -69,6 +69,9 @@
     <Compile Include="GameController.cs" />
     <Compile Include="Game\UI\Objects\SpellList.cs" />
     <Compile Include="Map\PieceManager.cs" />
+    <Compile Include="Physics\PhysicsLine.cs" />
+    <Compile Include="Physics\RayPhysics.cs" />
+    <Compile Include="Physics\Shape.cs" />
     <Compile Include="SpellTree\Spell.cs" />
     <Compile Include="GameSettings.cs" />
     <Compile Include="Game\Actor\Spells\EffectPart.cs" />
@@ -189,7 +192,7 @@
     <Compile Include="Game\Color\ColoredLine.cs" />
     <Compile Include="Game\UI\Objects\Keyboardbutton.cs" />
     <Compile Include="Game\Particles\Particle.cs" />
-    <Compile Include="Physics\Physics.cs" />
+    <Compile Include="Physics\SimplePhysics.cs" />
     <Compile Include="Game\Types\WallType.cs" />
     <Compile Include="Game\Types\WeaponType.cs" />
     <Compile Include="Game\Wall.cs" />

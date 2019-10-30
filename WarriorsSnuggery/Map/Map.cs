@@ -24,6 +24,12 @@ namespace WarriorsSnuggery
 		public MPos Bounds { get; private set; }
 		public MPos Center { get { return Bounds / new MPos(2, 2); } }
 		public MPos DefaultEdgeDistance { get { return Bounds / new MPos(8, 8); } }
+
+		public CPos TopLeftCorner { get { return new CPos(-512, -512, 0); } }
+		public CPos TopRightCorner { get { return new CPos(-512 + Bounds.X * 1024, -512, 0); } }
+		public CPos BottomLeftCorner { get { return new CPos(-512, -512 + Bounds.Y * 1024, 0); } }
+		public CPos BottomRightCorner { get { return new CPos(-512 + Bounds.X * 1024, -512 + Bounds.Y * 1024, 0); } }
+
 		public CPos PlayerSpawn;
 		public MPos Exit;
 

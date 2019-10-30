@@ -1,20 +1,11 @@
 using System;
 using WarriorsSnuggery.Graphics;
 
-namespace WarriorsSnuggery.Objects
+namespace WarriorsSnuggery.Physics
 {
-	public enum Shape
+	public sealed class SimplePhysics : IDisposable
 	{
-		CIRCLE,
-		RECTANGLE,
-		LINE_HORIZONTAL,
-		LINE_VERTICAL,
-		NONE
-	}
-
-	public sealed class Physics : IDisposable
-	{
-		public static readonly Physics Empty = new Physics(CPos.Zero, 0, Shape.NONE, 0, 0, 0);
+		public static readonly SimplePhysics Empty = new SimplePhysics(CPos.Zero, 0, Shape.NONE, 0, 0, 0);
 
 		public readonly Shape Shape;
 		public readonly int RadiusX;
@@ -26,7 +17,7 @@ namespace WarriorsSnuggery.Objects
 		public CPos Position;
 		public int Height;
 
-		public Physics(CPos position, int height, Shape shape, int radiusX, int radiusY, int heightradius)
+		public SimplePhysics(CPos position, int height, Shape shape, int radiusX, int radiusY, int heightradius)
 		{
 			Position = position;
 			Height = height;
@@ -64,7 +55,7 @@ namespace WarriorsSnuggery.Objects
 			}
 		}
 
-		public bool Intersects(Physics other, bool ignoreHeight)
+		public bool Intersects(SimplePhysics other, bool ignoreHeight)
 		{
 			if (other == null)
 				return false;
@@ -161,6 +152,35 @@ namespace WarriorsSnuggery.Objects
 			}
 
 			return false;
+		}
+
+		public PhysicsLine[] GetLines()
+		{
+			switch(Shape)
+			{
+				default:
+					return new PhysicsLine[0];
+				case Shape.LINE_VERTICAL:
+					return new PhysicsLine[]
+					{
+						new PhysicsLine(Position - new CPos(RadiusX, 2 * RadiusY, 0), Position + new CPos(-RadiusX, 0, 0))
+					};
+				case Shape.LINE_HORIZONTAL:
+					return new PhysicsLine[]
+					{
+						new PhysicsLine(Position - new CPos(2 * RadiusX, RadiusY, 0), Position + new CPos(0, -RadiusY, 0))
+					};
+					// TODO: give Circle an own collider
+				case Shape.CIRCLE:
+				case Shape.RECTANGLE:
+					return new PhysicsLine[]
+					{
+						new PhysicsLine(Position - new CPos(RadiusX, RadiusY, 0), Position + new CPos(-RadiusX, RadiusY, 0)),
+						new PhysicsLine(Position - new CPos(RadiusX, RadiusY, 0), Position + new CPos(RadiusX, -RadiusY, 0)),
+						new PhysicsLine(Position + new CPos(-RadiusX, RadiusY, 0), Position + new CPos(RadiusX, RadiusY, 0)),
+						new PhysicsLine(Position + new CPos(RadiusX, -RadiusY, 0), Position + new CPos(RadiusX, RadiusY, 0))
+					};
+			}
 		}
 
 		public void RenderShape()

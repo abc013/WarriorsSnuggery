@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using WarriorsSnuggery.Objects.Effects;
 using WarriorsSnuggery.Objects.Parts;
+using WarriorsSnuggery.Physics;
 
 namespace WarriorsSnuggery.Objects
 {
@@ -61,7 +62,7 @@ namespace WarriorsSnuggery.Objects
 		}
 		public ActorAction CurrentAction;
 
-		public Actor(World world, ActorType type, CPos position, byte team, bool isBot, bool isPlayer = false) : base(position, null, type.Physics == null ? null : new Physics(position, 0, type.Physics.Shape, type.Physics.Size.X, type.Physics.Size.Y, type.Physics.Size.Z))
+		public Actor(World world, ActorType type, CPos position, byte team, bool isBot, bool isPlayer = false) : base(position, null, type.Physics == null ? null : new SimplePhysics(position, 0, type.Physics.Shape, type.Physics.Size.X, type.Physics.Size.Y, type.Physics.Size.Z))
 		{
 			World = world;
 			Type = type;

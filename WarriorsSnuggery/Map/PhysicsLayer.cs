@@ -7,6 +7,7 @@ namespace WarriorsSnuggery
 {
 	public sealed class PhysicsLayer
 	{
+		public const float SectorSize = 2;
 		public PhysicsSector[,] Sectors;
 		public MPos Size;
 
@@ -17,7 +18,7 @@ namespace WarriorsSnuggery
 
 		public void SetMapDimensions(MPos size)
 		{
-			Size = new MPos((int)Math.Ceiling(size.X / 2f), (int)Math.Ceiling(size.Y / 2f));
+			Size = new MPos((int)Math.Ceiling(size.X / SectorSize), (int)Math.Ceiling(size.Y / SectorSize));
 			Sectors = new PhysicsSector[Size.X, Size.Y];
 			for (int x = 0; x < Size.X; x++)
 			{
@@ -30,7 +31,7 @@ namespace WarriorsSnuggery
 
 		public void UpdateSectors(PhysicsObject obj, bool @new = false)
 		{
-			if (obj.Physics == null || obj.Physics.Shape == Shape.NONE)
+			if (obj.Physics == null || obj.Physics.Shape == Physics.Shape.NONE)
 				return;
 
 			if (!@new)
@@ -62,11 +63,11 @@ namespace WarriorsSnuggery
 			{
 				var point = points[i];
 
-				var x = point.X / 2048f;
+				var x = point.X / (SectorSize * 1024);
 				if (x < 0) x = 0;
 				if (x >= Size.X) x = Size.X - 1;
 
-				var y = point.Y / 2048f;
+				var y = point.Y / (SectorSize * 1024);
 				if (y < 0) y = 0;
 				if (y >= Size.Y) y = Size.Y - 1;
 
@@ -124,6 +125,11 @@ namespace WarriorsSnuggery
 				return true;
 
 			return Objects.Any((o) => o.Physics != obj.Physics && o.Physics.Intersects(obj.Physics, ignoreHeight) && (ignoreObjects == null || !ignoreObjects.Contains(o)) && (ignoreTypes == null || !ignoreTypes.Contains(o.GetType())));
+		}
+
+		public PhysicsObject[] CheckRay(Physics.RayPhysics physics, Type[] ignoreTypes = null, PhysicsObject[] ignoreObjects = null)
+		{
+			return Objects.Where((o) => (ignoreObjects == null || !ignoreObjects.Contains(o)) && (ignoreTypes == null || !ignoreTypes.Contains(o.GetType()))).ToArray();
 		}
 	}
 }
