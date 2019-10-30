@@ -48,8 +48,6 @@ namespace WarriorsSnuggery.Objects
 
 		public override void Render()
 		{
-			base.RenderPhysics();
-
 			var distance = originPos.DistToXY(Target);
 			var angle = Target.AngleToXY(originPos);
 			var fit = distance / renderabledistance;

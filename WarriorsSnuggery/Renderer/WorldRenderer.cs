@@ -95,6 +95,20 @@ namespace WarriorsSnuggery
 				}
 			}
 
+			if (Settings.DeveloperMode)
+			{
+				foreach(var sector in world.PhysicsLayer.Sectors)
+				{
+					sector.RenderDebug();
+				}
+
+				foreach(var wall in world.WallLayer.Walls)
+				{
+					if (wall != null)
+						wall.Physics.RenderDebug();
+				}
+			}
+
 			Ambient = world.Map.Type.Ambient;
 		}
 

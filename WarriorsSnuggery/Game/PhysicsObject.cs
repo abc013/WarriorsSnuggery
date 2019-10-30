@@ -119,10 +119,7 @@ namespace WarriorsSnuggery.Objects
 		public virtual void Render()
 		{
 			if (Renderable != null)
-			{
 				Renderable.Render();
-			}
-			RenderPhysics();
 		}
 
 		public void RenderShadow()
@@ -138,14 +135,6 @@ namespace WarriorsSnuggery.Objects
 
 				MasterRenderer.RenderShadow = false;
 				Program.CheckGraphicsError("RenderShadow");
-			}
-		}
-
-		protected virtual void RenderPhysics()
-		{
-			if (Settings.DeveloperMode)
-			{
-				Physics.RenderShape();
 			}
 		}
 
