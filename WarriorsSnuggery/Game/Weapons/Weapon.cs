@@ -134,7 +134,7 @@ namespace WarriorsSnuggery.Objects
 			return Position.DistToXY(position) <= range;
 		}
 
-		public virtual void Detonate()
+		public virtual void Detonate(bool dispose = true)
 		{
 			foreach (var actor in World.Actors)
 			{
@@ -190,7 +190,8 @@ namespace WarriorsSnuggery.Objects
 				}
 			}
 
-			Dispose();
+			if (dispose)
+				Dispose();
 		}
 
 		protected CPos getInaccuracy()

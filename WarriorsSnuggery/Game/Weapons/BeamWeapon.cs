@@ -5,7 +5,7 @@
  */
 using System;
 using WarriorsSnuggery.Graphics;
-
+using WarriorsSnuggery.Physics;
 
 namespace WarriorsSnuggery.Objects
 {
@@ -18,11 +18,20 @@ namespace WarriorsSnuggery.Objects
 		int curTick;
 		int frame;
 
+		int duration;
+		readonly RayPhysics rayPhysics;
+
 		public BeamWeapon(World world, WeaponType type, CPos origin, CPos target) : base(world, type, origin, target)
 		{
 			Target += getInaccuracy();
 			originPos = origin;
 			tick = type.Textures.Tick;
+			duration = 10;
+			rayPhysics = new RayPhysics(world)
+			{
+				Start = originPos,
+				Target = target
+			};
 
 			renderabledistance = (1024 * type.Textures.Height) / 24;
 			var sprite = TextureManager.Sprite(type.Textures);
@@ -35,6 +44,12 @@ namespace WarriorsSnuggery.Objects
 			Target += getInaccuracy();
 			originPos = origin.ActiveWeapon.WeaponOffsetPosition;
 			tick = type.Textures.Tick;
+			duration = 10;
+			rayPhysics = new RayPhysics(world)
+			{
+				Start = originPos,
+				Target = target
+			};
 
 			renderabledistance = (1024 * type.Textures.Height) / 24;
 			var sprite = TextureManager.Sprite(type.Textures);
@@ -53,8 +68,8 @@ namespace WarriorsSnuggery.Objects
 
 		public override void Render()
 		{
-			var distance = originPos.DistToXY(Target);
-			var angle = Target.AngleToXY(originPos);
+			var distance = originPos.DistToXY(Position);
+			var angle = Position.AngleToXY(originPos);
 			var fit = distance / renderabledistance;
 
 			var curFrame = frame;
@@ -77,7 +92,6 @@ namespace WarriorsSnuggery.Objects
 
 		public override void Tick()
 		{
-			base.Tick();
 			curTick--;
 			if (curTick < 0)
 			{
@@ -91,6 +105,18 @@ namespace WarriorsSnuggery.Objects
 			if (Origin != null)
 			{
 				originPos = Origin.ActiveWeapon.WeaponOffsetPosition;
+				rayPhysics.Start = originPos;
+			}
+			rayPhysics.CalculateEnd(Origin);
+			Position = rayPhysics.End;
+			Detonate(false);
+
+			if (Type.OrientateToTarget)
+				Rotation = new VAngle(0, 0, -Position.AngleToXY(Target));
+
+			if (duration-- < 0)
+			{
+				Dispose();
 			}
 		}
 
