@@ -1,5 +1,6 @@
 ﻿using System;
 using WarriorsSnuggery.Graphics;
+using WarriorsSnuggery.Objects;
 
 namespace WarriorsSnuggery.Physics
 {
@@ -12,13 +13,13 @@ namespace WarriorsSnuggery.Physics
 		public CPos Target;
 
 		readonly CPos[][] mapBounds;
-		readonly Game game;
+		readonly World world;
 
-		public RayPhysics(Game game)
+		public RayPhysics(World world)
 		{
-			this.game = game;
+			this.world = world;
 
-			var map = game.World.Map;
+			var map = world.Map;
 			mapBounds = new[]
 			{
 				new [] { map.TopLeftCorner, map.TopRightCorner },
@@ -28,7 +29,7 @@ namespace WarriorsSnuggery.Physics
 			};
 		}
 
-		public void CalculateEnd()
+		public void CalculateEnd(Actor shooter = null)
 		{
 			var closestIntersect = new CPos(0, 0, int.MaxValue);
 			var closestT1 = double.MaxValue;
@@ -44,7 +45,7 @@ namespace WarriorsSnuggery.Physics
 				}
 			}
 
-			var layer = game.World.PhysicsLayer;
+			var layer = world.PhysicsLayer;
 
 			// Calculate Sectors that the line intersects with
 			var sector1 = new MPos((int)Math.Floor(Start.X / (PhysicsLayer.SectorSize * 1024)), (int)Math.Floor(Start.Y / (PhysicsLayer.SectorSize * 1024)));
@@ -83,7 +84,7 @@ namespace WarriorsSnuggery.Physics
 				if (sector.Position.X - sectorMax.X > 0 || sector.Position.Y - sectorMax.Y > 0)
 					continue;
 
-				var objs = sector.CheckRay(this, null, new[] { game.World.LocalPlayer });
+				var objs = sector.CheckRay(this, new[] { typeof(Weapon), typeof(BeamWeapon), typeof(BulletWeapon), typeof(RocketWeapon) }, shooter == null ? null : new[] { shooter });
 				foreach(var obj in objs)
 				{
 					foreach(var line in obj.Physics.GetLines())
@@ -97,7 +98,7 @@ namespace WarriorsSnuggery.Physics
 					}
 				}
 			}
-			foreach(var wall in game.World.WallLayer.Walls)
+			foreach(var wall in world.WallLayer.Walls)
 			{
 				if (wall == null)
 					continue;
