@@ -5,6 +5,7 @@
  */
 using System;
 using WarriorsSnuggery.Graphics;
+using WarriorsSnuggery.Physics;
 
 namespace WarriorsSnuggery.Objects
 {
@@ -12,7 +13,7 @@ namespace WarriorsSnuggery.Objects
 	{
 		protected readonly GraphicsObject Renderable;
 		public PhysicsSector[] PhysicsSectors = new PhysicsSector[0];
-		public readonly Physics Physics;
+		public readonly SimplePhysics Physics;
 		public bool Disposed;
 
 		public int Height
@@ -101,16 +102,16 @@ namespace WarriorsSnuggery.Objects
 		public PhysicsObject(CPos pos)
 		{
 			Position = pos;
-			Physics = Physics.Empty;
+			Physics = SimplePhysics.Empty;
 		}
 
 		/// <summary>
 		/// Used to create renderables with physical shape.
 		/// Used by: Actors, Weapons, Walls, Particles
 		/// </summary>
-		public PhysicsObject(CPos pos, GraphicsObject renderable, Physics physics = null)
+		public PhysicsObject(CPos pos, GraphicsObject renderable, SimplePhysics physics = null)
 		{
-			Physics = physics ?? Physics.Empty;
+			Physics = physics ?? SimplePhysics.Empty;
 			Renderable = renderable;
 			Position = pos;
 		}

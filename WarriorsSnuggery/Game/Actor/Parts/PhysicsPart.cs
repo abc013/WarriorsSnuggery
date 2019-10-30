@@ -6,7 +6,7 @@
 		[Desc("Size of the collision field.", "Z is used for height boundary.")]
 		public readonly CPos Size;
 		[Desc("Shape of the collision field.", "Possible: CIRCLE, RECTANGLE, LINE_HORIZONTAL, LINE_VERTICAL, NONE")]
-		public readonly Shape Shape;
+		public readonly Physics.Shape Shape;
 
 		public override ActorPart Create(Actor self)
 		{
@@ -23,7 +23,7 @@
 	{
 		readonly PhysicsPartInfo info;
 
-		public Shape Shape
+		public Physics.Shape Shape
 		{
 			get { return info.Shape; }
 			set { }

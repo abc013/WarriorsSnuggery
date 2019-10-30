@@ -106,7 +106,7 @@ namespace WarriorsSnuggery
 				var minRange = 512;
 				var damageFalloff = FalloffType.CUBIC;
 				var turnToTarget = true;
-				var physicalShape = Shape.CIRCLE;
+				var physicalShape = Physics.Shape.CIRCLE;
 				var physicalSize = 100;
 				var gravity = 9;
 
@@ -161,7 +161,7 @@ namespace WarriorsSnuggery
 									switch (physics.Key)
 									{
 										case "Shape":
-											physicalShape = child.Convert<Shape>();
+											physicalShape = child.Convert<Physics.Shape>();
 
 											break;
 										case "Size":

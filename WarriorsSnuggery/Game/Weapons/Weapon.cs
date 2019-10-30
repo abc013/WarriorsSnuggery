@@ -22,7 +22,7 @@ namespace WarriorsSnuggery.Objects
 		{
 		}
 
-		public Weapon(World world, WeaponType type, CPos origin, CPos target, Actor originActor = null) : base(origin, new IImageSequenceRenderable(type.Textures.GetTextures(), type.Textures.Tick), new Physics(origin, 0, type.PhysicalShape, type.PhysicalSize, type.PhysicalSize, type.PhysicalSize))
+		public Weapon(World world, WeaponType type, CPos origin, CPos target, Actor originActor = null) : base(origin, new IImageSequenceRenderable(type.Textures.GetTextures(), type.Textures.Tick), new Physics.SimplePhysics(origin, 0, type.PhysicalShape, type.PhysicalSize, type.PhysicalSize, type.PhysicalSize))
 		{
 			World = world;
 			Type = type;

@@ -157,7 +157,7 @@ namespace WarriorsSnuggery
 
 		public bool CheckCollision(PhysicsObject obj, bool ignoreHeight, Type[] ignoreTypes = null, PhysicsObject[] ignoreObjects = null)
 		{
-			if (obj.Physics == null || obj.Physics.RadiusX == 0 || obj.Physics.Shape == Shape.NONE)
+			if (obj.Physics == null || obj.Physics.RadiusX == 0 || obj.Physics.Shape == Physics.Shape.NONE)
 				return false;
 
 			foreach (var p in obj.PhysicsSectors)
