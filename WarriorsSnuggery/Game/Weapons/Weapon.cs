@@ -149,16 +149,16 @@ namespace WarriorsSnuggery.Objects
 				switch (Type.DamageFalloff)
 				{
 					case FalloffType.LINEAR:
-						damagemultiplier = 1 / (float)Math.Pow(1, dist);
+						damagemultiplier = 1 / dist;
 						break;
 					case FalloffType.QUADRATIC:
-						damagemultiplier = 1 / (float)Math.Pow(2, dist);
+						damagemultiplier = 1 / (dist * dist);
 						break;
 					case FalloffType.CUBIC:
-						damagemultiplier = 1 / (float)Math.Pow(3, dist);
+						damagemultiplier = 1 / (dist * dist * dist);
 						break;
 					case FalloffType.EXPONENTIAL:
-						damagemultiplier = 1 / (float)Math.Pow(5, dist);
+						damagemultiplier = 1 / (float)Math.Pow(2, dist);
 						break;
 					case FalloffType.ROOT:
 						damagemultiplier = 1 / (float)Math.Sqrt(dist);
