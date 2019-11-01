@@ -35,7 +35,7 @@ namespace WarriorsSnuggery.Objects
 		[Desc("Acceleration of the warhead.")]
 		public readonly int Acceleration;
 
-		[Desc("Time until the weapon has been reloaded.")]
+		[Desc("Time until the weapon has been reloaded.", "Will also be used for the duration of beam weapons.")]
 		public readonly int Reload;
 
 		[Desc("Particles that will be emitted when the weapon impacts.")]
@@ -65,7 +65,9 @@ namespace WarriorsSnuggery.Objects
 		[Desc("Gravity applied to the weapon.")]
 		public readonly int Gravity;
 
-		public WeaponType(TextureInfo textures, TextureInfo smudge, int damage, int speed, int acceleration, int reload, ParticleSpawner particlesOnImpact, int inaccuracy, int maxRange, int minRange, FalloffType damageFalloff, WeaponFireType weaponFireType, bool orientateToTarget, Physics.Shape physicalShape, int physicalSize, int gravity)
+		[Desc("Interval in which the beam will detonate its warhead.", "Works only if the WeaponFireType is BEAM or DIRECTEDBEAM.")]
+		public readonly int BeamImpactInterval;
+		public WeaponType(TextureInfo textures, TextureInfo smudge, int damage, int speed, int acceleration, int reload, ParticleSpawner particlesOnImpact, int beamImpactInterval, int inaccuracy, int maxRange, int minRange, FalloffType damageFalloff, WeaponFireType weaponFireType, bool orientateToTarget, Physics.Shape physicalShape, int physicalSize, int gravity)
 		{
 			Textures = textures;
 			Smudge = smudge;
@@ -74,6 +76,7 @@ namespace WarriorsSnuggery.Objects
 			Acceleration = acceleration;
 			Reload = reload;
 			ParticlesOnImpact = particlesOnImpact;
+			BeamImpactInterval = beamImpactInterval;
 			Inaccuracy = inaccuracy;
 			MaxRange = maxRange;
 			MinRange = minRange;

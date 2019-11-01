@@ -101,6 +101,7 @@ namespace WarriorsSnuggery
 				var reload = 0;
 				WeaponFireType type = WeaponFireType.BULLET;
 				ParticleSpawner particlesOnImpact = null;
+				var beamImpactInterval = 0;
 				var inaccuracy = 0;
 				var maxRange = 8192;
 				var minRange = 512;
@@ -137,6 +138,9 @@ namespace WarriorsSnuggery
 							break;
 						case "ParticlesOnImpact":
 							particlesOnImpact = child.Convert<ParticleSpawner>();
+							break;
+						case "BeamImpactInterval":
+							beamImpactInterval = child.Convert<int>();
 							break;
 						case "Inaccuracy":
 							inaccuracy = child.Convert<int>();
@@ -183,7 +187,7 @@ namespace WarriorsSnuggery
 				if (info == null)
 					throw new YamlMissingNodeException(weapon.Key, "Image");
 
-				AddTypes(new WeaponType(info, smudge, damage, speed, acceleration, reload, particlesOnImpact, inaccuracy, maxRange, minRange, damageFalloff, type, turnToTarget, physicalShape, physicalSize, gravity), name);
+				AddTypes(new WeaponType(info, smudge, damage, speed, acceleration, reload, particlesOnImpact, beamImpactInterval, inaccuracy, maxRange, minRange, damageFalloff, type, turnToTarget, physicalShape, physicalSize, gravity), name);
 			}
 		}
 
