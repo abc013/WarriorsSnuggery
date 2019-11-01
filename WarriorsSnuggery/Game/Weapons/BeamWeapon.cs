@@ -6,22 +6,24 @@ namespace WarriorsSnuggery.Objects
 {
 	class BeamWeapon : Weapon
 	{
-		readonly ImageRenderable[] renderables;
+		ImageRenderable[] renderables;
 		readonly int renderabledistance;
 		readonly int tick;
 		CPos originPos;
 		int curTick;
 		int frame;
 
+		int impactInterval;
 		int duration;
 		readonly RayPhysics rayPhysics;
 
-		public BeamWeapon(World world, WeaponType type, CPos origin, CPos target) : base(world, type, origin, target)
+		public BeamWeapon(World world, WeaponType type, CPos origin, CPos target, Action targetSetter = null) : base(world, type, origin, target)
 		{
 			Target += getInaccuracy();
 			originPos = origin;
 			tick = type.Textures.Tick;
-			duration = 10;
+			duration = type.Reload;
+			impactInterval = type.BeamImpactInterval;
 			rayPhysics = new RayPhysics(world)
 			{
 				Start = originPos,
@@ -29,31 +31,29 @@ namespace WarriorsSnuggery.Objects
 			};
 
 			renderabledistance = (1024 * type.Textures.Height) / 24;
-			var sprite = TextureManager.Sprite(type.Textures);
-			renderables = new ImageRenderable[sprite.Length];
-			init(sprite);
+			init();
 		}
 
-		public BeamWeapon(World world, WeaponType type, Actor origin, CPos target) : base(world, type, origin, target)
+		public BeamWeapon(World world, WeaponType type, Actor origin, CPos target, Action targetSetter = null) : base(world, type, origin, target)
 		{
 			Target += getInaccuracy();
 			originPos = origin.ActiveWeapon.WeaponOffsetPosition;
 			tick = type.Textures.Tick;
-			duration = 10;
+			duration = 100;
 			rayPhysics = new RayPhysics(world)
 			{
 				Start = originPos,
 				Target = target
 			};
 
-			renderabledistance = (1024 * type.Textures.Height) / 24;
-			var sprite = TextureManager.Sprite(type.Textures);
-			renderables = new ImageRenderable[sprite.Length];
-			init(sprite);
+			init();
+			renderabledistance = (1024 * Type.Textures.Height) / 24;
 		}
 
-		void init(ITexture[] sprite)
+		void init()
 		{
+			var sprite = Type.Textures.GetTextures();
+			renderables = new ImageRenderable[sprite.Length];
 			for (int i = 0; i < sprite.Length; i++)
 			{
 				renderables[i] = new ImageRenderable(sprite[i]);
@@ -102,13 +102,19 @@ namespace WarriorsSnuggery.Objects
 				originPos = Origin.ActiveWeapon.WeaponOffsetPosition;
 				rayPhysics.Start = originPos;
 			}
+
+			rayPhysics.Target = Target;
 			rayPhysics.CalculateEnd(Origin);
 			Position = rayPhysics.End;
 
 			if (Type.WeaponFireType == WeaponFireType.DIRECTEDBEAM && originPos.Dist(Position) > originPos.Dist(Target))
 				Position = Target;
 
-			Detonate(false);
+			if (impactInterval-- <= 0)
+			{
+				Detonate(false);
+				impactInterval = Type.BeamImpactInterval;
+			}
 
 			if (Type.OrientateToTarget)
 				Rotation = new VAngle(0, 0, -Position.Angle(Target));

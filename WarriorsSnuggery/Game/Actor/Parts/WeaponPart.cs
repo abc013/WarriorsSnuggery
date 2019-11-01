@@ -31,6 +31,8 @@
 			get { return self.GraphicPositionWithoutHeight + info.Offset; }
 			set { }
 		}
+		public CPos Target;
+		BeamWeapon beam;
 
 		public WeaponPart(Actor self, WeaponPartInfo info) : base(self)
 		{
@@ -40,11 +42,27 @@
 
 		public Weapon OnAttack(CPos target)
 		{
+			Target = target;
 			var weapon = WeaponCreator.Create(self.World, info.Type, self, target);
 			weapon.Height = info.Height;
 			self.World.Add(weapon);
+			if (weapon is BeamWeapon)
+				beam = (BeamWeapon)weapon;
 
 			return weapon;
+		}
+
+		public override void Tick()
+		{
+			if (beam != null)
+			{
+				if (beam.Disposed)
+				{
+					beam = null;
+					return;
+				}
+				beam.Target = Target;
+			}
 		}
 	}
 }

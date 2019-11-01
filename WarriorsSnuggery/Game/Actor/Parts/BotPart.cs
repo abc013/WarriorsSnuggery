@@ -50,6 +50,7 @@ namespace WarriorsSnuggery.Objects.Parts
 				// Look if we have a weapon and are in weapon range
 				if (canAttack)
 				{
+					self.ActiveWeapon.Target = target.Position;
 					int range = self.ActiveWeapon.Type.MaxRange;
 					range /= inRage > 40 ? 2 : 1;
 
