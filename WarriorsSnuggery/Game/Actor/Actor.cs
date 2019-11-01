@@ -97,9 +97,7 @@ namespace WarriorsSnuggery.Objects
 				parts.Add(new DebugPart(this));
 
 			if (isPlayer)
-			{
 				parts.Add(new PlayerPart(this));
-			}
 
 			if (isBot)
 				parts.Add(new BotPart(this));

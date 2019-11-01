@@ -111,7 +111,6 @@ namespace WarriorsSnuggery.Objects
 			}
 
 			var old = Position;
-			// Note: we made sure that a weapon's target can't be out of world. (Actor.cs#87(Attack))
 			Position = new CPos(Position.X + (int)x, Position.Y + (int)y, Position.Z);
 			Physics.Position = Position;
 

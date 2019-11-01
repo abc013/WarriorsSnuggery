@@ -522,7 +522,7 @@ firepot=
 	Part@Sprite=
 		Name=firepot
 		Dimensions=24,24
-		Offset=256,-512,0
+		Offset=256,-320,0
 		UseAsPreview=true
 	Part@Physics=
 		Shape=Rectangle
@@ -532,7 +532,7 @@ firepot=
 		Name=fire
 		Type=PARTICLE
 		Tick=1
-		Offset=0,-64,736
+		Offset=0,-64,576
 
 furCarpet=
 	Part@Sprite=
