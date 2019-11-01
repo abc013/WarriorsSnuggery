@@ -33,12 +33,12 @@ namespace WarriorsSnuggery.Maps
 					var blocked = false;
 					for (int x = a * info.SpawnBounds; x < a * info.SpawnBounds + info.SpawnBounds; x++)
 					{
-						if (x < 0 || x >= map.Bounds.X)
+						if (x < map.TopLeftCorner.X || x >= map.TopRightCorner.X)
 							continue;
 
 						for (int y = a * info.SpawnBounds; y < a * info.SpawnBounds + info.SpawnBounds; y++)
 						{
-							if (y < 0 || y >= map.Bounds.Y)
+							if (y < map.TopLeftCorner.Y || y >= map.BottomLeftCorner.Y)
 								continue;
 
 							if (!map.CanAcquireCell(new MPos(x, y), info.ID))
@@ -72,7 +72,7 @@ namespace WarriorsSnuggery.Maps
 		{
 			foreach (var spawn in spawns)
 			{
-				var mid = spawn.ToCPos() + new CPos(spawn.X * 512, spawn.Y * 512, 0);
+				var mid = spawn.ToCPos();
 				var patrol = getPatrol();
 				var unitCount = patrol.ActorTypes.Length;
 
