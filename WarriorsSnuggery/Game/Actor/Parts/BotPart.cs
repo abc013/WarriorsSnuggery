@@ -20,12 +20,12 @@ namespace WarriorsSnuggery.Objects.Parts
 		}
 		float distToTarget
 		{
-			get { return target.Position.DistToXY(self.Position); }
+			get { return target.Position.Dist(self.Position); }
 			set { }
 		}
 		float angleToTarget
 		{
-			get { return target.Position.AngleToXY(self.Position); }
+			get { return target.Position.Angle(self.Position); }
 			set { }
 		}
 
@@ -103,7 +103,7 @@ namespace WarriorsSnuggery.Objects.Parts
 				range = self.ActiveWeapon.Type.MaxRange * (canMove ? 1.5f : 1f);
 
 			// Find all possible targets in range
-			var targets = world.Actors.FindAll(a => a.Team != Actor.NeutralTeam && a.Team != self.Team && a.Position.DistToXY(self.Position) <= range);
+			var targets = world.Actors.FindAll(a => a.Team != Actor.NeutralTeam && a.Team != self.Team && a.Position.Dist(self.Position) <= range);
 
 			if (!targets.Any())
 				return;
@@ -134,7 +134,7 @@ namespace WarriorsSnuggery.Objects.Parts
 
 			// Factor: Distance.
 			// If target is closer, then keep attacking it
-			newFavor += 1 - self.Position.DistToXY(actor.Position) / distToTarget;
+			newFavor += 1 - self.Position.Dist(actor.Position) / distToTarget;
 
 			// Factor: Player. from 0 to 1
 			// If target is player, then keep attacking it

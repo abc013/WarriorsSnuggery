@@ -217,14 +217,14 @@ namespace WarriorsSnuggery.UI
 
 		void remove()
 		{
-			var remove = game.World.Actors.Find(a => a.Position.DistToXY(MouseInput.GamePosition) < 512);
+			var remove = game.World.Actors.Find(a => a.Position.Dist(MouseInput.GamePosition) < 512);
 			if (remove != null)
 			{
 				remove.Dispose();
 			}
 			else
 			{
-				var remove2 = game.World.Objects.Find(a => a.Position.DistToXY(MouseInput.GamePosition) < 512);
+				var remove2 = game.World.Objects.Find(a => a.Position.Dist(MouseInput.GamePosition) < 512);
 				if (remove2 != null)
 				{
 					remove2.Dispose();

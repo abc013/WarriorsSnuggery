@@ -33,7 +33,7 @@ namespace WarriorsSnuggery.Objects
 			Target = target;
 
 			if (Type.OrientateToTarget)
-				Rotation = new VAngle(0, 0, -Position.AngleToXY(Target));
+				Rotation = new VAngle(0, 0, -Position.Angle(Target));
 
 			if (originActor != null)
 			{
@@ -68,7 +68,7 @@ namespace WarriorsSnuggery.Objects
 			Move(Target);
 
 			if (Type.OrientateToTarget)
-				Rotation = new VAngle(0, 0, -Position.AngleToXY(Target));
+				Rotation = new VAngle(0, 0, -Position.Angle(Target));
 
 			if (InRange(Target))
 				Detonate();
@@ -82,7 +82,7 @@ namespace WarriorsSnuggery.Objects
 
 		public virtual void Move(CPos target)
 		{
-			var angle = target.AngleToXY(Position);
+			var angle = target.Angle(Position);
 
 			var x = Math.Cos(angle) * Speed;
 			var y = Math.Sin(angle) * Speed;
@@ -95,14 +95,14 @@ namespace WarriorsSnuggery.Objects
 				if (TargetActor != null)
 				{
 					zDiff = Height - TargetActor.Height;
-					dDiff = (int)Position.DistToXY(TargetActor.Position);
+					dDiff = (int)Position.Dist(TargetActor.Position);
 				}
 				else
 				{
 					zDiff = Height;
-					dDiff = (int)Position.DistToXY(Target);
+					dDiff = (int)Position.Dist(Target);
 				}
-				angle2 = new CPos(dDiff, zDiff, 0).AngleToXY(CPos.Zero);
+				angle2 = new CPos(dDiff, zDiff, 0).Angle(CPos.Zero);
 				z = Math.Sin(angle2) * Speed;
 			}
 			else
@@ -124,14 +124,14 @@ namespace WarriorsSnuggery.Objects
 			if (World.CheckCollision(this, true, new[] { typeof(Weapon), typeof(BeamWeapon), typeof(BulletWeapon), typeof(RocketWeapon) }, new[] { Origin }))
 				Detonate();
 
-			DistanceMoved += Position.DistToXY(old);
+			DistanceMoved += Position.Dist(old);
 			if (DistanceMoved > Type.MaxRange * rangeModifier || !World.IsInWorld(Position))
 				Detonate();
 		}
 
 		public virtual bool InRange(CPos position, int range = 256)
 		{
-			return Position.DistToXY(position) <= range;
+			return Position.Dist(position) <= range;
 		}
 
 		public virtual void Detonate(bool dispose = true)
@@ -141,7 +141,7 @@ namespace WarriorsSnuggery.Objects
 				if (Origin != null && Origin.Team == actor.Team)
 					continue;
 
-				var dist = Position.DistToXY(actor.Position) / 512;
+				var dist = Position.Dist(actor.Position) / 512;
 				if (dist > 128f) continue;
 				if (dist < 1f) dist = 1;
 
