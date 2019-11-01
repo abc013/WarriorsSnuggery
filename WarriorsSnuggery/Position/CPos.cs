@@ -38,14 +38,20 @@ namespace WarriorsSnuggery
 
 		public override string ToString() { return X + "," + Y + "," + Z; }
 
-		public float DistToXY(CPos pos)
+		/// <summary>
+		/// Only uses X and Y coordinates
+		/// </summary>
+		public float Dist(CPos pos)
 		{
 			var x = (double)X - pos.X;
 			var y = (double)Y - pos.Y;
 			return (float)Math.Sqrt(x * x + y * y);
 		}
 
-		public float AngleToXY(CPos pos)
+		/// <summary>
+		/// Only uses X and Y coordinates
+		/// </summary>
+		public float Angle(CPos pos)
 		{
 			var diff = pos - this;
 			var diffX = -diff.X;

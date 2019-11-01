@@ -52,7 +52,7 @@ namespace WarriorsSnuggery.Physics
 
 			if (Shape == Shape.CIRCLE && other.Shape == Shape.CIRCLE)
 			{
-				return Position.DistToXY(other.Position) <= RadiusX + other.RadiusX;
+				return Position.Dist(other.Position) <= RadiusX + other.RadiusX;
 			}
 			if (Shape == Shape.RECTANGLE && other.Shape == Shape.RECTANGLE)
 			{

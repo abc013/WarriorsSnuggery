@@ -49,8 +49,8 @@ namespace WarriorsSnuggery.Graphics
 
 		public static void DrawLine(CPos start, CPos end, Color color)
 		{
-			line.SetScale(end.DistToXY(start) / 1024f);
-			line.SetRotation(new VAngle(0, 0, -start.AngleToXY(end)) + new VAngle(0, 0, 90));
+			line.SetScale(end.Dist(start) / 1024f);
+			line.SetRotation(new VAngle(0, 0, -start.Angle(end)) + new VAngle(0, 0, 90));
 			line.SetPosition(start);
 			line.SetColor(color);
 
