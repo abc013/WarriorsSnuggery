@@ -76,7 +76,7 @@ namespace WarriorsSnuggery.Objects
 
 		public override void Render()
 		{
-			base.RenderShadow();
+			RenderShadow();
 			base.Render();
 		}
 
@@ -142,24 +142,24 @@ namespace WarriorsSnuggery.Objects
 					continue;
 
 				var dist = Position.DistToXY(actor.Position) / 512;
-				if (dist > 512f) continue;
+				if (dist > 128f) continue;
 				if (dist < 1f) dist = 1;
 
 				float damagemultiplier = 0f;
 
 				switch (Type.DamageFalloff)
 				{
+					case FalloffType.LINEAR:
+						damagemultiplier = 1 / (float)Math.Pow(1, dist);
+						break;
 					case FalloffType.QUADRATIC:
-						damagemultiplier = 1 / (dist * dist);
+						damagemultiplier = 1 / (float)Math.Pow(2, dist);
 						break;
 					case FalloffType.CUBIC:
-						damagemultiplier = 1 / (dist * dist * dist);
+						damagemultiplier = 1 / (float)Math.Pow(3, dist);
 						break;
 					case FalloffType.EXPONENTIAL:
 						damagemultiplier = 1 / (float)Math.Pow(5, dist);
-						break;
-					case FalloffType.LINEAR:
-						damagemultiplier = 1 / dist;
 						break;
 					case FalloffType.ROOT:
 						damagemultiplier = 1 / (float)Math.Sqrt(dist);
