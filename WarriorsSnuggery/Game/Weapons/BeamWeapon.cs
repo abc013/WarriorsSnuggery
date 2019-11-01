@@ -109,6 +109,10 @@ namespace WarriorsSnuggery.Objects
 			}
 			rayPhysics.CalculateEnd(Origin);
 			Position = rayPhysics.End;
+
+			if (Type.WeaponFireType == WeaponFireType.DIRECTEDBEAM && originPos.DistToXY(Position) > originPos.DistToXY(Target))
+				Position = Target;
+
 			Detonate(false);
 
 			if (Type.OrientateToTarget)

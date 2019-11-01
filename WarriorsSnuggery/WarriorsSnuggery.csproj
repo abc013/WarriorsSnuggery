@@ -194,7 +194,7 @@
     <Compile Include="Game\Particles\Particle.cs" />
     <Compile Include="Physics\SimplePhysics.cs" />
     <Compile Include="Game\Types\WallType.cs" />
-    <Compile Include="Game\Types\WeaponType.cs" />
+    <Compile Include="Game\Weapons\WeaponType.cs" />
     <Compile Include="Game\Wall.cs" />
     <Compile Include="Game\Weapons\BeamWeapon.cs" />
     <Compile Include="Game\Weapons\BulletWeapon.cs" />

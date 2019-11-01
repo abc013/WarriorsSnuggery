@@ -17,6 +17,7 @@ namespace WarriorsSnuggery.Objects
 		BULLET,
 		ROCKET,
 		BEAM,
+		DIRECTEDBEAM
 	}
 
 	public class WeaponType
@@ -48,7 +49,7 @@ namespace WarriorsSnuggery.Objects
 		[Desc("Minimal Range the player can target.")]
 		public readonly int MinRange;
 
-		[Desc("Type of weapon.", "Possible: BULLET, ROCKET, BEAM")]
+		[Desc("Type of weapon.", "Possible: BULLET, ROCKET, BEAM, DIRECTEDBEAM")]
 		public readonly WeaponFireType WeaponFireType;
 		[Desc("Falloff of the impact.", "Possible: QUADRATIC, CUBIC, EXPONENTIAL, LINEAR, ROOT")]
 		public readonly FalloffType DamageFalloff;
