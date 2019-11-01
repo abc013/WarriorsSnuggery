@@ -49,7 +49,7 @@ namespace WarriorsSnuggery.Physics
 
 			// Calculate Sectors that the line intersects with
 			var sector1 = new MPos((int)Math.Floor(Start.X / (PhysicsLayer.SectorSize * 1024)), (int)Math.Floor(Start.Y / (PhysicsLayer.SectorSize * 1024)));
-			var sector2 = new MPos((int)Math.Floor(End.X / (PhysicsLayer.SectorSize * 1024)), (int)Math.Floor(End.Y / (PhysicsLayer.SectorSize * 1024)));
+			var sector2 = new MPos((int)Math.Floor(closestIntersect.X / (PhysicsLayer.SectorSize * 1024)), (int)Math.Floor(closestIntersect.Y / (PhysicsLayer.SectorSize * 1024)));
 
 			MPos sectorMax;
 			MPos sectorMin;
@@ -75,6 +75,23 @@ namespace WarriorsSnuggery.Physics
 				sectorMax = new MPos(sectorMax.X, sector1.Y);
 			}
 
+			// Collision at walls
+			foreach (var wall in world.WallLayer.Walls)
+			{
+				if (wall == null)
+					continue;
+
+				var lines = wall.Physics.GetLines();
+				foreach (var line in lines)
+				{
+					var end = getIntersection(line.Start, line.End, out var t1);
+					if (end != invalid && t1 < closestT1)
+					{
+						closestIntersect = end;
+						closestT1 = t1;
+					}
+				}
+			}
 			// Collision at actors.
 			foreach (var sector in layer.Sectors)
 			{
@@ -95,22 +112,6 @@ namespace WarriorsSnuggery.Physics
 							closestIntersect = end;
 							closestT1 = t1;
 						}
-					}
-				}
-			}
-			foreach(var wall in world.WallLayer.Walls)
-			{
-				if (wall == null)
-					continue;
-
-				var lines = wall.Physics.GetLines();
-				foreach (var line in lines)
-				{
-					var end = getIntersection(line.Start, line.End, out var t1);
-					if (end != invalid && t1 < closestT1)
-					{
-						closestIntersect = end;
-						closestT1 = t1;
 					}
 				}
 			}
