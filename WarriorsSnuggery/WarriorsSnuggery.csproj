@@ -63,11 +63,19 @@
     <Reference Include="System.Windows.Forms" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AudioController.cs" />
+    <Compile Include="Audio\AudioDevice.cs" />
+    <Compile Include="Audio\AudioManager.cs" />
+    <Compile Include="Audio\AudioBuffer.cs" />
+    <Compile Include="Audio\AudioSource.cs" />
+    <Compile Include="Audio\FailingSoundDeviceException.cs" />
+    <Compile Include="Audio\InvalidSoundFileException.cs" />
     <Compile Include="Game\Conditions\Condition.cs" />
     <Compile Include="Game\Conditions\ConditionManager.cs" />
     <Compile Include="Cursor.cs" />
     <Compile Include="GameController.cs" />
     <Compile Include="Game\UI\Objects\SpellList.cs" />
+    <Compile Include="Loader\WavLoader.cs" />
     <Compile Include="Map\PieceManager.cs" />
     <Compile Include="Physics\PhysicsLine.cs" />
     <Compile Include="Physics\RayPhysics.cs" />

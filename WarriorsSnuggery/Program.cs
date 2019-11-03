@@ -84,6 +84,7 @@ namespace WarriorsSnuggery
 			var watch = Timer.Start();
 
 			GameController.Exit();
+			AudioController.Exit();
 			Window.CloseWindow();
 
 			watch.StopAndWrite("Disposing");

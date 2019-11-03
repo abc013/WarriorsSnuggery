@@ -115,9 +115,15 @@ namespace WarriorsSnuggery
 
 			watch.StopAndWrite("Loading Rules");
 
+			var watch2 = Timer.Start();
+			AudioController.Load();
+
+			watch2.StopAndWrite("Loading Sound");
+
 			Ready = true;
 			Console.WriteLine(" Done!");
 			Console.WriteLine("Textures: " + TextureManager.TextureCount);
+			Audio.AudioManager.PlaySound("new1", false, true);
 
 			// For multithreads
 			//IGraphicsContext context2 = new GraphicsContext(GraphicsMode.Default, this.WindowInfo);
@@ -138,6 +144,7 @@ namespace WarriorsSnuggery
 			}
 
 			GameController.Tick();
+			AudioController.Tick();
 
 			CharInput = '';
 

@@ -237,6 +237,11 @@ namespace WarriorsSnuggery
 				}
 
 				// Key input
+				if (KeyInput.IsKeyDown(OpenTK.Input.Key.S, 5))
+				{
+					Audio.AudioManager.PlaySound("test", true);
+				}
+
 				if (KeyInput.IsKeyDown(Settings.Key("CameraLock"), 5))
 				{
 					Camera.LockedToPlayer = !Camera.LockedToPlayer;
