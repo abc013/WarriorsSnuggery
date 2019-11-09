@@ -40,13 +40,13 @@ namespace WarriorsSnuggery.UI
 			attack.WriteText("Attack: " + Color.Yellow + "Left mouse button");
 
 			aim = new TextLine(CPos.Zero, IFont.Pixel16, TextLine.OffsetType.MIDDLE);
-			aim.SetText("Go up, and you'll get to the story mode. Go down for the tutorial.");
+			aim.SetText("Go up, and you'll get to the story mode. Walk down for the tutorial.");
 
 			how = new TextLine(new CPos(0, 1024, 0), IFont.Pixel16, TextLine.OffsetType.MIDDLE);
 			how.SetText("");
 
 			@switch = new TextLine(new CPos(0, 4096, 0), IFont.Pixel16, TextLine.OffsetType.MIDDLE);
-			@switch.WriteText("Switch through characters: " + Color.Cyan + "Mouse scroll" + Color.White + " (Requires Money)");
+			@switch.WriteText("Select spells: " + Color.Cyan + "Mouse scroll");
 		}
 
 		public override void Tick()
