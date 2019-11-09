@@ -13,7 +13,7 @@ namespace WarriorsSnuggery
 
 		public const int MaxTeams = 8;
 
-		public const string Version = "(Playtest) 1.5pre";
+		public const string Version = "(Playtest) 1.5";
 
 		public const int UpdatesPerSecond = 60;
 
@@ -44,6 +44,12 @@ namespace WarriorsSnuggery
 		public static bool FirstStarted;
 
 		public static int EdgeScrolling;
+
+		public static float MasterVolume = 1f;
+
+		public static float EffectsVolume = 1f;
+
+		public static float MusicVolume = 1f;
 
 		public static Dictionary<string, string> KeyDictionary = new Dictionary<string, string>();
 
@@ -98,6 +104,15 @@ namespace WarriorsSnuggery
 					case "FirstStarted":
 						FirstStarted = node.Convert<bool>();
 						break;
+					case "MasterVolume":
+						MasterVolume = node.Convert<float>();
+						break;
+					case "EffectsVolume":
+						EffectsVolume = node.Convert<float>();
+						break;
+					case "MusicVolume":
+						MusicVolume = node.Convert<float>();
+						break;
 					case "Keys":
 						foreach (var key in node.Children)
 						{
@@ -127,6 +142,9 @@ namespace WarriorsSnuggery
 				writer.WriteLine("EnablePixeling=" + EnablePixeling.GetHashCode());
 				writer.WriteLine("EnableTextShadowing=" + EnableTextShadowing.GetHashCode());
 				writer.WriteLine("FirstStarted=" + 0);
+				writer.WriteLine("MasterVolume=" + MasterVolume);
+				writer.WriteLine("EffectsVolume=" + EffectsVolume);
+				writer.WriteLine("MusicVolume=" + MusicVolume);
 
 				writer.WriteLine("Keys=");
 				foreach (var key in KeyDictionary)

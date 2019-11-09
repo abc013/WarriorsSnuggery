@@ -12,7 +12,7 @@ namespace WarriorsSnuggery.Audio
 
 		public static void PlaySound(string name)
 		{
-			AudioController.Play(buffers[name], false, 1f, false);
+			AudioController.Play(buffers[name], false, Settings.EffectsVolume, false);
 		}
 
 		public static AudioBuffer GetBuffer(string name)

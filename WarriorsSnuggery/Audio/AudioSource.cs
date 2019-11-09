@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using OpenTK.Audio.OpenAL;
+﻿using OpenTK.Audio.OpenAL;
 
 namespace WarriorsSnuggery.Audio
 {
@@ -25,9 +20,14 @@ namespace WarriorsSnuggery.Audio
 			Buffer = buffer;
 
 			AL.BindBufferToSource(source, buffer.GetID());
-			AL.Source(source, ALSourcef.Gain, volume);
+			AL.Source(source, ALSourcef.Gain, volume * Settings.MasterVolume);
 			AL.Source(source, ALSourceb.Looping, loops);
 			AL.SourcePlay(source);
+		}
+
+		public void CheckUsed()
+		{
+			Used = AL.GetSourceState(source) == ALSourceState.Playing;
 		}
 
 		public void Stop()
