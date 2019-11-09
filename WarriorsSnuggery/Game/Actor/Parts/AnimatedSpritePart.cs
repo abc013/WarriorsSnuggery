@@ -40,7 +40,8 @@ namespace WarriorsSnuggery.Objects.Parts
 
 		public AnimatedSpritePartInfo(MiniTextNode[] nodes) : base(nodes)
 		{
-			Textures = SpriteManager.AddTexture(new TextureInfo(Name, TextureType.ANIMATION, Tick, Dimensions.X, Dimensions.Y));
+			if (Name != null)
+				Textures = SpriteManager.AddTexture(new TextureInfo(Name, TextureType.ANIMATION, Tick, Dimensions.X, Dimensions.Y));
 		}
 	}
 

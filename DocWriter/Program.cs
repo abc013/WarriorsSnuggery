@@ -18,7 +18,8 @@ namespace WarriorsSnuggery
 
 	static class Program
 	{
-		static void Main(string[] args)
+		public static bool DarkMode;
+		public static void Main(string[] args)
 		{
 			FileExplorer.InitPaths();
 			Console.ForegroundColor = ConsoleColor.White;
@@ -32,6 +33,14 @@ namespace WarriorsSnuggery
 			Console.ResetColor();
 
 			var input = Console.ReadLine();
+
+			Console.ForegroundColor = ConsoleColor.Yellow;
+			Console.Write("Write the documentation in dark mode? (y to accept): ");
+			Console.ResetColor();
+
+			DarkMode = Console.ReadKey().Key == ConsoleKey.Y;
+			HTMLWriter.Colors = DarkMode ? HTMLWriter.DarkModeColors : HTMLWriter.LightModeColors;
+			Console.WriteLine();
 
 			Console.ForegroundColor = ConsoleColor.White;
 			Console.WriteLine("--------------------------------------------------------------");
@@ -49,8 +58,8 @@ namespace WarriorsSnuggery
 				return;
 			}
 
-			try
-			{
+			//try
+			//{
 				using (var writer = new StreamWriter(FileExplorer.MainDirectory + "Documentation.html"))
 				{
 					Console.WriteLine("Generating document, please wait...");
@@ -69,14 +78,14 @@ namespace WarriorsSnuggery
 					writer.Flush();
 					writer.Close();
 				}
-			}
-			catch (Exception)
-			{
-				Console.ForegroundColor = ConsoleColor.Red;
-				Console.WriteLine("Failed to init document/write rules.");
-				Console.ReadKey();
-				return;
-			}
+			//}
+			//catch (Exception)
+			//{
+			//	Console.ForegroundColor = ConsoleColor.Red;
+			//	Console.WriteLine("Failed to init document/write rules.");
+			//	Console.ReadKey();
+			//	return;
+			//}
 
 			Console.ForegroundColor = ConsoleColor.White;
 			Console.WriteLine("--------------------------------------------------------------");
