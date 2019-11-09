@@ -39,7 +39,7 @@ namespace WarriorsSnuggery.Objects.Particles
 
 			if (Texture != null)
 				SpriteManager.AddTexture(Texture);
-			else
+			else if (MeshSize > 0)
 				ColoredRenderable = new IColor(ColoredMesh.Plane(MeshSize / 24f, Color), DrawMethod.TRIANGLE);
 		}
 	}
