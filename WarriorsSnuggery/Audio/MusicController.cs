@@ -11,8 +11,6 @@ namespace WarriorsSnuggery.Audio
 		public readonly Music[] music;
 		int current = 0;
 
-		public float Volume = 1f;
-
 		public MusicController(string[] names)
 		{
 			music = new Music[names.Length];
@@ -22,7 +20,7 @@ namespace WarriorsSnuggery.Audio
 				music[i] = new Music(names[i]);
 			}
 
-			music[current].Play(Volume);
+			music[current].Play(Settings.MusicVolume);
 		}
 
 		public void Tick()
@@ -40,7 +38,7 @@ namespace WarriorsSnuggery.Audio
 			if (current == music.Length)
 				current = 0;
 
-			music[current].Play(Volume);
+			music[current].Play(Settings.MusicVolume);
 		}
 	}
 }

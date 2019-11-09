@@ -157,7 +157,7 @@ namespace WarriorsSnuggery
 		public void Pause(bool paused)
 		{
 			Paused = paused;
-			AudioController.PauseAll(paused, false);
+			AudioController.PauseAll(paused, true);
 			MasterRenderer.PauseSequences = Paused;
 			Camera.Locked = Paused;
 		}

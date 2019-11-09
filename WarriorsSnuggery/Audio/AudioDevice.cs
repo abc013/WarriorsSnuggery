@@ -36,6 +36,7 @@ namespace WarriorsSnuggery.Audio
 			{
 				foreach(var source in Sources)
 				{
+					source.CheckUsed();
 					if (!source.Used)
 					{
 						source.Start(buffer, volume, loops);
@@ -47,6 +48,7 @@ namespace WarriorsSnuggery.Audio
 			{
 				foreach (var source in GameSources)
 				{
+					source.CheckUsed();
 					if (!source.Used)
 					{
 						source.Start(buffer, volume, loops);

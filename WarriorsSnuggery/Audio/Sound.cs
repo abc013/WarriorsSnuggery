@@ -44,7 +44,7 @@ namespace WarriorsSnuggery.Audio
 
 		public void Play()
 		{
-			source = AudioController.Play(info.Buffer, info.InGame, info.Volume, info.Loops);
+			source = AudioController.Play(info.Buffer, info.InGame, info.Volume * Settings.EffectsVolume, info.Loops);
 			length = (int)Math.Ceiling(info.Length * 30);
 		}
 
