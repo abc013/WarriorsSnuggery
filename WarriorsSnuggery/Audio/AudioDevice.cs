@@ -30,20 +30,7 @@ namespace WarriorsSnuggery.Audio
 			}
 		}
 
-		public void Tick()
-		{
-			foreach(var source in Sources)
-			{
-				source.Tick();
-			}
-
-			foreach(var source in GameSources)
-			{
-				source.Tick();
-			}
-		}
-
-		public void Play(AudioBuffer buffer, bool inGame, bool loops)
+		public AudioSource Play(AudioBuffer buffer, bool inGame, float volume, bool loops)
 		{
 			if (!inGame)
 			{
@@ -51,9 +38,8 @@ namespace WarriorsSnuggery.Audio
 				{
 					if (!source.Used)
 					{
-						source.Start(buffer);
-						source.Loops = loops;
-						return;
+						source.Start(buffer, volume, loops);
+						return source;
 					}
 				}
 			}
@@ -63,12 +49,13 @@ namespace WarriorsSnuggery.Audio
 				{
 					if (!source.Used)
 					{
-						source.Start(buffer);
-						source.Loops = loops;
-						return;
+						source.Start(buffer, volume, loops);
+						return source;
 					}
 				}
 			}
+
+			return null;
 		}
 
 		public void Stop(bool game)

@@ -70,6 +70,9 @@
     <Compile Include="Audio\AudioSource.cs" />
     <Compile Include="Audio\FailingSoundDeviceException.cs" />
     <Compile Include="Audio\InvalidSoundFileException.cs" />
+    <Compile Include="Audio\Music.cs" />
+    <Compile Include="Audio\MusicController.cs" />
+    <Compile Include="Audio\Sound.cs" />
     <Compile Include="Game\Conditions\Condition.cs" />
     <Compile Include="Game\Conditions\ConditionManager.cs" />
     <Compile Include="Cursor.cs" />

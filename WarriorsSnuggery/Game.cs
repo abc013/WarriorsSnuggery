@@ -162,6 +162,7 @@ namespace WarriorsSnuggery
 		public void Pause(bool paused)
 		{
 			Paused = paused;
+			AudioController.PauseAll(paused, false);
 			MasterRenderer.PauseSequences = Paused;
 			Camera.Locked = Paused;
 		}
@@ -237,9 +238,9 @@ namespace WarriorsSnuggery
 				}
 
 				// Key input
-				if (KeyInput.IsKeyDown(OpenTK.Input.Key.S, 5))
+				if (KeyInput.IsKeyDown(OpenTK.Input.Key.Q, 5))
 				{
-					Audio.AudioManager.PlaySound("test", true);
+					Audio.AudioManager.PlaySound("test");
 				}
 
 				if (KeyInput.IsKeyDown(Settings.Key("CameraLock"), 5))

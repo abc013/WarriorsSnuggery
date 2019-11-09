@@ -11,39 +11,22 @@ namespace WarriorsSnuggery.Audio
 	{
 		public AudioBuffer Buffer { get; private set; }
 		public bool Used;
-		public bool Loops;
 
 		uint source;
-		int ticksRemaining;
 
 		public AudioSource()
 		{
 			AL.GenSource(out source);
 		}
 
-		public void Tick()
-		{
-			if (ticksRemaining-- <= 0)
-			{
-				if (Loops)
-				{
-					Start(Buffer);
-				}
-				else
-				{
-					Buffer = null;
-					Used = false;
-				}
-			}
-		}
-
-		public void Start(AudioBuffer buffer)
+		public void Start(AudioBuffer buffer, float volume, bool loops)
 		{
 			Used = true;
 			Buffer = buffer;
-			ticksRemaining = buffer.Length;
 
 			AL.BindBufferToSource(source, buffer.GetID());
+			AL.Source(source, ALSourcef.Gain, volume);
+			AL.Source(source, ALSourceb.Looping, loops);
 			AL.SourcePlay(source);
 		}
 
@@ -53,15 +36,16 @@ namespace WarriorsSnuggery.Audio
 
 			Used = false;
 			Buffer = null;
-			ticksRemaining = 0;
+			AL.Source(source, ALSourcef.Gain, 1f);
+			AL.Source(source, ALSourceb.Looping, false);
 		}
 
 		public void Pause(bool pause)
 		{
 			if (pause)
 				AL.SourcePause(source);
-			else
-				AL.SourcePlay(source);
+			else if(AL.GetSourceState(source) == ALSourceState.Paused)
+					AL.SourcePlay(source);
 		}
 
 		public void Dispose()

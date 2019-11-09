@@ -10,13 +10,21 @@ namespace WarriorsSnuggery.Audio
 	{
 		static readonly Dictionary<string, AudioBuffer> buffers = new Dictionary<string, AudioBuffer>();
 
-		public static void PlaySound(string name, bool inGame, bool loops = false)
+		public static void PlaySound(string name)
 		{
-			AudioController.Play(buffers[name], inGame, loops);
+			AudioController.Play(buffers[name], false, 1f, false);
+		}
+
+		public static AudioBuffer GetBuffer(string name)
+		{
+			return buffers[name];
 		}
 
 		public static void LoadSound(string name, string path)
 		{
+			if (buffers.ContainsKey(name))
+				return;
+
 			buffers.Add(name, new AudioBuffer(path + name + ".wav"));
 		}
 
