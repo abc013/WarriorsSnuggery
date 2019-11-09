@@ -118,7 +118,6 @@ namespace WarriorsSnuggery
 			Ready = true;
 			Console.WriteLine(" Done!");
 			Console.WriteLine("Textures: " + TextureManager.TextureCount);
-			Audio.AudioManager.PlaySound("new1", false, true);
 
 			// For multithreads
 			//IGraphicsContext context2 = new GraphicsContext(GraphicsMode.Default, this.WindowInfo);
@@ -145,6 +144,9 @@ namespace WarriorsSnuggery
 
 			if (KeyInput.IsKeyDown(Key.F4) && (KeyInput.IsKeyDown(Key.AltLeft) || KeyInput.IsKeyDown(Key.AltRight)))
 				Program.Exit();
+
+			if (KeyInput.IsKeyDown(Key.N, 10))
+				AudioController.Music.Next();
 
 			GlobalTick++;
 		}

@@ -1,39 +1,35 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using WarriorsSnuggery.Audio;
+﻿using WarriorsSnuggery.Audio;
 
 namespace WarriorsSnuggery
 {
 	public static class AudioController
 	{
 		static AudioDevice device;
+		public static MusicController Music;
 
 		public static void Load()
 		{
 			device = new AudioDevice();
 			AudioManager.LoadSound("test", FileExplorer.FindPath(FileExplorer.Misc, "test", ".wav"));
-			AudioManager.LoadSound("new1", FileExplorer.FindPath(FileExplorer.Misc, "new1", ".wav"));
+			Music = new MusicController(new[] { "new1", "new3" });
 		}
 
 		public static void Tick()
 		{
-			device.Tick();
+			Music.Tick();
 		}
 
-		public static void Play(AudioBuffer buffer, bool inGame, bool loops)
+		public static AudioSource Play(AudioBuffer buffer, bool inGame, float volume, bool loops)
 		{
-			device.Play(buffer, inGame, loops);
+			return device.Play(buffer, inGame, volume, loops);
 		}
 
-		public static void Stop(bool game)
+		public static void StopAll(bool game)
 		{
 			device.Stop(game);
 		}
 
-		public static void Pause(bool pause, bool game)
+		public static void PauseAll(bool pause, bool game)
 		{
 			device.Pause(pause, game);
 		}
