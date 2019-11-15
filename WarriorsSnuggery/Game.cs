@@ -95,8 +95,6 @@ namespace WarriorsSnuggery
 			// In case of success, use this statistic.
 			Statistics = statistics;
 
-			SpellManager = new SpellManager(this);
-			ConditionManager = new ConditionManager(this);
 
 			Type = MapType.DefaultType;
 			Mode = MapType.DefaultModes[SharedRandom.Next(MapType.DefaultModes.Length)];
@@ -108,6 +106,9 @@ namespace WarriorsSnuggery
 				State = GameState.NONE;
 			else
 				State = GameState.UNKNOWN;
+
+			SpellManager = new SpellManager(this);
+			ConditionManager = new ConditionManager(this);
 
 			ScreenControl = new ScreenControl(this);
 
