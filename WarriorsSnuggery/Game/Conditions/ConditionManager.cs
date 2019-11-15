@@ -15,17 +15,16 @@ namespace WarriorsSnuggery.Objects.Conditions
 			items = new Dictionary<string, bool>()
 			{
 				{ "Enemies", true },
-				{ "IsMenu", false },
 				{ "MissionKillEnemies", game.Mode == GameMode.KILL_ENEMIES },
 				{ "MissionFindExit", game.Mode == GameMode.FIND_EXIT },
-				{ "MissionWaves", game.Mode == GameMode.WAVES }
+				{ "MissionWaves", game.Mode == GameMode.WAVES },
+				{ "IsMenu", game.Type == GameType.MAINMENU || game.Type == GameType.MENU }
 			};
 		}
 
 		public void Tick()
 		{
 			items["Enemies"] = game.World.Actors.Any(a => a.Team != Actor.PlayerTeam && a.Team != Actor.NeutralTeam);
-			items["IsMenu"] = game.Type == GameType.MAINMENU || game.Type == GameType.MENU;
 		}
 
 		public bool CheckCondition(Condition condition, Actor actor)
