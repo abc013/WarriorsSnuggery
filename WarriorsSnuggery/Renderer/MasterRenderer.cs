@@ -107,8 +107,8 @@ namespace WarriorsSnuggery
 		}
 
 		static int frameBuffer;
-		public static int frameTexture;
 		static FrameRenderable renderable;
+		static ITexture frameTexture;
 
 		static void initializeGL()
 		{
@@ -140,15 +140,16 @@ namespace WarriorsSnuggery
 				var width = (int)(WindowInfo.UnitWidth * 24);
 				var height = (int)(WindowInfo.UnitHeight * 24);
 
-				frameTexture = GL.GenTexture();
+				var frameTextureID = GL.GenTexture();
 
-				GL.BindTexture(TextureTarget.Texture2D, frameTexture);
+				GL.BindTexture(TextureTarget.Texture2D, frameTextureID);
 				GL.TexImage2D(TextureTarget2d.Texture2D, 0, TextureComponentCount.Rgb32f, width, height, 0, PixelFormat.Rgb, PixelType.Float, (IntPtr)null);
 
 				frameBuffer = GL.GenFramebuffer();
 				GL.BindFramebuffer(FramebufferTarget.Framebuffer, frameBuffer);
-				GL.FramebufferTexture2D(FramebufferTarget.Framebuffer, FramebufferAttachment.ColorAttachment0, TextureTarget2d.Texture2D, frameTexture, 0);
-				renderable = new FrameRenderable(new ITexture("FramebufferTexture", width, height, frameTexture));
+				GL.FramebufferTexture2D(FramebufferTarget.Framebuffer, FramebufferAttachment.ColorAttachment0, TextureTarget2d.Texture2D, frameTextureID, 0);
+				frameTexture = new ITexture("FramebufferTexture", width, height, frameTextureID);
+				renderable = new FrameRenderable(frameTexture);
 				Program.CheckGraphicsError("GLFrameBuffer");
 
 				GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMinFilter, (int)TextureMinFilter.Nearest);
@@ -252,7 +253,7 @@ namespace WarriorsSnuggery
 					shader.Dispose();
 			}
 			GL.DeleteFramebuffer(frameBuffer);
-			GL.DeleteTexture(frameTexture);
+			frameTexture.Dispose();
 		}
 
 		public static bool RenderShadow;
