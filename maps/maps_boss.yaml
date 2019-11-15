@@ -1,5 +1,5 @@
 boss1=
-	PlayModes=WIPE_OUT_ENEMIES
+	PlayModes=KILL_ENEMIES
 	Level=10
 	TerrainGenerationBase=
 		Terrain=0
@@ -10,7 +10,7 @@ boss1=
 	Ambient=170,170,200
 
 boss2=
-	PlayModes=WIPE_OUT_ENEMIES
+	PlayModes=KILL_ENEMIES
 	Level=20
 	TerrainGenerationBase=
 		Terrain=0

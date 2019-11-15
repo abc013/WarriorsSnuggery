@@ -1,5 +1,5 @@
 plains=
-	PlayModes=FIND_EXIT, WIPE_OUT_ENEMIES
+	PlayModes=FIND_EXIT, KILL_ENEMIES
 	FromLevel=10
 	TerrainGenerationBase=0
 		Terrain=0
@@ -54,7 +54,7 @@ plains=
 		PositionType=SPAWN
 		
 city1=
-	PlayModes=FIND_EXIT, WIPE_OUT_ENEMIES
+	PlayModes=FIND_EXIT, KILL_ENEMIES
 	TerrainGenerationBase=0
 		Terrain=0
 		Terrain=4

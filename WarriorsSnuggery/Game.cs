@@ -25,8 +25,8 @@ namespace WarriorsSnuggery
 
 	public enum GameMode
 	{
-		TOWER_DEFENSE,
-		WIPE_OUT_ENEMIES,
+		WAVES,
+		KILL_ENEMIES,
 		FIND_EXIT,
 		TUTORIAL,
 		NONE
@@ -366,8 +366,8 @@ namespace WarriorsSnuggery
 					break;
 				// TODO not yet implemented.
 				// When no enemies are present, won
-				case GameMode.TOWER_DEFENSE:
-				case GameMode.WIPE_OUT_ENEMIES:
+				case GameMode.WAVES:
+				case GameMode.KILL_ENEMIES:
 					var actor = World.Actors.Find(a => !(a.Team == Actor.PlayerTeam || a.Team == Actor.NeutralTeam));
 
 					if (actor == null)

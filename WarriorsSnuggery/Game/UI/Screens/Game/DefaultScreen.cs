@@ -100,10 +100,10 @@ namespace WarriorsSnuggery.UI
 				case GameMode.FIND_EXIT:
 					missionText.SetText("Search for the exit!");
 					break;
-				case GameMode.TOWER_DEFENSE:
+				case GameMode.WAVES:
 					missionText.SetText("Defend your position!");
 					break;
-				case GameMode.WIPE_OUT_ENEMIES:
+				case GameMode.KILL_ENEMIES:
 					missionText.SetText("Wipe out all enemies!");
 					break;
 			}
