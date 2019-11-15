@@ -58,8 +58,8 @@ namespace WarriorsSnuggery
 				return;
 			}
 
-			//try
-			//{
+			try
+			{
 				using (var writer = new StreamWriter(FileExplorer.MainDirectory + "Documentation.html"))
 				{
 					Console.WriteLine("Generating document, please wait...");
@@ -78,14 +78,14 @@ namespace WarriorsSnuggery
 					writer.Flush();
 					writer.Close();
 				}
-			//}
-			//catch (Exception)
-			//{
-			//	Console.ForegroundColor = ConsoleColor.Red;
-			//	Console.WriteLine("Failed to init document/write rules.");
-			//	Console.ReadKey();
-			//	return;
-			//}
+			}
+			catch (Exception)
+			{
+				Console.ForegroundColor = ConsoleColor.Red;
+				Console.WriteLine("Failed to init document/write rules.");
+				Console.ReadKey();
+				return;
+			}
 
 			Console.ForegroundColor = ConsoleColor.White;
 			Console.WriteLine("--------------------------------------------------------------");
