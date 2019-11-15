@@ -41,7 +41,7 @@ namespace WarriorsSnuggery.Maps
 							if (y < map.TopLeftCorner.Y || y >= map.BottomLeftCorner.Y)
 								continue;
 
-							if (!map.CanAcquireCell(new MPos(x, y), info.ID))
+							if (!info.UseForWaves && !map.CanAcquireCell(new MPos(x, y), info.ID))
 								blocked = true;
 						}
 					}
@@ -152,6 +152,9 @@ namespace WarriorsSnuggery.Maps
 		public readonly PatrolProbabilityGeneratorInfo[] Patrols;
 		public readonly float PatrolProbabilities;
 
+		[Desc("Use Patrols in the WAVES GameMode.", "Please note by setting to true, the Generator will not be used in other GameModes.")]
+		public readonly bool UseForWaves;
+
 		public PatrolGeneratorInfo(int id, MiniTextNode[] nodes) : base(id)
 		{
 			Loader.PartLoader.SetValues(this, nodes);
@@ -160,6 +163,9 @@ namespace WarriorsSnuggery.Maps
 
 		public override MapGenerator GetGenerator(Random random, Map map, World world)
 		{
+			if (world.Game.Mode == GameMode.WAVES)
+				return null;
+
 			return new PatrolGenerator(random, map, world, this);
 		}
 	}

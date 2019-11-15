@@ -243,6 +243,7 @@
     <Compile Include="Timer.cs" />
     <Compile Include="Renderer\UIRenderer.cs" />
     <Compile Include="Game\Weapons\Weapon.cs" />
+    <Compile Include="WaveController.cs" />
     <Compile Include="Window.cs" />
     <Compile Include="World.cs" />
     <Compile Include="Renderer\WorldRenderer.cs" />

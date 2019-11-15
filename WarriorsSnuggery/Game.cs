@@ -57,6 +57,8 @@ namespace WarriorsSnuggery
 		public readonly SpellManager SpellManager;
 		public readonly ConditionManager ConditionManager;
 
+		readonly WaveController waveController;
+
 		readonly TextLine tick;
 		readonly TextLine render;
 		readonly TextLine visibility;
@@ -95,7 +97,6 @@ namespace WarriorsSnuggery
 			// In case of success, use this statistic.
 			Statistics = statistics;
 
-
 			Type = MapType.DefaultType;
 			Mode = MapType.DefaultModes[SharedRandom.Next(MapType.DefaultModes.Length)];
 
@@ -113,6 +114,9 @@ namespace WarriorsSnuggery
 			ScreenControl = new ScreenControl(this);
 
 			World = new World(this, Seed, Statistics);
+
+			if (Mode == GameMode.WAVES)
+				waveController = new WaveController(this);
 
 			var corner = (int)(WindowInfo.UnitWidth / 2 * 1024);
 			version = new TextLine(new CPos(corner, 6192, 0), IFont.Pixel16, TextLine.OffsetType.RIGHT);
@@ -316,6 +320,9 @@ namespace WarriorsSnuggery
 				SpellManager.Tick();
 				ConditionManager.Tick();
 				World.Tick();
+
+				if (Mode == GameMode.WAVES)
+					waveController.Tick();
 			}
 
 			if (Settings.EnableInfoScreen)
@@ -363,11 +370,10 @@ namespace WarriorsSnuggery
 			switch (Mode)
 			{
 				// FIND_EXIT and TUTORIAL will meet conditions when entering the exit
-				default:
-					break;
-				// TODO not yet implemented.
-				// When no enemies are present, won
 				case GameMode.WAVES:
+					if (waveController.Done())
+						VictoryConditionsMet();
+					break;
 				case GameMode.KILL_ENEMIES:
 					var actor = World.Actors.Find(a => !(a.Team == Actor.PlayerTeam || a.Team == Actor.NeutralTeam));
 

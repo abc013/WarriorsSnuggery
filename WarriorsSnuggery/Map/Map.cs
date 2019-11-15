@@ -79,7 +79,8 @@ namespace WarriorsSnuggery
 			foreach (var info in Type.GeneratorInfos)
 			{
 				var generator = info.GetGenerator(random, this, world);
-				generator.Generate();
+				if (generator != null)
+					generator.Generate();
 			}
 
 			//MapPrinter.PrintMapGeneration("debug", TerrainGenerationArray, TilesWithAssignedGenerator, Type.GeneratorInfos.Length);
