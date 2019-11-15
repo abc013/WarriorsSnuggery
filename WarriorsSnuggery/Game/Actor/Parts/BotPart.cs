@@ -20,18 +20,18 @@ namespace WarriorsSnuggery.Objects.Parts
 		}
 		float distToTarget
 		{
-			get { return target.Position.Dist(self.Position); }
+			get { return Target.Position.Dist(self.Position); }
 			set { }
 		}
 		float angleToTarget
 		{
-			get { return target.Position.Angle(self.Position); }
+			get { return Target.Position.Angle(self.Position); }
 			set { }
 		}
 
 		int inRage;
 
-		Actor target;
+		public Actor Target;
 		float targetFavor;
 
 		public BotPart(Actor self) : base(self)
@@ -41,7 +41,7 @@ namespace WarriorsSnuggery.Objects.Parts
 
 		public override void Tick()
 		{
-			if (target == null || !target.IsAlive || target.Disposed)
+			if (Target == null || !Target.IsAlive || Target.Disposed)
 			{
 				searchTarget();
 			}
@@ -50,13 +50,13 @@ namespace WarriorsSnuggery.Objects.Parts
 				// Look if we have a weapon and are in weapon range
 				if (canAttack)
 				{
-					self.ActiveWeapon.Target = target.Position;
+					self.ActiveWeapon.Target = Target.Position;
 					int range = self.ActiveWeapon.Type.MaxRange;
 					range /= inRage > 40 ? 2 : 1;
 
 					if (distToTarget < range)
 					{
-						self.Attack(target);
+						self.Attack(Target);
 						inRage++;
 						if (canMove)
 							self.Accelerate(-angleToTarget);
@@ -121,9 +121,9 @@ namespace WarriorsSnuggery.Objects.Parts
 
 		void checkTarget(Actor actor)
 		{
-			if (target == null || !target.IsAlive)
+			if (Target == null || !Target.IsAlive)
 			{
-				target = actor;
+				Target = actor;
 				return;
 			}
 
@@ -131,7 +131,7 @@ namespace WarriorsSnuggery.Objects.Parts
 
 			// Factor: Health. from 0 to 1
 			// If target has less health, then keep attacking it
-			newFavor += target.Health.HPRelativeToMax - actor.Health.HPRelativeToMax;
+			newFavor += Target.Health.HPRelativeToMax - actor.Health.HPRelativeToMax;
 
 			// Factor: Distance.
 			// If target is closer, then keep attacking it
@@ -143,7 +143,7 @@ namespace WarriorsSnuggery.Objects.Parts
 
 			if (newFavor > targetFavor)
 			{
-				target = actor;
+				Target = actor;
 				targetFavor = newFavor;
 			}
 		}

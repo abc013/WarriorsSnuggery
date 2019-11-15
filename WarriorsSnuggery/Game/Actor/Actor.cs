@@ -41,6 +41,8 @@ namespace WarriorsSnuggery.Objects
 
 		public readonly WorldPart WorldPart;
 
+		public readonly BotPart BotPart;
+
 		public readonly ActorType Type;
 
 		int localTick;
@@ -95,7 +97,10 @@ namespace WarriorsSnuggery.Objects
 				parts.Add(new PlayerPart(this));
 
 			if (isBot)
-				parts.Add(new BotPart(this));
+			{
+				BotPart = new BotPart(this);
+				parts.Add(BotPart);
+			}
 		}
 
 		public void Accelerate(CPos target, int customAcceleration = 0)
