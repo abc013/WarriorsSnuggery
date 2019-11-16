@@ -261,40 +261,9 @@ namespace WarriorsSnuggery
 
 			foreach (var wall in walls)
 			{
-				string texture = string.Empty;
-				bool blocks = true;
-				bool destroyable = false;
-				int height = 512;
-
-				foreach (var child in wall.Children)
-				{
-					switch (child.Key)
-					{
-						case "Image":
-							texture = child.Convert<string>();
-
-							break;
-						case "Blocks":
-							blocks = child.Convert<bool>();
-
-							break;
-						case "Destroyable":
-							destroyable = child.Convert<bool>();
-
-							break;
-						case "Height":
-							height = child.Convert<int>();
-
-							break;
-					}
-				}
-
-				if (texture == string.Empty)
-					throw new YamlMissingNodeException(wall.Key, "Image");
-
 				var id = int.Parse(wall.Key);
 
-				AddType(new WallType(id, texture, blocks, destroyable, height));
+				AddType(new WallType(id, wall.Children.ToArray()));
 			}
 		}
 
