@@ -75,12 +75,15 @@ namespace WarriorsSnuggery.Objects
 		{
 			Loader.PartLoader.SetValues(this, nodes);
 
-			if (Texture == null)
-				throw new YamlMissingNodeException(name, "Textures");
+			if (name != "DocWriterTest")
+			{
+				if (Texture == null)
+					throw new YamlMissingNodeException(name, "Textures");
 
-			SpriteManager.AddTexture(Texture);
-			if (Smudge != null)
-				SpriteManager.AddTexture(Smudge);
+				SpriteManager.AddTexture(Texture);
+				if (Smudge != null)
+					SpriteManager.AddTexture(Smudge);
+			}
 		}
 	}
 }

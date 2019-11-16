@@ -29,13 +29,16 @@ namespace WarriorsSnuggery.Objects
 			ID = id;
 			Loader.PartLoader.SetValues(this, nodes);
 
-			if (Image == null)
-				throw new YamlMissingNodeException("[Wall] " + id, "Image");
+			if (id >= 0)
+			{
+				if (Image == null)
+					throw new YamlMissingNodeException("[Wall] " + id, "Image");
 
-			textures = SpriteManager.AddTexture(new TextureInfo(Image, TextureType.ANIMATION, 0, 24, 48));
+				textures = SpriteManager.AddTexture(new TextureInfo(Image, TextureType.ANIMATION, 0, 24, 48));
 
-			if (textures.Length < 2)
-				throw new YamlInvalidNodeException(string.Format("Texture '{0}' of Wall '{1}' has not enough textures!", Image, id));
+				if (textures.Length < 2)
+					throw new YamlInvalidNodeException(string.Format("Texture '{0}' of Wall '{1}' has not enough textures!", Image, id));
+			}
 		}
 
 		public IImage GetTexture(bool horizontal)
