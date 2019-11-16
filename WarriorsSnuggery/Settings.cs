@@ -17,33 +17,33 @@ namespace WarriorsSnuggery
 
 		public const int UpdatesPerSecond = 60;
 
-		public static int FrameLimiter;
+		public static int FrameLimiter = 0;
 
-		public static float ScrollSpeed;
+		public static float ScrollSpeed = 6;
 
-		public static bool DeveloperMode;
+		public static int EdgeScrolling = 4;
+
+		public static bool DeveloperMode = false;
 
 		public static bool EnableDebug { get { return DeveloperMode; } private set { } }
 
 		public static bool EnableInfoScreen;
 
-		public static bool Fullscreen;
+		public static bool Fullscreen = true;
 
-		public static int Width;
+		public static int Width = 1920;
 
-		public static int Height;
+		public static int Height = 1080;
 
-		public static bool PartyMode;
+		public static bool PartyMode = false;
 
-		public static bool AntiAliasing;
+		public static bool AntiAliasing = false;
 
-		public static bool EnablePixeling;
+		public static bool EnablePixeling = false;
 
-		public static bool EnableTextShadowing;
+		public static bool EnableTextShadowing = true;
 
-		public static bool FirstStarted;
-
-		public static int EdgeScrolling;
+		public static bool FirstStarted = true;
 
 		public static float MasterVolume = 1f;
 
@@ -63,6 +63,8 @@ namespace WarriorsSnuggery
 
 		public static void Initialize()
 		{
+			FrameLimiter = (int)OpenTK.DisplayDevice.Default.RefreshRate;
+
 			foreach (var node in RuleReader.Read(FileExplorer.MainDirectory, "WS.yaml"))
 			{
 				switch (node.Key)
