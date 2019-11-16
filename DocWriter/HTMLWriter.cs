@@ -169,7 +169,7 @@ namespace WarriorsSnuggery
 				var attrib = info.GetCustomAttribute(typeof(DescAttribute));
 				HTMLWriter.WriteRuleHead(writer, info.Name.Replace("PartInfo", ""), attrib == null ? new string[] { "No Description." } : ((DescAttribute)attrib).Desc);
 
-				writeTypeAndValues(writer, info);
+				writeTypeAndValues(writer, info, new[] { new MiniTextNode[0] });
 
 				Console.Write((first ? "" : ", ") + info.Name.Replace("PartInfo", ""));
 				if (first)
@@ -183,33 +183,33 @@ namespace WarriorsSnuggery
 			writer.WriteLine("\t\t<h2>ParticleSpawner</h2>");
 			writer.WriteLine("\t\t<hr>");
 			var spawner = Assembly.Load("WarriorsSnuggery").GetType("WarriorsSnuggery.Objects.Particles.ParticleSpawner");
-			writeTypeAndValues(writer, spawner);
+			writeTypeAndValues(writer, spawner, new[] { new MiniTextNode[0] });
 
 			writer.WriteLine("\t\t<h2>Particle</h2>");
 			writer.WriteLine("\t\t<hr>");
 			var info = Assembly.Load("WarriorsSnuggery").GetType("WarriorsSnuggery.Objects.Particles.ParticleType");
-			writeTypeAndValues(writer, info);
+			writeTypeAndValues(writer, info, new[] { new MiniTextNode[0] });
 		}
 
 		public static void WriteTerrain(StreamWriter writer)
 		{
 			var info = Assembly.Load("WarriorsSnuggery").GetType("WarriorsSnuggery.Objects.TerrainType");
 
-			writeType(writer, info);
+			writeTypeAndValues(writer, info, new object[] { ushort.MaxValue, new MiniTextNode[0] });
 		}
 
 		public static void WriteWalls(StreamWriter writer)
 		{
 			var info = Assembly.Load("WarriorsSnuggery").GetType("WarriorsSnuggery.Objects.WallType");
 
-			writeType(writer, info);
+			writeTypeAndValues(writer, info, new object[] { -1, new MiniTextNode[0] });
 		}
 
 		public static void WriteWeapons(StreamWriter writer)
 		{
 			var info = Assembly.Load("WarriorsSnuggery").GetType("WarriorsSnuggery.Objects.WeaponType");
 
-			writeType(writer, info);
+			writeTypeAndValues(writer, info, new object[] { "DocWriterTest", new MiniTextNode[0] });
 		}
 
 		public static void WriteMaps(StreamWriter writer)
@@ -270,9 +270,9 @@ namespace WarriorsSnuggery
 			HTMLWriter.WriteTable(writer, cells, false);
 		}
 
-		static void writeTypeAndValues(StreamWriter writer, Type info)
+		static void writeTypeAndValues(StreamWriter writer, Type info, object[] args)
 		{
-			var obj = Activator.CreateInstance(info, new[] { new MiniTextNode[0] });
+			var obj = Activator.CreateInstance(info, args);
 			var variables = info.GetFields().Where(f => f.IsInitOnly && f.GetCustomAttribute(typeof(DescAttribute)) != null).ToArray();
 			var cells = new TableCell[variables.Length];
 			for (int i = 0; i < variables.Length; i++)

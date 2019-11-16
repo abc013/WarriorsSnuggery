@@ -59,20 +59,23 @@ namespace WarriorsSnuggery.Objects
 
 			Overlaps = EdgeSprite != null;
 
-			if (Sprite == null || Sprite == string.Empty)
-				throw new YamlMissingNodeException(ID.ToString(), "Image");
-
-			sprite = TerrainSpriteManager.AddTexture(new TextureInfo(Sprite, TextureType.ANIMATION, 10, 24, 24));
-			if (Overlaps)
+			if (id != ushort.MaxValue)
 			{
-				if (EdgeSprite != null)
-					edgeSprite = TerrainSpriteManager.AddTexture(new TextureInfo(EdgeSprite, TextureType.ANIMATION, 10, 24, 24));
+				if ((Sprite == null || Sprite == string.Empty))
+					throw new YamlMissingNodeException(ID.ToString(), "Image");
 
-				if (CornerSprite != null)
-					cornerSprite = TerrainSpriteManager.AddTexture(new TextureInfo(CornerSprite, TextureType.ANIMATION, 10, 24, 24));
+				sprite = TerrainSpriteManager.AddTexture(new TextureInfo(Sprite, TextureType.ANIMATION, 10, 24, 24));
+				if (Overlaps)
+				{
+					if (EdgeSprite != null)
+						edgeSprite = TerrainSpriteManager.AddTexture(new TextureInfo(EdgeSprite, TextureType.ANIMATION, 10, 24, 24));
 
-				if (VerticalEdgeSprite != null)
-					verticalEdgeSprite = TerrainSpriteManager.AddTexture(new TextureInfo(VerticalEdgeSprite, TextureType.ANIMATION, 10, 24, 24));
+					if (CornerSprite != null)
+						cornerSprite = TerrainSpriteManager.AddTexture(new TextureInfo(CornerSprite, TextureType.ANIMATION, 10, 24, 24));
+
+					if (VerticalEdgeSprite != null)
+						verticalEdgeSprite = TerrainSpriteManager.AddTexture(new TextureInfo(VerticalEdgeSprite, TextureType.ANIMATION, 10, 24, 24));
+				}
 			}
 		}
 	}
