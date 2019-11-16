@@ -24,40 +24,41 @@ namespace WarriorsSnuggery.Objects
 
 		public BeamWeapon(World world, WeaponType type, CPos origin, CPos target, Action targetSetter = null) : base(world, type, origin, target)
 		{
-			Target += getInaccuracy();
 			originPos = origin;
-			tick = type.Textures.Tick;
-			duration = type.Reload;
+			tick = type.Texture.Tick;
+			duration = type.BeamDuration;
 			impactInterval = type.BeamImpactInterval;
+			Target = target;
 			rayPhysics = new RayPhysics(world)
 			{
 				Start = originPos,
 				Target = target
 			};
+			renderabledistance = (1024 * type.Texture.Height) / 24;
 
-			renderabledistance = (1024 * type.Textures.Height) / 24;
 			init();
 		}
 
 		public BeamWeapon(World world, WeaponType type, Actor origin, CPos target, Action targetSetter = null) : base(world, type, origin, target)
 		{
-			Target += getInaccuracy();
 			originPos = origin.ActiveWeapon.WeaponOffsetPosition;
-			tick = type.Textures.Tick;
-			duration = 100;
+			tick = type.Texture.Tick;
+			duration = Type.BeamDuration;
+			impactInterval = type.BeamImpactInterval;
+			Target = target;
 			rayPhysics = new RayPhysics(world)
 			{
 				Start = originPos,
 				Target = target
 			};
+			renderabledistance = (1024 * Type.Texture.Height) / 24;
 
 			init();
-			renderabledistance = (1024 * Type.Textures.Height) / 24;
 		}
 
 		void init()
 		{
-			var sprite = Type.Textures.GetTextures();
+			var sprite = Type.Texture.GetTextures();
 			renderables = new ImageRenderable[sprite.Length];
 			for (int i = 0; i < sprite.Length; i++)
 			{
@@ -112,8 +113,16 @@ namespace WarriorsSnuggery.Objects
 			rayPhysics.CalculateEnd(Origin);
 			Position = rayPhysics.End;
 
-			if (Type.WeaponFireType == WeaponFireType.DIRECTEDBEAM && originPos.Dist(Position) > originPos.Dist(Target))
+			var dist = originPos.Dist(Position);
+
+			if (Type.WeaponFireType == WeaponFireType.DIRECTEDBEAM && dist > originPos.Dist(Target))
 				Position = Target;
+
+			if (dist > Type.MaxRange)
+			{
+				var angle = Target.Angle(originPos);
+				Position = originPos + new CPos((int)(Math.Cos(angle) * Type.MaxRange), (int)(Math.Sin(angle) * Type.MaxRange), 0);
+			}
 
 			if (impactInterval-- <= 0)
 			{

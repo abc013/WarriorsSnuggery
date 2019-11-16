@@ -23,7 +23,7 @@ namespace WarriorsSnuggery.Objects
 	public class WeaponType
 	{
 		[Desc("Texture of the Weapon.")]
-		public readonly TextureInfo Textures;
+		public readonly TextureInfo Texture;
 		[Desc("Texture of the Smudge that will be left behind from impact.")]
 		public readonly TextureInfo Smudge;
 
@@ -45,49 +45,40 @@ namespace WarriorsSnuggery.Objects
 		public readonly int Inaccuracy;
 
 		[Desc("Maximal Range the weapon can travel.")]
-		public readonly int MaxRange;
+		public readonly int MaxRange = 8192;
 		[Desc("Minimal Range the player can target.")]
 		public readonly int MinRange;
 
 		[Desc("Type of weapon.", "Possible: BULLET, ROCKET, BEAM, DIRECTEDBEAM")]
-		public readonly WeaponFireType WeaponFireType;
+		public readonly WeaponFireType WeaponFireType = WeaponFireType.BULLET;
 		[Desc("Falloff of the impact.", "Possible: QUADRATIC, CUBIC, EXPONENTIAL, LINEAR, ROOT")]
-		public readonly FalloffType DamageFalloff;
+		public readonly FalloffType Falloff = FalloffType.QUADRATIC;
 
 		[Desc("Weapon always points to the target.")]
 		public readonly bool OrientateToTarget;
 
 		[Desc("Collision shape of the weapon.", "Possible: CIRCLE, RECTANGLE, LINE_HORIZONTAL, LINE_VERTICAL, NONE")]
-		public readonly Physics.Shape PhysicalShape;
+		public readonly Physics.Shape PhysicalShape = Physics.Shape.RECTANGLE;
 		[Desc("Size of the collision boundary.")]
-		public readonly int PhysicalSize;
+		public readonly int PhysicalSize = 64;
 
 		[Desc("Gravity applied to the weapon.")]
-		public readonly int Gravity;
+		public readonly int Gravity = 9;
 
 		[Desc("Interval in which the beam will detonate its warhead.", "Works only if the WeaponFireType is BEAM or DIRECTEDBEAM.")]
 		public readonly int BeamImpactInterval;
-		public WeaponType(TextureInfo textures, TextureInfo smudge, int damage, int speed, int acceleration, int reload, ParticleSpawner particlesOnImpact, int beamImpactInterval, int inaccuracy, int maxRange, int minRange, FalloffType damageFalloff, WeaponFireType weaponFireType, bool orientateToTarget, Physics.Shape physicalShape, int physicalSize, int gravity)
-		{
-			Textures = textures;
-			Smudge = smudge;
-			Damage = damage;
-			Speed = speed;
-			Acceleration = acceleration;
-			Reload = reload;
-			ParticlesOnImpact = particlesOnImpact;
-			BeamImpactInterval = beamImpactInterval;
-			Inaccuracy = inaccuracy;
-			MaxRange = maxRange;
-			MinRange = minRange;
-			WeaponFireType = weaponFireType;
-			DamageFalloff = damageFalloff;
-			OrientateToTarget = orientateToTarget;
-			PhysicalShape = physicalShape;
-			PhysicalSize = physicalSize;
-			Gravity = gravity;
 
-			SpriteManager.AddTexture(Textures);
+		[Desc("Determines how long a beam will be fired.")]
+		public readonly int BeamDuration;
+
+		public WeaponType(string name, MiniTextNode[] nodes)
+		{
+			Loader.PartLoader.SetValues(this, nodes);
+
+			if (Texture == null)
+				throw new YamlMissingNodeException(name, "Textures");
+
+			SpriteManager.AddTexture(Texture);
 			if (Smudge != null)
 				SpriteManager.AddTexture(Smudge);
 		}
