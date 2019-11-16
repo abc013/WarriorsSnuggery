@@ -126,7 +126,7 @@ namespace WarriorsSnuggery.Objects
 			var currentTerrain = World.TerrainAt(Position);
 			if (currentTerrain == null) return;
 
-			var speedModifier = Height == 0 ? currentTerrain.Type.SpeedModifier : 1f;
+			var speedModifier = Height == 0 ? currentTerrain.Type.Speed : 1f;
 			if (speedModifier.Equals(0)) return;
 
 			var movement = new MPos((int)Math.Round(Velocity.X * speedModifier), (int)Math.Round(Velocity.Y * speedModifier));
@@ -141,7 +141,7 @@ namespace WarriorsSnuggery.Objects
 			Position = oldpos;
 			var terrain = World.TerrainAt(pos);
 
-			if (World.IsInWorld(pos) && !intersects && !(terrain == null || (terrain.Type.SpeedModifier.Equals(0) && Height == 0)))
+			if (World.IsInWorld(pos) && !intersects && !(terrain == null || (terrain.Type.Speed.Equals(0) && Height == 0)))
 			{
 				acceptMove(pos);
 				return;
@@ -154,7 +154,7 @@ namespace WarriorsSnuggery.Objects
 			Position = oldpos;
 			terrain = World.TerrainAt(posX);
 
-			if (World.IsInWorld(posX) && !intersects && !(terrain == null || (terrain.Type.SpeedModifier.Equals(0) && Height == 0)))
+			if (World.IsInWorld(posX) && !intersects && !(terrain == null || (terrain.Type.Speed.Equals(0) && Height == 0)))
 			{
 				acceptMove(posX);
 				Velocity = new CPos(Velocity.X, 0, 0);
@@ -168,7 +168,7 @@ namespace WarriorsSnuggery.Objects
 			Position = oldpos;
 			terrain = World.TerrainAt(posY);
 
-			if (World.IsInWorld(posY) && !intersects && !(terrain == null || (terrain.Type.SpeedModifier.Equals(0) && Height == 0)))
+			if (World.IsInWorld(posY) && !intersects && !(terrain == null || (terrain.Type.Speed.Equals(0) && Height == 0)))
 			{
 				acceptMove(posY);
 				Velocity = new CPos(0, Velocity.Y, 0);

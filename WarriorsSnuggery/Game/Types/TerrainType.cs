@@ -8,33 +8,42 @@ namespace WarriorsSnuggery.Objects
 
 		public IImage Texture
 		{
-			get { return Sprite[Program.SharedRandom.Next(Sprite.Length)]; }
+			get { return sprite[Program.SharedRandom.Next(sprite.Length)]; }
 		}
+		readonly IImage[] sprite;
+
 		[Desc("Random base texture.")]
-		readonly IImage[] Sprite;
+		public readonly string Sprite;
 
 		public IImage Texture_Edge
 		{
-			get { return EdgeSprite[Program.SharedRandom.Next(EdgeSprite.Length)]; }
+			get { return edgeSprite[Program.SharedRandom.Next(edgeSprite.Length)]; }
 		}
+		readonly IImage[] edgeSprite;
+
 		[Desc("Edge of the tile.")]
-		readonly IImage[] EdgeSprite;
+		public readonly string EdgeSprite;
+
 		public IImage Texture_Edge2 // For vertical edges
 		{
-			get { return VerticalEdgeSprite?[Program.SharedRandom.Next(VerticalEdgeSprite.Length)]; }
+			get { return verticalEdgeSprite?[Program.SharedRandom.Next(verticalEdgeSprite.Length)]; }
 		}
+		readonly IImage[] verticalEdgeSprite;
+
 		[Desc("(possible) Vertical Edge of the tile.")]
-		readonly IImage[] VerticalEdgeSprite;
+		public readonly string VerticalEdgeSprite;
 
 		public IImage Texture_Corner
 		{
-			get { return CornerSprite[Program.SharedRandom.Next(CornerSprite.Length)]; }
+			get { return cornerSprite[Program.SharedRandom.Next(cornerSprite.Length)]; }
 		}
+		readonly IImage[] cornerSprite;
+
 		[Desc("Corner of the tile.")]
-		readonly IImage[] CornerSprite;
+		public readonly string CornerSprite;
 
 		[Desc("If not 1, this will modify the speed of the player.")]
-		public readonly float SpeedModifier;
+		public readonly float Speed;
 
 		public readonly bool Overlaps;
 		[Desc("Overlap height. The higher the value, the more tiles with smaller numbers will be overlapped.")]
@@ -42,26 +51,29 @@ namespace WarriorsSnuggery.Objects
 		[Desc("If true, weapons will leave behind smudge on impact.")]
 		public readonly bool SpawnSmudge;
 
-		public TerrainType(ushort id, string texture, float speedModifier, bool overlaps, bool spawnSmudge, int overlapHeight, string texture_edge, string texture_corner, string texture_edge2)
+		public TerrainType(ushort id, MiniTextNode[] nodes)
 		{
 			ID = id;
-			Sprite = TerrainSpriteManager.AddTexture(new TextureInfo(texture, TextureType.ANIMATION, 10, 24, 24));
-			Overlaps = overlaps;
-			OverlapHeight = overlapHeight;
-			SpawnSmudge = spawnSmudge;
-			if (overlaps)
+
+			Loader.PartLoader.SetValues(this, nodes);
+
+			Overlaps = EdgeSprite != null;
+
+			if (Sprite == null || Sprite == string.Empty)
+				throw new YamlMissingNodeException(ID.ToString(), "Image");
+
+			sprite = TerrainSpriteManager.AddTexture(new TextureInfo(Sprite, TextureType.ANIMATION, 10, 24, 24));
+			if (Overlaps)
 			{
-				EdgeSprite = TerrainSpriteManager.AddTexture(new TextureInfo(texture_edge, TextureType.ANIMATION, 10, 24, 24));
+				if (EdgeSprite != null)
+					edgeSprite = TerrainSpriteManager.AddTexture(new TextureInfo(EdgeSprite, TextureType.ANIMATION, 10, 24, 24));
 
-				CornerSprite = TerrainSpriteManager.AddTexture(new TextureInfo(texture_corner, TextureType.ANIMATION, 10, 24, 24));
+				if (CornerSprite != null)
+					cornerSprite = TerrainSpriteManager.AddTexture(new TextureInfo(CornerSprite, TextureType.ANIMATION, 10, 24, 24));
 
-				if (texture_edge2 != "")
-				{
-					VerticalEdgeSprite = TerrainSpriteManager.AddTexture(new TextureInfo(texture_edge2, TextureType.ANIMATION, 10, 24, 24));
-				}
+				if (VerticalEdgeSprite != null)
+					verticalEdgeSprite = TerrainSpriteManager.AddTexture(new TextureInfo(VerticalEdgeSprite, TextureType.ANIMATION, 10, 24, 24));
 			}
-
-			SpeedModifier = speedModifier;
 		}
 	}
 }

@@ -218,48 +218,7 @@ namespace WarriorsSnuggery
 			{
 				var id = ushort.Parse(terrain.Key);
 
-				var image = string.Empty;
-				var speedModifier = 1f;
-				var overlapHeight = -1;
-				var spawnSmudge = true;
-				var edge_Image = "";
-				var edge_Image2 = "";
-				var corner_Image = "";
-
-				foreach (var child in terrain.Children)
-				{
-					switch (child.Key)
-					{
-						case "Sprite":
-							image = child.Convert<string>();
-							break;
-						case "Speed":
-							speedModifier = child.Convert<float>();
-							break;
-						case "OverlapHeight":
-							overlapHeight = child.Convert<int>();
-							break;
-						case "EdgeSprite":
-							edge_Image = child.Convert<string>();
-							break;
-						case "VerticalEdgeSprite":
-							edge_Image2 = child.Convert<string>();
-							break;
-						case "CornerSprite":
-							corner_Image = child.Convert<string>();
-							break;
-						case "SpawnSmudge":
-							spawnSmudge = child.Convert<bool>();
-							break;
-						default:
-							throw new YamlUnknownNodeException(child.Key, "Terrain " + id);
-					}
-				}
-
-				if (image == string.Empty)
-					throw new YamlMissingNodeException(terrain.Key, "Image");
-
-				AddType(new TerrainType(id, image, speedModifier, edge_Image != "", spawnSmudge, overlapHeight, edge_Image, corner_Image, edge_Image2));
+				AddType(new TerrainType(id, terrain.Children.ToArray()));
 			}
 		}
 
