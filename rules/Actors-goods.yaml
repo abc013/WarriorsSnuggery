@@ -17,6 +17,13 @@ box1=
 	Part@Physics=
 		Shape=Rectangle
 		Size=341,341,128
+	Part@Health=
+		MaxHealth=150
+	Part@SpawnOnDeath=
+		Count=1
+		Name=box1_debris
+		Type=ACTOR
+		AtCenter=true
 
 box2=
 	Part@Sprite=
@@ -27,6 +34,34 @@ box2=
 	Part@Physics=
 		Shape=Rectangle
 		Size=597,341,128
+	Part@Health=
+		MaxHealth=150
+	Part@SpawnOnDeath=
+		Count=1
+		Name=box2_debris
+		Type=ACTOR
+		AtCenter=true
+
+box1_debris=
+	Part@Sprite=
+		Name=planks1
+		Dimensions=24,24
+		UseAsPreview=true
+		Offset=0,0,-512
+		Random=true
+
+box2_debris=
+	Part@Sprite=
+		Name=planks1
+		Dimensions=24,24
+		UseAsPreview=true
+		Offset=256,0,-512
+		Random=true
+	Part@Sprite=
+		Name=planks1
+		Dimensions=24,24
+		Offset=-256,0,-512
+		Random=true
 
 barrel=
 	Part@Sprite=
@@ -43,6 +78,7 @@ barrel=
 		Count=1
 		Name=barrel_debris
 		Type=ACTOR
+		AtCenter=true
 
 barrel_debris=
 	Part@Sprite=
