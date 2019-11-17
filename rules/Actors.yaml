@@ -559,9 +559,23 @@ table1=
 		Dimensions=30,24
 		Offset=88,100,0
 		UseAsPreview=true
+	Part@Health=
+		MaxHealth=150
 	Part@Physics=
 		Shape=Circle
 		Size=400,400,300
+	Part@SpawnOnDeath=
+		Count=1
+		Name=table1_debris
+		Type=ACTOR
+		AtCenter=true
+
+table1_debris=
+	Part@Sprite=
+		Name=table1_debris
+		Dimensions=24,24
+		UseAsPreview=true
+		Offset=0,0,-512
 
 painting=
 	Part@Sprite=
