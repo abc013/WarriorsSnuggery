@@ -7,6 +7,16 @@ chest1=
 	Part@Physics=
 		Shape=Rectangle
 		Size=500,250,500
+	Part@Health=
+		MaxHealth=450
+	Part@SpawnOnDeath=
+		Count=20
+		Name=mana_splash
+		Type=ACTOR
+	Part@SpawnOnDeath=
+		Count=70
+		Name=mana_splash
+		Type=PARTICLE
 
 box1=
 	Part@Sprite=
@@ -79,6 +89,10 @@ barrel=
 		Name=barrel_debris
 		Type=ACTOR
 		AtCenter=true
+	Part@SpawnOnDeath=
+		Count=150
+		Name=barrel_splash
+		Type=PARTICLE
 
 barrel_debris=
 	Part@Sprite=

@@ -51,6 +51,20 @@ slime_splash=
 	Duration=100
 	DissolveDuration=1000
 
+barrel_splash=
+	Color=63,255,63,196
+	MeshSize=2
+	Duration=20
+	DissolveDuration=30
+	RandomVelocity=30,30,70
+
+mana_splash=
+	Color=63,63,255,196
+	MeshSize=2
+	Duration=20
+	DissolveDuration=30
+	RandomVelocity=20,20,40
+
 nebula1=
 	Texture=smoke_large
 		Size=72,72

@@ -113,7 +113,7 @@ portion_red=
 	Part@Collectable=
 		Type=HEALTH
 		Radius=512
-		Value=200
+		Value=100
 		MultipleActivations=no
 		KillsSelf=true
 
@@ -126,7 +126,20 @@ portion_blue=
 	Part@Collectable=
 		Type=MANA
 		Radius=512
-		Value=200
+		Value=50
+		MultipleActivations=no
+		KillsSelf=true
+
+mana_splash=
+	Part@Sprite=
+		Name=mana
+		Dimensions=3,3
+		Random=true
+		UseAsPreview=true
+	Part@Collectable=
+		Radius=128
+		Type=MANA
+		Value=2
 		MultipleActivations=no
 		KillsSelf=true
 
