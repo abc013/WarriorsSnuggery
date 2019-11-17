@@ -64,5 +64,11 @@
 				beam.Target = Target;
 			}
 		}
+
+		public override void OnDispose()
+		{
+			if (beam != null && !beam.Disposed)
+				beam.Dispose();
+		}
 	}
 }
