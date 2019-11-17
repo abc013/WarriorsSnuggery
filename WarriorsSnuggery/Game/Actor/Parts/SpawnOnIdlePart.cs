@@ -1,4 +1,6 @@
-﻿namespace WarriorsSnuggery.Objects.Parts
+﻿using WarriorsSnuggery.Objects.Conditions;
+
+namespace WarriorsSnuggery.Objects.Parts
 {
 	[Desc("Spawns objects when the object idles.")]
 	public class SpawnOnIdlePartInfo : PartInfo
@@ -17,10 +19,13 @@
 		public readonly bool InheritsBot;
 		[Desc("Type of the object.")]
 		public readonly string Type;
-		[Desc("Condition to spawn. Unused.")]
-		public readonly string Condition;
+		[Desc("Condition to spawn.")]
+		public readonly Condition Condition;
 		[Desc("Offset from the center of idling object where the objects spawn.")]
 		public readonly CPos Offset;
+
+		[Desc("Spawn object at center of actor, not random.")]
+		public readonly bool AtCenter;
 
 		public override ActorPart Create(Actor self)
 		{
@@ -45,7 +50,7 @@
 
 		public override void Tick()
 		{
-			if (self.CurrentAction == ActorAction.IDLING && curTick-- < 0)
+			if ((info.Condition != null && !info.Condition.True(self)) || self.CurrentAction == ActorAction.IDLING && curTick-- < 0)
 			{
 				for (int i = 0; i < info.Count; i++)
 				{
@@ -81,6 +86,9 @@
 
 		CPos randomPosition()
 		{
+			if (info.AtCenter)
+				return self.Position + new CPos(info.Offset.X, info.Offset.Y, 0);
+
 			var size = self.Physics != null ? self.Physics.RadiusX : 40;
 			var x = Program.SharedRandom.Next(size) - size / 2;
 			var y = Program.SharedRandom.Next(size) - size / 2;

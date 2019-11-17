@@ -1,4 +1,6 @@
-﻿namespace WarriorsSnuggery.Objects.Parts
+﻿using WarriorsSnuggery.Objects.Conditions;
+
+namespace WarriorsSnuggery.Objects.Parts
 {
 	[Desc("Spawns objects when the object dies.", "Without the health rule, this rule is useless.")]
 	public class SpawnOnDeathPartInfo : PartInfo
@@ -15,8 +17,11 @@
 		public readonly bool InheritsBot;
 		[Desc("Type of the object.")]
 		public readonly string Type;
-		[Desc("Condition to spawn. Unused.")]
-		public readonly string Condition;
+		[Desc("Condition to spawn.")]
+		public readonly Condition Condition;
+
+		[Desc("Spawn object at center of actor, not random.")]
+		public readonly bool AtCenter;
 
 		public override ActorPart Create(Actor self)
 		{
@@ -48,10 +53,10 @@
 
 		void create()
 		{
-			if (self.World.Game.SharedRandom.NextDouble() > info.Probability)
+			if ((info.Condition != null && !info.Condition.True(self)) || self.World.Game.SharedRandom.NextDouble() > info.Probability)
 				return;
 
-			PhysicsObject @object = null;
+			PhysicsObject @object;
 			switch (info.Type)
 			{
 				case "ACTOR":
@@ -71,6 +76,9 @@
 
 		CPos randomPosition()
 		{
+			if (info.AtCenter)
+				return self.Position;
+
 			var size = self.Physics != null ? self.Physics.RadiusX : 40;
 			var x = Program.SharedRandom.Next(size) - size / 2;
 			var y = Program.SharedRandom.Next(size) - size / 2;
