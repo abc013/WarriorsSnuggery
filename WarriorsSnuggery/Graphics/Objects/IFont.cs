@@ -10,10 +10,10 @@ namespace WarriorsSnuggery.Graphics
 {
 	public class IFont : Renderable
 	{
-		//public static IFont Arial18 { get; private set; }
 		public static IFont Papyrus24 { get; private set; }
 		public static IFont Pixel16 { get; private set; }
-		public static PrivateFontCollection Collection;
+
+		public static PrivateFontCollection Collection { get; private set; }
 
 		public static void LoadFonts()
 		{
@@ -29,9 +29,9 @@ namespace WarriorsSnuggery.Graphics
 
 		public static void InitializeFonts()
 		{
-			//Arial18 = new IFont("Arial", 18);
 			Collection.AddFontFile(FileExplorer.Misc + @"Fonts\PAPYRUS.TTF");
 			Papyrus24 = new IFont("Papyrus", 24);
+
 			Collection.AddFontFile(FileExplorer.Misc + @"Fonts\Pixel.ttf");
 			Pixel16 = new IFont("Pixel", 16);
 		}

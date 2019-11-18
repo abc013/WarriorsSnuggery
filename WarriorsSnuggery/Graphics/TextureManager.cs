@@ -93,17 +93,6 @@ namespace WarriorsSnuggery.Graphics
 			return createTexture(data, new TextureInfo("", TextureType.IMAGE, 10, size.X, size.Y, false), "Random#" + Program.SharedRandom.GetHashCode());
 		}
 
-		public static ITexture RandomTexture(TextureInfo info)
-		{
-			if (string.IsNullOrEmpty(info.File))
-				return null;
-
-			var textureArray = Sprite(info);
-			ITexture texture = textureArray[Program.SharedRandom.Next(textureArray.Length)];
-
-			return texture;
-		}
-
 		public static ITexture[] Sprite(TextureInfo info)
 		{
 			var filename = info.File;
@@ -152,9 +141,10 @@ namespace WarriorsSnuggery.Graphics
 			//	return texture;
 			//}
 
-			var bitmap = GenerateCharacters(size, font, out maxSize, out sizes);
-
-			texture = createTexture(bitmap, name);
+			using (var bitmap = GenerateCharacters(size, font, out maxSize, out sizes))
+			{
+				texture = createTexture(bitmap, name);
+			}
 
 			// For dispose
 			textures.Add(name, new[] { texture });
@@ -271,7 +261,13 @@ namespace WarriorsSnuggery.Graphics
 					c.Dispose();
 				}
 			}
+
+			foreach (var character in characters)
+				character.Dispose();
+			characters.Clear();
+
 			font.Dispose();
+
 			return charMap;
 		}
 
