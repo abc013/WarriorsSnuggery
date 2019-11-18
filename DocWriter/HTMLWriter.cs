@@ -7,7 +7,7 @@ namespace WarriorsSnuggery
 {
 	public static class HTMLWriter
 	{
-		public static readonly string[] LightModeColors = new []
+		public static readonly string[] LightModeColors = new[]
 		{
 			"#EEEEEE",
 			"#DDDDDD",

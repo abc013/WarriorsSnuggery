@@ -44,8 +44,8 @@ namespace WarriorsSnuggery.Audio
 		{
 			if (pause)
 				AL.SourcePause(source);
-			else if(AL.GetSourceState(source) == ALSourceState.Paused)
-					AL.SourcePlay(source);
+			else if (AL.GetSourceState(source) == ALSourceState.Paused)
+				AL.SourcePlay(source);
 		}
 
 		public void Dispose()

@@ -5,12 +5,10 @@
  */
 using OpenTK;
 using OpenTK.Graphics;
-using OpenTK.Graphics.ES30;
 using OpenTK.Input;
 using System;
 using System.Drawing;
 using WarriorsSnuggery.Graphics;
-using WarriorsSnuggery.Maps;
 
 namespace WarriorsSnuggery
 {
