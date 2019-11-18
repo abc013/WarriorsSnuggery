@@ -110,15 +110,16 @@ namespace WarriorsSnuggery
 
 			font.StopAndWrite("Loading Fonts");
 
+			var watch2 = Timer.Start();
+			AudioController.Load();
+
+			watch2.StopAndWrite("Loading Sound");
+
 			var watch = Timer.Start();
 			GameController.Load();
 
 			watch.StopAndWrite("Loading Rules");
 
-			var watch2 = Timer.Start();
-			AudioController.Load();
-
-			watch2.StopAndWrite("Loading Sound");
 
 			Ready = true;
 			Console.WriteLine(" Done!");
