@@ -35,7 +35,7 @@ namespace WarriorsSnuggery.Physics
 			var closestT1 = double.MaxValue;
 
 			// Collision at map Bounds.
-			foreach(var line in mapBounds)
+			foreach (var line in mapBounds)
 			{
 				var end = getIntersection(line[0], line[1], out var t1);
 				if (end != invalid && t1 < closestT1)
@@ -102,9 +102,9 @@ namespace WarriorsSnuggery.Physics
 					continue;
 
 				var objs = sector.CheckRay(this, new[] { typeof(Weapon), typeof(BeamWeapon), typeof(BulletWeapon), typeof(RocketWeapon) }, shooter == null ? null : new[] { shooter });
-				foreach(var obj in objs)
+				foreach (var obj in objs)
 				{
-					foreach(var line in obj.Physics.GetLines())
+					foreach (var line in obj.Physics.GetLines())
 					{
 						var end = getIntersection(line.Start, line.End, out var t1);
 						if (end != invalid && t1 < closestT1)

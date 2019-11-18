@@ -42,7 +42,7 @@ namespace WarriorsSnuggery.UI
 				var position = new CPos(-4096, -2048, 0) + e.Position.ToCPos();
 				SpellNode spell = new SpellNode(position, e, game);
 				tree[i] = spell;
-				foreach(var connection in e.Before)
+				foreach (var connection in e.Before)
 				{
 					if (connection == "")
 						continue;

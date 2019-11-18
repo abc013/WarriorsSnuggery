@@ -1,6 +1,6 @@
 ﻿using System;
-using System.Linq;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace WarriorsSnuggery.Objects.Conditions
 {
@@ -33,7 +33,7 @@ namespace WarriorsSnuggery.Objects.Conditions
 				return condition.Negate != items[condition.Type];
 
 			// Condition is a local type, which means it depends on the actor
-			switch(condition.Type)
+			switch (condition.Type)
 			{
 				case "IsPlayer":
 					return actor.IsPlayer;

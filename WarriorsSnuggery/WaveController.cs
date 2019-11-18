@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Linq;
-using WarriorsSnuggery.Objects;
 using WarriorsSnuggery.Maps;
+using WarriorsSnuggery.Objects;
 
 namespace WarriorsSnuggery
 {
@@ -46,7 +46,7 @@ namespace WarriorsSnuggery
 
 			var actors = game.World.Actors.FindAll(a => !(a.Team == Actor.PlayerTeam || a.Team == Actor.NeutralTeam));
 
-			foreach(var actor in actors)
+			foreach (var actor in actors)
 			{
 				if (actor.IsBot)
 					actor.BotPart.Target = game.World.LocalPlayer;

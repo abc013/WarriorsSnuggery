@@ -131,7 +131,7 @@ namespace WarriorsSnuggery.Physics
 
 		public PhysicsLine[] GetLines()
 		{
-			switch(Shape)
+			switch (Shape)
 			{
 				default:
 					return new PhysicsLine[0];
@@ -145,7 +145,7 @@ namespace WarriorsSnuggery.Physics
 					{
 						new PhysicsLine(Position - new CPos(2 * RadiusX, RadiusY, 0), Position + new CPos(0, -RadiusY, 0))
 					};
-					// TODO: give Circle an own collider
+				// TODO: give Circle an own collider
 				case Shape.CIRCLE:
 				case Shape.RECTANGLE:
 					return new PhysicsLine[]

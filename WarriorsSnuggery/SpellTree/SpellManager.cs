@@ -15,7 +15,7 @@ namespace WarriorsSnuggery.Spells
 			for (int i = 0; i < spellCasters.Length; i++)
 				spellCasters[i] = new SpellCaster(game, SpellTreeLoader.SpellTree[i]);
 		}
-		
+
 		public void Tick()
 		{
 			foreach (var caster in spellCasters)
@@ -50,7 +50,7 @@ namespace WarriorsSnuggery.Spells
 		}
 		public float RechargeProgress
 		{
-			get { return 1 - recharge / (float)node.Spell.Cooldown;  }
+			get { return 1 - recharge / (float)node.Spell.Cooldown; }
 			set { }
 		}
 		public bool Ready
