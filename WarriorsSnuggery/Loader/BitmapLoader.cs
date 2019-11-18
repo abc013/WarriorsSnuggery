@@ -73,6 +73,7 @@ namespace WarriorsSnuggery.Loader
 			finally
 			{
 				bmp.UnlockBits(data);
+				System.GC.AddMemoryPressure(data.Stride * data.Height);
 			}
 
 			return r;
