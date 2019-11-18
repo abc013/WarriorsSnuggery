@@ -79,6 +79,8 @@ namespace WarriorsSnuggery
 
 			Camera.Reset();
 			MasterRenderer.UpdateView();
+
+			GC.Collect();
 		}
 
 		public static void Pause()
