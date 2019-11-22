@@ -85,5 +85,10 @@ namespace WarriorsSnuggery.Graphics
 
 			filled_rect.Render();
 		}
+
+		public static void DrawDot(CPos position, Color color)
+		{
+			DrawQuad(position, 128, color);
+		}
 	}
 }

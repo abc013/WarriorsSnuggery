@@ -41,7 +41,7 @@ namespace WarriorsSnuggery
 		{
 			current = this;
 			SetScreen();
-			CursorVisible = Settings.EnableDebug;
+			CursorVisible = false;
 		}
 
 		public static void CloseWindow()

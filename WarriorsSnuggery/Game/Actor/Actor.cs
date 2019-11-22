@@ -90,9 +90,6 @@ namespace WarriorsSnuggery.Objects
 			if (WorldPart != null)
 				Height = WorldPart.Height;
 
-			if (Settings.DeveloperMode)
-				parts.Add(new DebugPart(this));
-
 			if (isPlayer)
 				parts.Add(new PlayerPart(this));
 
@@ -215,6 +212,11 @@ namespace WarriorsSnuggery.Objects
 
 				parts.ForEach(p => p.Render());
 			}
+		}
+
+		public void RenderDebug()
+		{
+			Graphics.ColorManager.DrawDot(Position, Color.Blue);
 		}
 
 		public override void Tick()
