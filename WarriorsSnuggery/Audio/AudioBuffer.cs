@@ -1,6 +1,6 @@
-﻿using System;
+﻿using OpenTK.Audio.OpenAL;
+using System;
 using System.Runtime.InteropServices;
-using OpenTK.Audio.OpenAL;
 using WarriorsSnuggery.Loader;
 
 namespace WarriorsSnuggery.Audio

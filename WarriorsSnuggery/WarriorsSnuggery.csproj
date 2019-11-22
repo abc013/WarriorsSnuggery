@@ -84,14 +84,12 @@
     <Compile Include="Physics\RayPhysics.cs" />
     <Compile Include="Physics\Shape.cs" />
     <Compile Include="SpellTree\Spell.cs" />
-    <Compile Include="GameSettings.cs" />
     <Compile Include="Game\Actor\Spells\EffectPart.cs" />
     <Compile Include="Game\Actor\Parts\ActorPart.cs" />
     <Compile Include="Game\Actor\IActor.cs" />
     <Compile Include="Game\Actor\Parts\AnimatedSpritePart.cs" />
     <Compile Include="Game\Actor\Parts\BotPart.cs" />
     <Compile Include="Game\Actor\Parts\CollectablePart.cs" />
-    <Compile Include="Game\Actor\Parts\DebugPart.cs" />
     <Compile Include="Description.cs" />
     <Compile Include="Game\Actor\Parts\HealthPart.cs" />
     <Compile Include="Game\Actor\Parts\MobilityPart.cs" />
@@ -149,12 +147,10 @@
     <Compile Include="Graphics\CharManager.cs" />
     <Compile Include="Graphics\ColoredRenderables.cs" />
     <Compile Include="Graphics\ColorManager.cs" />
-    <Compile Include="Graphics\Objects\IImageSequence.cs" />
     <Compile Include="Graphics\Sheet.cs" />
     <Compile Include="Graphics\SheetBuilder.cs" />
     <Compile Include="Graphics\SpriteManager.cs" />
     <Compile Include="Graphics\TerrainSpriteManager.cs" />
-    <Compile Include="Graphics\UISpriteManager.cs" />
     <Compile Include="Loader\BitmapLoader.cs" />
     <Compile Include="Loader\BitmapSaver.cs" />
     <Compile Include="Loader\LoaderExceptions.cs" />

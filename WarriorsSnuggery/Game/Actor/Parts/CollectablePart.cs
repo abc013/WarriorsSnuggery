@@ -1,6 +1,6 @@
 ﻿using System;
-using WarriorsSnuggery.Objects.Particles;
 using WarriorsSnuggery.Objects.Conditions;
+using WarriorsSnuggery.Objects.Particles;
 
 namespace WarriorsSnuggery.Objects.Parts
 {

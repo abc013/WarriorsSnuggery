@@ -1,13 +1,11 @@
-﻿using System;
-
-namespace WarriorsSnuggery.Audio
+﻿namespace WarriorsSnuggery.Audio
 {
 	public class Music
 	{
 		public readonly int Length;
 		int length;
 		bool paused;
-		
+
 		public bool Done
 		{
 			get { return length <= 0; }

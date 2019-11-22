@@ -3,10 +3,10 @@
  * Date: 30.09.2017
  * 
  */
-using System;
 using OpenTK;
 using OpenTK.Graphics;
 using OpenTK.Graphics.ES30;
+using System;
 using WarriorsSnuggery.Graphics;
 
 namespace WarriorsSnuggery

@@ -47,7 +47,7 @@ namespace WarriorsSnuggery
 					xChars = maxInText;
 			}
 
-			size = new CPos((xChars + 1) * (font.Width/4 + font.Gap) + 2 * margin, (text.Length + 1) * font.Height + 2 * margin, 0);
+			size = new CPos((xChars + 1) * (font.Width / 4 + font.Gap) + 2 * margin, (text.Length + 1) * font.Height + 2 * margin, 0);
 		}
 
 		public void Render()
@@ -69,8 +69,8 @@ namespace WarriorsSnuggery
 
 		void setPosition()
 		{
-			title.Position = position + new CPos(margin + font.Width/2 , margin + font.Height/2, 0);
-			text.Position = position + new CPos(margin + font.Width/2 , font.Height/2 + font.Height + font.Gap + margin, 0);
+			title.Position = position + new CPos(margin + font.Width / 2, margin + font.Height / 2, 0);
+			text.Position = position + new CPos(margin + font.Width / 2, font.Height / 2 + font.Height + font.Gap + margin, 0);
 		}
 
 		public void Dispose()

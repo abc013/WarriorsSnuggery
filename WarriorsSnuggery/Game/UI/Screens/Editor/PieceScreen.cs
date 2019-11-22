@@ -3,10 +3,7 @@
  * Date: 27.10.2018
  * Time: 15:44
  */
-using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using WarriorsSnuggery.Graphics;
 using WarriorsSnuggery.Maps;
 using WarriorsSnuggery.Objects;
@@ -35,7 +32,8 @@ namespace WarriorsSnuggery.UI
 			foreach (var piece in PieceManager.GetPieces())
 			{
 				mapSelection.Add(new PanelItem(CPos.Zero, new ImageRenderable(TextureManager.Texture("UI_map")), new MPos(512, 512), piece.Name, new[] { Color.Grey + "[" + piece.Size.X + "," + piece.Size.Y + "]" },
-				() => {
+				() =>
+				{
 					GameController.CreateNew(new GameStatistics(GameSaveManager.DefaultStatistic), GameType.EDITOR, custom: MapInfo.EditorMapTypeFromPiece(piece.InnerName, piece.Size));
 					Hide();
 				}));

@@ -7,9 +7,9 @@ using System;
 using WarriorsSnuggery.Graphics;
 using WarriorsSnuggery.Maps;
 using WarriorsSnuggery.Objects;
-using WarriorsSnuggery.UI;
-using WarriorsSnuggery.Spells;
 using WarriorsSnuggery.Objects.Conditions;
+using WarriorsSnuggery.Spells;
+using WarriorsSnuggery.UI;
 
 namespace WarriorsSnuggery
 {

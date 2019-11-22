@@ -4,8 +4,8 @@
  * 
  */
 using System;
-using System.Linq;
 using System.Collections.Generic;
+using System.Linq;
 using WarriorsSnuggery.Graphics;
 using WarriorsSnuggery.Objects;
 
@@ -102,17 +102,17 @@ namespace WarriorsSnuggery
 
 			if (Settings.DeveloperMode)
 			{
-				foreach(var actor in world.Actors)
+				foreach (var actor in world.Actors)
 				{
 					actor.RenderDebug();
 				}
 
-				foreach(var sector in world.PhysicsLayer.Sectors)
+				foreach (var sector in world.PhysicsLayer.Sectors)
 				{
 					sector.RenderDebug();
 				}
 
-				foreach(var wall in world.WallLayer.Walls)
+				foreach (var wall in world.WallLayer.Walls)
 				{
 					if (wall != null)
 						wall.Physics.RenderDebug();

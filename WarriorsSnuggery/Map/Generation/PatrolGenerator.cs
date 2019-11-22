@@ -1,6 +1,6 @@
 ﻿using System;
-using System.Linq;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace WarriorsSnuggery.Maps
 {
@@ -57,7 +57,7 @@ namespace WarriorsSnuggery.Maps
 				Log.WriteDebug(string.Format("Unable to spawn Patrol count ({0}) because there are not enough available spawn points ({1}).", count, positions.Count));
 				count = positions.Count;
 			}
-			
+
 			spawns = new MPos[count];
 
 			for (int i = 0; i < count; i++)

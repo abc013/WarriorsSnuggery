@@ -1,5 +1,5 @@
-﻿using OpenTK.Audio.OpenAL;
-using OpenTK.Audio;
+﻿using OpenTK.Audio;
+using OpenTK.Audio.OpenAL;
 
 namespace WarriorsSnuggery.Audio
 {
@@ -34,7 +34,7 @@ namespace WarriorsSnuggery.Audio
 		{
 			if (!inGame)
 			{
-				foreach(var source in Sources)
+				foreach (var source in Sources)
 				{
 					source.CheckUsed();
 					if (!source.Used)
@@ -64,7 +64,7 @@ namespace WarriorsSnuggery.Audio
 		{
 			if (!game)
 			{
-				foreach(var source in Sources)
+				foreach (var source in Sources)
 				{
 					source.Stop();
 				}

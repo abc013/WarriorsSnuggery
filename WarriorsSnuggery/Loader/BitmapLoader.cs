@@ -45,6 +45,8 @@ namespace WarriorsSnuggery.Loader
 			const int pixelWidth = 4;
 
 			var data = bmp.LockBits(size, ImageLockMode.ReadOnly, PixelFormat.Format32bppArgb);
+			var byteSize = data.Height * data.Stride;
+			System.GC.AddMemoryPressure(byteSize);
 
 			var scansize = data.Width * 4;
 			var stride = data.Stride;
@@ -73,7 +75,7 @@ namespace WarriorsSnuggery.Loader
 			finally
 			{
 				bmp.UnlockBits(data);
-				System.GC.AddMemoryPressure(data.Stride * data.Height);
+				System.GC.RemoveMemoryPressure(byteSize);
 			}
 
 			return r;
