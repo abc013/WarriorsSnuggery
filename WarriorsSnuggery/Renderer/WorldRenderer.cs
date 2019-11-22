@@ -102,6 +102,11 @@ namespace WarriorsSnuggery
 
 			if (Settings.DeveloperMode)
 			{
+				foreach(var actor in world.Actors)
+				{
+					actor.RenderDebug();
+				}
+
 				foreach(var sector in world.PhysicsLayer.Sectors)
 				{
 					sector.RenderDebug();
