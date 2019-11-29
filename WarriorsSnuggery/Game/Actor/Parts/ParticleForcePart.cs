@@ -57,7 +57,7 @@ namespace WarriorsSnuggery.Objects.Parts
 				if (info.AffectedTypes.Length != 0 && !info.AffectedTypes.Contains(particle.Name))
 					continue;
 
-				var dist = particle.Position.Dist(self.GraphicPosition);
+				var dist = (particle.Position - self.GraphicPosition).FlatDist;
 				if (dist > info.MaxRange || dist < info.MinRange)
 					continue;
 

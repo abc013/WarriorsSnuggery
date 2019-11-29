@@ -95,12 +95,12 @@ namespace WarriorsSnuggery.Objects
 				if (TargetActor != null)
 				{
 					zDiff = Height - TargetActor.Height;
-					dDiff = (int)Position.Dist(TargetActor.Position);
+					dDiff = (int)(Position - TargetActor.Position).FlatDist;
 				}
 				else
 				{
 					zDiff = Height;
-					dDiff = (int)Position.Dist(Target);
+					dDiff = (int)(Position - Target).FlatDist;
 				}
 				angle2 = new CPos(dDiff, zDiff, 0).Angle(CPos.Zero);
 				z = Math.Sin(angle2) * Speed;
@@ -123,14 +123,14 @@ namespace WarriorsSnuggery.Objects
 			if (World.CheckCollision(this, true, new[] { typeof(Weapon), typeof(BeamWeapon), typeof(BulletWeapon), typeof(RocketWeapon) }, new[] { Origin }))
 				Detonate();
 
-			DistanceMoved += Position.Dist(old);
+			DistanceMoved += (Position - old).FlatDist;
 			if (DistanceMoved > Type.MaxRange * rangeModifier || !World.IsInWorld(Position))
 				Detonate();
 		}
 
 		public virtual bool InRange(CPos position, int range = 256)
 		{
-			return Position.Dist(position) <= range;
+			return (Position - position).FlatDist <= range;
 		}
 
 		public virtual void Detonate(bool dispose = true)
@@ -140,7 +140,7 @@ namespace WarriorsSnuggery.Objects
 				if (Origin != null && Origin.Team == actor.Team)
 					continue;
 
-				var dist = Position.Dist(actor.Position) / 512;
+				var dist = (Position - actor.Position).FlatDist / 512;
 				if (dist > 128f) continue;
 				if (dist < 1f) dist = 1;
 

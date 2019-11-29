@@ -64,7 +64,7 @@ namespace WarriorsSnuggery.Objects
 
 		public override void Render()
 		{
-			var distance = originPos.Dist(Position);
+			var distance = (originPos - Position).FlatDist;
 			var angle = Position.Angle(originPos);
 			var fit = distance / renderabledistance;
 
@@ -108,9 +108,9 @@ namespace WarriorsSnuggery.Objects
 			rayPhysics.CalculateEnd(Origin);
 			Position = rayPhysics.End;
 
-			var dist = originPos.Dist(Position);
+			var dist = (originPos - Position).FlatDist;
 
-			if (Type.WeaponFireType == WeaponFireType.DIRECTEDBEAM && dist > originPos.Dist(Target))
+			if (Type.WeaponFireType == WeaponFireType.DIRECTEDBEAM && dist > (originPos - Target).FlatDist)
 				Position = Target;
 
 			if (dist > Type.MaxRange)

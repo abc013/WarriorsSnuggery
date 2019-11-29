@@ -10,6 +10,15 @@ namespace WarriorsSnuggery
 		public readonly int Y;
 		public readonly int Z;
 
+		public float Dist
+		{
+			get { return (float)Math.Sqrt(X * (double)X + Y * (double)Y + Z * (double)Z); }
+		}
+		public float FlatDist
+		{
+			get { return (float)Math.Sqrt(X * (double)X + Y * (double)Y); }
+		}
+
 		public CPos(int x, int y, int z)
 		{
 			X = x;
@@ -41,16 +50,6 @@ namespace WarriorsSnuggery
 		/// <summary>
 		/// Only uses X and Y coordinates
 		/// </summary>
-		public float Dist(CPos pos)
-		{
-			var x = (double)X - pos.X;
-			var y = (double)Y - pos.Y;
-			return (float)Math.Sqrt(x * x + y * y);
-		}
-
-		/// <summary>
-		/// Only uses X and Y coordinates
-		/// </summary>
 		public float Angle(CPos pos)
 		{
 			var diff = pos - this;
@@ -71,15 +70,15 @@ namespace WarriorsSnuggery
 
 		public WPos ToWPos()
 		{
-			return new WPos(roundCorrect(X), roundCorrect(Y), roundCorrect(Z));
+			return new WPos(round(X), round(Y), round(Z));
 		}
 
 		public MPos ToMPos()
 		{
-			return new MPos(roundCorrect(X), roundCorrect(Y));
+			return new MPos(round(X), round(Y));
 		}
 
-		int roundCorrect(int value)
+		int round(int value)
 		{
 			var ans = value / 1024;
 

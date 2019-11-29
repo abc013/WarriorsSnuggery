@@ -134,7 +134,7 @@ namespace WarriorsSnuggery.Maps
 
 		protected override void DrawDirty()
 		{
-			float distBetween = MPos.Zero.DistTo(map.Center) / info.RuinousFalloff.Length;
+			float distBetween = map.Center.Dist / info.RuinousFalloff.Length;
 			for (int x = 0; x < map.Bounds.X; x++)
 			{
 				for (int y = 0; y < map.Bounds.Y; y++)
@@ -146,7 +146,7 @@ namespace WarriorsSnuggery.Maps
 					var ruinousLength = info.RuinousFalloff.Length;
 					if (ruinousLength > 1)
 					{
-						var dist = new MPos(x, y).DistTo(map.Center);
+						var dist = (new MPos(x, y) - map.Center).Dist;
 
 						var low = (int)Math.Floor(dist / distBetween);
 						if (low >= ruinousLength)

@@ -41,23 +41,23 @@ namespace WarriorsSnuggery.Physics
 			if (!ignoreHeight && Math.Abs(other.Height - Height) >= other.HeightRadius + HeightRadius)
 				return false;
 
+			var diff = other.Position - Position;
+
 			if (other.Shape != Shape.LINE_HORIZONTAL && Shape != Shape.LINE_HORIZONTAL && other.Shape != Shape.LINE_VERTICAL && Shape != Shape.LINE_VERTICAL)
 			{
-				if (Math.Abs(other.Position.X - Position.X) >= other.RadiusX + RadiusX)
+				if (Math.Abs(diff.X) >= other.RadiusX + RadiusX)
 					return false;
 
-				if (Math.Abs(other.Position.Y - Position.Y) >= other.RadiusX + RadiusX)
+				if (Math.Abs(diff.Y) >= other.RadiusX + RadiusX)
 					return false;
 			}
 
 			if (Shape == Shape.CIRCLE && other.Shape == Shape.CIRCLE)
 			{
-				return Position.Dist(other.Position) <= RadiusX + other.RadiusX;
+				return diff.FlatDist <= RadiusX + other.RadiusX;
 			}
 			if (Shape == Shape.RECTANGLE && other.Shape == Shape.RECTANGLE)
 			{
-
-				var diff = other.Position - Position;
 				var scaleX = RadiusX + other.RadiusX;
 				var scaleY = RadiusY + other.RadiusY;
 				return Math.Abs(diff.X) < scaleX && Math.Abs(diff.Y) < scaleY;

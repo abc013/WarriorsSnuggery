@@ -9,6 +9,12 @@ namespace WarriorsSnuggery
 		public readonly int X;
 		public readonly int Y;
 
+		public float Dist
+		{
+			get { return (float)Math.Sqrt(X * (double)X + Y * (double)Y); }
+			set { }
+		}
+
 		public MPos(int x, int y)
 		{
 			X = x;
@@ -33,13 +39,6 @@ namespace WarriorsSnuggery
 		public override int GetHashCode() { return X ^ Y; }
 
 		public override string ToString() { return X + "," + Y; }
-
-		public float DistTo(MPos pos)
-		{
-			var x = (double)X - pos.X;
-			var y = (double)Y - pos.Y;
-			return (float)Math.Sqrt(x * x + y * y);
-		}
 
 		public float AngleTo(MPos pos)
 		{
