@@ -45,7 +45,7 @@ namespace WarriorsSnuggery.Objects.Particles
 		// TODO add z
 		public void AffectVelocity(ParticleForce force, float ratio, CPos origin)
 		{
-			var angle = origin.Angle(Position);
+			var angle = (Position - origin).FlatAngle;
 			var xFloat = 0f;
 			var yFloat = 0f;
 
@@ -84,7 +84,7 @@ namespace WarriorsSnuggery.Objects.Particles
 
 		public void AffectRotation(ParticleForce force, float ratio, CPos origin)
 		{
-			var angle = Position.Angle(origin) - 2 * (float)Math.PI + Rotation.CastToAngleRange().Z;
+			var angle = (origin - Position).FlatAngle - 2 * (float)Math.PI + Rotation.CastToAngleRange().Z;
 
 			if (angle < -Math.PI)
 				angle += 2 * (float)Math.PI;
