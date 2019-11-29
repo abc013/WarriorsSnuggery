@@ -25,7 +25,7 @@ namespace WarriorsSnuggery.Objects.Parts
 		}
 		float angleToTarget
 		{
-			get { return Target.Position.Angle(self.Position); }
+			get { return (self.Position - Target.Position).FlatAngle; }
 			set { }
 		}
 

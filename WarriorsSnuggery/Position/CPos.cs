@@ -19,6 +19,19 @@ namespace WarriorsSnuggery
 			get { return (float)Math.Sqrt(X * (double)X + Y * (double)Y); }
 		}
 
+		public float FlatAngle
+		{
+			get
+			{
+				float angle = (float)-Math.Atan2(Y, -X);
+
+				if (angle < 0f)
+					angle += (float)(2 * Math.PI);
+
+				return angle;
+			}
+		}
+
 		public CPos(int x, int y, int z)
 		{
 			X = x;
@@ -46,22 +59,6 @@ namespace WarriorsSnuggery
 		public override int GetHashCode() { return X ^ Y ^ Z; }
 
 		public override string ToString() { return X + "," + Y + "," + Z; }
-
-		/// <summary>
-		/// Only uses X and Y coordinates
-		/// </summary>
-		public float Angle(CPos pos)
-		{
-			var diff = pos - this;
-			var diffX = -diff.X;
-			var diffY = diff.Y;
-			float angle = (float)-Math.Atan2(diffY, diffX);
-
-			if (angle < 0f)
-				angle += (float)(2 * Math.PI);
-
-			return angle;
-		}
 
 		public Vector ToVector()
 		{

@@ -33,7 +33,7 @@ namespace WarriorsSnuggery.Objects
 			Target = target;
 
 			if (Type.OrientateToTarget)
-				Rotation = new VAngle(0, 0, -Position.Angle(Target));
+				Rotation = new VAngle(0, 0, (Position - Target).FlatAngle);
 
 			if (originActor != null)
 			{
@@ -68,7 +68,7 @@ namespace WarriorsSnuggery.Objects
 			Move(Target);
 
 			if (Type.OrientateToTarget)
-				Rotation = new VAngle(0, 0, -Position.Angle(Target));
+				Rotation = new VAngle(0, 0, (Position - Target).FlatAngle);
 
 			if (InRange(Target))
 				Detonate();
@@ -82,7 +82,7 @@ namespace WarriorsSnuggery.Objects
 
 		public virtual void Move(CPos target)
 		{
-			var angle = target.Angle(Position);
+			var angle = (Position - target).FlatAngle;
 
 			var x = Math.Cos(angle) * Speed;
 			var y = Math.Sin(angle) * Speed;
@@ -102,7 +102,7 @@ namespace WarriorsSnuggery.Objects
 					zDiff = Height;
 					dDiff = (int)(Position - Target).FlatDist;
 				}
-				angle2 = new CPos(dDiff, zDiff, 0).Angle(CPos.Zero);
+				angle2 = new CPos(-dDiff, -zDiff, 0).FlatAngle;
 				z = Math.Sin(angle2) * Speed;
 			}
 			else

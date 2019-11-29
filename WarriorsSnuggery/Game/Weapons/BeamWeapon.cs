@@ -65,7 +65,7 @@ namespace WarriorsSnuggery.Objects
 		public override void Render()
 		{
 			var distance = (originPos - Position).FlatDist;
-			var angle = Position.Angle(originPos);
+			var angle = (originPos - Position).FlatAngle;
 			var fit = distance / renderabledistance;
 
 			var curFrame = frame;
@@ -115,7 +115,7 @@ namespace WarriorsSnuggery.Objects
 
 			if (dist > Type.MaxRange)
 			{
-				var angle = Target.Angle(originPos);
+				var angle = (originPos - Target).FlatAngle;
 				Position = originPos + new CPos((int)(Math.Cos(angle) * Type.MaxRange), (int)(Math.Sin(angle) * Type.MaxRange), 0);
 			}
 
@@ -126,7 +126,7 @@ namespace WarriorsSnuggery.Objects
 			}
 
 			if (Type.OrientateToTarget)
-				Rotation = new VAngle(0, 0, -Position.Angle(Target));
+				Rotation = new VAngle(0, 0,(Position - Target).FlatAngle);
 
 			if (duration-- < 0)
 			{
