@@ -36,19 +36,19 @@ namespace WarriorsSnuggery.Objects.Conditions
 			switch (condition.Type)
 			{
 				case "IsFriendly":
-					return actor.Team == Actor.PlayerTeam;
+					return condition.Negate != (actor.Team == Actor.PlayerTeam);
 				case "IsNeutral":
-					return actor.Team == Actor.NeutralTeam;
+					return condition.Negate != (actor.Team == Actor.NeutralTeam);
 				case "IsPlayer":
-					return actor.IsPlayer;
+					return condition.Negate != actor.IsPlayer;
 				case "IsEnemy":
-					return actor.Team != Actor.PlayerTeam && actor.Team != Actor.NeutralTeam;
+					return condition.Negate != (actor.Team != Actor.PlayerTeam && actor.Team != Actor.NeutralTeam);
 				case "IsBot":
-					return actor.IsBot;
+					return condition.Negate != actor.IsBot;
 				case "IsDamaged":
 					if (actor.Health == null)
 						return false;
-					return actor.Health.HPRelativeToMax != 1;
+					return condition.Negate != (actor.Health.HPRelativeToMax != 1);
 			}
 
 			throw new Exception(string.Format("Invalid condition: {0}", condition.Type));
