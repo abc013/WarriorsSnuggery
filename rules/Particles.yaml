@@ -72,6 +72,7 @@ nebula1=
 		Size=72,72
 	Duration=50
 	DissolveDuration=150
+	RandomVelocity=10,10,0
 
 small_star=
 	Texture=small_star
@@ -79,6 +80,8 @@ small_star=
 		Tick=5
 	Duration=15
 	DissolveDuration=15
+	Gravity=0
+	RandomVelocity=4,4,4
 
 beam=
 	Texture=beam
