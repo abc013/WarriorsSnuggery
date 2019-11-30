@@ -47,7 +47,7 @@ namespace WarriorsSnuggery.Objects
 		[Desc("Corner of the tile.")]
 		public readonly string CornerSprite;
 
-		[Desc("If not 1, this will modify the speed of the player.")]
+		[Desc("Speed modifier for actors.")]
 		public readonly float Speed;
 
 		public readonly bool Overlaps;

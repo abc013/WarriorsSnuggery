@@ -122,7 +122,7 @@ namespace WarriorsSnuggery.Objects
 
 		void move()
 		{
-			if (!IsAlive || Mobility == null || Velocity == CPos.Zero) // PERF: increase accuracy by timestamp*speed / 2
+			if (!IsAlive || Mobility == null || Velocity == CPos.Zero)
 				return;
 
 			var currentTerrain = World.TerrainAt(Position);
