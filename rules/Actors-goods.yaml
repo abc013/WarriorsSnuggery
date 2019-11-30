@@ -44,6 +44,10 @@ chest1=
 		Count=70
 		Name=mana_splash
 		Type=PARTICLE
+	Part@SpawnOnDeath=
+		Count=10
+		Name=wood_debris
+		Type=PARTICLE
 
 box1=
 	Part@Sprite=
@@ -61,6 +65,10 @@ box1=
 		Name=box1_debris
 		Type=ACTOR
 		AtCenter=true
+	Part@SpawnOnDeath=
+		Count=10
+		Name=wood_debris
+		Type=PARTICLE
 
 box2=
 	Part@Sprite=
@@ -78,6 +86,10 @@ box2=
 		Name=box2_debris
 		Type=ACTOR
 		AtCenter=true
+	Part@SpawnOnDeath=
+		Count=10
+		Name=wood_debris
+		Type=PARTICLE
 
 box1_debris=
 	Part@Sprite=
@@ -119,6 +131,10 @@ barrel=
 	Part@SpawnOnDeath=
 		Count=150
 		Name=barrel_splash
+		Type=PARTICLE
+	Part@SpawnOnDeath=
+		Count=10
+		Name=wood_debris
 		Type=PARTICLE
 
 barrel_debris=

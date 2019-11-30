@@ -35,6 +35,10 @@ namespace WarriorsSnuggery.Objects.Conditions
 			// Condition is a local type, which means it depends on the actor
 			switch (condition.Type)
 			{
+				case "IsFriendly":
+					return actor.Team == Actor.PlayerTeam;
+				case "IsNeutral":
+					return actor.Team == Actor.NeutralTeam;
 				case "IsPlayer":
 					return actor.IsPlayer;
 				case "IsEnemy":

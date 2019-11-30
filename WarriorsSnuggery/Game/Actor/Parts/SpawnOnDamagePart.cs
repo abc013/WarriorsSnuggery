@@ -81,7 +81,10 @@ namespace WarriorsSnuggery.Objects.Parts
 		{
 			if (damage > 0)
 			{
-				create();
+				for (int i = 0; i < info.Count; i++)
+				{
+					create();
+				}
 			}
 		}
 	}
