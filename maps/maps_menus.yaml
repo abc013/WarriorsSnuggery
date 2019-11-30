@@ -6,7 +6,7 @@ main1=
 	ImportantPieceGeneration=10
 		Pieces=mainmap2
 		Position=0,0
-	Ambient=170,170,200
+	Ambient=255,255,255
 	AllowWeapons=false
 
 main2=
@@ -17,14 +17,14 @@ main2=
 	ImportantPieceGeneration=10
 		Pieces=mainmap1
 		Position=0,0
-	Ambient=150,150,180
+	Ambient=200,200,180
 	AllowWeapons=false
 
 tutorial=
 	PlayType=TUTORIAL
 	PlayModes=TUTORIAL
 	CustomSize=48,16
-	SpawnPoint=5,8
+	SpawnPoint=3,9
 	TerrainGenerationBase=
 		Terrain=0
 	ImportantPieceGeneration=10
