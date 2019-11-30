@@ -11,7 +11,9 @@ namespace WarriorsSnuggery.Objects
 	{
 		public readonly WPos LayerPosition;
 		readonly CPos renderPosition;
+
 		public readonly WallType Type;
+
 		readonly bool isHorizontal;
 
 		public Wall(WPos position, WallType type) : base(position.ToCPos(), new WallRenderable(position.X % 2 != 0, type), type.Blocks ? new Physics.SimplePhysics(position.ToCPos() / new CPos(2, 1, 1), 0, position.X % 2 != 0 ? WarriorsSnuggery.Physics.Shape.LINE_HORIZONTAL : WarriorsSnuggery.Physics.Shape.LINE_VERTICAL, 512, 512, type.Height) : new Physics.SimplePhysics(position.ToCPos() / new CPos(2, 1, 1), 0, WarriorsSnuggery.Physics.Shape.NONE, 0, 0, 0))
