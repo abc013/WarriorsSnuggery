@@ -227,6 +227,7 @@ namespace WarriorsSnuggery.UI
 				newActor.Health.HP = (int)(oldHP * newActor.Health.MaxHP);
 
 			game.Statistics.Actor = ActorCreator.GetName(type);
+			VisibilitySolver.ShroudUpdated();
 		}
 
 		public override void Dispose()
