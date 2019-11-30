@@ -5,7 +5,7 @@
  */
 using WarriorsSnuggery.Graphics;
 
-namespace WarriorsSnuggery.Objects
+namespace WarriorsSnuggery.UI
 {
 	public class CheckBoxType
 	{
