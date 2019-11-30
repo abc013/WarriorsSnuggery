@@ -96,6 +96,9 @@ namespace WarriorsSnuggery
 
 		public static bool IsVisible(WPos position)
 		{
+			if (shroud.AllRevealed)
+				return true;
+
 			if (position.X < 0 || position.Y < 0 || position.X >= size.X || position.Y >= size.Y)
 				return false;
 

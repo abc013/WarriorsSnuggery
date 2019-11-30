@@ -71,7 +71,7 @@ namespace WarriorsSnuggery
 				WorldRenderer.CheckVisibility(Camera.LookAt, Camera.DefaultZoom);
 		}
 
-		public void RevealShroudCircular(int team, MPos position, int radius)
+		public void RevealShroudCircular(int team, MPos position, int radius, bool ignoreLock = false)
 		{
 			if (AllRevealed)
 				return;
@@ -92,7 +92,7 @@ namespace WarriorsSnuggery
 
 			VisibilitySolver.ShroudUpdated();
 			// Camera automatically updates shroud, so we don't want to do that if we move anyways 
-			if (!Camera.LockedToPlayer)
+			if (!Camera.LockedToPlayer || ignoreLock)
 				WorldRenderer.CheckVisibility(Camera.LookAt, Camera.DefaultZoom);
 		}
 

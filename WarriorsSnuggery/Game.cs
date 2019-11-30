@@ -285,6 +285,7 @@ namespace WarriorsSnuggery
 					if (KeyInput.IsKeyDown("period", 5))
 					{
 						World.ShroudLayer.AllRevealed = true;
+						WorldRenderer.CheckVisibility(Camera.LookAt, Camera.DefaultZoom);
 					}
 					if (KeyInput.IsKeyDown("x", 5))
 					{
