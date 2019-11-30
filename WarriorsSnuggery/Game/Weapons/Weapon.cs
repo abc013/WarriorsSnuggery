@@ -33,7 +33,7 @@ namespace WarriorsSnuggery.Objects
 			Target = target;
 
 			if (Type.OrientateToTarget)
-				Rotation = new VAngle(0, 0, (Position - Target).FlatAngle);
+				Rotation = new VAngle(0, 0, -(Target - Position).FlatAngle);
 
 			if (originActor != null)
 			{
@@ -68,7 +68,7 @@ namespace WarriorsSnuggery.Objects
 			Move(Target);
 
 			if (Type.OrientateToTarget)
-				Rotation = new VAngle(0, 0, (Position - Target).FlatAngle);
+				Rotation = new VAngle(0, 0, -(Target - Position).FlatAngle);
 
 			if (InRange(Target))
 				Detonate();
@@ -183,7 +183,7 @@ namespace WarriorsSnuggery.Objects
 
 			if (Type.ParticlesOnImpact != null)
 			{
-				foreach (var particle in Type.ParticlesOnImpact.Create(World, Position, Height))
+				foreach (var particle in Type.ParticlesOnImpact.Create(World, Position, Type.WeaponFireType == WeaponFireType.BEAM ? 0 : Height))
 				{
 					World.Add(particle);
 				}
