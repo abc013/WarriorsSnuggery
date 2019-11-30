@@ -36,11 +36,13 @@ namespace WarriorsSnuggery.Objects
 		public byte Team;
 		public float Angle;
 
-		readonly List<ActorPart> parts = new List<ActorPart>();
+		public readonly List<ActorPart> Parts = new List<ActorPart>();
 		public readonly List<EffectPart> Effects = new List<EffectPart>();
 
 		public readonly MobilityPart Mobility;
 		public readonly HealthPart Health;
+
+		public readonly RevealsShroudPart RevealsShroudPart;
 
 		public WeaponPart ActiveWeapon;
 
@@ -83,25 +85,27 @@ namespace WarriorsSnuggery.Objects
 			// Parts
 			foreach (var partinfo in type.PartInfos)
 			{
-				parts.Add(partinfo.Create(this));
+				Parts.Add(partinfo.Create(this));
 			}
 
-			Mobility = (MobilityPart)parts.Find(p => p is MobilityPart);
-			Health = (HealthPart)parts.Find(p => p is HealthPart);
+			Mobility = (MobilityPart)Parts.Find(p => p is MobilityPart);
+			Health = (HealthPart)Parts.Find(p => p is HealthPart);
 
-			ActiveWeapon = (WeaponPart)parts.Find(p => p is WeaponPart);
+			RevealsShroudPart = (RevealsShroudPart)Parts.Find(p => p is RevealsShroudPart);
 
-			WorldPart = (WorldPart)parts.Find(p => p is WorldPart);
+			ActiveWeapon = (WeaponPart)Parts.Find(p => p is WeaponPart);
+
+			WorldPart = (WorldPart)Parts.Find(p => p is WorldPart);
 			if (WorldPart != null)
 				Height = WorldPart.Height;
 
 			if (isPlayer)
-				parts.Add(new PlayerPart(this));
+				Parts.Add(new PlayerPart(this));
 
 			if (isBot)
 			{
 				BotPart = new BotPart(this);
-				parts.Add(BotPart);
+				Parts.Add(BotPart);
 			}
 		}
 
@@ -117,7 +121,7 @@ namespace WarriorsSnuggery.Objects
 
 			var acceleration = Mobility.OnAccelerate(angle, customAcceleration);
 
-			parts.ForEach(p => p.OnAccelerate(angle, acceleration));
+			Parts.ForEach(p => p.OnAccelerate(angle, acceleration));
 		}
 
 		void move()
@@ -192,7 +196,7 @@ namespace WarriorsSnuggery.Objects
 			Angle = (old - position).FlatAngle;
 			World.PhysicsLayer.UpdateSectors(this);
 
-			parts.ForEach(p => p.OnMove(old, Velocity));
+			Parts.ForEach(p => p.OnMove(old, Velocity));
 		}
 
 		void denyMove()
@@ -200,7 +204,7 @@ namespace WarriorsSnuggery.Objects
 			Physics.Position = Position;
 			Velocity = CPos.Zero;
 
-			parts.ForEach(p => p.OnStop());
+			Parts.ForEach(p => p.OnStop());
 		}
 
 		public override void CheckVisibility()
@@ -215,7 +219,7 @@ namespace WarriorsSnuggery.Objects
 			{
 				base.Render();
 
-				parts.ForEach(p => p.Render());
+				Parts.ForEach(p => p.Render());
 			}
 		}
 
@@ -259,7 +263,7 @@ namespace WarriorsSnuggery.Objects
 				}
 			}
 
-			parts.ForEach(p => p.Tick());
+			Parts.ForEach(p => p.Tick());
 
 			Effects.ForEach(e => e.Tick());
 			Effects.RemoveAll(e => !e.Active);
@@ -280,7 +284,7 @@ namespace WarriorsSnuggery.Objects
 
 			var weapon = ActiveWeapon.OnAttack(target);
 
-			parts.ForEach(p => p.OnAttack(target, weapon));
+			Parts.ForEach(p => p.OnAttack(target, weapon));
 
 			var reloadModifier = 1f;
 			foreach (var effect in Effects.Where(e => e.Active && e.Spell.Type == Spells.EffectType.COOLDOWN))
@@ -299,7 +303,7 @@ namespace WarriorsSnuggery.Objects
 
 		public void Kill(Actor killed)
 		{
-			parts.ForEach(p => p.OnKill(killed));
+			Parts.ForEach(p => p.OnKill(killed));
 		}
 
 		public void Damage(Actor attacker, int damage)
@@ -312,7 +316,7 @@ namespace WarriorsSnuggery.Objects
 
 			Health.HP -= damage;
 
-			parts.ForEach(p => p.OnDamage(attacker, damage));
+			Parts.ForEach(p => p.OnDamage(attacker, damage));
 
 			if (Health.HP <= 0)
 				Killed(attacker);
@@ -330,7 +334,7 @@ namespace WarriorsSnuggery.Objects
 
 			IsAlive = false;
 
-			parts.ForEach(p => p.OnKilled(killer));
+			Parts.ForEach(p => p.OnKilled(killer));
 
 			Dispose();
 		}
@@ -339,7 +343,7 @@ namespace WarriorsSnuggery.Objects
 		{
 			base.Dispose();
 
-			parts.ForEach(p => p.OnDispose());
+			Parts.ForEach(p => p.OnDispose());
 			//parts.Clear(); TODO?
 		}
 	}

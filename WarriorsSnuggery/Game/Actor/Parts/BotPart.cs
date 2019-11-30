@@ -99,9 +99,7 @@ namespace WarriorsSnuggery.Objects.Parts
 				return;
 			inRage--;
 
-			float range = 10240f;
-			if (canAttack)
-				range = self.ActiveWeapon.Type.MaxRange * (canMove ? 1.5f : 1f);
+			var range = self.RevealsShroudPart == null ? 5120 : self.RevealsShroudPart.Range * 512;
 
 			// Find all possible targets in range
 			var targets = world.Actors.FindAll(a => a.Team != Actor.NeutralTeam && a.Team != self.Team && (a.Position - self.Position).FlatDist <= range);

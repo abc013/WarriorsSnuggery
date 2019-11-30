@@ -26,6 +26,11 @@
 		int tick;
 		bool firstActive;
 
+		public int Range
+		{
+			get { return info.Range; }
+		}
+
 		public RevealsShroudPart(Actor self, RevealsShroudPartInfo info) : base(self)
 		{
 			this.info = info;
@@ -47,7 +52,7 @@
 			tick--;
 			if (firstActive)
 			{
-				self.World.ShroudLayer.RevealShroudCircular(self.Team, (self.Position * new CPos(2, 2, 0)).ToMPos(), info.Range);
+				self.World.ShroudLayer.RevealShroudCircular(self.Team, (self.Position * new CPos(2, 2, 0)).ToMPos(), info.Range, true);
 				firstActive = false;
 			}
 		}
