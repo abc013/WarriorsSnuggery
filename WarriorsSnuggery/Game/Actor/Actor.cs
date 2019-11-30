@@ -189,7 +189,7 @@ namespace WarriorsSnuggery.Objects
 
 			CheckVisibility();
 			CurrentAction = ActorAction.MOVING;
-			Angle = (Position - old).FlatAngle;
+			Angle = (old - position).FlatAngle;
 			World.PhysicsLayer.UpdateSectors(this);
 
 			parts.ForEach(p => p.OnMove(old, Velocity));
@@ -243,7 +243,6 @@ namespace WarriorsSnuggery.Objects
 
 			if (Mobility != null)
 			{
-				Mobility.Tick();
 				if (Mobility.Velocity != CPos.Zero)
 					move();
 			}
