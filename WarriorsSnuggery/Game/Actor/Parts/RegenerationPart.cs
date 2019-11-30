@@ -45,7 +45,7 @@
 
 		public override void OnDamage(Actor damager, int damage)
 		{
-			tick += info.TimeAfterHit;
+			tick = info.TimeAfterHit;
 		}
 	}
 }

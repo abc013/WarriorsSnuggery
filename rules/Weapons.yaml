@@ -6,9 +6,6 @@ arrow=
 	Speed=120
 	Reload=20
 	OrientateToTarget=true
-	ParticlesOnImpact=
-		Type=woodPiece
-		Count=3
 
 cannon=
 	WeaponFireType=Rocket
@@ -24,7 +21,7 @@ cannon=
 	Inaccuracy=1536
 	ParticlesOnImpact=
 		Type=nebula1
-		Count=3
+		Count=10
 
 slime=
 	Texture=slime_mini
@@ -55,7 +52,7 @@ voidweapon=
 	Gravity=0
 	PhysicalSize=0
 	ParticlesOnImpact=
-		Type=nebula1
+		Type=colored_star
 		Count=10
 
 web=
@@ -71,7 +68,7 @@ web=
 	Inaccuracy=512
 	Gravity=1
 	ParticlesOnImpact=
-		Type=nebula1
+		Type=glitter
 		Count=20
 
 blade=

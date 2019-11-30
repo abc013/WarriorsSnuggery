@@ -28,12 +28,14 @@ firefly=
 	ShowShadow=true
 	AffectedByObjects=true
 
-woodPiece=
+wood_debris=
 	Texture=woodPiece
 		Size=1,2
 		Random=true
 	Duration=30
 	DissolveDuration=20
+	RandomVelocity=20,20,0
+	RandomRotation=0,0,10
 
 colored_star=
 	Texture=colored_star
@@ -91,15 +93,16 @@ puff1=
 	Texture=puff1
 		Size=6,6
 		Tick=5
-	Duration=50
-	DissolveDuration=10
+	Duration=30
+	DissolveDuration=30
+	RandomVelocity=5,5,0
 
-blood1=
-	Texture=blood
-		Size=8,8
-		Tick=6
-	Duration=12
-	DissolveDuration=12
+blood=
+	Color=255,63,63,255
+	MeshSize=1
+	Duration=60
+	DissolveDuration=30
+	RandomVelocity=10,10,40
 
 leaf=
 	Texture=leaf
