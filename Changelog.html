@@ -1,68 +1,0 @@
-<html>
-	<head>
-		<title>Changelog</title>
-	</head>
-	<body>
-		<h1>Playtest 1.0</h1>
-		<hr>- added ingame-editor
-		<br>- added start and exit points of maps
-		<br>- improved physics collision
-		<br>- added new UI graphics
-		<br>- improved movement in menus
-		<br>- added possibility to change player
-		<h1>Playtest 1.1</h1>
-		<hr>- improved physics performance
-		<br>- improved physics: circle collision
-		<br>- added new main map
-		<br>- added several new objects
-		<br>- added new character: the shadow runner
-		<br>- added new pieces
-		<br>- spawn is generated in the mid of the map
-		<br>- moved zoom to the right mouse button
-		<br>- improved UI
-		<br>- middle mouse button is now for switching characters
-		<br>- improved map generation algorithm 
-		<br>- removed bugs
-		<br>- added new bugs
-		<h1>Playtest 1.2</h1>
-		<hr>- added savegames
-		<br>- improved main menu, now separated in sections 
-		<br>- bullets now fly up to the end of the range if nothing was hit
-		<br>- added new objects
-		<br>- fixed typing ingame while window was not focused
-		<br>- fixed being able to see map degenerate at edges of window
-		<br>- fixed not being able to entirely walk to the edge of the map on the top and left side
-		<br>- debug overlay now renders above everything
-		<br>- first level is now a friendly, not automatically generated map
-		<br>- game can now be closed instantly with Alt+F4
-		<br>- added Modding Guide (Deprecated)
-		<br>- added Mana
-		<br>- added Mana weapons, activate with 'e'
-		<br>- rearranged main menu
-		<br>- changed a font to more readable stuff
-		<br>- improved AI behaviour
-		<br>- improved visual effects (no smudge in water)
-		<br>- improved visual effects (trees don't spawn a damage note)
-		<br>- closed major memory leak
-		<br>- <b>TESTING</b>: added wall getting transparent when behind it.
-		<br>- <b>TESTING</b>: added unfinished new Weapon type: Beam
-		<h1>Playtest 1.3</h1>		<h2>Important Changes</h2>		<hr>- completely reworked part (previously called trait) system, only for actors		<br>- removed objects, those are now replaced by actors		<br>- reworked menu system		<br>- added height collision		<br>- friendly fire and suicide is now deactivated		<br>- added old-game pixeling, can be deactivated in the settings		<br>- game can now be started despite of old graphic versions (is probably going to crash)		<br>- lists of things now can be scrolled in order to access more things		<br>- added physical effects, are deactivated right now (they work, but in a way nobody would expect)		<h2>Full list of Changes</h2>
-		<hr>- added tutorial
-		<br>- added new actors		<br>- added new parts		<br>- added custom cursor
-		<br>- visual improvement of nearly all textures
-		<br>- improved visual effects (text)
-		<br>- text can now be colored (input "Color(r|g|b)", values from 0 to 1)
-		<br>- added death and kill counter
-		<br>- added score to the death screen
-		<br>- improved internal code oversight
-		<br>- separated mana from characters
-		<br>- added cheats (find them out yourself / modders: contact me)
-		<br>- added tick to textures: Sprites now can run simultaneously
-		<br>- improved piece spawn algorithm
-		<br>- improved exit distance to spawn
-		<br>- polished circle-box collision
-		<br>- fixed minor camera problems
-		<br>- worldspace is now threedimensional (particles and weapons excluded)		<br>- increased amount of possibilites due to part system changes, e.g. multiple SpawnOnDeath parts		<br>- added small infotext that indicates a successful saving		<br>- improved bot behaviour		<br>- added possibility to change keys ingame		<br>- added shadow shader		<br>- improved savegame system		<h1>Playtest 1.4</h1>		<h2>Important Changes</h2>		<hr>- Added mapsave support (without weapons and particles)		<br>- Redesigned default screen		<br>- Readded physical effects		<br>- Added new actor sprite functionality		<br>- Added rule list generator		<br>- Completed tutorial		<br>- Redesigned map generation		<br>- Added shroud		<h2>Full list of Changes</h2>		<hr>- Changed map folder system a bit: maps now are a file instead of a directory.		<br>- Added Weapon Height, does not yet physically affect the game		<br>- Buffed Weapons (Open for further suggestions!)		<br>- Added new decision menu sections so deleting a save by accident is not possible anymore		<br>- Fixed some physics problems, physical shapes can now be greater than 4096		<br>- Removed mana weapons		<br>- Completed mapsystem, improved map generation (for detailed change, consider opening the modding guide)		<hr>- Made Exceptions for failed trait reading better		<br>- Removed possibility of leaving unsupported/not longer available traits in code		<br>- Scaled debug line size from 2.5px down to 1.0px		<br>- Fixed part of the beam weapon rendering		<br>- Fixed crashing of the beam weapon		<br>- Removed "cam to player" button		<br>- Added zoom to the editor, use with the mouse wheel		<br>- Improved text renderings		<br>- Fixed a GL bug related to the shadow shader		<br>- Game should now generate error logs		<br>- Player does not attack when clicking on UI anymore		<br>- Added new traits, see rules list		<br>- Added new loader feature: @INCLUDE <i>filename</i> on top of the content will now load that particular file as well		<br>- Adjusted some shadows
-		<br>- Spaces in nodes don't crash the NodeLoader anymore		<br>- Added seed to gamesaves		<br>- Added tooltips		<h1>Playtest 1.5pre</h1>		<h2>Important Changes</h2>		<hr>- Added particle force mechanics		<br>- Redesigned spell system		<br>- Improved rendering system		<br>- Improved texture loading technique		<br>- Readded the modding guide		<br>- Added the documentation generator		<br>- Improved map generation technology		<h2>Full list of Changes</h2>		<br>- Added a few unimportant actors		<br>- Fixed PieceGenerator only placing pieces in topleft corner		<br>- Increased minimum map bounds to 32		<br>- Set maximum map bounds to 128		<br>- Fixed terrain sometimes showing borders when it shouldn't		<br>- Fixed that levels are skippable by dying and getting back to the menu instantly		<br>- Added palettes in the misc folder		<br>- Rearranged folders in misc		<br>- Shroud is now saved in savegames as well		<br>- Added new ActionText animation		<br>- Added particleSpawners as a way of creating particles		<br>- Fixed some zoom issues		<br>- Fixed editor placement and removal functions		<br>- Added connections in the spell tree panel to show which spells need to be unlocked for the next one		<br>- Updated to .NET Framework 4.7.2		<br>- Fixed tooltip sometimes flowing out of its bounds		<br>- Made tooltip descriptions more useful		<br>- Zooming now works with control + right clicking		<br>- Scrolling through spells works with the mouse wheel		<h1>Playtest 1.5pre</h1>		<h2>Important Changes</h2>		<hr>- Added Piece cache, reducing loading time ingame		<h2>Full list of Changes</h2>
-	</body>
-</html>
