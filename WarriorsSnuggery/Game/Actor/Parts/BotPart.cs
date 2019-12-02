@@ -70,6 +70,10 @@ namespace WarriorsSnuggery.Objects.Parts
 							searchTarget();
 					}
 				}
+				else if (canMove)
+				{
+					self.Accelerate(angleToTarget);
+				}
 			}
 
 			if (inRage < -50)
@@ -80,7 +84,7 @@ namespace WarriorsSnuggery.Objects.Parts
 
 		public override void OnDamage(Actor damager, int damage)
 		{
-			inRage -= damage * 5;
+			inRage -= damage * 2;
 
 			if (damager == null || damager.Health == null)
 				return;
