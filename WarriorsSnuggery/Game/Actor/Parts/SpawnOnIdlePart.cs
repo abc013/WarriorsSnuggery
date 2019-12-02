@@ -71,6 +71,9 @@ namespace WarriorsSnuggery.Objects.Parts
 			{
 				case "ACTOR":
 					@object = ActorCreator.Create(self.World, info.Name, randomPosition(), info.InheritsTeam ? self.Team : Actor.NeutralTeam, info.InheritsBot ? self.IsBot : false);
+
+					if (self.IsBot)
+						((Actor)@object).BotPart.Target = self.BotPart.Target;
 					break;
 				case "PARTICLE":
 					@object = ParticleCreator.Create(info.Name, randomPosition(), self.Height + info.Offset.Z, self.World.Game.SharedRandom);
