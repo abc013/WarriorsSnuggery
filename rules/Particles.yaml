@@ -49,9 +49,9 @@ colored_star=
 
 slime_splash=
 	Color=63,255,63,63
-	MeshSize=8
-	Duration=100
-	DissolveDuration=1000
+	MeshSize=4
+	Duration=300
+	DissolveDuration=200
 
 barrel_splash=
 	Color=63,255,63,196

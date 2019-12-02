@@ -25,14 +25,13 @@ cannon=
 
 slime=
 	Texture=slime_mini
-		Size=2,2
+		Size=4,4
 		Random=true
 	Smudge=slime_splash
 		Size=8,8
 		Random=true
-	Damage=6
+	Damage=8
 	Speed=256
-	Acceleration=5
 	Reload=12
 	Inaccuracy=1024
 	Gravity=0
