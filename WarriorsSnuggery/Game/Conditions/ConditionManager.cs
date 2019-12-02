@@ -35,6 +35,10 @@ namespace WarriorsSnuggery.Objects.Conditions
 			// Condition is a local type, which means it depends on the actor
 			switch (condition.Type)
 			{
+				case "True":
+					return !condition.Negate;
+				case "False":
+					return condition.Negate;
 				case "IsFriendly":
 					return condition.Negate != (actor.Team == Actor.PlayerTeam);
 				case "IsNeutral":
@@ -45,9 +49,19 @@ namespace WarriorsSnuggery.Objects.Conditions
 					return condition.Negate != (actor.Team != Actor.PlayerTeam && actor.Team != Actor.NeutralTeam);
 				case "IsBot":
 					return condition.Negate != actor.IsBot;
+				case "IsIdling":
+					return condition.Negate != (actor.CurrentAction == ActorAction.IDLING);
+				case "IsMoving":
+					return condition.Negate != (actor.CurrentAction == ActorAction.MOVING);
+				case "IsAttacking":
+					return condition.Negate != (actor.CurrentAction == ActorAction.ATTACKING);
+				case "IsAlive":
+					if (actor.Health == null)
+						return !condition.Negate;
+					return condition.Negate != (actor.Health.HPRelativeToMax != 10);
 				case "IsDamaged":
 					if (actor.Health == null)
-						return false;
+						return condition.Negate;
 					return condition.Negate != (actor.Health.HPRelativeToMax != 1);
 			}
 
