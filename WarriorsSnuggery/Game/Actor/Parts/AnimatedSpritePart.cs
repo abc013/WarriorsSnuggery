@@ -21,11 +21,8 @@ namespace WarriorsSnuggery.Objects.Parts
 		[Desc("Frame rate (Speed of animation)")]
 		public readonly int Tick = 10;
 
-		[Desc("Actorcondition when the sprite is rendered.", "Possible: ATTACKING, MOVING, IDLING, ALL")]
-		public readonly ActorAction ActorCondition = ActorAction.ALL;
-
 		[Desc("Activate only by the following Condition.")]
-		public readonly Condition Condition;
+		public readonly Condition Condition = new Condition("True");
 
 		[Desc("Offset of the sprite.")]
 		public readonly CPos Offset;
@@ -84,9 +81,6 @@ namespace WarriorsSnuggery.Objects.Parts
 
 		public override GraphicsObject GetRenderable(ActorAction action, int facing)
 		{
-			if (info.ActorCondition != ActorAction.ALL && action != info.ActorCondition)
-				return null;
-
 			if (info.Condition != null && !info.Condition.True(self))
 				return null;
 
