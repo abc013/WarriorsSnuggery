@@ -19,6 +19,8 @@ namespace WarriorsSnuggery.Objects.Parts
 		public readonly string Type;
 		[Desc("Condition to spawn.")]
 		public readonly Condition Condition;
+		[Desc("Offset from the center of idling object where the objects spawn.", "Z-coordinate will be used for height.")]
+		public readonly CPos Offset;
 
 		[Desc("Spawn object at center of actor, not random.")]
 		public readonly bool AtCenter;
@@ -66,7 +68,7 @@ namespace WarriorsSnuggery.Objects.Parts
 						((Actor)@object).BotPart.Target = self.BotPart.Target;
 					break;
 				case "PARTICLE":
-					@object = ParticleCreator.Create(info.Name, randomPosition(), self.Height, self.World.Game.SharedRandom);
+					@object = ParticleCreator.Create(info.Name, randomPosition(), self.Height + info.Offset.Z, self.World.Game.SharedRandom);
 					break;
 				case "WEAPON":
 					@object = WeaponCreator.Create(self.World, info.Name, randomPosition(), randomPosition());
@@ -74,18 +76,19 @@ namespace WarriorsSnuggery.Objects.Parts
 				default:
 					throw new YamlInvalidNodeException(string.Format("SpawnOnDeath does not create objects of class '{0}'.", info.Type));
 			}
+			@object.Height = self.Height + info.Offset.Z;
 			self.World.Add(@object);
 		}
 
 		CPos randomPosition()
 		{
 			if (info.AtCenter)
-				return self.Position;
+				return self.Position + new CPos(info.Offset.X, info.Offset.Y, 0);
 
 			var size = self.Physics != null ? self.Physics.RadiusX : 40;
 			var x = Program.SharedRandom.Next(size) - size / 2;
 			var y = Program.SharedRandom.Next(size) - size / 2;
-			return self.Position + new CPos(x, y, 0);
+			return self.Position + new CPos(x, y, 0) + new CPos(info.Offset.X, info.Offset.Y, 0);
 		}
 	}
 }

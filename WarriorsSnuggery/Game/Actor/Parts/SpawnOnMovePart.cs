@@ -21,7 +21,7 @@ namespace WarriorsSnuggery.Objects.Parts
 		public readonly string Type;
 		[Desc("Condition to spawn.")]
 		public readonly Condition Condition;
-		[Desc("Offset from the center of idling object where the objects spawn.")]
+		[Desc("Offset from the center of idling object where the objects spawn.", "Z-coordinate will be used for height.")]
 		public readonly CPos Offset;
 
 		[Desc("Spawn object at center of actor, not random.")]
@@ -66,7 +66,7 @@ namespace WarriorsSnuggery.Objects.Parts
 			if (self.World.Game.SharedRandom.NextDouble() > info.Probability)
 				return;
 
-			PhysicsObject @object = null;
+			PhysicsObject @object;
 			switch (info.Type)
 			{
 				case "ACTOR":
@@ -84,6 +84,7 @@ namespace WarriorsSnuggery.Objects.Parts
 				default:
 					throw new YamlInvalidNodeException(string.Format("SpawnOnIdle does not create objects of class '{0}'.", info.Type));
 			}
+			@object.Height = self.Height + info.Offset.Z;
 			self.World.Add(@object);
 		}
 
