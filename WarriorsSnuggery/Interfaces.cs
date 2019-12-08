@@ -1,3 +1,4 @@
+using System;
 
 namespace WarriorsSnuggery
 {
@@ -16,10 +17,9 @@ namespace WarriorsSnuggery
 		void CheckVisibility();
 	}
 
-	public interface ITickRenderable : ITick, IRenderable
-	{
+	public interface ITickRenderable : ITick, IRenderable { }
 
-	}
+	public interface ITickRenderDisposable : ITick, IRenderable, IDisposable { }
 
 	public interface IDisableTooltip
 	{

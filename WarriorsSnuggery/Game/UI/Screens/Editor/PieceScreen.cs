@@ -11,10 +11,6 @@ namespace WarriorsSnuggery.UI
 
 		readonly PanelList mapSelection;
 
-		readonly Button back;
-		readonly Button @new;
-		readonly Button delete;
-
 		readonly CreatePieceScreen createPieceScreen;
 
 		public PieceScreen(Game game) : base("Piece Selection")
@@ -33,9 +29,9 @@ namespace WarriorsSnuggery.UI
 					Hide();
 				}));
 			}
-			back = ButtonCreator.Create("wooden", new CPos(4096, 6144, 0), "Back", () => game.ChangeScreen(ScreenType.MENU));
-			@new = ButtonCreator.Create("wooden", new CPos(0, 6144, 0), "New Piece", () => { createPieceScreen.ActiveScreen = true; });
-			delete = ButtonCreator.Create("wooden", new CPos(-4096, 6144, 0), "Delete Piece", () => { });
+			Content.Add(ButtonCreator.Create("wooden", new CPos(4096, 6144, 0), "Back", () => game.ChangeScreen(ScreenType.MENU)));
+			Content.Add(ButtonCreator.Create("wooden", new CPos(0, 6144, 0), "New Piece", () => { createPieceScreen.ActiveScreen = true; }));
+			Content.Add(ButtonCreator.Create("wooden", new CPos(-4096, 6144, 0), "Delete Piece", () => { }));
 
 			createPieceScreen = new CreatePieceScreen();
 		}
@@ -55,10 +51,6 @@ namespace WarriorsSnuggery.UI
 			base.Render();
 
 			mapSelection.Render();
-
-			back.Render();
-			@new.Render();
-			delete.Render();
 		}
 
 		public override void Tick()
@@ -74,13 +66,7 @@ namespace WarriorsSnuggery.UI
 			mapSelection.Tick();
 
 			if (KeyInput.IsKeyDown("escape", 10))
-			{
 				game.ChangeScreen(ScreenType.MENU);
-			}
-
-			back.Tick();
-			@new.Tick();
-			delete.Tick();
 		}
 
 		public override void Dispose()
@@ -88,10 +74,6 @@ namespace WarriorsSnuggery.UI
 			base.Dispose();
 
 			mapSelection.Dispose();
-
-			back.Dispose();
-			@new.Dispose();
-			delete.Dispose();
 
 			createPieceScreen.Dispose();
 		}
@@ -101,45 +83,37 @@ namespace WarriorsSnuggery.UI
 	{
 		public bool ActiveScreen = false;
 
-		readonly Button cancel;
-		readonly Button okay;
-
-		readonly TextLine size;
 		readonly TextBox sizeX;
 		readonly TextBox sizeY;
 
-		readonly TextLine warning;
 		readonly TextBox name;
 
 		public CreatePieceScreen() : base("Create Piece")
 		{
 			Title.Position = new CPos(0, -4096, 0);
 
-			cancel = ButtonCreator.Create("wooden", new CPos(4096, 6144, 0), "Cancel", () => { ActiveScreen = false; });
-			okay = ButtonCreator.Create("wooden", new CPos(-4096, 6144, 0), "Create", () => { create(); });
+			Content.Add(ButtonCreator.Create("wooden", new CPos(4096, 6144, 0), "Cancel", () => { ActiveScreen = false; }));
+			Content.Add(ButtonCreator.Create("wooden", new CPos(-4096, 6144, 0), "Create", () => { create(); }));
 
-			size = new TextLine(new CPos(0, -1024, 0), IFont.Pixel16, TextLine.OffsetType.MIDDLE);
+			var size = new TextLine(new CPos(0, -1024, 0), IFont.Pixel16, TextLine.OffsetType.MIDDLE);
 			size.SetText("Size of Piece");
+			Content.Add(size);
 			sizeX = TextBoxCreator.Create("wooden", new CPos(1024, 0, 0), "16", 2, true);
 			sizeY = TextBoxCreator.Create("wooden", new CPos(-1024, 0, 0), "16", 2, true);
 			name = TextBoxCreator.Create("wooden", new CPos(0, 1536, 0), "unnamed piece", 20, false);
-			warning = new TextLine(new CPos(0, 2548, 0), IFont.Pixel16, TextLine.OffsetType.MIDDLE);
+			var warning = new TextLine(new CPos(0, 2548, 0), IFont.Pixel16, TextLine.OffsetType.MIDDLE);
 			warning.SetColor(Color.Red);
 			warning.SetText("Warning: by using an name for an already existing map, you override it!");
+			Content.Add(warning);
 		}
 
 		public override void Render()
 		{
 			base.Render();
 
-			cancel.Render();
-			okay.Render();
-
-			size.Render();
 			sizeX.Render();
 			sizeY.Render();
 			name.Render();
-			warning.Render();
 		}
 
 		public override void Tick()
@@ -147,32 +121,20 @@ namespace WarriorsSnuggery.UI
 			base.Tick();
 
 			if (KeyInput.IsKeyDown("escape", 10))
-			{
 				ActiveScreen = false;
-			}
 
-			cancel.Tick();
-			okay.Tick();
-
-			size.Tick();
 			sizeX.Tick();
 			sizeY.Tick();
 			name.Tick();
-			warning.Tick();
 		}
 
 		public override void Dispose()
 		{
 			base.Dispose();
 
-			cancel.Dispose();
-			okay.Dispose();
-
-			size.Dispose();
 			sizeX.Dispose();
 			sizeY.Dispose();
 			name.Dispose();
-			warning.Dispose();
 		}
 
 		void create()

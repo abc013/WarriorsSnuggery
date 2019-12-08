@@ -82,7 +82,7 @@ namespace WarriorsSnuggery.UI
 					screen = new NewGameScreen(Game);
 					break;
 				case ScreenType.DECISION:
-					screen = new ConfirmationScreen(Game);
+					screen = new ConfirmationScreen();
 					break;
 			}
 

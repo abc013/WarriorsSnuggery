@@ -4,7 +4,7 @@ using WarriorsSnuggery.Graphics;
 
 namespace WarriorsSnuggery.Objects
 {
-	public class TextLine : IDisposable, ITickRenderable, IPositionable
+	public class TextLine : IPositionable, ITickRenderDisposable
 	{
 		public enum OffsetType
 		{

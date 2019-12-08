@@ -1,9 +1,8 @@
-﻿using System;
-using WarriorsSnuggery.Graphics;
+﻿using WarriorsSnuggery.Graphics;
 
 namespace WarriorsSnuggery.Objects
 {
-	public class TextBlock : ITickRenderable, IPositionable, IDisposable
+	public class TextBlock : IPositionable, ITickRenderDisposable
 	{
 		public CPos Position
 		{

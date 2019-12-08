@@ -7,47 +7,47 @@ namespace WarriorsSnuggery.UI
 	{
 		readonly Game game;
 
-		readonly TextLine create, name, difficulty, hardcore, seed;
 		readonly TextBox nameInput;
 		readonly TextBox difficultyInput;
 		readonly CheckBox hardcoreInput;
 		readonly TextBox seedInput;
-		readonly Button seedGenerate;
-
-		readonly Button cancel;
-		readonly Button proceed;
 
 		public NewGameScreen(Game game) : base("New Game [STORYMODE]")
 		{
 			this.game = game;
 			Title.Position = new CPos(0, -4096, 0);
 
-			create = new TextLine(new CPos(-2048, -2048, 0), IFont.Pixel16, TextLine.OffsetType.MIDDLE);
+			var create = new TextLine(new CPos(-2048, -2048, 0), IFont.Pixel16, TextLine.OffsetType.MIDDLE);
 			create.SetText("Please adjust the parameters as you wish.");
+			Content.Add(create);
 
-			name = new TextLine(new CPos(-2048, 0, 0), IFont.Pixel16, TextLine.OffsetType.RIGHT);
+			var name = new TextLine(new CPos(-2048, 0, 0), IFont.Pixel16, TextLine.OffsetType.RIGHT);
 			name.SetText("Name: ");
+			Content.Add(name);
 
 			nameInput = TextBoxCreator.Create("wooden", new CPos(1024, 0, 0), "Name", 15);
 
-			difficulty = new TextLine(new CPos(-2048, 1024, 0), IFont.Pixel16, TextLine.OffsetType.RIGHT);
+			var difficulty = new TextLine(new CPos(-2048, 1024, 0), IFont.Pixel16, TextLine.OffsetType.RIGHT);
 			difficulty.SetText("Difficulty: ");
+			Content.Add(difficulty);
 
 			difficultyInput = TextBoxCreator.Create("wooden", new CPos(1024, 1024, 0), "1", 1, true);
 
-			hardcore = new TextLine(new CPos(-2048, 2048, 0), IFont.Pixel16, TextLine.OffsetType.RIGHT);
+			var hardcore = new TextLine(new CPos(-2048, 2048, 0), IFont.Pixel16, TextLine.OffsetType.RIGHT);
 			hardcore.SetText("Hardcore: ");
+			Content.Add(hardcore);
 
 			hardcoreInput = CheckBoxCreator.Create("wooden", new CPos(1024, 2048, 0), false);
 
-			seed = new TextLine(new CPos(-2048, 3072, 0), IFont.Pixel16, TextLine.OffsetType.RIGHT);
+			var seed = new TextLine(new CPos(-2048, 3072, 0), IFont.Pixel16, TextLine.OffsetType.RIGHT);
 			seed.SetText("Seed: ");
+			Content.Add(seed);
 
 			seedInput = TextBoxCreator.Create("wooden", new CPos(1024, 3072, 0), getSeed(), 7, true);
-			seedGenerate = ButtonCreator.Create("wooden", new CPos(6144, 3072, 0), "Generate", () => { seedInput.Text = getSeed(); });
+			Content.Add(ButtonCreator.Create("wooden", new CPos(6144, 3072, 0), "Generate", () => { seedInput.Text = getSeed(); }));
 
-			cancel = ButtonCreator.Create("wooden", new CPos(-4096, 6144, 0), "Cancel", () => { game.Pause(false); game.ChangeScreen(ScreenType.DEFAULT); });
-			proceed = ButtonCreator.Create("wooden", new CPos(4096, 6144, 0), "Proceed", () => { GameController.CreateNew(GameStatistics.CreateGameStatistic(int.Parse(difficultyInput.Text), hardcoreInput.Checked, nameInput.Text, int.Parse(seedInput.Text))); });
+			Content.Add(ButtonCreator.Create("wooden", new CPos(-4096, 6144, 0), "Cancel", () => { game.Pause(false); game.ChangeScreen(ScreenType.DEFAULT); }));
+			Content.Add(ButtonCreator.Create("wooden", new CPos(4096, 6144, 0), "Proceed", () => { GameController.CreateNew(GameStatistics.CreateGameStatistic(int.Parse(difficultyInput.Text), hardcoreInput.Checked, nameInput.Text, int.Parse(seedInput.Text))); }));
 		}
 
 		string getSeed()
@@ -63,20 +63,10 @@ namespace WarriorsSnuggery.UI
 		{
 			base.Tick();
 
-			create.Tick();
-			name.Tick();
-			difficulty.Tick();
-			hardcore.Tick();
-			seed.Tick();
-
 			nameInput.Tick();
 			difficultyInput.Tick();
 			hardcoreInput.Tick();
 			seedInput.Tick();
-			seedGenerate.Tick();
-
-			cancel.Tick();
-			proceed.Tick();
 
 			if (KeyInput.IsKeyDown("escape", 10))
 			{
@@ -89,39 +79,20 @@ namespace WarriorsSnuggery.UI
 		{
 			base.Render();
 
-			create.Render();
-			name.Render();
-			difficulty.Render();
-			hardcore.Render();
-			seed.Render();
-
 			nameInput.Render();
 			difficultyInput.Render();
 			hardcoreInput.Render();
 			seedInput.Render();
-			seedGenerate.Render();
-
-			cancel.Render();
-			proceed.Render();
 		}
 
 		public override void Dispose()
 		{
 			base.Dispose();
 
-			create.Dispose();
-			name.Dispose();
-			difficulty.Dispose();
-			hardcore.Dispose();
-			seed.Dispose();
-
 			nameInput.Dispose();
 			difficultyInput.Dispose();
 			hardcoreInput.Dispose();
 			seedInput.Dispose();
-			seedGenerate.Dispose();
-
-			cancel.Dispose();
 		}
 	}
 }

@@ -4,7 +4,7 @@ using WarriorsSnuggery.Physics;
 
 namespace WarriorsSnuggery.Objects
 {
-	public class PhysicsObject : IDisposable, ITickRenderable, ICheckVisible, IPositionable
+	public class PhysicsObject : ITickRenderDisposable, ICheckVisible, IPositionable
 	{
 		protected readonly GraphicsObject Renderable;
 		public PhysicsSector[] PhysicsSectors = new PhysicsSector[0];

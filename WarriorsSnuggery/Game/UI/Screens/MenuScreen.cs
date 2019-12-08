@@ -7,18 +7,6 @@ namespace WarriorsSnuggery.UI
 	{
 		readonly Game game;
 
-		readonly Button resume;
-		readonly Button restart;
-		readonly Button menu;
-		readonly ColoredLine cut1;
-		readonly Button save;
-		readonly Button load;
-		readonly ColoredLine cut2;
-		readonly Button settings;
-		readonly Button editor;
-		readonly ColoredLine cut3;
-		readonly Button leave;
-
 		public bool Visible { get; private set; }
 
 		public MenuScreen(Game game) : base("Menu")
@@ -27,69 +15,69 @@ namespace WarriorsSnuggery.UI
 			Title.Position = new CPos(0, -2048, 0);
 
 			var height = -1024;
-			resume = ButtonCreator.Create("wooden", new CPos(0, height, 0), "Resume", () => { game.Pause(false); game.ScreenControl.ShowScreen(ScreenType.DEFAULT); });
+			Content.Add(ButtonCreator.Create("wooden", new CPos(0, height, 0), "Resume", () => { game.Pause(false); game.ScreenControl.ShowScreen(ScreenType.DEFAULT); }));
 
 			height += 1024;
 			switch (game.Type)
 			{
 				case GameType.EDITOR:
-					restart = ButtonCreator.Create("wooden", new CPos(2048, height, 0), "Play", () => humanAgree(() => { GameController.CreateNew(game.Statistics, GameType.NORMAL, true, Maps.MapInfo.ConvertGameType(game.MapType, GameType.TEST)); }, "Make sure you have saved the map!"));
-					menu = ButtonCreator.Create("wooden", new CPos(-2048, height, 0), "Main Menu", () => humanAgree(() => { GameController.CreateNew(game.Statistics, GameType.MAINMENU); }, "Are you sure to return? Unsaved progress will be lost!"));
+					Content.Add(ButtonCreator.Create("wooden", new CPos(2048, height, 0), "Play", () => humanAgree(() => { GameController.CreateNew(game.Statistics, GameType.NORMAL, true, Maps.MapInfo.ConvertGameType(game.MapType, GameType.TEST)); }, "Make sure you have saved the map!")));
+					Content.Add(ButtonCreator.Create("wooden", new CPos(-2048, height, 0), "Main Menu", () => humanAgree(() => { GameController.CreateNew(game.Statistics, GameType.MAINMENU); }, "Are you sure to return? Unsaved progress will be lost!")));
 					break;
 				case GameType.MAINMENU:
 					height -= 1024;
 					break;
 				case GameType.TUTORIAL:
-					restart = ButtonCreator.Create("wooden", new CPos(2048, height, 0), "Restart", () => GameController.CreateNew(game.Statistics, GameType.TUTORIAL, true));
-					menu = ButtonCreator.Create("wooden", new CPos(-2048, height, 0), "Main Menu", () => GameController.CreateNew(game.Statistics, GameType.MAINMENU));
+					Content.Add(ButtonCreator.Create("wooden", new CPos(2048, height, 0), "Restart", () => GameController.CreateNew(game.Statistics, GameType.TUTORIAL, true)));
+					Content.Add(ButtonCreator.Create("wooden", new CPos(-2048, height, 0), "Main Menu", () => GameController.CreateNew(game.Statistics, GameType.MAINMENU)));
 					break;
 				case GameType.MENU:
-					menu = ButtonCreator.Create("wooden", new CPos(0, height, 0), "Main Menu", () => humanAgree(() => { GameController.CreateNew(game.Statistics, GameType.MAINMENU); }, "Are you sure to leave this game? Unsaved progress will be lost!"));
+					Content.Add(ButtonCreator.Create("wooden", new CPos(0, height, 0), "Main Menu", () => humanAgree(() => { GameController.CreateNew(game.Statistics, GameType.MAINMENU); }, "Are you sure to leave this game? Unsaved progress will be lost!")));
 					break;
 				case GameType.TEST:
-					restart = ButtonCreator.Create("wooden", new CPos(2048, height, 0), "Editor", () => GameController.CreateNew(game.Statistics, GameType.EDITOR, true, Maps.MapInfo.ConvertGameType(game.MapType, GameType.EDITOR)));
-					menu = ButtonCreator.Create("wooden", new CPos(-2048, height, 0), "Main Menu", () => GameController.CreateNew(game.Statistics, GameType.MAINMENU));
+					Content.Add(ButtonCreator.Create("wooden", new CPos(2048, height, 0), "Editor", () => GameController.CreateNew(game.Statistics, GameType.EDITOR, true, Maps.MapInfo.ConvertGameType(game.MapType, GameType.EDITOR))));
+					Content.Add(ButtonCreator.Create("wooden", new CPos(-2048, height, 0), "Main Menu", () => GameController.CreateNew(game.Statistics, GameType.MAINMENU)));
 					break;
 				default:
-					restart = ButtonCreator.Create("wooden", new CPos(2048, height, 0), "Restart", () => humanAgree(() => { GameController.CreateNew(game.Statistics, GameType.NORMAL, true); }, "Are you sure you want to restart? Current progress in this level will be lost!"));
-					menu = ButtonCreator.Create("wooden", new CPos(-2048, height, 0), "Headquarters", () => humanAgree(() => { game.Statistics.Level--; GameController.CreateNew(game.Statistics, GameType.MENU); }, "Are you sure to return? All progress in this level will be lost!")); // Level is still the same as it was not finished
+					Content.Add(ButtonCreator.Create("wooden", new CPos(2048, height, 0), "Restart", () => humanAgree(() => { GameController.CreateNew(game.Statistics, GameType.NORMAL, true); }, "Are you sure you want to restart? Current progress in this level will be lost!")));
+					Content.Add(ButtonCreator.Create("wooden", new CPos(-2048, height, 0), "Headquarters", () => humanAgree(() => { game.Statistics.Level--; GameController.CreateNew(game.Statistics, GameType.MENU); }, "Are you sure to return? All progress in this level will be lost!"))); // Level is still the same as it was not finished
 					break;
 			}
 
 			height += 512;
-			cut1 = new ColoredLine(new CPos(4096, height, 0), Color.White, 8f)
+			Content.Add(new ColoredLine(new CPos(4096, height, 0), Color.White, 8f)
 			{
 				Rotation = new VAngle(0, 0, 90)
-			};
+			});
 			if (game.Type != GameType.EDITOR && game.Type != GameType.TUTORIAL && game.Type != GameType.TEST)
 			{
 				height += 512;
-				load = ButtonCreator.Create("wooden", new CPos(game.Type == GameType.MAINMENU ? 0 : -2048, height, 0), "Load Game", () => game.ChangeScreen(ScreenType.LOAD));
+				Content.Add(ButtonCreator.Create("wooden", new CPos(game.Type == GameType.MAINMENU ? 0 : -2048, height, 0), "Load Game", () => game.ChangeScreen(ScreenType.LOAD)));
 				if (game.Type != GameType.MAINMENU)
-					save = ButtonCreator.Create("wooden", new CPos(2048, height, 0), "Save Game", () => game.ChangeScreen(ScreenType.SAVE));
+					Content.Add(ButtonCreator.Create("wooden", new CPos(2048, height, 0), "Save Game", () => game.ChangeScreen(ScreenType.SAVE)));
 
 				height += 512;
-				cut2 = new ColoredLine(new CPos(4096, height, 0), Color.White, 8f)
+				Content.Add(new ColoredLine(new CPos(4096, height, 0), Color.White, 8f)
 				{
 					Rotation = new VAngle(0, 0, 90)
-				};
+				});
 			}
 			height += 512;
-			settings = ButtonCreator.Create("wooden", new CPos(0, height, 0), "Settings", () => game.ChangeScreen(ScreenType.SETTINGS));
+			Content.Add(ButtonCreator.Create("wooden", new CPos(0, height, 0), "Settings", () => game.ChangeScreen(ScreenType.SETTINGS)));
 
 			if (game.Type == GameType.MAINMENU || game.Type == GameType.EDITOR)
 			{
 				height += 1024;
-				editor = ButtonCreator.Create("wooden", new CPos(0, height, 0), "Editor", () => game.ChangeScreen(ScreenType.EDITORSELECTION));
+				Content.Add(ButtonCreator.Create("wooden", new CPos(0, height, 0), "Editor", () => game.ChangeScreen(ScreenType.EDITORSELECTION)));
 			}
 
 			height += 512;
-			cut3 = new ColoredLine(new CPos(4096, height, 0), Color.White, 8f)
+			Content.Add(new ColoredLine(new CPos(4096, height, 0), Color.White, 8f)
 			{
 				Rotation = new VAngle(0, 0, 90)
-			};
+			});
 			height += 512;
-			leave = ButtonCreator.Create("wooden", new CPos(0, height, 0), "Exit Game", () => humanAgree(Program.Exit, "Are you sure you want to exit the game?"));
+			Content.Add(ButtonCreator.Create("wooden", new CPos(0, height, 0), "Exit Game", () => humanAgree(Program.Exit, "Are you sure you want to exit the game?")));
 		}
 
 		void humanAgree(Action onAgree, string text)
@@ -102,95 +90,15 @@ namespace WarriorsSnuggery.UI
 			game.ScreenControl.ShowScreen(ScreenType.DECISION);
 		}
 
-		public override void Render()
-		{
-			base.Render();
-
-			resume.Render();
-
-			if (restart != null)
-				restart.Render();
-
-			if (menu != null)
-				menu.Render();
-
-			cut1.Render();
-			if (game.Type != GameType.EDITOR && game.Type != GameType.TUTORIAL && game.Type != GameType.TEST)
-			{
-				load.Render();
-				if (game.Type != GameType.MAINMENU)
-					save.Render();
-				cut2.Render();
-			}
-			settings.Render();
-
-			if (game.Type == GameType.MAINMENU || game.Type == GameType.EDITOR)
-				editor.Render();
-
-			cut3.Render();
-			leave.Render();
-		}
-
 		public override void Tick()
 		{
 			base.Tick();
-
-			resume.Tick();
-
-			if (restart != null)
-				restart.Tick();
-
-			if (menu != null)
-				menu.Tick();
-
-			if (game.Type != GameType.EDITOR && game.Type != GameType.TUTORIAL && game.Type != GameType.TEST)
-			{
-				load.Tick();
-				if (game.Type != GameType.MAINMENU)
-					save.Tick();
-			}
-			settings.Tick();
-
-			if (game.Type == GameType.MAINMENU || game.Type == GameType.EDITOR)
-				editor.Tick();
-
-			leave.Tick();
 
 			if (KeyInput.IsKeyDown("escape", 10))
 			{
 				game.Pause(false);
 				game.ChangeScreen(ScreenType.DEFAULT);
 			}
-		}
-
-		public override void Dispose()
-		{
-			base.Dispose();
-
-			resume.Dispose();
-
-			if (restart != null)
-				restart.Dispose();
-
-			if (menu != null)
-				menu.Dispose();
-
-			cut1.Dispose();
-
-			if (game.Type != GameType.EDITOR && game.Type != GameType.TUTORIAL && game.Type != GameType.TEST)
-			{
-				load.Dispose();
-				if (game.Type != GameType.MAINMENU)
-					save.Dispose();
-				cut2.Dispose();
-			}
-			settings.Dispose();
-
-			if (game.Type == GameType.MAINMENU || game.Type == GameType.EDITOR)
-				editor.Dispose();
-
-			cut3.Dispose();
-			leave.Dispose();
 		}
 	}
 }

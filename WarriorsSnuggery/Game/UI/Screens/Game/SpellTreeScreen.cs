@@ -9,10 +9,6 @@ namespace WarriorsSnuggery.UI
 	{
 		readonly Game game;
 
-		readonly Button back;
-
-		readonly Panel @base;
-
 		readonly ImageRenderable money;
 		readonly TextLine moneyText;
 		int cashCooldown;
@@ -26,8 +22,8 @@ namespace WarriorsSnuggery.UI
 			this.game = game;
 			Title.Position = new CPos(0, -4096, 0);
 
-			back = ButtonCreator.Create("wooden", new CPos(0, 6144, 0), "Resume", () => { game.Pause(false); game.ScreenControl.ShowScreen(ScreenType.DEFAULT); });
-			@base = new Panel(new CPos(0, 1024, 0), new MPos(8192 / 64 * 3, 4096 / 64 * 3), PanelManager.Get("wooden"));
+			Content.Add(ButtonCreator.Create("wooden", new CPos(0, 6144, 0), "Resume", () => { game.Pause(false); game.ScreenControl.ShowScreen(ScreenType.DEFAULT); }));
+			Content.Add(new Panel(new CPos(0, 1024, 0), new MPos(8192 / 64 * 3, 4096 / 64 * 3), PanelManager.Get("wooden")));
 
 			money = new ImageRenderable(TextureManager.Texture("UI_money"));
 			money.SetPosition(new CPos(-(int)(WindowInfo.UnitWidth / 2 * 1024) + 1024, 7192, 0));
@@ -56,9 +52,6 @@ namespace WarriorsSnuggery.UI
 		public override void Render()
 		{
 			base.Render();
-			@base.Render();
-
-			back.Render();
 
 			foreach (var line in lines)
 			{
@@ -76,9 +69,6 @@ namespace WarriorsSnuggery.UI
 		public override void Tick()
 		{
 			base.Tick();
-			@base.Tick();
-
-			back.Tick();
 
 			foreach (var panel in tree)
 			{
@@ -110,9 +100,6 @@ namespace WarriorsSnuggery.UI
 		public override void Dispose()
 		{
 			base.Dispose();
-			@base.Dispose();
-
-			back.Dispose();
 
 			foreach (var panel in tree)
 				panel.Dispose();

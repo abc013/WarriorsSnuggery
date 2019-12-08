@@ -8,9 +8,6 @@ namespace WarriorsSnuggery.UI
 		readonly Game game;
 
 		readonly GameSaveList list;
-		readonly Button back;
-		readonly Button save;
-		readonly Button @new;
 
 		readonly NewSaveGameScreen createSaveScreen;
 
@@ -21,9 +18,9 @@ namespace WarriorsSnuggery.UI
 
 			list = new GameSaveList(new CPos(0, 1024, 0), new MPos((int)(WindowInfo.UnitWidth * 128), 4096), PanelManager.Get("wooden"), "UI_save");
 
-			back = ButtonCreator.Create("wooden", new CPos(4096, 6144, 0), "Back", () => game.ChangeScreen(ScreenType.MENU));
-			save = ButtonCreator.Create("wooden", new CPos(0, 6144, 0), "Save", () => { saveGame(); game.RefreshSaveGameScreens(); });
-			@new = ButtonCreator.Create("wooden", new CPos(-4096, 6144, 0), "New Save", () => createSaveScreen.ActiveScreen = true);
+			Content.Add(ButtonCreator.Create("wooden", new CPos(4096, 6144, 0), "Back", () => game.ChangeScreen(ScreenType.MENU)));
+			Content.Add(ButtonCreator.Create("wooden", new CPos(0, 6144, 0), "Save", () => { saveGame(); game.RefreshSaveGameScreens(); }));
+			Content.Add(ButtonCreator.Create("wooden", new CPos(-4096, 6144, 0), "New Save", () => createSaveScreen.ActiveScreen = true));
 
 			createSaveScreen = new NewSaveGameScreen(game);
 		}
@@ -69,9 +66,6 @@ namespace WarriorsSnuggery.UI
 			}
 			base.Render();
 
-			back.Render();
-			save.Render();
-			@new.Render();
 			list.Render();
 		}
 
@@ -84,25 +78,16 @@ namespace WarriorsSnuggery.UI
 			}
 			base.Tick();
 
-			back.Tick();
-			save.Tick();
-			@new.Tick();
 			list.Tick();
 
 			if (KeyInput.IsKeyDown("escape", 10))
-			{
 				game.ChangeScreen(ScreenType.MENU);
-			}
 		}
 
 		public override void Dispose()
 		{
 			base.Dispose();
 			list.Dispose();
-
-			back.Dispose();
-			save.Dispose();
-			@new.Dispose();
 
 			createSaveScreen.Dispose();
 		}

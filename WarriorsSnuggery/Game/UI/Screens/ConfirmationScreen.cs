@@ -5,7 +5,6 @@ namespace WarriorsSnuggery.UI
 {
 	public class ConfirmationScreen : Screen
 	{
-		readonly Game game;
 		readonly TextLine text;
 
 		Action onDecline;
@@ -13,9 +12,8 @@ namespace WarriorsSnuggery.UI
 		Button decline;
 		Button agree;
 
-		public ConfirmationScreen(Game game) : base("Are you sure?")
+		public ConfirmationScreen() : base("Are you sure?")
 		{
-			this.game = game;
 			Title.Position = new CPos(0, -2048, 0);
 
 			text = new TextLine(CPos.Zero, Graphics.IFont.Pixel16, TextLine.OffsetType.MIDDLE);

@@ -7,9 +7,6 @@ namespace WarriorsSnuggery.UI
 		readonly Game game;
 
 		readonly GameSaveList list;
-		readonly Button back;
-		readonly Button load;
-		readonly Button delete;
 
 		public LoadGameScreen(Game game) : base("Load Game")
 		{
@@ -18,7 +15,7 @@ namespace WarriorsSnuggery.UI
 
 			list = new GameSaveList(new CPos(0, 1024, 0), new MPos((int)(WindowInfo.UnitWidth * 128), 4096), PanelManager.Get("wooden"), "UI_save");
 
-			back = ButtonCreator.Create("wooden", new CPos(4096, 6144, 0), "Back", () => game.ChangeScreen(ScreenType.MENU));
+			Content.Add(ButtonCreator.Create("wooden", new CPos(4096, 6144, 0), "Back", () => game.ChangeScreen(ScreenType.MENU)));
 			void loadAction()
 			{
 				var stats = list.GetStatistic();
@@ -30,7 +27,7 @@ namespace WarriorsSnuggery.UI
 					}, "Are you sure to leave this game? Unsaved progress will be lost!");
 				}
 			}
-			load = ButtonCreator.Create("wooden", new CPos(0, 6144, 0), "Load", loadAction);
+			Content.Add(ButtonCreator.Create("wooden", new CPos(0, 6144, 0), "Load", loadAction));
 			void deleteAction()
 			{
 				var stats = list.GetStatistic();
@@ -44,7 +41,7 @@ namespace WarriorsSnuggery.UI
 					}, "Are you sure to delete this save?");
 				}
 			}
-			delete = ButtonCreator.Create("wooden", new CPos(-4096, 6144, 0), "Delete", deleteAction);
+			Content.Add(ButtonCreator.Create("wooden", new CPos(-4096, 6144, 0), "Delete", deleteAction));
 		}
 
 		public override void Hide()
@@ -71,6 +68,7 @@ namespace WarriorsSnuggery.UI
 			{
 				game.ScreenControl.ShowScreen(ScreenType.LOAD);
 			}
+
 			game.ScreenControl.SetDecision(onDecline, onAgree, text);
 			game.ScreenControl.ShowScreen(ScreenType.DECISION);
 		}
@@ -84,9 +82,6 @@ namespace WarriorsSnuggery.UI
 		{
 			base.Render();
 
-			back.Render();
-			load.Render();
-			delete.Render();
 			list.Render();
 		}
 
@@ -94,25 +89,17 @@ namespace WarriorsSnuggery.UI
 		{
 			base.Tick();
 
-			back.Tick();
-			load.Tick();
-			delete.Tick();
 			list.Tick();
 
 			if (KeyInput.IsKeyDown("escape", 10))
-			{
 				game.ChangeScreen(ScreenType.MENU);
-			}
+
 		}
 
 		public override void Dispose()
 		{
 			base.Dispose();
 			list.Dispose();
-
-			back.Dispose();
-			load.Dispose();
-			delete.Dispose();
 		}
 	}
 }
