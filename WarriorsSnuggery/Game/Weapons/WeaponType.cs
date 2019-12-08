@@ -24,6 +24,10 @@ namespace WarriorsSnuggery.Objects
 	{
 		[Desc("Texture of the Weapon.")]
 		public readonly TextureInfo Texture;
+		[Desc("Texture of the Weapon.", "Used in Beamweapons as startup.")]
+		public readonly TextureInfo TextureStart;
+		[Desc("Texture of the Weapon.", "Used in Beamweapons for the end.")]
+		public readonly TextureInfo TextureEnd;
 		[Desc("Texture of the Smudge that will be left behind from impact.")]
 		public readonly TextureInfo Smudge;
 
@@ -70,6 +74,10 @@ namespace WarriorsSnuggery.Objects
 
 		[Desc("Determines how long a beam will be fired.")]
 		public readonly int BeamDuration;
+		[Desc("Determines how the beam needs to be fired up.")]
+		public readonly int BeamStartDuration;
+		[Desc("Determines how long the beam stays after ending.")]
+		public readonly int BeamEndDuration;
 
 		public WeaponType(string name, MiniTextNode[] nodes)
 		{
@@ -81,6 +89,10 @@ namespace WarriorsSnuggery.Objects
 					throw new YamlMissingNodeException(name, "Textures");
 
 				SpriteManager.AddTexture(Texture);
+				if (TextureEnd != null)
+					SpriteManager.AddTexture(TextureEnd);
+				if (TextureStart != null)
+					SpriteManager.AddTexture(TextureStart);
 				if (Smudge != null)
 					SpriteManager.AddTexture(Smudge);
 			}

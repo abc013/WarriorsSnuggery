@@ -7,21 +7,22 @@ namespace WarriorsSnuggery.Objects
 	class BeamWeapon : Weapon
 	{
 		ImageRenderable[] renderables;
-		readonly int renderabledistance;
-		readonly int tick;
+		int renderabledistance;
+		int tick;
+
 		CPos originPos;
 		int curTick;
 		int frame;
 
 		int impactInterval;
 		int duration;
+		int buildupduration;
+		int endduration;
 		readonly RayPhysics rayPhysics;
 
-		public BeamWeapon(World world, WeaponType type, CPos origin, CPos target, Action targetSetter = null) : base(world, type, origin, target)
+		public BeamWeapon(World world, WeaponType type, CPos origin, CPos target) : base(world, type, origin, target)
 		{
 			originPos = origin;
-			tick = type.Texture.Tick;
-			duration = type.BeamDuration;
 			impactInterval = type.BeamImpactInterval;
 			Target = target;
 			rayPhysics = new RayPhysics(world)
@@ -29,16 +30,13 @@ namespace WarriorsSnuggery.Objects
 				Start = originPos,
 				Target = target
 			};
-			renderabledistance = (1024 * type.Texture.Height) / 24;
 
 			init();
 		}
 
-		public BeamWeapon(World world, WeaponType type, Actor origin, CPos target, Action targetSetter = null) : base(world, type, origin, target)
+		public BeamWeapon(World world, WeaponType type, Actor origin, CPos target) : base(world, type, origin, target)
 		{
 			originPos = origin.ActiveWeapon.WeaponOffsetPosition;
-			tick = type.Texture.Tick;
-			duration = Type.BeamDuration;
 			impactInterval = type.BeamImpactInterval;
 			Target = target;
 			rayPhysics = new RayPhysics(world)
@@ -46,20 +44,35 @@ namespace WarriorsSnuggery.Objects
 				Start = originPos,
 				Target = target
 			};
-			renderabledistance = (1024 * Type.Texture.Height) / 24;
 
 			init();
 		}
 
 		void init()
 		{
-			var sprite = Type.Texture.GetTextures();
+			duration = Type.BeamDuration;
+			buildupduration = Type.BeamStartDuration;
+			endduration = Type.BeamEndDuration;
+
+			if (buildupduration > 0 && Type.TextureStart != null)
+				useTexture(Type.TextureStart);
+			else
+				useTexture(Type.Texture);
+		}
+
+		void useTexture(TextureInfo texture)
+		{
+			frame = 0;
+			tick = texture.Tick;
+			renderabledistance = 1024 * texture.Height / MasterRenderer.PixelSize;
+			curTick = 0;
+
+			var sprite = texture.GetTextures();
 			renderables = new ImageRenderable[sprite.Length];
 			for (int i = 0; i < sprite.Length; i++)
 			{
 				renderables[i] = new ImageRenderable(sprite[i]);
 			}
-			curTick = tick;
 		}
 
 		public override void Render()
@@ -88,6 +101,17 @@ namespace WarriorsSnuggery.Objects
 
 		public override void Tick()
 		{
+			if (buildupduration-- == 0)
+				useTexture(Type.Texture);
+
+			if (duration == 0)
+			{
+				if (Type.TextureEnd != null)
+					useTexture(Type.TextureEnd);
+				else
+					useTexture(Type.Texture);
+			}
+
 			curTick--;
 			if (curTick < 0)
 			{
@@ -119,7 +143,7 @@ namespace WarriorsSnuggery.Objects
 				Position = originPos + new CPos((int)(Math.Cos(angle) * Type.MaxRange), (int)(Math.Sin(angle) * Type.MaxRange), 0);
 			}
 
-			if (impactInterval-- <= 0)
+			if (duration > 0 && buildupduration <= 0 && impactInterval-- <= 0)
 			{
 				Detonate(false);
 				impactInterval = Type.BeamImpactInterval;
@@ -128,17 +152,12 @@ namespace WarriorsSnuggery.Objects
 			if (Type.OrientateToTarget)
 				Rotation = new VAngle(0, 0,(Position - Target).FlatAngle);
 
-			if (duration-- < 0)
-			{
-				Dispose();
-			}
+			if (buildupduration < 0 && duration-- < 0 && endduration-- < 0)
+					Dispose();
 		}
 
 		public override void Dispose()
 		{
-			//foreach (var renderable in renderables)
-			//renderable.Dispose();
-
 			base.Dispose();
 		}
 	}
