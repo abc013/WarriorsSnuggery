@@ -64,14 +64,14 @@ namespace WarriorsSnuggery.UI
 				 deselectBoxes(Selected.WALL);
 			 });
 
-			tiles = new PanelList(new CPos((int)(WindowInfo.UnitWidth * 512 - 2048), 2048, 0), new MPos(2048, 4096), new MPos(512, 512), PanelManager.GetType("wooden"));
+			tiles = new PanelList(new CPos((int)(WindowInfo.UnitWidth * 512 - 2048), 2048, 0), new MPos(2048, 4096), new MPos(512, 512), PanelManager.Get("wooden"));
 			foreach (var n in TerrainCreator.GetIDs())
 			{
 				var a = TerrainCreator.GetType(n);
 				tiles.Add(new PanelItem(CPos.Zero, new ImageRenderable(a.Texture), new MPos(512, 512), n + "", new string[0], () => terrainSelected = a));
 			}
 
-			actors = new PanelList(new CPos((int)(WindowInfo.UnitWidth * 512 - 2048), 2048, 0), new MPos(2048, 4096), new MPos(512, 512), PanelManager.GetType("wooden"));
+			actors = new PanelList(new CPos((int)(WindowInfo.UnitWidth * 512 - 2048), 2048, 0), new MPos(2048, 4096), new MPos(512, 512), PanelManager.Get("wooden"));
 			foreach (var n in ActorCreator.GetNames())
 			{
 				var a = ActorCreator.GetType(n);
@@ -83,7 +83,7 @@ namespace WarriorsSnuggery.UI
 				});
 			}
 
-			walls = new PanelList(new CPos((int)(WindowInfo.UnitWidth * 512 - 2048), 2048, 0), new MPos(2048, 4096), new MPos(512, 512), PanelManager.GetType("wooden"));
+			walls = new PanelList(new CPos((int)(WindowInfo.UnitWidth * 512 - 2048), 2048, 0), new MPos(2048, 4096), new MPos(512, 512), PanelManager.Get("wooden"));
 			foreach (var n in WallCreator.GetIDs())
 			{
 				var a = WallCreator.GetType(n);

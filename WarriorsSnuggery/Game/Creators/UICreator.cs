@@ -13,7 +13,7 @@ namespace WarriorsSnuggery.UI
 			types.Add(name, info);
 		}
 
-		public static PanelType GetType(string name)
+		public static PanelType Get(string name)
 		{
 			if (!types.ContainsKey(name))
 				throw new MissingInfoException(name);
@@ -26,7 +26,7 @@ namespace WarriorsSnuggery.UI
 	{
 		public static Button Create(string type, CPos position, string text, Action onClick)
 		{
-			return new Button(position, text, PanelManager.GetType(type), onClick);
+			return new Button(position, text, PanelManager.Get(type), onClick);
 		}
 	}
 
@@ -57,7 +57,7 @@ namespace WarriorsSnuggery.UI
 	{
 		public static TextBox Create(string type, CPos position, string text, int maximumLength = 10, bool onlyNumbers = false, Action onEnter = null)
 		{
-			return new TextBox(position, text, maximumLength, onlyNumbers, PanelManager.GetType(type), onEnter);
+			return new TextBox(position, text, maximumLength, onlyNumbers, PanelManager.Get(type), onEnter);
 		}
 	}
 }

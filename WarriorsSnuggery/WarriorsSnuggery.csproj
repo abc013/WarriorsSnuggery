@@ -77,6 +77,7 @@
     <Compile Include="Game\Conditions\ConditionManager.cs" />
     <Compile Include="Cursor.cs" />
     <Compile Include="GameController.cs" />
+    <Compile Include="Game\UI\Objects\SliderBar.cs" />
     <Compile Include="Game\UI\Objects\SpellList.cs" />
     <Compile Include="Loader\WavLoader.cs" />
     <Compile Include="Map\PieceManager.cs" />
