@@ -122,6 +122,7 @@ namespace WarriorsSnuggery.UI
 			Settings.MasterVolume = masterVolumeSlider.Value;
 			Settings.EffectsVolume = effectVolumeSlider.Value;
 			Settings.MusicVolume = musicVolumeSlider.Value;
+			AudioController.Music.SetVolume();
 
 			Settings.Save();
 

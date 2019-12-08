@@ -14,7 +14,12 @@
 				music[i] = new Music(names[i]);
 			}
 
-			music[current].Play(Settings.MusicVolume);
+			music[current].Play();
+		}
+
+		public void SetVolume()
+		{
+			music[current].SetVolume();
 		}
 
 		public void Tick()
@@ -32,7 +37,7 @@
 			if (current == music.Length)
 				current = 0;
 
-			music[current].Play(Settings.MusicVolume);
+			music[current].Play();
 		}
 	}
 }

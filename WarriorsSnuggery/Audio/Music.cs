@@ -21,10 +21,15 @@
 			Length = buffer.Length;
 		}
 
-		public void Play(float volume)
+		public void Play()
 		{
 			length = Length;
-			source = AudioController.Play(buffer, false, volume, false);
+			source = AudioController.Play(buffer, false, Settings.MusicVolume, false);
+		}
+
+		public void SetVolume()
+		{
+			source.SetVolume(Settings.MusicVolume);
 		}
 
 		public void Tick()

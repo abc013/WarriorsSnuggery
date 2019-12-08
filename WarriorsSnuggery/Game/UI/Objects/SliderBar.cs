@@ -52,10 +52,10 @@ namespace WarriorsSnuggery.UI
 
 		public float Value
 		{
-			get { return currentPosition / (float)limit + 1f; }
+			get { return (currentPosition / (float)limit + 1f) / 2; }
 			set
 			{
-				currentPosition = (int)((value - 1f) * limit);
+				currentPosition = (int)((value - 0.5f) * limit) * 2;
 				Position = new CPos(centerPosition.X + currentPosition, centerPosition.Y, 0);
 				tooltip = new Tooltip(Position, Math.Round(Value, 1).ToString());
 			}

@@ -25,6 +25,11 @@ namespace WarriorsSnuggery.Audio
 			AL.SourcePlay(source);
 		}
 
+		public void SetVolume(float volume)
+		{
+			AL.Source(source, ALSourcef.Gain, volume * Settings.MasterVolume);
+		}
+
 		public void CheckUsed()
 		{
 			Used = AL.GetSourceState(source) == ALSourceState.Playing;
