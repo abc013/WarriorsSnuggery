@@ -33,6 +33,8 @@ namespace WarriorsSnuggery.Objects
 
 		[Desc("Highest damage value possible.")]
 		public readonly int Damage;
+		[Desc("Highest damage value for walls.")]
+		public readonly int WallDamage;
 
 		[Desc("Speed of the warhead.")]
 		public readonly int Speed;

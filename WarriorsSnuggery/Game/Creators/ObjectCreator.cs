@@ -291,9 +291,9 @@ namespace WarriorsSnuggery
 			return types[ID];
 		}
 
-		public static Wall Create(WPos position, int ID)
+		public static Wall Create(WPos position, WallLayer layer, int ID)
 		{
-			return new Wall(position, GetType(ID));
+			return new Wall(position.ToMPos(), layer, GetType(ID));
 		}
 	}
 }

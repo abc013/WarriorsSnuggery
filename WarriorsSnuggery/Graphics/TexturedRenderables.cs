@@ -89,9 +89,4 @@ namespace WarriorsSnuggery.Graphics
 			base.Render();
 		}
 	}
-
-	public class WallRenderable : GraphicsObject
-	{
-		public WallRenderable(bool horizontal, WallType type) : base(type.GetTexture(horizontal)) { }
-	}
 }

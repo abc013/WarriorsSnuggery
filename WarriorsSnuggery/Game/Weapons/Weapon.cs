@@ -135,47 +135,52 @@ namespace WarriorsSnuggery.Objects
 
 		public virtual void Detonate(bool dispose = true)
 		{
-			foreach (var actor in World.Actors)
+			if (Type.Damage != 0)
 			{
-				if (Origin != null && Origin.Team == actor.Team)
-					continue;
-
-				var dist = (Position - actor.Position).FlatDist / 512;
-				if (dist > 128f) continue;
-				if (dist < 1f) dist = 1;
-
-				float damagemultiplier = 0f;
-
-				switch (Type.Falloff)
+				foreach (var actor in World.Actors)
 				{
-					case FalloffType.LINEAR:
-						damagemultiplier = 1 / dist;
-						break;
-					case FalloffType.QUADRATIC:
-						damagemultiplier = 1 / (dist * dist);
-						break;
-					case FalloffType.CUBIC:
-						damagemultiplier = 1 / (dist * dist * dist);
-						break;
-					case FalloffType.EXPONENTIAL:
-						damagemultiplier = 1 / (float)Math.Pow(2, dist);
-						break;
-					case FalloffType.ROOT:
-						damagemultiplier = 1 / (float)Math.Sqrt(dist);
-						break;
+					if (!actor.IsAlive || actor.Health == null || Origin != null && Origin.Team == actor.Team)
+						continue;
+
+					var dist = (Position - actor.Position).FlatDist / 512;
+					if (dist > 32f) continue;
+					if (dist < 1f) dist = 1;
+
+					float damagemultiplier = getDamageMultiplier(dist);
+					var damage = (int)Math.Floor(damagemultiplier * Type.Damage * damageModifier);
+
+					if (damage == 0)
+						continue;
+
+					if (actor.WorldPart != null && actor.WorldPart.ShowDamage)
+						World.Add(new ActionText(actor.Position + new CPos(0, 0, 1024), new CPos(0, -15, 30), 50, ActionText.ActionTextType.SCALE, new Color(1f, 1 - (damage / (Type.Damage * 1.5f)), 0).ToString() + damage.ToString()));
+
+					if (Origin != null)
+						actor.Damage(Origin, damage);
+					else
+						actor.Damage(damage);
 				}
-				var damage = (int)Math.Floor(damagemultiplier * Type.Damage * damageModifier);
+			}
 
-				if (damage < 2 || !actor.IsAlive)
-					continue;
+			if (Type.WallDamage != 0)
+			{
+				foreach (var wall in World.WallLayer.Walls)
+				{
+					if (wall == null || wall.Type.Invincible)
+						continue;
 
-				if (actor.WorldPart != null && actor.WorldPart.ShowDamage)
-					World.Add(new ActionText(actor.Position + new CPos(0, 0, 1024), new CPos(0, -15, 30), 50, ActionText.ActionTextType.SCALE, new Color(1f, 1 - (damage / (Type.Damage * 1.5f)), 0).ToString() + damage.ToString()));
+					var dist = (Position - wall.Position).FlatDist / 512;
+					if (dist > 32f) continue;
+					if (dist < 1f) dist = 1;
 
-				if (Origin != null)
-					actor.Damage(Origin, damage);
-				else
-					actor.Damage(damage);
+					float damagemultiplier = getDamageMultiplier(dist);
+					var damage = (int)Math.Floor(damagemultiplier * Type.WallDamage * damageModifier);
+
+					if (damage == 0)
+						continue;
+
+					wall.Damage(damage);
+				}
 			}
 
 			if (Type.Smudge != null && World.TerrainAt(Position) != null && World.TerrainAt(Position).Type.SpawnSmudge)
@@ -191,6 +196,25 @@ namespace WarriorsSnuggery.Objects
 
 			if (dispose)
 				Dispose();
+		}
+
+		float getDamageMultiplier(float dist)
+		{
+			switch (Type.Falloff)
+			{
+				case FalloffType.LINEAR:
+					return 1 / dist;
+				case FalloffType.QUADRATIC:
+					return 1 / (dist * dist);
+				case FalloffType.CUBIC:
+					return 1 / (dist * dist * dist);
+				case FalloffType.EXPONENTIAL:
+					return 1 / (float)Math.Pow(2, dist);
+				case FalloffType.ROOT:
+					return 1 / (float)Math.Sqrt(dist);
+				default:
+					return 1;
+			}
 		}
 
 		protected CPos getInaccuracy()

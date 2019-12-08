@@ -176,7 +176,11 @@ namespace WarriorsSnuggery
 				{
 					for (int x = 0; x < world.WallLayer.Size.X - 1; x++)
 					{
-						walls += (world.WallLayer.Walls[x, y] == null ? -1 : world.WallLayer.Walls[x, y].Type.ID) + ",";
+						var wall = world.WallLayer.Walls[x, y];
+						if (wall == null)
+							walls += "-1,0,";
+						else
+							walls += wall.Type.ID + "," + wall.Health + ",";
 					}
 				}
 

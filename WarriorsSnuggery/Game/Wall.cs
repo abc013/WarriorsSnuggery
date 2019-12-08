@@ -1,19 +1,42 @@
+using System;
 using WarriorsSnuggery.Graphics;
 
 namespace WarriorsSnuggery.Objects
 {
 	public class Wall : PhysicsObject
 	{
-		public readonly WPos LayerPosition;
+		public readonly MPos LayerPosition;
 		readonly CPos renderPosition;
+		readonly WallLayer layer;
 
 		public readonly WallType Type;
+		readonly ImageRenderable damaged1;
+		readonly ImageRenderable damaged2;
 
 		readonly bool isHorizontal;
+		public int Health
+		{
+			get { return health; }
+			set
+			{
+				if (Type.Invincible)
+					return;
 
-		public Wall(WPos position, WallType type) : base(position.ToCPos(), new WallRenderable(position.X % 2 != 0, type), type.Blocks ? new Physics.SimplePhysics(position.ToCPos() / new CPos(2, 1, 1), 0, position.X % 2 != 0 ? WarriorsSnuggery.Physics.Shape.LINE_HORIZONTAL : WarriorsSnuggery.Physics.Shape.LINE_VERTICAL, 512, 512, type.Height) : new Physics.SimplePhysics(position.ToCPos() / new CPos(2, 1, 1), 0, WarriorsSnuggery.Physics.Shape.NONE, 0, 0, 0))
+				health = value;
+			}
+		}
+
+		int health;
+		float healthPercentage
+		{
+			get { return health / (float)Type.Health; }
+		}
+
+		public Wall(MPos position, WallLayer layer, WallType type) : base(position.ToCPos(), new ImageRenderable(type.GetTexture(position.X % 2 != 0)), type.Blocks ? new Physics.SimplePhysics(position.ToCPos() / new CPos(2, 1, 1), 0, position.X % 2 != 0 ? WarriorsSnuggery.Physics.Shape.LINE_HORIZONTAL : WarriorsSnuggery.Physics.Shape.LINE_VERTICAL, 512, 512, type.Height) : new Physics.SimplePhysics(position.ToCPos() / new CPos(2, 1, 1), 0, WarriorsSnuggery.Physics.Shape.NONE, 0, 0, 0))
 		{
 			LayerPosition = position;
+			this.layer = layer;
+
 			var pos = position.ToCPos() / new CPos(2, 1, 1);
 			Position = pos + new CPos(0, -512, 0);
 			isHorizontal = position.X % 2 != 0;
@@ -29,17 +52,69 @@ namespace WarriorsSnuggery.Objects
 				renderPosition = pos + new CPos(-83, -512, 0);
 			}
 			Type = type;
+			health = type.Health;
+
+			if (Type.DamagedImage1 != null)
+				damaged1 = new ImageRenderable(type.GetDamagedTexture(isHorizontal, false));
+			if (Type.DamagedImage2 != null)
+				damaged2 = new ImageRenderable(type.GetDamagedTexture(isHorizontal, true));
 		}
 
 		public override void Render()
 		{
-			Renderable.SetPosition(renderPosition);
-			base.Render();
+			if (!Type.Invincible && healthPercentage < 0.75f)
+			{
+				if (healthPercentage >= 0.25f)
+				{
+					if (damaged1 != null)
+					{
+						damaged1.SetPosition(renderPosition);
+						damaged1.Render();
+					}
+					else
+					{
+						Renderable.SetPosition(renderPosition);
+						base.Render();
+					}
+				}
+				else
+				{
+					if (damaged2 != null)
+					{
+						damaged2.SetPosition(renderPosition);
+						damaged2.Render();
+					}
+					else if (damaged1 != null)
+					{
+						damaged1.SetPosition(renderPosition);
+						damaged1.Render();
+					}
+					else
+					{
+						Renderable.SetPosition(renderPosition);
+						base.Render();
+					}
+				}
+			}
+			else
+			{
+				Renderable.SetPosition(renderPosition);
+				base.Render();
+			}
 		}
 
-		public override void Dispose()
+		public void Damage(int damage)
 		{
-			base.Dispose();
+			if (Type.Invincible)
+				return;
+
+			health -= (int)Math.Round(damage * Type.DamagePenetration);
+
+			if (health <= 0)
+			{
+				Dispose();
+				layer.Remove(LayerPosition);
+			}
 		}
 
 		public override void CheckVisibility()
@@ -48,6 +123,11 @@ namespace WarriorsSnuggery.Objects
 
 			if (!isHorizontal)
 				Renderable.Visible |= VisibilitySolver.IsVisibleIgnoringBounds(new WPos(LayerPosition.X / 2, LayerPosition.Y, 0));
+		}
+
+		public override void Dispose()
+		{
+			base.Dispose();
 		}
 	}
 }

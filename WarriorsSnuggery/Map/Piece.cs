@@ -78,11 +78,11 @@ namespace WarriorsSnuggery.Maps
 				}
 			}
 
-			if (groundData.Length < size.X * size.Y)
-				throw new InvalidPieceException(string.Format(@"The count of given terrains ({0}) is not the same as the size ({1}) on the piece '{2}'", groundData.Length, size.X * size.Y, name));
+			if (groundData.Length != size.X * size.Y)
+				throw new InvalidPieceException(string.Format(@"The count of given terrains ({0}) is not the size ({1}) of the piece '{2}'", groundData.Length, size.X * size.Y, name));
 
-			if (wallData.Length != 0 && wallData.Length < size.X * size.Y)
-				throw new InvalidPieceException(string.Format(@"The count of given walls ({0}) is not the same as the size ({1}) on the piece '{2}'", groundData.Length, size.X * 2 * size.Y, name));
+			if (wallData.Length != (size.X + 1) * (size.Y + 1) * 2 * 2)
+				throw new InvalidPieceException(string.Format(@"The count of given walls ({0}) is smaller as the size ({1}) on the piece '{2}'", groundData.Length, size.X * size.Y, name));
 
 			return new Piece(size, groundData, wallData, name, innerName, actors);
 		}
@@ -108,8 +108,15 @@ namespace WarriorsSnuggery.Maps
 					for (int x = position.X * 2; x < maxX; x++)
 					{
 						var dataPos = (y - position.Y) * (Size.X + 1) * 2 + (x - position.X * 2);
+						dataPos *= 2;
+
 						if (wallData[dataPos] >= 0)
-							world.WallLayer.Set(WallCreator.Create(new WPos(x, y, 0), wallData[dataPos]));
+						{
+							var wall = WallCreator.Create(new WPos(x, y, 0), world.WallLayer, wallData[dataPos]);
+							wall.Health = wallData[dataPos + 1];
+
+							world.WallLayer.Set(wall);
+						}
 						else if (world.WallLayer.Walls[x, y] != null && x != position.X * 2 && y != position.Y && y != maxY - 1 && !(x >= maxX - 2))
 							world.WallLayer.Remove(new MPos(x, y));
 					}

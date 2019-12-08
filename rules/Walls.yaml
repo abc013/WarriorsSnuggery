@@ -1,41 +1,62 @@
 0=
 	Image=walls1
 		Size=48,24
+	Health=1000
 
 1=
 	Image=walls0
 		Size=48,24
+	DamagedImage1=walls0_dam1
+		Size=48,24
+	DamagedImage2=walls0_dam2
+		Size=48,24
+	Health=1000
 
 2=
 	Image=handrails
 		Size=48,24
 	Height=256
+	Health=500
 
 3=
-	Image=fence1
+	Image=fence0
+		Size=48,24
+	DamagedImage1=fence0_dam1
+		Size=48,24
+	DamagedImage2=fence0_dam2
 		Size=48,24
 	Height=256
+	Health=500
 
 4=
 	Image=walls0_damaged0
 		Size=48,24
+	Health=1000
 
 5=
 	Image=walls0_damaged1
 		Size=48,24
+	Health=1000
 
 6=
 	Image=walls1_damaged0
 		Size=48,24
+	Health=1000
 
 7=
 	Image=walls1_damaged1
 		Size=48,24
+	Health=1000
 
 8=
 	Image=walls0_gate
 		Size=48,24
+	DamagedImage1=walls0_gate_dam1
+		Size=48,24
+	DamagedImage2=walls0_gate_dam2
+		Size=48,24
 	Blocks=false
+	Health=1000
 
 
 
