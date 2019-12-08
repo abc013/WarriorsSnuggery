@@ -26,11 +26,11 @@ namespace WarriorsSnuggery.Objects
 		};
 
 		readonly World world;
-		public readonly WPos Position;
+		public readonly MPos Position;
 		public readonly TerrainType Type;
 		bool firstChecked;
 
-		public Terrain(World world, WPos position, TerrainType type)
+		public Terrain(World world, MPos position, TerrainType type)
 		{
 			this.world = world;
 			Position = position;

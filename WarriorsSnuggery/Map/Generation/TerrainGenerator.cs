@@ -94,7 +94,7 @@ namespace WarriorsSnuggery.Maps
 					dirtyCells[x, y] = true;
 					//terrainGenerationArray[x, y] = info.ID;
 					var number = (int)Math.Floor(single * (info.Terrain.Length - 1));
-					world.TerrainLayer.Set(TerrainCreator.Create(world, new WPos(x, y, 0), info.Terrain[number]));
+					world.TerrainLayer.Set(TerrainCreator.Create(world, new MPos(x, y), info.Terrain[number]));
 
 					if (info.SpawnActors != null)
 					{
@@ -124,7 +124,7 @@ namespace WarriorsSnuggery.Maps
 
 								if (!dirtyCells[p.X, p.Y] && map.AcquireCell(p, info.ID))
 								{
-									world.TerrainLayer.Set(TerrainCreator.Create(world, new WPos(p.X, p.Y, 0), info.BorderTerrain[0]));
+									world.TerrainLayer.Set(TerrainCreator.Create(world, new MPos(p.X, p.Y), info.BorderTerrain[0]));
 								}
 							}
 						}

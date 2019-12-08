@@ -94,7 +94,7 @@ namespace WarriorsSnuggery
 				|| shroud.ShroudRevealed(Objects.Actor.PlayerTeam, x * 2, y * 2 + 1);
 		}
 
-		public static bool IsVisible(WPos position)
+		public static bool IsVisible(MPos position)
 		{
 			if (shroud.AllRevealed)
 				return true;

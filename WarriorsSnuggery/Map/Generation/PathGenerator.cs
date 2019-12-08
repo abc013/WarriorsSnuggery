@@ -168,7 +168,7 @@ namespace WarriorsSnuggery.Maps
 					if (random.NextDouble() > ruinous)
 					{
 						var ran = random.Next(info.Types.Length);
-						world.TerrainLayer.Set(TerrainCreator.Create(world, new WPos(x, y, 0), info.Types[ran]));
+						world.TerrainLayer.Set(TerrainCreator.Create(world, new MPos(x, y), info.Types[ran]));
 					}
 				}
 			}

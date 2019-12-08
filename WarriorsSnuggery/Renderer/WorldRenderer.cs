@@ -250,7 +250,7 @@ namespace WarriorsSnuggery
 			}
 		}
 
-		public static void CheckTerrainAround(WPos pos, bool checkEdges = false)
+		public static void CheckTerrainAround(MPos pos, bool checkEdges = false)
 		{
 			int calls = 0;
 			for (int x = pos.X - 1; x < pos.X + 2; x++)

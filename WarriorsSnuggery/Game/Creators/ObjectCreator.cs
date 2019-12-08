@@ -246,7 +246,7 @@ namespace WarriorsSnuggery
 			return types[ID];
 		}
 
-		public static Terrain Create(World world, WPos position, int ID)
+		public static Terrain Create(World world, MPos position, int ID)
 		{
 			return new Terrain(world, position, GetType(ID));
 		}
@@ -291,9 +291,9 @@ namespace WarriorsSnuggery
 			return types[ID];
 		}
 
-		public static Wall Create(WPos position, WallLayer layer, int ID)
+		public static Wall Create(MPos position, WallLayer layer, int ID)
 		{
-			return new Wall(position.ToMPos(), layer, GetType(ID));
+			return new Wall(position, layer, GetType(ID));
 		}
 	}
 }

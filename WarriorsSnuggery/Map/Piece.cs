@@ -94,7 +94,7 @@ namespace WarriorsSnuggery.Maps
 			{
 				for (int x = position.X; x < (Size.X + position.X); x++)
 				{
-					world.TerrainLayer.Set(TerrainCreator.Create(world, new WPos(x, y, 0), groundData[(y - position.Y) * Size.X + (x - position.X)]));
+					world.TerrainLayer.Set(TerrainCreator.Create(world, new MPos(x, y), groundData[(y - position.Y) * Size.X + (x - position.X)]));
 				}
 			}
 
@@ -112,7 +112,7 @@ namespace WarriorsSnuggery.Maps
 
 						if (wallData[dataPos] >= 0)
 						{
-							var wall = WallCreator.Create(new WPos(x, y, 0), world.WallLayer, wallData[dataPos]);
+							var wall = WallCreator.Create(new MPos(x, y), world.WallLayer, wallData[dataPos]);
 							wall.Health = wallData[dataPos + 1];
 
 							world.WallLayer.Set(wall);

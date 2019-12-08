@@ -248,7 +248,7 @@ namespace WarriorsSnuggery.UI
 
 			var pos = MouseInput.GamePosition;
 			pos = rasterizationBox.Checked ? new CPos(pos.X - pos.X % 512, pos.Y - pos.Y % 512, 0) : pos;
-			var wpos = MouseInput.GamePosition.ToWPos();
+			var mpos = MouseInput.GamePosition.ToMPos();
 
 			switch (currentSelected)
 			{
@@ -262,22 +262,22 @@ namespace WarriorsSnuggery.UI
 					if (terrainSelected == null)
 						return;
 
-					wpos = new WPos(wpos.X < 0 ? 0 : wpos.X, wpos.Y < 0 ? 0 : wpos.Y, 0);
-					var terrain = TerrainCreator.Create(game.World, wpos, terrainSelected.ID);
+					mpos = new MPos(mpos.X < 0 ? 0 : mpos.X, mpos.Y < 0 ? 0 : mpos.Y);
+					var terrain = TerrainCreator.Create(game.World, mpos, terrainSelected.ID);
 					game.World.TerrainLayer.Set(terrain);
 
-					WorldRenderer.CheckTerrainAround(wpos, true);
+					WorldRenderer.CheckTerrainAround(mpos, true);
 
 					break;
 				case Selected.WALL:
 					if (wallSelected == null)
 						return;
 
-					wpos = new WPos(wpos.X < 0 ? 0 : wpos.X, wpos.Y < 0 ? 0 : wpos.Y, 0);
-					wpos = new WPos(wpos.X > game.World.Map.Bounds.X ? game.World.Map.Bounds.X : wpos.X, wpos.Y > game.World.Map.Bounds.Y ? game.World.Map.Bounds.Y : wpos.Y, 0);
-					wpos = new WPos(wpos.X * 2 + (horizontal ? 0 : 1), wpos.Y, 0);
+					mpos = new MPos(mpos.X < 0 ? 0 : mpos.X, mpos.Y < 0 ? 0 : mpos.Y);
+					mpos = new MPos(mpos.X > game.World.Map.Bounds.X ? game.World.Map.Bounds.X : mpos.X, mpos.Y > game.World.Map.Bounds.Y ? game.World.Map.Bounds.Y : mpos.Y);
+					mpos = new MPos(mpos.X * 2 + (horizontal ? 0 : 1), mpos.Y);
 
-					game.World.WallLayer.Set(WallCreator.Create(wpos, game.World.WallLayer, wallSelected.ID));
+					game.World.WallLayer.Set(WallCreator.Create(mpos, game.World.WallLayer, wallSelected.ID));
 					break;
 			}
 		}
