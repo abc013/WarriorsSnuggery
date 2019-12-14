@@ -266,7 +266,7 @@ namespace WarriorsSnuggery
 				Program.CheckGraphicsError("UniformHeight_Program");
 				var height2 = (1024 - height ^ 2) / 2048f;
 				if (height2 > 1) height2 = 1;
-				if (height2 < 0) height2 = 0;
+				if (height2 < 0.2f) height2 = 0.2f;
 				GL.Uniform1(heightLocation, height2);
 				Program.CheckGraphicsError("UniformHeight_Uniform");
 				GL.UseProgram(0);
