@@ -5,7 +5,7 @@ namespace WarriorsSnuggery.Graphics
 {
 	public class IImage : Renderable
 	{
-		static readonly Dictionary<int, IImage> Images = new Dictionary<int, IImage>();
+		static readonly Dictionary<int, IImage> images = new Dictionary<int, IImage>();
 
 		public static IImage Create(TexturedVertex[] vertices, ITexture info)
 		{
@@ -15,14 +15,14 @@ namespace WarriorsSnuggery.Graphics
 			foreach (var vertex in vertices)
 				key ^= vertex.GetHashCode();
 
-			if (Images.ContainsKey(key))
+			if (images.ContainsKey(key))
 			{
-				image = Images[key];
+				image = images[key];
 			}
 			else
 			{
 				image = new IImage(vertices, info);
-				Images.Add(key, image);
+				images.Add(key, image);
 			}
 
 			return image;
@@ -30,10 +30,10 @@ namespace WarriorsSnuggery.Graphics
 
 		public static void DisposeImages()
 		{
-			foreach (var image in Images.Values)
+			foreach (var image in images.Values)
 				image.Dispose();
 
-			Images.Clear();
+			images.Clear();
 		}
 
 		public static void CreateTextureBuffer(TexturedVertex[] vertices)

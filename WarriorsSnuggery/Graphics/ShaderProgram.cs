@@ -64,11 +64,11 @@ namespace WarriorsSnuggery.Graphics
 
 		public virtual void Dispose()
 		{
-			Dispose(true);
+			dispose(true);
 			GC.SuppressFinalize(this);
 		}
 
-		void Dispose(bool disposing)
+		void dispose(bool disposing)
 		{
 			if (disposing)
 			{

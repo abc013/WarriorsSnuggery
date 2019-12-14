@@ -101,7 +101,7 @@ namespace WarriorsSnuggery.Physics
 				if (sector.Position.X - sectorMax.X > 0 || sector.Position.Y - sectorMax.Y > 0)
 					continue;
 
-				var objs = sector.CheckRay(this, new[] { typeof(Weapon), typeof(BeamWeapon), typeof(BulletWeapon) }, shooter == null ? null : new[] { shooter });
+				var objs = sector.GetObjects(new[] { typeof(Weapon), typeof(BeamWeapon), typeof(BulletWeapon) }, shooter == null ? null : new[] { shooter });
 				foreach (var obj in objs)
 				{
 					foreach (var line in obj.Physics.GetLines())

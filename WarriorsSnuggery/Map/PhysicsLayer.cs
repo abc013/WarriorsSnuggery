@@ -21,12 +21,8 @@ namespace WarriorsSnuggery
 			Size = new MPos((int)Math.Ceiling(size.X / SectorSize), (int)Math.Ceiling(size.Y / SectorSize));
 			Sectors = new PhysicsSector[Size.X, Size.Y];
 			for (int x = 0; x < Size.X; x++)
-			{
 				for (int y = 0; y < Size.Y; y++)
-				{
 					Sectors[x, y] = new PhysicsSector(new MPos(x, y));
-				}
-			}
 		}
 
 		public void UpdateSectors(PhysicsObject obj, bool @new = false, bool updateSectors = true)
@@ -35,18 +31,13 @@ namespace WarriorsSnuggery
 				return;
 
 			if (!@new && updateSectors)
-			{
 				foreach (var sector in obj.PhysicsSectors)
-				{
 					sector.Leave(obj);
-				}
-			}
 
 			var position = obj.Position;
 			// Add margin to be sure.
 			var radiusX = obj.Physics.RadiusX + 10;
 			var radiusY = obj.Physics.RadiusY + 10;
-			var shape = obj.Physics.Shape;
 			var points = new MPos[4];
 
 			// Corner points
@@ -125,7 +116,7 @@ namespace WarriorsSnuggery
 			return objects.Any((o) => o.Physics != obj.Physics && (ignoreObjects == null || !ignoreObjects.Contains(o)) && o.Physics.Intersects(obj.Physics, ignoreHeight));
 		}
 
-		public PhysicsObject[] CheckRay(Physics.RayPhysics physics, Type[] ignoreTypes = null, PhysicsObject[] ignoreObjects = null)
+		public PhysicsObject[] GetObjects(Type[] ignoreTypes = null, PhysicsObject[] ignoreObjects = null)
 		{
 			return objects.Where((o) => (ignoreObjects == null || !ignoreObjects.Contains(o)) && (ignoreTypes == null || !ignoreTypes.Contains(o.GetType()))).ToArray();
 		}

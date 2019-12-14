@@ -6,7 +6,7 @@ namespace WarriorsSnuggery
 	public static class MouseInput
 	{
 		public static int WheelState;
-		static int WheelValue;
+		static int wheelValue;
 		public static CPos WindowPosition;
 		public static CPos GamePosition;
 		static Vector vPos;
@@ -23,8 +23,8 @@ namespace WarriorsSnuggery
 		public static void Tick()
 		{
 			var change = Mouse.GetCursorState().Wheel;
-			WheelState = WheelValue - change;
-			WheelValue = change;
+			WheelState = wheelValue - change;
+			wheelValue = change;
 
 			var state = Mouse.GetState();
 			IsLeftDown = state.IsButtonDown(MouseButton.Left);
