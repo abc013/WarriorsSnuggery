@@ -8,7 +8,7 @@ arrow=
 
 cannon=
 	MaxRange=15360
-	MinRange=4096
+	MinRange=1536
 	Texture=cannonball
 		Size=2,2
 	Smudge=smudge2

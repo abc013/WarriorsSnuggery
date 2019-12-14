@@ -77,7 +77,7 @@ namespace WarriorsSnuggery.Objects
 
 			World.PhysicsLayer.UpdateSectors(this, updateSectors: false);
 
-			if (World.CheckCollision(this, true, new[] { Origin }))
+			if (World.CheckCollision(this, false, new[] { Origin }))
 				Detonate();
 
 			flatDistMoved += (Position - old).FlatDist;
