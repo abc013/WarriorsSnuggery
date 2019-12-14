@@ -136,7 +136,7 @@ namespace WarriorsSnuggery.Objects
 			var pos = new CPos(Position.X + movement.X, Position.Y + movement.Y, Position.Z);
 			var oldpos = Position;
 
-			var ignoreTypes = new[] { typeof(Weapon), typeof(BeamWeapon), typeof(BulletWeapon), typeof(RocketWeapon) };
+			var ignoreTypes = new[] { typeof(Weapon), typeof(BeamWeapon), typeof(BulletWeapon) };
 			Position = pos;
 			var intersects = World.CheckCollision(this, false, ignoreTypes);
 			Position = oldpos;

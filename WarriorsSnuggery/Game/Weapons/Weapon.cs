@@ -87,7 +87,7 @@ namespace WarriorsSnuggery.Objects
 			var x = Math.Cos(angle) * Speed;
 			var y = Math.Sin(angle) * Speed;
 			double z;
-			if (Type.WeaponFireType == WeaponFireType.ROCKET)
+			if (Type.WeaponFireType == WeaponFireType.BULLET)
 			{
 				int zDiff;
 				int dDiff;
@@ -120,7 +120,7 @@ namespace WarriorsSnuggery.Objects
 
 			World.PhysicsLayer.UpdateSectors(this);
 
-			if (World.CheckCollision(this, true, new[] { typeof(Weapon), typeof(BeamWeapon), typeof(BulletWeapon), typeof(RocketWeapon) }, new[] { Origin }))
+			if (World.CheckCollision(this, true, new[] { typeof(Weapon), typeof(BeamWeapon), typeof(BulletWeapon) }, new[] { Origin }))
 				Detonate();
 
 			DistanceMoved += (Position - old).FlatDist;

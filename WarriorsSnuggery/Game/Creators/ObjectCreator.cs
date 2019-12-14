@@ -132,9 +132,6 @@ namespace WarriorsSnuggery
 		{
 			switch (type.WeaponFireType)
 			{
-				case WeaponFireType.ROCKET:
-					return new RocketWeapon(world, type, origin, target);
-
 				case WeaponFireType.DIRECTEDBEAM:
 				case WeaponFireType.BEAM:
 					return new BeamWeapon(world, type, origin, target);
@@ -147,9 +144,6 @@ namespace WarriorsSnuggery
 		{
 			switch (type.WeaponFireType)
 			{
-				case WeaponFireType.ROCKET:
-					return new RocketWeapon(world, type, origin, target);
-
 				case WeaponFireType.DIRECTEDBEAM:
 				case WeaponFireType.BEAM:
 					return new BeamWeapon(world, type, origin, target);

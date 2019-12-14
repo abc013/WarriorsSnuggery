@@ -207,7 +207,6 @@
     <Compile Include="Game\Wall.cs" />
     <Compile Include="Game\Weapons\BeamWeapon.cs" />
     <Compile Include="Game\Weapons\BulletWeapon.cs" />
-    <Compile Include="Game\Weapons\RocketWeapon.cs" />
     <Compile Include="Statistics.cs" />
     <Compile Include="Position\Vector.cs" />
     <Compile Include="Graphics\DrawMethod.cs" />

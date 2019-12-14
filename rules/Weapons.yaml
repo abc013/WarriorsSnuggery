@@ -1,5 +1,4 @@
 arrow=
-	WeaponFireType=Rocket
 	Texture=arrow
 		Size=6,2
 	Damage=20
@@ -8,7 +7,6 @@ arrow=
 	OrientateToTarget=true
 
 cannon=
-	WeaponFireType=Rocket
 	MaxRange=15360
 	MinRange=4096
 	Texture=cannonball
