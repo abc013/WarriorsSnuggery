@@ -195,7 +195,6 @@ namespace WarriorsSnuggery.Objects
 
 		void denyMove()
 		{
-			Console.WriteLine("meh");
 			Physics.Position = Position;
 			Velocity = CPos.Zero;
 

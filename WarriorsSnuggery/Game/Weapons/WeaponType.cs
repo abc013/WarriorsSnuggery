@@ -62,11 +62,6 @@ namespace WarriorsSnuggery.Objects
 		[Desc("Weapon always points to the target.")]
 		public readonly bool OrientateToTarget;
 
-		[Desc("Collision shape of the weapon.", "Possible: CIRCLE, RECTANGLE, LINE_HORIZONTAL, LINE_VERTICAL, NONE")]
-		public readonly Physics.Shape PhysicalShape = Physics.Shape.RECTANGLE;
-		[Desc("Size of the collision boundary.")]
-		public readonly int PhysicalSize = 64;
-
 		[Desc("Gravity applied to the weapon.")]
 		public readonly int Gravity = 9;
 

@@ -20,7 +20,9 @@ namespace WarriorsSnuggery.Objects
 		int endduration;
 		readonly RayPhysics rayPhysics;
 
-		public BeamWeapon(World world, WeaponType type, CPos origin, CPos target) : base(world, type, origin, target)
+		public BeamWeapon(World world, WeaponType type, Actor origin, CPos target) : this(world, type, origin.ActiveWeapon.WeaponOffsetPosition, target, origin) { }
+
+		public BeamWeapon(World world, WeaponType type, CPos origin, CPos target, Actor originActor = null) : base(world, type, origin, target, originActor)
 		{
 			originPos = origin;
 			impactInterval = type.BeamImpactInterval;
@@ -31,25 +33,6 @@ namespace WarriorsSnuggery.Objects
 				Target = target
 			};
 
-			init();
-		}
-
-		public BeamWeapon(World world, WeaponType type, Actor origin, CPos target) : base(world, type, origin, target)
-		{
-			originPos = origin.ActiveWeapon.WeaponOffsetPosition;
-			impactInterval = type.BeamImpactInterval;
-			Target = target;
-			rayPhysics = new RayPhysics(world)
-			{
-				Start = originPos,
-				Target = target
-			};
-
-			init();
-		}
-
-		void init()
-		{
 			duration = Type.BeamDuration;
 			buildupduration = Type.BeamStartDuration;
 			endduration = Type.BeamEndDuration;

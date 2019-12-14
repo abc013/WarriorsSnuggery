@@ -89,7 +89,6 @@ blade=
 	MinRange=256
 	OrientateToTarget=true
 	Speed=180
-	PhysicalSize=0
 	Reload=10
 	Gravity=0
 

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using WarriorsSnuggery.Graphics;
+using WarriorsSnuggery.Physics;
 
 namespace WarriorsSnuggery.Objects
 {
@@ -11,24 +12,16 @@ namespace WarriorsSnuggery.Objects
 		public CPos Target;
 		protected Actor TargetActor;
 		protected readonly WeaponType Type;
-		protected float DistanceMoved;
-		protected int Speed;
 
-		readonly float inaccuracyModifier = 1f;
-		readonly float damageModifier = 1f;
-		readonly float rangeModifier = 1f;
+		protected readonly float InaccuracyModifier = 1f;
+		protected readonly float DamageModifier = 1f;
+		protected readonly float RangeModifier = 1f;
 
-		public Weapon(World world, WeaponType type, Actor origin, CPos target) : this(world, type, origin.ActiveWeapon.WeaponOffsetPosition, target, origin)
-		{
-		}
-
-		public Weapon(World world, WeaponType type, CPos origin, CPos target, Actor originActor = null) : base(origin, new IImageSequenceRenderable(type.Texture.GetTextures(), type.Texture.Tick), new Physics.SimplePhysics(origin, 0, type.PhysicalShape, type.PhysicalSize, type.PhysicalSize, type.PhysicalSize))
+		public Weapon(World world, WeaponType type, CPos origin, CPos target, Actor originActor = null) : base(origin, new IImageSequenceRenderable(type.Texture.GetTextures(), type.Texture.Tick), type.WeaponFireType == WeaponFireType.BULLET ? new SimplePhysics(origin, 0, Shape.RECTANGLE, 64, 64, 64) : SimplePhysics.Empty)
 		{
 			World = world;
 			Type = type;
 			Origin = originActor;
-			if (type.Acceleration == 0)
-				Speed = type.Speed;
 
 			Target = target;
 
@@ -37,38 +30,22 @@ namespace WarriorsSnuggery.Objects
 
 			if (originActor != null)
 			{
-				foreach (var effect in originActor.Effects.Where(e => e.Active && e.Spell.Type == Spells.EffectType.INACCURACY))
-				{
-					inaccuracyModifier *= effect.Spell.Value;
-				}
+				var effects = originActor.Effects.Where(e => e.Active);
 
-				foreach (var effect in originActor.Effects.Where(e => e.Active && e.Spell.Type == Spells.EffectType.DAMAGE))
-				{
-					damageModifier *= effect.Spell.Value;
-				}
+				foreach (var effect in effects.Where(e => e.Spell.Type == Spells.EffectType.INACCURACY))
+					InaccuracyModifier *= effect.Spell.Value;
 
-				foreach (var effect in originActor.Effects.Where(e => e.Active && e.Spell.Type == Spells.EffectType.RANGE))
-				{
-					rangeModifier *= effect.Spell.Value;
-				}
+				foreach (var effect in effects.Where(e => e.Spell.Type == Spells.EffectType.DAMAGE))
+					DamageModifier *= effect.Spell.Value;
+
+				foreach (var effect in effects.Where(e => e.Spell.Type == Spells.EffectType.RANGE))
+					RangeModifier *= effect.Spell.Value;
 			}
 		}
 
 		public override void Tick()
 		{
 			base.Tick();
-
-			if (Type.Acceleration != 0 && Speed != Type.Speed)
-			{
-				Speed += Type.Acceleration;
-				if (Speed > Type.Speed)
-					Speed = Type.Speed;
-			}
-
-			Move(Target);
-
-			if (Type.OrientateToTarget)
-				Rotation = new VAngle(0, 0, -(Target - Position).FlatAngle);
 
 			if (InRange(Target))
 				Detonate();
@@ -78,54 +55,6 @@ namespace WarriorsSnuggery.Objects
 		{
 			RenderShadow();
 			base.Render();
-		}
-
-		public virtual void Move(CPos target)
-		{
-			var angle = (Position - target).FlatAngle;
-
-			var x = Math.Cos(angle) * Speed;
-			var y = Math.Sin(angle) * Speed;
-			double z;
-			if (Type.WeaponFireType == WeaponFireType.BULLET)
-			{
-				int zDiff;
-				int dDiff;
-				float angle2;
-				if (TargetActor != null)
-				{
-					zDiff = Height - TargetActor.Height;
-					dDiff = (int)(Position - TargetActor.Position).FlatDist;
-				}
-				else
-				{
-					zDiff = Height;
-					dDiff = (int)(Position - Target).FlatDist;
-				}
-				angle2 = new CPos(-dDiff, -zDiff, 0).FlatAngle;
-				z = Math.Sin(angle2) * Speed;
-			}
-			else
-			{
-				z = Type.Gravity;
-			}
-
-			var old = Position;
-			Position = new CPos(Position.X + (int)x, Position.Y + (int)y, Position.Z);
-			Physics.Position = Position;
-
-			Height -= (int)z;
-			if (Height < 0)
-				Detonate();
-
-			World.PhysicsLayer.UpdateSectors(this, updateSectors: false);
-
-			if (World.CheckCollision(this, true, new[] { Origin }))
-				Detonate();
-
-			DistanceMoved += (Position - old).FlatDist;
-			if (DistanceMoved > Type.MaxRange * rangeModifier || !World.IsInWorld(Position))
-				Detonate();
 		}
 
 		public virtual bool InRange(CPos position, int range = 256)
@@ -147,7 +76,7 @@ namespace WarriorsSnuggery.Objects
 					if (dist < 1f) dist = 1;
 
 					float damagemultiplier = getDamageMultiplier(dist);
-					var damage = (int)Math.Floor(damagemultiplier * Type.Damage * damageModifier);
+					var damage = (int)Math.Floor(damagemultiplier * Type.Damage * DamageModifier);
 
 					if (damage == 0)
 						continue;
@@ -174,7 +103,7 @@ namespace WarriorsSnuggery.Objects
 					if (dist < 1f) dist = 1;
 
 					float damagemultiplier = getDamageMultiplier(dist);
-					var damage = (int)Math.Floor(damagemultiplier * Type.WallDamage * damageModifier);
+					var damage = (int)Math.Floor(damagemultiplier * Type.WallDamage * DamageModifier);
 
 					if (damage == 0)
 						continue;
@@ -187,12 +116,8 @@ namespace WarriorsSnuggery.Objects
 				World.Add(new Smudge(new CPos(Position.X, Position.Y, -512), new IImageSequenceRenderable(Type.Smudge.GetTextures(), Type.Smudge.Tick)));
 
 			if (Type.ParticlesOnImpact != null)
-			{
 				foreach (var particle in Type.ParticlesOnImpact.Create(World, Position, Type.WeaponFireType == WeaponFireType.BEAM ? 0 : Height))
-				{
 					World.Add(particle);
-				}
-			}
 
 			if (dispose)
 				Dispose();
@@ -221,8 +146,8 @@ namespace WarriorsSnuggery.Objects
 		{
 			if (Type.Inaccuracy > 0)
 			{
-				var ranX = (Program.SharedRandom.Next(Type.Inaccuracy) - Type.Inaccuracy / 2) * inaccuracyModifier;
-				var ranY = (Program.SharedRandom.Next(Type.Inaccuracy) - Type.Inaccuracy / 2) * inaccuracyModifier;
+				var ranX = (Program.SharedRandom.Next(Type.Inaccuracy) - Type.Inaccuracy / 2) * InaccuracyModifier;
+				var ranY = (Program.SharedRandom.Next(Type.Inaccuracy) - Type.Inaccuracy / 2) * InaccuracyModifier;
 
 				return new CPos((int)ranX, (int)ranY, 0);
 			}
