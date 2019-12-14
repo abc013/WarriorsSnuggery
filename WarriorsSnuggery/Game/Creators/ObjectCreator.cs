@@ -130,25 +130,23 @@ namespace WarriorsSnuggery
 
 		public static Weapon Create(World world, WeaponType type, CPos origin, CPos target)
 		{
-			switch (type.WeaponFireType)
-			{
-				case WeaponFireType.DIRECTEDBEAM:
-				case WeaponFireType.BEAM:
-					return new BeamWeapon(world, type, origin, target);
-				default:
-					return new BulletWeapon(world, type, origin, target);
-			}
+			return create(world, type, origin, target);
 		}
 
 		public static Weapon Create(World world, WeaponType type, Actor origin, CPos target)
+		{
+			return create(world, type, origin.ActiveWeapon.WeaponOffsetPosition, target, origin);
+		}
+
+		static Weapon create(World world, WeaponType type, CPos origin, CPos target, Actor originActor = null)
 		{
 			switch (type.WeaponFireType)
 			{
 				case WeaponFireType.DIRECTEDBEAM:
 				case WeaponFireType.BEAM:
-					return new BeamWeapon(world, type, origin, target);
+					return new BeamWeapon(world, type, origin, target, originActor);
 				default:
-					return new BulletWeapon(world, type, origin, target);
+					return new BulletWeapon(world, type, origin, target, originActor);
 			}
 		}
 	}

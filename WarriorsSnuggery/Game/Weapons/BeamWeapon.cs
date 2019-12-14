@@ -21,9 +21,7 @@ namespace WarriorsSnuggery.Objects
 		int endduration;
 		readonly RayPhysics rayPhysics;
 
-		public BeamWeapon(World world, WeaponType type, Actor origin, CPos target) : this(world, type, origin.ActiveWeapon.WeaponOffsetPosition, target, origin) { }
-
-		public BeamWeapon(World world, WeaponType type, CPos origin, CPos target, Actor originActor = null) : base(world, type, origin, target, originActor)
+		public BeamWeapon(World world, WeaponType type, CPos origin, CPos target, Actor originActor) : base(world, type, origin, target, originActor)
 		{
 			OriginPos = origin;
 			impactInterval = type.BeamImpactInterval;

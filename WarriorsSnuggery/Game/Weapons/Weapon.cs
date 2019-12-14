@@ -17,7 +17,7 @@ namespace WarriorsSnuggery.Objects
 		protected readonly float DamageModifier = 1f;
 		protected readonly float RangeModifier = 1f;
 
-		public Weapon(World world, WeaponType type, CPos origin, CPos target, Actor originActor = null) : base(origin, new IImageSequenceRenderable(type.Texture.GetTextures(), type.Texture.Tick), type.WeaponFireType == WeaponFireType.BULLET ? new SimplePhysics(origin, 0, Shape.RECTANGLE, 64, 64, 64) : SimplePhysics.Empty)
+		public Weapon(World world, WeaponType type, CPos origin, CPos target, Actor originActor) : base(origin, new IImageSequenceRenderable(type.Texture.GetTextures(), type.Texture.Tick), type.WeaponFireType == WeaponFireType.BULLET ? new SimplePhysics(origin, 0, Shape.RECTANGLE, 64, 64, 64) : SimplePhysics.Empty)
 		{
 			World = world;
 			Type = type;

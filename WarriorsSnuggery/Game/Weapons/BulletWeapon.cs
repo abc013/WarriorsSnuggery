@@ -7,9 +7,7 @@ namespace WarriorsSnuggery.Objects
 		float flatDistMoved;
 		int speed;
 
-		public BulletWeapon(World world, WeaponType type, Actor origin, CPos target) : this(world, type, origin.ActiveWeapon.WeaponOffsetPosition, target, origin) { }
-
-		public BulletWeapon(World world, WeaponType type, CPos origin, CPos target, Actor originActor = null) : base(world, type, origin, target, originActor)
+		public BulletWeapon(World world, WeaponType type, CPos origin, CPos target, Actor originActor) : base(world, type, origin, target, originActor)
 		{
 			if (Type.Acceleration == 0)
 				speed = Type.Speed;
