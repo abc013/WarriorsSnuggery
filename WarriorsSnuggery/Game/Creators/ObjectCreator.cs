@@ -4,6 +4,7 @@ using System.Linq;
 using WarriorsSnuggery.Objects;
 using WarriorsSnuggery.Objects.Particles;
 using WarriorsSnuggery.Objects.Parts;
+using WarriorsSnuggery.Objects.Weapons;
 
 namespace WarriorsSnuggery
 {
@@ -140,14 +141,12 @@ namespace WarriorsSnuggery
 
 		static Weapon create(World world, WeaponType type, CPos origin, CPos target, Actor originActor = null)
 		{
-			switch (type.WeaponFireType)
-			{
-				case WeaponFireType.DIRECTEDBEAM:
-				case WeaponFireType.BEAM:
-					return new BeamWeapon(world, type, origin, target, originActor);
-				default:
-					return new BulletWeapon(world, type, origin, target, originActor);
-			}
+			if (type.Projectile is BeamProjectileType)
+				return new BeamWeapon(world, type, origin, target, originActor);
+			else if (type.Projectile is BulletProjectileType)
+				return new BulletWeapon(world, type, origin, target, originActor);
+			else
+				return null; // TODO
 		}
 	}
 

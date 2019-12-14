@@ -1,6 +1,7 @@
 ﻿using System;
 using WarriorsSnuggery.Graphics;
 using WarriorsSnuggery.Objects.Conditions;
+using WarriorsSnuggery.Objects.Weapons;
 
 namespace WarriorsSnuggery.Objects.Parts
 {

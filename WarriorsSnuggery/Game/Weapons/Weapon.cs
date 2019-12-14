@@ -3,9 +3,9 @@ using System.Linq;
 using WarriorsSnuggery.Graphics;
 using WarriorsSnuggery.Physics;
 
-namespace WarriorsSnuggery.Objects
+namespace WarriorsSnuggery.Objects.Weapons
 {
-	public class Weapon : PhysicsObject
+	public abstract class Weapon : PhysicsObject
 	{
 		protected readonly World World;
 		protected readonly Actor Origin;
@@ -17,16 +17,13 @@ namespace WarriorsSnuggery.Objects
 		protected readonly float DamageModifier = 1f;
 		protected readonly float RangeModifier = 1f;
 
-		public Weapon(World world, WeaponType type, CPos origin, CPos target, Actor originActor) : base(origin, new IImageSequenceRenderable(type.Texture.GetTextures(), type.Texture.Tick), type.WeaponFireType == WeaponFireType.BULLET ? new SimplePhysics(origin, 0, Shape.RECTANGLE, 64, 64, 64) : SimplePhysics.Empty)
+		protected Weapon(World world, WeaponType type, CPos origin, CPos target, Actor originActor) : base(origin, type.Projectile is BulletProjectileType ? new IImageSequenceRenderable((type.Projectile as BulletProjectileType).Texture.GetTextures(), (type.Projectile as BulletProjectileType).Texture.Tick) : null, type.Projectile is BulletProjectileType ? new SimplePhysics(origin, 0, Shape.RECTANGLE, 64, 64, 64) : SimplePhysics.Empty)
 		{
 			World = world;
 			Type = type;
 			Origin = originActor;
 
 			Target = target;
-
-			if (Type.OrientateToTarget)
-				Rotation = new VAngle(0, 0, -(Target - Position).FlatAngle);
 
 			if (originActor != null)
 			{
@@ -140,19 +137,6 @@ namespace WarriorsSnuggery.Objects
 				default:
 					return 1;
 			}
-		}
-
-		protected CPos getInaccuracy()
-		{
-			if (Type.Inaccuracy > 0)
-			{
-				var ranX = (Program.SharedRandom.Next(Type.Inaccuracy) - Type.Inaccuracy / 2) * InaccuracyModifier;
-				var ranY = (Program.SharedRandom.Next(Type.Inaccuracy) - Type.Inaccuracy / 2) * InaccuracyModifier;
-
-				return new CPos((int)ranX, (int)ranY, 0);
-			}
-
-			return CPos.Zero;
 		}
 	}
 }

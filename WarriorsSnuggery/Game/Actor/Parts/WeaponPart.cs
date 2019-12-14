@@ -1,4 +1,6 @@
-﻿namespace WarriorsSnuggery.Objects.Parts
+﻿using WarriorsSnuggery.Objects.Weapons;
+
+namespace WarriorsSnuggery.Objects.Parts
 {
 	[Desc("Adds a weapon to the object.")]
 	public class WeaponPartInfo : PartInfo

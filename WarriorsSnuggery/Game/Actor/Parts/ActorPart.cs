@@ -1,4 +1,6 @@
-﻿namespace WarriorsSnuggery.Objects.Parts
+﻿using WarriorsSnuggery.Objects.Weapons;
+
+namespace WarriorsSnuggery.Objects.Parts
 {
 	public abstract class PartInfo
 	{

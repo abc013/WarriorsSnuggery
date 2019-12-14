@@ -232,7 +232,7 @@ namespace WarriorsSnuggery.Loader
 					return new Graphics.TextureInfo(name, randomTexture ? Graphics.TextureType.RANDOM : Graphics.TextureType.ANIMATION, tick, size.X, size.Y, searchFile);
 				}
 			}
-			else if (t == typeof(Objects.WeaponType))
+			else if (t == typeof(Objects.Weapons.WeaponType))
 			{
 				// Called method handles nonexistant weapon types
 				return WeaponCreator.GetType(s.Trim());
@@ -245,6 +245,18 @@ namespace WarriorsSnuggery.Loader
 			else if (t == typeof(Spells.Spell))
 			{
 				return new Spells.Spell(node.Children.ToArray());
+			}
+			else if (t == typeof(Objects.Weapons.ProjectileType))
+			{
+				switch(s)
+				{
+					case "Bullet":
+						return new Objects.Weapons.BulletProjectileType(node.Children.ToArray());
+					case "Beam":
+						return new Objects.Weapons.BeamProjectileType(node.Children.ToArray());
+					case "InstantHit":
+						return new Objects.Weapons.InstantHitProjectileType(node.Children.ToArray());
+				}
 			}
 			else if (t == typeof(Maps.ActorGeneratorInfo[]))
 			{

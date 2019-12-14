@@ -271,9 +271,6 @@ namespace WarriorsSnuggery.Objects
 			if (World.Game.Type == GameType.EDITOR || World.Game.Editor && IsPlayer || !World.Map.Type.AllowWeapons)
 				return;
 
-			if ((Position - target).FlatDist < ActiveWeapon.Type.MinRange)
-				return;
-
 			Angle = (Position - target).FlatAngle;
 
 			var weapon = ActiveWeapon.OnAttack(target);
