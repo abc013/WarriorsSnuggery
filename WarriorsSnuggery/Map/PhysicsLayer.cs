@@ -116,9 +116,9 @@ namespace WarriorsSnuggery
 			return objects.Any((o) => o.Physics != obj.Physics && (ignoreObjects == null || !ignoreObjects.Contains(o)) && o.Physics.Intersects(obj.Physics, ignoreHeight));
 		}
 
-		public PhysicsObject[] GetObjects(Type[] ignoreTypes = null, PhysicsObject[] ignoreObjects = null)
+		public PhysicsObject[] GetObjects(PhysicsObject[] ignoreObjects = null)
 		{
-			return objects.Where((o) => (ignoreObjects == null || !ignoreObjects.Contains(o)) && (ignoreTypes == null || !ignoreTypes.Contains(o.GetType()))).ToArray();
+			return objects.Where((o) => (ignoreObjects == null || !ignoreObjects.Contains(o))).ToArray();
 		}
 
 		public void RenderDebug()

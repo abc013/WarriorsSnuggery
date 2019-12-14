@@ -116,7 +116,7 @@ namespace WarriorsSnuggery.Objects
 				World.Add(new Smudge(new CPos(Position.X, Position.Y, -512), new IImageSequenceRenderable(Type.Smudge.GetTextures(), Type.Smudge.Tick)));
 
 			if (Type.ParticlesOnImpact != null)
-				foreach (var particle in Type.ParticlesOnImpact.Create(World, Position, Type.WeaponFireType == WeaponFireType.BEAM ? 0 : Height))
+				foreach (var particle in Type.ParticlesOnImpact.Create(World, Position, Height))
 					World.Add(particle);
 
 			if (dispose)

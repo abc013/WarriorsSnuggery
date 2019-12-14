@@ -36,7 +36,7 @@ slime=
 	Gravity=0
 
 voidweapon=
-	WeaponFireType=Beam
+	WeaponFireType=DIRECTEDBEAM
 	Texture=beam_blue
 		Size=12,3
 		Tick=3

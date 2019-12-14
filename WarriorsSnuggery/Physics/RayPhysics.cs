@@ -9,8 +9,11 @@ namespace WarriorsSnuggery.Physics
 		static readonly CPos invalid = new CPos(int.MaxValue, int.MaxValue, 0);
 
 		public CPos Start;
+		public int StartHeight;
 		public CPos End { get; private set; }
+		public int EndHeight;
 		public CPos Target;
+		public int TargetHeight;
 
 		readonly CPos[][] mapBounds;
 		readonly World world;
@@ -87,8 +90,13 @@ namespace WarriorsSnuggery.Physics
 					var end = getIntersection(line.Start, line.End, out var t1);
 					if (end != invalid && t1 < closestT1)
 					{
-						closestIntersect = end;
-						closestT1 = t1;
+						var height = calculateHeight(end);
+						if (height <= wall.Physics.Height + wall.Physics.HeightRadius || height >= wall.Physics.Height - wall.Physics.HeightRadius)
+						{
+							closestIntersect = end;
+							closestT1 = t1;
+							EndHeight = height;
+						}
 					}
 				}
 			}
@@ -101,7 +109,7 @@ namespace WarriorsSnuggery.Physics
 				if (sector.Position.X - sectorMax.X > 0 || sector.Position.Y - sectorMax.Y > 0)
 					continue;
 
-				var objs = sector.GetObjects(new[] { typeof(Weapon), typeof(BeamWeapon), typeof(BulletWeapon) }, shooter == null ? null : new[] { shooter });
+				var objs = sector.GetObjects(shooter == null ? null : new[] { shooter });
 				foreach (var obj in objs)
 				{
 					foreach (var line in obj.Physics.GetLines())
@@ -109,8 +117,13 @@ namespace WarriorsSnuggery.Physics
 						var end = getIntersection(line.Start, line.End, out var t1);
 						if (end != invalid && t1 < closestT1)
 						{
-							closestIntersect = end;
-							closestT1 = t1;
+							var height = calculateHeight(end);
+							if (height <= obj.Physics.Height + obj.Physics.HeightRadius || height >= obj.Physics.Height - obj.Physics.HeightRadius)
+							{
+								closestIntersect = end;
+								closestT1 = t1;
+								EndHeight = height;
+							}
 						}
 					}
 				}
@@ -144,6 +157,14 @@ namespace WarriorsSnuggery.Physics
 
 			// Return the POINT OF INTERSECTION
 			return new CPos(pos1.X + (int)(delta1.X * T1), pos1.Y + (int)(delta1.Y * T1), 0);
+		}
+
+		int calculateHeight(CPos pos)
+		{
+			var diff = (Start - pos).FlatDist/(Start - Target).FlatDist;
+			var hDiff = StartHeight - TargetHeight;
+
+			return StartHeight - (int)(diff * hDiff);
 		}
 
 		public void RenderDebug()

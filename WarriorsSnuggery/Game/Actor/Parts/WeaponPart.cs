@@ -31,6 +31,12 @@
 			get { return self.GraphicPositionWithoutHeight + info.Offset; }
 			set { }
 		}
+		public int WeaponHeightPosition
+		{
+			get { return self.Height + info.Height; }
+			set { }
+		}
+
 		public CPos Target;
 		BeamWeapon beam;
 
@@ -44,10 +50,15 @@
 		{
 			Target = target;
 			var weapon = WeaponCreator.Create(self.World, info.Type, self, target);
-			weapon.Height = info.Height;
-			self.World.Add(weapon);
 			if (weapon is BeamWeapon)
+			{
 				beam = (BeamWeapon)weapon;
+				beam.OriginHeight = WeaponHeightPosition;
+			}
+			else
+				weapon.Height = WeaponHeightPosition;
+
+			self.World.Add(weapon);
 
 			return weapon;
 		}

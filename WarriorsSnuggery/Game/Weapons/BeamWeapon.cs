@@ -10,7 +10,8 @@ namespace WarriorsSnuggery.Objects
 		int renderabledistance;
 		int tick;
 
-		CPos originPos;
+		public CPos OriginPos;
+		public int OriginHeight;
 		int curTick;
 		int frame;
 
@@ -24,13 +25,13 @@ namespace WarriorsSnuggery.Objects
 
 		public BeamWeapon(World world, WeaponType type, CPos origin, CPos target, Actor originActor = null) : base(world, type, origin, target, originActor)
 		{
-			originPos = origin;
+			OriginPos = origin;
 			impactInterval = type.BeamImpactInterval;
 			Target = target;
 			rayPhysics = new RayPhysics(world)
 			{
-				Start = originPos,
-				Target = target
+				Start = OriginPos,
+				Target = target,
 			};
 
 			duration = Type.BeamDuration;
@@ -60,8 +61,8 @@ namespace WarriorsSnuggery.Objects
 
 		public override void Render()
 		{
-			var distance = (originPos - Position).FlatDist;
-			var angle = (originPos - Position).FlatAngle;
+			var distance = (OriginPos - GraphicPosition - new CPos(0, OriginHeight, -OriginHeight)).FlatDist;
+			var angle = (OriginPos - GraphicPosition - new CPos(0, OriginHeight, -OriginHeight)).FlatAngle;
 			var fit = distance / renderabledistance;
 
 			var curFrame = frame;
@@ -73,12 +74,17 @@ namespace WarriorsSnuggery.Objects
 				var posY = (int)(Math.Sin(angle) * i * renderabledistance);
 
 				renderable.SetRotation(new VAngle(0, 0, -angle) + new VAngle(0, 0, 270));
-				renderable.SetPosition(originPos + new CPos(posX, posY, 0));
+				renderable.SetPosition(OriginPos + new CPos(posX, posY, 0) - new CPos(0, OriginHeight, -OriginHeight));
 				renderable.Render();
 
 				curFrame--;
 				if (curFrame < 0)
 					curFrame = renderables.Length - 1;
+			}
+
+			if (Settings.DeveloperMode)
+			{
+				ColorManager.DrawLine(OriginPos, Position, Color.Magenta);
 			}
 		}
 
@@ -107,23 +113,30 @@ namespace WarriorsSnuggery.Objects
 
 			if (Origin != null)
 			{
-				originPos = Origin.ActiveWeapon.WeaponOffsetPosition;
-				rayPhysics.Start = originPos;
+				OriginHeight = Origin.ActiveWeapon.WeaponHeightPosition;
+				OriginPos = Origin.ActiveWeapon.WeaponOffsetPosition;
+				rayPhysics.Start = OriginPos;
+				rayPhysics.StartHeight = OriginHeight;
 			}
 
 			rayPhysics.Target = Target;
 			rayPhysics.CalculateEnd(Origin);
 			Position = rayPhysics.End;
+			Height = rayPhysics.EndHeight;
 
-			var dist = (originPos - Position).FlatDist;
-
-			if (Type.WeaponFireType == WeaponFireType.DIRECTEDBEAM && dist > (originPos - Target).FlatDist)
-				Position = Target;
+			var dist = (OriginPos - Position).FlatDist;
 
 			if (dist > Type.MaxRange)
 			{
-				var angle = (originPos - Target).FlatAngle;
-				Position = originPos + new CPos((int)(Math.Cos(angle) * Type.MaxRange), (int)(Math.Sin(angle) * Type.MaxRange), 0);
+				var angle = (OriginPos - Target).FlatAngle;
+				Position = OriginPos + new CPos((int)(Math.Cos(angle) * Type.MaxRange), (int)(Math.Sin(angle) * Type.MaxRange), 0);
+				Height = 0;
+			}
+
+			if (Type.WeaponFireType == WeaponFireType.DIRECTEDBEAM && dist > (OriginPos - Target).FlatDist)
+			{
+				Position = Target;
+				Height = 0;
 			}
 
 			if (duration > 0 && buildupduration <= 0 && impactInterval-- <= 0)
