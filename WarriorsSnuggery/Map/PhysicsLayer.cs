@@ -29,12 +29,12 @@ namespace WarriorsSnuggery
 			}
 		}
 
-		public void UpdateSectors(PhysicsObject obj, bool @new = false)
+		public void UpdateSectors(PhysicsObject obj, bool @new = false, bool updateSectors = true)
 		{
 			if (obj.Physics == null || obj.Physics.Shape == Physics.Shape.NONE)
 				return;
 
-			if (!@new)
+			if (!@new && updateSectors)
 			{
 				foreach (var sector in obj.PhysicsSectors)
 				{
@@ -89,7 +89,8 @@ namespace WarriorsSnuggery
 					if (!sectors.Contains(sector))
 						sectors.Add(sector);
 
-					sector.Enter(obj);
+					if (updateSectors)
+						sector.Enter(obj);
 				}
 			}
 
@@ -119,12 +120,9 @@ namespace WarriorsSnuggery
 			objects.Remove(obj);
 		}
 
-		public bool Check(PhysicsObject obj, bool ignoreHeight = false, Type[] ignoreTypes = null, PhysicsObject[] ignoreObjects = null)
+		public bool Check(PhysicsObject obj, bool ignoreHeight = false, PhysicsObject[] ignoreObjects = null)
 		{
-			if (!objects.Contains(obj))
-				return true;
-
-			return objects.Any((o) => o.Physics != obj.Physics && o.Physics.Intersects(obj.Physics, ignoreHeight) && (ignoreObjects == null || !ignoreObjects.Contains(o)) && (ignoreTypes == null || !ignoreTypes.Contains(o.GetType())));
+			return objects.Any((o) => o.Physics != obj.Physics && (ignoreObjects == null || !ignoreObjects.Contains(o)) && o.Physics.Intersects(obj.Physics, ignoreHeight));
 		}
 
 		public PhysicsObject[] CheckRay(Physics.RayPhysics physics, Type[] ignoreTypes = null, PhysicsObject[] ignoreObjects = null)

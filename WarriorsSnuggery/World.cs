@@ -150,27 +150,23 @@ namespace WarriorsSnuggery
 			}
 		}
 
-		public bool CheckCollision(PhysicsObject obj, bool ignoreHeight, Type[] ignoreTypes = null, PhysicsObject[] ignoreObjects = null)
+		public bool CheckCollision(PhysicsObject obj, bool ignoreHeight, PhysicsObject[] ignoreObjects = null)
 		{
 			if (obj.Physics == null || obj.Physics.RadiusX == 0 || obj.Physics.Shape == Physics.Shape.NONE)
 				return false;
 
 			foreach (var p in obj.PhysicsSectors)
-				if (p.Check(obj, ignoreHeight, ignoreTypes, ignoreObjects))
+				if (p.Check(obj, ignoreHeight, ignoreObjects))
 					return true;
 
-			if (ignoreTypes == null || !ignoreTypes.Contains(typeof(Wall)))
+			foreach (var wall in WallLayer.Walls)
 			{
-				foreach (var wall in WallLayer.Walls)
-				{
-					if (wall == null/* || obj.Physics == wall.Physics*/) continue;
-
+				if (wall == null/* || obj.Physics == wall.Physics*/) continue;
 					if (ignoreObjects != null && ignoreObjects.Contains(wall))
 						continue;
 
-					if (obj.Physics.Intersects(wall.Physics, ignoreHeight))
-						return true;
-				}
+				if (obj.Physics.Intersects(wall.Physics, ignoreHeight))
+					return true;
 			}
 
 			return false;
@@ -186,7 +182,9 @@ namespace WarriorsSnuggery
 			else
 				objectsToAdd.Add(@object);
 
-			PhysicsLayer.UpdateSectors(@object, true);
+			// Make sure that no weapons are added to the sectors, as they will not influence any movement
+			if (!(@object is Weapon))
+				PhysicsLayer.UpdateSectors(@object, true);
 		}
 
 		public Terrain TerrainAt(CPos pos)

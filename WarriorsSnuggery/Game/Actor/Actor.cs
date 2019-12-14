@@ -136,9 +136,8 @@ namespace WarriorsSnuggery.Objects
 			var pos = new CPos(Position.X + movement.X, Position.Y + movement.Y, Position.Z);
 			var oldpos = Position;
 
-			var ignoreTypes = new[] { typeof(Weapon), typeof(BeamWeapon), typeof(BulletWeapon) };
 			Position = pos;
-			var intersects = World.CheckCollision(this, false, ignoreTypes);
+			var intersects = World.CheckCollision(this, false);
 			Position = oldpos;
 			var terrain = World.TerrainAt(pos);
 
@@ -151,7 +150,7 @@ namespace WarriorsSnuggery.Objects
 			var posX = new CPos(Position.X + movement.X, Position.Y, Position.Z);
 
 			Position = posX;
-			intersects = World.CheckCollision(this, false, ignoreTypes);
+			intersects = World.CheckCollision(this, false);
 			Position = oldpos;
 			terrain = World.TerrainAt(posX);
 
@@ -165,7 +164,7 @@ namespace WarriorsSnuggery.Objects
 			var posY = new CPos(Position.X, Position.Y + movement.Y, Position.Z);
 
 			Position = posY;
-			intersects = World.CheckCollision(this, false, ignoreTypes);
+			intersects = World.CheckCollision(this, false);
 			Position = oldpos;
 			terrain = World.TerrainAt(posY);
 
@@ -196,6 +195,7 @@ namespace WarriorsSnuggery.Objects
 
 		void denyMove()
 		{
+			Console.WriteLine("meh");
 			Physics.Position = Position;
 			Velocity = CPos.Zero;
 

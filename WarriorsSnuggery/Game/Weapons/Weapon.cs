@@ -118,9 +118,9 @@ namespace WarriorsSnuggery.Objects
 			if (Height < 0)
 				Detonate();
 
-			World.PhysicsLayer.UpdateSectors(this);
+			World.PhysicsLayer.UpdateSectors(this, updateSectors: false);
 
-			if (World.CheckCollision(this, true, new[] { typeof(Weapon), typeof(BeamWeapon), typeof(BulletWeapon) }, new[] { Origin }))
+			if (World.CheckCollision(this, true, new[] { Origin }))
 				Detonate();
 
 			DistanceMoved += (Position - old).FlatDist;
