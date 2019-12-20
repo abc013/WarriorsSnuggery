@@ -1,5 +1,4 @@
 ﻿using System;
-using WarriorsSnuggery.Graphics;
 
 namespace WarriorsSnuggery.Objects.Weapons
 {
@@ -8,7 +7,7 @@ namespace WarriorsSnuggery.Objects.Weapons
 		readonly BulletProjectileType projectileType;
 
 		float flatDistMoved;
-		int speed;
+		readonly int speed;
 
 		public BulletWeapon(World world, WeaponType type, CPos origin, CPos target, Actor originActor) : base(world, type, origin, target, originActor)
 		{

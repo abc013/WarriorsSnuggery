@@ -79,6 +79,7 @@
     <Compile Include="GameController.cs" />
     <Compile Include="Game\UI\Objects\SliderBar.cs" />
     <Compile Include="Game\UI\Objects\SpellList.cs" />
+    <Compile Include="Game\Weapons\InstantHitWeapon.cs" />
     <Compile Include="Game\Weapons\ProjectileType.cs" />
     <Compile Include="Loader\WavLoader.cs" />
     <Compile Include="Map\PieceManager.cs" />

@@ -9,6 +9,9 @@ namespace WarriorsSnuggery.Objects.Weapons
 
 	public class InstantHitProjectileType : ProjectileType
 	{
+		[Desc("Chance of the weapon to hit.")]
+		public readonly float HitChance;
+
 		public InstantHitProjectileType(MiniTextNode[] nodes)
 		{
 			Loader.PartLoader.SetValues(this, nodes);
@@ -32,14 +35,20 @@ namespace WarriorsSnuggery.Objects.Weapons
 		[Desc("Weapon always points to the target.")]
 		public readonly bool OrientateToTarget;
 
-		[Desc("Angle at which the weapon should be launched. Maximum is 89.")]
-		public readonly int LaunchAngle = 0;
+		[Desc("Angle at which the weapon should be launched at minimum.", "Minimum is -89, Maximum is 89.")]
+		public readonly int MinimumAngle = 0;
+		[Desc("Angle at which the weapon should be launched at maximum.", "Minimum is -89, Maximum is 89.")]
+		public readonly int MaximumAngle = 89;
+
 		[Desc("Gravity applied to the weapon.")]
 		public readonly int Gravity = 0;
 
 		public BulletProjectileType(MiniTextNode[] nodes)
 		{
 			Loader.PartLoader.SetValues(this, nodes);
+
+			if (Texture != null)
+				SpriteManager.AddTexture(Texture);
 		}
 	}
 

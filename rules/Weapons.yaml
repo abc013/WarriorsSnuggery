@@ -79,15 +79,17 @@ web=
 		Count=20
 
 blade=
-	Reload=10
-	MaxRange=1536
-	Projectile=Bullet
-		Texture=blade
-			Size=6,12
-		Speed=180
-		OrientateToTarget=true
+	Reload=50
+	MaxRange=1024
+	Projectile=InstantHit
+		HitChance=100
 	Falloff=EXPONENTIAL
-	Damage=130
+	Damage=150
+	ParticlesOnImpact=
+		Type=grey
+		Count=30
+		Radius=100
+		AreaType=CIRCLE
 
 lazer=
 	Reload=40

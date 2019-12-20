@@ -77,9 +77,8 @@ namespace WarriorsSnuggery
 		{
 			var actor = new Actor(world, type, position, team, isBot, isPlayer);
 			if (actor.Health != null)
-			{
 				actor.Health.HP = (int)(actor.Health.HP * health);
-			}
+
 			return actor;
 		}
 	}
@@ -91,11 +90,7 @@ namespace WarriorsSnuggery
 			var weapons = RuleReader.Read(directory, file);
 
 			foreach (var weapon in weapons)
-			{
-				var name = weapon.Key;
-
-				AddTypes(new WeaponType(name, weapon.Children.ToArray()), name);
-			}
+				AddTypes(new WeaponType(weapon.Children.ToArray()), weapon.Key);
 		}
 
 		static readonly Dictionary<string, WeaponType> types = new Dictionary<string, WeaponType>();
@@ -146,7 +141,7 @@ namespace WarriorsSnuggery
 			else if (type.Projectile is BulletProjectileType)
 				return new BulletWeapon(world, type, origin, target, originActor);
 			else
-				return null; // TODO
+				return new InstantHitWeapon(world, type, origin, target, originActor);
 		}
 	}
 
@@ -157,9 +152,7 @@ namespace WarriorsSnuggery
 			var nodes = RuleReader.Read(directory, file);
 
 			foreach (var node in nodes)
-			{
 				AddType(new ParticleType(node.Children.ToArray()), node.Key);
-			}
 		}
 
 		static readonly Dictionary<string, ParticleType> types = new Dictionary<string, ParticleType>();
@@ -205,11 +198,7 @@ namespace WarriorsSnuggery
 			var terrains = RuleReader.Read(directory, file);
 
 			foreach (var terrain in terrains)
-			{
-				var id = ushort.Parse(terrain.Key);
-
-				AddType(new TerrainType(id, terrain.Children.ToArray()));
-			}
+				AddType(new TerrainType(ushort.Parse(terrain.Key), terrain.Children.ToArray()));
 		}
 
 		static readonly Dictionary<int, TerrainType> types = new Dictionary<int, TerrainType>();

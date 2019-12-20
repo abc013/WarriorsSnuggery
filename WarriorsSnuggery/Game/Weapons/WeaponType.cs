@@ -12,13 +12,6 @@ namespace WarriorsSnuggery.Objects.Weapons
 		ROOT
 	}
 
-	public enum WeaponFireType
-	{
-		BULLET,
-		BEAM,
-		DIRECTEDBEAM
-	}
-
 	public class WeaponType
 	{
 		[Desc("Texture of the Smudge that will be left behind from impact.")]
@@ -44,7 +37,7 @@ namespace WarriorsSnuggery.Objects.Weapons
 		[Desc("Type of the Projectile.", "Possible: Bullet, Beam, InstantHit;")]
 		public readonly ProjectileType Projectile;
 
-		public WeaponType(string name, MiniTextNode[] nodes)
+		public WeaponType(MiniTextNode[] nodes)
 		{
 			Loader.PartLoader.SetValues(this, nodes);
 
