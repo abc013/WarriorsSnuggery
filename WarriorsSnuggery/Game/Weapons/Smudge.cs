@@ -4,10 +4,12 @@ namespace WarriorsSnuggery.Objects
 {
 	public class Smudge : PhysicsObject
 	{
+		readonly int maxDissolve;
 		int dissolveTime;
 		public Smudge(CPos pos, GraphicsObject renderable, int dissolve = 100) : base(pos, renderable)
 		{
-			dissolveTime = dissolve;
+			maxDissolve = dissolve;
+			dissolveTime = dissolve/2;
 		}
 
 		public override void Tick()
@@ -16,8 +18,8 @@ namespace WarriorsSnuggery.Objects
 			dissolveTime--;
 			if (dissolveTime <= 0)
 			{
-				Renderable.SetColor(new Color(1f, 1f, 1f, 1f - dissolveTime / -250f));
-				if (dissolveTime < -250)
+				Renderable.SetColor(new Color(1f, 1f, 1f, 1f - dissolveTime / -maxDissolve / 2f));
+				if (dissolveTime < -maxDissolve/2)
 					Dispose();
 			}
 		}
