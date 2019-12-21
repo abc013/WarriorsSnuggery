@@ -47,7 +47,7 @@ namespace WarriorsSnuggery.Objects.Weapons
 			base.Tick();
 
 			if (InRange(TargetPosition))
-				Detonate(Target);
+				Detonate(new Target(TargetPosition, Height));
 		}
 
 		public override void Render()
@@ -61,8 +61,10 @@ namespace WarriorsSnuggery.Objects.Weapons
 			return (Position - position).FlatDist <= range;
 		}
 
-		public virtual void Detonate(Target finalTarget, bool dispose = true)
+		public virtual void Detonate(Target finalTarget, bool dispose = true, bool detonateOnce = false)
 		{
+			if (Disposed)
+				return;
 
 			foreach (var warhead in Type.Warheads)
 				warhead.Impact(World, this, finalTarget);
