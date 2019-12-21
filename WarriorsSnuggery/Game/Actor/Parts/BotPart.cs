@@ -94,7 +94,7 @@ namespace WarriorsSnuggery.Objects.Parts
 
 		public override void OnKill(Actor killer)
 		{
-			inRage += self.ActiveWeapon.Type.Damage * 10;
+			inRage += 10;
 		}
 
 		void searchTarget()

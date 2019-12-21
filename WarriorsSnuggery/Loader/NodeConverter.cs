@@ -246,7 +246,7 @@ namespace WarriorsSnuggery.Loader
 			{
 				return new Spells.Spell(node.Children.ToArray());
 			}
-			else if (t == typeof(Objects.Weapons.ProjectileType))
+			else if (t == typeof(Objects.Weapons.IProjectileType))
 			{
 				switch(s)
 				{
@@ -257,6 +257,27 @@ namespace WarriorsSnuggery.Loader
 					case "InstantHit":
 						return new Objects.Weapons.InstantHitProjectileType(node.Children.ToArray());
 				}
+			}
+			else if (t == typeof(Objects.Weapons.IWarhead[]))
+			{
+				var array = new Objects.Weapons.IWarhead[node.Children.Count];
+				var i = 0;
+				foreach (var child in node.Children)
+				{
+					switch (child.Key)
+					{
+						case "Smudge":
+							array[i++] = new Objects.Weapons.SmudgeWarhead(child.Children.ToArray());
+							break;
+						case "Damage":
+							array[i++] = new Objects.Weapons.DamageWarhead(child.Children.ToArray());
+							break;
+						case "Particle":
+							array[i++] = new Objects.Weapons.ParticleWarhead(child.Children.ToArray());
+							break;
+					}
+				}
+				return array;
 			}
 			else if (t == typeof(Maps.ActorGeneratorInfo[]))
 			{

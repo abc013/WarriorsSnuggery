@@ -9,19 +9,19 @@ namespace WarriorsSnuggery.Objects.Weapons
 		float flatDistMoved;
 		readonly int speed;
 
-		public BulletWeapon(World world, WeaponType type, CPos origin, CPos target, Actor originActor) : base(world, type, origin, target, originActor)
+		public BulletWeapon(World world, WeaponType type, CPos origin, Target target, Actor originActor) : base(world, type, origin, target, originActor)
 		{
 			projectileType = (BulletProjectileType)type.Projectile;
 			speed = projectileType.Speed;
 
-			var angle = (Position - Target).FlatAngle;
+			var angle = (Position - TargetPosition).FlatAngle;
 
 			if (projectileType.OrientateToTarget)
 				Rotation = new VAngle(0, 0, angle);
 
-			Target = Position + new CPos((int)(Math.Cos(angle) * type.MaxRange), (int)(Math.Sin(angle) * type.MaxRange), 0);
+			TargetPosition = Position + new CPos((int)(Math.Cos(angle) * type.MaxRange), (int)(Math.Sin(angle) * type.MaxRange), 0);
 
-			Target += getInaccuracy();
+			TargetPosition += getInaccuracy();
 		}
 
 		public override void Tick()
@@ -29,9 +29,9 @@ namespace WarriorsSnuggery.Objects.Weapons
 			base.Tick();
 
 			if (projectileType.OrientateToTarget)
-				Rotation = new VAngle(0, 0, -(Target - Position).FlatAngle);
+				Rotation = new VAngle(0, 0, -(TargetPosition - Position).FlatAngle);
 
-			Move(Target);
+			Move(TargetPosition);
 		}
 
 		public void Move(CPos target)
@@ -53,7 +53,7 @@ namespace WarriorsSnuggery.Objects.Weapons
 			else
 			{
 				zDiff = Height;
-				dDiff = (int)(Position - Target).FlatDist;
+				dDiff = (int)(Position - TargetPosition).FlatDist;
 			}
 			angle2 = new CPos(-dDiff, -zDiff, 0).FlatAngle;
 			z = Math.Sin(angle2) * speed; // TODO add gravity
@@ -64,16 +64,16 @@ namespace WarriorsSnuggery.Objects.Weapons
 
 			Height -= (int)z;
 			if (Height < 0)
-				Detonate();
+				Detonate(new Target(Position, 0));
 
 			World.PhysicsLayer.UpdateSectors(this, updateSectors: false);
 
 			if (World.CheckCollision(this, false, new[] { Origin }))
-				Detonate();
+				Detonate(new Target(Position, Height));
 
 			flatDistMoved += (Position - old).FlatDist;
 			if (flatDistMoved > Type.MaxRange * RangeModifier || !World.IsInWorld(Position))
-				Detonate();
+				Detonate(new Target(Position, Height));
 		}
 
 		CPos getInaccuracy()

@@ -3,11 +3,9 @@ using WarriorsSnuggery.Objects.Particles;
 
 namespace WarriorsSnuggery.Objects.Weapons
 {
-	public abstract class ProjectileType
-	{
-	}
+	public interface IProjectileType { }
 
-	public class InstantHitProjectileType : ProjectileType
+	public class InstantHitProjectileType : IProjectileType
 	{
 		[Desc("Chance of the weapon to hit.")]
 		public readonly float HitChance;
@@ -18,7 +16,7 @@ namespace WarriorsSnuggery.Objects.Weapons
 		}
 	}
 
-	public class BulletProjectileType : ProjectileType
+	public class BulletProjectileType : IProjectileType
 	{
 		[Desc("Texture of the Weapon.")]
 		public readonly TextureInfo Texture;
@@ -52,7 +50,7 @@ namespace WarriorsSnuggery.Objects.Weapons
 		}
 	}
 
-	public class BeamProjectileType : ProjectileType
+	public class BeamProjectileType : IProjectileType
 	{
 		[Desc("Texture of the Beam.")]
 		public readonly TextureInfo Beam;

@@ -6,23 +6,23 @@ namespace WarriorsSnuggery.Objects.Weapons
 	{
 		readonly InstantHitProjectileType projectileType;
 
-		public InstantHitWeapon(World world, WeaponType type, CPos origin, CPos target, Actor originActor) : base(world, type, origin, target, originActor)
+		public InstantHitWeapon(World world, WeaponType type, CPos origin, Target target, Actor originActor) : base(world, type, origin, target, originActor)
 		{
 			projectileType = (InstantHitProjectileType)type.Projectile;
 
-			var diff = Position - Target;
+			var diff = Position - TargetPosition;
 			if (diff.FlatDist > type.MaxRange)
 			{
-				var angle = (Position - Target).FlatAngle;
-				Target = Position + new CPos((int)(Math.Cos(angle) * type.MaxRange), (int)(Math.Sin(angle) * type.MaxRange), 0);
+				var angle = (Position - TargetPosition).FlatAngle;
+				TargetPosition = Position + new CPos((int)(Math.Cos(angle) * type.MaxRange), (int)(Math.Sin(angle) * type.MaxRange), 0);
 			}
 		}
 
 		public override void Tick()
 		{
-			Position = Target;
+			Position = TargetPosition;
 			if (Program.SharedRandom.NextDouble() < projectileType.HitChance)
-				Detonate();
+				Detonate(Target);
 		}
 	}
 }

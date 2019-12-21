@@ -84,6 +84,8 @@ namespace WarriorsSnuggery
 			//Add(ActorCreator.Create(this, "heal", CPos.Zero, 1, true));
 			if (actorsToAdd.Any())
 				Game.Teams = actorsToAdd.Max(a => a.Team);
+
+			addObjects();
 		}
 
 		public void Tick()
@@ -102,10 +104,10 @@ namespace WarriorsSnuggery
 			Actors.ForEach(a => a.Tick());
 			Objects.ForEach(o => o.Tick());
 
-			AddObjects();
+			addObjects();
 		}
 
-		public void AddObjects()
+		public void addObjects()
 		{
 			int removed = 0;
 			removed += Actors.RemoveAll(a => a.Disposed);
@@ -186,6 +188,12 @@ namespace WarriorsSnuggery
 			// Make sure that no weapons are added to the sectors, as they will not influence any movement
 			if (!(@object is Weapon))
 				PhysicsLayer.UpdateSectors(@object, true);
+		}
+
+		public void Add(PhysicsObject[] objects)
+		{
+			foreach (var obj in objects)
+				Add(obj);
 		}
 
 		public Terrain TerrainAt(CPos pos)

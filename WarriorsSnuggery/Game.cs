@@ -140,7 +140,6 @@ namespace WarriorsSnuggery
 			MasterRenderer.ResetRenderer(this);
 
 			World.Load();
-			World.AddObjects();
 
 			ScreenControl.Load();
 

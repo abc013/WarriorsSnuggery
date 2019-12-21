@@ -81,6 +81,11 @@
     <Compile Include="Game\UI\Objects\SpellList.cs" />
     <Compile Include="Game\Weapons\InstantHitWeapon.cs" />
     <Compile Include="Game\Weapons\ProjectileType.cs" />
+    <Compile Include="Game\Weapons\Target.cs" />
+    <Compile Include="Game\Weapons\Warheads\DamageWarhead.cs" />
+    <Compile Include="Game\Weapons\Warheads\ParticleWarhead.cs" />
+    <Compile Include="Game\Weapons\Warheads\SmudgeWarhead.cs" />
+    <Compile Include="Game\Weapons\Warheads\Warhead.cs" />
     <Compile Include="Loader\WavLoader.cs" />
     <Compile Include="Map\PieceManager.cs" />
     <Compile Include="Physics\PhysicsLine.cs" />

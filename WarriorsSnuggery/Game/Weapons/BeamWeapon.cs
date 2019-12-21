@@ -23,16 +23,15 @@ namespace WarriorsSnuggery.Objects.Weapons
 		int buildupduration;
 		int endduration;
 
-		public BeamWeapon(World world, WeaponType type, CPos origin, CPos target, Actor originActor) : base(world, type, origin, target, originActor)
+		public BeamWeapon(World world, WeaponType type, CPos origin, Target target, Actor originActor) : base(world, type, origin, target, originActor)
 		{
 			projectileType = (BeamProjectileType)type.Projectile;
 			OriginPos = origin;
 			impactInterval = projectileType.ImpactInterval;
-			Target = target;
 			rayPhysics = new RayPhysics(world)
 			{
 				Start = OriginPos,
-				Target = target,
+				Target = TargetPosition,
 			};
 
 			duration = projectileType.BeamDuration;
@@ -111,7 +110,7 @@ namespace WarriorsSnuggery.Objects.Weapons
 				rayPhysics.StartHeight = OriginHeight;
 			}
 
-			rayPhysics.Target = Target;
+			rayPhysics.Target = TargetPosition;
 			rayPhysics.CalculateEnd(Origin);
 			Position = rayPhysics.End;
 			Height = rayPhysics.EndHeight;
@@ -120,20 +119,20 @@ namespace WarriorsSnuggery.Objects.Weapons
 
 			if (dist > Type.MaxRange)
 			{
-				var angle = (OriginPos - Target).FlatAngle;
+				var angle = (OriginPos - TargetPosition).FlatAngle;
 				Position = OriginPos + new CPos((int)(Math.Cos(angle) * Type.MaxRange), (int)(Math.Sin(angle) * Type.MaxRange), 0);
 				Height = 0;
 			}
 
-			if (projectileType.Directed && dist > (OriginPos - Target).FlatDist)
+			if (projectileType.Directed && dist > (OriginPos - TargetPosition).FlatDist)
 			{
-				Position = Target;
+				Position = TargetPosition;
 				Height = 0;
 			}
 
 			if (duration > 0 && buildupduration <= 0 && impactInterval-- <= 0)
 			{
-				Detonate(false);
+				Detonate(new Target(Position, Height), false);
 				impactInterval = projectileType.ImpactInterval;
 			}
 

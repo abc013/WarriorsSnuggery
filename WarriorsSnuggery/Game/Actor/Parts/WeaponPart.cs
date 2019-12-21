@@ -74,7 +74,7 @@ namespace WarriorsSnuggery.Objects.Parts
 					beam = null;
 					return;
 				}
-				beam.Target = Target;
+				beam.TargetPosition = Target;
 			}
 		}
 
