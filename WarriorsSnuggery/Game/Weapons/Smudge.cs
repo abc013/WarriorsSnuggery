@@ -18,7 +18,7 @@ namespace WarriorsSnuggery.Objects
 			dissolveTime--;
 			if (dissolveTime <= 0)
 			{
-				Renderable.SetColor(new Color(1f, 1f, 1f, 1f - dissolveTime / -maxDissolve / 2f));
+				Renderable.SetColor(new Color(1f, 1f, 1f, 1f - dissolveTime / (-maxDissolve / 2f)));
 				if (dissolveTime < -maxDissolve/2)
 					Dispose();
 			}
