@@ -35,7 +35,7 @@ namespace WarriorsSnuggery.Objects.Weapons
 				{
 					foreach (var actor in world.Actors)
 					{
-						if (!actor.IsAlive || actor.Health == null)
+						if (!actor.IsAlive || actor.Health == null || actor == weapon.Origin)
 							continue;
 
 						var dist = (target.Position - actor.Position).FlatDist / 512;
