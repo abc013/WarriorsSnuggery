@@ -49,7 +49,7 @@ namespace WarriorsSnuggery.Objects
 		[Desc("Overlap height. The higher the value, the more tiles with smaller numbers will be overlapped.")]
 		public readonly int OverlapHeight;
 		[Desc("If true, weapons will leave behind smudge on impact.")]
-		public readonly bool SpawnSmudge;
+		public readonly bool SpawnSmudge = true;
 
 		public TerrainType(ushort id, MiniTextNode[] nodes)
 		{
