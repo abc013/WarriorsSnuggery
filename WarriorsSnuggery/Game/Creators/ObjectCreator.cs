@@ -124,9 +124,9 @@ namespace WarriorsSnuggery
 			return create(world, type, new Target(target, 0), origin);
 		}
 
-		public static Weapon Create(World world, WeaponType type, CPos target, Actor origin)
+		public static Weapon Create(World world, WeaponType type, Target target, Actor origin)
 		{
-			return create(world, type, new Target(target, 0), origin);
+			return create(world, type, target, origin);
 		}
 
 		static Weapon create(World world, WeaponType type, Target target, Actor origin)

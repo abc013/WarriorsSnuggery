@@ -48,15 +48,13 @@ namespace WarriorsSnuggery.Objects.Parts
 			Type = info.Type;
 		}
 
-		public Weapon OnAttack(CPos target)
+		public Weapon OnAttack(Target target)
 		{
-			Target = target;
-
 			var weapon = WeaponCreator.Create(self.World, info.Type, target, self);
+			Target = weapon.TargetPosition;
 			beam = weapon as BeamWeapon;
 
 			self.World.Add(weapon);
-
 			return weapon;
 		}
 

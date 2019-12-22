@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using WarriorsSnuggery.Objects.Effects;
 using WarriorsSnuggery.Objects.Parts;
+using WarriorsSnuggery.Objects.Weapons;
 using WarriorsSnuggery.Physics;
 
 namespace WarriorsSnuggery.Objects
@@ -263,7 +264,17 @@ namespace WarriorsSnuggery.Objects
 			Effects.RemoveAll(e => !e.Active);
 		}
 
-		public void Attack(CPos target)
+		public void Attack(Actor target)
+		{
+			attack(new Target(target));
+		}
+
+		public void Attack(CPos target, int height = 0)
+		{
+			attack(new Target(target, height));
+		}
+
+		void attack(Target target)
 		{
 			if (reloadDelay != 0 || ActiveWeapon == null || !IsAlive)
 				return;
@@ -271,11 +282,11 @@ namespace WarriorsSnuggery.Objects
 			if (World.Game.Type == GameType.EDITOR || World.Game.Editor && IsPlayer || !World.Map.Type.AllowWeapons)
 				return;
 
-			Angle = (Position - target).FlatAngle;
+			Angle = (Position - target.Position).FlatAngle;
 
 			var weapon = ActiveWeapon.OnAttack(target);
 
-			Parts.ForEach(p => p.OnAttack(target, weapon));
+			Parts.ForEach(p => p.OnAttack(target.Position, weapon));
 
 			var reloadModifier = 1f;
 			foreach (var effect in Effects.Where(e => e.Active && e.Spell.Type == Spells.EffectType.COOLDOWN))
@@ -285,11 +296,6 @@ namespace WarriorsSnuggery.Objects
 
 			reloadDelay = (int)(ActiveWeapon.Type.Reload * reloadModifier);
 			CurrentAction = ActorAction.ATTACKING;
-		}
-
-		public void Attack(Actor target)
-		{
-			Attack(target.Position);
 		}
 
 		public void Kill(Actor killed)
