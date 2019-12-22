@@ -105,43 +105,33 @@ namespace WarriorsSnuggery
 			return visible[position.X, position.Y];
 		}
 
-		public static bool IsVisibleIgnoringBounds(WPos position)
+		public static bool IsVisibleIgnoringBounds(MPos position)
 		{
 			if (size == MPos.Zero)
 				return false;
 
 			if (position.X < 0)
-			{
-				position = new WPos(0, position.Y, 0);
-			}
+				position = new MPos(0, position.Y);
 			else if (position.X >= size.X)
-			{
-				position = new WPos(size.X - 1, position.Y, 0);
-			}
+				position = new MPos(size.X - 1, position.Y);
 
 			if (position.Y < 0)
-			{
-				position = new WPos(position.X, 0, 0);
-			}
+				position = new MPos(position.X, 0);
 			else if (position.Y >= size.Y)
-			{
-				position = new WPos(position.X, size.Y - 1, 0);
-			}
+				position = new MPos(position.X, size.Y - 1);
 
 			return visible[position.X, position.Y];
 		}
 
 		public static bool IsVisible(CPos position)
 		{
-			if (position.X < 0 || position.Y < 0)
+			if (position.X < -512 || position.Y < -512)
 				return false;
 
-			if (position.X >= size.X * 1024 - 1024 || position.Y >= size.Y * 1024 - 1024)
+			if (position.X >= size.X * 1024 - 512 || position.Y >= size.Y * 1024 - 512)
 				return false;
 
-			var mPos = position.ToMPos();
-
-			return visible[mPos.X, mPos.Y];
+			return IsVisibleIgnoringBounds(position.ToMPos());
 		}
 
 		public static bool IsVisible(CPos position, MPos scale)
