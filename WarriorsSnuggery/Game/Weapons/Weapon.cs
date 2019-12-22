@@ -8,28 +8,32 @@ namespace WarriorsSnuggery.Objects.Weapons
 	public abstract class Weapon : PhysicsObject
 	{
 		protected readonly World World;
+
 		public readonly Actor Origin;
 		public Target Target;
 		public CPos TargetPosition;
 		protected Actor TargetActor;
+
 		protected readonly WeaponType Type;
 
 		public readonly float InaccuracyModifier = 1f;
 		public readonly float DamageModifier = 1f;
 		public readonly float RangeModifier = 1f;
 
-		protected Weapon(World world, WeaponType type, CPos origin, Target target, Actor originActor) : base(origin, type.Projectile is BulletProjectileType ? new IImageSequenceRenderable((type.Projectile as BulletProjectileType).Texture.GetTextures(), (type.Projectile as BulletProjectileType).Texture.Tick) : null, type.Projectile is BulletProjectileType ? new SimplePhysics(origin, 0, Shape.RECTANGLE, 64, 64, 64) : SimplePhysics.Empty)
+		protected Weapon(World world, WeaponType type, Target target, Actor origin) : base(origin.ActiveWeapon.WeaponOffsetPosition, type.Projectile is BulletProjectileType ? new IImageSequenceRenderable((type.Projectile as BulletProjectileType).Texture.GetTextures(), (type.Projectile as BulletProjectileType).Texture.Tick) : null, type.Projectile is BulletProjectileType ? new SimplePhysics(origin.Position, origin.Height, Shape.RECTANGLE, 64, 64, 64) : SimplePhysics.Empty)
 		{
 			World = world;
 			Type = type;
-			Origin = originActor;
+			Origin = origin;
+
+			Height = origin.ActiveWeapon.WeaponHeightPosition;
 
 			Target = target;
 			TargetPosition = target.Position;
 
-			if (originActor != null)
+			if (origin != null)
 			{
-				var effects = originActor.Effects.Where(e => e.Active);
+				var effects = origin.Effects.Where(e => e.Active);
 
 				foreach (var effect in effects.Where(e => e.Spell.Type == Spells.EffectType.INACCURACY))
 					InaccuracyModifier *= effect.Spell.Value;

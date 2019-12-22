@@ -6,7 +6,7 @@ namespace WarriorsSnuggery.Objects.Weapons
 	{
 		readonly InstantHitProjectileType projectileType;
 
-		public InstantHitWeapon(World world, WeaponType type, CPos origin, Target target, Actor originActor) : base(world, type, origin, target, originActor)
+		public InstantHitWeapon(World world, WeaponType type, Target target, Actor origin) : base(world, type, target, origin)
 		{
 			projectileType = (InstantHitProjectileType)type.Projectile;
 

@@ -23,16 +23,17 @@ namespace WarriorsSnuggery.Objects.Weapons
 		int buildupduration;
 		int endduration;
 
-		public BeamWeapon(World world, WeaponType type, CPos origin, Target target, Actor originActor) : base(world, type, origin, target, originActor)
+		public BeamWeapon(World world, WeaponType type, Target target, Actor origin) : base(world, type, target, origin)
 		{
 			projectileType = (BeamProjectileType)type.Projectile;
-			OriginPos = origin;
 			impactInterval = projectileType.ImpactInterval;
 			rayPhysics = new RayPhysics(world)
 			{
 				Start = OriginPos,
 				Target = TargetPosition,
 			};
+
+			setPosition();
 
 			duration = projectileType.BeamDuration;
 			buildupduration = projectileType.StartupDuration;
@@ -102,13 +103,7 @@ namespace WarriorsSnuggery.Objects.Weapons
 				curTick = tick;
 			}
 
-			if (Origin != null)
-			{
-				OriginHeight = Origin.ActiveWeapon.WeaponHeightPosition;
-				OriginPos = Origin.ActiveWeapon.WeaponOffsetPosition;
-				rayPhysics.Start = OriginPos;
-				rayPhysics.StartHeight = OriginHeight;
-			}
+			setPosition();
 
 			rayPhysics.Target = TargetPosition;
 			rayPhysics.CalculateEnd(Origin);
@@ -143,6 +138,14 @@ namespace WarriorsSnuggery.Objects.Weapons
 		public override void Dispose()
 		{
 			base.Dispose();
+		}
+
+		void setPosition()
+		{
+			OriginHeight = Origin.ActiveWeapon.WeaponHeightPosition;
+			OriginPos = Origin.ActiveWeapon.WeaponOffsetPosition;
+			rayPhysics.Start = OriginPos;
+			rayPhysics.StartHeight = OriginHeight;
 		}
 
 		CPos getInaccuracy()

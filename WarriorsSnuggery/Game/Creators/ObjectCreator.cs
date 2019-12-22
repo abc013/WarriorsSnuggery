@@ -118,25 +118,25 @@ namespace WarriorsSnuggery
 			return types[name];
 		}
 
-		public static Weapon Create(World world, string name, CPos origin, CPos target)
+		public static Weapon Create(World world, string name, CPos target, Actor origin)
 		{
 			var type = GetType(name);
-			return create(world, type, origin, new Target(target, 0)); //TODO
+			return create(world, type, new Target(target, 0), origin);
 		}
 
-		public static Weapon Create(World world, WeaponType type, Actor origin, CPos target)
+		public static Weapon Create(World world, WeaponType type, CPos target, Actor origin)
 		{
-			return create(world, type, origin.ActiveWeapon.WeaponOffsetPosition, new Target(target, 0), origin);
+			return create(world, type, new Target(target, 0), origin);
 		}
 
-		static Weapon create(World world, WeaponType type, CPos origin, Target target, Actor originActor = null)
+		static Weapon create(World world, WeaponType type, Target target, Actor origin)
 		{
 			if (type.Projectile is BeamProjectileType)
-				return new BeamWeapon(world, type, origin, target, originActor);
+				return new BeamWeapon(world, type, target, origin);
 			else if (type.Projectile is BulletProjectileType)
-				return new BulletWeapon(world, type, origin, target, originActor);
+				return new BulletWeapon(world, type, target, origin);
 			else
-				return new InstantHitWeapon(world, type, origin, target, originActor);
+				return new InstantHitWeapon(world, type, target, origin);
 		}
 	}
 

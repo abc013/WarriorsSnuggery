@@ -51,14 +51,9 @@ namespace WarriorsSnuggery.Objects.Parts
 		public Weapon OnAttack(CPos target)
 		{
 			Target = target;
-			var weapon = WeaponCreator.Create(self.World, info.Type, self, target);
-			if (weapon is BeamWeapon)
-			{
-				beam = (BeamWeapon)weapon;
-				beam.OriginHeight = WeaponHeightPosition;
-			}
-			else
-				weapon.Height = WeaponHeightPosition;
+
+			var weapon = WeaponCreator.Create(self.World, info.Type, target, self);
+			beam = weapon as BeamWeapon;
 
 			self.World.Add(weapon);
 
@@ -69,12 +64,9 @@ namespace WarriorsSnuggery.Objects.Parts
 		{
 			if (beam != null)
 			{
-				if (beam.Disposed)
-				{
-					beam = null;
-					return;
-				}
 				beam.TargetPosition = Target;
+				if (beam.Disposed)
+					beam = null;
 			}
 		}
 

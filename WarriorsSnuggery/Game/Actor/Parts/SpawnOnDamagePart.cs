@@ -74,7 +74,7 @@ namespace WarriorsSnuggery.Objects.Parts
 					@object = ParticleCreator.Create(info.Name, randomPosition(), self.Height + info.Offset.Z, self.World.Game.SharedRandom);
 					break;
 				case "WEAPON":
-					@object = WeaponCreator.Create(self.World, info.Name, randomPosition(), randomPosition());
+					@object = WeaponCreator.Create(self.World, info.Name, randomPosition(), self);
 					break;
 				default:
 					throw new YamlInvalidNodeException(string.Format("SpawnOnDeath does not create objects of class '{0}'.", info.Type));

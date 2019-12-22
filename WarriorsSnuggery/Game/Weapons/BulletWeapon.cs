@@ -9,7 +9,7 @@ namespace WarriorsSnuggery.Objects.Weapons
 		float flatDistMoved;
 		readonly int speed;
 
-		public BulletWeapon(World world, WeaponType type, CPos origin, Target target, Actor originActor) : base(world, type, origin, target, originActor)
+		public BulletWeapon(World world, WeaponType type, Target target, Actor origin) : base(world, type, target, origin)
 		{
 			projectileType = (BulletProjectileType)type.Projectile;
 			speed = projectileType.Speed;
