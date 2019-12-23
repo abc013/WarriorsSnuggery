@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using WarriorsSnuggery.Graphics;
 using WarriorsSnuggery.Maps;
 using WarriorsSnuggery.Objects;
@@ -396,6 +397,21 @@ namespace WarriorsSnuggery
 			Finish();
 
 			ChangeScreen(ScreenType.DEFEAT);
+		}
+
+		public Actor FindValidTarget(CPos pos, int team)
+		{
+			if (KeyInput.IsKeyDown(OpenTK.Input.Key.ShiftLeft, 0))
+				return null;
+
+			// Look for actors in range.
+			var valid = World.Actors.Where(a => a.IsAlive && a.Team != team && a.WorldPart != null && a.WorldPart.Targetable && (pos - a.Position).Dist < 256 && VisibilitySolver.IsVisible(a.Position)).ToArray();
+
+			// If any, pick one and fire the weapon on it.
+			if (!valid.Any())
+				return null;
+
+			return valid.OrderByDescending(a => (pos - a.Position).Dist).First();
 		}
 
 		// Instant travel to next level

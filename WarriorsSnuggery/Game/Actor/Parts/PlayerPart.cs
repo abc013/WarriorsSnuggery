@@ -29,27 +29,17 @@ namespace WarriorsSnuggery.Objects.Parts
 
 			if (self.ActiveWeapon != null)
 			{
-				if (KeyInput.IsKeyDown(OpenTK.Input.Key.ShiftLeft, 0))
+				var actor = self.World.Game.FindValidTarget(MouseInput.GamePosition, self.Team);
+
+				if (actor == null)
 				{
 					self.ActiveWeapon.Target = MouseInput.GamePosition;
 					self.ActiveWeapon.TargetHeight = 0;
 				}
 				else
 				{
-					// Look for actors in range.
-					var valid = self.World.Actors.Where(a => a.IsAlive && a.Team != Actor.PlayerTeam && a.WorldPart != null && a.WorldPart.Targetable && (MouseInput.GamePosition - a.Position).Dist < 256).ToArray();
-
-					// If any, pick one and fire the weapon on it.
-					if (valid.Any())
-					{
-						self.ActiveWeapon.Target = valid.First().Position;
-						self.ActiveWeapon.TargetHeight = valid.First().Height;
-					}
-					else
-					{
-						self.ActiveWeapon.Target = MouseInput.GamePosition;
-						self.ActiveWeapon.TargetHeight = 0;
-					}
+					self.ActiveWeapon.Target = actor.Position;
+					self.ActiveWeapon.TargetHeight = actor.Height;
 				}
 			}
 
@@ -65,14 +55,12 @@ namespace WarriorsSnuggery.Objects.Parts
 			}
 			else
 			{
-				// Look for actors in range.
-				var valid = self.World.Actors.Where(a => a.IsAlive && a.Team != Actor.PlayerTeam && a.WorldPart != null && a.WorldPart.Targetable && (pos - a.Position).Dist < 256).ToArray();
+				var actor = self.World.Game.FindValidTarget(pos, self.Team);
 
-				// If any, pick one and fire the weapon on it.
-				if (valid.Any())
-					self.Attack(valid.First());
-				else
+				if (actor == null)
 					self.Attack(pos, 0);
+				else
+					self.Attack(actor);
 			}
 		}
 

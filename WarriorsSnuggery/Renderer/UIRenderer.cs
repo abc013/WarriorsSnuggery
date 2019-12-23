@@ -87,13 +87,15 @@ namespace WarriorsSnuggery
 
 			tooltip?.Render();
 
+			var possibleTarget = game.FindValidTarget(MouseInput.GamePosition, game.World.LocalPlayer.Team) != null;
 			if (Settings.EnableDebug)
 			{
 				Graphics.ColorManager.DrawRect(new CPos(-64, -64, 0), new CPos(64, 64, 0), Color.Cyan);
-				Graphics.ColorManager.DrawRect(MouseInput.WindowPosition + new CPos(-64, -64, 0), MouseInput.WindowPosition + new CPos(64, 64, 0), Color.Blue);
+				Graphics.ColorManager.DrawRect(MouseInput.WindowPosition + new CPos(-64, -64, 0), MouseInput.WindowPosition + new CPos(64, 64, 0), possibleTarget ? Color.Red : Color.Blue);
 			}
 			else
 			{
+				Cursor.Current = possibleTarget ? CursorType.ATTACK : CursorType.DEFAULT;
 				Cursor.Render();
 			}
 		}
