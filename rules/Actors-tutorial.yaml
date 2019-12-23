@@ -27,6 +27,8 @@ dummy=
 		Type=ACTOR
 		Count=1
 		Name=silver
+	Part@World=
+		Targetable=true
 
 tut_1=
 	Part@AnimatedSprite=

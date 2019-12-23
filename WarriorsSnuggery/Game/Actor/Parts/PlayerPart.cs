@@ -37,7 +37,7 @@ namespace WarriorsSnuggery.Objects.Parts
 				else
 				{
 					// Look for actors in range.
-					var valid = self.World.Actors.Where(a => a.IsAlive && a.Team != Actor.PlayerTeam && (MouseInput.GamePosition - a.Position).Dist < 512).ToArray();
+					var valid = self.World.Actors.Where(a => a.IsAlive && a.Team != Actor.PlayerTeam && a.WorldPart != null && a.WorldPart.Targetable && (MouseInput.GamePosition - a.Position).Dist < 256).ToArray();
 
 					// If any, pick one and fire the weapon on it.
 					if (valid.Any())
@@ -66,7 +66,7 @@ namespace WarriorsSnuggery.Objects.Parts
 			else
 			{
 				// Look for actors in range.
-				var valid = self.World.Actors.Where(a => a.IsAlive && a.Team != Actor.PlayerTeam && (pos - a.Position).Dist < 512).ToArray();
+				var valid = self.World.Actors.Where(a => a.IsAlive && a.Team != Actor.PlayerTeam && a.WorldPart != null && a.WorldPart.Targetable && (pos - a.Position).Dist < 256).ToArray();
 
 				// If any, pick one and fire the weapon on it.
 				if (valid.Any())

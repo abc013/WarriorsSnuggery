@@ -6,6 +6,9 @@
 		[Desc("When true, the actor will show a damage text.")]
 		public readonly bool ShowDamage;
 
+		[Desc("When true, the actor can be targeted by the automatic target system.")]
+		public readonly bool Targetable;
+
 		[Desc("When true, the actor will be able to trigger other objects.")]
 		public readonly bool CanTrigger;
 
@@ -36,6 +39,12 @@
 		public bool ShowDamage
 		{
 			get { return info.ShowDamage; }
+			set { }
+		}
+
+		public bool Targetable
+		{
+			get { return info.Targetable; }
 			set { }
 		}
 
