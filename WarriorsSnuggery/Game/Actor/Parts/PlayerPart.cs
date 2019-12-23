@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 
 namespace WarriorsSnuggery.Objects.Parts
 {
@@ -14,7 +15,6 @@ namespace WarriorsSnuggery.Objects.Parts
 
 		public override void Tick()
 		{
-
 			if (KeyInput.IsKeyDown(Settings.Key("MoveUp")))
 				self.Accelerate((float)Math.PI * 1.5f);
 
@@ -28,10 +28,52 @@ namespace WarriorsSnuggery.Objects.Parts
 				self.Accelerate((float)Math.PI);
 
 			if (self.ActiveWeapon != null)
-				self.ActiveWeapon.Target = MouseInput.GamePosition;
+			{
+				if (KeyInput.IsKeyDown(OpenTK.Input.Key.ShiftLeft, 0))
+				{
+					self.ActiveWeapon.Target = MouseInput.GamePosition;
+					self.ActiveWeapon.TargetHeight = 0;
+				}
+				else
+				{
+					// Look for actors in range.
+					var valid = self.World.Actors.Where(a => a.IsAlive && a.Team != Actor.PlayerTeam && (MouseInput.GamePosition - a.Position).Dist < 512).ToArray();
+
+					// If any, pick one and fire the weapon on it.
+					if (valid.Any())
+					{
+						self.ActiveWeapon.Target = valid.First().Position;
+						self.ActiveWeapon.TargetHeight = valid.First().Height;
+					}
+					else
+					{
+						self.ActiveWeapon.Target = MouseInput.GamePosition;
+						self.ActiveWeapon.TargetHeight = 0;
+					}
+				}
+			}
 
 			if (MouseInput.IsLeftDown && !self.World.Game.ScreenControl.CursorOnUI())
-				self.Attack(MouseInput.GamePosition);
+				attackTarget(MouseInput.GamePosition);
+		}
+
+		void attackTarget(CPos pos)
+		{
+			if (KeyInput.IsKeyDown(OpenTK.Input.Key.ShiftLeft, 0))
+			{
+				self.Attack(pos, 0);
+			}
+			else
+			{
+				// Look for actors in range.
+				var valid = self.World.Actors.Where(a => a.IsAlive && a.Team != Actor.PlayerTeam && (pos - a.Position).Dist < 512).ToArray();
+
+				// If any, pick one and fire the weapon on it.
+				if (valid.Any())
+					self.Attack(valid.First());
+				else
+					self.Attack(pos, 0);
+			}
 		}
 
 		public override void OnKilled(Actor killer)

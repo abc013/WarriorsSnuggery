@@ -12,6 +12,8 @@ namespace WarriorsSnuggery.Objects.Weapons
 		public readonly Actor Origin;
 		public Target Target;
 		public CPos TargetPosition;
+		public int TargetHeight;
+
 		protected Actor TargetActor;
 
 		protected readonly WeaponType Type;
@@ -30,6 +32,7 @@ namespace WarriorsSnuggery.Objects.Weapons
 
 			Target = target;
 			TargetPosition = target.Position;
+			TargetHeight = target.Height;
 
 			if (origin != null)
 			{

@@ -106,6 +106,7 @@ namespace WarriorsSnuggery.Objects.Weapons
 			setPosition();
 
 			rayPhysics.Target = TargetPosition;
+			rayPhysics.TargetHeight = TargetHeight;
 			rayPhysics.CalculateEnd(Origin);
 			Position = rayPhysics.End;
 			Height = rayPhysics.EndHeight;

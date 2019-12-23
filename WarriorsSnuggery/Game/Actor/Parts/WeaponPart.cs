@@ -40,6 +40,8 @@ namespace WarriorsSnuggery.Objects.Parts
 		}
 
 		public CPos Target;
+		public int TargetHeight;
+
 		BeamWeapon beam;
 
 		public WeaponPart(Actor self, WeaponPartInfo info) : base(self)
@@ -63,6 +65,7 @@ namespace WarriorsSnuggery.Objects.Parts
 			if (beam != null)
 			{
 				beam.TargetPosition = Target;
+				beam.TargetHeight = TargetHeight;
 				if (beam.Disposed)
 					beam = null;
 			}

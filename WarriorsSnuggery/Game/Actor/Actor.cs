@@ -269,7 +269,7 @@ namespace WarriorsSnuggery.Objects
 			attack(new Target(target));
 		}
 
-		public void Attack(CPos target, int height = 0)
+		public void Attack(CPos target, int height)
 		{
 			attack(new Target(target, height));
 		}
