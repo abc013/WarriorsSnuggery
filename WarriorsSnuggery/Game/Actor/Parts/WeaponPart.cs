@@ -44,24 +44,35 @@ namespace WarriorsSnuggery.Objects.Parts
 
 		BeamWeapon beam;
 
+		bool attackOrdered;
+		Target target;
+		int prep;
+		int post;
+
 		public WeaponPart(Actor self, WeaponPartInfo info) : base(self)
 		{
 			this.info = info;
 			Type = info.Type;
 		}
 
-		public Weapon OnAttack(Target target)
+		public void OnAttack(Target target)
 		{
-			var weapon = WeaponCreator.Create(self.World, info.Type, target, self);
-			Target = weapon.TargetPosition;
-			beam = weapon as BeamWeapon;
+			if (attackOrdered)
+				return;
 
-			self.World.Add(weapon);
-			return weapon;
+			attackOrdered = true;
+			this.target = target;
+			prep = Type.PreparationDelay;
 		}
 
 		public override void Tick()
 		{
+			if (attackOrdered && prep-- <= 0)
+				attack();
+
+			if (prep > 0 || post-- > 0 || (beam != null && !beam.Disposed))
+				self.CurrentAction = ActorAction.ATTACKING;
+
 			if (beam != null)
 			{
 				beam.TargetPosition = Target;
@@ -69,6 +80,19 @@ namespace WarriorsSnuggery.Objects.Parts
 				if (beam.Disposed)
 					beam = null;
 			}
+		}
+
+		void attack()
+		{
+			attackOrdered = false;
+			post = Type.CooldownDelay;
+
+			var weapon = WeaponCreator.Create(self.World, info.Type, target, self);
+			Target = weapon.TargetPosition;
+			beam = weapon as BeamWeapon;
+
+			self.World.Add(weapon);
+			self.AttackWith(target, weapon);
 		}
 
 		public override void OnDispose()

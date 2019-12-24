@@ -284,8 +284,11 @@ namespace WarriorsSnuggery.Objects
 
 			Angle = (Position - target.Position).FlatAngle;
 
-			var weapon = ActiveWeapon.OnAttack(target);
+			ActiveWeapon.OnAttack(target);
+		}
 
+		public void AttackWith(Target target, Weapon weapon)
+		{
 			Parts.ForEach(p => p.OnAttack(target.Position, weapon));
 
 			var reloadModifier = 1f;
