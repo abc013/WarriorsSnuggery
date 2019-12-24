@@ -88,6 +88,7 @@
     <Compile Include="Game\Weapons\Warheads\Warhead.cs" />
     <Compile Include="Loader\WavLoader.cs" />
     <Compile Include="Map\PieceManager.cs" />
+    <Compile Include="Map\SmudgeLayer.cs" />
     <Compile Include="Physics\PhysicsLine.cs" />
     <Compile Include="Physics\RayPhysics.cs" />
     <Compile Include="Physics\Shape.cs" />

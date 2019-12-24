@@ -44,6 +44,7 @@ namespace WarriorsSnuggery
 				return;
 
 			world.TerrainLayer.Render();
+			world.SmudgeLayer.Render();
 
 			foreach (PhysicsObject o in world.ToRender)
 			{

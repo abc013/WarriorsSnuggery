@@ -15,6 +15,7 @@ namespace WarriorsSnuggery
 		public readonly WallLayer WallLayer;
 		public readonly PhysicsLayer PhysicsLayer;
 		public readonly ShroudLayer ShroudLayer;
+		public readonly SmudgeLayer SmudgeLayer;
 
 		public readonly List<Actor> Actors = new List<Actor>();
 		public readonly List<PhysicsObject> Objects = new List<PhysicsObject>();
@@ -34,6 +35,7 @@ namespace WarriorsSnuggery
 			WallLayer = new WallLayer();
 			PhysicsLayer = new PhysicsLayer();
 			ShroudLayer = new ShroudLayer();
+			SmudgeLayer = new SmudgeLayer();
 
 			Map = new Map(this, game.MapType, seed, stats.Level, stats.Difficulty);
 		}
@@ -103,6 +105,7 @@ namespace WarriorsSnuggery
 
 			Actors.ForEach(a => a.Tick());
 			Objects.ForEach(o => o.Tick());
+			SmudgeLayer.Tick();
 
 			addObjects();
 		}
@@ -234,6 +237,7 @@ namespace WarriorsSnuggery
 			TerrainLayer.Dispose();
 			WallLayer.Dispose();
 			ShroudLayer.Dispose();
+			SmudgeLayer.Dispose();
 		}
 	}
 }
