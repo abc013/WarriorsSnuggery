@@ -21,9 +21,6 @@ namespace WarriorsSnuggery.Objects.Weapons
 		[Desc("Texture of the Weapon.")]
 		public readonly TextureInfo Texture;
 
-		[Desc("Speed of the warhead.")]
-		public readonly int Speed;
-
 		[Desc("Particles that are emitted at the weapons travel time.")]
 		public readonly ParticleSpawner TrailParticles;
 
@@ -33,13 +30,14 @@ namespace WarriorsSnuggery.Objects.Weapons
 		[Desc("Weapon always points to the target.")]
 		public readonly bool OrientateToTarget;
 
-		[Desc("Angle at which the weapon should be launched at minimum.", "Minimum is -89, Maximum is 89.")]
-		public readonly int MinimumAngle = 0;
-		[Desc("Angle at which the weapon should be launched at maximum.", "Minimum is -89, Maximum is 89.")]
-		public readonly int MaximumAngle = 89;
+		[Desc("Force applied to the weapon during flight.")]
+		public readonly CPos Force = CPos.Zero;
 
-		[Desc("Gravity applied to the weapon.")]
-		public readonly int Gravity = 0;
+		[Desc("Startspeed of the warhead.")]
+		public readonly int Speed = 32;
+
+		[Desc("Maximum speed of the warhead.")]
+		public readonly int MaxSpeed = 128;
 
 		public BulletProjectileType(MiniTextNode[] nodes)
 		{

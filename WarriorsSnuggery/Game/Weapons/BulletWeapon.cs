@@ -6,15 +6,15 @@ namespace WarriorsSnuggery.Objects.Weapons
 	{
 		readonly BulletProjectileType projectileType;
 
-		float flatDistMoved;
-		readonly int speed;
+		Vector speed;
+		Vector speedLeft;
 
 		public BulletWeapon(World world, WeaponType type, Target target, Actor origin) : base(world, type, target, origin)
 		{
 			projectileType = (BulletProjectileType)type.Projectile;
-			speed = projectileType.Speed;
 
 			var angle = (Position - TargetPosition).FlatAngle;
+			calculateStartSpeed(angle);
 
 			if (projectileType.OrientateToTarget)
 				Rotation = new VAngle(0, 0, angle);
@@ -24,55 +24,61 @@ namespace WarriorsSnuggery.Objects.Weapons
 			TargetPosition += getInaccuracy();
 		}
 
+		void calculateStartSpeed(float angle)
+		{
+			var x = (float)Math.Cos(angle) * projectileType.Speed;
+			var y = (float)Math.Sin(angle) * projectileType.Speed;
+
+			var zDiff = TargetHeight - Height;
+			var dDiff = (int)(Position - TargetPosition).FlatDist;
+
+			var angle2 = new CPos(-dDiff, -zDiff, 0).FlatAngle;
+			var z = (float)Math.Sin(angle2) * projectileType.Speed;
+			var plusZ = (dDiff / projectileType.Speed) * -projectileType.Force.Z / 2;
+
+			speed = new Vector(x, y, z + plusZ);
+		}
+
 		public override void Tick()
 		{
 			base.Tick();
 
 			if (projectileType.OrientateToTarget)
-				Rotation = new VAngle(0, 0, -(TargetPosition - Position).FlatAngle);
+				Rotation = new VAngle(0, 0, -(TargetPosition - GraphicPosition).FlatAngle);
 
-			Move(TargetPosition);
+			Move();
+
+			if (projectileType.TrailParticles != null)
+				World.Add(projectileType.TrailParticles.Create(World, Position, Height));
 		}
 
-		public void Move(CPos target)
+		public void Move()
 		{
-			var angle = (Position - target).FlatAngle;
+			var curSpeed = speed + speedLeft;
+			var x = (int)curSpeed.X;
+			var y = (int)curSpeed.Y;
+			var z = (int)curSpeed.Z;
+			speedLeft = new Vector(curSpeed.X - x, curSpeed.Y - y, curSpeed.Z - z);
 
-			var x = Math.Cos(angle) * speed;
-			var y = Math.Sin(angle) * speed;
-			double z;
-
-			int zDiff;
-			int dDiff;
-			float angle2;
-			if (TargetActor != null)
-			{
-				zDiff = Height - TargetActor.Height;
-				dDiff = (int)(Position - TargetActor.Position).FlatDist;
-			}
-			else
-			{
-				zDiff = Height;
-				dDiff = (int)(Position - TargetPosition).FlatDist;
-			}
-			angle2 = new CPos(-dDiff, -zDiff, 0).FlatAngle;
-			z = Math.Sin(angle2) * speed; // TODO add gravity
-
-			var old = Position;
-			Position = new CPos(Position.X + (int)x, Position.Y + (int)y, Position.Z);
+			Position = new CPos(Position.X + x, Position.Y + y, Position.Z);
 			Physics.Position = Position;
+			Height += z;
+			Physics.Height = Height;
+			speed += new Vector(projectileType.Force.X, projectileType.Force.Y, projectileType.Force.Z);
 
-			Height -= (int)z;
-			if (Height < 0)
+			if (speed.X > projectileType.MaxSpeed)
+				speed = new Vector(projectileType.MaxSpeed, speed.Y, speed.Z);
+			if (speed.Y > projectileType.MaxSpeed)
+				speed = new Vector(speed.X, projectileType.MaxSpeed, speed.Z);
+			if (speed.Z > projectileType.MaxSpeed)
+				speed = new Vector(speed.X, speed.Y, projectileType.MaxSpeed);
+
+			if (Height < 0 || !World.IsInWorld(Position))
 				Detonate(new Target(Position, 0));
 
 			World.PhysicsLayer.UpdateSectors(this, updateSectors: false);
 
 			if (World.CheckCollision(this, false, new[] { Origin }))
-				Detonate(new Target(Position, Height));
-
-			flatDistMoved += (Position - old).FlatDist;
-			if (flatDistMoved > Type.MaxRange * RangeModifier || !World.IsInWorld(Position))
 				Detonate(new Target(Position, Height));
 		}
 
