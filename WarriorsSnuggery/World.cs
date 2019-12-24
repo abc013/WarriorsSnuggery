@@ -68,22 +68,7 @@ namespace WarriorsSnuggery
 				PlayerAlive = false;
 				Camera.Position(new MPos(Map.Bounds.X / 2, Map.Bounds.Y / 2).ToCPos(), true);
 			}
-			//Add(new PhysicsObject(new CPos(0, 0, 1024), new ImageRenderable(TextureManager.NoiseTexture(
-			//	new MPos(128, 128),
-			//	6,
-			//	scale: 1f,
-			//	intensity: -0.1f,
-			//	contrast: 5f
-			//	), 1f)));
-			//Add(new PhysicsObject(new CPos(0, 6000, 1024), new ImageRenderable(TextureManager.NoiseTexture(
-			//	new MPos(128, 128),
-			//	2,
-			//	8f,
-			//	1,
-			//	intensity: -0.3f,
-			//	contrast: 1.5f
-			//	), 1f)));
-			//Add(ActorCreator.Create(this, "heal", CPos.Zero, 1, true));
+
 			if (actorsToAdd.Any())
 				Game.Teams = actorsToAdd.Max(a => a.Team);
 
@@ -98,13 +83,13 @@ namespace WarriorsSnuggery
 					Camera.Position(LocalPlayer.Position);
 
 				foreach (var effect in LocalPlayer.Effects.Where(e => e.Active && e.Spell.Type == Spells.EffectType.MANA))
-				{
 					Game.Statistics.Mana += (int)effect.Spell.Value;
-				}
 			}
 
-			Actors.ForEach(a => a.Tick());
-			Objects.ForEach(o => o.Tick());
+			foreach (var actor in Actors)
+				actor.Tick();
+			foreach (var @object in Objects)
+				@object.Tick();
 			SmudgeLayer.Tick();
 
 			addObjects();
@@ -119,9 +104,8 @@ namespace WarriorsSnuggery
 			if (actorsToAdd.Any())
 			{
 				foreach (var actor in actorsToAdd)
-				{
 					actor.CheckVisibility();
-				}
+
 				Actors.AddRange(actorsToAdd);
 				actorsToAdd.Clear();
 			}
@@ -129,9 +113,8 @@ namespace WarriorsSnuggery
 			if (objectsToAdd.Any())
 			{
 				foreach (var @object in objectsToAdd)
-				{
 					@object.CheckVisibility();
-				}
+
 				Objects.AddRange(objectsToAdd);
 				objectsToAdd.Clear();
 			}
@@ -139,9 +122,12 @@ namespace WarriorsSnuggery
 			var toRender = Objects.ToList(); // Copy array
 			toRender.AddRange(Actors); // Add actors
 			foreach (var wall in WallLayer.Walls)
+			{
 				if (wall != null)
 					toRender.Add(wall);
-			toRender = toRender.OrderBy(e => (e.GraphicPosition.Z + (e.Position.Y - 512) * 2)).ToList();
+			}
+
+			toRender = toRender.OrderBy(e => e.GraphicPosition.Z + (e.Position.Y - 512) * 2).ToList();
 			ToRender = toRender;
 		}
 
@@ -162,14 +148,15 @@ namespace WarriorsSnuggery
 				return false;
 
 			foreach (var p in obj.PhysicsSectors)
+			{
 				if (p.Check(obj, ignoreHeight, ignoreObjects))
 					return true;
+			}
 
 			foreach (var wall in WallLayer.Walls)
 			{
-				if (wall == null/* || obj.Physics == wall.Physics*/) continue;
-					if (ignoreObjects != null && ignoreObjects.Contains(wall))
-						continue;
+				if (wall == null || (ignoreObjects != null && ignoreObjects.Contains(wall)))
+					continue;
 
 				if (obj.Physics.Intersects(wall.Physics, ignoreHeight))
 					return true;
