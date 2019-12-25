@@ -60,7 +60,7 @@
 
 		public override string ToString()
 		{
-			if (children != null)
+			if (children == null)
 				return (Negate ? "!" : "") + Type;
 
 			return children[0].ToString() + (operation == Operation.AND ? "&&" : "||") + children[1].ToString();
