@@ -1,9 +1,15 @@
 ﻿using WarriorsSnuggery.Graphics;
+using WarriorsSnuggery.Physics;
 using WarriorsSnuggery.Objects.Particles;
 
 namespace WarriorsSnuggery.Objects.Weapons
 {
-	public interface IProjectileType { }
+	public interface IProjectileType
+	{
+		IImageSequenceRenderable GetTexture();
+
+		SimplePhysics GetPhysics();
+	}
 
 	public class InstantHitProjectileType : IProjectileType
 	{
@@ -13,6 +19,16 @@ namespace WarriorsSnuggery.Objects.Weapons
 		public InstantHitProjectileType(MiniTextNode[] nodes)
 		{
 			Loader.PartLoader.SetValues(this, nodes);
+		}
+
+		public IImageSequenceRenderable GetTexture()
+		{
+			return null;
+		}
+
+		public SimplePhysics GetPhysics()
+		{
+			return SimplePhysics.Empty;
 		}
 	}
 
@@ -45,6 +61,64 @@ namespace WarriorsSnuggery.Objects.Weapons
 
 			if (Texture != null)
 				SpriteManager.AddTexture(Texture);
+		}
+
+		public IImageSequenceRenderable GetTexture()
+		{
+			return new IImageSequenceRenderable(Texture.GetTextures(), Texture.Tick);
+		}
+
+		public SimplePhysics GetPhysics()
+		{
+			return new SimplePhysics(CPos.Zero, 0, Shape.CIRCLE, 48, 48, 48);
+		}
+	}
+
+	public class MagicProjectileType : IProjectileType
+	{
+		[Desc("Texture of the Weapon.")]
+		public readonly TextureInfo Texture;
+
+		[Desc("Particles that are emitted at the weapons travel time.")]
+		public readonly ParticleSpawner TrailParticles;
+
+		[Desc("Inaccuracy of the weapon.")]
+		public readonly int Inaccuracy;
+
+		[Desc("Weapon always points to the target.")]
+		public readonly bool OrientateToTarget;
+
+		[Desc("Weapon follows the target.")]
+		public readonly bool FollowTarget;
+
+		[Desc("Speed of the warhead.")]
+		public readonly int Speed = 32;
+
+		[Desc("Turnspeed of the warhead.")]
+		public readonly int TurnSpeed = 32;
+
+		public readonly float FloatTurnSpeed;
+
+		[Desc("Turbulence to build in.")]
+		public readonly int Turbulence = 0;
+
+		public MagicProjectileType(MiniTextNode[] nodes)
+		{
+			Loader.PartLoader.SetValues(this, nodes);
+			FloatTurnSpeed = TurnSpeed / (float)(180 * System.Math.PI);
+
+			if (Texture != null)
+				SpriteManager.AddTexture(Texture);
+		}
+
+		public IImageSequenceRenderable GetTexture()
+		{
+			return new IImageSequenceRenderable(Texture.GetTextures(), Texture.Tick);
+		}
+
+		public SimplePhysics GetPhysics()
+		{
+			return new SimplePhysics(CPos.Zero, 0, Shape.CIRCLE, 48, 48, 48);
 		}
 	}
 
@@ -86,6 +160,16 @@ namespace WarriorsSnuggery.Objects.Weapons
 				SpriteManager.AddTexture(BeamStartUp);
 			if (BeamCooldown != null)
 				SpriteManager.AddTexture(BeamCooldown);
+		}
+
+		public IImageSequenceRenderable GetTexture()
+		{
+			return null;
+		}
+
+		public SimplePhysics GetPhysics()
+		{
+			return SimplePhysics.Empty;
 		}
 	}
 }

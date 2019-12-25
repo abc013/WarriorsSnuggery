@@ -22,7 +22,7 @@ namespace WarriorsSnuggery.Objects.Weapons
 		public readonly float DamageModifier = 1f;
 		public readonly float RangeModifier = 1f;
 
-		protected Weapon(World world, WeaponType type, Target target, Actor origin) : base(origin.ActiveWeapon.WeaponOffsetPosition, type.Projectile is BulletProjectileType ? new IImageSequenceRenderable((type.Projectile as BulletProjectileType).Texture.GetTextures(), (type.Projectile as BulletProjectileType).Texture.Tick) : null, type.Projectile is BulletProjectileType ? new SimplePhysics(origin.Position, origin.Height, Shape.RECTANGLE, 64, 64, 64) : SimplePhysics.Empty)
+		protected Weapon(World world, WeaponType type, Target target, Actor origin) : base(origin.ActiveWeapon.WeaponOffsetPosition, type.Projectile.GetTexture(), type.Projectile.GetPhysics())
 		{
 			World = world;
 			Type = type;

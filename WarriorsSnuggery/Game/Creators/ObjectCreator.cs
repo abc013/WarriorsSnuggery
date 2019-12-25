@@ -135,6 +135,8 @@ namespace WarriorsSnuggery
 				return new BeamWeapon(world, type, target, origin);
 			else if (type.Projectile is BulletProjectileType)
 				return new BulletWeapon(world, type, target, origin);
+			else if (type.Projectile is MagicProjectileType)
+				return new MagicWeapon(world, type, target, origin);
 			else
 				return new InstantHitWeapon(world, type, target, origin);
 		}

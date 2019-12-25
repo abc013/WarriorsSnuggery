@@ -252,6 +252,8 @@ namespace WarriorsSnuggery.Loader
 				{
 					case "Bullet":
 						return new Objects.Weapons.BulletProjectileType(node.Children.ToArray());
+					case "Magic":
+						return new Objects.Weapons.MagicProjectileType(node.Children.ToArray());
 					case "Beam":
 						return new Objects.Weapons.BeamProjectileType(node.Children.ToArray());
 					case "InstantHit":
