@@ -21,6 +21,11 @@
 		[Desc("Hides the actor when the cursor/player is behind it so the player can see more.")]
 		public readonly bool Hideable;
 
+		[Desc("Up-left-corner of the selection box for possible targets.")]
+		public readonly CPos TargetBoxCorner1 = new CPos(-256, 256, 0);
+		[Desc("Down-right-corner of the selection box for possible targets.")]
+		public readonly CPos TargetBoxCorner2 = new CPos(256, -256, 0);
+
 		public override ActorPart Create(Actor self)
 		{
 			return new WorldPart(self, this);
@@ -75,6 +80,12 @@
 		public WorldPart(Actor self, WorldPartInfo info) : base(self)
 		{
 			this.info = info;
+		}
+
+		public bool InTargetBox(CPos pos)
+		{
+			var diff = pos - self.Position;
+			return diff.X > info.TargetBoxCorner1.X && diff.X < info.TargetBoxCorner2.X && diff.Y > -info.TargetBoxCorner1.Y  && diff.Y < -info.TargetBoxCorner2.Y;
 		}
 	}
 }

@@ -46,7 +46,7 @@ namespace WarriorsSnuggery
 					money.Render();
 					break;
 				case CursorType.ATTACK:
-					attack.SetPosition(MouseInput.WindowPosition + new CPos(240, 240, 0));
+					attack.SetPosition(MouseInput.WindowPosition);
 					attack.Render();
 					break;
 				default:

@@ -405,7 +405,7 @@ namespace WarriorsSnuggery
 				return null;
 
 			// Look for actors in range.
-			var valid = World.Actors.Where(a => a.IsAlive && a.Team != team && a.WorldPart != null && a.WorldPart.Targetable && (pos - a.Position).Dist < 256 && VisibilitySolver.IsVisible(a.Position)).ToArray();
+			var valid = World.Actors.Where(a => a.IsAlive && a.Team != team && a.WorldPart != null && a.WorldPart.Targetable && a.WorldPart.InTargetBox(pos) && VisibilitySolver.IsVisible(a.Position)).ToArray();
 
 			// If any, pick one and fire the weapon on it.
 			if (!valid.Any())

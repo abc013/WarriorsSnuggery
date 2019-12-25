@@ -29,6 +29,8 @@ dummy=
 		Name=silver
 	Part@World=
 		Targetable=true
+		TargetBoxCorner1=-334,512,0
+		TargetBoxCorner2=334,-512,0
 
 tut_1=
 	Part@AnimatedSprite=
