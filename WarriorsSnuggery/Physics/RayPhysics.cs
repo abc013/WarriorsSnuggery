@@ -120,7 +120,7 @@ namespace WarriorsSnuggery.Physics
 						if (end != invalid && t1 < closestT1)
 						{
 							var height = calculateHeight(end);
-							if (height <= obj.Physics.Height + obj.Physics.HeightRadius || height >= obj.Physics.Height - obj.Physics.HeightRadius)
+							if (height <= obj.Physics.Height + obj.Physics.HeightRadius && height >= obj.Physics.Height - obj.Physics.HeightRadius)
 							{
 								closestIntersect = end;
 								closestT1 = t1;
