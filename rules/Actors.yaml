@@ -71,7 +71,6 @@ heal=
 		Count=1
 		Name=puff1
 		Type=PARTICLE
-		Offset=0,0,-1024
 		Tick=3
 	Part@SpawnOnDeath=
 		Condition=!IsFriendly
