@@ -62,6 +62,7 @@ namespace WarriorsSnuggery
 
 		public static void WriteDoc(StreamWriter writer, DocumentationType type)
 		{
+			TypeWriter.Initialize();
 			writer.WriteLine();
 			writer.WriteLine("\t\t<h1>" + type.ToString().ToLower(System.Globalization.CultureInfo.CurrentCulture) + "</h1>");
 			writer.WriteLine("\t\t<hr>");
@@ -90,15 +91,7 @@ namespace WarriorsSnuggery
 
 					break;
 				case DocumentationType.MAPS:
-					writer.WriteLine("\t\t<h2> Map Information</h2>");
-					writer.WriteLine("\t\t<hr>");
-					writer.WriteLine();
 					ObjectWriter.WriteMaps(writer);
-					writer.WriteLine();
-					writer.WriteLine("\t\t<h2> Map Generators</h2>");
-					writer.WriteLine("\t\t<hr>");
-					writer.WriteLine();
-					ObjectWriter.WriteMapGenerators(writer);
 
 					break;
 				case DocumentationType.SPELLS:
@@ -114,6 +107,12 @@ namespace WarriorsSnuggery
 			foreach (var descLine in description)
 				writer.WriteLine("\t\t" + descLine + "<br><br>");
 			writer.WriteLine();
+		}
+
+		public static void WriteHead(StreamWriter writer, string head)
+		{
+			writer.WriteLine("\t\t<h2>" + head  + "</h2>");
+			writer.WriteLine("\t\t<hr>");
 		}
 
 		public static void WriteTable(StreamWriter writer, TableCell[] cells, bool showValues)
@@ -163,172 +162,56 @@ namespace WarriorsSnuggery
 	{
 		public static void WriteActors(StreamWriter writer)
 		{
-			var infos = Assembly.Load("WarriorsSnuggery").GetTypes().Where(t => t.Name.EndsWith("Info") && t.Namespace == "WarriorsSnuggery.Objects.Parts" && !t.IsAbstract);
-
-			bool first = true;
-			foreach (var info in infos)
-			{
-				var attrib = info.GetCustomAttribute(typeof(DescAttribute));
-				HTMLWriter.WriteRuleHead(writer, info.Name.Replace("PartInfo", ""), attrib == null ? new string[] { "No Description." } : ((DescAttribute)attrib).Desc);
-
-				writeTypeAndValues(writer, info, new[] { new MiniTextNode[0] });
-
-				Console.Write((first ? "" : ", ") + info.Name.Replace("PartInfo", ""));
-				if (first)
-					first = false;
-			}
-			Console.WriteLine();
+			TypeWriter.WriteAll(writer, "WarriorsSnuggery.Objects.Parts", "PartInfo", new[] { new MiniTextNode[0] });
 		}
 
 		public static void WriteParticles(StreamWriter writer)
 		{
-			writer.WriteLine("\t\t<h2>ParticleSpawner</h2>");
-			writer.WriteLine("\t\t<hr>");
-			var spawner = Assembly.Load("WarriorsSnuggery").GetType("WarriorsSnuggery.Objects.Particles.ParticleSpawner");
-			writeTypeAndValues(writer, spawner, new[] { new MiniTextNode[0] });
+			HTMLWriter.WriteHead(writer, "ParticleSpawner");
+			TypeWriter.Write(writer, "WarriorsSnuggery.Objects.Particles.ParticleSpawner", new[] { new MiniTextNode[0] });
 
-			writer.WriteLine("\t\t<h2>Particle</h2>");
-			writer.WriteLine("\t\t<hr>");
-			var info = Assembly.Load("WarriorsSnuggery").GetType("WarriorsSnuggery.Objects.Particles.ParticleType");
-			writeTypeAndValues(writer, info, new[] { new MiniTextNode[0] });
+			HTMLWriter.WriteHead(writer, "Particle");
+			TypeWriter.Write(writer, "WarriorsSnuggery.Objects.Particles.ParticleType", new[] { new MiniTextNode[0] });
 		}
 
 		public static void WriteTerrain(StreamWriter writer)
 		{
-			var info = Assembly.Load("WarriorsSnuggery").GetType("WarriorsSnuggery.Objects.TerrainType");
-
-			writeTypeAndValues(writer, info, new object[] { ushort.MaxValue, new MiniTextNode[0] });
+			TypeWriter.Write(writer, "WarriorsSnuggery.Objects.TerrainType", new object[] { 0, new MiniTextNode[0], true });
 		}
 
 		public static void WriteWalls(StreamWriter writer)
 		{
-			var info = Assembly.Load("WarriorsSnuggery").GetType("WarriorsSnuggery.Objects.WallType");
-
-			writeTypeAndValues(writer, info, new object[] { -1, new MiniTextNode[0] });
+			TypeWriter.Write(writer, "WarriorsSnuggery.Objects.WallType", new object[] { 0, new MiniTextNode[0], true });
 		}
 
 		public static void WriteWeapons(StreamWriter writer)
 		{
-			writer.WriteLine("\t\t<h2>WeaponType</h2>");
-			writer.WriteLine("\t\t<hr>");
-			var weaponType = Assembly.Load("WarriorsSnuggery").GetType("WarriorsSnuggery.Objects.Weapons.WeaponType");
-			writeTypeAndValues(writer, weaponType, new object[] { new MiniTextNode[0] });
+			HTMLWriter.WriteHead(writer, "WeaponType");
+			TypeWriter.Write(writer, "WarriorsSnuggery.Objects.Weapons.WeaponType", new [] { new MiniTextNode[0] });
 
-			writer.WriteLine("\t\t<h2>ProjectileType</h2>");
-			writer.WriteLine("\t\t<hr>");
-			var infos = Assembly.Load("WarriorsSnuggery").GetTypes().Where(t => t.Name.EndsWith("ProjectileType") && t.Namespace == "WarriorsSnuggery.Objects.Weapons" && !t.IsInterface);
+			HTMLWriter.WriteHead(writer, "ProjectileTypes");
+			TypeWriter.WriteAll(writer, "WarriorsSnuggery.Objects.Weapons", "ProjectileType", new[] { new MiniTextNode[0] });
 
-			bool first = true;
-			foreach (var info in infos)
-			{
-				var attrib = info.GetCustomAttribute(typeof(DescAttribute));
-				HTMLWriter.WriteRuleHead(writer, info.Name.Replace("ProjectileType", ""), attrib == null ? new string[] { "No Description." } : ((DescAttribute)attrib).Desc, false);
-
-				writeTypeAndValues(writer, info, new object[] { new MiniTextNode[0] });
-
-				Console.Write((first ? "" : ", ") + info.Name.Replace("ProjectileType", ""));
-				first = false;
-			}
-			Console.WriteLine();
-
-			writer.WriteLine("\t\t<h2>Warhead</h2>");
-			writer.WriteLine("\t\t<hr>");
-			var infos2 = Assembly.Load("WarriorsSnuggery").GetTypes().Where(t => t.Name.EndsWith("Warhead") && t.Namespace == "WarriorsSnuggery.Objects.Weapons" && !t.IsInterface);
-			first = true;
-			foreach (var info in infos2)
-			{
-				var attrib = info.GetCustomAttribute(typeof(DescAttribute));
-				HTMLWriter.WriteRuleHead(writer, info.Name.Replace("Warhead", ""), attrib == null ? new string[] { "No Description." } : ((DescAttribute)attrib).Desc, false);
-
-				writeTypeAndValues(writer, info, new object[] { new MiniTextNode[0] });
-
-				Console.Write((first ? "" : ", ") + info.Name.Replace("Warhead", ""));
-				first = false;
-			}
-			Console.WriteLine();
+			HTMLWriter.WriteHead(writer, "Warheads");
+			TypeWriter.WriteAll(writer, "WarriorsSnuggery.Objects.Weapons", "Warhead", new[] { new MiniTextNode[0] });
 		}
 
 		public static void WriteMaps(StreamWriter writer)
 		{
-			var info = Assembly.Load("WarriorsSnuggery").GetType("WarriorsSnuggery.Maps.MapInfo");
+			HTMLWriter.WriteHead(writer, "Map");
+			TypeWriter.Write(writer, "WarriorsSnuggery.Maps.MapInfo", new[] { new MiniTextNode[0] });
 
-			writeType(writer, info);
-		}
-
-		public static void WriteMapGenerators(StreamWriter writer)
-		{
-			var infos = Assembly.Load("WarriorsSnuggery").GetTypes().Where(t => t.Name.EndsWith("Info") && t.Namespace == "WarriorsSnuggery.Maps" && !t.IsAbstract);
-
-			bool first = true;
-			foreach (var info in infos)
-			{
-				if (info.Name == "MapInfo")
-					continue;
-
-				var attrib = info.GetCustomAttribute(typeof(DescAttribute));
-				HTMLWriter.WriteRuleHead(writer, info.Name.Replace("Info", ""), attrib == null ? new string[] { "No Description." } : ((DescAttribute)attrib).Desc);
-
-				writeType(writer, info);
-
-				Console.Write((first ? "" : ", ") + info.Name.Replace("Info", ""));
-				first = false;
-			}
-			Console.WriteLine();
+			HTMLWriter.WriteHead(writer, "MapGenerators");
+			TypeWriter.WriteAll(writer, "WarriorsSnuggery.Maps", "GeneratorInfo", new object[] { -1, new MiniTextNode[0] });
 		}
 
 		public static void WriteSpells(StreamWriter writer)
 		{
-			writer.WriteLine("\t\t<h2> Spell basic information</h2>");
-			writer.WriteLine("\t\t<hr>");
-			writer.WriteLine();
-			var info = Assembly.Load("WarriorsSnuggery").GetType("WarriorsSnuggery.Spells.SpellTreeNode");
-			writeType(writer, info);
+			HTMLWriter.WriteHead(writer, "SpellNode");
+			TypeWriter.Write(writer, "WarriorsSnuggery.Spells.SpellTreeNode", new object[] { new MiniTextNode[0], "", true });
 
-			writer.WriteLine("\t\t<h2> Spell</h2>");
-			writer.WriteLine("\t\t<hr>");
-			writer.WriteLine();
-			var info2 = Assembly.Load("WarriorsSnuggery").GetType("WarriorsSnuggery.Spells.Spell");
-			writeType(writer, info2);
-		}
-
-		static void writeType(StreamWriter writer, Type info)
-		{
-			var variables = info.GetFields().Where(f => f.IsInitOnly && f.GetCustomAttribute(typeof(DescAttribute)) != null).ToArray();
-			var cells = new TableCell[variables.Length];
-			for (int i = 0; i < variables.Length; i++)
-			{
-				var variable = variables[i];
-				var name = variable.Name;
-				var type = getNameOfType(variable.FieldType.Name);
-				var desc = ((DescAttribute)variable.GetCustomAttribute(typeof(DescAttribute))).Desc;
-				cells[i] = new TableCell(name, type, desc, "Not given");
-			}
-			HTMLWriter.WriteTable(writer, cells, false);
-		}
-
-		static void writeTypeAndValues(StreamWriter writer, Type info, object[] args)
-		{
-			var obj = Activator.CreateInstance(info, args);
-			var variables = info.GetFields().Where(f => f.IsInitOnly && f.GetCustomAttribute(typeof(DescAttribute)) != null).ToArray();
-			var cells = new TableCell[variables.Length];
-			for (int i = 0; i < variables.Length; i++)
-			{
-				var variable = variables[i];
-				var name = variable.Name;
-				var type = getNameOfType(variable.FieldType.Name);
-				var desc = ((DescAttribute)variable.GetCustomAttribute(typeof(DescAttribute))).Desc;
-				var value = variable.GetValue(obj);
-				cells[i] = new TableCell(name, type, desc, value == null ? "" : value.ToString());
-			}
-			HTMLWriter.WriteTable(writer, cells, true);
-		}
-
-		static string getNameOfType(string name)
-		{
-			name = name.Replace("Single", "Float");
-			name = name.Replace("Int32", "Integer");
-
-			return name;
+			HTMLWriter.WriteHead(writer, "Spell");
+			TypeWriter.Write(writer, "WarriorsSnuggery.Spells.Spell", new[] { new MiniTextNode[0] });
 		}
 	}
 }

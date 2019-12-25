@@ -115,7 +115,7 @@ namespace WarriorsSnuggery.Maps
 			}
 		}
 
-		PatrolProbabilityGeneratorInfo getPatrol()
+		PatrolProbabilityInfo getPatrol()
 		{
 			var probability = random.NextDouble() * info.PatrolProbabilities;
 			for (int i = 0; i < info.Patrols.Length; i++)
@@ -149,7 +149,7 @@ namespace WarriorsSnuggery.Maps
 		[Desc("Maximum number of patrols.", "Maximum currently is 13.")]
 		public readonly int MaximumPatrols = 4;
 		[Desc("Patrols to possibly spawn.")]
-		public readonly PatrolProbabilityGeneratorInfo[] Patrols;
+		public readonly PatrolProbabilityInfo[] Patrols;
 		public readonly float PatrolProbabilities;
 
 		[Desc("Use Patrols in the WAVES GameMode.", "Please note by setting to true, the Generator will not be used in other GameModes.")]
@@ -158,7 +158,10 @@ namespace WarriorsSnuggery.Maps
 		public PatrolGeneratorInfo(int id, MiniTextNode[] nodes) : base(id)
 		{
 			Loader.PartLoader.SetValues(this, nodes);
-			PatrolProbabilities = Patrols.Sum(p => p.Probability);
+
+
+			if (id >= 0)
+				PatrolProbabilities = Patrols.Sum(p => p.Probability);
 		}
 
 		public override MapGenerator GetGenerator(Random random, Map map, World world)
@@ -171,7 +174,7 @@ namespace WarriorsSnuggery.Maps
 	}
 
 	[Desc("Information used for determining what actors will be spawned in the PatrolGenerator.")]
-	public class PatrolProbabilityGeneratorInfo
+	public class PatrolProbabilityInfo
 	{
 		[Desc("Distance between the spawned objects in CPos size.", "Should be smaller than half of the size of the SpawnBounds.")]
 		public readonly int DistanceBetweenObjects = 1024;
@@ -180,7 +183,7 @@ namespace WarriorsSnuggery.Maps
 		[Desc("Probability that this patrol will be spawned.", "This value will be set in relation with all other patrol probabilities.")]
 		public readonly float Probability = 1f;
 
-		public PatrolProbabilityGeneratorInfo(MiniTextNode[] nodes)
+		public PatrolProbabilityInfo(MiniTextNode[] nodes)
 		{
 			Loader.PartLoader.SetValues(this, nodes);
 		}

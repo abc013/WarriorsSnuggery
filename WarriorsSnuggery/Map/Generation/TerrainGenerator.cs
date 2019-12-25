@@ -4,7 +4,7 @@ using WarriorsSnuggery.Objects;
 namespace WarriorsSnuggery.Maps
 {
 	[Desc("Information about objects that can be spawned with the TerrainGenerator.")]
-	public class ActorGeneratorInfo
+	public class ActorProbabilityInfo
 	{
 		[Desc("Probability of spawning an actor on a field.")]
 		public readonly float Probability = 1f;
@@ -18,7 +18,7 @@ namespace WarriorsSnuggery.Maps
 		[Desc("Determines whether the actor spawned is a bot.")]
 		public readonly bool IsBot = false;
 
-		public ActorGeneratorInfo(MiniTextNode[] nodes)
+		public ActorProbabilityInfo(MiniTextNode[] nodes)
 		{
 			Loader.PartLoader.SetValues(this, nodes);
 		}
@@ -175,7 +175,7 @@ namespace WarriorsSnuggery.Maps
 		[Desc("Allows spawning of pieces.")]
 		public readonly bool SpawnPieces = true;
 		[Desc("Information about the actors to be spawned on that terrain.")]
-		public readonly ActorGeneratorInfo[] SpawnActors;
+		public readonly ActorProbabilityInfo[] SpawnActors;
 
 		[Desc("Border thickness.")]
 		public readonly int Border = 0;

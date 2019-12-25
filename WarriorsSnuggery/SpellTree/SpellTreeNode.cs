@@ -27,13 +27,16 @@ namespace WarriorsSnuggery.Spells
 
 		public readonly IImage[] Images;
 
-		public SpellTreeNode(MiniTextNode[] nodes, string name)
+		public SpellTreeNode(MiniTextNode[] nodes, string name, bool documentation = false)
 		{
 			Loader.PartLoader.SetValues(this, nodes);
 
-			InnerName = name;
-			Name = name.Replace('_', ' ');
-			Images = SpriteManager.AddTexture(Icon);
+			if (!documentation)
+			{
+				InnerName = name;
+				Name = name.Replace('_', ' ');
+				Images = SpriteManager.AddTexture(Icon);
+			}
 		}
 
 		public string[] getInformation(bool showDesc)

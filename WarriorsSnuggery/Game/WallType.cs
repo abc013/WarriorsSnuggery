@@ -30,12 +30,12 @@ namespace WarriorsSnuggery.Objects
 		[Desc("How much damage of nearby explosions penetrates the wall.")]
 		public readonly float DamagePenetration = 0f;
 
-		public WallType(int id, MiniTextNode[] nodes)
+		public WallType(int id, MiniTextNode[] nodes, bool documentation = false)
 		{
 			ID = id;
 			Loader.PartLoader.SetValues(this, nodes);
 
-			if (id >= 0)
+			if (!documentation)
 			{
 				if (Image == null || Image.Trim() == "")
 					throw new YamlMissingNodeException("[Wall] " + id, "Image");

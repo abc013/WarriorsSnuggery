@@ -51,7 +51,7 @@ namespace WarriorsSnuggery.Objects
 		[Desc("If true, weapons will leave behind smudge on impact.")]
 		public readonly bool SpawnSmudge = true;
 
-		public TerrainType(ushort id, MiniTextNode[] nodes)
+		public TerrainType(ushort id, MiniTextNode[] nodes, bool documentation = false)
 		{
 			ID = id;
 
@@ -59,7 +59,7 @@ namespace WarriorsSnuggery.Objects
 
 			Overlaps = EdgeSprite != null;
 
-			if (id != ushort.MaxValue)
+			if (!documentation)
 			{
 				if ((Sprite == null || Sprite == string.Empty))
 					throw new YamlMissingNodeException(ID.ToString(), "Image");
