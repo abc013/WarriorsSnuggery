@@ -25,7 +25,7 @@ namespace WarriorsSnuggery.Objects.Weapons
 		[Desc("Maximal Range the weapon can travel.")]
 		public readonly int MaxRange = 8192;
 
-		[Desc("Type of the Projectile.", "Possible: Bullet, Beam, InstantHit;")]
+		[Desc("Type of the Projectile.")]
 		public readonly IProjectileType Projectile;
 
 		[Desc("Contains all different kinds of warheads that will impact when the weapon hits the target.")]

@@ -45,6 +45,7 @@ namespace WarriorsSnuggery
 				writer.WriteLine("hr { color: " + Colors[2] + "; }");
 				writer.WriteLine("h1 { margin-bottom: 0px; color: #FFFFFF; }");
 				writer.WriteLine("h2 { margin-bottom: 0px; color: #FFFFFF; }");
+				writer.WriteLine("h3 { margin-bottom: 0px; color: #EEEEEE; }");
 			}
 			else
 			{
@@ -54,6 +55,7 @@ namespace WarriorsSnuggery
 				writer.WriteLine("tr:nth-child(even) { background-color: " + Colors[0] + "; }");
 				writer.WriteLine("h1 { margin-bottom: 0px; }");
 				writer.WriteLine("h2 { margin-bottom: 0px; }");
+				writer.WriteLine("h3 { margin-bottom: 0px; }");
 			}
 			writer.WriteLine("\t\t</style>");
 		}
@@ -105,9 +107,9 @@ namespace WarriorsSnuggery
 			}
 		}
 
-		public static void WriteRuleHead(StreamWriter writer, string rule, string[] description)
+		public static void WriteRuleHead(StreamWriter writer, string rule, string[] description, bool h2 = true)
 		{
-			writer.WriteLine("\t\t<h2>" + rule + "</h2>");
+			writer.WriteLine("\t\t<" + (h2 ? "h2" : "h3") + ">" + rule + "</h2>");
 			writer.WriteLine("\t\t<hr color=\"" + Colors[2] + "\">");
 			foreach (var descLine in description)
 				writer.WriteLine("\t\t" + descLine + "<br><br>");
@@ -207,9 +209,43 @@ namespace WarriorsSnuggery
 
 		public static void WriteWeapons(StreamWriter writer)
 		{
-			var info = Assembly.Load("WarriorsSnuggery").GetType("WarriorsSnuggery.Objects.WeaponType");
+			writer.WriteLine("\t\t<h2>WeaponType</h2>");
+			writer.WriteLine("\t\t<hr>");
+			var weaponType = Assembly.Load("WarriorsSnuggery").GetType("WarriorsSnuggery.Objects.Weapons.WeaponType");
+			writeTypeAndValues(writer, weaponType, new object[] { new MiniTextNode[0] });
 
-			writeTypeAndValues(writer, info, new object[] { "DocWriterTest", new MiniTextNode[0] });
+			writer.WriteLine("\t\t<h2>ProjectileType</h2>");
+			writer.WriteLine("\t\t<hr>");
+			var infos = Assembly.Load("WarriorsSnuggery").GetTypes().Where(t => t.Name.EndsWith("ProjectileType") && t.Namespace == "WarriorsSnuggery.Objects.Weapons" && !t.IsInterface);
+
+			bool first = true;
+			foreach (var info in infos)
+			{
+				var attrib = info.GetCustomAttribute(typeof(DescAttribute));
+				HTMLWriter.WriteRuleHead(writer, info.Name.Replace("ProjectileType", ""), attrib == null ? new string[] { "No Description." } : ((DescAttribute)attrib).Desc, false);
+
+				writeTypeAndValues(writer, info, new object[] { new MiniTextNode[0] });
+
+				Console.Write((first ? "" : ", ") + info.Name.Replace("ProjectileType", ""));
+				first = false;
+			}
+			Console.WriteLine();
+
+			writer.WriteLine("\t\t<h2>Warhead</h2>");
+			writer.WriteLine("\t\t<hr>");
+			var infos2 = Assembly.Load("WarriorsSnuggery").GetTypes().Where(t => t.Name.EndsWith("Warhead") && t.Namespace == "WarriorsSnuggery.Objects.Weapons" && !t.IsInterface);
+			first = true;
+			foreach (var info in infos2)
+			{
+				var attrib = info.GetCustomAttribute(typeof(DescAttribute));
+				HTMLWriter.WriteRuleHead(writer, info.Name.Replace("Warhead", ""), attrib == null ? new string[] { "No Description." } : ((DescAttribute)attrib).Desc, false);
+
+				writeTypeAndValues(writer, info, new object[] { new MiniTextNode[0] });
+
+				Console.Write((first ? "" : ", ") + info.Name.Replace("Warhead", ""));
+				first = false;
+			}
+			Console.WriteLine();
 		}
 
 		public static void WriteMaps(StreamWriter writer)
