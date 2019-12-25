@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using WarriorsSnuggery.Graphics;
 using WarriorsSnuggery.Objects;
 
@@ -32,7 +33,7 @@ namespace WarriorsSnuggery.Physics
 			};
 		}
 
-		public void CalculateEnd(Actor shooter = null)
+		public void CalculateEnd(Actor shooter = null, bool onlyWalls = false)
 		{
 			var closestIntersect = new CPos(0, 0, int.MaxValue);
 			var closestT1 = double.MaxValue;
@@ -45,6 +46,29 @@ namespace WarriorsSnuggery.Physics
 				{
 					closestIntersect = end;
 					closestT1 = t1;
+				}
+			}
+
+			// Collision at walls
+			foreach (var wall in world.WallLayer.Walls)
+			{
+				if (wall == null)
+					continue;
+
+				var lines = wall.Physics.GetLines();
+				foreach (var line in lines)
+				{
+					var end = getIntersection(line.Start, line.End, out var t1);
+					if (end != invalid && t1 < closestT1)
+					{
+						var height = calculateHeight(end);
+						if (height <= wall.Physics.Height + wall.Physics.HeightRadius || height >= wall.Physics.Height - wall.Physics.HeightRadius)
+						{
+							closestIntersect = end;
+							closestT1 = t1;
+							EndHeight = height;
+						}
+					}
 				}
 			}
 
@@ -78,28 +102,6 @@ namespace WarriorsSnuggery.Physics
 				sectorMax = new MPos(sectorMax.X, sector1.Y);
 			}
 
-			// Collision at walls
-			foreach (var wall in world.WallLayer.Walls)
-			{
-				if (wall == null)
-					continue;
-
-				var lines = wall.Physics.GetLines();
-				foreach (var line in lines)
-				{
-					var end = getIntersection(line.Start, line.End, out var t1);
-					if (end != invalid && t1 < closestT1)
-					{
-						var height = calculateHeight(end);
-						if (height <= wall.Physics.Height + wall.Physics.HeightRadius || height >= wall.Physics.Height - wall.Physics.HeightRadius)
-						{
-							closestIntersect = end;
-							closestT1 = t1;
-							EndHeight = height;
-						}
-					}
-				}
-			}
 			// Collision at actors.
 			foreach (var sector in layer.Sectors)
 			{
@@ -130,6 +132,31 @@ namespace WarriorsSnuggery.Physics
 			}
 
 			End = closestIntersect;
+		}
+
+		public float GetWallPenetrationValue()
+		{
+			var walls = new List<Wall>();
+
+			// Collision at walls
+			foreach (var wall in world.WallLayer.Walls)
+			{
+				if (wall == null)
+					continue;
+
+				var lines = wall.Physics.GetLines();
+				foreach (var line in lines)
+				{
+					var end = getIntersection(line.Start, line.End, out var t1);
+					if (end != invalid && (Start - end).Dist <= (Start - Target).Dist)
+						walls.Add(wall);
+				}
+			}
+			var output = 1f;
+			foreach(var wall in walls)
+				output *= wall.Type.DamagePenetration;
+
+			return output;
 		}
 
 		CPos getIntersection(CPos a1, CPos a2, out double T1)

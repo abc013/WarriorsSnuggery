@@ -28,7 +28,7 @@ namespace WarriorsSnuggery.Objects
 		public bool Invincible { get { return Health <= 0; } }
 
 		[Desc("How much damage of nearby explosions penetrates the wall.")]
-		public readonly float DamagePenetration = 1f;
+		public readonly float DamagePenetration = 0f;
 
 		public WallType(int id, MiniTextNode[] nodes)
 		{

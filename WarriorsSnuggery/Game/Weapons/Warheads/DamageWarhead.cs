@@ -1,4 +1,5 @@
 ﻿using System;
+using WarriorsSnuggery.Physics;
 
 namespace WarriorsSnuggery.Objects.Weapons
 {
@@ -24,18 +25,23 @@ namespace WarriorsSnuggery.Objects.Weapons
 			{
 				if (target.Type == TargetType.ACTOR && !AgainstWalls)
 				{
-					if (weapon.Origin != null)
-						target.Actor.Damage(weapon.Origin, Damage);
-					else
-						target.Actor.Damage(Damage);
+					target.Actor.Damage(weapon.Origin, Damage);
 					return;
 				}
 
 				if (!AgainstWalls)
 				{
+					var physics = new RayPhysics(world);
 					foreach (var actor in world.Actors)
 					{
 						if (!actor.IsAlive || actor.Health == null || actor == weapon.Origin)
+							continue;
+
+						physics.Start = actor.Position;
+						physics.Target = target.Position;
+						var pen = physics.GetWallPenetrationValue();
+
+						if (pen == 0f)
 							continue;
 
 						var dist = (target.Position - actor.Position).FlatDist / 512;
@@ -43,7 +49,7 @@ namespace WarriorsSnuggery.Objects.Weapons
 						if (dist < 1f) dist = 1;
 
 						float damagemultiplier = getDamageMultiplier(dist);
-						var damage = (int)Math.Floor(damagemultiplier * Damage * weapon.DamageModifier);
+						var damage = (int)Math.Floor(damagemultiplier * Damage * weapon.DamageModifier * pen);
 
 						if (damage == 0)
 							continue;
