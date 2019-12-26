@@ -277,6 +277,9 @@ namespace WarriorsSnuggery.Loader
 						case "Particle":
 							array[i++] = new Objects.Weapons.ParticleWarhead(child.Children.ToArray());
 							break;
+						case "Actor":
+							array[i++] = new Objects.Weapons.ActorWarhead(child.Children.ToArray());
+							break;
 					}
 				}
 				return array;
