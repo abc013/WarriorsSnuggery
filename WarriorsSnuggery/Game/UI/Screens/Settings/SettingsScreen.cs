@@ -44,8 +44,16 @@ namespace WarriorsSnuggery.UI
 				width.SetColor(ticked ? new Color(128, 128, 128) : Color.White);
 				height.SetColor(ticked ? new Color(128, 128, 128) : Color.White);
 			});
-			widthWrite = TextBoxCreator.Create("wooden", new CPos(-1536, -2300, 0), Settings.Width + "", 5, true);
-			heightWrite = TextBoxCreator.Create("wooden", new CPos(-1536, -1600, 0), Settings.Height + "", 5, true);
+			widthWrite = TextBoxCreator.Create("wooden", new CPos(-1536, -2300, 0), Settings.Width + "", 5, true, () =>
+			{
+				if (int.Parse(heightWrite.Text) < 640)
+					heightWrite.Text = 640 + "";
+			});
+			heightWrite = TextBoxCreator.Create("wooden", new CPos(-1536, -1600, 0), Settings.Height + "", 5, true, () =>
+			{
+				if (int.Parse(heightWrite.Text) < 480)
+					heightWrite.Text = 480 + "";
+			});
 
 			// Graphics
 			var antiAliasing = new TextLine(new CPos(128, -3000, 0), IFont.Pixel16);

@@ -5,7 +5,7 @@ namespace WarriorsSnuggery.UI
 {
 	public class FailureScreen : Screen
 	{
-		public FailureScreen(Game game) : base("You Failed.")
+		public FailureScreen(Game game) : base("Level Failed.")
 		{
 			Title.SetColor(Color.Red);
 			Speed = 64;

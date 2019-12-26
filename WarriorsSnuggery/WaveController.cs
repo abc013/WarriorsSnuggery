@@ -39,6 +39,8 @@ namespace WarriorsSnuggery
 				return;
 
 			game.AddInfoMessage(120, "Wave " + currentWave + "/" + waves);
+			if (game.ScreenControl.FocusedType == UI.ScreenType.DEFAULT)
+				((UI.DefaultScreen)game.ScreenControl.Focused).SetWave(currentWave, currentWave == waves);
 			var generatorInfo = (PatrolGeneratorInfo)generators[game.SharedRandom.Next(generators.Length)];
 			var generator = new PatrolGenerator(game.SharedRandom, game.World.Map, game.World, generatorInfo);
 

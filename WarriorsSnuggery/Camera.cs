@@ -34,15 +34,18 @@ namespace WarriorsSnuggery
 			return diff.X - scaleX < halfzoomX && diff.X + scaleX > -halfzoomX && diff.Y - scaleY < halfzoomY && diff.Y + scaleY > -halfzoomY;
 		}
 
-		public static void Reset()
+		public static void Reset(bool values = true)
 		{
-			LookAt = CPos.Zero;
-			Locked = false;
-			CurrentZoom = DefaultZoom;
+			if (values)
+			{
+				LookAt = CPos.Zero;
+				Locked = false;
+				CurrentZoom = DefaultZoom;
+			}
 
 			calculatePosition();
 			calculateScale();
-			UpdateView();
+			updateView();
 		}
 
 		public static void Zoom(float add, bool ignoreLock = false)
@@ -59,7 +62,7 @@ namespace WarriorsSnuggery
 				CurrentZoom = DefaultZoom * 1.5f;
 
 			calculateScale();
-			UpdateView();
+			updateView();
 
 			WorldRenderer.CheckVisibility(oldZoom, CurrentZoom);
 		}
@@ -89,7 +92,7 @@ namespace WarriorsSnuggery
 			}
 
 			calculatePosition();
-			UpdateView();
+			updateView();
 
 			WorldRenderer.CheckVisibility(oldLookAt, LookAt);
 		}
@@ -103,7 +106,7 @@ namespace WarriorsSnuggery
 			LookAt = pos;
 
 			calculatePosition();
-			UpdateView();
+			updateView();
 
 			WorldRenderer.CheckVisibility(oldLookAt, LookAt);
 		}
@@ -124,7 +127,7 @@ namespace WarriorsSnuggery
 			VisibilitySolver.ZoomUpdated();
 		}
 
-		public static void UpdateView()
+		static void updateView()
 		{
 			Matrix = view * projection;
 

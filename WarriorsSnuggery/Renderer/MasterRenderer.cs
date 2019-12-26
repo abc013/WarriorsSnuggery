@@ -241,7 +241,7 @@ namespace WarriorsSnuggery
 				Program.CheckGraphicsError("View_Scissor");
 			}
 
-			Camera.UpdateView();
+			Camera.Reset(false);
 			UIRenderer.Update();
 		}
 

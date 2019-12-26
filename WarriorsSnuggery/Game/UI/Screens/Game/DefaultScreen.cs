@@ -13,7 +13,7 @@ namespace WarriorsSnuggery.UI
 		readonly ImageRenderable money;
 		readonly TextLine moneyText;
 		readonly TextLine menu, pause;
-		readonly TextLine missionText;
+		readonly TextLine waveText;
 		readonly Panel background;
 		readonly PanelList actorPanel;
 		readonly SpellList spellList;
@@ -22,10 +22,10 @@ namespace WarriorsSnuggery.UI
 		float healthPercentage;
 		float manaPercentage;
 
-		public DefaultScreen(Game game) : base("Level " + game.Statistics.Level + "/" + game.Statistics.FinalLevel, 0)
+		public DefaultScreen(Game game) : base("", 0)
 		{
+			Speed = int.MaxValue;
 			this.game = game;
-			Title.Position += new CPos(0, -7120, 0);
 
 			if (game.Statistics.Level == game.Statistics.FinalLevel)
 				Title.SetColor(Color.Blue);
@@ -33,7 +33,7 @@ namespace WarriorsSnuggery.UI
 				Title.SetColor(Color.Green);
 
 			// SECTION ACTORS
-			actorPanel = new PanelList(new CPos((int)(WindowInfo.UnitWidth * 512) - 1080, -3072 / 2, 0), new MPos(1024, 8192 - 3072 / 2), new MPos(512, 512), PanelManager.Get("wooden"));
+			actorPanel = new PanelList(new CPos((int)(WindowInfo.UnitWidth * 512) - 512, -3072 / 2, 0), new MPos(512, 8192 - 3072 / 2), new MPos(512, 512), PanelManager.Get("wooden"));
 
 			foreach (var n in ActorCreator.GetNames())
 			{
@@ -64,25 +64,25 @@ namespace WarriorsSnuggery.UI
 
 			// SECTION MONEY
 			money = new ImageRenderable(TextureManager.Texture("UI_money"));
-			money.SetPosition(new CPos((int)(WindowInfo.UnitWidth * 512) - 8120 + 512, 8192 - 1024, 0));
-			moneyText = new TextLine(new CPos((int)(WindowInfo.UnitWidth * 512) - 7096 + 512, 8192 - 1024, 0), IFont.Papyrus24);
+			money.SetPosition(new CPos((int)(WindowInfo.UnitWidth * 512) - 4096 + 512, 8192 - 1024, 0));
+			moneyText = new TextLine(new CPos((int)(WindowInfo.UnitWidth * 512) - 4096 + 1536, 8192 - 1024, 0), IFont.Papyrus24);
 			moneyText.SetText(game.Statistics.Money);
 
 			// SECTION MENUS
-			pause = new TextLine(new CPos((int)(WindowInfo.UnitWidth * 512) - 4096, 8192 - 1536, 0), IFont.Pixel16);
+			pause = new TextLine(new CPos((int)-2048, 8192 - 256, 0), IFont.Pixel16, TextLine.OffsetType.MIDDLE);
 			pause.WriteText("Pause: '" + new Color(0.5f, 0.5f, 1f) + "P" + Color.White + "'");
 
-			menu = new TextLine(new CPos((int)(WindowInfo.UnitWidth * 512) - 4096, 8192 - 512, 0), IFont.Pixel16);
+			menu = new TextLine(new CPos((int)2048, 8192 - 256, 0), IFont.Pixel16, TextLine.OffsetType.MIDDLE);
 			menu.WriteText("Menu: '" + new Color(0.5f, 0.5f, 1f) + "Escape" + Color.White + "'");
 
 			// SECTION HEALTH
 			health = new TextLine(new CPos(0, 8192 - 2048, 0), IFont.Papyrus24, TextLine.OffsetType.MIDDLE);
 
 			// SECTION MANA
-			mana = new TextLine(new CPos(0, 8192 - 772, 0), IFont.Papyrus24, TextLine.OffsetType.MIDDLE);
+			mana = new TextLine(new CPos(0, 8192 - 1024, 0), IFont.Papyrus24, TextLine.OffsetType.MIDDLE);
 
 			// SECTION MISSION
-			missionText = new TextLine(new CPos((int)(-WindowInfo.UnitWidth * 512) + 1024, 8192 - 2048, 0), IFont.Pixel16);
+			var missionText = new TextLine(new CPos(0, -8192 + 512, 0), IFont.Pixel16, TextLine.OffsetType.MIDDLE);
 			switch (game.Mode)
 			{
 				case GameMode.NONE:
@@ -101,6 +101,21 @@ namespace WarriorsSnuggery.UI
 					missionText.SetText("Wipe out all enemies!");
 					break;
 			}
+			Content.Add(missionText);
+
+			var levelText = new TextLine(new CPos((int)-(WindowInfo.UnitWidth * 512) + 776, 8192 - 1536, 0), IFont.Pixel16);
+			levelText.SetText("Level " + game.Statistics.Level + "/" + game.Statistics.FinalLevel);
+			Content.Add(levelText);
+			waveText = new TextLine(new CPos((int)-(WindowInfo.UnitWidth * 512) + 776, 8192 - 1024, 0), IFont.Pixel16);
+			if (game.Mode == GameMode.WAVES)
+				waveText.SetText("Wave 1");
+		}
+
+		public void SetWave(int wave, bool final)
+		{
+			if (final)
+				waveText.SetColor(Color.Green);
+			waveText.SetText("Wave " + wave);
 		}
 
 		public override void Hide()
@@ -128,45 +143,45 @@ namespace WarriorsSnuggery.UI
 
 		public override void Render()
 		{
-			base.Render();
-
 			// SECTION BASE
 			background.Render();
 
 			// SECTION MONEY
-			ColorManager.DrawRect(new CPos((int)(WindowInfo.UnitWidth * 512) - 8120, 8192, 0), new CPos((int)(WindowInfo.UnitWidth * 512) - 8120 + 3120, 8192 - 2560, 0), new Color(0, 0, 0, 128));
-			money.Render();
-			moneyText.Render();
-
-			// SECTION MENUS
 			if (!Settings.EnableInfoScreen)
 			{
 				ColorManager.DrawRect(new CPos((int)(WindowInfo.UnitWidth * 512) - 4096 - 512, 8192, 0), new CPos((int)(WindowInfo.UnitWidth * 512) - 1024 + 512, 8192 - 2560, 0), new Color(0, 0, 0, 128));
-				menu.Render();
-				pause.Render();
+				money.Render();
+				moneyText.Render();
 			}
 
+			ColorManager.DrawRect(new CPos(-6120, 8192 - 2560, 0), new CPos(6120, 8192, 0), new Color(0, 0, 0, 128));
+
+			// SECTION MENUS
+			menu.Render();
+			pause.Render();
+
+			const int edge = 64;
 			// SECTION HEALTH
-			ColorManager.DrawRect(new CPos(-6120, 8192 - 1536, 0), new CPos(6120, 8192 - 2560, 0), new Color(0, 0, 0, 128));
-			// draw line
-			ColorManager.DrawRect(new CPos(-6120 + 128, 8192 - 1536 - 128, 0), new CPos(-6120 + 256 + (int)(11856 * healthPercentage), 8192 - 2560 + 128, 0), new Color(255, 0, 0, 128));
+			ColorManager.DrawRect(new CPos(-6120 + edge, 8192 - 1536 - edge, 0), new CPos(-6120 - 2 * edge + 12288, 8192 - 2560 + edge, 0), new Color(255, 0, 0, 64));
+			ColorManager.DrawRect(new CPos(-6120 + edge, 8192 - 1536 - edge, 0), new CPos(-6120 - 2 * edge + (int)((12288 - edge) * healthPercentage), 8192 - 2560 + edge, 0), new Color(255, 0, 0, 196));
 			health.Render();
 
 			// SECTION MANA
-			ColorManager.DrawRect(new CPos(-6120, 8192 - 256, 0), new CPos(6120, 8192 - 1280, 0), new Color(0, 0, 0, 128));
-			//draw line
-			ColorManager.DrawRect(new CPos(-6120 + 128, 8192 - 256 - 128, 0), new CPos(-6120 + 256 + (int)(11856 * manaPercentage), 8192 - 1280 + 128, 0), new Color(0, 0, 255, 128));
+			ColorManager.DrawRect(new CPos(-6120 + edge, 8192 - 512 - edge, 0), new CPos(-6120 - 2 * edge + 12288, 8192 - 1024 - 512 + edge, 0), new Color(0, 0, 255, 64));
+			ColorManager.DrawRect(new CPos(-6120 + edge, 8192 - 512 - edge, 0), new CPos(-6120 - 2 * edge + (int)((12288 - edge) * manaPercentage), 8192 - 1024 - 512 + edge, 0), new Color(0, 0, 255, 196));
 			mana.Render();
-
-			// SECTION MISSION
-			ColorManager.DrawRect(new CPos((int)-(WindowInfo.UnitWidth * 512) + 256, 8192, 0), new CPos(-6120 - 128, 8192 - 2560, 0), new Color(0, 0, 0, 128));
-			missionText.Render();
 
 			// SECTION ACTORS
 			actorPanel.Render();
 
 			// SECTION EFFECTS
 			spellList.Render();
+
+			// SECTION MISSION
+			ColorManager.DrawRect(new CPos((int)-(WindowInfo.UnitWidth * 512) + 256, 8192, 0), new CPos(-6120 - 128, 8192 - 2560, 0), new Color(0, 0, 0, 128));
+			waveText.Render();
+
+			base.Render();
 		}
 
 		public override void Tick()
@@ -244,7 +259,7 @@ namespace WarriorsSnuggery.UI
 			menu.Dispose();
 			pause.Dispose();
 
-			missionText.Dispose();
+			waveText.Dispose();
 
 			actorPanel.Dispose();
 			spellList.Dispose();
