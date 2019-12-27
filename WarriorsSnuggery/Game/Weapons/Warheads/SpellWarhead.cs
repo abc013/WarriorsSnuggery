@@ -18,9 +18,13 @@ namespace WarriorsSnuggery.Objects.Weapons
 		[Desc("Falloff of the probability.")]
 		public readonly FalloffType ProbabilityFalloff = FalloffType.QUADRATIC;
 
+		readonly float maxRange = 1f;
+
 		public SpellWarhead(MiniTextNode[] nodes)
 		{
 			Loader.PartLoader.SetValues(this, nodes);
+
+			maxRange = FalloffHelper.GetMax(ProbabilityFalloff, Probability);
 		}
 
 		public void Impact(World world, Weapon weapon, Target target)
@@ -40,10 +44,10 @@ namespace WarriorsSnuggery.Objects.Weapons
 						continue;
 
 					var dist = (target.Position - actor.Position).FlatDist / 512;
-					if (dist > 32f) continue;
+					if (dist > maxRange) continue;
 					if (dist < 1f) dist = 1;
 
-					var probability = Probability * getMultiplier(dist);
+					var probability = Probability * FalloffHelper.GetMultiplier(ProbabilityFalloff, dist);
 
 					if (!IgnoreWalls)
 					{
@@ -62,25 +66,6 @@ namespace WarriorsSnuggery.Objects.Weapons
 
 					actor.CastSpell(Spell);
 				}
-			}
-		}
-
-		float getMultiplier(float dist)
-		{
-			switch (ProbabilityFalloff)
-			{
-				case FalloffType.LINEAR:
-					return 1 / dist;
-				case FalloffType.QUADRATIC:
-					return 1 / (dist * dist);
-				case FalloffType.CUBIC:
-					return 1 / (dist * dist * dist);
-				case FalloffType.EXPONENTIAL:
-					return 1 / (float)Math.Pow(2, dist);
-				case FalloffType.ROOT:
-					return 1 / (float)Math.Sqrt(dist);
-				default:
-					return 1;
 			}
 		}
 	}
