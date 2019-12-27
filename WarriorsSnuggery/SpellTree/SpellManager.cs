@@ -92,7 +92,7 @@ namespace WarriorsSnuggery.Spells
 			recharge = node.Spell.Cooldown;
 			duration = node.Spell.Duration;
 
-			actor.Effects.Add(new Objects.Effects.EffectPart(actor, node.Spell));
+			actor.CastSpell(node.Spell);
 
 			return true;
 		}

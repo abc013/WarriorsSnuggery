@@ -202,6 +202,11 @@ namespace WarriorsSnuggery.Objects
 			Parts.ForEach(p => p.OnStop());
 		}
 
+		public void CastSpell(Spells.Spell spell)
+		{
+			Effects.Add(new EffectPart(this, spell));
+		}
+
 		public override void CheckVisibility()
 		{
 			// TODO solve detection scale

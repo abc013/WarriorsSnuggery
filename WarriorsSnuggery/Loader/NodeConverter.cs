@@ -280,6 +280,9 @@ namespace WarriorsSnuggery.Loader
 						case "Actor":
 							array[i++] = new Objects.Weapons.ActorWarhead(child.Children.ToArray());
 							break;
+						case "Spell":
+							array[i++] = new Objects.Weapons.SpellWarhead(child.Children.ToArray());
+							break;
 					}
 				}
 				return array;

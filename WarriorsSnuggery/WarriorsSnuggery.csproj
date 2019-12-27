@@ -87,6 +87,7 @@
     <Compile Include="Game\Weapons\Warheads\DamageWarhead.cs" />
     <Compile Include="Game\Weapons\Warheads\ParticleWarhead.cs" />
     <Compile Include="Game\Weapons\Warheads\SmudgeWarhead.cs" />
+    <Compile Include="Game\Weapons\Warheads\SpellWarhead.cs" />
     <Compile Include="Game\Weapons\Warheads\Warhead.cs" />
     <Compile Include="Loader\WavLoader.cs" />
     <Compile Include="Map\PieceManager.cs" />
