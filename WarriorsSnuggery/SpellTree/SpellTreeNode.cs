@@ -39,13 +39,13 @@ namespace WarriorsSnuggery.Spells
 			}
 		}
 
-		public string[] getInformation(bool showDesc)
+		public string[] GetInformation(bool showDesc)
 		{
 			var res = new string[showDesc ? 3 : 2];
 			res[0] = Color.Grey + "Mana use: " + new Color(0.5f, 0.5f, 1f) + Spell.ManaCost;
 			res[1] = Color.Grey + "Reload: " + Color.Green + Math.Round(Spell.Cooldown / (float)Settings.UpdatesPerSecond, 2) + Color.Grey + " Seconds";
 			if (showDesc)
-				res[2] = Description;
+				res[2] = Color.Grey + Description;
 
 			return res;
 		}

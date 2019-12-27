@@ -54,7 +54,7 @@ namespace WarriorsSnuggery.UI
 			int index = 0;
 			foreach (var effect in Spells.SpellTreeLoader.SpellTree)
 			{
-				var item = new SpellListItem(CPos.Zero, new MPos(256, 256), effect, game.SpellManager.spellCasters[index], game, false);
+				var item = new SpellListItem(CPos.Zero, new MPos(256, 256), effect, game.SpellManager.spellCasters[index], game, true);
 
 				spellList.Add(item);
 				index++;

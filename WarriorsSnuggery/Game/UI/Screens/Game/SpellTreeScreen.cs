@@ -123,7 +123,7 @@ namespace WarriorsSnuggery.UI
 			image = new IImageSequenceRenderable(node.Images, node.Icon.Tick);
 			image.SetPosition(position);
 
-			tooltip = new Tooltip(position, node.Name + " : " + node.Cost, node.getInformation(true));
+			tooltip = new Tooltip(position, node.Name + " : " + node.Cost, node.GetInformation(true));
 
 			if (node.Unlocked || game.Statistics.UnlockedSpells.ContainsKey(node.InnerName) && game.Statistics.UnlockedSpells[node.InnerName])
 				HighlightVisible = true;
