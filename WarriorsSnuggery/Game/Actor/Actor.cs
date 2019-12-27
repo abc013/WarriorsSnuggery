@@ -115,6 +115,9 @@ namespace WarriorsSnuggery.Objects
 			if (!IsAlive || Mobility == null)
 				return;
 
+			if (Effects.Any(e => e.Active && e.Spell.Type == Spells.EffectType.STUN))
+				return;
+
 			var acceleration = Mobility.OnAccelerate(angle, customAcceleration);
 
 			Parts.ForEach(p => p.OnAccelerate(angle, acceleration));
@@ -285,6 +288,9 @@ namespace WarriorsSnuggery.Objects
 				return;
 
 			if (World.Game.Type == GameType.EDITOR || World.Game.Editor && IsPlayer || !World.Map.Type.AllowWeapons)
+				return;
+
+			if (Effects.Any(e => e.Active && e.Spell.Type == Spells.EffectType.STUN))
 				return;
 
 			Angle = (Position - target.Position).FlatAngle;

@@ -10,12 +10,13 @@
 		HEALTH,
 		MANA,
 		SPEED,
-		SHIELD
+		SHIELD,
+		STUN
 	}
 
 	public class Spell
 	{
-		[Desc("Type of the Spell.", "Available: NONE, RANGE, INACCURACY, DAMAGE, COOLDOWN, HEALTH, MANA, SPEED, SHIELD")]
+		[Desc("Type of the Spell.", "Available: NONE, RANGE, INACCURACY, DAMAGE, COOLDOWN, HEALTH, MANA, SPEED, SHIELD, STUN")]
 		public readonly EffectType Type;
 		[Desc("Strength/Intensity of the spell.", "Value effect depends on the effect type.")]
 		public readonly float Value;
