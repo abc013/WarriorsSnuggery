@@ -17,7 +17,7 @@ namespace WarriorsSnuggery.UI
 			this.game = game;
 			Title.Position = new CPos(0, -4096, 0);
 
-			var create = new TextLine(new CPos(-2048, -2048, 0), IFont.Pixel16, TextLine.OffsetType.MIDDLE);
+			var create = new TextLine(new CPos(0, -2048, 0), IFont.Pixel16, TextLine.OffsetType.MIDDLE);
 			create.SetText("Please adjust the parameters as you wish.");
 			Content.Add(create);
 

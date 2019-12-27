@@ -3,6 +3,7 @@
 @INCLUDE Actors-goods.yaml
 @INCLUDE Actors-decorations.yaml
 @INCLUDE Actors-nature.yaml
+@INCLUDE Actors-playable.yaml
 
 fireflyspawner=
 	Part@SpawnOnIdle=
@@ -57,9 +58,6 @@ heal=
 	Part@Physics=
 		Shape=Circle
 		Size=300,300,200
-	Part@Playable=
-		Playable=yes
-		Cost=20
 	Part@SpawnOnDamage=
 		Probability=0,5
 		Count=10
@@ -115,9 +113,6 @@ shadowrunner=
 	Part@Physics=
 		Shape=Circle
 		Size=200,200,200
-	Part@Playable=
-		Playable=yes
-		Cost=5
 	Part@SpawnOnDeath=
 		Condition=!IsFriendly
 		Count=1
@@ -176,9 +171,6 @@ blackspider_small=
 		Count=2
 		Name=silver
 		Type=ACTOR
-	Part@Playable=
-		Playable=yes
-		Cost=10
 	Part@RevealsShroud=
 		Range=8
 		Interval=0
@@ -319,9 +311,6 @@ slime_medium=
 		Count=1
 		Name=blue
 		Type=ACTOR
-	Part@Playable=
-		Playable=yes
-		Cost=0
 	Part@SpawnOnMove=
 		Count=1
 		Name=slime_splash
@@ -427,9 +416,6 @@ magictower=
 		Count=2
 		Name=silver
 		Type=ACTOR
-	Part@Playable=
-		Playable=yes
-		Cost=3
 	Part@RevealsShroud=
 		Range=16
 		Interval=0
