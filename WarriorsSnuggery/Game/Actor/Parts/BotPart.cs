@@ -123,6 +123,9 @@ namespace WarriorsSnuggery.Objects.Parts
 
 		void checkTarget(Actor actor)
 		{
+			if (actor.Team == self.Team)
+				return;
+
 			if (Target == null || !Target.IsAlive)
 			{
 				Target = actor;
