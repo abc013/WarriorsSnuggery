@@ -162,13 +162,13 @@ namespace WarriorsSnuggery.UI
 
 			const int edge = 64;
 			// SECTION HEALTH
-			ColorManager.DrawRect(new CPos(-6120 + edge, 8192 - 1536 - edge, 0), new CPos(-6120 - 2 * edge + 12288, 8192 - 2560 + edge, 0), new Color(255, 0, 0, 64));
-			ColorManager.DrawRect(new CPos(-6120 + edge, 8192 - 1536 - edge, 0), new CPos(-6120 - 2 * edge + (int)((12288 - edge) * healthPercentage), 8192 - 2560 + edge, 0), new Color(255, 0, 0, 196));
+			ColorManager.DrawRect(new CPos(-6120 + edge, 8192 - 1536 - edge, 0), new CPos(6120 - edge, 8192 - 2560 + edge, 0), new Color(255, 0, 0, 64));
+			ColorManager.DrawRect(new CPos(-6120 + edge, 8192 - 1536 - edge, 0), new CPos(-6120 + edge + (int)((12288 - 2 * edge) * healthPercentage), 8192 - 2560 + edge, 0), new Color(255, 0, 0, 196));
 			health.Render();
 
 			// SECTION MANA
-			ColorManager.DrawRect(new CPos(-6120 + edge, 8192 - 512 - edge, 0), new CPos(-6120 - 2 * edge + 12288, 8192 - 1024 - 512 + edge, 0), new Color(0, 0, 255, 64));
-			ColorManager.DrawRect(new CPos(-6120 + edge, 8192 - 512 - edge, 0), new CPos(-6120 - 2 * edge + (int)((12288 - edge) * manaPercentage), 8192 - 1024 - 512 + edge, 0), new Color(0, 0, 255, 196));
+			ColorManager.DrawRect(new CPos(-6120 + edge, 8192 - 512 - edge, 0), new CPos(6120 - edge, 8192 - 1024 - 512 + edge, 0), new Color(0, 0, 255, 64));
+			ColorManager.DrawRect(new CPos(-6120 + edge, 8192 - 512 - edge, 0), new CPos(-6120 + edge + (int)((12288 - 2 * edge) * manaPercentage), 8192 - 1024 - 512 + edge, 0), new Color(0, 0, 255, 196));
 			mana.Render();
 
 			// SECTION ACTORS
