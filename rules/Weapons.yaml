@@ -32,7 +32,7 @@ cannon=
 			Damage=500
 
 slime=
-	Reload=12
+	Reload=10
 	Projectile=Bullet
 		Texture=slime_mini
 			Size=4,4
@@ -48,7 +48,7 @@ slime=
 			Damage=8
 
 voidweapon=
-	Reload=250
+	Reload=230
 	MaxRange=12288
 	Projectile=Beam
 		Directed=true
@@ -77,7 +77,7 @@ voidweapon=
 			Damage=7
 
 web=
-	Reload=100
+	Reload=80
 	Projectile=Bullet
 		Texture=arrow
 			Size=2,6
@@ -101,7 +101,7 @@ web=
 			Damage=30
 
 blade=
-	Reload=50
+	Reload=40
 	MaxRange=1024
 	Projectile=InstantHit
 		HitChance=0,9
@@ -117,7 +117,7 @@ blade=
 			Falloff=EXPONENTIAL
 
 lazer=
-	Reload=40
+	Reload=30
 	MaxRange=8120
 	Projectile=Beam
 		Beam=beam_red
