@@ -1,10 +1,12 @@
 ﻿using System;
+using WarriorsSnuggery.Physics;
 
 namespace WarriorsSnuggery.Objects.Weapons
 {
 	class BulletWeapon : Weapon
 	{
 		readonly BulletProjectileType projectileType;
+		readonly RayPhysics rayPhysics;
 
 		Vector speed;
 		Vector speedLeft;
@@ -29,6 +31,8 @@ namespace WarriorsSnuggery.Objects.Weapons
 
 			if (projectileType.OrientateToTarget)
 				Rotation = new VAngle(0, 0, angle);
+
+			rayPhysics = new RayPhysics(world);
 		}
 
 		void calculateStartSpeed(float angle)
@@ -61,6 +65,9 @@ namespace WarriorsSnuggery.Objects.Weapons
 
 		public void Move()
 		{
+			var beforePos = Position;
+			var beforeHeight = Height;
+
 			var curSpeed = speed + speedLeft;
 			var x = (int)curSpeed.X;
 			var y = (int)curSpeed.Y;
@@ -68,9 +75,7 @@ namespace WarriorsSnuggery.Objects.Weapons
 			speedLeft = new Vector(curSpeed.X - x, curSpeed.Y - y, curSpeed.Z - z);
 
 			Position = new CPos(Position.X + x, Position.Y + y, Position.Z);
-			Physics.Position = Position;
 			Height += z;
-			Physics.Height = Height;
 			speed += new Vector(projectileType.Force.X, projectileType.Force.Y, projectileType.Force.Z);
 
 			if (Math.Abs(speed.X) > projectileType.MaxSpeed)
@@ -83,10 +88,14 @@ namespace WarriorsSnuggery.Objects.Weapons
 			if (Height < 0 || !World.IsInWorld(Position))
 				Detonate(new Target(Position, 0));
 
-			World.PhysicsLayer.UpdateSectors(this, updateSectors: false);
+			rayPhysics.Start = beforePos;
+			rayPhysics.StartHeight = beforeHeight;
+			rayPhysics.Target = Position;
+			rayPhysics.TargetHeight = Height;
+			rayPhysics.CalculateEnd(Origin);
 
-			if (World.CheckCollision(this, false, new[] { Origin }))
-				Detonate(new Target(Position, Height));
+			if ((beforePos - rayPhysics.End).Dist < (beforePos - Position).Dist)
+				Detonate(new Target(rayPhysics.End, rayPhysics.EndHeight));
 		}
 
 		CPos getInaccuracy()

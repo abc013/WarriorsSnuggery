@@ -1,5 +1,4 @@
 ﻿using WarriorsSnuggery.Graphics;
-using WarriorsSnuggery.Physics;
 using WarriorsSnuggery.Objects.Particles;
 
 namespace WarriorsSnuggery.Objects.Weapons
@@ -7,8 +6,6 @@ namespace WarriorsSnuggery.Objects.Weapons
 	public interface IProjectileType
 	{
 		IImageSequenceRenderable GetTexture();
-
-		SimplePhysics GetPhysics();
 	}
 
 	public class InstantHitProjectileType : IProjectileType
@@ -24,11 +21,6 @@ namespace WarriorsSnuggery.Objects.Weapons
 		public IImageSequenceRenderable GetTexture()
 		{
 			return null;
-		}
-
-		public SimplePhysics GetPhysics()
-		{
-			return SimplePhysics.Empty;
 		}
 	}
 
@@ -73,11 +65,6 @@ namespace WarriorsSnuggery.Objects.Weapons
 		{
 			return new IImageSequenceRenderable(Texture.GetTextures(), Texture.Tick);
 		}
-
-		public SimplePhysics GetPhysics()
-		{
-			return new SimplePhysics(CPos.Zero, 0, Shape.CIRCLE, 48, 48, 48);
-		}
 	}
 
 	public class MagicProjectileType : IProjectileType
@@ -120,11 +107,6 @@ namespace WarriorsSnuggery.Objects.Weapons
 		public IImageSequenceRenderable GetTexture()
 		{
 			return new IImageSequenceRenderable(Texture.GetTextures(), Texture.Tick);
-		}
-
-		public SimplePhysics GetPhysics()
-		{
-			return new SimplePhysics(CPos.Zero, 0, Shape.CIRCLE, 48, 48, 48);
 		}
 	}
 
@@ -171,11 +153,6 @@ namespace WarriorsSnuggery.Objects.Weapons
 		public IImageSequenceRenderable GetTexture()
 		{
 			return null;
-		}
-
-		public SimplePhysics GetPhysics()
-		{
-			return SimplePhysics.Empty;
 		}
 	}
 }

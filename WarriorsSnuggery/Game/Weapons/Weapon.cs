@@ -1,6 +1,4 @@
-﻿using System;
-using System.Linq;
-using WarriorsSnuggery.Graphics;
+﻿using System.Linq;
 using WarriorsSnuggery.Physics;
 
 namespace WarriorsSnuggery.Objects.Weapons
@@ -22,7 +20,7 @@ namespace WarriorsSnuggery.Objects.Weapons
 		public readonly float DamageModifier = 1f;
 		public readonly float RangeModifier = 1f;
 
-		protected Weapon(World world, WeaponType type, Target target, Actor origin) : base(origin.ActiveWeapon.WeaponOffsetPosition, type.Projectile.GetTexture(), type.Projectile.GetPhysics())
+		protected Weapon(World world, WeaponType type, Target target, Actor origin) : base(origin.ActiveWeapon.WeaponOffsetPosition, type.Projectile.GetTexture(), SimplePhysics.Empty)
 		{
 			World = world;
 			Type = type;
