@@ -27,13 +27,13 @@ namespace WarriorsSnuggery.UI
 
 		public SpellList(CPos pos, MPos bounds, MPos itemSize, PanelType type) : base(pos, bounds, itemSize, type)
 		{
-			selector = new ImageRenderable(TextureManager.Texture("UI_selector"));
+			selector = new ImageRenderable(TextureManager.Texture("UI_selector1"));
 		}
 
 		public override void Render()
 		{
 			base.Render();
-			selector.SetPosition(Container[currentSpell].Position + new CPos(0, -712, 0));
+			selector.SetPosition(Container[currentSpell].Position + new CPos(0, -688, 0));
 			selector.Render();
 		}
 	}

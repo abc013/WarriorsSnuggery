@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using WarriorsSnuggery.Graphics;
 using WarriorsSnuggery.Objects;
 
@@ -15,7 +16,8 @@ namespace WarriorsSnuggery.UI
 		readonly TextLine menu, pause;
 		readonly TextLine waveText;
 		readonly Panel background;
-		readonly PanelList actorPanel;
+		readonly ActorList actorList;
+		readonly List<ActorType> actorTypes = new List<ActorType>();
 		readonly SpellList spellList;
 		int cashCooldown;
 		int lastCash;
@@ -33,16 +35,17 @@ namespace WarriorsSnuggery.UI
 				Title.SetColor(Color.Green);
 
 			// SECTION ACTORS
-			actorPanel = new PanelList(new CPos((int)(WindowInfo.UnitWidth * 512) - 512, -3072 / 2, 0), new MPos(512, 8192 - 3072 / 2), new MPos(512, 512), PanelManager.Get("wooden"));
+			actorList = new ActorList(new CPos((int)(WindowInfo.UnitWidth * 512) - 512, -3072 / 2, 0), new MPos(512, 8192 - 3072 / 2), new MPos(512, 512), PanelManager.Get("wooden"));
 
 			foreach (var n in ActorCreator.GetNames())
 			{
 				var a = ActorCreator.GetType(n);
 				if (a.Playable != null && a.Playable.Playable)
 				{
+					actorTypes.Add(a);
 					var sprite = a.GetPreviewSprite();
 					var scale = (sprite.Width > sprite.Height ? 24f / sprite.Width : 24f / sprite.Height) - 0.1f;
-					actorPanel.Add(new PanelItem(CPos.Zero, new ImageRenderable(sprite), new MPos(512, 512), n.ToLowerInvariant(), new[] { Color.Grey + "Cost: " + a.Playable.Cost.ToString() }, () => { changePlayer(game.World.LocalPlayer, a); })
+					actorList.Add(new PanelItem(CPos.Zero, new ImageRenderable(sprite), new MPos(512, 512), n.ToLowerInvariant(), new[] { Color.Grey + "Cost: " + a.Playable.Cost.ToString() }, () => { changePlayer(game.World.LocalPlayer, a); })
 					{
 						Scale = scale
 					});
@@ -121,7 +124,7 @@ namespace WarriorsSnuggery.UI
 		public override void Hide()
 		{
 			spellList.DisableTooltip();
-			actorPanel.DisableTooltip();
+			actorList.DisableTooltip();
 		}
 
 		public override bool CursorOnUI()
@@ -172,7 +175,7 @@ namespace WarriorsSnuggery.UI
 			mana.Render();
 
 			// SECTION ACTORS
-			actorPanel.Render();
+			actorList.Render();
 
 			// SECTION EFFECTS
 			spellList.Render();
@@ -203,11 +206,19 @@ namespace WarriorsSnuggery.UI
 				mana.SetText(game.Statistics.Mana + "/" + game.Statistics.MaxMana);
 				manaPercentage = game.Statistics.Mana / (float)game.Statistics.MaxMana;
 
-				spellList.CurrentSpell += MouseInput.WheelState;
-
-				if (!KeyInput.IsKeyDown("controlleft") && MouseInput.IsRightClicked)
+				if (KeyInput.IsKeyDown("shiftleft"))
 				{
-					game.SpellManager.Activate(spellList.CurrentSpell);
+					actorList.CurrentActor += MouseInput.WheelState;
+
+					if (!KeyInput.IsKeyDown("controlleft") && MouseInput.IsRightClicked)
+						changePlayer(game.World.LocalPlayer, actorTypes[actorList.CurrentActor]);
+				}
+				else
+				{
+					spellList.CurrentSpell += MouseInput.WheelState;
+
+					if (!KeyInput.IsKeyDown("controlleft") && MouseInput.IsRightClicked)
+						game.SpellManager.Activate(spellList.CurrentSpell);
 				}
 			}
 
@@ -220,7 +231,7 @@ namespace WarriorsSnuggery.UI
 			if (cashCooldown-- > 0)
 				moneyText.Scale = (cashCooldown / 10f) + 1f;
 
-			actorPanel.Tick();
+			actorList.Tick();
 			spellList.Tick();
 		}
 
@@ -261,7 +272,7 @@ namespace WarriorsSnuggery.UI
 
 			waveText.Dispose();
 
-			actorPanel.Dispose();
+			actorList.Dispose();
 			spellList.Dispose();
 		}
 	}
