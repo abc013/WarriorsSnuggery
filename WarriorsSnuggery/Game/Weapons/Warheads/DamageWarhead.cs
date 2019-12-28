@@ -30,6 +30,8 @@ namespace WarriorsSnuggery.Objects.Weapons
 				if (target.Type == TargetType.ACTOR && !AgainstWalls)
 				{
 					target.Actor.Damage(weapon.Origin, Damage);
+					if (target.Actor.WorldPart != null && target.Actor.WorldPart.ShowDamage)
+						world.Add(new ActionText(target.Actor.Position + new CPos(0, 0, 1024), new CPos(0, -15, 30), 50, ActionText.ActionTextType.SCALE, new Color(1f, 0.4f, 0).ToString() + Damage));
 					return;
 				}
 
@@ -39,6 +41,9 @@ namespace WarriorsSnuggery.Objects.Weapons
 					foreach (var actor in world.Actors)
 					{
 						if (!actor.IsAlive || actor.Health == null || actor == weapon.Origin)
+							continue;
+
+						if (weapon.Origin != null && actor.Team == weapon.Origin.Team)
 							continue;
 
 						var dist = (target.Position - actor.Position).FlatDist / 512;
@@ -63,7 +68,7 @@ namespace WarriorsSnuggery.Objects.Weapons
 							continue;
 
 						if (actor.WorldPart != null && actor.WorldPart.ShowDamage)
-							world.Add(new ActionText(actor.Position + new CPos(0, 0, 1024), new CPos(0, -15, 30), 50, ActionText.ActionTextType.SCALE, new Color(1f, 1 - (damage / (Damage * 1.5f)), 0).ToString() + damage.ToString()));
+							world.Add(new ActionText(actor.Position + new CPos(0, 0, 1024), new CPos(0, -15, 30), 50, ActionText.ActionTextType.SCALE, new Color(1f, 1 - (damage / (Damage * 1.5f)), 0).ToString() + damage));
 
 						if (weapon.Origin != null)
 							actor.Damage(weapon.Origin, damage);
