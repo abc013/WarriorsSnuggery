@@ -55,6 +55,9 @@ namespace WarriorsSnuggery.Objects.Weapons
 		[Desc("Maximum speed of the warhead.")]
 		public readonly int MaxSpeed = 128;
 
+		[Desc("Decides whether the projectile flies till the end of maximum range or only till the target position.")]
+		public readonly bool FlyToTarget;
+
 		public BulletProjectileType(MiniTextNode[] nodes)
 		{
 			Loader.PartLoader.SetValues(this, nodes);

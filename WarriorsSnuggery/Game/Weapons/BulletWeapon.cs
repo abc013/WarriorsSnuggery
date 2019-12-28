@@ -13,15 +13,22 @@ namespace WarriorsSnuggery.Objects.Weapons
 		{
 			projectileType = (BulletProjectileType)type.Projectile;
 
+			TargetPosition += getInaccuracy();
+
 			var angle = (Position - TargetPosition).FlatAngle;
+			if ((Position - TargetPosition).Dist > type.MaxRange)
+			{
+				TargetPosition = Position + new CPos((int)(Math.Cos(angle) * type.MaxRange), (int)(Math.Sin(angle) * type.MaxRange), 0) + getInaccuracy();
+				angle = (Position - TargetPosition).FlatAngle;
+			}
+
 			calculateStartSpeed(angle);
+
+			if (!projectileType.FlyToTarget)
+				TargetPosition = Position + new CPos((int)(Math.Cos(angle) * type.MaxRange), (int)(Math.Sin(angle) * type.MaxRange), 0) + getInaccuracy();
 
 			if (projectileType.OrientateToTarget)
 				Rotation = new VAngle(0, 0, angle);
-
-			TargetPosition = Position + new CPos((int)(Math.Cos(angle) * type.MaxRange), (int)(Math.Sin(angle) * type.MaxRange), 0);
-
-			TargetPosition += getInaccuracy();
 		}
 
 		void calculateStartSpeed(float angle)
