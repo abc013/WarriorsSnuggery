@@ -29,7 +29,8 @@
 
 		public void SetVolume()
 		{
-			source.SetVolume(Settings.MusicVolume);
+			if (source != null)
+				source.SetVolume(Settings.MusicVolume);
 		}
 
 		public void Tick()
@@ -41,12 +42,14 @@
 		public void Pause(bool pause)
 		{
 			paused = pause;
-			source.Pause(pause);
+			if (source != null)
+				source.Pause(pause);
 		}
 
 		public void Stop()
 		{
-			source.Stop();
+			if (source != null)
+				source.Stop();
 			source = null;
 		}
 	}
