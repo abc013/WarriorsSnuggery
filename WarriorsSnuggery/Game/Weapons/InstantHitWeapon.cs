@@ -1,4 +1,5 @@
 ﻿using System;
+using WarriorsSnuggery.Physics;
 
 namespace WarriorsSnuggery.Objects.Weapons
 {
@@ -21,8 +22,24 @@ namespace WarriorsSnuggery.Objects.Weapons
 
 		public override void Tick()
 		{
-			Position = TargetPosition;
-			if (Program.SharedRandom.NextDouble() < projectileType.HitChance)
+			if (Program.SharedRandom.NextDouble() > projectileType.HitChance)
+			{
+				Dispose();
+				return;
+			}
+
+			var physics = new RayPhysics(World)
+			{
+				Start = Position,
+				StartHeight = Height,
+				Target = Target.Position,
+				TargetHeight = Target.Height
+			};
+			physics.CalculateEnd(Origin);
+
+			if ((physics.End - Position).Dist < (Position - Target.Position).Dist)
+				Detonate(new Target(physics.End, physics.EndHeight));
+			else
 				Detonate(Target);
 		}
 	}
