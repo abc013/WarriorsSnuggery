@@ -218,6 +218,9 @@ namespace WarriorsSnuggery.Objects
 
 		public override void Render()
 		{
+			if (Effects.Any(e => e.Active && e.Spell.Type == Spells.EffectType.INVISIBILITY))
+				return;
+
 			if (visible)
 			{
 				base.Render();
