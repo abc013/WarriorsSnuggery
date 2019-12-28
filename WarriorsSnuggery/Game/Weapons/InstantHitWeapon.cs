@@ -11,10 +11,11 @@ namespace WarriorsSnuggery.Objects.Weapons
 			projectileType = (InstantHitProjectileType)type.Projectile;
 
 			var diff = Position - TargetPosition;
-			if (diff.FlatDist > type.MaxRange)
+			if (diff.FlatDist > type.MaxRange * RangeModifier)
 			{
-				var angle = (Position - TargetPosition).FlatAngle;
-				TargetPosition = Position + new CPos((int)(Math.Cos(angle) * type.MaxRange), (int)(Math.Sin(angle) * type.MaxRange), 0);
+				var angle = diff.FlatAngle;
+				TargetPosition = Position + new CPos((int)(Math.Cos(angle) * type.MaxRange * RangeModifier), (int)(Math.Sin(angle) * type.MaxRange * RangeModifier), 0);
+				Target = new Target(TargetPosition, 0);
 			}
 		}
 

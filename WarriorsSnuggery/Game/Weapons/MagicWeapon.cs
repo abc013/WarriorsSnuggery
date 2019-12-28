@@ -13,10 +13,14 @@ namespace WarriorsSnuggery.Objects.Weapons
 		{
 			projectileType = (MagicProjectileType)type.Projectile;
 
+			TargetPosition += getInaccuracy();
+
 			angle = (Position - TargetPosition).FlatAngle;
 			calculateSpeed(angle);
 
-			TargetPosition += target.Position + getInaccuracy();
+			if ((Position - TargetPosition).Dist > type.MaxRange * RangeModifier)
+				TargetPosition = Position + new CPos((int)(Math.Cos(angle) * type.MaxRange * RangeModifier), (int)(Math.Sin(angle) * type.MaxRange * RangeModifier), 0) + getInaccuracy();
+
 		}
 
 		public override void Tick()

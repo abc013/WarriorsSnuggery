@@ -57,7 +57,7 @@ namespace WarriorsSnuggery.Objects.Parts
 
 		public void OnAttack(Target target)
 		{
-			if (attackOrdered || (Type.Projectile is InstantHitProjectileType && (target.Position - WeaponOffsetPosition).Dist > Type.MaxRange))
+			if (attackOrdered)
 				return;
 
 			attackOrdered = true;
