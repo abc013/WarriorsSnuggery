@@ -52,7 +52,7 @@ namespace WarriorsSnuggery.Objects.Weapons
 		[Desc("Startspeed of the warhead.")]
 		public readonly int Speed = 32;
 
-		[Desc("Maximum speed of the warhead.")]
+		[Desc("Maximum speed of the warhead.", "If smaller than Speed, this value will be the same as Speed.")]
 		public readonly int MaxSpeed = 128;
 
 		[Desc("Decides whether the projectile flies till the end of maximum range or only till the target position.")]
@@ -64,6 +64,9 @@ namespace WarriorsSnuggery.Objects.Weapons
 
 			if (Texture != null)
 				SpriteManager.AddTexture(Texture);
+
+			if (MaxSpeed < Speed)
+				MaxSpeed = Speed;
 		}
 
 		public IImageSequenceRenderable GetTexture()

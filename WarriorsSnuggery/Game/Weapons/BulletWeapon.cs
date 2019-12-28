@@ -73,12 +73,12 @@ namespace WarriorsSnuggery.Objects.Weapons
 			Physics.Height = Height;
 			speed += new Vector(projectileType.Force.X, projectileType.Force.Y, projectileType.Force.Z);
 
-			if (speed.X > projectileType.MaxSpeed)
-				speed = new Vector(projectileType.MaxSpeed, speed.Y, speed.Z);
-			if (speed.Y > projectileType.MaxSpeed)
-				speed = new Vector(speed.X, projectileType.MaxSpeed, speed.Z);
-			if (speed.Z > projectileType.MaxSpeed)
-				speed = new Vector(speed.X, speed.Y, projectileType.MaxSpeed);
+			if (Math.Abs(speed.X) > projectileType.MaxSpeed)
+				speed = new Vector(Math.Sign(speed.X) * projectileType.MaxSpeed, speed.Y, speed.Z);
+			if (Math.Abs(speed.Y) > projectileType.MaxSpeed)
+				speed = new Vector(speed.X, Math.Sign(speed.Y) * projectileType.MaxSpeed, speed.Z);
+			if (Math.Abs(speed.Z) > projectileType.MaxSpeed)
+				speed = new Vector(speed.X, speed.Y, Math.Sign(speed.Z) * projectileType.MaxSpeed);
 
 			if (Height < 0 || !World.IsInWorld(Position))
 				Detonate(new Target(Position, 0));
