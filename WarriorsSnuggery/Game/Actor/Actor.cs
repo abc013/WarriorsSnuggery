@@ -244,9 +244,7 @@ namespace WarriorsSnuggery.Objects
 			if (reloadDelay < 0) reloadDelay = 0;
 
 			if (WorldPart != null && WorldPart.Hover > 0)
-			{
 				Height += (int)(Math.Sin(localTick / 32f) * WorldPart.Hover * 0.5f);
-			}
 
 			if (Mobility != null)
 			{
@@ -257,13 +255,10 @@ namespace WarriorsSnuggery.Objects
 			if (Health != null && Health.HP <= 0)
 			{
 				if (Health.HP <= 0)
-				{
 					Killed(null);
-				}
+
 				foreach (var effect in Effects.Where(e => e.Active && e.Spell.Type == Spells.EffectType.HEALTH))
-				{
 					Health.HP += (int)effect.Spell.Value;
-				}
 			}
 
 			Parts.ForEach(p => p.Tick());
@@ -304,9 +299,7 @@ namespace WarriorsSnuggery.Objects
 
 			var reloadModifier = 1f;
 			foreach (var effect in Effects.Where(e => e.Active && e.Spell.Type == Spells.EffectType.COOLDOWN))
-			{
 				reloadModifier *= effect.Spell.Value;
-			}
 
 			reloadDelay = (int)(ActiveWeapon.Type.Reload * reloadModifier);
 			CurrentAction = ActorAction.ATTACKING;
@@ -355,7 +348,6 @@ namespace WarriorsSnuggery.Objects
 			base.Dispose();
 
 			Parts.ForEach(p => p.OnDispose());
-			//parts.Clear(); TODO?
 		}
 	}
 }
