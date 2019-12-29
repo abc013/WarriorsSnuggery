@@ -82,7 +82,10 @@ namespace WarriorsSnuggery.Objects.Weapons
 			}
 
 			if (Settings.DeveloperMode)
+			{
 				ColorManager.DrawLine(OriginPos, Position, Color.Magenta);
+				rayPhysics.RenderDebug();
+			}
 		}
 
 		public override void Tick()
