@@ -34,7 +34,7 @@ namespace WarriorsSnuggery.Physics
 			};
 		}
 
-		public void CalculateEnd(Actor shooter = null, bool onlyWalls = false)
+		public void CalculateEnd(Actor shooter = null)
 		{
 			var closestIntersect = new CPos(0, 0, int.MaxValue);
 			var closestT1 = double.MaxValue;
@@ -89,11 +89,13 @@ namespace WarriorsSnuggery.Physics
 				var sector = world.PhysicsLayer.Sectors[sectorPos.X, sectorPos.Y];
 
 				var objs = sector.GetObjects(shooter == null ? null : new[] { shooter });
+
+				var hit = false;
 				foreach (var obj in objs)
 				{
-					foreach (var line in obj.Physics.GetLines())
+					if (obj.Physics.Shape == Shape.CIRCLE)
 					{
-						var end = getIntersection(line.Start, line.End, out var t1);
+						var end = getIntersection(obj.Physics.Position, obj.Physics.RadiusX, out var t1, out var t2, out var end2);
 						if (end != invalid && t1 < closestT1)
 						{
 							var height = calculateHeight(end);
@@ -102,10 +104,44 @@ namespace WarriorsSnuggery.Physics
 								closestIntersect = end;
 								closestT1 = t1;
 								EndHeight = height;
+								hit = true;
+							}
+							else if (t2 < closestT1)
+							{
+								height = calculateHeight(end2);
+								if (height <= obj.Physics.Height + obj.Physics.HeightRadius && height >= obj.Physics.Height - obj.Physics.HeightRadius)
+								{
+									closestIntersect = end2;
+									closestT1 = t2;
+									EndHeight = height;
+									hit = true;
+								}
+							}
+						}
+					}
+					else
+					{
+						foreach (var line in obj.Physics.GetLines())
+						{
+							var end = getIntersection(line.Start, line.End, out var t1);
+							if (end != invalid && t1 < closestT1)
+							{
+								var height = calculateHeight(end);
+								if (height <= obj.Physics.Height + obj.Physics.HeightRadius && height >= obj.Physics.Height - obj.Physics.HeightRadius)
+								{
+									closestIntersect = end;
+									closestT1 = t1;
+									EndHeight = height;
+									hit = true;
+								}
 							}
 						}
 					}
 				}
+
+				// If we hit something, we won't need to check any sectors behind
+				if (hit)
+					break;
 			}
 
 			// Collision at map bounds, if nothing was hit
@@ -245,6 +281,32 @@ namespace WarriorsSnuggery.Physics
 
 			// Return the POINT OF INTERSECTION
 			return new CPos(pos1.X + (int)(delta1.X * T1), pos1.Y + (int)(delta1.Y * T1), 0);
+		}
+
+		CPos getIntersection(CPos center, int radius, out double T1, out double T2, out CPos intersect2)
+		{
+			T1 = double.MaxValue;
+			T2 = double.MaxValue;
+			intersect2 = invalid;
+			var delta = Target - Start;
+			var dist = center - Start;
+
+			double a = (delta.X * delta.X) + (delta.Y * delta.Y);
+			double b = 2 * ((delta.X * dist.X) + (delta.Y * dist.Y));
+			double c = (dist.X * dist.X) + (dist.Y * dist.Y) - radius * radius;
+
+			var discriminant = b * b - 4 * a * c;
+
+			if (discriminant < 0)
+				return invalid;
+
+			// smallest one is the nearest
+			T1 = Math.Abs(-b + Math.Sqrt(discriminant)) / (2 * a);
+			T2 = Math.Abs(-b - Math.Sqrt(discriminant)) / (2 * a);
+
+			// Return the POINT OF INTERSECTION
+			intersect2 = new CPos(Start.X + (int)(delta.X * T2), Start.Y + (int)(delta.Y * T2), 0);
+			return new CPos(Start.X + (int)(delta.X * T1), Start.Y + (int)(delta.Y * T1), 0);
 		}
 
 		int calculateHeight(CPos pos)
