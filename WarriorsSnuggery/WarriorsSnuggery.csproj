@@ -91,6 +91,9 @@
     <Compile Include="Game\Weapons\Warheads\SmudgeWarhead.cs" />
     <Compile Include="Game\Weapons\Warheads\SpellWarhead.cs" />
     <Compile Include="Game\Weapons\Warheads\Warhead.cs" />
+    <Compile Include="Graphics\BatchImage.cs" />
+    <Compile Include="Graphics\Batch.cs" />
+    <Compile Include="Graphics\BatchRenderer.cs" />
     <Compile Include="Loader\WavLoader.cs" />
     <Compile Include="Map\PieceManager.cs" />
     <Compile Include="Map\SmudgeLayer.cs" />

@@ -3,6 +3,51 @@ using System;
 
 namespace WarriorsSnuggery.Graphics
 {
+	public static class Mesh
+	{
+		public static Vertex[] Terrain(ITexture texture)
+		{
+			var x = texture.Offset.X / (float)Settings.SheetSize;
+			var y = texture.Offset.Y / (float)Settings.SheetSize;
+			var w = (texture.Offset.X + texture.Width) / (float)Settings.SheetSize;
+			var h = (texture.Offset.Y + texture.Height) / (float)Settings.SheetSize;
+			var scale = 1 / 2f + 0.001f;
+
+			Vertex[] vertices =
+			{
+				new Vertex(new Vector(scale,  scale,  0, 1.0f), new Vector4(w, y, 0, 0)),
+				new Vertex(new Vector(-scale, -scale, 0, 1.0f), new Vector4(x, h, 0, 0)),
+				new Vertex(new Vector(scale,  -scale, 0, 1.0f), new Vector4(w, h, 0, 0)),
+				new Vertex(new Vector(-scale, scale,  0, 1.0f), new Vector4(x, y, 0, 0)),
+				new Vertex(new Vector(-scale, -scale, 0, 1.0f), new Vector4(x, h, 0, 0)),
+				new Vertex(new Vector(scale,  scale,  0, 1.0f), new Vector4(w, y, 0, 0)),
+			};
+
+			return vertices;
+		}
+
+		public static Vertex[] Image(ITexture texture)
+		{
+			var x = texture.Offset.X / (float)Settings.SheetSize;
+			var y = texture.Offset.Y / (float)Settings.SheetSize;
+			var w = (texture.Offset.X + texture.Width) / (float)Settings.SheetSize;
+			var h = (texture.Offset.Y + texture.Height) / (float)Settings.SheetSize;
+			var scale = texture.Height / 48f;
+			var correction = texture.Width / (float)texture.Height;
+
+			Vertex[] vertices =
+			{
+				new Vertex(new Vector(scale * correction,  scale,  0, 1.0f), new Vector4(w, y, 0, 0)),
+				new Vertex(new Vector(-scale * correction, -scale, 0, 1.0f), new Vector4(x, h, 0, 0)),
+				new Vertex(new Vector(scale * correction,  -scale, 0, 1.0f), new Vector4(w, h, 0, 0)),
+				new Vertex(new Vector(-scale * correction, scale,  0, 1.0f), new Vector4(x, y, 0, 0)),
+				new Vertex(new Vector(-scale * correction, -scale, 0, 1.0f), new Vector4(x, h, 0, 0)),
+				new Vertex(new Vector(scale * correction,  scale,  0, 1.0f), new Vector4(w, y, 0, 0)),
+			};
+
+			return vertices;
+		}
+	}
 	public static class TexturedMesh
 	{
 		// Text character

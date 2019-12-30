@@ -13,6 +13,8 @@ namespace WarriorsSnuggery
 
 		static ImageRenderable shroud;
 
+		public static readonly BatchRenderer TerrainRenderer = new BatchRenderer();
+
 		public static Color Ambient = Color.White;
 
 		static readonly List<IRenderable> beforeRender = new List<IRenderable>();
@@ -24,6 +26,7 @@ namespace WarriorsSnuggery
 				shroud = new ImageRenderable(TextureManager.Texture("shroud"));
 			game = @new;
 			world = game.World;
+			TerrainRenderer.Clear();
 			Camera.Reset();
 			ClearRenderLists();
 		}
@@ -43,7 +46,12 @@ namespace WarriorsSnuggery
 			if (world.ToRender == null)
 				return;
 
+			MasterRenderer.BatchRenderer = TerrainRenderer;
+			TerrainRenderer.SetCurrent();
 			world.TerrainLayer.Render();
+			TerrainRenderer.Render();
+			MasterRenderer.BatchRenderer = null;
+
 			world.SmudgeLayer.Render();
 
 			foreach (PhysicsObject o in world.ToRender)

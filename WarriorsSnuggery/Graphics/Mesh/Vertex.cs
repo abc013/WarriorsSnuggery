@@ -3,6 +3,32 @@ using OpenTK.Graphics;
 
 namespace WarriorsSnuggery.Graphics
 {
+	public struct Vertex
+	{
+		public const int Size = (4 + 4 /*+ 4*/) * 4; // size of struct in bytes
+
+		readonly Vector4 position;
+		readonly Vector4 textureCoordinate;
+		//readonly Color4 color;
+
+		public Vertex(Vector4 position, Vector4 textureCoordinate/*, Color4 color*/)
+		{
+			this.position = position;
+			this.textureCoordinate = textureCoordinate;
+			/*this.color = color;*/
+		}
+
+		public Vertex UseMatrix(Matrix4 matrix)
+		{
+			return new Vertex(position * matrix, textureCoordinate/*, color*/);
+		}
+
+		public override int GetHashCode()
+		{
+			return position.GetHashCode() ^ textureCoordinate.GetHashCode();
+		}
+	}
+
 	public struct ColoredVertex
 	{
 		public const int Size = (4 + 4) * 4; // size of struct in bytes

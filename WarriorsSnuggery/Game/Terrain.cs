@@ -1,12 +1,13 @@
 using System;
+using OpenTK;
 using WarriorsSnuggery.Graphics;
 
 namespace WarriorsSnuggery.Objects
 {
 	public class Terrain : IRenderable, ICheckVisible, IDisposable
 	{
-		readonly ImageRenderable renderable;
-		readonly ImageRenderable[] edges, corners;
+		readonly BatchImage renderable;
+		readonly BatchImage[] edges, corners;
 
 		readonly bool[] edgesVisible = new bool[4];
 		readonly CPos[] edgePositions = new CPos[4]
@@ -36,25 +37,26 @@ namespace WarriorsSnuggery.Objects
 			Position = position;
 			Type = type;
 
-			renderable = new ImageRenderable(type.Texture);
+			Batch.texture = type.Texture.Texture;
+			renderable = new BatchImage(type.Texture.Texture);
 			if (Type.Overlaps)
 			{
-				edges = new ImageRenderable[4];
+				edges = new BatchImage[4];
 				for (int i = 0; i < 4; i++)
 				{
 					edgesVisible[i] = true;
 					if (i % 2 != 0 && Type.Texture_Edge2 != null)
-						edges[i] = new ImageRenderable(Type.Texture_Edge2);
+						edges[i] = new BatchImage(Type.Texture_Edge2.Texture);
 					else
-						edges[i] = new ImageRenderable(Type.Texture_Edge);
+						edges[i] = new BatchImage(Type.Texture_Edge.Texture);
 					edges[i].SetRotation(new VAngle(0, 0, i * -90));
 				}
 
-				corners = new ImageRenderable[4];
+				corners = new BatchImage[4];
 				for (int i = 0; i < 4; i++)
 				{
 					cornersVisible[i] = true;
-					corners[i] = new ImageRenderable(Type.Texture_Corner);
+					corners[i] = new BatchImage(Type.Texture_Corner.Texture);
 					corners[i].SetRotation(new VAngle(0, 0, i * -90));
 				}
 			}
@@ -72,8 +74,8 @@ namespace WarriorsSnuggery.Objects
 					if (!edgesVisible[i])
 						continue;
 
-					edges[i].SetPosition(Position.ToCPos() + edgePositions[i]);
-					edges[i].Render();
+					edges[i].SetPosition((Position.ToCPos() + edgePositions[i]).ToVector());
+					edges[i].PushToBatchRenderer();
 				}
 
 				for (int i = 0; i < 4; i++)
@@ -81,12 +83,12 @@ namespace WarriorsSnuggery.Objects
 					if (!cornersVisible[i])
 						continue;
 
-					corners[i].SetPosition(Position.ToCPos() + cornerPositions[i]);
-					corners[i].Render();
+					corners[i].SetPosition((Position.ToCPos() + cornerPositions[i]).ToVector());
+					corners[i].PushToBatchRenderer();
 				}
 			}
-			renderable.SetPosition(Position.ToCPos());
-			renderable.Render();
+			renderable.SetPosition(Position.ToCPos().ToVector());
+			renderable.PushToBatchRenderer();
 		}
 
 		public void CheckVisibility()

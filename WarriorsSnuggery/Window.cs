@@ -175,7 +175,7 @@ namespace WarriorsSnuggery
 				SwapBuffers();
 			}
 
-			Title = title + " | " + MasterRenderer.RenderCalls + " Calls";
+			Title = title + " | " + MasterRenderer.RenderCalls + " Calls | " + WorldRenderer.TerrainRenderer.BatchCount + " Batches | " + MasterRenderer.BatchCalls + " BatchCalls";
 			GlobalRender++;
 		}
 
@@ -194,6 +194,7 @@ namespace WarriorsSnuggery
 			ColorManager.Dispose();
 			CharManager.Dispose();
 
+			WorldRenderer.TerrainRenderer.Dispose();
 			MasterRenderer.Dispose();
 
 			TerrainSpriteManager.DeleteTexture();

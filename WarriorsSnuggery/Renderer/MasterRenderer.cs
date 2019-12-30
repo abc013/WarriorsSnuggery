@@ -9,6 +9,9 @@ namespace WarriorsSnuggery
 	public static class MasterRenderer
 	{
 		public static int RenderCalls;
+		public static int BatchCalls;
+
+		public static BatchRenderer BatchRenderer;
 
 		public const int PixelSize = 24;
 		public const float PixelMultiplier = 1f / PixelSize;
@@ -19,7 +22,6 @@ namespace WarriorsSnuggery
 		public static int ColorShader, TextureShader, FontShader, ShadowShader;
 		static int heightLocation;
 		static readonly int[] locations = new int[16];
-
 		public static int GetLocation(int shader, string name)
 		{
 			var shadernum = 4 * (shader - 1);
@@ -166,6 +168,7 @@ namespace WarriorsSnuggery
 			lock (GLLock)
 			{
 				RenderCalls = 0;
+				BatchCalls = 0;
 				if (Settings.EnablePixeling)
 				{
 					GL.BindFramebuffer(FramebufferTarget.Framebuffer, frameBuffer);
