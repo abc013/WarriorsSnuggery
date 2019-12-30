@@ -16,7 +16,7 @@ namespace WarriorsSnuggery.Graphics
 
 		public BatchImage(ITexture texture)
 		{
-			this.vertices = Mesh.Image(texture);
+			vertices = Mesh.Image(texture);
 		}
 
 		public void SetPosition(Vector position)
