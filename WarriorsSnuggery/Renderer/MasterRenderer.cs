@@ -88,8 +88,10 @@ namespace WarriorsSnuggery
 
 				GL.BindAttribLocation(ColorShader, 1, "color");
 				GL.BindAttribLocation(TextureShader, 1, "textureCoordinate");
+				GL.BindAttribLocation(TextureShader, 2, "color");
 				GL.BindAttribLocation(FontShader, 3, "textureOffset");
 				GL.BindAttribLocation(ShadowShader, 1, "textureCoordinate");
+				GL.BindAttribLocation(ShadowShader, 2, "color");
 
 				Program.CheckGraphicsError("InitShaders");
 			}

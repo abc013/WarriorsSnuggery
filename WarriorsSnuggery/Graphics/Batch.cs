@@ -100,10 +100,10 @@ namespace WarriorsSnuggery.Graphics
 				GL.VertexAttribPointer(1, 4, VertexAttribPointerType.Float, true, Vertex.Size, 16);
 				Program.CheckGraphicsError("BatchBind_3");
 
-				/*// color
+				// color
 				GL.EnableVertexAttribArray(2);
-				GL.VertexAttribPointer(0, 4, VertexAttribPointerType.Float, true, Vertex.Size, 32);
-				Program.CheckGraphicsError("BatchBind_4");*/
+				GL.VertexAttribPointer(2, 4, VertexAttribPointerType.Float, true, Vertex.Size, 32);
+				Program.CheckGraphicsError("BatchBind_4");
 				if (texture != null)
 					GL.BindTexture(TextureTarget.Texture2D, texture.SheetID);
 			}

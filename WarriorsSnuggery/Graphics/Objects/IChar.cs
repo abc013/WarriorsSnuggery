@@ -13,11 +13,28 @@ namespace WarriorsSnuggery.Graphics
 
 		public IChar(IFont font) : base(MasterRenderer.FontShader, font.Mesh.Length)
 		{
-			IImage.CreateTextureBuffer(font.Mesh);
+			createBuffer(font.Mesh);
 
 			offset = Characters.IndexOf(' ');
 			color = Color.White;
 			Font = font;
+		}
+
+		void createBuffer(CharVertex[] vertices)
+		{
+			lock (MasterRenderer.GLLock)
+			{
+				GL.BufferData(BufferTarget.ArrayBuffer, CharVertex.Size * vertices.Length, vertices, BufferUsageHint.StaticDraw);
+				Program.CheckGraphicsError("CreateTexture_Buffer");
+
+				GL.EnableVertexAttribArray(0);
+				GL.VertexAttribPointer(0, 4, VertexAttribPointerType.Float, true, CharVertex.Size, 0);
+				Program.CheckGraphicsError("CreateTexture_VertexArray1");
+
+				GL.EnableVertexAttribArray(1);
+				GL.VertexAttribPointer(1, 4, VertexAttribPointerType.Float, true, CharVertex.Size, 16);
+				Program.CheckGraphicsError("CreateTexture_VertexArray2");
+			}
 		}
 
 		public void SetColor(Color color)

@@ -15,12 +15,12 @@ namespace WarriorsSnuggery.Graphics
 
 			Vertex[] vertices =
 			{
-				new Vertex(new Vector(scale,  scale,  0, 1.0f), new Vector4(w, y, 0, 0)),
-				new Vertex(new Vector(-scale, -scale, 0, 1.0f), new Vector4(x, h, 0, 0)),
-				new Vertex(new Vector(scale,  -scale, 0, 1.0f), new Vector4(w, h, 0, 0)),
-				new Vertex(new Vector(-scale, scale,  0, 1.0f), new Vector4(x, y, 0, 0)),
-				new Vertex(new Vector(-scale, -scale, 0, 1.0f), new Vector4(x, h, 0, 0)),
-				new Vertex(new Vector(scale,  scale,  0, 1.0f), new Vector4(w, y, 0, 0)),
+				new Vertex(new Vector(scale,  scale,  0, 1.0f), new Vector4(w, y, 0, 0), Color.White),
+				new Vertex(new Vector(-scale, -scale, 0, 1.0f), new Vector4(x, h, 0, 0), Color.White),
+				new Vertex(new Vector(scale,  -scale, 0, 1.0f), new Vector4(w, h, 0, 0), Color.White),
+				new Vertex(new Vector(-scale, scale,  0, 1.0f), new Vector4(x, y, 0, 0), Color.White),
+				new Vertex(new Vector(-scale, -scale, 0, 1.0f), new Vector4(x, h, 0, 0), Color.White),
+				new Vertex(new Vector(scale,  scale,  0, 1.0f), new Vector4(w, y, 0, 0), Color.White),
 			};
 
 			return vertices;
@@ -37,38 +37,41 @@ namespace WarriorsSnuggery.Graphics
 
 			Vertex[] vertices =
 			{
-				new Vertex(new Vector(scale * correction,  scale,  0, 1.0f), new Vector4(w, y, 0, 0)),
-				new Vertex(new Vector(-scale * correction, -scale, 0, 1.0f), new Vector4(x, h, 0, 0)),
-				new Vertex(new Vector(scale * correction,  -scale, 0, 1.0f), new Vector4(w, h, 0, 0)),
-				new Vertex(new Vector(-scale * correction, scale,  0, 1.0f), new Vector4(x, y, 0, 0)),
-				new Vertex(new Vector(-scale * correction, -scale, 0, 1.0f), new Vector4(x, h, 0, 0)),
-				new Vertex(new Vector(scale * correction,  scale,  0, 1.0f), new Vector4(w, y, 0, 0)),
+				new Vertex(new Vector(scale * correction,  scale,  0, 1.0f), new Vector4(w, y, 0, 0), Color.White),
+				new Vertex(new Vector(-scale * correction, -scale, 0, 1.0f), new Vector4(x, h, 0, 0), Color.White),
+				new Vertex(new Vector(scale * correction,  -scale, 0, 1.0f), new Vector4(w, h, 0, 0), Color.White),
+				new Vertex(new Vector(-scale * correction, scale,  0, 1.0f), new Vector4(x, y, 0, 0), Color.White),
+				new Vertex(new Vector(-scale * correction, -scale, 0, 1.0f), new Vector4(x, h, 0, 0), Color.White),
+				new Vertex(new Vector(scale * correction,  scale,  0, 1.0f), new Vector4(w, y, 0, 0), Color.White),
 			};
 
 			return vertices;
 		}
 	}
-	public static class TexturedMesh
+
+	public static class CharMesh
 	{
-		// Text character
-		public static TexturedVertex[] Character(IFont font)
+		public static CharVertex[] Character(IFont font)
 		{
 			var w = font.MaxSize.X;
 			var h = font.MaxSize.Y;
 			var size = w * IFont.FontSizeMultiplier;
 
-			TexturedVertex[] vertices =
+			CharVertex[] vertices =
 			{
-				new TexturedVertex(new Vector(-size, -size, 0, 1.0f), new Vector2(0, h)),
-				new TexturedVertex(new Vector(size,  -size, 0, 1.0f), new Vector2(w, h)),
-				new TexturedVertex(new Vector(-size, size,  0, 1.0f), new Vector2(0, 0)),
-				new TexturedVertex(new Vector(-size, size,  0, 1.0f), new Vector2(0, 0)),
-				new TexturedVertex(new Vector(size,  -size, 0, 1.0f), new Vector2(w, h)),
-				new TexturedVertex(new Vector(size,  size,  0, 1.0f), new Vector2(w, 0)),
+				new CharVertex(new Vector(-size, -size, 0, 1.0f), new Vector2(0, h)),
+				new CharVertex(new Vector(size,  -size, 0, 1.0f), new Vector2(w, h)),
+				new CharVertex(new Vector(-size, size,  0, 1.0f), new Vector2(0, 0)),
+				new CharVertex(new Vector(-size, size,  0, 1.0f), new Vector2(0, 0)),
+				new CharVertex(new Vector(size,  -size, 0, 1.0f), new Vector2(w, h)),
+				new CharVertex(new Vector(size,  size,  0, 1.0f), new Vector2(w, 0)),
 			};
 			return vertices;
 		}
+	}
 
+	public static class TexturedMesh
+	{
 		// in the both functions down here, y scale has been inverted.
 		// Terrain
 		public static TexturedVertex[] Terrain(int xp, int yp, int width, int height)

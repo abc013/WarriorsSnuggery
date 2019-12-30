@@ -50,6 +50,10 @@ namespace WarriorsSnuggery.Graphics
 				GL.EnableVertexAttribArray(1);
 				GL.VertexAttribPointer(1, 4, VertexAttribPointerType.Float, true, TexturedVertex.Size, 16);
 				Program.CheckGraphicsError("CreateTexture_VertexArray2");
+
+				GL.EnableVertexAttribArray(2);
+				GL.VertexAttribPointer(2, 4, VertexAttribPointerType.Float, true, Vertex.Size, 32);
+				Program.CheckGraphicsError("CreateTexture_VertexArray3");
 			}
 		}
 
