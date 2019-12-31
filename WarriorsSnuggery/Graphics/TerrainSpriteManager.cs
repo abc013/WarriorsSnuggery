@@ -10,20 +10,15 @@
 			SheetBuilder.UseSheet(sheet);
 		}
 
-		public static IImage[] AddTexture(TextureInfo info)
+		public static ITexture[] AddTexture(TextureInfo info)
 		{
 			var data = TextureManager.loadSprite(info.File, info.Width, info.Height);
-			var renderables = new IImage[data.Length];
+			var textures = new ITexture[data.Length];
 
 			for (int i = 0; i < data.Length; i++)
-			{
-				var texture = SheetBuilder.WriteTexture(data[i], info);
-				var renderable = IImage.Create(Mesh.Terrain(texture, Color.White), texture);
+				textures[i] = SheetBuilder.WriteTexture(data[i], info);
 
-				renderables[i] = renderable;
-			}
-
-			return renderables;
+			return textures;
 		}
 
 		public static void CreateTexture()

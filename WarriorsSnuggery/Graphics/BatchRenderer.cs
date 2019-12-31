@@ -12,6 +12,7 @@ namespace WarriorsSnuggery.Graphics
 		const int bufferSize = 6000;
 		readonly Vertex[] buffer;
 		int offset;
+		bool added;
 
 		public BatchRenderer()
 		{
@@ -20,7 +21,8 @@ namespace WarriorsSnuggery.Graphics
 
 		public void Add(Vertex[] data)
 		{
-			foreach(var vertex in data)
+			added = true;
+			foreach (var vertex in data)
 			{
 				buffer[offset++] = vertex;
 
@@ -56,24 +58,29 @@ namespace WarriorsSnuggery.Graphics
 
 		public void Render()
 		{
+			if (!added)
+				return;
+
 			push();
+
+			lock (MasterRenderer.GLLock)
+			{
+				GL.UseProgram(MasterRenderer.TextureShader);
+
+				var mat = Matrix4.Identity;
+				GL.UniformMatrix4(MasterRenderer.GetLocation(MasterRenderer.TextureShader, "modelView"), false, ref mat);
+				GL.Uniform4(MasterRenderer.GetLocation(MasterRenderer.TextureShader, "objectColor"), Color.White);
+				Program.CheckGraphicsError("GraphicsObject_Uniform");
+			}
 			foreach (var batch in batches)
 			{
-				//batch.Push();
 				batch.Bind();
-				lock (MasterRenderer.GLLock)
-				{
-					GL.UseProgram(MasterRenderer.TextureShader);
-
-					var mat = Matrix4.Identity;
-					GL.UniformMatrix4(MasterRenderer.GetLocation(MasterRenderer.TextureShader, "modelView"), false, ref mat);
-					GL.Uniform4(MasterRenderer.GetLocation(MasterRenderer.TextureShader, "objectColor"), Color.White);
-					Program.CheckGraphicsError("GraphicsObject_Uniform");
-				}
 				batch.Render();
 				// Reset so we can overwrite the buffer;
 				batch.CurrentSize = 0;
 			}
+
+			added = false;
 		}
 
 		public void Clear()

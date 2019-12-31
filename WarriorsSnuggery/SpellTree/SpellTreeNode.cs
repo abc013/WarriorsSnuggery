@@ -35,7 +35,10 @@ namespace WarriorsSnuggery.Spells
 			{
 				InnerName = name;
 				Name = name.Replace('_', ' ');
-				Images = SpriteManager.AddTexture(Icon);
+				var textures = SpriteManager.AddTexture(Icon);
+				Images = new IImage[textures.Length];
+				for (int i = 0; i < Images.Length; i++)
+					Images[i] = IImage.Create(Mesh.Image(textures[i], Color.White), textures[i]);
 			}
 		}
 

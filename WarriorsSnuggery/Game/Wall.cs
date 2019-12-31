@@ -32,7 +32,7 @@ namespace WarriorsSnuggery.Objects
 			get { return health / (float)Type.Health; }
 		}
 
-		public Wall(MPos position, WallLayer layer, WallType type) : base(position.ToCPos(), new BatchObject(type.GetTexture(position.X % 2 != 0).Texture, Color.White), type.Blocks ? new Physics.SimplePhysics(position.ToCPos() / new CPos(2, 1, 1), 0, position.X % 2 != 0 ? WarriorsSnuggery.Physics.Shape.LINE_HORIZONTAL : WarriorsSnuggery.Physics.Shape.LINE_VERTICAL, 512, 512, type.Height) : new Physics.SimplePhysics(position.ToCPos() / new CPos(2, 1, 1), 0, WarriorsSnuggery.Physics.Shape.NONE, 0, 0, 0))
+		public Wall(MPos position, WallLayer layer, WallType type) : base(position.ToCPos(), new BatchObject(type.GetTexture(position.X % 2 != 0), Color.White), type.Blocks ? new Physics.SimplePhysics(position.ToCPos() / new CPos(2, 1, 1), 0, position.X % 2 != 0 ? WarriorsSnuggery.Physics.Shape.LINE_HORIZONTAL : WarriorsSnuggery.Physics.Shape.LINE_VERTICAL, 512, 512, type.Height) : new Physics.SimplePhysics(position.ToCPos() / new CPos(2, 1, 1), 0, WarriorsSnuggery.Physics.Shape.NONE, 0, 0, 0))
 		{
 			LayerPosition = position;
 			this.layer = layer;
@@ -55,9 +55,9 @@ namespace WarriorsSnuggery.Objects
 			health = type.Health;
 
 			if (Type.DamagedImage1 != null)
-				damaged1 = new BatchObject(type.GetDamagedTexture(isHorizontal, false).Texture, Color.White);
+				damaged1 = new BatchObject(type.GetDamagedTexture(isHorizontal, false), Color.White);
 			if (Type.DamagedImage2 != null)
-				damaged2 = new BatchObject(type.GetDamagedTexture(isHorizontal, true).Texture, Color.White);
+				damaged2 = new BatchObject(type.GetDamagedTexture(isHorizontal, true), Color.White);
 		}
 
 		public override void Render()

@@ -115,6 +115,9 @@ namespace WarriorsSnuggery.Graphics
 
 		public void Render()
 		{
+			if (CurrentSize == 0)
+				return;
+
 			MasterRenderer.Batches++;
 			lock (MasterRenderer.GLLock)
 			{

@@ -7,7 +7,7 @@ namespace WarriorsSnuggery.Objects.Parts
 	[Desc("This will add a sprite to an actor which will be rendered upon call.")]
 	public class SpritePartInfo : PartInfo
 	{
-		public readonly IImage[] Textures;
+		public readonly ITexture[] Textures;
 
 		[Desc("Name of the texture file.")]
 		public readonly string Name;
@@ -62,7 +62,7 @@ namespace WarriorsSnuggery.Objects.Parts
 
 			for (int i = 0; i < renderables.Length; i++)
 			{
-				var anim = new IImage[frameCountPerIdleAnim];
+				var anim = new ITexture[frameCountPerIdleAnim];
 				for (int x = 0; x < frameCountPerIdleAnim; x++)
 					anim[x] = info.Textures[i * frameCountPerIdleAnim + x];
 
@@ -72,11 +72,11 @@ namespace WarriorsSnuggery.Objects.Parts
 				if (info.Random)
 				{
 					var ran = self.World.Game.SharedRandom.Next(anim.Length);
-					renderables[i] = new BatchObject(anim[ran].Texture, Color.White);
+					renderables[i] = new BatchObject(anim[ran], Color.White);
 				}
 				else
 				{
-					renderables[i] = new BatchObject(anim[0].Texture, Color.White);
+					renderables[i] = new BatchObject(anim[0], Color.White);
 				}
 			}
 		}

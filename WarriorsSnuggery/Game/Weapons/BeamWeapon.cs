@@ -9,7 +9,7 @@ namespace WarriorsSnuggery.Objects.Weapons
 		readonly BeamProjectileType projectileType;
 		readonly RayPhysics rayPhysics;
 
-		ImageRenderable[] renderables;
+		BatchRenderable[] renderables;
 		int renderabledistance;
 		int tick;
 
@@ -53,9 +53,9 @@ namespace WarriorsSnuggery.Objects.Weapons
 			curTick = 0;
 
 			var sprite = texture.GetTextures();
-			renderables = new ImageRenderable[sprite.Length];
+			renderables = new BatchRenderable[sprite.Length];
 			for (int i = 0; i < sprite.Length; i++)
-				renderables[i] = new ImageRenderable(sprite[i]);
+				renderables[i] = new BatchObject(sprite[i], Color.White);
 		}
 
 		public override void Render()
@@ -74,7 +74,7 @@ namespace WarriorsSnuggery.Objects.Weapons
 
 				renderable.SetRotation(new VAngle(0, 0, -angle) + new VAngle(0, 0, 270));
 				renderable.SetPosition(OriginPos + new CPos(posX, posY, 0) - new CPos(0, OriginHeight, -OriginHeight));
-				renderable.Render();
+				renderable.PushToBatchRenderer();
 
 				curFrame--;
 				if (curFrame < 0)

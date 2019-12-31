@@ -35,7 +35,7 @@ namespace WarriorsSnuggery.Graphics
 		}
 
 		//if the type is random or image, it is certain that in this array there's only one texture.
-		public IImage[] GetTextures()
+		public ITexture[] GetTextures()
 		{
 			switch (Type)
 			{

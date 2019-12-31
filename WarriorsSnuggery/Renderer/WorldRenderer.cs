@@ -11,7 +11,7 @@ namespace WarriorsSnuggery
 		static Game game;
 		static World world;
 
-		static ImageRenderable shroud;
+		static BatchObject shroud;
 
 		public static readonly BatchRenderer TerrainRenderer = new BatchRenderer();
 		public static readonly BatchRenderer SmudgeRenderer = new BatchRenderer();
@@ -26,7 +26,7 @@ namespace WarriorsSnuggery
 		public static void Reset(Game @new)
 		{
 			if (shroud == null)
-				shroud = new ImageRenderable(TextureManager.Texture("shroud"));
+				shroud = new BatchObject(TextureManager.Texture("shroud"), Color.White, Mesh.Plane(1f, 1f, 1f, Color.White));
 			game = @new;
 			world = game.World;
 			TerrainRenderer.Clear();
@@ -106,7 +106,7 @@ namespace WarriorsSnuggery
 							if (y >= 0 && y < world.ShroudLayer.Size.Y && !world.ShroudLayer.ShroudRevealed(Actor.PlayerTeam, x, y))
 							{
 								shroud.SetPosition(new CPos(x * 512 - 256, y * 512 - 256, 0));
-								shroud.Render();
+								shroud.PushToBatchRenderer();
 							}
 						}
 					}

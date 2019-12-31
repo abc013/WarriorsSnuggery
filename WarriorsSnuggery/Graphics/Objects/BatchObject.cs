@@ -11,6 +11,11 @@ namespace WarriorsSnuggery.Graphics
 			this.texture = texture;
 		}
 
+		public BatchObject(ITexture texture, Color color, Vertex[] vertices) : base(vertices, color)
+		{
+			this.texture = texture;
+		}
+
 		public BatchObject(float scale, Color color) : base(Mesh.Plane(scale, color), color) { }
 
 		public override void PushToBatchRenderer()

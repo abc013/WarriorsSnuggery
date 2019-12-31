@@ -7,7 +7,7 @@ namespace WarriorsSnuggery.Graphics
 		public static Sheet[] sheets;
 		static int currentSheet;
 
-		static readonly Dictionary<int, IImage[]> hashedTextures = new Dictionary<int, IImage[]>();
+		static readonly Dictionary<int, ITexture[]> hashedTextures = new Dictionary<int, ITexture[]>();
 
 		public static void CreateSheet(int maxSheets)
 		{
@@ -29,7 +29,7 @@ namespace WarriorsSnuggery.Graphics
 			SheetBuilder.UseSheet(sheets[currentSheet]);
 		}
 
-		public static IImage[] AddTexture(TextureInfo info)
+		public static ITexture[] AddTexture(TextureInfo info)
 		{
 			var hash = info.GetHashCode();
 
@@ -37,25 +37,22 @@ namespace WarriorsSnuggery.Graphics
 				return hashedTextures[hash];
 
 			var data = TextureManager.loadSprite(info.File, info.Width, info.Height);
-			var renderables = new IImage[data.Length];
+			var textures = new ITexture[data.Length];
 
 			for (int i = 0; i < data.Length; i++)
 			{
 				if (!SheetBuilder.IsSpaceLeft(info.Width, info.Height))
 					UseNextSheet();
 
-				var texture = SheetBuilder.WriteTexture(data[i], info);
-				var renderable = IImage.Create(Mesh.Image(texture, Color.White), texture);
-
-				renderables[i] = renderable;
+				textures[i] = SheetBuilder.WriteTexture(data[i], info);
 			}
 
-			hashedTextures.Add(hash, renderables);
+			hashedTextures.Add(hash, textures);
 
-			return renderables;
+			return textures;
 		}
 
-		public static IImage[] GetTexture(TextureInfo info)
+		public static ITexture[] GetTexture(TextureInfo info)
 		{
 			return hashedTextures[info.GetHashCode()];
 		}
