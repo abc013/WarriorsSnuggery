@@ -41,7 +41,6 @@ namespace WarriorsSnuggery
 				o.Render();
 
 			MasterRenderer.Uniform(MasterRenderer.TextureShader, ref Camera.Matrix, Ambient);
-			MasterRenderer.Uniform(MasterRenderer.ColorShader, ref Camera.Matrix, Ambient);
 			MasterRenderer.Uniform(MasterRenderer.FontShader, ref Camera.Matrix, Ambient);
 			MasterRenderer.Uniform(MasterRenderer.ShadowShader, ref Camera.Matrix, Ambient);
 
@@ -74,14 +73,12 @@ namespace WarriorsSnuggery
 
 					Ambient = new Color(Ambient.R, Ambient.G, Ambient.B, alpha);
 					MasterRenderer.Uniform(MasterRenderer.TextureShader, ref Camera.Matrix, Ambient);
-					MasterRenderer.Uniform(MasterRenderer.ColorShader, ref Camera.Matrix, Ambient);
 					MasterRenderer.Uniform(MasterRenderer.FontShader, ref Camera.Matrix, Ambient);
 					MasterRenderer.Uniform(MasterRenderer.ShadowShader, ref Camera.Matrix, Ambient);
 					o.Render();
 
 					Ambient = new Color(Ambient.R, Ambient.G, Ambient.B, 1f);
 					MasterRenderer.Uniform(MasterRenderer.TextureShader, ref Camera.Matrix, Ambient);
-					MasterRenderer.Uniform(MasterRenderer.ColorShader, ref Camera.Matrix, Ambient);
 					MasterRenderer.Uniform(MasterRenderer.FontShader, ref Camera.Matrix, Ambient);
 					MasterRenderer.Uniform(MasterRenderer.ShadowShader, ref Camera.Matrix, Ambient);
 				}

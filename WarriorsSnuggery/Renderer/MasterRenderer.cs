@@ -19,9 +19,9 @@ namespace WarriorsSnuggery
 		public static bool PauseSequences;
 		public static object GLLock = new object();
 
-		public static int ColorShader, TextureShader, FontShader, ShadowShader;
+		public static int TextureShader, FontShader, ShadowShader;
 		static int heightLocation;
-		static readonly int[] locations = new int[16];
+		static readonly int[] locations = new int[12];
 		public static int GetLocation(int shader, string name)
 		{
 			var shadernum = 4 * (shader - 1);
@@ -41,7 +41,7 @@ namespace WarriorsSnuggery
 			return locations[num + shadernum];
 		}
 
-		static readonly ShaderProgram[] shaders = new ShaderProgram[4];
+		static readonly ShaderProgram[] shaders = new ShaderProgram[3];
 
 		public static void ResetRenderer(Game game)
 		{
@@ -65,12 +65,11 @@ namespace WarriorsSnuggery
 		{
 			lock (GLLock)
 			{
-				ColorShader = createShader("Col");
 				TextureShader = createShader("Tex");
 				FontShader = createShader("Fon");
 				ShadowShader = createShader("Sha");
 
-				foreach (int shader in new[] { ColorShader, TextureShader, FontShader, ShadowShader })
+				foreach (int shader in new[] { TextureShader, FontShader, ShadowShader })
 				{
 					var num = 4 * (shader - 1);
 					locations[num] = GL.GetUniformLocation(shader, "projection");
@@ -86,7 +85,6 @@ namespace WarriorsSnuggery
 				heightLocation = GL.GetUniformLocation(ShadowShader, "height");
 				Log.WriteDebug("SHADER " + ShadowShader + " shadowloc: " + heightLocation);
 
-				GL.BindAttribLocation(ColorShader, 1, "color");
 				GL.BindAttribLocation(TextureShader, 1, "textureCoordinate");
 				GL.BindAttribLocation(TextureShader, 2, "color");
 				GL.BindAttribLocation(FontShader, 3, "textureOffset");
@@ -133,7 +131,6 @@ namespace WarriorsSnuggery
 				GL.Enable(EnableCap.ScissorTest);
 				GL.Enable(EnableCap.AlphaTest);
 				GL.Enable(EnableCap.Blend);
-				//GL.Enable(EnableCap.DepthTest);
 				GL.CullFace(CullFaceMode.Back);
 				Program.CheckGraphicsError("GLTests");
 
