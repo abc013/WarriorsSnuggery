@@ -47,13 +47,13 @@ namespace WarriorsSnuggery.Objects.Parts
 	{
 		readonly AnimatedSpritePartInfo info;
 
-		readonly IImageSequenceRenderable[] renderables;
+		readonly BatchRenderable[] renderables;
 		int currentFacing;
 
 		public AnimatedSpritePart(Actor self, AnimatedSpritePartInfo info) : base(self)
 		{
 			this.info = info;
-			renderables = new IImageSequenceRenderable[info.Facings];
+			renderables = new BatchRenderable[info.Facings];
 			var frameCountPerIdleAnim = info.Textures.Length / info.Facings;
 
 			if (frameCountPerIdleAnim * info.Facings != info.Textures.Length)
@@ -65,7 +65,7 @@ namespace WarriorsSnuggery.Objects.Parts
 				for (int x = 0; x < frameCountPerIdleAnim; x++)
 					anim[x] = info.Textures[i * frameCountPerIdleAnim + x];
 
-				renderables[i] = new IImageSequenceRenderable(anim, tick: info.Tick);
+				renderables[i] = new BatchSequence(anim, tick: info.Tick);
 			}
 		}
 
@@ -80,7 +80,7 @@ namespace WarriorsSnuggery.Objects.Parts
 			return facing;
 		}
 
-		public override GraphicsObject GetRenderable(ActorAction action, int facing)
+		public override BatchRenderable GetRenderable(ActorAction action, int facing)
 		{
 			if (info.Condition != null && !info.Condition.True(self))
 				return null;
@@ -109,7 +109,8 @@ namespace WarriorsSnuggery.Objects.Parts
 					MasterRenderer.UniformHeight(self.Height);
 
 					renderable.SetPosition(self.GraphicPositionWithoutHeight);
-					renderable.Render();
+					renderable.SetColor(new Color(0, 0, 0, 64));
+					renderable.PushToBatchRenderer();
 
 					MasterRenderer.RenderShadow = false;
 					Program.CheckGraphicsError("RenderShadow");
@@ -117,7 +118,8 @@ namespace WarriorsSnuggery.Objects.Parts
 
 				self.Offset = info.Offset; // TODO replace by proper rendering
 				renderable.SetPosition(self.GraphicPosition);
-				renderable.Render();
+				renderable.SetColor(Color.White);
+				renderable.PushToBatchRenderer();
 			}
 		}
 	}

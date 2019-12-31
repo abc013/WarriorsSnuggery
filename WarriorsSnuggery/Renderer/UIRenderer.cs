@@ -25,6 +25,7 @@ namespace WarriorsSnuggery
 
 			Cursor.Current = CursorType.DEFAULT;
 			UIRenderer.game = game;
+			UIBatchRenderer.Clear();
 			Update();
 			ClearRenderLists();
 		}

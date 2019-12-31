@@ -30,6 +30,9 @@ namespace WarriorsSnuggery
 			game = @new;
 			world = game.World;
 			TerrainRenderer.Clear();
+			SmudgeRenderer.Clear();
+			ObjectRenderer.Clear();
+			ShroudRenderer.Clear();
 			Camera.Reset();
 			ClearRenderLists();
 		}

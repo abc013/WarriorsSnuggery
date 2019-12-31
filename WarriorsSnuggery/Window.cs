@@ -195,6 +195,10 @@ namespace WarriorsSnuggery
 			CharManager.Dispose();
 
 			WorldRenderer.TerrainRenderer.Dispose();
+			WorldRenderer.SmudgeRenderer.Dispose();
+			WorldRenderer.ObjectRenderer.Dispose();
+			WorldRenderer.ShroudRenderer.Dispose();
+			UIRenderer.UIBatchRenderer.Dispose();
 			MasterRenderer.Dispose();
 
 			TerrainSpriteManager.DeleteTexture();

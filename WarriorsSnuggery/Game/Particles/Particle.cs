@@ -17,8 +17,7 @@ namespace WarriorsSnuggery.Objects.Particles
 		CPos transform_velocity;
 		VAngle rotate_velocity;
 
-		// TODO: make color use only one mesh or sth like that
-		public Particle(CPos pos, int height, ParticleType type, Random random) : base(pos, type.Texture != null ? (GraphicsObject)new IImageSequenceRenderable(type.Texture.GetTextures(), tick: type.Texture.Tick) : new ColoredRectRenderable(type.ColoredRenderable))
+		public Particle(CPos pos, int height, ParticleType type, Random random) : base(pos, type.Texture != null ? (BatchRenderable)new BatchSequence(type.Texture.GetTextures(), tick: type.Texture.Tick) : new BatchObject(type.MeshSize * MasterRenderer.PixelMultiplier, type.Color))
 		{
 			Height = height;
 			this.type = type;

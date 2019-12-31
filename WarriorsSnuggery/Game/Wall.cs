@@ -10,8 +10,8 @@ namespace WarriorsSnuggery.Objects
 		readonly WallLayer layer;
 
 		public readonly WallType Type;
-		readonly ImageRenderable damaged1;
-		readonly ImageRenderable damaged2;
+		readonly BatchObject damaged1;
+		readonly BatchObject damaged2;
 
 		readonly bool isHorizontal;
 		public int Health
@@ -32,7 +32,7 @@ namespace WarriorsSnuggery.Objects
 			get { return health / (float)Type.Health; }
 		}
 
-		public Wall(MPos position, WallLayer layer, WallType type) : base(position.ToCPos(), new ImageRenderable(type.GetTexture(position.X % 2 != 0)), type.Blocks ? new Physics.SimplePhysics(position.ToCPos() / new CPos(2, 1, 1), 0, position.X % 2 != 0 ? WarriorsSnuggery.Physics.Shape.LINE_HORIZONTAL : WarriorsSnuggery.Physics.Shape.LINE_VERTICAL, 512, 512, type.Height) : new Physics.SimplePhysics(position.ToCPos() / new CPos(2, 1, 1), 0, WarriorsSnuggery.Physics.Shape.NONE, 0, 0, 0))
+		public Wall(MPos position, WallLayer layer, WallType type) : base(position.ToCPos(), new BatchObject(type.GetTexture(position.X % 2 != 0).Texture, Color.White), type.Blocks ? new Physics.SimplePhysics(position.ToCPos() / new CPos(2, 1, 1), 0, position.X % 2 != 0 ? WarriorsSnuggery.Physics.Shape.LINE_HORIZONTAL : WarriorsSnuggery.Physics.Shape.LINE_VERTICAL, 512, 512, type.Height) : new Physics.SimplePhysics(position.ToCPos() / new CPos(2, 1, 1), 0, WarriorsSnuggery.Physics.Shape.NONE, 0, 0, 0))
 		{
 			LayerPosition = position;
 			this.layer = layer;
@@ -55,9 +55,9 @@ namespace WarriorsSnuggery.Objects
 			health = type.Health;
 
 			if (Type.DamagedImage1 != null)
-				damaged1 = new ImageRenderable(type.GetDamagedTexture(isHorizontal, false));
+				damaged1 = new BatchObject(type.GetDamagedTexture(isHorizontal, false).Texture, Color.White);
 			if (Type.DamagedImage2 != null)
-				damaged2 = new ImageRenderable(type.GetDamagedTexture(isHorizontal, true));
+				damaged2 = new BatchObject(type.GetDamagedTexture(isHorizontal, true).Texture, Color.White);
 		}
 
 		public override void Render()
@@ -69,7 +69,7 @@ namespace WarriorsSnuggery.Objects
 					if (damaged1 != null)
 					{
 						damaged1.SetPosition(renderPosition);
-						damaged1.Render();
+						damaged1.PushToBatchRenderer();
 					}
 					else
 					{
@@ -82,12 +82,12 @@ namespace WarriorsSnuggery.Objects
 					if (damaged2 != null)
 					{
 						damaged2.SetPosition(renderPosition);
-						damaged2.Render();
+						damaged2.PushToBatchRenderer();
 					}
 					else if (damaged1 != null)
 					{
 						damaged1.SetPosition(renderPosition);
-						damaged1.Render();
+						damaged1.PushToBatchRenderer();
 					}
 					else
 					{

@@ -214,9 +214,6 @@
     <Compile Include="Game\UI\Objects\CheckBoxType.cs" />
     <Compile Include="Game\Particles\ParticleType.cs" />
     <Compile Include="Game\TerrainType.cs" />
-    <Compile Include="Game\Color\ColoredCircle.cs" />
-    <Compile Include="Game\Color\ColoredRect.cs" />
-    <Compile Include="Game\Color\ColoredLine.cs" />
     <Compile Include="Game\UI\Objects\Keyboardbutton.cs" />
     <Compile Include="Game\Particles\Particle.cs" />
     <Compile Include="Physics\SimplePhysics.cs" />

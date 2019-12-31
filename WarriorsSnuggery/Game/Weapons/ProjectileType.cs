@@ -5,7 +5,7 @@ namespace WarriorsSnuggery.Objects.Weapons
 {
 	public interface IProjectileType
 	{
-		IImageSequenceRenderable GetTexture();
+		BatchSequence GetTexture();
 	}
 
 	public class InstantHitProjectileType : IProjectileType
@@ -18,7 +18,7 @@ namespace WarriorsSnuggery.Objects.Weapons
 			Loader.PartLoader.SetValues(this, nodes);
 		}
 
-		public IImageSequenceRenderable GetTexture()
+		public BatchSequence GetTexture()
 		{
 			return null;
 		}
@@ -61,9 +61,9 @@ namespace WarriorsSnuggery.Objects.Weapons
 				MaxSpeed = Speed;
 		}
 
-		public IImageSequenceRenderable GetTexture()
+		public BatchSequence GetTexture()
 		{
-			return new IImageSequenceRenderable(Texture.GetTextures(), Texture.Tick);
+			return new BatchSequence(Texture.GetTextures(), Texture.Tick);
 		}
 	}
 
@@ -104,9 +104,9 @@ namespace WarriorsSnuggery.Objects.Weapons
 				SpriteManager.AddTexture(Texture);
 		}
 
-		public IImageSequenceRenderable GetTexture()
+		public BatchSequence GetTexture()
 		{
-			return new IImageSequenceRenderable(Texture.GetTextures(), Texture.Tick);
+			return new BatchSequence(Texture.GetTextures(), Texture.Tick);
 		}
 	}
 
@@ -150,7 +150,7 @@ namespace WarriorsSnuggery.Objects.Weapons
 				SpriteManager.AddTexture(BeamCooldown);
 		}
 
-		public IImageSequenceRenderable GetTexture()
+		public BatchSequence GetTexture()
 		{
 			return null;
 		}

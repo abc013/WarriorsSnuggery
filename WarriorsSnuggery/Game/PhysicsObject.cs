@@ -6,7 +6,7 @@ namespace WarriorsSnuggery.Objects
 {
 	public class PhysicsObject : ITickRenderDisposable, ICheckVisible, IPositionable
 	{
-		protected readonly GraphicsObject Renderable;
+		protected readonly BatchRenderable Renderable;
 		public PhysicsSector[] PhysicsSectors = new PhysicsSector[0];
 		public readonly SimplePhysics Physics;
 		public bool Disposed;
@@ -89,7 +89,7 @@ namespace WarriorsSnuggery.Objects
 				scale = value;
 
 				if (Renderable != null)
-					Renderable.SetScale(scale);
+					Renderable.SetScale(new Vector(scale, scale, scale));
 			}
 		}
 		float scale = 1f;
@@ -104,7 +104,7 @@ namespace WarriorsSnuggery.Objects
 		/// Used to create renderables with physical shape.
 		/// Used by: Actors, Weapons, Walls, Particles
 		/// </summary>
-		public PhysicsObject(CPos pos, GraphicsObject renderable, SimplePhysics physics = null)
+		public PhysicsObject(CPos pos, BatchRenderable renderable, SimplePhysics physics = null)
 		{
 			Physics = physics ?? SimplePhysics.Empty;
 			Renderable = renderable;
@@ -119,7 +119,7 @@ namespace WarriorsSnuggery.Objects
 		public virtual void Render()
 		{
 			if (Renderable != null)
-				Renderable.Render();
+				Renderable.PushToBatchRenderer();
 		}
 
 		public void RenderShadow()
@@ -130,7 +130,9 @@ namespace WarriorsSnuggery.Objects
 				MasterRenderer.UniformHeight(Height);
 
 				Renderable.SetPosition(GraphicPositionWithoutHeight);
-				Renderable.Render();
+				Renderable.SetColor(new Color(0, 0, 0, 64));
+				Renderable.PushToBatchRenderer();
+				Renderable.SetColor(Color.White);
 				Renderable.SetPosition(GraphicPosition);
 
 				MasterRenderer.RenderShadow = false;
