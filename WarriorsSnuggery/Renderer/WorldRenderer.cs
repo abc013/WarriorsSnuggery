@@ -25,8 +25,17 @@ namespace WarriorsSnuggery
 
 		public static void Reset(Game @new)
 		{
+			// This means first reset
 			if (shroud == null)
-				shroud = new BatchObject(TextureManager.Texture("shroud"), Color.White, Mesh.Plane(1f, 1f, 1f, Color.White));
+			{
+				var shroudTex = TextureManager.Texture("shroud");
+				shroud = new BatchObject(Mesh.Plane(1f, 1f, 1f, Color.White), Color.White);
+
+				TerrainRenderer.SetTexture(TerrainSpriteManager.sheet.TextureID);
+				SmudgeRenderer.SetTexture(SpriteManager.sheets[0].TextureID);
+				ObjectRenderer.SetTexture(SpriteManager.sheets[0].TextureID);
+				ShroudRenderer.SetTexture(shroudTex.SheetID);
+			}
 			game = @new;
 			world = game.World;
 			TerrainRenderer.Clear();

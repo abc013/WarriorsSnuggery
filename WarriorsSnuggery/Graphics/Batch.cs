@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Runtime.InteropServices;
 using OpenTK.Graphics.ES30;
 
 namespace WarriorsSnuggery.Graphics

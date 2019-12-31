@@ -11,12 +11,18 @@ namespace WarriorsSnuggery.Graphics
 
 		const int bufferSize = 6000;
 		readonly Vertex[] buffer;
+		int textureID;
 		int offset;
 		bool added;
 
 		public BatchRenderer()
 		{
 			buffer = new Vertex[bufferSize];
+		}
+
+		public void SetTexture(int ID)
+		{
+			textureID = ID;
 		}
 
 		public void Add(Vertex[] data)
@@ -70,7 +76,8 @@ namespace WarriorsSnuggery.Graphics
 				var mat = Matrix4.Identity;
 				GL.UniformMatrix4(MasterRenderer.GetLocation(MasterRenderer.TextureShader, "modelView"), false, ref mat);
 				GL.Uniform4(MasterRenderer.GetLocation(MasterRenderer.TextureShader, "objectColor"), Color.White);
-				Program.CheckGraphicsError("GraphicsObject_Uniform");
+				Program.CheckGraphicsError("BatchRenderer_Uniform");
+				GL.BindTexture(TextureTarget.Texture2D, textureID);
 			}
 			foreach (var batch in batches)
 			{
