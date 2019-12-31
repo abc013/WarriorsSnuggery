@@ -54,11 +54,17 @@ namespace WarriorsSnuggery.Maps
 				var canAcquire = true;
 				for (var x = xStart; x < xStart + searchBlocks.X; x++)
 				{
+					if (x >= map.Bounds.X)
+						break;
+
 					if (!canAcquire)
 						break;
 
 					for (var y = yStart; y < yStart + searchBlocks.Y; y++)
 					{
+						if (y >= map.Bounds.Y)
+							break;
+
 						if (!map.CanAcquireCell(new MPos(x, y), info.ID))
 						{
 							canAcquire = false;
@@ -85,6 +91,9 @@ namespace WarriorsSnuggery.Maps
 					var canAcquire = true;
 					for (var x = xStart; x < xStart + searchBlocks.X; x++)
 					{
+						if (x >= map.Bounds.X)
+							break;
+
 						if (!canAcquire)
 							break;
 
@@ -114,11 +123,17 @@ namespace WarriorsSnuggery.Maps
 					var canAcquire = true;
 					for (var x = xStart; x < xStart + searchBlocks.X; x++)
 					{
+						if (x >= map.Bounds.X)
+							break;
+
 						if (!canAcquire)
 							break;
 
 						for (var y = yStart; y < yStart + searchBlocks.Y; y++)
 						{
+							if (y >= map.Bounds.Y)
+								break;
+
 							if (!map.CanAcquireCell(new MPos(x, y), info.ID))
 							{
 								canAcquire = false;
