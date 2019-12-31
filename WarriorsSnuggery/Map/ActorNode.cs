@@ -18,15 +18,5 @@
 
 			Loader.PartLoader.SetValues(this, nodes);
 		}
-
-		public ActorNode(int id, CPos position, string type, byte team, float health, bool isBot)
-		{
-			ID = id;
-			Position = position;
-			Type = type;
-			Team = team;
-			Health = health;
-			IsBot = isBot;
-		}
 	}
 }

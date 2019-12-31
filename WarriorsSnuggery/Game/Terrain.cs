@@ -9,7 +9,7 @@ namespace WarriorsSnuggery.Objects
 		readonly BatchObject[] edges, corners;
 
 		readonly bool[] edgesVisible = new bool[4];
-		readonly CPos[] edgePositions = new CPos[4]
+		static readonly CPos[] edgePositions = new CPos[4]
 		{
 			new CPos(0, -1024, 0),
 			new CPos(1024, 0, 0),
@@ -17,7 +17,7 @@ namespace WarriorsSnuggery.Objects
 			new CPos(-1024, 0, 0)
 		};
 		readonly bool[] cornersVisible = new bool[4];
-		readonly CPos[] cornerPositions = new CPos[4]
+		static readonly CPos[] cornerPositions = new CPos[4]
 		{
 			new CPos(1024, -1024, 0),
 			new CPos(1024, 1024, 0),
