@@ -12,7 +12,12 @@ out vec4 color;
 
 void main(void)
 {
-    color = texture(textureObj, vec2(vs_textureCoordinate.x, vs_textureCoordinate.y)) * proximityColor * objectColor * vs_color;
+    // Check whether a texture should be used
+    if (vs_textureCoordinate.w >= 0)
+        color = texture(textureObj, vec2(vs_textureCoordinate.x, vs_textureCoordinate.y)) * vs_color;
+    else
+        color = vs_color;
+    color *= proximityColor * objectColor;
     if (color.a == 0.0)
         discard;
 }

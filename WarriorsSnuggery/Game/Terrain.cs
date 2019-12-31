@@ -6,8 +6,8 @@ namespace WarriorsSnuggery.Objects
 {
 	public class Terrain : IRenderable, ICheckVisible, IDisposable
 	{
-		readonly BatchImage renderable;
-		readonly BatchImage[] edges, corners;
+		readonly BatchObject renderable;
+		readonly BatchObject[] edges, corners;
 
 		readonly bool[] edgesVisible = new bool[4];
 		readonly CPos[] edgePositions = new CPos[4]
@@ -38,25 +38,25 @@ namespace WarriorsSnuggery.Objects
 			Type = type;
 
 			Batch.texture = type.Texture.Texture;
-			renderable = new BatchImage(type.Texture.Texture);
+			renderable = new BatchObject(type.Texture.Texture, Color.White);
 			if (Type.Overlaps)
 			{
-				edges = new BatchImage[4];
+				edges = new BatchObject[4];
 				for (int i = 0; i < 4; i++)
 				{
 					edgesVisible[i] = true;
 					if (i % 2 != 0 && Type.Texture_Edge2 != null)
-						edges[i] = new BatchImage(Type.Texture_Edge2.Texture);
+						edges[i] = new BatchObject(Type.Texture_Edge2.Texture, Color.White);
 					else
-						edges[i] = new BatchImage(Type.Texture_Edge.Texture);
+						edges[i] = new BatchObject(Type.Texture_Edge.Texture, Color.White);
 					edges[i].SetRotation(new VAngle(0, 0, i * -90));
 				}
 
-				corners = new BatchImage[4];
+				corners = new BatchObject[4];
 				for (int i = 0; i < 4; i++)
 				{
 					cornersVisible[i] = true;
-					corners[i] = new BatchImage(Type.Texture_Corner.Texture);
+					corners[i] = new BatchObject(Type.Texture_Corner.Texture, Color.White);
 					corners[i].SetRotation(new VAngle(0, 0, i * -90));
 				}
 			}

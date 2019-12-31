@@ -18,7 +18,7 @@
 			for (int i = 0; i < data.Length; i++)
 			{
 				var texture = SheetBuilder.WriteTexture(data[i], info);
-				var renderable = IImage.Create(Mesh.Terrain(texture), texture);
+				var renderable = IImage.Create(Mesh.Terrain(texture, Color.White), texture);
 
 				renderables[i] = renderable;
 			}

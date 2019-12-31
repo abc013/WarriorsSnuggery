@@ -71,7 +71,7 @@ namespace WarriorsSnuggery.Graphics
 		}
 
 		// Note: in case of rendering the whole font.
-		static readonly Vertex[] vertices = Mesh.Plane(0.01f, 3432, 48);
+		static readonly Vertex[] vertices = Mesh.Plane(0.01f, 3432, 48, Color.White);
 
 		public override void Bind()
 		{

@@ -45,7 +45,7 @@ namespace WarriorsSnuggery.Graphics
 					UseNextSheet();
 
 				var texture = SheetBuilder.WriteTexture(data[i], info);
-				var renderable = IImage.Create(Mesh.Image(texture), texture);
+				var renderable = IImage.Create(Mesh.Image(texture, Color.White), texture);
 
 				renderables[i] = renderable;
 			}

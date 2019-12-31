@@ -2,20 +2,20 @@
 {
 	public class ColoredCircleRenderable : GraphicsObject
 	{
-		public ColoredCircleRenderable(Color color, float size, int resolution, DrawMethod method) : base(new IColor(ColoredMesh.Circle(size, color, resolution), method)) { }
+		public ColoredCircleRenderable(Color color, float size, int resolution, DrawMethod method) : base(new IColor(Mesh.Circle(size, color, resolution))) { }
 	}
 
 	public class ColoredLineRenderable : GraphicsObject
 	{
-		public ColoredLineRenderable(Color color, float size) : base(new IColor(ColoredMesh.Line(size, color), DrawMethod.LINES)) { }
+		public ColoredLineRenderable(Color color, float size) : base(new IColor(Mesh.Line(size, color))) { }
 	}
 
 	public class ColoredRectRenderable : GraphicsObject
 	{
 		public ColoredRectRenderable(IColor color) : base(color) { }
 
-		public ColoredRectRenderable(Color color, float size, DrawMethod method) : base(new IColor(method == DrawMethod.TRIANGLE ? ColoredMesh.Plane(size, color) : ColoredMesh.PlaneEdges(size, color), method)) { }
+		public ColoredRectRenderable(Color color, float size, DrawMethod method) : base(new IColor(method == DrawMethod.TRIANGLE ? Mesh.Plane(size, color) : Mesh.PlaneEdges(size, color))) { }
 
-		public ColoredRectRenderable(Color color, float x, float y, DrawMethod method) : base(new IColor(method == DrawMethod.TRIANGLE ? ColoredMesh.Plane(x, y, color) : ColoredMesh.PlaneEdges(x, y, color), method)) { }
+		public ColoredRectRenderable(Color color, float x, float y, DrawMethod method) : base(new IColor(method == DrawMethod.TRIANGLE ? Mesh.Plane(x, y, color) : Mesh.PlaneEdges(x, y, color))) { }
 	}
 }

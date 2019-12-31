@@ -19,33 +19,14 @@ namespace WarriorsSnuggery.Graphics
 			this.color = color;
 		}
 
-		public Vertex UseMatrix(Matrix4 matrix)
+		public Vertex Apply(Matrix4 matrix, Color color)
 		{
 			return new Vertex(position * matrix, textureCoordinate, color);
 		}
 
 		public override int GetHashCode()
 		{
-			return position.GetHashCode() ^ textureCoordinate.GetHashCode();
-		}
-	}
-
-	public struct ColoredVertex
-	{
-		public const int Size = (4 + 4) * 4;
-
-		readonly Vector4 position;
-		readonly Color4 color;
-
-		public ColoredVertex(Vector4 position, Color4 color)
-		{
-			this.position = position;
-			this.color = color;
-		}
-
-		public override int GetHashCode()
-		{
-			return position.GetHashCode() ^ color.GetHashCode();
+			return position.GetHashCode() ^ textureCoordinate.GetHashCode() ^ color.GetHashCode();
 		}
 	}
 

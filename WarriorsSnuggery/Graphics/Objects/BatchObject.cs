@@ -2,7 +2,7 @@
 
 namespace WarriorsSnuggery.Graphics
 {
-	public class BatchImage
+	public class BatchObject
 	{
 		readonly Vertex[] vertices;
 		Vertex[] calculated;
@@ -12,11 +12,24 @@ namespace WarriorsSnuggery.Graphics
 		Vector4 position = Vector4.Zero;
 		Vector4 rotation = Vector4.Zero;
 		Vector3 scale = Vector3.One;
+		Color color = Color.White;
 		bool matrixChanged;
 
-		public BatchImage(ITexture texture)
+		public BatchObject(ITexture texture, Color color)
 		{
-			vertices = Mesh.Image(texture);
+			this.color = color;
+			vertices = Mesh.Image(texture, color);
+		}
+
+		public BatchObject(Color color)
+		{
+			this.color = color;
+			vertices = Mesh.Plane(1f, color);
+		}
+
+		public void SetPosition(CPos position)
+		{
+			SetPosition(position.ToVector());
 		}
 
 		public void SetPosition(Vector position)
@@ -49,6 +62,15 @@ namespace WarriorsSnuggery.Graphics
 			matrixChanged = true;
 		}
 
+		public void SetColor(Color color)
+		{
+			if (this.color == color)
+				return;
+
+			this.color = color;
+			matrixChanged = true;
+		}
+
 		public void PushToBatchRenderer()
 		{
 			if (!Visible)
@@ -65,7 +87,7 @@ namespace WarriorsSnuggery.Graphics
 
 				calculated = new Vertex[vertices.Length];
 				for (int i = 0; i < vertices.Length; i++)
-					calculated[i] = vertices[i].UseMatrix(matrix);
+					calculated[i] = vertices[i].Apply(matrix, color);
 
 				matrixChanged = false;
 			}
