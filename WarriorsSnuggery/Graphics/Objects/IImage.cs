@@ -7,7 +7,7 @@ namespace WarriorsSnuggery.Graphics
 	{
 		static readonly Dictionary<int, IImage> images = new Dictionary<int, IImage>();
 
-		public static IImage Create(TexturedVertex[] vertices, ITexture info)
+		public static IImage Create(Vertex[] vertices, ITexture info)
 		{
 			IImage image;
 
@@ -36,19 +36,19 @@ namespace WarriorsSnuggery.Graphics
 			images.Clear();
 		}
 
-		public static void CreateTextureBuffer(TexturedVertex[] vertices)
+		public static void CreateTextureBuffer(Vertex[] vertices)
 		{
 			lock (MasterRenderer.GLLock)
 			{
-				GL.BufferData(BufferTarget.ArrayBuffer, TexturedVertex.Size * vertices.Length, vertices, BufferUsageHint.StaticDraw);
+				GL.BufferData(BufferTarget.ArrayBuffer, Vertex.Size * vertices.Length, vertices, BufferUsageHint.StaticDraw);
 				Program.CheckGraphicsError("CreateTexture_Buffer");
 
 				GL.EnableVertexAttribArray(0);
-				GL.VertexAttribPointer(0, 4, VertexAttribPointerType.Float, true, TexturedVertex.Size, 0);
+				GL.VertexAttribPointer(0, 4, VertexAttribPointerType.Float, true, Vertex.Size, 0);
 				Program.CheckGraphicsError("CreateTexture_VertexArray1");
 
 				GL.EnableVertexAttribArray(1);
-				GL.VertexAttribPointer(1, 4, VertexAttribPointerType.Float, true, TexturedVertex.Size, 16);
+				GL.VertexAttribPointer(1, 4, VertexAttribPointerType.Float, true, Vertex.Size, 16);
 				Program.CheckGraphicsError("CreateTexture_VertexArray2");
 
 				GL.EnableVertexAttribArray(2);
@@ -59,7 +59,7 @@ namespace WarriorsSnuggery.Graphics
 
 		public readonly ITexture Texture;
 
-		IImage(TexturedVertex[] vertices, ITexture texture) : base(MasterRenderer.TextureShader, vertices.Length)
+		IImage(Vertex[] vertices, ITexture texture) : base(MasterRenderer.TextureShader, vertices.Length)
 		{
 			CreateTextureBuffer(vertices);
 			Texture = texture;

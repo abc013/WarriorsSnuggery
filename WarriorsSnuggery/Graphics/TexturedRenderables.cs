@@ -47,16 +47,16 @@ namespace WarriorsSnuggery.Graphics
 
 	public class FrameRenderable : GraphicsObject
 	{
-		public FrameRenderable(ITexture texture) : base(IImage.Create(TexturedMesh.Frame(), texture)) { }
+		public FrameRenderable(ITexture texture) : base(IImage.Create(Mesh.Frame(), texture)) { }
 	}
 
 	public class ImageRenderable : GraphicsObject
 	{
 		public ImageRenderable(IImage image) : base(image) { }
 
-		public ImageRenderable(ITexture texture, float scale = 1f) : base(IImage.Create(TexturedMesh.Plane(scale * (texture.Width > texture.Height ? texture.Width / 24f : texture.Height / 24f), texture.Width, texture.Height), texture)) { }
+		public ImageRenderable(ITexture texture, float scale = 1f) : base(IImage.Create(Mesh.Plane(scale * (texture.Width > texture.Height ? texture.Width * MasterRenderer.PixelMultiplier : texture.Height * MasterRenderer.PixelMultiplier), texture.Width, texture.Height), texture)) { }
 
-		public ImageRenderable(ITexture texture, MPos size, float scale = 1f) : base(IImage.Create(TexturedMesh.PixelOrientedPlane(scale, size.X, size.Y), texture)) { }
+		public ImageRenderable(ITexture texture, MPos size, float scale = 1f) : base(IImage.Create(Mesh.PixelOrientedPlane(scale, size.X, size.Y), texture)) { }
 	}
 
 	public class IImageSequenceRenderable : GraphicsObject

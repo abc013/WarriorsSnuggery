@@ -51,7 +51,7 @@ namespace WarriorsSnuggery.Graphics
 		public readonly ITexture Font;
 		public readonly MPos MaxSize;
 		public readonly MPos SpaceSize;
-		public readonly CharVertex[] Mesh;
+		public readonly CharVertex[] Vertices;
 
 		readonly int[] charWidths;
 
@@ -62,7 +62,7 @@ namespace WarriorsSnuggery.Graphics
 			Font = TextureManager.Font(fontname, size, out MaxSize, out charWidths);
 			SpaceSize = new MPos(MaxSize.X / 2, MaxSize.Y);
 
-			Mesh = CharMesh.Character(this);
+			Vertices = CharMesh.Character(this);
 		}
 
 		public int getCharWidth(char c)
@@ -71,7 +71,7 @@ namespace WarriorsSnuggery.Graphics
 		}
 
 		// Note: in case of rendering the whole font.
-		static readonly TexturedVertex[] vertices = TexturedMesh.Plane(0.01f, 3432, 48);
+		static readonly Vertex[] vertices = Mesh.Plane(0.01f, 3432, 48);
 
 		public override void Bind()
 		{

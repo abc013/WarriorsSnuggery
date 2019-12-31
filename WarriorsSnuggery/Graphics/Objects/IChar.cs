@@ -11,9 +11,9 @@ namespace WarriorsSnuggery.Graphics
 
 		public Color color { get; private set; }
 
-		public IChar(IFont font) : base(MasterRenderer.FontShader, font.Mesh.Length)
+		public IChar(IFont font) : base(MasterRenderer.FontShader, font.Vertices.Length)
 		{
-			createBuffer(font.Mesh);
+			createBuffer(font.Vertices);
 
 			offset = Characters.IndexOf(' ');
 			color = Color.White;
