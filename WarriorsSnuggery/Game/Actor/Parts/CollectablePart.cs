@@ -1,6 +1,7 @@
 ﻿using System;
 using WarriorsSnuggery.Objects.Conditions;
 using WarriorsSnuggery.Objects.Particles;
+using WarriorsSnuggery.Physics;
 
 namespace WarriorsSnuggery.Objects.Parts
 {
@@ -62,12 +63,16 @@ namespace WarriorsSnuggery.Objects.Parts
 	public class CollectablePart : ActorPart
 	{
 		readonly CollectablePartInfo info;
+		readonly SimplePhysics physics;
 		bool activated;
 		int cooldown;
+		bool updatePhysics = true;
+		PhysicsSector[] sectors;
 
 		public CollectablePart(Actor self, CollectablePartInfo info) : base(self)
 		{
 			this.info = info;
+			physics = new SimplePhysics(self.Position, 0, Shape.CIRCLE, info.Radius, info.Radius, info.Radius);
 		}
 
 		public override void Tick()
@@ -93,17 +98,27 @@ namespace WarriorsSnuggery.Objects.Parts
 				var localPlayer = self.World.LocalPlayer;
 
 				if (localPlayer != null && self.World.PlayerAlive && localPlayer.WorldPart != null && localPlayer.WorldPart.CanTrigger && (localPlayer.Position - self.Position).FlatDist < info.Radius)
-				{
 					activate(localPlayer);
-				}
 			}
 			else
 			{
-				foreach (var actor in self.World.Actors)
+				if (updatePhysics)
 				{
-					if (actor != self && actor.IsAlive && actor.WorldPart != null && actor.WorldPart.CanTrigger && (actor.Position - self.Position).FlatDist < info.Radius)
+					physics.Position = self.Position;
+					physics.Height = self.Height;
+					sectors = self.World.PhysicsLayer.GetSectors(physics);
+					updatePhysics = false;
+				}
+
+				foreach (var sector in sectors)
+				{
+					foreach (var @object in sector.GetObjects())
 					{
-						activate(actor);
+						if (!(@object is Actor actor))
+							continue;
+
+						if (actor != self && actor.IsAlive && actor.WorldPart != null && actor.WorldPart.CanTrigger && (actor.Position - self.Position).FlatDist < info.Radius)
+							activate(actor);
 					}
 				}
 			}
@@ -230,6 +245,11 @@ namespace WarriorsSnuggery.Objects.Parts
 						return (a) => { };
 				}
 			}
+		}
+
+		public override void OnMove(CPos old, CPos speed)
+		{
+			updatePhysics = true;
 		}
 	}
 }

@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using WarriorsSnuggery.Objects;
+using WarriorsSnuggery.Physics;
 
 namespace WarriorsSnuggery
 {
@@ -34,10 +35,22 @@ namespace WarriorsSnuggery
 				foreach (var sector in obj.PhysicsSectors)
 					sector.Leave(obj);
 
-			var position = obj.Position;
+			obj.PhysicsSectors = GetSectors(obj.Physics);
+
+			if (updateSectors)
+				foreach (var sector in obj.PhysicsSectors)
+					sector.Enter(obj);
+		}
+
+		public PhysicsSector[] GetSectors(SimplePhysics physics)
+		{
+			if (physics == null || physics.Shape == Physics.Shape.NONE)
+				return new PhysicsSector[0];
+
+			var position = physics.Position;
 			// Add margin to be sure.
-			var radiusX = obj.Physics.RadiusX + 10;
-			var radiusY = obj.Physics.RadiusY + 10;
+			var radiusX = physics.RadiusX + 10;
+			var radiusY = physics.RadiusY + 10;
 			var points = new MPos[4];
 
 			// Corner points
@@ -79,13 +92,10 @@ namespace WarriorsSnuggery
 					var sector = Sectors[startPosition.X + x, startPosition.Y + y];
 					if (!sectors.Contains(sector))
 						sectors.Add(sector);
-
-					if (updateSectors)
-						sector.Enter(obj);
 				}
 			}
 
-			obj.PhysicsSectors = sectors.ToArray();
+			return sectors.ToArray();
 		}
 	}
 
