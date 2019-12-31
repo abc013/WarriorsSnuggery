@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using OpenTK;
 using OpenTK.Graphics.ES30;
 
@@ -8,24 +9,44 @@ namespace WarriorsSnuggery.Graphics
 	{
 		readonly List<Batch> batches = new List<Batch>();
 
+		const int bufferSize = 6000;
+		readonly Vertex[] buffer;
+		int offset;
+
 		public BatchRenderer()
 		{
+			buffer = new Vertex[bufferSize];
 		}
 
 		public void Add(Vertex[] data)
 		{
-			foreach(var batch in batches)
+			foreach(var vertex in data)
 			{
-				if (batch.CurrentSize + data.Length >= Settings.BatchSize)
+				buffer[offset++] = vertex;
+
+				if (offset == bufferSize)
+					push();
+			}
+		}
+
+		void push()
+		{
+			foreach (var batch in batches)
+			{
+				if (batch.CurrentSize + bufferSize >= Settings.BatchSize)
 					continue;
 
-				batch.SetData(data, batch.CurrentSize, data.Length);
+				batch.SetData(buffer, batch.CurrentSize, bufferSize);
+				Array.Clear(buffer, 0, bufferSize);
+				offset = 0;
 				return;
 			}
 
 			var @new = new Batch();
-			@new.SetData(data, data.Length);
+			@new.SetData(buffer, bufferSize);
 			batches.Add(@new);
+			Array.Clear(buffer, 0, bufferSize);
+			offset = 0;
 		}
 
 		public void SetCurrent()
@@ -35,6 +56,7 @@ namespace WarriorsSnuggery.Graphics
 
 		public void Render()
 		{
+			push();
 			foreach (var batch in batches)
 			{
 				//batch.Push();
