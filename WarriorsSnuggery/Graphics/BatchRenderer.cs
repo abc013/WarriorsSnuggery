@@ -6,10 +6,6 @@ namespace WarriorsSnuggery.Graphics
 {
 	public class BatchRenderer
 	{
-		public int BatchCount
-		{
-			get { return batches.Count; }
-		}
 		readonly List<Batch> batches = new List<Batch>();
 
 		public BatchRenderer()

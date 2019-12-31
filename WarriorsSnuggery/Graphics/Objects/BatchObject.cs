@@ -1,98 +1,28 @@
-﻿using OpenTK;
+﻿using OpenTK.Graphics.ES30;
 
 namespace WarriorsSnuggery.Graphics
 {
-	public class BatchObject
+	public class BatchObject : BatchRenderable
 	{
-		readonly Vertex[] vertices;
-		Vertex[] calculated;
+		readonly ITexture texture;
 
-		public bool Visible = true;
-
-		Vector4 position = Vector4.Zero;
-		Vector4 rotation = Vector4.Zero;
-		Vector3 scale = Vector3.One;
-		Color color = Color.White;
-		bool matrixChanged;
-
-		public BatchObject(ITexture texture, Color color)
+		public BatchObject(ITexture texture, Color color) : base(Mesh.Image(texture, color), color)
 		{
-			this.color = color;
-			vertices = Mesh.Image(texture, color);
+			this.texture = texture;
 		}
 
-		public BatchObject(Color color)
+		public BatchObject(Color color) : base(Mesh.Plane(1f, color), color) { }
+
+		public override void PushToBatchRenderer()
 		{
-			this.color = color;
-			vertices = Mesh.Plane(1f, color);
-		}
-
-		public void SetPosition(CPos position)
-		{
-			SetPosition(position.ToVector());
-		}
-
-		public void SetPosition(Vector position)
-		{
-			Vector4 vec4 = position;
-			if (this.position == vec4)
-				return;
-
-			this.position = vec4;
-			matrixChanged = true;
-		}
-
-		public void SetRotation(VAngle rotation)
-		{
-			Vector4 rot4 = rotation;
-			if (this.rotation == rot4)
-				return;
-
-			this.rotation = rot4;
-			matrixChanged = true;
-		}
-
-		public void SetScale(Vector scale)
-		{
-			Vector3 sca3 = ((Vector4)scale).Xyz;
-			if (this.scale == sca3)
-				return;
-
-			this.scale = sca3;
-			matrixChanged = true;
-		}
-
-		public void SetColor(Color color)
-		{
-			if (this.color == color)
-				return;
-
-			this.color = color;
-			matrixChanged = true;
-		}
-
-		public void PushToBatchRenderer()
-		{
-			if (!Visible)
-				return;
-
-			if (matrixChanged)
+			if (texture != null)
 			{
-				var t2 = Matrix4.CreateTranslation(position.X, position.Y, position.Z);
-				var r1 = Matrix4.CreateRotationX(rotation.X);
-				var r2 = Matrix4.CreateRotationY(rotation.Y);
-				var r3 = Matrix4.CreateRotationZ(rotation.Z);
-				var s1 = Matrix4.CreateScale(scale);
-				var matrix = r1 * r2 * r3 * s1 * t2;
-
-				calculated = new Vertex[vertices.Length];
-				for (int i = 0; i < vertices.Length; i++)
-					calculated[i] = vertices[i].Apply(matrix, color);
-
-				matrixChanged = false;
+				lock (MasterRenderer.GLLock)
+				{
+					GL.BindTexture(TextureTarget.Texture2D, texture.SheetID);
+				}
 			}
-
-			MasterRenderer.BatchRenderer.Add(calculated);
+			base.PushToBatchRenderer();
 		}
 	}
 }

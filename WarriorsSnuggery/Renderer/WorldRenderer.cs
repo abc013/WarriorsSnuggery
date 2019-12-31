@@ -16,6 +16,7 @@ namespace WarriorsSnuggery
 		public static readonly BatchRenderer TerrainRenderer = new BatchRenderer();
 		public static readonly BatchRenderer SmudgeRenderer = new BatchRenderer();
 		public static readonly BatchRenderer ObjectRenderer = new BatchRenderer();
+		public static readonly BatchRenderer ShroudRenderer = new BatchRenderer();
 
 		public static Color Ambient = Color.White;
 
@@ -47,18 +48,17 @@ namespace WarriorsSnuggery
 			if (world.ToRender == null)
 				return;
 
-			MasterRenderer.BatchRenderer = TerrainRenderer;
 			TerrainRenderer.SetCurrent();
 			world.TerrainLayer.Render();
 			TerrainRenderer.Render();
 			MasterRenderer.BatchRenderer = null;
 
-			MasterRenderer.BatchRenderer = SmudgeRenderer;
 			SmudgeRenderer.SetCurrent();
 			world.SmudgeLayer.Render();
 			SmudgeRenderer.Render();
 			MasterRenderer.BatchRenderer = null;
 
+			ObjectRenderer.SetCurrent();
 			foreach (PhysicsObject o in world.ToRender)
 			{
 				CPos pos = world.Game.Editor ? MouseInput.GamePosition : world.LocalPlayer == null ? CPos.Zero : world.LocalPlayer.Position;
@@ -85,10 +85,13 @@ namespace WarriorsSnuggery
 				else
 					o.Render();
 			}
+			ObjectRenderer.Render();
+			MasterRenderer.BatchRenderer = null;
 
 			foreach (var o in afterRender)
 				o.Render();
 
+			ShroudRenderer.SetCurrent();
 			if (!world.ShroudLayer.AllRevealed)
 			{
 				for (int x = (VisibilitySolver.lastCameraPosition.X) * 2; x < (VisibilitySolver.lastCameraPosition.X + VisibilitySolver.lastCameraZoom.X) * 2; x++)
@@ -106,6 +109,8 @@ namespace WarriorsSnuggery
 					}
 				}
 			}
+			ShroudRenderer.Render();
+			MasterRenderer.BatchRenderer = null;
 
 			if (Settings.DeveloperMode)
 			{

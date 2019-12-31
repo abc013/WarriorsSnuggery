@@ -56,7 +56,7 @@ namespace WarriorsSnuggery
 		public void Dispose()
 		{
 			foreach (var smudge in smudgeList)
-				smudge.Dispose();
+				smudge.Disposed = true;
 			smudgeList.Clear();
 		}
 	}

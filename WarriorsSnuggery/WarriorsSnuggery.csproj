@@ -94,6 +94,8 @@
     <Compile Include="Graphics\Objects\BatchObject.cs" />
     <Compile Include="Graphics\Batch.cs" />
     <Compile Include="Graphics\BatchRenderer.cs" />
+    <Compile Include="Graphics\Objects\BatchRenderable.cs" />
+    <Compile Include="Graphics\Objects\BatchSequence.cs" />
     <Compile Include="Loader\WavLoader.cs" />
     <Compile Include="Map\PieceManager.cs" />
     <Compile Include="Map\SmudgeLayer.cs" />

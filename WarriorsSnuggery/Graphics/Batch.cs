@@ -6,7 +6,6 @@ namespace WarriorsSnuggery.Graphics
 {
 	public class Batch : IDisposable
 	{
-		public static ITexture texture;
 		public const int Size = Settings.BatchSize * Vertex.Size;
 		public int CurrentSize;
 
@@ -104,13 +103,12 @@ namespace WarriorsSnuggery.Graphics
 				GL.EnableVertexAttribArray(2);
 				GL.VertexAttribPointer(2, 4, VertexAttribPointerType.Float, true, Vertex.Size, 32);
 				Program.CheckGraphicsError("BatchBind_4");
-				if (texture != null)
-					GL.BindTexture(TextureTarget.Texture2D, texture.SheetID);
 			}
 		}
 
 		public void Render()
 		{
+			MasterRenderer.Batches++;
 			lock (MasterRenderer.GLLock)
 			{
 				GL.DrawArrays(PrimitiveType.Triangles, 0, Size);

@@ -175,7 +175,7 @@ namespace WarriorsSnuggery
 				SwapBuffers();
 			}
 
-			Title = title + " | " + MasterRenderer.RenderCalls + " Calls | " + WorldRenderer.TerrainRenderer.BatchCount + " Batches | " + MasterRenderer.BatchCalls + " BatchCalls";
+			Title = title + " | " + MasterRenderer.RenderCalls + " Calls | " + MasterRenderer.Batches + " Batches | " + MasterRenderer.BatchCalls + " BatchCalls";
 			GlobalRender++;
 		}
 

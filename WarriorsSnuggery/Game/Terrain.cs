@@ -1,5 +1,4 @@
 using System;
-using OpenTK;
 using WarriorsSnuggery.Graphics;
 
 namespace WarriorsSnuggery.Objects
@@ -37,7 +36,6 @@ namespace WarriorsSnuggery.Objects
 			Position = position;
 			Type = type;
 
-			Batch.texture = type.Texture.Texture;
 			renderable = new BatchObject(type.Texture.Texture, Color.White);
 			if (Type.Overlaps)
 			{

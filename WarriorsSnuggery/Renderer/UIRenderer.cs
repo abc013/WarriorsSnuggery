@@ -1,5 +1,6 @@
 using OpenTK;
 using System.Collections.Generic;
+using WarriorsSnuggery.Graphics;
 
 namespace WarriorsSnuggery
 {
@@ -8,6 +9,8 @@ namespace WarriorsSnuggery
 		static Game game;
 
 		static Matrix4 matrix;
+
+		public static BatchRenderer UIBatchRenderer = new BatchRenderer();
 
 		static readonly List<IRenderable> beforeRender = new List<IRenderable>();
 		static readonly List<IRenderable> afterRender = new List<IRenderable>();
@@ -74,6 +77,7 @@ namespace WarriorsSnuggery
 			MasterRenderer.Uniform(MasterRenderer.FontShader, ref matrix, Color.White);
 			MasterRenderer.Uniform(MasterRenderer.ShadowShader, ref matrix, Color.White);
 
+			UIBatchRenderer.SetCurrent();
 			foreach (var r in beforeRender)
 				r.Render();
 
@@ -97,6 +101,8 @@ namespace WarriorsSnuggery
 				Cursor.Current = possibleTarget ? CursorType.ATTACK : CursorType.DEFAULT;
 				Cursor.Render();
 			}
+			UIBatchRenderer.Render();
+			MasterRenderer.BatchRenderer = null;
 		}
 	}
 }

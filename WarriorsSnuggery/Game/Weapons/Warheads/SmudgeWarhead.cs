@@ -21,7 +21,12 @@ namespace WarriorsSnuggery.Objects.Weapons
 		public void Impact(World world, Weapon weapon, Target target)
 		{
 			if (world.TerrainAt(target.Position) != null && world.TerrainAt(target.Position).Type.SpawnSmudge)
-				world.SmudgeLayer.Add(new Smudge(new CPos(target.Position.X, target.Position.Y, -512), new IImageSequenceRenderable(Texture.GetTextures(), Texture.Tick), DissolveDuration));
+			{
+				world.SmudgeLayer.Add(new Smudge(new BatchSequence(Texture.GetTextures(), Texture.Tick), DissolveDuration)
+				{
+					Position = new CPos(target.Position.X, target.Position.Y, -512)
+				});
+			}
 		}
 	}
 }

@@ -10,6 +10,7 @@ namespace WarriorsSnuggery
 	{
 		public static int RenderCalls;
 		public static int BatchCalls;
+		public static int Batches;
 
 		public static BatchRenderer BatchRenderer;
 
@@ -168,6 +169,7 @@ namespace WarriorsSnuggery
 			{
 				RenderCalls = 0;
 				BatchCalls = 0;
+				Batches = 0;
 				if (Settings.EnablePixeling)
 				{
 					GL.BindFramebuffer(FramebufferTarget.Framebuffer, frameBuffer);
