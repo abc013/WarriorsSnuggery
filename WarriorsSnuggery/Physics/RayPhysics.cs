@@ -45,6 +45,9 @@ namespace WarriorsSnuggery.Physics
 			// Collision at walls
 			foreach (var pos in positions)
 			{
+				if (pos.X < 0 || pos.Y < 0)
+					continue;
+
 				var walls = new Wall[2];
 				walls[0] = world.WallLayer.Walls[pos.X * 2,pos.Y];
 				walls[1] = world.WallLayer.Walls[pos.X * 2 + 1, pos.Y];
