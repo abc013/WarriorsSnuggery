@@ -12,7 +12,7 @@ namespace WarriorsSnuggery
 			var terrainFiles = new string[0];
 			var terrainPaths = new string[0];
 
-			SpriteManager.CreateSheet(7);
+			SpriteManager.CreateSheet(5);
 
 			foreach (var rule in rules)
 			{
