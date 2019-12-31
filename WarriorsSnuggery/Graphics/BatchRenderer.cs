@@ -11,7 +11,7 @@ namespace WarriorsSnuggery.Graphics
 
 		const int bufferSize = 6000;
 		readonly Vertex[] buffer;
-		int textureID;
+		int[] textureIDs;
 		int offset;
 		bool added;
 
@@ -20,9 +20,22 @@ namespace WarriorsSnuggery.Graphics
 			buffer = new Vertex[bufferSize];
 		}
 
-		public void SetTexture(int ID)
+		public void SetTextures(Sheet[] sheets)
 		{
-			textureID = ID;
+			textureIDs = new int[sheets.Length];
+			for (int i = 0; i < sheets.Length; i++)
+				textureIDs[i] = sheets[i] == null ? 0 : sheets[i].TextureID;
+
+			if (textureIDs.Length > 5)
+				Log.WriteDebug(string.Format("Warning: BatchRenderer got {0} sheets, maximum is {1}", sheets.Length, 5));
+		}
+
+		public void SetTextures(int[] IDs)
+		{
+			textureIDs = IDs;
+
+			if (textureIDs.Length > 5)
+				Log.WriteDebug(string.Format("Warning: BatchRenderer got {0} sheets, maximum is {1}", IDs.Length, 5));
 		}
 
 		public void Add(Vertex[] data)
@@ -77,7 +90,13 @@ namespace WarriorsSnuggery.Graphics
 				GL.UniformMatrix4(MasterRenderer.GetLocation(MasterRenderer.TextureShader, "modelView"), false, ref mat);
 				GL.Uniform4(MasterRenderer.GetLocation(MasterRenderer.TextureShader, "objectColor"), Color.White);
 				Program.CheckGraphicsError("BatchRenderer_Uniform");
-				GL.BindTexture(TextureTarget.Texture2D, textureID);
+				for (int i = 0; i < textureIDs.Length; i++)
+				{
+					GL.ActiveTexture(TextureUnit.Texture0 + i);
+					GL.BindTexture(TextureTarget.Texture2D, textureIDs[i]);
+					Program.CheckGraphicsError("BatchRenderer_Texture" + i);
+				}
+				GL.ActiveTexture(TextureUnit.Texture0);
 			}
 			foreach (var batch in batches)
 			{

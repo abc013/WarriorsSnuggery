@@ -31,10 +31,10 @@ namespace WarriorsSnuggery
 				var shroudTex = TextureManager.Texture("shroud");
 				shroud = new BatchObject(Mesh.Plane(1f, 1f, 1f, Color.White), Color.White);
 
-				TerrainRenderer.SetTexture(TerrainSpriteManager.sheet.TextureID);
-				SmudgeRenderer.SetTexture(SpriteManager.sheets[0].TextureID);
-				ObjectRenderer.SetTexture(SpriteManager.sheets[0].TextureID);
-				ShroudRenderer.SetTexture(shroudTex.SheetID);
+				TerrainRenderer.SetTextures(new[] { TerrainSpriteManager.sheet.TextureID });
+				SmudgeRenderer.SetTextures(SpriteManager.sheets);
+				ObjectRenderer.SetTextures(SpriteManager.sheets);
+				ShroudRenderer.SetTextures(new[] { shroudTex.SheetID });
 			}
 			game = @new;
 			world = game.World;
