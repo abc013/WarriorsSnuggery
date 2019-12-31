@@ -57,6 +57,15 @@ namespace WarriorsSnuggery.Graphics
 			return hashedTextures[info.GetHashCode()];
 		}
 
+		public static int SheetIndex(int SheetID)
+		{
+			for (int i = 0; i < sheets.Length; i++)
+				if (sheets[i] != null && sheets[i].TextureID == SheetID)
+					return i;
+
+			return 0;
+		}
+
 		public static void CreateTextures()
 		{
 			int i = 0;

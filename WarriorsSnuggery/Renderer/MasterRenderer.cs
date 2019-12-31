@@ -92,6 +92,19 @@ namespace WarriorsSnuggery
 				GL.BindAttribLocation(ShadowShader, 1, "textureCoordinate");
 				GL.BindAttribLocation(ShadowShader, 2, "color");
 
+				foreach (int shader in new[] { TextureShader, ShadowShader })
+				{
+					GL.UseProgram(shader);
+					var tex1 = GL.GetUniformLocation(shader, "texture1");
+					GL.Uniform1(tex1, 1);
+					var tex2 = GL.GetUniformLocation(shader, "texture2");
+					GL.Uniform1(tex2, 2);
+					var tex3 = GL.GetUniformLocation(shader, "texture3");
+					GL.Uniform1(tex3, 3);
+					var tex4 = GL.GetUniformLocation(shader, "texture4");
+					GL.Uniform1(tex4, 4);
+				}
+
 				Program.CheckGraphicsError("InitShaders");
 			}
 		}

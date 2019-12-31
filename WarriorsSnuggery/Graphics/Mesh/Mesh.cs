@@ -13,15 +13,16 @@ namespace WarriorsSnuggery.Graphics
 			var h = (texture.Offset.Y + texture.Height) / (float)Settings.SheetSize;
 			var scale = 1 / 2f + 0.001f;
 			var color4 = color.toColor4();
+			var id = SpriteManager.SheetIndex(texture.SheetID);
 
 			Vertex[] vertices =
 			{
-				new Vertex(new Vector(scale,  scale,  0, 1.0f), new Vector4(w, y, 0, 0), color4),
-				new Vertex(new Vector(-scale, -scale, 0, 1.0f), new Vector4(x, h, 0, 0), color4),
-				new Vertex(new Vector(scale,  -scale, 0, 1.0f), new Vector4(w, h, 0, 0), color4),
-				new Vertex(new Vector(-scale, scale,  0, 1.0f), new Vector4(x, y, 0, 0), color4),
-				new Vertex(new Vector(-scale, -scale, 0, 1.0f), new Vector4(x, h, 0, 0), color4),
-				new Vertex(new Vector(scale,  scale,  0, 1.0f), new Vector4(w, y, 0, 0), color4),
+				new Vertex(new Vector(scale,  scale,  0, 1.0f), new Vector4(w, y, id, 0), color4),
+				new Vertex(new Vector(-scale, -scale, 0, 1.0f), new Vector4(x, h, id, 0), color4),
+				new Vertex(new Vector(scale,  -scale, 0, 1.0f), new Vector4(w, h, id, 0), color4),
+				new Vertex(new Vector(-scale, scale,  0, 1.0f), new Vector4(x, y, id, 0), color4),
+				new Vertex(new Vector(-scale, -scale, 0, 1.0f), new Vector4(x, h, id, 0), color4),
+				new Vertex(new Vector(scale,  scale,  0, 1.0f), new Vector4(w, y, id, 0), color4),
 			};
 
 			return vertices;
@@ -36,15 +37,16 @@ namespace WarriorsSnuggery.Graphics
 			var scale = texture.Height / 48f;
 			var correction = texture.Width / (float)texture.Height;
 			var color4 = color.toColor4();
+			var id = SpriteManager.SheetIndex(texture.SheetID);
 
 			Vertex[] vertices =
 			{
-				new Vertex(new Vector(scale * correction,  scale,  0, 1.0f), new Vector4(w, y, 0, 0), color4),
-				new Vertex(new Vector(-scale * correction, -scale, 0, 1.0f), new Vector4(x, h, 0, 0), color4),
-				new Vertex(new Vector(scale * correction,  -scale, 0, 1.0f), new Vector4(w, h, 0, 0), color4),
-				new Vertex(new Vector(-scale * correction, scale,  0, 1.0f), new Vector4(x, y, 0, 0), color4),
-				new Vertex(new Vector(-scale * correction, -scale, 0, 1.0f), new Vector4(x, h, 0, 0), color4),
-				new Vertex(new Vector(scale * correction,  scale,  0, 1.0f), new Vector4(w, y, 0, 0), color4),
+				new Vertex(new Vector(scale * correction,  scale,  0, 1.0f), new Vector4(w, y, id, 0), color4),
+				new Vertex(new Vector(-scale * correction, -scale, 0, 1.0f), new Vector4(x, h, id, 0), color4),
+				new Vertex(new Vector(scale * correction,  -scale, 0, 1.0f), new Vector4(w, h, id, 0), color4),
+				new Vertex(new Vector(-scale * correction, scale,  0, 1.0f), new Vector4(x, y, id, 0), color4),
+				new Vertex(new Vector(-scale * correction, -scale, 0, 1.0f), new Vector4(x, h, id, 0), color4),
+				new Vertex(new Vector(scale * correction,  scale,  0, 1.0f), new Vector4(w, y, id, 0), color4),
 			};
 
 			return vertices;
