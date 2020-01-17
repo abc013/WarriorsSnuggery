@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Runtime.InteropServices;
 using OpenTK;
 using OpenTK.Graphics.ES30;
 
@@ -41,13 +42,11 @@ namespace WarriorsSnuggery.Graphics
 		public void Add(Vertex[] data)
 		{
 			added = true;
-			foreach (var vertex in data)
-			{
-				buffer[offset++] = vertex;
+			if (data.Length + offset == bufferSize)
+				push();
 
-				if (offset == bufferSize)
-					push();
-			}
+			Array.Copy(data, 0, buffer, offset, data.Length);
+			offset += data.Length;
 		}
 
 		void push()
