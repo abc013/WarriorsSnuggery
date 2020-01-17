@@ -123,18 +123,16 @@ namespace WarriorsSnuggery
 			//context2.MakeCurrent(WindowInfo);
 		}
 
-		public static float TPS;
-		public static float TMS;
+		public static double TPS;
+		public static double TMS;
 		protected override void OnUpdateFrame(FrameEventArgs e)
 		{
 			if (!Ready)
 				return;
 
+			Timer watch = null;
 			if (GlobalTick % 20 == 0)
-			{
-				TPS = (float)Math.Round(1 / e.Time, 1);
-				TMS = (float)Math.Round(e.Time * 1000, 1);
-			}
+				watch = Timer.Start();
 
 			GameController.Tick();
 			AudioController.Tick();
@@ -147,11 +145,17 @@ namespace WarriorsSnuggery
 			if (KeyInput.IsKeyDown(Key.N, 10))
 				AudioController.Music.Next();
 
+			if (GlobalTick % 20 == 0)
+			{
+				TPS = 1 / e.Time;
+				TMS = watch.Stop();
+			}
+
 			GlobalTick++;
 		}
 
-		public static float FPS;
-		public static float FMS;
+		public static double FPS;
+		public static double FMS;
 		protected override void OnRenderFrame(FrameEventArgs e)
 		{
 			if (!Ready || Exiting)
@@ -159,20 +163,20 @@ namespace WarriorsSnuggery
 
 			Timer watch = null;
 			if (GlobalRender % 20 == 0)
-			{
-				FPS = (float)Math.Round(1 / e.Time, 1);
-				FMS = (float)Math.Round(e.Time * 1000, 1);
 				watch = Timer.Start();
-			}
 
 			MasterRenderer.Render();
-
-			if (GlobalRender % 20 == 0)
-				watch.StopAndWrite("render" + GlobalRender);
 
 			lock (MasterRenderer.GLLock)
 			{
 				SwapBuffers();
+			}
+
+			if (GlobalRender % 20 == 0)
+			{
+				watch.StopAndWrite("render" + GlobalRender);
+				FPS = 1 / e.Time;
+				FMS = watch.Stop();
 			}
 
 			Title = title + " | " + MasterRenderer.RenderCalls + " Calls | " + MasterRenderer.Batches + " Batches | " + MasterRenderer.BatchCalls + " BatchCalls";

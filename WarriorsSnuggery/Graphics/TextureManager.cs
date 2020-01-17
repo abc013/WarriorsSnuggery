@@ -225,7 +225,7 @@ namespace WarriorsSnuggery.Graphics
 			}
 		}
 
-		public const string Characters = @" qwertyuiopasdfghjklzxcvbnmäöüQWERTYUIOPASDFGHJKLZXCVBNMÄÖÜ0123456789µ§!""#%&/()=?^*@${[]}\~¨'¯-_.:,;<>|°+↓↑←→";
+		public const string Characters = @" qwertyuiopasdfghjklzxcvbnmäöüQWERTYUIOPASDFGHJKLZXCVBNMÄÖÜ0123456789µ§!""#%&/()=?^*@${[]}\~¨'¯-_.:,;<>|°+↓↑←→∞";
 		//public const string Characters = @" qwertyuiopasdfghjklzxcvbnmäöüQWERTYUIOPASDFGHJKLZXCVBNMÄÖÜ0123456789µ§½!""#¤%&/()=?^*@£¥€${[]}\~¨'¯-_.:,;<>|°©®±ツ+↓↑←→"; In order to save space and performance, we remove some chars we know we won't need.
 
 		public static Bitmap GenerateCharacters(int fontSize, string fontName, out MPos maxSize, out int[] sizes)

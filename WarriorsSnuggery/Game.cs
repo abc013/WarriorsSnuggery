@@ -329,21 +329,21 @@ namespace WarriorsSnuggery
 
 				var tickColor = Color.White;
 				if (Window.TPS < Settings.UpdatesPerSecond - 5)
-					tickColor = Color.Red;
+					tickColor = new Color(256, 192, 192);
 				else if (Window.TPS > Settings.UpdatesPerSecond + 5)
-					tickColor = Color.Green;
+					tickColor = new Color(256, 192, 192);
 
 				tick.SetColor(tickColor);
-				tick.SetText("Tick " + Window.TPS + " @ " + Window.TMS + " ms");
+				tick.SetText("Tick " + Window.TPS.ToString("F1") + " @ " + Window.TMS + " ms");
 
 				var renderColor = Color.White;
 				if (Window.FPS < Settings.FrameLimiter - 20)
-					renderColor = Color.Red;
+					renderColor = new Color(256, 192, 192);
 				else if (Window.FPS > Settings.FrameLimiter + 5)
-					renderColor = Color.Green;
+					renderColor = new Color(256, 192, 192);
 
 				render.SetColor(renderColor);
-				render.SetText("Render " + Window.FPS + " @ " + Window.FMS + " ms");
+				render.SetText("Render " + Window.FPS.ToString("F1") + " @ " + Window.FMS + " ms");
 			}
 
 			if (infoTextDuration-- < 90)
