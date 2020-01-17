@@ -10,7 +10,7 @@ namespace WarriorsSnuggery.Graphics
 	{
 		readonly List<Batch> batches = new List<Batch>();
 
-		const int bufferSize = 6000;
+		const int bufferSize = 4096;
 		readonly Vertex[] buffer;
 		int[] textureIDs;
 		int offset;
@@ -42,7 +42,7 @@ namespace WarriorsSnuggery.Graphics
 		public void Add(Vertex[] data)
 		{
 			added = true;
-			if (data.Length + offset == bufferSize)
+			if (data.Length + offset >= bufferSize)
 				push();
 
 			Array.Copy(data, 0, buffer, offset, data.Length);
