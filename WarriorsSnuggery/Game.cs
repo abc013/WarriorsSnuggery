@@ -474,8 +474,6 @@ namespace WarriorsSnuggery
 			UIRenderer.ClearRenderLists();
 
 			VisibilitySolver.Reset();
-
-			GC.Collect();
 		}
 	}
 }
