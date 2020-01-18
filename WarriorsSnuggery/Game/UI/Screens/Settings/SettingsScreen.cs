@@ -21,7 +21,7 @@ namespace WarriorsSnuggery.UI
 		{
 			this.game = game;
 			Title.Position = new CPos(0, -4096, 0);
-			saved = new TextLine(new CPos(0, 6210, 0), IFont.Pixel16, TextLine.OffsetType.MIDDLE);
+			saved = new TextLine(new CPos(-5120, 6144, 0), IFont.Pixel16, TextLine.OffsetType.MIDDLE);
 			saved.SetText("Save");
 
 			// Window
@@ -209,9 +209,7 @@ namespace WarriorsSnuggery.UI
 			musicVolumeSlider.Tick();
 
 			if (KeyInput.IsKeyDown("escape", 10))
-			{
 				game.ChangeScreen(ScreenType.MENU);
-			}
 		}
 
 		public override void Dispose()
