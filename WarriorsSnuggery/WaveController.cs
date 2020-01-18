@@ -51,7 +51,7 @@ namespace WarriorsSnuggery
 			foreach (var actor in actors)
 			{
 				if (actor.IsBot)
-					actor.BotPart.Target = game.World.LocalPlayer;
+					actor.BotPart.Target = new Objects.Weapons.Target(game.World.LocalPlayer);
 			}
 		}
 

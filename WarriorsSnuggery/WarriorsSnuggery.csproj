@@ -73,10 +73,12 @@
     <Compile Include="Audio\Music.cs" />
     <Compile Include="Audio\MusicController.cs" />
     <Compile Include="Audio\Sound.cs" />
+    <Compile Include="Game\Bot\NormalBotBehavior.cs" />
     <Compile Include="Game\Conditions\Condition.cs" />
     <Compile Include="Game\Conditions\ConditionManager.cs" />
     <Compile Include="Cursor.cs" />
     <Compile Include="GameController.cs" />
+    <Compile Include="Game\Bot\BotBehavior.cs" />
     <Compile Include="Game\UI\Objects\ActorList.cs" />
     <Compile Include="Game\UI\Objects\SliderBar.cs" />
     <Compile Include="Game\UI\Objects\SpellList.cs" />
