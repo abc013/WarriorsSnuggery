@@ -153,6 +153,7 @@ blackspider_small=
 		Targetable=true
 		TargetBoxCorner1=-300,300,0
 		TargetBoxCorner2=300,-300,0
+		BotBehavior: HIDE_AND_SEEK
 	Part@Weapon=
 		Type=web
 		Height=50
@@ -256,6 +257,7 @@ slime_small=
 		Targetable=true
 		TargetBoxCorner1=-256,256,0
 		TargetBoxCorner2=256,-256,0
+		BotBehavior=PANIC
 	Part@Weapon=
 		Type=slime_slap
 	Part@Mobility=

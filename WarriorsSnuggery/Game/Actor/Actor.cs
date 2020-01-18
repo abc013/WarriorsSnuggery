@@ -51,6 +51,11 @@ namespace WarriorsSnuggery.Objects
 		int localTick;
 		int reloadDelay;
 
+		public bool WeaponReloading
+		{
+			get { return reloadDelay > 0; }
+		}
+
 		bool visible;
 
 		CPos Velocity
@@ -100,7 +105,8 @@ namespace WarriorsSnuggery.Objects
 
 			if (isBot)
 			{
-				BotPart = new BotPart(this);
+				var behavior = WorldPart == null ? Bot.BotBehaviorType.TYPICAL : WorldPart.BotBehavior;
+				BotPart = new BotPart(this, behavior);
 				Parts.Add(BotPart);
 			}
 		}
@@ -272,15 +278,15 @@ namespace WarriorsSnuggery.Objects
 
 		public void Attack(Actor target)
 		{
-			attack(new Target(target));
+			Attack(new Target(target));
 		}
 
 		public void Attack(CPos target, int height)
 		{
-			attack(new Target(target, height));
+			Attack(new Target(target, height));
 		}
 
-		void attack(Target target)
+		public void Attack(Target target)
 		{
 			if (reloadDelay != 0 || ActiveWeapon == null || !IsAlive)
 				return;

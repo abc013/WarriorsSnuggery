@@ -1,5 +1,4 @@
-﻿using System.Linq;
-using WarriorsSnuggery.Objects.Weapons;
+﻿using WarriorsSnuggery.Objects.Weapons;
 
 namespace WarriorsSnuggery.Objects.Bot
 {
@@ -29,15 +28,11 @@ namespace WarriorsSnuggery.Objects.Bot
 			if (!CanMove && !CanAttack)
 				return;
 
-			if (!perfectTarget())
+			if (!PerfectTarget())
 			{
-				moral--;
-				searchTarget();
-				if (CanMove && Target != null)
-				{
-					if (DistToTarget > 712)
+				SearchTarget();
+				if (CanMove && Target != null && DistToTarget > 712)
 						Self.Accelerate(AngleToTarget);
-				}
 
 				return;
 			}
@@ -50,14 +45,9 @@ namespace WarriorsSnuggery.Objects.Bot
 				range /= moral > 40 ? 2 : 1;
 
 				if (DistToTarget < range)
-				{
-					Self.Attack(Target.Actor);
-					moral++;
-				}
+					Self.Attack(Target);
 				else if (!CanMove)
-				{
-					searchTarget();
-				}
+					SearchTarget();
 			}
 
 			if (CanMove)
@@ -83,11 +73,13 @@ namespace WarriorsSnuggery.Objects.Bot
 						Self.Accelerate(-AngleToTarget);
 				}
 			}
+
+			moral++;
 		}
 
 		public override void OnDamage(Actor damager, int damage)
 		{
-			moral -= damage * 2;
+			moral -= damage;
 
 			if (damager == null || damager.Health == null)
 				return;
@@ -99,66 +91,6 @@ namespace WarriorsSnuggery.Objects.Bot
 		public override void OnKill(Actor killer)
 		{
 			moral += 10;
-		}
-
-		bool perfectTarget()
-		{
-			return Target != null && Target.Actor != null && Target.Actor.IsAlive && !Target.Actor.Disposed;
-		}
-
-		void searchTarget()
-		{
-			if (World.Game.LocalTick % SearchIntervall != 0)
-				return;
-
-			var range = Self.RevealsShroudPart == null ? 5120 : Self.RevealsShroudPart.Range * 512;
-
-			// Find all possible targets in range
-			var targets = World.Actors.FindAll(a => a.Team != Actor.NeutralTeam && a.Team != Self.Team && (a.Position - Self.Position).FlatDist <= range);
-
-			if (!targets.Any())
-				return;
-
-			// Loop through and find the best target
-			foreach (var actor in targets)
-			{
-				if (actor.Health == null || !actor.IsAlive)
-					continue;
-
-				checkTarget(actor);
-			}
-		}
-
-		void checkTarget(Actor actor)
-		{
-			if (actor.Team == Self.Team)
-				return;
-
-			if (Target == null || Target.Actor == null || !Target.Actor.IsAlive || !Target.Actor.Disposed)
-			{
-				Target = new Target(actor);
-				return;
-			}
-
-			var newFavor = 0f;
-
-			// Factor: Health. from 0 to 1
-			// If target has less health, then keep attacking it
-			newFavor += Target.Actor.Health.HPRelativeToMax - actor.Health.HPRelativeToMax;
-
-			// Factor: Distance.
-			// If target is closer, then keep attacking it
-			newFavor += 1 - (Self.Position - actor.Position).FlatDist / DistToTarget;
-
-			// Factor: Player. from 0 to 1
-			// If target is player, then keep attacking it
-			newFavor += actor.IsPlayer ? 1 : 0;
-
-			if (newFavor > TargetFavor)
-			{
-				Target = new Target(actor);
-				TargetFavor = newFavor;
-			}
 		}
 	}
 }

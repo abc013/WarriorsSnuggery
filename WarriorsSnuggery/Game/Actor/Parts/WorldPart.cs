@@ -1,4 +1,6 @@
-﻿namespace WarriorsSnuggery.Objects.Parts
+﻿using WarriorsSnuggery.Objects.Bot;
+
+namespace WarriorsSnuggery.Objects.Parts
 {
 	[Desc("Basic information about the object.")]
 	public class WorldPartInfo : PartInfo
@@ -25,6 +27,9 @@
 		public readonly CPos TargetBoxCorner1 = new CPos(-256, 256, 0);
 		[Desc("Down-right-corner of the selection box for possible targets.")]
 		public readonly CPos TargetBoxCorner2 = new CPos(256, -256, 0);
+
+		[Desc("Selects the bot behavior that will be used if the actor is controlled by a bot.", "Possible: TYPICAL, PANIC, MOTH, HIDE_AND_SEEK")]
+		public readonly BotBehaviorType BotBehavior = BotBehaviorType.TYPICAL;
 
 		public override ActorPart Create(Actor self)
 		{
@@ -74,6 +79,11 @@
 		public bool Hideable
 		{
 			get { return info.Hideable; }
+			set { }
+		}
+		public BotBehaviorType BotBehavior
+		{
+			get { return info.BotBehavior; }
 			set { }
 		}
 

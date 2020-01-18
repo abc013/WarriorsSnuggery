@@ -73,7 +73,11 @@
     <Compile Include="Audio\Music.cs" />
     <Compile Include="Audio\MusicController.cs" />
     <Compile Include="Audio\Sound.cs" />
+    <Compile Include="Game\Bot\BotBehaviorType.cs" />
+    <Compile Include="Game\Bot\HideAndSeekBotBehavior.cs" />
+    <Compile Include="Game\Bot\MothBehavior.cs" />
     <Compile Include="Game\Bot\NormalBotBehavior.cs" />
+    <Compile Include="Game\Bot\PanicBotBehavior.cs" />
     <Compile Include="Game\Conditions\Condition.cs" />
     <Compile Include="Game\Conditions\ConditionManager.cs" />
     <Compile Include="Cursor.cs" />
