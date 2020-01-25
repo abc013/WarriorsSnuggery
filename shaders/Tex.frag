@@ -16,6 +16,7 @@ out vec4 color;
 
 void main(void)
 {
+    color = vs_color;
     // Check whether a texture should be used
     if (vs_textureCoordinate.w >= 0)
     {
@@ -31,8 +32,7 @@ void main(void)
             color = texture(texture4, vec2(vs_textureCoordinate.x, vs_textureCoordinate.y));
         color *= vs_color;
     }
-    else
-        color = vs_color;
+
     color *= proximityColor * objectColor;
     if (color.a == 0.0)
         discard;
