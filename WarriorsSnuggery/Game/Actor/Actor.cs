@@ -297,6 +297,14 @@ namespace WarriorsSnuggery.Objects
 			{
 				if (Mobility.Velocity != CPos.Zero)
 					move();
+
+				if (WorldPart != null && Mobility.CanFly)
+				{
+					if (Height > WorldPart.Height + WorldPart.Hover * 64)
+						AccelerateHeight(false);
+					else if (Height < WorldPart.Height - WorldPart.Hover * 64)
+						AccelerateHeight(true);
+				}
 			}
 
 			if (Health != null && Health.HP <= 0)
