@@ -176,7 +176,7 @@ namespace WarriorsSnuggery
 
 		public static void WriteTerrain(StreamWriter writer)
 		{
-			TypeWriter.Write(writer, "WarriorsSnuggery.Objects.TerrainType", new object[] { 0, new MiniTextNode[0], true });
+			TypeWriter.Write(writer, "WarriorsSnuggery.Objects.TerrainType", new object[] { (ushort)0, new MiniTextNode[0], true });
 		}
 
 		public static void WriteWalls(StreamWriter writer)
