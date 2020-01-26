@@ -103,6 +103,7 @@ shadowrunner=
 		Type=blade
 	Part@Mobility=
 		Speed=130
+		CanFly=true
 	Part@Health=
 		MaxHealth=750
 		StartHealth=500

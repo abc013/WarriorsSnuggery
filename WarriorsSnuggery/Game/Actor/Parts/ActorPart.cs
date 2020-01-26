@@ -61,6 +61,11 @@ namespace WarriorsSnuggery.Objects.Parts
 
 		}
 
+		public virtual void OnAccelerate(CPos acceleration)
+		{
+
+		}
+
 		public virtual void OnAccelerate(float angle, int acceleration)
 		{
 

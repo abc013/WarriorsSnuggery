@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Linq;
 
 namespace WarriorsSnuggery.Objects.Parts
 {
@@ -17,15 +16,20 @@ namespace WarriorsSnuggery.Objects.Parts
 		{
 			if (KeyInput.IsKeyDown(Settings.Key("MoveUp")))
 				self.Accelerate((float)Math.PI * 1.5f);
-
 			if (KeyInput.IsKeyDown(Settings.Key("MoveDown")))
 				self.Accelerate((float)Math.PI * 0.5f);
-
 			if (KeyInput.IsKeyDown(Settings.Key("MoveRight")))
 				self.Accelerate(0);
-
 			if (KeyInput.IsKeyDown(Settings.Key("MoveLeft")))
 				self.Accelerate((float)Math.PI);
+
+			if (KeyInput.IsKeyDown(OpenTK.Input.Key.AltLeft))
+			{
+				if (KeyInput.IsKeyDown(Settings.Key("MoveAbove")))
+					self.AccelerateHeight(true);
+				if (KeyInput.IsKeyDown(Settings.Key("MoveBelow")))
+					self.AccelerateHeight(false);
+			}
 
 			if (self.ActiveWeapon != null)
 			{

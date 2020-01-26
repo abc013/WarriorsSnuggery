@@ -18,6 +18,10 @@ namespace WarriorsSnuggery.Objects
 			{
 				height = value;
 
+				// Make it impossible to be in the ground.
+				if (height < 0)
+					height = 0;
+
 				if (Renderable != null)
 					Renderable.SetPosition(GraphicPosition);
 

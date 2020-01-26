@@ -78,6 +78,7 @@ shadowrunner_playable=
 		Type=blade
 	Part@Mobility=
 		Speed=130
+		CanFly=true
 	Part@Health=
 		MaxHealth=2000
 		StartHealth=1300

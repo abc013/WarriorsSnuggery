@@ -111,22 +111,51 @@ namespace WarriorsSnuggery.Objects
 			}
 		}
 
-		public void Accelerate(CPos target, int customAcceleration = 0)
+		public void Accelerate(CPos acceleration, bool forced = false)
 		{
-			Accelerate((Position - target).FlatAngle, customAcceleration);
-		}
-
-		public void Accelerate(float angle, int customAcceleration = 0)
-		{
-			if (!IsAlive || Mobility == null)
+			if (Mobility == null)
 				return;
 
-			if (Effects.Any(e => e.Active && e.Spell.Type == Spells.EffectType.STUN))
+			if (!forced && !canMove())
+				return;
+
+			Mobility.OnAccelerate(acceleration);
+			Parts.ForEach(p => p.OnAccelerate(acceleration));
+		}
+
+		public void Accelerate(float angle, bool forced = false, int customAcceleration = 0)
+		{
+			if (Mobility == null)
+				return;
+
+			if (!forced && !canMove())
 				return;
 
 			var acceleration = Mobility.OnAccelerate(angle, customAcceleration);
-
 			Parts.ForEach(p => p.OnAccelerate(angle, acceleration));
+		}
+
+		public void AccelerateHeight(bool up, bool forced = false, int customAcceleration = 0)
+		{
+			if (Mobility == null)
+				return;
+
+			if (!forced && (!Mobility.CanFly || !canMove()))
+				return;
+
+			var acceleration = Mobility.OnAccelerateHeight(up, customAcceleration);
+			Parts.ForEach(p => p.OnAccelerate(new CPos(0, 0, acceleration)));
+		}
+
+		bool canMove()
+		{
+			if (!IsAlive || Height > 0 && !Mobility.CanFly)
+				return false;
+
+			if (Effects.Any(e => e.Active && e.Spell.Type == Spells.EffectType.STUN))
+				return false;
+
+			return true;
 		}
 
 		void move()
@@ -140,34 +169,41 @@ namespace WarriorsSnuggery.Objects
 			var speedModifier = Height == 0 ? currentTerrain.Type.Speed : 1f;
 			if (speedModifier.Equals(0)) return;
 
-			var movement = new MPos((int)Math.Round(Velocity.X * speedModifier), (int)Math.Round(Velocity.Y * speedModifier));
-			if (movement == MPos.Zero) return;
+			var movement = new CPos((int)Math.Round(Velocity.X * speedModifier), (int)Math.Round(Velocity.Y * speedModifier), (int)Math.Round(Velocity.Z * speedModifier));
+			if (movement == CPos.Zero) return;
+
+			var oldpos = Position;
+			var oldHeight = Height;
 
 			var pos = new CPos(Position.X + movement.X, Position.Y + movement.Y, Position.Z);
-			var oldpos = Position;
+			var height = Height + movement.Z;
 
 			Position = pos;
+			Height = height;
 			var intersects = World.CheckCollision(this, false);
 			Position = oldpos;
+			Height = oldHeight;
 			var terrain = World.TerrainAt(pos);
 
 			if (World.IsInWorld(pos) && !intersects && !(terrain == null || (terrain.Type.Speed.Equals(0) && Height == 0)))
 			{
-				acceptMove(pos);
+				acceptMove(pos, height);
 				return;
 			}
 
 			var posX = new CPos(Position.X + movement.X, Position.Y, Position.Z);
 
 			Position = posX;
+			Height = height;
 			intersects = World.CheckCollision(this, false);
 			Position = oldpos;
+			Height = oldHeight;
 			terrain = World.TerrainAt(posX);
 
 			if (World.IsInWorld(posX) && !intersects && !(terrain == null || (terrain.Type.Speed.Equals(0) && Height == 0)))
 			{
-				acceptMove(posX);
-				Velocity = new CPos(Velocity.X, 0, 0);
+				acceptMove(posX, height);
+				Velocity = new CPos(Velocity.X, 0, Velocity.Z);
 				return;
 			}
 
@@ -176,21 +212,23 @@ namespace WarriorsSnuggery.Objects
 			Position = posY;
 			intersects = World.CheckCollision(this, false);
 			Position = oldpos;
+			Height = oldHeight;
 			terrain = World.TerrainAt(posY);
 
 			if (World.IsInWorld(posY) && !intersects && !(terrain == null || (terrain.Type.Speed.Equals(0) && Height == 0)))
 			{
-				acceptMove(posY);
-				Velocity = new CPos(0, Velocity.Y, 0);
+				acceptMove(posY, height);
+				Velocity = new CPos(0, Velocity.Y, Velocity.Z);
 				return;
 			}
 
 			denyMove();
 		}
 
-		void acceptMove(CPos position)
+		void acceptMove(CPos position, int height)
 		{
 			var old = Position;
+			Height = height;
 			Position = position;
 			if (Physics != null)
 				Physics.Position = position;

@@ -14,6 +14,10 @@ namespace WarriorsSnuggery.Objects.Parts
 		public readonly int Deceleration;
 		[Desc("Acceleration to use for the vertical axis.")]
 		public readonly int HeightAcceleration;
+		[Desc("Actor may also control velocity while in air.")]
+		public readonly bool CanFly;
+		[Desc("Gravity to apply while flying.", "Gravity will not be applied when the actor can fly.")]
+		public readonly CPos Gravity = new CPos(0, 0, -9);
 
 		public override ActorPart Create(Actor self)
 		{
@@ -36,6 +40,11 @@ namespace WarriorsSnuggery.Objects.Parts
 		public CPos Force;
 		public CPos Velocity;
 
+		public bool CanFly
+		{
+			get { return info.CanFly; }
+		}
+
 		public MobilityPart(Actor self, MobilityPartInfo info) : base(self)
 		{
 			this.info = info;
@@ -48,29 +57,43 @@ namespace WarriorsSnuggery.Objects.Parts
 				if (self.World.Game.Type == GameType.EDITOR)
 					return;
 
-				var signX = Math.Sign(Velocity.X);
-				var signY = Math.Sign(Velocity.Y);
-				Velocity -= new CPos(info.Deceleration * signX, info.Deceleration * signY, 0);
+				if (self.Height == 0 || CanFly)
+				{
+					var signX = Math.Sign(Velocity.X);
+					var signY = Math.Sign(Velocity.Y);
+					var signZ = Math.Sign(Velocity.Z);
+					Velocity -= new CPos(info.Deceleration * signX, info.Deceleration * signY, info.Deceleration * signZ);
 
-				if (Math.Sign(Velocity.X) != signX)
-					Velocity = new CPos(0, Velocity.Y, 0);
-				if (Math.Sign(Velocity.Y) != signY)
-					Velocity = new CPos(Velocity.X, 0, 0);
+					if (Math.Sign(Velocity.X) != signX)
+						Velocity = new CPos(0, Velocity.Y, Velocity.Z);
+					if (Math.Sign(Velocity.Y) != signY)
+						Velocity = new CPos(Velocity.X, 0, Velocity.Z);
+					if (Math.Sign(Velocity.Z) != signZ)
+						Velocity = new CPos(Velocity.X, Velocity.Y, 0);
+				}
 			}
+			if (self.Height > 0 && !CanFly)
+				Force += info.Gravity;
+
 			Velocity += Force;
 			Force = CPos.Zero;
 
 			var speedFactor = 1f;
 			foreach (var effect in self.Effects.Where(e => e.Active && e.Spell.Type == Spells.EffectType.SPEED))
-			{
 				speedFactor *= effect.Spell.Value;
-			}
 
-			if (Math.Abs(Velocity.X) >= info.Speed * speedFactor)
-				Velocity = new CPos((int)(Math.Sign(Velocity.X) * info.Speed * speedFactor), Velocity.Y, 0);
+			var maxSpeed = speedFactor * info.Speed;
+			if (Math.Abs(Velocity.X) > maxSpeed)
+				Velocity = new CPos((int)maxSpeed * Math.Sign(Velocity.X), Velocity.Y, Velocity.Z);
+			if (Math.Abs(Velocity.Y) > maxSpeed)
+				Velocity = new CPos(Velocity.X, (int)maxSpeed * Math.Sign(Velocity.Y), Velocity.Z);
+			if (Math.Abs(Velocity.Z) > maxSpeed)
+				Velocity = new CPos(Velocity.X, Velocity.Y, (int)maxSpeed * Math.Sign(Velocity.Z));
+		}
 
-			if (Math.Abs(Velocity.Y) >= info.Speed * speedFactor)
-				Velocity = new CPos(Velocity.X, (int)(Math.Sign(Velocity.Y) * info.Speed * speedFactor), 0);
+		public new void OnAccelerate(CPos acceleration)
+		{
+			Force += acceleration;
 		}
 
 		public new int OnAccelerate(float angle, int customAcceleration)
@@ -84,12 +107,13 @@ namespace WarriorsSnuggery.Objects.Parts
 			return acceleration;
 		}
 
-		CPos randomPosition()
+		public int OnAccelerateHeight(bool up, int customAcceleration)
 		{
-			var size = self.Physics != null ? self.Physics.RadiusX : 40;
-			var x = Program.SharedRandom.Next(size) - size / 2;
-			var y = Program.SharedRandom.Next(size) - size / 2;
-			return self.Position + new CPos(x, y, 0);
+			var acceleration = (up ? -1 : 1) * (customAcceleration == 0 ? info.Acceleration * 2 : customAcceleration);
+
+			Force += new CPos(0, 0, acceleration);
+
+			return acceleration;
 		}
 	}
 }
