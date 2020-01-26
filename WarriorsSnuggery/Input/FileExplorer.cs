@@ -18,34 +18,14 @@ namespace WarriorsSnuggery
 		public static void InitPaths()
 		{
 			string path = Directory.GetCurrentDirectory();
-			while (MainDirectory == null)
-			{
-				if (!Directory.Exists(path))
-					throw new DirectoryNotFoundException(path);
 
-				if (find(path, @"\WS.yaml"))
-					MainDirectory = path + @"\";
-				else
-					path += @"\..";
-			}
-
+			MainDirectory = path + @"\";
 			Misc = path + @"\misc\";
 			Rules = path + @"\rules\";
 			Maps = path + @"\maps\";
 			Shaders = path + @"\shaders\";
 			Logs = path + @"\logs\";
 			Saves = path + @"\saves\";
-		}
-
-		static bool find(string path, string file)
-		{
-			foreach (string str in Directory.GetFiles(path))
-			{
-				if (str == path + file)
-					return true;
-			}
-
-			return false;
 		}
 
 		public static bool CheckDll()
@@ -62,8 +42,13 @@ namespace WarriorsSnuggery
 			return false;
 		}
 
+		public static bool Exists(string path, string name)
+		{
+			return File.Exists(path + name);
+		}
+
 		/// <summary>
-		/// Finds the directory in which the given file is.
+		/// Finds the whole path of the given file.
 		/// </summary>
 		/// <returns>Returns the filepath.</returns>
 		public static string FindIn(string path, string name, string suffix = ".png")

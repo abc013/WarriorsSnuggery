@@ -57,7 +57,6 @@ namespace WarriorsSnuggery
 				return;
 			}
 
-			Settings.DeveloperMode = isDebug;
 			Settings.Initialize();
 			window = new Window();
 

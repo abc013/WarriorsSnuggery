@@ -61,7 +61,19 @@ namespace WarriorsSnuggery
 		{
 			FrameLimiter = (int)OpenTK.DisplayDevice.Default.RefreshRate;
 
-			foreach (var node in RuleReader.Read(FileExplorer.MainDirectory, "WS.yaml"))
+			if (FileExplorer.Exists(FileExplorer.MainDirectory, "Settings.yaml"))
+				load();
+			else
+				defaultKeys();
+
+			// Set FirstStarted to 0.
+			if (FirstStarted)
+				Save();
+		}
+
+		static void load()
+		{
+			foreach (var node in RuleReader.Read(FileExplorer.MainDirectory, "Settings.yaml"))
 			{
 				switch (node.Key)
 				{
@@ -113,21 +125,32 @@ namespace WarriorsSnuggery
 						break;
 					case "Keys":
 						foreach (var key in node.Children)
-						{
 							KeyDictionary.Add(key.Key, key.Value);
-						}
 						break;
 				}
 			}
+		}
 
-			// Set FirstStarted to 0.
-			if (FirstStarted)
-				Save();
+		static void defaultKeys()
+		{
+			KeyDictionary.Clear();
+			KeyDictionary.Add("Pause", "p");
+			KeyDictionary.Add("CameraLock", "l");
+			KeyDictionary.Add("MoveUp", "w");
+			KeyDictionary.Add("MoveDown", "s");
+			KeyDictionary.Add("MoveLeft", "a");
+			KeyDictionary.Add("MoveRight", "d");
+			KeyDictionary.Add("MoveAbove", "e");
+			KeyDictionary.Add("MoveBelow", "r");
+			KeyDictionary.Add("CameraUp", "up");
+			KeyDictionary.Add("CameraDown", "down");
+			KeyDictionary.Add("CameraLeft", "left");
+			KeyDictionary.Add("CameraRight", "right");
 		}
 
 		public static void Save()
 		{
-			using (var writer = new System.IO.StreamWriter(FileExplorer.MainDirectory + "WS.yaml"))
+			using (var writer = new System.IO.StreamWriter(FileExplorer.MainDirectory + "Settings.yaml"))
 			{
 				writer.WriteLine("FrameLimiter=" + FrameLimiter);
 				writer.WriteLine("ScrollSpeed=" + ScrollSpeed);
@@ -146,9 +169,7 @@ namespace WarriorsSnuggery
 
 				writer.WriteLine("Keys=");
 				foreach (var key in KeyDictionary)
-				{
 					writer.WriteLine("\t" + key.Key + "=" + key.Value);
-				}
 
 				writer.Flush();
 				writer.Close();
