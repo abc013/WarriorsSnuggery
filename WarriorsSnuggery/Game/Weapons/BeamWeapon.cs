@@ -151,18 +151,5 @@ namespace WarriorsSnuggery.Objects.Weapons
 			rayPhysics.Start = OriginPos;
 			rayPhysics.StartHeight = OriginHeight;
 		}
-
-		CPos getInaccuracy()
-		{
-			if (projectileType.Inaccuracy > 0)
-			{
-				var ranX = (Program.SharedRandom.Next(projectileType.Inaccuracy) - projectileType.Inaccuracy / 2) * InaccuracyModifier;
-				var ranY = (Program.SharedRandom.Next(projectileType.Inaccuracy) - projectileType.Inaccuracy / 2) * InaccuracyModifier;
-
-				return new CPos((int)ranX, (int)ranY, 0);
-			}
-
-			return CPos.Zero;
-		}
 	}
 }
