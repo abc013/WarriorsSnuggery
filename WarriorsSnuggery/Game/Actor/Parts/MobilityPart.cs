@@ -109,7 +109,7 @@ namespace WarriorsSnuggery.Objects.Parts
 
 		public int OnAccelerateHeight(bool up, int customAcceleration)
 		{
-			var acceleration = (up ? -1 : 1) * (customAcceleration == 0 ? info.Acceleration * 2 : customAcceleration);
+			var acceleration = (up ? 1 : -1) * (customAcceleration == 0 ? info.Acceleration * 2 : customAcceleration);
 
 			Force += new CPos(0, 0, acceleration);
 
