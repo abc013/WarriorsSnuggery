@@ -305,6 +305,10 @@ namespace WarriorsSnuggery.Objects
 					else if (Height < WorldPart.Height - WorldPart.Hover * 64)
 						AccelerateHeight(true);
 				}
+
+				// Make it impossible to be in the ground.
+				if (Height < 0)
+					Height = 0;
 			}
 
 			if (Health != null && Health.HP <= 0)
