@@ -65,9 +65,15 @@ namespace WarriorsSnuggery
 			// Important Parts
 			if (!string.IsNullOrEmpty(Type.OverridePiece))
 			{
-				var input = RuleReader.Read(!Type.FromSave ? FileExplorer.FindPath(FileExplorer.Maps, Type.OverridePiece, ".yaml") : FileExplorer.Saves, Type.OverridePiece + ".yaml");
-
-				GeneratePiece(input.ToArray(), MPos.Zero, 100, true);
+				if (Type.FromSave)
+				{
+					var input = Piece.Load(Type.OverridePiece, string.Empty, RuleReader.Read(FileExplorer.Saves, Type.OverridePiece + ".yaml").ToArray());
+					GeneratePiece(input, MPos.Zero, 100, true);
+				}
+				else
+				{
+					GeneratePiece(PieceManager.GetPiece(Type.OverridePiece), MPos.Zero, 100, true);
+				}
 			}
 
 			// Generators
@@ -98,11 +104,6 @@ namespace WarriorsSnuggery
 				return false;
 
 			return true;
-		}
-
-		public bool GeneratePiece(MiniTextNode[] nodes, MPos position, int ID, bool important = false, bool playerSpawn = false, bool cancelIfAcquiredBySameID = false)
-		{
-			return GeneratePiece(Piece.LoadPiece("generated", nodes), position, ID, important, playerSpawn, cancelIfAcquiredBySameID);
 		}
 
 		public bool GeneratePiece(Piece piece, MPos position, int ID, bool important = false, bool playerSpawn = false, bool cancelIfAcquiredBySameID = false)
@@ -142,14 +143,9 @@ namespace WarriorsSnuggery
 			return true;
 		}
 
-		public void Save(string name)
-		{
-			Save(FileExplorer.Maps, name);
-		}
-
 		public void Save(string directory, string name)
 		{
-			SaveFile(directory + @"maps/" + name + ".yaml", name);
+			SaveFile(directory + name + ".yaml", name);
 		}
 
 		public void SaveFile(string file, string name)

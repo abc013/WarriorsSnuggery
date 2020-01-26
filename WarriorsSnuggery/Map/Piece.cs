@@ -8,23 +8,26 @@ namespace WarriorsSnuggery.Maps
 		public readonly MPos Size;
 		public readonly string Name;
 		public readonly string InnerName;
+		public readonly string Path;
 
 		readonly int[] groundData;
 		readonly int[] wallData;
 
 		readonly ActorNode[] actors;
 
-		Piece(MPos size, int[] groundData, int[] wallData, string name, string innerName, ActorNode[] actors)
+		Piece(MPos size, int[] groundData, int[] wallData, string name, string innerName, string path, ActorNode[] actors)
 		{
 			Size = size;
 			Name = name;
 			InnerName = innerName;
+			Path = path;
+
 			this.groundData = groundData;
 			this.wallData = wallData;
 			this.actors = actors;
 		}
 
-		public static Piece LoadPiece(string innerName, MiniTextNode[] nodes)
+		public static Piece Load(string innerName, string path, MiniTextNode[] nodes)
 		{
 			MPos size = MPos.Zero;
 
@@ -84,7 +87,7 @@ namespace WarriorsSnuggery.Maps
 			if (wallData.Length != (size.X + 1) * (size.Y + 1) * 2 * 2)
 				throw new InvalidPieceException(string.Format(@"The count of given walls ({0}) is smaller as the size ({1}) on the piece '{2}'", groundData.Length, size.X * size.Y, name));
 
-			return new Piece(size, groundData, wallData, name, innerName, actors);
+			return new Piece(size, groundData, wallData, name, innerName, path, actors);
 		}
 
 		public void PlacePiece(MPos position, World world)

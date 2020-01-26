@@ -31,7 +31,7 @@ namespace WarriorsSnuggery.Maps
 
 					var nodes = RuleReader.Read(path + @"\", name + ".yaml").ToArray();
 
-					list.Add(Piece.LoadPiece(name, nodes));
+					list.Add(Piece.Load(name, path, nodes));
 				}
 			}
 
@@ -40,14 +40,15 @@ namespace WarriorsSnuggery.Maps
 
 		public static void RefreshPiece(string piece)
 		{
-			var nodes = RuleReader.FindAndRead(FileExplorer.Maps, piece, ".yaml").ToArray();
+			var path = FileExplorer.FindPath(FileExplorer.Maps, piece, ".yaml");
+			var nodes = RuleReader.Read(path, piece + ".yaml").ToArray();
 
 			var existingPiece = pieces.FirstOrDefault(p => p.InnerName == piece);
 
 			if (existingPiece != null)
 				pieces.Remove(existingPiece);
 
-			pieces.Add(Piece.LoadPiece(piece, nodes));
+			pieces.Add(Piece.Load(piece, path, nodes));
 		}
 
 		public static Piece GetPiece(string piece)

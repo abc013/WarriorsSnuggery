@@ -40,6 +40,7 @@ namespace WarriorsSnuggery.Maps
 
 		[Desc("Variable used to determine wether this map comes from an save. DO NOT ALTER.")]
 		public readonly bool FromSave;
+
 		public MapInfo(string overridePiece, int wall, MPos customSize, Color ambient, GameType defaultType, GameMode[] defaultModes, int level, int fromLevel, TerrainGeneratorInfo baseTerrainGeneration, MapGeneratorInfo[] genInfos, MPos spawnPoint, bool fromSave, bool allowWeapons)
 		{
 			OverridePiece = overridePiece;

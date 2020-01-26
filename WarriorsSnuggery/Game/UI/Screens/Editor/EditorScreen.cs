@@ -285,7 +285,7 @@ namespace WarriorsSnuggery.UI
 		void savePiece()
 		{
 			savedTick = 15;
-			game.World.Map.Save(game.MapType.OverridePiece);
+			game.World.Map.Save(FileExplorer.FindPath(FileExplorer.Maps, game.MapType.OverridePiece, ".yaml"), game.MapType.OverridePiece);
 			Maps.PieceManager.RefreshPiece(game.MapType.OverridePiece);
 			game.AddInfoMessage(150, "Map saved!");
 		}
