@@ -79,6 +79,11 @@ namespace WarriorsSnuggery
 
 		protected override void OnResize(EventArgs e)
 		{
+			base.OnResize(e);
+
+			if (Height == 0 || Width == 0)
+				return;
+
 			WarriorsSnuggery.WindowInfo.Height = Height;
 			WarriorsSnuggery.WindowInfo.Width = Width;
 

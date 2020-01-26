@@ -95,6 +95,8 @@ namespace WarriorsSnuggery.UI
 			isBot = CheckBoxCreator.Create("wooden", new CPos((int)(WindowInfo.UnitWidth * 512 - 1024), -4196, 0), false, (b) => { });
 			team = TextBoxCreator.Create("wooden", new CPos((int)(WindowInfo.UnitWidth * 512 - 1024), -3372, 0), "0", 1, true, () =>
 		   {
+			   if (team.Text == "")
+				   team.Text = "0";
 			   var num = byte.Parse(team.Text);
 			   if (num >= Settings.MaxTeams)
 			   {
