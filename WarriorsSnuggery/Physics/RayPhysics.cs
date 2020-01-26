@@ -34,7 +34,7 @@ namespace WarriorsSnuggery.Physics
 			};
 		}
 
-		public void CalculateEnd(Actor shooter = null)
+		public void CalculateEnd(Actor[] ignore = null)
 		{
 			var closestIntersect = new CPos(0, 0, int.MaxValue);
 			var closestT1 = double.MaxValue;
@@ -91,7 +91,7 @@ namespace WarriorsSnuggery.Physics
 			{
 				var sector = world.PhysicsLayer.Sectors[sectorPos.X, sectorPos.Y];
 
-				var objs = sector.GetObjects(shooter == null ? null : new[] { shooter });
+				var objs = sector.GetObjects(ignore);
 
 				var hit = false;
 				foreach (var obj in objs)
