@@ -23,6 +23,8 @@ namespace WarriorsSnuggery.Objects.Parts
 		public readonly Condition Condition;
 		[Desc("Offset from the center of idling object where the objects spawn.", "Z-coordinate will be used for height.")]
 		public readonly CPos Offset;
+		[Desc("Radius in which the objects get spawned randomly.", "If set to 0, physics radius will be used when possible.")]
+		public readonly int Radius;
 
 		[Desc("Spawn object at center of actor, not random.")]
 		public readonly bool AtCenter;
@@ -51,12 +53,8 @@ namespace WarriorsSnuggery.Objects.Parts
 		public override void Tick()
 		{
 			if ((info.Condition != null && !info.Condition.True(self)) || self.CurrentAction == ActorAction.IDLING && curTick-- < 0)
-			{
 				for (int i = 0; i < info.Count; i++)
-				{
 					create();
-				}
-			}
 		}
 
 		void create()
@@ -93,7 +91,7 @@ namespace WarriorsSnuggery.Objects.Parts
 			if (info.AtCenter)
 				return self.Position + new CPos(info.Offset.X, info.Offset.Y, 0);
 
-			var size = self.Physics != null ? self.Physics.RadiusX : 40;
+			var size = info.Radius == 0 ? (self.Physics != null ? self.Physics.RadiusX : 512) : info.Radius;
 			var x = Program.SharedRandom.Next(size) - size / 2;
 			var y = Program.SharedRandom.Next(size) - size / 2;
 			return self.Position + new CPos(x, y, 0) + new CPos(info.Offset.X, info.Offset.Y, 0);
