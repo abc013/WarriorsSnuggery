@@ -109,11 +109,13 @@ blood=
 
 leaf=
 	Texture=leaf
-		Size=5,5
-		Tick=10
-	Duration=40
-	DissolveDuration=15
-	RandomVelocity=3,3,0
+		Size=3,3
+		Tick=5
+	Duration=50
+	DissolveDuration=30
+	Gravity=1
+	RandomVelocity=4,4,0
+	AffectedByObjects=true
 
 fire=
 	Texture=fire

@@ -5,27 +5,6 @@
 @INCLUDE Actors-nature.yaml
 @INCLUDE Actors-playable.yaml
 
-fireflyspawner=
-	Part@SpawnOnIdle=
-		Count=1
-		Tick=50
-		Name=firefly
-		Type=PARTICLE
-	Part@ParticleForce=
-		AffectedTypes=firefly
-		ForceType=DRAG
-		Strength=0,5
-		MaxRange=10240
-		MinRange=2048
-	Part@ParticleForce=
-		AffectedTypes=firefly
-		ForceType=TURBULENCE
-		Strength=1,2
-		MaxRange=5120
-		MinRange=0
-	Part@World=
-		Height=512
-
 fly=
 	Part@AnimatedSprite=
 		Name=fly
