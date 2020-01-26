@@ -93,6 +93,7 @@
     <Compile Include="Game\Weapons\Warheads\ActorWarhead.cs" />
     <Compile Include="Game\Weapons\Warheads\DamageWarhead.cs" />
     <Compile Include="Game\Weapons\Warheads\FalloffHelper.cs" />
+    <Compile Include="Game\Weapons\Warheads\ForceWarhead.cs" />
     <Compile Include="Game\Weapons\Warheads\ParticleWarhead.cs" />
     <Compile Include="Game\Weapons\Warheads\SmudgeWarhead.cs" />
     <Compile Include="Game\Weapons\Warheads\SpellWarhead.cs" />

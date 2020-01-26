@@ -19,6 +19,7 @@ cannon=
 		Speed=128
 		MaxSpeed=256
 		Inaccuracy=1536
+		Force=0,0,-2
 	Warheads=
 		Smudge=
 			Texture=smudge2
@@ -32,6 +33,8 @@ cannon=
 		Damage=
 			AgainstWalls=true
 			Damage=500
+		Force=
+			Acceleration=250
 
 slime=
 	Reload=10
@@ -118,6 +121,8 @@ web=
 		Damage=
 			AgainstWalls=true
 			Damage=30
+		Force=
+			Acceleration=50
 
 blade=
 	Reload=40
