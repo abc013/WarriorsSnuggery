@@ -37,6 +37,7 @@ namespace WarriorsSnuggery
 				game.Finish();
 				game.Dispose();
 			}
+			Camera.Reset();
 
 			if (loadStatsMap)
 			{
@@ -77,7 +78,6 @@ namespace WarriorsSnuggery
 			if (stats.Health > 0 && game.World.LocalPlayer != null && game.World.LocalPlayer.Health != null)
 				game.World.LocalPlayer.Health.HP = stats.Health;
 
-			Camera.Reset();
 			MasterRenderer.UpdateView();
 		}
 

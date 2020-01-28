@@ -155,8 +155,6 @@ namespace WarriorsSnuggery
 			{
 				ChangeScreen(ScreenType.DEFAULT);
 			}
-
-			Camera.Reset();
 		}
 
 		public void Pause(bool paused)
