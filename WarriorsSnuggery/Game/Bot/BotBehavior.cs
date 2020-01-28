@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using WarriorsSnuggery.Objects.Weapons;
 
 namespace WarriorsSnuggery.Objects.Bot
@@ -12,6 +13,33 @@ namespace WarriorsSnuggery.Objects.Bot
 
 		protected readonly World World;
 		protected readonly Actor Self;
+
+		protected float DistToMapEdge
+		{
+			get
+			{
+				int x;
+				if (Self.Position.X > World.Map.Bounds.X * 512)
+					x = World.Map.BottomRightCorner.X;
+				else
+					x = World.Map.BottomLeftCorner.X;
+
+				int y;
+				if (Self.Position.Y > World.Map.Bounds.Y * 512)
+					y = World.Map.TopRightCorner.Y;
+				else
+					y = World.Map.BottomLeftCorner.Y;
+
+				return (float)Math.Sqrt(x*x + y*y);
+			}
+		}
+		protected float AngleToMapMid
+		{
+			get
+			{
+				return (Self.Position - World.Map.Center.ToCPos()).FlatAngle;
+			}
+		}
 
 		protected float DistToTarget
 		{

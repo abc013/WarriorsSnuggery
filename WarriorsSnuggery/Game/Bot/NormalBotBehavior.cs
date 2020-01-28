@@ -58,19 +58,26 @@ namespace WarriorsSnuggery.Objects.Bot
 				else if (Self.RevealsShroudPart != null)
 					range = Self.RevealsShroudPart.Range * 512;
 
-				if (moral >= 0)
+				if (DistToMapEdge > 3096)
 				{
-					if (DistToTarget > range * 0.9f)
-						Self.Accelerate(AngleToTarget);
-					else if (DistToTarget < range * 0.8f)
-						Self.Accelerate(-AngleToTarget);
+					if (moral >= 0)
+					{
+						if (DistToTarget > range * 0.9f)
+							Self.Accelerate(AngleToTarget);
+						else if (DistToTarget < range * 0.8f)
+							Self.Accelerate(-AngleToTarget);
+					}
+					else
+					{
+						if (DistToTarget > range * 1.1f)
+							Self.Accelerate(AngleToTarget);
+						else if (DistToTarget < range * 0.9f)
+							Self.Accelerate(-AngleToTarget);
+					}
 				}
 				else
 				{
-					if (DistToTarget > range * 1.1f)
-						Self.Accelerate(AngleToTarget);
-					else if (DistToTarget < range * 0.9f)
-						Self.Accelerate(-AngleToTarget);
+					Self.Accelerate((AngleToMapMid + AngleToTarget) / 2);
 				}
 			}
 
