@@ -17,6 +17,7 @@ namespace WarriorsSnuggery
 		public static readonly BatchRenderer SmudgeRenderer = new BatchRenderer();
 		public static readonly BatchRenderer ObjectRenderer = new BatchRenderer();
 		public static readonly BatchRenderer ShroudRenderer = new BatchRenderer();
+		public static readonly BatchRenderer DebugRenderer = new BatchRenderer();
 
 		public static Color Ambient = Color.White;
 
@@ -35,6 +36,7 @@ namespace WarriorsSnuggery
 				SmudgeRenderer.SetTextures(SpriteManager.sheets);
 				ObjectRenderer.SetTextures(SpriteManager.sheets);
 				ShroudRenderer.SetTextures(new[] { shroudTex.SheetID });
+				DebugRenderer.SetTextures(new[] { 0 });
 			}
 			game = @new;
 			world = game.World;
@@ -124,6 +126,8 @@ namespace WarriorsSnuggery
 			ShroudRenderer.Render();
 			MasterRenderer.BatchRenderer = null;
 
+			DebugRenderer.SetCurrent();
+			MasterRenderer.PrimitiveType = OpenTK.Graphics.ES30.PrimitiveType.Lines;
 			if (Settings.DeveloperMode)
 			{
 				foreach(var sector in world.PhysicsLayer.Sectors)
@@ -137,6 +141,9 @@ namespace WarriorsSnuggery
 						wall.Physics.RenderDebug();
 				}
 			}
+			DebugRenderer.Render();
+			MasterRenderer.BatchRenderer = null;
+			MasterRenderer.PrimitiveType = OpenTK.Graphics.ES30.PrimitiveType.Triangles;
 
 			Ambient = world.Map.Type.Ambient;
 		}

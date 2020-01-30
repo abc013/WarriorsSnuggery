@@ -120,7 +120,7 @@ namespace WarriorsSnuggery.Graphics
 			MasterRenderer.Batches++;
 			lock (MasterRenderer.GLLock)
 			{
-				GL.DrawArrays(PrimitiveType.Triangles, 0, Size);
+				GL.DrawArrays(MasterRenderer.PrimitiveType, 0, Size);
 			}
 		}
 

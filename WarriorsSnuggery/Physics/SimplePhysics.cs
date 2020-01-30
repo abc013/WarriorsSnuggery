@@ -12,8 +12,6 @@ namespace WarriorsSnuggery.Physics
 		public readonly int RadiusY;// only for box and drawing
 		public readonly int HeightRadius;
 
-		readonly GraphicsObject circle;
-
 		public CPos Position;
 		public int Height;
 
@@ -25,9 +23,6 @@ namespace WarriorsSnuggery.Physics
 			RadiusX = radiusX;
 			RadiusY = radiusY;
 			HeightRadius = heightradius;
-
-			if (Shape == Shape.CIRCLE)
-				circle = new ColoredCircleRenderable(Color.Magenta, RadiusX * 2 / 1024f, 16, DrawMethod.LINELOOP);
 		}
 
 		public bool Intersects(SimplePhysics other, bool ignoreHeight)
@@ -163,8 +158,7 @@ namespace WarriorsSnuggery.Physics
 			switch (Shape)
 			{
 				case Shape.CIRCLE:
-					circle.SetPosition(Position);
-					circle.Render();
+					ColorManager.DrawCircle(Position, RadiusX / 1024f, Color.Magenta);
 
 					break;
 				case Shape.RECTANGLE:
@@ -184,10 +178,7 @@ namespace WarriorsSnuggery.Physics
 
 		public void Dispose()
 		{
-			if (circle != null)
-			{
-				circle.Dispose();
-			}
+
 		}
 	}
 }

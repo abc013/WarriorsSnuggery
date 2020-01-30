@@ -23,6 +23,9 @@ namespace WarriorsSnuggery
 		public static int TextureShader, FontShader, ShadowShader;
 		static int heightLocation;
 		static readonly int[] locations = new int[12];
+
+		public static PrimitiveType PrimitiveType = PrimitiveType.Triangles;
+
 		public static int GetLocation(int shader, string name)
 		{
 			var shadernum = 4 * (shader - 1);

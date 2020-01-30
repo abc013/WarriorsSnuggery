@@ -19,6 +19,9 @@ namespace WarriorsSnuggery.Graphics
 		static float lineWidth;
 		public const float DefaultLineWidth = 2.0f;
 
+		static BatchObject line;
+		static BatchObject circle;
+
 		public static void ResetLineWidth()
 		{
 			LineWidth = DefaultLineWidth;
@@ -26,7 +29,8 @@ namespace WarriorsSnuggery.Graphics
 
 		public static void Initialize()
 		{
-			line = new ColoredLineRenderable(Color.White, 1f);
+			line = new BatchObject(Mesh.Line(1f, Color.White), Color.White);
+			circle = new BatchObject(Mesh.Circle(1f, Color.White, 32), Color.White);
 			fullscreen_rect = new ColoredRectRenderable(Color.White, WindowInfo.UnitHeight, DrawMethod.TRIANGLE);
 			WindowRescaled();
 
@@ -40,21 +44,28 @@ namespace WarriorsSnuggery.Graphics
 
 		public static void Dispose()
 		{
-			line.Dispose();
 			fullscreen_rect.Dispose();
 			filled_rect.Dispose();
 		}
 
-		static ColoredLineRenderable line;
-
 		public static void DrawLine(CPos start, CPos end, Color color)
 		{
-			line.SetScale((start - end).FlatDist / 1024f);
+			var s = (start - end).FlatDist / 1024f;
+			line.SetScale(new Vector(s, s, s, s));
 			line.SetRotation(new VAngle(0, 0, -(start - end).FlatAngle) - new VAngle(0, 0, 90));
 			line.SetPosition(start);
 			line.SetColor(color);
 
-			line.Render();
+			line.PushToBatchRenderer();
+		}
+
+		public static void DrawCircle(CPos center, float radius, Color color)
+		{
+			circle.SetScale(new Vector(radius * 2, radius * 2, radius * 2, radius * 2));
+			circle.SetPosition(center);
+			circle.SetColor(color);
+
+			circle.PushToBatchRenderer();
 		}
 
 		static ColoredRectRenderable fullscreen_rect;
