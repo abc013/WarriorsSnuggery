@@ -168,14 +168,65 @@ namespace WarriorsSnuggery.Physics
 		{
 			var walls = new List<Wall>();
 
-			var positions = getPositions(Start, Target);
+			var diff = Target - Start;
+			var bounds = world.Map.Bounds;
+			var positions = new List<MPos>();
 
-			// Collision at walls
-			foreach (var pos in positions)
+			var x0 = (int)Math.Round(Start.X / 1024.0);
+			var y0 = (int)Math.Round(Start.Y / 1024.0);
+
+			if (x0 < 0 || y0 < 0 || x0 > world.Map.Bounds.X || y0 > world.Map.Bounds.Y)
+				return 1f;
+
+			positions.Add(new MPos(x0, y0));
+
+			var sx = Math.Sign(diff.X);
+			var sy = Math.Sign(diff.Y);
+
+			var tMaxX = Math.Abs((x0 * 1024.0 - Start.X + 512 * sx) / diff.X);
+			var tMaxY = Math.Abs((y0 * 1024.0 - Start.Y + 512 * sy) / diff.Y);
+			var tDeltaX = Math.Abs(1024.0 / diff.X);
+			var tDeltaY = Math.Abs(1024.0 / diff.Y);
+
+			bool run = true; ;
+			while (run)
 			{
+				if (tMaxX < tMaxY)
+				{
+					tMaxX += tDeltaX;
+					x0 += sx;
+				}
+				else
+				{
+					tMaxY += tDeltaY;
+					y0 += sy;
+				}
+
+				// Map edges as exit conditions
+				if (x0 < 0)
+				{
+					if (sx < 0) break;
+					continue;
+				}
+				if (x0 >= bounds.X)
+				{
+					if (sx > 0) break;
+					continue;
+				}
+				if (y0 < 0)
+				{
+					if (sy < 0) break;
+					continue;
+				}
+				if (y0 >= bounds.Y)
+				{
+					if (sy > 0) break;
+					continue;
+				}
+
 				var walls2 = new Wall[2];
-				walls2[0] = world.WallLayer.Walls[pos.X * 2, pos.Y];
-				walls2[1] = world.WallLayer.Walls[pos.X * 2 + 1, pos.Y];
+				walls2[0] = world.WallLayer.Walls[x0 * 2, y0];
+				walls2[1] = world.WallLayer.Walls[x0 * 2 + 1, y0];
 
 				foreach (var wall in walls2)
 				{
@@ -187,7 +238,13 @@ namespace WarriorsSnuggery.Physics
 					{
 						var end = getIntersection(line.Start, line.End, out var _);
 						if (end != invalid && (Start - end).Dist <= (Start - Target).Dist)
+						{
 							walls.Add(wall);
+
+							// Stop if damage does not get penetrated anyway
+							if (wall.Type.DamagePenetration == 0f)
+								run = false;
+						}
 					}
 				}
 			}
@@ -327,10 +384,6 @@ namespace WarriorsSnuggery.Physics
 		{
 			foreach (var pos in positions)
 				ColorManager.DrawQuad(pos.ToCPos(), 1012, new Color(0, 255, 0, 64));
-
-			ColorManager.LineWidth = 2f;
-			ColorManager.DrawLine(Start, End, Color.Yellow);
-			ColorManager.ResetLineWidth();
 		}
 	}
 }
