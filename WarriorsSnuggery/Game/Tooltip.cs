@@ -58,10 +58,10 @@ namespace WarriorsSnuggery
 
 			ColorManager.DrawRect(position, position + size, new Color(0, 0, 0, 0.8f));
 			ColorManager.LineWidth = 3f;
-			ColorManager.DrawLine(position, position + new CPos(size.X, 0, 0), Color.White);
-			ColorManager.DrawLine(position, position + new CPos(0, size.Y, 0), Color.White);
-			ColorManager.DrawLine(position + new CPos(size.X, 0, 0), position + new CPos(size.X, size.Y, 0), Color.White);
-			ColorManager.DrawLine(position + new CPos(0, size.Y, 0), position + new CPos(size.X, size.Y, 0), Color.White);
+			ColorManager.DrawDot(position, Color.White);
+			ColorManager.DrawDot(position + new CPos(0, size.Y, 0), Color.White);
+			ColorManager.DrawDot(position + new CPos(size.X, 0, 0), Color.White);
+			ColorManager.DrawDot(position + new CPos(size.X, size.Y, 0), Color.White);
 			ColorManager.ResetLineWidth();
 			title.Render();
 			text.Render();
