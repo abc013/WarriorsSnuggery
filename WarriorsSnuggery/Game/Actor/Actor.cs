@@ -276,6 +276,8 @@ namespace WarriorsSnuggery.Objects
 		public void RenderDebug()
 		{
 			Graphics.ColorManager.DrawDot(Position, Color.Blue);
+			if (ActiveWeapon != null)
+				Graphics.ColorManager.DrawCircle(Position, ActiveWeapon.Type.MaxRange / 1024f * 2, Color.Red);
 		}
 
 		public override void Tick()
