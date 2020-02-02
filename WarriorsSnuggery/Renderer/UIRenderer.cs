@@ -14,6 +14,8 @@ namespace WarriorsSnuggery
 
 		static readonly List<IRenderable> beforeRender = new List<IRenderable>();
 		static readonly List<IRenderable> afterRender = new List<IRenderable>();
+		static readonly List<BatchRenderable> actorRender = new List<BatchRenderable>();
+		static readonly List<BatchRenderable> terrainRender = new List<BatchRenderable>();
 
 		static Tooltip tooltip;
 
@@ -26,6 +28,7 @@ namespace WarriorsSnuggery
 			Cursor.Current = CursorType.DEFAULT;
 			UIRenderer.game = game;
 			UIBatchRenderer.Clear();
+			UIBatchRenderer.SetTextures(new[] { UISpriteManager.sheet });
 			Update();
 			ClearRenderLists();
 		}
@@ -39,6 +42,8 @@ namespace WarriorsSnuggery
 		{
 			beforeRender.Clear();
 			afterRender.Clear();
+			actorRender.Clear();
+			terrainRender.Clear();
 			tooltip = null;
 		}
 
@@ -46,10 +51,21 @@ namespace WarriorsSnuggery
 		{
 			UIRenderer.tooltip = tooltip;
 		}
+
 		public static void DisableTooltip(Tooltip tooltip)
 		{
 			if (UIRenderer.tooltip == tooltip)
 				UIRenderer.tooltip = null;
+		}
+
+		public static void RenderActor(BatchRenderable renderable)
+		{
+			actorRender.Add(renderable);
+		}
+
+		public static void RenderTerrain(BatchRenderable renderable)
+		{
+			terrainRender.Add(renderable);
 		}
 
 		public static void RenderAfter(IRenderable renderable)
@@ -88,22 +104,28 @@ namespace WarriorsSnuggery
 
 			foreach (var r in afterRender)
 				r.Render();
-
-			tooltip?.Render();
-
 			var possibleTarget = game.World.LocalPlayer == null ? false : game.FindValidTarget(MouseInput.GamePosition, game.World.LocalPlayer.Team) != null;
+
+			UIBatchRenderer.Render();
+			MasterRenderer.BatchRenderer = null;
+
+			WorldRenderer.RenderActors(actorRender);
+			actorRender.Clear();
+			WorldRenderer.RenderTerrain(terrainRender);
+			terrainRender.Clear();
+
 			if (Settings.EnableDebug)
 			{
-				Graphics.ColorManager.DrawRect(new CPos(-64, -64, 0), new CPos(64, 64, 0), Color.Cyan);
-				Graphics.ColorManager.DrawRect(MouseInput.WindowPosition + new CPos(-64, -64, 0), MouseInput.WindowPosition + new CPos(64, 64, 0), possibleTarget ? Color.Red : Color.Blue);
+				ColorManager.DrawRect(new CPos(-64, -64, 0), new CPos(64, 64, 0), Color.Cyan);
+				ColorManager.DrawRect(MouseInput.WindowPosition + new CPos(-64, -64, 0), MouseInput.WindowPosition + new CPos(64, 64, 0), possibleTarget ? Color.Red : Color.Blue);
 			}
 			else
 			{
 				Cursor.Current = possibleTarget ? CursorType.ATTACK : CursorType.DEFAULT;
 				Cursor.Render();
 			}
-			UIBatchRenderer.Render();
-			MasterRenderer.BatchRenderer = null;
+
+			tooltip?.Render();
 		}
 	}
 }

@@ -11,7 +11,7 @@ namespace WarriorsSnuggery.UI
 		readonly TextLine health;
 		readonly TextLine mana;
 
-		readonly ImageRenderable money;
+		readonly BatchObject money;
 		readonly TextLine moneyText;
 		readonly TextLine menu, pause;
 		readonly TextLine waveText;
@@ -45,7 +45,7 @@ namespace WarriorsSnuggery.UI
 					actorTypes.Add(a);
 					var sprite = a.GetPreviewSprite();
 					var scale = (sprite.Width > sprite.Height ? 24f / sprite.Width : 24f / sprite.Height) - 0.1f;
-					actorList.Add(new PanelItem(CPos.Zero, new ImageRenderable(sprite), new MPos(512, 512), n.ToLowerInvariant(), new[] { Color.Grey + "Cost: " + a.Playable.Cost.ToString() }, () => { changePlayer(game.World.LocalPlayer, a); })
+					actorList.Add(new PanelItem(CPos.Zero, new BatchObject(sprite, Color.White), new MPos(512, 512), n.ToLowerInvariant(), new[] { Color.Grey + "Cost: " + a.Playable.Cost.ToString() }, () => { changePlayer(game.World.LocalPlayer, a); }, true)
 					{
 						Scale = scale
 					});
@@ -66,16 +66,16 @@ namespace WarriorsSnuggery.UI
 			background = new Panel(new CPos(0, (int)(WindowInfo.UnitHeight * 512) - 3072 / 2 + 64, 0), new MPos(8192 / 64 * 6, (3072 - 64) / 64 / 2 * 3), PanelManager.Get("wooden"));
 
 			// SECTION MONEY
-			money = new ImageRenderable(TextureManager.Texture("UI_money"));
+			money = new BatchObject(UITextureManager.Get("UI_money")[0], Color.White);
 			money.SetPosition(new CPos((int)(WindowInfo.UnitWidth * 512) - 4096 + 512, 8192 - 1024, 0));
 			moneyText = new TextLine(new CPos((int)(WindowInfo.UnitWidth * 512) - 4096 + 1536, 8192 - 1024, 0), IFont.Papyrus24);
 			moneyText.SetText(game.Statistics.Money);
 
 			// SECTION MENUS
-			pause = new TextLine(new CPos((int)-2048, 8192 - 256, 0), IFont.Pixel16, TextLine.OffsetType.MIDDLE);
+			pause = new TextLine(new CPos(-2048, 8192 - 256, 0), IFont.Pixel16, TextLine.OffsetType.MIDDLE);
 			pause.WriteText("Pause: '" + new Color(0.5f, 0.5f, 1f) + "P" + Color.White + "'");
 
-			menu = new TextLine(new CPos((int)2048, 8192 - 256, 0), IFont.Pixel16, TextLine.OffsetType.MIDDLE);
+			menu = new TextLine(new CPos(2048, 8192 - 256, 0), IFont.Pixel16, TextLine.OffsetType.MIDDLE);
 			menu.WriteText("Menu: '" + new Color(0.5f, 0.5f, 1f) + "Escape" + Color.White + "'");
 
 			// SECTION HEALTH
@@ -153,7 +153,7 @@ namespace WarriorsSnuggery.UI
 			if (!Settings.EnableInfoScreen)
 			{
 				ColorManager.DrawRect(new CPos((int)(WindowInfo.UnitWidth * 512) - 4096 - 512, 8192, 0), new CPos((int)(WindowInfo.UnitWidth * 512) - 1024 + 512, 8192 - 2560, 0), new Color(0, 0, 0, 128));
-				money.Render();
+				money.PushToBatchRenderer();
 				moneyText.Render();
 			}
 

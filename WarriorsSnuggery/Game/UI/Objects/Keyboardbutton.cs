@@ -47,8 +47,8 @@ namespace WarriorsSnuggery.Objects
 		}
 		float scale = 1f;
 
-		readonly ImageRenderable released;
-		readonly ImageRenderable pressed;
+		readonly BatchObject released;
+		readonly BatchObject pressed;
 		readonly TextRenderable keyDisplay;
 
 		int blinkTick;
@@ -58,14 +58,13 @@ namespace WarriorsSnuggery.Objects
 
 		public char Key;
 
-		public KeyboardButton(CPos position, char key, TextureInfo buttons, IFont font, Color color)
+		public KeyboardButton(CPos position, char key, ITexture[] textures, IFont font, Color color)
 		{
 			Key = key;
-			var textures = TextureManager.Sprite(buttons);
 
-			released = new ImageRenderable(textures[0]);
+			released = new BatchObject(textures[0], Color.White);
 			released.SetPosition(position);
-			pressed = new ImageRenderable(textures[1]);
+			pressed = new BatchObject(textures[1], Color.White);
 			pressed.SetPosition(position);
 			keyDisplay = new TextRenderable(position, font, key, color);
 
@@ -77,12 +76,12 @@ namespace WarriorsSnuggery.Objects
 			if (KeyInput.IsKeyDown(Key + ""))
 			{
 				keyDisplay.SetPosition(Position + new CPos(50, 50, 0));
-				pressed.Render();
+				pressed.PushToBatchRenderer();
 			}
 			else
 			{
 				keyDisplay.SetPosition(Position + new CPos(50, -100, 0));
-				released.Render();
+				released.PushToBatchRenderer();
 			}
 			if (blinkTick < 10)
 				keyDisplay.Render();

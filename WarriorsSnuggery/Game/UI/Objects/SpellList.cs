@@ -5,7 +5,7 @@ namespace WarriorsSnuggery.UI
 {
 	public class SpellList : PanelList
 	{
-		readonly ImageRenderable selector;
+		readonly BatchObject selector;
 		public int CurrentSpell
 		{
 			get
@@ -27,14 +27,14 @@ namespace WarriorsSnuggery.UI
 
 		public SpellList(CPos pos, MPos bounds, MPos itemSize, PanelType type) : base(pos, bounds, itemSize, type)
 		{
-			selector = new ImageRenderable(TextureManager.Texture("UI_selector1"));
+			selector = new BatchObject(UITextureManager.Get("UI_selector1")[0], Color.White);
 		}
 
 		public override void Render()
 		{
 			base.Render();
 			selector.SetPosition(Container[currentSpell].Position + new CPos(0, -688, 0));
-			selector.Render();
+			selector.PushToBatchRenderer();
 		}
 	}
 }

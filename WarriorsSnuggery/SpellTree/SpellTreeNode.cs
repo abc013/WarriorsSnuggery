@@ -25,7 +25,7 @@ namespace WarriorsSnuggery.Spells
 		[Desc("Icon of the spell.")]
 		public readonly TextureInfo Icon;
 
-		public readonly IImage[] Images;
+		public readonly ITexture[] Textures;
 
 		public SpellTreeNode(MiniTextNode[] nodes, string name, bool documentation = false)
 		{
@@ -35,10 +35,7 @@ namespace WarriorsSnuggery.Spells
 			{
 				InnerName = name;
 				Name = name.Replace('_', ' ');
-				var textures = SpriteManager.AddTexture(Icon);
-				Images = new IImage[textures.Length];
-				for (int i = 0; i < Images.Length; i++)
-					Images[i] = IImage.Create(Mesh.Image(textures[i], Color.White), textures[i]);
+				Textures = UISpriteManager.AddTexture(Icon);
 			}
 		}
 

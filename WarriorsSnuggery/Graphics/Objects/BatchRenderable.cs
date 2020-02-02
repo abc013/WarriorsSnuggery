@@ -51,6 +51,11 @@ namespace WarriorsSnuggery.Graphics
 			MatrixChanged = true;
 		}
 
+		public virtual void SetScale(float scale)
+		{
+			SetScale(new Vector3(scale));
+		}
+
 		public virtual void SetScale(Vector scale)
 		{
 			SetScale(((Vector4)scale).Xyz);

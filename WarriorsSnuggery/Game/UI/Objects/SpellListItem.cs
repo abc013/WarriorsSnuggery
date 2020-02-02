@@ -13,7 +13,7 @@ namespace WarriorsSnuggery.UI
 		readonly bool unlocked;
 		int progress;
 
-		public SpellListItem(CPos pos, MPos size, SpellTreeNode node, SpellCaster caster, Game game, bool showDesc) : base(pos, new IImageSequenceRenderable(node.Images, node.Icon.Tick), size, node.Name, node.GetInformation(showDesc), null)
+		public SpellListItem(CPos pos, MPos size, SpellTreeNode node, SpellCaster caster, Game game, bool showDesc) : base(pos, new BatchSequence(node.Textures, node.Icon.Tick), size, node.Name, node.GetInformation(showDesc), null)
 		{
 			this.caster = caster;
 			this.game = game;

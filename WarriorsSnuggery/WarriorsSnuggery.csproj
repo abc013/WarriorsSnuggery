@@ -109,6 +109,8 @@
     <Compile Include="Graphics\BatchRenderer.cs" />
     <Compile Include="Graphics\Objects\BatchRenderable.cs" />
     <Compile Include="Graphics\Objects\BatchSequence.cs" />
+    <Compile Include="Graphics\UISpriteManager.cs" />
+    <Compile Include="Graphics\UITextureManager.cs" />
     <Compile Include="Loader\WavLoader.cs" />
     <Compile Include="Map\PieceManager.cs" />
     <Compile Include="Map\SmudgeLayer.cs" />
@@ -122,7 +124,6 @@
     <Compile Include="Game\Actor\Parts\AnimatedSpritePart.cs" />
     <Compile Include="Game\Actor\Parts\BotPart.cs" />
     <Compile Include="Game\Actor\Parts\CollectablePart.cs" />
-    <Compile Include="Game\Actor\Parts\DebugPart.cs" />
     <Compile Include="Description.cs" />
     <Compile Include="Game\Actor\Parts\HealthPart.cs" />
     <Compile Include="Game\Actor\Parts\MobilityPart.cs" />

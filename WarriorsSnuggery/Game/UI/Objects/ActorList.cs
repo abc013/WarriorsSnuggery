@@ -5,7 +5,7 @@ namespace WarriorsSnuggery.UI
 {
 	public class ActorList : PanelList
 	{
-		readonly ImageRenderable selector;
+		readonly BatchObject selector;
 		public int CurrentActor
 		{
 			get
@@ -27,14 +27,14 @@ namespace WarriorsSnuggery.UI
 
 		public ActorList(CPos pos, MPos bounds, MPos itemSize, PanelType type) : base(pos, bounds, itemSize, type)
 		{
-			selector = new ImageRenderable(TextureManager.Texture("UI_selector2"));
+			selector = new BatchObject(UITextureManager.Get("UI_selector2")[0], Color.White);
 		}
 
 		public override void Render()
 		{
 			base.Render();
 			selector.SetPosition(Container[currentActor].Position + new CPos(-712, 0, 0));
-			selector.Render();
+			selector.PushToBatchRenderer();
 		}
 	}
 }

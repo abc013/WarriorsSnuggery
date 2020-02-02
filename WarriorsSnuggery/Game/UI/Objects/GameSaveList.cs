@@ -1,16 +1,16 @@
-﻿namespace WarriorsSnuggery.UI
+﻿
+
+namespace WarriorsSnuggery.UI
 {
 	class GameSaveList : PanelList
 	{
-		readonly string saveTexture;
 		readonly MPos size;
-		public GameSaveList(CPos pos, MPos size, PanelType type, string saveTexture) : base(pos, size, new MPos(size.X, 1024), type)
+		public GameSaveList(CPos pos, MPos size, PanelType type) : base(pos, size, new MPos(size.X, 1024), type)
 		{
 			this.size = size;
-			this.saveTexture = saveTexture;
 			foreach (var statistic in GameSaveManager.Statistics)
 				if (statistic.Name != "DEFAULT")
-					Add(new GameSaveItem(CPos.Zero, statistic, saveTexture, size.X, () => { }));
+					Add(new GameSaveItem(CPos.Zero, statistic, size.X, () => { }));
 		}
 
 		public void Refresh()
@@ -22,7 +22,7 @@
 			foreach (var statistic in GameSaveManager.Statistics)
 			{
 				if (statistic.Name != "DEFAULT")
-					Add(new GameSaveItem(CPos.Zero, statistic, saveTexture, size.X, () => { }));
+					Add(new GameSaveItem(CPos.Zero, statistic, size.X, () => { }));
 			}
 		}
 

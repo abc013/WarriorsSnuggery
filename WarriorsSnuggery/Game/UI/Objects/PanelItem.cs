@@ -44,7 +44,7 @@ namespace WarriorsSnuggery.UI
 		}
 		float scale = 1f;
 
-		readonly GraphicsObject renderable;
+		readonly BatchRenderable renderable;
 		readonly Action action;
 		protected readonly MPos size;
 
@@ -52,13 +52,19 @@ namespace WarriorsSnuggery.UI
 
 		protected readonly Tooltip tooltip;
 
-		public PanelItem(CPos pos, GraphicsObject renderable, MPos size, string title, string[] text, Action action)
+		readonly bool terrain;
+		readonly bool actor;
+
+		public PanelItem(CPos pos, BatchRenderable renderable, MPos size, string title, string[] text, Action action, bool actor = false, bool terrain = false)
 		{
 			tooltip = new Tooltip(pos, title, text);
 			this.renderable = renderable;
 			this.action = action;
 			this.size = size;
 			position = pos;
+
+			this.actor = actor;
+			this.terrain = terrain;
 		}
 
 		public virtual void SetColor(Color color)
@@ -68,7 +74,12 @@ namespace WarriorsSnuggery.UI
 
 		public virtual void Render()
 		{
-			renderable.Render();
+			if (actor)
+				UIRenderer.RenderActor(renderable);
+			else if (terrain)
+				UIRenderer.RenderTerrain(renderable);
+			else
+				renderable.PushToBatchRenderer();
 		}
 
 		public virtual void Tick()

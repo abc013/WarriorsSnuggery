@@ -18,7 +18,6 @@ namespace WarriorsSnuggery
 		public static void Load()
 		{
 			RuleLoader.LoadRules();
-			RuleLoader.LoadUIRules();
 
 			PieceManager.RefreshPieces();
 

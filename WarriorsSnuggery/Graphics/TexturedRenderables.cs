@@ -56,35 +56,4 @@ namespace WarriorsSnuggery.Graphics
 
 		public ImageRenderable(ITexture texture, MPos size, float scale = 1f) : base(IImage.Create(Mesh.PixelOrientedPlane(scale, size.X, size.Y, Color.White), texture)) { }
 	}
-
-	public class IImageSequenceRenderable : GraphicsObject
-	{
-		readonly IImage[] images;
-		readonly int tick;
-		readonly bool pauseable;
-		int curTick;
-		int curImage;
-
-		// Create empty GraphicsObject
-		public IImageSequenceRenderable(IImage[] images, int tick, bool pauseable = false) : base(null)
-		{
-			this.images = images;
-			this.tick = tick;
-			this.pauseable = pauseable;
-			curTick = tick;
-		}
-
-		public override void Render()
-		{
-			if (!(pauseable && MasterRenderer.PauseSequences) && curTick-- <= 0)
-			{
-				curTick = tick;
-				curImage++;
-				if (curImage >= images.Length)
-					curImage = 0;
-			}
-			renderable = images[curImage];
-			base.Render();
-		}
-	}
 }

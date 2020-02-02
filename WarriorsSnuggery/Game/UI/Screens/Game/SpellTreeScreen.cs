@@ -1,4 +1,6 @@
+using System;
 using System.Collections.Generic;
+using System.Linq;
 using WarriorsSnuggery.Graphics;
 using WarriorsSnuggery.Objects;
 using WarriorsSnuggery.Spells;
@@ -9,13 +11,13 @@ namespace WarriorsSnuggery.UI
 	{
 		readonly Game game;
 
-		readonly ImageRenderable money;
+		readonly BatchObject money;
 		readonly TextLine moneyText;
 		int cashCooldown;
 		int lastCash;
 
 		readonly SpellNode[] tree;
-		readonly List<CPos[]> lines = new List<CPos[]>();
+		readonly List<SpellConnection> lines = new List<SpellConnection>();
 
 		public SpellTreeScreen(Game game) : base("Spell Tree")
 		{
@@ -25,26 +27,29 @@ namespace WarriorsSnuggery.UI
 			Content.Add(ButtonCreator.Create("wooden", new CPos(0, 6144, 0), "Resume", () => { game.Pause(false); game.ScreenControl.ShowScreen(ScreenType.DEFAULT); }));
 			Content.Add(new Panel(new CPos(0, 1024, 0), new MPos(8192 / 64 * 3, 4096 / 64 * 3), PanelManager.Get("wooden")));
 
-			money = new ImageRenderable(TextureManager.Texture("UI_money"));
+			money = new BatchObject(UITextureManager.Get("UI_money")[0], Color.White);
 			money.SetPosition(new CPos(-(int)(WindowInfo.UnitWidth / 2 * 1024) + 1024, 7192, 0));
 
 			moneyText = new TextLine(new CPos(-(int)(WindowInfo.UnitWidth / 2 * 1024) + 2048, 7192, 0), IFont.Papyrus24);
 			moneyText.SetText(game.Statistics.Money);
 
+			var active = UITextureManager.Get("UI_activeConnection");
+			var inactive = UITextureManager.Get("UI_inactiveConnection");
 			tree = new SpellNode[SpellTreeLoader.SpellTree.Count];
 			for (int i = 0; i < tree.Length; i++)
 			{
-				var e = SpellTreeLoader.SpellTree[i];
-				var position = new CPos(-4096, -2048, 0) + e.Position.ToCPos();
-				SpellNode spell = new SpellNode(position, e, game);
+				var origin = SpellTreeLoader.SpellTree[i];
+				var position = new CPos(-4096, -2048, 0) + origin.Position.ToCPos();
+				SpellNode spell = new SpellNode(position, origin, game);
 				tree[i] = spell;
-				foreach (var connection in e.Before)
+				foreach (var connection in origin.Before)
 				{
 					if (connection == "")
 						continue;
 
-					var positionTo = new CPos(-4096, -2048, 0) + SpellTreeLoader.SpellTree.Find(s => s.InnerName == connection).Position.ToCPos();
-					lines.Add(new[] { position, positionTo });
+					var target = SpellTreeLoader.SpellTree.Find(s => s.InnerName == connection);
+					var line = new SpellConnection(game, origin, target, active, inactive, 10);
+					lines.Add(line);
 				}
 			}
 		}
@@ -54,15 +59,12 @@ namespace WarriorsSnuggery.UI
 			base.Render();
 
 			foreach (var line in lines)
-			{
-				ColorManager.DrawLine(line[0], line[1], Color.Green);
-			}
+				line.Render();
+			
 			foreach (var panel in tree)
-			{
 				panel.Render();
-			}
 
-			money.Render();
+			money.PushToBatchRenderer();
 			moneyText.Render();
 		}
 
@@ -71,9 +73,7 @@ namespace WarriorsSnuggery.UI
 			base.Tick();
 
 			foreach (var panel in tree)
-			{
 				panel.Tick();
-			}
 
 			if (KeyInput.IsKeyDown("escape", 10))
 			{
@@ -112,7 +112,7 @@ namespace WarriorsSnuggery.UI
 		readonly SpellTreeNode node;
 		readonly Game game;
 
-		readonly IImageSequenceRenderable image;
+		readonly BatchSequence image;
 		readonly Tooltip tooltip;
 		bool mouseOnItem;
 
@@ -120,7 +120,7 @@ namespace WarriorsSnuggery.UI
 		{
 			this.node = node;
 			this.game = game;
-			image = new IImageSequenceRenderable(node.Images, node.Icon.Tick);
+			image = new BatchSequence(node.Textures, node.Icon.Tick);
 			image.SetPosition(position);
 
 			tooltip = new Tooltip(position, node.Name + " : " + node.Cost, node.GetInformation(true));
@@ -150,7 +150,7 @@ namespace WarriorsSnuggery.UI
 		{
 			base.Render();
 
-			image.Render();
+			image.PushToBatchRenderer();
 		}
 
 		void checkMouse()
@@ -194,13 +194,9 @@ namespace WarriorsSnuggery.UI
 				game.Statistics.Money -= node.Cost;
 				HighlightVisible = true;
 				if (game.Statistics.UnlockedSpells.ContainsKey(node.InnerName))
-				{
 					game.Statistics.UnlockedSpells[node.InnerName] = true;
-				}
 				else
-				{
 					game.Statistics.UnlockedSpells.Add(node.InnerName, true);
-				}
 			}
 		}
 
@@ -209,6 +205,86 @@ namespace WarriorsSnuggery.UI
 			tooltip.Dispose();
 
 			base.Dispose();
+		}
+	}
+
+	class SpellConnection : IRenderable
+	{
+		public bool Active
+		{
+			set
+			{
+				renderables = value ? active : inactive;
+			}
+		}
+
+		readonly Game game;
+
+		readonly CPos originPos;
+		readonly SpellTreeNode target;
+		readonly CPos targetPos;
+
+		readonly int renderabledistance;
+		readonly BatchRenderable[] inactive;
+		readonly BatchRenderable[] active;
+		BatchRenderable[] renderables;
+		readonly int tick;
+		int curTick;
+		int frame;
+
+		public SpellConnection(Game game, SpellTreeNode origin, SpellTreeNode target, ITexture[] active, ITexture[] inactive, int tick)
+		{
+			this.game = game;
+			originPos = new CPos(-4096, -2048, 0) + origin.Position.ToCPos();
+			this.target = target;
+			targetPos = new CPos(-4096, -2048, 0) + target.Position.ToCPos();
+			this.active = new BatchRenderable[active.Length];
+			for (int i = 0; i < active.Length; i++)
+				this.active[i] = new BatchObject(Mesh.Image(active[i], Color.White), Color.White);
+			this.inactive = new BatchRenderable[inactive.Length];
+			for (int i = 0; i < inactive.Length; i++)
+				this.inactive[i] = new BatchObject(Mesh.Image(inactive[i], Color.White), Color.White);
+			this.tick = tick;
+
+			renderabledistance = 1024 * active[0].Height / MasterRenderer.PixelSize;
+			Active = false;
+		}
+
+		public void Render()
+		{
+			if (target.Unlocked || game.Statistics.UnlockedSpells.ContainsKey(target.InnerName) && game.Statistics.UnlockedSpells[target.InnerName])
+				Active = true;
+
+			curTick--;
+			if (curTick < 0)
+			{
+				frame++;
+				if (frame >= renderables.Length)
+					frame = 0;
+
+				curTick = tick;
+			}
+
+			var distance = (originPos - targetPos).FlatDist;
+			var angle = (originPos - targetPos).FlatAngle;
+			var fit = distance / renderabledistance;
+
+			var curFrame = frame;
+			for (int i = 0; i < fit; i++)
+			{
+				var renderable = renderables[curFrame];
+
+				var posX = (int)(Math.Cos(angle) * i * renderabledistance);
+				var posY = (int)(Math.Sin(angle) * i * renderabledistance);
+
+				renderable.SetRotation(new VAngle(0, 0, -angle) + new VAngle(0, 0, 270));
+				renderable.SetPosition(originPos + new CPos(posX, posY, 0));
+				renderable.PushToBatchRenderer();
+
+				curFrame--;
+				if (curFrame < 0)
+					curFrame = renderables.Length - 1;
+			}
 		}
 	}
 }

@@ -22,7 +22,7 @@ namespace WarriorsSnuggery.UI
 			Content.Add(ButtonCreator.Create("wooden", new CPos(2048, 6144, 0), "Back", () => game.ChangeScreen(ScreenType.SETTINGS)));
 			Content.Add(ButtonCreator.Create("wooden", new CPos(-2048, 6144, 0), "Save", save));
 
-			var texture = new TextureInfo("keyboard", TextureType.ANIMATION, 10, 24, 24);
+			var texture = UITextureManager.Get("keyboard");
 
 			var tPause = new TextLine(new CPos(-2048, -3072, 0), IFont.Pixel16);
 			tPause.SetText("Pause/unpause");

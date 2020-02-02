@@ -25,15 +25,16 @@ namespace WarriorsSnuggery.Objects
 			if (rawimage != null)
 			{
 				var image = rawimage as SpritePartInfo;
-				return TextureManager.Sprite(new TextureInfo(image.Name, TextureType.ANIMATION, 0, image.Dimensions.X, image.Dimensions.Y))[0];
+				return image.Textures[0];
 			}
 			var rawsprite = PartInfos.Where(s => s is AnimatedSpritePartInfo).FirstOrDefault(s => (s as AnimatedSpritePartInfo).UseAsPreview);
 			if (rawsprite != null)
 			{
 				var image = rawsprite as AnimatedSpritePartInfo;
-				return TextureManager.Sprite(new TextureInfo(image.Name, TextureType.ANIMATION, image.Tick, image.Dimensions.X, image.Dimensions.Y))[0];
+				return image.Textures[0];
 			}
 
+			// TODO
 			return TextureManager.Texture("questionmark");
 		}
 	}

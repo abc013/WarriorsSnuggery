@@ -4,18 +4,21 @@ namespace WarriorsSnuggery.UI
 {
 	public class CheckBoxType
 	{
-		public readonly GraphicsObject Default;
-		public readonly GraphicsObject Checked;
-		public readonly GraphicsObject Click;
+		public readonly BatchObject Default;
+		public readonly BatchObject Checked;
+		public readonly BatchObject Click;
 
 		public readonly float Height;
 		public readonly float Width;
 
-		public CheckBoxType(GraphicsObject @default, GraphicsObject @checked, GraphicsObject click, float height, float width)
+		public CheckBoxType(ITexture @default, ITexture @checked, ITexture click, float height, float width)
 		{
-			Default = @default;
-			Checked = @checked;
-			Click = click;
+			Default = new BatchObject(@default, Color.White);
+			Default.SetScale(1.5f);
+			Checked = new BatchObject(@checked, Color.White);
+			Checked.SetScale(1.5f);
+			Click = new BatchObject(click, Color.White);
+			Click.SetScale(1.5f);
 
 			Height = height * 512;
 			Width = width * 512;
