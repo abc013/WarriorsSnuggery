@@ -170,15 +170,12 @@ namespace WarriorsSnuggery.Physics
 
 			var diff = Target - Start;
 			var bounds = world.Map.Bounds;
-			var positions = new List<MPos>();
 
 			var x0 = (int)Math.Round(Start.X / 1024.0);
 			var y0 = (int)Math.Round(Start.Y / 1024.0);
 
 			if (x0 < 0 || y0 < 0 || x0 > world.Map.Bounds.X || y0 > world.Map.Bounds.Y)
 				return 1f;
-
-			positions.Add(new MPos(x0, y0));
 
 			var sx = Math.Sign(diff.X);
 			var sy = Math.Sign(diff.Y);
@@ -188,7 +185,7 @@ namespace WarriorsSnuggery.Physics
 			var tDeltaX = Math.Abs(1024.0 / diff.X);
 			var tDeltaY = Math.Abs(1024.0 / diff.Y);
 
-			bool run = true; ;
+			bool run = true;
 			while (run)
 			{
 				if (tMaxX < tMaxY)
