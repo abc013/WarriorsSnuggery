@@ -17,7 +17,7 @@ namespace WarriorsSnuggery.Objects.Parts
 			return new WeaponPart(self, this);
 		}
 
-		public WeaponPartInfo(MiniTextNode[] nodes) : base(nodes)
+		public WeaponPartInfo(string internalName, MiniTextNode[] nodes) : base(internalName, nodes)
 		{
 
 		}

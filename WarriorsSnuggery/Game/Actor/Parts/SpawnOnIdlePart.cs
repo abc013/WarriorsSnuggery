@@ -34,7 +34,7 @@ namespace WarriorsSnuggery.Objects.Parts
 			return new SpawnOnIdlePart(self, this);
 		}
 
-		public SpawnOnIdlePartInfo(MiniTextNode[] nodes) : base(nodes)
+		public SpawnOnIdlePartInfo(string internalName, MiniTextNode[] nodes) : base(internalName, nodes)
 		{
 
 		}

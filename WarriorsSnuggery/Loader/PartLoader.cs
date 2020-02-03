@@ -19,34 +19,27 @@ namespace WarriorsSnuggery.Loader
 				}
 				throw new YamlUnknownNodeException(node.Key, info.GetType().Name);
 			}
-			// other variant
-			//foreach (var attrib in info.GetType().GetFields().Where(f => f.IsInitOnly))
-			//{
-			//	var type = attrib.FieldType;
-			//	var node = nodes.FirstOrDefault(n => n.Key == attrib.Name);
-
-			//	if (node != null)
-			//		attrib.SetValue(info, node.Convert(type));
-			//}
-		}
-
-		public static bool IsPart(string name)
-		{
-			return name.Contains("@");
 		}
 
 		public static PartInfo GetPart(string name, MiniTextNode[] nodes)
 		{
-			if (!IsPart(name))
-				return null;
-
-			name = name.Remove(0, name.IndexOf('@') + 1);
+			var split = name.Split('@');
+			var internalName = "";
+			if (split.Length == 1)
+			{
+				name = split[0];
+			}
+			else
+			{
+				name = split[1];
+				internalName = split[0];
+			}
 
 			try
 			{
 				var type = Type.GetType("WarriorsSnuggery.Objects.Parts." + name + "PartInfo", true, true);
 
-				return (PartInfo)Activator.CreateInstance(type, new[] { nodes });
+				return (PartInfo)Activator.CreateInstance(type, new object[] { internalName, nodes });
 			}
 			catch (Exception e)
 			{

@@ -32,7 +32,7 @@ namespace WarriorsSnuggery.Objects.Parts
 			return new SpawnOnDamagePart(self, this);
 		}
 
-		public SpawnOnDamagePartInfo(MiniTextNode[] nodes) : base(nodes)
+		public SpawnOnDamagePartInfo(string internalName, MiniTextNode[] nodes) : base(internalName, nodes)
 		{
 
 		}

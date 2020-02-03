@@ -36,7 +36,7 @@ namespace WarriorsSnuggery.Objects.Parts
 			return new WorldPart(self, this);
 		}
 
-		public WorldPartInfo(MiniTextNode[] nodes) : base(nodes)
+		public WorldPartInfo(string internalName, MiniTextNode[] nodes) : base(internalName, nodes)
 		{
 
 		}

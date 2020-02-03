@@ -13,7 +13,7 @@
 			return new HealthPart(self, this);
 		}
 
-		public HealthPartInfo(MiniTextNode[] nodes) : base(nodes)
+		public HealthPartInfo(string internalName, MiniTextNode[] nodes) : base(internalName, nodes)
 		{
 			if (StartHealth == 0)
 				StartHealth = MaxHealth;

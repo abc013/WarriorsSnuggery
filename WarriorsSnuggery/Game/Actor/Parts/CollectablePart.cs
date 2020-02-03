@@ -52,7 +52,7 @@ namespace WarriorsSnuggery.Objects.Parts
 		[Desc("Text field for the effect.")]
 		public readonly string Text;
 
-		public CollectablePartInfo(MiniTextNode[] nodes) : base(nodes) { }
+		public CollectablePartInfo(string internalName, MiniTextNode[] nodes) : base(internalName, nodes) { }
 
 		public override ActorPart Create(Actor self)
 		{

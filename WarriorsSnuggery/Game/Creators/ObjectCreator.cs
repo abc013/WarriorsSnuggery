@@ -21,19 +21,7 @@ namespace WarriorsSnuggery
 				var partinfos = new List<PartInfo>();
 
 				foreach (var child in actor.Children)
-				{
-					if (Loader.PartLoader.IsPart(child.Key))
-					{
-						var part = Loader.PartLoader.GetPart(child.Key, child.Children.ToArray());
-
-						partinfos.Add(part);
-						continue;
-					}
-					else
-					{
-						throw new YamlUnknownNodeException(child.Key, name);
-					}
-				}
+					partinfos.Add(Loader.PartLoader.GetPart(child.Key, child.Children.ToArray()));
 
 				var physics = (PhysicsPartInfo)partinfos.Find(p => p is PhysicsPartInfo);
 				var playable = (PlayablePartInfo)partinfos.Find(p => p is PlayablePartInfo);

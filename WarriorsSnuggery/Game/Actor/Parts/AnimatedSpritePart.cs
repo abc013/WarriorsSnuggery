@@ -36,7 +36,7 @@ namespace WarriorsSnuggery.Objects.Parts
 			return new AnimatedSpritePart(self, this);
 		}
 
-		public AnimatedSpritePartInfo(MiniTextNode[] nodes) : base(nodes)
+		public AnimatedSpritePartInfo(string internalName, MiniTextNode[] nodes) : base(internalName, nodes)
 		{
 			if (Name != null)
 				Textures = SpriteManager.AddTexture(new TextureInfo(Name, TextureType.ANIMATION, Tick, Dimensions.X, Dimensions.Y));

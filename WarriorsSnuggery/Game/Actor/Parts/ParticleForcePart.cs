@@ -23,7 +23,7 @@ namespace WarriorsSnuggery.Objects.Parts
 		[Desc("Determines whether the force should only applied if the actor is a player.")]
 		public readonly bool AffectOnlyWhenPlayer = false;
 
-		public ParticleForcePartInfo(MiniTextNode[] nodes) : base(nodes) { }
+		public ParticleForcePartInfo(string internalName, MiniTextNode[] nodes) : base(internalName, nodes) { }
 
 		public override ActorPart Create(Actor self)
 		{

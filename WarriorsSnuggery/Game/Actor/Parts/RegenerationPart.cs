@@ -15,7 +15,7 @@
 			return new RegenerationPart(self, this);
 		}
 
-		public RegenerationPartInfo(MiniTextNode[] nodes) : base(nodes)
+		public RegenerationPartInfo(string internalName, MiniTextNode[] nodes) : base(internalName, nodes)
 		{
 
 		}

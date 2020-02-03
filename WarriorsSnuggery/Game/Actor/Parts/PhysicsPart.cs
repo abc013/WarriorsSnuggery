@@ -13,7 +13,7 @@
 			return new PhysicsPart(self, this);
 		}
 
-		public PhysicsPartInfo(MiniTextNode[] nodes) : base(nodes)
+		public PhysicsPartInfo(string internalName, MiniTextNode[] nodes) : base(internalName, nodes)
 		{
 
 		}

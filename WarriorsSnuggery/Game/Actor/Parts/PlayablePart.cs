@@ -18,7 +18,7 @@
 			return new PlayablePart(self, this);
 		}
 
-		public PlayablePartInfo(MiniTextNode[] nodes) : base(nodes)
+		public PlayablePartInfo(string internalName, MiniTextNode[] nodes) : base(internalName, nodes)
 		{
 
 		}

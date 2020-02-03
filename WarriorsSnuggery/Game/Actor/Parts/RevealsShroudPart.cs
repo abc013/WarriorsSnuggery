@@ -14,7 +14,7 @@
 			return new RevealsShroudPart(self, this);
 		}
 
-		public RevealsShroudPartInfo(MiniTextNode[] nodes) : base(nodes)
+		public RevealsShroudPartInfo(string internalName, MiniTextNode[] nodes) : base(internalName, nodes)
 		{
 
 		}
