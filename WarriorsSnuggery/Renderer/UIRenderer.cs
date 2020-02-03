@@ -14,8 +14,6 @@ namespace WarriorsSnuggery
 
 		static readonly List<IRenderable> beforeRender = new List<IRenderable>();
 		static readonly List<IRenderable> afterRender = new List<IRenderable>();
-		static readonly List<BatchRenderable> actorRender = new List<BatchRenderable>();
-		static readonly List<BatchRenderable> terrainRender = new List<BatchRenderable>();
 
 		static Tooltip tooltip;
 
@@ -44,8 +42,6 @@ namespace WarriorsSnuggery
 		{
 			beforeRender.Clear();
 			afterRender.Clear();
-			actorRender.Clear();
-			terrainRender.Clear();
 			tooltip = null;
 		}
 
@@ -58,16 +54,6 @@ namespace WarriorsSnuggery
 		{
 			if (UIRenderer.tooltip == tooltip)
 				UIRenderer.tooltip = null;
-		}
-
-		public static void RenderActor(BatchRenderable renderable)
-		{
-			actorRender.Add(renderable);
-		}
-
-		public static void RenderTerrain(BatchRenderable renderable)
-		{
-			terrainRender.Add(renderable);
 		}
 
 		public static void RenderAfter(IRenderable renderable)
@@ -110,11 +96,6 @@ namespace WarriorsSnuggery
 
 			BatchRenderer.Render();
 			MasterRenderer.BatchRenderer = null;
-
-			WorldRenderer.RenderActors(actorRender);
-			actorRender.Clear();
-			WorldRenderer.RenderTerrain(terrainRender);
-			terrainRender.Clear();
 
 			if (Settings.EnableDebug)
 			{

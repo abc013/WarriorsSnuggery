@@ -34,8 +34,7 @@ namespace WarriorsSnuggery.Objects
 				return image.Textures[0];
 			}
 
-			// TODO
-			return TextureManager.Texture("questionmark");
+			return RuleLoader.Questionmark[0];
 		}
 	}
 

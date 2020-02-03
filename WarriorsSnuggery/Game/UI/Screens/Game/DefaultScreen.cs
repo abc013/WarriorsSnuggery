@@ -45,7 +45,7 @@ namespace WarriorsSnuggery.UI
 					actorTypes.Add(a);
 					var sprite = a.GetPreviewSprite();
 					var scale = (sprite.Width > sprite.Height ? 24f / sprite.Width : 24f / sprite.Height) - 0.1f;
-					actorList.Add(new PanelItem(CPos.Zero, new BatchObject(sprite, Color.White), new MPos(512, 512), n.ToLowerInvariant(), new[] { Color.Grey + "Cost: " + a.Playable.Cost.ToString() }, () => { changePlayer(game.World.LocalPlayer, a); }, true)
+					actorList.Add(new PanelItem(CPos.Zero, new BatchObject(sprite, Color.White), new MPos(512, 512), n.ToLowerInvariant(), new[] { Color.Grey + "Cost: " + a.Playable.Cost.ToString() }, () => { changePlayer(game.World.LocalPlayer, a); })
 					{
 						Scale = scale
 					});

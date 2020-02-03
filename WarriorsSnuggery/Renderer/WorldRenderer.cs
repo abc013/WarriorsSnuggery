@@ -145,28 +145,6 @@ namespace WarriorsSnuggery
 			Ambient = world.Map.Type.Ambient;
 		}
 
-		public static void RenderActors(List<BatchRenderable> renderables)
-		{
-			BatchRenderer.SetCurrent();
-
-			foreach (var renderable in renderables)
-				renderable.PushToBatchRenderer();
-
-			BatchRenderer.Render();
-			MasterRenderer.BatchRenderer = null;
-		}
-
-		public static void RenderTerrain(List<BatchRenderable> renderables)
-		{
-			BatchRenderer.SetCurrent();
-
-			foreach (var renderable in renderables)
-				renderable.PushToBatchRenderer();
-
-			BatchRenderer.Render();
-			MasterRenderer.BatchRenderer = null;
-		}
-
 		public static void ClearRenderLists()
 		{
 			beforeRender.Clear();

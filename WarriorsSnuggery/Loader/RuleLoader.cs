@@ -6,6 +6,7 @@ namespace WarriorsSnuggery
 	static class RuleLoader
 	{
 		public static ITexture[] ShroudTexture;
+		public static ITexture[] Questionmark;
 
 		public static void LoadRules()
 		{
@@ -61,6 +62,7 @@ namespace WarriorsSnuggery
 			}
 
 			ShroudTexture = SpriteManager.AddTexture(new TextureInfo("shroud", TextureType.IMAGE, 0, 16, 16));
+			Questionmark = SpriteManager.AddTexture(new TextureInfo("questionmark", TextureType.IMAGE, 0, 12, 12));
 
 			SpriteManager.UseNextSheet();
 
