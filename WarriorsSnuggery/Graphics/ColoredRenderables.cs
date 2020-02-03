@@ -1,10 +1,5 @@
 ﻿namespace WarriorsSnuggery.Graphics
 {
-	public class ColoredCircleRenderable : GraphicsObject
-	{
-		public ColoredCircleRenderable(Color color, float size, int resolution, DrawMethod method) : base(new IColor(Mesh.Circle(size, color, resolution))) { }
-	}
-
 	public class ColoredRectRenderable : GraphicsObject
 	{
 		public ColoredRectRenderable(IColor color) : base(color) { }

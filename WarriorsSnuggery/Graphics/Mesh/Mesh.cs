@@ -241,24 +241,21 @@ namespace WarriorsSnuggery.Graphics
 			}
 			return vertices;
 		}
-	}
 
-	public static class CharMesh
-	{
-		public static CharVertex[] Character(IFont font)
+		public static Vertex[] Character(IFont font)
 		{
 			var w = font.MaxSize.X;
 			var h = font.MaxSize.Y;
 			var size = w * IFont.FontSizeMultiplier;
 
-			CharVertex[] vertices =
+			Vertex[] vertices =
 			{
-				new CharVertex(new Vector(-size, -size, 0, 1.0f), new Vector2(0, h)),
-				new CharVertex(new Vector(size,  -size, 0, 1.0f), new Vector2(w, h)),
-				new CharVertex(new Vector(-size, size,  0, 1.0f), new Vector2(0, 0)),
-				new CharVertex(new Vector(-size, size,  0, 1.0f), new Vector2(0, 0)),
-				new CharVertex(new Vector(size,  -size, 0, 1.0f), new Vector2(w, h)),
-				new CharVertex(new Vector(size,  size,  0, 1.0f), new Vector2(w, 0)),
+				new Vertex(new Vector(-size, -size, 0, 1.0f), new Vector4(0, h, 0, 0), Color.White),
+				new Vertex(new Vector(size,  -size, 0, 1.0f), new Vector4(w, h, 0, 0), Color.White),
+				new Vertex(new Vector(-size, size,  0, 1.0f), new Vector4(0, 0, 0, 0), Color.White),
+				new Vertex(new Vector(-size, size,  0, 1.0f), new Vector4(0, 0, 0, 0), Color.White),
+				new Vertex(new Vector(size,  -size, 0, 1.0f), new Vector4(w, h, 0, 0), Color.White),
+				new Vertex(new Vector(size,  size,  0, 1.0f), new Vector4(w, 0, 0, 0), Color.White),
 			};
 			return vertices;
 		}

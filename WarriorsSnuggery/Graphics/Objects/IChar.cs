@@ -20,19 +20,23 @@ namespace WarriorsSnuggery.Graphics
 			Font = font;
 		}
 
-		void createBuffer(CharVertex[] vertices)
+		void createBuffer(Vertex[] vertices)
 		{
 			lock (MasterRenderer.GLLock)
 			{
-				GL.BufferData(BufferTarget.ArrayBuffer, CharVertex.Size * vertices.Length, vertices, BufferUsageHint.StaticDraw);
+				GL.BufferData(BufferTarget.ArrayBuffer, Vertex.Size * vertices.Length, vertices, BufferUsageHint.StaticDraw);
 				Program.CheckGraphicsError("CreateTexture_Buffer");
 
 				GL.EnableVertexAttribArray(0);
-				GL.VertexAttribPointer(0, 4, VertexAttribPointerType.Float, true, CharVertex.Size, 0);
+				GL.VertexAttribPointer(0, 4, VertexAttribPointerType.Float, true, Vertex.Size, 0);
 				Program.CheckGraphicsError("CreateTexture_VertexArray1");
 
 				GL.EnableVertexAttribArray(1);
-				GL.VertexAttribPointer(1, 4, VertexAttribPointerType.Float, true, CharVertex.Size, 16);
+				GL.VertexAttribPointer(1, 4, VertexAttribPointerType.Float, true, Vertex.Size, 16);
+				Program.CheckGraphicsError("CreateTexture_VertexArray2");
+
+				GL.EnableVertexAttribArray(2);
+				GL.VertexAttribPointer(2, 4, VertexAttribPointerType.Float, true, Vertex.Size, 32);
 				Program.CheckGraphicsError("CreateTexture_VertexArray2");
 			}
 		}
@@ -55,8 +59,6 @@ namespace WarriorsSnuggery.Graphics
 				{
 					GL.UseProgram(ProgramID);
 					Program.CheckGraphicsError("CharBind_UseProgram");
-					GL.VertexAttrib4(2, color.toVector4());
-					Program.CheckGraphicsError("CharBind_ColorAttrib");
 					GL.VertexAttrib4(3, new OpenTK.Vector4(offset * Font.MaxSize.X, 0, 0, 0));
 					Program.CheckGraphicsError("CharBind_OffsetAttrib");
 					GL.BindVertexArray(VertexArrayID);
