@@ -162,7 +162,7 @@ namespace WarriorsSnuggery
 	{
 		public static void WriteActors(StreamWriter writer)
 		{
-			TypeWriter.WriteAll(writer, "WarriorsSnuggery.Objects.Parts", "PartInfo", new[] { new MiniTextNode[0] });
+			TypeWriter.WriteAll(writer, "WarriorsSnuggery.Objects.Parts", "PartInfo", new object[] { string.Empty, new MiniTextNode[0] });
 		}
 
 		public static void WriteParticles(StreamWriter writer)
