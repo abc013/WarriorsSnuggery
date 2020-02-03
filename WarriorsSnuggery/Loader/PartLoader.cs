@@ -24,15 +24,15 @@ namespace WarriorsSnuggery.Loader
 		public static PartInfo GetPart(string name, MiniTextNode[] nodes)
 		{
 			var split = name.Split('@');
-			var internalName = "";
+			var internalName = string.Empty;
 			if (split.Length == 1)
 			{
 				name = split[0];
 			}
 			else
 			{
-				name = split[1];
-				internalName = split[0];
+				name = split[0];
+				internalName = split[1];
 			}
 
 			try
