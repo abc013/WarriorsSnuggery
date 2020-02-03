@@ -10,7 +10,7 @@ namespace WarriorsSnuggery
 
 		static Matrix4 matrix;
 
-		public static BatchRenderer UIBatchRenderer = new BatchRenderer();
+		public static BatchRenderer BatchRenderer = new BatchRenderer();
 
 		static readonly List<IRenderable> beforeRender = new List<IRenderable>();
 		static readonly List<IRenderable> afterRender = new List<IRenderable>();
@@ -23,12 +23,14 @@ namespace WarriorsSnuggery
 		public static void Reset(Game game)
 		{
 			if (Cursor == null)
+			{
 				Cursor = new Cursor();
+				BatchRenderer.SetTextures(SpriteManager.sheets);
+			}
 
 			Cursor.Current = CursorType.DEFAULT;
 			UIRenderer.game = game;
-			UIBatchRenderer.Clear();
-			UIBatchRenderer.SetTextures(new[] { UISpriteManager.sheet });
+			BatchRenderer.Clear();
 			Update();
 			ClearRenderLists();
 		}
@@ -94,7 +96,7 @@ namespace WarriorsSnuggery
 			MasterRenderer.Uniform(MasterRenderer.FontShader, ref matrix, Color.White);
 			MasterRenderer.Uniform(MasterRenderer.ShadowShader, ref matrix, Color.White);
 
-			UIBatchRenderer.SetCurrent();
+			BatchRenderer.SetCurrent();
 			foreach (var r in beforeRender)
 				r.Render();
 
@@ -106,7 +108,7 @@ namespace WarriorsSnuggery
 				r.Render();
 			var possibleTarget = game.World.LocalPlayer == null ? false : game.FindValidTarget(MouseInput.GamePosition, game.World.LocalPlayer.Team) != null;
 
-			UIBatchRenderer.Render();
+			BatchRenderer.Render();
 			MasterRenderer.BatchRenderer = null;
 
 			WorldRenderer.RenderActors(actorRender);

@@ -1,6 +1,4 @@
-﻿using OpenTK.Graphics.ES30;
-
-namespace WarriorsSnuggery.Graphics
+﻿namespace WarriorsSnuggery.Graphics
 {
 	public class BatchObject : BatchRenderable
 	{

@@ -10,7 +10,7 @@ namespace WarriorsSnuggery.Graphics
 		public static void Add(string name, TextureInfo info)
 		{
 			infos.Add(name, info);
-			textures.Add(info, UISpriteManager.AddTexture(info));
+			textures.Add(info, SpriteManager.AddTexture(info));
 		}
 
 		public static ITexture[] Get(string name)

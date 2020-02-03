@@ -109,7 +109,6 @@
     <Compile Include="Graphics\BatchRenderer.cs" />
     <Compile Include="Graphics\Objects\BatchRenderable.cs" />
     <Compile Include="Graphics\Objects\BatchSequence.cs" />
-    <Compile Include="Graphics\UISpriteManager.cs" />
     <Compile Include="Graphics\UITextureManager.cs" />
     <Compile Include="Loader\WavLoader.cs" />
     <Compile Include="Map\PieceManager.cs" />
@@ -184,7 +183,6 @@
     <Compile Include="Graphics\Sheet.cs" />
     <Compile Include="Graphics\SheetBuilder.cs" />
     <Compile Include="Graphics\SpriteManager.cs" />
-    <Compile Include="Graphics\TerrainSpriteManager.cs" />
     <Compile Include="Loader\BitmapLoader.cs" />
     <Compile Include="Loader\BitmapSaver.cs" />
     <Compile Include="Loader\LoaderExceptions.cs" />

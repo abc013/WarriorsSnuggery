@@ -1,11 +1,12 @@
 ﻿using WarriorsSnuggery.Graphics;
-using WarriorsSnuggery.Objects;
 using WarriorsSnuggery.UI;
 
 namespace WarriorsSnuggery
 {
 	static class RuleLoader
 	{
+		public static ITexture[] ShroudTexture;
+
 		public static void LoadRules()
 		{
 			var rules = RuleReader.Read(FileExplorer.Rules, "Rules.yaml");
@@ -15,7 +16,7 @@ namespace WarriorsSnuggery
 			var uiFiles = new string[0];
 			var uiPaths = new string[0];
 
-			SpriteManager.CreateSheet(5);
+			SpriteManager.CreateSheet(8);
 
 			foreach (var rule in rules)
 			{
@@ -58,22 +59,21 @@ namespace WarriorsSnuggery
 						break;
 				}
 			}
-			SpriteManager.CreateTextures();
 
-			TerrainSpriteManager.CreateSheet();
+			ShroudTexture = SpriteManager.AddTexture(new TextureInfo("shroud", TextureType.IMAGE, 0, 16, 16));
+
+			SpriteManager.UseNextSheet();
 
 			for (int j = 0; j < terrainFiles.Length; j++)
 				TerrainCreator.LoadTypes(terrainPaths[j], terrainFiles[j] + ".yaml");
 
-			TerrainSpriteManager.CreateTexture();
-
-			UISpriteManager.CreateSheet();
+			SpriteManager.UseNextSheet();
 
 			for (int j = 0; j < uiFiles.Length; j++)
 				Spells.SpellTreeLoader.Load(uiPaths[j], uiFiles[j] + ".yaml");
 			loadUIRules();
 
-			UISpriteManager.CreateTexture();
+			SpriteManager.CreateTextures();
 		}
 
 		static void loadUIRules()
@@ -90,11 +90,11 @@ namespace WarriorsSnuggery
 			PanelManager.AddType(new PanelType("UI_wood1", "UI_wood2", "UI_wood3", 4), "wooden");
 			PanelManager.AddType(new PanelType("UI_stone1", "UI_wood3", "UI_stone2", 4), "stone");
 
-			CheckBoxCreator.AddType(new CheckBoxType(UISpriteManager.AddTexture(checkBox("check"))[0], UISpriteManager.AddTexture(checkBox("check_hover"))[0], UISpriteManager.AddTexture(checkBox("check_click"))[0], 0.6f, 0.6f), "wooden");
-			CheckBoxCreator.AddType(new CheckBoxType(UISpriteManager.AddTexture(checkBox("check_terrain"))[0], UISpriteManager.AddTexture(checkBox("check_terrain_hover"))[0], UISpriteManager.AddTexture(checkBox("check_terrain_click"))[0], 0.5f, 0.5f), "terrain_editor");
-			CheckBoxCreator.AddType(new CheckBoxType(UISpriteManager.AddTexture(checkBox("check_actor"))[0], UISpriteManager.AddTexture(checkBox("check_actor_hover"))[0], UISpriteManager.AddTexture(checkBox("check_actor_click"))[0], 0.5f, 0.5f), "actor_editor");
-			CheckBoxCreator.AddType(new CheckBoxType(UISpriteManager.AddTexture(checkBox("check_object"))[0], UISpriteManager.AddTexture(checkBox("check_object_hover"))[0], UISpriteManager.AddTexture(checkBox("check_object_click"))[0], 0.5f, 0.5f), "object_editor");
-			CheckBoxCreator.AddType(new CheckBoxType(UISpriteManager.AddTexture(checkBox("check_wall"))[0], UISpriteManager.AddTexture(checkBox("check_wall_hover"))[0], UISpriteManager.AddTexture(checkBox("check_wall_click"))[0], 0.5f, 0.5f), "wall_editor");
+			CheckBoxCreator.AddType(new CheckBoxType(SpriteManager.AddTexture(checkBox("check"))[0], SpriteManager.AddTexture(checkBox("check_hover"))[0], SpriteManager.AddTexture(checkBox("check_click"))[0], 0.6f, 0.6f), "wooden");
+			CheckBoxCreator.AddType(new CheckBoxType(SpriteManager.AddTexture(checkBox("check_terrain"))[0], SpriteManager.AddTexture(checkBox("check_terrain_hover"))[0], SpriteManager.AddTexture(checkBox("check_terrain_click"))[0], 0.5f, 0.5f), "terrain_editor");
+			CheckBoxCreator.AddType(new CheckBoxType(SpriteManager.AddTexture(checkBox("check_actor"))[0], SpriteManager.AddTexture(checkBox("check_actor_hover"))[0], SpriteManager.AddTexture(checkBox("check_actor_click"))[0], 0.5f, 0.5f), "actor_editor");
+			CheckBoxCreator.AddType(new CheckBoxType(SpriteManager.AddTexture(checkBox("check_object"))[0], SpriteManager.AddTexture(checkBox("check_object_hover"))[0], SpriteManager.AddTexture(checkBox("check_object_click"))[0], 0.5f, 0.5f), "object_editor");
+			CheckBoxCreator.AddType(new CheckBoxType(SpriteManager.AddTexture(checkBox("check_wall"))[0], SpriteManager.AddTexture(checkBox("check_wall_hover"))[0], SpriteManager.AddTexture(checkBox("check_wall_click"))[0], 0.5f, 0.5f), "wall_editor");
 		}
 
 		static TextureInfo checkBox(string file)

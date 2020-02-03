@@ -13,10 +13,7 @@ namespace WarriorsSnuggery
 
 		static BatchObject shroud;
 
-		public static readonly BatchRenderer TerrainRenderer = new BatchRenderer();
-		public static readonly BatchRenderer SmudgeRenderer = new BatchRenderer();
-		public static readonly BatchRenderer ObjectRenderer = new BatchRenderer();
-		public static readonly BatchRenderer ShroudRenderer = new BatchRenderer();
+		public static readonly BatchRenderer BatchRenderer = new BatchRenderer();
 		public static readonly BatchRenderer DebugRenderer = new BatchRenderer();
 
 		public static Color Ambient = Color.White;
@@ -29,21 +26,21 @@ namespace WarriorsSnuggery
 			// This means first reset
 			if (shroud == null)
 			{
-				var shroudTex = TextureManager.Texture("shroud");
-				shroud = new BatchObject(Mesh.Plane(1f, 1f, 1f, Color.White), Color.White);
+				shroud = new BatchObject(RuleLoader.ShroudTexture[0], Color.White);
 
-				TerrainRenderer.SetTextures(new[] { TerrainSpriteManager.sheet.TextureID });
-				SmudgeRenderer.SetTextures(SpriteManager.sheets);
-				ObjectRenderer.SetTextures(SpriteManager.sheets);
-				ShroudRenderer.SetTextures(new[] { shroudTex.SheetID });
+				var textures = new int[8];
+				for (int i = 0; i < textures.Length; i++)
+				{
+					if (SpriteManager.sheets[i] == null)
+						break;
+					textures[i] = SpriteManager.sheets[i].TextureID;
+				}
+				BatchRenderer.SetTextures(textures);
 				DebugRenderer.SetTextures(new[] { 0 });
 			}
 			game = @new;
 			world = game.World;
-			TerrainRenderer.Clear();
-			SmudgeRenderer.Clear();
-			ObjectRenderer.Clear();
-			ShroudRenderer.Clear();
+			BatchRenderer.Clear();
 			Camera.Reset();
 			ClearRenderLists();
 		}
@@ -62,17 +59,17 @@ namespace WarriorsSnuggery
 			if (world.ToRender == null)
 				return;
 
-			TerrainRenderer.SetCurrent();
+			BatchRenderer.SetCurrent();
 			world.TerrainLayer.Render();
-			TerrainRenderer.Render();
+			BatchRenderer.Render();
 			MasterRenderer.BatchRenderer = null;
 
-			SmudgeRenderer.SetCurrent();
+			BatchRenderer.SetCurrent();
 			world.SmudgeLayer.Render();
-			SmudgeRenderer.Render();
+			BatchRenderer.Render();
 			MasterRenderer.BatchRenderer = null;
 
-			ObjectRenderer.SetCurrent();
+			BatchRenderer.SetCurrent();
 			foreach (PhysicsObject o in world.ToRender)
 			{
 				CPos pos = world.Game.Editor ? MouseInput.GamePosition : world.LocalPlayer == null ? CPos.Zero : world.LocalPlayer.Position;
@@ -99,13 +96,13 @@ namespace WarriorsSnuggery
 				else
 					o.Render();
 			}
-			ObjectRenderer.Render();
+			BatchRenderer.Render();
 			MasterRenderer.BatchRenderer = null;
 
 			foreach (var o in afterRender)
 				o.Render();
 
-			ShroudRenderer.SetCurrent();
+			BatchRenderer.SetCurrent();
 			if (!world.ShroudLayer.AllRevealed)
 			{
 				for (int x = (VisibilitySolver.lastCameraPosition.X) * 2; x < (VisibilitySolver.lastCameraPosition.X + VisibilitySolver.lastCameraZoom.X) * 2; x++)
@@ -123,7 +120,7 @@ namespace WarriorsSnuggery
 					}
 				}
 			}
-			ShroudRenderer.Render();
+			BatchRenderer.Render();
 			MasterRenderer.BatchRenderer = null;
 
 			DebugRenderer.SetCurrent();
@@ -150,23 +147,23 @@ namespace WarriorsSnuggery
 
 		public static void RenderActors(List<BatchRenderable> renderables)
 		{
-			ObjectRenderer.SetCurrent();
+			BatchRenderer.SetCurrent();
 
 			foreach (var renderable in renderables)
 				renderable.PushToBatchRenderer();
 
-			ObjectRenderer.Render();
+			BatchRenderer.Render();
 			MasterRenderer.BatchRenderer = null;
 		}
 
 		public static void RenderTerrain(List<BatchRenderable> renderables)
 		{
-			TerrainRenderer.SetCurrent();
+			BatchRenderer.SetCurrent();
 
 			foreach (var renderable in renderables)
 				renderable.PushToBatchRenderer();
 
-			TerrainRenderer.Render();
+			BatchRenderer.Render();
 			MasterRenderer.BatchRenderer = null;
 		}
 
