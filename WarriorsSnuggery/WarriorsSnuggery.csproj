@@ -235,7 +235,6 @@
     <Compile Include="Game\Weapons\BulletWeapon.cs" />
     <Compile Include="Statistics.cs" />
     <Compile Include="Position\Vector.cs" />
-    <Compile Include="Graphics\DrawMethod.cs" />
     <Compile Include="Graphics\GraphicsObject.cs" />
     <Compile Include="Graphics\Objects\Font.cs" />
     <Compile Include="Graphics\ITexture.cs" />

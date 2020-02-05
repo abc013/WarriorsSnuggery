@@ -79,7 +79,6 @@ namespace WarriorsSnuggery
 		public static void Render()
 		{
 			MasterRenderer.Uniform(MasterRenderer.TextureShader, ref matrix, Color.White);
-			MasterRenderer.Uniform(MasterRenderer.FontShader, ref matrix, Color.White);
 			MasterRenderer.Uniform(MasterRenderer.ShadowShader, ref matrix, Color.White);
 
 			BatchRenderer.SetCurrent();

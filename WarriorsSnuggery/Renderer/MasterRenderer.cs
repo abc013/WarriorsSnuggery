@@ -20,9 +20,9 @@ namespace WarriorsSnuggery
 		public static bool PauseSequences;
 		public static object GLLock = new object();
 
-		public static int TextureShader, FontShader, ShadowShader;
+		public static int TextureShader, ShadowShader;
 		static int heightLocation;
-		static readonly int[] locations = new int[12];
+		static readonly int[] locations = new int[8];
 
 		public static PrimitiveType PrimitiveType = PrimitiveType.Triangles;
 
@@ -45,7 +45,7 @@ namespace WarriorsSnuggery
 			return locations[num + shadernum];
 		}
 
-		static readonly ShaderProgram[] shaders = new ShaderProgram[3];
+		static readonly ShaderProgram[] shaders = new ShaderProgram[2];
 
 		public static void ResetRenderer(Game game)
 		{
@@ -70,10 +70,9 @@ namespace WarriorsSnuggery
 			lock (GLLock)
 			{
 				TextureShader = createShader("Tex");
-				FontShader = createShader("Fon");
 				ShadowShader = createShader("Sha");
 
-				foreach (int shader in new[] { TextureShader, FontShader, ShadowShader })
+				foreach (int shader in new[] { TextureShader, ShadowShader })
 				{
 					var num = 4 * (shader - 1);
 					locations[num] = GL.GetUniformLocation(shader, "projection");
@@ -91,21 +90,28 @@ namespace WarriorsSnuggery
 
 				GL.BindAttribLocation(TextureShader, 1, "textureCoordinate");
 				GL.BindAttribLocation(TextureShader, 2, "color");
-				GL.BindAttribLocation(FontShader, 3, "textureOffset");
 				GL.BindAttribLocation(ShadowShader, 1, "textureCoordinate");
 				GL.BindAttribLocation(ShadowShader, 2, "color");
 
 				foreach (int shader in new[] { TextureShader, ShadowShader })
 				{
 					GL.UseProgram(shader);
-					var tex1 = GL.GetUniformLocation(shader, "texture1");
-					GL.Uniform1(tex1, 1);
-					var tex2 = GL.GetUniformLocation(shader, "texture2");
-					GL.Uniform1(tex2, 2);
-					var tex3 = GL.GetUniformLocation(shader, "texture3");
-					GL.Uniform1(tex3, 3);
-					var tex4 = GL.GetUniformLocation(shader, "texture4");
-					GL.Uniform1(tex4, 4);
+					var tex1 = GL.GetUniformLocation(shader, "texture0");
+					GL.Uniform1(tex1, 0);
+					var tex2 = GL.GetUniformLocation(shader, "texture1");
+					GL.Uniform1(tex2, 1);
+					var tex3 = GL.GetUniformLocation(shader, "texture2");
+					GL.Uniform1(tex3, 2);
+					var tex4 = GL.GetUniformLocation(shader, "texture3");
+					GL.Uniform1(tex4, 3);
+					var tex5 = GL.GetUniformLocation(shader, "texture4");
+					GL.Uniform1(tex5, 4);
+					var tex6 = GL.GetUniformLocation(shader, "texture5");
+					GL.Uniform1(tex6, 5);
+					var tex7 = GL.GetUniformLocation(shader, "texture6");
+					GL.Uniform1(tex7, 6);
+					var tex8 = GL.GetUniformLocation(shader, "texture7");
+					GL.Uniform1(tex8, 7);
 				}
 
 				Program.CheckGraphicsError("InitShaders");
