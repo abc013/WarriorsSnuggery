@@ -178,7 +178,6 @@
     <Compile Include="Generation\Noise.cs" />
     <Compile Include="GameSaveManager.cs" />
     <Compile Include="GlobalSuppressions.cs" />
-    <Compile Include="Graphics\ColoredRenderables.cs" />
     <Compile Include="Graphics\ColorManager.cs" />
     <Compile Include="Graphics\Sheet.cs" />
     <Compile Include="Graphics\SheetBuilder.cs" />
@@ -246,7 +245,6 @@
     <Compile Include="Game\PhysicsObject.cs" />
     <Compile Include="Graphics\TexturedRenderables.cs" />
     <Compile Include="Game\Terrain.cs" />
-    <Compile Include="Graphics\Objects\IColor.cs" />
     <Compile Include="Graphics\Objects\IRenderable.cs" />
     <Compile Include="Graphics\Objects\IImage.cs" />
     <Compile Include="Graphics\ShaderProgram.cs" />

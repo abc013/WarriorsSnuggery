@@ -4,7 +4,7 @@ namespace WarriorsSnuggery.Objects.Particles
 {
 	public class ParticleType
 	{
-		public readonly IColor ColoredRenderable;
+		public readonly BatchObject ColoredRenderable;
 
 		[Desc("Texture to use for the particle.", "The game will crash when both Texture and MeshSize are not defined or zero.")]
 		public readonly TextureInfo Texture;
@@ -40,7 +40,7 @@ namespace WarriorsSnuggery.Objects.Particles
 			if (Texture != null)
 				SpriteManager.AddTexture(Texture);
 			else if (MeshSize > 0)
-				ColoredRenderable = new IColor(Mesh.Plane(MeshSize / 24f, Color));
+				ColoredRenderable = new BatchObject(Mesh.Plane(MeshSize / 24f, Color), Color.White);
 		}
 	}
 }
