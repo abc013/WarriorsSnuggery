@@ -103,8 +103,8 @@ namespace WarriorsSnuggery
 
 			var font = Timer.Start();
 			Icon = new Icon(FileExplorer.Misc + "/warsnu.ico");
-			IFont.LoadFonts();
-			IFont.InitializeFonts();
+			Graphics.Font.LoadFonts();
+			Graphics.Font.InitializeFonts();
 
 			font.StopAndWrite("Loading Fonts");
 
@@ -202,7 +202,6 @@ namespace WarriorsSnuggery
 
 			TextureManager.DeleteTextures();
 			UITextureManager.Dispose();
-			ColorManager.Dispose();
 
 			WorldRenderer.BatchRenderer.Dispose();
 			UIRenderer.BatchRenderer.Dispose();
@@ -211,7 +210,7 @@ namespace WarriorsSnuggery
 			SpriteManager.DeleteTextures();
 
 			IImage.DisposeImages();
-			IFont.DisposeFonts();
+			Graphics.Font.DisposeFonts();
 
 			base.Exit();
 		}

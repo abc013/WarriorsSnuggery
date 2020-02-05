@@ -58,7 +58,7 @@ namespace WarriorsSnuggery.Objects
 
 		public char Key;
 
-		public KeyboardButton(CPos position, char key, ITexture[] textures, IFont font, Color color)
+		public KeyboardButton(CPos position, char key, ITexture[] textures, Font font, Color color)
 		{
 			Key = key;
 

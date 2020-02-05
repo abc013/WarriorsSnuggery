@@ -242,7 +242,7 @@ namespace WarriorsSnuggery.Graphics
 			return vertices;
 		}
 
-		public static Vertex[] Character(IFont font, char c)
+		public static Vertex[] Character(Font font, char c)
 		{
 			var texture = font.GetTexture(c);
 			var x = texture.Offset.X / (float)Settings.SheetSize;

@@ -238,7 +238,7 @@
     <Compile Include="Position\Vector.cs" />
     <Compile Include="Graphics\DrawMethod.cs" />
     <Compile Include="Graphics\GraphicsObject.cs" />
-    <Compile Include="Graphics\Objects\IFont.cs" />
+    <Compile Include="Graphics\Objects\Font.cs" />
     <Compile Include="Graphics\ITexture.cs" />
     <Compile Include="Graphics\TextureManager.cs" />
     <Compile Include="Input\KeyInput.cs" />

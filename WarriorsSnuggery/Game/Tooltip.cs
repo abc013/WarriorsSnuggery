@@ -23,7 +23,7 @@ namespace WarriorsSnuggery
 		}
 		CPos position;
 
-		readonly IFont font;
+		readonly Font font;
 		readonly TextLine title;
 		readonly TextBlock text;
 
@@ -31,7 +31,7 @@ namespace WarriorsSnuggery
 
 		public Tooltip(CPos pos, string title, params string[] text)
 		{
-			font = IFont.Pixel16;
+			font = Font.Pixel16;
 
 			this.title = new TextLine(CPos.Zero, font);
 			this.title.WriteText(title);

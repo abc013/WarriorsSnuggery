@@ -1,13 +1,15 @@
-using System.Drawing.Text;
+﻿using System.Drawing.Text;
 
 namespace WarriorsSnuggery.Graphics
 {
-	public class IFont
+	public class Font
 	{
-		public static IFont Papyrus24 { get; private set; }
-		public static IFont Pixel16 { get; private set; }
+		public static Font Papyrus24 { get; private set; }
+		public static Font Pixel16 { get; private set; }
 
 		public static PrivateFontCollection Collection { get; private set; }
+
+		public const string Characters = @" qwertyuiopasdfghjklzxcvbnmäöüQWERTYUIOPASDFGHJKLZXCVBNMÄÖÜ0123456789µ§!""#%&/()=?^*@${[]}\~¨'¯-_.:,;<>|°+↓↑←→∞";
 
 		public static void LoadFonts()
 		{
@@ -22,10 +24,10 @@ namespace WarriorsSnuggery.Graphics
 		public static void InitializeFonts()
 		{
 			Collection.AddFontFile(FileExplorer.Misc + @"Fonts\PAPYRUS.ttf");
-			Papyrus24 = new IFont(new FontInfo(24, "Papyrus"));
+			Papyrus24 = new Font(new FontInfo(24, "Papyrus"));
 
 			Collection.AddFontFile(FileExplorer.Misc + @"Fonts\Pixel.ttf");
-			Pixel16 = new IFont(new FontInfo(12, "Pixel"));
+			Pixel16 = new Font(new FontInfo(12, "Pixel"));
 		}
 
 		public float PixelMultiplier
@@ -51,7 +53,7 @@ namespace WarriorsSnuggery.Graphics
 		readonly ITexture[] characters;
 		public readonly FontInfo Info;
 
-		public IFont(FontInfo info)
+		public Font(FontInfo info)
 		{
 			Info = info;
 			characters = SpriteManager.AddFont(info);
@@ -60,12 +62,12 @@ namespace WarriorsSnuggery.Graphics
 
 		public int GetWidth(char c)
 		{
-			return Info.CharSizes[TextureManager.Characters.IndexOf(c)].X;
+			return Info.CharSizes[Characters.IndexOf(c)].X;
 		}
 
 		public ITexture GetTexture(char c)
 		{
-			return characters[TextureManager.Characters.IndexOf(c)];
+			return characters[Characters.IndexOf(c)];
 		}
 	}
 }

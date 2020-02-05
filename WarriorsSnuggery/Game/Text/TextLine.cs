@@ -13,7 +13,7 @@ namespace WarriorsSnuggery.Objects
 			LEFT
 		}
 		readonly OffsetType offset;
-		readonly IFont font;
+		readonly Font font;
 		readonly List<TextRenderable> chars = new List<TextRenderable>();
 
 		public bool Visible = true;
@@ -62,7 +62,7 @@ namespace WarriorsSnuggery.Objects
 		}
 		float scale = 1f;
 
-		public TextLine(CPos pos, IFont font, OffsetType type = OffsetType.LEFT)
+		public TextLine(CPos pos, Font font, OffsetType type = OffsetType.LEFT)
 		{
 			Position = pos;
 			this.font = font;

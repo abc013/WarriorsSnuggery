@@ -6,10 +6,10 @@ namespace WarriorsSnuggery.Graphics
 		static readonly Vector shadowOffset = new Vector(0.02f * WindowInfo.Ratio, -0.02f, 0);
 		Vector position;
 
-		readonly IFont font;
+		readonly Font font;
 		Color color;
 
-		public TextRenderable(CPos position, IFont font, char c, Color color, int pxOffset = 0)
+		public TextRenderable(CPos position, Font font, char c, Color color, int pxOffset = 0)
 		{
 			this.font = font;
 			charRenderable = new BatchObject(Mesh.Character(font, c), color);

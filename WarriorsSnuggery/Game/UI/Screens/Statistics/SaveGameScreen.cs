@@ -112,7 +112,7 @@ namespace WarriorsSnuggery.UI
 			back = ButtonCreator.Create("wooden", new CPos(4096, 6144, 0), "Back", () => ActiveScreen = false);
 			create = ButtonCreator.Create("wooden", new CPos(0, 6144, 0), "Save", save);
 			@new = new TextBox(CPos.Zero, "Name", 20, false, PanelManager.Get("wooden"), save);
-			warning = new TextLine(new CPos(0, 1024, 0), IFont.Pixel16, TextLine.OffsetType.MIDDLE);
+			warning = new TextLine(new CPos(0, 1024, 0), Font.Pixel16, TextLine.OffsetType.MIDDLE);
 			warning.WriteText(Color.Red + "WARNING: " + Color.White + "You have to save over the just created save!");
 		}
 

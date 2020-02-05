@@ -34,7 +34,7 @@ namespace WarriorsSnuggery.UI
 			realText = text;
 			MaximumLength = maximumLength;
 			OnlyNumbers = onlyNumbers;
-			this.text = new TextLine(pos + new CPos(128, 0, 0), IFont.Pixel16, Objects.TextLine.OffsetType.MIDDLE);
+			this.text = new TextLine(pos + new CPos(128, 0, 0), Font.Pixel16, Objects.TextLine.OffsetType.MIDDLE);
 			this.text.SetText(text);
 			this.onEnter = onEnter;
 		}

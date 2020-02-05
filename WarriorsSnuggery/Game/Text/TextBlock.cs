@@ -49,10 +49,10 @@ namespace WarriorsSnuggery.Objects
 		}
 		float scale = 1f;
 
-		readonly IFont font;
+		readonly Font font;
 		public readonly TextLine[] Lines = new TextLine[0];
 
-		public TextBlock(CPos position, IFont font, TextLine.OffsetType type, params string[] text)
+		public TextBlock(CPos position, Font font, TextLine.OffsetType type, params string[] text)
 		{
 			Position = position;
 			this.font = font;

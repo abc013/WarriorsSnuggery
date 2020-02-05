@@ -115,11 +115,6 @@ namespace WarriorsSnuggery.Graphics
 			return texture;
 		}
 
-		static ITexture createTexture(Bitmap bitmap, string name)
-		{
-			return createTexture(loadTexture(bitmap), new TextureInfo(name, TextureType.IMAGE, 0, bitmap.Width, bitmap.Height, false), name);
-		}
-
 		static void setTextureParams()
 		{
 			GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMinFilter, (int)All.Nearest);
@@ -193,20 +188,18 @@ namespace WarriorsSnuggery.Graphics
 			}
 		}
 
-		public const string Characters = @" qwertyuiopasdfghjklzxcvbnmäöüQWERTYUIOPASDFGHJKLZXCVBNMÄÖÜ0123456789µ§!""#%&/()=?^*@${[]}\~¨'¯-_.:,;<>|°+↓↑←→∞";
-
 		public static float[][] LoadCharacters(int fontSize, string fontName, out MPos maxSize, out MPos[] sizes)
 		{
-			var characters = new float[Characters.Length][];
-			sizes = new MPos[Characters.Length];
+			var characters = new float[Font.Characters.Length][];
+			sizes = new MPos[Font.Characters.Length];
 
-			using (var font = new Font(IFont.Collection.Families.Where(a => a.Name == fontName).First(), fontSize))
+			using (var font = new System.Drawing.Font(Font.Collection.Families.Where(a => a.Name == fontName).First(), fontSize))
 			{
 				var maxWidth = 0;
 				var maxHeight = 0;
-				for (int i = 0; i < Characters.Length; i++)
+				for (int i = 0; i < Font.Characters.Length; i++)
 				{
-					var charBmp = generateFontChar(font, Characters[i]);
+					var charBmp = generateFontChar(font, Font.Characters[i]);
 					sizes[i] = new MPos(charBmp.Width, charBmp.Height);
 					if (charBmp.Width > maxWidth)
 						maxWidth = charBmp.Width;
@@ -221,7 +214,7 @@ namespace WarriorsSnuggery.Graphics
 			return characters;
 		}
 
-		static Bitmap generateFontChar(Font font, char c)
+		static Bitmap generateFontChar(System.Drawing.Font font, char c)
 		{
 			var size = getFontSize(font, c);
 			var bmp = new Bitmap((int)Math.Ceiling(size.Width), (int)Math.Ceiling(size.Height));
@@ -235,7 +228,7 @@ namespace WarriorsSnuggery.Graphics
 			return bmp;
 		}
 
-		static SizeF getFontSize(Font font, char c)
+		static SizeF getFontSize(System.Drawing.Font font, char c)
 		{
 			// If bugs start with font spacing, increase number of pixels here
 			using (var bmp = new Bitmap(64, 64))

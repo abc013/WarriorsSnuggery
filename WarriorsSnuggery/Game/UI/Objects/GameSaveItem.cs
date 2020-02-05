@@ -30,10 +30,10 @@ namespace WarriorsSnuggery.UI
 		public GameSaveItem(CPos pos, GameStatistics stats, int width, Action action) : base(pos, new BatchObject(UITextureManager.Get("UI_save")[0], Color.White), new MPos(width, 1024), stats.Name, new[] { Color.Grey + "Difficulty: " + stats.Difficulty, Color.Grey + "Money: " + stats.Money }, action)
 		{
 			Stats = stats;
-			name = new TextLine(pos - new CPos(2048, 512, 0), IFont.Pixel16);
+			name = new TextLine(pos - new CPos(2048, 512, 0), Font.Pixel16);
 			name.SetColor(Color.Black);
 			name.SetText(stats.Name);
-			level = new TextLine(pos - new CPos(2560, 0, 0), IFont.Pixel16);
+			level = new TextLine(pos - new CPos(2560, 0, 0), Font.Pixel16);
 			level.SetColor(Color.Black);
 			if (stats.Level >= stats.FinalLevel) level.SetColor(new Color(0, 200, 0));
 			level.SetText(stats.Level);

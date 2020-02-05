@@ -22,6 +22,9 @@ namespace WarriorsSnuggery.Graphics
 		static BatchObject line;
 		static BatchObject circle;
 
+		static BatchObject fullscreen_rect;
+		static BatchObject filled_rect;
+
 		public static void ResetLineWidth()
 		{
 			LineWidth = DefaultLineWidth;
@@ -31,21 +34,15 @@ namespace WarriorsSnuggery.Graphics
 		{
 			line = new BatchObject(Mesh.Line(1f, Color.White), Color.White);
 			circle = new BatchObject(Mesh.Circle(1f, Color.White, 32), Color.White);
-			fullscreen_rect = new ColoredRectRenderable(Color.White, WindowInfo.UnitHeight, DrawMethod.TRIANGLE);
+			fullscreen_rect = new BatchObject(Mesh.Plane(WindowInfo.UnitHeight, Color.White), Color.White);
 			WindowRescaled();
 
-			filled_rect = new ColoredRectRenderable(Color.White, 1f, DrawMethod.TRIANGLE);
+			filled_rect = new BatchObject(Mesh.Plane(1f, Color.White), Color.White);
 		}
 
 		public static void WindowRescaled()
 		{
 			fullscreen_rect.SetScale(WindowInfo.Ratio);
-		}
-
-		public static void Dispose()
-		{
-			fullscreen_rect.Dispose();
-			filled_rect.Dispose();
 		}
 
 		public static void DrawLine(CPos start, CPos end, Color color)
@@ -68,24 +65,18 @@ namespace WarriorsSnuggery.Graphics
 			circle.PushToBatchRenderer();
 		}
 
-		static ColoredRectRenderable fullscreen_rect;
-
 		public static void DrawFullscreenRect(Color color)
 		{
 			fullscreen_rect.SetColor(color);
-
-			fullscreen_rect.Render();
+			fullscreen_rect.PushToBatchRenderer();
 		}
-
-		static ColoredRectRenderable filled_rect;
 
 		public static void DrawRect(CPos bottomleft, CPos topright, Color color)
 		{
-			filled_rect.SetScale(new CPos(Math.Abs(bottomleft.X - topright.X), Math.Abs(bottomleft.Y - topright.Y), 0));
+			filled_rect.SetScale(new CPos(Math.Abs(bottomleft.X - topright.X), Math.Abs(bottomleft.Y - topright.Y), 0).ToVector());
 			filled_rect.SetPosition(new CPos((bottomleft.X + topright.X) / 2, (bottomleft.Y + topright.Y) / 2, 0));
 			filled_rect.SetColor(color);
-
-			filled_rect.Render();
+			filled_rect.PushToBatchRenderer();
 		}
 
 		public static void DrawQuad(CPos position, int radius, Color color)
@@ -93,8 +84,7 @@ namespace WarriorsSnuggery.Graphics
 			filled_rect.SetScale(radius / 1024f);
 			filled_rect.SetPosition(position);
 			filled_rect.SetColor(color);
-
-			filled_rect.Render();
+			filled_rect.PushToBatchRenderer();
 		}
 
 		public static void DrawDot(CPos position, Color color)

@@ -13,7 +13,7 @@ namespace WarriorsSnuggery.UI
 
 		public Button(CPos pos, string text, PanelType type, Action action) : base(pos, new MPos(8 * text.Length + 2, 12), type)
 		{
-			this.text = new TextLine(pos + new CPos(256, 0, 0), IFont.Pixel16, TextLine.OffsetType.MIDDLE);
+			this.text = new TextLine(pos + new CPos(256, 0, 0), Font.Pixel16, TextLine.OffsetType.MIDDLE);
 			this.text.WriteText(text);
 			this.action = action;
 		}
