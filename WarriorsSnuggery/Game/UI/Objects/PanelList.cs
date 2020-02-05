@@ -14,11 +14,11 @@ namespace WarriorsSnuggery.UI
 		protected bool mouseOnPanel;
 		int scrolled;
 
-		public PanelList(CPos pos, MPos size, MPos itemSize, PanelType type) : base(pos, new MPos(size.X / 64 * 3, size.Y / 64 * 3), type.BorderWidth, type.Background, type.Border, type.Background2 != "" ? new ImageRenderable(TextureManager.Texture(type.Background2), new MPos(itemSize.X / 64 * 3, itemSize.Y / 64 * 3)) : null)
+		public PanelList(CPos pos, MPos size, MPos itemSize, PanelType type) : base(pos, new Vector(size.X / 1024f, size.Y / 1024f, 0), type, type.Background2 != null ? new BatchObject(Mesh.UIPlane(type.Background2, Color.White, new Vector(itemSize.X / 1024f, itemSize.Y / 1024f, 0)), Color.White) : null)
 		{
 			intSize = size;
 			this.itemSize = itemSize;
-			Size = new MPos((int)Math.Floor(size.X / itemSize.X + 0f), (int)Math.Floor(size.Y / itemSize.Y + 0f));
+			Size = new MPos((int)Math.Floor(size.X / (float)itemSize.X), (int)Math.Floor(size.Y / (float)itemSize.Y));
 		}
 
 		public void Add(PanelItem o)

@@ -93,8 +93,6 @@ namespace WarriorsSnuggery
 				r.Render();
 			var possibleTarget = game.World.LocalPlayer == null ? false : game.FindValidTarget(MouseInput.GamePosition, game.World.LocalPlayer.Team) != null;
 
-			BatchRenderer.Render();
-
 			if (Settings.EnableDebug)
 			{
 				ColorManager.DrawRect(new CPos(-64, -64, 0), new CPos(64, 64, 0), Color.Cyan);

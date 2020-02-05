@@ -35,7 +35,7 @@ namespace WarriorsSnuggery.UI
 				Title.SetColor(Color.Green);
 
 			// SECTION ACTORS
-			actorList = new ActorList(new CPos((int)(WindowInfo.UnitWidth * 512) - 512, -3072 / 2, 0), new MPos(512, 8192 - 3072 / 2), new MPos(512, 512), PanelManager.Get("wooden"));
+			actorList = new ActorList(new CPos((int)(WindowInfo.UnitWidth * 512) - 512, 3072, 0), new MPos(512, 8192 + 3072), new MPos(512, 512), PanelManager.Get("wooden"));
 
 			foreach (var n in ActorCreator.GetNames())
 			{
@@ -63,7 +63,7 @@ namespace WarriorsSnuggery.UI
 				index++;
 			}
 
-			background = new Panel(new CPos(0, (int)(WindowInfo.UnitHeight * 512) - 3072 / 2 + 64, 0), new MPos(8192 / 64 * 6, (3072 - 64) / 64 / 2 * 3), PanelManager.Get("wooden"));
+			background = new Panel(new CPos(0, (int)(WindowInfo.UnitHeight * 512) - 3072 / 2 + 64, 0), new Vector(32, (6 - 0.01f) / 2, 0), PanelManager.Get("wooden"));
 
 			// SECTION MONEY
 			money = new BatchObject(UITextureManager.Get("UI_money")[0], Color.White);

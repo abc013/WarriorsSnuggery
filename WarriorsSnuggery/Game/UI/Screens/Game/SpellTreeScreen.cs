@@ -25,7 +25,7 @@ namespace WarriorsSnuggery.UI
 			Title.Position = new CPos(0, -4096, 0);
 
 			Content.Add(ButtonCreator.Create("wooden", new CPos(0, 6144, 0), "Resume", () => { game.Pause(false); game.ScreenControl.ShowScreen(ScreenType.DEFAULT); }));
-			Content.Add(new Panel(new CPos(0, 1024, 0), new MPos(8192 / 64 * 3, 4096 / 64 * 3), PanelManager.Get("wooden")));
+			Content.Add(new Panel(new CPos(0, 1024, 0), new Vector(8, 4, 0), PanelManager.Get("wooden")));
 
 			money = new BatchObject(UITextureManager.Get("UI_money")[0], Color.White);
 			money.SetPosition(new CPos(-(int)(WindowInfo.UnitWidth / 2 * 1024) + 1024, 7192, 0));
@@ -116,7 +116,7 @@ namespace WarriorsSnuggery.UI
 		readonly Tooltip tooltip;
 		bool mouseOnItem;
 
-		public SpellNode(CPos position, SpellTreeNode node, Game game) : base(position, new MPos(16, 16), PanelManager.Get("stone"))
+		public SpellNode(CPos position, SpellTreeNode node, Game game) : base(position, new Vector(8 * MasterRenderer.PixelMultiplier, 8 * MasterRenderer.PixelMultiplier, 0), PanelManager.Get("stone"))
 		{
 			this.node = node;
 			this.game = game;

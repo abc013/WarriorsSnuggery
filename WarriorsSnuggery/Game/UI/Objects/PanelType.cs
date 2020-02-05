@@ -1,14 +1,15 @@
+using WarriorsSnuggery.Graphics;
 
 namespace WarriorsSnuggery.UI
 {
 	public class PanelType
 	{
-		public readonly string Background;
-		public readonly string Background2;
-		public readonly string Border;
-		public readonly int BorderWidth;
+		public readonly ITexture Background;
+		public readonly ITexture Background2;
+		public readonly ITexture Border;
+		public readonly float BorderWidth;
 
-		public PanelType(string background, string background2, string border, int borderWidth)
+		public PanelType(ITexture background, ITexture background2, ITexture border, float borderWidth)
 		{
 			Background = background;
 			Background2 = background2;

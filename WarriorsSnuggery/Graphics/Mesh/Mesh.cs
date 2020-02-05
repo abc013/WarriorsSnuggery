@@ -71,99 +71,52 @@ namespace WarriorsSnuggery.Graphics
 			return vertices;
 		}
 
-		public static Vertex[] Plane(float scale, float x, float y, float w, float h, Color color)
+		public static Vertex[] UIPlane(ITexture texture, Color color, Vector size)
 		{
-			scale /= 2;
-			var correction = w < h ? w / h : h / w;
-			var color4 = color.toColor4();
+			var countX = (int)Math.Ceiling(size.X);
+			var countY = (int)Math.Ceiling(size.Y);
+			var vertices = new Vertex[countX * countY * 6];
 
-			Vertex[] vertices;
-			if (w < h)
+			var index = 0;
+			var sOffset = new Vector(-size.X, -size.Y, 0);
+			for (int x = 0; x < countX; x++)
 			{
-				Vertex[] vertices1 =
+				for (int y = 0; y < countY; y++)
 				{
-					new Vertex(new Vector(scale * correction,  scale,  0, 1.0f), new Vector4(w, y, 0, 0), color4),
-					new Vertex(new Vector(-scale * correction, -scale, 0, 1.0f), new Vector4(x, h, 0, 0), color4),
-					new Vertex(new Vector(scale * correction,  -scale, 0, 1.0f), new Vector4(w, h, 0, 0), color4),
-					new Vertex(new Vector(-scale * correction, scale,  0, 1.0f), new Vector4(x, y, 0, 0), color4),
-					new Vertex(new Vector(-scale * correction, -scale, 0, 1.0f), new Vector4(x, h, 0, 0), color4),
-					new Vertex(new Vector(scale * correction,  scale,  0, 1.0f), new Vector4(w, y, 0, 0), color4),
-				};
-				vertices = vertices1;
-			}
-			else
-			{
-				Vertex[] vertices1 =
-				{
-					new Vertex(new Vector(scale,  scale * correction,  0, 1.0f), new Vector4(w, y, 0, 0), color4),
-					new Vertex(new Vector(-scale, -scale * correction, 0, 1.0f), new Vector4(x, h, 0, 0), color4),
-					new Vertex(new Vector(scale,  -scale * correction, 0, 1.0f), new Vector4(w, h, 0, 0), color4),
-					new Vertex(new Vector(-scale, scale * correction,  0, 1.0f), new Vector4(x, y, 0, 0), color4),
-					new Vertex(new Vector(-scale, -scale * correction, 0, 1.0f), new Vector4(x, h, 0, 0), color4),
-					new Vertex(new Vector(scale,  scale * correction,  0, 1.0f), new Vector4(w, y, 0, 0), color4),
-				};
-				vertices = vertices1;
+					var scaleX = Math.Min(1f, size.X - x);
+					var scaleY = Math.Min(1f, size.Y - y);
+					var lSize = new Vector(scaleX, scaleY, 0);
+					var lOffset = sOffset + new Vector(x * 2, y * 2, 0);
+					Array.Copy(uiPlanePart(texture, color, lOffset, lSize), 0, vertices, index, 6);
+					index += 6;
+				}
 			}
 
 			return vertices;
 		}
 
-		public static Vertex[] Plane(float scale, float w, float h, Color color)
+		static Vertex[] uiPlanePart(ITexture texture, Color color, Vector offset, Vector size)
 		{
-			scale /= 2;
-			var correction = w < h ? w / h : h / w;
+			var x = texture.Offset.X / (float)Settings.SheetSize;
+			var y = texture.Offset.Y / (float)Settings.SheetSize;
+			var w = (texture.Offset.X + size.X * texture.Width) / Settings.SheetSize;
+			var h = (texture.Offset.Y + size.Y * texture.Height) / Settings.SheetSize;
 			var color4 = color.toColor4();
-
-			Vertex[] vertices;
-			if (w < h)
-			{
-				Vertex[] vertices1 =
-				{
-					new Vertex(new Vector(scale * correction,  scale,  0, 1.0f), new Vector4(1, 0, 0, 0), color4),
-					new Vertex(new Vector(-scale * correction, -scale, 0, 1.0f), new Vector4(0, 1, 0, 0), color4),
-					new Vertex(new Vector(scale * correction,  -scale, 0, 1.0f), new Vector4(1, 1, 0, 0), color4),
-					new Vertex(new Vector(-scale * correction, scale,  0, 1.0f), new Vector4(0, 0, 0, 0), color4),
-					new Vertex(new Vector(-scale * correction, -scale, 0, 1.0f), new Vector4(0, 1, 0, 0), color4),
-					new Vertex(new Vector(scale * correction,  scale,  0, 1.0f), new Vector4(1, 0, 0, 0), color4),
-				};
-				vertices = vertices1;
-			}
-			else
-			{
-				Vertex[] vertices1 =
-				{
-					new Vertex(new Vector(scale,  scale * correction,  0, 1.0f), new Vector4(1, 0, 0, 0), color4),
-					new Vertex(new Vector(-scale, -scale * correction, 0, 1.0f), new Vector4(0, 1, 0, 0), color4),
-					new Vertex(new Vector(scale,  -scale * correction, 0, 1.0f), new Vector4(1, 1, 0, 0), color4),
-					new Vertex(new Vector(-scale, scale * correction,  0, 1.0f), new Vector4(0, 0, 0, 0), color4),
-					new Vertex(new Vector(-scale, -scale * correction, 0, 1.0f), new Vector4(0, 1, 0, 0), color4),
-					new Vertex(new Vector(scale,  scale * correction,  0, 1.0f), new Vector4(1, 0, 0, 0), color4),
-				};
-				vertices = vertices1;
-			}
-
-			return vertices;
-		}
-
-		public static Vertex[] PixelOrientedPlane(float scale, int width, int height, Color color)
-		{
-			scale /= 2;
-			var sX = width * MasterRenderer.PixelMultiplier;
-			var sY = height * MasterRenderer.PixelMultiplier;
-			var color4 = color.toColor4();
+			var id = SpriteManager.SheetIndex(texture.SheetID);
 
 			Vertex[] vertices =
 			{
-				new Vertex(new Vector(sX * scale,  sY * scale,  0, 1.0f), new Vector4(sX,  0, 0, 0), color4),
-				new Vertex(new Vector(-sX * scale, -sY * scale, 0, 1.0f), new Vector4( 0, sY, 0, 0), color4),
-				new Vertex(new Vector(sX * scale,  -sY * scale, 0, 1.0f), new Vector4(sX, sY, 0, 0), color4),
-				new Vertex(new Vector(-sX * scale, sY * scale,  0, 1.0f), new Vector4( 0,  0, 0, 0), color4),
-				new Vertex(new Vector(-sX * scale, -sY * scale, 0, 1.0f), new Vector4( 0, sY, 0, 0), color4),
-				new Vertex(new Vector(sX * scale,  sY * scale,  0, 1.0f), new Vector4(sX,  0, 0, 0), color4),
+				new Vertex(new Vector(offset.X + size.X * 2, offset.Y + size.Y * 2,  0, 1.0f), new Vector4(w, y, id, 0), color4),
+				new Vertex(new Vector(offset.X, offset.Y, 0, 1.0f), new Vector4(x, h, id, 0), color4),
+				new Vertex(new Vector(offset.X + size.X * 2, offset.Y, 0, 1.0f), new Vector4(w, h, id, 0), color4),
+				new Vertex(new Vector(offset.X, offset.Y + size.Y * 2,  0, 1.0f), new Vector4(x, y, id, 0), color4),
+				new Vertex(new Vector(offset.X, offset.Y, 0, 1.0f), new Vector4(x, h, id, 0), color4),
+				new Vertex(new Vector(offset.X + size.X * 2, offset.Y + size.Y * 2, 0, 1.0f), new Vector4(w, y, id, 0), color4),
 			};
 
 			return vertices;
 		}
+
 		public static Vertex[] Line(float size, Color color)
 		{
 			var color4 = color.toColor4();

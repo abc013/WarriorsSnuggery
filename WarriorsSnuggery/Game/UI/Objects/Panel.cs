@@ -78,32 +78,32 @@ namespace WarriorsSnuggery.UI
 			get; private set;
 		}
 
-		readonly GraphicsObject background;
-		readonly GraphicsObject border;
-		public readonly GraphicsObject Highlight;
+		readonly BatchObject background;
+		readonly BatchObject border;
+		public readonly BatchObject Highlight;
 
 		public bool HighlightVisible;
 
-		public Panel(CPos position, MPos bounds, PanelType type) : this(position, bounds, type.BorderWidth, type.Background, type.Border, type.Background2 != "" ? new ImageRenderable(TextureManager.Texture(type.Background2), bounds) : null) { }
+		public Panel(CPos position, Vector bounds, PanelType type) : this(position, bounds, type, type.Background2 != null ? new BatchObject(Mesh.UIPlane(type.Background2, Color.White, bounds), Color.White) : null) { }
 
-		public Panel(CPos position, MPos bounds, int borderWidth, string background, string border, ImageRenderable background2)
+		public Panel(CPos position, Vector bounds, PanelType type, BatchObject background2)
 		{
-			this.background = new ImageRenderable(TextureManager.Texture(background), bounds);
-			this.border = new ImageRenderable(TextureManager.Texture(border), bounds + new MPos(borderWidth, borderWidth));
+			background = new BatchObject(Mesh.UIPlane(type.Background, Color.White, bounds), Color.White);
+			border = new BatchObject(Mesh.UIPlane(type.Border, Color.White, bounds + new Vector(type.BorderWidth, type.BorderWidth, 0)), Color.White);
 			if (background2 != null) Highlight = background2;
 
-			Bounds = new MPos((int)((bounds.X + borderWidth) * MasterRenderer.PixelMultiplier * 512), (int)((bounds.Y + borderWidth) * MasterRenderer.PixelMultiplier * 512));
+			Bounds = new MPos((int)((bounds.X + type.BorderWidth) * MasterRenderer.PixelMultiplier * 512), (int)((bounds.Y + type.BorderWidth) * MasterRenderer.PixelMultiplier * 512));
 
 			Position = position;
 		}
 
 		public virtual void Render()
 		{
-			border.Render();
-			background.Render();
+			border.PushToBatchRenderer();
+			background.PushToBatchRenderer();
 
 			if (HighlightVisible && Highlight != null)
-				Highlight.Render();
+				Highlight.PushToBatchRenderer();
 		}
 
 		public virtual void Tick() { }

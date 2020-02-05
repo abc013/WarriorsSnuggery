@@ -26,11 +26,13 @@ namespace WarriorsSnuggery.UI
 		bool mouseOnBox;
 		readonly TextLine text;
 		readonly Action onEnter;
+		readonly MPos gameBounds;
 
 		int keyDuration;
 
-		public TextBox(CPos pos, string text, int maximumLength, bool onlyNumbers, PanelType type, Action onEnter) : base(pos, new MPos(8 * maximumLength + 2, 12), type)
+		public TextBox(CPos pos, string text, int maximumLength, bool onlyNumbers, PanelType type, Action onEnter) : base(pos, new Vector(Font.Pixel16.Info.Size * maximumLength * MasterRenderer.PixelMultiplier * 0.5f, Font.Pixel16.Info.Size * MasterRenderer.PixelMultiplier * 0.5f, 0), type)
 		{
+			gameBounds = new MPos((int)(Font.Pixel16.Info.Size * maximumLength * MasterRenderer.PixelMultiplier * 512), (int)(Font.Pixel16.Info.Size * MasterRenderer.PixelMultiplier * 512));
 			realText = text;
 			MaximumLength = maximumLength;
 			OnlyNumbers = onlyNumbers;
@@ -108,10 +110,7 @@ namespace WarriorsSnuggery.UI
 		void checkMouse()
 		{
 			var mousePosition = MouseInput.WindowPosition;
-
-			var width = (int)((8 * MaximumLength + 2) / 24f * 512);
-			var height = 512 / 2;
-			mouseOnBox = mousePosition.X > Position.X - width && mousePosition.X < Position.X + width && mousePosition.Y > Position.Y - height && mousePosition.Y < Position.Y + height;
+			mouseOnBox = mousePosition.X > Position.X - gameBounds.X && mousePosition.X < Position.X + gameBounds.X && mousePosition.Y > Position.Y - gameBounds.Y && mousePosition.Y < Position.Y + gameBounds.Y;
 		}
 	}
 }

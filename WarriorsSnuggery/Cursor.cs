@@ -12,19 +12,19 @@ namespace WarriorsSnuggery
 	}
 	public class Cursor : IRenderable
 	{
-		readonly ImageRenderable @default;
-		readonly ImageRenderable select;
-		readonly ImageRenderable money;
-		readonly ImageRenderable attack;
+		readonly BatchObject @default;
+		readonly BatchObject select;
+		readonly BatchObject money;
+		readonly BatchObject attack;
 
 		public CursorType Current;
 
 		public Cursor()
 		{
-			@default = new ImageRenderable(TextureManager.Texture("cursor_default"));
-			select = new ImageRenderable(TextureManager.Texture("cursor_select"));
-			money = new ImageRenderable(TextureManager.Texture("cursor_money"));
-			attack = new ImageRenderable(TextureManager.Texture("cursor_attack"));
+			@default = new BatchObject(UITextureManager.Get("cursor_default")[0], Color.White);
+			select = new BatchObject(UITextureManager.Get("cursor_select")[0], Color.White);
+			money = new BatchObject(UITextureManager.Get("cursor_money")[0], Color.White);
+			attack = new BatchObject(UITextureManager.Get("cursor_attack")[0], Color.White);
 
 			Current = CursorType.NONE;
 		}
@@ -35,19 +35,19 @@ namespace WarriorsSnuggery
 			{
 				case CursorType.DEFAULT:
 					@default.SetPosition(MouseInput.WindowPosition + new CPos(240, 240, 0));
-					@default.Render();
+					@default.PushToBatchRenderer();
 					break;
 				case CursorType.SELECT:
 					select.SetPosition(MouseInput.WindowPosition);
-					select.Render();
+					select.PushToBatchRenderer();
 					break;
 				case CursorType.MONEY:
 					money.SetPosition(MouseInput.WindowPosition + new CPos(240, 240, 0));
-					money.Render();
+					money.PushToBatchRenderer();
 					break;
 				case CursorType.ATTACK:
 					attack.SetPosition(MouseInput.WindowPosition);
-					attack.Render();
+					attack.PushToBatchRenderer();
 					break;
 				default:
 					break;
