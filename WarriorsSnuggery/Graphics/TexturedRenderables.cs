@@ -1,45 +1,70 @@
 namespace WarriorsSnuggery.Graphics
 {
-	public class TextRenderable : GraphicsObject
+	public class TextRenderable : IRenderable
 	{
-		static readonly Vector shadowVector = new Vector(-0.04f / WindowInfo.Ratio, -0.04f, 0f);
-		public Color Color;
-		public char @Char;
+		BatchObject charRenderable;
+		static readonly Vector shadowOffset = new Vector(0.02f * WindowInfo.Ratio, -0.02f, 0);
+		Vector position;
 
-		public TextRenderable(CPos position, IFont font, char @char, Color color, int curTextWidth = 0) : base(font == IFont.Pixel16 ? CharManager.Pixel16 : CharManager.Papyrus24)
+		readonly IFont font;
+		Color color;
+
+		public TextRenderable(CPos position, IFont font, char c, Color color, int pxOffset = 0)
 		{
-			SetPosition(position.ToVector() + new Vector(curTextWidth * IFont.FontSizeMultiplier, 0, 0, 0));
-			Color = color;
-			@Char = @char;
+			this.font = font;
+			charRenderable = new BatchObject(Mesh.Character(font, c), color);
+			SetPosition(position, pxOffset);
+			SetColor(color);
 		}
 
-		void setColor(Color color)
+		public void SetPosition(CPos position, int pxOffset = 0)
 		{
-			((IChar)renderable).SetColor(color);
+			SetPosition(position.ToVector(), pxOffset);
 		}
 
-		void setChar(char @char)
+		public void SetPosition(Vector position, int pxOffset = 0)
 		{
-			((IChar)renderable).SetChar(@char);
+			this.position = position + new Vector(pxOffset * font.PixelMultiplier, 0, 0, 0);
+			charRenderable.SetPosition(this.position);
 		}
 
-		public override void Render()
+		public void SetScale(float scale)
 		{
-			setChar(@Char);
-			if (Settings.EnableTextShadowing && Color != Color.Black)
+			charRenderable.SetScale(scale);
+		}
+
+		public void SetScale(Vector scale)
+		{
+			charRenderable.SetScale(scale);
+		}
+
+		public void SetRotation(VAngle rotation)
+		{
+			charRenderable.SetRotation(rotation);
+		}
+
+		public void SetColor(Color color)
+		{
+			this.color = color;
+			charRenderable.SetColor(color);
+		}
+
+		public void SetCharacter(char c)
+		{
+			charRenderable = new BatchObject(Mesh.Character(font, c), color);
+		}
+
+		public void Render()
+		{
+			if (Settings.EnableTextShadowing)
 			{
-				setColor(Color.Black);
-				SetPosition((Vector)position + shadowVector);
-				base.Render();
-				SetPosition((Vector)position - shadowVector);
+				charRenderable.SetColor(Color.Black);
+				charRenderable.SetPosition(position + shadowOffset);
+				charRenderable.PushToBatchRenderer();
+				charRenderable.SetPosition(position - shadowOffset);
+				charRenderable.SetColor(color);
 			}
-			setColor(Color);
-			base.Render();
-		}
-
-		public override void Dispose()
-		{
-			Visible = false;
+			charRenderable.PushToBatchRenderer();
 		}
 	}
 

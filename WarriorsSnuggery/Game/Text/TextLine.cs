@@ -118,15 +118,14 @@ namespace WarriorsSnuggery.Objects
 					else
 					{
 						var localchar = chars[i];
-						localchar.Color = color;
-						localchar.Char = text[i];
+						localchar.SetColor(color);
+						localchar.SetCharacter(text[i]);
 					}
 					width += charWidth(text[i]);
 				}
 
 				while (text.Length < chars.Count)
 				{
-					chars[chars.Count - 1].Dispose();
 					chars.Remove(chars[chars.Count - 1]);
 				}
 			}
@@ -186,15 +185,14 @@ namespace WarriorsSnuggery.Objects
 				else
 				{
 					var localchar = chars[i];
-					localchar.Color = color;
-					localchar.Char = String[i];
+					localchar.SetColor(color);
+					localchar.SetCharacter(String[i]);
 				}
 				width += charWidth(String[i]);
 			}
 
 			while (String.Length < chars.Count)
 			{
-				chars[chars.Count - 1].Dispose();
 				chars.Remove(chars[chars.Count - 1]);
 			}
 
@@ -235,7 +233,7 @@ namespace WarriorsSnuggery.Objects
 			}
 			for (int i = 0; i < chars.Count; i++)
 			{
-				chars[i].SetPosition(Position.ToVector() + new Vector((width + 1) * IFont.FontSizeMultiplier, 0, 0, 0));
+				chars[i].SetPosition(Position, width);
 				width += charWidth(String[i]) + 1;
 			}
 		}
@@ -243,9 +241,9 @@ namespace WarriorsSnuggery.Objects
 		int charWidth(char @char)
 		{
 			if (@char != ' ')
-				return font.getCharWidth(@char);
+				return font.GetWidth(@char);
 
-			return font.MaxSize.X / 2;
+			return font.Info.MaxSize.X / 2;
 		}
 
 		public virtual void Render()
@@ -264,8 +262,6 @@ namespace WarriorsSnuggery.Objects
 		public void Dispose()
 		{
 			Visible = false;
-			foreach (TextRenderable @char in chars)
-				@char.Dispose();
 		}
 	}
 }

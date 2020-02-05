@@ -95,7 +95,6 @@ namespace WarriorsSnuggery
 			var possibleTarget = game.World.LocalPlayer == null ? false : game.FindValidTarget(MouseInput.GamePosition, game.World.LocalPlayer.Team) != null;
 
 			BatchRenderer.Render();
-			MasterRenderer.BatchRenderer = null;
 
 			if (Settings.EnableDebug)
 			{
@@ -109,6 +108,9 @@ namespace WarriorsSnuggery
 			}
 
 			tooltip?.Render();
+
+			BatchRenderer.Render();
+			MasterRenderer.BatchRenderer = null;
 		}
 	}
 }

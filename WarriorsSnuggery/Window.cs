@@ -97,6 +97,7 @@ namespace WarriorsSnuggery
 			Console.Write("Loading...");
 
 			MasterRenderer.Initialize();
+			SpriteManager.CreateSheet(8);
 
 			base.OnLoad(e);
 
@@ -104,7 +105,6 @@ namespace WarriorsSnuggery
 			Icon = new Icon(FileExplorer.Misc + "/warsnu.ico");
 			IFont.LoadFonts();
 			IFont.InitializeFonts();
-			CharManager.Initialize();
 
 			font.StopAndWrite("Loading Fonts");
 
@@ -118,6 +118,7 @@ namespace WarriorsSnuggery
 
 			watch.StopAndWrite("Loading Rules");
 
+			SpriteManager.CreateTextures();
 
 			Ready = true;
 			Console.WriteLine(" Done!");
@@ -202,7 +203,6 @@ namespace WarriorsSnuggery
 			TextureManager.DeleteTextures();
 			UITextureManager.Dispose();
 			ColorManager.Dispose();
-			CharManager.Dispose();
 
 			WorldRenderer.BatchRenderer.Dispose();
 			UIRenderer.BatchRenderer.Dispose();

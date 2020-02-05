@@ -242,20 +242,25 @@ namespace WarriorsSnuggery.Graphics
 			return vertices;
 		}
 
-		public static Vertex[] Character(IFont font)
+		public static Vertex[] Character(IFont font, char c)
 		{
-			var w = font.MaxSize.X;
-			var h = font.MaxSize.Y;
-			var size = w * IFont.FontSizeMultiplier;
+			var texture = font.GetTexture(c);
+			var x = texture.Offset.X / (float)Settings.SheetSize;
+			var y = texture.Offset.Y / (float)Settings.SheetSize;
+			var w = (texture.Offset.X + texture.Width) / (float)Settings.SheetSize;
+			var h = (texture.Offset.Y + texture.Height) / (float)Settings.SheetSize;
+			var correction = texture.Width / (float)texture.Height;
+			var id = SpriteManager.SheetIndex(texture.SheetID);
+			var scale = MasterRenderer.PixelMultiplier * font.Info.Size;
 
 			Vertex[] vertices =
 			{
-				new Vertex(new Vector(-size, -size, 0, 1.0f), new Vector4(0, h, 0, 0), Color.White),
-				new Vertex(new Vector(size,  -size, 0, 1.0f), new Vector4(w, h, 0, 0), Color.White),
-				new Vertex(new Vector(-size, size,  0, 1.0f), new Vector4(0, 0, 0, 0), Color.White),
-				new Vertex(new Vector(-size, size,  0, 1.0f), new Vector4(0, 0, 0, 0), Color.White),
-				new Vertex(new Vector(size,  -size, 0, 1.0f), new Vector4(w, h, 0, 0), Color.White),
-				new Vertex(new Vector(size,  size,  0, 1.0f), new Vector4(w, 0, 0, 0), Color.White),
+				new Vertex(new Vector(scale * correction,  scale,  0, 1.0f), new Vector4(w, y, id, 0), Color.White),
+				new Vertex(new Vector(-scale * correction, -scale, 0, 1.0f), new Vector4(x, h, id, 0), Color.White),
+				new Vertex(new Vector(scale * correction,  -scale, 0, 1.0f), new Vector4(w, h, id, 0), Color.White),
+				new Vertex(new Vector(-scale * correction, scale,  0, 1.0f), new Vector4(x, y, id, 0), Color.White),
+				new Vertex(new Vector(-scale * correction, -scale, 0, 1.0f), new Vector4(x, h, id, 0), Color.White),
+				new Vertex(new Vector(scale * correction,  scale,  0, 1.0f), new Vector4(w, y, id, 0), Color.White),
 			};
 			return vertices;
 		}

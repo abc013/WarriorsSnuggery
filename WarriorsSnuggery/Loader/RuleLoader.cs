@@ -17,8 +17,6 @@ namespace WarriorsSnuggery
 			var uiFiles = new string[0];
 			var uiPaths = new string[0];
 
-			SpriteManager.CreateSheet(8);
-
 			foreach (var rule in rules)
 			{
 				var files = rule.Convert<string[]>();
@@ -64,18 +62,12 @@ namespace WarriorsSnuggery
 			ShroudTexture = SpriteManager.AddTexture(new TextureInfo("shroud", TextureType.IMAGE, 0, 16, 16));
 			Questionmark = SpriteManager.AddTexture(new TextureInfo("questionmark", TextureType.IMAGE, 0, 12, 12));
 
-			SpriteManager.UseNextSheet();
-
 			for (int j = 0; j < terrainFiles.Length; j++)
 				TerrainCreator.LoadTypes(terrainPaths[j], terrainFiles[j] + ".yaml");
-
-			SpriteManager.UseNextSheet();
 
 			for (int j = 0; j < uiFiles.Length; j++)
 				Spells.SpellTreeLoader.Load(uiPaths[j], uiFiles[j] + ".yaml");
 			loadUIRules();
-
-			SpriteManager.CreateTextures();
 		}
 
 		static void loadUIRules()

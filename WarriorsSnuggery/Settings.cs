@@ -5,7 +5,7 @@ namespace WarriorsSnuggery
 	public static class Settings
 	{
 		public const int BatchSize = 8120;
-		public const int SheetSize = 512;
+		public const int SheetSize = 1024;
 
 		public const int MaxTeams = 8;
 

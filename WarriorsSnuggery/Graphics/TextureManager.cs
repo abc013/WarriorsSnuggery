@@ -115,38 +115,6 @@ namespace WarriorsSnuggery.Graphics
 			return texture;
 		}
 
-		public static ITexture Font(string font, int size, out MPos maxSize, out int[] sizes)
-		{
-			maxSize = MPos.Zero;
-			sizes = new int[Characters.Length];
-			sizes.Initialize();
-
-			if (string.IsNullOrEmpty(font))
-				return null;
-
-			ITexture texture;
-			string name = font + size;
-
-			// We don't need this as this method gets only called twice with different font.
-			//if (textures.ContainsKey(name))
-			//{
-			//	textures.TryGetValue(name, out ITexture[] textureArray);
-			//	texture = textureArray[0];
-			//	maxSize = new MPos(texture.Width / Characters.Length, texture.Height);
-			//	return texture;
-			//}
-
-			using (var bitmap = GenerateCharacters(size, font, out maxSize, out sizes))
-			{
-				texture = createTexture(bitmap, name);
-			}
-
-			// For dispose
-			textures.Add(name, new[] { texture });
-
-			return texture;
-		}
-
 		static ITexture createTexture(Bitmap bitmap, string name)
 		{
 			return createTexture(loadTexture(bitmap), new TextureInfo(name, TextureType.IMAGE, 0, bitmap.Width, bitmap.Height, false), name);
@@ -226,44 +194,31 @@ namespace WarriorsSnuggery.Graphics
 		}
 
 		public const string Characters = @" qwertyuiopasdfghjklzxcvbnmäöüQWERTYUIOPASDFGHJKLZXCVBNMÄÖÜ0123456789µ§!""#%&/()=?^*@${[]}\~¨'¯-_.:,;<>|°+↓↑←→∞";
-		//public const string Characters = @" qwertyuiopasdfghjklzxcvbnmäöüQWERTYUIOPASDFGHJKLZXCVBNMÄÖÜ0123456789µ§½!""#¤%&/()=?^*@£¥€${[]}\~¨'¯-_.:,;<>|°©®±ツ+↓↑←→"; In order to save space and performance, we remove some chars we know we won't need.
 
-		public static Bitmap GenerateCharacters(int fontSize, string fontName, out MPos maxSize, out int[] sizes)
+		public static float[][] LoadCharacters(int fontSize, string fontName, out MPos maxSize, out MPos[] sizes)
 		{
-			var characters = new List<Bitmap>();
-			sizes = new int[Characters.Length];
+			var characters = new float[Characters.Length][];
+			sizes = new MPos[Characters.Length];
 
-			Font font = null;
-			var @private = IFont.Collection.Families.Where(a => a.Name == fontName);
-			font = @private.Any() ? new Font(@private.First(), fontSize) : new Font(fontName, fontSize);
-
-			for (int i = 0; i < Characters.Length; i++)
+			using (var font = new Font(IFont.Collection.Families.Where(a => a.Name == fontName).First(), fontSize))
 			{
-				var charBmp = generateFontChar(font, Characters[i]);
-				sizes[i] = charBmp.Width;
-				characters.Add(charBmp);
-			}
-			maxSize = new MPos(characters.Max(x => x.Width), characters.Max(x => x.Height));
-			var charMap = new Bitmap(maxSize.X * characters.Count, maxSize.Y);
-			using (var gfx = System.Drawing.Graphics.FromImage(charMap))
-			{
-				gfx.FillRectangle(Brushes.Black, 0, 0, charMap.Width, charMap.Height);
-				for (int i = 0; i < characters.Count; i++)
+				var maxWidth = 0;
+				var maxHeight = 0;
+				for (int i = 0; i < Characters.Length; i++)
 				{
-					var c = characters[i];
-					gfx.DrawImageUnscaled(c, i * maxSize.X, 0);
+					var charBmp = generateFontChar(font, Characters[i]);
+					sizes[i] = new MPos(charBmp.Width, charBmp.Height);
+					if (charBmp.Width > maxWidth)
+						maxWidth = charBmp.Width;
+					if (charBmp.Height > maxHeight)
+						maxHeight = charBmp.Height;
 
-					c.Dispose();
+					characters[i] = loadTexture(charBmp);
 				}
+				maxSize = new MPos(maxWidth, maxHeight);
 			}
 
-			foreach (var character in characters)
-				character.Dispose();
-			characters.Clear();
-
-			font.Dispose();
-
-			return charMap;
+			return characters;
 		}
 
 		static Bitmap generateFontChar(Font font, char c)
@@ -274,7 +229,7 @@ namespace WarriorsSnuggery.Graphics
 			using (var gfx = System.Drawing.Graphics.FromImage(bmp))
 			{
 				gfx.TextRenderingHint = System.Drawing.Text.TextRenderingHint.AntiAliasGridFit;
-				gfx.FillRectangle(Brushes.Black, 0, 0, bmp.Width, bmp.Height);
+				gfx.Clear(System.Drawing.Color.FromArgb(0));
 				gfx.DrawString(c.ToString(), font, Brushes.White, 0, 0);
 			}
 			return bmp;

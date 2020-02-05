@@ -109,6 +109,7 @@
     <Compile Include="Graphics\BatchRenderer.cs" />
     <Compile Include="Graphics\Objects\BatchRenderable.cs" />
     <Compile Include="Graphics\Objects\BatchSequence.cs" />
+    <Compile Include="Graphics\Objects\FontInfo.cs" />
     <Compile Include="Graphics\UITextureManager.cs" />
     <Compile Include="Loader\WavLoader.cs" />
     <Compile Include="Map\PieceManager.cs" />
@@ -177,7 +178,6 @@
     <Compile Include="Generation\Noise.cs" />
     <Compile Include="GameSaveManager.cs" />
     <Compile Include="GlobalSuppressions.cs" />
-    <Compile Include="Graphics\CharManager.cs" />
     <Compile Include="Graphics\ColoredRenderables.cs" />
     <Compile Include="Graphics\ColorManager.cs" />
     <Compile Include="Graphics\Sheet.cs" />
@@ -238,7 +238,6 @@
     <Compile Include="Position\Vector.cs" />
     <Compile Include="Graphics\DrawMethod.cs" />
     <Compile Include="Graphics\GraphicsObject.cs" />
-    <Compile Include="Graphics\Objects\IChar.cs" />
     <Compile Include="Graphics\Objects\IFont.cs" />
     <Compile Include="Graphics\ITexture.cs" />
     <Compile Include="Graphics\TextureManager.cs" />

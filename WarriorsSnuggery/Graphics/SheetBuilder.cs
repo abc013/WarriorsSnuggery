@@ -37,9 +37,7 @@ namespace WarriorsSnuggery.Graphics
 			var location = new MPos(currentSheet.Size.X - rowSpaceLeft, currentHeight);
 
 			for (int y = 0; y < size.Y; y++)
-			{
 				Array.Copy(data, y * size.X * 4, currentSheet.Data, ((currentHeight + y) * currentSheet.Size.X + currentSheet.Size.X - rowSpaceLeft) * 4, size.X * 4);
-			}
 
 			rowSpaceLeft -= size.X;
 

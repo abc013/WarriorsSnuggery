@@ -49,8 +49,10 @@ namespace WarriorsSnuggery
 		{
 			game.LocalRender++;
 
+			BatchRenderer.SetCurrent();
 			foreach (var o in beforeRender)
 				o.Render();
+			BatchRenderer.Render();
 
 			MasterRenderer.Uniform(MasterRenderer.TextureShader, ref Camera.Matrix, Ambient);
 			MasterRenderer.Uniform(MasterRenderer.FontShader, ref Camera.Matrix, Ambient);
@@ -59,17 +61,12 @@ namespace WarriorsSnuggery
 			if (world.ToRender == null)
 				return;
 
-			BatchRenderer.SetCurrent();
 			world.TerrainLayer.Render();
 			BatchRenderer.Render();
-			MasterRenderer.BatchRenderer = null;
 
-			BatchRenderer.SetCurrent();
 			world.SmudgeLayer.Render();
 			BatchRenderer.Render();
-			MasterRenderer.BatchRenderer = null;
 
-			BatchRenderer.SetCurrent();
 			foreach (PhysicsObject o in world.ToRender)
 			{
 				CPos pos = world.Game.Editor ? MouseInput.GamePosition : world.LocalPlayer == null ? CPos.Zero : world.LocalPlayer.Position;
@@ -97,12 +94,11 @@ namespace WarriorsSnuggery
 					o.Render();
 			}
 			BatchRenderer.Render();
-			MasterRenderer.BatchRenderer = null;
 
 			foreach (var o in afterRender)
 				o.Render();
-
-			BatchRenderer.SetCurrent();
+			BatchRenderer.Render();
+			
 			if (!world.ShroudLayer.AllRevealed)
 			{
 				for (int x = (VisibilitySolver.lastCameraPosition.X) * 2; x < (VisibilitySolver.lastCameraPosition.X + VisibilitySolver.lastCameraZoom.X) * 2; x++)

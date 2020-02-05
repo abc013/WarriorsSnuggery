@@ -1,5 +1,4 @@
-﻿using System;
-using WarriorsSnuggery.Maps;
+﻿using WarriorsSnuggery.Maps;
 
 namespace WarriorsSnuggery
 {

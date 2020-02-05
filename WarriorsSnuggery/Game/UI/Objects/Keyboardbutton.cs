@@ -108,7 +108,7 @@ namespace WarriorsSnuggery.Objects
 					if (KeyInput.IsKeyDown(key, 0))
 					{
 						Key = key[0];
-						keyDisplay.Char = Key;
+						keyDisplay.SetCharacter(Key);
 						Selected = false;
 						blinkTick = 0;
 					}
@@ -127,7 +127,7 @@ namespace WarriorsSnuggery.Objects
 
 		public void Dispose()
 		{
-			keyDisplay.Dispose();
+
 		}
 	}
 }

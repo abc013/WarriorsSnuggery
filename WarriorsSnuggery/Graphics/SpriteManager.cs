@@ -52,6 +52,22 @@ namespace WarriorsSnuggery.Graphics
 			return textures;
 		}
 
+		public static ITexture[] AddFont(FontInfo font)
+		{
+			var data = TextureManager.LoadCharacters(font.Size, font.FontName, out font.MaxSize, out font.CharSizes);
+			var textures = new ITexture[data.Length];
+
+			for (int i = 0; i < data.Length; i++)
+			{
+				if (!SheetBuilder.IsSpaceLeft(font.CharSizes[i].X, font.CharSizes[i].Y))
+					UseNextSheet();
+
+				textures[i] = SheetBuilder.WriteTexture(data[i], new TextureInfo(font.FontName, TextureType.IMAGE, 0, font.CharSizes[i].X, font.CharSizes[i].Y, false));
+			}
+
+			return textures;
+		}
+
 		public static ITexture[] GetTexture(TextureInfo info)
 		{
 			return hashedTextures[info.GetHashCode()];
