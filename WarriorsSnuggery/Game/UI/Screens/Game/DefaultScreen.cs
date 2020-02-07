@@ -35,7 +35,7 @@ namespace WarriorsSnuggery.UI
 				Title.SetColor(Color.Green);
 
 			// SECTION ACTORS
-			actorList = new ActorList(new CPos((int)(WindowInfo.UnitWidth * 512) - 512, -1024, 0), new MPos(512, 5120), new MPos(512, 512), PanelManager.Get("wooden"));
+			actorList = new ActorList(new CPos((int)(WindowInfo.UnitWidth * 512) - 512, -1536, 0), new MPos(512, 5120), new MPos(512, 512), PanelManager.Get("wooden"));
 
 			foreach (var n in ActorCreator.GetNames())
 			{
@@ -67,8 +67,8 @@ namespace WarriorsSnuggery.UI
 
 			// SECTION MONEY
 			money = new BatchObject(UITextureManager.Get("UI_money")[0], Color.White);
-			money.SetPosition(new CPos((int)(WindowInfo.UnitWidth * 512) - 4096 + 512, 8192 - 1024, 0));
-			moneyText = new TextLine(new CPos((int)(WindowInfo.UnitWidth * 512) - 4096 + 1536, 8192 - 1024, 0), Font.Papyrus24);
+			money.SetPosition(new CPos(6120 + 128 + 1536, 8192 - 1024, 0));
+			moneyText = new TextLine(new CPos(6120 + 256 + 2560, 8192 - 1024, 0), Font.Papyrus24);
 			moneyText.SetText(game.Statistics.Money);
 
 			// SECTION MENUS
@@ -152,7 +152,7 @@ namespace WarriorsSnuggery.UI
 			// SECTION MONEY
 			if (!Settings.EnableInfoScreen)
 			{
-				ColorManager.DrawRect(new CPos((int)(WindowInfo.UnitWidth * 512) - 4096 - 512, 8192, 0), new CPos((int)(WindowInfo.UnitWidth * 512) - 1024 + 512, 8192 - 2560, 0), new Color(0, 0, 0, 128));
+				ColorManager.DrawRect(new CPos(6120 + 128, 8192, 0), new CPos((int)(WindowInfo.UnitWidth * 512) - 2048, 8192 - 2560, 0), new Color(0, 0, 0, 128));
 				money.PushToBatchRenderer();
 				moneyText.Render();
 			}

@@ -85,8 +85,8 @@ namespace WarriorsSnuggery
 			UITextureManager.Add("cursor_money", new TextureInfo("cursor_money", TextureType.IMAGE, 0, 10, 10));
 			UITextureManager.Add("cursor_attack", new TextureInfo("cursor_attack", TextureType.IMAGE, 0, 10, 10));
 
-			PanelManager.AddType(new PanelType(panelTex("UI_wood1"), panelTex("UI_wood2"), panelTex("UI_wood3"), 0.1f), "wooden");
-			PanelManager.AddType(new PanelType(panelTex("UI_stone1"), panelTex("UI_wood3"), panelTex("UI_stone2"), 0.1f), "stone");
+			PanelManager.AddType(new PanelType(panelTex("UI_wood1"), panelTex("UI_wood2"), panelTex("UI_wood3"), 0.07f), "wooden");
+			PanelManager.AddType(new PanelType(panelTex("UI_stone1"), panelTex("UI_wood3"), panelTex("UI_stone2"), 0.07f), "stone");
 
 			CheckBoxCreator.AddType(new CheckBoxType(checkBox("check"), checkBox("check_hover"), checkBox("check_click"), 0.6f, 0.6f), "wooden");
 			CheckBoxCreator.AddType(new CheckBoxType(checkBox("check_terrain"), checkBox("check_terrain_hover"), checkBox("check_terrain_click"), 0.5f, 0.5f), "terrain_editor");

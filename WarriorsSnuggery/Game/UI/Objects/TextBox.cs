@@ -6,6 +6,8 @@ namespace WarriorsSnuggery.UI
 {
 	public class TextBox : Panel
 	{
+		const int margin = 64;
+
 		public bool Selected;
 		public string Text
 		{
@@ -30,9 +32,9 @@ namespace WarriorsSnuggery.UI
 
 		int keyDuration;
 
-		public TextBox(CPos pos, string text, int maximumLength, bool onlyNumbers, PanelType type, Action onEnter) : base(pos, new Vector(Font.Pixel16.Info.Size * maximumLength * MasterRenderer.PixelMultiplier * 0.5f, Font.Pixel16.Info.Size * MasterRenderer.PixelMultiplier * 0.5f, 0), type)
+		public TextBox(CPos pos, string text, int maximumLength, bool onlyNumbers, PanelType type, Action onEnter) : base(pos, new Vector((2 * margin + Font.Pixel16.Width * text.Length) / 2048f, (2 * margin + Font.Pixel16.Height) / 2048f, 0), type)
 		{
-			gameBounds = new MPos((int)(Font.Pixel16.Info.Size * maximumLength * MasterRenderer.PixelMultiplier * 512), (int)(Font.Pixel16.Info.Size * MasterRenderer.PixelMultiplier * 512));
+			gameBounds = new MPos((Font.Pixel16.Width * text.Length) / 2 + margin, Font.Pixel16.Height / 2 + margin);
 			realText = text;
 			MaximumLength = maximumLength;
 			OnlyNumbers = onlyNumbers;

@@ -39,67 +39,67 @@ namespace WarriorsSnuggery.UI
 			height.SetText("Height:");
 			Content.Add(height);
 
-			fullscreenCheck = CheckBoxCreator.Create("wooden", new CPos(-1024, -3000, 0), Settings.Fullscreen, (ticked) =>
+			fullscreenCheck = CheckBoxCreator.Create("wooden", new CPos(-1536, -3000, 0), Settings.Fullscreen, (ticked) =>
 			{
 				width.SetColor(ticked ? new Color(128, 128, 128) : Color.White);
 				height.SetColor(ticked ? new Color(128, 128, 128) : Color.White);
 			});
-			widthWrite = TextBoxCreator.Create("wooden", new CPos(-1536, -2300, 0), Settings.Width + "", 5, true, () =>
+			widthWrite = TextBoxCreator.Create("wooden", new CPos(-2048, -2300, 0), Settings.Width + "", 5, true, () =>
 			{
 				if (int.Parse(heightWrite.Text) < 640)
 					heightWrite.Text = 640 + "";
 			});
-			heightWrite = TextBoxCreator.Create("wooden", new CPos(-1536, -1600, 0), Settings.Height + "", 5, true, () =>
+			heightWrite = TextBoxCreator.Create("wooden", new CPos(-2048, -1600, 0), Settings.Height + "", 5, true, () =>
 			{
 				if (int.Parse(heightWrite.Text) < 480)
 					heightWrite.Text = 480 + "";
 			});
 
 			// Graphics
-			var antiAliasing = new TextLine(new CPos(128, -3000, 0), Font.Pixel16);
+			var antiAliasing = new TextLine(new CPos(-512, -3000, 0), Font.Pixel16);
 			antiAliasing.SetText("Enable Antialising:");
 			Content.Add(antiAliasing);
-			var pixeling = new TextLine(new CPos(128, -2300, 0), Font.Pixel16);
+			var pixeling = new TextLine(new CPos(-512, -2300, 0), Font.Pixel16);
 			pixeling.SetText("Enable Pixeling:");
 			Content.Add(pixeling);
-			var textshadow = new TextLine(new CPos(128, -1600, 0), Font.Pixel16);
+			var textshadow = new TextLine(new CPos(-512, -1600, 0), Font.Pixel16);
 			textshadow.SetText("Enable text shadows:");
 			Content.Add(textshadow);
 
-			antiAliasingCheck = CheckBoxCreator.Create("wooden", new CPos(5024, -3000, 0), Settings.AntiAliasing);
-			pixelingCheck = CheckBoxCreator.Create("wooden", new CPos(5024, -2300, 0), Settings.EnablePixeling);
-			textshadowCheck = CheckBoxCreator.Create("wooden", new CPos(5024, -1600, 0), Settings.EnableTextShadowing);
+			antiAliasingCheck = CheckBoxCreator.Create("wooden", new CPos(6656, -3000, 0), Settings.AntiAliasing);
+			pixelingCheck = CheckBoxCreator.Create("wooden", new CPos(6656, -2300, 0), Settings.EnablePixeling);
+			textshadowCheck = CheckBoxCreator.Create("wooden", new CPos(6656, -1600, 0), Settings.EnableTextShadowing);
 
 			// Scrolling
-			var scrollSpeed = new TextLine(new CPos(-6096, -600, 0), Font.Pixel16);
+			var scrollSpeed = new TextLine(new CPos(-6144, -600, 0), Font.Pixel16);
 			scrollSpeed.SetText("Scroll Speed:");
 			Content.Add(scrollSpeed);
-			var edgeScrolling = new TextLine(new CPos(-6096, 100, 0), Font.Pixel16);
+			var edgeScrolling = new TextLine(new CPos(-6144, 100, 0), Font.Pixel16);
 			edgeScrolling.SetText("Edge Scrolling (0 when disabled):");
 			Content.Add(edgeScrolling);
 
-			scrollWrite = TextBoxCreator.Create("wooden", new CPos(5024, -600, 0), Settings.ScrollSpeed + "", 1, true);
-			edgeScrollWrite = TextBoxCreator.Create("wooden", new CPos(5024, 100, 0), Settings.EdgeScrolling + "", 1, true);
+			scrollWrite = TextBoxCreator.Create("wooden", new CPos(6656, -600, 0), Settings.ScrollSpeed + "", 1, true);
+			edgeScrollWrite = TextBoxCreator.Create("wooden", new CPos(6656, 100, 0), Settings.EdgeScrolling + "", 1, true);
 
 			// Additional features
-			var frameLimiter = new TextLine(new CPos(-6096, 1000, 0), Font.Pixel16);
+			var frameLimiter = new TextLine(new CPos(-6144, 1000, 0), Font.Pixel16);
 			frameLimiter.SetText("Framelimiter (0 when disabled):");
 			Content.Add(frameLimiter);
-			var developerMode = new TextLine(new CPos(-6096, 1900, 0), Font.Pixel16);
+			var developerMode = new TextLine(new CPos(-6144, 1900, 0), Font.Pixel16);
 			developerMode.SetText("Enable Developermode:");
 			Content.Add(developerMode);
 
-			frameLimiterWrite = TextBoxCreator.Create("wooden", new CPos(5024, 1000, 0), Settings.FrameLimiter + "", 2, true);
-			developerModeCheck = CheckBoxCreator.Create("wooden", new CPos(5024, 1900, 0), Settings.DeveloperMode);
+			frameLimiterWrite = TextBoxCreator.Create("wooden", new CPos(6656, 1000, 0), Settings.FrameLimiter + "", 2, true);
+			developerModeCheck = CheckBoxCreator.Create("wooden", new CPos(6656, 1900, 0), Settings.DeveloperMode);
 
 			// Volume
-			var masterVol = new TextLine(new CPos(-6096, 2800, 0), Font.Pixel16);
+			var masterVol = new TextLine(new CPos(-6144, 2800, 0), Font.Pixel16);
 			masterVol.SetText("Master Volume:");
 			Content.Add(masterVol);
-			var effectVol = new TextLine(new CPos(-6096, 3700, 0), Font.Pixel16);
+			var effectVol = new TextLine(new CPos(-6144, 3700, 0), Font.Pixel16);
 			effectVol.SetText("Effects Volume:");
 			Content.Add(effectVol);
-			var musicVol = new TextLine(new CPos(-6096, 4600, 0), Font.Pixel16);
+			var musicVol = new TextLine(new CPos(-6144, 4600, 0), Font.Pixel16);
 			musicVol.SetText("Music Volume:");
 			Content.Add(musicVol);
 
