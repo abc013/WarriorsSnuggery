@@ -106,8 +106,10 @@ namespace WarriorsSnuggery.Objects
 		public override void SetColor(Color color)
 		{
 			base.SetColor(color);
-			damaged1.SetColor(color);
-			damaged2.SetColor(color);
+			if (damaged1 != null)
+				damaged1.SetColor(color);
+			if (damaged2 != null)
+				damaged2.SetColor(color);
 		}
 
 		public void Damage(int damage)
