@@ -15,7 +15,7 @@
 
 		public HealthPartInfo(string internalName, MiniTextNode[] nodes) : base(internalName, nodes)
 		{
-			if (StartHealth == 0)
+			if (StartHealth <= 0 || StartHealth > MaxHealth)
 				StartHealth = MaxHealth;
 		}
 	}
@@ -24,8 +24,14 @@
 	{
 		readonly HealthPartInfo info;
 
-		public readonly int MaxHP;
-		public readonly int StartHealth;
+		public int MaxHP
+		{
+			get { return info.MaxHealth; }
+		}
+		public int StartHealth
+		{
+			get { return info.StartHealth; }
+		}
 		public float HPRelativeToMax => health / (float)MaxHP;
 		public int HP
 		{
@@ -47,9 +53,6 @@
 		public HealthPart(Actor self, HealthPartInfo info) : base(self)
 		{
 			this.info = info;
-
-			MaxHP = info.MaxHealth;
-			StartHealth = info.StartHealth;
 
 			HP = StartHealth;
 		}
