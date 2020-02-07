@@ -50,6 +50,7 @@ namespace WarriorsSnuggery.Objects.Parts
 		readonly SpritePartInfo info;
 
 		readonly BatchRenderable[] renderables;
+		Color color = Color.White;
 
 		public SpritePart(Actor self, SpritePartInfo info) : base(self)
 		{
@@ -111,7 +112,6 @@ namespace WarriorsSnuggery.Objects.Parts
 					MasterRenderer.UniformHeight(self.Height);
 
 					renderable.SetPosition(self.GraphicPositionWithoutHeight);
-					renderable.SetColor(new Color(0, 0, 0, 64));
 					renderable.PushToBatchRenderer();
 
 					MasterRenderer.RenderShadow = false;
@@ -120,10 +120,15 @@ namespace WarriorsSnuggery.Objects.Parts
 
 				self.Offset = info.Offset; // TODO replace by proper rendering
 				renderable.SetPosition(self.GraphicPosition);
-				renderable.SetColor(Color.White);
+				renderable.SetColor(color);
 				renderable.PushToBatchRenderer();
 				Program.CheckGraphicsError("Render");
 			}
+		}
+
+		public override void SetColor(Color color)
+		{
+			this.color = color;
 		}
 	}
 }

@@ -122,6 +122,12 @@ namespace WarriorsSnuggery.Objects
 				Renderable.PushToBatchRenderer();
 		}
 
+		public virtual void SetColor(Color color)
+		{
+			if (Renderable != null)
+				Renderable.SetColor(color);
+		}
+
 		public void RenderShadow()
 		{
 			if (Height != 0 && Renderable != null)

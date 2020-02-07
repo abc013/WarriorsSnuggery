@@ -13,5 +13,7 @@ namespace WarriorsSnuggery.Objects.Parts
 		public abstract Graphics.BatchRenderable GetRenderable(ActorAction action, int facing);
 
 		public abstract override void Render();
+
+		public abstract void SetColor(Color color);
 	}
 }

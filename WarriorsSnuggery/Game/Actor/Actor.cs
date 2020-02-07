@@ -328,6 +328,12 @@ namespace WarriorsSnuggery.Objects
 			Effects.RemoveAll(e => !e.Active);
 		}
 
+		public override void SetColor(Color color)
+		{
+			foreach (var part in Parts.Where(p => p is RenderablePart))
+				((RenderablePart)part).SetColor(color);
+		}
+
 		public void Attack(Actor target)
 		{
 			Attack(new Target(target));

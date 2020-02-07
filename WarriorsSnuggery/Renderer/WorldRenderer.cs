@@ -69,7 +69,7 @@ namespace WarriorsSnuggery
 			foreach (PhysicsObject o in world.ToRender)
 			{
 				CPos pos = world.Game.Editor ? MouseInput.GamePosition : world.LocalPlayer == null ? CPos.Zero : world.LocalPlayer.Position;
-				if (((o is Actor && ((Actor)o).WorldPart != null && ((Actor)o).WorldPart.Hideable) || (o is Wall && ((Wall)o).Type.Height >= 512)) && o.Position.Y > pos.Y && Math.Abs(o.Position.X - pos.X) < 4096)
+				if (((o is Actor && ((Actor)o).WorldPart != null && ((Actor)o).WorldPart.Hideable) || (o is Wall && ((Wall)o).LayerPosition.X % 2 != 0 && ((Wall)o).Type.Height >= 512)) && o.Position.Y > pos.Y && Math.Abs(o.Position.X - pos.X) < 4096)
 				{
 					var alpha = o.Position.Y - pos.Y < 1024 ? 1 - (o.Position.Y - pos.Y) / 1024f : (o.Position.Y - pos.Y - 1024) / 1024f;
 					var sidealpha = Math.Abs(o.Position.X - pos.X) / 4096f;
@@ -78,14 +78,9 @@ namespace WarriorsSnuggery
 					if (alpha < 0.5f) alpha = 0.5f;
 					if (alpha > 1f) alpha = 1f;
 
-					Ambient = new Color(Ambient.R, Ambient.G, Ambient.B, alpha);
-					MasterRenderer.Uniform(MasterRenderer.TextureShader, ref Camera.Matrix, Ambient);
-					MasterRenderer.Uniform(MasterRenderer.ShadowShader, ref Camera.Matrix, Ambient);
+					o.SetColor(new Color(1f, 1f, 1f, alpha));
 					o.Render();
-
-					Ambient = new Color(Ambient.R, Ambient.G, Ambient.B, 1f);
-					MasterRenderer.Uniform(MasterRenderer.TextureShader, ref Camera.Matrix, Ambient);
-					MasterRenderer.Uniform(MasterRenderer.ShadowShader, ref Camera.Matrix, Ambient);
+					o.SetColor(Color.White);
 				}
 				else
 					o.Render();

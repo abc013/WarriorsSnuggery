@@ -103,6 +103,13 @@ namespace WarriorsSnuggery.Objects
 			}
 		}
 
+		public override void SetColor(Color color)
+		{
+			base.SetColor(color);
+			damaged1.SetColor(color);
+			damaged2.SetColor(color);
+		}
+
 		public void Damage(int damage)
 		{
 			if (Type.Invincible)
