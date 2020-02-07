@@ -25,7 +25,6 @@ namespace WarriorsSnuggery.UI
 			Title.Position = new CPos(0, -4096, 0);
 
 			Content.Add(ButtonCreator.Create("wooden", new CPos(0, 6144, 0), "Resume", () => { game.Pause(false); game.ScreenControl.ShowScreen(ScreenType.DEFAULT); }));
-			Content.Add(new Panel(new CPos(0, 1024, 0), new Vector(8, 4, 0), PanelManager.Get("wooden")));
 
 			money = new BatchObject(UITextureManager.Get("UI_money")[0], Color.White);
 			money.SetPosition(new CPos(-(int)(WindowInfo.UnitWidth / 2 * 1024) + 1024, 7192, 0));
@@ -39,8 +38,7 @@ namespace WarriorsSnuggery.UI
 			for (int i = 0; i < tree.Length; i++)
 			{
 				var origin = SpellTreeLoader.SpellTree[i];
-				var position = new CPos(-4096, -2048, 0) + origin.Position.ToCPos();
-				SpellNode spell = new SpellNode(position, origin, game);
+				SpellNode spell = new SpellNode(origin.VisualPosition, origin, game);
 				tree[i] = spell;
 				foreach (var connection in origin.Before)
 				{
@@ -235,9 +233,9 @@ namespace WarriorsSnuggery.UI
 		public SpellConnection(Game game, SpellTreeNode origin, SpellTreeNode target, ITexture[] active, ITexture[] inactive, int tick)
 		{
 			this.game = game;
-			originPos = new CPos(-4096, -2048, 0) + origin.Position.ToCPos();
+			originPos = origin.VisualPosition;
 			this.target = target;
-			targetPos = new CPos(-4096, -2048, 0) + target.Position.ToCPos();
+			targetPos = target.VisualPosition;
 			this.active = new BatchRenderable[active.Length];
 			for (int i = 0; i < active.Length; i++)
 				this.active[i] = new BatchObject(Mesh.Image(active[i], Color.White), Color.White);

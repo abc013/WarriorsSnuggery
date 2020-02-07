@@ -35,7 +35,7 @@ namespace WarriorsSnuggery.UI
 				Title.SetColor(Color.Green);
 
 			// SECTION ACTORS
-			actorList = new ActorList(new CPos((int)(WindowInfo.UnitWidth * 512) - 512, 3072, 0), new MPos(512, 8192 + 3072), new MPos(512, 512), PanelManager.Get("wooden"));
+			actorList = new ActorList(new CPos((int)(WindowInfo.UnitWidth * 512) - 512, -1024, 0), new MPos(512, 5120), new MPos(512, 512), PanelManager.Get("wooden"));
 
 			foreach (var n in ActorCreator.GetNames())
 			{
@@ -63,7 +63,7 @@ namespace WarriorsSnuggery.UI
 				index++;
 			}
 
-			background = new Panel(new CPos(0, (int)(WindowInfo.UnitHeight * 512) - 3072 / 2 + 64, 0), new Vector(32, (6 - 0.01f) / 2, 0), PanelManager.Get("wooden"));
+			background = new Panel(new CPos(0, (int)(WindowInfo.UnitHeight * 512) - 1024, 0), new Vector(16, 2, 0), PanelManager.Get("wooden"));
 
 			// SECTION MONEY
 			money = new BatchObject(UITextureManager.Get("UI_money")[0], Color.White);
@@ -72,10 +72,10 @@ namespace WarriorsSnuggery.UI
 			moneyText.SetText(game.Statistics.Money);
 
 			// SECTION MENUS
-			pause = new TextLine(new CPos(-2048, 8192 - 256, 0), Font.Pixel16, TextLine.OffsetType.MIDDLE);
+			pause = new TextLine(new CPos(-2560, 8192 - 256, 0), Font.Pixel16, TextLine.OffsetType.MIDDLE);
 			pause.WriteText("Pause: '" + new Color(0.5f, 0.5f, 1f) + "P" + Color.White + "'");
 
-			menu = new TextLine(new CPos(2048, 8192 - 256, 0), Font.Pixel16, TextLine.OffsetType.MIDDLE);
+			menu = new TextLine(new CPos(2560, 8192 - 256, 0), Font.Pixel16, TextLine.OffsetType.MIDDLE);
 			menu.WriteText("Menu: '" + new Color(0.5f, 0.5f, 1f) + "Escape" + Color.White + "'");
 
 			// SECTION HEALTH
