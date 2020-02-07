@@ -19,6 +19,7 @@ namespace WarriorsSnuggery.Graphics
 		{
 			Vertices = vertices;
 			Color = color;
+			MatrixChanged = true;
 		}
 
 		public virtual void SetPosition(CPos position)

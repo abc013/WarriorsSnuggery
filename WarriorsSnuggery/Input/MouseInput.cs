@@ -43,15 +43,15 @@ namespace WarriorsSnuggery
 		{
 			var x = (pos.X - WindowInfo.Width / 2f) / WindowInfo.Width * WindowInfo.Ratio;
 			var y = (pos.Y - WindowInfo.Height / 2f) / WindowInfo.Height;
-			vPos = new Vector(x, y, 0, 0);
+			vPos = new Vector(x, y, 0);
 
-			WindowPosition = (vPos * new Vector(Camera.DefaultZoom, Camera.DefaultZoom, 1, 1)).ToCPos();
-			GamePosition = (vPos * new Vector(Camera.CurrentZoom, Camera.CurrentZoom, 1, 1)).ToCPos() + Camera.LookAt;
+			WindowPosition = (vPos * new Vector(Camera.DefaultZoom, Camera.DefaultZoom, 1)).ToCPos();
+			GamePosition = (vPos * new Vector(Camera.CurrentZoom, Camera.CurrentZoom, 1)).ToCPos() + Camera.LookAt;
 		}
 
 		public static void RecalculateMousePosition()
 		{
-			GamePosition = (vPos * new Vector(Camera.CurrentZoom, Camera.CurrentZoom, 1, 1)).ToCPos() + Camera.LookAt;
+			GamePosition = (vPos * new Vector(Camera.CurrentZoom, Camera.CurrentZoom, 1)).ToCPos() + Camera.LookAt;
 		}
 
 		public static float AngleToCursor(CPos pos)

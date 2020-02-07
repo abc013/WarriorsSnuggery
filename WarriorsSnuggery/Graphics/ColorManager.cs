@@ -48,7 +48,7 @@ namespace WarriorsSnuggery.Graphics
 		public static void DrawLine(CPos start, CPos end, Color color)
 		{
 			var s = (start - end).FlatDist / 1024f;
-			line.SetScale(new Vector(s, s, s, s));
+			line.SetScale(new Vector(s, s, s));
 			line.SetRotation(new VAngle(0, 0, -(start - end).FlatAngle) - new VAngle(0, 0, 90));
 			line.SetPosition(start);
 			line.SetColor(color);
@@ -58,7 +58,7 @@ namespace WarriorsSnuggery.Graphics
 
 		public static void DrawCircle(CPos center, float radius, Color color)
 		{
-			circle.SetScale(new Vector(radius * 2, radius * 2, radius * 2, radius * 2));
+			circle.SetScale(new Vector(radius * 2, radius * 2, radius * 2));
 			circle.SetPosition(center);
 			circle.SetColor(color);
 

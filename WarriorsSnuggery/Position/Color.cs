@@ -42,11 +42,6 @@ namespace WarriorsSnuggery
 			return new Color(color.R, color.G, color.B, color.A);
 		}
 
-		public static implicit operator Vector(Color color)
-		{
-			return new Vector(color.R, color.G, color.B, color.A);
-		}
-
 		public static implicit operator OpenTK.Graphics.Color4(Color color)
 		{
 			return new OpenTK.Graphics.Color4(color.R, color.G, color.B, color.A);

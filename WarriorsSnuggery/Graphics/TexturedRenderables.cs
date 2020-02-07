@@ -24,7 +24,7 @@ namespace WarriorsSnuggery.Graphics
 
 		public void SetPosition(Vector position, int pxOffset = 0)
 		{
-			this.position = position + new Vector(pxOffset * font.PixelMultiplier, 0, 0, 0);
+			this.position = position + new Vector(pxOffset * font.PixelMultiplier, 0, 0);
 			charRenderable.SetPosition(this.position);
 		}
 
