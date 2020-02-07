@@ -1,4 +1,4 @@
-# WarriorsSnuggery
+# Warrior's Snuggery
 ## Requirements & Dependencies
 - [.NET Framework 4.7.2 (Developer Pack)](https://dotnet.microsoft.com/download/dotnet-framework/net472)
 - [OpenTK](https://github.com/opentk/opentk) (As interface for OpenGL)
