@@ -47,7 +47,7 @@ namespace WarriorsSnuggery
 					xChars = maxInText;
 			}
 
-			size = new CPos((xChars + 1) * (font.Width / 4 + font.Gap) + 2 * margin, (text.Length + 1) * font.Height + 2 * margin, 0);
+			size = new CPos((xChars + 1) * font.Width + 2 * margin, (text.Length + 1) * font.Height + 2 * margin, 0);
 		}
 
 		public void Render()
@@ -56,7 +56,7 @@ namespace WarriorsSnuggery
 			if (Position.X + size.X > WindowInfo.UnitWidth * 512)
 				Position -= new CPos(size.X, 0, 0);
 
-			ColorManager.DrawRect(position, position + size, new Color(0, 0, 0, 0.8f));
+			ColorManager.DrawRect(position - new CPos(-margin, margin, 0), position + size, new Color(0, 0, 0, 0.8f));
 			ColorManager.LineWidth = 3f;
 			ColorManager.DrawDot(position, Color.White);
 			ColorManager.DrawDot(position + new CPos(0, size.Y, 0), Color.White);
@@ -69,8 +69,8 @@ namespace WarriorsSnuggery
 
 		void setPosition()
 		{
-			title.Position = position + new CPos(margin + font.Width / 2, margin + font.Height / 2, 0);
-			text.Position = position + new CPos(margin + font.Width / 2, font.Height / 2 + font.Height + font.Gap + margin, 0);
+			title.Position = position + new CPos(font.Width, font.Height / 2, 0);
+			text.Position = position + new CPos(font.Width, font.Height / 2 * 3, 0);
 		}
 
 		public void Dispose()

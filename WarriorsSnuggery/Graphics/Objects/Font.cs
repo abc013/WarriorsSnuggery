@@ -32,22 +32,22 @@ namespace WarriorsSnuggery.Graphics
 
 		public float PixelMultiplier
 		{
-			get { return MasterRenderer.PixelMultiplier * 6f / Info.Size; }
+			get { return MasterRenderer.PixelMultiplier * 2.5f / Info.Size * WindowInfo.Ratio; }
 		}
 
 		public int Gap
 		{
-			get { return (int)(1024 * Info.SpaceSize.X * MasterRenderer.PixelMultiplier); }
+			get { return (int)(10 * Info.SpaceSize.Y * PixelMultiplier); }
 		}
 
 		public int Width
 		{
-			get { return (int)(1024 * Info.MaxSize.X * MasterRenderer.PixelMultiplier); }
+			get { return (int)(512 * Info.MaxSize.X * PixelMultiplier); }
 		}
 
 		public int Height
 		{
-			get { return (int)(1024 * Info.MaxSize.Y * MasterRenderer.PixelMultiplier); }
+			get { return (int)(1024 * Info.MaxSize.Y * PixelMultiplier); }
 		}
 
 		readonly ITexture[] characters;
