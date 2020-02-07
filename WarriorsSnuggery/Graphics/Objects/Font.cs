@@ -27,12 +27,12 @@ namespace WarriorsSnuggery.Graphics
 			Papyrus24 = new Font(new FontInfo(24, "Papyrus"));
 
 			Collection.AddFontFile(FileExplorer.Misc + @"Fonts\Pixel.ttf");
-			Pixel16 = new Font(new FontInfo(12, "Pixel"));
+			Pixel16 = new Font(new FontInfo(16, "Pixel"));
 		}
 
 		public float PixelMultiplier
 		{
-			get { return MasterRenderer.PixelMultiplier * 2.5f / Info.Size * WindowInfo.Ratio; }
+			get { return MasterRenderer.PixelMultiplier / 1.5f; }
 		}
 
 		public int Gap

@@ -40,9 +40,7 @@ namespace WarriorsSnuggery.Objects
 				rotation = value;
 
 				foreach (var c in chars)
-				{
 					c.SetRotation(rotation);
-				}
 			}
 		}
 		VAngle rotation;
@@ -55,9 +53,7 @@ namespace WarriorsSnuggery.Objects
 				scale = value;
 
 				foreach (var c in chars)
-				{
 					c.SetScale(scale);
-				}
 			}
 		}
 		float scale = 1f;
@@ -76,9 +72,7 @@ namespace WarriorsSnuggery.Objects
 			if (updateText)
 			{
 				foreach (TextRenderable @char in chars)
-				{
 					@char.SetColor(color);
-				}
 			}
 		}
 
@@ -109,9 +103,8 @@ namespace WarriorsSnuggery.Objects
 				for (int i = 0; i < text.Length; i++)
 				{
 					if (colorPairs.ContainsKey(i))
-					{
 						color = colorPairs[i];
-					}
+
 					var @char = text[i];
 					if (chars.Count <= i)
 						chars.Add(new TextRenderable(Position, font, @char, color, width));
@@ -125,9 +118,7 @@ namespace WarriorsSnuggery.Objects
 				}
 
 				while (text.Length < chars.Count)
-				{
 					chars.Remove(chars[chars.Count - 1]);
-				}
 			}
 			else
 			{
@@ -141,11 +132,10 @@ namespace WarriorsSnuggery.Objects
 				for (int i = chars.Count; i < String.Length; i++)
 				{
 					if (colorPairs.ContainsKey(i - charlength))
-					{
 						color = colorPairs[i - charlength];
-					}
+
 					chars.Add(new TextRenderable(Position, font, String[i], color, width));
-					width += charWidth(String[i]) + 1;
+					width += charWidth(String[i]);
 				}
 			}
 
@@ -192,9 +182,7 @@ namespace WarriorsSnuggery.Objects
 			}
 
 			while (String.Length < chars.Count)
-			{
 				chars.Remove(chars[chars.Count - 1]);
-			}
 
 			setCharPositions();
 		}
@@ -210,7 +198,7 @@ namespace WarriorsSnuggery.Objects
 			for (int i = chars.Count; i < String.Length; i++)
 			{
 				chars.Add(new TextRenderable(Position, font, String[i], color, width));
-				width += charWidth(String[i]) + 1;
+				width += charWidth(String[i]);
 			}
 
 			setCharPositions();
@@ -223,18 +211,18 @@ namespace WarriorsSnuggery.Objects
 			{
 				case OffsetType.MIDDLE:
 					for (int i = 0; i < (chars.Count - 1); i++)
-						width -= charWidth(String[i]) + 1;
+						width -= charWidth(String[i]);
 					width /= 2;
 					break;
 				case OffsetType.RIGHT:
 					for (int i = 0; i < chars.Count - 1; i++)
-						width -= charWidth(String[i]) + 1;
+						width -= charWidth(String[i]);
 					break;
 			}
 			for (int i = 0; i < chars.Count; i++)
 			{
 				chars[i].SetPosition(Position, width);
-				width += charWidth(String[i]) + 1;
+				width += charWidth(String[i]);
 			}
 		}
 
@@ -243,7 +231,7 @@ namespace WarriorsSnuggery.Objects
 			if (@char != ' ')
 				return font.GetWidth(@char);
 
-			return font.Info.MaxSize.X / 2;
+			return font.Info.MaxSize.X / 2 + 1;
 		}
 
 		public virtual void Render()

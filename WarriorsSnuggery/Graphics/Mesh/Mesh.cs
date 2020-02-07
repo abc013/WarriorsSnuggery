@@ -204,7 +204,7 @@ namespace WarriorsSnuggery.Graphics
 			var h = (texture.Offset.Y + texture.Height) / (float)Settings.SheetSize;
 			var correction = texture.Width / (float)texture.Height;
 			var id = SpriteManager.SheetIndex(texture.SheetID);
-			var scale = MasterRenderer.PixelMultiplier * font.Info.Size;
+			var scale = MasterRenderer.PixelMultiplier * font.Info.Size / 1.5f;
 
 			Vertex[] vertices =
 			{

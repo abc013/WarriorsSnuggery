@@ -193,7 +193,7 @@ namespace WarriorsSnuggery.Graphics
 			var characters = new float[Font.Characters.Length][];
 			sizes = new MPos[Font.Characters.Length];
 
-			using (var font = new System.Drawing.Font(Font.Collection.Families.Where(a => a.Name == fontName).First(), fontSize))
+			using (var font = new System.Drawing.Font(Font.Collection.Families.Where(a => a.Name == fontName).First(), fontSize, GraphicsUnit.Pixel))
 			{
 				var maxWidth = 0;
 				var maxHeight = 0;
@@ -221,7 +221,7 @@ namespace WarriorsSnuggery.Graphics
 
 			using (var gfx = System.Drawing.Graphics.FromImage(bmp))
 			{
-				gfx.TextRenderingHint = System.Drawing.Text.TextRenderingHint.AntiAliasGridFit;
+				gfx.TextRenderingHint = System.Drawing.Text.TextRenderingHint.SingleBitPerPixelGridFit;
 				gfx.Clear(System.Drawing.Color.FromArgb(0));
 				gfx.DrawString(c.ToString(), font, Brushes.White, 0, 0);
 			}
