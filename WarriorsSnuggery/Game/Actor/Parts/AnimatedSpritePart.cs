@@ -110,6 +110,7 @@ namespace WarriorsSnuggery.Objects.Parts
 					MasterRenderer.UniformHeight(self.Height);
 
 					renderable.SetPosition(self.GraphicPositionWithoutHeight);
+					renderable.SetColor(new Color(0, 0, 0, 64));
 					renderable.PushToBatchRenderer();
 
 					MasterRenderer.RenderShadow = false;
