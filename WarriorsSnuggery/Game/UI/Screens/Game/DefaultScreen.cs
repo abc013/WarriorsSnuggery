@@ -240,6 +240,9 @@ namespace WarriorsSnuggery.UI
 			if (game.Statistics.Money < type.Playable.Cost)
 				return;
 
+			if (game.World.LocalPlayer.Type == type)
+				return;
+
 			game.Statistics.Money -= type.Playable.Cost;
 
 			var oldHP = player.Health != null ? player.Health.HPRelativeToMax : 1;
