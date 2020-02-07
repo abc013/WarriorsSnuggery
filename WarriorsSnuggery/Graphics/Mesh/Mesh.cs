@@ -60,12 +60,12 @@ namespace WarriorsSnuggery.Graphics
 
 			Vertex[] vertices =
 			{
-				new Vertex(new Vector(scale,  scale,  0), new Vector4(1, 0, 0, 0), color),
-				new Vertex(new Vector(-scale, -scale, 0), new Vector4(0, 1, 0, 0), color),
-				new Vertex(new Vector(scale,  -scale, 0), new Vector4(1, 1, 0, 0), color),
-				new Vertex(new Vector(-scale, scale,  0), new Vector4(0, 0, 0, 0), color),
-				new Vertex(new Vector(-scale, -scale, 0), new Vector4(0, 1, 0, 0), color),
-				new Vertex(new Vector(scale,  scale,  0), new Vector4(1, 0, 0, 0), color),
+				new Vertex(new Vector(scale,  -scale,  0), new Vector4(1, 0, 0, 0), color),
+				new Vertex(new Vector(-scale, scale, 0), new Vector4(0, 1, 0, 0), color),
+				new Vertex(new Vector(scale,  scale, 0), new Vector4(1, 1, 0, 0), color),
+				new Vertex(new Vector(-scale, -scale,  0), new Vector4(0, 0, 0, 0), color),
+				new Vertex(new Vector(-scale, scale, 0), new Vector4(0, 1, 0, 0), color),
+				new Vertex(new Vector(scale,  -scale,  0), new Vector4(1, 0, 0, 0), color),
 			};
 
 			return vertices;
