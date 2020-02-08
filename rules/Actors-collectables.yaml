@@ -24,9 +24,9 @@ new_game_pad=
 		OnlyByPlayer=yes
 
 tech_pad=
-	Sprite=
+	AnimatedSprite=
 		Name=tech_pad
-		Dimensions=24,24
+		Dimensions=24,16
 		Offset=0,0,-2048
 		UseAsPreview=true
 	Collectable=
