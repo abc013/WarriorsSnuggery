@@ -45,7 +45,7 @@ namespace WarriorsSnuggery.Physics
 			// Collision at walls
 			foreach (var pos in positions)
 			{
-				if (pos.X < 0 || pos.Y < 0)
+				if (pos.X < 0 || pos.Y < 0 || pos.X > world.Map.Bounds.X || pos.Y > world.Map.Bounds.Y)
 					continue;
 
 				var walls = new Wall[2];
@@ -89,6 +89,9 @@ namespace WarriorsSnuggery.Physics
 			// Collision at actors
 			foreach (var sectorPos in sectors)
 			{
+				if (sectorPos.X < 0 || sectorPos.Y < 0 || sectorPos.X >= world.Map.Bounds.X / PhysicsLayer.SectorSize || sectorPos.Y >= world.Map.Bounds.Y / PhysicsLayer.SectorSize)
+					continue;
+
 				var sector = world.PhysicsLayer.Sectors[sectorPos.X, sectorPos.Y];
 
 				var objs = sector.GetObjects(ignore);
