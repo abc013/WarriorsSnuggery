@@ -36,7 +36,7 @@ namespace WarriorsSnuggery.Objects.Bot
 					Self.ActiveWeapon.Target = Target.Position;
 					int range = Self.ActiveWeapon.Type.MaxRange;
 
-					if (DistToTarget < range)
+					if (DistToTarget < range * 1.1f)
 					{
 						Self.Attack(Target);
 						hide = true;
@@ -56,9 +56,9 @@ namespace WarriorsSnuggery.Objects.Bot
 				if (hide)
 					range *= 10;
 
-				if (DistToTarget > range)
+				if (DistToTarget > range * 0.9f)
 					Self.Accelerate(AngleToTarget);
-				else if (DistToTarget < range * 0.9f)
+				else if (DistToTarget < range * 0.8f)
 					Self.Accelerate(-AngleToTarget);
 			}
 		}

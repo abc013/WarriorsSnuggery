@@ -44,7 +44,7 @@ namespace WarriorsSnuggery.Objects.Bot
 				int range = Self.ActiveWeapon.Type.MaxRange;
 				range /= moral > 40 ? 2 : 1;
 
-				if (DistToTarget < range)
+				if (DistToTarget < range * 1.1f)
 					Self.Attack(Target);
 				else if (!CanMove)
 					SearchTarget();
@@ -62,14 +62,14 @@ namespace WarriorsSnuggery.Objects.Bot
 				{
 					if (moral >= 0)
 					{
-						if (DistToTarget > range * 0.9f)
+						if (DistToTarget > range * 0.8f)
 							Self.Accelerate(AngleToTarget);
-						else if (DistToTarget < range * 0.8f)
+						else if (DistToTarget < range * 0.7f)
 							Self.Accelerate(-AngleToTarget);
 					}
 					else
 					{
-						if (DistToTarget > range * 1.1f)
+						if (DistToTarget > range)
 							Self.Accelerate(AngleToTarget);
 						else if (DistToTarget < range * 0.9f)
 							Self.Accelerate(-AngleToTarget);

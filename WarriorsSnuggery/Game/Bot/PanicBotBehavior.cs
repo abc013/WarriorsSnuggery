@@ -53,7 +53,7 @@ namespace WarriorsSnuggery.Objects.Bot
 				{
 					Self.ActiveWeapon.Target = Target.Position;
 					int range = Self.ActiveWeapon.Type.MaxRange;
-					if (DistToTarget < range)
+					if (DistToTarget < range * 1.1f)
 						Self.Attack(Target);
 					else if (!CanMove)
 						SearchTarget();
