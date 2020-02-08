@@ -75,11 +75,6 @@ namespace WarriorsSnuggery.Objects.Bot
 
 		public abstract void OnKill(Actor killer);
 
-		public void GiveTarget(Target target)
-		{
-			Target = target;
-		}
-
 		protected bool PerfectTarget()
 		{
 			return Target != null && Target.Actor != null && Target.Actor.IsAlive && !Target.Actor.Disposed;

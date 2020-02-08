@@ -54,7 +54,7 @@ namespace WarriorsSnuggery.Objects.Parts
 				if (!(obj is Particle particle) || !particle.AffectedByObjects)
 					continue; // TODO cache affectable particles
 
-				if (info.AffectedTypes.Length != 0 && !info.AffectedTypes.Contains(particle.Name))
+				if (!info.AffectedTypes.Contains(particle.Name))
 					continue;
 
 				var dist = (particle.Position - self.GraphicPosition).FlatDist;

@@ -26,7 +26,7 @@ namespace WarriorsSnuggery.Objects.Bot
 				if (panic % 20 == 0)
 					angle = (float)Program.SharedRandom.NextDouble();
 
-				if (CanMove && Target != null && DistToTarget > 512)
+				if (CanMove && DistToTarget > 512)
 					Self.Accelerate(angle);
 
 				if (!PerfectTarget() && Program.SharedRandom.Next(100) == 0)
