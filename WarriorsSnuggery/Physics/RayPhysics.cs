@@ -17,7 +17,7 @@ namespace WarriorsSnuggery.Physics
 		public int TargetHeight;
 
 		readonly CPos[][] mapBounds;
-		MPos[] positions = new MPos[0];
+		List<MPos> positions = new List<MPos>();
 		readonly World world;
 
 		public RayPhysics(World world)
@@ -39,51 +39,101 @@ namespace WarriorsSnuggery.Physics
 			var closestIntersect = new CPos(0, 0, int.MaxValue);
 			var closestT1 = double.MaxValue;
 
-			positions = getPositions(Start, Target);
 			var sectors = new List<MPos>();
 
-			// Collision at walls
-			foreach (var pos in positions)
+			var diff = Target - Start;
+			var bounds = world.Map.Bounds;
+			positions.Clear();
+
+			var x0 = (int)Math.Round(Start.X / 1024.0);
+			var y0 = (int)Math.Round(Start.Y / 1024.0);
+
+			if (x0 >= 0 && y0 >= 0 && x0 < bounds.X && y0 < bounds.Y)
 			{
-				if (pos.X < 0 || pos.Y < 0 || pos.X > world.Map.Bounds.X || pos.Y > world.Map.Bounds.Y)
-					continue;
+				positions.Add(new MPos(x0, y0));
 
-				var walls = new Wall[2];
-				walls[0] = world.WallLayer.Walls[pos.X * 2,pos.Y];
-				walls[1] = world.WallLayer.Walls[pos.X * 2 + 1, pos.Y];
+				var sx = Math.Sign(diff.X);
+				var sy = Math.Sign(diff.Y);
 
-				var hit = false;
-				foreach (var wall in walls)
+				var tMaxX = Math.Abs((x0 * 1024.0 - Start.X + 512 * sx) / diff.X);
+				var tMaxY = Math.Abs((y0 * 1024.0 - Start.Y + 512 * sy) / diff.Y);
+				var tDeltaX = Math.Abs(1024.0 / diff.X);
+				var tDeltaY = Math.Abs(1024.0 / diff.Y);
+
+				while (true)
 				{
-					if (wall == null)
-						continue;
-
-					var lines = wall.Physics.GetLines();
-					foreach (var line in lines)
+					if (tMaxX < tMaxY)
 					{
-						var end = getIntersection(line.Start, line.End, out var t1);
-						if (end != invalid && t1 < closestT1)
+						tMaxX += tDeltaX;
+						x0 += sx;
+					}
+					else
+					{
+						tMaxY += tDeltaY;
+						y0 += sy;
+					}
+
+					// Map edges as exit conditions
+					if (x0 < 0)
+					{
+						if (sx < 0) break;
+						continue;
+					}
+					if (x0 >= bounds.X)
+					{
+						if (sx > 0) break;
+						continue;
+					}
+					if (y0 < 0)
+					{
+						if (sy < 0) break;
+						continue;
+					}
+					if (y0 >= bounds.Y)
+					{
+						if (sy > 0) break;
+						continue;
+					}
+
+					var walls = new Wall[2];
+					walls[0] = world.WallLayer.Walls[x0 * 2, y0];
+					walls[1] = world.WallLayer.Walls[x0 * 2 + 1, y0];
+
+					var hit = false;
+					foreach (var wall in walls)
+					{
+						if (wall == null)
+							continue;
+
+						var lines = wall.Physics.GetLines();
+						foreach (var line in lines)
 						{
-							var height = calculateHeight(end);
-							if (height <= wall.Physics.Height + wall.Physics.HeightRadius || height >= wall.Physics.Height - wall.Physics.HeightRadius)
+							var end = getIntersection(line.Start, line.End, out var t1);
+							if (end != invalid && t1 < closestT1)
 							{
-								closestIntersect = end;
-								closestT1 = t1;
-								EndHeight = height;
-								hit = true;
+								var height = calculateHeight(end);
+								if (height <= wall.Physics.Height + wall.Physics.HeightRadius || height >= wall.Physics.Height - wall.Physics.HeightRadius)
+								{
+									closestIntersect = end;
+									closestT1 = t1;
+									EndHeight = height;
+									hit = true;
+								}
 							}
 						}
 					}
+
+					// Add sectors that need to be checked for collision
+					var sector = new MPos(x0 / 2, y0 / 2);
+					if (!sectors.Contains(sector))
+						sectors.Add(sector);
+
+					// We hit something, therefore we can ignore the rest which is further away
+					if (hit)
+						break;
+
+					positions.Add(new MPos(x0, y0));
 				}
-
-				// Add sectors that need to be checked for collision
-				var sector = pos / new MPos(2, 2);
-				if (!sectors.Contains(sector))
-					sectors.Add(sector);
-
-				// We hit something, therefore we can ignore the rest which is further away
-				if (hit)
-					break;
 			}
 
 			// Collision at actors
@@ -191,45 +241,15 @@ namespace WarriorsSnuggery.Physics
 			bool run = true;
 			while (run)
 			{
-				if (tMaxX < tMaxY)
-				{
-					tMaxX += tDeltaX;
-					x0 += sx;
-				}
-				else
-				{
-					tMaxY += tDeltaY;
-					y0 += sy;
-				}
-
-				// Map edges as exit conditions
-				if (x0 < 0)
-				{
-					if (sx < 0) break;
-					continue;
-				}
-				if (x0 >= bounds.X)
-				{
-					if (sx > 0) break;
-					continue;
-				}
-				if (y0 < 0)
-				{
-					if (sy < 0) break;
-					continue;
-				}
-				if (y0 >= bounds.Y)
-				{
-					if (sy > 0) break;
-					continue;
-				}
-
 				var walls2 = new Wall[2];
 				walls2[0] = world.WallLayer.Walls[x0 * 2, y0];
 				walls2[1] = world.WallLayer.Walls[x0 * 2 + 1, y0];
 
 				foreach (var wall in walls2)
 				{
+					if (!run)
+						break;
+
 					if (wall == null)
 						continue;
 
@@ -243,43 +263,14 @@ namespace WarriorsSnuggery.Physics
 
 							// Stop if damage does not get penetrated anyway
 							if (wall.Type.DamagePenetration == 0f)
+							{
 								run = false;
+								break;
+							}
 						}
 					}
 				}
-			}
 
-			var output = 1f;
-			foreach (var wall in walls)
-				output *= wall.Type.DamagePenetration;
-
-			return output;
-		}
-
-		MPos[] getPositions(CPos start, CPos target)
-		{
-			var diff = target - start;
-			var bounds = world.Map.Bounds;
-			var positions = new List<MPos>();
-
-			var x0 = (int)Math.Round(start.X / 1024.0);
-			var y0 = (int)Math.Round(start.Y / 1024.0);
-
-			if (x0 < 0 || y0 < 0 || x0 > world.Map.Bounds.X || y0 > world.Map.Bounds.Y)
-				return new MPos[0];
-
-			positions.Add(new MPos(x0, y0));
-
-			var sx = Math.Sign(diff.X);
-			var sy = Math.Sign(diff.Y);
-
-			var tMaxX = Math.Abs((x0 * 1024.0 - start.X + 512 * sx) / diff.X);
-			var tMaxY = Math.Abs((y0 * 1024.0 - start.Y + 512 * sy) / diff.Y);
-			var tDeltaX = Math.Abs(1024.0 / diff.X);
-			var tDeltaY = Math.Abs(1024.0 / diff.Y);
-
-			while (true)
-			{
 				if (tMaxX < tMaxY)
 				{
 					tMaxX += tDeltaX;
@@ -312,11 +303,13 @@ namespace WarriorsSnuggery.Physics
 					if (sy > 0) break;
 					continue;
 				}
-
-				positions.Add(new MPos(x0, y0));
 			}
 
-			return positions.ToArray();
+			var output = 1f;
+			foreach (var wall in walls)
+				output *= wall.Type.DamagePenetration;
+
+			return output;
 		}
 
 		CPos getIntersection(CPos a1, CPos a2, out double T1)
