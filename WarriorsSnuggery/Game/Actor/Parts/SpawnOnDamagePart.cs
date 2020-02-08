@@ -23,6 +23,8 @@ namespace WarriorsSnuggery.Objects.Parts
 		public readonly CPos Offset;
 		[Desc("Radius in which the objects get spawned randomly.", "If set to 0, physics radius will be used when possible.")]
 		public readonly int Radius;
+		[Desc("Threshold for damage.")]
+		public readonly int DamageThreshold = 2;
 
 		[Desc("Spawn object at center of actor, not random.")]
 		public readonly bool AtCenter;
@@ -49,7 +51,7 @@ namespace WarriorsSnuggery.Objects.Parts
 
 		public override void OnDamage(Actor damager, int damage)
 		{
-			if (damage > 0)
+			if (damage > info.DamageThreshold)
 				for (int i = 0; i < info.Count; i++)
 					create();
 		}
