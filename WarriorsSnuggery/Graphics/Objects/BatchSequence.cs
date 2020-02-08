@@ -9,7 +9,7 @@
 		int curObj;
 
 		// Create empty GraphicsObject
-		public BatchSequence(ITexture[] textures, int tick, bool pauseable = false) : base(new Vertex[0], Color.White)
+		public BatchSequence(Texture[] textures, int tick, bool pauseable = false) : base(new Vertex[0], Color.White)
 		{
 			this.tick = tick;
 			this.pauseable = pauseable;

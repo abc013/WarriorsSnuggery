@@ -25,7 +25,7 @@ namespace WarriorsSnuggery.Spells
 		[Desc("Icon of the spell.")]
 		public readonly TextureInfo Icon;
 
-		public readonly ITexture[] Textures;
+		public readonly Texture[] Textures;
 
 		public CPos VisualPosition
 		{

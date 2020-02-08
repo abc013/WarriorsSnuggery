@@ -50,7 +50,7 @@ namespace WarriorsSnuggery.Graphics
 			get { return (int)(1024 * Info.MaxSize.Y * PixelMultiplier); }
 		}
 
-		readonly ITexture[] characters;
+		readonly Texture[] characters;
 		public readonly FontInfo Info;
 
 		public Font(FontInfo info)
@@ -65,7 +65,7 @@ namespace WarriorsSnuggery.Graphics
 			return Info.CharSizes[Characters.IndexOf(c)].X;
 		}
 
-		public ITexture GetTexture(char c)
+		public Texture GetTexture(char c)
 		{
 			return characters[Characters.IndexOf(c)];
 		}

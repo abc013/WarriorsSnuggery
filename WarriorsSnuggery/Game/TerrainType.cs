@@ -6,38 +6,38 @@ namespace WarriorsSnuggery.Objects
 	{
 		public readonly ushort ID;
 
-		public ITexture Texture
+		public Texture Texture
 		{
 			get { return sprite[Program.SharedRandom.Next(sprite.Length)]; }
 		}
-		readonly ITexture[] sprite;
+		readonly Texture[] sprite;
 
 		[Desc("Random base texture.")]
 		public readonly string Sprite;
 
-		public ITexture Texture_Edge
+		public Texture Texture_Edge
 		{
 			get { return edgeSprite[Program.SharedRandom.Next(edgeSprite.Length)]; }
 		}
-		readonly ITexture[] edgeSprite;
+		readonly Texture[] edgeSprite;
 
 		[Desc("Edge of the tile.")]
 		public readonly string EdgeSprite;
 
-		public ITexture Texture_Edge2 // For vertical edges
+		public Texture Texture_Edge2 // For vertical edges
 		{
 			get { return verticalEdgeSprite?[Program.SharedRandom.Next(verticalEdgeSprite.Length)]; }
 		}
-		readonly ITexture[] verticalEdgeSprite;
+		readonly Texture[] verticalEdgeSprite;
 
 		[Desc("(possible) Vertical Edge of the tile.")]
 		public readonly string VerticalEdgeSprite;
 
-		public ITexture Texture_Corner
+		public Texture Texture_Corner
 		{
 			get { return cornerSprite[Program.SharedRandom.Next(cornerSprite.Length)]; }
 		}
-		readonly ITexture[] cornerSprite;
+		readonly Texture[] cornerSprite;
 
 		[Desc("Corner of the tile.")]
 		public readonly string CornerSprite;

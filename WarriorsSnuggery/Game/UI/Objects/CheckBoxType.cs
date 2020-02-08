@@ -11,7 +11,7 @@ namespace WarriorsSnuggery.UI
 		public readonly float Height;
 		public readonly float Width;
 
-		public CheckBoxType(ITexture @default, ITexture @checked, ITexture click, float height, float width)
+		public CheckBoxType(Texture @default, Texture @checked, Texture click, float height, float width)
 		{
 			Default = new BatchObject(@default, Color.White);
 			Default.SetScale(1.5f);

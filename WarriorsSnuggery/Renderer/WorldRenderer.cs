@@ -55,7 +55,6 @@ namespace WarriorsSnuggery
 			BatchRenderer.Render();
 
 			MasterRenderer.Uniform(MasterRenderer.TextureShader, ref Camera.Matrix, Ambient);
-			MasterRenderer.Uniform(MasterRenderer.ShadowShader, ref Camera.Matrix, Ambient);
 
 			if (world.ToRender == null)
 				return;

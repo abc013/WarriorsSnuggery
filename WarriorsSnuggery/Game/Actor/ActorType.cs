@@ -18,7 +18,7 @@ namespace WarriorsSnuggery.Objects
 			PartInfos = partInfos;
 		}
 
-		public ITexture GetPreviewSprite()
+		public Texture GetPreviewSprite()
 		{
 			// Get sprites here
 			var rawimage = PartInfos.Where(s => s is SpritePartInfo).FirstOrDefault(s => (s as SpritePartInfo).UseAsPreview);

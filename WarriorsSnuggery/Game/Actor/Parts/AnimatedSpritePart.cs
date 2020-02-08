@@ -8,7 +8,7 @@ namespace WarriorsSnuggery.Objects.Parts
 	[Desc("This will add a sprite to an actor which will be rendered upon call.")]
 	public class AnimatedSpritePartInfo : PartInfo
 	{
-		public readonly ITexture[] Textures;
+		public readonly Texture[] Textures;
 
 		[Desc("Name of the texture file.")]
 		public readonly string Name;
@@ -62,7 +62,7 @@ namespace WarriorsSnuggery.Objects.Parts
 
 			for (int i = 0; i < renderables.Length; i++)
 			{
-				var anim = new ITexture[frameCountPerIdleAnim];
+				var anim = new Texture[frameCountPerIdleAnim];
 				for (int x = 0; x < frameCountPerIdleAnim; x++)
 					anim[x] = info.Textures[i * frameCountPerIdleAnim + x];
 
@@ -106,18 +106,12 @@ namespace WarriorsSnuggery.Objects.Parts
 			{
 				if (self.Height > 0)
 				{
-					MasterRenderer.RenderShadow = true;
-					MasterRenderer.UniformHeight(self.Height);
-
 					renderable.SetPosition(self.GraphicPositionWithoutHeight);
 					renderable.SetColor(new Color(0, 0, 0, 64));
 					renderable.PushToBatchRenderer();
-
-					MasterRenderer.RenderShadow = false;
-					Program.CheckGraphicsError("RenderShadow");
 				}
 
-				self.Offset = info.Offset; // TODO replace by proper rendering
+				self.Offset = info.Offset;
 				renderable.SetPosition(self.GraphicPosition);
 				renderable.SetColor(color);
 				renderable.PushToBatchRenderer();

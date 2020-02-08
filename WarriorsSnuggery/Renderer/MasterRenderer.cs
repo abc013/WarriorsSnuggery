@@ -20,9 +20,10 @@ namespace WarriorsSnuggery
 		public static bool PauseSequences;
 		public static object GLLock = new object();
 
-		public static int TextureShader, ShadowShader;
-		static int heightLocation;
-		static readonly int[] locations = new int[8];
+		public static int TextureShader;
+		static readonly int[] locations = new int[4];
+
+		static readonly ShaderProgram[] shaders = new ShaderProgram[1];
 
 		public static PrimitiveType PrimitiveType = PrimitiveType.Triangles;
 
@@ -44,8 +45,6 @@ namespace WarriorsSnuggery
 			}
 			return locations[num + shadernum];
 		}
-
-		static readonly ShaderProgram[] shaders = new ShaderProgram[2];
 
 		public static void ResetRenderer(Game game)
 		{
@@ -70,9 +69,8 @@ namespace WarriorsSnuggery
 			lock (GLLock)
 			{
 				TextureShader = createShader("Tex");
-				ShadowShader = createShader("Sha");
 
-				foreach (int shader in new[] { TextureShader, ShadowShader })
+				foreach (int shader in new[] { TextureShader })
 				{
 					var num = 4 * (shader - 1);
 					locations[num] = GL.GetUniformLocation(shader, "projection");
@@ -85,15 +83,10 @@ namespace WarriorsSnuggery
 					Log.WriteDebug("SHADER " + shader + " locations: " + locations[num] + ", " + locations[num + 1] + ", " + locations[num + 2] + ", " + locations[num + 3] + ";");
 				}
 
-				heightLocation = GL.GetUniformLocation(ShadowShader, "height");
-				Log.WriteDebug("SHADER " + ShadowShader + " shadowloc: " + heightLocation);
-
 				GL.BindAttribLocation(TextureShader, 1, "textureCoordinate");
 				GL.BindAttribLocation(TextureShader, 2, "color");
-				GL.BindAttribLocation(ShadowShader, 1, "textureCoordinate");
-				GL.BindAttribLocation(ShadowShader, 2, "color");
 
-				foreach (int shader in new[] { TextureShader, ShadowShader })
+				foreach (int shader in new[] { TextureShader })
 				{
 					GL.UseProgram(shader);
 					var tex1 = GL.GetUniformLocation(shader, "texture0");
@@ -132,8 +125,8 @@ namespace WarriorsSnuggery
 		}
 
 		static int frameBuffer;
-		static FrameRenderable renderable;
-		static ITexture frameTexture;
+		static Image renderable;
+		static Texture frameTexture;
 
 		static void initializeGL()
 		{
@@ -172,8 +165,8 @@ namespace WarriorsSnuggery
 				frameBuffer = GL.GenFramebuffer();
 				GL.BindFramebuffer(FramebufferTarget.Framebuffer, frameBuffer);
 				GL.FramebufferTexture2D(FramebufferTarget.Framebuffer, FramebufferAttachment.ColorAttachment0, TextureTarget2d.Texture2D, frameTextureID, 0);
-				frameTexture = new ITexture("FramebufferTexture", width, height, frameTextureID);
-				renderable = new FrameRenderable(frameTexture);
+				frameTexture = new Texture("FramebufferTexture", width, height, frameTextureID);
+				renderable = new Image(Mesh.Frame(), frameTexture);
 				Program.CheckGraphicsError("GLFrameBuffer");
 
 				GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMinFilter, (int)TextureMinFilter.Nearest);
@@ -211,6 +204,7 @@ namespace WarriorsSnuggery
 					Matrix4 iden = Matrix4.CreateScale(1f, 1f, 1f);
 					Uniform(TextureShader, ref iden, Color.White);
 
+					renderable.Bind();
 					renderable.Render();
 					Program.CheckGraphicsError("GLRendering_World");
 				}
@@ -280,24 +274,7 @@ namespace WarriorsSnuggery
 			}
 			GL.DeleteFramebuffer(frameBuffer);
 			frameTexture.Dispose();
-		}
-
-		public static bool RenderShadow;
-
-		public static void UniformHeight(int height)
-		{
-			lock (GLLock)
-			{
-				GL.UseProgram(ShadowShader);
-				Program.CheckGraphicsError("UniformHeight_Program");
-				var height2 = (1024 - height ^ 2) / 2048f;
-				if (height2 > 1) height2 = 1;
-				if (height2 < 0.2f) height2 = 0.2f;
-				GL.Uniform1(heightLocation, height2);
-				Program.CheckGraphicsError("UniformHeight_Uniform");
-				GL.UseProgram(0);
-				Program.CheckGraphicsError("UniformHeight_Reset");
-			}
+			renderable.Dispose();
 		}
 
 		public static void Uniform(int shader, ref Matrix4 projection, Color ambient)

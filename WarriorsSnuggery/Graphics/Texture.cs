@@ -20,6 +20,8 @@ namespace WarriorsSnuggery.Graphics
 		public readonly int Width;
 		public readonly int Height;
 
+		public TextureInfo(string file, bool searchFile = true) : this(file, TextureType.IMAGE, 0, 0, 0, searchFile) { }
+
 		public TextureInfo(string file, TextureType type, int tick, int width, int height, bool searchFile = true)
 		{
 			if (searchFile)
@@ -35,7 +37,7 @@ namespace WarriorsSnuggery.Graphics
 		}
 
 		//if the type is random or image, it is certain that in this array there's only one texture.
-		public ITexture[] GetTextures()
+		public Texture[] GetTextures()
 		{
 			switch (Type)
 			{
@@ -55,7 +57,7 @@ namespace WarriorsSnuggery.Graphics
 		}
 	}
 
-	public class ITexture : IDisposable
+	public class Texture : IDisposable
 	{
 		public readonly int SheetID;
 
@@ -65,7 +67,7 @@ namespace WarriorsSnuggery.Graphics
 		public readonly int Width;
 		public readonly int Height;
 
-		public ITexture(string file, int x, int y, int width, int height, int sheetID)
+		public Texture(string file, int x, int y, int width, int height, int sheetID)
 		{
 			File = file;
 			Offset = new MPos(x, y);
@@ -74,7 +76,7 @@ namespace WarriorsSnuggery.Graphics
 			SheetID = sheetID;
 		}
 
-		public ITexture(string file, int width, int height, int id)
+		public Texture(string file, int width, int height, int id)
 		{
 			File = file;
 			Width = width;

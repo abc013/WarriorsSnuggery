@@ -200,7 +200,6 @@ namespace WarriorsSnuggery
 		{
 			Exiting = true;
 
-			TextureManager.DeleteTextures();
 			UITextureManager.Dispose();
 
 			WorldRenderer.BatchRenderer.Dispose();
@@ -209,7 +208,6 @@ namespace WarriorsSnuggery
 
 			SpriteManager.DeleteTextures();
 
-			IImage.DisposeImages();
 			Graphics.Font.DisposeFonts();
 
 			base.Exit();

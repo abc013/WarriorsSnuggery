@@ -67,9 +67,4 @@ namespace WarriorsSnuggery.Graphics
 			charRenderable.PushToBatchRenderer();
 		}
 	}
-
-	public class FrameRenderable : GraphicsObject
-	{
-		public FrameRenderable(ITexture texture) : base(IImage.Create(Mesh.Frame(), texture)) { }
-	}
 }

@@ -7,7 +7,7 @@ namespace WarriorsSnuggery.Graphics
 		public static Sheet[] sheets;
 		static int currentSheet;
 
-		static readonly Dictionary<int, ITexture[]> hashedTextures = new Dictionary<int, ITexture[]>();
+		static readonly Dictionary<int, Texture[]> hashedTextures = new Dictionary<int, Texture[]>();
 
 		public static void CreateSheet(int maxSheets)
 		{
@@ -29,15 +29,23 @@ namespace WarriorsSnuggery.Graphics
 			SheetBuilder.UseSheet(sheets[currentSheet]);
 		}
 
-		public static ITexture[] AddTexture(TextureInfo info)
+		public static Texture[] AddTexture(TextureInfo info)
 		{
 			var hash = info.GetHashCode();
 
 			if (hashedTextures.ContainsKey(hash))
 				return hashedTextures[hash];
 
-			var data = TextureManager.loadSprite(info.File, info.Width, info.Height);
-			var textures = new ITexture[data.Length];
+			float[][] data;
+			if (info.Type == TextureType.IMAGE)
+			{
+				data = new[] { TextureManager.LoadTexture(info.File, out var w, out var h) };
+				info = new TextureInfo(info.File, info.Type, 0, w, h, false);
+			}
+			else
+				data = TextureManager.LoadSprite(info.File, info.Width, info.Height);
+
+			var textures = new Texture[data.Length];
 
 			for (int i = 0; i < data.Length; i++)
 			{
@@ -52,10 +60,10 @@ namespace WarriorsSnuggery.Graphics
 			return textures;
 		}
 
-		public static ITexture[] AddFont(FontInfo font)
+		public static Texture[] AddFont(FontInfo font)
 		{
 			var data = TextureManager.LoadCharacters(font.Size, font.FontName, out font.MaxSize, out font.CharSizes);
-			var textures = new ITexture[data.Length];
+			var textures = new Texture[data.Length];
 
 			for (int i = 0; i < data.Length; i++)
 			{
@@ -68,7 +76,7 @@ namespace WarriorsSnuggery.Graphics
 			return textures;
 		}
 
-		public static ITexture[] GetTexture(TextureInfo info)
+		public static Texture[] GetTexture(TextureInfo info)
 		{
 			return hashedTextures[info.GetHashCode()];
 		}

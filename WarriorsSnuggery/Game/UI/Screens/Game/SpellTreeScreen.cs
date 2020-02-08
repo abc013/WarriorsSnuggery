@@ -230,7 +230,7 @@ namespace WarriorsSnuggery.UI
 		int curTick;
 		int frame;
 
-		public SpellConnection(Game game, SpellTreeNode origin, SpellTreeNode target, ITexture[] active, ITexture[] inactive, int tick)
+		public SpellConnection(Game game, SpellTreeNode origin, SpellTreeNode target, Texture[] active, Texture[] inactive, int tick)
 		{
 			this.game = game;
 			originPos = origin.VisualPosition;

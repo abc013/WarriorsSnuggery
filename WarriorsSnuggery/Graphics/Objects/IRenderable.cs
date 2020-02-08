@@ -45,10 +45,7 @@ namespace WarriorsSnuggery.Graphics
 
 		public void UseProgram()
 		{
-			if (MasterRenderer.RenderShadow)
-				GL.UseProgram(MasterRenderer.ShadowShader);
-			else
-				GL.UseProgram(ProgramID);
+			GL.UseProgram(ProgramID);
 			Program.CheckGraphicsError("Renderable_Program");
 		}
 

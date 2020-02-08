@@ -17,7 +17,7 @@ namespace WarriorsSnuggery.Physics
 		public int TargetHeight;
 
 		readonly CPos[][] mapBounds;
-		List<MPos> positions = new List<MPos>();
+		readonly List<MPos> positions = new List<MPos>();
 		readonly World world;
 
 		public RayPhysics(World world)

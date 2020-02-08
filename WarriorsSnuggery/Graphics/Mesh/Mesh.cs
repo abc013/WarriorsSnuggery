@@ -5,30 +5,7 @@ namespace WarriorsSnuggery.Graphics
 {
 	public static class Mesh
 	{
-		public static Vertex[] Terrain(ITexture texture, Color color)
-		{
-			var x = texture.Offset.X / (float)Settings.SheetSize;
-			var y = texture.Offset.Y / (float)Settings.SheetSize;
-			var w = (texture.Offset.X + texture.Width) / (float)Settings.SheetSize;
-			var h = (texture.Offset.Y + texture.Height) / (float)Settings.SheetSize;
-			var scale = 1 / 2f + 0.001f;
-			var color4 = color.toColor4();
-			var id = SpriteManager.SheetIndex(texture.SheetID);
-
-			Vertex[] vertices =
-			{
-				new Vertex(new Vector(scale,  scale,  0), new Vector4(w, y, id, 0), color4),
-				new Vertex(new Vector(-scale, -scale, 0), new Vector4(x, h, id, 0), color4),
-				new Vertex(new Vector(scale,  -scale, 0), new Vector4(w, h, id, 0), color4),
-				new Vertex(new Vector(-scale, scale,  0), new Vector4(x, y, id, 0), color4),
-				new Vertex(new Vector(-scale, -scale, 0), new Vector4(x, h, id, 0), color4),
-				new Vertex(new Vector(scale,  scale,  0), new Vector4(w, y, id, 0), color4),
-			};
-
-			return vertices;
-		}
-
-		public static Vertex[] Image(ITexture texture, Color color)
+		public static Vertex[] Image(Texture texture, Color color)
 		{
 			var x = texture.Offset.X / (float)Settings.SheetSize;
 			var y = texture.Offset.Y / (float)Settings.SheetSize;
@@ -52,7 +29,6 @@ namespace WarriorsSnuggery.Graphics
 			return vertices;
 		}
 
-		// Frame, used for pixelated rendering
 		public static Vertex[] Frame()
 		{
 			var color = Color.White.toColor4();
@@ -71,7 +47,7 @@ namespace WarriorsSnuggery.Graphics
 			return vertices;
 		}
 
-		public static Vertex[] UIPlane(ITexture texture, Color color, Vector size)
+		public static Vertex[] UIPlane(Texture texture, Color color, Vector size)
 		{
 			var countX = (int)Math.Ceiling(size.X);
 			var countY = (int)Math.Ceiling(size.Y);
@@ -95,7 +71,7 @@ namespace WarriorsSnuggery.Graphics
 			return vertices;
 		}
 
-		static Vertex[] uiPlanePart(ITexture texture, Color color, Vector offset, Vector size)
+		static Vertex[] uiPlanePart(Texture texture, Color color, Vector offset, Vector size)
 		{
 			var x = texture.Offset.X / (float)Settings.SheetSize;
 			var y = texture.Offset.Y / (float)Settings.SheetSize;
@@ -130,51 +106,19 @@ namespace WarriorsSnuggery.Graphics
 			return vertices;
 		}
 
-		public static Vertex[] PlaneEdges(float size, Color color)
+		public static Vertex[] Plane(float scale, Color color)
 		{
-			return PlaneEdges(size, size, color);
-		}
-
-		public static Vertex[] PlaneEdges(float x, float y, Color color)
-		{
-			x /= 2;
-			y /= 2;
+			scale /= 2;
 			var color4 = color.toColor4();
 
 			Vertex[] vertices =
 			{
-				new Vertex(new Vector(x,  y,  0), new Vector4(-1), color4),
-				new Vertex(new Vector(-x, y,  0), new Vector4(-1), color4),
-				new Vertex(new Vector(-x,  y, 0), new Vector4(-1), color4),
-				new Vertex(new Vector(-x, -y, 0), new Vector4(-1), color4),
-				new Vertex(new Vector(-x, -y, 0), new Vector4(-1), color4),
-				new Vertex(new Vector(x,  -y, 0), new Vector4(-1), color4),
-				new Vertex(new Vector(x,  -y, 0), new Vector4(-1), color4),
-				new Vertex(new Vector(x,  y,  0), new Vector4(-1), color4),
-			};
-
-			return vertices;
-		}
-
-		public static Vertex[] Plane(float size, Color color)
-		{
-			return Plane(size, size, color);
-		}
-
-		public static Vertex[] Plane(float x, float y, Color color)
-		{
-			x /= 2;
-			y /= 2;
-			var color4 = color.toColor4();
-
-			Vertex[] vertices =
-			{
-				new Vertex(new Vector(x,  y,  0), new Vector4(-1), color4),
-				new Vertex(new Vector(-x, -y, 0), new Vector4(-1), color4),
-				new Vertex(new Vector(x,  -y, 0), new Vector4(-1), color4),
-				new Vertex(new Vector(-x, y,  0), new Vector4(-1), color4),
-				new Vertex(new Vector(-x, -y, 0), new Vector4(-1), color4),
-				new Vertex(new Vector(x,  y,  0), new Vector4(-1), color4),
+				new Vertex(new Vector(scale,  scale,  0), new Vector4(-1), color4),
+				new Vertex(new Vector(-scale, -scale, 0), new Vector4(-1), color4),
+				new Vertex(new Vector(scale,  -scale, 0), new Vector4(-1), color4),
+				new Vertex(new Vector(-scale, scale,  0), new Vector4(-1), color4),
+				new Vertex(new Vector(-scale, -scale, 0), new Vector4(-1), color4),
+				new Vertex(new Vector(scale,  scale,  0), new Vector4(-1), color4),
 			};
 
 			return vertices;

@@ -132,17 +132,11 @@ namespace WarriorsSnuggery.Objects
 		{
 			if (Height != 0 && Renderable != null)
 			{
-				MasterRenderer.RenderShadow = true;
-				MasterRenderer.UniformHeight(Height);
-
 				Renderable.SetPosition(GraphicPositionWithoutHeight);
 				Renderable.SetColor(new Color(0, 0, 0, 64));
 				Renderable.PushToBatchRenderer();
 				Renderable.SetColor(Color.White);
 				Renderable.SetPosition(GraphicPosition);
-
-				MasterRenderer.RenderShadow = false;
-				Program.CheckGraphicsError("RenderShadow");
 			}
 		}
 

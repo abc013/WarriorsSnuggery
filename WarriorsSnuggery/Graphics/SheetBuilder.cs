@@ -18,12 +18,12 @@ namespace WarriorsSnuggery.Graphics
 			return currentHeight + height + rowHeight < currentSheet.Size.Y;
 		}
 
-		public static ITexture WriteTexture(float[] data, TextureInfo info)
+		public static Texture WriteTexture(float[] data, TextureInfo info)
 		{
 			var id = currentSheet.TextureID;
 			var position = writeTexture(data, new MPos(info.Width, info.Height));
 
-			return new ITexture(info.File, position.X, position.Y, info.Width, info.Height, id);
+			return new Texture(info.File, position.X, position.Y, info.Width, info.Height, id);
 		}
 
 		static MPos writeTexture(float[] data, MPos size)

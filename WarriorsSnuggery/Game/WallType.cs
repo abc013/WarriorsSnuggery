@@ -8,15 +8,15 @@ namespace WarriorsSnuggery.Objects
 
 		[Desc("Texture of the wall.")]
 		public readonly string Image;
-		readonly ITexture[] textures;
+		readonly Texture[] textures;
 
 		[Desc("Texture of the wall when slightly damaged.")]
 		public readonly string DamagedImage1;
-		readonly ITexture[] damagedTextures1;
+		readonly Texture[] damagedTextures1;
 
 		[Desc("Texture of the wall when heavily damaged.")]
 		public readonly string DamagedImage2;
-		readonly ITexture[] damagedTextures2;
+		readonly Texture[] damagedTextures2;
 
 		[Desc("If yes, this wall will block objects with physics.")]
 		public readonly bool Blocks = true;
@@ -63,7 +63,7 @@ namespace WarriorsSnuggery.Objects
 			}
 		}
 
-		public ITexture GetTexture(bool horizontal)
+		public Texture GetTexture(bool horizontal)
 		{
 			var half = textures.Length / 2;
 			var random = Program.SharedRandom.Next(half);
@@ -71,7 +71,7 @@ namespace WarriorsSnuggery.Objects
 			return horizontal ? textures[half + random] : textures[random];
 		}
 
-		public ITexture GetDamagedTexture(bool horizontal, bool heavily)
+		public Texture GetDamagedTexture(bool horizontal, bool heavily)
 		{
 			var texture = heavily ? damagedTextures2 : damagedTextures1;
 
