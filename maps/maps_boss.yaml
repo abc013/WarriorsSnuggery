@@ -1,5 +1,17 @@
 boss1=
 	PlayModes=KILL_ENEMIES
+	Level=5
+	TerrainGenerationBase=
+		Terrain=0
+	ImportantPieceGeneration=10
+		Pieces=boss_forest
+		Position=0,0
+	CustomSize=16,16
+	Ambient=120,120,100
+	SpawnPoint=15,15
+
+boss2=
+	PlayModes=KILL_ENEMIES
 	Level=10
 	TerrainGenerationBase=
 		Terrain=0
@@ -8,15 +20,3 @@ boss1=
 		Position=0,0
 	CustomSize=22,16
 	Ambient=170,170,200
-
-boss2=
-	PlayModes=KILL_ENEMIES
-	Level=20
-	TerrainGenerationBase=
-		Terrain=0
-	ImportantPieceGeneration=10
-		Pieces=boss_forest
-		Position=0,0
-	CustomSize=16,16
-	Ambient=120,120,100
-	SpawnPoint=12,12
