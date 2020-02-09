@@ -204,6 +204,13 @@ namespace WarriorsSnuggery
 			return TerrainLayer.Terrain[position.X, position.Y];
 		}
 
+		public bool ActorInWorld(CPos pos, Actor actor)
+		{
+			var size = Map.Bounds.ToCPos();
+
+			return pos.X >= -512 + actor.Physics.RadiusX && pos.X < size.X - 512 - actor.Physics.RadiusX && pos.Y >= -512 + actor.Physics.RadiusY && pos.Y < size.Y - 512 - actor.Physics.RadiusY;
+		}
+
 		public bool IsInWorld(CPos pos)
 		{
 			var size = Map.Bounds.ToCPos();

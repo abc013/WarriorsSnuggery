@@ -185,7 +185,7 @@ namespace WarriorsSnuggery.Objects
 			Height = oldHeight;
 			var terrain = World.TerrainAt(pos);
 
-			if (World.IsInWorld(pos) && !intersects && !(terrain == null || (terrain.Type.Speed.Equals(0) && Height == 0)))
+			if (World.ActorInWorld(pos, this) && !intersects && !(terrain == null || (terrain.Type.Speed.Equals(0) && Height == 0)))
 			{
 				acceptMove(pos, height);
 				return;
@@ -200,7 +200,7 @@ namespace WarriorsSnuggery.Objects
 			Height = oldHeight;
 			terrain = World.TerrainAt(posX);
 
-			if (World.IsInWorld(posX) && !intersects && !(terrain == null || (terrain.Type.Speed.Equals(0) && Height == 0)))
+			if (World.ActorInWorld(posX, this) && !intersects && !(terrain == null || (terrain.Type.Speed.Equals(0) && Height == 0)))
 			{
 				acceptMove(posX, height);
 				Velocity = new CPos(Velocity.X, 0, Velocity.Z);
@@ -215,7 +215,7 @@ namespace WarriorsSnuggery.Objects
 			Height = oldHeight;
 			terrain = World.TerrainAt(posY);
 
-			if (World.IsInWorld(posY) && !intersects && !(terrain == null || (terrain.Type.Speed.Equals(0) && Height == 0)))
+			if (World.ActorInWorld(posY, this) && !intersects && !(terrain == null || (terrain.Type.Speed.Equals(0) && Height == 0)))
 			{
 				acceptMove(posY, height);
 				Velocity = new CPos(0, Velocity.Y, Velocity.Z);
