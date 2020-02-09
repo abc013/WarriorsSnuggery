@@ -9,7 +9,7 @@ glitter=
 
 grey=
 	MeshSize=1
-	Color=0,0,0,127
+	Color=0,0,0,64
 	Duration=100
 	DissolveDuration=10
 	RandomVelocity=5,5,0
@@ -79,7 +79,8 @@ nebula1=
 		Size=72,72
 	Duration=50
 	DissolveDuration=150
-	RandomVelocity=10,10,0
+	RandomVelocity=10,10,10
+	Gravity=0
 
 small_star=
 	Texture=small_star
@@ -105,7 +106,8 @@ puff1=
 		Tick=5
 	Duration=30
 	DissolveDuration=30
-	RandomVelocity=5,5,0
+	RandomVelocity=5,5,1
+	Gravity=0
 
 blood=
 	Color=255,63,63,255
