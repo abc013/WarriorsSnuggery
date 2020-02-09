@@ -98,10 +98,15 @@ namespace WarriorsSnuggery
 					{
 						for (int y = (VisibilitySolver.lastCameraPosition.Y) * 2; y < (VisibilitySolver.lastCameraPosition.Y + VisibilitySolver.lastCameraZoom.Y) * 2; y++)
 						{
-							if (y >= 0 && y < world.ShroudLayer.Size.Y && !world.ShroudLayer.ShroudRevealed(Actor.PlayerTeam, x, y))
+							if (y >= 0 && y < world.ShroudLayer.Size.Y)
 							{
-								shroud.SetPosition(new CPos(x * 512 - 256, y * 512 - 256, 0));
-								shroud.PushToBatchRenderer();
+								var alpha = world.ShroudLayer.ShroudAlpha(new MPos(x, y), Actor.PlayerTeam);
+								if (alpha > 0f)
+								{
+									shroud.SetColor(new Color(1f, 1f, 1f, alpha));
+									shroud.SetPosition(new CPos(x * 512 - 256, y * 512 - 256, 0));
+									shroud.PushToBatchRenderer();
+								}
 							}
 						}
 					}
