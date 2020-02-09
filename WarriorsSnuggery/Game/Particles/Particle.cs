@@ -17,7 +17,7 @@ namespace WarriorsSnuggery.Objects.Particles
 		CPos transform_velocity;
 		VAngle rotate_velocity;
 
-		public Particle(CPos pos, int height, ParticleType type, Random random) : base(pos, type.Texture != null ? (BatchRenderable)new BatchSequence(type.Texture.GetTextures(), tick: type.Texture.Tick) : new BatchObject(type.MeshSize * MasterRenderer.PixelMultiplier, type.Color))
+		public Particle(CPos pos, int height, ParticleType type, Random random) : base(pos, type.Texture != null ? (BatchRenderable)new BatchSequence(type.Texture.GetTextures(), type.Color, tick: type.Texture.Tick) : new BatchObject(type.MeshSize * MasterRenderer.PixelMultiplier + variety(type.MeshSizeVariety), type.Color + new Color(variety(type.ColorVariety.R), variety(type.ColorVariety.G), variety(type.ColorVariety.B), variety(type.ColorVariety.A))))
 		{
 			Height = height;
 			this.type = type;
@@ -32,6 +32,11 @@ namespace WarriorsSnuggery.Objects.Particles
 
 			transform_velocity = new CPos(random.Next(-type.RandomVelocity.X, type.RandomVelocity.X), random.Next(-type.RandomVelocity.Y, type.RandomVelocity.Y), random.Next(-type.RandomVelocity.Z, type.RandomVelocity.Z));
 			rotate_velocity = new VAngle(random.Next(-type.RandomRotation.X, type.RandomRotation.X), random.Next(-type.RandomRotation.Y, type.RandomRotation.Y), random.Next(-type.RandomRotation.Z, type.RandomRotation.Z));
+		}
+		
+		static float variety(float variation)
+		{
+			return ((float)Program.SharedRandom.NextDouble() - 0.5f) * variation;
 		}
 
 		float xLeft;

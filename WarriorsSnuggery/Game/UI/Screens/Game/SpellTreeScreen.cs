@@ -118,7 +118,7 @@ namespace WarriorsSnuggery.UI
 		{
 			this.node = node;
 			this.game = game;
-			image = new BatchSequence(node.Textures, node.Icon.Tick);
+			image = new BatchSequence(node.Textures, Color.White, node.Icon.Tick);
 			image.SetPosition(position);
 
 			tooltip = new Tooltip(position, node.Name + " : " + node.Cost, node.GetInformation(true));

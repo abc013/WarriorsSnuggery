@@ -4,14 +4,16 @@ namespace WarriorsSnuggery.Objects.Particles
 {
 	public class ParticleType
 	{
-		public readonly BatchObject ColoredRenderable;
-
 		[Desc("Texture to use for the particle.", "The game will crash when both Texture and MeshSize are not defined or zero.")]
 		public readonly TextureInfo Texture;
-		[Desc("Color to use for Texture/Monocolored particle.")]
+		[Desc("Color to use for particle.")]
 		public readonly Color Color = Color.White;
+		[Desc("Random color modification.")]
+		public readonly Color ColorVariety;
 		[Desc("Size of the particle when using monocolored particles in pixels.", "The game will crash when both Texture and MeshSize are not defined or zero.", "Does not work if Texture is defined.")]
 		public readonly int MeshSize;
+		[Desc("Random scale when using monocolored particles.")]
+		public readonly float MeshSizeVariety;
 
 		[Desc("Gravitational force.")]
 		public readonly int Gravity = 2;
@@ -39,8 +41,6 @@ namespace WarriorsSnuggery.Objects.Particles
 
 			if (Texture != null)
 				SpriteManager.AddTexture(Texture);
-			else if (MeshSize > 0)
-				ColoredRenderable = new BatchObject(Mesh.Plane(MeshSize / 24f, Color), Color.White);
 		}
 	}
 }

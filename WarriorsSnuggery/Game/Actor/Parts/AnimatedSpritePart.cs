@@ -66,7 +66,7 @@ namespace WarriorsSnuggery.Objects.Parts
 				for (int x = 0; x < frameCountPerIdleAnim; x++)
 					anim[x] = info.Textures[i * frameCountPerIdleAnim + x];
 
-				renderables[i] = new BatchSequence(anim, tick: info.Tick);
+				renderables[i] = new BatchSequence(anim, Color.White, tick: info.Tick);
 			}
 		}
 

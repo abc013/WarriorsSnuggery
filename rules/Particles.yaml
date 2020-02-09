@@ -49,13 +49,17 @@ colored_star=
 
 slime_splash=
 	Color=63,255,63,63
+	ColorVariety=0,127,0,16
 	MeshSize=4
+	MeshSizeVariety=0,1
 	Duration=300
 	DissolveDuration=200
 
 slime_damage=
 	Color=63,255,63,63
+	ColorVariety=0,127,0,16
 	MeshSize=4
+	MeshSizeVariety=0,1
 	Duration=20
 	DissolveDuration=200
 	RandomVelocity=10,10,40
@@ -101,6 +105,7 @@ beam=
 	RandomVelocity=1,1,1
 
 puff1=
+	ColorVariety=127,127,127,127
 	Texture=puff1
 		Size=6,6
 		Tick=5

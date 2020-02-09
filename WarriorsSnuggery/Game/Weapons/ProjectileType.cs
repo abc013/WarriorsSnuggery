@@ -63,7 +63,7 @@ namespace WarriorsSnuggery.Objects.Weapons
 
 		public BatchSequence GetTexture()
 		{
-			return new BatchSequence(Texture.GetTextures(), Texture.Tick);
+			return new BatchSequence(Texture.GetTextures(), Color.White, Texture.Tick);
 		}
 	}
 
@@ -106,7 +106,7 @@ namespace WarriorsSnuggery.Objects.Weapons
 
 		public BatchSequence GetTexture()
 		{
-			return new BatchSequence(Texture.GetTextures(), Texture.Tick);
+			return new BatchSequence(Texture.GetTextures(), Color.White, Texture.Tick);
 		}
 	}
 
