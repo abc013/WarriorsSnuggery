@@ -113,7 +113,7 @@ namespace WarriorsSnuggery.Objects
 
 		public void Accelerate(CPos acceleration, bool forced = false)
 		{
-			if (Mobility == null)
+			if (Mobility == null || World.Game.Editor)
 				return;
 
 			if (!forced && !canMove())
@@ -125,7 +125,7 @@ namespace WarriorsSnuggery.Objects
 
 		public void Accelerate(float angle, bool forced = false, int customAcceleration = 0)
 		{
-			if (Mobility == null)
+			if (Mobility == null || World.Game.Editor)
 				return;
 
 			if (!forced && !canMove())
@@ -137,7 +137,7 @@ namespace WarriorsSnuggery.Objects
 
 		public void AccelerateHeight(bool up, bool forced = false, int customAcceleration = 0)
 		{
-			if (Mobility == null)
+			if (Mobility == null || World.Game.Editor)
 				return;
 
 			if (!forced && (!Mobility.CanFly || !canMove()))
@@ -160,7 +160,7 @@ namespace WarriorsSnuggery.Objects
 
 		void move()
 		{
-			if (!IsAlive || Mobility == null || Velocity == CPos.Zero)
+			if (!IsAlive || Mobility == null || Velocity == CPos.Zero || World.Game.Editor)
 				return;
 
 			var currentTerrain = World.TerrainAt(Position);
@@ -251,6 +251,9 @@ namespace WarriorsSnuggery.Objects
 
 		public void CastSpell(Spells.Spell spell)
 		{
+			if (World.Game.Editor)
+				return;
+
 			Effects.Add(new EffectPart(this, spell));
 		}
 
@@ -349,7 +352,7 @@ namespace WarriorsSnuggery.Objects
 			if (reloadDelay != 0 || ActiveWeapon == null || !IsAlive)
 				return;
 
-			if (World.Game.Type == GameType.EDITOR || World.Game.Editor && IsPlayer || !World.Map.Type.AllowWeapons)
+			if (World.Game.Editor && IsPlayer || !World.Map.Type.AllowWeapons)
 				return;
 
 			if (Effects.Any(e => e.Active && e.Spell.Type == Spells.EffectType.STUN))
@@ -362,6 +365,9 @@ namespace WarriorsSnuggery.Objects
 
 		public void AttackWith(Target target, Weapon weapon)
 		{
+			if (World.Game.Editor && IsPlayer || !World.Map.Type.AllowWeapons)
+				return;
+
 			Parts.ForEach(p => p.OnAttack(target.Position, weapon));
 
 			var reloadModifier = 1f;
@@ -379,6 +385,9 @@ namespace WarriorsSnuggery.Objects
 
 		public void Damage(Actor attacker, int damage)
 		{
+			if (World.Game.Editor)
+				return;
+
 			if (Health == null || Health.HP <= 0)
 				return;
 
@@ -400,6 +409,9 @@ namespace WarriorsSnuggery.Objects
 
 		public void Killed(Actor killer)
 		{
+			if (World.Game.Editor)
+				return;
+
 			if (killer != null)
 				killer.Kill(this);
 
