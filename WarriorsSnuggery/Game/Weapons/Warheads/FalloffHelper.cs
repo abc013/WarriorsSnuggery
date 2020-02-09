@@ -19,7 +19,7 @@ namespace WarriorsSnuggery.Objects.Weapons
 				case FalloffType.CUBIC:
 					return 1 / (dist * dist * dist);
 				case FalloffType.EXPONENTIAL:
-					return 1 / (float)Math.Pow(2, dist);
+					return 0.1f / (float)Math.Pow(2, dist);
 				case FalloffType.ROOT:
 					return 1 / (float)Math.Sqrt(dist);
 				default:
@@ -37,7 +37,7 @@ namespace WarriorsSnuggery.Objects.Weapons
 				case FalloffType.CUBIC:
 					return (float)Math.Pow(maxValue, 1/3f);
 				case FalloffType.EXPONENTIAL:
-					return 1 / (float)Math.Log(maxValue, 2);
+					return 10f / (float)Math.Log(maxValue, 2);
 				case FalloffType.ROOT:
 					return maxValue * maxValue;
 				default:

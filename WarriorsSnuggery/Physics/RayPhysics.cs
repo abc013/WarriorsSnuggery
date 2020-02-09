@@ -34,7 +34,7 @@ namespace WarriorsSnuggery.Physics
 			};
 		}
 
-		public void CalculateEnd(Actor[] ignore = null)
+		public void CalculateEnd(Actor[] ignore = null, bool ignoreActors = false)
 		{
 			var closestIntersect = new CPos(0, 0, int.MaxValue);
 			var closestT1 = double.MaxValue;
@@ -137,49 +137,23 @@ namespace WarriorsSnuggery.Physics
 			}
 
 			// Collision at actors
-			foreach (var sectorPos in sectors)
+			if (!ignoreActors)
 			{
-				if (sectorPos.X < 0 || sectorPos.Y < 0 || sectorPos.X >= world.Map.Bounds.X / PhysicsLayer.SectorSize || sectorPos.Y >= world.Map.Bounds.Y / PhysicsLayer.SectorSize)
-					continue;
-
-				var sector = world.PhysicsLayer.Sectors[sectorPos.X, sectorPos.Y];
-
-				var objs = sector.GetObjects(ignore);
-
-				var hit = false;
-				foreach (var obj in objs)
+				foreach (var sectorPos in sectors)
 				{
-					if (obj.Physics.Shape == Shape.CIRCLE)
+					if (sectorPos.X < 0 || sectorPos.Y < 0 || sectorPos.X >= world.Map.Bounds.X / PhysicsLayer.SectorSize || sectorPos.Y >= world.Map.Bounds.Y / PhysicsLayer.SectorSize)
+						continue;
+
+					var sector = world.PhysicsLayer.Sectors[sectorPos.X, sectorPos.Y];
+
+					var objs = sector.GetObjects(ignore);
+
+					var hit = false;
+					foreach (var obj in objs)
 					{
-						var end = getIntersection(obj.Physics.Position, obj.Physics.RadiusX, out var t1, out var t2, out var end2);
-						if (end != invalid && t1 < closestT1)
+						if (obj.Physics.Shape == Shape.CIRCLE)
 						{
-							var height = calculateHeight(end);
-							if (height <= obj.Physics.Height + obj.Physics.HeightRadius && height >= obj.Physics.Height - obj.Physics.HeightRadius)
-							{
-								closestIntersect = end;
-								closestT1 = t1;
-								EndHeight = height;
-								hit = true;
-							}
-							else if (t2 < closestT1)
-							{
-								height = calculateHeight(end2);
-								if (height <= obj.Physics.Height + obj.Physics.HeightRadius && height >= obj.Physics.Height - obj.Physics.HeightRadius)
-								{
-									closestIntersect = end2;
-									closestT1 = t2;
-									EndHeight = height;
-									hit = true;
-								}
-							}
-						}
-					}
-					else
-					{
-						foreach (var line in obj.Physics.GetLines())
-						{
-							var end = getIntersection(line.Start, line.End, out var t1);
+							var end = getIntersection(obj.Physics.Position, obj.Physics.RadiusX, out var t1, out var t2, out var end2);
 							if (end != invalid && t1 < closestT1)
 							{
 								var height = calculateHeight(end);
@@ -190,14 +164,43 @@ namespace WarriorsSnuggery.Physics
 									EndHeight = height;
 									hit = true;
 								}
+								else if (t2 < closestT1)
+								{
+									height = calculateHeight(end2);
+									if (height <= obj.Physics.Height + obj.Physics.HeightRadius && height >= obj.Physics.Height - obj.Physics.HeightRadius)
+									{
+										closestIntersect = end2;
+										closestT1 = t2;
+										EndHeight = height;
+										hit = true;
+									}
+								}
+							}
+						}
+						else
+						{
+							foreach (var line in obj.Physics.GetLines())
+							{
+								var end = getIntersection(line.Start, line.End, out var t1);
+								if (end != invalid && t1 < closestT1)
+								{
+									var height = calculateHeight(end);
+									if (height <= obj.Physics.Height + obj.Physics.HeightRadius && height >= obj.Physics.Height - obj.Physics.HeightRadius)
+									{
+										closestIntersect = end;
+										closestT1 = t1;
+										EndHeight = height;
+										hit = true;
+									}
+								}
 							}
 						}
 					}
-				}
 
-				// If we hit something, we won't need to check any sectors behind
-				if (hit)
-					break;
+					// If we hit something, we won't need to check any sectors behind
+					if (hit)
+						break;
+				}
 			}
 
 			// Collision at map bounds, if nothing was hit
