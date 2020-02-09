@@ -173,8 +173,6 @@ namespace WarriorsSnuggery
 				return;
 			}
 
-			var watch = Timer.Start();
-
 			if (LocalTick == 1)
 			{
 				// Check visibility the first time, one tick after because we have to check for shroud first
@@ -341,10 +339,6 @@ namespace WarriorsSnuggery
 			}
 
 			ScreenControl.Tick();
-
-			var ms = watch.Stop();
-			if (LocalTick % 4 == 0)
-				Log.WritePerformance(ms, " Tick " + LocalTick);
 
 			if (ScreenControl.FocusedType == ScreenType.START)
 				Pause(true);

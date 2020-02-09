@@ -130,7 +130,7 @@ namespace WarriorsSnuggery
 		}
 
 		public static double TPS;
-		public static double TMS;
+		public static long TMS;
 		protected override void OnUpdateFrame(FrameEventArgs e)
 		{
 			if (!Ready)
@@ -155,13 +155,14 @@ namespace WarriorsSnuggery
 			{
 				TPS = 1 / e.Time;
 				TMS = watch.Stop();
+				Log.WritePerformance(TMS, " tick " + GlobalTick);
 			}
 
 			GlobalTick++;
 		}
 
 		public static double FPS;
-		public static double FMS;
+		public static long FMS;
 		protected override void OnRenderFrame(FrameEventArgs e)
 		{
 			if (!Ready || Exiting)
@@ -180,9 +181,9 @@ namespace WarriorsSnuggery
 
 			if (GlobalRender % 20 == 0)
 			{
-				watch.StopAndWrite("render" + GlobalRender);
 				FPS = 1 / e.Time;
 				FMS = watch.Stop();
+				Log.WritePerformance(FMS, " render " + GlobalRender);
 			}
 
 			Title = title + " | " + MasterRenderer.RenderCalls + " Calls | " + MasterRenderer.Batches + " Batches | " + MasterRenderer.BatchCalls + " BatchCalls";

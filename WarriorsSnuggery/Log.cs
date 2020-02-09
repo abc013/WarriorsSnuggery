@@ -39,7 +39,7 @@ namespace WarriorsSnuggery
 		{
 			if (isClosed)
 				return;
-			Performance.WriteLine(ms + "ms\t\t<- " + text);
+			Performance.WriteLine(ms + "ms\t\t " + text);
 			Performance.Flush();
 		}
 
