@@ -50,8 +50,6 @@ namespace WarriorsSnuggery.Physics
 
 			if (x0 >= 0 && y0 >= 0 && x0 < bounds.X && y0 < bounds.Y)
 			{
-				positions.Add(new MPos(x0, y0));
-
 				var sx = Math.Sign(diff.X);
 				var sy = Math.Sign(diff.Y);
 
@@ -62,38 +60,6 @@ namespace WarriorsSnuggery.Physics
 
 				while (true)
 				{
-					if (tMaxX < tMaxY)
-					{
-						tMaxX += tDeltaX;
-						x0 += sx;
-					}
-					else
-					{
-						tMaxY += tDeltaY;
-						y0 += sy;
-					}
-
-					// Map edges as exit conditions
-					if (x0 < 0)
-					{
-						if (sx < 0) break;
-						continue;
-					}
-					if (x0 >= bounds.X)
-					{
-						if (sx > 0) break;
-						continue;
-					}
-					if (y0 < 0)
-					{
-						if (sy < 0) break;
-						continue;
-					}
-					if (y0 >= bounds.Y)
-					{
-						if (sy > 0) break;
-						continue;
-					}
 
 					var walls = new Wall[2];
 					walls[0] = world.WallLayer.Walls[x0 * 2, y0];
@@ -128,11 +94,44 @@ namespace WarriorsSnuggery.Physics
 					if (!sectors.Contains(sector))
 						sectors.Add(sector);
 
+					positions.Add(new MPos(x0, y0));
+
 					// We hit something, therefore we can ignore the rest which is further away
 					if (hit)
 						break;
 
-					positions.Add(new MPos(x0, y0));
+					if (tMaxX < tMaxY)
+					{
+						tMaxX += tDeltaX;
+						x0 += sx;
+					}
+					else
+					{
+						tMaxY += tDeltaY;
+						y0 += sy;
+					}
+
+					// Map edges as exit conditions
+					if (x0 < 0)
+					{
+						if (sx < 0) break;
+						continue;
+					}
+					if (x0 >= bounds.X)
+					{
+						if (sx > 0) break;
+						continue;
+					}
+					if (y0 < 0)
+					{
+						if (sy < 0) break;
+						continue;
+					}
+					if (y0 >= bounds.Y)
+					{
+						if (sy > 0) break;
+						continue;
+					}
 				}
 			}
 
