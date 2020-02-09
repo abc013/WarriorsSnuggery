@@ -53,6 +53,13 @@ slime_splash=
 	Duration=300
 	DissolveDuration=200
 
+slime_damage=
+	Color=63,255,63,63
+	MeshSize=4
+	Duration=20
+	DissolveDuration=200
+	RandomVelocity=10,10,40
+
 barrel_splash=
 	Color=63,255,63,196
 	MeshSize=2
