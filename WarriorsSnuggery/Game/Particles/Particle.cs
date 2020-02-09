@@ -17,7 +17,7 @@ namespace WarriorsSnuggery.Objects.Particles
 		CPos transform_velocity;
 		VAngle rotate_velocity;
 
-		public Particle(CPos pos, int height, ParticleType type, Random random) : base(pos, type.Texture != null ? (BatchRenderable)new BatchSequence(type.Texture.GetTextures(), type.Color, tick: type.Texture.Tick) : new BatchObject(type.MeshSize * MasterRenderer.PixelMultiplier + variety(type.MeshSizeVariety), type.Color + new Color(variety(type.ColorVariety.R), variety(type.ColorVariety.G), variety(type.ColorVariety.B), variety(type.ColorVariety.A))))
+		public Particle(CPos pos, int height, ParticleType type, Random random) : base(pos, type.Texture != null ? (BatchRenderable)new BatchSequence(type.Texture.GetTextures(), type.Color + new Color(variety(type.ColorVariety.R), variety(type.ColorVariety.G), variety(type.ColorVariety.B), variety(type.ColorVariety.A)), tick: type.Texture.Tick) : new BatchObject(type.MeshSize * MasterRenderer.PixelMultiplier + variety(type.MeshSizeVariety), type.Color + new Color(variety(type.ColorVariety.R), variety(type.ColorVariety.G), variety(type.ColorVariety.B), variety(type.ColorVariety.A))))
 		{
 			Height = height;
 			this.type = type;
