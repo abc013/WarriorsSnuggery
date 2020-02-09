@@ -202,7 +202,7 @@ namespace WarriorsSnuggery.UI
 				save.Tick();
 
 			mousePosition.Tick();
-			mousePosition.SetText(MouseInput.GamePosition);
+			mousePosition.WriteText(Color.White + "" + MouseInput.GamePosition.ToMPos() + Color.Grey + " | " + MouseInput.GamePosition);
 
 			showTiles.Tick();
 			showActors.Tick();
