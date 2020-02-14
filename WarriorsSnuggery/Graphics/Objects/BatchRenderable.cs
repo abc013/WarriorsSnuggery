@@ -4,8 +4,8 @@ namespace WarriorsSnuggery.Graphics
 {
 	public abstract class BatchRenderable
 	{
-		protected readonly Vertex[] Vertices;
-		protected Vertex[] Calculated;
+		readonly Vertex[] vertices;
+		readonly Vertex[] calculated;
 
 		public bool Visible = true;
 
@@ -17,7 +17,8 @@ namespace WarriorsSnuggery.Graphics
 
 		public BatchRenderable(Vertex[] vertices, Color color)
 		{
-			Vertices = vertices;
+			this.vertices = vertices;
+			calculated = new Vector[vertices.Length];
 			Color = color;
 			MatrixChanged = true;
 		}
@@ -94,14 +95,13 @@ namespace WarriorsSnuggery.Graphics
 				var s1 = Matrix4.CreateScale(Scale);
 				var matrix = r1 * r2 * r3 * s1 * t2;
 
-				Calculated = new Vertex[Vertices.Length];
-				for (int i = 0; i < Vertices.Length; i++)
-					Calculated[i] = Vertices[i].Apply(matrix, Color);
+				for (int i = 0; i < vertices.Length; i++)
+					calculated[i] = vertices[i].Apply(matrix, Color);
 
 				MatrixChanged = false;
 			}
 
-			MasterRenderer.BatchRenderer.Add(Calculated);
+			MasterRenderer.BatchRenderer.Add(calculated);
 		}
 	}
 }
