@@ -18,7 +18,7 @@ namespace WarriorsSnuggery.Graphics
 		public BatchRenderable(Vertex[] vertices, Color color)
 		{
 			this.vertices = vertices;
-			calculated = new Vector[vertices.Length];
+			calculated = new Vertex[vertices.Length];
 			Color = color;
 			MatrixChanged = true;
 		}
