@@ -37,6 +37,7 @@ namespace WarriorsSnuggery.Objects
 			Type = type;
 
 			renderable = new BatchObject(type.Texture, Color.White);
+			renderable.SetPosition(Position.ToCPos());
 			if (Type.Overlaps)
 			{
 				edges = new BatchObject[4];
@@ -48,6 +49,7 @@ namespace WarriorsSnuggery.Objects
 					else
 						edges[i] = new BatchObject(Type.Texture_Edge, Color.White);
 					edges[i].SetRotation(new VAngle(0, 0, i * -90));
+					edges[i].SetPosition(Position.ToCPos() + edgePositions[i]);
 				}
 
 				corners = new BatchObject[4];
@@ -56,6 +58,7 @@ namespace WarriorsSnuggery.Objects
 					cornersVisible[i] = true;
 					corners[i] = new BatchObject(Type.Texture_Corner, Color.White);
 					corners[i].SetRotation(new VAngle(0, 0, i * -90));
+					corners[i].SetPosition(Position.ToCPos() + cornerPositions[i]);
 				}
 			}
 		}
@@ -72,7 +75,6 @@ namespace WarriorsSnuggery.Objects
 					if (!edgesVisible[i])
 						continue;
 
-					edges[i].SetPosition((Position.ToCPos() + edgePositions[i]).ToVector());
 					edges[i].PushToBatchRenderer();
 				}
 
@@ -81,11 +83,9 @@ namespace WarriorsSnuggery.Objects
 					if (!cornersVisible[i])
 						continue;
 
-					corners[i].SetPosition((Position.ToCPos() + cornerPositions[i]).ToVector());
 					corners[i].PushToBatchRenderer();
 				}
 			}
-			renderable.SetPosition(Position.ToCPos().ToVector());
 			renderable.PushToBatchRenderer();
 		}
 

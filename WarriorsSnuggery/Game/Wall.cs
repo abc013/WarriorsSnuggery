@@ -6,7 +6,6 @@ namespace WarriorsSnuggery.Objects
 	public class Wall : PhysicsObject
 	{
 		public readonly MPos LayerPosition;
-		readonly CPos renderPosition;
 		readonly WallLayer layer;
 
 		public readonly WallType Type;
@@ -38,69 +37,52 @@ namespace WarriorsSnuggery.Objects
 			this.layer = layer;
 
 			var pos = position.ToCPos() / new CPos(2, 1, 1);
+			var renderPos = pos;
 			Position = pos + new CPos(0, -512, 0);
 			isHorizontal = position.X % 2 != 0;
 			if (isHorizontal)
 			{
 				Physics.Position += new CPos(0, 512, 0);
-				renderPosition = pos + new CPos(-512, -1536, 0);
+				renderPos += new CPos(-512, -1536, 0);
 			}
 			else
 			{
 				Position += new CPos(0, 0, 2048);
 				Physics.Position += new CPos(0, 1024, 0);
-				renderPosition = pos + new CPos(-83, -512, 0);
+				renderPos += new CPos(-83, -512, 0);
 			}
 			Type = type;
 			health = type.Health;
 
+			Renderable.SetPosition(renderPos);
 			if (Type.DamagedImage1 != null)
+			{
 				damaged1 = new BatchObject(type.GetDamagedTexture(isHorizontal, false), Color.White);
+				damaged1.SetPosition(renderPos);
+			}
 			if (Type.DamagedImage2 != null)
+			{
 				damaged2 = new BatchObject(type.GetDamagedTexture(isHorizontal, true), Color.White);
+				damaged2.SetPosition(renderPos);
+			}
 		}
 
 		public override void Render()
 		{
 			if (!Type.Invincible && healthPercentage < 0.75f)
 			{
-				if (healthPercentage >= 0.25f)
+				if (healthPercentage >= 0.25f || damaged2 == null)
 				{
 					if (damaged1 != null)
-					{
-						damaged1.SetPosition(renderPosition);
 						damaged1.PushToBatchRenderer();
-					}
 					else
-					{
-						Renderable.SetPosition(renderPosition);
 						base.Render();
-					}
 				}
 				else
-				{
-					if (damaged2 != null)
-					{
-						damaged2.SetPosition(renderPosition);
-						damaged2.PushToBatchRenderer();
-					}
-					else if (damaged1 != null)
-					{
-						damaged1.SetPosition(renderPosition);
-						damaged1.PushToBatchRenderer();
-					}
-					else
-					{
-						Renderable.SetPosition(renderPosition);
-						base.Render();
-					}
-				}
+					damaged2.PushToBatchRenderer();
 			}
 			else
-			{
-				Renderable.SetPosition(renderPosition);
 				base.Render();
-			}
 		}
 
 		public override void SetColor(Color color)
