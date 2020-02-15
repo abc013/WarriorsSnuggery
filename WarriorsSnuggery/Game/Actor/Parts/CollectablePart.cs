@@ -49,8 +49,8 @@ namespace WarriorsSnuggery.Objects.Parts
 
 		[Desc("Value field for the effect.")]
 		public readonly int Value;
-		[Desc("Text field for the effect.")]
-		public readonly string Text;
+		[Desc("Text lines for the effect.", "Commas are used to separate the lines.")]
+		public readonly string[] Text;
 
 		public CollectablePartInfo(string internalName, MiniTextNode[] nodes) : base(internalName, nodes) { }
 
@@ -239,7 +239,7 @@ namespace WarriorsSnuggery.Objects.Parts
 						};
 
 					case CollectableType.TEXT:
-						return (a) => a.World.Add(new ActionText(a.Position + new CPos(0, 0, 1024), new CPos(0, -15, 30), 100, ActionText.ActionTextType.TRANSFORM, info.Text));
+						return (a) => a.World.Add(new ActionText(a.Position + new CPos(0, 0, 1024), new CPos(0, -15, 30), info.Value, ActionText.ActionTextType.TRANSFORM, info.Text));
 
 					default:
 						return (a) => { };
