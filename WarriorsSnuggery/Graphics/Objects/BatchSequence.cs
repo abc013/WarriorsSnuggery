@@ -9,7 +9,7 @@
 		int curObj;
 
 		// Create empty GraphicsObject
-		public BatchSequence(Texture[] textures, Color color, int tick, bool pauseable = false) : base(new Vertex[0], Color.White)
+		public BatchSequence(Texture[] textures, Color color, int tick, bool pauseable = false, bool startRandom = false) : base(new Vertex[0], Color.White)
 		{
 			this.tick = tick;
 			this.pauseable = pauseable;
@@ -18,6 +18,9 @@
 			objects = new BatchObject[textures.Length];
 			for (int i = 0; i < textures.Length; i++)
 				objects[i] = new BatchObject(textures[i], color);
+
+			if (startRandom)
+				curObj = Program.SharedRandom.Next(textures.Length);
 		}
 
 		public override void PushToBatchRenderer()
