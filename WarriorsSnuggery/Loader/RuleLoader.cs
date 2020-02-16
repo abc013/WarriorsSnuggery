@@ -72,8 +72,8 @@ namespace WarriorsSnuggery
 
 		static void loadUIRules()
 		{
-			UITextureManager.Add("UI_inactiveConnection", new TextureInfo("UI_inactiveConnection"));
-			UITextureManager.Add("UI_activeConnection", new TextureInfo("UI_activeConnection"));
+			UITextureManager.Add("UI_inactiveConnection", new TextureInfo("UI_inactiveConnection", TextureType.ANIMATION, 10, 5, 3));
+			UITextureManager.Add("UI_activeConnection", new TextureInfo("UI_activeConnection", TextureType.ANIMATION, 10, 5, 3));
 			UITextureManager.Add("UI_save", new TextureInfo("UI_save"));
 			UITextureManager.Add("UI_map", new TextureInfo("UI_map"));
 			UITextureManager.Add("UI_money", new TextureInfo("UI_money"));

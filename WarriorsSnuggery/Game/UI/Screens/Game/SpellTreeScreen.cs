@@ -253,12 +253,10 @@ namespace WarriorsSnuggery.UI
 			if (target.Unlocked || game.Statistics.UnlockedSpells.ContainsKey(target.InnerName) && game.Statistics.UnlockedSpells[target.InnerName])
 				Active = true;
 
-			curTick--;
-			if (curTick < 0)
+			if (--curTick < 0)
 			{
-				frame++;
-				if (frame >= renderables.Length)
-					frame = 0;
+				if (--frame < 0)
+					frame = renderables.Length - 1;
 
 				curTick = tick;
 			}
