@@ -19,20 +19,21 @@ namespace WarriorsSnuggery.Objects.Bot
 			get
 			{
 				int x;
-				if (Self.Position.X > World.Map.Bounds.X * 512)
-					x = World.Map.BottomRightCorner.X;
+				if (Self.Position.X > World.Map.Bounds.X * 512 - 256)
+					x = World.Map.BottomRightCorner.X - Self.Position.X;
 				else
-					x = World.Map.BottomLeftCorner.X;
+					x = World.Map.BottomLeftCorner.X + Self.Position.X;
 
 				int y;
-				if (Self.Position.Y > World.Map.Bounds.Y * 512)
-					y = World.Map.TopRightCorner.Y;
+				if (Self.Position.Y > World.Map.Bounds.Y * 512 - 256)
+					y = World.Map.BottomLeftCorner.Y - Self.Position.Y;
 				else
-					y = World.Map.BottomLeftCorner.Y;
+					y = World.Map.TopRightCorner.Y + Self.Position.Y;
 
-				return (float)Math.Sqrt(x*x + y*y);
+				return x > y ? y : x;
 			}
 		}
+
 		protected float AngleToMapMid
 		{
 			get
@@ -60,6 +61,34 @@ namespace WarriorsSnuggery.Objects.Bot
 		protected bool CanAttack
 		{
 			get { return Self.ActiveWeapon != null; }
+			set { }
+		}
+
+		protected float AngleToNearActor
+		{
+			get
+			{
+				if (Self.Physics.Shape != Physics.Shape.NONE && Self.Physics.RadiusX > 0)
+				{
+					foreach (var sector in Self.PhysicsSectors)
+					{
+						foreach (var obj in sector.GetObjects())
+						{
+							if (!(obj is Actor) || obj == Self)
+								continue;
+
+							if ((obj as Actor).Team != Self.Team)
+								continue;
+
+							var dist = Self.Position - obj.Position;
+							if (dist.Dist < (Self.Physics.RadiusX + obj.Physics.RadiusX) * 2)
+								return dist.FlatAngle;
+						}
+					}
+				}
+
+				return float.NegativeInfinity;
+			}
 			set { }
 		}
 

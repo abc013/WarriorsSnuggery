@@ -12,6 +12,9 @@ namespace WarriorsSnuggery.Objects.Bot
 
 		public override void Tick()
 		{
+			if (Self.World.Game.Editor)
+				return;
+
 			if (!CanMove && !CanAttack)
 				return;
 
@@ -61,16 +64,27 @@ namespace WarriorsSnuggery.Objects.Bot
 
 				if (CanMove)
 				{
-					var range = 5120;
-					if (CanAttack)
-						range = Self.ActiveWeapon.Type.MaxRange;
-					else if (Self.RevealsShroudPart != null)
-						range = Self.RevealsShroudPart.Range * 512;
+					if (DistToMapEdge > 1536)
+					{
+						var range = 5120;
+						if (CanAttack)
+							range = Self.ActiveWeapon.Type.MaxRange;
+						else if (Self.RevealsShroudPart != null)
+							range = Self.RevealsShroudPart.Range * 512;
 
-					if (DistToTarget > range * 0.9f)
-						Self.Accelerate(AngleToTarget);
-					else if (DistToTarget < range * 0.8f)
-						Self.Accelerate(-AngleToTarget);
+						var angle = -AngleToNearActor;
+						if (float.IsInfinity(angle))
+							angle = AngleToTarget;
+
+						if (DistToTarget > range * 0.9f)
+							Self.Accelerate(angle);
+						else if (DistToTarget < range * 0.8f)
+							Self.Accelerate(-angle);
+					}
+					else
+					{
+						Self.Accelerate(AngleToMapMid);
+					}
 				}
 			}
 		}

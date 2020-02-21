@@ -171,7 +171,8 @@ namespace WarriorsSnuggery.Objects
 				return;
 
 			var movement = new CPos((int)Math.Round(Velocity.X * speedModifier), (int)Math.Round(Velocity.Y * speedModifier), (int)Math.Round(Velocity.Z * speedModifier));
-			if (movement == CPos.Zero) return;
+			if (movement == CPos.Zero)
+				return;
 
 			var oldpos = Position;
 			var oldHeight = Height;
