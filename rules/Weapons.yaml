@@ -137,8 +137,8 @@ blade=
 				Radius=100
 				AreaType=CIRCLE
 		Damage=
-			Damage=250
-			Falloff=EXPONENTIAL
+			Damage=200
+			Falloff=CUBIC
 
 lazer=
 	Reload=30
