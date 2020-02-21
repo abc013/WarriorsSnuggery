@@ -194,7 +194,12 @@ namespace WarriorsSnuggery
 					if (a.Health != null && a.Health.HP != a.Health.MaxHP)
 						writer.WriteLine("\t\t" + "Health=" + a.Health.HPRelativeToMax);
 					if (a.IsBot)
+					{
 						writer.WriteLine("\t\t" + "IsBot=" + a.IsBot);
+
+						if (a.BotPart.Target != null)
+							writer.WriteLine("\t\t" + "BotTarget=" + a.BotPart.Target.Position);
+					}
 					if (a.IsPlayer)
 						writer.WriteLine("\t\t" + "IsPlayer=" + a.IsPlayer);
 				}

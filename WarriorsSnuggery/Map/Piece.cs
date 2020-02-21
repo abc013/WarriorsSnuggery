@@ -131,6 +131,8 @@ namespace WarriorsSnuggery.Maps
 			{
 				var a = ActorCreator.Create(world, actor.Type, actor.Position + position.ToCPos(), actor.Team, actor.IsBot, actor.IsPlayer, actor.Health);
 				if (actor.IsPlayer) world.LocalPlayer = a;
+				if (actor.BotTarget.X != int.MaxValue)
+					a.BotPart.Target = new Objects.Weapons.Target(actor.BotTarget, 0);
 				world.Add(a);
 			}
 		}
