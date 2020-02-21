@@ -4,6 +4,8 @@ namespace WarriorsSnuggery
 {
 	public static class Camera
 	{
+		public static readonly CPos CamPlayerOffset = new CPos(0, 2048, 0);
+
 		public static CPos LookAt = CPos.Zero;
 
 		public static bool Locked;

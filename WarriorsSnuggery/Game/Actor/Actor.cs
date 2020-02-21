@@ -163,11 +163,12 @@ namespace WarriorsSnuggery.Objects
 			if (!IsAlive || Mobility == null || Velocity == CPos.Zero || World.Game.Editor)
 				return;
 
-			var currentTerrain = World.TerrainAt(Position);
-			if (currentTerrain == null) return;
+			var speedModifier = 1f;
+			if (Height == 0 && World.TerrainAt(Position) != null)
+				speedModifier = World.TerrainAt(Position).Type.Speed;
 
-			var speedModifier = Height == 0 ? currentTerrain.Type.Speed : 1f;
-			if (speedModifier.Equals(0)) return;
+			if (speedModifier <= 0.01f)
+				return;
 
 			var movement = new CPos((int)Math.Round(Velocity.X * speedModifier), (int)Math.Round(Velocity.Y * speedModifier), (int)Math.Round(Velocity.Z * speedModifier));
 			if (movement == CPos.Zero) return;
