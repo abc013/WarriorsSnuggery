@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 
 namespace WarriorsSnuggery
@@ -98,22 +99,36 @@ namespace WarriorsSnuggery
 					return path;
 			}
 
-			var directories = Directory.EnumerateDirectories(path);
-
-			foreach (var directory in directories)
+			foreach (var directory in Directory.EnumerateDirectories(path))
 			{
 				var found = findUntil(directory + @"\", name, suffix);
 
-				if (found != String.Empty)
+				if (found != string.Empty)
 					return found;
 			}
 
 			return string.Empty;
 		}
 
-		public static void CreateFile(string path, string name, string end = ".txt")
+		public static string[] FilesIn(string path, string suffix = ".yaml")
 		{
-			File.Create(path + name + end).Close();
+			var list = new List<string>();
+			foreach (var file in Directory.EnumerateFiles(path))
+			{
+				if (!file.EndsWith(suffix, StringComparison.CurrentCulture))
+					continue;
+
+				var split = file.Split('\\');
+				var name = split[split.Length - 1];
+				list.Add(name.Remove(name.Length - 4));
+			}
+
+			return list.ToArray();
+		}
+
+		public static void CreateFile(string path, string name, string suffix = ".txt")
+		{
+			File.Create(path + name + suffix).Close();
 		}
 	}
 }

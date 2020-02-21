@@ -11,7 +11,7 @@ namespace WarriorsSnuggery
 		{
 			device = new AudioDevice();
 			AudioManager.LoadSound("test", FileExplorer.FindPath(FileExplorer.Misc, "test", ".wav"));
-			Music = new MusicController(new[] { "new1", "new3" });
+			Music = new MusicController(FileExplorer.FilesIn(FileExplorer.Misc + @"music\", ".wav"));
 		}
 
 		public static void Tick()
