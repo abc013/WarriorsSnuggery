@@ -94,6 +94,10 @@ namespace WarriorsSnuggery.Physics
 					if (!sectors.Contains(sector))
 						sectors.Add(sector);
 
+					// HACK: Break to prevent crash
+					if (positions.Contains(new MPos(x0, y0)))
+						break;
+
 					positions.Add(new MPos(x0, y0));
 
 					// We hit something, therefore we can ignore the rest which is further away
