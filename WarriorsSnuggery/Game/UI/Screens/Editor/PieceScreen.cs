@@ -146,7 +146,7 @@ namespace WarriorsSnuggery.UI
 				Directory.CreateDirectory(path);
 
 			FileExplorer.CreateFile(path + "\\", name.Text, ".yaml");
-			using (var stream = new StreamWriter(path + "\\map.yaml"))
+			using (var stream = new StreamWriter(path + "\\" + name.Text + ".yaml"))
 			{
 				stream.WriteLine("Name=" + name.Text);
 				stream.WriteLine("Size=" + size.X + "," + size.Y);
@@ -155,7 +155,7 @@ namespace WarriorsSnuggery.UI
 					terrain += ",0";
 				stream.WriteLine("Terrain=" + terrain);
 				var walls = "-1";
-				for (int i = 1; i < size.X * size.Y * 2; i++)
+				for (int i = 1; i < (size.X + 1) * (size.Y + 1) * 2 * 2; i++)
 					walls += ",-1";
 				stream.WriteLine("Walls=" + walls);
 			}
