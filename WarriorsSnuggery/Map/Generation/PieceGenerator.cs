@@ -99,6 +99,9 @@ namespace WarriorsSnuggery.Maps
 
 						for (var y = yStart; y < yStart + searchBlocks.Y; y++)
 						{
+							if (y >= map.Bounds.Y)
+								break;
+
 							if (!map.CanAcquireCell(new MPos(x, y), info.ID))
 							{
 								canAcquire = false;
