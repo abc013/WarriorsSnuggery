@@ -1,3 +1,4 @@
+using System.Linq;
 using System.IO;
 using WarriorsSnuggery.Graphics;
 using WarriorsSnuggery.Maps;
@@ -153,13 +154,9 @@ namespace WarriorsSnuggery.UI
 			{
 				stream.WriteLine("Name=" + name.Text);
 				stream.WriteLine("Size=" + size.X + "," + size.Y);
-				var terrain = "0";
-				for (int i = 1; i < size.X * size.Y; i++)
-					terrain += ",0";
+				var terrain = string.Join(",", Enumerable.Repeat("0", size.X * size.Y));
 				stream.WriteLine("Terrain=" + terrain);
-				var walls = "-1";
-				for (int i = 1; i < (size.X + 1) * (size.Y + 1) * 2 * 2; i++)
-					walls += ",-1";
+				var walls = string.Join(",", Enumerable.Repeat("-1", (size.X + 1) * (size.Y + 1) * 2 * 2));
 				stream.WriteLine("Walls=" + walls);
 			}
 			// Load piece into cache
