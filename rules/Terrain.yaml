@@ -4,14 +4,14 @@
 	EdgeSprite=grass2_edges_h
 	VerticalEdgeSprite=grass2_edges_v
 	CornerSprite=grass2_corners
-	Speed=1,0
+	Speed=1.0
 
 1=
 	Sprite=sand
 	OverlapHeight=7
 	EdgeSprite=sand_edges
 	CornerSprite=sand_corners
-	Speed=1,1
+	Speed=1.1
 
 2=
 	Sprite=water
@@ -21,15 +21,15 @@
 3=
 	Sprite=wood
 	OverlapHeight=20
-	Speed=1,1
+	Speed=1.1
 
 4=
 	Sprite=stone
-	Speed=1,1
+	Speed=1.1
 
 5=
 	Sprite=stone2
-	Speed=1,1
+	Speed=1.1
 	OverlapHeight=5
 	EdgeSprite=stone2_edges
 	CornerSprite=stone2_corners
@@ -39,11 +39,11 @@
 	OverlapHeight=4
 	EdgeSprite=brickstone1_edges
 	CornerSprite=brickstone1_corners
-	Speed=1,2
+	Speed=1.2
 
 7=
 	Sprite=farmland
-	Speed=0,7
+	Speed=0.7
 
 8=
 	Sprite=grass
@@ -51,26 +51,26 @@
 	EdgeSprite=grass_edges_h
 	VerticalEdgeSprite=grass_edges_v
 	CornerSprite=grass_corners
-	Speed=0,9
+	Speed=0.9
 
 9=
 	Sprite=dark_stone
 	OverlapHeight=6
 	EdgeSprite=dark_stone_edges
 	CornerSprite=dark_stone_corners
-	Speed=1,0
+	Speed=1.0
 
 10=
 	Sprite=light_stone
 	OverlapHeight=3
 	EdgeSprite=light_stone_edges
 	CornerSprite=light_stone_corners
-	Speed=1,0
+	Speed=1.0
 
 11=
 	Sprite=lava_stone
-	Speed=0,3
+	Speed=0.3
 
 12=
 	Sprite=brickstone2
-	Speed=1,2
+	Speed=1.2

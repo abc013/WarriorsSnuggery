@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Globalization;
 using System.Linq;
 
 namespace WarriorsSnuggery.Loader
@@ -45,7 +46,7 @@ namespace WarriorsSnuggery.Loader
 			{
 				float i;
 
-				if (float.TryParse(s, out i))
+				if (float.TryParse(s, NumberStyles.Float, CultureInfo.InvariantCulture, out i))
 					return i;
 			}
 			else if (t == typeof(bool))
@@ -72,13 +73,9 @@ namespace WarriorsSnuggery.Loader
 					int convert;
 
 					if (int.TryParse(part, out convert))
-					{
 						res[i] = convert;
-					}
 					else
-					{
 						throw new InvalidConversionException(file, node, t);
-					}
 				}
 
 				return res;
@@ -93,14 +90,10 @@ namespace WarriorsSnuggery.Loader
 					var part = parts[i].Trim();
 					float convert;
 
-					if (float.TryParse(part, out convert))
-					{
+					if (float.TryParse(part, NumberStyles.Float, CultureInfo.InvariantCulture, out convert))
 						res[i] = convert;
-					}
 					else
-					{
 						throw new InvalidConversionException(file, node, t);
-					}
 				}
 
 				return res;
@@ -110,9 +103,7 @@ namespace WarriorsSnuggery.Loader
 				var parts = s.Split(',').ToArray();
 
 				for (int i = 0; i < parts.Length; i++)
-				{
 					parts[i] = parts[i].Trim();
-				}
 
 				return parts;
 			}
@@ -130,9 +121,7 @@ namespace WarriorsSnuggery.Loader
 					else if (falseBooleans.Contains(part))
 						res[i] = false;
 					else
-					{
 						throw new InvalidConversionException(file, node, t);
-					}
 				}
 
 				return res;
@@ -205,41 +194,36 @@ namespace WarriorsSnuggery.Loader
 				var children = node.Children;
 				foreach (var child in children)
 				{
-					if (child.Key == "AddDirectory")
+					switch(child.Key)
 					{
-						searchFile = child.Convert<bool>();
-					}
-					else if (child.Key == "Random")
-					{
-						randomTexture = child.Convert<bool>();
-					}
-					else if (child.Key == "Tick")
-					{
-						tick = child.Convert<int>();
-					}
-					else if (child.Key == "Size")
-					{
-						size = child.Convert<MPos>();
-					}
-					else
-					{
-						throw new UnexpectedConversionChild(file, node, t, child.Key);
+						case "AddDirectory":
+							searchFile = child.Convert<bool>();
+							break;
+						case "Random":
+							randomTexture = child.Convert<bool>();
+							break;
+						case "Tick":
+							tick = child.Convert<int>();
+							break;
+						case "Size":
+							size = child.Convert<MPos>();
+							break;
+						default:
+							throw new UnexpectedConversionChild(file, node, t, child.Key);
 					}
 				}
 
 				if (size != MPos.Zero)
-				{
 					return new Graphics.TextureInfo(name, randomTexture ? Graphics.TextureType.RANDOM : Graphics.TextureType.ANIMATION, tick, size.X, size.Y, searchFile);
-				}
 			}
 			else if (t == typeof(Objects.Weapons.WeaponType))
 			{
-				// Called method handles nonexistant weapon types
+				// Called method handles nonexistent weapon types
 				return WeaponCreator.GetType(s.Trim());
 			}
 			else if (t == typeof(Objects.Particles.ParticleType))
 			{
-				// Called method handles nonexistant weapon types
+				// Called method handles nonexistent particle types
 				return ParticleCreator.GetType(s.Trim());
 			}
 			else if (t == typeof(Spells.Spell))

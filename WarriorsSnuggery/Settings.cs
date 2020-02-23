@@ -1,9 +1,13 @@
+using System;
+using System.Globalization;
 using System.Collections.Generic;
 
 namespace WarriorsSnuggery
 {
 	public static class Settings
 	{
+		public static readonly IFormatProvider FloatFormat = CultureInfo.InvariantCulture;
+
 		public const int BatchSize = 8120;
 		public const int SheetSize = 1024;
 
@@ -153,7 +157,7 @@ namespace WarriorsSnuggery
 			using (var writer = new System.IO.StreamWriter(FileExplorer.MainDirectory + "Settings.yaml"))
 			{
 				writer.WriteLine("FrameLimiter=" + FrameLimiter);
-				writer.WriteLine("ScrollSpeed=" + ScrollSpeed);
+				writer.WriteLine("ScrollSpeed=" + ScrollSpeed.ToString(FloatFormat));
 				writer.WriteLine("EdgeScrolling=" + EdgeScrolling);
 				writer.WriteLine("DeveloperMode=" + DeveloperMode.GetHashCode());
 				writer.WriteLine("Fullscreen=" + Fullscreen.GetHashCode());
@@ -163,9 +167,9 @@ namespace WarriorsSnuggery
 				writer.WriteLine("EnablePixeling=" + EnablePixeling.GetHashCode());
 				writer.WriteLine("EnableTextShadowing=" + EnableTextShadowing.GetHashCode());
 				writer.WriteLine("FirstStarted=" + 0);
-				writer.WriteLine("MasterVolume=" + MasterVolume);
-				writer.WriteLine("EffectsVolume=" + EffectsVolume);
-				writer.WriteLine("MusicVolume=" + MusicVolume);
+				writer.WriteLine("MasterVolume=" + MasterVolume.ToString(FloatFormat));
+				writer.WriteLine("EffectsVolume=" + EffectsVolume.ToString(FloatFormat));
+				writer.WriteLine("MusicVolume=" + MusicVolume.ToString(FloatFormat));
 
 				writer.WriteLine("Keys=");
 				foreach (var key in KeyDictionary)

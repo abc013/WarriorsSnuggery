@@ -54,40 +54,18 @@ namespace WarriorsSnuggery.UI
 		{
 			savedTick = 15;
 
-			using (var writer = new System.IO.StreamWriter(FileExplorer.MainDirectory + "WS.yaml"))
-			{
-				writer.WriteLine("FrameLimiter=" + Settings.FrameLimiter);
-				writer.WriteLine("ScrollSpeed=" + Settings.ScrollSpeed);
-				writer.WriteLine("EdgeScrolling=" + Settings.EdgeScrolling);
-				writer.WriteLine("DeveloperMode=" + Settings.DeveloperMode.GetHashCode());
-				writer.WriteLine("Fullscreen=" + Settings.Fullscreen.GetHashCode());
-				writer.WriteLine("Width=" + Settings.Width);
-				writer.WriteLine("Height=" + Settings.Height);
-				writer.WriteLine("AntiAliasing=" + Settings.AntiAliasing.GetHashCode());
-				writer.WriteLine("EnablePixeling=" + Settings.EnablePixeling.GetHashCode());
-				writer.WriteLine("FirstStarted=" + 0);
-
-				Settings.KeyDictionary.Clear();
-				Settings.KeyDictionary.Add("Pause", pause.Key + "");
-				Settings.KeyDictionary.Add("CameraLock", @lock.Key + "");
-				Settings.KeyDictionary.Add("MoveUp", up.Key + "");
-				Settings.KeyDictionary.Add("MoveDown", down.Key + "");
-				Settings.KeyDictionary.Add("MoveLeft", left.Key + "");
-				Settings.KeyDictionary.Add("MoveRight", right.Key + "");
-				Settings.KeyDictionary.Add("CameraUp", camUp.Key + "");
-				Settings.KeyDictionary.Add("CameraDown", camDown.Key + "");
-				Settings.KeyDictionary.Add("CameraLeft", camLeft.Key + "");
-				Settings.KeyDictionary.Add("CameraRight", camRight.Key + "");
-
-				writer.WriteLine("Keys=");
-				foreach (var key in Settings.KeyDictionary)
-				{
-					writer.WriteLine("\t" + key.Key + "=" + key.Value);
-				}
-
-				writer.Flush();
-				writer.Close();
-			}
+			Settings.KeyDictionary.Clear();
+			Settings.KeyDictionary.Add("Pause", pause.Key + "");
+			Settings.KeyDictionary.Add("CameraLock", @lock.Key + "");
+			Settings.KeyDictionary.Add("MoveUp", up.Key + "");
+			Settings.KeyDictionary.Add("MoveDown", down.Key + "");
+			Settings.KeyDictionary.Add("MoveLeft", left.Key + "");
+			Settings.KeyDictionary.Add("MoveRight", right.Key + "");
+			Settings.KeyDictionary.Add("CameraUp", camUp.Key + "");
+			Settings.KeyDictionary.Add("CameraDown", camDown.Key + "");
+			Settings.KeyDictionary.Add("CameraLeft", camLeft.Key + "");
+			Settings.KeyDictionary.Add("CameraRight", camRight.Key + "");
+			Settings.Save();
 
 			game.AddInfoMessage(150, "Keys Saved!");
 		}

@@ -15,7 +15,7 @@
 2=
 	Image=handrails
 		Size=48,24
-	DamagePenetration=0,8
+	DamagePenetration=0.8
 	Height=256
 	Health=500
 
@@ -26,32 +26,32 @@
 		Size=48,24
 	DamagedImage2=fence0_dam2
 		Size=48,24
-	DamagePenetration=0,8
+	DamagePenetration=0.8
 	Height=256
 	Health=500
 
 4=
 	Image=walls0_damaged0
 		Size=48,24
-	DamagePenetration=0,3
+	DamagePenetration=0.3
 	Health=1000
 
 5=
 	Image=walls0_damaged1
 		Size=48,24
-	DamagePenetration=0,3
+	DamagePenetration=0.3
 	Health=1000
 
 6=
 	Image=walls1_damaged0
 		Size=48,24
-	DamagePenetration=0,3
+	DamagePenetration=0.3
 	Health=1000
 
 7=
 	Image=walls1_damaged1
 		Size=48,24
-	DamagePenetration=0,3
+	DamagePenetration=0.3
 	Health=1000
 
 8=
