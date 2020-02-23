@@ -64,7 +64,7 @@ namespace WarriorsSnuggery.Loader
 			}
 			else if (t == typeof(int[]))
 			{
-				var parts = s.Split(',').ToArray();
+				var parts = s.Split(',');
 				var res = new int[parts.Length];
 
 				for (int i = 0; i < parts.Length; i++)
@@ -82,7 +82,7 @@ namespace WarriorsSnuggery.Loader
 			}
 			else if (t == typeof(float[]))
 			{
-				var parts = s.Split(',').ToArray();
+				var parts = s.Split(',');
 				var res = new float[parts.Length];
 
 				for (int i = 0; i < parts.Length; i++)
@@ -100,7 +100,7 @@ namespace WarriorsSnuggery.Loader
 			}
 			else if (t == typeof(string[]))
 			{
-				var parts = s.Split(',').ToArray();
+				var parts = s.Split(',');
 
 				for (int i = 0; i < parts.Length; i++)
 					parts[i] = parts[i].Trim();
@@ -109,7 +109,7 @@ namespace WarriorsSnuggery.Loader
 			}
 			else if (t == typeof(bool[]))
 			{
-				var parts = s.Split(',').ToArray();
+				var parts = s.Split(',');
 				var res = new bool[parts.Length];
 
 				for (int i = 0; i < parts.Length; i++)

@@ -110,6 +110,9 @@ namespace WarriorsSnuggery
 			if (size == MPos.Zero)
 				return false;
 
+			if (shroud.AllRevealed)
+				return true;
+
 			if (position.X < 0)
 				position = new MPos(0, position.Y);
 			else if (position.X >= size.X)

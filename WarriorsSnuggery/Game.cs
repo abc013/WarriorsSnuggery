@@ -155,6 +155,8 @@ namespace WarriorsSnuggery
 			{
 				ChangeScreen(ScreenType.DEFAULT);
 			}
+
+			WorldRenderer.CheckVisibilityAll();
 		}
 
 		public void Pause(bool paused)
@@ -171,12 +173,6 @@ namespace WarriorsSnuggery
 			{
 				GameController.CreateNew(Statistics, instantExitType);
 				return;
-			}
-
-			if (LocalTick == 1)
-			{
-				// Check visibility the first time, one tick after because we have to check for shroud first
-				WorldRenderer.CheckVisibilityAll();
 			}
 
 			LocalTick++;
