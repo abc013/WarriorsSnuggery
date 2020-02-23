@@ -100,7 +100,7 @@ namespace WarriorsSnuggery.UI
 			Content.Add(size);
 			sizeX = TextBoxCreator.Create("wooden", new CPos(1024, 0, 0), "16", 2, true);
 			sizeY = TextBoxCreator.Create("wooden", new CPos(-1024, 0, 0), "16", 2, true);
-			name = TextBoxCreator.Create("wooden", new CPos(0, 1536, 0), "unnamed piece", 20, false);
+			name = TextBoxCreator.Create("wooden", new CPos(0, 1536, 0), "unnamed piece", 20, isPath: true);
 			var warning = new TextLine(new CPos(0, 2548, 0), Font.Pixel16, TextLine.OffsetType.MIDDLE);
 			warning.SetColor(Color.Red);
 			warning.SetText("Warning: by using an name for an already existing map, you override it!");
@@ -139,6 +139,9 @@ namespace WarriorsSnuggery.UI
 
 		void create()
 		{
+			if (name.Text == string.Empty)
+				return;
+
 			var size = new MPos(int.Parse(sizeX.Text), int.Parse(sizeY.Text));
 			var path = FileExplorer.Maps + @"\maps";
 

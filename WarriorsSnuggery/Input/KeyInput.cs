@@ -1,41 +1,14 @@
-using OpenTK.Input;
 using System;
+using System.IO;
+using OpenTK.Input;
 
 namespace WarriorsSnuggery
 {
 	public static class KeyInput
 	{
-		public static string[] AlphabetKeys =
-		{
-			"q",
-			"w",
-			"e",
-			"r",
-			"t",
-			"y",
-			"u",
-			"i",
-			"o",
-			"p",
-			"a",
-			"s",
-			"d",
-			"f",
-			"g",
-			"h",
-			"j",
-			"k",
-			"l",
-			"z",
-			"x",
-			"c",
-			"v",
-			"b",
-			"n",
-			"m"
-		};
+		public readonly static char[] InvalidFileNameChars;
 
-		public static string[] AllKeys =
+		public readonly static string[] AllKeys =
 		{
 			"↓",
 			"↑",
@@ -74,6 +47,11 @@ namespace WarriorsSnuggery
 
 		static KeyboardState state;
 		public static int HitCooldown;
+
+		static KeyInput()
+		{
+			InvalidFileNameChars = Path.GetInvalidFileNameChars();
+		}
 
 		public static bool IsKeyDown(string key, int coolDownWhenHit = 0)
 		{
@@ -132,11 +110,6 @@ namespace WarriorsSnuggery
 		{
 			HitCooldown--;
 			state = Keyboard.GetState();
-		}
-
-		public static void KeyPressed(KeyboardKeyEventArgs key)
-		{
-
 		}
 	}
 }

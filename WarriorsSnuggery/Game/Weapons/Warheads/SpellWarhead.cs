@@ -30,7 +30,7 @@ namespace WarriorsSnuggery.Objects.Weapons
 			if (RangeSteps.Length != ProbabilityFalloff.Length)
 				throw new YamlInvalidNodeException(string.Format("Range step length ({0}) does not match with given falloff values ({1}).", RangeSteps.Length, ProbabilityFalloff.Length));
 
-			maxRange = FalloffHelper.GetMax(ProbabilityFalloff, RangeSteps, Probability);
+			maxRange = FalloffHelper.GetMax(ProbabilityFalloff, RangeSteps);
 		}
 
 		public void Impact(World world, Weapon weapon, Target target)

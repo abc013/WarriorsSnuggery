@@ -19,7 +19,7 @@
 			return falloff[falloff.Length - 1];
 		}
 
-		public static float GetMax(float[] falloff, int[] steps, float maxValue)
+		public static float GetMax(float[] falloff, int[] steps)
 		{
 			if (falloff[falloff.Length - 1] != 0f)
 				return float.PositiveInfinity;

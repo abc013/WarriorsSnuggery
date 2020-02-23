@@ -1,4 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
 using WarriorsSnuggery.Graphics;
 using WarriorsSnuggery.Objects;
 
@@ -24,23 +27,24 @@ namespace WarriorsSnuggery.UI
 		string realText;
 		public readonly int MaximumLength;
 		public readonly bool OnlyNumbers;
+		public readonly bool IsPath;
 
 		bool mouseOnBox;
 		readonly TextLine text;
-		readonly Action onEnter;
 		readonly MPos gameBounds;
 
-		int keyDuration;
+		public Action OnEnter;
+		public Action OnType;
 
-		public TextBox(CPos pos, string text, int maximumLength, bool onlyNumbers, PanelType type, Action onEnter) : base(pos, new Vector((2 * margin + Font.Pixel16.Width * text.Length) / 2048f, (2 * margin + Font.Pixel16.Height) / 2048f, 0), type)
+		public TextBox(CPos pos, string text, int maximumLength, bool onlyNumbers, bool isPath, PanelType type) : base(pos, new Vector((2 * margin + Font.Pixel16.Width * maximumLength) / 2048f, (2 * margin + Font.Pixel16.Height) / 2048f, 0), type)
 		{
-			gameBounds = new MPos((Font.Pixel16.Width * text.Length) / 2 + margin, Font.Pixel16.Height / 2 + margin);
+			gameBounds = new MPos((Font.Pixel16.Width * maximumLength) / 2 + margin, Font.Pixel16.Height / 2 + margin);
 			realText = text;
 			MaximumLength = maximumLength;
 			OnlyNumbers = onlyNumbers;
+			IsPath = isPath;
 			this.text = new TextLine(pos + new CPos(128, 0, 0), Font.Pixel16, Objects.TextLine.OffsetType.MIDDLE);
 			this.text.SetText(text);
-			this.onEnter = onEnter;
 		}
 
 		public override void Render()
@@ -54,57 +58,34 @@ namespace WarriorsSnuggery.UI
 		{
 			checkMouse();
 			if (MouseInput.IsLeftClicked)
-			{
 				Selected = mouseOnBox;
-			}
 
 			if (Selected)
 			{
 				if (KeyInput.IsKeyDown("Enter", 7))
 				{
 					Selected = false;
-					onEnter?.Invoke();
+					OnEnter?.Invoke();
 					return;
 				}
-				if (!OnlyNumbers)
+				if (Text.Length > 0 && (KeyInput.IsKeyDown("Back", 5) || KeyInput.IsKeyDown("Delete", 5)))
 				{
-					foreach (var key in KeyInput.AlphabetKeys)
-					{
-						if (realText.Length <= MaximumLength && Window.CharInput != '' && keyDuration-- <= 0)
-						{
-							text.AddText(Window.CharInput);
-							realText += Window.CharInput;
-							keyDuration = 25;
-							//if (KeyInput.IsKeyDown(key + "", 0))
-							//{
-							//	var @case = key;
-							//	if (KeyInput.IsKeyDown("ShiftLeft", 0) || KeyInput.IsKeyDown("ShiftRight", 0))
-							//		@case = @case.ToUpper();
-							//	text.AddText(@case);
-							//	realText += @case;
-							//	KeyInput.IsKeyDown(key + "", 7); // To get the delay
-							//}
-						}
-					}
+					realText = Text.Substring(0, Text.Length - 1);
+					text.SetText(Text);
+					OnType?.Invoke();
+					return;
 				}
-				if (KeyInput.IsKeyDown("Back", 7) || KeyInput.IsKeyDown("Delete", 7))
+				if (realText.Length <= MaximumLength && Window.CharInput != '')
 				{
-					if (Text.Length != 0)
-					{
-						realText = Text.Substring(0, Text.Length - 1);
-						text.SetText(Text);
-					}
-				}
-				for (int i = 0; i < 10; i++)
-				{
-					if (KeyInput.IsKeyDown("number" + i, 7))
-					{
-						if (Text.Length <= MaximumLength)
-						{
-							text.AddText(i + "");
-							realText += i + "";
-						}
-					}
+					if (OnlyNumbers && !int.TryParse(Window.CharInput + "", out _))
+						return;
+
+					if (IsPath && KeyInput.InvalidFileNameChars.Contains(Window.CharInput))
+						return;
+
+					text.AddText(Window.CharInput);
+					realText += Window.CharInput;
+					OnType?.Invoke();
 				}
 			}
 		}

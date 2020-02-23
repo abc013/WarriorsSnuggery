@@ -10,8 +10,10 @@ namespace WarriorsSnuggery
 	public static class WindowInfo
 	{
 		public static int Height;
-
 		public static int Width;
+
+		public static int ScreenHeight;
+		public static int ScreenWidth;
 
 		public static float Ratio { get { return Width / (float)Height; } }
 
@@ -40,6 +42,10 @@ namespace WarriorsSnuggery
 			current = this;
 			SetScreen();
 			CursorVisible = false;
+
+			var bounds = DisplayDevice.Default;
+			WarriorsSnuggery.WindowInfo.ScreenWidth = bounds.Width;
+			WarriorsSnuggery.WindowInfo.ScreenHeight = bounds.Height;
 		}
 
 		public static void CloseWindow()
@@ -65,7 +71,7 @@ namespace WarriorsSnuggery
 			{
 				WindowBorder = WindowBorder.Fixed;
 				WindowState = WindowState.Normal;
-				var bounds = System.Windows.Forms.Screen.PrimaryScreen.Bounds;
+				var bounds = DisplayDevice.Default;
 				X = bounds.Width / 2 - Settings.Width / 2;
 				Y = bounds.Height / 2 - Settings.Height / 2;
 				Width = Settings.Width;
@@ -219,16 +225,10 @@ namespace WarriorsSnuggery
 			MouseInput.UpdateMousePosition(new MPos(e.Position.X, e.Position.Y));
 		}
 
-		protected override void OnKeyDown(KeyboardKeyEventArgs e)
+		protected override void OnKeyPress(KeyPressEventArgs e)
 		{
-			KeyInput.KeyPressed(e);
-			var str = e.Key.ToString();
-			if (str.Length == 1)
-			{
-				CharInput = str[0];
-				if (!e.Shift)
-					CharInput = char.ToLower(CharInput);
-			}
+			base.OnKeyPress(e);
+			CharInput = e.KeyChar;
 		}
 	}
 }

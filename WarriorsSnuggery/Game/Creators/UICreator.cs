@@ -55,9 +55,9 @@ namespace WarriorsSnuggery.UI
 
 	public static class TextBoxCreator
 	{
-		public static TextBox Create(string type, CPos position, string text, int maximumLength = 10, bool onlyNumbers = false, Action onEnter = null)
+		public static TextBox Create(string type, CPos position, string text, int maximumLength = 10, bool onlyNumbers = false, bool isPath = false)
 		{
-			return new TextBox(position, text, maximumLength, onlyNumbers, PanelManager.Get(type), onEnter);
+			return new TextBox(position, text, maximumLength, onlyNumbers, isPath, PanelManager.Get(type));
 		}
 	}
 }
