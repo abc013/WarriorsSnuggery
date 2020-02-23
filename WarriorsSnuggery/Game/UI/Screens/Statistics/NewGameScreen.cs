@@ -49,7 +49,7 @@ namespace WarriorsSnuggery.UI
 			Content.Add(ButtonCreator.Create("wooden", new CPos(-4096, 6144, 0), "Cancel", () => { game.Pause(false); game.ChangeScreen(ScreenType.DEFAULT); }));
 			Content.Add(ButtonCreator.Create("wooden", new CPos(4096, 6144, 0), "Proceed", () => 
 			{
-				if (nameInput.Text == string.Empty)
+				if (nameInput.Text != string.Empty)
 					GameController.CreateNew(GameStatistics.CreateGameStatistic(int.Parse(difficultyInput.Text), hardcoreInput.Checked, nameInput.Text, int.Parse(seedInput.Text)));
 			}));
 		}
