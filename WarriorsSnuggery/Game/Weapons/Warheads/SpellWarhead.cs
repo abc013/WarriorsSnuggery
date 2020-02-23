@@ -15,8 +15,11 @@ namespace WarriorsSnuggery.Objects.Weapons
 		[Desc("Probability of casting that spell on the actor.")]
 		public readonly float Probability = 1f;
 
-		[Desc("Falloff of the probability.")]
-		public readonly FalloffType ProbabilityFalloff = FalloffType.QUADRATIC;
+		[Desc("Damage percentage at each range step.")]
+		public readonly float[] ProbabilityFalloff = new[] { 1f, 1f, 0.5f, 0.25f, 0.125f, 0.0f };
+
+		[Desc("Range steps used for falloff.", "Defines at which range the falloff points are defined.")]
+		public readonly int[] RangeSteps = new[] { 0, 256, 512, 1024, 2048, 3096 };
 
 		readonly float maxRange = 1f;
 
@@ -24,7 +27,10 @@ namespace WarriorsSnuggery.Objects.Weapons
 		{
 			Loader.PartLoader.SetValues(this, nodes);
 
-			maxRange = FalloffHelper.GetMax(ProbabilityFalloff, Probability);
+			if (RangeSteps.Length != ProbabilityFalloff.Length)
+				throw new YamlInvalidNodeException(string.Format("Range step length ({0}) does not match with given falloff values ({1}).", RangeSteps.Length, ProbabilityFalloff.Length));
+
+			maxRange = FalloffHelper.GetMax(ProbabilityFalloff, RangeSteps, Probability);
 		}
 
 		public void Impact(World world, Weapon weapon, Target target)
@@ -46,11 +52,11 @@ namespace WarriorsSnuggery.Objects.Weapons
 					if (weapon.Origin != null && actor.Team == weapon.Origin.Team)
 						continue;
 
-					var dist = (target.Position - actor.Position).FlatDist / 512;
+					var dist = (target.Position - actor.Position).FlatDist;
 					if (dist > maxRange) continue;
 					if (dist < 1f) dist = 1;
 
-					var probability = Probability * FalloffHelper.GetMultiplier(ProbabilityFalloff, dist);
+					var probability = Probability * FalloffHelper.GetMultiplier(ProbabilityFalloff, RangeSteps, dist);
 
 					if (!IgnoreWalls)
 					{

@@ -11,8 +11,11 @@ namespace WarriorsSnuggery.Objects.Weapons
 		[Desc("Determines whether damage affects only walls.")]
 		public readonly bool AgainstWalls;
 
-		[Desc("Falloff if weapon is not aimed against a single actor.", "possible: QUADRATIC, CUBIC, EXPONENTIAL, LINEAR, ROOT;")]
-		public readonly FalloffType Falloff = FalloffType.QUADRATIC;
+		[Desc("Damage percentage at each range step.")]
+		public readonly float[] Falloff = new[] { 1f, 1f, 0.5f, 0.25f, 0.125f, 0.0f };
+
+		[Desc("Range steps used for falloff.", "Defines at which range the falloff points are defined.")]
+		public readonly int[] RangeSteps = new[] { 0, 256, 512, 1024, 2048, 3096 };
 
 		readonly float maxRange;
 
@@ -20,7 +23,10 @@ namespace WarriorsSnuggery.Objects.Weapons
 		{
 			Loader.PartLoader.SetValues(this, nodes);
 
-			maxRange = FalloffHelper.GetMax(Falloff, Damage);
+			if (RangeSteps.Length != Falloff.Length)
+				throw new YamlInvalidNodeException(string.Format("Range step length ({0}) does not match with given falloff values ({1}).", RangeSteps.Length, Falloff.Length));
+
+			maxRange = FalloffHelper.GetMax(Falloff, RangeSteps, Damage);
 		}
 
 		public void Impact(World world, Weapon weapon, Target target)
@@ -46,14 +52,11 @@ namespace WarriorsSnuggery.Objects.Weapons
 						if (weapon.Origin != null && actor.Team == weapon.Origin.Team)
 							continue;
 
-						var dist = (target.Position - actor.Position).FlatDist / 512;
-						if (weapon.DamageModifier == 1f)
-							if (dist > maxRange) continue;
-						else
-							if (dist > FalloffHelper.GetMax(Falloff, Damage)) continue;
+						var dist = (target.Position - actor.Position).FlatDist;
+						if (dist > maxRange) continue;
 						if (dist < 1f) dist = 1;
 
-						float damagemultiplier = FalloffHelper.GetMultiplier(Falloff, dist);
+						float damagemultiplier = FalloffHelper.GetMultiplier(Falloff, RangeSteps, dist);
 
 						physics.Start = actor.Position;
 						physics.Target = target.Position;
@@ -83,11 +86,11 @@ namespace WarriorsSnuggery.Objects.Weapons
 						if (wall == null || wall.Type.Invincible)
 							continue;
 
-						var dist = (target.Position - wall.Position).FlatDist / 512;
+						var dist = (target.Position - wall.Position).FlatDist;
 						if (dist > 32f) continue;
 						if (dist < 1f) dist = 1;
 
-						float damagemultiplier = FalloffHelper.GetMultiplier(Falloff, dist);
+						float damagemultiplier = FalloffHelper.GetMultiplier(Falloff, RangeSteps, dist);
 						var damage = (int)Math.Floor(damagemultiplier * Damage * weapon.DamageModifier);
 
 						if (damage == 0)

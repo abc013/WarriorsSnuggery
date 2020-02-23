@@ -1,48 +1,30 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace WarriorsSnuggery.Objects.Weapons
+﻿namespace WarriorsSnuggery.Objects.Weapons
 {
 	public static class FalloffHelper
 	{
-		public static float GetMultiplier(FalloffType type, float dist)
+		public static float GetMultiplier(float[] falloff, int[] steps, float dist)
 		{
-			switch (type)
+			var start = steps[0];
+
+			for (int i = 1; i < steps.Length; i++)
 			{
-				case FalloffType.LINEAR:
-					return 1 / dist;
-				case FalloffType.QUADRATIC:
-					return 1 / (dist * dist);
-				case FalloffType.CUBIC:
-					return 1 / (dist * dist * dist);
-				case FalloffType.EXPONENTIAL:
-					return 0.1f / (float)Math.Pow(2, dist);
-				case FalloffType.ROOT:
-					return 1 / (float)Math.Sqrt(dist);
-				default:
-					return 1;
+				var end = steps[i];
+
+				if (end > dist)
+					return (start - dist) / (end - start) * (falloff[i] - falloff[i - 1]) + falloff[i - 1];
+
+				start = end;
 			}
+
+			return falloff[falloff.Length - 1];
 		}
-		public static float GetMax(FalloffType type, float maxValue)
+
+		public static float GetMax(float[] falloff, int[] steps, float maxValue)
 		{
-			switch (type)
-			{
-				case FalloffType.LINEAR:
-					return maxValue;
-				case FalloffType.QUADRATIC:
-					return (float)Math.Sqrt(maxValue);
-				case FalloffType.CUBIC:
-					return (float)Math.Pow(maxValue, 1/3f);
-				case FalloffType.EXPONENTIAL:
-					return 10f / (float)Math.Log(maxValue, 2);
-				case FalloffType.ROOT:
-					return maxValue * maxValue;
-				default:
-					return 1;
-			}
+			if (falloff[falloff.Length - 1] != 0f)
+				return float.PositiveInfinity;
+
+			return steps[steps.Length - 1];
 		}
 	}
 }

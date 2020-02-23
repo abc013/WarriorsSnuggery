@@ -1,16 +1,5 @@
-﻿using WarriorsSnuggery.Objects.Particles;
-
-namespace WarriorsSnuggery.Objects.Weapons
+﻿namespace WarriorsSnuggery.Objects.Weapons
 {
-	public enum FalloffType
-	{
-		QUADRATIC,
-		CUBIC,
-		EXPONENTIAL,
-		LINEAR,
-		ROOT
-	}
-
 	public class WeaponType
 	{
 		[Desc("Time until the weapon has been reloaded.")]

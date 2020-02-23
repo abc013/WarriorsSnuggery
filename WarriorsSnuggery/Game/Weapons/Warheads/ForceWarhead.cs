@@ -11,8 +11,11 @@ namespace WarriorsSnuggery.Objects.Weapons
 		[Desc("Detonation will also cause actors to fly up into the sky.")]
 		public readonly bool UseHeight = true;
 
-		[Desc("Falloff.", "possible: QUADRATIC, CUBIC, EXPONENTIAL, LINEAR, ROOT;")]
-		public readonly FalloffType Falloff = FalloffType.QUADRATIC;
+		[Desc("Damage percentage at each range step.")]
+		public readonly float[] Falloff = new[] { 1f, 1f, 0.5f, 0.25f, 0.125f, 0.0f };
+
+		[Desc("Range steps used for falloff.", "Defines at which range the falloff points are defined.")]
+		public readonly int[] RangeSteps = new[] { 0, 256, 512, 1024, 2048, 3096 };
 
 		readonly float maxRange;
 
@@ -20,7 +23,10 @@ namespace WarriorsSnuggery.Objects.Weapons
 		{
 			Loader.PartLoader.SetValues(this, nodes);
 
-			maxRange = FalloffHelper.GetMax(Falloff, Acceleration);
+			if (RangeSteps.Length != Falloff.Length)
+				throw new YamlInvalidNodeException(string.Format("Range step length ({0}) does not match with given falloff values ({1}).", RangeSteps.Length, Falloff.Length));
+
+			maxRange = FalloffHelper.GetMax(Falloff, RangeSteps, Acceleration);
 		}
 
 		public void Impact(World world, Weapon weapon, Target target)
@@ -36,14 +42,11 @@ namespace WarriorsSnuggery.Objects.Weapons
 					if (weapon.Origin != null && actor.Team == weapon.Origin.Team)
 						continue;
 
-					var dist = (target.Position - actor.Position).FlatDist / 512;
-					if (weapon.DamageModifier == 1f)
-						if (dist > maxRange) continue;
-					else
-						if (dist > FalloffHelper.GetMax(Falloff, Acceleration)) continue;
+					var dist = (target.Position - actor.Position).FlatDist;
+					if (dist > maxRange) continue;
 					if (dist < 1f) dist = 1;
 
-					float multiplier = FalloffHelper.GetMultiplier(Falloff, dist);
+					float multiplier = FalloffHelper.GetMultiplier(Falloff, RangeSteps, dist);
 
 					physics.Start = actor.Position;
 					physics.Target = target.Position;

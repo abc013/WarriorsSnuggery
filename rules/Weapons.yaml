@@ -138,7 +138,6 @@ blade=
 				AreaType=CIRCLE
 		Damage=
 			Damage=200
-			Falloff=CUBIC
 
 lazer=
 	Reload=30
