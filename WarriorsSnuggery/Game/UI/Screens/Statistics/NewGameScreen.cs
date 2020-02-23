@@ -25,7 +25,7 @@ namespace WarriorsSnuggery.UI
 			name.SetText("Name: ");
 			Content.Add(name);
 
-			nameInput = TextBoxCreator.Create("wooden", new CPos(1024, 0, 0), "Name", 15);
+			nameInput = TextBoxCreator.Create("wooden", new CPos(1024, 0, 0), "Name", 15, isPath: true);
 
 			var difficulty = new TextLine(new CPos(-2048, 1024, 0), Font.Pixel16, TextLine.OffsetType.RIGHT);
 			difficulty.SetText("Difficulty: ");
@@ -47,7 +47,11 @@ namespace WarriorsSnuggery.UI
 			Content.Add(ButtonCreator.Create("wooden", new CPos(6144, 3072, 0), "Generate", () => { seedInput.Text = getSeed(); }));
 
 			Content.Add(ButtonCreator.Create("wooden", new CPos(-4096, 6144, 0), "Cancel", () => { game.Pause(false); game.ChangeScreen(ScreenType.DEFAULT); }));
-			Content.Add(ButtonCreator.Create("wooden", new CPos(4096, 6144, 0), "Proceed", () => { GameController.CreateNew(GameStatistics.CreateGameStatistic(int.Parse(difficultyInput.Text), hardcoreInput.Checked, nameInput.Text, int.Parse(seedInput.Text))); }));
+			Content.Add(ButtonCreator.Create("wooden", new CPos(4096, 6144, 0), "Proceed", () => 
+			{
+				if (nameInput.Text == string.Empty)
+					GameController.CreateNew(GameStatistics.CreateGameStatistic(int.Parse(difficultyInput.Text), hardcoreInput.Checked, nameInput.Text, int.Parse(seedInput.Text)));
+			}));
 		}
 
 		string getSeed()
