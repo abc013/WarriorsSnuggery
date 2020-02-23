@@ -38,29 +38,8 @@ namespace WarriorsSnuggery.Objects
 
 			renderable = new BatchObject(type.Texture, Color.White);
 			renderable.SetPosition(Position.ToCPos());
-			if (Type.Overlaps)
-			{
-				edges = new BatchObject[4];
-				for (int i = 0; i < 4; i++)
-				{
-					edgesVisible[i] = true;
-					if (i % 2 != 0 && Type.Texture_Edge2 != null)
-						edges[i] = new BatchObject(Type.Texture_Edge2, Color.White);
-					else
-						edges[i] = new BatchObject(Type.Texture_Edge, Color.White);
-					edges[i].SetRotation(new VAngle(0, 0, i * -90));
-					edges[i].SetPosition(Position.ToCPos() + edgePositions[i]);
-				}
-
-				corners = new BatchObject[4];
-				for (int i = 0; i < 4; i++)
-				{
-					cornersVisible[i] = true;
-					corners[i] = new BatchObject(Type.Texture_Corner, Color.White);
-					corners[i].SetRotation(new VAngle(0, 0, i * -90));
-					corners[i].SetPosition(Position.ToCPos() + cornerPositions[i]);
-				}
-			}
+			edges = new BatchObject[4];
+			corners = new BatchObject[4];
 		}
 
 		public void Render()
@@ -72,18 +51,14 @@ namespace WarriorsSnuggery.Objects
 			{
 				for (int i = 0; i < 4; i++)
 				{
-					if (!edgesVisible[i])
-						continue;
-
-					edges[i].PushToBatchRenderer();
+					if (edgesVisible[i] && edges[i] != null)
+						edges[i].PushToBatchRenderer();
 				}
 
 				for (int i = 0; i < 4; i++)
 				{
-					if (!cornersVisible[i])
-						continue;
-
-					corners[i].PushToBatchRenderer();
+					if (cornersVisible[i] && corners[i] != null)
+						corners[i].PushToBatchRenderer();
 				}
 			}
 			renderable.PushToBatchRenderer();
@@ -188,6 +163,41 @@ namespace WarriorsSnuggery.Objects
 			{
 				var terrainLeftUp = world.TerrainLayer.Terrain[Position.X - 1, Position.Y - 1].Type;
 				cornersVisible[3] = !(terrainLeftUp.ID == Type.ID || terrainLeftUp.OverlapHeight > Type.OverlapHeight);
+			}
+
+			for (int i = 0; i < 4; i++)
+			{
+				if (!edgesVisible[i])
+				{
+					edges[i] = null;
+					continue;
+				}
+
+				if (edges[i] != null)
+					continue;
+
+				if (i % 2 != 0 && Type.Texture_Edge2 != null)
+					edges[i] = new BatchObject(Type.Texture_Edge2, Color.White);
+				else
+					edges[i] = new BatchObject(Type.Texture_Edge, Color.White);
+				edges[i].SetRotation(new VAngle(0, 0, i * -90));
+				edges[i].SetPosition(Position.ToCPos() + edgePositions[i]);
+			}
+
+			for (int i = 0; i < 4; i++)
+			{
+				if (!cornersVisible[i])
+				{
+					corners[i] = null;
+					continue;
+				}
+
+				if (corners[i] != null)
+					continue;
+
+				corners[i] = new BatchObject(Type.Texture_Corner, Color.White);
+				corners[i].SetRotation(new VAngle(0, 0, i * -90));
+				corners[i].SetPosition(Position.ToCPos() + cornerPositions[i]);
 			}
 		}
 
