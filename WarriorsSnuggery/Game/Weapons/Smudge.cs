@@ -9,9 +9,11 @@ namespace WarriorsSnuggery.Objects
 		readonly int maxDissolve;
 		int dissolveTime;
 
-		public Smudge(CPos pos, BatchRenderable renderable, int dissolve) : base(pos, renderable)
+		public Smudge(CPos pos, BatchRenderable renderable, int dissolve, bool instantDissolve = false) : base(pos, renderable)
 		{
 			maxDissolve = dissolve;
+			if (instantDissolve)
+				BeginDissolve();
 		}
 
 		public override void Tick()

@@ -10,6 +10,9 @@ namespace WarriorsSnuggery.Objects.Weapons
 		[Desc("How long it will need to dissolve the smudge.")]
 		public readonly int DissolveDuration = 120;
 
+		[Desc("Start dissolving the smudge immediately.")]
+		public readonly bool StartDissolve = false;
+
 		public SmudgeWarhead(MiniTextNode[] nodes)
 		{
 			Loader.PartLoader.SetValues(this, nodes);
@@ -21,7 +24,7 @@ namespace WarriorsSnuggery.Objects.Weapons
 		public void Impact(World world, Weapon weapon, Target target)
 		{
 			if (world.TerrainAt(target.Position) != null && world.TerrainAt(target.Position).Type.SpawnSmudge)
-				world.SmudgeLayer.Add(new Smudge(new CPos(target.Position.X, target.Position.Y, -512), new BatchSequence(Texture.GetTextures(), Color.White, Texture.Tick), DissolveDuration));
+				world.SmudgeLayer.Add(new Smudge(new CPos(target.Position.X, target.Position.Y, -512), new BatchSequence(Texture.GetTextures(), Color.White, Texture.Tick), DissolveDuration, StartDissolve));
 		}
 	}
 }
