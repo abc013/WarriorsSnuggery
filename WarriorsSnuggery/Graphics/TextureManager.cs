@@ -54,10 +54,13 @@ namespace WarriorsSnuggery.Graphics
 			}
 		}
 
+		static Bitmap measureBmp;
 		public static float[][] LoadCharacters(int fontSize, string fontName, out MPos maxSize, out MPos[] sizes)
 		{
 			var characters = new float[Font.Characters.Length][];
 			sizes = new MPos[Font.Characters.Length];
+			// If bugs start with font spacing, increase number of pixels here
+			measureBmp = new Bitmap(64, 64);
 
 			using (var font = new System.Drawing.Font(Font.Collection.Families.Where(a => a.Name == fontName).First(), fontSize, GraphicsUnit.Pixel))
 			{
@@ -77,6 +80,7 @@ namespace WarriorsSnuggery.Graphics
 				maxSize = new MPos(maxWidth, maxHeight);
 			}
 
+			measureBmp.Dispose();
 			return characters;
 		}
 
@@ -96,13 +100,9 @@ namespace WarriorsSnuggery.Graphics
 
 		static SizeF getFontSize(System.Drawing.Font font, char c)
 		{
-			// If bugs start with font spacing, increase number of pixels here
-			using (var bmp = new Bitmap(64, 64))
+			using (var gfx = System.Drawing.Graphics.FromImage(measureBmp))
 			{
-				using (var gfx = System.Drawing.Graphics.FromImage(bmp))
-				{
-					return gfx.MeasureString(c.ToString(), font);
-				}
+				return gfx.MeasureString(c.ToString(), font);
 			}
 		}
 
