@@ -1,6 +1,6 @@
+using OpenTK.Input;
 using System;
 using System.IO;
-using OpenTK.Input;
 
 namespace WarriorsSnuggery
 {

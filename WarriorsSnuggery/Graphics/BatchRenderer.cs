@@ -1,8 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Runtime.InteropServices;
-using OpenTK;
+﻿using OpenTK;
 using OpenTK.Graphics.ES30;
+using System;
+using System.Collections.Generic;
 
 namespace WarriorsSnuggery.Graphics
 {

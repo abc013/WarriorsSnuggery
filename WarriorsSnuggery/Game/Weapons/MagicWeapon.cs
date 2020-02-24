@@ -37,7 +37,7 @@ namespace WarriorsSnuggery.Objects.Weapons
 				calculateAngle();
 				calculateSpeed(angle);
 			}
-	
+
 			Move();
 
 			if (projectileType.TrailParticles != null)

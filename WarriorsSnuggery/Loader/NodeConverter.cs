@@ -194,7 +194,7 @@ namespace WarriorsSnuggery.Loader
 				var children = node.Children;
 				foreach (var child in children)
 				{
-					switch(child.Key)
+					switch (child.Key)
 					{
 						case "AddDirectory":
 							searchFile = child.Convert<bool>();
@@ -232,7 +232,7 @@ namespace WarriorsSnuggery.Loader
 			}
 			else if (t == typeof(Objects.Weapons.IProjectileType))
 			{
-				switch(s)
+				switch (s)
 				{
 					case "Bullet":
 						return new Objects.Weapons.BulletProjectileType(node.Children.ToArray());

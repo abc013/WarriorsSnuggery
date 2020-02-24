@@ -95,7 +95,7 @@ namespace WarriorsSnuggery.Objects.Parts
 		public bool InTargetBox(CPos pos)
 		{
 			var diff = pos - self.Position;
-			return diff.X > info.TargetBoxCorner1.X && diff.X < info.TargetBoxCorner2.X && diff.Y > -info.TargetBoxCorner1.Y  && diff.Y < -info.TargetBoxCorner2.Y;
+			return diff.X > info.TargetBoxCorner1.X && diff.X < info.TargetBoxCorner2.X && diff.Y > -info.TargetBoxCorner1.Y && diff.Y < -info.TargetBoxCorner2.Y;
 		}
 	}
 }

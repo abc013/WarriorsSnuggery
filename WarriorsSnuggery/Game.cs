@@ -243,10 +243,10 @@ namespace WarriorsSnuggery
 				{
 					if (KeyInput.IsKeyDown("v", 5) && Type != GameType.EDITOR)
 						World.LocalPlayer.Health.HP = 0;
-					
+
 					if (KeyInput.IsKeyDown("b", 5) && Type != GameType.EDITOR)
 						World.LocalPlayer.Health.HP += 100;
-					
+
 					if (KeyInput.IsKeyDown("n", 5))
 					{
 						Statistics.Mana += 100;
@@ -256,10 +256,10 @@ namespace WarriorsSnuggery
 
 					if (KeyInput.IsKeyDown("m", 5))
 						Statistics.Money += 100;
-					
+
 					if (KeyInput.IsKeyDown("comma", 5))
 						Settings.EnableInfoScreen = !Settings.EnableInfoScreen;
-					
+
 					if (KeyInput.IsKeyDown("period", 5))
 					{
 						World.ShroudLayer.AllRevealed = true;

@@ -33,7 +33,7 @@ namespace WarriorsSnuggery.Objects.Particles
 			transform_velocity = new CPos(random.Next(-type.RandomVelocity.X, type.RandomVelocity.X), random.Next(-type.RandomVelocity.Y, type.RandomVelocity.Y), random.Next(-type.RandomVelocity.Z, type.RandomVelocity.Z));
 			rotate_velocity = new VAngle(random.Next(-type.RandomRotation.X, type.RandomRotation.X), random.Next(-type.RandomRotation.Y, type.RandomRotation.Y), random.Next(-type.RandomRotation.Z, type.RandomRotation.Z));
 		}
-		
+
 		static float variety(float variation)
 		{
 			return ((float)Program.SharedRandom.NextDouble() - 0.5f) * variation;

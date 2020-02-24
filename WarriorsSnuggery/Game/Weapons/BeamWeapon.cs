@@ -133,7 +133,7 @@ namespace WarriorsSnuggery.Objects.Weapons
 			}
 
 			if (buildupduration < 0 && duration-- < 0 && endduration-- < 0)
-					Dispose();
+				Dispose();
 		}
 
 		public override void Dispose()

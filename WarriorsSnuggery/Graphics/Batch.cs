@@ -1,5 +1,5 @@
-﻿using System;
-using OpenTK.Graphics.ES30;
+﻿using OpenTK.Graphics.ES30;
+using System;
 
 namespace WarriorsSnuggery.Graphics
 {

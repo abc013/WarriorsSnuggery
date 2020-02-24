@@ -1,5 +1,4 @@
-﻿using System;
-using WarriorsSnuggery.Physics;
+﻿using WarriorsSnuggery.Physics;
 using WarriorsSnuggery.Spells;
 
 namespace WarriorsSnuggery.Objects.Weapons

@@ -89,7 +89,7 @@ namespace WarriorsSnuggery
 			foreach (var o in afterRender)
 				o.Render();
 			BatchRenderer.Render();
-			
+
 			if (!world.ShroudLayer.AllRevealed)
 			{
 				for (int x = (VisibilitySolver.lastCameraPosition.X) * 2; x < (VisibilitySolver.lastCameraPosition.X + VisibilitySolver.lastCameraZoom.X) * 2; x++)
@@ -119,7 +119,7 @@ namespace WarriorsSnuggery
 			MasterRenderer.PrimitiveType = OpenTK.Graphics.ES30.PrimitiveType.Lines;
 			if (Settings.DeveloperMode)
 			{
-				foreach(var sector in world.PhysicsLayer.Sectors)
+				foreach (var sector in world.PhysicsLayer.Sectors)
 				{
 					sector.RenderDebug();
 				}

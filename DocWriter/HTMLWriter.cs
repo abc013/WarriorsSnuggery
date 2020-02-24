@@ -1,7 +1,5 @@
 ﻿using System;
 using System.IO;
-using System.Linq;
-using System.Reflection;
 
 namespace WarriorsSnuggery
 {
@@ -111,7 +109,7 @@ namespace WarriorsSnuggery
 
 		public static void WriteHead(StreamWriter writer, string head)
 		{
-			writer.WriteLine("\t\t<h2>" + head  + "</h2>");
+			writer.WriteLine("\t\t<h2>" + head + "</h2>");
 			writer.WriteLine("\t\t<hr>");
 		}
 
@@ -187,7 +185,7 @@ namespace WarriorsSnuggery
 		public static void WriteWeapons(StreamWriter writer)
 		{
 			HTMLWriter.WriteHead(writer, "WeaponType");
-			TypeWriter.Write(writer, "WarriorsSnuggery.Objects.Weapons.WeaponType", new [] { new MiniTextNode[0] });
+			TypeWriter.Write(writer, "WarriorsSnuggery.Objects.Weapons.WeaponType", new[] { new MiniTextNode[0] });
 
 			HTMLWriter.WriteHead(writer, "ProjectileTypes");
 			TypeWriter.WriteAll(writer, "WarriorsSnuggery.Objects.Weapons", "ProjectileType", new[] { new MiniTextNode[0] });

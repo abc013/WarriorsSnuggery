@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using WarriorsSnuggery.Graphics;
 using WarriorsSnuggery.Objects;
 using WarriorsSnuggery.Spells;
@@ -58,7 +57,7 @@ namespace WarriorsSnuggery.UI
 
 			foreach (var line in lines)
 				line.Render();
-			
+
 			foreach (var panel in tree)
 				panel.Render();
 

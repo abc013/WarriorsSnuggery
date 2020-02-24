@@ -32,7 +32,7 @@ namespace WarriorsSnuggery.UI
 			how.SetText("");
 			Content.Add(how);
 
-			var  @switch = new TextLine(new CPos(0, 4096, 0), Font.Pixel16, TextLine.OffsetType.MIDDLE);
+			var @switch = new TextLine(new CPos(0, 4096, 0), Font.Pixel16, TextLine.OffsetType.MIDDLE);
 			@switch.WriteText("Select spells: " + Color.Cyan + "Mouse scroll");
 			Content.Add(@switch);
 		}

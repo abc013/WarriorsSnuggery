@@ -1,4 +1,3 @@
-using System;
 using WarriorsSnuggery.Graphics;
 using WarriorsSnuggery.Physics;
 
