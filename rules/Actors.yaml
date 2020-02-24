@@ -553,7 +553,7 @@ magictower=
 		Range=16
 		Interval=0
 	SpawnOnIdle=
-		Count=10
+		Count=5
 		Tick=1
 		Name=grey
 		Type=PARTICLE
@@ -562,7 +562,7 @@ magictower=
 		AffectedTypes=grey
 		ForceType=TURBULENCE
 		Strength=5
-		MaxRange=5120
+		MaxRange=3072
 		MinRange=512
 
 machine=

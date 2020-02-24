@@ -40,7 +40,7 @@ namespace WarriorsSnuggery.Objects.Parts
 		public ParticleForcePart(Actor self, ParticleForcePartInfo info) : base(self)
 		{
 			this.info = info;
-			maxRangesquared = info.MaxRange; // TODO use falloff
+			maxRangesquared = info.MaxRange;
 			force = new ParticleForce(info.ForceType, info.Strength);
 		}
 
@@ -54,11 +54,11 @@ namespace WarriorsSnuggery.Objects.Parts
 				if (!(obj is Particle particle) || !particle.AffectedByObjects)
 					continue; // TODO cache affectable particles
 
-				if (!info.AffectedTypes.Contains(particle.Name))
-					continue;
-
 				var dist = (particle.Position - self.GraphicPosition).FlatDist;
 				if (dist > info.MaxRange || dist < info.MinRange)
+					continue;
+
+				if (!info.AffectedTypes.Contains(particle.Name))
 					continue;
 
 				var ratio = 1 - dist / maxRangesquared;
