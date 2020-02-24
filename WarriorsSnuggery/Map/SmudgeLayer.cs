@@ -39,18 +39,13 @@ namespace WarriorsSnuggery
 
 		public void Tick()
 		{
-			var toRemove = new List<int>();
 			for (int i = 0; i < smudgeList.Count; i++)
 			{
 				var smudge = smudgeList[i];
 				smudge.Tick();
-
-				if (smudge.Disposed)
-					toRemove.Add(i);
 			}
 
-			foreach (var i in toRemove)
-				smudgeList.RemoveAt(i);
+			smudgeList.RemoveAll(s => s.Disposed);
 		}
 
 		public void Dispose()
