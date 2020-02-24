@@ -36,12 +36,19 @@ namespace WarriorsSnuggery.Physics
 
 		public void CalculateEnd(Actor[] ignore = null, bool ignoreActors = false)
 		{
+			var diff = Target - Start;
+
+			if (diff == CPos.Zero)
+			{
+				End = Start;
+				EndHeight = StartHeight;
+				return;
+			}
+
 			var closestIntersect = new CPos(0, 0, int.MaxValue);
 			var closestT1 = double.MaxValue;
 
 			var sectors = new List<MPos>();
-
-			var diff = Target - Start;
 			var bounds = world.Map.Bounds;
 			positions.Clear();
 
@@ -60,7 +67,6 @@ namespace WarriorsSnuggery.Physics
 
 				while (true)
 				{
-
 					var walls = new Wall[2];
 					walls[0] = world.WallLayer.Walls[x0 * 2, y0];
 					walls[1] = world.WallLayer.Walls[x0 * 2 + 1, y0];
@@ -93,10 +99,6 @@ namespace WarriorsSnuggery.Physics
 					var sector = new MPos(x0 / 2, y0 / 2);
 					if (!sectors.Contains(sector))
 						sectors.Add(sector);
-
-					// HACK: Break to prevent crash
-					if (positions.Contains(new MPos(x0, y0)))
-						break;
 
 					positions.Add(new MPos(x0, y0));
 
@@ -225,9 +227,12 @@ namespace WarriorsSnuggery.Physics
 
 		public float GetWallPenetrationValue()
 		{
-			var walls = new List<Wall>();
-
 			var diff = Target - Start;
+
+			if (diff == CPos.Zero)
+				return 1f;
+
+			var walls = new List<Wall>();
 			var bounds = world.Map.Bounds;
 
 			var x0 = (int)Math.Round(Start.X / 1024.0);
