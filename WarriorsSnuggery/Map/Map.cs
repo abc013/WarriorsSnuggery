@@ -1,5 +1,6 @@
 using System;
 using System.IO;
+using System.Text;
 using WarriorsSnuggery.Maps;
 
 namespace WarriorsSnuggery
@@ -155,33 +156,38 @@ namespace WarriorsSnuggery
 				writer.WriteLine("Name=" + name);
 				writer.WriteLine("Size=" + Bounds.X + "," + Bounds.Y);
 
-				var terrain = "Terrain=";
+				var builder = new StringBuilder(8 + Bounds.X * Bounds.Y * 3, 8 + Bounds.X * Bounds.Y * 4);
+				builder.Append("Terrain=");
 				for (int y = 0; y < Bounds.Y; y++)
 				{
 					for (int x = 0; x < Bounds.X; x++)
 					{
-						terrain += world.TerrainLayer.Terrain[x, y].Type.ID + ",";
+						builder.Append(world.TerrainLayer.Terrain[x, y].Type.ID);
+						if (x == Bounds.X - 1 && y == Bounds.Y - 1)
+							break;
+						builder.Append(",");
 					}
 				}
+				writer.WriteLine(builder);
+				builder.Clear();
 
-				terrain = terrain.Substring(0, terrain.Length - 1);
-				writer.WriteLine(terrain);
-
-				var walls = "Walls=";
-				for (int y = 0; y < world.WallLayer.Size.Y - 1; y++)
+				var wallSize = world.WallLayer.Size;
+				var builder2 = new StringBuilder(6 + wallSize.X * wallSize.Y * 6, 6 + wallSize.X * wallSize.Y * 12);
+				builder2.Append("Walls=");
+				for (int y = 0; y < wallSize.Y - 1; y++)
 				{
-					for (int x = 0; x < world.WallLayer.Size.X - 1; x++)
+					for (int x = 0; x < wallSize.X - 1; x++)
 					{
 						var wall = world.WallLayer.Walls[x, y];
 						if (wall == null)
-							walls += "-1,0,";
+							builder2.Append("-1,0,");
 						else
-							walls += wall.Type.ID + "," + wall.Health + ",";
+							builder2.Append(wall.Type.ID + "," + wall.Health + ",");
 					}
 				}
-
-				walls = walls.Substring(0, walls.Length - 1);
-				writer.WriteLine(walls);
+				builder2.Remove(builder2.Length - 1, 1);
+				writer.WriteLine(builder2);
+				builder2.Clear();
 
 				writer.WriteLine("Actors=");
 				for (int i = 0; i < world.Actors.Count; i++)
