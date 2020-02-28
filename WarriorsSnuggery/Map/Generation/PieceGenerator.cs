@@ -153,7 +153,8 @@ namespace WarriorsSnuggery.Maps
 
 		protected override void DrawDirty()
 		{
-			var count = random.Next(info.MinimumCount, info.MaximumCount);
+			var multiplier = map.Bounds.X * map.Bounds.Y / (float)(32 * 32);
+			var count = random.Next((int)(info.MinimumCount * multiplier), (int)(info.MaximumCount * multiplier));
 			for (int i = 0; i < count; i++)
 			{
 				if (!possiblePlaces.Any())
@@ -193,9 +194,9 @@ namespace WarriorsSnuggery.Maps
 		[Desc("Searches for more spawning opportunities by shifting.", "The lower the value, the finer the search.")]
 		public readonly int ShiftStep = 2;
 
-		[Desc("Minimum count of pieces on the map.")]
+		[Desc("Minimum count of pieces on the map per 32x32 field.")]
 		public readonly int MinimumCount = 1;
-		[Desc("Maximum count of pieces on the map.")]
+		[Desc("Maximum count of pieces on the map per 32x32 field.")]
 		public readonly int MaximumCount = 4;
 
 		public PieceGeneratorInfo(int id, MiniTextNode[] nodes) : base(id)

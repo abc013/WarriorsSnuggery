@@ -51,7 +51,8 @@ namespace WarriorsSnuggery.Maps
 				}
 			}
 
-			var count = random.Next(info.MinimumPatrols, info.MaximumPatrols);
+			var multiplier = map.Bounds.X * map.Bounds.Y / (float) (32 * 32);
+			var count = random.Next((int)(info.MinimumPatrols * multiplier), (int)(info.MaximumPatrols * multiplier));
 			if (positions.Count < count)
 			{
 				Log.WriteDebug(string.Format("Unable to spawn Patrol count ({0}) because there are not enough available spawn points ({1}).", count, positions.Count));
@@ -144,9 +145,9 @@ namespace WarriorsSnuggery.Maps
 
 		[Desc("Bounds of the patrol group to determine a valid spawnlocation.")]
 		public readonly int SpawnBounds = 3;
-		[Desc("Minimum number of patrols.")]
+		[Desc("Minimum number of patrols per 32x32 field.")]
 		public readonly int MinimumPatrols = 1;
-		[Desc("Maximum number of patrols.", "Maximum currently is 13.")]
+		[Desc("Maximum number of patrols per 32x32 field.")]
 		public readonly int MaximumPatrols = 4;
 		[Desc("Patrols to possibly spawn.")]
 		public readonly PatrolProbabilityInfo[] Patrols;
@@ -158,7 +159,6 @@ namespace WarriorsSnuggery.Maps
 		public PatrolGeneratorInfo(int id, MiniTextNode[] nodes) : base(id)
 		{
 			Loader.PartLoader.SetValues(this, nodes);
-
 
 			if (id >= 0)
 				PatrolProbabilities = Patrols.Sum(p => p.Probability);
