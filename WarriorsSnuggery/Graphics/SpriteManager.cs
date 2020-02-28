@@ -5,28 +5,28 @@ namespace WarriorsSnuggery.Graphics
 	public class SpriteManager
 	{
 		public static Sheet[] sheets;
-		static int currentSheet;
+		public static int CurrentSheet;
 
 		static readonly Dictionary<int, Texture[]> hashedTextures = new Dictionary<int, Texture[]>();
 
 		public static void CreateSheet(int maxSheets)
 		{
 			sheets = new Sheet[maxSheets];
-			currentSheet = 0;
+			CurrentSheet = 0;
 
-			sheets[currentSheet] = new Sheet(Settings.SheetSize);
-			SheetBuilder.UseSheet(sheets[currentSheet]);
+			sheets[CurrentSheet] = new Sheet(Settings.SheetSize);
+			SheetBuilder.UseSheet(sheets[CurrentSheet]);
 		}
 
 		public static void UseNextSheet()
 		{
-			currentSheet++;
+			CurrentSheet++;
 
-			if (currentSheet >= sheets.Length)
+			if (CurrentSheet >= sheets.Length)
 				throw new System.Exception("Sheetoverflow.");
 
-			sheets[currentSheet] = new Sheet(Settings.SheetSize);
-			SheetBuilder.UseSheet(sheets[currentSheet]);
+			sheets[CurrentSheet] = new Sheet(Settings.SheetSize);
+			SheetBuilder.UseSheet(sheets[CurrentSheet]);
 		}
 
 		public static Texture[] AddTexture(TextureInfo info)

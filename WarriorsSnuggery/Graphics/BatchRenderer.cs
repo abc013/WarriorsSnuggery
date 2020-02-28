@@ -20,11 +20,11 @@ namespace WarriorsSnuggery.Graphics
 			buffer = new Vertex[bufferSize];
 		}
 
-		public void SetTextures(Sheet[] sheets)
+		public void SetTextures(Sheet[] sheets, int used)
 		{
-			textureIDs = new int[sheets.Length];
-			for (int i = 0; i < sheets.Length; i++)
-				textureIDs[i] = sheets[i] == null ? 0 : sheets[i].TextureID;
+			textureIDs = new int[used + 1];
+			for (int i = 0; i < used + 1; i++)
+				textureIDs[i] = sheets[i].TextureID;
 
 			if (textureIDs.Length > 4)
 				Log.WriteDebug(string.Format("Warning: BatchRenderer got {0} sheets, maximum is {1}", sheets.Length, 4));
