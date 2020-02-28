@@ -2,8 +2,10 @@ using OpenTK.Graphics.ES30;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
+using System.Runtime.InteropServices;
 
 namespace WarriorsSnuggery.Graphics
 {
@@ -36,7 +38,7 @@ namespace WarriorsSnuggery.Graphics
 				GL.PixelStore(PixelStoreParameter.UnpackAlignment, 1);
 				GL.ActiveTexture(TextureUnit.Texture0);
 				GL.BindTexture(TextureTarget.Texture2D, id);
-				GL.TexImage2D(TextureTarget2d.Texture2D, 0, TextureComponentCount.Rgba32fExt, size.X, size.Y, 0, PixelFormat.Rgba, PixelType.Float, data);
+				GL.TexImage2D(TextureTarget2d.Texture2D, 0, TextureComponentCount.Rgba32fExt, size.X, size.Y, 0, OpenTK.Graphics.ES30.PixelFormat.Rgba, PixelType.Float, data);
 
 				setTextureParams();
 

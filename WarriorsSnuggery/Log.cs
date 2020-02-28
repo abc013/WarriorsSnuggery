@@ -15,14 +15,9 @@ namespace WarriorsSnuggery
 		{
 			Directory.CreateDirectory(FileExplorer.Logs);
 
-			FileExplorer.CreateFile(FileExplorer.Logs, "exception", ".log");
-			Exeption = new StreamWriter(FileExplorer.Logs + "exception.log");
-
-			FileExplorer.CreateFile(FileExplorer.Logs, "performance", ".log");
-			Performance = new StreamWriter(FileExplorer.Logs + "performance.log");
-
-			FileExplorer.CreateFile(FileExplorer.Logs, "debug", ".log");
-			Debug = new StreamWriter(FileExplorer.Logs + "debug.log");
+			Exeption = new StreamWriter(FileExplorer.CreateFile(FileExplorer.Logs, "exception", ".log"));
+			Performance = new StreamWriter(FileExplorer.CreateFile(FileExplorer.Logs, "performance", ".log"));
+			Debug = new StreamWriter(FileExplorer.CreateFile(FileExplorer.Logs, "debug", ".log"));
 		}
 
 		public static void WriteExeption(Exception exception)
@@ -39,6 +34,7 @@ namespace WarriorsSnuggery
 		{
 			if (isClosed)
 				return;
+
 			Performance.WriteLine(ms + "ms\t\t " + text);
 			Performance.Flush();
 		}
@@ -47,6 +43,7 @@ namespace WarriorsSnuggery
 		{
 			if (isClosed)
 				return;
+
 			Debug.WriteLine(text);
 			Debug.Flush();
 		}
@@ -54,9 +51,9 @@ namespace WarriorsSnuggery
 		public static void Close()
 		{
 			isClosed = true;
-			Exeption.Close();
-			Performance.Close();
-			Debug.Close();
+			Exeption.Dispose();
+			Performance.Dispose();
+			Debug.Dispose();
 		}
 	}
 }

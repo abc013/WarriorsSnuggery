@@ -182,7 +182,7 @@ namespace WarriorsSnuggery
 				// screen control
 				if (ScreenControl.FocusedType != ScreenType.DEFEAT)
 				{
-					if (KeyInput.IsKeyDown(Settings.Key("Pause"), 10))
+					if (KeyInput.IsKeyDown(Settings.Key("Pause"), 10) && !(KeyInput.IsKeyDown(OpenTK.Input.Key.ControlLeft) || KeyInput.IsKeyDown(OpenTK.Input.Key.ControlRight)))
 					{
 						Pause(true);
 						ChangeScreen(ScreenType.PAUSED);

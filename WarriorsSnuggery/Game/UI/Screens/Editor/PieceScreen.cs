@@ -149,8 +149,7 @@ namespace WarriorsSnuggery.UI
 			if (!Directory.Exists(path))
 				Directory.CreateDirectory(path);
 
-			FileExplorer.CreateFile(path + "\\", name.Text, ".yaml");
-			using (var stream = new StreamWriter(path + "\\" + name.Text + ".yaml"))
+			using (var stream = new StreamWriter(FileExplorer.CreateFile(path + "\\", name.Text, ".yaml")))
 			{
 				stream.WriteLine("Name=" + name.Text);
 				stream.WriteLine("Size=" + size.X + "," + size.Y);

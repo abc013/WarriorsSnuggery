@@ -265,16 +265,15 @@ namespace WarriorsSnuggery
 			UIRenderer.Update();
 		}
 
-		public static void Dispose()
+		public static void CreateScreenshot()
 		{
 			lock (GLLock)
 			{
-				foreach (var shader in shaders)
-					shader.Dispose();
+				var array = new float[WindowInfo.Width * WindowInfo.Height * 4];
+				GL.ReadPixels(0, 0, WindowInfo.Width, WindowInfo.Height, PixelFormat.Rgba, PixelType.Float, array);
+
+				FileExplorer.WriteScreenshot(array, WindowInfo.Width, WindowInfo.Height);
 			}
-			GL.DeleteFramebuffer(frameBuffer);
-			frameTexture.Dispose();
-			renderable.Dispose();
 		}
 
 		public static void Uniform(int shader, ref Matrix4 projection, Color ambient)
@@ -285,6 +284,18 @@ namespace WarriorsSnuggery
 				GL.UniformMatrix4(GetLocation(shader, "projection"), false, ref projection);
 				GL.Uniform4(GetLocation(shader, "proximityColor"), ambient.toColor4());
 			}
+		}
+
+		public static void Dispose()
+		{
+			lock (GLLock)
+			{
+				foreach (var shader in shaders)
+					shader.Dispose();
+			}
+			GL.DeleteFramebuffer(frameBuffer);
+			frameTexture.Dispose();
+			renderable.Dispose();
 		}
 	}
 }

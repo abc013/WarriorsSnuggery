@@ -126,9 +126,15 @@ namespace WarriorsSnuggery
 			return list.ToArray();
 		}
 
-		public static void CreateFile(string path, string name, string suffix = ".txt")
+		public static FileStream CreateFile(string path, string name, string suffix = ".txt")
 		{
-			File.Create(path + name + suffix).Close();
+			return File.Create(path + name + suffix);
+		}
+
+		public static void WriteScreenshot(float[] array, int width, int height)
+		{
+			var file = Logs + "screenshot_" + DateTime.Now.ToString("HHmmss_ddMMyyyy") + ".png";
+			Loader.BitmapSaver.Save(file, array, new MPos(width, height), true);
 		}
 	}
 }
