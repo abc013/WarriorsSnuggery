@@ -28,16 +28,16 @@ namespace WarriorsSnuggery.Objects.Parts
 	public class CollectablePartInfo : PartInfo
 	{
 		[Desc("Type of the effect on triggering.", "Possible: NONE, MONEY, HEALTH, NEXT_LEVEL, NEXT_LEVEL_INSTANT, TUTORIAL_LEVEL, MAIN_LEVEL, MAINMENU_LEVEL, TEXT, SPAWNOBJECT, NEW_GAME, NEW_STORY_GAME, NEW_CUSTOM_GAME, TECH_TREE;")]
-		public readonly CollectableType Type;
+		public readonly CollectableType Type = CollectableType.NONE;
 		[Desc("Scanradius for triggering.")]
-		public readonly int Radius;
+		public readonly int Radius = 512;
 
 		[Desc("Allow multiple activations.")]
 		public readonly bool MultipleActivations;
 		[Desc("Trigger kills itself upon collection.")]
 		public readonly bool KillsSelf;
-		[Desc("Time until the trigger can be reactivated again.")]
-		public readonly int Duration;
+		[Desc("Time until the trigger can be reactivated again.", "If set to negative value, the actor has to leave and enter the radius to activate again.")]
+		public readonly int Duration = -1;
 
 		[Desc("Activate only by Player.")]
 		public readonly bool OnlyByPlayer;
@@ -66,6 +66,7 @@ namespace WarriorsSnuggery.Objects.Parts
 		readonly SimplePhysics physics;
 		bool activated;
 		int cooldown;
+		Actor lastActor;
 		bool updatePhysics = true;
 		PhysicsSector[] sectors;
 
@@ -85,8 +86,14 @@ namespace WarriorsSnuggery.Objects.Parts
 
 			if (activated)
 			{
-				cooldown--;
-				activated &= cooldown > 0;
+				if (info.Duration < 0)
+				{
+					if ((lastActor.Position - self.Position).FlatDist > info.Radius)
+						activated = false;
+				}
+				else
+					activated &= --cooldown > 0;
+
 				return;
 			}
 
@@ -128,6 +135,7 @@ namespace WarriorsSnuggery.Objects.Parts
 				getFunction().Invoke(actor);
 
 				activated = true;
+				lastActor = actor;
 				cooldown = info.Duration;
 
 				if (info.ParticleSpawner != null)

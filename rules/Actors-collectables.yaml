@@ -19,7 +19,6 @@ new_game_pad=
 	Collectable=
 		Type=NEW_STORY_GAME
 		MultipleActivations=yes
-		Duration=90
 		Radius=512
 		OnlyByPlayer=yes
 
@@ -32,7 +31,6 @@ tech_pad=
 	Collectable=
 		Type=TECH_TREE
 		MultipleActivations=yes
-		Duration=90
 		Radius=512
 		OnlyByPlayer=yes
 
