@@ -97,14 +97,6 @@ namespace WarriorsSnuggery
 					GL.Uniform1(tex3, 2);
 					var tex4 = GL.GetUniformLocation(shader, "texture3");
 					GL.Uniform1(tex4, 3);
-					var tex5 = GL.GetUniformLocation(shader, "texture4");
-					GL.Uniform1(tex5, 4);
-					var tex6 = GL.GetUniformLocation(shader, "texture5");
-					GL.Uniform1(tex6, 5);
-					var tex7 = GL.GetUniformLocation(shader, "texture6");
-					GL.Uniform1(tex7, 6);
-					var tex8 = GL.GetUniformLocation(shader, "texture7");
-					GL.Uniform1(tex8, 7);
 				}
 
 				Program.CheckGraphicsError("InitShaders");

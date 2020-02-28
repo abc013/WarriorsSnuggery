@@ -26,16 +26,16 @@ namespace WarriorsSnuggery.Graphics
 			for (int i = 0; i < sheets.Length; i++)
 				textureIDs[i] = sheets[i] == null ? 0 : sheets[i].TextureID;
 
-			if (textureIDs.Length > 5)
-				Log.WriteDebug(string.Format("Warning: BatchRenderer got {0} sheets, maximum is {1}", sheets.Length, 5));
+			if (textureIDs.Length > 4)
+				Log.WriteDebug(string.Format("Warning: BatchRenderer got {0} sheets, maximum is {1}", sheets.Length, 4));
 		}
 
 		public void SetTextures(int[] IDs)
 		{
 			textureIDs = IDs;
 
-			if (textureIDs.Length > 5)
-				Log.WriteDebug(string.Format("Warning: BatchRenderer got {0} sheets, maximum is {1}", IDs.Length, 5));
+			if (textureIDs.Length > 4)
+				Log.WriteDebug(string.Format("Warning: BatchRenderer got {0} sheets, maximum is {1}", IDs.Length, 4));
 		}
 
 		public void Add(Vertex[] data)
