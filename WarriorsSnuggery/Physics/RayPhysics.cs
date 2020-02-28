@@ -106,7 +106,11 @@ namespace WarriorsSnuggery.Physics
 					if (hit)
 						break;
 
-					if (tMaxX < tMaxY)
+					if (double.IsInfinity(tDeltaX))
+						y0 += sy;
+					else if (double.IsInfinity(tDeltaY))
+						x0 += sx;
+					else if (tMaxX < tMaxY)
 					{
 						tMaxX += tDeltaX;
 						x0 += sx;
@@ -282,7 +286,11 @@ namespace WarriorsSnuggery.Physics
 					}
 				}
 
-				if (tMaxX < tMaxY)
+				if (double.IsInfinity(tDeltaX))
+					y0 += sy;
+				else if (double.IsInfinity(tDeltaY))
+					x0 += sx;
+				else if (tMaxX < tMaxY)
 				{
 					tMaxX += tDeltaX;
 					x0 += sx;
