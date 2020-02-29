@@ -6,9 +6,9 @@
 		public readonly string Type;
 
 		[Desc("Actor is bot.")]
-		public readonly bool isBot;
+		public readonly bool IsBot;
 		[Desc("Actor uses the team of its origin.")]
-		public readonly bool useTeam = true;
+		public readonly bool UseTeam = true;
 
 		public ActorWarhead(MiniTextNode[] nodes)
 		{
@@ -17,7 +17,7 @@
 
 		public void Impact(World world, Weapon weapon, Target target)
 		{
-			world.Add(ActorCreator.Create(world, Type, target.Position, weapon.Origin == null ? Actor.NeutralTeam : weapon.Origin.Team, isBot));
+			world.Add(ActorCreator.Create(world, Type, target.Position, weapon.Origin == null ? Actor.NeutralTeam : weapon.Origin.Team, IsBot));
 		}
 	}
 }
