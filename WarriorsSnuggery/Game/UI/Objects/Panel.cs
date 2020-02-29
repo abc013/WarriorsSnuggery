@@ -2,7 +2,7 @@
 
 namespace WarriorsSnuggery.UI
 {
-	public class Panel : IPositionable, ITickRenderDisposable
+	public class Panel : IPositionable, ITickRenderable
 	{
 		public virtual CPos Position
 		{
@@ -106,7 +106,5 @@ namespace WarriorsSnuggery.UI
 		}
 
 		public virtual void Tick() { }
-
-		public virtual void Dispose() { }
 	}
 }

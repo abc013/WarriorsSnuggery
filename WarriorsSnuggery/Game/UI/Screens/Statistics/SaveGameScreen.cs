@@ -83,14 +83,6 @@ namespace WarriorsSnuggery.UI
 			if (KeyInput.IsKeyDown("escape", 10))
 				game.ChangeScreen(ScreenType.MENU);
 		}
-
-		public override void Dispose()
-		{
-			base.Dispose();
-			list.Dispose();
-
-			createSaveScreen.Dispose();
-		}
 	}
 
 	class NewSaveGameScreen : Screen
@@ -141,16 +133,6 @@ namespace WarriorsSnuggery.UI
 			create.Render();
 			@new.Render();
 			warning.Render();
-		}
-
-		public override void Dispose()
-		{
-			base.Dispose();
-
-			back.Dispose();
-			create.Dispose();
-			@new.Dispose();
-			warning.Dispose();
 		}
 
 		void save()

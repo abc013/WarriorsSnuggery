@@ -93,13 +93,6 @@ namespace WarriorsSnuggery.UI
 
 			if (KeyInput.IsKeyDown("escape", 10))
 				game.ChangeScreen(ScreenType.MENU);
-
-		}
-
-		public override void Dispose()
-		{
-			base.Dispose();
-			list.Dispose();
 		}
 	}
 }

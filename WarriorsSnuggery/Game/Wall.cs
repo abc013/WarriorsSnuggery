@@ -115,10 +115,5 @@ namespace WarriorsSnuggery.Objects
 			if (!isHorizontal)
 				Renderable.Visible |= VisibilitySolver.IsVisibleIgnoringBounds(new MPos(LayerPosition.X / 2, LayerPosition.Y));
 		}
-
-		public override void Dispose()
-		{
-			base.Dispose();
-		}
 	}
 }

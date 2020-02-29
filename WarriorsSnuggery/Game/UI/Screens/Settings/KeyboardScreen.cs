@@ -118,25 +118,5 @@ namespace WarriorsSnuggery.UI
 				saved.Render();
 			}
 		}
-
-		public override void Dispose()
-		{
-			base.Dispose();
-
-			pause.Dispose();
-			@lock.Dispose();
-
-			up.Dispose();
-			down.Dispose();
-			left.Dispose();
-			right.Dispose();
-
-			camUp.Dispose();
-			camDown.Dispose();
-			camLeft.Dispose();
-			camRight.Dispose();
-
-			saved.Dispose();
-		}
 	}
 }

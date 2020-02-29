@@ -88,15 +88,5 @@ namespace WarriorsSnuggery.UI
 			hardcoreInput.Render();
 			seedInput.Render();
 		}
-
-		public override void Dispose()
-		{
-			base.Dispose();
-
-			nameInput.Dispose();
-			difficultyInput.Dispose();
-			hardcoreInput.Dispose();
-			seedInput.Dispose();
-		}
 	}
 }

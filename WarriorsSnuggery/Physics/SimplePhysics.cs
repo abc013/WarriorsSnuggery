@@ -3,7 +3,7 @@ using WarriorsSnuggery.Graphics;
 
 namespace WarriorsSnuggery.Physics
 {
-	public sealed class SimplePhysics : IDisposable
+	public sealed class SimplePhysics
 	{
 		public static readonly SimplePhysics Empty = new SimplePhysics(CPos.Zero, 0, Shape.NONE, 0, 0, 0);
 
@@ -174,11 +174,6 @@ namespace WarriorsSnuggery.Physics
 					ColorManager.DrawLine(Position - new CPos(RadiusX, 2 * RadiusY, 0), Position + new CPos(-RadiusX, 0, 0), Color.Magenta);
 					break;
 			}
-		}
-
-		public void Dispose()
-		{
-
 		}
 	}
 }

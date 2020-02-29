@@ -2,7 +2,7 @@
 
 namespace WarriorsSnuggery.Objects
 {
-	public class TextBlock : IPositionable, ITickRenderDisposable
+	public class TextBlock : IPositionable, ITickRenderable
 	{
 		public CPos Position
 		{
@@ -75,12 +75,6 @@ namespace WarriorsSnuggery.Objects
 		{
 			foreach (var line in Lines)
 				line.Tick();
-		}
-
-		public void Dispose()
-		{
-			foreach (var line in Lines)
-				line.Dispose();
 		}
 	}
 }

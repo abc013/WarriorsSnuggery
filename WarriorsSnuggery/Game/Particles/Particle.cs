@@ -151,10 +151,5 @@ namespace WarriorsSnuggery.Objects.Particles
 
 			base.Render();
 		}
-
-		public override void Dispose()
-		{
-			base.Dispose();
-		}
 	}
 }

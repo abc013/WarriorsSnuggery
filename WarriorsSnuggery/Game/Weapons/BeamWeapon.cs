@@ -136,11 +136,6 @@ namespace WarriorsSnuggery.Objects.Weapons
 				Dispose();
 		}
 
-		public override void Dispose()
-		{
-			base.Dispose();
-		}
-
 		void setPosition()
 		{
 			OriginHeight = Origin.ActiveWeapon.WeaponHeightPosition;

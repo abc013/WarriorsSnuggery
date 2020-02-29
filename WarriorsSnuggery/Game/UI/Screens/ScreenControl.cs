@@ -98,8 +98,6 @@ namespace WarriorsSnuggery.UI
 
 		public void NewDefaultScreen(Screen screen)
 		{
-			if (screens[ScreenType.DEFAULT] != null)
-				screens[ScreenType.DEFAULT].Dispose();
 			screens[ScreenType.DEFAULT] = screen;
 		}
 
@@ -169,8 +167,6 @@ namespace WarriorsSnuggery.UI
 
 		public void DisposeScreens()
 		{
-			foreach (var screen in screens.Values)
-				screen?.Dispose();
 			screens.Clear();
 			Focused = null;
 			FocusedType = ScreenType.NONE;

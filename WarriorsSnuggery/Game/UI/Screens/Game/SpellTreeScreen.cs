@@ -93,15 +93,6 @@ namespace WarriorsSnuggery.UI
 			foreach (var spell in tree)
 				spell.DisableTooltip();
 		}
-
-		public override void Dispose()
-		{
-			base.Dispose();
-
-			foreach (var panel in tree)
-				panel.Dispose();
-			moneyText.Dispose();
-		}
 	}
 
 	class SpellNode : Panel
@@ -195,13 +186,6 @@ namespace WarriorsSnuggery.UI
 				else
 					game.Statistics.UnlockedSpells.Add(node.InnerName, true);
 			}
-		}
-
-		public override void Dispose()
-		{
-			tooltip.Dispose();
-
-			base.Dispose();
 		}
 	}
 

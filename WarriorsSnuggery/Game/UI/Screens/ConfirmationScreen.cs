@@ -26,11 +26,6 @@ namespace WarriorsSnuggery.UI
 			this.onDecline = onDecline;
 			this.onAgree = onAgree;
 
-			if (decline != null)
-			{
-				decline.Dispose();
-				agree.Dispose();
-			}
 			decline = ButtonCreator.Create("wooden", new CPos(-2048, 1024, 0), "Nope", onDecline);
 			agree = ButtonCreator.Create("wooden", new CPos(2048, 1024, 0), "Yup", onAgree);
 		}
@@ -58,17 +53,6 @@ namespace WarriorsSnuggery.UI
 			text.Render();
 			decline.Render();
 			agree.Render();
-		}
-
-		public override void Dispose()
-		{
-			text.Dispose();
-			if (decline != null)
-			{
-				decline.Dispose();
-				agree.Dispose();
-			}
-			base.Dispose();
 		}
 	}
 }

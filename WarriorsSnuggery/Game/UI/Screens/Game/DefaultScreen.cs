@@ -258,25 +258,5 @@ namespace WarriorsSnuggery.UI
 			game.Statistics.Actor = ActorCreator.GetName(type);
 			VisibilitySolver.ShroudUpdated();
 		}
-
-		public override void Dispose()
-		{
-			base.Dispose();
-
-			background.Dispose();
-			health.Dispose();
-			mana.Dispose();
-
-			//money.Dispose();
-			moneyText.Dispose();
-
-			menu.Dispose();
-			pause.Dispose();
-
-			waveText.Dispose();
-
-			actorList.Dispose();
-			spellList.Dispose();
-		}
 	}
 }

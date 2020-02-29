@@ -443,12 +443,6 @@ namespace WarriorsSnuggery
 
 			ScreenControl.DisposeScreens();
 
-			version.Dispose();
-			visibility.Dispose();
-			tick.Dispose();
-			render.Dispose();
-			infoText.Dispose();
-
 			WorldRenderer.ClearRenderLists();
 			UIRenderer.ClearRenderLists();
 

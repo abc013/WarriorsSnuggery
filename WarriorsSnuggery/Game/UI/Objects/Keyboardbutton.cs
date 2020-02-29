@@ -3,7 +3,7 @@ using WarriorsSnuggery.Graphics;
 
 namespace WarriorsSnuggery.Objects
 {
-	public class KeyboardButton : IDisposable, ITickRenderable, IPositionable
+	public class KeyboardButton : ITickRenderable, IPositionable
 	{
 		public virtual CPos Position
 		{
@@ -123,11 +123,6 @@ namespace WarriorsSnuggery.Objects
 			var width = 400;
 			var height = 400;
 			mouseOnBox = mousePosition.X > Position.X - width && mousePosition.X < Position.X + width && mousePosition.Y > Position.Y - height && mousePosition.Y < Position.Y + height;
-		}
-
-		public void Dispose()
-		{
-
 		}
 	}
 }

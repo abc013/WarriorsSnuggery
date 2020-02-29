@@ -307,31 +307,5 @@ namespace WarriorsSnuggery.UI
 			Maps.PieceManager.RefreshPiece(game.MapType.OverridePiece);
 			game.AddInfoMessage(150, "Map saved!");
 		}
-
-		public override void Dispose()
-		{
-			base.Dispose();
-
-			showTiles.Dispose();
-			showActors.Dispose();
-			showWalls.Dispose();
-
-			tiles.Dispose();
-			actors.Dispose();
-			walls.Dispose();
-
-			wallBox.Dispose();
-			rasterizationBox.Dispose();
-			isBot.Dispose();
-			team.Dispose();
-			botText.Dispose();
-			teamText.Dispose();
-			wallText.Dispose();
-			rasterizationText.Dispose();
-
-			mousePosition.Dispose();
-			save.Dispose();
-			saved.Dispose();
-		}
 	}
 }

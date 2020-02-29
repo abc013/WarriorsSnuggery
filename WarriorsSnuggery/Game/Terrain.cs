@@ -1,9 +1,8 @@
-using System;
 using WarriorsSnuggery.Graphics;
 
 namespace WarriorsSnuggery.Objects
 {
-	public class Terrain : IRenderable, ICheckVisible, IDisposable
+	public class Terrain : IRenderable, ICheckVisible
 	{
 		readonly StaticBatchRenderable renderable;
 		readonly StaticBatchRenderable[] edges, corners;
@@ -196,11 +195,6 @@ namespace WarriorsSnuggery.Objects
 
 				corners[i] = new StaticBatchRenderable(Position.ToCPos() + cornerPositions[i], new VAngle(0, 0, i * -90), Type.Texture_Corner, Color.White);
 			}
-		}
-
-		public void Dispose()
-		{
-
 		}
 	}
 }

@@ -2,7 +2,7 @@ using System;
 
 namespace WarriorsSnuggery.UI
 {
-	public class CheckBox : IDisposable, IPositionable, ITickRenderable
+	public class CheckBox : IPositionable, ITickRenderable
 	{
 		public virtual CPos Position
 		{
@@ -96,11 +96,6 @@ namespace WarriorsSnuggery.UI
 				Checked = !Checked;
 				action?.Invoke(Checked);
 			}
-		}
-
-		public void Dispose()
-		{
-
 		}
 	}
 }

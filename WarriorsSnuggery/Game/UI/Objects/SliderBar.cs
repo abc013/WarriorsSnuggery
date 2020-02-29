@@ -30,13 +30,6 @@ namespace WarriorsSnuggery.UI
 
 			slider.Tick();
 		}
-
-		public override void Dispose()
-		{
-			base.Dispose();
-
-			slider.Dispose();
-		}
 	}
 
 	public class Slider : Panel
@@ -107,12 +100,6 @@ namespace WarriorsSnuggery.UI
 				drag = true;
 			else if (!MouseInput.IsLeftDown)
 				drag = false;
-		}
-
-		public override void Dispose()
-		{
-			base.Dispose();
-			tooltip.Dispose();
 		}
 	}
 }

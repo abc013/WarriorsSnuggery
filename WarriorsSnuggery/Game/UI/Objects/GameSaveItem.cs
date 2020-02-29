@@ -76,12 +76,5 @@ namespace WarriorsSnuggery.UI
 			else if (MouseInput.IsLeftClicked)
 				Selected = false;
 		}
-
-		public override void Dispose()
-		{
-			base.Dispose();
-			name.Dispose();
-			level.Dispose();
-		}
 	}
 }

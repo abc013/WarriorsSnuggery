@@ -15,8 +15,6 @@ namespace WarriorsSnuggery.UI
 
 		public void Refresh()
 		{
-			foreach (var o in Container)
-				o.Dispose();
 			Container.Clear();
 
 			foreach (var statistic in GameSaveManager.Statistics)

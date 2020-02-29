@@ -103,13 +103,5 @@ namespace WarriorsSnuggery.UI
 			foreach (var o in Container)
 				o.Render();
 		}
-
-		public override void Dispose()
-		{
-			base.Dispose();
-
-			foreach (var o in Container)
-				o.Dispose();
-		}
 	}
 }

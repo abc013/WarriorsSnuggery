@@ -219,28 +219,5 @@ namespace WarriorsSnuggery.UI
 			if (KeyInput.IsKeyDown("escape", 10))
 				game.ChangeScreen(ScreenType.MENU);
 		}
-
-		public override void Dispose()
-		{
-			base.Dispose();
-
-			saved.Dispose();
-
-			fullscreenCheck.Dispose();
-			pixelingCheck.Dispose();
-			antiAliasingCheck.Dispose();
-			textshadowCheck.Dispose();
-			developerModeCheck.Dispose();
-
-			widthWrite.Dispose();
-			heightWrite.Dispose();
-			frameLimiterWrite.Dispose();
-			scrollWrite.Dispose();
-			edgeScrollWrite.Dispose();
-
-			masterVolumeSlider.Dispose();
-			effectVolumeSlider.Dispose();
-			musicVolumeSlider.Dispose();
-		}
 	}
 }

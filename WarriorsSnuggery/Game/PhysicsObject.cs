@@ -152,8 +152,6 @@ namespace WarriorsSnuggery.Objects
 
 		public virtual void Dispose()
 		{
-			if (Physics != null)
-				Physics.Dispose();
 			foreach (var sector in PhysicsSectors)
 				sector.Leave(this);
 

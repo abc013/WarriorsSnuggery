@@ -3,7 +3,7 @@ using WarriorsSnuggery.Graphics;
 
 namespace WarriorsSnuggery.UI
 {
-	public class PanelItem : ITickRenderable, IDisposable, IDisableTooltip
+	public class PanelItem : ITickRenderable, IDisableTooltip
 	{
 		public virtual bool Visible
 		{
@@ -82,11 +82,6 @@ namespace WarriorsSnuggery.UI
 		public virtual void DisableTooltip()
 		{
 			UIRenderer.DisableTooltip(tooltip);
-		}
-
-		public virtual void Dispose()
-		{
-			tooltip.Dispose();
 		}
 
 		void checkMouse()

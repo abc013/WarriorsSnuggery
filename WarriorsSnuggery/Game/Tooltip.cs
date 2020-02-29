@@ -5,7 +5,7 @@ using WarriorsSnuggery.Objects;
 
 namespace WarriorsSnuggery
 {
-	public class Tooltip : IRenderable, IDisposable
+	public class Tooltip : IRenderable
 	{
 		const int margin = 64;
 
@@ -71,12 +71,6 @@ namespace WarriorsSnuggery
 		{
 			title.Position = position + new CPos(font.Width, font.Height / 2, 0);
 			text.Position = position + new CPos(font.Width, font.Height / 2 * 3, 0);
-		}
-
-		public void Dispose()
-		{
-			title.Dispose();
-			text.Dispose();
 		}
 	}
 }

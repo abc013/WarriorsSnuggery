@@ -69,15 +69,6 @@ namespace WarriorsSnuggery.UI
 			if (KeyInput.IsKeyDown("escape", 10))
 				game.ChangeScreen(ScreenType.MENU);
 		}
-
-		public override void Dispose()
-		{
-			base.Dispose();
-
-			mapSelection.Dispose();
-
-			createPieceScreen.Dispose();
-		}
 	}
 
 	class CreatePieceScreen : Screen
@@ -127,15 +118,6 @@ namespace WarriorsSnuggery.UI
 			sizeX.Tick();
 			sizeY.Tick();
 			name.Tick();
-		}
-
-		public override void Dispose()
-		{
-			base.Dispose();
-
-			sizeX.Dispose();
-			sizeY.Dispose();
-			name.Dispose();
 		}
 
 		void create()

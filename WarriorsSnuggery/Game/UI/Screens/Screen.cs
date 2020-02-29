@@ -5,12 +5,12 @@ using WarriorsSnuggery.Objects;
 
 namespace WarriorsSnuggery.UI
 {
-	public abstract class Screen : ITickRenderDisposable
+	public abstract class Screen : ITickRenderable
 	{
 		protected readonly TextLine Title;
 		protected int Speed = 32;
 
-		protected readonly List<ITickRenderDisposable> Content = new List<ITickRenderDisposable>();
+		protected readonly List<ITickRenderable> Content = new List<ITickRenderable>();
 
 		int scale;
 		readonly Color darkness;
@@ -47,14 +47,6 @@ namespace WarriorsSnuggery.UI
 
 			foreach (var content in Content)
 				content.Render();
-		}
-
-		public virtual void Dispose()
-		{
-			Title.Dispose();
-
-			foreach (var content in Content)
-				content.Dispose();
 		}
 	}
 }
