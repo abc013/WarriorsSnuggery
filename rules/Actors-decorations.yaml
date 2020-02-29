@@ -31,6 +31,16 @@ statue1=
 		Shape=Rectangle
 		Size=512,512,1024
 
+maptable=
+	Sprite=
+		Name=maptable
+		Dimensions=48,48
+		Offset=150,-128,0
+		UseAsPreview=true
+	Physics=
+		Shape=Rectangle
+		Size=859,859,256
+
 firepot=
 	Sprite=
 		Name=firepot
