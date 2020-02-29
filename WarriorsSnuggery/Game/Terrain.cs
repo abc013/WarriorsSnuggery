@@ -5,8 +5,8 @@ namespace WarriorsSnuggery.Objects
 {
 	public class Terrain : IRenderable, ICheckVisible, IDisposable
 	{
-		readonly BatchObject renderable;
-		readonly BatchObject[] edges, corners;
+		readonly StaticBatchRenderable renderable;
+		readonly StaticBatchRenderable[] edges, corners;
 
 		readonly bool[] edgesVisible = new bool[4];
 		static readonly CPos[] edgePositions = new CPos[4]
@@ -36,10 +36,9 @@ namespace WarriorsSnuggery.Objects
 			Position = position;
 			Type = type;
 
-			renderable = new BatchObject(type.Texture, Color.White);
-			renderable.SetPosition(Position.ToCPos());
-			edges = new BatchObject[4];
-			corners = new BatchObject[4];
+			renderable = new StaticBatchRenderable(Position.ToCPos(), VAngle.Zero, type.Texture, Color.White);
+			edges = new StaticBatchRenderable[4];
+			corners = new StaticBatchRenderable[4];
 		}
 
 		public void Render()
@@ -176,12 +175,12 @@ namespace WarriorsSnuggery.Objects
 				if (edges[i] != null)
 					continue;
 
+				var rotation = new VAngle(0, 0, i * -90);
+				var position = Position.ToCPos() + edgePositions[i];
 				if (i % 2 != 0 && Type.Texture_Edge2 != null)
-					edges[i] = new BatchObject(Type.Texture_Edge2, Color.White);
+					edges[i] = new StaticBatchRenderable(position, rotation, Type.Texture_Edge2, Color.White);
 				else
-					edges[i] = new BatchObject(Type.Texture_Edge, Color.White);
-				edges[i].SetRotation(new VAngle(0, 0, i * -90));
-				edges[i].SetPosition(Position.ToCPos() + edgePositions[i]);
+					edges[i] = new StaticBatchRenderable(position, rotation, Type.Texture_Edge, Color.White);
 			}
 
 			for (int i = 0; i < 4; i++)
@@ -195,9 +194,7 @@ namespace WarriorsSnuggery.Objects
 				if (corners[i] != null)
 					continue;
 
-				corners[i] = new BatchObject(Type.Texture_Corner, Color.White);
-				corners[i].SetRotation(new VAngle(0, 0, i * -90));
-				corners[i].SetPosition(Position.ToCPos() + cornerPositions[i]);
+				corners[i] = new StaticBatchRenderable(Position.ToCPos() + cornerPositions[i], new VAngle(0, 0, i * -90), Type.Texture_Corner, Color.White);
 			}
 		}
 

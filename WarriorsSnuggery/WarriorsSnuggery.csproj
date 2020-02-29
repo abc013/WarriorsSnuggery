@@ -106,6 +106,7 @@
     <Compile Include="Graphics\Objects\BatchRenderable.cs" />
     <Compile Include="Graphics\Objects\BatchSequence.cs" />
     <Compile Include="Graphics\Objects\FontInfo.cs" />
+    <Compile Include="Graphics\Objects\StaticBatchRenderable.cs" />
     <Compile Include="Graphics\UITextureManager.cs" />
     <Compile Include="Loader\WavLoader.cs" />
     <Compile Include="Map\PieceManager.cs" />
