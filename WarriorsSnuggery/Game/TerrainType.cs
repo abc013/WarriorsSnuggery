@@ -42,6 +42,11 @@ namespace WarriorsSnuggery.Objects
 		[Desc("Corner of the tile.")]
 		public readonly string CornerSprite;
 
+		public Texture[] Texture_Overlay { get; }
+
+		[Desc("Overlay to render over the terrain.")]
+		public readonly TextureInfo Overlay;
+
 		[Desc("Speed modifier for actors.")]
 		public readonly float Speed;
 
@@ -76,6 +81,9 @@ namespace WarriorsSnuggery.Objects
 					if (VerticalEdgeSprite != null)
 						verticalEdgeSprite = SpriteManager.AddTexture(new TextureInfo(VerticalEdgeSprite, TextureType.ANIMATION, 10, 24, 24));
 				}
+
+				if (Overlay != null)
+					Texture_Overlay = SpriteManager.AddTexture(Overlay);
 			}
 		}
 	}

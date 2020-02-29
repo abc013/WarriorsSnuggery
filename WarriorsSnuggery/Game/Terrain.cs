@@ -5,6 +5,7 @@ namespace WarriorsSnuggery.Objects
 	public class Terrain : IRenderable, ICheckVisible
 	{
 		readonly StaticBatchRenderable renderable;
+		readonly BatchSequence overlay;
 		readonly StaticBatchRenderable[] edges, corners;
 
 		readonly bool[] edgesVisible = new bool[4];
@@ -36,6 +37,11 @@ namespace WarriorsSnuggery.Objects
 			Type = type;
 
 			renderable = new StaticBatchRenderable(Position.ToCPos(), VAngle.Zero, type.Texture, Color.White);
+			if (type.Texture_Overlay != null)
+			{
+				overlay = new BatchSequence(type.Texture_Overlay, Color.White, type.Overlay.Tick, startRandom: true);
+				overlay.SetPosition(Position.ToCPos());
+			}
 			edges = new StaticBatchRenderable[4];
 			corners = new StaticBatchRenderable[4];
 		}
@@ -60,6 +66,7 @@ namespace WarriorsSnuggery.Objects
 				}
 			}
 			renderable.PushToBatchRenderer();
+			overlay?.PushToBatchRenderer();
 		}
 
 		public void CheckVisibility()
