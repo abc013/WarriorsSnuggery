@@ -20,13 +20,13 @@ namespace WarriorsSnuggery.Objects.Weapons
 		public readonly float DamageModifier = 1f;
 		public readonly float RangeModifier = 1f;
 
-		protected Weapon(World world, WeaponType type, Target target, Actor origin) : base(origin.ActiveWeapon.WeaponOffsetPosition, type.Projectile.GetTexture(), SimplePhysics.Empty)
+		protected Weapon(World world, WeaponType type, Target target, Actor origin) : base(origin.ActiveWeapon != null ? origin.ActiveWeapon.WeaponOffsetPosition : origin.GraphicPosition, type.Projectile.GetTexture(), SimplePhysics.Empty)
 		{
 			World = world;
 			Type = type;
 			Origin = origin;
 
-			Height = origin.ActiveWeapon.WeaponHeightPosition;
+			Height = origin.ActiveWeapon != null ? origin.ActiveWeapon.WeaponHeightPosition : origin.Height;
 
 			Target = target;
 			TargetPosition = target.Position;
