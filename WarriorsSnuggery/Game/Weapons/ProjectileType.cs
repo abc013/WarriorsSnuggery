@@ -11,7 +11,7 @@ namespace WarriorsSnuggery.Objects.Weapons
 	public class InstantHitProjectileType : IProjectileType
 	{
 		[Desc("Chance of the weapon to hit.")]
-		public readonly float HitChance;
+		public readonly float HitChance = 1.0f;
 
 		public InstantHitProjectileType(MiniTextNode[] nodes)
 		{
