@@ -1,0 +1,5 @@
+﻿; paint.net palette
+FF0FE435
+800FE335
+FFFFFFFF
+40000000
