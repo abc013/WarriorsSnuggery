@@ -234,7 +234,10 @@ namespace WarriorsSnuggery
 				Program.Exit();
 
 			if (e.Control && e.Key == Key.P)
+			{
 				MasterRenderer.CreateScreenshot();
+				GameController.AddInfoMessage(150, "Screenshot!");
+			}
 		}
 	}
 }

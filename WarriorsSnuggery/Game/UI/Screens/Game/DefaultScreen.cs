@@ -106,19 +106,19 @@ namespace WarriorsSnuggery.UI
 			}
 			Content.Add(missionText);
 
-			var levelText = new TextLine(new CPos((int)-(WindowInfo.UnitWidth * 512) + 776, 8192 - 1536, 0), Font.Pixel16);
+			var levelText = new TextLine(new CPos((int)-(WindowInfo.UnitWidth * 512) + 776, 8192 - 2048, 0), Font.Pixel16);
 			levelText.SetText("Level " + game.Statistics.Level + "/" + game.Statistics.FinalLevel);
 			Content.Add(levelText);
-			waveText = new TextLine(new CPos((int)-(WindowInfo.UnitWidth * 512) + 776, 8192 - 1024, 0), Font.Pixel16);
+			waveText = new TextLine(new CPos((int)-(WindowInfo.UnitWidth * 512) + 776, 8192 - 1536, 0), Font.Pixel16);
 			if (game.Mode == GameMode.WAVES)
 				waveText.SetText("Wave 1");
 		}
 
-		public void SetWave(int wave, bool final)
+		public void SetWave(int wave, int final)
 		{
-			if (final)
+			if (wave == final)
 				waveText.SetColor(Color.Green);
-			waveText.SetText("Wave " + wave);
+			waveText.SetText("Wave " + wave + "/" + final);
 		}
 
 		public override void Hide()

@@ -79,6 +79,11 @@ namespace WarriorsSnuggery
 			MasterRenderer.UpdateView();
 		}
 
+		public static void AddInfoMessage(int duration, string text)
+		{
+			game.AddInfoMessage(duration, text);
+		}
+
 		public static void Pause()
 		{
 			if (!game.Paused)

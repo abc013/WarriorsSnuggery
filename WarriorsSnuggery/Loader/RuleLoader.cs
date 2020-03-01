@@ -84,6 +84,7 @@ namespace WarriorsSnuggery
 			UITextureManager.Add("cursor_select", new TextureInfo("cursor_select"));
 			UITextureManager.Add("cursor_money", new TextureInfo("cursor_money"));
 			UITextureManager.Add("cursor_attack", new TextureInfo("cursor_attack"));
+			UITextureManager.Add("logo", new TextureInfo("logo"));
 
 			PanelManager.AddType(new PanelType(panelTex("UI_wood1"), panelTex("UI_wood2"), panelTex("UI_wood3"), 0.07f), "wooden");
 			PanelManager.AddType(new PanelType(panelTex("UI_stone1"), panelTex("UI_wood3"), panelTex("UI_stone2"), 0.07f), "stone");
