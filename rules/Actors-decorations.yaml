@@ -141,10 +141,24 @@ web=
 		Random=true
 		UseAsPreview=true
 
-s_stones=
+s_rocks=
 	Sprite=
-		Name=small_stones
-		Dimensions=6,6
+		Name=s_rocks
+		Dimensions=8,8
 		Random=true
 		Offset=0,0,-512
 		UseAsPreview=true
+	Physics=
+		Shape=Circle
+		Size=128,128,128
+
+m_rocks=
+	Sprite=
+		Name=m_rocks
+		Dimensions=24,16
+		Random=true
+		Offset=0,0,-512
+		UseAsPreview=true
+	Physics=
+		Shape=Circle
+		Size=330,330,256
