@@ -7,10 +7,10 @@ namespace WarriorsSnuggery.Graphics
 	{
 		public static Vertex[] Image(Texture texture, Color color)
 		{
-			var x = texture.Offset.X / (float)Settings.SheetSize;
-			var y = texture.Offset.Y / (float)Settings.SheetSize;
-			var w = (texture.Offset.X + texture.Width) / (float)Settings.SheetSize;
-			var h = (texture.Offset.Y + texture.Height) / (float)Settings.SheetSize;
+			var x = texture.Offset.X / (float)Settings.SheetSize + Settings.SheetHalfPixel;
+			var y = texture.Offset.Y / (float)Settings.SheetSize + Settings.SheetHalfPixel;
+			var w = (texture.Offset.X + texture.Width) / (float)Settings.SheetSize - Settings.SheetHalfPixel;
+			var h = (texture.Offset.Y + texture.Height) / (float)Settings.SheetSize - Settings.SheetHalfPixel;
 			var scale = texture.Height / 48f;
 			var correction = texture.Width / (float)texture.Height;
 			var color4 = color.toColor4();
@@ -73,10 +73,10 @@ namespace WarriorsSnuggery.Graphics
 
 		static Vertex[] uiPlanePart(Texture texture, Color color, Vector offset, Vector size)
 		{
-			var x = texture.Offset.X / (float)Settings.SheetSize;
-			var y = texture.Offset.Y / (float)Settings.SheetSize;
-			var w = (texture.Offset.X + size.X * texture.Width) / Settings.SheetSize;
-			var h = (texture.Offset.Y + size.Y * texture.Height) / Settings.SheetSize;
+			var x = texture.Offset.X / (float)Settings.SheetSize + Settings.SheetHalfPixel;
+			var y = texture.Offset.Y / (float)Settings.SheetSize + Settings.SheetHalfPixel;
+			var w = (texture.Offset.X + size.X * texture.Width) / Settings.SheetSize - Settings.SheetHalfPixel;
+			var h = (texture.Offset.Y + size.Y * texture.Height) / Settings.SheetSize - Settings.SheetHalfPixel;
 			var color4 = color.toColor4();
 			var id = SpriteManager.SheetIndex(texture.SheetID);
 
@@ -142,10 +142,10 @@ namespace WarriorsSnuggery.Graphics
 		public static Vertex[] Character(Font font, char c)
 		{
 			var texture = font.GetTexture(c);
-			var x = texture.Offset.X / (float)Settings.SheetSize;
-			var y = texture.Offset.Y / (float)Settings.SheetSize;
-			var w = (texture.Offset.X + texture.Width) / (float)Settings.SheetSize;
-			var h = (texture.Offset.Y + texture.Height) / (float)Settings.SheetSize;
+			var x = texture.Offset.X / (float)Settings.SheetSize + Settings.SheetHalfPixel;
+			var y = texture.Offset.Y / (float)Settings.SheetSize + Settings.SheetHalfPixel;
+			var w = (texture.Offset.X + texture.Width) / (float)Settings.SheetSize - Settings.SheetHalfPixel;
+			var h = (texture.Offset.Y + texture.Height) / (float)Settings.SheetSize - Settings.SheetHalfPixel;
 			var correction = texture.Width / (float)texture.Height;
 			var id = SpriteManager.SheetIndex(texture.SheetID);
 			var scale = MasterRenderer.PixelMultiplier * font.Info.Size / 1.5f;
