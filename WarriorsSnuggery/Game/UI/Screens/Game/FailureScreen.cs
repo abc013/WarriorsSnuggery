@@ -8,7 +8,6 @@ namespace WarriorsSnuggery.UI
 		public FailureScreen(Game game) : base("Level Failed.")
 		{
 			Title.SetColor(Color.Red);
-			Speed = 64;
 
 			var score = new TextLine(new CPos(0, 1024, 0), Font.Pixel16, TextLine.OffsetType.MIDDLE);
 			score.WriteText("Achieved Score: " + Color.Blue + game.Statistics.CalculateScore());

@@ -24,9 +24,8 @@ namespace WarriorsSnuggery.UI
 		float healthPercentage;
 		float manaPercentage;
 
-		public DefaultScreen(Game game) : base("", 0)
+		public DefaultScreen(Game game) : base(string.Empty, 0)
 		{
-			Speed = int.MaxValue;
 			this.game = game;
 
 			if (game.Statistics.Level == game.Statistics.FinalLevel)
