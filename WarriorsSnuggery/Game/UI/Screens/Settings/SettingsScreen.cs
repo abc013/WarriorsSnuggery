@@ -8,12 +8,9 @@ namespace WarriorsSnuggery.UI
 	{
 		readonly Game game;
 
-		readonly TextLine saved;
-		int savedTick;
-
 		readonly CheckBox fullscreenCheck, antiAliasingCheck, developerModeCheck, pixelingCheck, textshadowCheck;
-		readonly TextBox widthWrite, heightWrite, frameLimiterWrite, scrollWrite, edgeScrollWrite;
-		readonly SliderBar masterVolumeSlider, effectVolumeSlider, musicVolumeSlider;
+		readonly TextBox widthWrite, heightWrite, frameLimiterWrite;
+		readonly SliderBar panningSlider, edgePanningSlider, masterVolumeSlider, effectVolumeSlider, musicVolumeSlider;
 
 		public bool Visible { get; private set; }
 
@@ -21,8 +18,6 @@ namespace WarriorsSnuggery.UI
 		{
 			this.game = game;
 			Title.Position = new CPos(0, -4096, 0);
-			saved = new TextLine(new CPos(-5120, 6144, 0), Font.Pixel16, TextLine.OffsetType.MIDDLE);
-			saved.SetText("Save");
 
 			// Window
 			var fullscreen = new TextLine(new CPos(-6096, -3000, 0), Font.Pixel16);
@@ -44,6 +39,7 @@ namespace WarriorsSnuggery.UI
 				width.SetColor(ticked ? new Color(128, 128, 128) : Color.White);
 				height.SetColor(ticked ? new Color(128, 128, 128) : Color.White);
 			});
+			Content.Add(fullscreenCheck);
 			widthWrite = TextBoxCreator.Create("wooden", new CPos(-2048, -2300, 0), Settings.Width + "", 5, true);
 			widthWrite.OnEnter = () =>
 			{
@@ -53,6 +49,7 @@ namespace WarriorsSnuggery.UI
 				else if (parse > WindowInfo.ScreenWidth)
 					widthWrite.Text = WindowInfo.ScreenWidth + "";
 			};
+			Content.Add(widthWrite);
 			heightWrite = TextBoxCreator.Create("wooden", new CPos(-2048, -1600, 0), Settings.Height + "", 5, true);
 			heightWrite.OnEnter = () =>
 			{
@@ -62,6 +59,7 @@ namespace WarriorsSnuggery.UI
 				else if (parse > WindowInfo.ScreenHeight)
 					heightWrite.Text = WindowInfo.ScreenHeight + "";
 			};
+			Content.Add(heightWrite);
 
 			// Graphics
 			var antiAliasing = new TextLine(new CPos(-512, -3000, 0), Font.Pixel16);
@@ -74,31 +72,69 @@ namespace WarriorsSnuggery.UI
 			textshadow.SetText("Enable text shadows:");
 			Content.Add(textshadow);
 
-			antiAliasingCheck = CheckBoxCreator.Create("wooden", new CPos(6656, -3000, 0), Settings.AntiAliasing);
-			pixelingCheck = CheckBoxCreator.Create("wooden", new CPos(6656, -2300, 0), Settings.EnablePixeling);
-			textshadowCheck = CheckBoxCreator.Create("wooden", new CPos(6656, -1600, 0), Settings.EnableTextShadowing);
+			antiAliasingCheck = CheckBoxCreator.Create("wooden", new CPos(6656, -3000, 0), Settings.AntiAliasing, (b) =>
+			{
+				Settings.AntiAliasing = b;
+			});
+			Content.Add(antiAliasingCheck);
+			pixelingCheck = CheckBoxCreator.Create("wooden", new CPos(6656, -2300, 0), Settings.EnablePixeling, (b) => 
+			{
+				Settings.EnablePixeling = b;
+			});
+			Content.Add(pixelingCheck);
+			textshadowCheck = CheckBoxCreator.Create("wooden", new CPos(6656, -1600, 0), Settings.EnableTextShadowing, (b) => 
+			{
+				Settings.EnableTextShadowing = b;
+			});
+			Content.Add(textshadowCheck);
 
 			// Scrolling
 			var scrollSpeed = new TextLine(new CPos(-6144, -600, 0), Font.Pixel16);
-			scrollSpeed.SetText("Scroll Speed:");
+			scrollSpeed.SetText("Camera panning speed:");
 			Content.Add(scrollSpeed);
 			var edgeScrolling = new TextLine(new CPos(-6144, 100, 0), Font.Pixel16);
-			edgeScrolling.SetText("Edge Scrolling (0 when disabled):");
+			edgeScrolling.SetText("Edge Panning (0 = disabled):");
 			Content.Add(edgeScrolling);
 
-			scrollWrite = TextBoxCreator.Create("wooden", new CPos(6656, -600, 0), Settings.ScrollSpeed + "", 1, true);
-			edgeScrollWrite = TextBoxCreator.Create("wooden", new CPos(6656, 100, 0), Settings.EdgeScrolling + "", 1, true);
+			panningSlider = new SliderBar(new CPos(5120, -600, 0), 100, PanelManager.Get("wooden"), () =>
+			{
+				Settings.ScrollSpeed = (int)(panningSlider.Value * 10);
+			})
+			{
+				Value = Settings.ScrollSpeed / 10f
+			};
+			Content.Add(panningSlider);
+			edgePanningSlider = new SliderBar(new CPos(5120, 100, 0), 100, PanelManager.Get("wooden"), () =>
+			{
+				Settings.EdgeScrolling = (int)(edgePanningSlider.Value * 10);
+			})
+			{
+				Value = Settings.EdgeScrolling / 10f
+			};
+			Content.Add(edgePanningSlider);
 
 			// Additional features
 			var frameLimiter = new TextLine(new CPos(-6144, 1000, 0), Font.Pixel16);
-			frameLimiter.SetText("Framelimiter (0 when disabled):");
+			frameLimiter.SetText("Framelimiter (0 = disabled):");
 			Content.Add(frameLimiter);
+
+			frameLimiterWrite = TextBoxCreator.Create("wooden", new CPos(5120, 1000, 0), Settings.FrameLimiter + "", 2, true);
+			frameLimiterWrite.OnEnter = () =>
+			{
+				var number = int.Parse(frameLimiterWrite.Text);
+				if (number > OpenTK.DisplayDevice.Default.RefreshRate)
+					frameLimiterWrite.Text = ((int)OpenTK.DisplayDevice.Default.RefreshRate).ToString();
+			};
+			Content.Add(frameLimiterWrite);
+
 			var developerMode = new TextLine(new CPos(-6144, 1900, 0), Font.Pixel16);
 			developerMode.SetText("Enable Developermode:");
 			Content.Add(developerMode);
-
-			frameLimiterWrite = TextBoxCreator.Create("wooden", new CPos(6656, 1000, 0), Settings.FrameLimiter + "", 2, true);
-			developerModeCheck = CheckBoxCreator.Create("wooden", new CPos(6656, 1900, 0), Settings.DeveloperMode);
+			developerModeCheck = CheckBoxCreator.Create("wooden", new CPos(5120, 1900, 0), Settings.DeveloperMode, (b) =>
+			{
+				Settings.DeveloperMode = b;
+			});
+			Content.Add(developerModeCheck);
 
 			// Volume
 			var masterVol = new TextLine(new CPos(-6144, 2800, 0), Font.Pixel16);
@@ -111,37 +147,54 @@ namespace WarriorsSnuggery.UI
 			musicVol.SetText("Music Volume:");
 			Content.Add(musicVol);
 
-			masterVolumeSlider = new SliderBar(new CPos(5120, 2800, 0), 100, PanelManager.Get("wooden"))
+			masterVolumeSlider = new SliderBar(new CPos(5120, 2800, 0), 100, PanelManager.Get("wooden"), () =>
+			{
+				Settings.MasterVolume = (float)Math.Round(masterVolumeSlider.Value, 2);
+				AudioController.Music.SetVolume();
+			})
 			{
 				Value = Settings.MasterVolume
 			};
-			effectVolumeSlider = new SliderBar(new CPos(5120, 3700, 0), 100, PanelManager.Get("wooden"))
+			Content.Add(masterVolumeSlider);
+			effectVolumeSlider = new SliderBar(new CPos(5120, 3700, 0), 100, PanelManager.Get("wooden"), () =>
+			{
+				Settings.EffectsVolume = (float)Math.Round(effectVolumeSlider.Value, 2);
+			})
 			{
 				Value = Settings.EffectsVolume
 			};
-			musicVolumeSlider = new SliderBar(new CPos(5120, 4600, 0), 100, PanelManager.Get("wooden"))
+			Content.Add(effectVolumeSlider);
+			musicVolumeSlider = new SliderBar(new CPos(5120, 4600, 0), 100, PanelManager.Get("wooden"), () =>
+			{
+				Settings.MusicVolume = (float)Math.Round(musicVolumeSlider.Value, 2);
+				AudioController.Music.SetVolume();
+			})
 			{
 				Value = Settings.MusicVolume
 			};
+			Content.Add(musicVolumeSlider);
 
 			var warning = new TextLine(new CPos(0, 5450, 0), Font.Pixel16, TextLine.OffsetType.MIDDLE);
 			warning.SetColor(Color.Red);
-			warning.SetText("Some changes may only take effect after restarting and can cause visual bugs.");
+			warning.SetText("Some changes only take effect after restarting and can cause visual bugs.");
 			Content.Add(warning);
 
-			Content.Add(ButtonCreator.Create("wooden", new CPos(5120, 6144, 0), "Back", () => game.ChangeScreen(ScreenType.MENU)));
+			Content.Add(ButtonCreator.Create("wooden", new CPos(-5120, 6144, 0), "Apply", Save));
+			Content.Add(ButtonCreator.Create("wooden", new CPos(5120, 6144, 0), "Save & Back", () => game.ChangeScreen(ScreenType.MENU)));
 			Content.Add(ButtonCreator.Create("wooden", new CPos(0, 6144, 0), "Key Bindings", () => game.ChangeScreen(ScreenType.KEYSETTINGS)));
-			Content.Add(ButtonCreator.Create("wooden", new CPos(-5120, 6144, 0), "Save", Save));
+		}
+
+		public override void Hide()
+		{
+			base.Hide();
+			Save();
 		}
 
 		public void Save()
 		{
 			Settings.FrameLimiter = int.Parse(frameLimiterWrite.Text);
-			if (Settings.FrameLimiter == 0 || Settings.FrameLimiter > OpenTK.DisplayDevice.Default.RefreshRate)
-				Settings.FrameLimiter = (int)OpenTK.DisplayDevice.Default.RefreshRate;
-
-			Settings.ScrollSpeed = int.Parse(scrollWrite.Text);
-			Settings.EdgeScrolling = int.Parse(edgeScrollWrite.Text);
+			Settings.ScrollSpeed = (int)(panningSlider.Value * 10);
+			Settings.EdgeScrolling = (int)(edgePanningSlider.Value * 10);
 			Settings.DeveloperMode = developerModeCheck.Checked;
 			Settings.Fullscreen = fullscreenCheck.Checked;
 			Settings.Width = int.Parse(widthWrite.Text);
@@ -163,58 +216,12 @@ namespace WarriorsSnuggery.UI
 			else
 				MasterRenderer.DisableAliasing();
 
-			savedTick = 15;
 			game.AddInfoMessage(150, "Settings saved!");
-		}
-
-		public override void Render()
-		{
-			base.Render();
-
-			fullscreenCheck.Render();
-			pixelingCheck.Render();
-			antiAliasingCheck.Render();
-			textshadowCheck.Render();
-			developerModeCheck.Render();
-
-			widthWrite.Render();
-			heightWrite.Render();
-			frameLimiterWrite.Render();
-			scrollWrite.Render();
-			edgeScrollWrite.Render();
-
-			masterVolumeSlider.Render();
-			effectVolumeSlider.Render();
-			musicVolumeSlider.Render();
-
-			if (savedTick > 0)
-			{
-				savedTick--;
-				saved.Scale = 1.7f - savedTick / 15f;
-				saved.SetColor(new Color(1f, 1f, 1f, savedTick / 15f));
-				saved.Render();
-			}
 		}
 
 		public override void Tick()
 		{
 			base.Tick();
-
-			fullscreenCheck.Tick();
-			pixelingCheck.Tick();
-			antiAliasingCheck.Tick();
-			textshadowCheck.Tick();
-			developerModeCheck.Tick();
-
-			widthWrite.Tick();
-			heightWrite.Tick();
-			frameLimiterWrite.Tick();
-			scrollWrite.Tick();
-			edgeScrollWrite.Tick();
-
-			masterVolumeSlider.Tick();
-			effectVolumeSlider.Tick();
-			musicVolumeSlider.Tick();
 
 			if (KeyInput.IsKeyDown("escape", 10))
 				game.ChangeScreen(ScreenType.MENU);

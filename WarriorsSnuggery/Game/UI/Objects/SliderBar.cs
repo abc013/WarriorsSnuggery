@@ -12,9 +12,9 @@ namespace WarriorsSnuggery.UI
 			set { slider.Value = value; }
 		}
 
-		public SliderBar(CPos position, int size, PanelType type) : base(position, new Vector(size * MasterRenderer.PixelMultiplier / 2, MasterRenderer.PixelMultiplier, 0), type)
+		public SliderBar(CPos position, int size, PanelType type, Action onChanged) : base(position, new Vector(size * MasterRenderer.PixelMultiplier / 2, MasterRenderer.PixelMultiplier, 0), type)
 		{
-			slider = new Slider(position, size, type);
+			slider = new Slider(position, size, type, onChanged);
 		}
 
 		public override void Render()
@@ -38,6 +38,8 @@ namespace WarriorsSnuggery.UI
 		readonly int limit;
 		readonly MPos gameBounds;
 
+		readonly Action onChanged;
+
 		bool mouseOnSlider;
 		bool drag;
 		int currentPosition;
@@ -55,10 +57,11 @@ namespace WarriorsSnuggery.UI
 			}
 		}
 
-		public Slider(CPos position, int limit, PanelType type) : base(position, new Vector(MasterRenderer.PixelMultiplier, 4 * MasterRenderer.PixelMultiplier, 0), type)
+		public Slider(CPos position, int limit, PanelType type, Action onChanged) : base(position, new Vector(MasterRenderer.PixelMultiplier, 4 * MasterRenderer.PixelMultiplier, 0), type)
 		{
 			gameBounds = new MPos((int)(2 * MasterRenderer.PixelMultiplier * 1024), (int)(8 * MasterRenderer.PixelMultiplier * 1024));
 			centerPosition = position;
+			this.onChanged = onChanged;
 			this.limit = (int)(limit * MasterRenderer.PixelMultiplier * 512);
 			tooltip = new Tooltip(position, Math.Round(Value, 1).ToString());
 		}
@@ -81,6 +84,7 @@ namespace WarriorsSnuggery.UI
 				currentPosition = xPos - centerPosition.X;
 				Position = new CPos(xPos, Position.Y, Position.Z);
 
+				onChanged?.Invoke();
 				UIRenderer.DisableTooltip(tooltip);
 				tooltip = new Tooltip(Position, Math.Round(Value, 1).ToString());
 			}
