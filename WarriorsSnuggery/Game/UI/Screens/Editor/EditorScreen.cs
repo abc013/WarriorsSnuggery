@@ -128,7 +128,7 @@ namespace WarriorsSnuggery.UI
 		public override bool CursorOnUI()
 		{
 			var mouse = MouseInput.WindowPosition;
-			return mouse.X > WindowInfo.UnitWidth * 512 - 4096 - 128;
+			return mouse.X > WindowInfo.UnitWidth * 512 - 4096 - 128 && mouse.X < WindowInfo.UnitWidth - 64;
 		}
 
 		public override void Hide()
