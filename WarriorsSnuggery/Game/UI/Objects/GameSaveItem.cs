@@ -15,8 +15,9 @@ namespace WarriorsSnuggery.UI
 			set
 			{
 				base.Position = value;
-				name.Position = value - new CPos(2048, 400, 0);
-				level.Position = value - new CPos(2560, 0, 0);
+				name.Position = value - new CPos(3072, 512, 0);
+				score.Position = value - new CPos(3072, 0, 0);
+				level.Position = value - new CPos(-1152, 0, 0);
 				tooltip.Position = value;
 			}
 		}
@@ -25,19 +26,22 @@ namespace WarriorsSnuggery.UI
 		public bool Selected;
 
 		readonly TextLine name;
+		readonly TextLine score;
 		readonly TextLine level;
 
 		public GameSaveItem(CPos pos, GameStatistics stats, int width, Action action) : base(pos, new BatchObject(UITextureManager.Get("UI_save")[0], Color.White), new MPos(width, 1024), stats.Name, new[] { Color.Grey + "Difficulty: " + stats.Difficulty, Color.Grey + "Money: " + stats.Money }, action)
 		{
 			Stats = stats;
-			name = new TextLine(pos - new CPos(2048, 512, 0), Font.Pixel16);
-			name.SetColor(Color.Black);
+			Scale *= 2;
+			name = new TextLine(pos - new CPos(3072, 512, 0), Font.Pixel16);
 			name.SetText(stats.Name);
-			level = new TextLine(pos - new CPos(2560, 0, 0), Font.Pixel16);
-			level.SetColor(Color.Black);
+			score = new TextLine(pos - new CPos(3072, 0, 0), Font.Pixel16);
+			score.SetColor(Color.Yellow);
+			score.SetText(stats.CalculateScore());
+			level = new TextLine(pos - new CPos(-1152, 0, 0), Font.Papyrus24);
 			if (stats.Level >= stats.FinalLevel) level.SetColor(new Color(0, 200, 0));
-			level.SetText(stats.Level);
-			level.Scale = 2f;
+			level.SetText(stats.Level + "/" + stats.FinalLevel);
+			level.Scale = 1.4f;
 		}
 
 		public override void Render()
@@ -54,6 +58,7 @@ namespace WarriorsSnuggery.UI
 					name.Scale = 1f;
 
 				name.Render();
+				score.Render();
 				level.Render();
 			}
 			if (Selected)
