@@ -10,7 +10,7 @@ namespace WarriorsSnuggery
 
 		public const int BatchSize = 8120;
 		public const int SheetSize = 1024;
-		public const float SheetHalfPixel = 0.5f / SheetSize;
+		public const float SheetHalfPixel = 0.1f / SheetSize;
 
 		public const int MaxTeams = 8;
 
