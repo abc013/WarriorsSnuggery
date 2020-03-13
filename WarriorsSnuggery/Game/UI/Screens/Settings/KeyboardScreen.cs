@@ -7,53 +7,84 @@ namespace WarriorsSnuggery.UI
 	{
 		readonly Game game;
 
-		readonly KeyboardButton up, down, right, left, pause, camUp, camDown, camRight, camLeft, @lock;
-		readonly TextLine saved;
-		int savedTick;
+		readonly KeyboardButton up, down, right, left, above, below, pause, camUp, camDown, camRight, camLeft, @lock;
 
-		public KeyboardScreen(Game game) : base("Keyboard")
+		public KeyboardScreen(Game game) : base("Key Bindings")
 		{
 			this.game = game;
 
 			Title.Position = new CPos(0, -4096, 0);
-			saved = new TextLine(new CPos(-2048, 6210, 0), Font.Pixel16, TextLine.OffsetType.MIDDLE);
-			saved.SetText("Save");
 
-			Content.Add(ButtonCreator.Create("wooden", new CPos(2048, 6144, 0), "Back", () => game.ChangeScreen(ScreenType.SETTINGS)));
-			Content.Add(ButtonCreator.Create("wooden", new CPos(-2048, 6144, 0), "Save", save));
+			Content.Add(ButtonCreator.Create("wooden", new CPos(0, 6144, 0), "Save & Back", () => game.ChangeScreen(ScreenType.SETTINGS)));
 
-			var texture = UITextureManager.Get("keyboard");
+			var type = PanelManager.Get("wooden");
 
-			var tPause = new TextLine(new CPos(-2048, -3072, 0), Font.Pixel16);
+			var tPause = new TextLine(new CPos(-1024, -3072, 0), Font.Pixel16, TextLine.OffsetType.RIGHT);
 			tPause.SetText("Pause/unpause");
 			Content.Add(tPause);
-			pause = new KeyboardButton(new CPos(2048, -3072, 0), Settings.KeyDictionary["Pause"][0], texture, Font.Pixel16, Color.Black);
-			var tLock = new TextLine(new CPos(-2048, -2048, 0), Font.Pixel16);
-			tLock.SetText("Toggle cam lock");
+			pause = new KeyboardButton(new CPos(1536, -3072, 0), Settings.KeyDictionary["Pause"], Color.White, type);
+			Content.Add(pause);
+			var tLock = new TextLine(new CPos(-1024, -2048, 0), Font.Pixel16, TextLine.OffsetType.RIGHT);
+			tLock.SetText("Toggle camera lock");
 			Content.Add(tLock);
-			@lock = new KeyboardButton(new CPos(2048, -2048, 0), Settings.KeyDictionary["CameraLock"][0], texture, Font.Pixel16, Color.Black);
+			@lock = new KeyboardButton(new CPos(1536, -2048, 0), Settings.KeyDictionary["CameraLock"], Color.White, type);
+			Content.Add(@lock);
 
-			var tMove = new TextLine(new CPos(-2048, -256, 0), Font.Pixel16);
+			var font = Font.Pixel16;
+
+			var tMove = new TextLine(new CPos(-3072, -1024, 0), Font.Pixel16, TextLine.OffsetType.RIGHT);
 			tMove.SetText("Movement");
 			Content.Add(tMove);
-			up = new KeyboardButton(new CPos(2048, -576, 0), Settings.KeyDictionary["MoveUp"][0], texture, Font.Pixel16, Color.Black);
-			down = new KeyboardButton(new CPos(2048, 0, 1), Settings.KeyDictionary["MoveDown"][0], texture, Font.Pixel16, Color.Black);
-			left = new KeyboardButton(new CPos(1276, 0, 1), Settings.KeyDictionary["MoveLeft"][0], texture, Font.Pixel16, Color.Black);
-			right = new KeyboardButton(new CPos(2806, 0, 1), Settings.KeyDictionary["MoveRight"][0], texture, Font.Pixel16, Color.Black);
+			var line = 0;
+			foreach(var dir in new [] { "Up", "Down", "Left", "Right", "Above", "Below" })
+			{
+				var text = new TextLine(new CPos(-1024, -1024 + line * 640, 0), font, TextLine.OffsetType.RIGHT);
+				text.SetText(dir);
+				line++;
+				Content.Add(text);
+			}
+			up = new KeyboardButton(new CPos(1536, -1024, 0), Settings.KeyDictionary["MoveUp"], Color.White, type);
+			Content.Add(up);
+			down = new KeyboardButton(new CPos(1536, -1024 + 640, 1), Settings.KeyDictionary["MoveDown"], Color.White, type);
+			Content.Add(down);
+			left = new KeyboardButton(new CPos(1536, -1024 + 1280, 1), Settings.KeyDictionary["MoveLeft"], Color.White, type);
+			Content.Add(left);
+			right = new KeyboardButton(new CPos(1536, - 1024 + 1920, 0), Settings.KeyDictionary["MoveRight"], Color.White, type);
+			Content.Add(right);
+			above = new KeyboardButton(new CPos(1536, -1024 + 2560, 1), Settings.KeyDictionary["MoveAbove"], Color.White, type);
+			Content.Add(above);
+			below = new KeyboardButton(new CPos(1536, -1024 + 3200, 0), Settings.KeyDictionary["MoveBelow"], Color.White, type);
+			Content.Add(below);
 
-			var tCam = new TextLine(new CPos(-2048, 1748, 0), Font.Pixel16);
+			var tCam = new TextLine(new CPos(-3072, 3072, 0), Font.Pixel16, TextLine.OffsetType.RIGHT);
 			tCam.SetText("Camera");
 			Content.Add(tCam);
-			camUp = new KeyboardButton(new CPos(2048, 1448, 0), Settings.KeyDictionary["CameraUp"][0], texture, Font.Pixel16, Color.Black);
-			camDown = new KeyboardButton(new CPos(2048, 2048, 1), Settings.KeyDictionary["CameraDown"][0], texture, Font.Pixel16, Color.Black);
-			camLeft = new KeyboardButton(new CPos(1276, 2048, 1), Settings.KeyDictionary["CameraLeft"][0], texture, Font.Pixel16, Color.Black);
-			camRight = new KeyboardButton(new CPos(2806, 2048, 1), Settings.KeyDictionary["CameraRight"][0], texture, Font.Pixel16, Color.Black);
+			line = 0;
+			foreach (var dir in new[] { "Up", "Down", "Left", "Right"})
+			{
+				var text = new TextLine(new CPos(-1024, 3072 + line * 640, 0), font, TextLine.OffsetType.RIGHT);
+				text.SetText(dir);
+				line++;
+				Content.Add(text);
+			}
+			camUp = new KeyboardButton(new CPos(1536, 3072, 0), Settings.KeyDictionary["CameraUp"], Color.White, type);
+			Content.Add(camUp);
+			camDown = new KeyboardButton(new CPos(1536, 3072 + 640, 1), Settings.KeyDictionary["CameraDown"], Color.White, type);
+			Content.Add(camDown);
+			camLeft = new KeyboardButton(new CPos(1536, 3072 + 1280, 1), Settings.KeyDictionary["CameraLeft"], Color.White, type);
+			Content.Add(camLeft);
+			camRight = new KeyboardButton(new CPos(1536, 3072 + 1920, 1), Settings.KeyDictionary["CameraRight"], Color.White, type);
+			Content.Add(camRight);
+		}
+
+		public override void Hide()
+		{
+			base.Hide();
+			save();
 		}
 
 		void save()
 		{
-			savedTick = 15;
-
 			Settings.KeyDictionary.Clear();
 			Settings.KeyDictionary.Add("Pause", pause.Key + "");
 			Settings.KeyDictionary.Add("CameraLock", @lock.Key + "");
@@ -61,62 +92,23 @@ namespace WarriorsSnuggery.UI
 			Settings.KeyDictionary.Add("MoveDown", down.Key + "");
 			Settings.KeyDictionary.Add("MoveLeft", left.Key + "");
 			Settings.KeyDictionary.Add("MoveRight", right.Key + "");
+			Settings.KeyDictionary.Add("MoveAbove", above.Key + "");
+			Settings.KeyDictionary.Add("MoveBelow", below.Key + "");
 			Settings.KeyDictionary.Add("CameraUp", camUp.Key + "");
 			Settings.KeyDictionary.Add("CameraDown", camDown.Key + "");
 			Settings.KeyDictionary.Add("CameraLeft", camLeft.Key + "");
 			Settings.KeyDictionary.Add("CameraRight", camRight.Key + "");
 			Settings.Save();
 
-			game.AddInfoMessage(150, "Keys Saved!");
+			game.AddInfoMessage(150, "Controls Saved!");
 		}
 
 		public override void Tick()
 		{
 			base.Tick();
 
-			pause.Tick();
-			@lock.Tick();
-
-			up.Tick();
-			down.Tick();
-			left.Tick();
-			right.Tick();
-
-			camUp.Tick();
-			camDown.Tick();
-			camLeft.Tick();
-			camRight.Tick();
-
 			if (KeyInput.IsKeyDown("escape", 10))
-			{
 				game.ChangeScreen(ScreenType.SETTINGS);
-			}
-		}
-
-		public override void Render()
-		{
-			base.Render();
-
-			pause.Render();
-			@lock.Render();
-
-			up.Render();
-			down.Render();
-			left.Render();
-			right.Render();
-
-			camUp.Render();
-			camDown.Render();
-			camLeft.Render();
-			camRight.Render();
-
-			if (savedTick > 0)
-			{
-				savedTick--;
-				saved.Scale = 1.7f - savedTick / 15f;
-				saved.SetColor(new Color(1f, 1f, 1f, savedTick / 15f));
-				saved.Render();
-			}
 		}
 	}
 }

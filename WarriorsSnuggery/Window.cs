@@ -30,6 +30,7 @@ namespace WarriorsSnuggery
 		const string title = "Warrior's Snuggery";
 
 		public static char CharInput;
+		public static Key KeyInput;
 
 		public static uint GlobalTick;
 		public static uint GlobalRender;
@@ -150,9 +151,7 @@ namespace WarriorsSnuggery
 			AudioController.Tick();
 
 			CharInput = '';
-
-			if (KeyInput.IsKeyDown(Key.N, 10))
-				AudioController.Music.Next();
+			KeyInput = Key.End;
 
 			if (GlobalTick % 20 == 0)
 			{
@@ -230,6 +229,11 @@ namespace WarriorsSnuggery
 
 		protected override void OnKeyDown(KeyboardKeyEventArgs e)
 		{
+			KeyInput = e.Key;
+
+			if (e.Key == Key.N)
+				AudioController.Music.Next();
+
 			if (e.Alt && e.Key == Key.F4)
 				Program.Exit();
 
