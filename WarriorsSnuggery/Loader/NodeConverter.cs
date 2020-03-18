@@ -171,9 +171,9 @@ namespace WarriorsSnuggery.Loader
 					}
 				}
 			}
-			else if (t == typeof(Audio.SoundInfo))
+			else if (t == typeof(SoundType))
 			{
-				return new Audio.SoundInfo(node.Children.ToArray());
+				return new SoundType(node.Children.ToArray());
 			}
 			else if (t == typeof(Objects.Conditions.Condition))
 			{

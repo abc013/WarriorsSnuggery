@@ -9,25 +9,37 @@ namespace WarriorsSnuggery.Audio
 
 		uint source;
 
+		float volume;
+
 		public AudioSource()
 		{
 			AL.GenSource(out source);
 		}
 
-		public void Start(AudioBuffer buffer, float volume, bool loops)
+		public void Start(AudioBuffer buffer, bool loops)
 		{
 			Used = true;
 			Buffer = buffer;
 
 			AL.BindBufferToSource(source, buffer.GetID());
-			AL.Source(source, ALSourcef.Gain, volume * Settings.MasterVolume);
 			AL.Source(source, ALSourceb.Looping, loops);
 			AL.SourcePlay(source);
 		}
 
-		public void SetVolume(float volume)
+		public void SetVolume(float volume, float master)
 		{
-			AL.Source(source, ALSourcef.Gain, volume * Settings.MasterVolume);
+			this.volume = volume;
+			UpdateVolume(master);
+		}
+
+		public void UpdateVolume(float master)
+		{
+			AL.Source(source, ALSourcef.Gain, volume * master);
+		}
+
+		public void SetPosition(Vector position)
+		{
+			AL.Source(source, ALSource3f.Position, position.X, position.Y, position.Z);
 		}
 
 		public void CheckUsed()
@@ -41,6 +53,9 @@ namespace WarriorsSnuggery.Audio
 
 			Used = false;
 			Buffer = null;
+
+			volume = 1f;
+
 			AL.Source(source, ALSourcef.Gain, 1f);
 			AL.Source(source, ALSourceb.Looping, false);
 		}

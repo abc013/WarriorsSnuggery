@@ -24,13 +24,12 @@
 		public void Play()
 		{
 			length = Length;
-			source = AudioController.Play(buffer, false, Settings.MusicVolume, false);
+			source = AudioController.Play(buffer, false, Settings.MusicVolume, Vector.Zero, false);
 		}
 
 		public void SetVolume()
 		{
-			if (source != null)
-				source.SetVolume(Settings.MusicVolume);
+			source?.UpdateVolume(Settings.MusicVolume * Settings.MasterVolume);
 		}
 
 		public void Tick()
@@ -42,14 +41,12 @@
 		public void Pause(bool pause)
 		{
 			paused = pause;
-			if (source != null)
-				source.Pause(pause);
+			source?.Pause(pause);
 		}
 
 		public void Stop()
 		{
-			if (source != null)
-				source.Stop();
+			source?.Stop();
 			source = null;
 		}
 	}

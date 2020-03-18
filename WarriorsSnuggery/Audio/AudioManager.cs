@@ -6,9 +6,14 @@ namespace WarriorsSnuggery.Audio
 	{
 		static readonly Dictionary<string, AudioBuffer> buffers = new Dictionary<string, AudioBuffer>();
 
-		public static void PlaySound(string name)
+		public static AudioSource PlaySound(string name)
 		{
-			AudioController.Play(buffers[name], false, Settings.EffectsVolume, false);
+			return AudioController.Play(buffers[name], false, 1f, Vector.Zero, false);
+		}
+
+		public static AudioSource PlaySound(string name, bool inGame, float volume, Vector position, bool loops = false)
+		{
+			return AudioController.Play(buffers[name], inGame, volume, position, loops);
 		}
 
 		public static AudioBuffer GetBuffer(string name)
@@ -27,9 +32,8 @@ namespace WarriorsSnuggery.Audio
 		public static void Dispose()
 		{
 			foreach (var buffer in buffers.Values)
-			{
 				buffer.Dispose();
-			}
+
 			buffers.Clear();
 		}
 	}

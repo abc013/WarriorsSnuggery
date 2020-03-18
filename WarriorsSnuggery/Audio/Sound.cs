@@ -1,60 +1,64 @@
-﻿using System;
+﻿using WarriorsSnuggery.Audio;
 
-namespace WarriorsSnuggery.Audio
+namespace WarriorsSnuggery
 {
-	public class SoundInfo
+	[Desc("Needed to play sound on specific events.")]
+	public class SoundType
 	{
-		[Desc("Describes whether the sound has to be player ingame.")]
-		public readonly bool InGame;
-
-		[Desc("Loops the sound until the specific length is played.")]
-		public readonly bool Loops;
-
-		[Desc("Length to play in seconds.")]
-		public readonly float Length;
-
 		[Desc("Basic volume in percent.")]
-		public readonly float Volume;
+		public readonly float Volume = 1f;
 
 		[Desc("Name of the audio file.")]
 		public readonly string Name;
 
 		public readonly AudioBuffer Buffer;
 
-		public SoundInfo(MiniTextNode[] nodes)
+		public SoundType(MiniTextNode[] nodes)
 		{
 			Loader.PartLoader.SetValues(this, nodes);
 
+			AudioManager.LoadSound(Name, FileExplorer.FindPath(FileExplorer.Misc, Name, ".wav"));
 			Buffer = AudioManager.GetBuffer(Name);
 		}
 	}
 
 	public class Sound
 	{
-		readonly SoundInfo info;
-		public CPos Position;
-
+		readonly SoundType info;
+		readonly bool inGame;
 		AudioSource source;
-		int length;
 
-		public Sound(SoundInfo info)
+		public Sound(SoundType info, bool inGame = true)
 		{
 			this.info = info;
+			this.inGame = inGame;
 		}
 
-		public void Play()
+		public void Play(CPos position, bool loops)
 		{
-			source = AudioController.Play(info.Buffer, info.InGame, info.Volume * Settings.EffectsVolume, info.Loops);
-			length = (int)Math.Ceiling(info.Length * 30);
+			source = AudioController.Play(info.Buffer, inGame, info.Volume, convert(position), loops);
 		}
 
-		public void Tick()
+		public void SetVolume(float volume)
 		{
-			length--;
-			if (length-- <= 0 && info.Length > 0)
+			source.SetVolume(volume, Settings.EffectsVolume * Settings.MasterVolume);
+		}
+
+		public void SetPosition(CPos position)
+		{
+			source.SetPosition(convert(position));
+		}
+
+		Vector convert(CPos position)
+		{
+			const float reduction = 3f;
+			if (inGame)
 			{
-				Stop();
+				position -= Camera.LookAt;
+				return position.ToVector() / new Vector(Camera.CurrentZoom * reduction, Camera.CurrentZoom * reduction, 1);
 			}
+
+			return position.ToVector() / new Vector(Camera.DefaultZoom * reduction, Camera.DefaultZoom * reduction, 1);
 		}
 
 		public void Pause(bool pause)
