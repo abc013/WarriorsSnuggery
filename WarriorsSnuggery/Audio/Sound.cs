@@ -24,9 +24,12 @@ namespace WarriorsSnuggery
 
 	public class Sound
 	{
+		const float reduction = 1000000f;
+
 		readonly SoundType info;
 		readonly bool inGame;
 		AudioSource source;
+		float dist;
 
 		public Sound(SoundType info, bool inGame = true)
 		{
@@ -36,22 +39,30 @@ namespace WarriorsSnuggery
 
 		public void Play(CPos position, bool loops)
 		{
-			source = AudioController.Play(info.Buffer, inGame, info.Volume, convert(position), loops);
+			var vector = convert(position);
+			dist = vector.Dist;
+			source = AudioController.Play(info.Buffer, inGame, info.Volume * distanceVolume(), vector, loops);
 		}
 
 		public void SetVolume(float volume)
 		{
-			source.SetVolume(volume, Settings.EffectsVolume * Settings.MasterVolume);
+			source.SetVolume(volume * distanceVolume(), Settings.EffectsVolume * Settings.MasterVolume);
 		}
 
 		public void SetPosition(CPos position)
 		{
-			source.SetPosition(convert(position));
+			var vector = convert(position);
+			dist = vector.Dist;
+			source.SetPosition(vector);
+		}
+
+		float distanceVolume()
+		{
+			return 1 / (1 + dist * reduction * 16);
 		}
 
 		Vector convert(CPos position)
 		{
-			const float reduction = 3f;
 			if (inGame)
 			{
 				position -= Camera.LookAt;
