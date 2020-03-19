@@ -26,6 +26,11 @@ namespace WarriorsSnuggery.Audio
 			AL.SourcePlay(source);
 		}
 
+		public void SetPitch(float pitch)
+		{
+			AL.Source(source, ALSourcef.Pitch, pitch);
+		}
+
 		public void SetVolume(float volume, float master)
 		{
 			this.volume = volume;
@@ -42,9 +47,10 @@ namespace WarriorsSnuggery.Audio
 			AL.Source(source, ALSource3f.Position, position.X, position.Y, position.Z);
 		}
 
-		public void CheckUsed()
+		public bool CheckUsed()
 		{
 			Used = AL.GetSourceState(source) == ALSourceState.Playing;
+			return Used;
 		}
 
 		public void Stop()
@@ -57,6 +63,7 @@ namespace WarriorsSnuggery.Audio
 			volume = 1f;
 
 			AL.Source(source, ALSourcef.Gain, 1f);
+			AL.Source(source, ALSourcef.Pitch, 1f);
 			AL.Source(source, ALSourceb.Looping, false);
 		}
 

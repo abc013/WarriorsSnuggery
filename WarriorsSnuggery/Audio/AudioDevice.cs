@@ -33,7 +33,7 @@ namespace WarriorsSnuggery.Audio
 				GameSources[i] = new AudioSource();
 		}
 
-		public AudioSource Play(AudioBuffer buffer, bool inGame, float volume, Vector position, bool loops)
+		public AudioSource Play(AudioBuffer buffer, bool inGame, float volume, float pitch, Vector position, bool loops)
 		{
 			if (!initialized)
 				return null;
@@ -42,11 +42,11 @@ namespace WarriorsSnuggery.Audio
 			{
 				foreach (var source in Sources)
 				{
-					source.CheckUsed();
-					if (!source.Used)
+					if (!source.CheckUsed())
 					{
 						source.SetPosition(position);
 						source.SetVolume(volume, Settings.MasterVolume);
+						source.SetPitch(pitch);
 						source.Start(buffer, loops);
 						return source;
 					}
@@ -56,11 +56,11 @@ namespace WarriorsSnuggery.Audio
 			{
 				foreach (var source in GameSources)
 				{
-					source.CheckUsed();
-					if (!source.Used)
+					if (!source.CheckUsed())
 					{
 						source.SetPosition(position);
 						source.SetVolume(volume, Settings.EffectsVolume * Settings.MasterVolume);
+						source.SetPitch(pitch);
 						source.Start(buffer, loops);
 						return source;
 					}

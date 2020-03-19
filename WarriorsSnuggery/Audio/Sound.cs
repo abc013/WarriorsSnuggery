@@ -8,6 +8,15 @@ namespace WarriorsSnuggery
 		[Desc("Basic volume in percent.")]
 		public readonly float Volume = 1f;
 
+		[Desc("Maximum random volume in percent.")]
+		public readonly float RandomVolume = 0f;
+
+		[Desc("Pitch in percent from 0.5 to 1.5.")]
+		public readonly float Pitch = 1f;
+
+		[Desc("Maximum random pitch in percent.")]
+		public readonly float RandomPitch = 0f;
+
 		[Desc("Name of the audio file.")]
 		public readonly string Name;
 
@@ -28,6 +37,8 @@ namespace WarriorsSnuggery
 
 		readonly SoundType info;
 		readonly bool inGame;
+		readonly float defaultVolume;
+		readonly float defaultPitch;
 		AudioSource source;
 		float dist;
 
@@ -35,18 +46,25 @@ namespace WarriorsSnuggery
 		{
 			this.info = info;
 			this.inGame = inGame;
+			defaultVolume = info.Volume + info.RandomVolume * (float)(Program.SharedRandom.NextDouble() - 0.5);
+			defaultPitch = info.Pitch + info.RandomPitch * (float)(Program.SharedRandom.NextDouble() - 0.5);
 		}
 
 		public void Play(CPos position, bool loops)
 		{
 			var vector = convert(position);
 			dist = vector.Dist;
-			source = AudioController.Play(info.Buffer, inGame, info.Volume * distanceVolume(), vector, loops);
+			source = AudioController.Play(info.Buffer, inGame, defaultVolume * distanceVolume(), defaultPitch, vector, loops);
 		}
 
 		public void SetVolume(float volume)
 		{
-			source.SetVolume(info.Volume * volume * distanceVolume(), Settings.EffectsVolume * Settings.MasterVolume);
+			source.SetVolume(defaultVolume * volume * distanceVolume(), Settings.EffectsVolume * Settings.MasterVolume);
+		}
+
+		public void SetPitch(float pitch)
+		{
+			source.SetPitch(defaultPitch * pitch);
 		}
 
 		public void SetPosition(CPos position)

@@ -8,12 +8,12 @@ namespace WarriorsSnuggery.Audio
 
 		public static AudioSource PlaySound(string name)
 		{
-			return AudioController.Play(buffers[name], false, 1f, Vector.Zero, false);
+			return AudioController.Play(buffers[name], false, 1f, 1f, Vector.Zero, false);
 		}
 
-		public static AudioSource PlaySound(string name, bool inGame, float volume, Vector position, bool loops = false)
+		public static AudioSource PlaySound(string name, bool inGame, float volume, float pitch, Vector position, bool loops = false)
 		{
-			return AudioController.Play(buffers[name], inGame, volume, position, loops);
+			return AudioController.Play(buffers[name], inGame, volume, pitch, position, loops);
 		}
 
 		public static AudioBuffer GetBuffer(string name)

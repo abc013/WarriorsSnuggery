@@ -19,9 +19,9 @@ namespace WarriorsSnuggery
 			Music.Tick();
 		}
 
-		public static AudioSource Play(AudioBuffer buffer, bool inGame, float volume, Vector position, bool loops)
+		public static AudioSource Play(AudioBuffer buffer, bool inGame, float volume, float pitch, Vector position, bool loops)
 		{
-			return device.Play(buffer, inGame, volume, position, loops);
+			return device.Play(buffer, inGame, volume, pitch, position, loops);
 		}
 
 		public static void StopAll(bool game)

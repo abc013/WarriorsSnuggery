@@ -24,7 +24,7 @@
 		public void Play()
 		{
 			length = Length;
-			source = AudioController.Play(buffer, false, Settings.MusicVolume, Vector.Zero, false);
+			source = AudioController.Play(buffer, false, Settings.MusicVolume, 1f, Vector.Zero, false);
 		}
 
 		public void SetVolume()
