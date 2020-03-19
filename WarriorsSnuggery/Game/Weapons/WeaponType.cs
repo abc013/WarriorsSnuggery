@@ -14,6 +14,9 @@
 		[Desc("Maximal Range the weapon can travel.")]
 		public readonly int MaxRange = 8192;
 
+		[Desc("Sound to be played on firing.")]
+		public readonly SoundType FireSound;
+
 		[Desc("Type of the Projectile.")]
 		public readonly IProjectileType Projectile;
 

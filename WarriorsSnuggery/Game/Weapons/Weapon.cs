@@ -45,6 +45,12 @@ namespace WarriorsSnuggery.Objects.Weapons
 				foreach (var effect in effects.Where(e => e.Spell.Type == Spells.EffectType.RANGE))
 					RangeModifier *= effect.Spell.Value;
 			}
+
+			if (Type.FireSound != null)
+			{
+				var sound = new Sound(Type.FireSound);
+				sound.Play(Position, false);
+			}
 		}
 
 		public override void Tick()
