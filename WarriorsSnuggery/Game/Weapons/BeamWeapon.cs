@@ -94,6 +94,9 @@ namespace WarriorsSnuggery.Objects.Weapons
 
 		public override void Tick()
 		{
+			if (Disposed)
+				return;
+
 			if (buildupduration-- == 0)
 				useTexture(projectileType.Beam);
 
