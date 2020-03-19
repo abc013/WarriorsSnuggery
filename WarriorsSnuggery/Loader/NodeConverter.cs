@@ -252,6 +252,9 @@ namespace WarriorsSnuggery.Loader
 				{
 					switch (child.Key)
 					{
+						case "Sound":
+							array[i++] = new Objects.Weapons.SoundWarhead(child.Children.ToArray());
+							break;
 						case "Smudge":
 							array[i++] = new Objects.Weapons.SmudgeWarhead(child.Children.ToArray());
 							break;
