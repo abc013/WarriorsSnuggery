@@ -46,7 +46,7 @@ namespace WarriorsSnuggery
 
 		public void SetVolume(float volume)
 		{
-			source.SetVolume(volume * distanceVolume(), Settings.EffectsVolume * Settings.MasterVolume);
+			source.SetVolume(info.Volume * volume * distanceVolume(), Settings.EffectsVolume * Settings.MasterVolume);
 		}
 
 		public void SetPosition(CPos position)

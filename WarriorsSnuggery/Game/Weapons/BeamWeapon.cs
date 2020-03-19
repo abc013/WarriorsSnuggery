@@ -9,6 +9,7 @@ namespace WarriorsSnuggery.Objects.Weapons
 		readonly BeamProjectileType projectileType;
 		readonly RayPhysics rayPhysics;
 
+		readonly Sound sound;
 		BatchRenderable[] renderables;
 		int renderabledistance;
 		int tick;
@@ -43,6 +44,12 @@ namespace WarriorsSnuggery.Objects.Weapons
 				useTexture(projectileType.BeamStartUp);
 			else
 				useTexture(projectileType.Beam);
+
+			if (projectileType.BeamSound != null)
+			{
+				sound = new Sound(projectileType.BeamSound);
+				sound.Play(OriginPos, true);
+			}
 		}
 
 		void useTexture(TextureInfo texture)
@@ -113,6 +120,8 @@ namespace WarriorsSnuggery.Objects.Weapons
 
 			var dist = (OriginPos - Position).FlatDist;
 
+			sound?.SetPosition((OriginPos + Position) / new CPos(2, 2, 1));
+
 			if (dist > Type.MaxRange * RangeModifier)
 			{
 				var angle = (OriginPos - TargetPosition).FlatAngle;
@@ -142,6 +151,12 @@ namespace WarriorsSnuggery.Objects.Weapons
 			OriginPos = Origin.ActiveWeapon.WeaponOffsetPosition;
 			rayPhysics.Start = OriginPos;
 			rayPhysics.StartHeight = OriginHeight;
+		}
+
+		public override void Dispose()
+		{
+			base.Dispose();
+			sound?.Stop();
 		}
 	}
 }

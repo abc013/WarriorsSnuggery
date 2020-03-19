@@ -122,6 +122,9 @@ namespace WarriorsSnuggery.Objects.Weapons
 		[Desc("Particles that are emitted along the path of the beamweapon.")]
 		public readonly ParticleSpawner BeamParticles;
 
+		[Desc("Sound to play while the beam is running. This sound is looping.")]
+		public readonly SoundType BeamSound;
+
 		[Desc("Inaccuracy of the weapon.")]
 		public readonly int Inaccuracy;
 
