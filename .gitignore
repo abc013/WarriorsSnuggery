@@ -268,3 +268,13 @@ __pycache__/
 /WarriorsSnuggery.exe
 /Settings.yaml
 logs/
+/OpenToolkit.Windowing.GraphicsLibraryFramework.dll
+/OpenToolkit.Windowing.Desktop.dll
+/OpenToolkit.Windowing.Common.dll
+/OpenToolkit.Mathematics.dll
+/OpenToolkit.Input.dll
+/OpenToolkit.Graphics.dll
+/OpenToolkit.Core.dll
+/OpenAL32.dll
+/glfw3-x86.dll
+/glfw3-x64.dll
