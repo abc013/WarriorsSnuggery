@@ -62,16 +62,25 @@ namespace WarriorsSnuggery
 
 		public void SetVolume(float volume)
 		{
+			if (source == null)
+				return;
+
 			source.SetVolume(defaultVolume * volume * distanceVolume(), Settings.EffectsVolume * Settings.MasterVolume);
 		}
 
 		public void SetPitch(float pitch)
 		{
+			if (source == null)
+				return;
+
 			source.SetPitch(defaultPitch * pitch);
 		}
 
 		public void SetPosition(CPos position)
 		{
+			if (source == null)
+				return;
+
 			var vector = convert(position);
 			dist = vector.Dist;
 			source.SetPosition(vector);
