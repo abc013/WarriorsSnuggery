@@ -134,7 +134,8 @@ namespace WarriorsSnuggery.Objects.Parts
 
 			void activate(Actor actor)
 			{
-				getFunction().Invoke(actor);
+				if (!invokeFunction(actor))
+					return;
 
 				activated = true;
 				lastActor = actor;
@@ -155,109 +156,91 @@ namespace WarriorsSnuggery.Objects.Parts
 					self.Killed(null);
 			}
 
-			Action<Actor> getFunction()
+			bool invokeFunction(Actor a)
 			{
+				var game = a.World.Game;
 				switch (info.Type)
 				{
 					case CollectableType.HEALTH:
-						return (a) =>
-						{
-							if (a.Health != null)
-								a.Health.HP += info.Value;
-						};
+						if (a.Health == null)
+							return false;
+						if (a.Health.HP == a.Health.MaxHP)
+							return false;
+						
+						a.Health.HP += info.Value;
 
+						return true;
 					case CollectableType.MANA:
-						return (a) =>
-						{
-							var stats = a.World.Game.Statistics;
-							stats.Mana += info.Value;
-							if (stats.Mana > stats.MaxMana)
-								stats.Mana = stats.MaxMana;
-						};
+						var stats = a.World.Game.Statistics;
+						if (stats.Mana == stats.MaxMana)
+							return false;
 
+						stats.Mana += info.Value;
+						if (stats.Mana > stats.MaxMana)
+							stats.Mana = stats.MaxMana;
+
+						return true;
 					case CollectableType.MONEY:
-						return (a) => a.World.Game.Statistics.Money += info.Value;
+						a.World.Game.Statistics.Money += info.Value;
 
+						return true;
 					case CollectableType.NEXT_LEVEL:
-						return (a) =>
+						if (game.Type == GameType.TEST)
 						{
-							var game = a.World.Game;
-							if (game.Type == GameType.TEST)
-							{
-								game.InstantLevelChange(GameType.MAINMENU);
-							}
-							else
-							{
-								game.Statistics.Money += info.Value;
-								game.VictoryConditionsMet();
-							}
-						};
-					case CollectableType.NEXT_LEVEL_INSTANT:
-						return (a) =>
-						{
-							var game = a.World.Game;
-							if (game.Type == GameType.TEST)
-							{
-								game.InstantLevelChange(GameType.MAINMENU);
-							}
-							else
-							{
-								game.Statistics.Money += info.Value;
-								game.InstantLevelChange(GameType.NORMAL);
-							}
-						};
-
-					case CollectableType.TUTORIAL_LEVEL:
-						return (a) =>
-						{
-							var game = a.World.Game;
-							game.InstantLevelChange(GameType.TUTORIAL);
-						};
-
-					case CollectableType.MAIN_LEVEL:
-						return (a) =>
-						{
-							var game = a.World.Game;
-							game.Statistics.Money += info.Value;
-							game.InstantLevelChange(GameType.MENU);
-						};
-
-					case CollectableType.MAINMENU_LEVEL:
-						return (a) =>
-						{
-							var game = a.World.Game;
 							game.InstantLevelChange(GameType.MAINMENU);
-						};
+						}
+						else
+						{
+							game.Statistics.Money += info.Value;
+							game.VictoryConditionsMet();
+						}
+						return true;
+					case CollectableType.NEXT_LEVEL_INSTANT:
+						if (game.Type == GameType.TEST)
+						{
+							game.InstantLevelChange(GameType.MAINMENU);
+						}
+						else
+						{
+							game.Statistics.Money += info.Value;
+							game.InstantLevelChange(GameType.NORMAL);
+						}
 
+						return true;
+					case CollectableType.TUTORIAL_LEVEL:
+						game.InstantLevelChange(GameType.TUTORIAL);
+
+						return true;
+					case CollectableType.MAIN_LEVEL:
+						game.Statistics.Money += info.Value;
+						game.InstantLevelChange(GameType.MENU);
+
+						return true;
+					case CollectableType.MAINMENU_LEVEL:
+						game.InstantLevelChange(GameType.MAINMENU);
+
+						return true;
 					case CollectableType.NEW_STORY_GAME:
-						return (a) =>
-						{
-							var game = a.World.Game;
-							game.Pause(true);
-							game.ScreenControl.ShowScreen(UI.ScreenType.NEW_STORY_GAME);
-						};
+						game.Pause(true);
+						game.ScreenControl.ShowScreen(UI.ScreenType.NEW_STORY_GAME);
 
+						return true;
 					case CollectableType.NEW_CUSTOM_GAME:
-						return (a) =>
-						{
-							var game = a.World.Game;
-							game.Pause(true);
-							game.ScreenControl.ShowScreen(UI.ScreenType.NEW_CUSTOM_GAME);
-						};
+						game.Pause(true);
+						game.ScreenControl.ShowScreen(UI.ScreenType.NEW_CUSTOM_GAME);
 
+						return true;
 					case CollectableType.TECH_TREE:
-						return (a) =>
-						{
-							var game = a.World.Game;
-							game.Pause(true);
-							game.ScreenControl.ShowScreen(UI.ScreenType.TECHTREE);
-						};
+						game.Pause(true);
+						game.ScreenControl.ShowScreen(UI.ScreenType.TECHTREE);
 
+						return true;
 					case CollectableType.TEXT:
-						return (a) => a.World.Add(new ActionText(a.Position + new CPos(0, 0, 1024), new CPos(0, -15, 30), info.Value, ActionText.ActionTextType.TRANSFORM, info.Text));
+						a.World.Add(new ActionText(a.Position + new CPos(0, 0, 1024), new CPos(0, -15, 30), info.Value, ActionText.ActionTextType.TRANSFORM, info.Text));
 
+						return true;
 					default:
-						return (a) => { };
+						return true;
 				}
 			}
 		}
