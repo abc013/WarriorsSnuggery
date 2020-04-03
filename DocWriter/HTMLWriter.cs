@@ -94,6 +94,11 @@ namespace WarriorsSnuggery
 					break;
 				case DocumentationType.SPELLS:
 					ObjectWriter.WriteSpells(writer);
+
+					break;
+				case DocumentationType.SOUNDS:
+					ObjectWriter.WriteSounds(writer);
+
 					break;
 			}
 		}
@@ -210,6 +215,12 @@ namespace WarriorsSnuggery
 
 			HTMLWriter.WriteHead(writer, "Spell");
 			TypeWriter.Write(writer, "WarriorsSnuggery.Spells.Spell", new[] { new MiniTextNode[0] });
+		}
+
+		public static void WriteSounds(StreamWriter writer)
+		{
+			HTMLWriter.WriteHead(writer, "Sound");
+			TypeWriter.Write(writer, "WarriorsSnuggery.SoundType", new object[] { new MiniTextNode[0], true });
 		}
 	}
 }

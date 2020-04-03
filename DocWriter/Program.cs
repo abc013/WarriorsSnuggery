@@ -13,7 +13,8 @@ namespace WarriorsSnuggery
 		TERRAIN,
 		WALLS,
 		MAPS,
-		SPELLS
+		SPELLS,
+		SOUNDS
 	}
 
 	static class Program
@@ -25,7 +26,7 @@ namespace WarriorsSnuggery
 			Console.ForegroundColor = ConsoleColor.White;
 
 			Console.WriteLine("Welcome to the WarriorsSnuggery DocWriter. This program will search through the installation and create a documentation of the modding rules.");
-			Console.WriteLine("Available are: ALL, ACTORS, PARTICLES, WEAPONS, TERRAIN, WALLS, MAPS and SPELLS.");
+			Console.WriteLine("Available are: ALL, ACTORS, PARTICLES, WEAPONS, TERRAIN, WALLS, MAPS, SPELLS and SOUNDS.");
 
 			Console.ForegroundColor = ConsoleColor.Yellow;
 
@@ -102,7 +103,7 @@ namespace WarriorsSnuggery
 				types[i] = (DocumentationType)Enum.Parse(typeof(DocumentationType), strings[i].Trim(), true);
 
 			if (types.Contains(DocumentationType.ALL))
-				types = new DocumentationType[] { DocumentationType.ACTORS, DocumentationType.PARTICLES, DocumentationType.WEAPONS, DocumentationType.WALLS, DocumentationType.TERRAIN, DocumentationType.MAPS, DocumentationType.SPELLS };
+				types = new DocumentationType[] { DocumentationType.ACTORS, DocumentationType.PARTICLES, DocumentationType.WEAPONS, DocumentationType.WALLS, DocumentationType.TERRAIN, DocumentationType.MAPS, DocumentationType.SPELLS, DocumentationType.SOUNDS };
 
 			return types;
 		}

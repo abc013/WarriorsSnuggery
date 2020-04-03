@@ -22,12 +22,15 @@ namespace WarriorsSnuggery
 
 		public readonly AudioBuffer Buffer;
 
-		public SoundType(MiniTextNode[] nodes)
+		public SoundType(MiniTextNode[] nodes, bool isDocumentation = false)
 		{
 			Loader.PartLoader.SetValues(this, nodes);
 
-			AudioManager.LoadSound(Name, FileExplorer.FindPath(FileExplorer.Misc, Name, ".wav"));
-			Buffer = AudioManager.GetBuffer(Name);
+			if (!isDocumentation)
+			{
+				AudioManager.LoadSound(Name, FileExplorer.FindPath(FileExplorer.Misc, Name, ".wav"));
+				Buffer = AudioManager.GetBuffer(Name);
+			}
 		}
 	}
 
