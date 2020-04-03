@@ -14,6 +14,9 @@ namespace WarriorsSnuggery.Objects.Parts
 		[Desc("When true, the actor will be able to trigger other objects.")]
 		public readonly bool CanTrigger;
 
+		[Desc("Determines whether this actor needs to be killed in order to win a match.")]
+		public readonly bool KillForVictory = false;
+
 		[Desc("Height of the actor.")]
 		public readonly int Height;
 
@@ -61,6 +64,11 @@ namespace WarriorsSnuggery.Objects.Parts
 		public bool CanTrigger
 		{
 			get { return info.CanTrigger; }
+			set { }
+		}
+		public bool KillForVictory
+		{
+			get { return info.KillForVictory; }
 			set { }
 		}
 

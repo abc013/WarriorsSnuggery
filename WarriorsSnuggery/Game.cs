@@ -350,7 +350,7 @@ namespace WarriorsSnuggery
 						VictoryConditionsMet();
 					break;
 				case GameMode.KILL_ENEMIES:
-					var actor = World.Actors.Find(a => !(a.Team == Actor.PlayerTeam || a.Team == Actor.NeutralTeam));
+					var actor = World.Actors.Find(a => (a.WorldPart != null && a.WorldPart.KillForVictory) && !(a.Team == Actor.PlayerTeam || a.Team == Actor.NeutralTeam));
 
 					if (actor == null)
 						VictoryConditionsMet();
