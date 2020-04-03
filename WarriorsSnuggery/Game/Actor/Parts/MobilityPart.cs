@@ -18,6 +18,8 @@ namespace WarriorsSnuggery.Objects.Parts
 		public readonly bool CanFly;
 		[Desc("Gravity to apply while flying.", "Gravity will not be applied when the actor can fly.")]
 		public readonly CPos Gravity = new CPos(0, 0, -9);
+		[Desc("Sound to be played while moving.")]
+		public readonly SoundType Sound;
 
 		public override ActorPart Create(Actor self)
 		{
@@ -39,6 +41,8 @@ namespace WarriorsSnuggery.Objects.Parts
 
 		public CPos Force;
 		public CPos Velocity;
+		public CPos oldVelocity;
+		public Sound sound;
 
 		public bool CanFly
 		{
@@ -48,6 +52,8 @@ namespace WarriorsSnuggery.Objects.Parts
 		public MobilityPart(Actor self, MobilityPartInfo info) : base(self)
 		{
 			this.info = info;
+			if (info.Sound != null)
+				sound = new Sound(info.Sound);
 		}
 
 		public override void Tick()
@@ -71,7 +77,14 @@ namespace WarriorsSnuggery.Objects.Parts
 					if (Math.Sign(Velocity.Z) != signZ)
 						Velocity = new CPos(Velocity.X, Velocity.Y, 0);
 				}
+
+				if (oldVelocity == CPos.Zero)
+					sound?.Play(self.Position, true);
 			}
+			else if (oldVelocity == CPos.Zero)
+				sound?.Stop();
+			oldVelocity = Velocity;
+
 			if (self.Height > 0 && !CanFly)
 				Force += info.Gravity;
 
@@ -89,6 +102,8 @@ namespace WarriorsSnuggery.Objects.Parts
 				Velocity = new CPos(Velocity.X, (int)maxSpeed * Math.Sign(Velocity.Y), Velocity.Z);
 			if (Math.Abs(Velocity.Z) > maxSpeed)
 				Velocity = new CPos(Velocity.X, Velocity.Y, (int)maxSpeed * Math.Sign(Velocity.Z));
+
+			sound?.SetPosition(self.Position);
 		}
 
 		public new void OnAccelerate(CPos acceleration)

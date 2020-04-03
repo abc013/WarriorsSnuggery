@@ -46,6 +46,8 @@ namespace WarriorsSnuggery.Objects.Parts
 
 		[Desc("Spawn particles when triggered.")]
 		public readonly ParticleSpawner ParticleSpawner;
+		[Desc("Play sound when triggered.")]
+		public readonly SoundType Sound;
 
 		[Desc("Value field for the effect.")]
 		public readonly int Value;
@@ -142,6 +144,11 @@ namespace WarriorsSnuggery.Objects.Parts
 				{
 					foreach (var particle in info.ParticleSpawner.Create(self.World, self.Position, actor.Height))
 						self.World.Add(particle);
+				}
+				if (info.Sound != null)
+				{
+					var sound = new Sound(info.Sound);
+					sound.Play(self.Position, false);
 				}
 
 				if (info.KillsSelf)
