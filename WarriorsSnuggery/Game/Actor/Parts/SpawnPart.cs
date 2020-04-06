@@ -101,9 +101,9 @@ namespace WarriorsSnuggery.Objects.Parts
 			switch (info.Type)
 			{
 				case "ACTOR":
-					@object = ActorCreator.Create(self.World, info.Name, randomPosition(), info.InheritsTeam ? self.Team : Actor.NeutralTeam, info.InheritsBot ? self.IsBot : false);
+					@object = ActorCreator.Create(self.World, info.Name, randomPosition(), info.InheritsTeam ? self.Team : Actor.NeutralTeam, info.InheritsBot && self.IsBot);
 
-					if (self.IsBot)
+					if (info.InheritsBot && self.IsBot)
 						((Actor)@object).BotPart.Target = self.BotPart.Target;
 					break;
 				case "PARTICLE":
@@ -113,7 +113,7 @@ namespace WarriorsSnuggery.Objects.Parts
 					@object = WeaponCreator.Create(self.World, info.Name, randomPosition(), self);
 					break;
 				default:
-					throw new YamlInvalidNodeException(string.Format("SpawnOnDeath does not create objects of class '{0}'.", info.Type));
+					throw new YamlInvalidNodeException(string.Format("Spawn does not create objects of type '{0}'.", info.Type));
 			}
 			@object.Height = self.Height + info.Offset.Z;
 			self.World.Add(@object);
