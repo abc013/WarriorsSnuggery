@@ -366,6 +366,10 @@ namespace WarriorsSnuggery.Physics
 			var delta = Target - Start;
 			var dist = center - Start;
 
+			// check signs and whether the vectors are opposing themselves
+			if ((delta.X ^ dist.X) < 0 && (delta.Y ^ dist.Y) < 0 && dist.FlatDist - radius > 0)
+				return invalid;
+
 			double a = (delta.X * delta.X) + (delta.Y * delta.Y);
 			double b = 2 * ((delta.X * dist.X) + (delta.Y * dist.Y));
 			double c = (dist.X * dist.X) + (dist.Y * dist.Y) - radius * radius;
