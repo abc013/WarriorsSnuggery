@@ -2,60 +2,99 @@
 
 namespace WarriorsSnuggery.Objects.Parts
 {
-	[Desc("Spawns objects when the object dies.", "Without the health rule, this rule is useless.")]
-	public class SpawnOnDeathPartInfo : PartInfo
+	public enum Occasion
+	{
+		DAMAGE,
+		DEATH,
+		TICK
+	}
+
+	[Desc("Spawns objects when the object takes damage.", "Without the health rule, this rule is useless.")]
+	public class SpawnPartInfo : PartInfo
 	{
 		[Desc("Probability that the object will be spawned.")]
 		public readonly float Probability = 1f;
 		[Desc("Count of spawned objects.")]
 		public readonly int Count;
+		[Desc("Time distance between spawn of the objects in ticks.", "Used for the TICK occasion.")]
+		public readonly int Tick;
 		[Desc("Name of the object.")]
 		public readonly string Name;
+
 		[Desc("Object will inherit Team from the dead object.")]
 		public readonly bool InheritsTeam;
 		[Desc("Object will inherit Bot from the dead object.")]
 		public readonly bool InheritsBot;
-		[Desc("Type of the object.")]
+
+		[Desc("Type of the object.", "This can be set either to ACTOR, PARTICLE or WEAPON.")]
 		public readonly string Type;
 		[Desc("Condition to spawn.")]
 		public readonly Condition Condition;
+		[Desc("Defines when the objects should be spawned.", "possible: DAMAGE, DEATH, TICK")]
+		public readonly Occasion Occasion;
+
 		[Desc("Offset from the center of idling object where the objects spawn.", "Z-coordinate will be used for height.")]
 		public readonly CPos Offset;
 		[Desc("Radius in which the objects get spawned randomly.", "If set to 0, physics radius will be used when possible.")]
 		public readonly int Radius;
+		[Desc("Threshold for damage concerning the DAMAGE occasion.")]
+		public readonly int DamageThreshold = 2;
 
 		[Desc("Spawn object at center of actor, not random.")]
 		public readonly bool AtCenter;
 
 		public override ActorPart Create(Actor self)
 		{
-			return new SpawnOnDeathPart(self, this);
+			return new SpawnPart(self, this);
 		}
 
-		public SpawnOnDeathPartInfo(string internalName, MiniTextNode[] nodes) : base(internalName, nodes)
+		public SpawnPartInfo(string internalName, MiniTextNode[] nodes) : base(internalName, nodes)
 		{
 
 		}
 	}
 
-	public class SpawnOnDeathPart : ActorPart
+	public class SpawnPart : ActorPart
 	{
-		readonly SpawnOnDeathPartInfo info;
+		readonly SpawnPartInfo info;
+		int curTick;
 
-		public SpawnOnDeathPart(Actor self, SpawnOnDeathPartInfo info) : base(self)
+		public SpawnPart(Actor self, SpawnPartInfo info) : base(self)
 		{
 			this.info = info;
 		}
 
+		public override void OnDamage(Actor damager, int damage)
+		{
+			if (info.Occasion == Occasion.DAMAGE && damage > info.DamageThreshold)
+				create();
+		}
+
 		public override void OnKilled(Actor killer)
 		{
-			for (int i = 0; i < info.Count; i++)
+			if (info.Occasion == Occasion.DEATH)
+				create();
+		}
+
+		public override void Tick()
+		{
+			if (info.Occasion == Occasion.TICK && curTick-- < 0)
 				create();
 		}
 
 		void create()
 		{
-			if ((info.Condition != null && !info.Condition.True(self)) || self.World.Game.SharedRandom.NextDouble() > info.Probability)
+			curTick = info.Tick;
+			if(info.Condition == null || info.Condition.True(self))
+			{
+				for (int i = 0; i < info.Count; i++)
+					createParticle();
+			}
+		}
+
+		void createParticle()
+		{
+			if (self.World.Game.SharedRandom.NextDouble() > info.Probability)
 				return;
 
 			PhysicsObject @object;
@@ -64,7 +103,7 @@ namespace WarriorsSnuggery.Objects.Parts
 				case "ACTOR":
 					@object = ActorCreator.Create(self.World, info.Name, randomPosition(), info.InheritsTeam ? self.Team : Actor.NeutralTeam, info.InheritsBot ? self.IsBot : false);
 
-					if (self.IsBot && info.InheritsBot)
+					if (self.IsBot)
 						((Actor)@object).BotPart.Target = self.BotPart.Target;
 					break;
 				case "PARTICLE":

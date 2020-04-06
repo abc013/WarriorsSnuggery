@@ -148,10 +148,7 @@
     <Compile Include="Game\Actor\Parts\RegenerationPart.cs" />
     <Compile Include="Game\Actor\Parts\RenderablePart.cs" />
     <Compile Include="Game\Actor\Parts\RevealsShroudPart.cs" />
-    <Compile Include="Game\Actor\Parts\SpawnOnDamagePart.cs" />
-    <Compile Include="Game\Actor\Parts\SpawnOnDeathPart.cs" />
-    <Compile Include="Game\Actor\Parts\SpawnOnIdlePart.cs" />
-    <Compile Include="Game\Actor\Parts\SpawnOnMovePart.cs" />
+    <Compile Include="Game\Actor\Parts\SpawnPart.cs" />
     <Compile Include="Game\Actor\Parts\SpritePart.cs" />
     <Compile Include="Game\Actor\Parts\WeaponPart.cs" />
     <Compile Include="Game\Actor\Parts\WorldPart.cs" />
