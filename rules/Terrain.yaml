@@ -73,6 +73,7 @@
 11=
 	Sprite=lava_stone
 	Speed=0.3
+	Damage=1
 
 12=
 	Sprite=brickstone2

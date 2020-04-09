@@ -49,6 +49,8 @@ namespace WarriorsSnuggery.Objects
 
 		[Desc("Speed modifier for actors.")]
 		public readonly float Speed;
+		[Desc("Possible damage to actors being on this ground, used every 2 ticks.")]
+		public readonly int Damage;
 
 		public readonly bool Overlaps;
 		[Desc("Overlap height. The higher the value, the more tiles with smaller numbers will be overlapped.")]

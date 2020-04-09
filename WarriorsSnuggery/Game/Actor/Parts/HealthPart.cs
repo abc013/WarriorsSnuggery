@@ -56,5 +56,12 @@
 
 			HP = StartHealth;
 		}
+
+		public override void Tick()
+		{
+			var terrain = self.World.TerrainAt(self.Position);
+			if (terrain != null && self.World.Game.LocalTick % 2 == 0)
+				HP -= terrain.Type.Damage;
+		}
 	}
 }
