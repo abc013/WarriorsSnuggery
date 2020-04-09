@@ -50,7 +50,7 @@ namespace WarriorsSnuggery
 
 		public static float EffectsVolume = 1f;
 
-		public static float MusicVolume = 1f;
+		public static float MusicVolume = 0.5f;
 
 		public static Dictionary<string, string> KeyDictionary = new Dictionary<string, string>();
 
