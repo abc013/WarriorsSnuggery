@@ -56,7 +56,7 @@ Anger=
 		Cooldown=2400
 	Icon=anger
 		Size=12,12
-	Description=Decreases cooldown (-60%) for 20 seconds.
+	Description=Decreases weapon reload (-60%) for 20 seconds.
 
 Strength=
 	Before=Warm_up,First_hit
