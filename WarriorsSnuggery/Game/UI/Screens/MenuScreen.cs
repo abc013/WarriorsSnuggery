@@ -39,7 +39,7 @@ namespace WarriorsSnuggery.UI
 					break;
 				default:
 					Content.Add(ButtonCreator.Create("wooden", new CPos(2048, height, 0), "Restart", () => humanAgree(() => { GameController.CreateNew(game.Statistics, GameType.NORMAL, true); }, "Are you sure you want to restart? Current progress in this level will be lost!")));
-					Content.Add(ButtonCreator.Create("wooden", new CPos(-2048, height, 0), "Headquarters", () => humanAgree(() => { game.Statistics.Level--; GameController.CreateNew(game.Statistics, GameType.MENU); }, "Are you sure to return? All progress in this level will be lost!"))); // Level is still the same as it was not finished
+					Content.Add(ButtonCreator.Create("wooden", new CPos(-2048, height, 0), "Headquarters", () => humanAgree(() => { GameController.CreateNew(game.Statistics, GameType.MENU); }, "Are you sure to return? All progress in this level will be lost!"))); // Level is still the same as it was not finished
 					break;
 			}
 
