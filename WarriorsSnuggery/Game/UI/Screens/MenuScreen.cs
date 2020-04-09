@@ -44,10 +44,6 @@ namespace WarriorsSnuggery.UI
 			}
 
 			height += 512;
-			//Content.Add(new ColoredLine(new CPos(4096, height, 0), Color.White, 8f)
-			//{
-			//	Rotation = new VAngle(0, 0, 90)
-			//});
 			if (game.Type != GameType.EDITOR && game.Type != GameType.TUTORIAL && game.Type != GameType.TEST)
 			{
 				height += 512;
@@ -56,10 +52,6 @@ namespace WarriorsSnuggery.UI
 					Content.Add(ButtonCreator.Create("wooden", new CPos(2048, height, 0), "Save Game", () => game.ChangeScreen(ScreenType.SAVE)));
 
 				height += 512;
-				//Content.Add(new ColoredLine(new CPos(4096, height, 0), Color.White, 8f)
-				//{
-				//	Rotation = new VAngle(0, 0, 90)
-				//});
 			}
 			height += 512;
 			Content.Add(ButtonCreator.Create("wooden", new CPos(0, height, 0), "Settings", () => game.ChangeScreen(ScreenType.SETTINGS)));
@@ -70,12 +62,7 @@ namespace WarriorsSnuggery.UI
 				Content.Add(ButtonCreator.Create("wooden", new CPos(0, height, 0), "Editor", () => game.ChangeScreen(ScreenType.EDITORSELECTION)));
 			}
 
-			height += 512;
-			//Content.Add(new ColoredLine(new CPos(4096, height, 0), Color.White, 8f)
-			//{
-			//	Rotation = new VAngle(0, 0, 90)
-			//});
-			height += 512;
+			height += 1024;
 			Content.Add(ButtonCreator.Create("wooden", new CPos(0, height, 0), "Exit Game", () => humanAgree(Program.Exit, "Are you sure you want to exit the game?")));
 		}
 
