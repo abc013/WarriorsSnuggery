@@ -18,13 +18,15 @@ namespace WarriorsSnuggery.Objects.Conditions
 				{ "MissionKillEnemies", game.Mode == GameMode.KILL_ENEMIES },
 				{ "MissionFindExit", game.Mode == GameMode.FIND_EXIT },
 				{ "MissionWaves", game.Mode == GameMode.WAVES },
-				{ "IsMenu", game.Type == GameType.MAINMENU || game.Type == GameType.MENU }
+				{ "IsMenu", game.Type == GameType.MAINMENU || game.Type == GameType.MENU },
+				{ "KeyFound", false }
 			};
 		}
 
 		public void Tick()
 		{
 			items["Enemies"] = game.World.Actors.Any(a => a.Team != Actor.PlayerTeam && a.Team != Actor.NeutralTeam);
+			items["KeyFound"] = game.World.KeyFound;
 		}
 
 		public bool CheckCondition(Condition condition, Actor actor)

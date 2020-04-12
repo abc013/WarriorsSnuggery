@@ -1,3 +1,14 @@
+key=
+	Sprite=
+		Name=key
+		Dimensions=8,8
+		UseAsPreview=true
+	Collectable=
+		Radius=512
+		Type=KEY
+		MultipleActivations=false
+		KillsSelf=true
+
 apple=
 	Sprite=
 		Name=apple
@@ -44,12 +55,12 @@ exit_pad=
 		Name=blockedexit
 		Dimensions=24,24
 		Offset=0,0,-2048
-		Condition=Enemies
+		Condition=!KeyFound
 	Collectable=
 		Type=NEXT_LEVEL
 		Radius=512
 		OnlyByPlayer=yes
-		Condition=!Enemies
+		Condition=KeyFound
 
 instant_exit_pad=
 	Sprite=

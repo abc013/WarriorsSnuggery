@@ -21,13 +21,14 @@ namespace WarriorsSnuggery.Objects.Parts
 		NEW_GAME,
 		NEW_STORY_GAME,
 		NEW_CUSTOM_GAME,
-		TECH_TREE
+		TECH_TREE,
+		KEY
 	}
 
 	[Desc("Attach to an actor to make it trigger an effect when an actor gets near.")]
 	public class CollectablePartInfo : PartInfo
 	{
-		[Desc("Type of the effect on triggering.", "Possible: NONE, MONEY, HEALTH, NEXT_LEVEL, NEXT_LEVEL_INSTANT, TUTORIAL_LEVEL, MAIN_LEVEL, MAINMENU_LEVEL, TEXT, SPAWNOBJECT, NEW_GAME, NEW_STORY_GAME, NEW_CUSTOM_GAME, TECH_TREE;")]
+		[Desc("Type of the effect on triggering.", "Possible: NONE, MONEY, HEALTH, NEXT_LEVEL, NEXT_LEVEL_INSTANT, TUTORIAL_LEVEL, MAIN_LEVEL, MAINMENU_LEVEL, TEXT, SPAWNOBJECT, NEW_GAME, NEW_STORY_GAME, NEW_CUSTOM_GAME, TECH_TREE, KEY;")]
 		public readonly CollectableType Type = CollectableType.NONE;
 		[Desc("Scanradius for triggering.")]
 		public readonly int Radius = 512;
@@ -237,6 +238,10 @@ namespace WarriorsSnuggery.Objects.Parts
 						return true;
 					case CollectableType.TEXT:
 						a.World.Add(new ActionText(a.Position + new CPos(0, 0, 1024), new CPos(0, -15, 30), info.Value, ActionText.ActionTextType.TRANSFORM, info.Text));
+
+						return true;
+					case CollectableType.KEY:
+						a.World.KeyFound = true;
 
 						return true;
 					default:

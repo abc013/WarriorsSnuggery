@@ -92,16 +92,16 @@ namespace WarriorsSnuggery.UI
 					missionText.SetText("No mission.");
 					break;
 				case GameMode.TUTORIAL:
-					missionText.SetText("Follow the blue panels!");
+					missionText.SetText("Follow the arrows and step on blue panels!");
 					break;
 				case GameMode.FIND_EXIT:
-					missionText.SetText("Search for the exit!");
+					missionText.SetText("Search for the exit and gain access to it!");
 					break;
 				case GameMode.WAVES:
-					missionText.SetText("Defend your position!");
+					missionText.SetText("Defend your position from incoming waves!");
 					break;
 				case GameMode.KILL_ENEMIES:
-					missionText.SetText("Wipe out all enemies!");
+					missionText.SetText("Wipe out all enemies on the map!");
 					break;
 			}
 			Content.Add(missionText);

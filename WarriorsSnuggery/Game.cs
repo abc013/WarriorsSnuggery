@@ -348,6 +348,7 @@ namespace WarriorsSnuggery
 				case GameMode.WAVES:
 					if (waveController.Done())
 						VictoryConditionsMet();
+
 					break;
 				case GameMode.KILL_ENEMIES:
 					var actor = World.Actors.Find(a => (a.WorldPart != null && a.WorldPart.KillForVictory) && !(a.Team == Actor.PlayerTeam || a.Team == Actor.NeutralTeam));
