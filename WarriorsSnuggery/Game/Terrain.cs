@@ -89,11 +89,16 @@ namespace WarriorsSnuggery.Objects
 			if (!Type.Overlaps)
 				return;
 
+			// Special case: Map size is 1x1
+			var visible = world.Map.Bounds.X != 1 && world.Map.Bounds.Y != 1;
 			for (int i = 0; i < 4; i++)
 			{
-				edgesVisible[i] = true;
-				cornersVisible[i] = true;
+				edgesVisible[i] = visible;
+				cornersVisible[i] = visible;
 			}
+
+			if (!visible)
+				return;
 
 			bool isEdgeLeft = Position.X == 0;
 			bool isEdgeRight = Position.X >= world.Map.Bounds.X - 1;
