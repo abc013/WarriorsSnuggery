@@ -152,8 +152,6 @@ namespace WarriorsSnuggery.UI
 				if (game.Statistics.UnlockedSpells.ContainsKey(node.InnerName) && game.Statistics.UnlockedSpells[node.InnerName])
 					return;
 
-				var prerequisitesMet = true;
-
 				foreach (var before in node.Before)
 				{
 					if (before.Trim() == "")
@@ -162,19 +160,12 @@ namespace WarriorsSnuggery.UI
 					if (game.Statistics.UnlockedSpells.ContainsKey(before) && game.Statistics.UnlockedSpells[before])
 						continue;
 
-					prerequisitesMet = false;
 					foreach (var node in SpellTreeLoader.SpellTree)
 					{
-						if (node.InnerName == before)
-						{
-							prerequisitesMet = node.Unlocked;
-							continue;
-						}
+						if (node.InnerName == before && !node.Unlocked)
+							return;
 					}
 				}
-
-				if (!prerequisitesMet)
-					return;
 
 				if (game.Statistics.Money < node.Cost)
 					return;
