@@ -37,7 +37,8 @@ namespace WarriorsSnuggery.UI
 			for (int i = 0; i < tree.Length; i++)
 			{
 				var origin = SpellTreeLoader.SpellTree[i];
-				SpellNode spell = new SpellNode(origin.VisualPosition, origin, game);
+				SpellNode spell = new SpellNode(origin.VisualPosition, origin, game, this);
+				spell.CheckAvailability();
 				tree[i] = spell;
 				foreach (var connection in origin.Before)
 				{
@@ -88,10 +89,18 @@ namespace WarriorsSnuggery.UI
 				moneyText.Scale = (cashCooldown / 10f) + 1f;
 		}
 
+		public void UpdateAvailability()
+		{
+			foreach (var node in tree)
+				node.CheckAvailability();
+		}
+
 		public override void Hide()
 		{
 			foreach (var spell in tree)
 				spell.DisableTooltip();
+
+			game.ScreenControl.UpdateSpells();
 		}
 	}
 
@@ -99,15 +108,18 @@ namespace WarriorsSnuggery.UI
 	{
 		readonly SpellTreeNode node;
 		readonly Game game;
+		readonly SpellTreeScreen screen;
 
 		readonly BatchSequence image;
 		readonly Tooltip tooltip;
 		bool mouseOnItem;
+		bool available;
 
-		public SpellNode(CPos position, SpellTreeNode node, Game game) : base(position, new Vector(8 * MasterRenderer.PixelMultiplier, 8 * MasterRenderer.PixelMultiplier, 0), PanelManager.Get("stone"))
+		public SpellNode(CPos position, SpellTreeNode node, Game game, SpellTreeScreen screen) : base(position, new Vector(8 * MasterRenderer.PixelMultiplier, 8 * MasterRenderer.PixelMultiplier, 0), PanelManager.Get("stone"))
 		{
 			this.node = node;
 			this.game = game;
+			this.screen = screen;
 			image = new BatchSequence(node.Textures, Color.White, node.Icon.Tick);
 			image.SetPosition(position);
 
@@ -138,7 +150,33 @@ namespace WarriorsSnuggery.UI
 		{
 			base.Render();
 
+			image.SetColor(available ? Color.White : Color.Black);
 			image.PushToBatchRenderer();
+		}
+
+		public void CheckAvailability()
+		{
+			available |= HighlightVisible;
+
+			if (available)
+				return;
+
+			foreach (var before in node.Before)
+			{
+				if (string.IsNullOrWhiteSpace(before))
+					continue;
+
+				if (game.Statistics.UnlockedSpells.ContainsKey(before) && game.Statistics.UnlockedSpells[before])
+					continue;
+
+				foreach (var node in SpellTreeLoader.SpellTree)
+				{
+					if (node.InnerName == before && !node.Unlocked)
+						return;
+				}
+			}
+
+			available = true;
 		}
 
 		void checkMouse()
@@ -149,33 +187,23 @@ namespace WarriorsSnuggery.UI
 
 			if (mouseOnItem && !node.Unlocked && MouseInput.IsLeftClicked)
 			{
-				if (game.Statistics.UnlockedSpells.ContainsKey(node.InnerName) && game.Statistics.UnlockedSpells[node.InnerName])
+				if (HighlightVisible)
 					return;
 
-				foreach (var before in node.Before)
-				{
-					if (before.Trim() == "")
-						continue;
-
-					if (game.Statistics.UnlockedSpells.ContainsKey(before) && game.Statistics.UnlockedSpells[before])
-						continue;
-
-					foreach (var node in SpellTreeLoader.SpellTree)
-					{
-						if (node.InnerName == before && !node.Unlocked)
-							return;
-					}
-				}
+				if (!available)
+					return;
 
 				if (game.Statistics.Money < node.Cost)
 					return;
 
 				game.Statistics.Money -= node.Cost;
+
 				HighlightVisible = true;
 				if (game.Statistics.UnlockedSpells.ContainsKey(node.InnerName))
 					game.Statistics.UnlockedSpells[node.InnerName] = true;
 				else
 					game.Statistics.UnlockedSpells.Add(node.InnerName, true);
+				screen.UpdateAvailability();
 			}
 		}
 	}

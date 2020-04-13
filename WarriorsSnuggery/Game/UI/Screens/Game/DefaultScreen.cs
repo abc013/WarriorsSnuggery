@@ -121,6 +121,11 @@ namespace WarriorsSnuggery.UI
 			waveText.SetText("Wave " + wave + "/" + final);
 		}
 
+		public void UpdateSpells()
+		{
+			spellList.Update();
+		}
+
 		public override void Hide()
 		{
 			spellList.DisableTooltip();

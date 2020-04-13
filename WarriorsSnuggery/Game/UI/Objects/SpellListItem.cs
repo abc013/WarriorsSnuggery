@@ -10,7 +10,7 @@ namespace WarriorsSnuggery.UI
 		readonly Game game;
 
 		int tick;
-		readonly bool unlocked;
+		bool unlocked;
 		int progress;
 
 		public SpellListItem(CPos pos, MPos size, SpellTreeNode node, SpellCaster caster, Game game, bool showDesc) : base(pos, new BatchSequence(node.Textures, Color.White, node.Icon.Tick), size, node.Name, node.GetInformation(showDesc), null)
@@ -40,6 +40,11 @@ namespace WarriorsSnuggery.UI
 			{
 				SetColor(unlocked ? Color.White : Color.Black);
 			}
+		}
+
+		public void Update()
+		{
+			unlocked = caster.Unlocked();
 		}
 
 		public override void Render()

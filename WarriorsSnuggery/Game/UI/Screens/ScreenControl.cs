@@ -101,6 +101,13 @@ namespace WarriorsSnuggery.UI
 			screens[ScreenType.DEFAULT] = screen;
 		}
 
+		public void UpdateSpells()
+		{
+			var defaultScreen = screens[ScreenType.DEFAULT] as DefaultScreen;
+			if (defaultScreen != null)
+				defaultScreen.UpdateSpells();
+		}
+
 		public void SetDecision(Action OnDecline, Action OnAgree, string text)
 		{
 			if (!screens.ContainsKey(ScreenType.DECISION))

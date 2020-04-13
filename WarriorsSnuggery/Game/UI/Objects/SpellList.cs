@@ -30,6 +30,12 @@ namespace WarriorsSnuggery.UI
 			selector = new BatchObject(UITextureManager.Get("UI_selector1")[0], Color.White);
 		}
 
+		public void Update()
+		{
+			foreach (var content in Container)
+				((SpellListItem)content).Update();
+		}
+
 		public override void Render()
 		{
 			base.Render();
