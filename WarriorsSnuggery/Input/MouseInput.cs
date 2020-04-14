@@ -22,6 +22,15 @@ namespace WarriorsSnuggery
 
 		public static void Tick()
 		{
+			if (!WindowInfo.Focused)
+			{
+				WheelState = 0;
+				IsLeftClicked = IsLeftDown = false;
+				IsMiddleClicked = IsMiddleDown = false;
+				IsRightClicked = IsRightDown = false;
+				return;
+			}
+
 			var change = Mouse.GetCursorState().Wheel;
 			WheelState = wheelValue - change;
 			wheelValue = change;
