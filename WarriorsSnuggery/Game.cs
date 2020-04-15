@@ -156,7 +156,11 @@ namespace WarriorsSnuggery
 				ChangeScreen(ScreenType.DEFAULT);
 			}
 
+			if (Statistics.Health > 0 && World.LocalPlayer != null && World.LocalPlayer.Health != null)
+				World.LocalPlayer.Health.HP = Statistics.Health;
+
 			WorldRenderer.CheckVisibilityAll();
+			MasterRenderer.UpdateView();
 		}
 
 		public void Pause(bool paused)
@@ -171,7 +175,7 @@ namespace WarriorsSnuggery
 		{
 			if (Finished && instantExit)
 			{
-				GameController.CreateNew(Statistics, instantExitType);
+				GameController.CreateNext(instantExitType);
 				return;
 			}
 
@@ -448,6 +452,7 @@ namespace WarriorsSnuggery
 			UIRenderer.ClearRenderLists();
 
 			VisibilitySolver.Reset();
+			Camera.Reset();
 		}
 	}
 }

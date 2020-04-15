@@ -16,12 +16,12 @@ namespace WarriorsSnuggery.UI
 			deaths.WriteText(Color.Red + "Deaths: " + game.OldStatistics.Deaths);
 			Content.Add(deaths);
 
-			Content.Add(ButtonCreator.Create("wooden", new CPos(-2048, 5120, 0), "Restart Map", () => GameController.CreateNew(game.OldStatistics, sameSeed: true)));
+			Content.Add(ButtonCreator.Create("wooden", new CPos(-2048, 5120, 0), "Restart Map", () => GameController.CreateRestart()));
 
 			if (game.Type == GameType.TEST)
-				Content.Add(ButtonCreator.Create("wooden", new CPos(2048, 5120, 0), "Main Menu", () => GameController.CreateNew(game.OldStatistics, GameType.MAINMENU)));
+				Content.Add(ButtonCreator.Create("wooden", new CPos(2048, 5120, 0), "Main Menu", () => GameController.CreateReturn(GameType.MAINMENU)));
 			else
-				Content.Add(ButtonCreator.Create("wooden", new CPos(2048, 5120, 0), "Menu", () => GameController.CreateNew(game.OldStatistics, GameType.MENU)));
+				Content.Add(ButtonCreator.Create("wooden", new CPos(2048, 5120, 0), "Menu", () => GameController.CreateReturn(GameType.MENU)));
 		}
 	}
 }

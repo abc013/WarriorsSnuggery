@@ -25,17 +25,81 @@ namespace WarriorsSnuggery
 			GameSaveManager.Load();
 			GameSaveManager.DefaultStatistic = GameStatistics.LoadGameStatistic("DEFAULT");
 
-			CreateNew(new GameStatistics(GameSaveManager.DefaultStatistic), GameType.MAINMENU);
+			createFirst();
 		}
 
-		public static void CreateNew(GameStatistics stats, GameType type = GameType.NORMAL, bool sameSeed = false, MapInfo custom = null, bool loadStatsMap = false)
+		static void createFirst()
 		{
-			if (game != null)
+			game = new Game(new GameStatistics(GameSaveManager.DefaultStatistic), MapCreator.FindMainMenuMap(0));
+			game.Load();
+		}
+
+		public static void CreateReturn(GameType type)
+		{
+			var stats = game.OldStatistics;
+
+			game.Finish();
+			game.Dispose();
+
+			switch (type)
 			{
-				game.Finish();
-				game.Dispose();
+				case GameType.TUTORIAL:
+					game = new Game(stats, MapCreator.FindTutorial());
+					break;
+				case GameType.MENU:
+					game = new Game(stats, MapCreator.FindMainMap(stats.Level));
+					break;
+				case GameType.MAINMENU:
+					game = new Game(stats, MapCreator.FindMainMenuMap(stats.Level));
+					break;
+				default:
+					game = new Game(stats, MapCreator.FindMap(stats.Level));
+					break;
 			}
-			Camera.Reset();
+			game.Load();
+		}
+
+		public static void CreateRestart()
+		{
+			var stats = game.OldStatistics;
+
+			game.Finish();
+			game.Dispose();
+
+			game = new Game(stats, game.MapType, game.Seed);
+			game.Load();
+		}
+
+		public static void CreateNext(GameType type)
+		{
+			var stats = game.Statistics;
+
+			game.Finish();
+			game.Dispose();
+
+			switch (type)
+			{
+				case GameType.TUTORIAL:
+					game = new Game(stats, MapCreator.FindTutorial());
+					break;
+				case GameType.MENU:
+					game = new Game(stats, MapCreator.FindMainMap(stats.Level));
+					break;
+				case GameType.MAINMENU:
+					game = new Game(stats, MapCreator.FindMainMenuMap(stats.Level));
+					break;
+				default:
+					game = new Game(stats, MapCreator.FindMap(stats.Level));
+					break;
+			}
+
+			game.Load();
+		}
+
+		public static void CreateNew(GameStatistics stats, GameType type = GameType.NORMAL, MapInfo custom = null, bool loadStatsMap = false)
+		{
+			game.Finish();
+			game.Dispose();
 
 			if (loadStatsMap)
 			{
@@ -49,34 +113,23 @@ namespace WarriorsSnuggery
 				}
 			}
 
-			if (!sameSeed)
+			switch (type)
 			{
-				switch (type)
-				{
-					case GameType.TUTORIAL:
-						game = new Game(stats, custom ?? MapCreator.FindTutorial());
-						break;
-					case GameType.MENU:
-						game = new Game(stats, custom ?? MapCreator.FindMainMap(stats.Level));
-						break;
-					case GameType.MAINMENU:
-						game = new Game(stats, custom ?? MapCreator.FindMainMenuMap(stats.Level));
-						break;
-					default:
-						game = new Game(stats, custom ?? MapCreator.FindMap(stats.Level));
-						break;
-				}
-			}
-			else
-			{
-				game = new Game(stats, custom ?? game.MapType, game.Seed);
+				case GameType.TUTORIAL:
+					game = new Game(stats, custom ?? MapCreator.FindTutorial());
+					break;
+				case GameType.MENU:
+					game = new Game(stats, custom ?? MapCreator.FindMainMap(stats.Level));
+					break;
+				case GameType.MAINMENU:
+					game = new Game(stats, custom ?? MapCreator.FindMainMenuMap(stats.Level));
+					break;
+				default:
+					game = new Game(stats, custom ?? MapCreator.FindMap(stats.Level));
+					break;
 			}
 
 			game.Load();
-			if (stats.Health > 0 && game.World.LocalPlayer != null && game.World.LocalPlayer.Health != null)
-				game.World.LocalPlayer.Health.HP = stats.Health;
-
-			MasterRenderer.UpdateView();
 		}
 
 		public static void AddInfoMessage(int duration, string text)
