@@ -12,6 +12,8 @@ namespace WarriorsSnuggery.Objects.Weapons
 	{
 		[Desc("Chance of the weapon to hit.")]
 		public readonly float HitChance = 1.0f;
+		[Desc("Determines whether only the target should be damaged when hit.")]
+		public readonly bool Splash = true;
 
 		public InstantHitProjectileType(MiniTextNode[] nodes)
 		{

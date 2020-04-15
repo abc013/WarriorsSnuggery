@@ -39,6 +39,8 @@ namespace WarriorsSnuggery.Objects.Weapons
 
 			if ((physics.End - Position).Dist < (Position - Target.Position).Dist)
 				Detonate(new Target(physics.End, physics.EndHeight));
+			else if (projectileType.Splash)
+				Detonate(new Target(Target.Position, Target.Height));
 			else
 				Detonate(Target);
 		}

@@ -129,7 +129,7 @@ voidweapon=
 			Falloff=1.0, 0.8, 0.7, 0.0
 			RangeSteps=0, 256, 512, 1024
 		Force=
-			Acceleration=50
+			Acceleration=10
 			Falloff=1.0, 1.0, 0.7, 0.0
 			RangeSteps=0, 512, 736, 1024
 
@@ -243,7 +243,7 @@ blade=
 				Radius=100
 				AreaType=CIRCLE
 		Damage=
-			Damage=200
+			Damage=100
 			Falloff=1.0, 1.0, 0.7, 0.0
 			RangeSteps=0, 512, 736, 1024
 
