@@ -61,7 +61,7 @@ namespace WarriorsSnuggery
 
 		public void SetScreen()
 		{
-			if (Settings.Fullscreen && !Program.isDebug)
+			if (Settings.Fullscreen && !Program.NoFullscreen)
 			{
 				WindowBorder = WindowBorder.Hidden;
 				WindowState = WindowState.Fullscreen;

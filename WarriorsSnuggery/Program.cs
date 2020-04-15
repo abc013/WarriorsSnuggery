@@ -8,10 +8,11 @@ namespace WarriorsSnuggery
 	{
 		public static Random SharedRandom = new Random();
 		public static bool isDebug;
+		public static bool NoFullscreen;
 
 		static Window window;
 
-		public static void Main()
+		public static void Main(string[] args)
 		{
 			isDebug = Debugger.IsAttached;
 
@@ -23,7 +24,7 @@ namespace WarriorsSnuggery
 			{
 				try
 				{
-					run();
+					run(args);
 				}
 				catch (Exception e)
 				{
@@ -42,13 +43,13 @@ namespace WarriorsSnuggery
 			}
 			else
 			{
-				run();
+				run(args);
 			}
 
 			Log.Close();
 		}
 
-		static void run()
+		static void run(string[] args)
 		{
 			if (!FileExplorer.CheckDll(true))
 			{
@@ -63,7 +64,16 @@ namespace WarriorsSnuggery
 				return;
 			}
 
-			Settings.Initialize();
+			var newSettings = false;
+			foreach(var arg in args)
+			{
+				if (arg == "-no-fullscreen")
+					NoFullscreen = true;
+				else if (arg == "-new-settings")
+					newSettings = true;
+			}
+
+			Settings.Initialize(newSettings);
 			window = new Window();
 
 			if (GL.GetInteger(GetPName.MajorVersion) < 3)

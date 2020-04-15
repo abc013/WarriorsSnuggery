@@ -62,11 +62,11 @@ namespace WarriorsSnuggery
 			return KeyDictionary[value];
 		}
 
-		public static void Initialize()
+		public static void Initialize(bool newSettings)
 		{
 			FrameLimiter = (int)OpenTK.DisplayDevice.Default.RefreshRate;
 
-			if (FileExplorer.Exists(FileExplorer.MainDirectory, "Settings.yaml"))
+			if (!newSettings && FileExplorer.Exists(FileExplorer.MainDirectory, "Settings.yaml"))
 				load();
 			else
 				defaultKeys();
