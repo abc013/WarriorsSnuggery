@@ -1,5 +1,4 @@
-﻿using System;
-using WarriorsSnuggery.Objects.Conditions;
+﻿using WarriorsSnuggery.Objects.Conditions;
 using WarriorsSnuggery.Objects.Particles;
 using WarriorsSnuggery.Physics;
 

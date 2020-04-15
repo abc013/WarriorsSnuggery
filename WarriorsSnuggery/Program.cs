@@ -50,7 +50,13 @@ namespace WarriorsSnuggery
 
 		static void run()
 		{
-			if (!FileExplorer.CheckDll())
+			if (!FileExplorer.CheckDll(true))
+			{
+				Console.WriteLine("\"OpenAL32.dll\" has not been found.");
+				Console.ReadKey(true);
+				return;
+			}
+			if (!FileExplorer.CheckDll(false))
 			{
 				Console.WriteLine("\"OpenTK.dll\" has not been found.");
 				Console.ReadKey(true);
