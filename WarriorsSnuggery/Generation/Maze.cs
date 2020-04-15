@@ -27,8 +27,10 @@ namespace WarriorsSnuggery
 			{
 				for (int y = 0; y < size.Y; y++)
 				{
-					var field = new MazeField(new MPos(x, y));
-					field.IsWall = (x * y) % 2 == 0;
+					var field = new MazeField(new MPos(x, y))
+					{
+						IsWall = (x * y) % 2 == 0
+					};
 
 					fields[x, y] = field;
 					maze[x, y] = field.IsWall;
@@ -39,7 +41,7 @@ namespace WarriorsSnuggery
 			startField.Parent = startField;
 
 			MazeField last = startField;
-			while ((last = Link(fields, random, last, size)) != startField) { }
+			while ((last = link(fields, random, last, size)) != startField) { }
 
 			for (int x = 0; x < size.X; x++)
 			{
@@ -51,13 +53,12 @@ namespace WarriorsSnuggery
 			return maze;
 		}
 
-		static MazeField Link(MazeField[,] fields, Random random, MazeField last, MPos size)
+		static MazeField link(MazeField[,] fields, Random random, MazeField last, MPos size)
 		{
-			var dir = (byte)0;
 			var pos = MPos.Zero;
 			while (last.Directions != 0)
 			{
-				dir = (byte)(1 << random.Next(4));
+				byte dir = (byte)(1 << random.Next(4));
 
 				if ((last.Directions & dir) == 0)
 					continue;

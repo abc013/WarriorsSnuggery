@@ -33,12 +33,12 @@ namespace WarriorsSnuggery.Loader
 			}
 		}
 
-		static double bytesToDouble(byte firstByte, byte secondByte)
+		/*static double bytesToDouble(byte firstByte, byte secondByte)
 		{
 			// convert two bytes to one short (little endian)
 			int s = (secondByte << 8) | firstByte;
 			// convert to range from -1 to (just below) 1
 			return s / 32768.0;
-		}
+		}*/
 	}
 }

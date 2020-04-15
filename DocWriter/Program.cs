@@ -20,7 +20,7 @@ namespace WarriorsSnuggery
 	static class Program
 	{
 		public static bool DarkMode;
-		public static void Main(string[] args)
+		public static void Main()
 		{
 			FileExplorer.InitPaths();
 			Console.ForegroundColor = ConsoleColor.White;
