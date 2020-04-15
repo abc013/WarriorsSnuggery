@@ -59,7 +59,7 @@ namespace WarriorsSnuggery
 					ShroudLayer.RevealShroudList(Actor.PlayerTeam, Game.Statistics.Shroud);
 				}
 
-				Camera.Position(LocalPlayer.Position + (Game.ScreenControl.Focused is UI.DefaultScreen ? Camera.CamPlayerOffset : CPos.Zero), true);
+				Camera.Position(LocalPlayer.GraphicPosition + (Game.ScreenControl.Focused is UI.DefaultScreen ? Camera.CamPlayerOffset : CPos.Zero), true);
 
 				if (Game.Type == GameType.NORMAL)
 					Add(new ActionText(LocalPlayer.Position + new CPos(0, 0, 1024), new CPos(0, -15, 30), 300, ActionText.ActionTextType.TRANSFORM, @"Level" + Game.Statistics.Level));
@@ -81,7 +81,7 @@ namespace WarriorsSnuggery
 			if (LocalPlayer != null)
 			{
 				if (Camera.LockedToPlayer)
-					Camera.Position(LocalPlayer.Position + (Game.ScreenControl.Focused is UI.DefaultScreen ? Camera.CamPlayerOffset : CPos.Zero));
+					Camera.Position(LocalPlayer.GraphicPosition + (Game.ScreenControl.Focused is UI.DefaultScreen ? Camera.CamPlayerOffset : CPos.Zero));
 
 				foreach (var effect in LocalPlayer.Effects.Where(e => e.Active && e.Spell.Type == Spells.EffectType.MANA))
 					Game.Statistics.Mana += (int)effect.Spell.Value;
