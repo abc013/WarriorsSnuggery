@@ -292,7 +292,9 @@ namespace WarriorsSnuggery.UI
 						return;
 
 					mpos = new MPos(mpos.X < 0 ? 0 : mpos.X, mpos.Y < 0 ? 0 : mpos.Y);
-					mpos = new MPos(mpos.X > game.World.Map.Bounds.X ? game.World.Map.Bounds.X : mpos.X, mpos.Y > game.World.Map.Bounds.Y ? game.World.Map.Bounds.Y : mpos.Y);
+					if (mpos.X > game.World.Map.Bounds.X || mpos.Y > game.World.Map.Bounds.Y)
+						return;
+
 					mpos = new MPos(mpos.X * 2 + (horizontal ? 0 : 1), mpos.Y);
 
 					game.World.WallLayer.Set(WallCreator.Create(mpos, game.World.WallLayer, wallSelected.ID));
