@@ -303,7 +303,7 @@
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
     <PackageReference Include="OpenTK">
-      <Version>4.0.0-pre3</Version>
+      <Version>4.0.0-pre7</Version>
     </PackageReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -129,12 +129,14 @@ namespace WarriorsSnuggery.Graphics
 			size /= 2;
 			var color4 = color.toColor4();
 
-			var vertices = new Vertex[resolution];
-			for (int i = 0; i < resolution; i++)
+			var vertices = new Vertex[resolution * 2];
+			for (int i = 0; i < resolution * 2; i++)
 			{
 				var x = ((float)Math.Cos(i * Math.PI / resolution * 2)) * size;
 				var y = ((float)Math.Sin(i * Math.PI / resolution * 2)) * size;
 				vertices[i] = new Vertex(new Vector(x, y, 0), new Vector4(-1), color4);
+				if (i != 0 && i != resolution * 2 - 1)
+					vertices[++i] = new Vertex(new Vector(x, y, 0), new Vector4(-1), color4);
 			}
 			return vertices;
 		}
