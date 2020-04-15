@@ -52,6 +52,7 @@ namespace WarriorsSnuggery.Objects.Weapons
 						if (weapon.Origin != null && actor.Team == weapon.Origin.Team)
 							continue;
 
+						var dist2 = target.Position - actor.Position;
 						var dist = (target.Position - actor.Position).FlatDist;
 						if (dist > maxRange) continue;
 						if (dist < 1f) dist = 1;
@@ -59,7 +60,7 @@ namespace WarriorsSnuggery.Objects.Weapons
 						float damagemultiplier = FalloffHelper.GetMultiplier(Falloff, RangeSteps, dist);
 
 						physics.Start = actor.Position;
-						physics.Target = target.Position;
+						physics.Target = target.Position - new CPos(Math.Sign(dist2.X), Math.Sign(dist2.Y), 0);
 						var pen = physics.GetWallPenetrationValue();
 
 						if (pen == 0f)

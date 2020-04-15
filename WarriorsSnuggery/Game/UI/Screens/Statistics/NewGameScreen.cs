@@ -1,4 +1,5 @@
-﻿using WarriorsSnuggery.Graphics;
+﻿using System;
+using WarriorsSnuggery.Graphics;
 using WarriorsSnuggery.Objects;
 
 namespace WarriorsSnuggery.UI
@@ -8,7 +9,7 @@ namespace WarriorsSnuggery.UI
 		readonly Game game;
 
 		readonly TextBox nameInput;
-		readonly TextBox difficultyInput;
+		readonly SliderBar difficultyInput;
 		readonly CheckBox hardcoreInput;
 		readonly TextBox seedInput;
 
@@ -31,10 +32,10 @@ namespace WarriorsSnuggery.UI
 			difficulty.SetText("Difficulty: ");
 			Content.Add(difficulty);
 
-			difficultyInput = TextBoxCreator.Create("wooden", new CPos(1024, 1024, 0), "1", 1, true);
+			difficultyInput = new SliderBar(new CPos(1024, 1024, 0), 116, PanelManager.Get("wooden"), () => { });
 
 			var hardcore = new TextLine(new CPos(-2048, 2048, 0), Font.Pixel16, TextLine.OffsetType.RIGHT);
-			hardcore.SetText("Hardcore: ");
+			hardcore.SetText("Hardcore (one life): ");
 			Content.Add(hardcore);
 
 			hardcoreInput = CheckBoxCreator.Create("wooden", new CPos(1024, 2048, 0), false);
@@ -50,7 +51,7 @@ namespace WarriorsSnuggery.UI
 			Content.Add(ButtonCreator.Create("wooden", new CPos(4096, 6144, 0), "Proceed", () =>
 			{
 				if (nameInput.Text != string.Empty)
-					GameController.CreateNew(GameStatistics.CreateGameStatistic(int.Parse(difficultyInput.Text), hardcoreInput.Checked, nameInput.Text, int.Parse(seedInput.Text)));
+					GameController.CreateNew(GameStatistics.CreateGameStatistic((int)Math.Round(difficultyInput.Value * 10), hardcoreInput.Checked, nameInput.Text, int.Parse(seedInput.Text)));
 			}));
 		}
 

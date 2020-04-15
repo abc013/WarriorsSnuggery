@@ -18,7 +18,7 @@ namespace WarriorsSnuggery
 		{
 			this.game = game;
 
-			waves = (int)Math.Ceiling(Math.Sqrt(game.Statistics.Difficulty * game.Statistics.Level));
+			waves = Math.Min((int)Math.Ceiling(Math.Sqrt((game.Statistics.Difficulty / 2 + 1) * game.Statistics.Level)), 10);
 			generators = game.MapType.GeneratorInfos.Where(g => g is PatrolGeneratorInfo && ((PatrolGeneratorInfo)g).UseForWaves).ToArray();
 
 			if (generators.Length == 0)

@@ -161,8 +161,8 @@ namespace WarriorsSnuggery
 			statistic.SaveName = name;
 
 			statistic.Level = 1;
-			statistic.FinalLevel = difficulty * 10;
-			statistic.Money = 100 - difficulty * 20;
+			statistic.FinalLevel = (difficulty + 1) * 5;
+			statistic.Money = 100 - difficulty * 10;
 			statistic.MaxMana = GameSaveManager.DefaultStatistic.MaxMana;
 			statistic.Actor = GameSaveManager.DefaultStatistic.Actor;
 			statistic.Seed = seed;
