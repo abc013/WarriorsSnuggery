@@ -60,7 +60,7 @@ namespace WarriorsSnuggery.Objects.Weapons
 						float damagemultiplier = FalloffHelper.GetMultiplier(Falloff, RangeSteps, dist);
 
 						physics.Start = actor.Position;
-						physics.Target = target.Position - new CPos(Math.Sign(dist2.X), Math.Sign(dist2.Y), 0);
+						physics.Target = target.Position;
 						var pen = physics.GetWallPenetrationValue();
 
 						if (pen == 0f)
