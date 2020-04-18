@@ -10,7 +10,7 @@ namespace WarriorsSnuggery.Objects.Parts
 		public Target Target
 		{
 			get { return bot.Target; }
-			set { bot.Target = Target; }
+			set { bot.Target = value; }
 		}
 
 		public BotPart(Actor self, BotBehaviorType type) : base(self)

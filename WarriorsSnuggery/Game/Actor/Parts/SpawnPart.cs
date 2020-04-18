@@ -101,10 +101,11 @@ namespace WarriorsSnuggery.Objects.Parts
 			switch (info.Type)
 			{
 				case "ACTOR":
-					@object = ActorCreator.Create(self.World, info.Name, randomPosition(), info.InheritsTeam ? self.Team : Actor.NeutralTeam, info.InheritsBot && self.IsBot);
+					var actor = ActorCreator.Create(self.World, info.Name, randomPosition(), info.InheritsTeam ? self.Team : Actor.NeutralTeam, info.InheritsBot && self.IsBot);
 
 					if (info.InheritsBot && self.IsBot)
-						((Actor)@object).BotPart.Target = self.BotPart.Target;
+						actor.BotPart.Target = self.BotPart.Target;
+					@object = actor;
 					break;
 				case "PARTICLE":
 					@object = ParticleCreator.Create(info.Name, randomPosition(), self.Height + info.Offset.Z, self.World.Game.SharedRandom);

@@ -96,7 +96,7 @@ namespace WarriorsSnuggery
 			addObjects();
 		}
 
-		public void addObjects()
+		void addObjects()
 		{
 			int removed = 0;
 			removed += Actors.RemoveAll(a => a.Disposed);
@@ -185,6 +185,11 @@ namespace WarriorsSnuggery
 		{
 			foreach (var obj in objects)
 				Add(obj);
+		}
+
+		public List<Actor> getActorsToAdd()
+		{
+			return actorsToAdd;
 		}
 
 		public Terrain TerrainAt(CPos pos)

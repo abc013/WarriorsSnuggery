@@ -27,7 +27,7 @@ namespace WarriorsSnuggery
 
 		public void Tick()
 		{
-			var actor = game.World.Actors.FirstOrDefault(a => !(a.Team == Actor.PlayerTeam || a.Team == Actor.NeutralTeam));
+			var actor = game.World.Actors.FirstOrDefault(a => !(a.Team == Actor.PlayerTeam || a.Team == Actor.NeutralTeam) && a.WorldPart != null && a.WorldPart.KillForVictory);
 
 			if (actor == null)
 				CreateNextWave();
@@ -46,7 +46,7 @@ namespace WarriorsSnuggery
 
 			generator.Generate();
 
-			var actors = game.World.Actors.FindAll(a => !(a.Team == Actor.PlayerTeam || a.Team == Actor.NeutralTeam));
+			var actors = game.World.getActorsToAdd().FindAll(a => !(a.Team == Actor.PlayerTeam || a.Team == Actor.NeutralTeam));
 
 			foreach (var actor in actors)
 			{
