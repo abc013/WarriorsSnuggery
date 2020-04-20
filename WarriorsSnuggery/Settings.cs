@@ -8,15 +8,16 @@ namespace WarriorsSnuggery
 	{
 		public static readonly IFormatProvider FloatFormat = CultureInfo.InvariantCulture;
 
-		public const int BatchSize = 4096;
-		public const int SheetSize = 1024;
-		public const float SheetHalfPixel = 0.1f / SheetSize;
-
 		public const int MaxTeams = 8;
 
 		public const string Version = "(Release) 2.1";
 
 		public const int UpdatesPerSecond = 60;
+
+		public static int BatchSize = 4096;
+
+		public static int SheetSize = 1024;
+		public static float SheetHalfPixel = 0.1f / SheetSize;
 
 		public static int FrameLimiter = 0;
 
@@ -82,6 +83,15 @@ namespace WarriorsSnuggery
 			{
 				switch (node.Key)
 				{
+					case "BatchSize":
+						BatchSize = node.Convert<int>();
+
+						break;
+					case "SheetSize":
+						SheetSize = node.Convert<int>();
+						SheetHalfPixel = 0.1f / SheetSize;
+						
+						break;
 					case "FrameLimiter":
 						FrameLimiter = node.Convert<int>();
 
@@ -157,6 +167,8 @@ namespace WarriorsSnuggery
 		{
 			using (var writer = new System.IO.StreamWriter(FileExplorer.MainDirectory + "Settings.yaml"))
 			{
+				writer.WriteLine("BatchSize=" + BatchSize);
+				writer.WriteLine("SheetSize=" + SheetSize);
 				writer.WriteLine("FrameLimiter=" + FrameLimiter);
 				writer.WriteLine("ScrollSpeed=" + ScrollSpeed.ToString(FloatFormat));
 				writer.WriteLine("EdgeScrolling=" + EdgeScrolling);
