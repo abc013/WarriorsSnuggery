@@ -9,7 +9,7 @@ namespace WarriorsSnuggery.Graphics
 	{
 		readonly List<Batch> batches = new List<Batch>();
 
-		const int bufferSize = 4096;
+		readonly static int bufferSize = Settings.BatchSize;
 		readonly Vertex[] buffer;
 		int[] textureIDs;
 		int offset;
@@ -50,13 +50,15 @@ namespace WarriorsSnuggery.Graphics
 
 		void push()
 		{
+			if (offset != bufferSize)
+				Array.Clear(buffer, offset, bufferSize - offset);
+
 			foreach (var batch in batches)
 			{
-				if (batch.CurrentSize + bufferSize >= Settings.BatchSize)
+				if (batch.CurrentSize >= Settings.BatchSize)
 					continue;
 
 				batch.SetData(buffer, batch.CurrentSize, bufferSize);
-				Array.Clear(buffer, 0, bufferSize);
 				offset = 0;
 				return;
 			}
@@ -64,7 +66,6 @@ namespace WarriorsSnuggery.Graphics
 			var @new = new Batch();
 			@new.SetData(buffer, bufferSize);
 			batches.Add(@new);
-			Array.Clear(buffer, 0, bufferSize);
 			offset = 0;
 		}
 

@@ -8,7 +8,7 @@ namespace WarriorsSnuggery
 	{
 		public static readonly IFormatProvider FloatFormat = CultureInfo.InvariantCulture;
 
-		public const int BatchSize = 8120;
+		public const int BatchSize = 4096;
 		public const int SheetSize = 1024;
 		public const float SheetHalfPixel = 0.1f / SheetSize;
 
