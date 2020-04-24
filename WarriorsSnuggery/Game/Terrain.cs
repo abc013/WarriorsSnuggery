@@ -2,7 +2,7 @@ using WarriorsSnuggery.Graphics;
 
 namespace WarriorsSnuggery.Objects
 {
-	public class Terrain : IRenderable, ICheckVisible
+	public class Terrain : ITickRenderable, ICheckVisible
 	{
 		readonly StaticBatchRenderable renderable;
 		readonly BatchSequence overlay;
@@ -44,6 +44,11 @@ namespace WarriorsSnuggery.Objects
 			}
 			edges = new StaticBatchRenderable[4];
 			corners = new StaticBatchRenderable[4];
+		}
+
+		public void Tick()
+		{
+			overlay?.Tick();
 		}
 
 		public void Render()

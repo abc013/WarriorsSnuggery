@@ -20,7 +20,7 @@ namespace WarriorsSnuggery.Objects.Parts
 		public readonly int Facings = 1;
 
 		[Desc("Frame rate (Speed of animation).")]
-		public readonly int Tick = 10;
+		public readonly int Tick = 20;
 
 		[Desc("If true, a random start frame of the animation will be picked.")]
 		public readonly bool StartRandom = false;
@@ -51,6 +51,7 @@ namespace WarriorsSnuggery.Objects.Parts
 		readonly AnimatedSpritePartInfo info;
 
 		readonly BatchRenderable[] renderables;
+		BatchRenderable renderable;
 		int currentFacing;
 		Color color = Color.White;
 
@@ -102,23 +103,28 @@ namespace WarriorsSnuggery.Objects.Parts
 			currentFacing = FacingFromAngle(self.Angle);
 		}
 
+		public override void Tick()
+		{
+			renderable = GetRenderable(self.CurrentAction, currentFacing);
+			renderable?.Tick();
+		}
+
 		public override void Render()
 		{
-			var renderable = GetRenderable(self.CurrentAction, currentFacing);
-			if (renderable != null)
-			{
-				if (self.Height > 0)
-				{
-					renderable.SetPosition(self.GraphicPositionWithoutHeight);
-					renderable.SetColor(new Color(0, 0, 0, 64));
-					renderable.PushToBatchRenderer();
-				}
+			if (renderable == null)
+				return;
 
-				self.Offset = info.Offset;
-				renderable.SetPosition(self.GraphicPosition);
-				renderable.SetColor(color);
+			if (self.Height > 0)
+			{
+				renderable.SetPosition(self.GraphicPositionWithoutHeight);
+				renderable.SetColor(new Color(0, 0, 0, 64));
 				renderable.PushToBatchRenderer();
 			}
+
+			self.Offset = info.Offset;
+			renderable.SetPosition(self.GraphicPosition);
+			renderable.SetColor(color);
+			renderable.PushToBatchRenderer();
 		}
 
 		public override void SetColor(Color color)

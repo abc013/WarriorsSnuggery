@@ -5,7 +5,7 @@ namespace WarriorsSnuggery.Graphics
 {
 	public class Batch : IDisposable
 	{
-		public const int Size = Settings.BatchSize * Vertex.Size;
+		public int Size = Settings.BatchSize * Vertex.Size;
 		public int CurrentSize;
 
 		readonly int vertexarrayID;

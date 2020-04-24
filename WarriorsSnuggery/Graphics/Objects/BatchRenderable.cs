@@ -81,6 +81,11 @@ namespace WarriorsSnuggery.Graphics
 			MatrixChanged = true;
 		}
 
+		public virtual void Tick()
+		{
+
+		}
+
 		public virtual void PushToBatchRenderer()
 		{
 			if (!Visible)

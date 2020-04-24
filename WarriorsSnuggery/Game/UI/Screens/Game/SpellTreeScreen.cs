@@ -144,6 +144,8 @@ namespace WarriorsSnuggery.UI
 				UIRenderer.SetTooltip(tooltip);
 			else
 				UIRenderer.DisableTooltip(tooltip);
+
+			image.Tick();
 		}
 
 		public override void Render()

@@ -23,7 +23,7 @@
 				curObj = Program.SharedRandom.Next(textures.Length);
 		}
 
-		public override void PushToBatchRenderer()
+		public override void Tick()
 		{
 			if (!(pauseable && MasterRenderer.PauseSequences) && curTick-- <= 0)
 			{
@@ -32,6 +32,10 @@
 				if (curObj >= objects.Length)
 					curObj = 0;
 			}
+		}
+
+		public override void PushToBatchRenderer()
+		{
 
 			if (!Visible)
 				return;

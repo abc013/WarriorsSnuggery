@@ -91,6 +91,7 @@ namespace WarriorsSnuggery
 				actor.Tick();
 			foreach (var @object in Objects)
 				@object.Tick();
+			TerrainLayer.Tick();
 			SmudgeLayer.Tick();
 
 			addObjects();

@@ -5,7 +5,7 @@ using WarriorsSnuggery.Objects;
 
 namespace WarriorsSnuggery
 {
-	public sealed class TerrainLayer : IRenderable, IDisposable
+	public sealed class TerrainLayer : ITickRenderable, IDisposable
 	{
 		public Terrain[,] Terrain { get; private set; }
 		List<Terrain> renderList = new List<Terrain>();
@@ -34,6 +34,12 @@ namespace WarriorsSnuggery
 			Terrain[position.X, position.Y] = terrain;
 			renderList.Add(terrain);
 			listChanged = true;
+		}
+
+		public void Tick()
+		{
+			foreach (var terrain in renderList)
+				terrain.Tick();
 		}
 
 		public void Render()

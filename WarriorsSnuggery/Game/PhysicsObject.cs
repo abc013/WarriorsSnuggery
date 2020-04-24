@@ -112,19 +112,17 @@ namespace WarriorsSnuggery.Objects
 
 		public virtual void Tick()
 		{
-
+			Renderable?.Tick();
 		}
 
 		public virtual void Render()
 		{
-			if (Renderable != null)
-				Renderable.PushToBatchRenderer();
+			Renderable?.PushToBatchRenderer();
 		}
 
 		public virtual void SetColor(Color color)
 		{
-			if (Renderable != null)
-				Renderable.SetColor(color);
+			Renderable?.SetColor(color);
 		}
 
 		public void RenderShadow()

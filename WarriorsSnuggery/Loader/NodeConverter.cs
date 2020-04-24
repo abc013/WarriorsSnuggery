@@ -188,7 +188,7 @@ namespace WarriorsSnuggery.Loader
 				var size = MPos.Zero;
 				var name = s.Trim();
 				var randomTexture = false;
-				var tick = 10;
+				var tick = 20;
 				bool searchFile = true;
 
 				var children = node.Children;
