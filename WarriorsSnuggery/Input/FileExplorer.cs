@@ -29,20 +29,6 @@ namespace WarriorsSnuggery
 			Saves = path + @"\saves\";
 		}
 
-		public static bool CheckDll(bool openAL)
-		{
-			var files = Directory.GetFiles(Path);
-
-			foreach (var raw in files)
-			{
-				var file = raw.Substring(raw.LastIndexOf('\\') + 1);
-				if (file == (openAL ? "OpenAL32.dll" : "OpenTK.dll"))
-					return true;
-			}
-
-			return false;
-		}
-
 		public static bool Exists(string path, string name)
 		{
 			return File.Exists(path + name);

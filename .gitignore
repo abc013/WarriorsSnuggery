@@ -256,18 +256,20 @@ paket-files/
 # CodeRush
 .cr/
 
-# Python Tools for Visual Studio (PTVS)
-__pycache__/
-*.pyc
-/Documentation.html
-/OpenTK.xml
-/OpenTK.dll
-/DocWriter.exe.config
-/DocWriter.exe
-/WarriorsSnuggery.exe.config
 /WarriorsSnuggery.exe
+/WarriorsSnuggery.dll
+/WarriorsSnuggery.runtimeconfig.json
+/WarriorsSnuggery.runtimeconfig.dev.json
+/WarriorsSnuggery.deps.json
+/DocWriter.exe
+/DocWriter.dll
+/DocWriter.runtimeconfig.json
+/DocWriter.runtimeconfig.dev.json
+/DocWriter.deps.json
+/Documentation.html
 /Settings.yaml
 logs/
+runtimes/
 /OpenToolkit.Windowing.GraphicsLibraryFramework.dll
 /OpenToolkit.Windowing.Desktop.dll
 /OpenToolkit.Windowing.Common.dll
@@ -275,6 +277,10 @@ logs/
 /OpenToolkit.Input.dll
 /OpenToolkit.Graphics.dll
 /OpenToolkit.Core.dll
+/OpenToolkit.OpenAL.dll
 /OpenAL32.dll
 /glfw3-x86.dll
 /glfw3-x64.dll
+/System.Drawing.Common.dll
+/Microsoft.Win32.SystemEvents.dll
+/libglfw.so.3.3

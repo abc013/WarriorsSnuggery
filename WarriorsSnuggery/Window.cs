@@ -1,8 +1,9 @@
-using OpenTK;
-using OpenTK.Graphics;
-using OpenTK.Input;
+using OpenToolkit.Mathematics;
+using OpenToolkit.Windowing.Common;
+using OpenToolkit.Windowing.Common.Input;
+using OpenToolkit.Windowing.Desktop;
+using OpenToolkit.Windowing.GraphicsLibraryFramework;
 using System;
-using System.Drawing;
 using WarriorsSnuggery.Graphics;
 
 namespace WarriorsSnuggery
@@ -27,31 +28,29 @@ namespace WarriorsSnuggery
 	public class Window : GameWindow
 	{
 		static Window current;
-		const string title = "Warrior's Snuggery";
 
-		public static char CharInput;
+		public static string StringInput;
 		public static Key KeyInput;
 
 		public static uint GlobalTick;
 		public static uint GlobalRender;
 
 		public static bool Ready;
-		public static bool Exiting;
+		public static bool Stopped;
 
-		public Window() : base(Settings.Width, Settings.Height, GraphicsMode.Default, title)
+		public Window(GameWindowSettings settings1, NativeWindowSettings settings2) : base(settings1, settings2)
 		{
 			current = this;
-			SetScreen();
 			CursorVisible = false;
 
-			var bounds = DisplayDevice.Default;
-			WarriorsSnuggery.WindowInfo.ScreenWidth = bounds.Width;
-			WarriorsSnuggery.WindowInfo.ScreenHeight = bounds.Height;
+			// Initialize values TODO
+			WindowInfo.ScreenWidth = /*bounds.Width*/3840;
+			WindowInfo.ScreenHeight = /*bounds.Height*/2160;
 		}
 
 		public static void CloseWindow()
 		{
-			current.Exit();
+			current.Close();
 		}
 
 		public static void UpdateScreen()
@@ -65,53 +64,51 @@ namespace WarriorsSnuggery
 			{
 				WindowBorder = WindowBorder.Hidden;
 				WindowState = WindowState.Fullscreen;
-				Width = ClientRectangle.Width;
-				Height = ClientRectangle.Height;
+
+				ClientRectangle = new Box2i(0, 0, WindowInfo.ScreenWidth, WindowInfo.ScreenHeight);
 			}
 			else
 			{
 				WindowBorder = WindowBorder.Fixed;
 				WindowState = WindowState.Normal;
-				var bounds = DisplayDevice.Default;
-				X = bounds.Width / 2 - Settings.Width / 2;
-				Y = bounds.Height / 2 - Settings.Height / 2;
-				Width = Settings.Width;
-				Height = Settings.Height;
+				var offsetX = WindowInfo.ScreenWidth / 2 - Settings.Width;
+				var offsetY = WindowInfo.ScreenHeight / 2 - Settings.Height;
+				ClientRectangle = new Box2i(offsetX, offsetY + 1, Settings.Width + offsetX, Settings.Height + offsetY);
 			}
-			WarriorsSnuggery.WindowInfo.Height = Height;
-			WarriorsSnuggery.WindowInfo.Width = Width;
-
-			MasterRenderer.UpdateView();
+			WindowInfo.Width = ClientRectangle.Size.X;
+			WindowInfo.Height = ClientRectangle.Size.Y;
+			// OnResize should be called automatically
 		}
 
-		protected override void OnResize(EventArgs e)
+		protected override void OnResize(ResizeEventArgs e)
 		{
-			base.OnResize(e);
-
-			if (Height == 0 || Width == 0)
+			if (e.Height == 0 || e.Width == 0)
 				return;
 
-			WarriorsSnuggery.WindowInfo.Height = Height;
-			WarriorsSnuggery.WindowInfo.Width = Width;
+			base.OnResize(e);
+
+			WindowInfo.Height = e.Height;
+			WindowInfo.Width = e.Width;
 
 			ColorManager.WindowRescaled();
 
 			MasterRenderer.UpdateView();
 		}
 
-		protected override void OnLoad(EventArgs e)
+		protected override void OnLoad()
 		{
 			Console.Write("Loading...");
+
+			base.OnLoad();
+			SetScreen();
 
 			MasterRenderer.Initialize();
 			SpriteManager.CreateSheet(8);
 
-			base.OnLoad(e);
-
 			var font = Timer.Start();
-			Icon = new Icon(FileExplorer.Misc + "/warsnu.ico");
-			Graphics.Font.LoadFonts();
-			Graphics.Font.InitializeFonts();
+			//Icon = new WindowIcon(new OpenToolkit.Windowing.Common.Input.Image(FileExplorer.Misc + "/warsnu.ico"));
+			Font.LoadFonts();
+			Font.InitializeFonts();
 
 			font.StopAndWrite("Loading Fonts");
 
@@ -147,10 +144,14 @@ namespace WarriorsSnuggery
 			if (GlobalTick % 20 == 0)
 				watch = Timer.Start();
 
+			MouseInput.State = MouseState;
+			MouseInput.WheelState = 0;
+			WarriorsSnuggery.KeyInput.State = KeyboardState;
+
 			GameController.Tick();
 			AudioController.Tick();
 
-			CharInput = '';
+			StringInput = string.Empty;
 			KeyInput = Key.End;
 
 			if (GlobalTick % 20 == 0)
@@ -167,7 +168,7 @@ namespace WarriorsSnuggery
 		public static long FMS;
 		protected override void OnRenderFrame(FrameEventArgs e)
 		{
-			if (!Ready || Exiting)
+			if (!Ready || Stopped)
 				return;
 
 			Timer watch = null;
@@ -188,20 +189,20 @@ namespace WarriorsSnuggery
 				Log.WritePerformance(FMS, " render " + GlobalRender);
 			}
 
-			Title = title + " | " + MasterRenderer.RenderCalls + " Calls | " + MasterRenderer.Batches + " Batches | " + MasterRenderer.BatchCalls + " BatchCalls";
+			Title = Program.Title + " | " + MasterRenderer.RenderCalls + " Calls | " + MasterRenderer.Batches + " Batches | " + MasterRenderer.BatchCalls + " BatchCalls";
 			GlobalRender++;
 		}
 
-		protected override void OnFocusedChanged(EventArgs e)
+		protected override void OnFocusedChanged(FocusedChangedEventArgs e)
 		{
-			WarriorsSnuggery.WindowInfo.Focused = Focused;
-			if (!Focused && !Program.isDebug && Ready)
+			WindowInfo.Focused = e.IsFocused;
+			if (!e.IsFocused && !Program.isDebug && Ready)
 				GameController.Pause();
 		}
 
-		public override void Exit()
+		public override void Close()
 		{
-			Exiting = true;
+			Stopped = true;
 
 			UITextureManager.Dispose();
 
@@ -213,18 +214,22 @@ namespace WarriorsSnuggery
 
 			Graphics.Font.DisposeFonts();
 
-			base.Exit();
+			base.Close();
 		}
 
 		protected override void OnMouseMove(MouseMoveEventArgs e)
 		{
-			MouseInput.UpdateMousePosition(new MPos(e.Position.X, e.Position.Y));
+			MouseInput.UpdateMousePosition(e.Position.X, e.Position.Y);
 		}
 
-		protected override void OnKeyPress(KeyPressEventArgs e)
+		protected override void OnMouseWheel(MouseWheelEventArgs e)
 		{
-			base.OnKeyPress(e);
-			CharInput = e.KeyChar;
+			MouseInput.WheelState = (int)e.Offset.X;
+		}
+
+		protected override void OnTextInput(TextInputEventArgs e)
+		{
+			StringInput = e.AsString;
 		}
 
 		protected override void OnKeyDown(KeyboardKeyEventArgs e)

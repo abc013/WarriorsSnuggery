@@ -1,4 +1,4 @@
-﻿using OpenTK.Audio.OpenAL;
+﻿using OpenToolkit.Audio.OpenAL;
 using System;
 using System.Runtime.InteropServices;
 using WarriorsSnuggery.Loader;
@@ -7,18 +7,19 @@ namespace WarriorsSnuggery.Audio
 {
 	public class AudioBuffer
 	{
-		uint buffer;
 		public readonly int Length;
+
+		readonly int buffer;
 		readonly float seconds;
 
 		public AudioBuffer(string path)
 		{
-			AL.GenBuffer(out this.buffer);
+			buffer = AL.GenBuffer();
 
 			ALFormat format;
-			WavLoader.LoadWavFile(path, out byte[] buffer, out int channels, out int sampleRate, out int bitDepth);
+			WavLoader.LoadWavFile(path, out byte[] data, out int channels, out int sampleRate, out int bitDepth);
 
-			seconds = buffer.Length / (sampleRate * channels * bitDepth / 8f);
+			seconds = data.Length / (sampleRate * channels * bitDepth / 8f);
 			Length = (int)Math.Ceiling(seconds * 60);
 			if (channels == 1)
 			{
@@ -45,23 +46,23 @@ namespace WarriorsSnuggery.Audio
 
 			unsafe
 			{
-				GCHandle pinnedArray = GCHandle.Alloc(buffer, GCHandleType.Pinned);
+				GCHandle pinnedArray = GCHandle.Alloc(data, GCHandleType.Pinned);
 				IntPtr pointer = pinnedArray.AddrOfPinnedObject();
 
-				AL.BufferData(this.buffer, format, pointer, buffer.Length, sampleRate);
+				AL.BufferData(buffer, format, pointer, data.Length, sampleRate);
 
 				pinnedArray.Free();
 			}
 		}
 
-		public uint GetID()
+		public int GetID()
 		{
 			return buffer;
 		}
 
 		public void Dispose()
 		{
-			AL.DeleteBuffer(ref buffer);
+			AL.DeleteBuffer(buffer);
 		}
 	}
 }

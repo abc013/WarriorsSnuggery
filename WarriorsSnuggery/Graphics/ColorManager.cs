@@ -42,7 +42,7 @@ namespace WarriorsSnuggery.Graphics
 
 		public static void WindowRescaled()
 		{
-			fullscreen_rect.SetScale(WindowInfo.Ratio);
+			fullscreen_rect?.SetScale(WindowInfo.Ratio);
 		}
 
 		public static void DrawLine(CPos start, CPos end, Color color)

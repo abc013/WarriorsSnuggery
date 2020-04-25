@@ -1,3 +1,4 @@
+using OpenToolkit.Windowing.Common.Input;
 using WarriorsSnuggery.Graphics;
 using WarriorsSnuggery.Objects;
 
@@ -12,11 +13,11 @@ namespace WarriorsSnuggery.UI
 		bool mouseOnBox;
 		public bool Selected;
 
-		public string Key;
+		public string KeyString;
 
 		public KeyboardButton(CPos position, string key, Color color, PanelType type) : base(position, new Vector(1.5f, 0.25f, 0), type)
 		{
-			Key = key;
+			KeyString = key;
 
 			keyDisplay = new TextLine(position, Font.Pixel16, TextLine.OffsetType.MIDDLE);
 			keyDisplay.SetColor(color);
@@ -49,10 +50,10 @@ namespace WarriorsSnuggery.UI
 				if (blinkTick-- < 0)
 					blinkTick = 20;
 
-				if (Window.KeyInput != OpenTK.Input.Key.End)
+				if (Window.KeyInput != Key.End)
 				{
-					Key = Window.KeyInput.ToString();
-					keyDisplay.SetText(Key);
+					KeyString = Window.KeyInput.ToString();
+					keyDisplay.SetText(KeyString);
 					Selected = false;
 					blinkTick = 0;
 				}

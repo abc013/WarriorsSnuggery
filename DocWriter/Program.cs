@@ -23,6 +23,7 @@ namespace WarriorsSnuggery
 		public static void Main()
 		{
 			FileExplorer.InitPaths();
+			TypeWriter.Initialize();
 			Console.ForegroundColor = ConsoleColor.White;
 
 			Console.WriteLine("Welcome to the WarriorsSnuggery DocWriter. This program will search through the installation and create a documentation of the modding rules.");
@@ -61,24 +62,23 @@ namespace WarriorsSnuggery
 
 			try
 			{
-				using (var writer = new StreamWriter(FileExplorer.MainDirectory + "Documentation.html"))
+				using var writer = new StreamWriter(FileExplorer.MainDirectory + "Documentation.html");
+
+				Console.WriteLine("Generating document, please wait...");
+				HTMLWriter.WriteHead(writer);
+
+				foreach (var type in types)
 				{
-					Console.WriteLine("Generating document, please wait...");
-					HTMLWriter.WriteHead(writer);
-
-					foreach (var type in types)
-					{
-						Console.ForegroundColor = ConsoleColor.White;
-						Console.WriteLine("Reading " + type + "...");
-						Console.ResetColor();
-						HTMLWriter.WriteDoc(writer, type);
-					}
-
-					HTMLWriter.WriteEnd(writer);
-
-					writer.Flush();
-					writer.Close();
+					Console.ForegroundColor = ConsoleColor.White;
+					Console.WriteLine("Reading " + type + "...");
+					Console.ResetColor();
+					HTMLWriter.WriteDoc(writer, type);
 				}
+
+				HTMLWriter.WriteEnd(writer);
+
+				writer.Flush();
+				writer.Close();
 			}
 			catch (Exception)
 			{

@@ -1,12 +1,12 @@
-using OpenTK.Input;
+using OpenToolkit.Windowing.Common.Input;
 using System;
 
 namespace WarriorsSnuggery
 {
 	public static class MouseInput
 	{
+		public static MouseState State;
 		public static int WheelState;
-		static int wheelValue;
 		public static CPos WindowPosition;
 		public static CPos GamePosition;
 		static Vector vPos;
@@ -31,14 +31,9 @@ namespace WarriorsSnuggery
 				return;
 			}
 
-			var change = Mouse.GetCursorState().Wheel;
-			WheelState = wheelValue - change;
-			wheelValue = change;
-
-			var state = Mouse.GetState();
-			IsLeftDown = state.IsButtonDown(MouseButton.Left);
-			IsMiddleDown = state.IsButtonDown(MouseButton.Middle);
-			IsRightDown = state.IsButtonDown(MouseButton.Right);
+			IsLeftDown = State.IsButtonDown(MouseButton.Left);
+			IsMiddleDown = State.IsButtonDown(MouseButton.Middle);
+			IsRightDown = State.IsButtonDown(MouseButton.Right);
 			IsLeftClicked = !IsLeftDown && leftPressed;
 			IsMiddleClicked = !IsMiddleDown && middlePressed;
 			IsRightClicked = !IsRightDown && rightPressed;
@@ -48,11 +43,9 @@ namespace WarriorsSnuggery
 			rightPressed = IsRightDown;
 		}
 
-		public static void UpdateMousePosition(MPos pos)
+		public static void UpdateMousePosition(float x, float y)
 		{
-			var x = (pos.X - WindowInfo.Width / 2f) / WindowInfo.Width * WindowInfo.Ratio;
-			var y = (pos.Y - WindowInfo.Height / 2f) / WindowInfo.Height;
-			vPos = new Vector(x, y, 0);
+			vPos = new Vector((x / WindowInfo.Width - 0.5f) * WindowInfo.Ratio, y / WindowInfo.Height - 0.5f, 0);
 
 			WindowPosition = (vPos * new Vector(Camera.DefaultZoom, Camera.DefaultZoom, 1)).ToCPos();
 			GamePosition = (vPos * new Vector(Camera.CurrentZoom, Camera.CurrentZoom, 1)).ToCPos() + Camera.LookAt;

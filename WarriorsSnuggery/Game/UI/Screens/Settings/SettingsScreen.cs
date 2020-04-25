@@ -122,8 +122,9 @@ namespace WarriorsSnuggery.UI
 			frameLimiterWrite.OnEnter = () =>
 			{
 				var number = int.Parse(frameLimiterWrite.Text);
-				if (number > OpenTK.DisplayDevice.Default.RefreshRate)
-					frameLimiterWrite.Text = ((int)OpenTK.DisplayDevice.Default.RefreshRate).ToString();
+				// TODO
+				//if (number > OpenToolkit.DisplayDevice.Default.RefreshRate)
+				//	frameLimiterWrite.Text = ((int)OpenToolkit.DisplayDevice.Default.RefreshRate).ToString();
 			};
 			Content.Add(frameLimiterWrite);
 

@@ -86,18 +86,18 @@ namespace WarriorsSnuggery.UI
 		void save()
 		{
 			Settings.KeyDictionary.Clear();
-			Settings.KeyDictionary.Add("Pause", pause.Key + "");
-			Settings.KeyDictionary.Add("CameraLock", @lock.Key + "");
-			Settings.KeyDictionary.Add("MoveUp", up.Key + "");
-			Settings.KeyDictionary.Add("MoveDown", down.Key + "");
-			Settings.KeyDictionary.Add("MoveLeft", left.Key + "");
-			Settings.KeyDictionary.Add("MoveRight", right.Key + "");
-			Settings.KeyDictionary.Add("MoveAbove", above.Key + "");
-			Settings.KeyDictionary.Add("MoveBelow", below.Key + "");
-			Settings.KeyDictionary.Add("CameraUp", camUp.Key + "");
-			Settings.KeyDictionary.Add("CameraDown", camDown.Key + "");
-			Settings.KeyDictionary.Add("CameraLeft", camLeft.Key + "");
-			Settings.KeyDictionary.Add("CameraRight", camRight.Key + "");
+			Settings.KeyDictionary.Add("Pause", pause.KeyString + "");
+			Settings.KeyDictionary.Add("CameraLock", @lock.KeyString + "");
+			Settings.KeyDictionary.Add("MoveUp", up.KeyString + "");
+			Settings.KeyDictionary.Add("MoveDown", down.KeyString + "");
+			Settings.KeyDictionary.Add("MoveLeft", left.KeyString + "");
+			Settings.KeyDictionary.Add("MoveRight", right.KeyString + "");
+			Settings.KeyDictionary.Add("MoveAbove", above.KeyString + "");
+			Settings.KeyDictionary.Add("MoveBelow", below.KeyString + "");
+			Settings.KeyDictionary.Add("CameraUp", camUp.KeyString + "");
+			Settings.KeyDictionary.Add("CameraDown", camDown.KeyString + "");
+			Settings.KeyDictionary.Add("CameraLeft", camLeft.KeyString + "");
+			Settings.KeyDictionary.Add("CameraRight", camRight.KeyString + "");
 			Settings.Save();
 
 			game.AddInfoMessage(150, "Controls Saved!");

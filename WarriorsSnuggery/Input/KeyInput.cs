@@ -1,4 +1,4 @@
-using OpenTK.Input;
+using OpenToolkit.Windowing.Common.Input;
 using System;
 using System.IO;
 
@@ -8,7 +8,7 @@ namespace WarriorsSnuggery
 	{
 		public readonly static char[] InvalidFileNameChars;
 
-		static KeyboardState state;
+		public static KeyboardState State;
 		public static int HitCooldown;
 
 		static KeyInput()
@@ -18,10 +18,10 @@ namespace WarriorsSnuggery
 
 		public static bool IsKeyDown(string key, int coolDownWhenHit = 0)
 		{
-			if (HitCooldown > 0 || !state.IsAnyKeyDown || !WindowInfo.Focused)
+			if (HitCooldown > 0 || !State.IsAnyKeyDown || !WindowInfo.Focused)
 				return false;
 
-			bool hit = state.IsKeyDown((Key)Enum.Parse(typeof(Key), key, true));
+			bool hit = State.IsKeyDown((Key)Enum.Parse(typeof(Key), key, true));
 
 			if (hit)
 				HitCooldown = coolDownWhenHit;
@@ -31,10 +31,10 @@ namespace WarriorsSnuggery
 
 		public static bool IsKeyDown(Key key, int coolDownWhenHit = 0)
 		{
-			if (HitCooldown > 0 || !state.IsAnyKeyDown || !WindowInfo.Focused)
+			if (HitCooldown > 0 || !State.IsAnyKeyDown || !WindowInfo.Focused)
 				return false;
 
-			bool hit = state.IsKeyDown(key);
+			bool hit = State.IsKeyDown(key);
 
 			if (hit)
 				HitCooldown = coolDownWhenHit;
@@ -45,7 +45,6 @@ namespace WarriorsSnuggery
 		public static void Tick()
 		{
 			HitCooldown--;
-			state = Keyboard.GetState();
 		}
 	}
 }

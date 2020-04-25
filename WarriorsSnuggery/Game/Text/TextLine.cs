@@ -118,7 +118,7 @@ namespace WarriorsSnuggery.Objects
 				}
 
 				while (text.Length < chars.Count)
-					chars.Remove(chars[chars.Count - 1]);
+					chars.Remove(chars[^1]);
 			}
 			else
 			{
@@ -182,7 +182,7 @@ namespace WarriorsSnuggery.Objects
 			}
 
 			while (String.Length < chars.Count)
-				chars.Remove(chars[chars.Count - 1]);
+				chars.Remove(chars[^1]);
 
 			setCharPositions();
 		}

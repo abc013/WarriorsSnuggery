@@ -1,3 +1,4 @@
+using OpenToolkit.Windowing.Common.Input;
 using System;
 using System.Linq;
 using WarriorsSnuggery.Graphics;
@@ -186,7 +187,7 @@ namespace WarriorsSnuggery
 				// screen control
 				if (ScreenControl.FocusedType != ScreenType.DEFEAT)
 				{
-					if (KeyInput.IsKeyDown(Settings.Key("Pause"), 10) && !(KeyInput.IsKeyDown(OpenTK.Input.Key.ControlLeft) || KeyInput.IsKeyDown(OpenTK.Input.Key.ControlRight)))
+					if (KeyInput.IsKeyDown(Settings.Key("Pause"), 10) && !(KeyInput.IsKeyDown(Key.ControlLeft) || KeyInput.IsKeyDown(Key.ControlRight)))
 					{
 						Pause(true);
 						ChangeScreen(ScreenType.PAUSED);
@@ -234,7 +235,7 @@ namespace WarriorsSnuggery
 				}
 
 				// Key input
-				if (KeyInput.IsKeyDown(OpenTK.Input.Key.Q, 5))
+				if (KeyInput.IsKeyDown(Key.Q, 5))
 					Audio.AudioManager.PlaySound("test");
 
 				if (KeyInput.IsKeyDown(Settings.Key("CameraLock"), 5))
@@ -385,7 +386,7 @@ namespace WarriorsSnuggery
 
 		public Actor FindValidTarget(CPos pos, int team)
 		{
-			if (KeyInput.IsKeyDown(OpenTK.Input.Key.ShiftLeft, 0))
+			if (KeyInput.IsKeyDown(Key.ShiftLeft, 0))
 				return null;
 
 			// Look for actors in range.

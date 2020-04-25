@@ -1,4 +1,4 @@
-﻿using OpenTK.Audio.OpenAL;
+﻿using OpenToolkit.Audio.OpenAL;
 
 namespace WarriorsSnuggery.Audio
 {
@@ -7,13 +7,12 @@ namespace WarriorsSnuggery.Audio
 		public AudioBuffer Buffer { get; private set; }
 		public bool Used;
 
-		uint source;
-
+		readonly int source;
 		float volume;
 
 		public AudioSource()
 		{
-			AL.GenSource(out source);
+			source = AL.GenSource();
 		}
 
 		public void Start(AudioBuffer buffer, bool loops)
@@ -77,7 +76,7 @@ namespace WarriorsSnuggery.Audio
 
 		public void Dispose()
 		{
-			AL.DeleteSource(ref source);
+			AL.DeleteSource(source);
 		}
 	}
 }

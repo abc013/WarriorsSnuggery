@@ -65,7 +65,8 @@ namespace WarriorsSnuggery
 
 		public static void Initialize(bool newSettings)
 		{
-			FrameLimiter = (int)OpenTK.DisplayDevice.Default.RefreshRate;
+			//TODO
+			//FrameLimiter = (int)OpenToolkit.DisplayDevice.Default.RefreshRate;
 
 			if (!newSettings && FileExplorer.Exists(FileExplorer.MainDirectory, "Settings.yaml"))
 				load();
@@ -95,8 +96,9 @@ namespace WarriorsSnuggery
 					case "FrameLimiter":
 						FrameLimiter = node.Convert<int>();
 
-						if (FrameLimiter == 0 || FrameLimiter > OpenTK.DisplayDevice.Default.RefreshRate)
-							FrameLimiter = (int)OpenTK.DisplayDevice.Default.RefreshRate;
+						// TODO
+						//if (FrameLimiter == 0 || FrameLimiter > OpenToolkit.DisplayDevice.Default.RefreshRate)
+						//	FrameLimiter = (int)OpenToolkit.DisplayDevice.Default.RefreshRate;
 
 						break;
 					case "ScrollSpeed":
@@ -165,32 +167,31 @@ namespace WarriorsSnuggery
 
 		public static void Save()
 		{
-			using (var writer = new System.IO.StreamWriter(FileExplorer.MainDirectory + "Settings.yaml"))
-			{
-				writer.WriteLine("BatchSize=" + BatchSize);
-				writer.WriteLine("SheetSize=" + SheetSize);
-				writer.WriteLine("FrameLimiter=" + FrameLimiter);
-				writer.WriteLine("ScrollSpeed=" + ScrollSpeed.ToString(FloatFormat));
-				writer.WriteLine("EdgeScrolling=" + EdgeScrolling);
-				writer.WriteLine("DeveloperMode=" + DeveloperMode.GetHashCode());
-				writer.WriteLine("Fullscreen=" + Fullscreen.GetHashCode());
-				writer.WriteLine("Width=" + Width);
-				writer.WriteLine("Height=" + Height);
-				writer.WriteLine("AntiAliasing=" + AntiAliasing.GetHashCode());
-				writer.WriteLine("EnablePixeling=" + EnablePixeling.GetHashCode());
-				writer.WriteLine("EnableTextShadowing=" + EnableTextShadowing.GetHashCode());
-				writer.WriteLine("FirstStarted=" + 0);
-				writer.WriteLine("MasterVolume=" + MasterVolume.ToString(FloatFormat));
-				writer.WriteLine("EffectsVolume=" + EffectsVolume.ToString(FloatFormat));
-				writer.WriteLine("MusicVolume=" + MusicVolume.ToString(FloatFormat));
+			using var writer = new System.IO.StreamWriter(FileExplorer.MainDirectory + "Settings.yaml");
 
-				writer.WriteLine("Keys=");
-				foreach (var key in KeyDictionary)
-					writer.WriteLine("\t" + key.Key + "=" + key.Value);
+			writer.WriteLine("BatchSize=" + BatchSize);
+			writer.WriteLine("SheetSize=" + SheetSize);
+			writer.WriteLine("FrameLimiter=" + FrameLimiter);
+			writer.WriteLine("ScrollSpeed=" + ScrollSpeed.ToString(FloatFormat));
+			writer.WriteLine("EdgeScrolling=" + EdgeScrolling);
+			writer.WriteLine("DeveloperMode=" + DeveloperMode.GetHashCode());
+			writer.WriteLine("Fullscreen=" + Fullscreen.GetHashCode());
+			writer.WriteLine("Width=" + Width);
+			writer.WriteLine("Height=" + Height);
+			writer.WriteLine("AntiAliasing=" + AntiAliasing.GetHashCode());
+			writer.WriteLine("EnablePixeling=" + EnablePixeling.GetHashCode());
+			writer.WriteLine("EnableTextShadowing=" + EnableTextShadowing.GetHashCode());
+			writer.WriteLine("FirstStarted=" + 0);
+			writer.WriteLine("MasterVolume=" + MasterVolume.ToString(FloatFormat));
+			writer.WriteLine("EffectsVolume=" + EffectsVolume.ToString(FloatFormat));
+			writer.WriteLine("MusicVolume=" + MusicVolume.ToString(FloatFormat));
 
-				writer.Flush();
-				writer.Close();
-			}
+			writer.WriteLine("Keys=");
+			foreach (var key in KeyDictionary)
+				writer.WriteLine("\t" + key.Key + "=" + key.Value);
+
+			writer.Flush();
+			writer.Close();
 		}
 	}
 }

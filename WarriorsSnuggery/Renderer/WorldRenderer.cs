@@ -1,3 +1,4 @@
+using OpenToolkit.Graphics.OpenGL;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -116,7 +117,7 @@ namespace WarriorsSnuggery
 			MasterRenderer.BatchRenderer = null;
 
 			DebugRenderer.SetCurrent();
-			MasterRenderer.PrimitiveType = OpenTK.Graphics.ES30.PrimitiveType.Lines;
+			MasterRenderer.PrimitiveType = PrimitiveType.Lines;
 			if (Settings.DeveloperMode)
 			{
 				foreach (var sector in world.PhysicsLayer.Sectors)
@@ -130,7 +131,7 @@ namespace WarriorsSnuggery
 			}
 			DebugRenderer.Render();
 			MasterRenderer.BatchRenderer = null;
-			MasterRenderer.PrimitiveType = OpenTK.Graphics.ES30.PrimitiveType.Triangles;
+			MasterRenderer.PrimitiveType = PrimitiveType.Triangles;
 
 			Ambient = world.Map.Type.Ambient;
 		}

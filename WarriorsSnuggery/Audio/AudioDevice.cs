@@ -1,5 +1,5 @@
-﻿using OpenTK.Audio;
-using OpenTK.Audio.OpenAL;
+﻿using OpenToolkit.Audio;
+using OpenToolkit.Audio.OpenAL;
 
 namespace WarriorsSnuggery.Audio
 {
@@ -7,18 +7,17 @@ namespace WarriorsSnuggery.Audio
 	{
 		public readonly AudioSource[] Sources;
 		public readonly AudioSource[] GameSources;
-		readonly AudioContext context;
 		readonly bool initialized;
 
 		public AudioDevice()
 		{
-			var device = AudioContext.DefaultDevice;
+			var device = new ALDevice();
 
-			if (AudioContext.DefaultDevice == null)
+			if (device == ALDevice.Null)
 				return;
 
-			context = new AudioContext(device);
-			context.MakeCurrent();
+			var context = new ALContext(device);
+
 			var error = AL.GetError();
 			if (error != ALError.NoError)
 				throw new FailingSoundDeviceException(string.Format("Failed to open audio device. Error code: {0}.", error));
@@ -104,8 +103,6 @@ namespace WarriorsSnuggery.Audio
 		{
 			if (!initialized)
 				return;
-
-			context.Dispose();
 
 			foreach (var source in Sources)
 				source.Dispose();

@@ -1,4 +1,4 @@
-using OpenTK.Graphics.ES30;
+using OpenToolkit.Graphics.OpenGL;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -38,7 +38,7 @@ namespace WarriorsSnuggery.Graphics
 				GL.PixelStore(PixelStoreParameter.UnpackAlignment, 1);
 				GL.ActiveTexture(TextureUnit.Texture0);
 				GL.BindTexture(TextureTarget.Texture2D, id);
-				GL.TexImage2D(TextureTarget2d.Texture2D, 0, TextureComponentCount.Rgba32fExt, size.X, size.Y, 0, OpenTK.Graphics.ES30.PixelFormat.Rgba, PixelType.Float, data);
+				GL.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.Rgba32f, size.X, size.Y, 0, OpenToolkit.Graphics.OpenGL.PixelFormat.Rgba, PixelType.Float, data);
 
 				setTextureParams();
 
@@ -102,10 +102,9 @@ namespace WarriorsSnuggery.Graphics
 
 		static SizeF getFontSize(System.Drawing.Font font, char c)
 		{
-			using (var gfx = System.Drawing.Graphics.FromImage(measureBmp))
-			{
-				return gfx.MeasureString(c.ToString(), font);
-			}
+			using var gfx = System.Drawing.Graphics.FromImage(measureBmp);
+
+			return gfx.MeasureString(c.ToString(), font);
 		}
 
 		static float[] loadTexture(Bitmap bmp)

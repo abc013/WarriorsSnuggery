@@ -1,6 +1,5 @@
-using OpenTK;
-using OpenTK.Graphics;
-using OpenTK.Graphics.ES30;
+using OpenToolkit.Mathematics;
+using OpenToolkit.Graphics.OpenGL;
 using System;
 using WarriorsSnuggery.Graphics;
 
@@ -127,23 +126,18 @@ namespace WarriorsSnuggery
 				GL.ClearColor(Color4.Black);
 
 				GL.LineWidth(ColorManager.DefaultLineWidth);
+				Program.CheckGraphicsError("GLTests");
 
 				if (Settings.AntiAliasing)
-				{
 					EnableAliasing();
-					//GL.Enable(EnableCap.PolygonSmooth); // WORKS, but you can see line in polygons
-					//GL.Hint(HintTarget.PolygonSmoothHint, HintMode.Nicest);
-				}
 
-				GL.Enable(EnableCap.Texture2D);
 				GL.Enable(EnableCap.ScissorTest);
-				GL.Enable(EnableCap.AlphaTest);
 				GL.Enable(EnableCap.Blend);
-				GL.CullFace(CullFaceMode.Back);
+				//GL.Enable(EnableCap.AlphaTest); WUT why does this work
 				Program.CheckGraphicsError("GLTests");
 
 				GL.BlendEquationSeparate(BlendEquationMode.FuncAdd, BlendEquationMode.FuncAdd);
-				GL.BlendFunc(BlendingFactorSrc.SrcAlpha, BlendingFactorDest.OneMinusSrcAlpha);
+				GL.BlendFunc(BlendingFactor.SrcAlpha, BlendingFactor.OneMinusSrcAlpha);
 				Program.CheckGraphicsError("GLEquations");
 
 				var width = (int)(WindowInfo.UnitWidth * 24);
@@ -152,11 +146,11 @@ namespace WarriorsSnuggery
 				var frameTextureID = GL.GenTexture();
 
 				GL.BindTexture(TextureTarget.Texture2D, frameTextureID);
-				GL.TexImage2D(TextureTarget2d.Texture2D, 0, TextureComponentCount.Rgb32f, width, height, 0, PixelFormat.Rgb, PixelType.Float, (IntPtr)null);
+				GL.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.Rgb32f, width, height, 0, PixelFormat.Rgb, PixelType.Float, (IntPtr)null);
 
 				frameBuffer = GL.GenFramebuffer();
 				GL.BindFramebuffer(FramebufferTarget.Framebuffer, frameBuffer);
-				GL.FramebufferTexture2D(FramebufferTarget.Framebuffer, FramebufferAttachment.ColorAttachment0, TextureTarget2d.Texture2D, frameTextureID, 0);
+				GL.FramebufferTexture2D(FramebufferTarget.Framebuffer, FramebufferAttachment.ColorAttachment0, TextureTarget.Texture2D, frameTextureID, 0);
 				frameTexture = new Texture("FramebufferTexture", width, height, frameTextureID);
 				renderable = new Image(Mesh.Frame(), frameTexture);
 				Program.CheckGraphicsError("GLFrameBuffer");

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using OpenToolkit.Windowing.Common.Input;
+using System;
 
 namespace WarriorsSnuggery.Objects.Parts
 {
@@ -7,10 +8,7 @@ namespace WarriorsSnuggery.Objects.Parts
 	/// </summary>
 	class PlayerPart : ActorPart
 	{
-		public PlayerPart(Actor self) : base(self)
-		{
-
-		}
+		public PlayerPart(Actor self) : base(self) { }
 
 		public override void Tick()
 		{
@@ -23,7 +21,7 @@ namespace WarriorsSnuggery.Objects.Parts
 			if (KeyInput.IsKeyDown(Settings.Key("MoveLeft")))
 				self.Accelerate((float)Math.PI);
 
-			if (KeyInput.IsKeyDown(OpenTK.Input.Key.AltLeft))
+			if (KeyInput.IsKeyDown(Key.AltLeft))
 			{
 				if (KeyInput.IsKeyDown(Settings.Key("MoveAbove")))
 					self.AccelerateHeight(true);
@@ -53,7 +51,7 @@ namespace WarriorsSnuggery.Objects.Parts
 
 		void attackTarget(CPos pos)
 		{
-			if (KeyInput.IsKeyDown(OpenTK.Input.Key.ShiftLeft, 0))
+			if (KeyInput.IsKeyDown(Key.ShiftLeft, 0))
 			{
 				self.Attack(pos, 0);
 			}

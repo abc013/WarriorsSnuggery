@@ -1,4 +1,6 @@
-using OpenTK.Graphics.ES30;
+using OpenToolkit.Graphics.OpenGL;
+using OpenToolkit.Windowing.Common;
+using OpenToolkit.Windowing.Desktop;
 using System;
 using System.Diagnostics;
 
@@ -6,6 +8,8 @@ namespace WarriorsSnuggery
 {
 	class Program
 	{
+		public const string Title = "Warrior's Snuggery";
+
 		public static Random SharedRandom = new Random();
 		public static bool isDebug;
 		public static bool NoFullscreen;
@@ -28,7 +32,7 @@ namespace WarriorsSnuggery
 				}
 				catch (Exception e)
 				{
-					window.Visible = false;
+					window.IsVisible = false;
 					Log.WriteExeption(e);
 					Console.ForegroundColor = ConsoleColor.Red;
 					Console.WriteLine("Ouch! An error occurred.");
@@ -51,19 +55,6 @@ namespace WarriorsSnuggery
 
 		static void run(string[] args)
 		{
-			if (!FileExplorer.CheckDll(true))
-			{
-				Console.WriteLine("\"OpenAL32.dll\" has not been found.");
-				Console.ReadKey(true);
-				return;
-			}
-			if (!FileExplorer.CheckDll(false))
-			{
-				Console.WriteLine("\"OpenTK.dll\" has not been found.");
-				Console.ReadKey(true);
-				return;
-			}
-
 			var newSettings = false;
 			foreach(var arg in args)
 			{
@@ -74,7 +65,31 @@ namespace WarriorsSnuggery
 			}
 
 			Settings.Initialize(newSettings);
-			window = new Window();
+
+			var settings1 = new GameWindowSettings
+			{
+				RenderFrequency = Settings.FrameLimiter,
+				UpdateFrequency = Settings.UpdatesPerSecond
+			};
+			var settings2 = new NativeWindowSettings
+			{
+				Title = Title,
+				API = ContextAPI.OpenGL,
+				APIVersion = new Version(3, 2),
+				Size = new OpenToolkit.Mathematics.Vector2i(Settings.Width, Settings.Height)
+			};
+			if (Settings.Fullscreen && !NoFullscreen)
+			{
+				settings2.WindowState = WindowState.Fullscreen;
+				settings2.WindowBorder = WindowBorder.Hidden;
+			}
+			else
+			{
+				settings2.WindowState = WindowState.Normal;
+				settings2.WindowBorder = WindowBorder.Fixed;
+				settings2.Location = new OpenToolkit.Mathematics.Vector2i(1000, 1000);
+			}
+			window = new Window(settings1, settings2);
 
 			if (GL.GetInteger(GetPName.MajorVersion) < 3)
 			{
@@ -85,8 +100,7 @@ namespace WarriorsSnuggery
 				if (info != 'y')
 					return;
 			}
-
-			window.Run(Settings.UpdatesPerSecond, Settings.FrameLimiter);
+			window.Run();
 		}
 
 		public static void Exit()
@@ -105,12 +119,11 @@ namespace WarriorsSnuggery
 		//[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static void CheckGraphicsError(string code)
 		{
+			// TODO
 			var error = GL.GetError();
 
 			if (error != ErrorCode.NoError)
-			{
-				throw new OpenTK.Graphics.GraphicsErrorException("GraphicError in '" + code + "' :" + error);
-			}
+				throw new Exception("GraphicError in '" + code + "' :" + error);
 		}
 	}
 }

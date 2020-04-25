@@ -68,21 +68,31 @@ namespace WarriorsSnuggery.UI
 				}
 				if (Text.Length > 0 && (KeyInput.IsKeyDown("Back", 5) || KeyInput.IsKeyDown("Delete", 5)))
 				{
-					realText = Text.Substring(0, Text.Length - 1);
+					realText = Text[0..^1];
 					text.SetText(Text);
 					OnType?.Invoke();
 					return;
 				}
-				if (realText.Length <= MaximumLength && Window.CharInput != '')
+				if (realText.Length <= MaximumLength && !string.IsNullOrEmpty(Window.StringInput))
 				{
-					if (OnlyNumbers && !int.TryParse(Window.CharInput + "", out _))
+					if (OnlyNumbers && !int.TryParse(Window.StringInput + "", out _))
 						return;
 
-					if (IsPath && KeyInput.InvalidFileNameChars.Contains(Window.CharInput))
-						return;
+					var toAdd = Window.StringInput;
+					if (IsPath)
+					{
+						foreach (var @char in Window.StringInput)
+						{
+							if (!KeyInput.InvalidFileNameChars.Contains(@char))
+								toAdd += @char;
+						}
 
-					text.AddText(Window.CharInput);
-					realText += Window.CharInput;
+						if (string.IsNullOrEmpty(toAdd))
+							return;
+					}
+
+					text.AddText(toAdd);
+					realText += toAdd;
 					OnType?.Invoke();
 				}
 			}

@@ -1,3 +1,5 @@
+using OpenToolkit.Mathematics;
+
 
 namespace WarriorsSnuggery
 {
@@ -37,14 +39,14 @@ namespace WarriorsSnuggery
 			return System.Drawing.Color.FromArgb((int)(color.A * 255f), (int)(color.R * 255f), (int)(color.G * 255f), (int)(color.B * 255f));
 		}
 
-		public static implicit operator Color(OpenTK.Graphics.Color4 color)
+		public static implicit operator Color(Color4 color)
 		{
 			return new Color(color.R, color.G, color.B, color.A);
 		}
 
-		public static implicit operator OpenTK.Graphics.Color4(Color color)
+		public static implicit operator Color4(Color color)
 		{
-			return new OpenTK.Graphics.Color4(color.R, color.G, color.B, color.A);
+			return new Color4(color.R, color.G, color.B, color.A);
 		}
 
 		public static bool operator !=(Color lhf, Color rhf)
@@ -57,14 +59,14 @@ namespace WarriorsSnuggery
 			return lhf.R == rhf.R && lhf.G == rhf.G && lhf.B == rhf.B && lhf.A == rhf.A;
 		}
 
-		public OpenTK.Graphics.Color4 toColor4()
+		public Color4 toColor4()
 		{
-			return new OpenTK.Graphics.Color4(R, G, B, A);
+			return new Color4(R, G, B, A);
 		}
 
-		public OpenTK.Vector4 toVector4()
+		public Vector4 toVector4()
 		{
-			return new OpenTK.Vector4(R, G, B, A);
+			return new Vector4(R, G, B, A);
 		}
 
 		public System.Drawing.Color toSysColor()

@@ -1,5 +1,4 @@
-using OpenTK;
-using OpenTK.Graphics;
+using OpenToolkit.Mathematics;
 
 namespace WarriorsSnuggery.Graphics
 {

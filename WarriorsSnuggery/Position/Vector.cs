@@ -1,4 +1,5 @@
 using System;
+using OpenToolkit.Mathematics;
 
 namespace WarriorsSnuggery
 {
@@ -35,14 +36,14 @@ namespace WarriorsSnuggery
 
 		public static Vector operator -(Vector vec) { return new Vector(-vec.X, -vec.Y, -vec.Z); }
 
-		public static implicit operator Vector(OpenTK.Vector4 vec)
+		public static implicit operator Vector(Vector4 vec)
 		{
 			return new Vector(vec.X, vec.Y, vec.Z);
 		}
 
-		public static implicit operator OpenTK.Vector4(Vector vec)
+		public static implicit operator Vector4(Vector vec)
 		{
-			return new OpenTK.Vector4(vec.X, vec.Y, vec.Z, 1f);
+			return new Vector4(vec.X, vec.Y, vec.Z, 1f);
 		}
 
 		public static bool operator ==(Vector lhs, Vector rhs) { return lhs.X == rhs.X && lhs.Y == rhs.Y && lhs.Z == rhs.Z; }

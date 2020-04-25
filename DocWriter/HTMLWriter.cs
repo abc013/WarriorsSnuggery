@@ -60,7 +60,6 @@ namespace WarriorsSnuggery
 
 		public static void WriteDoc(StreamWriter writer, DocumentationType type)
 		{
-			TypeWriter.Initialize();
 			writer.WriteLine();
 			writer.WriteLine("\t\t<h1>" + type.ToString().ToLower(System.Globalization.CultureInfo.CurrentCulture) + "</h1>");
 			writer.WriteLine("\t\t<hr>");
