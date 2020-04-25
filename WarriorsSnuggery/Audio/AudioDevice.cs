@@ -1,5 +1,4 @@
-﻿using OpenToolkit.Audio;
-using OpenToolkit.Audio.OpenAL;
+﻿using OpenToolkit.Audio.OpenAL;
 
 namespace WarriorsSnuggery.Audio
 {

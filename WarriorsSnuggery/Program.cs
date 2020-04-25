@@ -56,7 +56,7 @@ namespace WarriorsSnuggery
 		static void run(string[] args)
 		{
 			var newSettings = false;
-			foreach(var arg in args)
+			foreach (var arg in args)
 			{
 				if (arg == "-no-fullscreen")
 					NoFullscreen = true;

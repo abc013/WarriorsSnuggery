@@ -36,7 +36,7 @@ namespace WarriorsSnuggery.UI
 			tMove.SetText("Movement");
 			Content.Add(tMove);
 			var line = 0;
-			foreach(var dir in new [] { "Up", "Down", "Left", "Right", "Above", "Below" })
+			foreach (var dir in new[] { "Up", "Down", "Left", "Right", "Above", "Below" })
 			{
 				var text = new TextLine(new CPos(-1024, -1024 + line * 640, 0), font, TextLine.OffsetType.RIGHT);
 				text.SetText(dir);
@@ -49,7 +49,7 @@ namespace WarriorsSnuggery.UI
 			Content.Add(down);
 			left = new KeyboardButton(new CPos(1536, -1024 + 1280, 1), Settings.KeyDictionary["MoveLeft"], Color.White, type);
 			Content.Add(left);
-			right = new KeyboardButton(new CPos(1536, - 1024 + 1920, 0), Settings.KeyDictionary["MoveRight"], Color.White, type);
+			right = new KeyboardButton(new CPos(1536, -1024 + 1920, 0), Settings.KeyDictionary["MoveRight"], Color.White, type);
 			Content.Add(right);
 			above = new KeyboardButton(new CPos(1536, -1024 + 2560, 1), Settings.KeyDictionary["MoveAbove"], Color.White, type);
 			Content.Add(above);
@@ -60,7 +60,7 @@ namespace WarriorsSnuggery.UI
 			tCam.SetText("Camera");
 			Content.Add(tCam);
 			line = 0;
-			foreach (var dir in new[] { "Up", "Down", "Left", "Right"})
+			foreach (var dir in new[] { "Up", "Down", "Left", "Right" })
 			{
 				var text = new TextLine(new CPos(-1024, 3072 + line * 640, 0), font, TextLine.OffsetType.RIGHT);
 				text.SetText(dir);

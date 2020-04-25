@@ -85,7 +85,7 @@ namespace WarriorsSnuggery.Objects.Parts
 		void create()
 		{
 			curTick = info.Tick;
-			if(info.Condition == null || info.Condition.True(self))
+			if (info.Condition == null || info.Condition.True(self))
 			{
 				for (int i = 0; i < info.Count; i++)
 					createParticle();

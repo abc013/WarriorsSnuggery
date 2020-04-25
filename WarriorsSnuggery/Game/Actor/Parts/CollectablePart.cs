@@ -164,7 +164,7 @@ namespace WarriorsSnuggery.Objects.Parts
 							return false;
 						if (info.Value > 0 && a.Health.HP == a.Health.MaxHP)
 							return false;
-						
+
 						a.Health.HP += info.Value;
 
 						return true;

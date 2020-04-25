@@ -91,7 +91,7 @@ namespace WarriorsSnuggery
 					case "SheetSize":
 						SheetSize = node.Convert<int>();
 						SheetHalfPixel = 0.1f / SheetSize;
-						
+
 						break;
 					case "FrameLimiter":
 						FrameLimiter = node.Convert<int>();

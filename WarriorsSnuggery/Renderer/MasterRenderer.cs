@@ -1,5 +1,5 @@
-using OpenToolkit.Mathematics;
 using OpenToolkit.Graphics.OpenGL;
+using OpenToolkit.Mathematics;
 using System;
 using WarriorsSnuggery.Graphics;
 

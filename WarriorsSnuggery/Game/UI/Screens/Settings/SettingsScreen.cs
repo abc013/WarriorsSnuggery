@@ -77,12 +77,12 @@ namespace WarriorsSnuggery.UI
 				Settings.AntiAliasing = b;
 			});
 			Content.Add(antiAliasingCheck);
-			pixelingCheck = CheckBoxCreator.Create("wooden", new CPos(6656, -2300, 0), Settings.EnablePixeling, (b) => 
+			pixelingCheck = CheckBoxCreator.Create("wooden", new CPos(6656, -2300, 0), Settings.EnablePixeling, (b) =>
 			{
 				Settings.EnablePixeling = b;
 			});
 			Content.Add(pixelingCheck);
-			textshadowCheck = CheckBoxCreator.Create("wooden", new CPos(6656, -1600, 0), Settings.EnableTextShadowing, (b) => 
+			textshadowCheck = CheckBoxCreator.Create("wooden", new CPos(6656, -1600, 0), Settings.EnableTextShadowing, (b) =>
 			{
 				Settings.EnableTextShadowing = b;
 			});

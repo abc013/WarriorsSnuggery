@@ -51,7 +51,7 @@ namespace WarriorsSnuggery.Maps
 				}
 			}
 
-			var multiplier = map.Bounds.X * map.Bounds.Y / (float) (32 * 32) + (world.Game.Statistics.Difficulty - 5) / 10f;
+			var multiplier = map.Bounds.X * map.Bounds.Y / (float)(32 * 32) + (world.Game.Statistics.Difficulty - 5) / 10f;
 			var count = random.Next((int)(info.MinimumPatrols * multiplier), (int)(info.MaximumPatrols * multiplier));
 			if (positions.Count < count)
 			{
