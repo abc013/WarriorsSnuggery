@@ -47,15 +47,12 @@
 
 		public bool True(Actor actor)
 		{
-			switch (operation)
+			return operation switch
 			{
-				case Operation.AND:
-					return children[0].True(actor) && children[1].True(actor);
-				case Operation.OR:
-					return children[0].True(actor) || children[1].True(actor);
-				default:
-					return actor.World.Game.ConditionManager.CheckCondition(this, actor);
-			}
+				Operation.AND => children[0].True(actor) && children[1].True(actor),
+				Operation.OR => children[0].True(actor) || children[1].True(actor),
+				_ => actor.World.Game.ConditionManager.CheckCondition(this, actor),
+			};
 		}
 
 		public override string ToString()

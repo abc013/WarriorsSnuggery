@@ -105,7 +105,7 @@ namespace WarriorsSnuggery
 					continue;
 
 				var split = file.Split('\\');
-				var name = split[split.Length - 1];
+				var name = split[^1];
 				list.Add(name.Remove(name.Length - 4));
 			}
 

@@ -15,7 +15,7 @@ namespace WarriorsSnuggery.Audio
 			if (device == ALDevice.Null)
 				return;
 
-			var context = new ALContext(device);
+			// var context = new ALContext(device);
 
 			var error = AL.GetError();
 			if (error != ALError.NoError)

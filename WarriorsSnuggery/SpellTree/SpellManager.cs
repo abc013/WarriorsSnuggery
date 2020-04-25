@@ -24,7 +24,7 @@ namespace WarriorsSnuggery.Spells
 
 		public bool Activate(int caster)
 		{
-			return spellCasters[caster].Activate(game.World.LocalPlayer, MouseInput.GamePosition);
+			return spellCasters[caster].Activate(game.World.LocalPlayer);
 		}
 
 		public bool Unlocked(int caster)
@@ -78,7 +78,7 @@ namespace WarriorsSnuggery.Spells
 			}
 		}
 
-		public bool Activate(Actor actor, CPos position)
+		public bool Activate(Actor actor)
 		{
 			if (!Ready || !Unlocked())
 				return false;

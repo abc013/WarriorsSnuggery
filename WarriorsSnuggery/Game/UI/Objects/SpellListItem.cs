@@ -57,7 +57,7 @@ namespace WarriorsSnuggery.UI
 
 		protected override void takeAction()
 		{
-			caster.Activate(game.World.LocalPlayer, MouseInput.GamePosition);
+			caster.Activate(game.World.LocalPlayer);
 		}
 	}
 }

@@ -255,7 +255,7 @@ namespace WarriorsSnuggery.Objects
 			if (World.Game.Editor)
 				return;
 
-			Effects.Add(new EffectPart(this, spell));
+			Effects.Add(new EffectPart(spell));
 		}
 
 		public override void CheckVisibility()

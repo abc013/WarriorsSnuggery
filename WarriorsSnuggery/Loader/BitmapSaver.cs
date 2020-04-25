@@ -35,10 +35,9 @@ namespace WarriorsSnuggery.Loader
 				}
 			}
 
-			using (var img = new Bitmap(size.X, size.Y, size.X * 4, System.Drawing.Imaging.PixelFormat.Format32bppArgb, Marshal.UnsafeAddrOfPinnedArrayElement(data2, 0)))
-			{
-				img.Save(filename);
-			}
+			using var img = new Bitmap(size.X, size.Y, size.X * 4, System.Drawing.Imaging.PixelFormat.Format32bppArgb, Marshal.UnsafeAddrOfPinnedArrayElement(data2, 0));
+
+			img.Save(filename);
 		}
 	}
 }

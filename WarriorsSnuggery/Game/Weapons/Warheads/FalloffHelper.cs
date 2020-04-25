@@ -16,15 +16,15 @@
 				start = end;
 			}
 
-			return falloff[falloff.Length - 1];
+			return falloff[^1];
 		}
 
 		public static float GetMax(float[] falloff, int[] steps)
 		{
-			if (falloff[falloff.Length - 1] != 0f)
+			if (falloff[^1] != 0f)
 				return float.PositiveInfinity;
 
-			return steps[steps.Length - 1];
+			return steps[^1];
 		}
 	}
 }

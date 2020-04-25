@@ -15,21 +15,13 @@ namespace WarriorsSnuggery.Objects.Parts
 
 		public BotPart(Actor self, BotBehaviorType type) : base(self)
 		{
-			switch (type)
+			bot = type switch
 			{
-				case BotBehaviorType.HIDE_AND_SEEK:
-					bot = new HideAndSeekBotBehavior(self.World, self);
-					break;
-				case BotBehaviorType.MOTH:
-					bot = new MothBotBehavior(self.World, self);
-					break;
-				case BotBehaviorType.PANIC:
-					bot = new PanicBotBehavior(self.World, self);
-					break;
-				default:
-					bot = new NormalBotBehavior(self.World, self);
-					break;
-			}
+				BotBehaviorType.HIDE_AND_SEEK => new HideAndSeekBotBehavior(self.World, self),
+				BotBehaviorType.MOTH => new MothBotBehavior(self.World, self),
+				BotBehaviorType.PANIC => new PanicBotBehavior(self.World, self),
+				_ => new NormalBotBehavior(self.World, self),
+			};
 		}
 
 		public override void Tick()

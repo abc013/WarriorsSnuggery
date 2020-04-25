@@ -151,68 +151,67 @@ namespace WarriorsSnuggery
 
 		public void SaveFile(string file, string name)
 		{
-			using (var writer = new StreamWriter(file, false))
+			using var writer = new StreamWriter(file, false);
+
+			writer.WriteLine("Name=" + name);
+			writer.WriteLine("Size=" + Bounds.X + "," + Bounds.Y);
+
+			var builder = new StringBuilder(8 + Bounds.X * Bounds.Y * 3, 8 + Bounds.X * Bounds.Y * 4);
+			builder.Append("Terrain=");
+			for (int y = 0; y < Bounds.Y; y++)
 			{
-				writer.WriteLine("Name=" + name);
-				writer.WriteLine("Size=" + Bounds.X + "," + Bounds.Y);
-
-				var builder = new StringBuilder(8 + Bounds.X * Bounds.Y * 3, 8 + Bounds.X * Bounds.Y * 4);
-				builder.Append("Terrain=");
-				for (int y = 0; y < Bounds.Y; y++)
+				for (int x = 0; x < Bounds.X; x++)
 				{
-					for (int x = 0; x < Bounds.X; x++)
-					{
-						builder.Append(world.TerrainLayer.Terrain[x, y].Type.ID);
-						if (x == Bounds.X - 1 && y == Bounds.Y - 1)
-							break;
-						builder.Append(",");
-					}
+					builder.Append(world.TerrainLayer.Terrain[x, y].Type.ID);
+					if (x == Bounds.X - 1 && y == Bounds.Y - 1)
+						break;
+					builder.Append(",");
 				}
-				writer.WriteLine(builder);
-				builder.Clear();
-
-				var wallSize = world.WallLayer.Size;
-				var builder2 = new StringBuilder(6 + wallSize.X * wallSize.Y * 6, 6 + wallSize.X * wallSize.Y * 12);
-				builder2.Append("Walls=");
-				for (int y = 0; y < wallSize.Y - 1; y++)
-				{
-					for (int x = 0; x < wallSize.X - 1; x++)
-					{
-						var wall = world.WallLayer.Walls[x, y];
-						if (wall == null)
-							builder2.Append("-1,0,");
-						else
-							builder2.Append(wall.Type.ID + "," + wall.Health + ",");
-					}
-				}
-				builder2.Remove(builder2.Length - 1, 1);
-				writer.WriteLine(builder2);
-				builder2.Clear();
-
-				writer.WriteLine("Actors=");
-				for (int i = 0; i < world.Actors.Count; i++)
-				{
-					var a = world.Actors[i];
-					writer.WriteLine("\t" + i + "=" + a.Position.X + "," + a.Position.Y + "," + a.Position.Z);
-					writer.WriteLine("\t\t" + "Type=" + ActorCreator.GetName(a.Type));
-					if (a.Team != Objects.Actor.NeutralTeam)
-						writer.WriteLine("\t\t" + "Team=" + a.Team);
-					if (a.Health != null && a.Health.HP != a.Health.MaxHP)
-						writer.WriteLine("\t\t" + "Health=" + a.Health.HPRelativeToMax.ToString(Settings.FloatFormat));
-					if (a.IsBot)
-					{
-						writer.WriteLine("\t\t" + "IsBot=" + a.IsBot);
-
-						if (a.BotPart.Target != null)
-							writer.WriteLine("\t\t" + "BotTarget=" + a.BotPart.Target.Position);
-					}
-					if (a.IsPlayer)
-						writer.WriteLine("\t\t" + "IsPlayer=" + a.IsPlayer);
-				}
-
-				writer.Flush();
-				writer.Close();
 			}
+			writer.WriteLine(builder);
+			builder.Clear();
+
+			var wallSize = world.WallLayer.Size;
+			var builder2 = new StringBuilder(6 + wallSize.X * wallSize.Y * 6, 6 + wallSize.X * wallSize.Y * 12);
+			builder2.Append("Walls=");
+			for (int y = 0; y < wallSize.Y - 1; y++)
+			{
+				for (int x = 0; x < wallSize.X - 1; x++)
+				{
+					var wall = world.WallLayer.Walls[x, y];
+					if (wall == null)
+						builder2.Append("-1,0,");
+					else
+						builder2.Append(wall.Type.ID + "," + wall.Health + ",");
+				}
+			}
+			builder2.Remove(builder2.Length - 1, 1);
+			writer.WriteLine(builder2);
+			builder2.Clear();
+
+			writer.WriteLine("Actors=");
+			for (int i = 0; i < world.Actors.Count; i++)
+			{
+				var a = world.Actors[i];
+				writer.WriteLine("\t" + i + "=" + a.Position.X + "," + a.Position.Y + "," + a.Position.Z);
+				writer.WriteLine("\t\t" + "Type=" + ActorCreator.GetName(a.Type));
+				if (a.Team != Objects.Actor.NeutralTeam)
+					writer.WriteLine("\t\t" + "Team=" + a.Team);
+				if (a.Health != null && a.Health.HP != a.Health.MaxHP)
+					writer.WriteLine("\t\t" + "Health=" + a.Health.HPRelativeToMax.ToString(Settings.FloatFormat));
+				if (a.IsBot)
+				{
+					writer.WriteLine("\t\t" + "IsBot=" + a.IsBot);
+
+					if (a.BotPart.Target != null)
+						writer.WriteLine("\t\t" + "BotTarget=" + a.BotPart.Target.Position);
+				}
+				if (a.IsPlayer)
+					writer.WriteLine("\t\t" + "IsPlayer=" + a.IsPlayer);
+			}
+
+			writer.Flush();
+			writer.Close();
 		}
 	}
 }

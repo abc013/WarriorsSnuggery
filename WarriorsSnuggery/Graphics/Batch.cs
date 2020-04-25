@@ -126,20 +126,16 @@ namespace WarriorsSnuggery.Graphics
 
 		public void Dispose()
 		{
-			Dispose(true);
-			GC.SuppressFinalize(true);
-		}
-
-		public void Dispose(bool disposing)
-		{
 			if (disposed)
 				return;
 			disposed = true;
+
 			lock (MasterRenderer.GLLock)
 			{
 				GL.DeleteVertexArray(vertexarrayID);
 				GL.DeleteBuffer(bufferID);
 			}
+			GC.SuppressFinalize(true);
 		}
 	}
 }

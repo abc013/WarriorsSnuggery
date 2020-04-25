@@ -4,18 +4,14 @@ namespace WarriorsSnuggery.Objects.Parts
 {
 	public class EffectPart : ITick
 	{
-		readonly Actor self;
-
 		public readonly Spell Spell;
 
 		int tick;
 		int particleTick;
 		public bool Active;
 
-		public EffectPart(Actor self, Spell spell)
+		public EffectPart(Spell spell)
 		{
-			this.self = self;
-
 			Spell = spell;
 			Active = true;
 			tick = spell.Duration;

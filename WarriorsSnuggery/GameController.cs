@@ -41,21 +41,13 @@ namespace WarriorsSnuggery
 			game.Finish();
 			game.Dispose();
 
-			switch (type)
+			game = type switch
 			{
-				case GameType.TUTORIAL:
-					game = new Game(stats, MapCreator.FindTutorial());
-					break;
-				case GameType.MENU:
-					game = new Game(stats, MapCreator.FindMainMap(stats.Level));
-					break;
-				case GameType.MAINMENU:
-					game = new Game(stats, MapCreator.FindMainMenuMap(stats.Level));
-					break;
-				default:
-					game = new Game(stats, MapCreator.FindMap(stats.Level));
-					break;
-			}
+				GameType.TUTORIAL => new Game(stats, MapCreator.FindTutorial()),
+				GameType.MENU => new Game(stats, MapCreator.FindMainMap(stats.Level)),
+				GameType.MAINMENU => new Game(stats, MapCreator.FindMainMenuMap(stats.Level)),
+				_ => new Game(stats, MapCreator.FindMap(stats.Level)),
+			};
 			game.Load();
 		}
 
@@ -77,22 +69,13 @@ namespace WarriorsSnuggery
 			game.Finish();
 			game.Dispose();
 
-			switch (type)
+			game = type switch
 			{
-				case GameType.TUTORIAL:
-					game = new Game(stats, MapCreator.FindTutorial());
-					break;
-				case GameType.MENU:
-					game = new Game(stats, MapCreator.FindMainMap(stats.Level));
-					break;
-				case GameType.MAINMENU:
-					game = new Game(stats, MapCreator.FindMainMenuMap(stats.Level));
-					break;
-				default:
-					game = new Game(stats, MapCreator.FindMap(stats.Level));
-					break;
-			}
-
+				GameType.TUTORIAL => new Game(stats, MapCreator.FindTutorial()),
+				GameType.MENU => new Game(stats, MapCreator.FindMainMap(stats.Level)),
+				GameType.MAINMENU => new Game(stats, MapCreator.FindMainMenuMap(stats.Level)),
+				_ => new Game(stats, MapCreator.FindMap(stats.Level)),
+			};
 			game.Load();
 		}
 
@@ -113,22 +96,13 @@ namespace WarriorsSnuggery
 				}
 			}
 
-			switch (type)
+			game = type switch
 			{
-				case GameType.TUTORIAL:
-					game = new Game(stats, custom ?? MapCreator.FindTutorial());
-					break;
-				case GameType.MENU:
-					game = new Game(stats, custom ?? MapCreator.FindMainMap(stats.Level));
-					break;
-				case GameType.MAINMENU:
-					game = new Game(stats, custom ?? MapCreator.FindMainMenuMap(stats.Level));
-					break;
-				default:
-					game = new Game(stats, custom ?? MapCreator.FindMap(stats.Level));
-					break;
-			}
-
+				GameType.TUTORIAL => new Game(stats, custom ?? MapCreator.FindTutorial()),
+				GameType.MENU => new Game(stats, custom ?? MapCreator.FindMainMap(stats.Level)),
+				GameType.MAINMENU => new Game(stats, custom ?? MapCreator.FindMainMenuMap(stats.Level)),
+				_ => new Game(stats, custom ?? MapCreator.FindMap(stats.Level)),
+			};
 			game.Load();
 		}
 
