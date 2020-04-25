@@ -210,21 +210,21 @@ namespace WarriorsSnuggery
 
 		public static void EnableAliasing()
 		{
-			lock (GLLock)
-			{
-				GL.Enable(EnableCap.LineSmooth);
-				GL.Enable(EnableCap.PointSmooth);
-			}
+			//lock (GLLock)
+			//{
+			//	GL.Enable(EnableCap.LineSmooth);
+			//	GL.Enable(EnableCap.PointSmooth);
+			//}
 			Program.CheckGraphicsError("Aliasing_On");
 		}
 
 		public static void DisableAliasing()
 		{
-			lock (GLLock)
-			{
-				GL.Disable(EnableCap.LineSmooth);
-				GL.Disable(EnableCap.PointSmooth);
-			}
+			//lock (GLLock)
+			//{
+			//	GL.Disable(EnableCap.LineSmooth);
+			//	GL.Disable(EnableCap.PointSmooth);
+			//}
 			Program.CheckGraphicsError("Aliasing_Off");
 		}
 

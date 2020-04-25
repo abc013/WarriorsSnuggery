@@ -77,6 +77,10 @@ namespace WarriorsSnuggery
 			WindowInfo.Width = ClientRectangle.Size.X;
 			WindowInfo.Height = ClientRectangle.Size.Y;
 			// OnResize should be called automatically
+
+			ColorManager.WindowRescaled();
+
+			MasterRenderer.UpdateView();
 		}
 
 		protected override void OnResize(ResizeEventArgs e)
@@ -88,10 +92,6 @@ namespace WarriorsSnuggery
 
 			WindowInfo.Height = e.Height;
 			WindowInfo.Width = e.Width;
-
-			ColorManager.WindowRescaled();
-
-			MasterRenderer.UpdateView();
 		}
 
 		protected override void OnLoad()

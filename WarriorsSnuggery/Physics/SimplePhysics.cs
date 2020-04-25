@@ -140,8 +140,6 @@ namespace WarriorsSnuggery.Physics
 					{
 						new PhysicsLine(Position - new CPos(2 * RadiusX, RadiusY, 0), Position + new CPos(0, -RadiusY, 0))
 					};
-				// TODO: give Circle an own collider
-				case Shape.CIRCLE:
 				case Shape.RECTANGLE:
 					return new PhysicsLine[]
 					{
