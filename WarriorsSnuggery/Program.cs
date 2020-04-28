@@ -20,7 +20,6 @@ namespace WarriorsSnuggery
 		public static void Main(string[] args)
 		{
 			isDebug = Debugger.IsAttached;
-
 			FileExplorer.InitPaths();
 			Log.InitLogs();
 			Console.SetError(Log.Exeption);
@@ -41,9 +40,7 @@ namespace WarriorsSnuggery
 					Console.WriteLine("For more details, check the logs (Press 'o' on Windows). Please report the files to abc013 (See authors.html).");
 					var key = Console.ReadKey(true).KeyChar;
 					if (key == 'o')
-					{
 						Process.Start("explorer.exe", "/select, \"" + FileExplorer.Logs + "\"");
-					}
 				}
 			}
 			else

@@ -4,18 +4,17 @@ namespace WarriorsSnuggery.Audio
 {
 	public class AudioDevice
 	{
+		public readonly ALDevice device;
+		public readonly ALContext context;
 		public readonly AudioSource[] Sources;
 		public readonly AudioSource[] GameSources;
 		readonly bool initialized;
 
 		public AudioDevice()
 		{
-			var device = new ALDevice();
-
-			if (device == ALDevice.Null)
-				return;
-
-			// var context = new ALContext(device);
+			device = ALC.OpenDevice("");
+			context = ALC.CreateContext(device, new ALContextAttributes());
+			ALC.MakeContextCurrent(context);
 
 			var error = AL.GetError();
 			if (error != ALError.NoError)
@@ -108,6 +107,9 @@ namespace WarriorsSnuggery.Audio
 
 			foreach (var source in GameSources)
 				source.Dispose();
+
+			ALC.DestroyContext(context);
+			ALC.CloseDevice(device);
 		}
 	}
 }
