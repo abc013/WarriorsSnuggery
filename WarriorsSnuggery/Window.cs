@@ -43,8 +43,9 @@ namespace WarriorsSnuggery
 			CursorVisible = false;
 
 			// Initialize values TODO
-			WindowInfo.ScreenWidth = /*bounds.Width*/3840;
-			WindowInfo.ScreenHeight = /*bounds.Height*/2160;
+			WindowInfo.ScreenWidth = /*bounds.Width*/2736;
+			WindowInfo.ScreenHeight = /*bounds.Height*/1824;
+			SetScreen();
 		}
 
 		public static void CloseWindow()
@@ -99,7 +100,6 @@ namespace WarriorsSnuggery
 			Console.Write("Loading...");
 
 			base.OnLoad();
-			SetScreen();
 
 			MasterRenderer.Initialize();
 			SpriteManager.CreateSheet(8);

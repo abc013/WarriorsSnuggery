@@ -13,6 +13,7 @@ namespace WarriorsSnuggery
 		public static Random SharedRandom = new Random();
 		public static bool isDebug;
 		public static bool NoFullscreen;
+		static bool noGLErrors;
 
 		static Window window;
 
@@ -62,6 +63,8 @@ namespace WarriorsSnuggery
 					NoFullscreen = true;
 				else if (arg == "-new-settings")
 					newSettings = true;
+				else if (arg == "-no-GL-errors")
+					noGLErrors = true;
 			}
 
 			Settings.Initialize(newSettings);
@@ -78,17 +81,6 @@ namespace WarriorsSnuggery
 				APIVersion = new Version(3, 2),
 				Size = new OpenToolkit.Mathematics.Vector2i(Settings.Width, Settings.Height)
 			};
-			if (Settings.Fullscreen && !NoFullscreen)
-			{
-				settings2.WindowState = WindowState.Fullscreen;
-				settings2.WindowBorder = WindowBorder.Hidden;
-			}
-			else
-			{
-				settings2.WindowState = WindowState.Normal;
-				settings2.WindowBorder = WindowBorder.Fixed;
-				settings2.Location = new OpenToolkit.Mathematics.Vector2i(1000, 1000);
-			}
 			window = new Window(settings1, settings2);
 
 			if (GL.GetInteger(GetPName.MajorVersion) < 3)
@@ -119,7 +111,9 @@ namespace WarriorsSnuggery
 		//[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static void CheckGraphicsError(string code)
 		{
-			// TODO
+			if (noGLErrors)
+				return;
+
 			var error = GL.GetError();
 
 			if (error != ErrorCode.NoError)
