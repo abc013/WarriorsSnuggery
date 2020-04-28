@@ -83,11 +83,11 @@ namespace WarriorsSnuggery
 			};
 			window = new Window(settings1, settings2);
 
-			if (GL.GetInteger(GetPName.MajorVersion) < 3)
+			if (GL.GetInteger(GetPName.MajorVersion) < 3 && GL.GetInteger(GetPName.MinorVersion) < 2)
 			{
-				Console.WriteLine("OpenGL version is under 3.00.");
-				Console.WriteLine("Please run the program with a graphics card that supports > 3.00.");
-				Console.WriteLine("Press 'y' to start the game anyway or press any key to exit.");
+				Console.WriteLine("OpenGL version is under 3.20.");
+				Console.WriteLine("Please run the program with a graphics card that supports at least OpenGL 3.20.");
+				Console.WriteLine("Press 'y' to start the game anyway (will probably crash) or press any key to exit.");
 				var info = Console.ReadKey(true).KeyChar;
 				if (info != 'y')
 					return;
