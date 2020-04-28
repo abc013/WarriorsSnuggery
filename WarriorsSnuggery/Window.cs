@@ -70,8 +70,8 @@ namespace WarriorsSnuggery
 			{
 				WindowBorder = WindowBorder.Fixed;
 				WindowState = WindowState.Normal;
-				var offsetX = WindowInfo.ScreenWidth / 2 - Settings.Width;
-				var offsetY = WindowInfo.ScreenHeight / 2 - Settings.Height;
+				var offsetX = (WindowInfo.ScreenWidth - Settings.Width) / 2;
+				var offsetY = (WindowInfo.ScreenHeight - Settings.Height) / 2;
 				ClientRectangle = new Box2i(offsetX, offsetY + 1, Settings.Width + offsetX, Settings.Height + offsetY);
 			}
 			WindowInfo.Width = ClientRectangle.Size.X;
