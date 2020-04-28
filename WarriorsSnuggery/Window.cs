@@ -2,6 +2,7 @@ using OpenToolkit.Mathematics;
 using OpenToolkit.Windowing.Common;
 using OpenToolkit.Windowing.Common.Input;
 using OpenToolkit.Windowing.Desktop;
+using OpenToolkit.Windowing.GraphicsLibraryFramework;
 using System;
 using WarriorsSnuggery.Graphics;
 
@@ -14,6 +15,8 @@ namespace WarriorsSnuggery
 
 		public static int ScreenHeight;
 		public static int ScreenWidth;
+
+		public static int ScreenRefreshRate;
 
 		public static float Ratio { get { return Width / (float)Height; } }
 
@@ -42,9 +45,14 @@ namespace WarriorsSnuggery
 			current = this;
 			CursorVisible = false;
 
-			// Initialize values TODO
-			WindowInfo.ScreenWidth = /*bounds.Width*/2736;
-			WindowInfo.ScreenHeight = /*bounds.Height*/1824;
+			// Initialize values
+			unsafe
+			{
+				var mode = GLFW.GetVideoMode(CurrentMonitor.ToUnsafePtr<OpenToolkit.Windowing.GraphicsLibraryFramework.Monitor>());
+				WindowInfo.ScreenWidth = mode->Width;
+				WindowInfo.ScreenHeight = mode->Height;
+				WindowInfo.ScreenRefreshRate = mode->RefreshRate;
+			}
 			SetScreen();
 		}
 
@@ -75,24 +83,13 @@ namespace WarriorsSnuggery
 				var offsetY = (WindowInfo.ScreenHeight - Settings.Height) / 2;
 				ClientRectangle = new Box2i(offsetX, offsetY + 1, Settings.Width + offsetX, Settings.Height + offsetY);
 			}
+			RenderFrequency = Settings.FrameLimiter == 0 ? WindowInfo.ScreenRefreshRate : Settings.FrameLimiter;
 			WindowInfo.Width = ClientRectangle.Size.X;
 			WindowInfo.Height = ClientRectangle.Size.Y;
-			// OnResize should be called automatically
 
 			ColorManager.WindowRescaled();
 
 			MasterRenderer.UpdateView();
-		}
-
-		protected override void OnResize(ResizeEventArgs e)
-		{
-			if (e.Height == 0 || e.Width == 0)
-				return;
-
-			base.OnResize(e);
-
-			WindowInfo.Height = e.Height;
-			WindowInfo.Width = e.Width;
 		}
 
 		protected override void OnLoad()

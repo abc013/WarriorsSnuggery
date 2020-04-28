@@ -65,9 +65,6 @@ namespace WarriorsSnuggery
 
 		public static void Initialize(bool newSettings)
 		{
-			//TODO
-			//FrameLimiter = (int)OpenToolkit.DisplayDevice.Default.RefreshRate;
-
 			if (!newSettings && FileExplorer.Exists(FileExplorer.MainDirectory, "Settings.yaml"))
 				load();
 			else
@@ -95,10 +92,6 @@ namespace WarriorsSnuggery
 						break;
 					case "FrameLimiter":
 						FrameLimiter = node.Convert<int>();
-
-						// TODO
-						//if (FrameLimiter == 0 || FrameLimiter > OpenToolkit.DisplayDevice.Default.RefreshRate)
-						//	FrameLimiter = (int)OpenToolkit.DisplayDevice.Default.RefreshRate;
 
 						break;
 					case "ScrollSpeed":

@@ -68,15 +68,17 @@ namespace WarriorsSnuggery
 
 			var settings1 = new GameWindowSettings
 			{
-				RenderFrequency = Settings.FrameLimiter,
 				UpdateFrequency = Settings.UpdatesPerSecond
 			};
+			if (Settings.FrameLimiter != 0)
+				settings1.RenderFrequency = Settings.FrameLimiter;
+
 			var settings2 = new NativeWindowSettings
 			{
 				Title = Title,
 				API = ContextAPI.OpenGL,
 				APIVersion = new Version(3, 2),
-				Size = new OpenToolkit.Mathematics.Vector2i(Settings.Width, Settings.Height)
+				Size = new OpenToolkit.Mathematics.Vector2i(Settings.Width, Settings.Height),
 			};
 			window = new Window(settings1, settings2);
 
