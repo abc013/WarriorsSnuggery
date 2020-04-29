@@ -100,6 +100,10 @@
     <Compile Include="Cursor.cs" />
     <Compile Include="GameController.cs" />
     <Compile Include="Game\Bot\BotBehavior.cs" />
+    <Compile Include="Game\Particles\LineParticleSpawner.cs" />
+    <Compile Include="Game\Particles\ListParticleSpawner.cs" />
+    <Compile Include="Game\Particles\ParticleSpawner.cs" />
+    <Compile Include="Game\Particles\PointParticleSpawner.cs" />
     <Compile Include="Game\UI\Objects\ActorList.cs" />
     <Compile Include="Game\UI\Objects\SliderBar.cs" />
     <Compile Include="Game\UI\Objects\SpellList.cs" />
@@ -155,7 +159,7 @@
     <Compile Include="Game\IPositionable.cs" />
     <Compile Include="Game\Particles\ParticleForce.cs" />
     <Compile Include="Game\Particles\ParticleForceType.cs" />
-    <Compile Include="Game\Particles\ParticleSpawner.cs" />
+    <Compile Include="Game\Particles\AreaParticleSpawner.cs" />
     <Compile Include="Game\Text\TextBlock.cs" />
     <Compile Include="Game\Tooltip.cs" />
     <Compile Include="Game\UI\Objects\Button.cs" />

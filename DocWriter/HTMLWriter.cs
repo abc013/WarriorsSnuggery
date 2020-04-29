@@ -170,8 +170,8 @@ namespace WarriorsSnuggery
 
 		public static void WriteParticles(StreamWriter writer)
 		{
-			HTMLWriter.WriteHead(writer, "ParticleSpawner");
-			TypeWriter.Write(writer, "WarriorsSnuggery.Objects.Particles.ParticleSpawner", new[] { new MiniTextNode[0] });
+			HTMLWriter.WriteHead(writer, "ParticleSpawners");
+			TypeWriter.WriteAll(writer, "WarriorsSnuggery.Objects.Particles", "ParticleSpawner", new[] { new MiniTextNode[0] });
 
 			HTMLWriter.WriteHead(writer, "Particle");
 			TypeWriter.Write(writer, "WarriorsSnuggery.Objects.Particles.ParticleType", new[] { new MiniTextNode[0] });

@@ -181,7 +181,17 @@ namespace WarriorsSnuggery.Loader
 			}
 			else if (t == typeof(Objects.Particles.ParticleSpawner))
 			{
-				return new Objects.Particles.ParticleSpawner(node.Children.ToArray());
+				switch (s)
+				{
+					case "Point":
+						return new Objects.Particles.AreaParticleSpawner(node.Children.ToArray());
+					case "Line":
+						return new Objects.Particles.LineParticleSpawner(node.Children.ToArray());
+					case "Area":
+						return new Objects.Particles.AreaParticleSpawner(node.Children.ToArray());
+					case "List":
+						return new Objects.Particles.ListParticleSpawner(node.Children.ToArray());
+				}
 			}
 			else if (t == typeof(Graphics.TextureInfo))
 			{
@@ -292,6 +302,15 @@ namespace WarriorsSnuggery.Loader
 
 				for (int i = 0; i < node.Children.Count; i++)
 					convert[i] = new Maps.PatrolProbabilityInfo(node.Children[i].Children.ToArray());
+
+				return convert;
+			}
+			else if (t == typeof(Objects.Particles.ParticleSpawner[]))
+			{
+				var convert = new Objects.Particles.ParticleSpawner[node.Children.Count];
+
+				for (int i = 0; i < node.Children.Count; i++)
+					convert[i] = (Objects.Particles.ParticleSpawner)Convert(file, node.Children[i], typeof(Objects.Particles.ParticleSpawner));
 
 				return convert;
 			}
