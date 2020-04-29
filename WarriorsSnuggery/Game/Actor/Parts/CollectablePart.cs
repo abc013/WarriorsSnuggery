@@ -162,7 +162,7 @@ namespace WarriorsSnuggery.Objects.Parts
 					case CollectableType.HEALTH:
 						if (a.Health == null)
 							return false;
-						if (a.Health.HP == a.Health.MaxHP)
+						if (info.Value > 0 && a.Health.HP == a.Health.MaxHP)
 							return false;
 						
 						a.Health.HP += info.Value;
