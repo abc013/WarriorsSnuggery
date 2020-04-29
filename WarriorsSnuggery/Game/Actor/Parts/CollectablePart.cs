@@ -142,10 +142,8 @@ namespace WarriorsSnuggery.Objects.Parts
 				cooldown = info.Duration;
 
 				if (info.ParticleSpawner != null)
-				{
-					foreach (var particle in info.ParticleSpawner.Create(self.World, self.Position, actor.Height))
-						self.World.Add(particle);
-				}
+					self.World.Add(info.ParticleSpawner.Create(self.World, self.Position, self.Height));
+
 				if (info.Sound != null)
 				{
 					var sound = new Sound(info.Sound);
