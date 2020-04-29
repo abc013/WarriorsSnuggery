@@ -141,12 +141,12 @@ namespace WarriorsSnuggery
 				watch = Timer.Start();
 
 			MouseInput.State = MouseState;
-			MouseInput.WheelState = 0;
 			WarriorsSnuggery.KeyInput.State = KeyboardState;
 
 			GameController.Tick();
 			AudioController.Tick();
 
+			MouseInput.WheelState = 0;
 			StringInput = string.Empty;
 			KeyInput = Key.End;
 
@@ -220,7 +220,7 @@ namespace WarriorsSnuggery
 
 		protected override void OnMouseWheel(MouseWheelEventArgs e)
 		{
-			MouseInput.WheelState = (int)e.Offset.X;
+			MouseInput.WheelState = (int)-e.Offset.Y;
 		}
 
 		protected override void OnTextInput(TextInputEventArgs e)
