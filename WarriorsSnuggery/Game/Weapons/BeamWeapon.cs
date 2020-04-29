@@ -123,7 +123,7 @@ namespace WarriorsSnuggery.Objects.Weapons
 
 			var dist = (OriginPos - Position).FlatDist;
 
-			sound?.SetPosition((OriginPos + Position) / new CPos(2, 2, 1));
+			sound?.SetPosition(OriginPos + (Position - OriginPos) / new CPos(2, 2, 1));
 
 			if (dist > Type.MaxRange * RangeModifier)
 			{

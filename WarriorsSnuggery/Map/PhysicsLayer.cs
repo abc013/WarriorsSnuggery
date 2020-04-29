@@ -52,7 +52,7 @@ namespace WarriorsSnuggery
 
 		public PhysicsSector[] GetSectors(SimplePhysics physics)
 		{
-			if (physics == null || physics.Shape == Physics.Shape.NONE)
+			if (physics == null || physics.Shape == Shape.NONE)
 				return new PhysicsSector[0];
 
 			var position = physics.Position;
@@ -63,10 +63,10 @@ namespace WarriorsSnuggery
 
 			// Corner points
 
-			points[0] = new MPos(position.X + radiusX + 512, position.Y + radiusY + 512); // Sector 1 ( x| y)
-			points[1] = new MPos(position.X + radiusX + 512, position.Y - radiusY + 512); // Sector 2 ( x|-y)
-			points[2] = new MPos(position.X - radiusX + 512, position.Y - radiusY + 512); // Sector 3 (-x|-y)
-			points[3] = new MPos(position.X - radiusX + 512, position.Y + radiusY + 512); // Sector 4 (-x| y)
+			points[0] = new MPos(position.X + radiusX, position.Y + radiusY); // Sector 1 ( x| y)
+			points[1] = new MPos(position.X + radiusX, position.Y - radiusY); // Sector 2 ( x|-y)
+			points[2] = new MPos(position.X - radiusX, position.Y - radiusY); // Sector 3 (-x|-y)
+			points[3] = new MPos(position.X - radiusX, position.Y + radiusY); // Sector 4 (-x| y)
 
 			// Corner sectors
 
