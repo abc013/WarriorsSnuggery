@@ -1,6 +1,6 @@
 ﻿using WarriorsSnuggery.Spells;
 
-namespace WarriorsSnuggery.Objects.Effects
+namespace WarriorsSnuggery.Objects.Parts
 {
 	public class EffectPart : ITick
 	{

@@ -136,7 +136,7 @@
     <Compile Include="Physics\RayPhysics.cs" />
     <Compile Include="Physics\Shape.cs" />
     <Compile Include="SpellTree\Spell.cs" />
-    <Compile Include="Game\Actor\Spells\EffectPart.cs" />
+    <Compile Include="Game\Actor\Parts\EffectPart.cs" />
     <Compile Include="Game\Actor\Parts\ActorPart.cs" />
     <Compile Include="Game\Actor\IActor.cs" />
     <Compile Include="Game\Actor\Parts\AnimatedSpritePart.cs" />

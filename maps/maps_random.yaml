@@ -235,6 +235,7 @@ city1=
 				Probability=1
 	ImportantPieceGeneration=8
 		Pieces=key
+		PositionType=EXIT
 	ImportantPieceGeneration=9
 		Pieces=exit3
 		PositionType=EXIT
