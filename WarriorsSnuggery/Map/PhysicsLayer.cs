@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using WarriorsSnuggery.Graphics;
 using WarriorsSnuggery.Objects;
 using WarriorsSnuggery.Physics;
 
@@ -31,15 +32,22 @@ namespace WarriorsSnuggery
 			if (obj.Physics == null || obj.Physics.Shape == Physics.Shape.NONE)
 				return;
 
-			if (!@new && updateSectors)
-				foreach (var sector in obj.PhysicsSectors)
-					sector.Leave(obj);
-
+			var oldSectors = obj.PhysicsSectors;
 			obj.PhysicsSectors = GetSectors(obj.Physics);
 
 			if (updateSectors)
+			{
+				if (!@new)
+				{
+					foreach (var sector in oldSectors)
+					{
+						if (!obj.PhysicsSectors.Contains(sector))
+							sector.Leave(obj);
+					}
+				}
 				foreach (var sector in obj.PhysicsSectors)
 					sector.Enter(obj);
+			}
 		}
 
 		public PhysicsSector[] GetSectors(SimplePhysics physics)
@@ -55,10 +63,10 @@ namespace WarriorsSnuggery
 
 			// Corner points
 
-			points[0] = new MPos(position.X + radiusX, position.Y + radiusY); // Sector 1 ( x| y)
-			points[1] = new MPos(position.X + radiusX, position.Y - radiusY); // Sector 2 ( x|-y)
-			points[2] = new MPos(position.X - radiusX, position.Y - radiusY); // Sector 3 (-x|-y)
-			points[3] = new MPos(position.X - radiusX, position.Y + radiusY); // Sector 4 (-x| y)
+			points[0] = new MPos(position.X + radiusX + 512, position.Y + radiusY + 512); // Sector 1 ( x| y)
+			points[1] = new MPos(position.X + radiusX + 512, position.Y - radiusY + 512); // Sector 2 ( x|-y)
+			points[2] = new MPos(position.X - radiusX + 512, position.Y - radiusY + 512); // Sector 3 (-x|-y)
+			points[3] = new MPos(position.X - radiusX + 512, position.Y + radiusY + 512); // Sector 4 (-x| y)
 
 			// Corner sectors
 
@@ -133,6 +141,11 @@ namespace WarriorsSnuggery
 
 		public void RenderDebug()
 		{
+			var pos = (Position * new MPos(2, 2)).ToCPos() + new CPos(512, 512, 0);
+			ColorManager.DrawLine(pos - new CPos(1000, 1000, 0), pos + new CPos(-1000, 1000, 0), new Color(0, 0, 1f, 0.2f));
+			ColorManager.DrawLine(pos - new CPos(1000, 1000, 0), pos + new CPos(1000, -1000, 0), new Color(0, 0, 1f, 0.2f));
+			ColorManager.DrawLine(pos - new CPos(-1000, 1000, 0), pos + new CPos(1000, 1000, 0), new Color(0, 0, 1f, 0.2f));
+			ColorManager.DrawLine(pos - new CPos(1000, -1000, 0), pos + new CPos(1000, 1000, 0), new Color(0, 0, 1f, 0.2f));
 			foreach (var obj in objects)
 				obj.Physics.RenderDebug();
 		}
