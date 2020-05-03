@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.IO;
 
 namespace WarriorsSnuggery
 {
@@ -92,7 +93,7 @@ namespace WarriorsSnuggery
 					shroud += world.ShroudLayer.ShroudRevealed(Objects.Actor.PlayerTeam, x, y).GetHashCode() + ",";
 				}
 			}
-			using (var writer = new System.IO.StreamWriter(FileExplorer.Saves + SaveName + ".yaml", false))
+			using (var writer = new StreamWriter(FileExplorer.Saves + SaveName + ".yaml", false))
 			{
 				writer.WriteLine("Name=" + Name);
 				writer.WriteLine("Level=" + Level);
@@ -128,10 +129,10 @@ namespace WarriorsSnuggery
 
 		public void Delete()
 		{
-			System.IO.File.Delete(FileExplorer.Saves + SaveName + ".yaml");
+			File.Delete(FileExplorer.Saves + SaveName + ".yaml");
 
-			if (System.IO.File.Exists(FileExplorer.Saves + SaveName + "_map.yaml"))
-				System.IO.File.Delete(FileExplorer.Saves + SaveName + "_map.yaml");
+			if (File.Exists(FileExplorer.Saves + SaveName + "_map.yaml"))
+				File.Delete(FileExplorer.Saves + SaveName + "_map.yaml");
 		}
 
 		public void SetName(string name)
@@ -139,9 +140,8 @@ namespace WarriorsSnuggery
 			Name = name;
 			const string invalidChars = "#*+'?=!.:;,";
 			foreach (var c in invalidChars)
-			{
 				name = name.Replace(c, '-');
-			}
+
 			SaveName = name;
 		}
 
@@ -153,12 +153,7 @@ namespace WarriorsSnuggery
 				Hardcore = hardcore,
 				Difficulty = difficulty
 			};
-			const string invalidChars = "#*+'?=!.:;,";
-			foreach (var c in invalidChars)
-			{
-				name = name.Replace(c, '-');
-			}
-			statistic.SaveName = name;
+			statistic.SetName(name);
 
 			statistic.Level = 1;
 			statistic.FinalLevel = (difficulty + 1) * 5;
@@ -189,6 +184,9 @@ namespace WarriorsSnuggery
 						break;
 					case "Difficulty":
 						statistic.Difficulty = node.Convert<int>();
+						break;
+					case "Hardcore":
+						statistic.Hardcore = node.Convert<bool>();
 						break;
 					case "Money":
 						statistic.Money = node.Convert<int>();

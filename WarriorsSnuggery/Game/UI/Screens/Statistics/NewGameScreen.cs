@@ -13,7 +13,7 @@ namespace WarriorsSnuggery.UI
 		readonly CheckBox hardcoreInput;
 		readonly TextBox seedInput;
 
-		public NewGameScreen(Game game) : base("New Game [STORYMODE]")
+		public NewGameScreen(Game game) : base("New Game")
 		{
 			this.game = game;
 			Title.Position = new CPos(0, -4096, 0);
