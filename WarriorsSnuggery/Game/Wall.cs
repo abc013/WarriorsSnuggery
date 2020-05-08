@@ -20,6 +20,8 @@ namespace WarriorsSnuggery.Objects
 			{
 				if (Type.Invincible)
 					return;
+				if (value >= Type.Health)
+					value = Type.Health;
 
 				health = value;
 			}
@@ -99,7 +101,7 @@ namespace WarriorsSnuggery.Objects
 			if (Type.Invincible)
 				return;
 
-			health -= (int)Math.Round(damage * Type.DamagePenetration);
+			health -= damage;
 
 			if (health <= 0)
 			{

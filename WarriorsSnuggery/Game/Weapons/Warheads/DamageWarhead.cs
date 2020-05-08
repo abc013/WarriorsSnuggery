@@ -87,8 +87,8 @@ namespace WarriorsSnuggery.Objects.Weapons
 							continue;
 
 						var dist = (target.Position - wall.Position).FlatDist;
-						if (dist > 32f) continue;
-						if (dist < 1f) dist = 1;
+						if (dist > 32 * 1024) continue;
+						if (dist < 1) dist = 1;
 
 						float damagemultiplier = FalloffHelper.GetMultiplier(Falloff, RangeSteps, dist);
 						var damage = (int)Math.Floor(damagemultiplier * Damage * weapon.DamageModifier);
