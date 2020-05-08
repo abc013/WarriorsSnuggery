@@ -39,72 +39,126 @@ namespace WarriorsSnuggery
 
 		void notifyNeighbors(MPos pos, bool added)
 		{
-			bool s1 = false;
-			bool s2 = false;
+			byte s = 0;
 
 			bool left = pos.X >= 2;
 			bool right = pos.X < Size.X - 3;
 			bool top = pos.Y > 0;
 			bool bottom = pos.Y < Size.Y - 2;
 
-			if (left)
-			{
-				Walls[pos.X - 1 - (pos.X % 2), pos.Y]?.SetNeighborState(0b10000000, false, added);
-				s1 |= Walls[pos.X - 1 - (pos.X % 2), pos.Y] != null;
-			}
 
-			if (top)
-			{
-				Walls[pos.X - (pos.X % 2), pos.Y - 1]?.SetNeighborState(0b01000000, false, added);
-				s1 |= Walls[pos.X - (pos.X % 2), pos.Y - 1] != null;
-			}
+			/*
+
+					|2
+					|
+			1		|		3
+			--------o--------
+					|
+					|
+					|
+			--------o--------
+			6		|		8
+					|
+				   7|
+
+					|1		|6
+					|		|
+			4		|		|	    5
+			--------o-------o--------
+					|	    |
+					|		|
+				   3|		|8
+			*/
 
 			if (pos.X % 2 != 0)
 			{
-				Walls[pos.X - 1, pos.Y]?.SetNeighborState(0b00001000, true, added);
-				s1 |= Walls[pos.X - 1, pos.Y] != null;
+				// Horizontal
+
+				if (left && Walls[pos.X - 2, pos.Y] != null)
+				{
+					Walls[pos.X - 2, pos.Y].SetNeighborState(0b00010000, added);
+					s |= 0b00001000;
+				}
+
+				if (top && Walls[pos.X - 1, pos.Y - 1] != null)
+				{
+					Walls[pos.X - 1, pos.Y - 1].SetNeighborState(0b10000000, added);
+					s |= 0b00000001;
+				}
+
+				if (Walls[pos.X - 1, pos.Y] != null)
+				{
+					Walls[pos.X - 1, pos.Y].SetNeighborState(0b00100000, added);
+					s |= 0b00100000;
+				}
 
 				if (right)
 				{
-					if (top)
+					if (top && Walls[pos.X + 1, pos.Y - 1] != null)
 					{
-						Walls[pos.X + 1, pos.Y - 1]?.SetNeighborState(0b00100000, false, added);
-						s2 |= Walls[pos.X + 1, pos.Y - 1] != null;
+						Walls[pos.X + 1, pos.Y - 1].SetNeighborState(0b00000100, added);
+						s |= 0b00000100;
 					}
 
-					Walls[pos.X + 1, pos.Y]?.SetNeighborState(0b00000100, true, added);
-					s2 |= Walls[pos.X + 1, pos.Y] != null;
+					if (Walls[pos.X + 1, pos.Y] != null)
+					{
+						Walls[pos.X + 1, pos.Y].SetNeighborState(0b00000001, added);
+						s |= 0b10000000;
+					}
 
-					Walls[pos.X + 2, pos.Y]?.SetNeighborState(0b00000010, true, added);
-					s2 |= Walls[pos.X + 2, pos.Y] != null;
+					if (Walls[pos.X + 2, pos.Y] != null)
+					{
+						Walls[pos.X + 2, pos.Y].SetNeighborState(0b00001000, added);
+						s |= 0b00010000;
+					}
 				}
 			}
 			else
 			{
-				Walls[pos.X + 1, pos.Y]?.SetNeighborState(0b00001000, true, added);
-				s1 |= Walls[pos.X + 1, pos.Y] != null;
+				// Vertical
+
+				if (left && Walls[pos.X - 1, pos.Y] != null)
+				{
+					Walls[pos.X - 1, pos.Y].SetNeighborState(0b10000000, added);
+					s |= 0b00000001;
+				}
+
+				if (top && Walls[pos.X, pos.Y - 1] != null)
+				{
+					Walls[pos.X, pos.Y - 1].SetNeighborState(0b01000000, added);
+					s |= 0b00000010;
+				}
+
+				if (Walls[pos.X + 1, pos.Y] != null)
+				{
+					Walls[pos.X + 1, pos.Y]?.SetNeighborState(0b00100000, added);
+					s |= 0b00100000;
+				}
 
 				if (bottom)
 				{
-					Walls[pos.X, pos.Y + 1]?.SetNeighborState(0b000000100, true, added);
-					s2 |= Walls[pos.X, pos.Y + 1] != null;
-
-					Walls[pos.X + 1, pos.Y + 1]?.SetNeighborState(0b00000010, true, added);
-					s2 |= Walls[pos.X + 1, pos.Y + 1] != null;
-
-					if (left)
+					if (Walls[pos.X, pos.Y + 1] != null)
 					{
-						Walls[pos.X - 1, pos.Y + 1]?.SetNeighborState(0b00100000, false, added);
-						s2 |= Walls[pos.X - 1, pos.Y + 1] != null;
+						Walls[pos.X, pos.Y + 1]?.SetNeighborState(0b00000010, added);
+						s |= 0b01000000;
+					}
+
+					if (Walls[pos.X + 1, pos.Y + 1] != null)
+					{
+						Walls[pos.X + 1, pos.Y + 1]?.SetNeighborState(0b00000001, added);
+						s |= 0b00010000;
+					}
+
+					if (left && Walls[pos.X - 1, pos.Y + 1] != null)
+					{
+						Walls[pos.X - 1, pos.Y + 1]?.SetNeighborState(0b00010000, added);
+						s |= 0b00001000;
 					}
 				}
 			}
 
 			if (added)
-			{
-				Walls[pos.X, pos.Y].SetNeighborState((byte)(s1 ? 0b00001000 : 0b00000000), true, s1);
-				Walls[pos.X, pos.Y].SetNeighborState((byte)(s2 ? 0b10000000 : 0b00000000), false, s2);
-			}
+				Walls[pos.X, pos.Y].SetNeighborState(s, true);
 		}
 
 		public void Render()

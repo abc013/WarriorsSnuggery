@@ -136,7 +136,7 @@ namespace WarriorsSnuggery.Objects
 			}
 		}
 
-		public void SetNeighborState(byte nS, bool s1, bool enabled)
+		public void SetNeighborState(byte nS, bool enabled)
 		{
 			if (!enabled)
 			{
@@ -153,11 +153,6 @@ namespace WarriorsSnuggery.Objects
 				nState |= nS;
 			else
 				nState &= (byte)~nS;
-
-			if (enabled)
-				neighborState |= s1 ? NeighborState.TOP_LEFT : NeighborState.BOTTOM_RIGHT;
-			else
-				neighborState &= s1 ? NeighborState.BOTTOM_RIGHT : NeighborState.TOP_LEFT;
 
 			setRenderable();
 		}

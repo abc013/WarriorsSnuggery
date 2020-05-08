@@ -76,18 +76,29 @@ namespace WarriorsSnuggery.Objects
 
 			if (ConsiderWallsNearby)
 			{
-				//if (nState << 4 == 0 && nState >> 4 == 0 || nState == 0)
-				//	Console.WriteLine("normal " + Convert.ToString(nState, 2));
-				//else if (nState << 4 == 0)
-				//	Console.WriteLine("left " + Convert.ToString(nState, 2));
-				//else if (nState >> 4 == 0)
-				//	Console.WriteLine("right " + Convert.ToString(nState, 2));
-
 				var add = 0;
-				if (neighborState == 1)
+				var checks1 = (byte) (horizontal ? 0b00101010 : 0b00100011);
+				var checks2 = (byte) (horizontal ? 0b10010100 : 0b11000100);
+
+				if ((nState & checks1) != 0 && (nState & checks2) != 0 || nState == 0)
+				{
+					Console.WriteLine("normal " + Convert.ToString(nState, 2));
+				}
+				else if ((nState & checks2) == 0)
+				{
+					Console.WriteLine("left " + Convert.ToString(nState, 2));
 					add = 1;
-				else if (neighborState == 2)
+				}
+				else
+				{
+					Console.WriteLine("right " + Convert.ToString(nState, 2));
 					add = 2;
+				}
+
+				//if (neighborState == 1)
+				//	add = 1;
+				//else if (neighborState == 2)
+				//	add = 2;
 				var count = half / 3;
 
 				var ran = Program.SharedRandom.Next(count);
