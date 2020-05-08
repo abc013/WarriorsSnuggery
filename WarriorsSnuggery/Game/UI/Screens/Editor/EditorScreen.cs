@@ -91,7 +91,7 @@ namespace WarriorsSnuggery.UI
 			foreach (var n in WallCreator.GetIDs())
 			{
 				var a = WallCreator.GetType(n);
-				walls.Add(new PanelItem(CPos.Zero, new BatchObject(a.GetTexture(true), Color.White), new MPos(512, 512), n + "", new string[0], () => wallSelected = a));
+				walls.Add(new PanelItem(CPos.Zero, new BatchObject(a.GetTexture(true, 0, 0), Color.White), new MPos(512, 512), n + "", new string[0], () => wallSelected = a));
 			}
 
 			wallBox = CheckBoxCreator.Create("wooden", new CPos((int)(WindowInfo.UnitWidth * 512 - 2048), 6244, 0), false, (b) => horizontal = b);
@@ -296,6 +296,9 @@ namespace WarriorsSnuggery.UI
 						return;
 
 					mpos = new MPos(mpos.X * 2 + (horizontal ? 0 : 1), mpos.Y);
+
+					if (game.World.WallLayer.Walls[mpos.X, mpos.Y] != null && game.World.WallLayer.Walls[mpos.X, mpos.Y].Type.ID == wallSelected.ID)
+						return;
 
 					game.World.WallLayer.Set(WallCreator.Create(mpos, game.World.WallLayer, wallSelected.ID));
 					break;

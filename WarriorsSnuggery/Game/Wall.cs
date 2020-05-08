@@ -1,16 +1,32 @@
-using System;
 using WarriorsSnuggery.Graphics;
+using WarriorsSnuggery.Physics;
 
 namespace WarriorsSnuggery.Objects
 {
 	public class Wall : PhysicsObject
 	{
+		enum NeighborState : byte
+		{
+			NONE = 0,
+			TOP_LEFT = 1,
+			BOTTOM_RIGHT = 2,
+			BOTH = 3
+		}
+
+		enum DamageState : byte
+		{
+			NONE,
+			LIGHT,
+			HEAVY
+		}
+
 		public readonly MPos LayerPosition;
+		readonly CPos renderPos;
 		readonly WallLayer layer;
 
 		public readonly WallType Type;
-		readonly BatchObject damaged1;
-		readonly BatchObject damaged2;
+		BatchObject renderable;
+		Color color = Color.White;
 
 		readonly bool isHorizontal;
 		public int Health
@@ -24,6 +40,7 @@ namespace WarriorsSnuggery.Objects
 					value = Type.Health;
 
 				health = value;
+				checkDamageState();
 			}
 		}
 
@@ -33,13 +50,17 @@ namespace WarriorsSnuggery.Objects
 			get { return health / (float)Type.Health; }
 		}
 
-		public Wall(MPos position, WallLayer layer, WallType type) : base(position.ToCPos(), new BatchObject(type.GetTexture(position.X % 2 != 0), Color.White), type.Blocks ? new Physics.SimplePhysics(position.ToCPos() / new CPos(2, 1, 1), 0, position.X % 2 != 0 ? WarriorsSnuggery.Physics.Shape.LINE_HORIZONTAL : WarriorsSnuggery.Physics.Shape.LINE_VERTICAL, 512, 512, type.Height) : new Physics.SimplePhysics(position.ToCPos() / new CPos(2, 1, 1), 0, WarriorsSnuggery.Physics.Shape.NONE, 0, 0, 0))
+		byte nState;
+		NeighborState neighborState;
+		DamageState damageState = DamageState.NONE;
+
+		public Wall(MPos position, WallLayer layer, WallType type) : base(position.ToCPos(), null, type.Blocks ? new SimplePhysics(position.ToCPos() / new CPos(2, 1, 1), 0, position.X % 2 != 0 ? Shape.LINE_HORIZONTAL : Shape.LINE_VERTICAL, 512, 512, type.Height) : SimplePhysics.Empty)
 		{
 			LayerPosition = position;
 			this.layer = layer;
 
 			var pos = position.ToCPos() / new CPos(2, 1, 1);
-			var renderPos = pos;
+			renderPos = pos;
 			Position = pos + new CPos(0, -512, 0);
 			isHorizontal = position.X % 2 != 0;
 			if (isHorizontal)
@@ -53,47 +74,20 @@ namespace WarriorsSnuggery.Objects
 				Physics.Position += new CPos(0, 1024, 0);
 				renderPos += new CPos(-83, -512, 0);
 			}
+
 			Type = type;
 			health = type.Health;
-
-			Renderable.SetPosition(renderPos);
-			if (Type.DamagedImage1 != null)
-			{
-				damaged1 = new BatchObject(type.GetDamagedTexture(isHorizontal, false), Color.White);
-				damaged1.SetPosition(renderPos);
-			}
-			if (Type.DamagedImage2 != null)
-			{
-				damaged2 = new BatchObject(type.GetDamagedTexture(isHorizontal, true), Color.White);
-				damaged2.SetPosition(renderPos);
-			}
 		}
 
 		public override void Render()
 		{
-			if (!Type.Invincible && healthPercentage < 0.75f)
-			{
-				if (healthPercentage >= 0.25f || damaged2 == null)
-				{
-					if (damaged1 != null)
-						damaged1.PushToBatchRenderer();
-					else
-						base.Render();
-				}
-				else
-					damaged2.PushToBatchRenderer();
-			}
-			else
-				base.Render();
+			renderable.PushToBatchRenderer();
 		}
 
 		public override void SetColor(Color color)
 		{
-			base.SetColor(color);
-			if (damaged1 != null)
-				damaged1.SetColor(color);
-			if (damaged2 != null)
-				damaged2.SetColor(color);
+			this.color = color;
+			renderable.SetColor(color);
 		}
 
 		public void Damage(int damage)
@@ -106,16 +100,92 @@ namespace WarriorsSnuggery.Objects
 			if (health <= 0)
 			{
 				Dispose();
-				layer.Remove(LayerPosition);
+				if (Type.WallOnDeath >= 0)
+					layer.Set(WallCreator.Create(LayerPosition, layer, Type.WallOnDeath));
+				else
+					layer.Remove(LayerPosition);
+
+				return;
 			}
+
+			checkDamageState();
+		}
+
+		void checkDamageState()
+		{
+			if (Type.Invincible)
+				return;
+
+			if (healthPercentage < 0.25f)
+			{
+				var newRenderable = Type.DamagedImage1 != null && damageState != DamageState.HEAVY;
+
+				damageState = DamageState.HEAVY;
+
+				if (newRenderable)
+					setRenderable();
+			}
+			else if (healthPercentage < 0.75f)
+			{
+				var newRenderable = Type.DamagedImage2 != null && damageState != DamageState.LIGHT;
+
+				damageState = DamageState.LIGHT;
+
+				if (newRenderable)
+					setRenderable();
+			}
+		}
+
+		public void SetNeighborState(byte nS, bool s1, bool enabled)
+		{
+			if (!enabled)
+			{
+				//if (neighborState == NeighborState.NONE)
+				//	return;
+			}
+			else
+			{
+				//if (neighborState == NeighborState.BOTH)
+				//	return;
+			}
+
+			if (enabled)
+				nState |= nS;
+			else
+				nState &= (byte)~nS;
+
+			if (enabled)
+				neighborState |= s1 ? NeighborState.TOP_LEFT : NeighborState.BOTTOM_RIGHT;
+			else
+				neighborState &= s1 ? NeighborState.BOTTOM_RIGHT : NeighborState.TOP_LEFT;
+
+			setRenderable();
+		}
+
+		void setRenderable()
+		{
+			switch (damageState)
+			{
+				case DamageState.NONE:
+					renderable = new BatchObject(Type.GetTexture(isHorizontal, (byte)neighborState, nState), Color.White);
+					break;
+				case DamageState.LIGHT:
+					renderable = new BatchObject(Type.GetDamagedTexture(isHorizontal, false, (byte)neighborState, nState), Color.White);
+					break;
+				case DamageState.HEAVY:
+					renderable = new BatchObject(Type.GetDamagedTexture(isHorizontal, true, (byte)neighborState, nState), Color.White);
+					break;
+			}
+			renderable.SetPosition(renderPos);
+			renderable.SetColor(color);
 		}
 
 		public override void CheckVisibility()
 		{
-			Renderable.Visible = VisibilitySolver.IsVisibleIgnoringBounds(new MPos(LayerPosition.X / 2, LayerPosition.Y - 1));
+			renderable.Visible = VisibilitySolver.IsVisibleIgnoringBounds(new MPos(LayerPosition.X / 2, LayerPosition.Y - 1));
 
 			if (!isHorizontal)
-				Renderable.Visible |= VisibilitySolver.IsVisibleIgnoringBounds(new MPos(LayerPosition.X / 2, LayerPosition.Y));
+				renderable.Visible |= VisibilitySolver.IsVisibleIgnoringBounds(new MPos(LayerPosition.X / 2, LayerPosition.Y));
 		}
 	}
 }

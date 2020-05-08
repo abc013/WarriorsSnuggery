@@ -116,9 +116,9 @@ namespace WarriorsSnuggery.Maps
 						if (wallData[dataPos] >= 0)
 						{
 							var wall = WallCreator.Create(new MPos(x, y), world.WallLayer, wallData[dataPos]);
-							wall.Health = wallData[dataPos + 1];
-
 							world.WallLayer.Set(wall);
+
+							wall.Health = wallData[dataPos + 1];
 						}
 						else if (world.WallLayer.Walls[x, y] != null && x != position.X * 2 && y != position.Y && y != maxY - 1 && !(x >= maxX - 2))
 							world.WallLayer.Remove(new MPos(x, y));
