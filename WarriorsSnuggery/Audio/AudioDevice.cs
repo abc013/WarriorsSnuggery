@@ -13,6 +13,10 @@ namespace WarriorsSnuggery.Audio
 		public AudioDevice()
 		{
 			device = ALC.OpenDevice("");
+
+			if (device.Equals(ALDevice.Null))
+				return;
+
 			context = ALC.CreateContext(device, new ALContextAttributes());
 			ALC.MakeContextCurrent(context);
 
