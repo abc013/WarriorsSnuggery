@@ -1,4 +1,6 @@
-﻿using WarriorsSnuggery.Objects.Weapons;
+﻿using System;
+using System.ComponentModel.DataAnnotations;
+using WarriorsSnuggery.Objects.Weapons;
 
 namespace WarriorsSnuggery.Objects.Parts
 {
@@ -75,10 +77,14 @@ namespace WarriorsSnuggery.Objects.Parts
 
 			if (beam != null)
 			{
-				beam.TargetPosition = Target;
-				beam.TargetHeight = TargetHeight;
+
 				if (beam.Disposed)
+				{
 					beam = null;
+					return;
+				}
+
+				beam.Move(Target, TargetHeight);
 			}
 		}
 

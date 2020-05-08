@@ -142,6 +142,8 @@ namespace WarriorsSnuggery.Objects.Weapons
 
 		[Desc("Determines whether the beam target can be moved.")]
 		public readonly bool Directed;
+		[Desc("Determines the speed of the beam target when being moved.")]
+		public readonly int MovementSpeed = 5;
 
 		public BeamProjectileType(MiniTextNode[] nodes)
 		{

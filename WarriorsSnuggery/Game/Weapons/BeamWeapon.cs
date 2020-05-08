@@ -1,3 +1,4 @@
+using OpenToolkit.Graphics.ES20;
 using System;
 using WarriorsSnuggery.Graphics;
 using WarriorsSnuggery.Physics;
@@ -154,6 +155,30 @@ namespace WarriorsSnuggery.Objects.Weapons
 			OriginPos = Origin.ActiveWeapon.WeaponOffsetPosition;
 			rayPhysics.Start = OriginPos;
 			rayPhysics.StartHeight = OriginHeight;
+		}
+
+		public void Move(CPos target, int height)
+		{
+			var dHeight = height - TargetHeight;
+			if (dHeight > projectileType.MovementSpeed)
+				TargetHeight += projectileType.MovementSpeed;
+			else if (dHeight < -projectileType.MovementSpeed)
+				TargetHeight -= projectileType.MovementSpeed;
+			else
+				TargetHeight += dHeight;
+
+			var dTarget = target - TargetPosition;
+			if (dTarget.Dist <= projectileType.MovementSpeed)
+			{
+				TargetPosition = target;
+				return;
+			}
+
+			var angle = dTarget.FlatAngle;
+			var dx = (int)-(Math.Cos(angle) * projectileType.MovementSpeed);
+			var dy = (int)-(Math.Sin(angle) * projectileType.MovementSpeed);
+			TargetPosition += new CPos(dx, dy, 0);
+
 		}
 
 		public override void Dispose()
