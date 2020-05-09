@@ -36,7 +36,7 @@ namespace WarriorsSnuggery
 
 	public class Sound
 	{
-		const float reduction = 1000000f;
+		const float reduction = 100000f;
 
 		readonly SoundType info;
 		readonly bool inGame;
@@ -88,7 +88,7 @@ namespace WarriorsSnuggery
 
 		float distanceVolume()
 		{
-			return 1 / (1 + dist * reduction * 16);
+			return 1 / (1 + dist);
 		}
 
 		Vector convert(CPos position)
@@ -96,10 +96,10 @@ namespace WarriorsSnuggery
 			if (inGame)
 			{
 				position -= Camera.LookAt;
-				return position.ToVector() / new Vector(Camera.CurrentZoom * reduction, Camera.CurrentZoom * reduction, 1);
+				return position.ToVector() / new Vector(Camera.CurrentZoom, Camera.CurrentZoom, 1);
 			}
 
-			return position.ToVector() / new Vector(Camera.DefaultZoom * reduction, Camera.DefaultZoom * reduction, 1);
+			return position.ToVector() / new Vector(Camera.DefaultZoom, Camera.DefaultZoom, 1);
 		}
 
 		public void Pause(bool pause)
