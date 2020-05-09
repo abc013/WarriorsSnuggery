@@ -165,10 +165,12 @@ namespace WarriorsSnuggery.Objects
 					renderable = new BatchObject(Type.GetTexture(isHorizontal, (byte)neighborState, nState), Color.White);
 					break;
 				case DamageState.LIGHT:
-					renderable = new BatchObject(Type.GetDamagedTexture(isHorizontal, false, (byte)neighborState, nState), Color.White);
+					if (Type.DamagedImage1 != null)
+						renderable = new BatchObject(Type.GetDamagedTexture(isHorizontal, false, (byte)neighborState, nState), Color.White);
 					break;
 				case DamageState.HEAVY:
-					renderable = new BatchObject(Type.GetDamagedTexture(isHorizontal, true, (byte)neighborState, nState), Color.White);
+					if (Type.DamagedImage2 != null)
+						renderable = new BatchObject(Type.GetDamagedTexture(isHorizontal, true, (byte)neighborState, nState), Color.White);
 					break;
 			}
 			renderable.SetPosition(renderPos);
