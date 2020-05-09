@@ -113,7 +113,7 @@ namespace WarriorsSnuggery.Objects.Parts
 					renderable.PushToBatchRenderer();
 				}
 
-				self.Offset = info.Offset; // TODO replace by proper rendering
+				self.Offset = info.Offset;
 				renderable.SetPosition(self.GraphicPosition);
 				renderable.SetColor(color);
 				renderable.PushToBatchRenderer();

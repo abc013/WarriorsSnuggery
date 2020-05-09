@@ -1,3 +1,4 @@
+using OpenToolkit.Windowing.GraphicsLibraryFramework;
 using System;
 using WarriorsSnuggery.Graphics;
 using WarriorsSnuggery.Objects;
@@ -122,9 +123,8 @@ namespace WarriorsSnuggery.UI
 			frameLimiterWrite.OnEnter = () =>
 			{
 				var number = int.Parse(frameLimiterWrite.Text);
-				// TODO
-				//if (number > OpenToolkit.DisplayDevice.Default.RefreshRate)
-				//	frameLimiterWrite.Text = ((int)OpenToolkit.DisplayDevice.Default.RefreshRate).ToString();
+				if (number > WindowInfo.ScreenRefreshRate)
+					frameLimiterWrite.Text = WindowInfo.ScreenRefreshRate.ToString();
 			};
 			Content.Add(frameLimiterWrite);
 
