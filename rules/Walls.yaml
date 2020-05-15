@@ -2,6 +2,7 @@
 	Image=walls1
 		Size=48,24
 	Health=400
+	ConsiderWallsNearby=true
 
 1=
 	Image=walls0
@@ -11,6 +12,7 @@
 	DamagedImage2=walls0_dam2
 		Size=48,24
 	Health=400
+	ConsiderWallsNearby=true
 
 2=
 	Image=handrails

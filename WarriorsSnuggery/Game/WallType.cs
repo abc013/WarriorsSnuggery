@@ -137,7 +137,7 @@ namespace WarriorsSnuggery.Objects
 				var count = half / 3;
 
 				var ran = Program.SharedRandom.Next(count);
-				return horizontal ? textures[half + add * count + ran] : textures[add * count + ran];
+				return horizontal ? texture[half + add * count + ran] : texture[add * count + ran];
 			}
 
 			var random = Program.SharedRandom.Next(half);
