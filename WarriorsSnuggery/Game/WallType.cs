@@ -70,35 +70,32 @@ namespace WarriorsSnuggery.Objects
 			}
 		}
 
-		public Texture GetTexture(bool horizontal, byte neighborState, byte nState)
+		public Texture GetTexture(bool horizontal, byte neighborState)
 		{
 			var half = textures.Length / 2;
 
 			if (ConsiderWallsNearby)
 			{
 				var add = 0;
-				var checks1 = (byte) (horizontal ? 0b00101010 : 0b00100011);
-				var checks2 = (byte) (horizontal ? 0b10010100 : 0b11000100);
+				var checks1 = (byte) (horizontal ? 0b00101011 : 0b00100011);
+				var checks2 = (byte) (horizontal ? 0b10010100 : 0b01011000);
 
-				if ((nState & checks1) != 0 && (nState & checks2) != 0 || nState == 0)
+				//var state = Convert.ToString(neighborState, 2).PadLeft(8, '0');
+				if (neighborState == 0 || (neighborState & checks1) != 0 && (neighborState & checks2) != 0)
 				{
-					Console.WriteLine("normal " + Convert.ToString(nState, 2));
+					//Console.WriteLine("normal " + state);
 				}
-				else if ((nState & checks2) == 0)
+				else if ((neighborState & checks2) == 0)
 				{
-					Console.WriteLine("left " + Convert.ToString(nState, 2));
+					//Console.WriteLine("left " + state);
 					add = 1;
 				}
 				else
 				{
-					Console.WriteLine("right " + Convert.ToString(nState, 2));
+					//Console.WriteLine("right " + state);
 					add = 2;
 				}
 
-				//if (neighborState == 1)
-				//	add = 1;
-				//else if (neighborState == 2)
-				//	add = 2;
 				var count = half / 3;
 
 				var ran = Program.SharedRandom.Next(count);
@@ -109,7 +106,7 @@ namespace WarriorsSnuggery.Objects
 			return horizontal ? textures[half + ran2] : textures[ran2];
 		}
 
-		public Texture GetDamagedTexture(bool horizontal, bool heavily, byte neighborState, byte nState)
+		public Texture GetDamagedTexture(bool horizontal, bool heavily, byte neighborState)
 		{
 			var texture = heavily ? damagedTextures2 : damagedTextures1;
 
@@ -118,10 +115,25 @@ namespace WarriorsSnuggery.Objects
 			if (ConsiderWallsNearby)
 			{
 				var add = 0;
-				if (neighborState == 1)
+				var checks1 = (byte)(horizontal ? 0b00101010 : 0b00100011);
+				var checks2 = (byte)(horizontal ? 0b10010100 : 0b11000100);
+
+				//var state = Convert.ToString(neighborState, 2).PadLeft(8, '0');
+				if ((neighborState & checks1) != 0 && (neighborState & checks2) != 0 || neighborState == 0)
+				{
+					//Console.WriteLine("normal " + state);
+				}
+				else if ((neighborState & checks2) == 0)
+				{
+					//Console.WriteLine("left " + state);
 					add = 1;
-				else if (neighborState == 10)
+				}
+				else
+				{
+					//Console.WriteLine("right " + state);
 					add = 2;
+				}
+
 				var count = half / 3;
 
 				var ran = Program.SharedRandom.Next(count);

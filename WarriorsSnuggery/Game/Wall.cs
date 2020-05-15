@@ -50,8 +50,7 @@ namespace WarriorsSnuggery.Objects
 			get { return health / (float)Type.Health; }
 		}
 
-		byte nState;
-		NeighborState neighborState;
+		byte neighborState;
 		DamageState damageState = DamageState.NONE;
 
 		public Wall(MPos position, WallLayer layer, WallType type) : base(position.ToCPos(), null, type.Blocks ? new SimplePhysics(position.ToCPos() / new CPos(2, 1, 1), 0, position.X % 2 != 0 ? Shape.LINE_HORIZONTAL : Shape.LINE_VERTICAL, 512, 512, type.Height) : SimplePhysics.Empty)
@@ -138,21 +137,10 @@ namespace WarriorsSnuggery.Objects
 
 		public void SetNeighborState(byte nS, bool enabled)
 		{
-			if (!enabled)
-			{
-				//if (neighborState == NeighborState.NONE)
-				//	return;
-			}
-			else
-			{
-				//if (neighborState == NeighborState.BOTH)
-				//	return;
-			}
-
 			if (enabled)
-				nState |= nS;
+				neighborState |= nS;
 			else
-				nState &= (byte)~nS;
+				neighborState &= (byte)~nS;
 
 			setRenderable();
 		}
@@ -162,15 +150,15 @@ namespace WarriorsSnuggery.Objects
 			switch (damageState)
 			{
 				case DamageState.NONE:
-					renderable = new BatchObject(Type.GetTexture(isHorizontal, (byte)neighborState, nState), Color.White);
+					renderable = new BatchObject(Type.GetTexture(isHorizontal, neighborState), Color.White);
 					break;
 				case DamageState.LIGHT:
 					if (Type.DamagedImage1 != null)
-						renderable = new BatchObject(Type.GetDamagedTexture(isHorizontal, false, (byte)neighborState, nState), Color.White);
+						renderable = new BatchObject(Type.GetDamagedTexture(isHorizontal, false, neighborState), Color.White);
 					break;
 				case DamageState.HEAVY:
 					if (Type.DamagedImage2 != null)
-						renderable = new BatchObject(Type.GetDamagedTexture(isHorizontal, true, (byte)neighborState, nState), Color.White);
+						renderable = new BatchObject(Type.GetDamagedTexture(isHorizontal, true, neighborState), Color.White);
 					break;
 			}
 			renderable.SetPosition(renderPos);
