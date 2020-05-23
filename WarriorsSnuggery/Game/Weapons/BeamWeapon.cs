@@ -122,18 +122,18 @@ namespace WarriorsSnuggery.Objects.Weapons
 			Position = rayPhysics.End;
 			Height = rayPhysics.EndHeight;
 
-			var dist = (OriginPos - Position).FlatDist;
+			var dist = (OriginPos - Position).SquaredFlatDist;
 
 			sound?.SetPosition(OriginPos + (Position - OriginPos) / new CPos(2, 2, 1));
 
-			if (dist > Type.MaxRange * RangeModifier)
+			if (dist > (Type.MaxRange * RangeModifier) * (Type.MaxRange * RangeModifier))
 			{
 				var angle = (OriginPos - TargetPosition).FlatAngle;
 				Position = OriginPos + new CPos((int)(Math.Cos(angle) * Type.MaxRange * RangeModifier), (int)(Math.Sin(angle) * Type.MaxRange * RangeModifier), 0);
 				Height = 0;
 			}
 
-			if (projectileType.Directed && dist > (OriginPos - TargetPosition).FlatDist)
+			if (projectileType.Directed && dist > (OriginPos - TargetPosition).SquaredFlatDist)
 			{
 				Position = TargetPosition;
 				Height = 0;

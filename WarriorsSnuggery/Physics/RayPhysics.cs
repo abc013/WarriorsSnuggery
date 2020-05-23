@@ -391,7 +391,7 @@ namespace WarriorsSnuggery.Physics
 
 		int calculateHeight(CPos pos)
 		{
-			var diff = (Start - pos).FlatDist / (Start - Target).FlatDist;
+			var diff = (Start - pos).SquaredFlatDist / (double)(Start - Target).SquaredFlatDist;
 			var hDiff = StartHeight - TargetHeight;
 
 			return StartHeight - (int)(diff * hDiff);

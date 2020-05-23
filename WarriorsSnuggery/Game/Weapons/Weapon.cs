@@ -69,7 +69,7 @@ namespace WarriorsSnuggery.Objects.Weapons
 
 		public virtual bool InRange(CPos position, int range = 128)
 		{
-			return (Position - position).FlatDist <= range;
+			return (Position - position).SquaredFlatDist <= range * range;
 		}
 
 		public virtual void Detonate(Target finalTarget, bool dispose = true, bool detonateOnce = false)

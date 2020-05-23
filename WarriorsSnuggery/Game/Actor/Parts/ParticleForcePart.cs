@@ -18,12 +18,19 @@ namespace WarriorsSnuggery.Objects.Parts
 		[Desc("Minimum range of the force.")]
 		public readonly int MinRange;
 
+		public readonly int MaxRangeSquared;
+		public readonly int MinRangeSquared;
+
 		[Desc("Force will also affect rotation.")]
 		public readonly bool AffectRotation = false;
 		[Desc("Determines whether the force should only applied if the actor is a player.")]
 		public readonly bool AffectOnlyWhenPlayer = false;
 
-		public ParticleForcePartInfo(string internalName, MiniTextNode[] nodes) : base(internalName, nodes) { }
+		public ParticleForcePartInfo(string internalName, MiniTextNode[] nodes) : base(internalName, nodes)
+		{
+			MaxRangeSquared = MaxRange * MaxRange;
+			MinRangeSquared = MinRange * MinRange;
+		}
 
 		public override ActorPart Create(Actor self)
 		{
@@ -35,12 +42,10 @@ namespace WarriorsSnuggery.Objects.Parts
 	{
 		readonly ParticleForcePartInfo info;
 		readonly ParticleForce force;
-		readonly float maxRangesquared;
 
 		public ParticleForcePart(Actor self, ParticleForcePartInfo info) : base(self)
 		{
 			this.info = info;
-			maxRangesquared = info.MaxRange;
 			force = new ParticleForce(info.ForceType, info.Strength);
 		}
 
@@ -54,14 +59,14 @@ namespace WarriorsSnuggery.Objects.Parts
 				if (!(obj is Particle particle) || !particle.AffectedByObjects)
 					continue; // TODO cache affectable particles
 
-				var dist = (particle.Position - self.GraphicPosition).FlatDist;
-				if (dist > info.MaxRange || dist < info.MinRange)
+				var dist = (particle.Position - self.GraphicPosition).SquaredFlatDist;
+				if (dist > info.MaxRangeSquared || dist < info.MinRangeSquared)
 					continue;
 
 				if (!info.AffectedTypes.Contains(particle.Name))
 					continue;
 
-				var ratio = 1 - dist / maxRangesquared;
+				var ratio = (float) (1 - dist / (double)info.MaxRangeSquared);
 
 				particle.AffectVelocity(force, ratio, self.GraphicPosition);
 				if (info.AffectRotation)

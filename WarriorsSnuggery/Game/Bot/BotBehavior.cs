@@ -116,7 +116,7 @@ namespace WarriorsSnuggery.Objects.Bot
 			var range = Self.RevealsShroudPart == null ? 5120 : Self.RevealsShroudPart.Range * 512;
 
 			// Find all possible targets in range
-			var targets = World.Actors.FindAll(a => a.Team != Actor.NeutralTeam && a.Team != Self.Team && (a.Position - Self.Position).FlatDist <= range);
+			var targets = World.Actors.FindAll(a => a.Team != Actor.NeutralTeam && a.Team != Self.Team && (a.Position - Self.Position).SquaredFlatDist <= range * range);
 
 			if (!targets.Any())
 				return;

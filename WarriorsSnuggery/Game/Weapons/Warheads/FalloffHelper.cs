@@ -1,4 +1,6 @@
-﻿namespace WarriorsSnuggery.Objects.Weapons
+﻿using OpenToolkit.Graphics.OpenGL;
+
+namespace WarriorsSnuggery.Objects.Weapons
 {
 	public static class FalloffHelper
 	{
@@ -19,10 +21,10 @@
 			return falloff[^1];
 		}
 
-		public static float GetMax(float[] falloff, int[] steps)
+		public static int GetMax(float[] falloff, int[] steps)
 		{
 			if (falloff[^1] != 0f)
-				return float.PositiveInfinity;
+				return int.MaxValue;
 
 			return steps[^1];
 		}

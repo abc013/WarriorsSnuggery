@@ -18,6 +18,10 @@ namespace WarriorsSnuggery
 		{
 			get { return (float)Math.Sqrt(X * (double)X + Y * (double)Y); }
 		}
+		public long SquaredFlatDist
+		{
+			get { return X * (long)X + Y * (long)Y; }
+		}
 
 		public float FlatAngle
 		{

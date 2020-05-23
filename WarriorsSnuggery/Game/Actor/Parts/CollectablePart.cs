@@ -90,7 +90,7 @@ namespace WarriorsSnuggery.Objects.Parts
 			{
 				if (info.Duration < 0)
 				{
-					if ((lastActor.Position - self.Position).FlatDist > info.Radius)
+					if ((lastActor.Position - self.Position).SquaredFlatDist > info.Radius * info.Radius)
 						activated = false;
 				}
 				else
@@ -106,7 +106,7 @@ namespace WarriorsSnuggery.Objects.Parts
 			{
 				var localPlayer = self.World.LocalPlayer;
 
-				if (localPlayer != null && self.World.PlayerAlive && localPlayer.WorldPart != null && localPlayer.WorldPart.CanTrigger && (localPlayer.Position - self.Position).FlatDist < info.Radius)
+				if (localPlayer != null && self.World.PlayerAlive && localPlayer.WorldPart != null && localPlayer.WorldPart.CanTrigger && (localPlayer.Position - self.Position).SquaredFlatDist < info.Radius * info.Radius)
 					activate(localPlayer);
 			}
 			else
@@ -126,7 +126,7 @@ namespace WarriorsSnuggery.Objects.Parts
 						if (!(@object is Actor actor))
 							continue;
 
-						if (actor != self && actor.IsAlive && actor.WorldPart != null && actor.WorldPart.CanTrigger && (actor.Position - self.Position).FlatDist < info.Radius)
+						if (actor != self && actor.IsAlive && actor.WorldPart != null && actor.WorldPart.CanTrigger && (actor.Position - self.Position).SquaredFlatDist < info.Radius * info.Radius)
 							activate(actor);
 					}
 				}
