@@ -21,6 +21,8 @@ namespace WarriorsSnuggery.Objects
 
 		[Desc("This settings determines the texture of the wall by walls that are placed nearby.", "For this setting, three textures are needed in total: One for nearby walls only at left/top side, one for right/bottom side and a default one.", "This applies to all damage levels.")]
 		public readonly bool ConsiderWallsNearby = false;
+		[Desc("Set this to ignore it for the WallsNearby check.")]
+		public readonly bool IgnoreForNearby = false;
 
 		[Desc("If yes, this wall will block objects with physics.")]
 		public readonly bool Blocks = true;

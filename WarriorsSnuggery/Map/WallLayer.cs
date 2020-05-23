@@ -23,8 +23,9 @@ namespace WarriorsSnuggery
 
 		public void Set(Wall wall)
 		{
+			Remove(wall.LayerPosition);
 			Walls[wall.LayerPosition.X, wall.LayerPosition.Y] = wall;
-			notifyNeighbors(wall.LayerPosition, true);
+			notifyNeighbors(wall.LayerPosition, true, wall.Type.IgnoreForNearby);
 		}
 
 		public void Remove(MPos pos)
@@ -34,10 +35,10 @@ namespace WarriorsSnuggery
 
 			Walls[pos.X, pos.Y].Dispose();
 			Walls[pos.X, pos.Y] = null;
-			notifyNeighbors(pos, false);
+			notifyNeighbors(pos, false, false);
 		}
 
-		void notifyNeighbors(MPos pos, bool added)
+		void notifyNeighbors(MPos pos, bool added, bool ignoresNearby)
 		{
 			byte s = 0;
 
@@ -45,7 +46,6 @@ namespace WarriorsSnuggery
 			bool right = pos.X < Size.X - 3;
 			bool top = pos.Y > 0;
 			bool bottom = pos.Y < Size.Y - 2;
-
 
 			/*
 
@@ -74,41 +74,47 @@ namespace WarriorsSnuggery
 			{
 				// Horizontal
 
-				if (left && Walls[pos.X - 2, pos.Y] != null)
+				if (left && Walls[pos.X - 2, pos.Y] != null && !Walls[pos.X - 2, pos.Y].Type.IgnoreForNearby)
 				{
-					Walls[pos.X - 2, pos.Y].SetNeighborState(0b00010000, added);
+					if (!ignoresNearby)
+						Walls[pos.X - 2, pos.Y].SetNeighborState(0b00010000, added);
 					s |= 0b00001000;
 				}
 
-				if (top && Walls[pos.X - 1, pos.Y - 1] != null)
+				if (top && Walls[pos.X - 1, pos.Y - 1] != null && !Walls[pos.X - 1, pos.Y - 1].Type.IgnoreForNearby)
 				{
-					Walls[pos.X - 1, pos.Y - 1].SetNeighborState(0b10000000, added);
+					if (!ignoresNearby)
+						Walls[pos.X - 1, pos.Y - 1].SetNeighborState(0b10000000, added);
 					s |= 0b00000001;
 				}
 
-				if (Walls[pos.X - 1, pos.Y] != null)
+				if (Walls[pos.X - 1, pos.Y] != null && !Walls[pos.X - 1, pos.Y].Type.IgnoreForNearby)
 				{
-					Walls[pos.X - 1, pos.Y].SetNeighborState(0b00100000, added);
+					if (!ignoresNearby)
+						Walls[pos.X - 1, pos.Y].SetNeighborState(0b00100000, added);
 					s |= 0b00100000;
 				}
 
 				if (right)
 				{
-					if (top && Walls[pos.X + 1, pos.Y - 1] != null)
+					if (top && Walls[pos.X + 1, pos.Y - 1] != null && !Walls[pos.X + 1, pos.Y - 1].Type.IgnoreForNearby)
 					{
-						Walls[pos.X + 1, pos.Y - 1].SetNeighborState(0b00000100, added);
+						if (!ignoresNearby)
+							Walls[pos.X + 1, pos.Y - 1].SetNeighborState(0b00000100, added);
 						s |= 0b00000100;
 					}
 
-					if (Walls[pos.X + 1, pos.Y] != null)
+					if (Walls[pos.X + 1, pos.Y] != null && !Walls[pos.X + 1, pos.Y].Type.IgnoreForNearby)
 					{
-						Walls[pos.X + 1, pos.Y].SetNeighborState(0b00000001, added);
+						if (!ignoresNearby)
+							Walls[pos.X + 1, pos.Y].SetNeighborState(0b00000001, added);
 						s |= 0b10000000;
 					}
 
-					if (Walls[pos.X + 2, pos.Y] != null)
+					if (Walls[pos.X + 2, pos.Y] != null && !Walls[pos.X + 2, pos.Y].Type.IgnoreForNearby)
 					{
-						Walls[pos.X + 2, pos.Y].SetNeighborState(0b00001000, added);
+						if (!ignoresNearby)
+							Walls[pos.X + 2, pos.Y].SetNeighborState(0b00001000, added);
 						s |= 0b00010000;
 					}
 				}
@@ -117,41 +123,47 @@ namespace WarriorsSnuggery
 			{
 				// Vertical
 
-				if (left && Walls[pos.X - 1, pos.Y] != null)
+				if (left && Walls[pos.X - 1, pos.Y] != null && !Walls[pos.X - 1, pos.Y].Type.IgnoreForNearby)
 				{
-					Walls[pos.X - 1, pos.Y].SetNeighborState(0b10000000, added);
+					if (!ignoresNearby)
+						Walls[pos.X - 1, pos.Y].SetNeighborState(0b10000000, added);
 					s |= 0b00000001;
 				}
 
-				if (top && Walls[pos.X, pos.Y - 1] != null)
+				if (top && Walls[pos.X, pos.Y - 1] != null && !Walls[pos.X, pos.Y - 1].Type.IgnoreForNearby)
 				{
-					Walls[pos.X, pos.Y - 1].SetNeighborState(0b01000000, added);
+					if (!ignoresNearby)
+						Walls[pos.X, pos.Y - 1].SetNeighborState(0b01000000, added);
 					s |= 0b00000010;
 				}
 
-				if (Walls[pos.X + 1, pos.Y] != null)
+				if (Walls[pos.X + 1, pos.Y] != null && !Walls[pos.X + 1, pos.Y].Type.IgnoreForNearby)
 				{
-					Walls[pos.X + 1, pos.Y]?.SetNeighborState(0b00100000, added);
+					if (!ignoresNearby)
+						Walls[pos.X + 1, pos.Y]?.SetNeighborState(0b00100000, added);
 					s |= 0b00100000;
 				}
 
 				if (bottom)
 				{
-					if (Walls[pos.X, pos.Y + 1] != null)
+					if (Walls[pos.X, pos.Y + 1] != null && !Walls[pos.X, pos.Y + 1].Type.IgnoreForNearby)
 					{
-						Walls[pos.X, pos.Y + 1]?.SetNeighborState(0b00000010, added);
+						if (!ignoresNearby)
+							Walls[pos.X, pos.Y + 1]?.SetNeighborState(0b00000010, added);
 						s |= 0b01000000;
 					}
 
-					if (Walls[pos.X + 1, pos.Y + 1] != null)
+					if (Walls[pos.X + 1, pos.Y + 1] != null && !Walls[pos.X + 1, pos.Y + 1].Type.IgnoreForNearby)
 					{
-						Walls[pos.X + 1, pos.Y + 1]?.SetNeighborState(0b00000001, added);
+						if (!ignoresNearby)
+							Walls[pos.X + 1, pos.Y + 1]?.SetNeighborState(0b00000001, added);
 						s |= 0b00010000;
 					}
 
-					if (left && Walls[pos.X - 1, pos.Y + 1] != null)
+					if (left && Walls[pos.X - 1, pos.Y + 1] != null && !Walls[pos.X - 1, pos.Y + 1].Type.IgnoreForNearby)
 					{
-						Walls[pos.X - 1, pos.Y + 1]?.SetNeighborState(0b00010000, added);
+						if (!ignoresNearby)
+							Walls[pos.X - 1, pos.Y + 1]?.SetNeighborState(0b00010000, added);
 						s |= 0b00001000;
 					}
 				}

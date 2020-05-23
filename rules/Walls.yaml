@@ -2,7 +2,6 @@
 	Image=walls1
 		Size=48,24
 	Health=400
-	ConsiderWallsNearby=true
 
 1=
 	Image=walls0
@@ -13,13 +12,19 @@
 		Size=48,24
 	Health=400
 	ConsiderWallsNearby=true
+	WallOnDeath=9
 
 2=
 	Image=handrails
 		Size=48,24
+	DamagedImage1=handrails_dam1
+		Size=48,24
+	DamagedImage2=handrails_dam2
+		Size=48,24
 	DamagePenetration=0.8
 	Height=256
 	Health=200
+	WallOnDeath=9
 
 3=
 	Image=fence0
@@ -31,18 +36,21 @@
 	DamagePenetration=0.8
 	Height=256
 	Health=150
+	WallOnDeath=9
 
 4=
 	Image=walls0_damaged0
 		Size=48,24
 	DamagePenetration=0.3
 	Health=300
+	WallOnDeath=9
 
 5=
 	Image=walls0_damaged1
 		Size=48,24
 	DamagePenetration=0.3
 	Health=300
+	WallOnDeath=9
 
 6=
 	Image=walls1_damaged0
@@ -67,5 +75,11 @@
 	DamagePenetration=1
 	Health=250
 
+9=
+	Image=walls_rubble
+		Size=48,24
+	Blocks=false
+	DamagePenetration=0
+	IgnoreForNearby=true
 
 
