@@ -61,10 +61,10 @@ namespace WarriorsSnuggery.Objects.Conditions
 					if (actor.Health == null)
 						return !condition.Negate;
 					return condition.Negate != (actor.Health.HPRelativeToMax != 10);
-				case "FullHealth":
+				case "IsDamaged":
 					if (actor.Health == null)
 						return condition.Negate;
-					return condition.Negate != (actor.Health.HP == actor.Health.MaxHP);
+					return condition.Negate != (actor.Health.HPRelativeToMax != 1);
 				case "SlightDamage":
 					if (actor.Health == null)
 						return condition.Negate;
@@ -73,10 +73,6 @@ namespace WarriorsSnuggery.Objects.Conditions
 					if (actor.Health == null)
 						return condition.Negate;
 					return condition.Negate != (actor.Health.HP <= actor.Health.MaxHP / 4f);
-				case "IsDamaged":
-					if (actor.Health == null)
-						return condition.Negate;
-					return condition.Negate != (actor.Health.HPRelativeToMax != 1);
 			}
 
 			throw new Exception(string.Format("Invalid condition: {0}", condition.Type));
