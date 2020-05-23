@@ -10,7 +10,7 @@ namespace WarriorsSnuggery
 
 		public const int MaxTeams = 8;
 
-		public const string Version = "(Release) 2.1";
+		public const string Version = "(Release) 2.2";
 
 		public const int UpdatesPerSecond = 60;
 
