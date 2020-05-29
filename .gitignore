@@ -283,5 +283,7 @@ runtimes/
 /glfw3-x64.dll
 /System.Drawing.Common.dll
 /Microsoft.Win32.SystemEvents.dll
+/Microsoft.CodeAnalysis.dll
+/Microsoft.CodeAnalysis.CSharp.dll
 /libglfw.so.3.3
 /WarriorsSnuggery/Properties/launchSettings.json
