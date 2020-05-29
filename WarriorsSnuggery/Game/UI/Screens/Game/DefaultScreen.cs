@@ -11,16 +11,13 @@ namespace WarriorsSnuggery.UI
 		readonly TextLine health;
 		readonly TextLine mana;
 
-		readonly BatchObject money;
-		readonly TextLine moneyText;
+		readonly MoneyDisplay money;
 		readonly TextLine menu, pause;
 		readonly TextLine waveText;
 		readonly Panel background;
 		readonly ActorList actorList;
 		readonly List<ActorType> actorTypes = new List<ActorType>();
 		readonly SpellList spellList;
-		int cashCooldown;
-		int lastCash;
 		float healthPercentage;
 		float manaPercentage;
 
@@ -66,11 +63,7 @@ namespace WarriorsSnuggery.UI
 			background = new Panel(new CPos(0, (int)(WindowInfo.UnitHeight * 512) - 1024, 0), new Vector(16, 2, 0), PanelManager.Get("wooden"));
 
 			// SECTION MONEY
-			money = new BatchObject(UITextureManager.Get("UI_money")[0], Color.White);
-			money.SetPosition(new CPos(6120 + 128 + 1536, 8192 - 1024, 0));
-			moneyText = new TextLine(new CPos(6120 + 256 + 2560, 8192 - 1024, 0), Font.Papyrus24);
-			moneyText.SetText(game.Statistics.Money);
-
+			money = new MoneyDisplay(game, new CPos(6120 + 128 + 1536, 8192 - 1024, 0));
 			// SECTION MENUS
 			pause = new TextLine(new CPos(-2560, 8192 - 256, 0), Font.Pixel16, TextLine.OffsetType.MIDDLE);
 			pause.WriteText("Pause: '" + new Color(0.5f, 0.5f, 1f) + "P" + Color.White + "'");
@@ -158,8 +151,7 @@ namespace WarriorsSnuggery.UI
 			if (!Settings.EnableInfoScreen)
 			{
 				ColorManager.DrawRect(new CPos(6120 + 128, 8192, 0), new CPos((int)(WindowInfo.UnitWidth * 512) - 2048, 8192 - 2560, 0), new Color(0, 0, 0, 128));
-				money.PushToBatchRenderer();
-				moneyText.Render();
+				money.Render();
 			}
 
 			ColorManager.DrawRect(new CPos(-6120, 8192 - 2560, 0), new CPos(6120, 8192, 0), new Color(0, 0, 0, 128));
@@ -227,14 +219,7 @@ namespace WarriorsSnuggery.UI
 				}
 			}
 
-			if (lastCash != game.Statistics.Money)
-			{
-				lastCash = game.Statistics.Money;
-				moneyText.SetText(game.Statistics.Money);
-				cashCooldown = 10;
-			}
-			if (cashCooldown-- > 0)
-				moneyText.Scale = (cashCooldown / 10f) + 1f;
+			money.Tick();
 
 			actorList.Tick();
 			spellList.Tick();

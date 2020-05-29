@@ -1,35 +1,27 @@
 using System;
 using System.Collections.Generic;
 using WarriorsSnuggery.Graphics;
-using WarriorsSnuggery.Objects;
 using WarriorsSnuggery.Spells;
 
 namespace WarriorsSnuggery.UI
 {
-	public class SpellTreeScreen : Screen
+	public class SpellShopScreen : Screen
 	{
 		readonly Game game;
 
-		readonly BatchObject money;
-		readonly TextLine moneyText;
-		int cashCooldown;
-		int lastCash;
+		readonly MoneyDisplay money;
 
 		readonly SpellNode[] tree;
 		readonly List<SpellConnection> lines = new List<SpellConnection>();
 
-		public SpellTreeScreen(Game game) : base("Spell Tree")
+		public SpellShopScreen(Game game) : base("Spell Tree")
 		{
 			this.game = game;
 			Title.Position = new CPos(0, -4096, 0);
 
 			Content.Add(ButtonCreator.Create("wooden", new CPos(0, 6144, 0), "Resume", () => { game.Pause(false); game.ScreenControl.ShowScreen(ScreenType.DEFAULT); }));
 
-			money = new BatchObject(UITextureManager.Get("UI_money")[0], Color.White);
-			money.SetPosition(new CPos(-(int)(WindowInfo.UnitWidth / 2 * 1024) + 1024, 7192, 0));
-
-			moneyText = new TextLine(new CPos(-(int)(WindowInfo.UnitWidth / 2 * 1024) + 2048, 7192, 0), Font.Papyrus24);
-			moneyText.SetText(game.Statistics.Money);
+			money = new MoneyDisplay(game, new CPos(-(int)(WindowInfo.UnitWidth / 2 * 1024) + 1024, 7192, 0));
 
 			var active = UITextureManager.Get("UI_activeConnection");
 			var inactive = UITextureManager.Get("UI_inactiveConnection");
@@ -62,8 +54,7 @@ namespace WarriorsSnuggery.UI
 			foreach (var panel in tree)
 				panel.Render();
 
-			money.PushToBatchRenderer();
-			moneyText.Render();
+			money.Render();
 		}
 
 		public override void Tick()
@@ -79,14 +70,7 @@ namespace WarriorsSnuggery.UI
 				game.ChangeScreen(ScreenType.DEFAULT);
 			}
 
-			if (lastCash != game.Statistics.Money)
-			{
-				lastCash = game.Statistics.Money;
-				moneyText.SetText(game.Statistics.Money);
-				cashCooldown = 10;
-			}
-			if (cashCooldown-- > 0)
-				moneyText.Scale = (cashCooldown / 10f) + 1f;
+			money.Tick();
 		}
 
 		public void UpdateAvailability()
@@ -108,14 +92,14 @@ namespace WarriorsSnuggery.UI
 	{
 		readonly SpellTreeNode node;
 		readonly Game game;
-		readonly SpellTreeScreen screen;
+		readonly SpellShopScreen screen;
 
 		readonly BatchSequence image;
 		readonly Tooltip tooltip;
 		bool mouseOnItem;
 		bool available;
 
-		public SpellNode(CPos position, SpellTreeNode node, Game game, SpellTreeScreen screen) : base(position, new Vector(8 * MasterRenderer.PixelMultiplier, 8 * MasterRenderer.PixelMultiplier, 0), PanelManager.Get("stone"))
+		public SpellNode(CPos position, SpellTreeNode node, Game game, SpellShopScreen screen) : base(position, new Vector(8 * MasterRenderer.PixelMultiplier, 8 * MasterRenderer.PixelMultiplier, 0), PanelManager.Get("stone"))
 		{
 			this.node = node;
 			this.game = game;
