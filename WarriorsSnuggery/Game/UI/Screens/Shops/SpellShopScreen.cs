@@ -14,12 +14,14 @@ namespace WarriorsSnuggery.UI
 		readonly SpellNode[] tree;
 		readonly List<SpellConnection> lines = new List<SpellConnection>();
 
-		public SpellShopScreen(Game game) : base("Spell Tree")
+		public SpellShopScreen(Game game) : base("Spell Shop")
 		{
 			this.game = game;
 			Title.Position = new CPos(0, -4096, 0);
 
 			Content.Add(ButtonCreator.Create("wooden", new CPos(0, 6144, 0), "Resume", () => { game.Pause(false); game.ScreenControl.ShowScreen(ScreenType.DEFAULT); }));
+
+			Content.Add(new Panel(new CPos(0, 256, 0), new Vector(8f, 3f, 0), PanelManager.Get("wooden")));
 
 			money = new MoneyDisplay(game, new CPos(-(int)(WindowInfo.UnitWidth / 2 * 1024) + 1024, 7192, 0));
 

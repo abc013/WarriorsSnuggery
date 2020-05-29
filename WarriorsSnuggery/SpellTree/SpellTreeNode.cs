@@ -29,7 +29,7 @@ namespace WarriorsSnuggery.Spells
 
 		public CPos VisualPosition
 		{
-			get { return new CPos(-6584, -2048, 0) + new CPos(Position.X * 1536, Position.Y * 1536, 0); }
+			get { return new CPos(-6584, -2048, 0) + new CPos(Position.X * 1024, Position.Y * 1024, 0); }
 		}
 
 		public SpellTreeNode(MiniTextNode[] nodes, string name, bool documentation = false)
