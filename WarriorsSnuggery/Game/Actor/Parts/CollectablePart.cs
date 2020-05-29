@@ -20,14 +20,15 @@ namespace WarriorsSnuggery.Objects.Parts
 		NEW_GAME,
 		NEW_STORY_GAME,
 		NEW_CUSTOM_GAME,
-		TECH_TREE,
+		SPELL_SHOP,
+		ACTOR_SHOP,
 		KEY
 	}
 
 	[Desc("Attach to an actor to make it trigger an effect when an actor gets near.")]
 	public class CollectablePartInfo : PartInfo
 	{
-		[Desc("Type of the effect on triggering.", "Possible: NONE, MONEY, HEALTH, NEXT_LEVEL, NEXT_LEVEL_INSTANT, TUTORIAL_LEVEL, MAIN_LEVEL, MAINMENU_LEVEL, TEXT, SPAWNOBJECT, NEW_GAME, NEW_STORY_GAME, NEW_CUSTOM_GAME, TECH_TREE, KEY;")]
+		[Desc("Type of the effect on triggering.", "Possible: NONE, MONEY, HEALTH, NEXT_LEVEL, NEXT_LEVEL_INSTANT, TUTORIAL_LEVEL, MAIN_LEVEL, MAINMENU_LEVEL, TEXT, SPAWNOBJECT, NEW_GAME, NEW_STORY_GAME, NEW_CUSTOM_GAME, SPELL_SHOP, ACTOR_SHOP, KEY;")]
 		public readonly CollectableType Type = CollectableType.NONE;
 		[Desc("Scanradius for triggering.")]
 		public readonly int Radius = 512;
@@ -228,9 +229,14 @@ namespace WarriorsSnuggery.Objects.Parts
 						game.ScreenControl.ShowScreen(UI.ScreenType.NEW_CUSTOM_GAME);
 
 						return true;
-					case CollectableType.TECH_TREE:
+					case CollectableType.SPELL_SHOP:
 						game.Pause(true);
-						game.ScreenControl.ShowScreen(UI.ScreenType.TECHTREE);
+						game.ScreenControl.ShowScreen(UI.ScreenType.SPELL_SHOP);
+
+						return true;
+					case CollectableType.ACTOR_SHOP:
+						game.Pause(true);
+						game.ScreenControl.ShowScreen(UI.ScreenType.ACTOR_SHOP);
 
 						return true;
 					case CollectableType.TEXT:

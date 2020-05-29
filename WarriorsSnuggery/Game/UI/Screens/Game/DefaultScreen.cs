@@ -36,17 +36,20 @@ namespace WarriorsSnuggery.UI
 			foreach (var n in ActorCreator.GetNames())
 			{
 				var a = ActorCreator.GetType(n);
-				if (a.Playable != null)
+				if (a.Playable == null)
+					continue;
+
+				actorTypes.Add(a);
+				var sprite = a.GetPreviewSprite();
+				var scale = (sprite.Width > sprite.Height ? 24f / sprite.Width : 24f / sprite.Height) - 0.1f;
+				var item = new PanelItem(CPos.Zero, new BatchObject(sprite, Color.White), new MPos(512, 512), a.Playable.Name, new[] { Color.Grey + "Cost: " + Color.Yellow + a.Playable.Cost }, () => { changePlayer(game.World.LocalPlayer, a); })
 				{
-					actorTypes.Add(a);
-					var sprite = a.GetPreviewSprite();
-					var scale = (sprite.Width > sprite.Height ? 24f / sprite.Width : 24f / sprite.Height) - 0.1f;
-					var desc = a.Playable.Description == string.Empty ? new[] { Color.Grey + "Cost: " + Color.Yellow + a.Playable.Cost } : new[] { Color.Grey + "Cost: " + Color.Yellow + a.Playable.Cost, Color.Grey + a.Playable.Description };
-					actorList.Add(new PanelItem(CPos.Zero, new BatchObject(sprite, Color.White), new MPos(512, 512), a.Playable.Name, desc, () => { changePlayer(game.World.LocalPlayer, a); })
-					{
-						Scale = scale
-					});
-				}
+					Scale = scale
+				};
+				if (!game.Statistics.ActorAvailable(a.Playable))
+					item.SetColor(Color.Black);
+
+				actorList.Add(item);
 			}
 
 			// SECTION EFFECTS
@@ -117,6 +120,12 @@ namespace WarriorsSnuggery.UI
 		public void UpdateSpells()
 		{
 			spellList.Update();
+		}
+
+		public void UpdateActors()
+		{
+			for (int i = 0; i < actorTypes.Count; i++)
+				actorList.Container[i].SetColor(game.Statistics.ActorAvailable(actorTypes[i].Playable) ? Color.White : Color.Black);
 		}
 
 		public override void Hide()
@@ -231,6 +240,9 @@ namespace WarriorsSnuggery.UI
 				return;
 
 			if (game.World.LocalPlayer.Type == type)
+				return;
+
+			if (!game.Statistics.ActorAvailable(type.Playable))
 				return;
 
 			game.Statistics.Money -= type.Playable.Cost;

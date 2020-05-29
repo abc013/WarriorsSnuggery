@@ -72,8 +72,11 @@ namespace WarriorsSnuggery.UI
 				case ScreenType.LOAD:
 					screen = new LoadGameScreen(Game);
 					break;
-				case ScreenType.TECHTREE:
-					screen = new SpellTreeScreen(Game);
+				case ScreenType.SPELL_SHOP:
+					screen = new SpellShopScreen(Game);
+					break;
+				case ScreenType.ACTOR_SHOP:
+					screen = new ActorShopScreen(Game);
 					break;
 				case ScreenType.NEW_STORY_GAME:
 					screen = new NewGameScreen(Game);
@@ -107,12 +110,17 @@ namespace WarriorsSnuggery.UI
 				defaultScreen.UpdateSpells();
 		}
 
+		public void UpdateActors()
+		{
+			if (screens[ScreenType.DEFAULT] is DefaultScreen defaultScreen)
+				defaultScreen.UpdateActors();
+		}
+
 		public void SetDecision(Action OnDecline, Action OnAgree, string text)
 		{
 			if (!screens.ContainsKey(ScreenType.DECISION))
-			{
 				createScreen(ScreenType.DECISION);
-			}
+
 			// Should not crash as the decisionScreen should always be a decisionScreen
 			(screens[ScreenType.DECISION] as ConfirmationScreen).SetAction(OnDecline, OnAgree, text);
 		}

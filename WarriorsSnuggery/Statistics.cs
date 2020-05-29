@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.IO;
+using WarriorsSnuggery.Objects.Parts;
 
 namespace WarriorsSnuggery
 {
@@ -22,6 +23,7 @@ namespace WarriorsSnuggery
 		public bool[] Shroud;
 
 		public readonly Dictionary<string, bool> UnlockedSpells = new Dictionary<string, bool>();
+		public readonly Dictionary<string, bool> UnlockedActors = new Dictionary<string, bool>();
 
 		// Static Values
 		public int FinalLevel;
@@ -49,6 +51,8 @@ namespace WarriorsSnuggery
 
 			foreach (var unlock in save.UnlockedSpells)
 				UnlockedSpells.Add(unlock.Key, unlock.Value);
+			foreach (var unlock in save.UnlockedActors)
+				UnlockedActors.Add(unlock.Key, unlock.Value);
 
 			FinalLevel = save.FinalLevel;
 			Difficulty = save.Difficulty;
@@ -67,6 +71,11 @@ namespace WarriorsSnuggery
 		public void Update(Game game)
 		{
 			Health = game.World.LocalPlayer.Health == null ? 1 : game.World.LocalPlayer.Health.HP;
+		}
+
+		public bool ActorAvailable(PlayablePartInfo playable)
+		{
+			return playable.Unlocked || UnlockedActors.ContainsKey(playable.InternalName) && UnlockedActors[playable.InternalName];
 		}
 
 		public int CalculateScore()
@@ -111,8 +120,11 @@ namespace WarriorsSnuggery
 				writer.WriteLine("Actor=" + Actor);
 				writer.WriteLine("\tHealth=" + Health);
 				writer.WriteLine("\tMana=" + Mana);
-				writer.WriteLine("Unlocks=");
+				writer.WriteLine("UnlockedSpells=");
 				foreach (var unlock in UnlockedSpells)
+					writer.WriteLine("\t" + unlock.Key + "=" + unlock.Value);
+				writer.WriteLine("UnlockedActors=");
+				foreach (var unlock in UnlockedActors)
 					writer.WriteLine("\t" + unlock.Key + "=" + unlock.Value);
 
 				writer.Flush();
@@ -231,12 +243,15 @@ namespace WarriorsSnuggery
 							}
 						}
 						break;
-					case "Unlocks":
-
+					case "UnlockedSpells":
 						foreach (var node2 in node.Children)
-						{
 							statistic.UnlockedSpells.Add(node2.Key, node2.Convert<bool>());
-						}
+
+						break;
+					case "UnlockedActors":
+						foreach (var node2 in node.Children)
+							statistic.UnlockedActors.Add(node2.Key, node2.Convert<bool>());
+
 						break;
 				}
 			}
