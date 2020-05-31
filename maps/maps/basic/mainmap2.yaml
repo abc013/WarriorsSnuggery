@@ -451,3 +451,5 @@ Actors=
 		Type=trophy_mainmenu
 	223=26112,25088,0
 		Type=trophies_pad
+	224=50112,4152,0
+		Type=trophy_mainmenu2
