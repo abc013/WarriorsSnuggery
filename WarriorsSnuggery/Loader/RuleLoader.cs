@@ -23,23 +23,23 @@ namespace WarriorsSnuggery
 				var files = rule.Convert<string[]>();
 				var paths = new string[files.Length];
 				for (int i = 0; i < paths.Length; i++)
-					paths[i] = FileExplorer.FindPath(FileExplorer.Rules, files[i], ".yaml");
+					paths[i] = FileExplorer.FindPath(FileExplorer.Rules, files[i], string.Empty);
 
 				switch (rule.Key)
 				{
 					case "Particles":
 						for (int j = 0; j < files.Length; j++)
-							ParticleCreator.Load(paths[j], files[j] + ".yaml");
+							ParticleCreator.Load(paths[j], files[j]);
 
 						break;
 					case "Weapons":
 						for (int j = 0; j < files.Length; j++)
-							WeaponCreator.Load(paths[j], files[j] + ".yaml");
+							WeaponCreator.Load(paths[j], files[j]);
 
 						break;
 					case "Actors":
 						for (int j = 0; j < files.Length; j++)
-							ActorCreator.Load(paths[j], files[j] + ".yaml");
+							ActorCreator.Load(paths[j], files[j]);
 
 						break;
 					case "Terrain":
@@ -49,7 +49,7 @@ namespace WarriorsSnuggery
 						break;
 					case "Walls":
 						for (int j = 0; j < files.Length; j++)
-							WallCreator.Load(paths[j], files[j] + ".yaml");
+							WallCreator.Load(paths[j], files[j]);
 
 						break;
 					case "Spells":
@@ -59,7 +59,7 @@ namespace WarriorsSnuggery
 						break;
 					case "Trophies":
 						for (int j = 0; j < files.Length; j++)
-							TrophyManager.Load(paths[j], files[j] + ".yaml");
+							TrophyManager.Load(paths[j], files[j]);
 
 						break;
 				}
@@ -69,10 +69,10 @@ namespace WarriorsSnuggery
 			Questionmark = SpriteManager.AddTexture(new TextureInfo("questionmark"));
 
 			for (int j = 0; j < terrainFiles.Length; j++)
-				TerrainCreator.LoadTypes(terrainPaths[j], terrainFiles[j] + ".yaml");
+				TerrainCreator.LoadTypes(terrainPaths[j], terrainFiles[j]);
 
 			for (int j = 0; j < uiFiles.Length; j++)
-				Spells.SpellTreeLoader.Load(uiPaths[j], uiFiles[j] + ".yaml");
+				Spells.SpellTreeLoader.Load(uiPaths[j], uiFiles[j]);
 			loadUIRules();
 		}
 

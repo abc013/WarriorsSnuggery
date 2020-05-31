@@ -1,8 +1,8 @@
-# Important: do NOT change the queue of the following rules. If you do so, the game is going to crash. This file is redundant. Use @INCLUDE filename instead.
-Particles=Particles
-Weapons=Weapons
-Actors=Actors
-Terrain=Terrain
-Walls=Walls
-Spells=Spells
-Trophies=Trophies
+# Important: do NOT change the queue of the following rules. If you do so, the game is going to crash.
+Particles=Particles.yaml
+Weapons=Weapons.yaml
+Actors=Actors.yaml
+Terrain=Terrain.yaml
+Walls=Walls.yaml
+Spells=Spells.yaml
+Trophies=Trophies.yaml
