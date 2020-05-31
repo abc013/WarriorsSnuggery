@@ -1,0 +1,12 @@
+trophy_mainmenu=
+	Sprite=
+		Name=trophy_mainmenu_rock
+		Dimensions=24,16
+		Offset=0,0,-512
+		UseAsPreview=true
+	Collectable=
+		Type=TROPHY
+		Text=mainmenu
+		MultipleActivations=false
+		Radius=512
+		OnlyByPlayer=true

@@ -78,6 +78,9 @@ namespace WarriorsSnuggery.UI
 				case ScreenType.ACTOR_SHOP:
 					screen = new ActorShopScreen(Game);
 					break;
+				case ScreenType.TROPHY_COLLECTION:
+					screen = new TrophyScreen(Game);
+					break;
 				case ScreenType.NEW_STORY_GAME:
 					screen = new NewGameScreen(Game);
 					break;

@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using WarriorsSnuggery.Objects.Parts;
 
 namespace WarriorsSnuggery
@@ -24,6 +25,7 @@ namespace WarriorsSnuggery
 
 		public readonly Dictionary<string, bool> UnlockedSpells = new Dictionary<string, bool>();
 		public readonly Dictionary<string, bool> UnlockedActors = new Dictionary<string, bool>();
+		public readonly List<string> UnlockedTrophies = new List<string>();
 
 		// Static Values
 		public int FinalLevel;
@@ -53,6 +55,7 @@ namespace WarriorsSnuggery
 				UnlockedSpells.Add(unlock.Key, unlock.Value);
 			foreach (var unlock in save.UnlockedActors)
 				UnlockedActors.Add(unlock.Key, unlock.Value);
+			UnlockedTrophies = save.UnlockedTrophies.ToList();
 
 			FinalLevel = save.FinalLevel;
 			Difficulty = save.Difficulty;
@@ -126,6 +129,9 @@ namespace WarriorsSnuggery
 				writer.WriteLine("UnlockedActors=");
 				foreach (var unlock in UnlockedActors)
 					writer.WriteLine("\t" + unlock.Key + "=" + unlock.Value);
+				writer.WriteLine("UnlockedTrophies=");
+				foreach (var unlock in UnlockedTrophies)
+					writer.WriteLine("\t" + unlock + "=");
 
 				writer.Flush();
 				writer.Close();
@@ -251,6 +257,11 @@ namespace WarriorsSnuggery
 					case "UnlockedActors":
 						foreach (var node2 in node.Children)
 							statistic.UnlockedActors.Add(node2.Key, node2.Convert<bool>());
+
+						break;
+					case "UnlockedTrophies":
+						foreach (var node2 in node.Children)
+							statistic.UnlockedTrophies.Add(node2.Key);
 
 						break;
 				}

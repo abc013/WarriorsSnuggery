@@ -66,6 +66,18 @@ actors_pad=
 		Radius=512
 		OnlyByPlayer=yes
 
+trophies_pad=
+	AnimatedSprite=
+		Name=trophy_pad
+		Dimensions=24,16
+		Offset=0,0,-2048
+		UseAsPreview=true
+	Collectable=
+		Type=TROPHY_COLLECTION
+		MultipleActivations=yes
+		Radius=512
+		OnlyByPlayer=yes
+
 exit_pad=
 	Sprite=
 		Name=exit

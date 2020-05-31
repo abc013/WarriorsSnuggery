@@ -1,4 +1,5 @@
 ﻿using WarriorsSnuggery.Graphics;
+using WarriorsSnuggery.Trophies;
 using WarriorsSnuggery.UI;
 
 namespace WarriorsSnuggery
@@ -54,6 +55,11 @@ namespace WarriorsSnuggery
 					case "Spells":
 						uiFiles = files;
 						uiPaths = paths;
+
+						break;
+					case "Trophies":
+						for (int j = 0; j < files.Length; j++)
+							TrophyManager.Load(paths[j], files[j] + ".yaml");
 
 						break;
 				}

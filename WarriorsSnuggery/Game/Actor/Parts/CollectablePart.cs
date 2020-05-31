@@ -22,13 +22,15 @@ namespace WarriorsSnuggery.Objects.Parts
 		NEW_CUSTOM_GAME,
 		SPELL_SHOP,
 		ACTOR_SHOP,
-		KEY
+		TROPHY_COLLECTION,
+		KEY,
+		TROPHY
 	}
 
 	[Desc("Attach to an actor to make it trigger an effect when an actor gets near.")]
 	public class CollectablePartInfo : PartInfo
 	{
-		[Desc("Type of the effect on triggering.", "Possible: NONE, MONEY, HEALTH, NEXT_LEVEL, NEXT_LEVEL_INSTANT, TUTORIAL_LEVEL, MAIN_LEVEL, MAINMENU_LEVEL, TEXT, SPAWNOBJECT, NEW_GAME, NEW_STORY_GAME, NEW_CUSTOM_GAME, SPELL_SHOP, ACTOR_SHOP, KEY;")]
+		[Desc("Type of the effect on triggering.", "Possible: NONE, MONEY, HEALTH, NEXT_LEVEL, NEXT_LEVEL_INSTANT, TUTORIAL_LEVEL, MAIN_LEVEL, MAINMENU_LEVEL, TEXT, SPAWNOBJECT, NEW_GAME, NEW_STORY_GAME, NEW_CUSTOM_GAME, SPELL_SHOP, ACTOR_SHOP, TROPHY_COLLECTION, KEY, TROPHY;")]
 		public readonly CollectableType Type = CollectableType.NONE;
 		[Desc("Scanradius for triggering.")]
 		public readonly int Radius = 512;
@@ -52,7 +54,7 @@ namespace WarriorsSnuggery.Objects.Parts
 
 		[Desc("Value field for the effect.")]
 		public readonly int Value;
-		[Desc("Text lines for the effect.", "Commas are used to separate the lines.")]
+		[Desc("Text lines for the effect.", "Commas are used to separate the lines.", "When using TROPHY, the name of the trophy must be given here.")]
 		public readonly string[] Text;
 
 		public CollectablePartInfo(string internalName, MiniTextNode[] nodes) : base(internalName, nodes) { }
@@ -239,6 +241,11 @@ namespace WarriorsSnuggery.Objects.Parts
 						game.ScreenControl.ShowScreen(UI.ScreenType.ACTOR_SHOP);
 
 						return true;
+					case CollectableType.TROPHY_COLLECTION:
+						game.Pause(true);
+						game.ScreenControl.ShowScreen(UI.ScreenType.TROPHY_COLLECTION);
+
+						return true;
 					case CollectableType.TEXT:
 						a.World.Add(new ActionText(a.Position + new CPos(0, 0, 1024), new CPos(0, -15, 30), info.Value, ActionText.ActionTextType.TRANSFORM, info.Text));
 
@@ -247,8 +254,12 @@ namespace WarriorsSnuggery.Objects.Parts
 						a.World.KeyFound = true;
 
 						return true;
-					default:
+					case CollectableType.TROPHY:
+						a.World.TrophyCollected(info.Text[0]);
+
 						return true;
+					default:
+						return false;
 				}
 			}
 		}

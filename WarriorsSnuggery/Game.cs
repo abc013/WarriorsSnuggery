@@ -130,7 +130,7 @@ namespace WarriorsSnuggery
 		public void AddInfoMessage(int duration, string text)
 		{
 			var corner = (int)(WindowInfo.UnitWidth / 2 * 1024);
-			infoText.Position = new CPos(-corner + 1024, 7192, 0);
+			infoText.Position = new CPos(-corner + 512, 7192, 0);
 			infoText.WriteText(text);
 			infoTextDuration = duration;
 		}
@@ -334,7 +334,7 @@ namespace WarriorsSnuggery
 				render.SetText("Render " + Window.FPS.ToString("F1") + " @ " + Window.FMS + " ms");
 			}
 
-			if (infoTextDuration-- < 90)
+			if (infoTextDuration-- < 120)
 			{
 				infoText.Position -= new CPos(48, 0, 0);
 			}

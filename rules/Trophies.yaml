@@ -1,0 +1,5 @@
+mainmenu=
+	Name=Is it a bug? Is it a feature? No, it's a plane!
+	Description=Get into the main menu with the shadow runner.
+	Image=trophy_mainmenu
+		Size=12,24

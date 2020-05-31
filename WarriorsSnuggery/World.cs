@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using WarriorsSnuggery.Objects;
 using WarriorsSnuggery.Objects.Weapons;
+using WarriorsSnuggery.Trophies;
 
 namespace WarriorsSnuggery
 {
@@ -131,6 +132,19 @@ namespace WarriorsSnuggery
 
 			toRender = toRender.OrderBy(e => e.GraphicPosition.Z + (e.Position.Y - 512) * 2).ToList();
 			ToRender = toRender;
+		}
+
+		public void TrophyCollected(string collected)
+		{
+
+			if (Game.Statistics.UnlockedTrophies.Contains(collected))
+				return;
+
+			if (!TrophyManager.Trophies.ContainsKey(collected))
+				throw new YamlInvalidNodeException("Unable to get Trophy with internal name " + collected);
+
+			Game.AddInfoMessage(250, "Trophy collected!");
+			Game.Statistics.UnlockedTrophies.Add(collected);
 		}
 
 		public void PlayerKilled()

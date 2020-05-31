@@ -4,6 +4,7 @@
 @INCLUDE Actors-decorations.yaml
 @INCLUDE Actors-nature.yaml
 @INCLUDE Actors-playable.yaml
+@INCLUDE Actors-trophies.yaml
 
 fly=
 	AnimatedSprite=
