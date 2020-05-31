@@ -259,7 +259,7 @@ namespace WarriorsSnuggery.Objects.Parts
 
 						return true;
 					default:
-						return false;
+						return true;
 				}
 			}
 		}
