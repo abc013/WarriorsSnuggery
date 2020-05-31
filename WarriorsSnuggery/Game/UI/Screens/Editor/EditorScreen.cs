@@ -128,7 +128,7 @@ namespace WarriorsSnuggery.UI
 		public override bool CursorOnUI()
 		{
 			var mouse = MouseInput.WindowPosition;
-			return mouse.X > WindowInfo.UnitWidth * 512 - 4096 - 128 && mouse.X < WindowInfo.UnitWidth - 64;
+			return mouse.X > WindowInfo.UnitWidth * 512 - 4096 - 128 && mouse.X < WindowInfo.UnitWidth * 512 - 64;
 		}
 
 		public override void Hide()
@@ -185,20 +185,22 @@ namespace WarriorsSnuggery.UI
 		{
 			base.Tick();
 
-			// Zoom function
 			if (!CursorOnUI())
+			{
+				// Zoom function
 				Camera.Zoom(MouseInput.WheelState);
 
-			// place something
-			if (MouseInput.IsLeftClicked)
-				place();
+				// place something
+				if (MouseInput.IsLeftClicked)
+					place();
 
-			if (MouseInput.IsLeftDown && (currentSelected == Selected.TILE || currentSelected == Selected.WALL))
-				place();
+				if (MouseInput.IsLeftDown && (currentSelected == Selected.TILE || currentSelected == Selected.WALL))
+					place();
 
-			// Delete something
-			if (MouseInput.IsRightClicked || MouseInput.IsRightDown)
-				remove();
+				// Delete something
+				if (MouseInput.IsRightClicked || MouseInput.IsRightDown)
+					remove();
+			}
 
 			if (game.Type == GameType.EDITOR)
 				save.Tick();
@@ -259,9 +261,6 @@ namespace WarriorsSnuggery.UI
 		void place()
 		{
 			if (!game.World.IsInWorld(MouseInput.GamePosition) && currentSelected != Selected.WALL)
-				return;
-
-			if (CursorOnUI())
 				return;
 
 			var pos = MouseInput.GamePosition;
