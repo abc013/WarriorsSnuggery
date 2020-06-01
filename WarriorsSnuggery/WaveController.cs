@@ -13,6 +13,7 @@ namespace WarriorsSnuggery
 		readonly Game game;
 
 		readonly MapGeneratorInfo[] generators;
+		int countdown;
 
 		public WaveController(Game game)
 		{
@@ -27,10 +28,21 @@ namespace WarriorsSnuggery
 
 		public void Tick()
 		{
-			var actor = game.World.Actors.FirstOrDefault(a => !(a.Team == Actor.PlayerTeam || a.Team == Actor.NeutralTeam) && a.WorldPart != null && a.WorldPart.KillForVictory);
+			if (--countdown < 0)
+			{
+				var actor = game.World.Actors.FirstOrDefault(a => !(a.Team == Actor.PlayerTeam || a.Team == Actor.NeutralTeam) && a.WorldPart != null && a.WorldPart.KillForVictory);
 
-			if (actor == null)
+				if (actor == null)
+					countdown = Settings.UpdatesPerSecond * 10;
+			}
+			else if (countdown == 0)
 				CreateNextWave();
+			else
+			{
+				var seconds = countdown / Settings.UpdatesPerSecond + 1;
+				if ((countdown + 1) % Settings.UpdatesPerSecond == 0)
+					game.AddInfoMessage(200, Color.White + "Wave " + (currentWave + 1) + " in " + (seconds % 2 == 0 ? Color.White : Color.Red) + seconds + " second" + (seconds > 1 ? "s" : string.Empty));
+			}
 		}
 
 		public void CreateNextWave()
@@ -38,7 +50,7 @@ namespace WarriorsSnuggery
 			if (++currentWave > waves)
 				return;
 
-			game.AddInfoMessage(120, "Wave " + currentWave + "/" + waves);
+			game.AddInfoMessage(200, ((currentWave == waves) ? Color.Green : Color.White) + "Wave " + currentWave + "/" + waves);
 			if (game.ScreenControl.FocusedType == UI.ScreenType.DEFAULT)
 				((UI.DefaultScreen)game.ScreenControl.Focused).SetWave(currentWave, waves);
 			var generatorInfo = (PatrolGeneratorInfo)generators[game.SharedRandom.Next(generators.Length)];

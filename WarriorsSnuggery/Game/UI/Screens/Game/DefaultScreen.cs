@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using WarriorsSnuggery.Graphics;
 using WarriorsSnuggery.Objects;
-using WarriorsSnuggery.Objects.Weapons;
 
 namespace WarriorsSnuggery.UI
 {
@@ -110,8 +109,6 @@ namespace WarriorsSnuggery.UI
 			levelText.SetText("Level " + game.Statistics.Level + "/" + game.Statistics.FinalLevel);
 			Content.Add(levelText);
 			waveText = new TextLine(new CPos((int)-(WindowInfo.UnitWidth * 512) + 776, 8192 - 1536, 0), Font.Pixel16);
-			if (game.Mode == GameMode.WAVES)
-				waveText.SetText("Wave 1");
 
 			enemyArrow = new BatchObject(UITextureManager.Get("UI_enemy_arrow")[0], Color.White);
 		}
