@@ -1,5 +1,6 @@
 plains=
 	PlayModes=FIND_EXIT, KILL_ENEMIES
+	ToLevel=10
 	TerrainGenerationBase=0
 		Terrain=0
 	TerrainGeneration=1
@@ -69,7 +70,7 @@ plains=
 
 stones=
 	PlayModes=FIND_EXIT, KILL_ENEMIES, WAVES
-	FromLevel=2
+	FromLevel=5
 	TerrainGenerationBase=0
 		Terrain=4
 	TerrainGeneration=1
@@ -170,7 +171,7 @@ stones=
 
 city1=
 	PlayModes=FIND_EXIT, KILL_ENEMIES, WAVES
-	FromLevel=1
+	FromLevel=2
 	TerrainGenerationBase=0
 		Terrain=0
 		Terrain=4

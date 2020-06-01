@@ -1,6 +1,7 @@
 main1=
 	PlayType=MENU
 	CustomSize=50,50
+	SpawnPoint=25,20
 	TerrainGenerationBase=
 		Terrain=0
 	ImportantPieceGeneration=10

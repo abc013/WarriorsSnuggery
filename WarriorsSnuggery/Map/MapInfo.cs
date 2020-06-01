@@ -41,7 +41,7 @@ namespace WarriorsSnuggery.Maps
 		[Desc("Variable used to determine wether this map comes from an save. DO NOT ALTER.")]
 		public readonly bool FromSave;
 
-		public MapInfo(string overridePiece, int wall, MPos customSize, Color ambient, GameType defaultType, GameMode[] defaultModes, int level, int fromLevel, TerrainGeneratorInfo baseTerrainGeneration, MapGeneratorInfo[] genInfos, MPos spawnPoint, bool fromSave, bool allowWeapons)
+		public MapInfo(string overridePiece, int wall, MPos customSize, Color ambient, GameType defaultType, GameMode[] defaultModes, int level, int fromLevel, int toLevel, TerrainGeneratorInfo baseTerrainGeneration, MapGeneratorInfo[] genInfos, MPos spawnPoint, bool fromSave, bool allowWeapons)
 		{
 			OverridePiece = overridePiece;
 			Wall = wall;
@@ -51,6 +51,7 @@ namespace WarriorsSnuggery.Maps
 			DefaultModes = defaultModes;
 			Level = level;
 			FromLevel = fromLevel;
+			ToLevel = toLevel;
 			TerrainGenerationBase = baseTerrainGeneration;
 			GeneratorInfos = genInfos;
 			SpawnPoint = spawnPoint;
@@ -67,17 +68,17 @@ namespace WarriorsSnuggery.Maps
 		{
 			var piece = stats.SaveName + "_map";
 			var size = RuleReader.Read(FileExplorer.Saves, stats.SaveName + "_map.yaml").First(n => n.Key == "Size").Convert<MPos>();
-			return new MapInfo(piece, 0, size, Color.White, stats.Type, new[] { stats.Mode }, -1, 0, new TerrainGeneratorInfo(0, new MiniTextNode[0]), new MapGeneratorInfo[0], MPos.Zero, true, true);
+			return new MapInfo(piece, 0, size, Color.White, stats.Type, new[] { stats.Mode }, -1, 0, int.MaxValue, new TerrainGeneratorInfo(0, new MiniTextNode[0]), new MapGeneratorInfo[0], MPos.Zero, true, true);
 		}
 
 		public static MapInfo EditorMapTypeFromPiece(string piece, MPos size)
 		{
-			return new MapInfo(piece, 0, size, Color.White, GameType.EDITOR, new[] { GameMode.NONE }, -1, 0, new TerrainGeneratorInfo(0, new MiniTextNode[0]), new MapGeneratorInfo[0], MPos.Zero, false, true);
+			return new MapInfo(piece, 0, size, Color.White, GameType.EDITOR, new[] { GameMode.NONE }, -1, 0, int.MaxValue, new TerrainGeneratorInfo(0, new MiniTextNode[0]), new MapGeneratorInfo[0], MPos.Zero, false, true);
 		}
 
 		public static MapInfo ConvertGameType(MapInfo map, GameType type)
 		{
-			return new MapInfo(map.OverridePiece, map.Wall, map.CustomSize, map.Ambient, type, map.DefaultModes, map.Level, map.FromLevel, map.TerrainGenerationBase, map.GeneratorInfos, map.SpawnPoint, map.FromSave, map.AllowWeapons);
+			return new MapInfo(map.OverridePiece, map.Wall, map.CustomSize, map.Ambient, type, map.DefaultModes, map.Level, map.FromLevel, map.ToLevel, map.TerrainGenerationBase, map.GeneratorInfos, map.SpawnPoint, map.FromSave, map.AllowWeapons);
 		}
 	}
 
@@ -93,6 +94,7 @@ namespace WarriorsSnuggery.Maps
 				var playModes = new[] { GameMode.NONE };
 				var level = -1;
 				var fromLevel = 0;
+				var toLevel = int.MaxValue;
 				var name = terrain.Key;
 				var wall = 0;
 				var ambient = Color.White;
@@ -121,6 +123,10 @@ namespace WarriorsSnuggery.Maps
 							break;
 						case "FromLevel":
 							fromLevel = child.Convert<int>();
+
+							break;
+						case "ToLevel":
+							toLevel = child.Convert<int>();
 
 							break;
 						case "Level":
@@ -186,7 +192,7 @@ namespace WarriorsSnuggery.Maps
 				if (baseterrain == null)
 					throw new YamlMissingNodeException(terrain.Key, "BaseTerrainGeneration");
 
-				AddType(new MapInfo(string.Empty, wall, customSize, ambient, playType, playModes, level, fromLevel, baseterrain, genInfos.ToArray(), spawnPoint, false, allowWeapons), name);
+				AddType(new MapInfo(string.Empty, wall, customSize, ambient, playType, playModes, level, fromLevel, toLevel, baseterrain, genInfos.ToArray(), spawnPoint, false, allowWeapons), name);
 			}
 		}
 
@@ -210,7 +216,7 @@ namespace WarriorsSnuggery.Maps
 			if (explicitLevels.Any())
 				return explicitLevels.ElementAt(Program.SharedRandom.Next(explicitLevels.Count()));
 
-			var implicitLevels = levels.Where(a => level >= a.FromLevel && a.FromLevel >= 0 && a.Level == -1);
+			var implicitLevels = levels.Where(a => level >= a.FromLevel && level <= a.ToLevel && a.FromLevel >= 0 && a.Level == -1);
 			if (!implicitLevels.Any())
 				throw new MissingFieldException(string.Format("There are no available Main Maps (Level:{0}).", level));
 
@@ -225,7 +231,7 @@ namespace WarriorsSnuggery.Maps
 			if (mainLevels.Any())
 				return mainLevels.ElementAt(Program.SharedRandom.Next(mainLevels.Count()));
 
-			var mainTypes = levels.Where(a => level >= a.FromLevel && a.FromLevel >= 0 && a.Level == -1);
+			var mainTypes = levels.Where(a => level >= a.FromLevel && level <= a.ToLevel && a.FromLevel >= 0 && a.Level == -1);
 			if (!mainTypes.Any())
 				throw new MissingFieldException(string.Format("There are no available Main Maps (Level:{0}).", level));
 
@@ -240,7 +246,7 @@ namespace WarriorsSnuggery.Maps
 			if (explicitLevels.Any())
 				return explicitLevels.ElementAt(Program.SharedRandom.Next(explicitLevels.Count()));
 
-			var mainTypes = levels.Where(a => level >= a.FromLevel && a.FromLevel >= 0 && a.Level == -1);
+			var mainTypes = levels.Where(a => level >= a.FromLevel && level <= a.ToLevel && a.FromLevel >= 0 && a.Level == -1);
 			if (!mainTypes.Any())
 				throw new MissingFieldException(string.Format("There are no Maps available."));
 
