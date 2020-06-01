@@ -219,7 +219,7 @@ namespace WarriorsSnuggery.UI
 					health.SetText(cur + "/" + max);
 					healthPercentage = (cur / (float)max);
 				}
-				if (game.World.PlayerDamagedTick < Settings.UpdatesPerSecond * 45)
+				if (game.Type != GameType.NORMAL || game.World.PlayerDamagedTick < Settings.UpdatesPerSecond * 45)
 					targetedEnemy = null;
 				else if (targetedEnemy != null && targetedEnemy.IsAlive)
 					setEnemyArrow();
