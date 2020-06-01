@@ -86,6 +86,7 @@ namespace WarriorsSnuggery
 			UITextureManager.Add("keyboard", new TextureInfo("keyboard", TextureType.ANIMATION, 10, 24, 24));
 			UITextureManager.Add("UI_selector1", new TextureInfo("UI_selector1"));
 			UITextureManager.Add("UI_selector2", new TextureInfo("UI_selector2"));
+			UITextureManager.Add("UI_enemy_arrow", new TextureInfo("UI_enemy_arrow"));
 			UITextureManager.Add("cursor_default", new TextureInfo("cursor_default"));
 			UITextureManager.Add("cursor_select", new TextureInfo("cursor_select"));
 			UITextureManager.Add("cursor_money", new TextureInfo("cursor_money"));

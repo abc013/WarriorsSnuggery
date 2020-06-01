@@ -47,6 +47,8 @@ namespace WarriorsSnuggery.Objects.Parts
 
 			if (MouseInput.IsLeftDown && !self.World.Game.ScreenControl.CursorOnUI())
 				attackTarget(MouseInput.GamePosition);
+
+			self.World.PlayerDamagedTick++;
 		}
 
 		void attackTarget(CPos pos)
@@ -64,6 +66,11 @@ namespace WarriorsSnuggery.Objects.Parts
 				else
 					self.Attack(actor);
 			}
+		}
+
+		public override void OnDamage(Actor damager, int damage)
+		{
+			self.World.PlayerDamagedTick = 0;
 		}
 
 		public override void OnKilled(Actor killer)

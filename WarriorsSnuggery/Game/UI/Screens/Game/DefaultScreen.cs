@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using WarriorsSnuggery.Graphics;
 using WarriorsSnuggery.Objects;
+using WarriorsSnuggery.Objects.Weapons;
 
 namespace WarriorsSnuggery.UI
 {
@@ -18,6 +19,9 @@ namespace WarriorsSnuggery.UI
 		readonly ActorList actorList;
 		readonly List<ActorType> actorTypes = new List<ActorType>();
 		readonly SpellList spellList;
+
+		readonly BatchObject enemyArrow;
+		Actor targetedEnemy;
 		float healthPercentage;
 		float manaPercentage;
 
@@ -108,6 +112,8 @@ namespace WarriorsSnuggery.UI
 			waveText = new TextLine(new CPos((int)-(WindowInfo.UnitWidth * 512) + 776, 8192 - 1536, 0), Font.Pixel16);
 			if (game.Mode == GameMode.WAVES)
 				waveText.SetText("Wave 1");
+
+			enemyArrow = new BatchObject(UITextureManager.Get("UI_enemy_arrow")[0], Color.White);
 		}
 
 		public void SetWave(int wave, int final)
@@ -126,6 +132,11 @@ namespace WarriorsSnuggery.UI
 		{
 			for (int i = 0; i < actorTypes.Count; i++)
 				actorList.Container[i].SetColor(game.Statistics.ActorAvailable(actorTypes[i].Playable) ? Color.White : Color.Black);
+		}
+
+		void selectNewEnemy()
+		{
+			targetedEnemy = game.World.Actors.Find(a => a.Team != Actor.PlayerTeam && a.Team != Actor.NeutralTeam && !a.Disposed);
 		}
 
 		public override void Hide()
@@ -190,6 +201,9 @@ namespace WarriorsSnuggery.UI
 			ColorManager.DrawRect(new CPos((int)-(WindowInfo.UnitWidth * 512) + 256, 8192, 0), new CPos(-6120 - 128, 8192 - 2560, 0), new Color(0, 0, 0, 128));
 			waveText.Render();
 
+			if (targetedEnemy != null)
+				enemyArrow.PushToBatchRenderer();
+
 			base.Render();
 		}
 
@@ -208,6 +222,12 @@ namespace WarriorsSnuggery.UI
 					health.SetText(cur + "/" + max);
 					healthPercentage = (cur / (float)max);
 				}
+				if (game.World.PlayerDamagedTick < Settings.UpdatesPerSecond * 45)
+					targetedEnemy = null;
+				else if (targetedEnemy != null && targetedEnemy.IsAlive)
+					setEnemyArrow();
+				else
+					selectNewEnemy();
 
 				mana.SetText(game.Statistics.Mana + "/" + game.Statistics.MaxMana);
 				manaPercentage = game.Statistics.Mana / (float)game.Statistics.MaxMana;
@@ -232,6 +252,19 @@ namespace WarriorsSnuggery.UI
 
 			actorList.Tick();
 			spellList.Tick();
+		}
+
+		void setEnemyArrow()
+		{
+			var pos = Camera.LookAt + new CPos(0, -2048, 0) - targetedEnemy.GraphicPosition;
+
+			enemyArrow.Visible = pos.SquaredFlatDist > 5120 * 5120;
+			if (!enemyArrow.Visible)
+				return;
+
+			var angle = pos.FlatAngle;
+			enemyArrow.SetRotation(new VAngle(0, 0, -angle) + new VAngle(0, 0, 270));
+			enemyArrow.SetPosition(new CPos((int)(Math.Cos(angle) * 2048), (int)(Math.Sin(angle) * 2048) - 2048, 0));
 		}
 
 		void changePlayer(Actor player, ActorType type)

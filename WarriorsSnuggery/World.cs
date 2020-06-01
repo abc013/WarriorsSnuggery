@@ -27,6 +27,7 @@ namespace WarriorsSnuggery
 
 		public Actor LocalPlayer;
 		public bool PlayerAlive = true;
+		public int PlayerDamagedTick = 0;
 		public bool KeyFound;
 
 		public World(Game game, int seed, GameStatistics stats)
