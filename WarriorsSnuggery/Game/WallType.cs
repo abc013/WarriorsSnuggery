@@ -39,6 +39,9 @@ namespace WarriorsSnuggery.Objects
 		[Desc("How much damage of nearby explosions penetrates the wall.")]
 		public readonly float DamagePenetration = 0f;
 
+		[Desc("Wall is only on floor and basically has no height.")]
+		public readonly bool IsOnFloor;
+
 		public WallType(int id, MiniTextNode[] nodes, bool documentation = false)
 		{
 			ID = id;

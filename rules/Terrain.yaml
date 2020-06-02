@@ -17,7 +17,7 @@
 	Sprite=water
 	Overlay=water_sparkle
 		Size=24,24
-		Tick=3
+		Tick=10
 	Speed=0
 	SpawnSmudge=false
 

@@ -2,6 +2,7 @@
 	Image=walls1
 		Size=48,24
 	Health=400
+	WallOnDeath=10
 
 1=
 	Image=walls0
@@ -36,7 +37,7 @@
 	DamagePenetration=0.8
 	Height=256
 	Health=150
-	WallOnDeath=9
+	WallOnDeath=10
 
 4=
 	Image=walls0_damaged0
@@ -57,12 +58,14 @@
 		Size=48,24
 	DamagePenetration=0.3
 	Health=300
+	WallOnDeath=10
 
 7=
 	Image=walls1_damaged1
 		Size=48,24
 	DamagePenetration=0.3
 	Health=300
+	WallOnDeath=10
 
 8=
 	Image=walls0_gate
@@ -76,10 +79,19 @@
 	Health=250
 
 9=
-	Image=walls_rubble
+	Image=walls_rubble0
 		Size=48,24
 	Blocks=false
 	DamagePenetration=0
 	IgnoreForNearby=true
+	IsOnFloor=true
+
+10=
+	Image=walls_rubble1
+		Size=48,24
+	Blocks=false
+	DamagePenetration=0
+	IgnoreForNearby=true
+	IsOnFloor=true
 
 

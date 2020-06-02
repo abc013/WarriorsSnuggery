@@ -73,6 +73,8 @@ namespace WarriorsSnuggery.Objects
 				Physics.Position += new CPos(0, 1024, 0);
 				renderPos += new CPos(-83, -512, 0);
 			}
+			if (type.IsOnFloor)
+				Height -= 2048;
 
 			Type = type;
 			health = type.Health;
