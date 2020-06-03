@@ -30,7 +30,7 @@ namespace WarriorsSnuggery
 
 		public Tooltip(CPos pos, string title, params string[] text)
 		{
-			font = Font.Pixel16;
+			font = FontManager.Pixel16;
 
 			this.title = new TextLine(CPos.Zero, font);
 			this.title.WriteText(title);

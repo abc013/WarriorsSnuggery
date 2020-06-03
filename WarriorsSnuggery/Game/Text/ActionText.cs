@@ -24,7 +24,7 @@ namespace WarriorsSnuggery.Objects
 			this.velocity = velocity;
 			this.type = type;
 
-			text = new TextBlock(pos, Font.Pixel16, TextLine.OffsetType.MIDDLE, lines);
+			text = new TextBlock(pos, FontManager.Pixel16, TextLine.OffsetType.MIDDLE, lines);
 			WorldRenderer.RenderAfter(text);
 		}
 

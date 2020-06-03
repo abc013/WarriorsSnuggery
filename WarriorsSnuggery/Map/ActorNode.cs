@@ -1,13 +1,15 @@
-﻿namespace WarriorsSnuggery.Maps
+﻿using WarriorsSnuggery.Objects;
+
+namespace WarriorsSnuggery.Maps
 {
 	public class ActorNode
 	{
 		public readonly int ID;
 		public readonly CPos Position;
 
-		public readonly string Type = "";
+		public readonly ActorType Type;
 		public readonly float Health = 1f;
-		public readonly byte Team = Objects.Actor.NeutralTeam;
+		public readonly byte Team = Actor.NeutralTeam;
 		public readonly bool IsBot = false;
 		public readonly CPos BotTarget = new CPos(int.MaxValue, 0, 0);
 		public readonly bool IsPlayer = false;

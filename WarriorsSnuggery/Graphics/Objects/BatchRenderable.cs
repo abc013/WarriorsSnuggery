@@ -9,8 +9,8 @@ namespace WarriorsSnuggery.Graphics
 
 		public bool Visible = true;
 
-		protected Vector4 Position = Vector4.Zero;
-		protected Vector4 Rotation = Vector4.Zero;
+		protected Vector3 Position = Vector3.Zero;
+		protected Vector3 Rotation = Vector3.Zero;
 		protected Vector3 Scale = Vector3.One;
 		protected Color Color = Color.White;
 		protected bool MatrixChanged;
@@ -30,26 +30,26 @@ namespace WarriorsSnuggery.Graphics
 
 		public virtual void SetPosition(Vector position)
 		{
-			Vector4 vec4 = position;
-			if (Position == vec4)
+			Vector3 vec3 = position;
+			if (Position == vec3)
 				return;
 
-			Position = vec4;
+			Position = vec3;
 			MatrixChanged = true;
 		}
 
 		public virtual void SetRotation(VAngle rotation)
 		{
-			SetRotation((Vector4)rotation);
+			SetRotation((Vector3)rotation);
 		}
 
-		public virtual void SetRotation(Vector4 rotation)
+		public virtual void SetRotation(Vector3 rotation)
 		{
-			Vector4 rot4 = rotation;
-			if (Rotation == rot4)
+			Vector3 rot3 = rotation;
+			if (Rotation == rot3)
 				return;
 
-			Rotation = rot4;
+			Rotation = rot3;
 			MatrixChanged = true;
 		}
 
@@ -60,7 +60,7 @@ namespace WarriorsSnuggery.Graphics
 
 		public virtual void SetScale(Vector scale)
 		{
-			SetScale(((Vector4)scale).Xyz);
+			SetScale((Vector3)scale);
 		}
 
 		public virtual void SetScale(Vector3 scale)
@@ -81,10 +81,7 @@ namespace WarriorsSnuggery.Graphics
 			MatrixChanged = true;
 		}
 
-		public virtual void Tick()
-		{
-
-		}
+		public virtual void Tick() { }
 
 		public virtual void PushToBatchRenderer()
 		{

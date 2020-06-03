@@ -21,15 +21,15 @@ namespace WarriorsSnuggery.UI
 			Title.Position = new CPos(0, -4096, 0);
 
 			// Window
-			var fullscreen = new TextLine(new CPos(-6096, -3000, 0), Font.Pixel16);
+			var fullscreen = new TextLine(new CPos(-6096, -3000, 0), FontManager.Pixel16);
 			fullscreen.SetText("Fullscreen:");
 			Content.Add(fullscreen);
-			var width = new TextLine(new CPos(-6096, -2300, 0), Font.Pixel16);
+			var width = new TextLine(new CPos(-6096, -2300, 0), FontManager.Pixel16);
 			if (Settings.Fullscreen)
 				width.SetColor(new Color(128, 128, 128));
 			width.SetText("Width:");
 			Content.Add(width);
-			var height = new TextLine(new CPos(-6096, -1600, 0), Font.Pixel16);
+			var height = new TextLine(new CPos(-6096, -1600, 0), FontManager.Pixel16);
 			if (Settings.Fullscreen)
 				height.SetColor(new Color(128, 128, 128));
 			height.SetText("Height:");
@@ -63,13 +63,13 @@ namespace WarriorsSnuggery.UI
 			Content.Add(heightWrite);
 
 			// Graphics
-			var antiAliasing = new TextLine(new CPos(-512, -3000, 0), Font.Pixel16);
+			var antiAliasing = new TextLine(new CPos(-512, -3000, 0), FontManager.Pixel16);
 			antiAliasing.SetText("Enable Antialising:");
 			Content.Add(antiAliasing);
-			var pixeling = new TextLine(new CPos(-512, -2300, 0), Font.Pixel16);
+			var pixeling = new TextLine(new CPos(-512, -2300, 0), FontManager.Pixel16);
 			pixeling.SetText("Enable Pixeling:");
 			Content.Add(pixeling);
-			var textshadow = new TextLine(new CPos(-512, -1600, 0), Font.Pixel16);
+			var textshadow = new TextLine(new CPos(-512, -1600, 0), FontManager.Pixel16);
 			textshadow.SetText("Enable text shadows:");
 			Content.Add(textshadow);
 
@@ -90,10 +90,10 @@ namespace WarriorsSnuggery.UI
 			Content.Add(textshadowCheck);
 
 			// Scrolling
-			var scrollSpeed = new TextLine(new CPos(-6144, -600, 0), Font.Pixel16);
+			var scrollSpeed = new TextLine(new CPos(-6144, -600, 0), FontManager.Pixel16);
 			scrollSpeed.SetText("Camera panning speed:");
 			Content.Add(scrollSpeed);
-			var edgeScrolling = new TextLine(new CPos(-6144, 100, 0), Font.Pixel16);
+			var edgeScrolling = new TextLine(new CPos(-6144, 100, 0), FontManager.Pixel16);
 			edgeScrolling.SetText("Edge Panning (0 = disabled):");
 			Content.Add(edgeScrolling);
 
@@ -115,7 +115,7 @@ namespace WarriorsSnuggery.UI
 			Content.Add(edgePanningSlider);
 
 			// Additional features
-			var frameLimiter = new TextLine(new CPos(-6144, 1000, 0), Font.Pixel16);
+			var frameLimiter = new TextLine(new CPos(-6144, 1000, 0), FontManager.Pixel16);
 			frameLimiter.SetText("Framelimiter (0 = disabled):");
 			Content.Add(frameLimiter);
 
@@ -128,7 +128,7 @@ namespace WarriorsSnuggery.UI
 			};
 			Content.Add(frameLimiterWrite);
 
-			var developerMode = new TextLine(new CPos(-6144, 1900, 0), Font.Pixel16);
+			var developerMode = new TextLine(new CPos(-6144, 1900, 0), FontManager.Pixel16);
 			developerMode.SetText("Enable Developermode:");
 			Content.Add(developerMode);
 			developerModeCheck = CheckBoxCreator.Create("wooden", new CPos(5120, 1900, 0), Settings.DeveloperMode, (b) =>
@@ -138,13 +138,13 @@ namespace WarriorsSnuggery.UI
 			Content.Add(developerModeCheck);
 
 			// Volume
-			var masterVol = new TextLine(new CPos(-6144, 2800, 0), Font.Pixel16);
+			var masterVol = new TextLine(new CPos(-6144, 2800, 0), FontManager.Pixel16);
 			masterVol.SetText("Master Volume:");
 			Content.Add(masterVol);
-			var effectVol = new TextLine(new CPos(-6144, 3700, 0), Font.Pixel16);
+			var effectVol = new TextLine(new CPos(-6144, 3700, 0), FontManager.Pixel16);
 			effectVol.SetText("Effects Volume:");
 			Content.Add(effectVol);
-			var musicVol = new TextLine(new CPos(-6144, 4600, 0), Font.Pixel16);
+			var musicVol = new TextLine(new CPos(-6144, 4600, 0), FontManager.Pixel16);
 			musicVol.SetText("Music Volume:");
 			Content.Add(musicVol);
 
@@ -175,7 +175,7 @@ namespace WarriorsSnuggery.UI
 			};
 			Content.Add(musicVolumeSlider);
 
-			var warning = new TextLine(new CPos(0, 5450, 0), Font.Pixel16, TextLine.OffsetType.MIDDLE);
+			var warning = new TextLine(new CPos(0, 5450, 0), FontManager.Pixel16, TextLine.OffsetType.MIDDLE);
 			warning.SetColor(Color.Red);
 			warning.SetText("Some changes only take effect after restarting and can cause visual bugs.");
 			Content.Add(warning);

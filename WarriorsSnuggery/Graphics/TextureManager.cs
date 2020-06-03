@@ -56,20 +56,21 @@ namespace WarriorsSnuggery.Graphics
 		}
 
 		static Bitmap measureBmp;
-		public static float[][] LoadCharacters(int fontSize, string fontName, out MPos maxSize, out MPos[] sizes)
+		public static float[][] LoadCharacters(FontInfo info)
 		{
-			var characters = new float[Font.Characters.Length][];
-			sizes = new MPos[Font.Characters.Length];
+			var characters = new float[FontManager.Characters.Length][];
+			var sizes = new MPos[characters.Length];
+
 			// If bugs start with font spacing, increase number of pixels here
 			measureBmp = new Bitmap(64, 64);
 
-			using (var font = new System.Drawing.Font(Font.Collection.Families.Where(a => a.Name == fontName).First(), fontSize, GraphicsUnit.Pixel))
+			using (var font = new System.Drawing.Font(FontManager.Collection.Families.Where(a => a.Name == info.FontName).First(), info.Size, GraphicsUnit.Pixel))
 			{
 				var maxWidth = 0;
 				var maxHeight = 0;
-				for (int i = 0; i < Font.Characters.Length; i++)
+				for (int i = 0; i < FontManager.Characters.Length; i++)
 				{
-					var charBmp = generateFontChar(font, Font.Characters[i]);
+					var charBmp = generateFontChar(font, FontManager.Characters[i]);
 					sizes[i] = new MPos(charBmp.Width, charBmp.Height);
 					if (charBmp.Width > maxWidth)
 						maxWidth = charBmp.Width;
@@ -78,7 +79,7 @@ namespace WarriorsSnuggery.Graphics
 
 					characters[i] = loadTexture(charBmp);
 				}
-				maxSize = new MPos(maxWidth, maxHeight);
+				info.SetSizes(new MPos(maxWidth, maxHeight), sizes);
 			}
 
 			measureBmp.Dispose();

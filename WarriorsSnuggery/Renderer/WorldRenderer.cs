@@ -29,14 +29,7 @@ namespace WarriorsSnuggery
 			{
 				shroud = new BatchObject(RuleLoader.ShroudTexture[0], Color.White);
 
-				var textures = new int[8];
-				for (int i = 0; i < textures.Length; i++)
-				{
-					if (SpriteManager.sheets[i] == null)
-						break;
-					textures[i] = SpriteManager.sheets[i].TextureID;
-				}
-				BatchRenderer.SetTextures(textures);
+				BatchRenderer.SetTextures(SpriteManager.Sheets, SpriteManager.CurrentSheet);
 				DebugRenderer.SetTextures(new[] { 0 });
 			}
 			game = @new;

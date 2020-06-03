@@ -23,7 +23,7 @@ namespace WarriorsSnuggery
 			if (Cursor == null)
 			{
 				Cursor = new Cursor();
-				BatchRenderer.SetTextures(SpriteManager.sheets, SpriteManager.CurrentSheet);
+				BatchRenderer.SetTextures(SpriteManager.Sheets, SpriteManager.CurrentSheet);
 			}
 
 			Cursor.Current = CursorType.DEFAULT;

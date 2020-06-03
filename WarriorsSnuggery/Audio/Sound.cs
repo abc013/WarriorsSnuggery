@@ -36,8 +36,6 @@ namespace WarriorsSnuggery
 
 	public class Sound
 	{
-		const float reduction = 100000f;
-
 		readonly SoundType info;
 		readonly bool inGame;
 		readonly float defaultVolume;

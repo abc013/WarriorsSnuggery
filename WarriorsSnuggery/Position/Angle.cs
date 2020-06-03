@@ -80,9 +80,9 @@ namespace WarriorsSnuggery
 			return new CPos(x, y, z);
 		}
 
-		public static implicit operator Vector4(VAngle angle)
+		public static implicit operator Vector3(VAngle angle)
 		{
-			return new Vector4(angle.X, angle.Y, angle.Z, 0f);
+			return new Vector3(angle.X, angle.Y, angle.Z);
 		}
 	}
 }

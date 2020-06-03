@@ -9,7 +9,7 @@ namespace WarriorsSnuggery.UI
 		public PausedScreen(Game game) : base("Paused")
 		{
 			this.game = game;
-			var paused = new TextLine(new CPos(0, 2048, 0), Font.Pixel16, TextLine.OffsetType.MIDDLE);
+			var paused = new TextLine(new CPos(0, 2048, 0), FontManager.Pixel16, TextLine.OffsetType.MIDDLE);
 			paused.WriteText(new Color(128, 128, 255) + "To unpause, press '" + Color.Yellow + "P" + new Color(128, 128, 255) + "'");
 			Content.Add(paused);
 		}

@@ -48,9 +48,9 @@ namespace WarriorsSnuggery.UI
 			this.game = game;
 			Title.Position += new CPos(0, -7120, 0);
 
-			mousePosition = new TextLine(new CPos((int)(WindowInfo.UnitWidth * 512 - 1024), -7172, 0), Font.Pixel16, TextLine.OffsetType.RIGHT);
+			mousePosition = new TextLine(new CPos((int)(WindowInfo.UnitWidth * 512 - 1024), -7172, 0), FontManager.Pixel16, TextLine.OffsetType.RIGHT);
 			save = ButtonCreator.Create("wooden", new CPos((int)(WindowInfo.UnitWidth * 512 - 2048), -5120, 0), "Save", savePiece);
-			saved = new TextLine(new CPos((int)(WindowInfo.UnitWidth * 512 - 2048), -5120, 0), Font.Pixel16, TextLine.OffsetType.MIDDLE);
+			saved = new TextLine(new CPos((int)(WindowInfo.UnitWidth * 512 - 2048), -5120, 0), FontManager.Pixel16, TextLine.OffsetType.MIDDLE);
 			saved.SetText("Save");
 
 			showTiles = CheckBoxCreator.Create("terrain_editor", new CPos((int)(WindowInfo.UnitWidth * 512 - 2496), -2536, 0), false, (b) =>
@@ -95,10 +95,10 @@ namespace WarriorsSnuggery.UI
 			}
 
 			wallBox = CheckBoxCreator.Create("wooden", new CPos((int)(WindowInfo.UnitWidth * 512 - 2048), 6244, 0), false, (b) => horizontal = b);
-			wallText = new TextLine(new CPos((int)(WindowInfo.UnitWidth * 512 - 2048), 6756, 0), Font.Pixel16, TextLine.OffsetType.MIDDLE);
+			wallText = new TextLine(new CPos((int)(WindowInfo.UnitWidth * 512 - 2048), 6756, 0), FontManager.Pixel16, TextLine.OffsetType.MIDDLE);
 			wallText.SetText("place vertical");
 			rasterizationBox = CheckBoxCreator.Create("wooden", new CPos((int)(WindowInfo.UnitWidth * 512 - 2048), 6244, 0), false, (b) => { });
-			rasterizationText = new TextLine(new CPos((int)(WindowInfo.UnitWidth * 512 - 2048), 6756, 0), Font.Pixel16, TextLine.OffsetType.MIDDLE);
+			rasterizationText = new TextLine(new CPos((int)(WindowInfo.UnitWidth * 512 - 2048), 6756, 0), FontManager.Pixel16, TextLine.OffsetType.MIDDLE);
 			rasterizationText.SetText("align to grid");
 			isBot = CheckBoxCreator.Create("wooden", new CPos((int)((WindowInfo.UnitWidth * 512) - 1024), -4196, 0), false, (b) => { });
 			team = TextBoxCreator.Create("wooden", new CPos((int)((WindowInfo.UnitWidth * 512) - 1024), -3372, 0), "0", 1, true);
@@ -111,9 +111,9 @@ namespace WarriorsSnuggery.UI
 				if (num >= Settings.MaxTeams)
 					team.Text = "" + (Settings.MaxTeams - 1);
 			};
-			teamText = new TextLine(new CPos((int)(WindowInfo.UnitWidth * 512 - 1536), -3372, 0), Font.Pixel16, TextLine.OffsetType.RIGHT);
+			teamText = new TextLine(new CPos((int)(WindowInfo.UnitWidth * 512 - 1536), -3372, 0), FontManager.Pixel16, TextLine.OffsetType.RIGHT);
 			teamText.SetText("Team:");
-			botText = new TextLine(new CPos((int)(WindowInfo.UnitWidth * 512 - 1536), -4196, 0), Font.Pixel16, TextLine.OffsetType.RIGHT);
+			botText = new TextLine(new CPos((int)(WindowInfo.UnitWidth * 512 - 1536), -4196, 0), FontManager.Pixel16, TextLine.OffsetType.RIGHT);
 			botText.SetText("Is bot:");
 		}
 

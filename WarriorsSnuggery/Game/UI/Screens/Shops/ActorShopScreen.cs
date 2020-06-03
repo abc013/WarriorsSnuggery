@@ -47,7 +47,7 @@ namespace WarriorsSnuggery.UI
 
 			Content.Add(ButtonCreator.Create("wooden", new CPos(0, 6144, 0), "Resume", () => { game.Pause(false); game.ScreenControl.ShowScreen(ScreenType.DEFAULT); }));
 
-			information = new TextBlock(new CPos(-7900, 0, 0), Font.Pixel16, TextLine.OffsetType.LEFT, "Select an actor for further information.", "", "", "Cost: -");
+			information = new TextBlock(new CPos(-7900, 0, 0), FontManager.Pixel16, TextLine.OffsetType.LEFT, "Select an actor for further information.", "", "", "Cost: -");
 
 			money = new MoneyDisplay(game, new CPos(-(int)(WindowInfo.UnitWidth / 2 * 1024) + 1024, 7192, 0));
 		}

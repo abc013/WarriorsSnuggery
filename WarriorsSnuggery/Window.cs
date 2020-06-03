@@ -99,12 +99,11 @@ namespace WarriorsSnuggery
 			base.OnLoad();
 
 			MasterRenderer.Initialize();
-			SpriteManager.CreateSheet(8);
+			SpriteManager.CreateSheet(4);
 
 			var font = Timer.Start();
 			//Icon = new WindowIcon(new OpenToolkit.Windowing.Common.Input.Image(FileExplorer.Misc + "/warsnu.ico"));
-			Font.LoadFonts();
-			Font.InitializeFonts();
+			FontManager.Load();
 
 			font.StopAndWrite("Loading Fonts");
 
@@ -183,9 +182,9 @@ namespace WarriorsSnuggery
 				FPS = 1 / e.Time;
 				FMS = watch.Stop();
 				Log.WritePerformance(FMS, " render " + GlobalRender);
+				Title = Program.Title + " | " + MasterRenderer.RenderCalls + " Calls | " + MasterRenderer.Batches + " Batches | " + MasterRenderer.BatchCalls + " BatchCalls";
 			}
 
-			Title = Program.Title + " | " + MasterRenderer.RenderCalls + " Calls | " + MasterRenderer.Batches + " Batches | " + MasterRenderer.BatchCalls + " BatchCalls";
 			GlobalRender++;
 		}
 
@@ -208,7 +207,7 @@ namespace WarriorsSnuggery
 
 			SpriteManager.DeleteTextures();
 
-			Graphics.Font.DisposeFonts();
+			FontManager.Dispose();
 
 			base.Close();
 		}

@@ -4,29 +4,29 @@ namespace WarriorsSnuggery.Graphics
 {
 	public class SpriteManager
 	{
-		public static Sheet[] sheets;
+		public static Sheet[] Sheets;
 		public static int CurrentSheet;
 
 		static readonly Dictionary<int, Texture[]> hashedTextures = new Dictionary<int, Texture[]>();
 
 		public static void CreateSheet(int maxSheets)
 		{
-			sheets = new Sheet[maxSheets];
+			Sheets = new Sheet[maxSheets];
 			CurrentSheet = 0;
 
-			sheets[CurrentSheet] = new Sheet(Settings.SheetSize);
-			SheetBuilder.UseSheet(sheets[CurrentSheet]);
+			Sheets[CurrentSheet] = new Sheet(Settings.SheetSize);
+			SheetBuilder.UseSheet(Sheets[CurrentSheet]);
 		}
 
 		public static void UseNextSheet()
 		{
 			CurrentSheet++;
 
-			if (CurrentSheet >= sheets.Length)
+			if (CurrentSheet >= Sheets.Length)
 				throw new System.Exception("Sheetoverflow.");
 
-			sheets[CurrentSheet] = new Sheet(Settings.SheetSize);
-			SheetBuilder.UseSheet(sheets[CurrentSheet]);
+			Sheets[CurrentSheet] = new Sheet(Settings.SheetSize);
+			SheetBuilder.UseSheet(Sheets[CurrentSheet]);
 		}
 
 		public static Texture[] AddTexture(TextureInfo info)
@@ -62,7 +62,7 @@ namespace WarriorsSnuggery.Graphics
 
 		public static Texture[] AddFont(FontInfo font)
 		{
-			var data = TextureManager.LoadCharacters(font.Size, font.FontName, out font.MaxSize, out font.CharSizes);
+			var data = TextureManager.LoadCharacters(font);
 			var textures = new Texture[data.Length];
 
 			for (int i = 0; i < data.Length; i++)
@@ -83,8 +83,8 @@ namespace WarriorsSnuggery.Graphics
 
 		public static int SheetIndex(int SheetID)
 		{
-			for (int i = 0; i < sheets.Length; i++)
-				if (sheets[i] != null && sheets[i].TextureID == SheetID)
+			for (int i = 0; i < Sheets.Length; i++)
+				if (Sheets[i] != null && Sheets[i].TextureID == SheetID)
 					return i;
 
 			return 0;
@@ -93,7 +93,7 @@ namespace WarriorsSnuggery.Graphics
 		public static void CreateTextures()
 		{
 			int i = 0;
-			foreach (var sheet in sheets)
+			foreach (var sheet in Sheets)
 			{
 				if (sheet == null)
 					continue;
@@ -107,7 +107,7 @@ namespace WarriorsSnuggery.Graphics
 
 		public static void DeleteTextures()
 		{
-			foreach (var sheet in sheets)
+			foreach (var sheet in Sheets)
 				sheet?.Dispose();
 		}
 	}

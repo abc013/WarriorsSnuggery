@@ -33,12 +33,12 @@ namespace WarriorsSnuggery.UI
 		{
 			Stats = stats;
 			Scale *= 2;
-			name = new TextLine(pos - new CPos(3072, 512, 0), Font.Pixel16);
+			name = new TextLine(pos - new CPos(3072, 512, 0), FontManager.Pixel16);
 			name.SetText(stats.Name);
-			score = new TextLine(pos - new CPos(3072, 0, 0), Font.Pixel16);
+			score = new TextLine(pos - new CPos(3072, 0, 0), FontManager.Pixel16);
 			score.SetColor(Color.Yellow);
 			score.SetText(stats.CalculateScore());
-			level = new TextLine(pos - new CPos(-1152, 0, 0), Font.Papyrus24);
+			level = new TextLine(pos - new CPos(-1152, 0, 0), FontManager.Papyrus24);
 			if (stats.Level >= stats.FinalLevel) level.SetColor(new Color(0, 200, 0));
 			level.SetText(stats.Level + "/" + stats.FinalLevel);
 			level.Scale = 1.4f;

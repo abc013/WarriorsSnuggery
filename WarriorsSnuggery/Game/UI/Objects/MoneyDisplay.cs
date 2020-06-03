@@ -53,7 +53,7 @@ namespace WarriorsSnuggery.UI
 			money = new BatchObject(UITextureManager.Get("UI_money")[0], Color.White);
 			money.SetPosition(position);
 
-			moneyText = new TextLine(position + new CPos(1024, 0, 0), Font.Papyrus24);
+			moneyText = new TextLine(position + new CPos(1024, 0, 0), FontManager.Papyrus24);
 			moneyText.SetText(game.Statistics.Money);
 		}
 

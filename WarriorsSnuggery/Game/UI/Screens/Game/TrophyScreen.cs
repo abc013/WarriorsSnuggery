@@ -33,7 +33,7 @@ namespace WarriorsSnuggery.UI
 				trophies.Add(item);
 			}
 
-			information = new TextBlock(new CPos(-7900, 512, 0), Font.Pixel16, TextLine.OffsetType.LEFT, "Select a trophy for further information.", "");
+			information = new TextBlock(new CPos(-7900, 512, 0), FontManager.Pixel16, TextLine.OffsetType.LEFT, "Select a trophy for further information.", "");
 
 			Content.Add(new Panel(new CPos(0, 1024, 0), new Vector(8, 1, 0), PanelManager.Get("stone")));
 			Content.Add(ButtonCreator.Create("wooden", new CPos(0, 6144, 0), "Resume", () => { game.Pause(false); game.ScreenControl.ShowScreen(ScreenType.DEFAULT); }));

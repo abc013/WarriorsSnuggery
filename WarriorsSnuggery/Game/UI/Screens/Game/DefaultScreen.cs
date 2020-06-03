@@ -71,20 +71,20 @@ namespace WarriorsSnuggery.UI
 			// SECTION MONEY
 			money = new MoneyDisplay(game, new CPos(6120 + 128 + 1536, 8192 - 1024, 0));
 			// SECTION MENUS
-			pause = new TextLine(new CPos(-2560, 8192 - 256, 0), Font.Pixel16, TextLine.OffsetType.MIDDLE);
+			pause = new TextLine(new CPos(-2560, 8192 - 256, 0), FontManager.Pixel16, TextLine.OffsetType.MIDDLE);
 			pause.WriteText("Pause: '" + new Color(0.5f, 0.5f, 1f) + "P" + Color.White + "'");
 
-			menu = new TextLine(new CPos(2560, 8192 - 256, 0), Font.Pixel16, TextLine.OffsetType.MIDDLE);
+			menu = new TextLine(new CPos(2560, 8192 - 256, 0), FontManager.Pixel16, TextLine.OffsetType.MIDDLE);
 			menu.WriteText("Menu: '" + new Color(0.5f, 0.5f, 1f) + "Escape" + Color.White + "'");
 
 			// SECTION HEALTH
-			health = new TextLine(new CPos(0, 8192 - 2048, 0), Font.Papyrus24, TextLine.OffsetType.MIDDLE);
+			health = new TextLine(new CPos(0, 8192 - 2048, 0), FontManager.Papyrus24, TextLine.OffsetType.MIDDLE);
 
 			// SECTION MANA
-			mana = new TextLine(new CPos(0, 8192 - 1024, 0), Font.Papyrus24, TextLine.OffsetType.MIDDLE);
+			mana = new TextLine(new CPos(0, 8192 - 1024, 0), FontManager.Papyrus24, TextLine.OffsetType.MIDDLE);
 
 			// SECTION MISSION
-			var missionText = new TextLine(new CPos(0, -8192 + 512, 0), Font.Pixel16, TextLine.OffsetType.MIDDLE);
+			var missionText = new TextLine(new CPos(0, -8192 + 512, 0), FontManager.Pixel16, TextLine.OffsetType.MIDDLE);
 			switch (game.Mode)
 			{
 				case GameMode.NONE:
@@ -105,10 +105,10 @@ namespace WarriorsSnuggery.UI
 			}
 			Content.Add(missionText);
 
-			var levelText = new TextLine(new CPos((int)-(WindowInfo.UnitWidth * 512) + 776, 8192 - 2048, 0), Font.Pixel16);
+			var levelText = new TextLine(new CPos((int)-(WindowInfo.UnitWidth * 512) + 776, 8192 - 2048, 0), FontManager.Pixel16);
 			levelText.SetText("Level " + game.Statistics.Level + "/" + game.Statistics.FinalLevel);
 			Content.Add(levelText);
-			waveText = new TextLine(new CPos((int)-(WindowInfo.UnitWidth * 512) + 776, 8192 - 1536, 0), Font.Pixel16);
+			waveText = new TextLine(new CPos((int)-(WindowInfo.UnitWidth * 512) + 776, 8192 - 1536, 0), FontManager.Pixel16);
 
 			enemyArrow = new BatchObject(UITextureManager.Get("UI_enemy_arrow")[0], Color.White);
 		}

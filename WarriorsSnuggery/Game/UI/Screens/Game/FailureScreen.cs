@@ -9,10 +9,10 @@ namespace WarriorsSnuggery.UI
 		{
 			Title.SetColor(Color.Red);
 
-			var score = new TextLine(new CPos(0, 1024, 0), Font.Pixel16, TextLine.OffsetType.MIDDLE);
+			var score = new TextLine(new CPos(0, 1024, 0), FontManager.Pixel16, TextLine.OffsetType.MIDDLE);
 			score.WriteText("Achieved Score: " + Color.Blue + game.Statistics.CalculateScore());
 			Content.Add(score);
-			var deaths = new TextLine(new CPos(0, 2048, 0), Font.Pixel16, TextLine.OffsetType.MIDDLE);
+			var deaths = new TextLine(new CPos(0, 2048, 0), FontManager.Pixel16, TextLine.OffsetType.MIDDLE);
 			deaths.WriteText(Color.Red + "Deaths: " + game.OldStatistics.Deaths);
 			Content.Add(deaths);
 

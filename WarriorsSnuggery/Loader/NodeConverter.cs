@@ -236,6 +236,11 @@ namespace WarriorsSnuggery.Loader
 				// Called method handles nonexistent particle types
 				return ParticleCreator.GetType(s.Trim());
 			}
+			else if (t == typeof(Objects.ActorType))
+			{
+				// Called method handles nonexistent actor types
+				return ActorCreator.GetType(s.Trim());
+			}
 			else if (t == typeof(Spells.Spell))
 			{
 				return new Spells.Spell(node.Children.ToArray());

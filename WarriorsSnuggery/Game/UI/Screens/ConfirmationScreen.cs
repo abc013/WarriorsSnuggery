@@ -1,4 +1,5 @@
 ﻿using System;
+using WarriorsSnuggery.Graphics;
 using WarriorsSnuggery.Objects;
 
 namespace WarriorsSnuggery.UI
@@ -16,7 +17,7 @@ namespace WarriorsSnuggery.UI
 		{
 			Title.Position = new CPos(0, -2048, 0);
 
-			text = new TextLine(CPos.Zero, Graphics.Font.Pixel16, TextLine.OffsetType.MIDDLE);
+			text = new TextLine(CPos.Zero, FontManager.Pixel16, TextLine.OffsetType.MIDDLE);
 		}
 
 		public void SetAction(Action onDecline, Action onAgree, string text)

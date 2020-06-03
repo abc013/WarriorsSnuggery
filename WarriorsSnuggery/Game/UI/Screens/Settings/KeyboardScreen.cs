@@ -19,20 +19,20 @@ namespace WarriorsSnuggery.UI
 
 			var type = PanelManager.Get("wooden");
 
-			var tPause = new TextLine(new CPos(-1024, -3072, 0), Font.Pixel16, TextLine.OffsetType.RIGHT);
+			var tPause = new TextLine(new CPos(-1024, -3072, 0), FontManager.Pixel16, TextLine.OffsetType.RIGHT);
 			tPause.SetText("Pause/unpause");
 			Content.Add(tPause);
 			pause = new KeyboardButton(new CPos(1536, -3072, 0), Settings.KeyDictionary["Pause"], Color.White, type);
 			Content.Add(pause);
-			var tLock = new TextLine(new CPos(-1024, -2048, 0), Font.Pixel16, TextLine.OffsetType.RIGHT);
+			var tLock = new TextLine(new CPos(-1024, -2048, 0), FontManager.Pixel16, TextLine.OffsetType.RIGHT);
 			tLock.SetText("Toggle camera lock");
 			Content.Add(tLock);
 			@lock = new KeyboardButton(new CPos(1536, -2048, 0), Settings.KeyDictionary["CameraLock"], Color.White, type);
 			Content.Add(@lock);
 
-			var font = Font.Pixel16;
+			var font = FontManager.Pixel16;
 
-			var tMove = new TextLine(new CPos(-3072, -1024, 0), Font.Pixel16, TextLine.OffsetType.RIGHT);
+			var tMove = new TextLine(new CPos(-3072, -1024, 0), FontManager.Pixel16, TextLine.OffsetType.RIGHT);
 			tMove.SetText("Movement");
 			Content.Add(tMove);
 			var line = 0;
@@ -56,7 +56,7 @@ namespace WarriorsSnuggery.UI
 			below = new KeyboardButton(new CPos(1536, -1024 + 3200, 0), Settings.KeyDictionary["MoveBelow"], Color.White, type);
 			Content.Add(below);
 
-			var tCam = new TextLine(new CPos(-3072, 3072, 0), Font.Pixel16, TextLine.OffsetType.RIGHT);
+			var tCam = new TextLine(new CPos(-3072, 3072, 0), FontManager.Pixel16, TextLine.OffsetType.RIGHT);
 			tCam.SetText("Camera");
 			Content.Add(tCam);
 			line = 0;

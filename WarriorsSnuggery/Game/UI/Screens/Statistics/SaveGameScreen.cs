@@ -106,7 +106,7 @@ namespace WarriorsSnuggery.UI
 			@new = TextBoxCreator.Create("wooden", CPos.Zero, "Name", 20, isPath: true);
 			@new.OnEnter = save;
 
-			warning = new TextLine(new CPos(0, 1024, 0), Font.Pixel16, TextLine.OffsetType.MIDDLE);
+			warning = new TextLine(new CPos(0, 1024, 0), FontManager.Pixel16, TextLine.OffsetType.MIDDLE);
 			warning.WriteText(Color.Red + "WARNING: " + Color.White + "You have to save over the just created save!");
 		}
 

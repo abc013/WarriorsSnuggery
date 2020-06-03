@@ -19,7 +19,7 @@ namespace WarriorsSnuggery.UI
 		{
 			KeyString = key;
 
-			keyDisplay = new TextLine(position, Font.Pixel16, TextLine.OffsetType.MIDDLE);
+			keyDisplay = new TextLine(position, FontManager.Pixel16, TextLine.OffsetType.MIDDLE);
 			keyDisplay.SetColor(color);
 			keyDisplay.SetText(key);
 		}

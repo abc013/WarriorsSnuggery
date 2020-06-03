@@ -46,6 +46,16 @@ namespace WarriorsSnuggery
 			return new Vector4(vec.X, vec.Y, vec.Z, 1f);
 		}
 
+		public static implicit operator Vector(Vector3 vec)
+		{
+			return new Vector(vec.X, vec.Y, vec.Z);
+		}
+
+		public static implicit operator Vector3(Vector vec)
+		{
+			return new Vector3(vec.X, vec.Y, vec.Z);
+		}
+
 		public static bool operator ==(Vector lhs, Vector rhs) { return lhs.X == rhs.X && lhs.Y == rhs.Y && lhs.Z == rhs.Z; }
 
 		public static bool operator !=(Vector lhs, Vector rhs) { return !(lhs == rhs); }

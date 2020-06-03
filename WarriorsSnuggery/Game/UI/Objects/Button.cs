@@ -14,10 +14,10 @@ namespace WarriorsSnuggery.UI
 
 		bool mouseOnButton;
 
-		public Button(CPos pos, string text, PanelType type, Action action) : base(pos, new Vector((2 * margin + Font.Pixel16.Width * text.Length) / 2048f, (2 * margin + Font.Pixel16.Height) / 2048f, 0), type)
+		public Button(CPos pos, string text, PanelType type, Action action) : base(pos, new Vector((2 * margin + FontManager.Pixel16.Width * text.Length) / 2048f, (2 * margin + FontManager.Pixel16.Height) / 2048f, 0), type)
 		{
-			gameBounds = new MPos(Font.Pixel16.Width * text.Length / 2 + margin, Font.Pixel16.Height / 2 + margin);
-			this.text = new TextLine(pos + new CPos(margin, 0, 0), Font.Pixel16, TextLine.OffsetType.MIDDLE);
+			gameBounds = new MPos(FontManager.Pixel16.Width * text.Length / 2 + margin, FontManager.Pixel16.Height / 2 + margin);
+			this.text = new TextLine(pos + new CPos(margin, 0, 0), FontManager.Pixel16, TextLine.OffsetType.MIDDLE);
 			this.text.WriteText(text);
 			this.action = action;
 		}

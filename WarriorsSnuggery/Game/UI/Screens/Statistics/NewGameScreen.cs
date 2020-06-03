@@ -18,29 +18,29 @@ namespace WarriorsSnuggery.UI
 			this.game = game;
 			Title.Position = new CPos(0, -4096, 0);
 
-			var create = new TextLine(new CPos(0, -2048, 0), Font.Pixel16, TextLine.OffsetType.MIDDLE);
+			var create = new TextLine(new CPos(0, -2048, 0), FontManager.Pixel16, TextLine.OffsetType.MIDDLE);
 			create.SetText("Please adjust the parameters as you wish.");
 			Content.Add(create);
 
-			var name = new TextLine(new CPos(-2048, 0, 0), Font.Pixel16, TextLine.OffsetType.RIGHT);
+			var name = new TextLine(new CPos(-2048, 0, 0), FontManager.Pixel16, TextLine.OffsetType.RIGHT);
 			name.SetText("Name: ");
 			Content.Add(name);
 
 			nameInput = TextBoxCreator.Create("wooden", new CPos(1024, 0, 0), "Name", 15, isPath: true);
 
-			var difficulty = new TextLine(new CPos(-2048, 1024, 0), Font.Pixel16, TextLine.OffsetType.RIGHT);
+			var difficulty = new TextLine(new CPos(-2048, 1024, 0), FontManager.Pixel16, TextLine.OffsetType.RIGHT);
 			difficulty.SetText("Difficulty: ");
 			Content.Add(difficulty);
 
 			difficultyInput = new SliderBar(new CPos(1024, 1024, 0), 116, PanelManager.Get("wooden"), () => { });
 
-			var hardcore = new TextLine(new CPos(-2048, 2048, 0), Font.Pixel16, TextLine.OffsetType.RIGHT);
+			var hardcore = new TextLine(new CPos(-2048, 2048, 0), FontManager.Pixel16, TextLine.OffsetType.RIGHT);
 			hardcore.SetText("Hardcore (one life): ");
 			Content.Add(hardcore);
 
 			hardcoreInput = CheckBoxCreator.Create("wooden", new CPos(1024, 2048, 0), false);
 
-			var seed = new TextLine(new CPos(-2048, 3072, 0), Font.Pixel16, TextLine.OffsetType.RIGHT);
+			var seed = new TextLine(new CPos(-2048, 3072, 0), FontManager.Pixel16, TextLine.OffsetType.RIGHT);
 			seed.SetText("Seed: ");
 			Content.Add(seed);
 
