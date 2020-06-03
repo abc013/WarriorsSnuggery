@@ -61,7 +61,7 @@ namespace WarriorsSnuggery
 		public static bool operator !=(Vector lhs, Vector rhs) { return !(lhs == rhs); }
 
 		public bool Equals(Vector pos) { return pos == this; }
-		public override bool Equals(object obj) { return obj is Vector && Equals((Vector)obj); }
+		public override bool Equals(object obj) { return obj is Vector vector && Equals(vector); }
 
 		public override int GetHashCode() { return X.GetHashCode() ^ Y.GetHashCode() ^ Z.GetHashCode(); }
 

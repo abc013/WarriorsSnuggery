@@ -12,7 +12,7 @@
 		[Desc("Offset of the spawning point.")]
 		public readonly CPos Offset = CPos.Zero;
 
-		public PointParticleSpawner(MiniTextNode[] nodes) : base(nodes)
+		public PointParticleSpawner(MiniTextNode[] nodes) : base()
 		{
 			Loader.PartLoader.SetValues(this, nodes);
 		}

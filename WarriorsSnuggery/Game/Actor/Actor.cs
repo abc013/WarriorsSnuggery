@@ -47,6 +47,8 @@ namespace WarriorsSnuggery.Objects
 
 		public readonly ActorType Type;
 
+		public WPos TerrainPosition;
+
 		int localTick;
 		int reloadDelay;
 
@@ -81,6 +83,7 @@ namespace WarriorsSnuggery.Objects
 			IsBot = isBot;
 
 			ObjectID = world.Game.NextObjectID;
+			TerrainPosition = position.ToWPos();
 
 			// Parts
 			foreach (var partinfo in type.PartInfos)
@@ -231,6 +234,7 @@ namespace WarriorsSnuggery.Objects
 			var old = Position;
 			Height = height;
 			Position = position;
+			TerrainPosition = Position.ToWPos();
 			if (Physics != null)
 				Physics.Position = position;
 

@@ -90,7 +90,7 @@ namespace WarriorsSnuggery
 
 			foreach (var r in afterRender)
 				r.Render();
-			var possibleTarget = game.World.LocalPlayer == null ? false : game.FindValidTarget(MouseInput.GamePosition, game.World.LocalPlayer.Team) != null;
+			var possibleTarget = game.World.LocalPlayer != null && game.FindValidTarget(MouseInput.GamePosition, game.World.LocalPlayer.Team) != null;
 
 			if (Settings.EnableDebug)
 			{

@@ -8,7 +8,7 @@ namespace WarriorsSnuggery.Objects.Particles
 		[Desc("List of ParticleSpawners.")]
 		public readonly ParticleSpawner[] Spawners;
 
-		public ListParticleSpawner(MiniTextNode[] nodes) : base(nodes)
+		public ListParticleSpawner(MiniTextNode[] nodes) : base()
 		{
 			Loader.PartLoader.SetValues(this, nodes);
 		}

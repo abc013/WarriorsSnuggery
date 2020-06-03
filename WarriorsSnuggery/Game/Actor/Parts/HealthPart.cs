@@ -59,8 +59,8 @@
 
 		public override void Tick()
 		{
-			var terrain = self.World.TerrainAt(self.Position);
-			if (terrain != null && self.World.Game.LocalTick % 2 == 0)
+			var terrain = self.World.TerrainAt(self.TerrainPosition);
+			if (terrain != null && terrain.Type.Damage != 0 && self.World.Game.LocalTick % 2 == 0)
 				HP -= terrain.Type.Damage;
 		}
 	}

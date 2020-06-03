@@ -126,29 +126,25 @@ namespace WarriorsSnuggery.Physics
 
 		public PhysicsLine[] GetLines()
 		{
-			switch (Shape)
+			return Shape switch
 			{
-				default:
-					return new PhysicsLine[0];
-				case Shape.LINE_VERTICAL:
-					return new PhysicsLine[]
-					{
-						new PhysicsLine(Position - new CPos(RadiusX, 2 * RadiusY, 0), Position + new CPos(-RadiusX, 0, 0))
-					};
-				case Shape.LINE_HORIZONTAL:
-					return new PhysicsLine[]
-					{
-						new PhysicsLine(Position - new CPos(2 * RadiusX, RadiusY, 0), Position + new CPos(0, -RadiusY, 0))
-					};
-				case Shape.RECTANGLE:
-					return new PhysicsLine[]
-					{
-						new PhysicsLine(Position - new CPos(RadiusX, RadiusY, 0), Position + new CPos(-RadiusX, RadiusY, 0)),
-						new PhysicsLine(Position - new CPos(RadiusX, RadiusY, 0), Position + new CPos(RadiusX, -RadiusY, 0)),
-						new PhysicsLine(Position + new CPos(-RadiusX, RadiusY, 0), Position + new CPos(RadiusX, RadiusY, 0)),
-						new PhysicsLine(Position + new CPos(RadiusX, -RadiusY, 0), Position + new CPos(RadiusX, RadiusY, 0))
-					};
-			}
+				Shape.LINE_VERTICAL => new PhysicsLine[]
+				{
+					new PhysicsLine(Position - new CPos(RadiusX, 2 * RadiusY, 0), Position + new CPos(-RadiusX, 0, 0))
+				},
+				Shape.LINE_HORIZONTAL => new PhysicsLine[]
+				{
+					new PhysicsLine(Position - new CPos(2 * RadiusX, RadiusY, 0), Position + new CPos(0, -RadiusY, 0))
+				},
+				Shape.RECTANGLE => new PhysicsLine[]
+				{
+					new PhysicsLine(Position - new CPos(RadiusX, RadiusY, 0), Position + new CPos(-RadiusX, RadiusY, 0)),
+					new PhysicsLine(Position - new CPos(RadiusX, RadiusY, 0), Position + new CPos(RadiusX, -RadiusY, 0)),
+					new PhysicsLine(Position + new CPos(-RadiusX, RadiusY, 0), Position + new CPos(RadiusX, RadiusY, 0)),
+					new PhysicsLine(Position + new CPos(RadiusX, -RadiusY, 0), Position + new CPos(RadiusX, RadiusY, 0))
+				},
+				_ => new PhysicsLine[0],
+			};
 		}
 
 		public void RenderDebug()

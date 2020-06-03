@@ -25,7 +25,7 @@ namespace WarriorsSnuggery
 		public static bool operator !=(WPos lhs, WPos rhs) { return !(lhs == rhs); }
 
 		public bool Equals(WPos pos) { return pos == this; }
-		public override bool Equals(object obj) { return obj is WPos && Equals((WPos)obj); }
+		public override bool Equals(object obj) { return obj is WPos pos && Equals(pos); }
 
 		public override int GetHashCode() { return X ^ Y ^ Z; }
 

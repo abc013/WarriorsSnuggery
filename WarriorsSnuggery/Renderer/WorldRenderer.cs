@@ -62,7 +62,7 @@ namespace WarriorsSnuggery
 			foreach (PhysicsObject o in world.ToRender)
 			{
 				CPos pos = world.Game.Editor ? MouseInput.GamePosition : world.LocalPlayer == null ? CPos.Zero : world.LocalPlayer.Position;
-				if (((o is Actor && ((Actor)o).WorldPart != null && ((Actor)o).WorldPart.Hideable) || (o is Wall && ((Wall)o).LayerPosition.X % 2 != 0 && ((Wall)o).Type.Height >= 512)) && o.Position.Y > pos.Y && Math.Abs(o.Position.X - pos.X) < 4096)
+				if (((o is Actor actor && actor.WorldPart != null && actor.WorldPart.Hideable) || (o is Wall wall && wall.LayerPosition.X % 2 != 0 && wall.Type.Height >= 512)) && o.Position.Y > pos.Y && Math.Abs(o.Position.X - pos.X) < 4096)
 				{
 					var alpha = o.Position.Y - pos.Y < 1024 ? 1 - (o.Position.Y - pos.Y) / 1024f : (o.Position.Y - pos.Y - 1024) / 1024f;
 					var sidealpha = Math.Abs(o.Position.X - pos.X) / 4096f;

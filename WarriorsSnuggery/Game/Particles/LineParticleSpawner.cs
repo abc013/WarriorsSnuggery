@@ -17,7 +17,7 @@ namespace WarriorsSnuggery.Objects.Particles
 		[Desc("Angle of line in degrees.")]
 		public readonly int Angle = 0;
 
-		public LineParticleSpawner(MiniTextNode[] nodes) : base(nodes)
+		public LineParticleSpawner(MiniTextNode[] nodes) : base()
 		{
 			Loader.PartLoader.SetValues(this, nodes);
 		}

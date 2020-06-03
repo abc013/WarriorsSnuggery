@@ -58,7 +58,7 @@ namespace WarriorsSnuggery
 		public static bool operator !=(CPos lhs, CPos rhs) { return !(lhs == rhs); }
 
 		public bool Equals(CPos pos) { return pos == this; }
-		public override bool Equals(object obj) { return obj is CPos && Equals((CPos)obj); }
+		public override bool Equals(object obj) { return obj is CPos pos && Equals(pos); }
 
 		public override int GetHashCode() { return X ^ Y ^ Z; }
 

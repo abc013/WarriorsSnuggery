@@ -42,7 +42,7 @@ namespace WarriorsSnuggery
 		public static bool operator !=(VAngle lhs, VAngle rhs) { return !(lhs == rhs); }
 
 		public bool Equals(VAngle pos) { return pos == this; }
-		public override bool Equals(object obj) { return obj is VAngle && Equals((VAngle)obj); }
+		public override bool Equals(object obj) { return obj is VAngle angle && Equals(angle); }
 
 		public override int GetHashCode() { return X.GetHashCode() ^ Y.GetHashCode() ^ Z.GetHashCode(); }
 

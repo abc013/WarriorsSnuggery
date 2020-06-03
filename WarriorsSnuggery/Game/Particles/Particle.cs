@@ -126,9 +126,11 @@ namespace WarriorsSnuggery.Objects.Particles
 			Rotation += rotate_velocity;
 
 			Position += new CPos(transform_velocity.X, transform_velocity.Y, 0);
-			Height += transform_velocity.Z;
-			if (Height < 0)
+			
+			if (Height + transform_velocity.Z < 0)
 				Height = 0;
+			else
+				Height += transform_velocity.Z;
 
 			if (current-- <= 0)
 			{

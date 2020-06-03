@@ -81,7 +81,7 @@ namespace WarriorsSnuggery
 
 		public override bool Equals(object obj)
 		{
-			return obj is Color && (Color)obj == this;
+			return obj is Color color && color == this;
 		}
 
 		public override int GetHashCode()

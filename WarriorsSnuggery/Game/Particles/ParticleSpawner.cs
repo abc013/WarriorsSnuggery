@@ -2,7 +2,7 @@
 {
 	public abstract class ParticleSpawner
 	{
-		public ParticleSpawner(MiniTextNode[] nodes) { }
+		public ParticleSpawner() { }
 
 		public abstract Particle[] Create(World world, CPos position, int height);
 	}

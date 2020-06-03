@@ -25,22 +25,19 @@ namespace WarriorsSnuggery.Objects.Particles
 		[Desc("Type of spawning area.", "Available: RANDOM, CIRCLE, BOX")]
 		public readonly ParticleAreaSpawnType AreaType = ParticleAreaSpawnType.RANDOM;
 
-		public AreaParticleSpawner(MiniTextNode[] nodes) : base(nodes)
+		public AreaParticleSpawner(MiniTextNode[] nodes) : base()
 		{
 			Loader.PartLoader.SetValues(this, nodes);
 		}
 
 		public override Particle[] Create(World world, CPos position, int height)
 		{
-			switch (AreaType)
+			return AreaType switch
 			{
-				case ParticleAreaSpawnType.CIRCLE:
-					return createCircle(world.Game.SharedRandom, position, height);
-				case ParticleAreaSpawnType.BOX:
-					return createBox(world.Game.SharedRandom, position, height);
-				default:
-					return createRandom(world.Game.SharedRandom, position, height);
-			}
+				ParticleAreaSpawnType.CIRCLE => createCircle(world.Game.SharedRandom, position, height),
+				ParticleAreaSpawnType.BOX => createBox(world.Game.SharedRandom, position, height),
+				_ => createRandom(world.Game.SharedRandom, position, height),
+			};
 		}
 
 		Particle[] createRandom(Random random, CPos position, int height)

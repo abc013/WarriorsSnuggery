@@ -168,7 +168,7 @@ namespace WarriorsSnuggery.Objects.Weapons
 				TargetHeight += dHeight;
 
 			var dTarget = target - TargetPosition;
-			if (dTarget.Dist <= projectileType.MovementSpeed)
+			if (dTarget.SquaredFlatDist <= projectileType.MovementSpeed * projectileType.MovementSpeed)
 			{
 				TargetPosition = target;
 				return;
