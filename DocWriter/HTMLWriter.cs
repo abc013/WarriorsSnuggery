@@ -95,6 +95,10 @@ namespace WarriorsSnuggery
 					ObjectWriter.WriteSpells(writer);
 
 					break;
+				case DocumentationType.TROPHIES:
+					ObjectWriter.WriteTrophies(writer);
+
+					break;
 				case DocumentationType.SOUNDS:
 					ObjectWriter.WriteSounds(writer);
 
@@ -214,6 +218,12 @@ namespace WarriorsSnuggery
 
 			HTMLWriter.WriteHead(writer, "Spell");
 			TypeWriter.Write(writer, "WarriorsSnuggery.Spells.Spell", new[] { new MiniTextNode[0] });
+		}
+
+		public static void WriteTrophies(StreamWriter writer)
+		{
+			HTMLWriter.WriteHead(writer, "Trophy");
+			TypeWriter.Write(writer, "WarriorsSnuggery.Trophies.Trophy", new object[] { new MiniTextNode[0] });
 		}
 
 		public static void WriteSounds(StreamWriter writer)

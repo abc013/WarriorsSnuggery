@@ -14,6 +14,7 @@ namespace WarriorsSnuggery
 		WALLS,
 		MAPS,
 		SPELLS,
+		TROPHIES,
 		SOUNDS
 	}
 
@@ -27,7 +28,7 @@ namespace WarriorsSnuggery
 			Console.ForegroundColor = ConsoleColor.White;
 
 			Console.WriteLine("Welcome to the WarriorsSnuggery DocWriter. This program will search through the installation and create a documentation of the modding rules.");
-			Console.WriteLine("Available are: ALL, ACTORS, PARTICLES, WEAPONS, TERRAIN, WALLS, MAPS, SPELLS and SOUNDS.");
+			Console.WriteLine("Available are: ALL, ACTORS, PARTICLES, WEAPONS, TERRAIN, WALLS, MAPS, SPELLS, TROPHIES and SOUNDS.");
 
 			Console.ForegroundColor = ConsoleColor.Yellow;
 
