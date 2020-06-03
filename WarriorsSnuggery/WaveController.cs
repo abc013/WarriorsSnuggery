@@ -41,7 +41,12 @@ namespace WarriorsSnuggery
 			{
 				var seconds = countdown / Settings.UpdatesPerSecond + 1;
 				if ((countdown + 1) % Settings.UpdatesPerSecond == 0)
-					game.AddInfoMessage(200, Color.White + "Wave " + (currentWave + 1) + " in " + (seconds % 2 == 0 ? Color.White : Color.Red) + seconds + " second" + (seconds > 1 ? "s" : string.Empty));
+				{
+					if (currentWave == waves)
+						game.AddInfoMessage(200, Color.Yellow + "Transfer in " + seconds + " second" + (seconds > 1 ? "s" : string.Empty));
+					else
+						game.AddInfoMessage(200, Color.White + "Wave " + (currentWave + 1) + " in " + (seconds % 2 == 0 ? Color.White : Color.Red) + seconds + " second" + (seconds > 1 ? "s" : string.Empty));
+				}
 			}
 		}
 
