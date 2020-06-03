@@ -149,6 +149,12 @@ namespace WarriorsSnuggery.UI
 			if (available)
 				return;
 
+			if (Program.IgnoreTech)
+			{
+				available = true;
+				return;
+			}
+
 			foreach (var before in node.Before)
 			{
 				if (string.IsNullOrWhiteSpace(before))

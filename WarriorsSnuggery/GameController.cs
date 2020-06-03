@@ -30,8 +30,13 @@ namespace WarriorsSnuggery
 
 		static void createFirst()
 		{
-			game = new Game(new GameStatistics(GameSaveManager.DefaultStatistic), MapCreator.FindMainMenuMap(0));
+			var map = Program.MapType != null ? MapCreator.GetType(Program.MapType) : MapCreator.FindMainMenuMap(0);
+
+			game = new Game(new GameStatistics(GameSaveManager.DefaultStatistic), map);
 			game.Load();
+
+			if (Program.StartEditor)
+				game.SwitchEditor();
 		}
 
 		public static void CreateReturn(GameType type)

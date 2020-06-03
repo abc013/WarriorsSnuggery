@@ -271,25 +271,7 @@ namespace WarriorsSnuggery
 						WorldRenderer.CheckVisibility(Camera.LookAt, Camera.DefaultZoom);
 					}
 					if (KeyInput.IsKeyDown("x", 5))
-					{
-						Screen defaultScreen;
-						if (Editor)
-						{
-							if (Type == GameType.MENU || Type == GameType.MAINMENU)
-								defaultScreen = null;
-							else
-								defaultScreen = new DefaultScreen(this);
-						}
-						else
-						{
-							defaultScreen = new EditorScreen(this);
-						}
-						Editor = !Editor;
-
-						ScreenControl.NewDefaultScreen(defaultScreen);
-
-						ChangeScreen(ScreenType.DEFAULT);
-					}
+						SwitchEditor();
 				}
 
 				// Zooming
@@ -397,6 +379,23 @@ namespace WarriorsSnuggery
 				return null;
 
 			return valid.OrderByDescending(a => (pos - a.Position).Dist).First();
+		}
+
+		public void SwitchEditor()
+		{
+			Editor = !Editor;
+
+			Screen defaultScreen;
+			if (Editor)
+				defaultScreen = new EditorScreen(this);
+			else if (Type == GameType.MENU || Type == GameType.MAINMENU)
+				defaultScreen = null;
+			else
+				defaultScreen = new DefaultScreen(this);
+
+			ScreenControl.NewDefaultScreen(defaultScreen);
+
+			ChangeScreen(ScreenType.DEFAULT);
 		}
 
 		// Instant travel to next level

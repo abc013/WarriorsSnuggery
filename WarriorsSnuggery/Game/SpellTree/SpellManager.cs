@@ -99,7 +99,7 @@ namespace WarriorsSnuggery.Spells
 
 		public bool Unlocked()
 		{
-			if (node.Unlocked)
+			if (node.Unlocked || Program.IgnoreTech)
 				return true;
 
 			return game.Statistics.UnlockedSpells.ContainsKey(node.InnerName) && game.Statistics.UnlockedSpells[node.InnerName];

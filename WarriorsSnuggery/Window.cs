@@ -191,7 +191,7 @@ namespace WarriorsSnuggery
 		protected override void OnFocusedChanged(FocusedChangedEventArgs e)
 		{
 			WindowInfo.Focused = e.IsFocused;
-			if (!e.IsFocused && !Program.isDebug && Ready)
+			if (!e.IsFocused && !Program.IsDebug && Ready)
 				GameController.Pause();
 		}
 

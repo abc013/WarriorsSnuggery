@@ -11,20 +11,25 @@ namespace WarriorsSnuggery
 		public const string Title = "Warrior's Snuggery";
 
 		public static Random SharedRandom = new Random();
-		public static bool isDebug;
+		public static bool IsDebug;
 		public static bool NoFullscreen;
+
+		public static bool StartEditor;
+		public static bool IgnoreTech;
+		public static string MapType;
+		
 		static bool noGLErrors;
 
 		static Window window;
 
 		public static void Main(string[] args)
 		{
-			isDebug = Debugger.IsAttached;
+			IsDebug = Debugger.IsAttached;
 			FileExplorer.InitPaths();
 			Log.InitLogs();
 			Console.SetError(Log.Exeption);
 
-			if (!isDebug)
+			if (!IsDebug)
 			{
 				try
 				{
@@ -54,14 +59,25 @@ namespace WarriorsSnuggery
 		static void run(string[] args)
 		{
 			var newSettings = false;
-			foreach (var arg in args)
+			for (int i = 0; i < args.Length; i++)
 			{
+				var arg = args[i];
+
 				if (arg == "-no-fullscreen")
 					NoFullscreen = true;
 				else if (arg == "-new-settings")
 					newSettings = true;
 				else if (arg == "-no-GL-errors")
 					noGLErrors = true;
+				else if (arg == "-editor")
+					StartEditor = true;
+				else if (arg == "-ignore-tech")
+					IgnoreTech = true;
+				else if (arg == "-map-type")
+				{
+					i++;
+					MapType = args[i];
+				}
 			}
 
 			Settings.Initialize(newSettings);

@@ -78,7 +78,7 @@ namespace WarriorsSnuggery
 
 		public bool ActorAvailable(PlayablePartInfo playable)
 		{
-			return playable.Unlocked || UnlockedActors.ContainsKey(playable.InternalName) && UnlockedActors[playable.InternalName];
+			return Program.IgnoreTech || playable.Unlocked || UnlockedActors.ContainsKey(playable.InternalName) && UnlockedActors[playable.InternalName];
 		}
 
 		public int CalculateScore()
