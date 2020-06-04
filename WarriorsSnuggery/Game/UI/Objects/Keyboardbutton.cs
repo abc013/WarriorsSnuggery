@@ -13,11 +13,11 @@ namespace WarriorsSnuggery.UI
 		bool mouseOnBox;
 		public bool Selected;
 
-		public string KeyString;
+		public Key Key;
 
-		public KeyboardButton(CPos position, string key, Color color, PanelType type) : base(position, new Vector(1.5f, 0.25f, 0), type)
+		public KeyboardButton(CPos position, Key key, Color color, PanelType type) : base(position, new Vector(1.5f, 0.25f, 0), type)
 		{
-			KeyString = key;
+			Key = key;
 
 			keyDisplay = new TextLine(position, FontManager.Pixel16, TextLine.OffsetType.MIDDLE);
 			keyDisplay.SetColor(color);
@@ -52,8 +52,8 @@ namespace WarriorsSnuggery.UI
 
 				if (Window.KeyInput != Key.End)
 				{
-					KeyString = Window.KeyInput.ToString();
-					keyDisplay.SetText(KeyString);
+					Key = Window.KeyInput;
+					keyDisplay.SetText(Key);
 					Selected = false;
 					blinkTick = 0;
 				}

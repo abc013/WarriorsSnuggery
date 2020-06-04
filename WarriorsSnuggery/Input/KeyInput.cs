@@ -21,12 +21,17 @@ namespace WarriorsSnuggery
 			if (HitCooldown > 0 || !State.IsAnyKeyDown || !WindowInfo.Focused)
 				return false;
 
-			bool hit = State.IsKeyDown((Key)Enum.Parse(typeof(Key), key, true));
+			bool hit = State.IsKeyDown(ToKey(key));
 
 			if (hit)
 				HitCooldown = coolDownWhenHit;
 
 			return hit;
+		}
+
+		public static Key ToKey(string key)
+		{
+			return (Key)Enum.Parse(typeof(Key), key, true);
 		}
 
 		public static bool IsKeyDown(Key key, int coolDownWhenHit = 0)

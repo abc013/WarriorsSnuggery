@@ -187,7 +187,7 @@ namespace WarriorsSnuggery
 				// screen control
 				if (ScreenControl.FocusedType != ScreenType.DEFEAT)
 				{
-					if (KeyInput.IsKeyDown(Settings.Key("Pause"), 10) && !(KeyInput.IsKeyDown(Key.ControlLeft) || KeyInput.IsKeyDown(Key.ControlRight)))
+					if (KeyInput.IsKeyDown(Settings.GetKey("Pause"), 10) && !(KeyInput.IsKeyDown(Key.ControlLeft) || KeyInput.IsKeyDown(Key.ControlRight)))
 					{
 						Pause(true);
 						ChangeScreen(ScreenType.PAUSED);
@@ -218,16 +218,16 @@ namespace WarriorsSnuggery
 
 					var add = CPos.Zero;
 
-					if (KeyInput.IsKeyDown(Settings.Key("CameraUp"), 0) || (mouse.Y < 0 && mouse.Y < -Camera.DefaultZoom * 512 + 64 * Settings.EdgeScrolling))
+					if (KeyInput.IsKeyDown(Settings.GetKey("CameraUp"), 0) || (mouse.Y < 0 && mouse.Y < -Camera.DefaultZoom * 512 + 64 * Settings.EdgeScrolling))
 						add = new CPos(add.X, add.Y - 1, 0);
 
-					if (KeyInput.IsKeyDown(Settings.Key("CameraDown"), 0) || (mouse.Y > 0 && mouse.Y > Camera.DefaultZoom * 512 - 64 * Settings.EdgeScrolling))
+					if (KeyInput.IsKeyDown(Settings.GetKey("CameraDown"), 0) || (mouse.Y > 0 && mouse.Y > Camera.DefaultZoom * 512 - 64 * Settings.EdgeScrolling))
 						add = new CPos(add.X, add.Y + 1, 0);
 
-					if (KeyInput.IsKeyDown(Settings.Key("CameraRight"), 0) || (mouse.X > 0 && mouse.X > Camera.DefaultZoom * WindowInfo.Ratio * 512 - 64 * Settings.EdgeScrolling))
+					if (KeyInput.IsKeyDown(Settings.GetKey("CameraRight"), 0) || (mouse.X > 0 && mouse.X > Camera.DefaultZoom * WindowInfo.Ratio * 512 - 64 * Settings.EdgeScrolling))
 						add = new CPos(add.X + 1, add.Y, 0);
 
-					if (KeyInput.IsKeyDown(Settings.Key("CameraLeft"), 0) || (mouse.X < 0 && mouse.X < -Camera.DefaultZoom * WindowInfo.Ratio * 512 + 64 * Settings.EdgeScrolling))
+					if (KeyInput.IsKeyDown(Settings.GetKey("CameraLeft"), 0) || (mouse.X < 0 && mouse.X < -Camera.DefaultZoom * WindowInfo.Ratio * 512 + 64 * Settings.EdgeScrolling))
 						add = new CPos(add.X - 1, add.Y, 0);
 
 					if (add != CPos.Zero)
@@ -238,7 +238,7 @@ namespace WarriorsSnuggery
 				if (KeyInput.IsKeyDown(Key.Q, 5))
 					Audio.AudioManager.PlaySound("test");
 
-				if (KeyInput.IsKeyDown(Settings.Key("CameraLock"), 5))
+				if (KeyInput.IsKeyDown(Settings.GetKey("CameraLock"), 5))
 					Camera.LockedToPlayer = !Camera.LockedToPlayer;
 
 				if (KeyInput.IsKeyDown("altright", 5))

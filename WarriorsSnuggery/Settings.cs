@@ -1,3 +1,4 @@
+using OpenToolkit.Windowing.Common.Input;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -53,9 +54,9 @@ namespace WarriorsSnuggery
 
 		public static float MusicVolume = 0.5f;
 
-		public static Dictionary<string, string> KeyDictionary = new Dictionary<string, string>();
+		public static Dictionary<string, Key> KeyDictionary = new Dictionary<string, Key>();
 
-		public static string Key(string value)
+		public static Key GetKey(string value)
 		{
 			if (!KeyDictionary.ContainsKey(value))
 				throw new YamlInvalidNodeException(string.Format("Unable to find keyboard key with name {0}.", value));
@@ -135,7 +136,7 @@ namespace WarriorsSnuggery
 						break;
 					case "Keys":
 						foreach (var key in node.Children)
-							KeyDictionary.Add(key.Key, key.Value);
+							KeyDictionary.Add(key.Key, KeyInput.ToKey(key.Value));
 						break;
 				}
 			}
@@ -144,18 +145,18 @@ namespace WarriorsSnuggery
 		static void defaultKeys()
 		{
 			KeyDictionary.Clear();
-			KeyDictionary.Add("Pause", "p");
-			KeyDictionary.Add("CameraLock", "l");
-			KeyDictionary.Add("MoveUp", "w");
-			KeyDictionary.Add("MoveDown", "s");
-			KeyDictionary.Add("MoveLeft", "a");
-			KeyDictionary.Add("MoveRight", "d");
-			KeyDictionary.Add("MoveAbove", "e");
-			KeyDictionary.Add("MoveBelow", "r");
-			KeyDictionary.Add("CameraUp", "up");
-			KeyDictionary.Add("CameraDown", "down");
-			KeyDictionary.Add("CameraLeft", "left");
-			KeyDictionary.Add("CameraRight", "right");
+			KeyDictionary.Add("Pause", Key.P);
+			KeyDictionary.Add("CameraLock", Key.L);
+			KeyDictionary.Add("MoveUp", Key.W);
+			KeyDictionary.Add("MoveDown", Key.S);
+			KeyDictionary.Add("MoveLeft", Key.A);
+			KeyDictionary.Add("MoveRight", Key.D);
+			KeyDictionary.Add("MoveAbove", Key.E);
+			KeyDictionary.Add("MoveBelow", Key.R);
+			KeyDictionary.Add("CameraUp", Key.Up);
+			KeyDictionary.Add("CameraDown", Key.Down);
+			KeyDictionary.Add("CameraLeft", Key.Left);
+			KeyDictionary.Add("CameraRight", Key.Right);
 		}
 
 		public static void Save()
