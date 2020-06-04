@@ -75,10 +75,8 @@ namespace WarriorsSnuggery.UI
 				return;
 
 			game.Statistics.Money -= actor.Playable.UnlockCost;
-			if (game.Statistics.UnlockedActors.ContainsKey(actor.Playable.InternalName))
-				game.Statistics.UnlockedActors[actor.Playable.InternalName] = true;
-			else
-				game.Statistics.UnlockedActors.Add(actor.Playable.InternalName, true);
+
+			game.Statistics.UnlockedActors.Add(actor.Playable.InternalName);
 
 			actors.Container[actorTypes.IndexOf(actor.Playable.InternalName)].SetColor(Color.White);
 			information.Lines[3].WriteText(Color.White + "Cost: " + Color.Green + "Bought");

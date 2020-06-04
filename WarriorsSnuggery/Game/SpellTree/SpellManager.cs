@@ -102,7 +102,7 @@ namespace WarriorsSnuggery.Spells
 			if (node.Unlocked || Program.IgnoreTech)
 				return true;
 
-			return game.Statistics.UnlockedSpells.ContainsKey(node.InnerName) && game.Statistics.UnlockedSpells[node.InnerName];
+			return game.Statistics.UnlockedSpells.Contains(node.InnerName);
 		}
 	}
 }

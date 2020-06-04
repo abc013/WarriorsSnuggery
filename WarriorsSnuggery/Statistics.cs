@@ -24,8 +24,8 @@ namespace WarriorsSnuggery
 		public GameType Type;
 		public bool[] Shroud;
 
-		public readonly Dictionary<string, bool> UnlockedSpells = new Dictionary<string, bool>();
-		public readonly Dictionary<string, bool> UnlockedActors = new Dictionary<string, bool>();
+		public readonly List<string> UnlockedSpells = new List<string>();
+		public readonly List<string> UnlockedActors = new List<string>();
 		public readonly List<string> UnlockedTrophies = new List<string>();
 
 		// Static Values
@@ -51,10 +51,8 @@ namespace WarriorsSnuggery
 			Type = save.Type;
 			Shroud = save.Shroud;
 
-			foreach (var unlock in save.UnlockedSpells)
-				UnlockedSpells.Add(unlock.Key, unlock.Value);
-			foreach (var unlock in save.UnlockedActors)
-				UnlockedActors.Add(unlock.Key, unlock.Value);
+			UnlockedSpells = save.UnlockedSpells.ToList();
+			UnlockedActors = save.UnlockedActors.ToList();
 			UnlockedTrophies = save.UnlockedTrophies.ToList();
 
 			FinalLevel = save.FinalLevel;
@@ -78,7 +76,7 @@ namespace WarriorsSnuggery
 
 		public bool ActorAvailable(PlayablePartInfo playable)
 		{
-			return Program.IgnoreTech || playable.Unlocked || UnlockedActors.ContainsKey(playable.InternalName) && UnlockedActors[playable.InternalName];
+			return Program.IgnoreTech || playable.Unlocked || UnlockedActors.Contains(playable.InternalName);
 		}
 
 		public int CalculateScore()
@@ -125,10 +123,10 @@ namespace WarriorsSnuggery
 				writer.WriteLine("\tMana=" + Mana);
 				writer.WriteLine("UnlockedSpells=");
 				foreach (var unlock in UnlockedSpells)
-					writer.WriteLine("\t" + unlock.Key + "=" + unlock.Value);
+					writer.WriteLine("\t" + unlock + "=");
 				writer.WriteLine("UnlockedActors=");
 				foreach (var unlock in UnlockedActors)
-					writer.WriteLine("\t" + unlock.Key + "=" + unlock.Value);
+					writer.WriteLine("\t" + unlock + "=");
 				writer.WriteLine("UnlockedTrophies=");
 				foreach (var unlock in UnlockedTrophies)
 					writer.WriteLine("\t" + unlock + "=");
@@ -251,12 +249,12 @@ namespace WarriorsSnuggery
 						break;
 					case "UnlockedSpells":
 						foreach (var node2 in node.Children)
-							statistic.UnlockedSpells.Add(node2.Key, node2.Convert<bool>());
+							statistic.UnlockedSpells.Add(node2.Key);
 
 						break;
 					case "UnlockedActors":
 						foreach (var node2 in node.Children)
-							statistic.UnlockedActors.Add(node2.Key, node2.Convert<bool>());
+							statistic.UnlockedActors.Add(node2.Key);
 
 						break;
 					case "UnlockedTrophies":

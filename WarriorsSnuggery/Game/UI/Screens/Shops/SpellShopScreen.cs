@@ -111,7 +111,7 @@ namespace WarriorsSnuggery.UI
 
 			tooltip = new Tooltip(position, node.Name + " : " + node.Cost, node.GetInformation(true));
 
-			if (node.Unlocked || game.Statistics.UnlockedSpells.ContainsKey(node.InnerName) && game.Statistics.UnlockedSpells[node.InnerName])
+			if (node.Unlocked || game.Statistics.UnlockedSpells.Contains(node.InnerName))
 				HighlightVisible = true;
 		}
 
@@ -160,7 +160,7 @@ namespace WarriorsSnuggery.UI
 				if (string.IsNullOrWhiteSpace(before))
 					continue;
 
-				if (game.Statistics.UnlockedSpells.ContainsKey(before) && game.Statistics.UnlockedSpells[before])
+				if (game.Statistics.UnlockedSpells.Contains(before))
 					continue;
 
 				foreach (var node in SpellTreeLoader.SpellTree)
@@ -191,12 +191,10 @@ namespace WarriorsSnuggery.UI
 					return;
 
 				game.Statistics.Money -= node.Cost;
+				game.Statistics.UnlockedSpells.Add(node.InnerName);
 
 				HighlightVisible = true;
-				if (game.Statistics.UnlockedSpells.ContainsKey(node.InnerName))
-					game.Statistics.UnlockedSpells[node.InnerName] = true;
-				else
-					game.Statistics.UnlockedSpells.Add(node.InnerName, true);
+
 				screen.UpdateAvailability();
 			}
 		}
@@ -246,7 +244,7 @@ namespace WarriorsSnuggery.UI
 
 		public void Render()
 		{
-			if (target.Unlocked || game.Statistics.UnlockedSpells.ContainsKey(target.InnerName) && game.Statistics.UnlockedSpells[target.InnerName])
+			if (target.Unlocked || game.Statistics.UnlockedSpells.Contains(target.InnerName))
 				Active = true;
 
 			if (--curTick < 0)
