@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using WarriorsSnuggery.Trophies;
 
 namespace WarriorsSnuggery.Objects.Conditions
 {
@@ -73,6 +74,13 @@ namespace WarriorsSnuggery.Objects.Conditions
 					if (actor.Health == null)
 						return condition.Negate;
 					return condition.Negate != (actor.Health.HP <= actor.Health.MaxHP / 4f);
+			}
+
+			foreach (var pair in TrophyManager.Trophies)
+			{
+				var trophy = pair.Value;
+				if (trophy.ConditionName != string.Empty && condition.Type == trophy.ConditionName)
+					return condition.Negate != game.Statistics.UnlockedTrophies.Contains(pair.Key);
 			}
 
 			throw new Exception(string.Format("Invalid condition: {0}", condition.Type));

@@ -18,6 +18,7 @@ namespace WarriorsSnuggery
 		public int Mana;
 		public int Kills;
 		public int Deaths;
+		public int MaxMana;
 
 		public GameMode Mode;
 		public GameType Type;
@@ -30,7 +31,6 @@ namespace WarriorsSnuggery
 		// Static Values
 		public int FinalLevel;
 		public int Difficulty;
-		public int MaxMana;
 		public int Seed;
 		public bool Hardcore;
 

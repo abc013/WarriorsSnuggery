@@ -146,6 +146,7 @@ namespace WarriorsSnuggery
 
 			Game.AddInfoMessage(250, "Trophy collected!");
 			Game.Statistics.UnlockedTrophies.Add(collected);
+			Game.Statistics.MaxMana += TrophyManager.Trophies[collected].MaxManaIncrease;
 		}
 
 		public void PlayerKilled()
