@@ -12,14 +12,22 @@ namespace WarriorsSnuggery.Objects.Parts
 
 		public override void Tick()
 		{
+			var vertical = 0;
 			if (KeyInput.IsKeyDown(Settings.GetKey("MoveUp")))
-				self.Accelerate((float)Math.PI * 1.5f);
+				vertical += 1;
 			if (KeyInput.IsKeyDown(Settings.GetKey("MoveDown")))
-				self.Accelerate((float)Math.PI * 0.5f);
+				vertical -= 1;
+
+			var horizontal = 0;
 			if (KeyInput.IsKeyDown(Settings.GetKey("MoveRight")))
-				self.Accelerate(0);
+				horizontal += 1;
 			if (KeyInput.IsKeyDown(Settings.GetKey("MoveLeft")))
-				self.Accelerate((float)Math.PI);
+				horizontal -= 1;
+
+			if (vertical != 0)
+				self.Accelerate((2 + vertical) * 0.5f * (float)Math.PI);
+			if (horizontal != 0)
+				self.Accelerate((3 + horizontal) * 0.5f * (float)Math.PI);
 
 			if (KeyInput.IsKeyDown(Key.AltLeft))
 			{
