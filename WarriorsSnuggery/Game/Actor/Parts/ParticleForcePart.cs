@@ -12,6 +12,8 @@ namespace WarriorsSnuggery.Objects.Parts
 		public readonly ParticleForceType ForceType = ParticleForceType.FORCE;
 		[Desc("Strength of the force.")]
 		public readonly float Strength = 1f;
+		[Desc("Also calculate height differences.")]
+		public readonly bool UseHeight = true;
 
 		[Desc("Maximum range of the force.")]
 		public readonly int MaxRange;
@@ -46,7 +48,7 @@ namespace WarriorsSnuggery.Objects.Parts
 		public ParticleForcePart(Actor self, ParticleForcePartInfo info) : base(self)
 		{
 			this.info = info;
-			force = new ParticleForce(info.ForceType, info.Strength);
+			force = new ParticleForce(info.ForceType, info.Strength, info.UseHeight);
 		}
 
 		public override void Tick()

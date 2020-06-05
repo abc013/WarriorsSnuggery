@@ -41,23 +41,31 @@ namespace WarriorsSnuggery.Objects.Particles
 
 		float xLeft;
 		float yLeft;
-		// TODO add z
+		float zLeft;
+
 		public void AffectVelocity(ParticleForce force, float ratio, CPos origin)
 		{
+			var useZ = force.UseHeight;
+
 			var angle = (Position - origin).FlatAngle;
 			var xFloat = 0f;
 			var yFloat = 0f;
+			var zFloat = 0f;
 
 			switch (force.Type)
 			{
 				case ParticleForceType.FORCE:
 					xFloat = (float)(force.Strength * Math.Cos(angle)) * ratio;
 					yFloat = (float)(force.Strength * Math.Sin(angle)) * ratio;
+					if (useZ)
+						zFloat = force.Strength * ratio;
 					break;
 				case ParticleForceType.TURBULENCE:
 					angle = (float)(random.NextDouble() * 2 * Math.PI);
 					xFloat = (float)(force.Strength * Math.Cos(angle)) * ratio;
 					yFloat = (float)(force.Strength * Math.Sin(angle)) * ratio;
+					if (useZ)
+						zFloat = ((float)random.NextDouble() - 0.5f) * force.Strength * ratio;
 					break;
 				case ParticleForceType.DRAG:
 					xFloat = -force.Strength * ratio * transform_velocity.X / 256;
@@ -67,18 +75,28 @@ namespace WarriorsSnuggery.Objects.Particles
 					yFloat = -force.Strength * ratio * transform_velocity.Y / 256;
 					if (Math.Abs(yFloat) > Math.Abs(transform_velocity.Y))
 						yFloat = -transform_velocity.Y * ratio;
+
+					if (useZ)
+					{
+						zFloat = -force.Strength * ratio * transform_velocity.Z / 256;
+						if (Math.Abs(zFloat) > Math.Abs(transform_velocity.Z))
+							zFloat = -transform_velocity.Z * ratio;
+					}
 					break;
 				case ParticleForceType.VORTEX:
 					angle -= (float)Math.PI / 2;
 					xFloat = (float)(force.Strength * Math.Cos(angle)) * ratio;
 					yFloat = (float)(force.Strength * Math.Sin(angle)) * ratio;
+					zFloat = 0; // Vortex is only 2D
 					break;
 			}
 			var x = (int)Math.Round(xFloat + xLeft);
 			var y = (int)Math.Round(yFloat + yLeft);
+			var z = (int)Math.Round(zFloat + zLeft);
 			xLeft = (xFloat + xLeft) - x;
 			yLeft = (yFloat + yLeft) - y;
-			transform_velocity += new CPos(x, y, 0);
+			zLeft = (zFloat + zLeft) - z;
+			transform_velocity += new CPos(x, y, z);
 		}
 
 		public void AffectRotation(ParticleForce force, float ratio, CPos origin)
