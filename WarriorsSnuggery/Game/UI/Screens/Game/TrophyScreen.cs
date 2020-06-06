@@ -33,7 +33,7 @@ namespace WarriorsSnuggery.UI
 				trophies.Add(item);
 			}
 
-			information = new TextBlock(new CPos(-7900, 512, 0), FontManager.Pixel16, TextLine.OffsetType.LEFT, "Select a trophy for further information.", "");
+			information = new TextBlock(new CPos(-7900, 512, 0), FontManager.Pixel16, TextLine.OffsetType.LEFT, "Select a trophy for further information.", "", "");
 
 			Content.Add(new Panel(new CPos(0, 1024, 0), new Vector(8, 1, 0), PanelManager.Get("stone")));
 			Content.Add(ButtonCreator.Create("wooden", new CPos(0, 6144, 0), "Resume", () => { game.Pause(false); game.ScreenControl.ShowScreen(ScreenType.DEFAULT); }));
@@ -45,11 +45,13 @@ namespace WarriorsSnuggery.UI
 			{
 				information.Lines[0].WriteText(Color.Red + "Locked Trophy");
 				information.Lines[1].WriteText(Color.Grey + " ");
+				information.Lines[1].WriteText(Color.Grey + " ");
 				return;
 			}
 
 			information.Lines[0].WriteText(Color.White + trophy.Name);
 			information.Lines[1].WriteText(Color.Grey + trophy.Description);
+			information.Lines[2].WriteText(Color.Grey + (trophy.MaxManaIncrease != 0 ? "Gives " + Color.Blue + trophy.MaxManaIncrease + Color.Grey + " additional mana storage!" : " "));
 		}
 
 		public override void Render()
