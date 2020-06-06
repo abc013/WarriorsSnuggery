@@ -221,7 +221,7 @@ namespace WarriorsSnuggery
 
 		public Terrain TerrainAt(WPos position)
 		{
-			if (position.X < 0 || position.Y < 0 || position.X > Map.Bounds.X || position.Y > Map.Bounds.Y)
+			if (position.X < 0 || position.Y < 0 || position.X >= Map.Bounds.X || position.Y >= Map.Bounds.Y)
 				return null;
 
 			return TerrainLayer.Terrain[position.X, position.Y];
