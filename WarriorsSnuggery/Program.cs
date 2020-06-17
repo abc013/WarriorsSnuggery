@@ -6,7 +6,7 @@ using System.Diagnostics;
 
 namespace WarriorsSnuggery
 {
-	class Program
+	public class Program
 	{
 		public const string Title = "Warrior's Snuggery";
 

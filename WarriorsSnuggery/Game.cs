@@ -174,7 +174,10 @@ namespace WarriorsSnuggery
 			WorldRenderer.CheckVisibilityAll();
 			MasterRenderer.UpdateView();
 
-			script?.OnStart();
+			if (World.Map.Type.FromSave)
+				script?.LoadState(Statistics.ScriptValues);
+			else
+				script?.OnStart();
 		}
 
 		public void Pause(bool paused)
@@ -431,6 +434,18 @@ namespace WarriorsSnuggery
 		{
 			Finished = true;
 			Pause(true);
+		}
+
+		public object[] GetScriptState(out string name)
+		{
+			name = string.Empty;
+
+			if (script == null)
+				return null;
+
+			name = script.File;
+
+			return script.GetState();
 		}
 
 		public void ChangeScreen(ScreenType screen)

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -10,24 +11,39 @@ namespace WarriorsSnuggery.Scripting
 {
 	public class MissionScriptLoader
 	{
+        static readonly Dictionary<string, Type> loadedAssemblies = new Dictionary<string, Type>();
+
+        readonly string file;
         readonly Assembly assembly;
         readonly Type type;
 
 		public MissionScriptLoader(string path, string file)
 		{
+            this.file = file;
             Log.WriteDebug("Loading new mission script: " + path);
+
+            if (loadedAssemblies.ContainsKey(file))
+            {
+                type = loadedAssemblies[file];
+                assembly = Assembly.GetAssembly(type);
+
+                Log.WriteDebug("Mission script already in memory. Loaded.");
+                return;
+			}
+
             using var reader = new StreamReader(path);
 			var content = reader.ReadToEnd();
             reader.Close();
 
             var assemblyLocation = System.Runtime.InteropServices.RuntimeEnvironment.GetRuntimeDirectory();
 
-            var compilation = CSharpCompilation.Create("Mission")
+            var compilation = CSharpCompilation.Create(file)
             .WithOptions(new CSharpCompilationOptions(OutputKind.DynamicallyLinkedLibrary))
             .AddReferences(
                 MetadataReference.CreateFromFile(typeof(object).GetTypeInfo().Assembly.Location),
                 MetadataReference.CreateFromFile(FileExplorer.MainDirectory + Path.DirectorySeparatorChar + "WarriorsSnuggery.dll"),
                 MetadataReference.CreateFromFile(assemblyLocation + Path.DirectorySeparatorChar + "System.Runtime.dll"),
+                MetadataReference.CreateFromFile(assemblyLocation + Path.DirectorySeparatorChar + "System.Runtime.Extensions.dll"),
                 MetadataReference.CreateFromFile(assemblyLocation + Path.DirectorySeparatorChar + "mscorlib.dll")
             )
             .AddSyntaxTrees(CSharpSyntaxTree.ParseText(content));
@@ -56,13 +72,16 @@ namespace WarriorsSnuggery.Scripting
 
                 if (type == null)
                     throw new MissingScriptException(file + ".cs");
+
+                loadedAssemblies.Add(file, type);
+
                 Log.WriteDebug("Successfully Loaded.");
             }
         }
 
         public MissionScriptBase Start(Game game)
         {
-            return (MissionScriptBase)Activator.CreateInstance(type, new[] { game });
+            return (MissionScriptBase)Activator.CreateInstance(type, new object[] { file, game });
         }
     }
 }

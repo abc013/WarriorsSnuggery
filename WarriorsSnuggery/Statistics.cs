@@ -37,6 +37,10 @@ namespace WarriorsSnuggery
 		public int Seed;
 		public bool Hardcore;
 
+		// Script Values
+		public string Script;
+		public MiniTextNode[] ScriptValues;
+
 		public GameStatistics(GameStatistics save)
 		{
 			Name = save.Name;
@@ -65,6 +69,9 @@ namespace WarriorsSnuggery
 			MaxMana = save.MaxMana;
 			Seed = save.Seed;
 			Hardcore = save.Hardcore;
+
+			Script = save.Script;
+			ScriptValues = save.ScriptValues;
 		}
 
 		GameStatistics() { }
@@ -100,6 +107,8 @@ namespace WarriorsSnuggery
 
 		public void Save(World world, bool withMap = true)
 		{
+			var scriptState = world.Game.GetScriptState(out Script);
+
 			Mode = world.Game.Mode;
 			Type = world.Game.Type;
 			MapType = MapCreator.GetName(world.Map.Type, world.Game.Statistics);
@@ -139,6 +148,14 @@ namespace WarriorsSnuggery
 				writer.WriteLine("UnlockedTrophies=");
 				foreach (var unlock in UnlockedTrophies)
 					writer.WriteLine("\t" + unlock + "=");
+
+				if (scriptState != null)
+				{
+					writer.WriteLine("Script=" + Script);
+					int i = 0;
+					foreach(var obj in scriptState)
+						writer.WriteLine("\t" + i++ + "=" + obj.ToString());
+				}
 
 				writer.Flush();
 				writer.Close();
@@ -277,6 +294,11 @@ namespace WarriorsSnuggery
 					case "UnlockedTrophies":
 						foreach (var node2 in node.Children)
 							statistic.UnlockedTrophies.Add(node2.Key);
+
+						break;
+					case "Script":
+						statistic.Script = node.Value;
+						statistic.ScriptValues = node.Children.ToArray();
 
 						break;
 				}
