@@ -112,14 +112,11 @@ namespace WarriorsSnuggery
 		public string ToString(int team)
 		{
 			var shroud = team + "=";
+
 			for (int x = 0; x < Size.X; x++)
-			{
 				for (int y = 0; y < Size.Y; y++)
-				{
-					// TODO: also save other shrouds
 					shroud += ShroudRevealed(team, x, y).GetHashCode() + ",";
-				}
-			}
+
 			shroud = shroud.TrimEnd(',');
 
 			return shroud;
