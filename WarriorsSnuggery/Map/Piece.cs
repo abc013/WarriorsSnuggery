@@ -12,11 +12,11 @@ namespace WarriorsSnuggery.Maps
 		public readonly string Path;
 
 		readonly ushort[] groundData;
-		readonly int[] wallData;
+		readonly short[] wallData;
 
 		readonly ActorNode[] actors;
 
-		Piece(MPos size, ushort[] groundData, int[] wallData, string name, string innerName, string path, ActorNode[] actors)
+		Piece(MPos size, ushort[] groundData, short[] wallData, string name, string innerName, string path, ActorNode[] actors)
 		{
 			Size = size;
 			Name = name;
@@ -33,7 +33,7 @@ namespace WarriorsSnuggery.Maps
 			MPos size = MPos.Zero;
 
 			ushort[] groundData = new ushort[0];
-			int[] wallData = new int[0];
+			short[] wallData = new short[0];
 
 			string name = "unknown";
 			ActorNode[] actors = new ActorNode[0];
@@ -51,7 +51,7 @@ namespace WarriorsSnuggery.Maps
 
 						break;
 					case "Walls":
-						wallData = rule.Convert<int[]>();
+						wallData = rule.Convert<short[]>();
 
 						break;
 					case "Name":

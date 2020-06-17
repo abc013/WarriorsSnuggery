@@ -4,7 +4,7 @@ namespace WarriorsSnuggery.Objects
 {
 	public static class WallCreator
 	{
-		public static readonly Dictionary<int, WallType> Types = new Dictionary<int, WallType>();
+		public static readonly Dictionary<short, WallType> Types = new Dictionary<short, WallType>();
 
 		public static void Load(string directory, string file)
 		{
@@ -12,13 +12,13 @@ namespace WarriorsSnuggery.Objects
 
 			foreach (var wall in walls)
 			{
-				var id = int.Parse(wall.Key);
+				var id = short.Parse(wall.Key);
 
 				Types.Add(id, new WallType(id, wall.Children.ToArray()));
 			}
 		}
 
-		public static Wall Create(MPos position, WallLayer layer, int ID)
+		public static Wall Create(MPos position, WallLayer layer, short ID)
 		{
 			if (!Types.ContainsKey(ID))
 				throw new MissingInfoException(ID.ToString());

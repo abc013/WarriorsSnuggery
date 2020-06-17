@@ -43,6 +43,13 @@ namespace WarriorsSnuggery.Loader
 				if (byte.TryParse(s, out i))
 					return i;
 			}
+			else if (t == typeof(short))
+			{
+				short i;
+
+				if (short.TryParse(s, out i))
+					return i;
+			}
 			else if (t == typeof(float))
 			{
 				float i;
@@ -138,6 +145,24 @@ namespace WarriorsSnuggery.Loader
 					ushort convert;
 
 					if (ushort.TryParse(part, out convert))
+						res[i] = convert;
+					else
+						throw new InvalidConversionException(file, node, t);
+				}
+
+				return res;
+			}
+			else if (t == typeof(short[]))
+			{
+				var parts = s.Split(',');
+				var res = new short[parts.Length];
+
+				for (int i = 0; i < parts.Length; i++)
+				{
+					var part = parts[i].Trim();
+					short convert;
+
+					if (short.TryParse(part, out convert))
 						res[i] = convert;
 					else
 						throw new InvalidConversionException(file, node, t);

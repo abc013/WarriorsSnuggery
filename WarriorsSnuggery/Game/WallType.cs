@@ -1,11 +1,10 @@
-using System;
 using WarriorsSnuggery.Graphics;
 
 namespace WarriorsSnuggery.Objects
 {
 	public class WallType
 	{
-		public readonly int ID;
+		public readonly short ID;
 
 		[Desc("Texture of the wall.")]
 		public readonly string Image;
@@ -34,7 +33,7 @@ namespace WarriorsSnuggery.Objects
 		public bool Invincible { get { return Health <= 0; } }
 
 		[Desc("Spawns a specific wall when dying.")]
-		public readonly int WallOnDeath = -1;
+		public readonly short WallOnDeath = -1;
 
 		[Desc("How much damage of nearby explosions penetrates the wall.")]
 		public readonly float DamagePenetration = 0f;
@@ -42,7 +41,7 @@ namespace WarriorsSnuggery.Objects
 		[Desc("Wall is only on floor and basically has no height.")]
 		public readonly bool IsOnFloor;
 
-		public WallType(int id, MiniTextNode[] nodes, bool documentation = false)
+		public WallType(short id, MiniTextNode[] nodes, bool documentation = false)
 		{
 			ID = id;
 			Loader.PartLoader.SetValues(this, nodes);
