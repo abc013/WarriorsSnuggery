@@ -38,10 +38,13 @@ namespace WarriorsSnuggery.Maps
 		[Desc("Generators to use. To add, just do it like traits.")]
 		public readonly MapGeneratorInfo[] GeneratorInfos = new MapGeneratorInfo[0];
 
+		[Desc("Determines the file of a script that will be executed during the game.", "Ending of the filename must be '.cs'.")]
+		public readonly string MissionScript;
+
 		[Desc("Variable used to determine wether this map comes from an save. DO NOT ALTER.")]
 		public readonly bool FromSave;
 
-		public MapInfo(string overridePiece, int wall, MPos customSize, Color ambient, GameType defaultType, GameMode[] defaultModes, int level, int fromLevel, int toLevel, TerrainGeneratorInfo baseTerrainGeneration, MapGeneratorInfo[] genInfos, MPos spawnPoint, bool fromSave, bool allowWeapons)
+		public MapInfo(string overridePiece, int wall, MPos customSize, Color ambient, GameType defaultType, GameMode[] defaultModes, int level, int fromLevel, int toLevel, TerrainGeneratorInfo baseTerrainGeneration, MapGeneratorInfo[] genInfos, MPos spawnPoint, bool fromSave, bool allowWeapons, string missionScript)
 		{
 			OverridePiece = overridePiece;
 			Wall = wall;
@@ -57,6 +60,7 @@ namespace WarriorsSnuggery.Maps
 			SpawnPoint = spawnPoint;
 			FromSave = fromSave;
 			AllowWeapons = allowWeapons;
+			MissionScript = missionScript;
 		}
 
 		public MapInfo(MiniTextNode[] nodes)
@@ -70,17 +74,17 @@ namespace WarriorsSnuggery.Maps
 			var size = RuleReader.Read(FileExplorer.Saves, stats.SaveName + "_map.yaml").First(n => n.Key == "Size").Convert<MPos>();
 			var type = MapCreator.GetType(stats.MapType);
 			var mapGeneratorInfos = type == null ? new MapGeneratorInfo[0] : type.GeneratorInfos;
-			return new MapInfo(piece, 0, size, Color.White, stats.Type, new[] { stats.Mode }, -1, 0, int.MaxValue, new TerrainGeneratorInfo(0, new MiniTextNode[0]), mapGeneratorInfos, MPos.Zero, true, true);
+			return new MapInfo(piece, 0, size, Color.White, stats.Type, new[] { stats.Mode }, -1, 0, int.MaxValue, new TerrainGeneratorInfo(0, new MiniTextNode[0]), mapGeneratorInfos, MPos.Zero, true, true, null);
 		}
 
 		public static MapInfo EditorMapTypeFromPiece(string piece, MPos size)
 		{
-			return new MapInfo(piece, 0, size, Color.White, GameType.EDITOR, new[] { GameMode.NONE }, -1, 0, int.MaxValue, new TerrainGeneratorInfo(0, new MiniTextNode[0]), new MapGeneratorInfo[0], MPos.Zero, false, true);
+			return new MapInfo(piece, 0, size, Color.White, GameType.EDITOR, new[] { GameMode.NONE }, -1, 0, int.MaxValue, new TerrainGeneratorInfo(0, new MiniTextNode[0]), new MapGeneratorInfo[0], MPos.Zero, false, true, null);
 		}
 
 		public static MapInfo ConvertGameType(MapInfo map, GameType type)
 		{
-			return new MapInfo(map.OverridePiece, map.Wall, map.CustomSize, map.Ambient, type, map.DefaultModes, map.Level, map.FromLevel, map.ToLevel, map.TerrainGenerationBase, map.GeneratorInfos, map.SpawnPoint, map.FromSave, map.AllowWeapons);
+			return new MapInfo(map.OverridePiece, map.Wall, map.CustomSize, map.Ambient, type, map.DefaultModes, map.Level, map.FromLevel, map.ToLevel, map.TerrainGenerationBase, map.GeneratorInfos, map.SpawnPoint, map.FromSave, map.AllowWeapons, null);
 		}
 	}
 
@@ -105,6 +109,7 @@ namespace WarriorsSnuggery.Maps
 				var spawnPoint = new MPos(-1, -1);
 				TerrainGeneratorInfo baseterrain = null;
 				var allowWeapons = true;
+				var missionScript = string.Empty;
 
 				foreach (var child in terrain.Children)
 				{
@@ -183,6 +188,10 @@ namespace WarriorsSnuggery.Maps
 							allowWeapons = child.Convert<bool>();
 
 							break;
+						case "MissionScript":
+							missionScript = child.Value.Trim();
+
+							break;
 						default:
 							throw new YamlUnknownNodeException(child.Key, terrain.Key);
 					}
@@ -194,7 +203,7 @@ namespace WarriorsSnuggery.Maps
 				if (baseterrain == null)
 					throw new YamlMissingNodeException(terrain.Key, "BaseTerrainGeneration");
 
-				AddType(new MapInfo(string.Empty, wall, customSize, ambient, playType, playModes, level, fromLevel, toLevel, baseterrain, genInfos.ToArray(), spawnPoint, false, allowWeapons), name);
+				AddType(new MapInfo(string.Empty, wall, customSize, ambient, playType, playModes, level, fromLevel, toLevel, baseterrain, genInfos.ToArray(), spawnPoint, false, allowWeapons, missionScript), name);
 			}
 		}
 

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Linq;
 using System.Reflection;
 using System.Runtime.Loader;
 using Microsoft.CodeAnalysis;
@@ -12,7 +13,7 @@ namespace WarriorsSnuggery.Scripting
         readonly Assembly assembly;
         readonly Type type;
 
-		public MissionScriptLoader(string path)
+		public MissionScriptLoader(string path, string file)
 		{
             Log.WriteDebug("Loading new mission script: " + path);
             using var reader = new StreamReader(path);
@@ -42,7 +43,7 @@ namespace WarriorsSnuggery.Scripting
                     Log.Exeption.WriteLine(compilerMessage);
                 }
 
-                throw new Exception("Mission could not be loaded. See console or error.log for more details.");
+                throw new Exception(string.Format("The script '{0}' could not be loaded. See console or error.log for more details.", file + ".cs"));
             }
             else
             {
@@ -51,17 +52,17 @@ namespace WarriorsSnuggery.Scripting
                 AssemblyLoadContext context = AssemblyLoadContext.Default;
                 assembly = context.LoadFromStream(ms);
 
-                type = assembly.GetType("Mission.MissionScript");
+                type = assembly.GetTypes().Where(t => t.BaseType == typeof(MissionScriptBase)).FirstOrDefault();
+
+                if (type == null)
+                    throw new MissingScriptException(file + ".cs");
                 Log.WriteDebug("Successfully Loaded.");
             }
         }
 
         public MissionScriptBase Start(Game game)
         {
-            var mission = (MissionScriptBase)Activator.CreateInstance(type, new[] { game });
-            mission.OnStart();
-
-            return mission;
+            return (MissionScriptBase)Activator.CreateInstance(type, new[] { game });
         }
     }
 }

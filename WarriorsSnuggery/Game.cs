@@ -7,6 +7,7 @@ using WarriorsSnuggery.Objects;
 using WarriorsSnuggery.Objects.Conditions;
 using WarriorsSnuggery.Spells;
 using WarriorsSnuggery.UI;
+using WarriorsSnuggery.Scripting;
 
 namespace WarriorsSnuggery
 {
@@ -55,6 +56,8 @@ namespace WarriorsSnuggery
 		public readonly ConditionManager ConditionManager;
 
 		readonly WaveController waveController;
+
+		readonly MissionScriptBase script;
 
 		readonly TextLine tick;
 		readonly TextLine render;
@@ -112,6 +115,14 @@ namespace WarriorsSnuggery
 
 			World = new World(this, Seed, Statistics);
 
+			if (!string.IsNullOrEmpty(map.MissionScript))
+			{
+				var scriptLoader = new MissionScriptLoader(FileExplorer.FindIn(FileExplorer.Maps, map.MissionScript, ".cs"), map.MissionScript);
+				script = scriptLoader.Start(this);
+			}
+			else
+				Log.WriteDebug("No mission script has been found.");
+
 			if (Mode == GameMode.WAVES)
 				waveController = new WaveController(this);
 
@@ -162,6 +173,8 @@ namespace WarriorsSnuggery
 
 			WorldRenderer.CheckVisibilityAll();
 			MasterRenderer.UpdateView();
+
+			script?.OnStart();
 		}
 
 		public void Pause(bool paused)
@@ -287,6 +300,8 @@ namespace WarriorsSnuggery
 				ConditionManager.Tick();
 				World.Tick();
 
+				script?.Tick();
+
 				if (Mode == GameMode.WAVES)
 					waveController.Tick();
 			}
@@ -317,9 +332,7 @@ namespace WarriorsSnuggery
 			}
 
 			if (infoTextDuration-- < 120)
-			{
 				infoText.Position -= new CPos(48, 0, 0);
-			}
 
 			ScreenControl.Tick();
 
@@ -349,6 +362,7 @@ namespace WarriorsSnuggery
 		public void VictoryConditionsMet()
 		{
 			State = GameState.VICTORY;
+			script?.OnWin();
 			Finish();
 
 			Statistics.Level++;
@@ -361,6 +375,7 @@ namespace WarriorsSnuggery
 		public void DefeatConditionsMet()
 		{
 			State = GameState.DEFEAT;
+			script?.OnLose();
 			Finish();
 
 			ChangeScreen(ScreenType.DEFEAT);
