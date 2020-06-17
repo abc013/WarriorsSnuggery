@@ -32,7 +32,19 @@
 		{
 			get { return info.StartHealth; }
 		}
-		public float HPRelativeToMax => health / (float)MaxHP;
+
+		public float RelativeHP
+		{
+			get
+			{
+				return health / (float)MaxHP;
+			}
+			set
+			{
+				health = (int)(value * MaxHP);
+			}
+		}
+
 		public int HP
 		{
 			get

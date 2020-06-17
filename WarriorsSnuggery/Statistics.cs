@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using WarriorsSnuggery.Objects;
 using WarriorsSnuggery.Objects.Parts;
 
 namespace WarriorsSnuggery
@@ -14,7 +15,7 @@ namespace WarriorsSnuggery
 		public int Level;
 		public int Money;
 		public string Actor;
-		public int Health;
+		public float RelativeHP;
 		public int Mana;
 		public int Kills;
 		public int Deaths;
@@ -42,7 +43,7 @@ namespace WarriorsSnuggery
 			Level = save.Level;
 			Money = save.Money;
 			Actor = save.Actor;
-			Health = save.Health;
+			RelativeHP = save.RelativeHP;
 			Mana = save.Mana;
 			Kills = save.Kills;
 			Deaths = save.Deaths;
@@ -71,7 +72,10 @@ namespace WarriorsSnuggery
 
 		public void Update(Game game)
 		{
-			Health = game.World.LocalPlayer.Health == null ? 1 : game.World.LocalPlayer.Health.HP;
+			if (game.World.PlayerSwitching)
+				RelativeHP = game.World.Switch.RelativeHP;
+			else
+				RelativeHP = game.World.LocalPlayer.Health == null ? 1 : game.World.LocalPlayer.Health.RelativeHP;
 		}
 
 		public bool ActorAvailable(PlayablePartInfo playable)
@@ -118,9 +122,9 @@ namespace WarriorsSnuggery
 				writer.WriteLine("CurrentType=" + Type);
 				writer.WriteLine(shroud.TrimEnd(','));
 				writer.WriteLine("Seed=" + Seed);
+				writer.WriteLine("Mana=" + Mana);
 				writer.WriteLine("Actor=" + Actor);
-				writer.WriteLine("\tHealth=" + Health);
-				writer.WriteLine("\tMana=" + Mana);
+				writer.WriteLine("\tHealth=" + RelativeHP);
 				writer.WriteLine("UnlockedSpells=");
 				foreach (var unlock in UnlockedSpells)
 					writer.WriteLine("\t" + unlock + "=");
@@ -231,20 +235,18 @@ namespace WarriorsSnuggery
 					case "Seed":
 						statistic.Seed = node.Convert<int>();
 						break;
+					case "Mana":
+						statistic.Mana = node.Convert<int>();
+						break;
 					case "Actor":
 						statistic.Actor = node.Convert<string>();
 
 						foreach (var node2 in node.Children)
 						{
-							switch (node2.Key)
-							{
-								case "Health":
-									statistic.Health = node2.Convert<int>();
-									break;
-								case "Mana":
-									statistic.Mana = node2.Convert<int>();
-									break;
-							}
+							if (node2.Key == "Health")
+								statistic.RelativeHP = node2.Convert<float>();
+							else
+								throw new YamlUnknownNodeException(node2.Key, name + ".yaml");
 						}
 						break;
 					case "UnlockedSpells":

@@ -26,7 +26,11 @@ namespace WarriorsSnuggery
 		readonly List<Actor> actorsToAdd = new List<Actor>();
 
 		public Actor LocalPlayer;
+
+		public bool PlayerSwitching { get { return Switch != null; } }
 		public bool PlayerAlive = true;
+		public PlayerSwitch Switch;
+
 		public int PlayerDamagedTick = 0;
 		public bool KeyFound;
 
@@ -84,10 +88,9 @@ namespace WarriorsSnuggery
 			{
 				if (Camera.LockedToPlayer)
 					Camera.Position(LocalPlayer.GraphicPosition + (Game.ScreenControl.Focused is UI.DefaultScreen ? Camera.CamPlayerOffset : CPos.Zero));
-
-				foreach (var effect in LocalPlayer.Effects.Where(e => e.Active && e.Spell.Type == Spells.EffectType.MANA))
-					Game.Statistics.Mana += (int)effect.Spell.Value;
 			}
+
+			Switch?.Tick();
 
 			foreach (var actor in Actors)
 				actor.Tick();
@@ -137,7 +140,6 @@ namespace WarriorsSnuggery
 
 		public void TrophyCollected(string collected)
 		{
-
 			if (Game.Statistics.UnlockedTrophies.Contains(collected))
 				return;
 
@@ -147,6 +149,26 @@ namespace WarriorsSnuggery
 			Game.AddInfoMessage(250, "Trophy collected!");
 			Game.Statistics.UnlockedTrophies.Add(collected);
 			Game.Statistics.MaxMana += TrophyManager.Trophies[collected].MaxManaIncrease;
+		}
+
+		public void BeginPlayerSwitch(ActorType to)
+		{
+			Switch = new PlayerSwitch(this, to);
+
+			LocalPlayer.Dispose();
+			LocalPlayer = null;
+		}
+
+		public void FinishPlayerSwitch(Actor @new)
+		{
+			LocalPlayer = @new;
+			Add(@new);
+
+			Game.Statistics.Actor = ActorCreator.GetName(@new.Type);
+
+			VisibilitySolver.ShroudUpdated();
+
+			Switch = null;
 		}
 
 		public void PlayerKilled()

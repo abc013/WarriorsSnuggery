@@ -45,7 +45,7 @@ namespace WarriorsSnuggery.UI
 				actorTypes.Add(a);
 				var sprite = a.GetPreviewSprite();
 				var scale = (sprite.Width > sprite.Height ? 24f / sprite.Width : 24f / sprite.Height) - 0.1f;
-				var item = new PanelItem(CPos.Zero, new BatchObject(sprite, Color.White), new MPos(512, 512), a.Playable.Name, new[] { Color.Grey + "Cost: " + Color.Yellow + a.Playable.Cost }, () => { changePlayer(game.World.LocalPlayer, a); })
+				var item = new PanelItem(CPos.Zero, new BatchObject(sprite, Color.White), new MPos(512, 512), a.Playable.Name, new[] { Color.Grey + "Cost: " + Color.Yellow + a.Playable.Cost }, () => { changePlayer(a); })
 				{
 					Scale = scale
 				};
@@ -217,9 +217,9 @@ namespace WarriorsSnuggery.UI
 					var cur = player.Health.HP;
 
 					health.SetText(cur + "/" + max);
-					healthPercentage = (cur / (float)max);
+					healthPercentage = player.Health.RelativeHP;
 				}
-				if (game.Type != GameType.NORMAL || game.World.PlayerDamagedTick < Settings.UpdatesPerSecond * 45)
+				if (game.Type != GameType.NORMAL || game.World.PlayerDamagedTick < Settings.UpdatesPerSecond * 60)
 					targetedEnemy = null;
 				else if (targetedEnemy != null && targetedEnemy.IsAlive)
 					setEnemyArrow();
@@ -234,7 +234,7 @@ namespace WarriorsSnuggery.UI
 					actorList.CurrentActor += MouseInput.WheelState;
 
 					if (!KeyInput.IsKeyDown("controlleft") && MouseInput.IsRightClicked)
-						changePlayer(game.World.LocalPlayer, actorTypes[actorList.CurrentActor]);
+						changePlayer(actorTypes[actorList.CurrentActor]);
 				}
 				else
 				{
@@ -243,6 +243,20 @@ namespace WarriorsSnuggery.UI
 					if (!KeyInput.IsKeyDown("controlleft") && MouseInput.IsRightClicked)
 						game.SpellManager.Activate(spellList.CurrentSpell);
 				}
+			}
+			else
+			{
+				health.SetText(string.Empty);
+				healthPercentage += 0.03f * (1 - healthPercentage);
+				if (healthPercentage > 1)
+					healthPercentage = 1;
+
+				targetedEnemy = null;
+
+				mana.SetText(string.Empty);
+				manaPercentage += 0.03f * (1 - manaPercentage);
+				if (manaPercentage > 1)
+					manaPercentage = 1;
 			}
 
 			money.Tick();
@@ -264,7 +278,7 @@ namespace WarriorsSnuggery.UI
 			enemyArrow.SetPosition(new CPos((int)(Math.Cos(angle) * 2048), (int)(Math.Sin(angle) * 2048) - 2048, 0));
 		}
 
-		void changePlayer(Actor player, ActorType type)
+		void changePlayer(ActorType type)
 		{
 			if (game.Statistics.Money < type.Playable.Cost)
 				return;
@@ -277,18 +291,7 @@ namespace WarriorsSnuggery.UI
 
 			game.Statistics.Money -= type.Playable.Cost;
 
-			var oldHP = player.Health != null ? player.Health.HPRelativeToMax : 1;
-			var newActor = ActorCreator.Create(game.World, type, player.Position, player.Team, isPlayer: true);
-
-			player.Dispose();
-			game.World.LocalPlayer = newActor;
-			game.World.Add(newActor);
-
-			if (newActor.Health != null)
-				newActor.Health.HP = (int)(oldHP * newActor.Health.MaxHP);
-
-			game.Statistics.Actor = ActorCreator.GetName(type);
-			VisibilitySolver.ShroudUpdated();
+			game.World.BeginPlayerSwitch(type);
 		}
 	}
 }

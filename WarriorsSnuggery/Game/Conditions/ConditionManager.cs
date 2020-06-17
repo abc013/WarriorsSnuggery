@@ -61,11 +61,11 @@ namespace WarriorsSnuggery.Objects.Conditions
 				case "IsAlive":
 					if (actor.Health == null)
 						return !condition.Negate;
-					return condition.Negate != (actor.Health.HPRelativeToMax != 10);
+					return condition.Negate != (actor.Health.RelativeHP != 10);
 				case "IsDamaged":
 					if (actor.Health == null)
 						return condition.Negate;
-					return condition.Negate != (actor.Health.HPRelativeToMax != 1);
+					return condition.Negate != (actor.Health.RelativeHP != 1);
 				case "SlightDamage":
 					if (actor.Health == null)
 						return condition.Negate;

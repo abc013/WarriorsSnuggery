@@ -146,7 +146,7 @@ namespace WarriorsSnuggery.Objects.Bot
 
 			// Factor: Health. from 0 to 1
 			// If target has less health, then keep attacking it
-			newFavor += Target.Actor.Health.HPRelativeToMax - actor.Health.HPRelativeToMax;
+			newFavor += Target.Actor.Health.RelativeHP - actor.Health.RelativeHP;
 
 			// Factor: Distance.
 			// If target is closer, then keep attacking it

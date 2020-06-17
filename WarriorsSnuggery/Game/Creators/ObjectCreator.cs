@@ -65,7 +65,7 @@ namespace WarriorsSnuggery
 		{
 			var actor = new Actor(world, type, position, team, isBot, isPlayer);
 			if (actor.Health != null)
-				actor.Health.HP = (int)(actor.Health.HP * health);
+				actor.Health.RelativeHP = health;
 
 			return actor;
 		}

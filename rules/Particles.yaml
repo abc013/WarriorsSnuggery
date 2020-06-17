@@ -1,3 +1,13 @@
+# This particle is hardcoded for playerswitching. Do not remove it, otherwise the game crashes!
+beam=
+	Texture=beam
+		Size=6,12
+		Tick=10
+	Duration=30
+	DissolveDuration=10
+	Gravity=-1
+	RandomVelocity=1,1,1
+
 glitter=
 	Texture=glitter
 		Size=12,12
@@ -94,15 +104,6 @@ small_star=
 	DissolveDuration=15
 	Gravity=0
 	RandomVelocity=4,4,4
-
-beam=
-	Texture=beam
-		Size=6,12
-		Tick=10
-	Duration=30
-	DissolveDuration=10
-	Gravity=-1
-	RandomVelocity=1,1,1
 
 puff1=
 	ColorVariety=127,127,127,127
