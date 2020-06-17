@@ -5,6 +5,7 @@ namespace WarriorsSnuggery
 	public sealed class ShroudLayer : IDisposable
 	{
 		bool[,,] shroudRevealed; // First: Team Second: X Third: Y
+
 		byte[,] shroudAlpha;
 		public bool AllRevealed;
 		public MPos Size;
@@ -16,11 +17,11 @@ namespace WarriorsSnuggery
 			Size = MPos.Zero;
 		}
 
-		public void SetMapDimensions(MPos size, int teams, bool allShroudRevealed)
+		public void SetMapDimensions(MPos size, bool allShroudRevealed)
 		{
 			Dispose();
 			Size = size * new MPos(2, 2);
-			shroudRevealed = new bool[teams, size.X * 2, size.Y * 2];
+			shroudRevealed = new bool[Settings.MaxTeams, size.X * 2, size.Y * 2];
 			shroudAlpha = new byte[size.X * 2, size.Y * 2];
 			AllRevealed = allShroudRevealed;
 		}
@@ -106,6 +107,22 @@ namespace WarriorsSnuggery
 				shroudAlpha[position.X, position.Y]++;
 
 			return 1 - alpha / 4f;
+		}
+
+		public string ToString(int team)
+		{
+			var shroud = team + "=";
+			for (int x = 0; x < Size.X; x++)
+			{
+				for (int y = 0; y < Size.Y; y++)
+				{
+					// TODO: also save other shrouds
+					shroud += ShroudRevealed(team, x, y).GetHashCode() + ",";
+				}
+			}
+			shroud = shroud.TrimEnd(',');
+
+			return shroud;
 		}
 
 		public void Dispose()

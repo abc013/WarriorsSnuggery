@@ -62,7 +62,8 @@ namespace WarriorsSnuggery
 				}
 				else
 				{
-					ShroudLayer.RevealShroudList(Actor.PlayerTeam, Game.Statistics.Shroud);
+					for(int i = 0; i < Game.Statistics.Shroud.Count; i++)
+						ShroudLayer.RevealShroudList(i, Game.Statistics.Shroud[i]);
 				}
 
 				Camera.Position(LocalPlayer.GraphicPosition + (Game.ScreenControl.Focused is UI.DefaultScreen ? Camera.CamPlayerOffset : CPos.Zero), true);

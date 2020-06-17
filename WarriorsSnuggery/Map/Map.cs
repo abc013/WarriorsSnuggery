@@ -54,7 +54,7 @@ namespace WarriorsSnuggery
 			world.TerrainLayer.SetMapDimensions(Bounds);
 			world.WallLayer.SetMapSize(Bounds);
 			world.PhysicsLayer.SetMapDimensions(Bounds);
-			world.ShroudLayer.SetMapDimensions(Bounds, Settings.MaxTeams, Type.DefaultType == GameType.MAINMENU || Type.DefaultType == GameType.MENU || Type.DefaultType == GameType.EDITOR || Type.DefaultType == GameType.TUTORIAL);
+			world.ShroudLayer.SetMapDimensions(Bounds, Type.DefaultType == GameType.MAINMENU || Type.DefaultType == GameType.MENU || Type.DefaultType == GameType.EDITOR || Type.DefaultType == GameType.TUTORIAL);
 
 			VisibilitySolver.SetMapDimensions(Bounds, world.ShroudLayer);
 

@@ -23,7 +23,7 @@ namespace WarriorsSnuggery
 
 		public GameMode Mode;
 		public GameType Type;
-		public bool[] Shroud;
+		public List<bool[]> Shroud;
 
 		public readonly List<string> UnlockedSpells = new List<string>();
 		public readonly List<string> UnlockedActors = new List<string>();
@@ -98,15 +98,6 @@ namespace WarriorsSnuggery
 		{
 			Mode = world.Game.Mode;
 			Type = world.Game.Type;
-			var shroud = "Shroud=";
-			for (int x = 0; x < world.ShroudLayer.Size.X; x++)
-			{
-				for (int y = 0; y < world.ShroudLayer.Size.Y; y++)
-				{
-					// TODO: also save other shrouds
-					shroud += world.ShroudLayer.ShroudRevealed(Objects.Actor.PlayerTeam, x, y).GetHashCode() + ",";
-				}
-			}
 			using (var writer = new StreamWriter(FileExplorer.Saves + SaveName + ".yaml", false))
 			{
 				writer.WriteLine("Name=" + Name);
@@ -120,11 +111,15 @@ namespace WarriorsSnuggery
 				writer.WriteLine("Deaths=" + Deaths);
 				writer.WriteLine("CurrentMode=" + Mode);
 				writer.WriteLine("CurrentType=" + Type);
-				writer.WriteLine(shroud.TrimEnd(','));
+
+				writer.WriteLine("Shroud=");
+				for (int i = 0; i < Settings.MaxTeams; i++)
+					writer.WriteLine("\t" + world.ShroudLayer.ToString(i));
+
 				writer.WriteLine("Seed=" + Seed);
 				writer.WriteLine("Mana=" + Mana);
 				writer.WriteLine("Actor=" + Actor);
-				writer.WriteLine("\tHealth=" + RelativeHP);
+				writer.WriteLine("\tHealth=" + RelativeHP.ToString(Settings.FloatFormat));
 				writer.WriteLine("UnlockedSpells=");
 				foreach (var unlock in UnlockedSpells)
 					writer.WriteLine("\t" + unlock + "=");
@@ -230,7 +225,11 @@ namespace WarriorsSnuggery
 						statistic.Type = node.Convert<GameType>();
 						break;
 					case "Shroud":
-						statistic.Shroud = node.Convert<bool[]>();
+						statistic.Shroud = new List<bool[]>();
+
+						foreach (var node2 in node.Children)
+							statistic.Shroud.Add(node2.Convert<bool[]>());
+
 						break;
 					case "Seed":
 						statistic.Seed = node.Convert<int>();
