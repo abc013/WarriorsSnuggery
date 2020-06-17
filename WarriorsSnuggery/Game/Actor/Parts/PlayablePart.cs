@@ -3,10 +3,10 @@
 	[Desc("Attach this to an actor to make it playable by the player.")]
 	public class PlayablePartInfo : PartInfo
 	{
-		[Desc("When true, this actor is unlocked from the beginning of the Game. Unused.")]
+		[Desc("When true, this actor is unlocked from the beginning of the Game.")]
 		public readonly bool Unlocked;
 
-		[Desc("Cost to unlock this actor. Unused.")]
+		[Desc("Cost to unlock this actor.")]
 		public readonly int UnlockCost;
 		[Desc("Cost to change to this actor.")]
 		public readonly int Cost;
