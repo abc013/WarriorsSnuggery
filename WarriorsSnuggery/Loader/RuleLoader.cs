@@ -1,4 +1,7 @@
 ﻿using WarriorsSnuggery.Graphics;
+using WarriorsSnuggery.Objects;
+using WarriorsSnuggery.Objects.Particles;
+using WarriorsSnuggery.Objects.Weapons;
 using WarriorsSnuggery.Trophies;
 using WarriorsSnuggery.UI;
 

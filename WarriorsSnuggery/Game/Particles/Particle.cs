@@ -6,8 +6,7 @@ namespace WarriorsSnuggery.Objects.Particles
 	public class Particle : PhysicsObject
 	{
 		public readonly bool AffectedByObjects;
-		public readonly string Name;
-		readonly ParticleType type;
+		public readonly ParticleType Type;
 		readonly Random random;
 
 		int current;
@@ -20,11 +19,10 @@ namespace WarriorsSnuggery.Objects.Particles
 		public Particle(CPos pos, int height, ParticleType type, Random random) : base(pos, type.Texture != null ? (BatchRenderable)new BatchSequence(type.Texture.GetTextures(), type.Color + new Color(variety(type.ColorVariety.R), variety(type.ColorVariety.G), variety(type.ColorVariety.B), variety(type.ColorVariety.A)), tick: type.Texture.Tick) : new BatchObject(type.MeshSize * MasterRenderer.PixelMultiplier + variety(type.MeshSizeVariety), type.Color + new Color(variety(type.ColorVariety.R), variety(type.ColorVariety.G), variety(type.ColorVariety.B), variety(type.ColorVariety.A))))
 		{
 			Height = height;
-			this.type = type;
+			Type = type;
 			this.random = random;
 
 			AffectedByObjects = type.AffectedByObjects;
-			Name = ParticleCreator.GetName(type);
 			current = type.Duration;
 			dissolve = type.DissolveDuration;
 
@@ -140,7 +138,7 @@ namespace WarriorsSnuggery.Objects.Particles
 		{
 			base.Tick();
 
-			transform_velocity += new CPos(0, 0, -type.Gravity);
+			transform_velocity += new CPos(0, 0, -Type.Gravity);
 			Rotation += rotate_velocity;
 
 			Position += new CPos(transform_velocity.X, transform_velocity.Y, 0);
@@ -159,14 +157,14 @@ namespace WarriorsSnuggery.Objects.Particles
 				}
 				else
 				{
-					Renderable.SetColor(new Color(type.Color.R, type.Color.G, type.Color.B, type.Color.A * dissolve / type.DissolveDuration));
+					Renderable.SetColor(new Color(Type.Color.R, Type.Color.G, Type.Color.B, Type.Color.A * dissolve / Type.DissolveDuration));
 				}
 			}
 		}
 
 		public override void Render()
 		{
-			if (type.ShowShadow)
+			if (Type.ShowShadow)
 				RenderShadow();
 
 			base.Render();

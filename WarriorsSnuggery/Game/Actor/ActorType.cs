@@ -11,10 +11,10 @@ namespace WarriorsSnuggery.Objects
 
 		public readonly PartInfo[] PartInfos;
 
-		public ActorType(PhysicsPartInfo physics, PlayablePartInfo playable, PartInfo[] partInfos)
+		public ActorType(PartInfo[] partInfos)
 		{
-			Playable = playable;
-			Physics = physics;
+			Physics = (PhysicsPartInfo)partInfos.FirstOrDefault(p => p is PhysicsPartInfo);
+			Playable = (PlayablePartInfo)partInfos.FirstOrDefault(p => p is PlayablePartInfo);
 			PartInfos = partInfos;
 		}
 

@@ -6,7 +6,7 @@ namespace WarriorsSnuggery.Objects.Parts
 	public class ParticleForcePartInfo : PartInfo
 	{
 		[Desc("Only affect particles of the types given here.", "If empty, all will be affected.")]
-		public readonly string[] AffectedTypes = new string[0];
+		public readonly ParticleType[] AffectedTypes = new ParticleType[0];
 
 		[Desc("Type of the force.", "Available: FORCE, TURBULENCE, VORTEX, DRAG")]
 		public readonly ParticleForceType ForceType = ParticleForceType.FORCE;
@@ -65,7 +65,7 @@ namespace WarriorsSnuggery.Objects.Parts
 				if (dist > info.MaxRangeSquared || dist < info.MinRangeSquared)
 					continue;
 
-				if (!info.AffectedTypes.Contains(particle.Name))
+				if (info.AffectedTypes.Length != 0 && !info.AffectedTypes.Contains(particle.Type))
 					continue;
 
 				var ratio = (float) (1 - dist / (double)info.MaxRangeSquared);

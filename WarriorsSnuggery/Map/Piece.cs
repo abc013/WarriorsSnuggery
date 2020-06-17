@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using WarriorsSnuggery.Objects;
 
 namespace WarriorsSnuggery.Maps
 {
@@ -10,12 +11,12 @@ namespace WarriorsSnuggery.Maps
 		public readonly string InnerName;
 		public readonly string Path;
 
-		readonly int[] groundData;
+		readonly ushort[] groundData;
 		readonly int[] wallData;
 
 		readonly ActorNode[] actors;
 
-		Piece(MPos size, int[] groundData, int[] wallData, string name, string innerName, string path, ActorNode[] actors)
+		Piece(MPos size, ushort[] groundData, int[] wallData, string name, string innerName, string path, ActorNode[] actors)
 		{
 			Size = size;
 			Name = name;
@@ -31,7 +32,7 @@ namespace WarriorsSnuggery.Maps
 		{
 			MPos size = MPos.Zero;
 
-			int[] groundData = new int[0];
+			ushort[] groundData = new ushort[0];
 			int[] wallData = new int[0];
 
 			string name = "unknown";
@@ -46,7 +47,7 @@ namespace WarriorsSnuggery.Maps
 
 						break;
 					case "Terrain":
-						groundData = rule.Convert<int[]>();
+						groundData = rule.Convert<ushort[]>();
 
 						break;
 					case "Walls":

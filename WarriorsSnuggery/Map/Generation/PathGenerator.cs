@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using WarriorsSnuggery.Objects;
 
 namespace WarriorsSnuggery.Maps
 {
@@ -189,8 +190,8 @@ namespace WarriorsSnuggery.Maps
 		[Desc("Width of the path.")]
 		public readonly int Width = 2;
 
-		[Desc("Unique ID for the generator.")]
-		public readonly int[] Types = new[] { 0 };
+		[Desc("Terrain to use as roadtiles.")]
+		public readonly ushort[] Types = new ushort[] { 0 };
 
 		[Desc("Uses the entrance as start point for the paths.", "If false, random points at the map edges will be used.")]
 		public readonly bool FromEntrance = true;

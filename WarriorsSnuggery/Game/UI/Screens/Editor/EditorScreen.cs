@@ -69,30 +69,24 @@ namespace WarriorsSnuggery.UI
 			 });
 
 			tiles = new PanelList(new CPos((int)(WindowInfo.UnitWidth * 512 - 2048), 2048, 0), new MPos(2048, 4096), new MPos(512, 512), PanelManager.Get("wooden"));
-			foreach (var n in TerrainCreator.GetIDs())
-			{
-				var a = TerrainCreator.GetType(n);
-				tiles.Add(new PanelItem(CPos.Zero, new BatchObject(a.Texture, Color.White), new MPos(512, 512), n + "", new string[0], () => terrainSelected = a));
-			}
+			foreach (var a in TerrainCreator.Types.Values)
+				tiles.Add(new PanelItem(CPos.Zero, new BatchObject(a.Texture, Color.White), new MPos(512, 512), a.ID.ToString(), new string[0], () => terrainSelected = a));
 
 			actors = new PanelList(new CPos((int)(WindowInfo.UnitWidth * 512 - 2048), 2048, 0), new MPos(2048, 4096), new MPos(512, 512), PanelManager.Get("wooden"));
-			foreach (var n in ActorCreator.GetNames())
+			foreach (var pair in ActorCreator.Types)
 			{
-				var a = ActorCreator.GetType(n);
+				var a = pair.Value;
 				var sprite = a.GetPreviewSprite();
 				var scale = (sprite.Width > sprite.Height ? 24f / sprite.Width : 24f / sprite.Height) - 0.1f;
-				actors.Add(new PanelItem(CPos.Zero, new BatchObject(sprite, Color.White), new MPos(512, 512), n, new string[0], () => actorSelected = a)
+				actors.Add(new PanelItem(CPos.Zero, new BatchObject(sprite, Color.White), new MPos(512, 512), a.Playable == null ? pair.Key : a.Playable.Name, new string[0], () => actorSelected = a)
 				{
 					Scale = scale
 				});
 			}
 
 			walls = new PanelList(new CPos((int)(WindowInfo.UnitWidth * 512 - 2048), 2048, 0), new MPos(2048, 4096), new MPos(512, 1024), PanelManager.Get("wooden"));
-			foreach (var n in WallCreator.GetIDs())
-			{
-				var a = WallCreator.GetType(n);
-				walls.Add(new PanelItem(CPos.Zero, new BatchObject(a.GetTexture(true, 0), Color.White), new MPos(512, 512), n + "", new string[0], () => wallSelected = a));
-			}
+			foreach (var a in WallCreator.Types.Values)
+				walls.Add(new PanelItem(CPos.Zero, new BatchObject(a.GetTexture(true, 0), Color.White), new MPos(512, 512), a.ID.ToString(), new string[0], () => wallSelected = a));
 
 			wallBox = CheckBoxCreator.Create("wooden", new CPos((int)(WindowInfo.UnitWidth * 512 - 2048), 6244, 0), false, (b) => horizontal = b);
 			wallText = new TextLine(new CPos((int)(WindowInfo.UnitWidth * 512 - 2048), 6756, 0), FontManager.Pixel16, TextLine.OffsetType.MIDDLE);

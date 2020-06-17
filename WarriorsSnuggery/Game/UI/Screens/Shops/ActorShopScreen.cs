@@ -22,12 +22,10 @@ namespace WarriorsSnuggery.UI
 			Title.Position = new CPos(0, -4096, 0);
 
 			actors = new PanelList(new CPos(0, -2048, 0), new MPos(8120, 1024), new MPos(1024, 1024), PanelManager.Get("stone"));
-			foreach (var n in ActorCreator.GetNames())
+			foreach (var a in ActorCreator.Types.Values)
 			{
-				var a = ActorCreator.GetType(n);
 				if (a.Playable == null)
 					continue;
-
 
 				var sprite = a.GetPreviewSprite();
 				var scale = (sprite.Width > sprite.Height ? 24f / sprite.Width : 24f / sprite.Height) - 0.1f;

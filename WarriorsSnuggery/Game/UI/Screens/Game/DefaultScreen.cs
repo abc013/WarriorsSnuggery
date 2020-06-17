@@ -36,9 +36,8 @@ namespace WarriorsSnuggery.UI
 			// SECTION ACTORS
 			actorList = new ActorList(new CPos((int)(WindowInfo.UnitWidth * 512) - 512, -1536, 0), new MPos(512, 5120), new MPos(512, 512), PanelManager.Get("wooden"));
 
-			foreach (var n in ActorCreator.GetNames())
+			foreach (var a in ActorCreator.Types.Values)
 			{
-				var a = ActorCreator.GetType(n);
 				if (a.Playable == null)
 					continue;
 

@@ -20,7 +20,7 @@ namespace WarriorsSnuggery
 		public PlayerSwitch(World world, ActorType to)
 		{
 			this.world = world;
-			particleType = ParticleCreator.GetType("beam");
+			particleType = ParticleCreator.Types["beam"];
 
 			type = to;
 			position = world.LocalPlayer.Position;

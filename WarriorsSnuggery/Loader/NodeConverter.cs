@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Globalization;
 using System.Linq;
+using WarriorsSnuggery.Objects;
 
 namespace WarriorsSnuggery.Loader
 {
@@ -126,6 +127,24 @@ namespace WarriorsSnuggery.Loader
 
 				return res;
 			}
+			else if (t == typeof(ushort[]))
+			{
+				var parts = s.Split(',');
+				var res = new ushort[parts.Length];
+
+				for (int i = 0; i < parts.Length; i++)
+				{
+					var part = parts[i].Trim();
+					ushort convert;
+
+					if (ushort.TryParse(part, out convert))
+						res[i] = convert;
+					else
+						throw new InvalidConversionException(file, node, t);
+				}
+
+				return res;
+			}
 			else if (t == typeof(MPos))
 			{
 				var parts = s.Split(',');
@@ -228,18 +247,22 @@ namespace WarriorsSnuggery.Loader
 			}
 			else if (t == typeof(Objects.Weapons.WeaponType))
 			{
-				// Called method handles nonexistent weapon types
-				return WeaponCreator.GetType(s.Trim());
+				if (!Objects.Weapons.WeaponCreator.Types.ContainsKey(s))
+					throw new MissingInfoException(s);
+
+				return Objects.Weapons.WeaponCreator.Types[s.Trim()];
 			}
 			else if (t == typeof(Objects.Particles.ParticleType))
 			{
-				// Called method handles nonexistent particle types
-				return ParticleCreator.GetType(s.Trim());
+				if (!Objects.Particles.ParticleCreator.Types.ContainsKey(s))
+					throw new MissingInfoException(s);
+
+				return Objects.Particles.ParticleCreator.Types[s.Trim()];
 			}
 			else if (t == typeof(Objects.ActorType))
 			{
 				// Called method handles nonexistent actor types
-				return ActorCreator.GetType(s.Trim());
+				return ActorCreator.Types[s.Trim()];
 			}
 			else if (t == typeof(Spells.Spell))
 			{
@@ -310,12 +333,26 @@ namespace WarriorsSnuggery.Loader
 
 				return convert;
 			}
+			else if (t == typeof(Objects.Particles.ParticleType[]))
+			{
+				var convert = new Objects.Particles.ParticleType[node.Children.Count];
+
+				for (int i = 0; i < node.Children.Count; i++)
+				{
+					if (!Objects.Particles.ParticleCreator.Types.ContainsKey(s))
+						throw new MissingInfoException(s);
+
+					convert[i] = Objects.Particles.ParticleCreator.Types[s.Trim()];
+				}
+
+				return convert;
+			}
 			else if (t == typeof(Objects.Particles.ParticleSpawner[]))
 			{
 				var convert = new Objects.Particles.ParticleSpawner[node.Children.Count];
 
 				for (int i = 0; i < node.Children.Count; i++)
-					convert[i] = (Objects.Particles.ParticleSpawner)Convert(file, node.Children[i], typeof(Objects.Particles.ParticleSpawner));
+					convert[i] = Convert<Objects.Particles.ParticleSpawner>(file, node.Children[i]);
 
 				return convert;
 			}

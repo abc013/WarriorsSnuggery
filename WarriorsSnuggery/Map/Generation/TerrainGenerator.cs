@@ -6,13 +6,14 @@ namespace WarriorsSnuggery.Maps
 	[Desc("Information about objects that can be spawned with the TerrainGenerator.")]
 	public class ActorProbabilityInfo
 	{
+		[Desc("Type of the actor.")]
+		public readonly ActorType Type;
+
 		[Desc("Probability of spawning an actor on a field.")]
 		public readonly float Probability = 1f;
 
 		[Desc("Health in percentage, if the Healthpart is given in the actor's definitions.")]
 		public readonly float Health = 1f;
-		[Desc("Name of the character or object.")]
-		public readonly string Type = string.Empty;
 		[Desc("Team of the actor.")]
 		public readonly byte Team = Actor.NeutralTeam;
 		[Desc("Determines whether the actor spawned is a bot.")]
@@ -21,6 +22,9 @@ namespace WarriorsSnuggery.Maps
 		public ActorProbabilityInfo(MiniTextNode[] nodes)
 		{
 			Loader.PartLoader.SetValues(this, nodes);
+
+			if (Type == null)
+				throw new YamlMissingNodeException("SpawnActors", "Type");
 		}
 	}
 
@@ -171,7 +175,7 @@ namespace WarriorsSnuggery.Maps
 		public readonly float EdgeNoise = 0f;
 
 		[Desc("Terrain to use.")]
-		public readonly int[] Terrain = new int[] { 0 };
+		public readonly ushort[] Terrain = new ushort[] { 0 };
 		[Desc("Allows spawning of pieces.")]
 		public readonly bool SpawnPieces = true;
 		[Desc("Information about the actors to be spawned on that terrain.")]
@@ -180,7 +184,7 @@ namespace WarriorsSnuggery.Maps
 		[Desc("Border thickness.")]
 		public readonly int Border = 0;
 		[Desc("Terrain to use for borders.")]
-		public readonly int[] BorderTerrain = new int[0];
+		public readonly ushort[] BorderTerrain = new ushort[0];
 
 		public TerrainGeneratorInfo(int id, MiniTextNode[] nodes) : base(id)
 		{
