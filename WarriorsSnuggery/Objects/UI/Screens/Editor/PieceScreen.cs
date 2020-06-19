@@ -30,9 +30,9 @@ namespace WarriorsSnuggery.UI
 					Hide();
 				}));
 			}
-			Content.Add(ButtonCreator.Create("wooden", new CPos(4096, 6144, 0), "Back", () => game.ChangeScreen(ScreenType.MENU)));
-			Content.Add(ButtonCreator.Create("wooden", new CPos(0, 6144, 0), "New Piece", () => { createPieceScreen.ActiveScreen = true; }));
-			Content.Add(ButtonCreator.Create("wooden", new CPos(-4096, 6144, 0), "Delete Piece", () => { }));
+			Content.Add(new Button(new CPos(4096, 6144, 0), "Back", "wooden", () => game.ChangeScreen(ScreenType.MENU)));
+			Content.Add(new Button(new CPos(0, 6144, 0), "New Piece", "wooden", () => { createPieceScreen.ActiveScreen = true; }));
+			Content.Add(new Button(new CPos(-4096, 6144, 0), "Delete Piece", "wooden", () => { }));
 
 			createPieceScreen = new CreatePieceScreen();
 		}
@@ -84,15 +84,15 @@ namespace WarriorsSnuggery.UI
 		{
 			Title.Position = new CPos(0, -4096, 0);
 
-			Content.Add(ButtonCreator.Create("wooden", new CPos(4096, 6144, 0), "Cancel", () => { ActiveScreen = false; }));
-			Content.Add(ButtonCreator.Create("wooden", new CPos(-4096, 6144, 0), "Create", () => { create(); }));
+			Content.Add(new Button(new CPos(4096, 6144, 0), "Cancel", "wooden", () => { ActiveScreen = false; }));
+			Content.Add(new Button(new CPos(-4096, 6144, 0), "Create", "wooden", () => { create(); }));
 
 			var size = new TextLine(new CPos(0, -1024, 0), FontManager.Pixel16, TextLine.OffsetType.MIDDLE);
 			size.SetText("Size of Piece");
 			Content.Add(size);
-			sizeX = TextBoxCreator.Create("wooden", new CPos(1024, 0, 0), "16", 2, true);
-			sizeY = TextBoxCreator.Create("wooden", new CPos(-1024, 0, 0), "16", 2, true);
-			name = TextBoxCreator.Create("wooden", new CPos(0, 1536, 0), "unnamed piece", 20, isPath: true);
+			sizeX = new TextBox(new CPos(1024, 0, 0), "16", "wooden", 2, true);
+			sizeY = new TextBox(new CPos(-1024, 0, 0), "16", "wooden", 2, true);
+			name = new TextBox(new CPos(0, 1536, 0), "unnamed piece", "wooden", 20, isPath: true);
 			var warning = new TextLine(new CPos(0, 2548, 0), FontManager.Pixel16, TextLine.OffsetType.MIDDLE);
 			warning.SetColor(Color.Red);
 			warning.SetText("Warning: by using an name for an already existing map, you override it!");

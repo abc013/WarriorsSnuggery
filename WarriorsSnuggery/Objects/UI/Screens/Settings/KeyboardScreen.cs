@@ -15,7 +15,7 @@ namespace WarriorsSnuggery.UI
 
 			Title.Position = new CPos(0, -4096, 0);
 
-			Content.Add(ButtonCreator.Create("wooden", new CPos(0, 6144, 0), "Save & Back", () => game.ChangeScreen(ScreenType.SETTINGS)));
+			Content.Add(new Button(new CPos(0, 6144, 0), "Save & Back", "wooden", () => game.ChangeScreen(ScreenType.SETTINGS)));
 
 			var type = PanelManager.Get("wooden");
 

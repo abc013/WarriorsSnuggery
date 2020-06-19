@@ -41,9 +41,9 @@ namespace WarriorsSnuggery.UI
 			}
 
 			Content.Add(new Panel(new CPos(0, 920, 0), new Vector(8, 2, 0), PanelManager.Get("wooden")));
-			Content.Add(ButtonCreator.Create("wooden", new CPos(-6144, 3072, 0), "Buy", () => buyActor(selected)));
+			Content.Add(new Button(new CPos(-6144, 3072, 0), "Buy", "wooden", () => buyActor(selected)));
 
-			Content.Add(ButtonCreator.Create("wooden", new CPos(0, 6144, 0), "Resume", () => { game.Pause(false); game.ScreenControl.ShowScreen(ScreenType.DEFAULT); }));
+			Content.Add(new Button(new CPos(0, 6144, 0), "Resume", "wooden", () => { game.Pause(false); game.ScreenControl.ShowScreen(ScreenType.DEFAULT); }));
 
 			information = new TextBlock(new CPos(-7900, 0, 0), FontManager.Pixel16, TextLine.OffsetType.LEFT, "Select an actor for further information.", "", "", "Cost: -");
 

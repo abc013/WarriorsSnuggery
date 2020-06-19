@@ -1,6 +1,6 @@
 using WarriorsSnuggery.Graphics;
 
-namespace WarriorsSnuggery.Objects
+namespace WarriorsSnuggery.Objects.Weapons
 {
 	public class Smudge : PhysicsObject
 	{

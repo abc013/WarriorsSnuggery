@@ -26,7 +26,7 @@ namespace WarriorsSnuggery.UI
 			name.SetText("Name: ");
 			Content.Add(name);
 
-			nameInput = TextBoxCreator.Create("wooden", new CPos(1024, 0, 0), "Name", 15, isPath: true);
+			nameInput = new TextBox(new CPos(1024, 0, 0), "Name", "wooden", 15, isPath: true);
 
 			var difficulty = new TextLine(new CPos(-2048, 1024, 0), FontManager.Pixel16, TextLine.OffsetType.RIGHT);
 			difficulty.SetText("Difficulty: ");
@@ -44,11 +44,11 @@ namespace WarriorsSnuggery.UI
 			seed.SetText("Seed: ");
 			Content.Add(seed);
 
-			seedInput = TextBoxCreator.Create("wooden", new CPos(1024, 3072, 0), getSeed(), 7, true);
-			Content.Add(ButtonCreator.Create("wooden", new CPos(6144, 3072, 0), "Generate", () => { seedInput.Text = getSeed(); }));
+			seedInput = new TextBox(new CPos(1024, 3072, 0), getSeed(), "wooden", 7, true);
+			Content.Add(new Button(new CPos(6144, 3072, 0), "Generate", "wooden", () => { seedInput.Text = getSeed(); }));
 
-			Content.Add(ButtonCreator.Create("wooden", new CPos(-4096, 6144, 0), "Cancel", () => { game.Pause(false); game.ChangeScreen(ScreenType.DEFAULT); }));
-			Content.Add(ButtonCreator.Create("wooden", new CPos(4096, 6144, 0), "Proceed", () =>
+			Content.Add(new Button(new CPos(-4096, 6144, 0), "Cancel", "wooden", () => { game.Pause(false); game.ChangeScreen(ScreenType.DEFAULT); }));
+			Content.Add(new Button(new CPos(4096, 6144, 0), "Proceed", "wooden", () =>
 			{
 				if (nameInput.Text != string.Empty)
 					GameController.CreateNew(GameStatistics.CreateGameStatistic((int)Math.Round(difficultyInput.Value * 10), hardcoreInput.Checked, nameInput.Text, int.Parse(seedInput.Text)));

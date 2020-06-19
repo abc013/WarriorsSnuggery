@@ -49,7 +49,7 @@ namespace WarriorsSnuggery.UI
 			Title.Position += new CPos(0, -7120, 0);
 
 			mousePosition = new TextLine(new CPos((int)(WindowInfo.UnitWidth * 512 - 1024), -7172, 0), FontManager.Pixel16, TextLine.OffsetType.RIGHT);
-			save = ButtonCreator.Create("wooden", new CPos((int)(WindowInfo.UnitWidth * 512 - 2048), -5120, 0), "Save", savePiece);
+			save = new Button(new CPos((int)(WindowInfo.UnitWidth * 512 - 2048), -5120, 0), "Save", "wooden", savePiece);
 			saved = new TextLine(new CPos((int)(WindowInfo.UnitWidth * 512 - 2048), -5120, 0), FontManager.Pixel16, TextLine.OffsetType.MIDDLE);
 			saved.SetText("Save");
 
@@ -95,7 +95,7 @@ namespace WarriorsSnuggery.UI
 			rasterizationText = new TextLine(new CPos((int)(WindowInfo.UnitWidth * 512 - 2048), 6756, 0), FontManager.Pixel16, TextLine.OffsetType.MIDDLE);
 			rasterizationText.SetText("align to grid");
 			isBot = CheckBoxCreator.Create("wooden", new CPos((int)((WindowInfo.UnitWidth * 512) - 1024), -4196, 0), false, (b) => { });
-			team = TextBoxCreator.Create("wooden", new CPos((int)((WindowInfo.UnitWidth * 512) - 1024), -3372, 0), "0", 1, true);
+			team = new TextBox(new CPos((int)((WindowInfo.UnitWidth * 512) - 1024), -3372, 0), "0", "wooden", 1, true);
 			team.OnEnter = () =>
 			{
 				if (team.Text == string.Empty)

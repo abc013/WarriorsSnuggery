@@ -15,7 +15,7 @@ namespace WarriorsSnuggery.UI
 
 			list = new GameSaveList(new CPos(0, 1024, 0), new MPos((int)(WindowInfo.UnitWidth * 128), 4096), PanelManager.Get("wooden"));
 
-			Content.Add(ButtonCreator.Create("wooden", new CPos(4096, 6144, 0), "Back", () => game.ChangeScreen(ScreenType.MENU)));
+			Content.Add(new Button(new CPos(4096, 6144, 0), "Back", "wooden", () => game.ChangeScreen(ScreenType.MENU)));
 			void loadAction()
 			{
 				var stats = list.GetStatistic();
@@ -27,7 +27,7 @@ namespace WarriorsSnuggery.UI
 					}, "Are you sure to leave this game? Unsaved progress will be lost!");
 				}
 			}
-			Content.Add(ButtonCreator.Create("wooden", new CPos(0, 6144, 0), "Load", loadAction));
+			Content.Add(new Button(new CPos(0, 6144, 0), "Load", "wooden", loadAction));
 			void deleteAction()
 			{
 				var stats = list.GetStatistic();
@@ -41,7 +41,7 @@ namespace WarriorsSnuggery.UI
 					}, "Are you sure to delete this save?");
 				}
 			}
-			Content.Add(ButtonCreator.Create("wooden", new CPos(-4096, 6144, 0), "Delete", deleteAction));
+			Content.Add(new Button(new CPos(-4096, 6144, 0), "Delete", "wooden", deleteAction));
 		}
 
 		public override void Hide()

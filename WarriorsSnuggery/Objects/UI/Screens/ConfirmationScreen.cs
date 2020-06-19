@@ -27,8 +27,8 @@ namespace WarriorsSnuggery.UI
 			this.onDecline = onDecline;
 			this.onAgree = onAgree;
 
-			decline = ButtonCreator.Create("wooden", new CPos(-2048, 1024, 0), "Nope", onDecline);
-			agree = ButtonCreator.Create("wooden", new CPos(2048, 1024, 0), "Yup", onAgree);
+			decline = new Button(new CPos(-2048, 1024, 0), "Nope", "wooden", onDecline);
+			agree = new Button(new CPos(2048, 1024, 0), "Yup", "wooden", onAgree);
 		}
 
 		public override void Tick()

@@ -34,7 +34,7 @@ namespace WarriorsSnuggery.UI
 		public Action OnEnter;
 		public Action OnType;
 
-		public TextBox(CPos pos, string text, int maximumLength, bool onlyNumbers, bool isPath, PanelType type) : base(pos, new Vector((2 * margin + FontManager.Pixel16.Width * maximumLength) / 2048f, (2 * margin + FontManager.Pixel16.Height) / 2048f, 0), type)
+		public TextBox(CPos pos, string text, string type, int maximumLength = 10, bool onlyNumbers = false, bool isPath = false) : base(pos, new Vector((2 * margin + FontManager.Pixel16.Width * maximumLength) / 2048f, (2 * margin + FontManager.Pixel16.Height) / 2048f, 0), PanelManager.Get(type))
 		{
 			gameBounds = new MPos((FontManager.Pixel16.Width * maximumLength) / 2 + margin, FontManager.Pixel16.Height / 2 + margin);
 			realText = text;

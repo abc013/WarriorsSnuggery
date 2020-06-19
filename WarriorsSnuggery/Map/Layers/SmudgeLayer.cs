@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using WarriorsSnuggery.Objects;
+using WarriorsSnuggery.Objects.Weapons;
 
 namespace WarriorsSnuggery
 {
@@ -7,10 +7,7 @@ namespace WarriorsSnuggery
 	{
 		readonly List<Smudge> smudgeList = new List<Smudge>();
 
-		public SmudgeLayer()
-		{
-
-		}
+		public SmudgeLayer() { }
 
 		public void Add(Smudge smudge)
 		{

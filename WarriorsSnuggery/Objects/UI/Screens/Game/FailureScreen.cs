@@ -20,16 +20,16 @@ namespace WarriorsSnuggery.UI
 			{
 				game.Statistics.Save(game.World);
 				game.Statistics.Delete();
-				Content.Add(ButtonCreator.Create("wooden", new CPos(0, 5120, 0), "Return to Main Menu", () => GameController.CreateReturn(GameType.MAINMENU)));
+				Content.Add(new Button(new CPos(0, 5120, 0), "Return to Main Menu", "wooden", () => GameController.CreateReturn(GameType.MAINMENU)));
 			}
 			else
 			{
-				Content.Add(ButtonCreator.Create("wooden", new CPos(-2048, 5120, 0), "Restart Map", () => GameController.CreateRestart()));
+				Content.Add(new Button(new CPos(-2048, 5120, 0), "Restart Map", "wooden", () => GameController.CreateRestart()));
 
 				if (game.Type == GameType.TEST)
-					Content.Add(ButtonCreator.Create("wooden", new CPos(2048, 5120, 0), "Main Menu", () => GameController.CreateReturn(GameType.MAINMENU)));
+					Content.Add(new Button(new CPos(2048, 5120, 0), "Main Menu", "wooden", () => GameController.CreateReturn(GameType.MAINMENU)));
 				else
-					Content.Add(ButtonCreator.Create("wooden", new CPos(2048, 5120, 0), "Menu", () => GameController.CreateReturn(GameType.MENU)));
+					Content.Add(new Button(new CPos(2048, 5120, 0), "Menu", "wooden", () => GameController.CreateReturn(GameType.MENU)));
 			}
 		}
 	}

@@ -41,7 +41,7 @@ namespace WarriorsSnuggery.UI
 				height.SetColor(ticked ? new Color(128, 128, 128) : Color.White);
 			});
 			Content.Add(fullscreenCheck);
-			widthWrite = TextBoxCreator.Create("wooden", new CPos(-2048, -2300, 0), Settings.Width + "", 5, true);
+			widthWrite = new TextBox(new CPos(-2048, -2300, 0), Settings.Width + "", "wooden", 5, true);
 			widthWrite.OnEnter = () =>
 			{
 				var parse = int.Parse(widthWrite.Text);
@@ -51,7 +51,7 @@ namespace WarriorsSnuggery.UI
 					widthWrite.Text = WindowInfo.ScreenWidth + "";
 			};
 			Content.Add(widthWrite);
-			heightWrite = TextBoxCreator.Create("wooden", new CPos(-2048, -1600, 0), Settings.Height + "", 5, true);
+			heightWrite = new TextBox(new CPos(-2048, -1600, 0), Settings.Height + "", "wooden", 5, true);
 			heightWrite.OnEnter = () =>
 			{
 				var parse = int.Parse(heightWrite.Text);
@@ -119,7 +119,7 @@ namespace WarriorsSnuggery.UI
 			frameLimiter.SetText("Framelimiter (0 = disabled):");
 			Content.Add(frameLimiter);
 
-			frameLimiterWrite = TextBoxCreator.Create("wooden", new CPos(5120, 1000, 0), Settings.FrameLimiter + "", 2, true);
+			frameLimiterWrite = new TextBox(new CPos(5120, 1000, 0), Settings.FrameLimiter + "", "wooden", 2, true);
 			frameLimiterWrite.OnEnter = () =>
 			{
 				var number = int.Parse(frameLimiterWrite.Text);
@@ -180,9 +180,9 @@ namespace WarriorsSnuggery.UI
 			warning.SetText("Some changes only take effect after restarting and can cause visual bugs.");
 			Content.Add(warning);
 
-			Content.Add(ButtonCreator.Create("wooden", new CPos(-5120, 6144, 0), "Apply", Save));
-			Content.Add(ButtonCreator.Create("wooden", new CPos(5120, 6144, 0), "Save & Back", () => game.ChangeScreen(ScreenType.MENU)));
-			Content.Add(ButtonCreator.Create("wooden", new CPos(0, 6144, 0), "Key Bindings", () => game.ChangeScreen(ScreenType.KEYSETTINGS)));
+			Content.Add(new Button(new CPos(-5120, 6144, 0), "Apply", "wooden", Save));
+			Content.Add(new Button(new CPos(5120, 6144, 0), "Save & Back", "wooden", () => game.ChangeScreen(ScreenType.MENU)));
+			Content.Add(new Button(new CPos(0, 6144, 0), "Key Bindings", "wooden", () => game.ChangeScreen(ScreenType.KEYSETTINGS)));
 		}
 
 		public override void Hide()
