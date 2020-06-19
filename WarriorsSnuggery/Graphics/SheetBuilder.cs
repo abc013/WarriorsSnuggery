@@ -23,7 +23,7 @@ namespace WarriorsSnuggery.Graphics
 			var id = currentSheet.TextureID;
 			var position = writeTexture(data, new MPos(info.Width, info.Height));
 
-			return new Texture(info.File, position.X, position.Y, info.Width, info.Height, id);
+			return new Texture(position.X, position.Y, info.Width, info.Height, id);
 		}
 
 		static MPos writeTexture(float[] data, MPos size)

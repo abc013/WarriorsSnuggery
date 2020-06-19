@@ -1,6 +1,3 @@
-using OpenToolkit.Graphics.OpenGL;
-using System;
-
 namespace WarriorsSnuggery.Graphics
 {
 	public enum TextureType
@@ -57,45 +54,22 @@ namespace WarriorsSnuggery.Graphics
 		}
 	}
 
-	public class Texture : IDisposable
+	public class Texture
 	{
 		public readonly int SheetID;
 
-		public readonly string File;
-
-		public readonly MPos Offset;
+		public readonly int X;
+		public readonly int Y;
 		public readonly int Width;
 		public readonly int Height;
 
-		public Texture(string file, int x, int y, int width, int height, int sheetID)
+		public Texture(int x, int y, int width, int height, int sheetID)
 		{
-			File = file;
-			Offset = new MPos(x, y);
+			X = x;
+			Y = y;
 			Width = width;
 			Height = height;
 			SheetID = sheetID;
-		}
-
-		public Texture(string file, int width, int height, int id)
-		{
-			File = file;
-			Width = width;
-			Height = height;
-			SheetID = id;
-		}
-
-		public void Dispose()
-		{
-			lock (MasterRenderer.GLLock)
-			{
-				GL.DeleteTexture(SheetID);
-				Program.CheckGraphicsError("Texture_Dispose");
-			}
-		}
-
-		public override int GetHashCode()
-		{
-			return SheetID ^ Width ^ Height ^ File.GetHashCode();
 		}
 	}
 }

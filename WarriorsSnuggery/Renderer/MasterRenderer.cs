@@ -151,7 +151,7 @@ namespace WarriorsSnuggery
 				frameBuffer = GL.GenFramebuffer();
 				GL.BindFramebuffer(FramebufferTarget.Framebuffer, frameBuffer);
 				GL.FramebufferTexture2D(FramebufferTarget.Framebuffer, FramebufferAttachment.ColorAttachment0, TextureTarget.Texture2D, frameTextureID, 0);
-				frameTexture = new Texture("FramebufferTexture", width, height, frameTextureID);
+				frameTexture = new Texture(0, 0, width, height, frameTextureID);
 				renderable = new Image(Mesh.Frame(), frameTexture);
 				Program.CheckGraphicsError("GLFrameBuffer");
 
@@ -280,7 +280,7 @@ namespace WarriorsSnuggery
 					shader.Dispose();
 			}
 			GL.DeleteFramebuffer(frameBuffer);
-			frameTexture.Dispose();
+			TextureManager.Dispose(frameTexture.SheetID);
 			renderable.Dispose();
 		}
 	}
