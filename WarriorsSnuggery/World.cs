@@ -85,11 +85,8 @@ namespace WarriorsSnuggery
 
 		public void Tick()
 		{
-			if (LocalPlayer != null)
-			{
-				if (Camera.LockedToPlayer)
-					Camera.Position(LocalPlayer.GraphicPosition + (Game.ScreenControl.Focused is UI.DefaultScreen ? Camera.CamPlayerOffset : CPos.Zero));
-			}
+			if (LocalPlayer != null && !Game.Editor && Camera.LockedToPlayer)
+				Camera.Position(LocalPlayer.GraphicPosition + (Game.ScreenControl.Focused is UI.DefaultScreen ? Camera.CamPlayerOffset : CPos.Zero));
 
 			Switch?.Tick();
 
