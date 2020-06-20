@@ -1,12 +1,18 @@
 using OpenToolkit.Mathematics;
 using System;
+using System.Collections.Generic;
 
 namespace WarriorsSnuggery.Graphics
 {
 	public static class Mesh
 	{
+		public static Dictionary<Texture, Vertex[]> keyValues = new Dictionary<Texture, Vertex[]>();
+
 		public static Vertex[] Image(Texture texture, Color color)
 		{
+			if (keyValues.ContainsKey(texture))
+				return keyValues[texture];
+
 			var x = texture.X / (float)Settings.SheetSize + Settings.SheetHalfPixel;
 			var y = texture.Y / (float)Settings.SheetSize + Settings.SheetHalfPixel;
 			var w = (texture.X + texture.Width) / (float)Settings.SheetSize - Settings.SheetHalfPixel;
@@ -25,6 +31,8 @@ namespace WarriorsSnuggery.Graphics
 				new Vertex(new Vector(-scale * correction, -scale, 0), new Vector4(x, h, id, 0), color4),
 				new Vertex(new Vector(scale * correction,  scale,  0), new Vector4(w, y, id, 0), color4),
 			};
+
+			keyValues[texture] = vertices;
 
 			return vertices;
 		}

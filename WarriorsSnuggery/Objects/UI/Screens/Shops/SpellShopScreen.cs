@@ -232,10 +232,10 @@ namespace WarriorsSnuggery.UI
 			targetPos = target.VisualPosition;
 			this.active = new BatchRenderable[active.Length];
 			for (int i = 0; i < active.Length; i++)
-				this.active[i] = new BatchObject(Mesh.Image(active[i], Color.White), Color.White);
+				this.active[i] = new BatchObject(active[i], Color.White);
 			this.inactive = new BatchRenderable[inactive.Length];
 			for (int i = 0; i < inactive.Length; i++)
-				this.inactive[i] = new BatchObject(Mesh.Image(inactive[i], Color.White), Color.White);
+				this.inactive[i] = new BatchObject(inactive[i], Color.White);
 			this.tick = tick;
 
 			renderabledistance = 1024 * active[0].Height / MasterRenderer.PixelSize;
