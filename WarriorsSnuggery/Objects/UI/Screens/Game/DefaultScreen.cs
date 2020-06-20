@@ -90,7 +90,7 @@ namespace WarriorsSnuggery.UI
 					missionText.SetText("No mission.");
 					break;
 				case GameMode.TUTORIAL:
-					missionText.SetText("Follow the arrows and step on blue panels!");
+					missionText.SetText("Step on blue pads and get to the exit!");
 					break;
 				case GameMode.FIND_EXIT:
 					missionText.SetText("Search for the exit and gain access to it!");

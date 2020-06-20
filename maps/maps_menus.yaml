@@ -22,6 +22,7 @@ main2=
 	AllowWeapons=false
 
 tutorial=
+	MissionScript=TutorialScript
 	PlayType=TUTORIAL
 	PlayModes=TUTORIAL
 	CustomSize=48,16
