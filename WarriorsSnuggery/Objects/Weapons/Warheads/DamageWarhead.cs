@@ -53,10 +53,10 @@ namespace WarriorsSnuggery.Objects.Weapons
 							continue;
 
 						var dist = (target.Position - actor.Position).FlatDist;
-						if (dist > maxRange) continue;
+						if (dist > maxRange * weapon.DamageRangeModifier) continue;
 						if (dist < 1f) dist = 1;
 
-						float damagemultiplier = FalloffHelper.GetMultiplier(Falloff, RangeSteps, dist);
+						float damagemultiplier = FalloffHelper.GetMultiplier(Falloff, RangeSteps, dist, weapon.DamageRangeModifier);
 
 						physics.Start = actor.Position;
 						physics.Target = target.Position;
@@ -90,7 +90,7 @@ namespace WarriorsSnuggery.Objects.Weapons
 						if (dist > 32 * 1024) continue;
 						if (dist < 1) dist = 1;
 
-						float damagemultiplier = FalloffHelper.GetMultiplier(Falloff, RangeSteps, dist);
+						float damagemultiplier = FalloffHelper.GetMultiplier(Falloff, RangeSteps, dist, weapon.DamageRangeModifier);
 						var damage = (int)Math.Floor(damagemultiplier * Damage * weapon.DamageModifier);
 
 						if (damage == 0)

@@ -8,6 +8,7 @@ namespace WarriorsSnuggery.Spells
 		RANGE,
 		INACCURACY,
 		DAMAGE,
+		DAMAGERANGE,
 		COOLDOWN,
 		HEALTH,
 		MANA,
@@ -19,7 +20,7 @@ namespace WarriorsSnuggery.Spells
 
 	public class Spell
 	{
-		[Desc("Type of the Spell.", "Available: NONE, RANGE, INACCURACY, DAMAGE, COOLDOWN, HEALTH, MANA, SPEED, SHIELD, STUN, INVISIBILITY")]
+		[Desc("Type of the Spell.", "Available: NONE, RANGE, INACCURACY, DAMAGE, DAMAGERANGE, COOLDOWN, HEALTH, MANA, SPEED, SHIELD, STUN, INVISIBILITY")]
 		public readonly EffectType Type;
 		[Desc("Strength/Intensity of the spell.", "Value effect depends on the effect type.")]
 		public readonly float Value = 1f;

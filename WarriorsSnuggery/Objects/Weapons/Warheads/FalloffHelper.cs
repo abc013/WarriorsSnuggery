@@ -1,16 +1,14 @@
-﻿using OpenToolkit.Graphics.OpenGL;
-
-namespace WarriorsSnuggery.Objects.Weapons
+﻿namespace WarriorsSnuggery.Objects.Weapons
 {
 	public static class FalloffHelper
 	{
-		public static float GetMultiplier(float[] falloff, int[] steps, float dist)
+		public static float GetMultiplier(float[] falloff, int[] steps, float dist, float modifier)
 		{
-			var start = steps[0];
+			var start = (int)(steps[0] * modifier);
 
 			for (int i = 1; i < steps.Length; i++)
 			{
-				var end = steps[i];
+				var end = (int)(steps[i] * modifier);
 
 				if (end > dist)
 					return (start - dist) / (end - start) * (falloff[i] - falloff[i - 1]) + falloff[i - 1];

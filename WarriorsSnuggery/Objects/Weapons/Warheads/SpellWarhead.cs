@@ -52,10 +52,10 @@ namespace WarriorsSnuggery.Objects.Weapons
 						continue;
 
 					var dist = (target.Position - actor.Position).FlatDist;
-					if (dist > maxRange) continue;
+					if (dist > maxRange * weapon.DamageRangeModifier) continue;
 					if (dist < 1f) dist = 1;
 
-					var probability = Probability * FalloffHelper.GetMultiplier(ProbabilityFalloff, RangeSteps, dist);
+					var probability = Probability * FalloffHelper.GetMultiplier(ProbabilityFalloff, RangeSteps, dist, weapon.DamageRangeModifier);
 
 					if (!IgnoreWalls)
 					{

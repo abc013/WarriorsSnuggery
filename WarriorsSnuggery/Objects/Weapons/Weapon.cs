@@ -18,6 +18,7 @@ namespace WarriorsSnuggery.Objects.Weapons
 
 		public readonly float InaccuracyModifier = 1f;
 		public readonly float DamageModifier = 1f;
+		public readonly float DamageRangeModifier = 1f;
 		public readonly float RangeModifier = 1f;
 
 		protected Weapon(World world, WeaponType type, Target target, Actor origin) : base(origin.ActiveWeapon != null ? origin.ActiveWeapon.WeaponOffsetPosition : origin.GraphicPosition, type.Projectile.GetTexture(), SimplePhysics.Empty)
@@ -41,6 +42,9 @@ namespace WarriorsSnuggery.Objects.Weapons
 
 				foreach (var effect in effects.Where(e => e.Spell.Type == Spells.EffectType.DAMAGE))
 					DamageModifier *= effect.Spell.Value;
+
+				foreach (var effect in effects.Where(e => e.Spell.Type == Spells.EffectType.DAMAGERANGE))
+					DamageRangeModifier *= effect.Spell.Value;
 
 				foreach (var effect in effects.Where(e => e.Spell.Type == Spells.EffectType.RANGE))
 					RangeModifier *= effect.Spell.Value;
