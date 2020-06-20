@@ -2,7 +2,7 @@
 {
 	public class BatchObject : BatchRenderable
 	{
-		public BatchObject(Texture texture, Color color) : base(Mesh.Image(texture, color), color) { }
+		public BatchObject(Texture texture, Color color) : base(Mesh.Image(texture), color) { }
 
 		public BatchObject(Vertex[] vertices, Color color) : base(vertices, color) { }
 

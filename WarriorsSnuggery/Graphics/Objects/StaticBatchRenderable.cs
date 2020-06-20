@@ -7,7 +7,7 @@ namespace WarriorsSnuggery.Graphics
 		readonly Vertex[] vertices;
 		public bool Visible = true;
 
-		public StaticBatchRenderable(CPos position, VAngle rotation, Texture texture, Color color) : this(position, rotation, Mesh.Image(texture, color), color) { }
+		public StaticBatchRenderable(CPos position, VAngle rotation, Texture texture, Color color) : this(position, rotation, Mesh.Image(texture), color) { }
 
 		public StaticBatchRenderable(CPos position, VAngle rotation, Vertex[] vertices, Color color)
 		{

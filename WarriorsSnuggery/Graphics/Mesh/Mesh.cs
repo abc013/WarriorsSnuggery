@@ -6,12 +6,12 @@ namespace WarriorsSnuggery.Graphics
 {
 	public static class Mesh
 	{
-		public static Dictionary<Texture, Vertex[]> keyValues = new Dictionary<Texture, Vertex[]>();
+		public static Dictionary<Texture, Vertex[]> meshCache = new Dictionary<Texture, Vertex[]>();
 
-		public static Vertex[] Image(Texture texture, Color color)
+		public static Vertex[] Image(Texture texture)
 		{
-			if (keyValues.ContainsKey(texture))
-				return keyValues[texture];
+			if (meshCache.ContainsKey(texture))
+				return meshCache[texture];
 
 			var x = texture.X / (float)Settings.SheetSize + Settings.SheetHalfPixel;
 			var y = texture.Y / (float)Settings.SheetSize + Settings.SheetHalfPixel;
@@ -19,7 +19,7 @@ namespace WarriorsSnuggery.Graphics
 			var h = (texture.Y + texture.Height) / (float)Settings.SheetSize - Settings.SheetHalfPixel;
 			var scale = texture.Height / 48f;
 			var correction = texture.Width / (float)texture.Height;
-			var color4 = color.toColor4();
+			var color4 = Color.White.toColor4();
 			var id = SpriteManager.SheetIndex(texture.SheetID);
 
 			Vertex[] vertices =
@@ -32,7 +32,7 @@ namespace WarriorsSnuggery.Graphics
 				new Vertex(new Vector(scale * correction,  scale,  0), new Vector4(w, y, id, 0), color4),
 			};
 
-			keyValues[texture] = vertices;
+			meshCache[texture] = vertices;
 
 			return vertices;
 		}
@@ -152,6 +152,10 @@ namespace WarriorsSnuggery.Graphics
 		public static Vertex[] Character(Font font, char c)
 		{
 			var texture = font.GetTexture(c);
+
+			if (meshCache.ContainsKey(texture))
+				return meshCache[texture];
+
 			var x = texture.X / (float)Settings.SheetSize + Settings.SheetHalfPixel;
 			var y = texture.Y / (float)Settings.SheetSize + Settings.SheetHalfPixel;
 			var w = (texture.X + texture.Width) / (float)Settings.SheetSize - Settings.SheetHalfPixel;
@@ -169,6 +173,9 @@ namespace WarriorsSnuggery.Graphics
 				new Vertex(new Vector(-scale * correction, -scale, 0), new Vector4(x, h, id, 0), Color.White),
 				new Vertex(new Vector(scale * correction,  scale,  0), new Vector4(w, y, id, 0), Color.White),
 			};
+
+			meshCache[texture] = vertices;
+
 			return vertices;
 		}
 	}
