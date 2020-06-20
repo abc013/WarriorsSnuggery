@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using WarriorsSnuggery.Objects;
+using WarriorsSnuggery.Maps;
 using WarriorsSnuggery.Objects.Parts;
 
 namespace WarriorsSnuggery
@@ -23,6 +23,8 @@ namespace WarriorsSnuggery
 
 		public GameMode Mode;
 		public GameType Type;
+		public string MapType;
+		public int Waves;
 		public List<bool[]> Shroud;
 
 		public readonly List<string> UnlockedSpells = new List<string>();
@@ -50,6 +52,8 @@ namespace WarriorsSnuggery
 
 			Mode = save.Mode;
 			Type = save.Type;
+			MapType = save.MapType;
+			Waves = save.Waves;
 			Shroud = save.Shroud;
 
 			UnlockedSpells = save.UnlockedSpells.ToList();
@@ -98,6 +102,9 @@ namespace WarriorsSnuggery
 		{
 			Mode = world.Game.Mode;
 			Type = world.Game.Type;
+			MapType = MapCreator.GetName(world.Map.Type, world.Game.Statistics);
+			Waves = world.Game.CurrentWave();
+
 			using (var writer = new StreamWriter(FileExplorer.Saves + SaveName + ".yaml", false))
 			{
 				writer.WriteLine("Name=" + Name);
@@ -111,6 +118,9 @@ namespace WarriorsSnuggery
 				writer.WriteLine("Deaths=" + Deaths);
 				writer.WriteLine("CurrentMode=" + Mode);
 				writer.WriteLine("CurrentType=" + Type);
+				writer.WriteLine("CurrentMapType=" + MapType);
+				if (Waves != 0)
+					writer.WriteLine("Waves=" + Waves);
 
 				writer.WriteLine("Shroud=");
 				for (int i = 0; i < Settings.MaxTeams; i++)
@@ -223,6 +233,12 @@ namespace WarriorsSnuggery
 						break;
 					case "CurrentType":
 						statistic.Type = node.Convert<GameType>();
+						break;
+					case "CurrentMapType":
+						statistic.MapType = node.Value;
+						break;
+					case "Waves":
+						statistic.Waves = node.Convert<int>();
 						break;
 					case "Shroud":
 						statistic.Shroud = new List<bool[]>();

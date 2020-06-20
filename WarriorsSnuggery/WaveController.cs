@@ -21,6 +21,8 @@ namespace WarriorsSnuggery
 
 			waves = Math.Min((int)Math.Ceiling(Math.Sqrt((game.Statistics.Difficulty / 2 + 1) * game.Statistics.Level)), 10);
 			generators = game.MapType.GeneratorInfos.Where(g => g is PatrolGeneratorInfo info && info.UseForWaves).ToArray();
+			if (game.MapType.FromSave && game.Statistics.Waves > 0)
+				currentWave = game.Statistics.Waves;
 
 			if (generators.Length == 0)
 				throw new YamlInvalidNodeException("The GameMode WAVES can not be executed because there are no available PatrolGenerators for it.");
@@ -70,6 +72,11 @@ namespace WarriorsSnuggery
 				if (actor.IsBot)
 					actor.BotPart.Target = new Objects.Weapons.Target(game.World.LocalPlayer);
 			}
+		}
+
+		public int CurrentWave()
+		{
+			return currentWave;
 		}
 
 		public bool Done()

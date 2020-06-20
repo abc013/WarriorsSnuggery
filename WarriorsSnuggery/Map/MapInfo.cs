@@ -68,7 +68,9 @@ namespace WarriorsSnuggery.Maps
 		{
 			var piece = stats.SaveName + "_map";
 			var size = RuleReader.Read(FileExplorer.Saves, stats.SaveName + "_map.yaml").First(n => n.Key == "Size").Convert<MPos>();
-			return new MapInfo(piece, 0, size, Color.White, stats.Type, new[] { stats.Mode }, -1, 0, int.MaxValue, new TerrainGeneratorInfo(0, new MiniTextNode[0]), new MapGeneratorInfo[0], MPos.Zero, true, true);
+			var type = MapCreator.GetType(stats.MapType);
+			var mapGeneratorInfos = type == null ? new MapGeneratorInfo[0] : type.GeneratorInfos;
+			return new MapInfo(piece, 0, size, Color.White, stats.Type, new[] { stats.Mode }, -1, 0, int.MaxValue, new TerrainGeneratorInfo(0, new MiniTextNode[0]), mapGeneratorInfos, MPos.Zero, true, true);
 		}
 
 		public static MapInfo EditorMapTypeFromPiece(string piece, MPos size)
@@ -206,6 +208,14 @@ namespace WarriorsSnuggery.Maps
 		public static MapInfo GetType(string name)
 		{
 			return types[name];
+		}
+
+		public static string GetName(MapInfo info, GameStatistics stats)
+		{
+			if (info.FromSave)
+				return stats.MapType;
+
+			return types.FirstOrDefault(t => t.Value == info).Key;
 		}
 
 		public static MapInfo FindMainMenuMap(int level)

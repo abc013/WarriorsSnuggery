@@ -366,6 +366,11 @@ namespace WarriorsSnuggery
 			ChangeScreen(ScreenType.DEFEAT);
 		}
 
+		public int CurrentWave()
+		{
+			return waveController != null ? waveController.CurrentWave() : 0;
+		}
+
 		public Actor FindValidTarget(CPos pos, int team)
 		{
 			if (KeyInput.IsKeyDown(Key.ShiftLeft, 0))
