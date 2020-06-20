@@ -111,7 +111,7 @@ namespace WarriorsSnuggery.UI
 
 			tooltip = new Tooltip(position, node.Name + " : " + node.Cost, node.GetInformation(true));
 
-			if (node.Unlocked || game.Statistics.UnlockedSpells.Contains(node.InnerName))
+			if (node.Unlocked || Program.IgnoreTech || game.Statistics.UnlockedSpells.Contains(node.InnerName))
 				HighlightVisible = true;
 		}
 
@@ -148,12 +148,6 @@ namespace WarriorsSnuggery.UI
 
 			if (available)
 				return;
-
-			if (Program.IgnoreTech)
-			{
-				available = true;
-				return;
-			}
 
 			foreach (var before in node.Before)
 			{
