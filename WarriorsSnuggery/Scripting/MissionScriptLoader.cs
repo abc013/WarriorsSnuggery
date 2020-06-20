@@ -44,6 +44,8 @@ namespace WarriorsSnuggery.Scripting
                 MetadataReference.CreateFromFile(FileExplorer.MainDirectory + Path.DirectorySeparatorChar + "WarriorsSnuggery.dll"),
                 MetadataReference.CreateFromFile(assemblyLocation + Path.DirectorySeparatorChar + "System.Runtime.dll"),
                 MetadataReference.CreateFromFile(assemblyLocation + Path.DirectorySeparatorChar + "System.Runtime.Extensions.dll"),
+                MetadataReference.CreateFromFile(assemblyLocation + Path.DirectorySeparatorChar + "System.Collections.dll"),
+                MetadataReference.CreateFromFile(assemblyLocation + Path.DirectorySeparatorChar + "System.Linq.dll"),
                 MetadataReference.CreateFromFile(assemblyLocation + Path.DirectorySeparatorChar + "mscorlib.dll")
             )
             .AddSyntaxTrees(CSharpSyntaxTree.ParseText(content));
