@@ -20,12 +20,10 @@
 			TextureID = TextureManager.Create(Size);
 		}
 
-		public void CreateTexture(bool final)
+		public void CreateTexture()
 		{
 			TextureManager.Write(TextureID, Data, Size);
-
-			if (final)
-				Data = null;
+			Data = null;
 		}
 
 		public void Dispose()

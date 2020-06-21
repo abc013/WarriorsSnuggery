@@ -17,6 +17,8 @@ namespace WarriorsSnuggery
 
 		public static int BatchSize = 4096;
 
+		public static int MaxSheets = 4;
+
 		public static int SheetSize = 1024;
 		public static float SheetHalfPixel = 0.1f / SheetSize;
 
@@ -84,6 +86,10 @@ namespace WarriorsSnuggery
 				{
 					case "BatchSize":
 						BatchSize = node.Convert<int>();
+
+						break;
+					case "MaxSheets":
+						MaxSheets = node.Convert<int>();
 
 						break;
 					case "SheetSize":
@@ -164,6 +170,7 @@ namespace WarriorsSnuggery
 			using var writer = new System.IO.StreamWriter(FileExplorer.MainDirectory + "Settings.yaml");
 
 			writer.WriteLine("BatchSize=" + BatchSize);
+			writer.WriteLine("MaxSheets=" + MaxSheets);
 			writer.WriteLine("SheetSize=" + SheetSize);
 			writer.WriteLine("FrameLimiter=" + FrameLimiter);
 			writer.WriteLine("ScrollSpeed=" + ScrollSpeed.ToString(FloatFormat));

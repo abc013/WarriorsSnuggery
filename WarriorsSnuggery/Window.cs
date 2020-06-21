@@ -99,7 +99,7 @@ namespace WarriorsSnuggery
 			base.OnLoad();
 
 			MasterRenderer.Initialize();
-			SpriteManager.CreateSheet(4);
+			SpriteManager.InitSheets();
 
 			var font = Timer.Start();
 			//Icon = new WindowIcon(new OpenToolkit.Windowing.Common.Input.Image(FileExplorer.Misc + "/warsnu.ico"));

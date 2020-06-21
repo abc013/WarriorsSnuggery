@@ -17,7 +17,7 @@ namespace WarriorsSnuggery.Graphics
 		public readonly int Width;
 		public readonly int Height;
 
-		public TextureInfo(string file, bool searchFile = true) : this(file, TextureType.IMAGE, 0, 0, 0, searchFile) { }
+		public TextureInfo(string file) : this(file, TextureType.IMAGE, 0, 0, 0, true) { }
 
 		public TextureInfo(string file, TextureType type, int tick, int width, int height, bool searchFile = true)
 		{

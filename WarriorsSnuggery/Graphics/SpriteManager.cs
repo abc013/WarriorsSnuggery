@@ -2,23 +2,23 @@
 
 namespace WarriorsSnuggery.Graphics
 {
-	public class SpriteManager
+	public static class SpriteManager
 	{
 		public static Sheet[] Sheets;
 		public static int CurrentSheet;
 
 		static readonly Dictionary<int, Texture[]> hashedTextures = new Dictionary<int, Texture[]>();
 
-		public static void CreateSheet(int maxSheets)
+		public static void InitSheets()
 		{
-			Sheets = new Sheet[maxSheets];
+			Sheets = new Sheet[Settings.MaxSheets];
 			CurrentSheet = 0;
 
 			Sheets[CurrentSheet] = new Sheet(Settings.SheetSize);
 			SheetBuilder.UseSheet(Sheets[CurrentSheet]);
 		}
 
-		public static void UseNextSheet()
+		static void nextSheet()
 		{
 			CurrentSheet++;
 
@@ -50,7 +50,7 @@ namespace WarriorsSnuggery.Graphics
 			for (int i = 0; i < data.Length; i++)
 			{
 				if (!SheetBuilder.IsSpaceLeft(info.Width, info.Height))
-					UseNextSheet();
+					nextSheet();
 
 				textures[i] = SheetBuilder.WriteTexture(data[i], info);
 			}
@@ -68,7 +68,7 @@ namespace WarriorsSnuggery.Graphics
 			for (int i = 0; i < data.Length; i++)
 			{
 				if (!SheetBuilder.IsSpaceLeft(font.CharSizes[i].X, font.CharSizes[i].Y))
-					UseNextSheet();
+					nextSheet();
 
 				textures[i] = SheetBuilder.WriteTexture(data[i], new TextureInfo(font.FontName, TextureType.IMAGE, 0, font.CharSizes[i].X, font.CharSizes[i].Y, false));
 			}
@@ -99,7 +99,7 @@ namespace WarriorsSnuggery.Graphics
 					continue;
 
 				Loader.BitmapSaver.Save(FileExplorer.Logs + "spritesheet_" + i + ".png", sheet.Data, sheet.Size);
-				sheet.CreateTexture(true);
+				sheet.CreateTexture();
 				i++;
 			}
 			SheetBuilder.Clear();
