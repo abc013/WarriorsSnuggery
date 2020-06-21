@@ -1,6 +1,4 @@
-﻿using WarriorsSnuggery.Audio;
-
-namespace WarriorsSnuggery
+﻿namespace WarriorsSnuggery.Audio
 {
 	public static class AudioController
 	{

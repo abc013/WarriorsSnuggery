@@ -1,6 +1,6 @@
 using OpenToolkit.Mathematics;
 
-namespace WarriorsSnuggery
+namespace WarriorsSnuggery.Graphics
 {
 	public static class Camera
 	{

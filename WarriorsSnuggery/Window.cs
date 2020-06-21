@@ -4,6 +4,7 @@ using OpenToolkit.Windowing.Common.Input;
 using OpenToolkit.Windowing.Desktop;
 using OpenToolkit.Windowing.GraphicsLibraryFramework;
 using System;
+using WarriorsSnuggery.Audio;
 using WarriorsSnuggery.Graphics;
 
 namespace WarriorsSnuggery

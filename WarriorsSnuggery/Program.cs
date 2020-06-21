@@ -3,6 +3,7 @@ using OpenToolkit.Windowing.Common;
 using OpenToolkit.Windowing.Desktop;
 using System;
 using System.Diagnostics;
+using WarriorsSnuggery.Audio;
 
 namespace WarriorsSnuggery
 {

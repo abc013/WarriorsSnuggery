@@ -1,5 +1,6 @@
 using OpenToolkit.Windowing.Common.Input;
 using System;
+using WarriorsSnuggery.Graphics;
 
 namespace WarriorsSnuggery
 {

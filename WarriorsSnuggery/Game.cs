@@ -1,6 +1,7 @@
 using OpenToolkit.Windowing.Common.Input;
 using System;
 using System.Linq;
+using WarriorsSnuggery.Audio;
 using WarriorsSnuggery.Graphics;
 using WarriorsSnuggery.Maps;
 using WarriorsSnuggery.Objects;

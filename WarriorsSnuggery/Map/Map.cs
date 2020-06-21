@@ -1,6 +1,7 @@
 using System;
 using System.IO;
 using System.Text;
+using WarriorsSnuggery.Graphics;
 using WarriorsSnuggery.Maps;
 using WarriorsSnuggery.Objects;
 
