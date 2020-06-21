@@ -35,7 +35,10 @@ namespace WarriorsSnuggery
 			game = @new;
 			world = game.World;
 			BatchRenderer.Clear();
+
+			VisibilitySolver.Reset();
 			Camera.Reset();
+
 			ClearRenderLists();
 		}
 
@@ -86,11 +89,13 @@ namespace WarriorsSnuggery
 
 			if (!world.ShroudLayer.AllRevealed)
 			{
-				for (int x = (VisibilitySolver.lastCameraPosition.X) * 2; x < (VisibilitySolver.lastCameraPosition.X + VisibilitySolver.lastCameraZoom.X) * 2; x++)
+				var bounds = VisibilitySolver.GetBounds(out var position);
+
+				for (int x = (position.X) * 2; x < (position.X + bounds.X) * 2; x++)
 				{
 					if (x >= 0 && x < world.ShroudLayer.Size.X)
 					{
-						for (int y = (VisibilitySolver.lastCameraPosition.Y) * 2; y < (VisibilitySolver.lastCameraPosition.Y + VisibilitySolver.lastCameraZoom.Y) * 2; y++)
+						for (int y = (position.Y) * 2; y < (position.Y + bounds.Y) * 2; y++)
 						{
 							if (y >= 0 && y < world.ShroudLayer.Size.Y)
 							{
@@ -205,8 +210,8 @@ namespace WarriorsSnuggery
 			if (world.WallLayer == null)
 				return;
 
-			foreach (Wall w in world.WallLayer.Walls)
-				w?.CheckVisibility();
+			foreach (var wall in world.WallLayer.WallList)
+				wall.CheckVisibility();
 		}
 
 		static void checkWalls(MPos bottomleft, MPos topright)

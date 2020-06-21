@@ -8,8 +8,8 @@ namespace WarriorsSnuggery
 		static bool[,] visible = new bool[0, 0];
 		static MPos size = MPos.Zero;
 
-		public static MPos lastCameraPosition;
-		public static MPos lastCameraZoom;
+		static MPos lastCameraPosition;
+		static MPos lastCameraZoom;
 
 		static ShroudLayer shroud;
 
@@ -24,7 +24,6 @@ namespace WarriorsSnuggery
 
 		public static void SetMapDimensions(MPos size, ShroudLayer shroud)
 		{
-			Reset();
 			VisibilitySolver.size = size;
 			VisibilitySolver.shroud = shroud;
 			visible = new bool[size.X, size.Y];
@@ -61,9 +60,15 @@ namespace WarriorsSnuggery
 
 		static void cameraUpdated()
 		{
-			clear();
+			Array.Clear(visible, 0, visible.Length);
 			// Is the same as we would use here
 			ShroudUpdated();
+		}
+
+		public static MPos GetBounds(out MPos position)
+		{
+			position = lastCameraPosition;
+			return lastCameraZoom;
 		}
 
 		public static void ShroudUpdated()
@@ -75,9 +80,7 @@ namespace WarriorsSnuggery
 					for (int y = lastCameraPosition.Y; y < lastCameraPosition.Y + lastCameraZoom.Y; y++)
 					{
 						if (y >= 0 && y < size.Y)
-						{
 							visible[x, y] = checkShroud(x, y);
-						}
 					}
 				}
 			}
@@ -97,11 +100,14 @@ namespace WarriorsSnuggery
 
 		public static bool IsVisible(MPos position)
 		{
-			if (shroud.AllRevealed)
-				return true;
-
 			if (position.X < 0 || position.Y < 0 || position.X >= size.X || position.Y >= size.Y)
 				return false;
+
+			if (position.X < lastCameraPosition.X || position.Y < lastCameraPosition.Y || position.X >= lastCameraPosition.X + lastCameraZoom.X || position.Y >= lastCameraPosition.Y + lastCameraZoom.Y)
+				return false;
+
+			if (shroud.AllRevealed)
+				return true;
 
 			return visible[position.X, position.Y];
 		}
@@ -109,6 +115,9 @@ namespace WarriorsSnuggery
 		public static bool IsVisibleIgnoringBounds(MPos position)
 		{
 			if (size == MPos.Zero)
+				return false;
+
+			if (position.X < lastCameraPosition.X || position.Y < lastCameraPosition.Y || position.X >= lastCameraPosition.X + lastCameraZoom.X || position.Y >= lastCameraPosition.Y + lastCameraZoom.Y)
 				return false;
 
 			if (shroud.AllRevealed)
@@ -140,16 +149,10 @@ namespace WarriorsSnuggery
 
 		public static bool IsVisible(CPos position, MPos scale)
 		{
-			// Only check for corners since this should solve most of the cases.
 			return IsVisible(new CPos(position.X + scale.X, position.Y + scale.Y, position.Z))
 				|| IsVisible(new CPos(position.X - scale.X, position.Y + scale.Y, position.Z))
 				|| IsVisible(new CPos(position.X - scale.X, position.Y - scale.Y, position.Z))
 				|| IsVisible(new CPos(position.X + scale.X, position.Y - scale.Y, position.Z));
-		}
-
-		static void clear()
-		{
-			visible = new bool[size.X, size.Y];
 		}
 
 		public static int TilesVisible()

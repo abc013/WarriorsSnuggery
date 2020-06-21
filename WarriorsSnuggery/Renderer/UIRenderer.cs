@@ -30,12 +30,13 @@ namespace WarriorsSnuggery
 			UIRenderer.game = game;
 			BatchRenderer.Clear();
 			Update();
+
 			ClearRenderLists();
 		}
 
 		public static void Update()
 		{
-			matrix = Matrix4.CreateScale(1 / Camera.DefaultZoom * 2 / WindowInfo.Ratio, 1 / Camera.DefaultZoom * 2, 1f);
+			matrix = Matrix4.CreateScale(1 / Camera.UIZoom * 2 / WindowInfo.Ratio, 1 / Camera.UIZoom * 2, 1f);
 		}
 
 		public static void ClearRenderLists()

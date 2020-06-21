@@ -8,8 +8,7 @@ namespace WarriorsSnuggery
 	public sealed class TerrainLayer : ITickRenderable, IDisposable
 	{
 		public Terrain[,] Terrain { get; private set; }
-		List<Terrain> renderList = new List<Terrain>();
-		bool listChanged = false;
+		MPos size;
 
 		public TerrainLayer()
 		{
@@ -19,42 +18,59 @@ namespace WarriorsSnuggery
 		public void SetMapDimensions(MPos size)
 		{
 			Dispose();
+			this.size = size;
 			Terrain = new Terrain[size.X, size.Y];
 		}
 
 		public void Set(Terrain terrain)
 		{
 			var position = terrain.Position;
-			if (Terrain[position.X, position.Y] != null)
-			{
-				//Terrain[position.X, position.Y].Dispose();
-				renderList.Remove(Terrain[position.X, position.Y]);
-			}
 
 			Terrain[position.X, position.Y] = terrain;
-			renderList.Add(terrain);
-			listChanged = true;
 		}
 
 		public void Tick()
 		{
-			foreach (var terrain in renderList)
-				terrain.Tick();
+			var bounds = VisibilitySolver.GetBounds(out var position);
+
+			for (int x = position.X; x < position.X + bounds.X; x++)
+			{
+				if (x >= 0 && x < size.X)
+				{
+					for (int y = position.Y; y < position.Y + bounds.Y; y++)
+					{
+						if (y >= 0 && y < size.Y)
+							Terrain[x, y].Tick();
+					}
+				}
+			}
 		}
 
 		public void Render()
 		{
-			if (listChanged)
-				renderList = renderList.OrderBy(t => t.Type.OverlapHeight).ToList();
-			listChanged = false;
+			var bounds = VisibilitySolver.GetBounds(out var position);
+			var renderList = new List<Terrain>();
 
-			foreach (var terrain in renderList)
+			for (int x = position.X; x < position.X + bounds.X; x++)
+			{
+				if (x >= 0 && x < size.X)
+				{
+					for (int y = position.Y; y < position.Y + bounds.Y; y++)
+					{
+						if (y >= 0 && y < size.Y)
+							renderList.Add(Terrain[x, y]);
+					}
+				}
+			}
+			var renderEnum = renderList.OrderBy(t => t.Type.OverlapHeight);
+
+			foreach (var terrain in renderEnum)
 				terrain.Render();
 		}
 
 		public void Dispose()
 		{
-			renderList.Clear();
+			Terrain = new Terrain[0, 0];
 		}
 	}
 }

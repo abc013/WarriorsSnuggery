@@ -483,12 +483,6 @@ namespace WarriorsSnuggery
 			World.Dispose();
 
 			ScreenControl.DisposeScreens();
-
-			WorldRenderer.ClearRenderLists();
-			UIRenderer.ClearRenderLists();
-
-			VisibilitySolver.Reset();
-			Camera.Reset();
 		}
 	}
 }

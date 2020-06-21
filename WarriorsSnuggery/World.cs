@@ -127,11 +127,7 @@ namespace WarriorsSnuggery
 
 			var toRender = Objects.ToList(); // Copy array
 			toRender.AddRange(Actors); // Add actors
-			foreach (var wall in WallLayer.Walls)
-			{
-				if (wall != null)
-					toRender.Add(wall);
-			}
+			toRender.AddRange(WallLayer.WallList); // Add walls
 
 			toRender = toRender.OrderBy(e => e.GraphicPosition.Z + (e.Position.Y - 512) * 2).ToList();
 			ToRender = toRender;

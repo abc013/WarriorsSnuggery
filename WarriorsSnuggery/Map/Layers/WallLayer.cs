@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using WarriorsSnuggery.Objects;
 
 namespace WarriorsSnuggery
@@ -6,6 +7,7 @@ namespace WarriorsSnuggery
 	public sealed class WallLayer : IRenderable, IDisposable
 	{
 		public Wall[,] Walls { get; private set; }
+		public readonly List<Wall> WallList = new List<Wall>();
 		public MPos Size { get; private set; }
 
 		public WallLayer()
@@ -26,6 +28,7 @@ namespace WarriorsSnuggery
 			Remove(wall.LayerPosition);
 			Walls[wall.LayerPosition.X, wall.LayerPosition.Y] = wall;
 			notifyNeighbors(wall.LayerPosition, true, wall.Type.IgnoreForNearby);
+			WallList.Add(wall);
 		}
 
 		public void Remove(MPos pos)
@@ -33,7 +36,9 @@ namespace WarriorsSnuggery
 			if (Walls[pos.X, pos.Y] == null)
 				return;
 
-			Walls[pos.X, pos.Y].Dispose();
+			var toRemove = Walls[pos.X, pos.Y];
+			toRemove.Dispose();
+			WallList.Remove(toRemove);
 			Walls[pos.X, pos.Y] = null;
 			notifyNeighbors(pos, false, false);
 		}
@@ -175,14 +180,17 @@ namespace WarriorsSnuggery
 
 		public void Render()
 		{
-			foreach (var wall in Walls)
-				wall?.Render();
+			foreach (var wall in WallList)
+				wall.Render();
 		}
 
 		public void Dispose()
 		{
-			foreach (var wall in Walls)
-				wall?.Dispose();
+			Walls = new Wall[0, 0];
+			Size = MPos.Zero;
+			foreach (var wall in WallList)
+				wall.Dispose();
+			WallList.Clear();
 		}
 	}
 }
