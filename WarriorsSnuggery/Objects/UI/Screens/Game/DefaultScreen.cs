@@ -132,7 +132,7 @@ namespace WarriorsSnuggery.UI
 
 		void selectNewEnemy()
 		{
-			targetedEnemy = game.World.Actors.Find(a => a.Team != Actor.PlayerTeam && a.Team != Actor.NeutralTeam && !a.Disposed);
+			targetedEnemy = game.World.Actors.Find(a => a.Team != Actor.PlayerTeam && a.Team != Actor.NeutralTeam && !a.Disposed && a.WorldPart != null && a.WorldPart.KillForVictory);
 		}
 
 		public override void Hide()
@@ -268,7 +268,7 @@ namespace WarriorsSnuggery.UI
 		{
 			var pos = Camera.LookAt + new CPos(0, -2048, 0) - targetedEnemy.GraphicPosition;
 
-			enemyArrow.Visible = pos.SquaredFlatDist > 5120 * 5120;
+			enemyArrow.Visible = pos.SquaredFlatDist > 8192 * 8192;
 			if (!enemyArrow.Visible)
 				return;
 
