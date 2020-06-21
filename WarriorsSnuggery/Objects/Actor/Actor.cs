@@ -265,16 +265,16 @@ namespace WarriorsSnuggery.Objects
 		public override void CheckVisibility()
 		{
 			// TODO solve detection scale
-			visible = VisibilitySolver.IsVisible(GraphicPosition, new MPos(1024, 1024));
+			visible = VisibilitySolver.IsVisible(GraphicPosition, new MPos(512, 512));
 		}
 
 		public override void Render()
 		{
-			if (Effects.Any(e => e.Active && e.Spell.Type == Spells.EffectType.INVISIBILITY))
-				return;
-
 			if (visible)
 			{
+				if (Effects.Any(e => e.Active && e.Spell.Type == Spells.EffectType.INVISIBILITY))
+					return;
+
 				base.Render();
 
 				Parts.ForEach(p => p.Render());

@@ -2,6 +2,7 @@ using OpenToolkit.Graphics.OpenGL;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.Intrinsics.X86;
 using WarriorsSnuggery.Graphics;
 using WarriorsSnuggery.Objects;
 
@@ -184,9 +185,10 @@ namespace WarriorsSnuggery
 		public static void CheckVisibility(CPos pos, float zoom)
 		{
 			var zoomPos = new CPos((int)(zoom * WindowInfo.Ratio * 512), (int)(zoom * 512), 0);
-			var bottomleft = pos - zoomPos;
-			var topright = pos + zoomPos;
-			checkActors(bottomleft, topright);
+			// TODO determine margins in some way
+			var topLeft = pos - zoomPos - new CPos(3072, 3072, 0);
+			var bottomRight = pos + zoomPos + new CPos(3072, 3072, 0);
+			checkActors(topLeft, bottomRight);
 
 			var botLeft = VisibilitySolver.LookAt(pos, zoom);
 			var topRight = botLeft + VisibilitySolver.Zoom(zoom);
@@ -237,10 +239,10 @@ namespace WarriorsSnuggery
 				o.CheckVisibility();
 		}
 
-		static void checkActors(CPos bottomleft, CPos topright)
+		static void checkActors(CPos topLeft, CPos bottomRight)
 		{
-			var actors = world.Actors.Where(a => a.Position.X > bottomleft.X && a.Position.X < topright.X && a.Position.Y > bottomleft.Y && a.Position.Y < topright.Y);
-			var objects = world.Objects.Where(a => a.Position.X > bottomleft.X && a.Position.X < topright.X && a.Position.Y > bottomleft.Y && a.Position.Y < topright.Y);
+			var actors = world.Actors.Where(a => a.GraphicPosition.X > topLeft.X && a.GraphicPosition.X < bottomRight.X && a.GraphicPosition.Y > topLeft.Y && a.GraphicPosition.Y < bottomRight.Y);
+			var objects = world.Objects.Where(a => a.GraphicPosition.X > topLeft.X && a.GraphicPosition.X < bottomRight.X && a.GraphicPosition.Y > topLeft.Y && a.GraphicPosition.Y < bottomRight.Y);
 
 			foreach (Actor a in actors)
 				a.CheckVisibility();
