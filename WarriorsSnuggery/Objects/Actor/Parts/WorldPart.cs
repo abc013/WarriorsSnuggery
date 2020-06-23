@@ -31,6 +31,11 @@ namespace WarriorsSnuggery.Objects.Parts
 		[Desc("Down-right-corner of the selection box for possible targets.")]
 		public readonly CPos TargetBoxCorner2 = new CPos(256, -256, 0);
 
+		[Desc("Size of the visbility box.", "This is used to determine when to hide the actor after it is out of sight.")]
+		public readonly MPos VisibilityBox = new MPos(512, 512);
+		[Desc("offset of the visibility box.", "This is used to determine when to hide the actor after it is out of sight.")]
+		public readonly CPos VisibilityBoxOffset = CPos.Zero;
+
 		[Desc("Selects the bot behavior that will be used if the actor is controlled by a bot.", "Possible: TYPICAL, PANIC, MOTH, HIDE_AND_SEEK")]
 		public readonly BotBehaviorType BotBehavior = BotBehaviorType.TYPICAL;
 
@@ -48,6 +53,17 @@ namespace WarriorsSnuggery.Objects.Parts
 	public class WorldPart : ActorPart
 	{
 		readonly WorldPartInfo info;
+
+		public MPos VisibilityBox
+		{
+			get { return info.VisibilityBox; }
+			set { }
+		}
+		public CPos VisibilityBoxOffset
+		{
+			get { return info.VisibilityBoxOffset; }
+			set { }
+		}
 
 		public bool ShowDamage
 		{

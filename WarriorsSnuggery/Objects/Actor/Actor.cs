@@ -7,14 +7,6 @@ using WarriorsSnuggery.Physics;
 
 namespace WarriorsSnuggery.Objects
 {
-	public enum ActorAction
-	{
-		IDLING,
-		ATTACKING,
-		MOVING,
-		ALL
-	}
-
 	public sealed class Actor : PhysicsObject
 	{
 		public readonly World World;
@@ -264,8 +256,10 @@ namespace WarriorsSnuggery.Objects
 
 		public override void CheckVisibility()
 		{
-			// TODO solve detection scale
-			visible = VisibilitySolver.IsVisible(GraphicPosition, new MPos(512, 512));
+			if (WorldPart != null)
+				visible = VisibilitySolver.IsVisible(GraphicPosition + WorldPart.VisibilityBoxOffset, WorldPart.VisibilityBox);
+			else
+				visible = VisibilitySolver.IsVisible(GraphicPosition, new MPos(512, 512));
 		}
 
 		public override void Render()
