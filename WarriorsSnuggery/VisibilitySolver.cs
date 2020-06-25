@@ -48,7 +48,8 @@ namespace WarriorsSnuggery
 			var zoom = Camera.CurrentZoom;
 			lastCameraPosition = LookAt(pos, zoom);
 
-			cameraUpdated();
+			Array.Clear(visible, 0, visible.Length);
+			ShroudUpdated();
 		}
 
 		public static MPos LookAt(CPos pos, float zoom)
@@ -56,13 +57,6 @@ namespace WarriorsSnuggery
 			var xPos = (int)Math.Floor(pos.X / 1024f - (zoom * WindowInfo.Ratio / 2));
 			var yPos = (int)Math.Floor(pos.Y / 1024f - (zoom / 2));
 			return new MPos(xPos, yPos);
-		}
-
-		static void cameraUpdated()
-		{
-			Array.Clear(visible, 0, visible.Length);
-			// Is the same as we would use here
-			ShroudUpdated();
 		}
 
 		public static MPos GetBounds(out MPos position)
