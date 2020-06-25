@@ -5,6 +5,7 @@
 - [OpenTK](https://github.com/opentk/opentk)
 - System.Drawing.Common
 - System.Runtime.Loader
+
 All dependencies are available on NuGet.
 
 ## Building the project (Windows, Visual Studio)
