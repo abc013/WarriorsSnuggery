@@ -39,6 +39,9 @@ namespace WarriorsSnuggery.Objects.Parts
 		[Desc("Selects the bot behavior that will be used if the actor is controlled by a bot.", "Possible: TYPICAL, PANIC, MOTH, HIDE_AND_SEEK")]
 		public readonly BotBehaviorType BotBehavior = BotBehaviorType.TYPICAL;
 
+		[Desc("Selects a sound that will always be played while the actor is alive.")]
+		public readonly SoundType IdleSound;
+
 		public override ActorPart Create(Actor self)
 		{
 			return new WorldPart(self, this);
@@ -111,15 +114,32 @@ namespace WarriorsSnuggery.Objects.Parts
 			set { }
 		}
 
+		readonly Sound sound;
+
 		public WorldPart(Actor self, WorldPartInfo info) : base(self)
 		{
 			this.info = info;
+			if (info.IdleSound != null)
+			{
+				sound = new Sound(info.IdleSound);
+				sound.Play(self.Position, true);
+			}
 		}
 
 		public bool InTargetBox(CPos pos)
 		{
 			var diff = pos - self.Position;
 			return diff.X > info.TargetBoxCorner1.X && diff.X < info.TargetBoxCorner2.X && diff.Y > -info.TargetBoxCorner1.Y && diff.Y < -info.TargetBoxCorner2.Y;
+		}
+
+		public override void OnMove(CPos old, CPos speed)
+		{
+			sound?.SetPosition(self.Position);
+		}
+
+		public override void OnDispose()
+		{
+			sound?.Stop();
 		}
 	}
 }
