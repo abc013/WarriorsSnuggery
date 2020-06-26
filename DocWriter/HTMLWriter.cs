@@ -187,7 +187,7 @@ namespace WarriorsSnuggery
 
 		public static void WriteWalls(StreamWriter writer)
 		{
-			TypeWriter.Write(writer, "WarriorsSnuggery.Objects.WallType", new object[] { 0, new MiniTextNode[0], true });
+			TypeWriter.Write(writer, "WarriorsSnuggery.Objects.WallType", new object[] { (short)0, new MiniTextNode[0], true });
 		}
 
 		public static void WriteWeapons(StreamWriter writer)

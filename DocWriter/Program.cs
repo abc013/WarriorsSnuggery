@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 
@@ -61,38 +62,48 @@ namespace WarriorsSnuggery
 				return;
 			}
 
-			try
+			if (Debugger.IsAttached)
+				Start(types);
+			else
 			{
-				using var writer = new StreamWriter(FileExplorer.MainDirectory + "Documentation.html");
-
-				Console.WriteLine("Generating document, please wait...");
-				HTMLWriter.WriteHead(writer);
-
-				foreach (var type in types)
+				try
 				{
-					Console.ForegroundColor = ConsoleColor.White;
-					Console.WriteLine("Reading " + type + "...");
-					Console.ResetColor();
-					HTMLWriter.WriteDoc(writer, type);
+					Start(types);
 				}
-
-				HTMLWriter.WriteEnd(writer);
-
-				writer.Flush();
-				writer.Close();
-			}
-			catch (Exception)
-			{
-				Console.ForegroundColor = ConsoleColor.Red;
-				Console.WriteLine("Failed to init document/write rules.");
-				Console.ReadKey();
-				return;
+				catch (Exception)
+				{
+					Console.ForegroundColor = ConsoleColor.Red;
+					Console.WriteLine("Failed to init document/write rules.");
+					Console.ReadKey();
+					return;
+				}
 			}
 
 			Console.ForegroundColor = ConsoleColor.White;
 			Console.WriteLine("--------------------------------------------------------------");
 			Console.WriteLine("Done!");
 			Console.ReadKey();
+		}
+
+		static void Start(DocumentationType[] types)
+		{
+			using var writer = new StreamWriter(FileExplorer.MainDirectory + "Documentation.html");
+
+			Console.WriteLine("Generating document, please wait...");
+			HTMLWriter.WriteHead(writer);
+
+			foreach (var type in types)
+			{
+				Console.ForegroundColor = ConsoleColor.White;
+				Console.WriteLine("Reading " + type + "...");
+				Console.ResetColor();
+				HTMLWriter.WriteDoc(writer, type);
+			}
+
+			HTMLWriter.WriteEnd(writer);
+
+			writer.Flush();
+			writer.Close();
 		}
 
 		static DocumentationType[] getTypes(string input)
