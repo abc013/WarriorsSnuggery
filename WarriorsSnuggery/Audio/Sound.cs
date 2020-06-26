@@ -52,10 +52,19 @@ namespace WarriorsSnuggery
 			defaultPitch = info.Pitch + info.RandomPitch * (float)(Program.SharedRandom.NextDouble() - 0.5);
 		}
 
-		public void Play(CPos position, bool loops)
+		public void Play(CPos position, bool loops, bool overwrite = true)
 		{
 			var vector = convert(position);
 			dist = vector.Dist;
+
+			if (source != null)
+			{
+				if (overwrite)
+					Stop();
+				else
+					return;
+			}
+			
 			source = AudioController.Play(info.Buffer, inGame, defaultVolume * distanceVolume(), defaultPitch, vector, loops);
 		}
 

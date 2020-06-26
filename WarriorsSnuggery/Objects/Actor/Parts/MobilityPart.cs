@@ -79,7 +79,7 @@ namespace WarriorsSnuggery.Objects.Parts
 				}
 
 				if (oldVelocity == CPos.Zero)
-					sound?.Play(self.Position, true);
+					sound?.Play(self.Position, true, false);
 			}
 			else if (oldVelocity == CPos.Zero)
 				sound?.Stop();
