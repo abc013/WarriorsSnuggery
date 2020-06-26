@@ -11,6 +11,14 @@ namespace WarriorsSnuggery.Objects.Parts
 		TICK
 	}
 
+	public enum SpawnPartTypes
+	{
+		ACTOR,
+		PARTICLE,
+		WEAPON,
+		NONE
+	}
+
 	[Desc("Spawns objects when the object takes damage.", "Without the health rule, this rule is useless.")]
 	public class SpawnPartInfo : PartInfo
 	{
@@ -28,8 +36,8 @@ namespace WarriorsSnuggery.Objects.Parts
 		[Desc("Object will inherit Bot from the dead object.")]
 		public readonly bool InheritsBot;
 
-		[Desc("Type of the object.", "This can be set either to ACTOR, PARTICLE or WEAPON.")]
-		public readonly string Type;
+		[Desc("Type of the object.", "This can be set either to ACTOR, PARTICLE, WEAPON or NONE.")]
+		public readonly SpawnPartTypes Type;
 		[Desc("Condition to spawn.")]
 		public readonly Condition Condition;
 		[Desc("Defines when the objects should be spawned.", "possible: DAMAGE, DEATH, TICK")]
@@ -41,6 +49,9 @@ namespace WarriorsSnuggery.Objects.Parts
 		public readonly int Radius;
 		[Desc("Threshold for damage concerning the DAMAGE occasion.")]
 		public readonly int DamageThreshold = 2;
+
+		[Desc("Sound to play when spawning.")]
+		public readonly SoundType Sound;
 
 		[Desc("Spawn object at center of actor, not random.")]
 		public readonly bool AtCenter;
@@ -86,15 +97,20 @@ namespace WarriorsSnuggery.Objects.Parts
 
 		void create()
 		{
-			curTick = info.Tick;
 			if (info.Condition == null || info.Condition.True(self))
 			{
+				curTick = info.Tick;
+				if (info.Sound != null)
+				{
+					var sound = new Sound(info.Sound);
+					sound.Play(self.Position, false);
+				}
 				for (int i = 0; i < info.Count; i++)
-					createParticle();
+					createObject();
 			}
 		}
 
-		void createParticle()
+		void createObject()
 		{
 			if (self.World.Game.SharedRandom.NextDouble() > info.Probability)
 				return;
@@ -102,21 +118,21 @@ namespace WarriorsSnuggery.Objects.Parts
 			PhysicsObject @object;
 			switch (info.Type)
 			{
-				case "ACTOR":
+				case SpawnPartTypes.ACTOR:
 					var actor = ActorCreator.Create(self.World, info.Name, randomPosition(), info.InheritsTeam ? self.Team : Actor.NeutralTeam, info.InheritsBot && self.IsBot);
 
 					if (info.InheritsBot && self.IsBot)
 						actor.BotPart.Target = self.BotPart.Target;
 					@object = actor;
 					break;
-				case "PARTICLE":
+				case SpawnPartTypes.PARTICLE:
 					@object = ParticleCreator.Create(info.Name, randomPosition(), self.Height + info.Offset.Z, self.World.Game.SharedRandom);
 					break;
-				case "WEAPON":
+				case SpawnPartTypes.WEAPON:
 					@object = WeaponCreator.Create(self.World, info.Name, randomPosition(), self);
 					break;
 				default:
-					throw new YamlInvalidNodeException(string.Format("Spawn does not create objects of type '{0}'.", info.Type));
+					return;
 			}
 			@object.Height = self.Height + info.Offset.Z;
 			self.World.Add(@object);
