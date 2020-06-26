@@ -99,6 +99,11 @@ table1=
 		Count=10
 		Name=wood_debris
 		Type=PARTICLE
+		Sound=
+			Name=planks_falling
+			RandomPitch=0.2
+			RandomVolume=0.3
+			Volume=0.6
 
 table1_debris=
 	Sprite=
