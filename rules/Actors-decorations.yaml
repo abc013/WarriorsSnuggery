@@ -57,6 +57,10 @@ firepot=
 		Type=PARTICLE
 		Tick=1
 		Offset=0,-64,576
+	World=
+		IdleSound=
+			Name=fire
+			Volume=0.5
 
 furCarpet=
 	Sprite=

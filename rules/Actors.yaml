@@ -309,6 +309,14 @@ poisonegg=
 		Name=poisoneggexplode
 		Type=WEAPON
 		AtCenter=true
+	Spawn=
+		Occasion=Tick
+		Tick=60
+		Type=NONE
+		AtCenter=true
+		Sound=
+			Name=poisonegg_beep
+			Volume=0.3
 
 slime_block=
 	Sprite=
