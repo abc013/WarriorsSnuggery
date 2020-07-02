@@ -12,7 +12,6 @@ namespace WarriorsSnuggery.UI
 		readonly TextLine mana;
 
 		readonly MoneyDisplay money;
-		readonly TextLine menu, pause;
 		readonly TextLine waveText;
 		readonly Panel background;
 		readonly ActorList actorList;
@@ -70,11 +69,13 @@ namespace WarriorsSnuggery.UI
 			// SECTION MONEY
 			money = new MoneyDisplay(game, new CPos(6120 + 128 + 1536, 8192 - 1024, 0));
 			// SECTION MENUS
-			pause = new TextLine(new CPos(-2560, 8192 - 256, 0), FontManager.Pixel16, TextLine.OffsetType.MIDDLE);
+			var pause = new TextLine(new CPos(-2560, 8192 - 256, 0), FontManager.Pixel16, TextLine.OffsetType.MIDDLE);
 			pause.WriteText("Pause: '" + new Color(0.5f, 0.5f, 1f) + "P" + Color.White + "'");
+			Content.Add(pause);
 
-			menu = new TextLine(new CPos(2560, 8192 - 256, 0), FontManager.Pixel16, TextLine.OffsetType.MIDDLE);
+			var menu = new TextLine(new CPos(2560, 8192 - 256, 0), FontManager.Pixel16, TextLine.OffsetType.MIDDLE);
 			menu.WriteText("Menu: '" + new Color(0.5f, 0.5f, 1f) + "Escape" + Color.White + "'");
+			Content.Add(pause);
 
 			// SECTION HEALTH
 			health = new TextLine(new CPos(0, 8192 - 2048, 0), FontManager.Papyrus24, TextLine.OffsetType.MIDDLE);
@@ -171,10 +172,6 @@ namespace WarriorsSnuggery.UI
 			}
 
 			ColorManager.DrawRect(new CPos(-6120, 8192 - 2560, 0), new CPos(6120, 8192, 0), new Color(0, 0, 0, 128));
-
-			// SECTION MENUS
-			menu.Render();
-			pause.Render();
 
 			const int edge = 64;
 			// SECTION HEALTH
