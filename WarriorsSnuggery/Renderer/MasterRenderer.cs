@@ -128,9 +128,6 @@ namespace WarriorsSnuggery
 				GL.LineWidth(ColorManager.DefaultLineWidth);
 				Program.CheckGraphicsError("GLTests");
 
-				if (Settings.AntiAliasing)
-					EnableAliasing();
-
 				GL.Enable(EnableCap.ScissorTest);
 				GL.Enable(EnableCap.Blend);
 				//GL.Enable(EnableCap.AlphaTest); WUT why does this work
@@ -206,26 +203,6 @@ namespace WarriorsSnuggery
 				UIRenderer.Render();
 				Program.CheckGraphicsError("GLRendering_UI");
 			}
-		}
-
-		public static void EnableAliasing()
-		{
-			//lock (GLLock)
-			//{
-			//	GL.Enable(EnableCap.LineSmooth);
-			//	GL.Enable(EnableCap.PointSmooth);
-			//}
-			Program.CheckGraphicsError("Aliasing_On");
-		}
-
-		public static void DisableAliasing()
-		{
-			//lock (GLLock)
-			//{
-			//	GL.Disable(EnableCap.LineSmooth);
-			//	GL.Disable(EnableCap.PointSmooth);
-			//}
-			Program.CheckGraphicsError("Aliasing_Off");
 		}
 
 		public static void SetLineWidth(float width)

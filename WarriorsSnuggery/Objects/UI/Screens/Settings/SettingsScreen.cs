@@ -9,7 +9,7 @@ namespace WarriorsSnuggery.UI
 	{
 		readonly Game game;
 
-		readonly CheckBox fullscreenCheck, antiAliasingCheck, developerModeCheck, pixelingCheck, textshadowCheck;
+		readonly CheckBox fullscreenCheck, vSyncCheck, developerModeCheck, pixelingCheck, textshadowCheck;
 		readonly TextBox widthWrite, heightWrite, frameLimiterWrite;
 		readonly SliderBar panningSlider, edgePanningSlider, masterVolumeSlider, effectVolumeSlider, musicVolumeSlider;
 
@@ -63,9 +63,9 @@ namespace WarriorsSnuggery.UI
 			Content.Add(heightWrite);
 
 			// Graphics
-			var antiAliasing = new TextLine(new CPos(-512, -3000, 0), FontManager.Pixel16);
-			antiAliasing.SetText("Enable Antialising:");
-			Content.Add(antiAliasing);
+			var vSync = new TextLine(new CPos(-512, -3000, 0), FontManager.Pixel16);
+			vSync.SetText("Enable V-Sync:");
+			Content.Add(vSync);
 			var pixeling = new TextLine(new CPos(-512, -2300, 0), FontManager.Pixel16);
 			pixeling.SetText("Enable Pixeling:");
 			Content.Add(pixeling);
@@ -73,11 +73,12 @@ namespace WarriorsSnuggery.UI
 			textshadow.SetText("Enable text shadows:");
 			Content.Add(textshadow);
 
-			antiAliasingCheck = CheckBoxCreator.Create("wooden", new CPos(6656, -3000, 0), Settings.AntiAliasing, (b) =>
+			vSyncCheck = CheckBoxCreator.Create("wooden", new CPos(6656, -3000, 0), Settings.VSync, (b) =>
 			{
-				Settings.AntiAliasing = b;
+				Settings.VSync = b;
+				Window.SetVSync();
 			});
-			Content.Add(antiAliasingCheck);
+			Content.Add(vSyncCheck);
 			pixelingCheck = CheckBoxCreator.Create("wooden", new CPos(6656, -2300, 0), Settings.EnablePixeling, (b) =>
 			{
 				Settings.EnablePixeling = b;
@@ -200,7 +201,7 @@ namespace WarriorsSnuggery.UI
 			Settings.Fullscreen = fullscreenCheck.Checked;
 			Settings.Width = int.Parse(widthWrite.Text);
 			Settings.Height = int.Parse(heightWrite.Text);
-			Settings.AntiAliasing = antiAliasingCheck.Checked;
+			Settings.VSync = vSyncCheck.Checked;
 			Settings.EnablePixeling = pixelingCheck.Checked;
 			Settings.EnableTextShadowing = textshadowCheck.Checked;
 
@@ -212,10 +213,6 @@ namespace WarriorsSnuggery.UI
 			Settings.Save();
 
 			Window.UpdateScreen();
-			if (Settings.AntiAliasing)
-				MasterRenderer.EnableAliasing();
-			else
-				MasterRenderer.DisableAliasing();
 
 			game.AddInfoMessage(150, "Settings saved!");
 		}

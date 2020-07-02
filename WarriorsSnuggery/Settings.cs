@@ -42,7 +42,7 @@ namespace WarriorsSnuggery
 
 		public static bool PartyMode = false;
 
-		public static bool AntiAliasing = false;
+		public static bool VSync = true;
 
 		public static bool EnablePixeling = false;
 
@@ -119,8 +119,8 @@ namespace WarriorsSnuggery
 					case "Height":
 						Height = node.Convert<int>();
 						break;
-					case "AntiAliasing":
-						AntiAliasing = node.Convert<bool>();
+					case "VSync":
+						VSync = node.Convert<bool>();
 						break;
 					case "EnablePixeling":
 						EnablePixeling = node.Convert<bool>();
@@ -179,7 +179,7 @@ namespace WarriorsSnuggery
 			writer.WriteLine("Fullscreen=" + Fullscreen.GetHashCode());
 			writer.WriteLine("Width=" + Width);
 			writer.WriteLine("Height=" + Height);
-			writer.WriteLine("AntiAliasing=" + AntiAliasing.GetHashCode());
+			writer.WriteLine("VSync=" + VSync.GetHashCode());
 			writer.WriteLine("EnablePixeling=" + EnablePixeling.GetHashCode());
 			writer.WriteLine("EnableTextShadowing=" + EnableTextShadowing.GetHashCode());
 			writer.WriteLine("FirstStarted=" + 0);

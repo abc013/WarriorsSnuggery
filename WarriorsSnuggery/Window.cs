@@ -54,7 +54,8 @@ namespace WarriorsSnuggery
 				WindowInfo.ScreenHeight = mode->Height;
 				WindowInfo.ScreenRefreshRate = mode->RefreshRate;
 			}
-			SetScreen();
+			setScreen();
+			setVSync();
 		}
 
 		public static void CloseWindow()
@@ -64,10 +65,11 @@ namespace WarriorsSnuggery
 
 		public static void UpdateScreen()
 		{
-			current.SetScreen();
+			current.setScreen();
+			current.setVSync();
 		}
 
-		public void SetScreen()
+		void setScreen()
 		{
 			if (Settings.Fullscreen && !Program.NoFullscreen)
 			{
@@ -84,6 +86,7 @@ namespace WarriorsSnuggery
 				var offsetY = (WindowInfo.ScreenHeight - Settings.Height) / 2;
 				ClientRectangle = new Box2i(offsetX, offsetY + 1, Settings.Width + offsetX, Settings.Height + offsetY);
 			}
+
 			RenderFrequency = Settings.FrameLimiter == 0 ? WindowInfo.ScreenRefreshRate : Settings.FrameLimiter;
 			WindowInfo.Width = ClientRectangle.Size.X;
 			WindowInfo.Height = ClientRectangle.Size.Y;
@@ -91,6 +94,16 @@ namespace WarriorsSnuggery
 			ColorManager.WindowRescaled();
 
 			MasterRenderer.UpdateView();
+		}
+
+		public static void SetVSync()
+		{
+			current.setVSync();
+		}
+
+		void setVSync()
+		{
+			VSync = Settings.VSync ? VSyncMode.On : VSyncMode.Off;
 		}
 
 		protected override void OnLoad()
