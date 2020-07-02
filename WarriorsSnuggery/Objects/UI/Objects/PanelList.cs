@@ -75,7 +75,7 @@ namespace WarriorsSnuggery.UI
 			}
 			if (mouseOnPanel)
 			{
-				if ((scrolled < Math.Round(Container.Count / (float)Size.X - Size.Y) + 1) && (KeyInput.IsKeyDown("down", 5) || MouseInput.WheelState > 0))
+				if ((scrolled < Math.Floor(Container.Count / (float)Size.X - Size.Y) + 1) && (KeyInput.IsKeyDown("down", 5) || MouseInput.WheelState > 0))
 				{
 					scrolled++;
 					UpdatePositions();
