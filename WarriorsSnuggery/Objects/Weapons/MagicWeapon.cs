@@ -91,7 +91,7 @@ namespace WarriorsSnuggery.Objects.Weapons
 
 			World.PhysicsLayer.UpdateSectors(this, updateSectors: false);
 
-			if (World.CheckCollision(this, false, new[] { Origin }))
+			if (World.CheckCollision(this, new[] { Origin }))
 				Detonate(new Target(Position, Height));
 		}
 

@@ -176,7 +176,7 @@ namespace WarriorsSnuggery.Objects
 
 			Position = pos;
 			Height = height;
-			var intersects = World.CheckCollision(this, false);
+			var intersects = World.CheckCollision(this);
 			Position = oldpos;
 			Height = oldHeight;
 			var terrain = World.TerrainAt(pos);
@@ -191,7 +191,7 @@ namespace WarriorsSnuggery.Objects
 
 			Position = posX;
 			Height = height;
-			intersects = World.CheckCollision(this, false);
+			intersects = World.CheckCollision(this);
 			Position = oldpos;
 			Height = oldHeight;
 			terrain = World.TerrainAt(posX);
@@ -206,7 +206,7 @@ namespace WarriorsSnuggery.Objects
 			var posY = new CPos(Position.X, Position.Y + movement.Y, Position.Z);
 
 			Position = posY;
-			intersects = World.CheckCollision(this, false);
+			intersects = World.CheckCollision(this);
 			Position = oldpos;
 			Height = oldHeight;
 			terrain = World.TerrainAt(posY);

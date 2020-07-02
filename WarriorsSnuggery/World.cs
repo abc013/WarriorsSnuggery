@@ -125,12 +125,11 @@ namespace WarriorsSnuggery
 				objectsToAdd.Clear();
 			}
 
-			var toRender = Objects.ToList(); // Copy array
-			toRender.AddRange(Actors); // Add actors
-			toRender.AddRange(WallLayer.WallList); // Add walls
+			ToRender = Objects.ToList(); // Copy array
+			ToRender.AddRange(Actors); // Add actors
+			ToRender.AddRange(WallLayer.WallList); // Add walls
 
-			toRender = toRender.OrderBy(e => e.GraphicPosition.Z + (e.Position.Y - 512) * 2).ToList();
-			ToRender = toRender;
+			ToRender = ToRender.OrderBy(e => e.GraphicPosition.Z + (e.Position.Y - 512) * 2).ToList();
 		}
 
 		public void TrophyCollected(string collected)
@@ -177,23 +176,20 @@ namespace WarriorsSnuggery
 			}
 		}
 
-		public bool CheckCollision(PhysicsObject obj, bool ignoreHeight, PhysicsObject[] ignoreObjects = null)
+		public bool CheckCollision(PhysicsObject obj, Actor[] toIgnore = null)
 		{
 			if (obj.Physics == null || obj.Physics.RadiusX == 0 || obj.Physics.Shape == Physics.Shape.NONE)
 				return false;
 
 			foreach (var p in obj.PhysicsSectors)
 			{
-				if (p.Check(obj, ignoreHeight, ignoreObjects))
+				if (p.Check(obj, toIgnore))
 					return true;
 			}
-
-			foreach (var wall in WallLayer.Walls)
+			
+			foreach (var wall in WallLayer.WallList)
 			{
-				if (wall == null || (ignoreObjects != null && ignoreObjects.Contains(wall)))
-					continue;
-
-				if (obj.Physics.Intersects(wall.Physics, ignoreHeight))
+				if (obj.Physics.Intersects(wall.Physics))
 					return true;
 			}
 

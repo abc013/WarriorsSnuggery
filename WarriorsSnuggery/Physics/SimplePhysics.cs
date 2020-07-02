@@ -25,7 +25,7 @@ namespace WarriorsSnuggery.Physics
 			HeightRadius = heightradius;
 		}
 
-		public bool Intersects(SimplePhysics other, bool ignoreHeight)
+		public bool Intersects(SimplePhysics other)
 		{
 			if (other == null)
 				return false;
@@ -33,7 +33,7 @@ namespace WarriorsSnuggery.Physics
 			if (Shape == Shape.NONE || other.Shape == Shape.NONE)
 				return false;
 
-			if (!ignoreHeight && Math.Abs(other.Height - Height) >= other.HeightRadius + HeightRadius)
+			if (Math.Abs(other.Height - Height) >= other.HeightRadius + HeightRadius)
 				return false;
 
 			var diff = other.Position - Position;

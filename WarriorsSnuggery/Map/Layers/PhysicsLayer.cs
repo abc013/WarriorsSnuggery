@@ -129,9 +129,9 @@ namespace WarriorsSnuggery
 			objects.Remove(obj);
 		}
 
-		public bool Check(PhysicsObject obj, bool ignoreHeight = false, PhysicsObject[] ignoreObjects = null)
+		public bool Check(PhysicsObject obj, Actor[] toIgnore = null)
 		{
-			return objects.Any((o) => o.Physics != obj.Physics && (ignoreObjects == null || !ignoreObjects.Contains(o)) && o.Physics.Intersects(obj.Physics, ignoreHeight));
+			return objects.Any((o) => o.Physics != obj.Physics && (toIgnore == null || !toIgnore.Contains(o)) && o.Physics.Intersects(obj.Physics));
 		}
 
 		public PhysicsObject[] GetObjects(PhysicsObject[] ignoreObjects = null)
