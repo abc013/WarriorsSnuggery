@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using WarriorsSnuggery.Objects;
+using WarriorsSnuggery.Objects.Parts;
 
 namespace WarriorsSnuggery.Maps
 {
@@ -134,6 +135,13 @@ namespace WarriorsSnuggery.Maps
 				if (actor.IsPlayer) world.LocalPlayer = a;
 				if (actor.BotTarget.X != int.MaxValue)
 					a.BotPart.Target = new Objects.Weapons.Target(actor.BotTarget, 0);
+				if (actor.IsPlayerSwitch)
+				{
+					var part = (PlayerSwitchPart)a.Parts.Find(p => p is PlayerSwitchPart);
+					part.ActorType = actor.ToActor;
+					part.CurrentTick = actor.Duration;
+					part.RelativeHP = actor.RelativeHP;
+				}
 				world.Add(a);
 			}
 		}

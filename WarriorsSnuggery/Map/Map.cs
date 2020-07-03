@@ -4,6 +4,7 @@ using System.Text;
 using WarriorsSnuggery.Graphics;
 using WarriorsSnuggery.Maps;
 using WarriorsSnuggery.Objects;
+using WarriorsSnuggery.Objects.Parts;
 
 namespace WarriorsSnuggery
 {
@@ -212,7 +213,16 @@ namespace WarriorsSnuggery
 						writer.WriteLine("\t\t" + "BotTarget=" + a.BotPart.Target.Position);
 				}
 				if (a.IsPlayer)
-					writer.WriteLine("\t\t" + "IsPlayer=" + a.IsPlayer);
+					writer.WriteLine("\t\t" + "IsPlayer=true");
+				if (a.IsPlayerSwitch)
+				{
+					writer.WriteLine("\t\t" + "IsPlayerSwitch=true");
+					var part = (PlayerSwitchPart)a.Parts.Find(p => p is PlayerSwitchPart);
+
+					writer.WriteLine("\t\t" + "Duration=" + part.CurrentTick);
+					writer.WriteLine("\t\t" + "ToActor=" + ActorCreator.GetName(part.ActorType));
+					writer.WriteLine("\t\t" + "RelativeHP=" + part.RelativeHP);
+				}
 			}
 
 			writer.Flush();

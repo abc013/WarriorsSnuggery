@@ -42,6 +42,9 @@ namespace WarriorsSnuggery.Objects.Parts
 		[Desc("Selects a sound that will always be played while the actor is alive.")]
 		public readonly SoundType IdleSound;
 
+		[Desc("Determines an actor that is used when switching to another actor.", "When left empty, the switch to the next actor will be instant.")]
+		public readonly string PlayerSwitchActor = string.Empty;
+
 		public override ActorPart Create(Actor self)
 		{
 			return new WorldPart(self, this);
@@ -111,6 +114,12 @@ namespace WarriorsSnuggery.Objects.Parts
 		public BotBehaviorType BotBehavior
 		{
 			get { return info.BotBehavior; }
+			set { }
+		}
+
+		public string PlayerSwitchActor
+		{
+			get { return info.PlayerSwitchActor; }
 			set { }
 		}
 

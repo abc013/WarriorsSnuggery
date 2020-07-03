@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using WarriorsSnuggery.Graphics;
 using WarriorsSnuggery.Objects;
+using WarriorsSnuggery.Objects.Parts;
 using WarriorsSnuggery.Objects.Weapons;
 using WarriorsSnuggery.Trophies;
 
@@ -28,9 +29,8 @@ namespace WarriorsSnuggery
 
 		public Actor LocalPlayer;
 
-		public bool PlayerSwitching { get { return Switch != null; } }
+		public bool PlayerSwitching { get { return LocalPlayer.IsPlayerSwitch; } }
 		public bool PlayerAlive = true;
-		public PlayerSwitch Switch;
 
 		public int PlayerDamagedTick = 0;
 		public bool KeyFound;
@@ -89,8 +89,6 @@ namespace WarriorsSnuggery
 			if (LocalPlayer != null && !Game.Editor && Camera.LockedToPlayer)
 				Camera.Position(LocalPlayer.GraphicPosition + (Game.ScreenControl.Focused is UI.DefaultScreen ? Camera.CamPlayerOffset : CPos.Zero));
 
-			Switch?.Tick();
-
 			foreach (var actor in Actors)
 				actor.Tick();
 			foreach (var @object in Objects)
@@ -145,24 +143,33 @@ namespace WarriorsSnuggery
 			Game.Statistics.MaxMana += TrophyManager.Trophies[collected].MaxManaIncrease;
 		}
 
-		public void BeginPlayerSwitch(ActorType to)
-		{
-			Switch = new PlayerSwitch(this, to);
-
-			LocalPlayer.Dispose();
-			LocalPlayer = null;
-		}
-
-		public void FinishPlayerSwitch(Actor @new)
+		public void FinishPlayerSwitch(Actor @new, ActorType type)
 		{
 			LocalPlayer = @new;
 			Add(@new);
 
-			Game.Statistics.Actor = ActorCreator.GetName(@new.Type);
+			Game.Statistics.Actor = ActorCreator.GetName(type);
 
 			VisibilitySolver.ShroudUpdated();
+		}
 
-			Switch = null;
+		public void BeginPlayerSwitch(ActorType to)
+		{
+			var health = LocalPlayer.Health != null ? LocalPlayer.Health.RelativeHP : 1;
+			if (LocalPlayer.WorldPart == null || string.IsNullOrWhiteSpace(LocalPlayer.WorldPart.PlayerSwitchActor))
+			{
+				FinishPlayerSwitch(ActorCreator.Create(this, to, LocalPlayer.Position, LocalPlayer.Team, isPlayer: true, health: health), to);
+				LocalPlayer.Dispose();
+				return;
+			}
+
+			var switchActor = ActorCreator.Create(this, LocalPlayer.WorldPart.PlayerSwitchActor, LocalPlayer.Position, LocalPlayer.Team, isPlayer: true);
+			var switchPart = (PlayerSwitchPart)switchActor.Parts.Find(p => p is PlayerSwitchPart);
+			switchPart.RelativeHP = health;
+			switchPart.ActorType = to;
+			LocalPlayer.Dispose();
+			LocalPlayer = switchActor;
+			Add(switchActor);
 		}
 
 		public void PlayerKilled()

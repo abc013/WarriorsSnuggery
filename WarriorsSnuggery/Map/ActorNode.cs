@@ -14,6 +14,11 @@ namespace WarriorsSnuggery.Maps
 		public readonly CPos BotTarget = new CPos(int.MaxValue, 0, 0);
 		public readonly bool IsPlayer = false;
 
+		public readonly bool IsPlayerSwitch = false;
+		public readonly int Duration = 0;
+		public readonly ActorType ToActor;
+		public readonly float RelativeHP = 1f;
+
 		public ActorNode(int id, CPos position, MiniTextNode[] nodes)
 		{
 			ID = id;

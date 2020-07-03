@@ -13,6 +13,7 @@ namespace WarriorsSnuggery.Objects
 
 		public readonly bool IsPlayer;
 		public readonly bool IsBot;
+		public readonly bool IsPlayerSwitch;
 		public readonly uint ObjectID;
 
 		public bool IsAlive = true;
@@ -79,9 +80,7 @@ namespace WarriorsSnuggery.Objects
 
 			// Parts
 			foreach (var partinfo in type.PartInfos)
-			{
 				Parts.Add(partinfo.Create(this));
-			}
 
 			Mobility = (MobilityPart)Parts.Find(p => p is MobilityPart);
 			Health = (HealthPart)Parts.Find(p => p is HealthPart);
@@ -93,6 +92,8 @@ namespace WarriorsSnuggery.Objects
 			WorldPart = (WorldPart)Parts.Find(p => p is WorldPart);
 			if (WorldPart != null)
 				Height = WorldPart.Height;
+
+			IsPlayerSwitch = Parts.Any(p => p is PlayerSwitchPart);
 
 			if (isPlayer)
 				Parts.Add(new PlayerPart(this));

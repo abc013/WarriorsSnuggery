@@ -240,20 +240,6 @@ namespace WarriorsSnuggery.UI
 						game.SpellManager.Activate(spellList.CurrentSpell);
 				}
 			}
-			else
-			{
-				health.SetText(string.Empty);
-				healthPercentage += 0.03f * (1 - healthPercentage);
-				if (healthPercentage > 1)
-					healthPercentage = 1;
-
-				targetedEnemy = null;
-
-				mana.SetText(string.Empty);
-				manaPercentage += 0.03f * (1 - manaPercentage);
-				if (manaPercentage > 1)
-					manaPercentage = 1;
-			}
 
 			money.Tick();
 

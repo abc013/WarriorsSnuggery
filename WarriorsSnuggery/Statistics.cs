@@ -84,7 +84,7 @@ namespace WarriorsSnuggery
 		public void Update(Game game)
 		{
 			if (game.World.PlayerSwitching)
-				RelativeHP = game.World.Switch.RelativeHP;
+				RelativeHP = ((PlayerSwitchPart)game.World.LocalPlayer.Parts.Find(p => p is PlayerSwitchPart)).RelativeHP;
 			else
 				RelativeHP = game.World.LocalPlayer.Health == null ? 1 : game.World.LocalPlayer.Health.RelativeHP;
 		}
