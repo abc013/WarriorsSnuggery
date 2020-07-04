@@ -491,7 +491,6 @@ slime_small=
 		Targetable=true
 		TargetBoxCorner1=-256,256,0
 		TargetBoxCorner2=256,-256,0
-		BotBehavior=PANIC
 	Weapon=
 		Type=slime_slap
 	Mobility=
