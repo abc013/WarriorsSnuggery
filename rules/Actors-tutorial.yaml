@@ -32,6 +32,16 @@ dummy=
 		Targetable=true
 		TargetBoxCorner1=-334,512,0
 		TargetBoxCorner2=334,-512,0
+	Spawn=
+		Occasion=Death
+		Count=10
+		Name=wood_debris
+		Type=PARTICLE
+		Sound=
+			Name=planks_falling
+			RandomPitch=0.2
+			RandomVolume=0.3
+			Volume=0.6
 
 tut_1=
 	AnimatedSprite=
