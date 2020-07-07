@@ -1,15 +1,11 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <OutputType>Exe</OutputType>
     <TargetFramework>netcoreapp3.1</TargetFramework>
   </PropertyGroup>
 
   <ItemGroup>
     <Compile Include="..\maps\scripts\*.cs" Link="%(Filename).cs" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\WarriorsSnuggery\WarriorsSnuggery.csproj" />
   </ItemGroup>
 
