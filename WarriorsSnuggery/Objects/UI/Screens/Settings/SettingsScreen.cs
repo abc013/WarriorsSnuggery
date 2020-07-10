@@ -215,6 +215,7 @@ namespace WarriorsSnuggery.UI
 			Window.UpdateScreen();
 
 			game.AddInfoMessage(150, "Settings saved!");
+			Log.WriteDebug("Saved settings.");
 		}
 
 		public override void Tick()

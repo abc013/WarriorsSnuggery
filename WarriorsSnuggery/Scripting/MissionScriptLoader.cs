@@ -11,79 +11,78 @@ namespace WarriorsSnuggery.Scripting
 {
 	public class MissionScriptLoader
 	{
-        static readonly Dictionary<string, Type> loadedAssemblies = new Dictionary<string, Type>();
+		static readonly Dictionary<string, Type> loadedAssemblies = new Dictionary<string, Type>();
 
-        readonly string file;
-        readonly Assembly assembly;
-        readonly Type type;
+		readonly string file;
+		readonly Assembly assembly;
+		readonly Type type;
 
 		public MissionScriptLoader(string path, string file)
 		{
-            this.file = file;
-            Log.WriteDebug("Loading new mission script: " + path);
+			this.file = file;
+			Log.WriteDebug("Loading new mission script: " + path);
+			Log.DebugIndentation++;
 
-            if (loadedAssemblies.ContainsKey(file))
-            {
-                type = loadedAssemblies[file];
-                assembly = Assembly.GetAssembly(type);
+			if (loadedAssemblies.ContainsKey(file))
+			{
+				type = loadedAssemblies[file];
+				assembly = Assembly.GetAssembly(type);
 
-                Log.WriteDebug("Mission script already in memory. Loaded.");
-                return;
+				Log.WriteDebug("Mission script already in memory. Loaded.");
+				return;
 			}
 
-            using var reader = new StreamReader(path);
+			using var reader = new StreamReader(path);
 			var content = reader.ReadToEnd();
-            reader.Close();
+			reader.Close();
 
-            var assemblyLocation = System.Runtime.InteropServices.RuntimeEnvironment.GetRuntimeDirectory();
+			var assemblyLocation = System.Runtime.InteropServices.RuntimeEnvironment.GetRuntimeDirectory();
 
-            var compilation = CSharpCompilation.Create(file)
-            .WithOptions(new CSharpCompilationOptions(OutputKind.DynamicallyLinkedLibrary))
-            .AddReferences(
-                MetadataReference.CreateFromFile(typeof(object).GetTypeInfo().Assembly.Location),
-                MetadataReference.CreateFromFile(FileExplorer.MainDirectory + Path.DirectorySeparatorChar + "WarriorsSnuggery.dll"),
-                MetadataReference.CreateFromFile(assemblyLocation + Path.DirectorySeparatorChar + "System.Runtime.dll"),
-                MetadataReference.CreateFromFile(assemblyLocation + Path.DirectorySeparatorChar + "System.Runtime.Extensions.dll"),
-                MetadataReference.CreateFromFile(assemblyLocation + Path.DirectorySeparatorChar + "System.Collections.dll"),
-                MetadataReference.CreateFromFile(assemblyLocation + Path.DirectorySeparatorChar + "System.Linq.dll"),
-                MetadataReference.CreateFromFile(assemblyLocation + Path.DirectorySeparatorChar + "mscorlib.dll")
-            )
-            .AddSyntaxTrees(CSharpSyntaxTree.ParseText(content));
+			var compilation = CSharpCompilation.Create(file)
+			.WithOptions(new CSharpCompilationOptions(OutputKind.DynamicallyLinkedLibrary))
+			.AddReferences(
+				MetadataReference.CreateFromFile(typeof(object).GetTypeInfo().Assembly.Location),
+				MetadataReference.CreateFromFile(FileExplorer.MainDirectory + Path.DirectorySeparatorChar + "WarriorsSnuggery.dll"),
+				MetadataReference.CreateFromFile(assemblyLocation + Path.DirectorySeparatorChar + "System.Runtime.dll"),
+				MetadataReference.CreateFromFile(assemblyLocation + Path.DirectorySeparatorChar + "System.Runtime.Extensions.dll"),
+				MetadataReference.CreateFromFile(assemblyLocation + Path.DirectorySeparatorChar + "System.Collections.dll"),
+				MetadataReference.CreateFromFile(assemblyLocation + Path.DirectorySeparatorChar + "System.Linq.dll"),
+				MetadataReference.CreateFromFile(assemblyLocation + Path.DirectorySeparatorChar + "mscorlib.dll")
+			)
+			.AddSyntaxTrees(CSharpSyntaxTree.ParseText(content));
 
-            using var ms = new MemoryStream();
-            var result = compilation.Emit(ms);
+			using var ms = new MemoryStream();
+			var result = compilation.Emit(ms);
 
-            if (!result.Success)
-            {
-                foreach (var compilerMessage in compilation.GetDiagnostics())
-                {
-                    Console.WriteLine(compilerMessage);
-                    Log.Exeption.WriteLine(compilerMessage);
-                }
+			if (!result.Success)
+			{
+				foreach (var compilerMessage in compilation.GetDiagnostics())
+				{
+					Console.WriteLine(compilerMessage);
+					Log.Exeption.WriteLine(compilerMessage);
+				}
 
-                throw new Exception(string.Format("The script '{0}' could not be loaded. See console or error.log for more details.", file + ".cs"));
-            }
-            else
-            {
-                ms.Seek(0, SeekOrigin.Begin);
+				throw new Exception(string.Format("The script '{0}' could not be loaded. See console or error.log for more details.", file + ".cs"));
+			}
+			ms.Seek(0, SeekOrigin.Begin);
 
-                AssemblyLoadContext context = AssemblyLoadContext.Default;
-                assembly = context.LoadFromStream(ms);
+			AssemblyLoadContext context = AssemblyLoadContext.Default;
+			assembly = context.LoadFromStream(ms);
 
-                type = assembly.GetTypes().Where(t => t.BaseType == typeof(MissionScriptBase)).FirstOrDefault();
+			type = assembly.GetTypes().Where(t => t.BaseType == typeof(MissionScriptBase)).FirstOrDefault();
 
-                if (type == null)
-                    throw new MissingScriptException(file + ".cs");
+			if (type == null)
+				throw new MissingScriptException(file + ".cs");
 
-                loadedAssemblies.Add(file, type);
+			loadedAssemblies.Add(file, type);
 
-                Log.WriteDebug("Successfully Loaded.");
-            }
-        }
+			Log.WriteDebug("Successfully Loaded.");
+			Log.DebugIndentation--;
+		}
 
-        public MissionScriptBase Start(Game game)
-        {
-            return (MissionScriptBase)Activator.CreateInstance(type, new object[] { file, game });
-        }
-    }
+		public MissionScriptBase Start(Game game)
+		{
+			return (MissionScriptBase)Activator.CreateInstance(type, new object[] { file, game });
+		}
+	}
 }

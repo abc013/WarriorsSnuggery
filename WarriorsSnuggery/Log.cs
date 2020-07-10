@@ -39,12 +39,13 @@ namespace WarriorsSnuggery
 			Performance.Flush();
 		}
 
+		public static int DebugIndentation;
 		public static void WriteDebug(string text)
 		{
 			if (isClosed)
 				return;
 
-			Debug.WriteLine(text);
+			Debug.WriteLine(new string('\t', DebugIndentation) + text);
 			Debug.Flush();
 		}
 

@@ -54,6 +54,7 @@ namespace WarriorsSnuggery
 				run(args);
 			}
 
+			Log.WriteDebug("Exiting program.");
 			Log.Close();
 		}
 

@@ -47,6 +47,7 @@ namespace WarriorsSnuggery.UI
 				game.ScreenControl.ShowScreen(ScreenType.MENU);
 				GameSaveManager.SaveOnNewName(@new, stats.Name, game);
 				game.AddInfoMessage(150, "Game Saved!");
+				Log.WriteDebug("Overrided a game: " + stats.SaveName);
 			}
 			game.ScreenControl.SetDecision(action1, action2, "Are you sure you want to override?");
 			game.ScreenControl.ShowScreen(ScreenType.DECISION);
@@ -120,9 +121,7 @@ namespace WarriorsSnuggery.UI
 			warning.Tick();
 
 			if (KeyInput.IsKeyDown("escape", 10))
-			{
 				game.ChangeScreen(ScreenType.MENU);
-			}
 		}
 
 		public override void Render()
@@ -141,6 +140,7 @@ namespace WarriorsSnuggery.UI
 			GameSaveManager.SaveOnNewName(game.Statistics, @new.Text, game);
 
 			game.RefreshSaveGameScreens();
+			Log.WriteDebug("Saved a game: " + game.Statistics.SaveName);
 		}
 	}
 }

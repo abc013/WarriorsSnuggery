@@ -87,6 +87,9 @@ namespace WarriorsSnuggery
 
 		public Game(GameStatistics statistics, MapInfo map, int seed = -1)
 		{
+			Log.WriteDebug("Loading new game...");
+			Log.DebugIndentation++;
+
 			MapType = map;
 
 			// If seed negative, calculate it.
@@ -109,6 +112,9 @@ namespace WarriorsSnuggery
 			else
 				State = GameState.UNKNOWN;
 
+			Log.WriteDebug("Editor: " + Editor);
+			Log.WriteDebug("GameType: " + Type);
+
 			SpellManager = new SpellManager(this);
 			ConditionManager = new ConditionManager(this);
 
@@ -122,7 +128,7 @@ namespace WarriorsSnuggery
 				script = scriptLoader.Start(this);
 			}
 			else
-				Log.WriteDebug("No mission script has been found.");
+				Log.WriteDebug("No mission script existing.");
 
 			if (Mode == GameMode.WAVES)
 				waveController = new WaveController(this);
@@ -179,6 +185,8 @@ namespace WarriorsSnuggery
 				script?.LoadState(Statistics.ScriptValues);
 			else
 				script?.OnStart();
+
+			Log.WriteDebug("Loading successful!");
 		}
 
 		public void Pause(bool paused)
@@ -187,6 +195,7 @@ namespace WarriorsSnuggery
 			AudioController.PauseAll(paused, true);
 			MasterRenderer.PauseSequences = Paused;
 			Camera.Locked = Paused;
+			Log.WriteDebug((paused ? "P" : "Unp") + "aused game.");
 		}
 
 		public void Tick()
@@ -407,6 +416,8 @@ namespace WarriorsSnuggery
 
 		public void SwitchEditor()
 		{
+			Log.WriteDebug("Editor Switched: " + Editor);
+
 			Editor = !Editor;
 
 			Screen defaultScreen;
@@ -483,6 +494,9 @@ namespace WarriorsSnuggery
 			World.Dispose();
 
 			ScreenControl.DisposeScreens();
+
+			Log.WriteDebug("Current game disposed!");
+			Log.DebugIndentation--;
 		}
 	}
 }
