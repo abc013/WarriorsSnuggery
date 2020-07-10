@@ -15,5 +15,30 @@
     <PackageReference Include="System.Drawing.Common" Version="4.7.0" />
     <PackageReference Include="System.Runtime.Loader" Version="4.3.0" />
   </ItemGroup>
+  
+  <!-- for publishing -->
+  <ItemGroup>
+    <ResolvedFileToPublish Include="..\README.md">
+      <RelativePath>README.md</RelativePath>
+    </ResolvedFileToPublish>
+    <ResolvedFileToPublish Include="..\AUTHORS.md">
+      <RelativePath>AUTHORS.md</RelativePath>
+    </ResolvedFileToPublish>
+    <ResolvedFileToPublish Include="..\maps\**\*">
+      <RelativePath>maps/%(RecursiveDir)%(Filename)%(Extension)</RelativePath>
+    </ResolvedFileToPublish>
+    <ResolvedFileToPublish Include="..\misc\**\*">
+      <RelativePath>misc/%(RecursiveDir)%(Filename)%(Extension)</RelativePath>
+    </ResolvedFileToPublish>
+    <ResolvedFileToPublish Include="..\rules\**\*">
+      <RelativePath>rules/%(RecursiveDir)%(Filename)%(Extension)</RelativePath>
+    </ResolvedFileToPublish>
+    <ResolvedFileToPublish Include="..\saves\**\*">
+      <RelativePath>saves/%(RecursiveDir)%(Filename)%(Extension)</RelativePath>
+    </ResolvedFileToPublish>
+    <ResolvedFileToPublish Include="..\shaders\**\*">
+      <RelativePath>shaders/%(RecursiveDir)%(Filename)%(Extension)</RelativePath>
+    </ResolvedFileToPublish>
+  </ItemGroup>
 
 </Project>
