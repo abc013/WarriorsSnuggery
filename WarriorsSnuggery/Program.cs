@@ -12,6 +12,7 @@ namespace WarriorsSnuggery
 		public const string Title = "Warrior's Snuggery";
 
 		public static Random SharedRandom = new Random();
+
 		public static bool IsDebug;
 		public static bool NoFullscreen;
 
@@ -20,6 +21,7 @@ namespace WarriorsSnuggery
 		public static string MapType;
 		
 		static bool noGLErrors;
+		static bool closeIntended;
 
 		static Window window;
 
@@ -38,7 +40,8 @@ namespace WarriorsSnuggery
 				}
 				catch (Exception e)
 				{
-					window.IsVisible = false;
+					if (window != null)
+						window.IsVisible = false;
 					Log.WriteExeption(e);
 					Console.ForegroundColor = ConsoleColor.Red;
 					Console.WriteLine("Ouch! An error occurred.");
@@ -47,6 +50,7 @@ namespace WarriorsSnuggery
 					var key = Console.ReadKey(true).KeyChar;
 					if (key == 'o')
 						Process.Start("explorer.exe", "/select, \"" + FileExplorer.Logs + "\"");
+					closeIntended = true;
 				}
 			}
 			else
@@ -56,6 +60,9 @@ namespace WarriorsSnuggery
 
 			Log.WriteDebug("Exiting program.");
 			Log.Close();
+
+			if (!closeIntended)
+				Console.ReadKey(true);
 		}
 
 		static void run(string[] args)
@@ -119,6 +126,7 @@ namespace WarriorsSnuggery
 			GameController.Exit();
 			AudioController.Exit();
 			Window.CloseWindow();
+			closeIntended = true;
 
 			watch.StopAndWrite("Disposing");
 		}

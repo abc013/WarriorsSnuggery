@@ -287,3 +287,6 @@ runtimes/
 /Microsoft.CodeAnalysis.CSharp.dll
 /libglfw.so.3.3
 /WarriorsSnuggery/Properties/launchSettings.json
+/publish_win_x64
+/publish_win_x86
+/publish_linux_x64
