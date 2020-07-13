@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using WarriorsSnuggery.Graphics;
 using WarriorsSnuggery.Objects;
+using WarriorsSnuggery.Objects.Particles;
 using WarriorsSnuggery.Objects.Parts;
 using WarriorsSnuggery.Objects.Weapons;
 using WarriorsSnuggery.Trophies;
@@ -21,6 +22,8 @@ namespace WarriorsSnuggery
 		public readonly SmudgeLayer SmudgeLayer;
 
 		public readonly List<Actor> Actors = new List<Actor>();
+		public readonly List<Weapon> Weapons = new List<Weapon>();
+		public readonly List<Particle> Particles = new List<Particle>();
 		public readonly List<PhysicsObject> Objects = new List<PhysicsObject>();
 		public List<PhysicsObject> ToRender { get; private set; }
 
@@ -104,6 +107,11 @@ namespace WarriorsSnuggery
 				actor.Tick();
 			foreach (var @object in Objects)
 				@object.Tick();
+			foreach (var particle in Particles)
+				particle.Tick();
+			foreach (var weapon in Weapons)
+				weapon.Tick();
+
 			TerrainLayer.Tick();
 			SmudgeLayer.Tick();
 
@@ -114,6 +122,8 @@ namespace WarriorsSnuggery
 		{
 			int removed = 0;
 			removed += Actors.RemoveAll(a => a.Disposed);
+			removed += Weapons.RemoveAll(o => o.Disposed);
+			removed += Particles.RemoveAll(o => o.Disposed);
 			removed += Objects.RemoveAll(o => o.Disposed);
 
 			if (actorsToAdd.Any())
@@ -131,14 +141,22 @@ namespace WarriorsSnuggery
 				foreach (var @object in objectsToAdd)
 				{
 					@object.CheckVisibility();
-					Objects.Add(@object);
+
+					if (@object is Particle)
+						Particles.Add((Particle)@object);
+					else if (@object is Weapon)
+						Weapons.Add((Weapon)@object);
+					else
+						Objects.Add(@object);
 				}
 				objectsToAdd.Clear();
 			}
 
 			ToRender = Objects.ToList(); // Copy array
-			ToRender.AddRange(Actors); // Add actors
-			ToRender.AddRange(WallLayer.WallList); // Add walls
+			ToRender.AddRange(Actors);
+			ToRender.AddRange(Weapons);
+			ToRender.AddRange(Particles);
+			ToRender.AddRange(WallLayer.WallList);
 
 			ToRender = ToRender.OrderBy(e => e.GraphicPosition.Z + (e.Position.Y - 512) * 2).ToList();
 		}
@@ -276,13 +294,21 @@ namespace WarriorsSnuggery
 
 		public void Dispose()
 		{
-			foreach (Actor a in Actors)
+			foreach (var a in Actors)
 				a.Dispose();
 			Actors.Clear();
 
-			foreach (PhysicsObject o in Objects)
+			foreach (var o in Objects)
 				o.Dispose();
 			Objects.Clear();
+
+			foreach (var p in Particles)
+				p.Dispose();
+			Particles.Clear();
+
+			foreach (var w in Weapons)
+				w.Dispose();
+			Weapons.Clear();
 
 			TerrainLayer.Dispose();
 			WallLayer.Dispose();

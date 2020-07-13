@@ -230,26 +230,23 @@ namespace WarriorsSnuggery.UI
 			if (remove != null)
 			{
 				remove.Dispose();
+				return;
 			}
-			else
-			{
-				var remove2 = game.World.Objects.Find(a => (a.Position - MouseInput.GamePosition).FlatDist < 512);
-				if (remove2 != null)
-				{
-					remove2.Dispose();
-				}
-				else
-				{
-					var pos4 = MouseInput.GamePosition.ToMPos();
-					pos4 = new MPos(pos4.X < 0 ? 0 : pos4.X, pos4.Y < 0 ? 0 : pos4.Y);
-					pos4 = new MPos(pos4.X > game.World.Map.Bounds.X ? game.World.Map.Bounds.X : pos4.X, pos4.Y > game.World.Map.Bounds.Y ? game.World.Map.Bounds.Y : pos4.Y);
-					pos4 = new MPos(pos4.X * 2 + (horizontal ? 0 : 1), pos4.Y);
 
-					if (pos4.X >= game.World.WallLayer.Bounds.X) pos4 = new MPos(game.World.WallLayer.Bounds.X - 1, pos4.Y);
-					if (pos4.Y >= game.World.WallLayer.Bounds.Y) pos4 = new MPos(pos4.X, game.World.WallLayer.Bounds.Y - 1);
-					game.World.WallLayer.Remove(pos4);
-				}
-			}
+			// TODO weapon and particle removal for future
+			var bounds = game.World.Map.Bounds;
+			var pos4 = MouseInput.GamePosition.ToMPos();
+			pos4 = new MPos(pos4.X < 0 ? 0 : pos4.X, pos4.Y < 0 ? 0 : pos4.Y);
+			pos4 = new MPos(pos4.X > bounds.X ? bounds.X : pos4.X, pos4.Y > bounds.Y ? bounds.Y : pos4.Y);
+			pos4 = new MPos(pos4.X * 2 + (horizontal ? 0 : 1), pos4.Y);
+
+			var wallLayer = game.World.WallLayer;
+			if (pos4.X >= wallLayer.Bounds.X)
+				pos4 = new MPos(wallLayer.Bounds.X - 1, pos4.Y);
+			if (pos4.Y >= wallLayer.Bounds.Y)
+				pos4 = new MPos(pos4.X, wallLayer.Bounds.Y - 1);
+
+			wallLayer.Remove(pos4);
 		}
 
 		void place()
@@ -285,15 +282,18 @@ namespace WarriorsSnuggery.UI
 						return;
 
 					mpos = new MPos(mpos.X < 0 ? 0 : mpos.X, mpos.Y < 0 ? 0 : mpos.Y);
-					if (mpos.X > game.World.Map.Bounds.X || mpos.Y > game.World.Map.Bounds.Y)
+
+					var bounds = game.World.Map.Bounds;
+					if (mpos.X > bounds.X || mpos.Y > bounds.Y)
 						return;
 
 					mpos = new MPos(mpos.X * 2 + (horizontal ? 0 : 1), mpos.Y);
 
-					if (game.World.WallLayer.Walls[mpos.X, mpos.Y] != null && game.World.WallLayer.Walls[mpos.X, mpos.Y].Type.ID == wallSelected.ID)
+					var wallLayer = game.World.WallLayer;
+					if (wallLayer.Walls[mpos.X, mpos.Y] != null && wallLayer.Walls[mpos.X, mpos.Y].Type.ID == wallSelected.ID)
 						return;
 
-					game.World.WallLayer.Set(WallCreator.Create(mpos, game.World.WallLayer, wallSelected.ID));
+					wallLayer.Set(WallCreator.Create(mpos, wallLayer, wallSelected.ID));
 					break;
 			}
 		}

@@ -2,7 +2,6 @@ using OpenToolkit.Graphics.OpenGL;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.Intrinsics.X86;
 using WarriorsSnuggery.Graphics;
 using WarriorsSnuggery.Objects;
 
@@ -164,7 +163,7 @@ namespace WarriorsSnuggery
 		public static void CheckVisibilityAll()
 		{
 			checkAllTerrain(true);
-			checkAllActors();
+			checkAll();
 			checkAllWalls();
 		}
 
@@ -224,31 +223,39 @@ namespace WarriorsSnuggery
 			for (int x = bottomleft.X; x < topright.X * 2 + 1; x++)
 			{
 				for (int y = bottomleft.Y; y < topright.Y + 1; y++)
-				{
 					world.WallLayer.Walls[x, y]?.CheckVisibility();
-				}
 			}
 		}
 
-		static void checkAllActors()
+		static void checkAll()
 		{
-			foreach (Actor a in world.Actors)
+			foreach (var a in world.Actors)
 				a.CheckVisibility();
-
-			foreach (PhysicsObject o in world.Objects)
+			foreach (var o in world.Objects)
 				o.CheckVisibility();
+			foreach (var p in world.Particles)
+				p.CheckVisibility();
+			foreach (var w in world.Weapons)
+				w.CheckVisibility();
 		}
 
 		static void checkActors(CPos topLeft, CPos bottomRight)
 		{
 			var actors = world.Actors.Where(a => a.GraphicPosition.X > topLeft.X && a.GraphicPosition.X < bottomRight.X && a.GraphicPosition.Y > topLeft.Y && a.GraphicPosition.Y < bottomRight.Y);
-			var objects = world.Objects.Where(a => a.GraphicPosition.X > topLeft.X && a.GraphicPosition.X < bottomRight.X && a.GraphicPosition.Y > topLeft.Y && a.GraphicPosition.Y < bottomRight.Y);
-
-			foreach (Actor a in actors)
+			foreach (var a in actors)
 				a.CheckVisibility();
 
-			foreach (PhysicsObject o in objects)
+			var objects = world.Objects.Where(a => a.GraphicPosition.X > topLeft.X && a.GraphicPosition.X < bottomRight.X && a.GraphicPosition.Y > topLeft.Y && a.GraphicPosition.Y < bottomRight.Y);
+			foreach (var o in objects)
 				o.CheckVisibility();
+
+			var particles = world.Particles.Where(a => a.GraphicPosition.X > topLeft.X && a.GraphicPosition.X < bottomRight.X && a.GraphicPosition.Y > topLeft.Y && a.GraphicPosition.Y < bottomRight.Y);
+			foreach (var p in particles)
+				p.CheckVisibility();
+
+			var weapons = world.Weapons.Where(a => a.GraphicPosition.X > topLeft.X && a.GraphicPosition.X < bottomRight.X && a.GraphicPosition.Y > topLeft.Y && a.GraphicPosition.Y < bottomRight.Y);
+			foreach (var w in weapons)
+				w.CheckVisibility();
 		}
 
 		static void checkAllTerrain(bool checkEdges = false)
@@ -268,9 +275,7 @@ namespace WarriorsSnuggery
 			for (int x = bottomleft.X; x < topright.X; x++)
 			{
 				for (int y = bottomleft.Y; y < topright.Y; y++)
-				{
 					world.TerrainLayer.Terrain[x, y].CheckVisibility(checkEdges);
-				}
 			}
 		}
 

@@ -56,9 +56,9 @@ namespace WarriorsSnuggery.Objects.Parts
 			if (info.MaxRange <= 0 || (info.AffectOnlyWhenPlayer && !self.IsPlayer))
 				return;
 
-			foreach (var obj in self.World.Objects)
+			foreach (var particle in self.World.Particles)
 			{
-				if (!(obj is Particle particle) || !particle.AffectedByObjects)
+				if (!particle.AffectedByObjects)
 					continue; // TODO cache affectable particles
 
 				var dist = (particle.Position - self.GraphicPosition).SquaredFlatDist;
