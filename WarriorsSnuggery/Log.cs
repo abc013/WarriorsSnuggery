@@ -5,56 +5,49 @@ namespace WarriorsSnuggery
 {
 	public static class Log
 	{
-		public static TextWriter Exeption;
-		public static TextWriter Performance;
-		public static TextWriter Debug;
+		static TextWriter exceptionWriter;
+		static TextWriter performanceWriter;
+		static TextWriter debugWriter;
 
-		static bool isClosed;
+		public static bool Initialized;
 
 		public static void InitLogs()
 		{
 			Directory.CreateDirectory(FileExplorer.Logs);
 
-			Exeption = new StreamWriter(FileExplorer.CreateFile(FileExplorer.Logs, "exception", ".log"));
-			Performance = new StreamWriter(FileExplorer.CreateFile(FileExplorer.Logs, "performance", ".log"));
-			Debug = new StreamWriter(FileExplorer.CreateFile(FileExplorer.Logs, "debug", ".log"));
+			exceptionWriter = new StreamWriter(FileExplorer.CreateFile(FileExplorer.Logs, "exception", ".log"));
+			Console.SetError(exceptionWriter);
+
+			performanceWriter = new StreamWriter(FileExplorer.CreateFile(FileExplorer.Logs, "performance", ".log"));
+			debugWriter = new StreamWriter(FileExplorer.CreateFile(FileExplorer.Logs, "debug", ".log"));
+
+			Initialized = true;
 		}
 
-		public static void WriteExeption(Exception exception)
+		public static void WriteExeption(object exception)
 		{
-			if (isClosed)
-				return;
-
-			Exeption.WriteLine(exception.Message);
-			Exeption.WriteLine(exception);
-			Exeption.Flush();
+			exceptionWriter.WriteLine(exception);
+			exceptionWriter.Flush();
 		}
 
 		public static void WritePerformance(long ms, string text)
 		{
-			if (isClosed)
-				return;
-
-			Performance.WriteLine(ms + "ms\t\t " + text);
-			Performance.Flush();
+			performanceWriter.WriteLine(ms + "ms\t\t " + text);
+			performanceWriter.Flush();
 		}
 
 		public static int DebugIndentation;
 		public static void WriteDebug(string text)
 		{
-			if (isClosed)
-				return;
-
-			Debug.WriteLine(new string('\t', DebugIndentation) + text);
-			Debug.Flush();
+			debugWriter.WriteLine(new string('\t', DebugIndentation) + text);
+			debugWriter.Flush();
 		}
 
 		public static void Close()
 		{
-			isClosed = true;
-			Exeption.Dispose();
-			Performance.Dispose();
-			Debug.Dispose();
+			exceptionWriter.Dispose();
+			performanceWriter.Dispose();
+			debugWriter.Dispose();
 		}
 	}
 }

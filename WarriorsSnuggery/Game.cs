@@ -166,14 +166,9 @@ namespace WarriorsSnuggery
 			timer.StopAndWrite("Loading Game");
 
 			if (Window.GlobalTick == 0 && Settings.FirstStarted)
-			{
-				Pause(true);
-				ChangeScreen(ScreenType.START);
-			}
+				ChangeScreen(ScreenType.START, true);
 			else
-			{
 				ChangeScreen(ScreenType.DEFAULT);
-			}
 
 			if (World.LocalPlayer != null && World.LocalPlayer.Health != null && Statistics.RelativeHP > 0)
 				World.LocalPlayer.Health.RelativeHP = Statistics.RelativeHP;
@@ -214,15 +209,10 @@ namespace WarriorsSnuggery
 				if (ScreenControl.FocusedType != ScreenType.DEFEAT)
 				{
 					if (KeyInput.IsKeyDown(Settings.GetKey("Pause"), 10) && !(KeyInput.IsKeyDown(Key.ControlLeft) || KeyInput.IsKeyDown(Key.ControlRight)))
-					{
-						Pause(true);
-						ChangeScreen(ScreenType.PAUSED);
-					}
+						ChangeScreen(ScreenType.PAUSED, true);
+
 					if (KeyInput.IsKeyDown("escape", 10))
-					{
-						Pause(true);
-						ChangeScreen(ScreenType.MENU);
-					}
+						ChangeScreen(ScreenType.MENU, true);
 
 					CheckVictory();
 				}
@@ -460,8 +450,10 @@ namespace WarriorsSnuggery
 			return script.GetState();
 		}
 
-		public void ChangeScreen(ScreenType screen)
+		public void ChangeScreen(ScreenType screen, bool pause = false)
 		{
+			if (pause)
+				Pause(true);
 			ScreenControl.ShowScreen(screen);
 
 			if (screen == ScreenType.DEFEAT)

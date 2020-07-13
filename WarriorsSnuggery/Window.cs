@@ -115,31 +115,29 @@ namespace WarriorsSnuggery
 			MasterRenderer.Initialize();
 			SpriteManager.InitSheets();
 
-			var font = Timer.Start();
+			var watch = Timer.Start();
 			//Icon = new WindowIcon(new OpenToolkit.Windowing.Common.Input.Image(FileExplorer.Misc + "/warsnu.ico"));
 			FontManager.Load();
 
-			font.StopAndWrite("Loading Fonts");
+			watch.StopAndWrite("Loading Fonts");
+			watch.Restart();
 
-			var watch2 = Timer.Start();
 			AudioController.Load();
 
-			watch2.StopAndWrite("Loading Sound");
+			watch.StopAndWrite("Loading Sound");
+			watch.Restart();
 
-			var watch = Timer.Start();
 			GameController.Load();
 
 			watch.StopAndWrite("Loading Rules");
+			watch.Restart();
 
 			SpriteManager.CreateTextures();
 
+			watch.StopAndWrite("Loading Textures");
+
 			Ready = true;
 			Console.WriteLine(" Done!");
-			Console.WriteLine("Textures: " + TextureManager.TextureCount);
-
-			// For multithreads
-			//IGraphicsContext context2 = new GraphicsContext(GraphicsMode.Default, this.WindowInfo);
-			//context2.MakeCurrent(WindowInfo);
 		}
 
 		public static double TPS;

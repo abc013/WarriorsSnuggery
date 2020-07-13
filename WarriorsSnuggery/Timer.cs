@@ -27,5 +27,10 @@ namespace WarriorsSnuggery
 			watch.Stop();
 			return watch.ElapsedMilliseconds;
 		}
+
+		public void Restart()
+		{
+			watch.Restart();
+		}
 	}
 }

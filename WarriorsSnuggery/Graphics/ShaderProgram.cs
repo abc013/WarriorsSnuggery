@@ -28,10 +28,7 @@ namespace WarriorsSnuggery.Graphics
 
 				var info = GL.GetShaderInfoLog(shader);
 				if (!string.IsNullOrWhiteSpace(info))
-				{
-					Console.WriteLine("ShaderProgram " + shader + " has created a log: " + info);
-					Console.WriteLine("If this log contains any error, please contact the developers.\nSee Authors.html.");
-				}
+					Log.WriteDebug("shader" + shader + " information: " + info);
 
 				shaders.Add(shader);
 			}
@@ -47,12 +44,8 @@ namespace WarriorsSnuggery.Graphics
 				GL.LinkProgram(ID);
 
 				var info = GL.GetProgramInfoLog(ID);
-
 				if (!string.IsNullOrWhiteSpace(info))
-				{
-					Console.WriteLine("ShaderProgram " + ID + " has created a log: " + info);
-					Console.WriteLine("If this log contains any error, please contact the developers.\nSee Authors.html.");
-				}
+					Log.WriteDebug("shader" + ID + " information: " + info);
 
 				foreach (var shader in shaders)
 				{

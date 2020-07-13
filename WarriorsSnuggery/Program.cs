@@ -19,54 +19,27 @@ namespace WarriorsSnuggery
 		public static bool StartEditor;
 		public static bool IgnoreTech;
 		public static string MapType;
-		
+
 		static bool noGLErrors;
-		static bool closeIntended;
 
 		static Window window;
 
 		public static void Main(string[] args)
 		{
 			IsDebug = Debugger.IsAttached;
-			FileExplorer.InitPaths();
-			Log.InitLogs();
-			Console.SetError(Log.Exeption);
+			AppDomain.CurrentDomain.UnhandledException += handleError;
 
-			if (!IsDebug)
-			{
-				try
-				{
-					run(args);
-				}
-				catch (Exception e)
-				{
-					if (window != null)
-						window.IsVisible = false;
-					Log.WriteExeption(e);
-					Console.ForegroundColor = ConsoleColor.Red;
-					Console.WriteLine("Ouch! An error occurred.");
-					Console.ForegroundColor = ConsoleColor.White;
-					Console.WriteLine("For more details, check the logs (Press 'o' on Windows). Please report the files to abc013 (See authors.html).");
-					var key = Console.ReadKey(true).KeyChar;
-					if (key == 'o')
-						Process.Start("explorer.exe", "/select, \"" + FileExplorer.Logs + "\"");
-					closeIntended = true;
-				}
-			}
-			else
-			{
-				run(args);
-			}
+			run(args);
 
 			Log.WriteDebug("Exiting program.");
 			Log.Close();
-
-			if (!closeIntended)
-				Console.ReadKey(true);
 		}
 
 		static void run(string[] args)
 		{
+			FileExplorer.InitPaths();
+			Log.InitLogs();
+
 			var newSettings = false;
 			for (int i = 0; i < args.Length; i++)
 			{
@@ -119,6 +92,31 @@ namespace WarriorsSnuggery
 			window.Run();
 		}
 
+		static void handleError(object sender, UnhandledExceptionEventArgs args)
+		{
+			var e = args.ExceptionObject;
+			if (window != null)
+				window.IsVisible = false;
+
+			if (Log.Initialized)
+				Log.WriteExeption(e);
+			else
+				Console.WriteLine(e);
+
+			Console.ForegroundColor = ConsoleColor.Red;
+			Console.WriteLine("Ouch! An error occurred.");
+			Console.ResetColor();
+			Console.WriteLine("For more details, check out the logs (press 'o' or open the 'logs' directory).");
+			Console.WriteLine("Please report the issue to https://github.com/abc013/WarriorsSnuggery or contact abc013.");
+			Console.WriteLine("Thank you!");
+			if (!IsDebug)
+			{
+				var key = Console.ReadKey(true).KeyChar;
+				if (key == 'o')
+					Process.Start("explorer.exe", "/select, \"" + FileExplorer.Logs + "exception.log\"");
+			}
+		}
+
 		public static void Exit()
 		{
 			var watch = Timer.Start();
@@ -126,7 +124,6 @@ namespace WarriorsSnuggery
 			GameController.Exit();
 			AudioController.Exit();
 			Window.CloseWindow();
-			closeIntended = true;
 
 			watch.StopAndWrite("Disposing");
 		}
