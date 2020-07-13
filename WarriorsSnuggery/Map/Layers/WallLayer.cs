@@ -6,21 +6,20 @@ namespace WarriorsSnuggery
 {
 	public sealed class WallLayer : IRenderable, IDisposable
 	{
-		public Wall[,] Walls { get; private set; }
 		public readonly List<Wall> WallList = new List<Wall>();
-		public MPos Size { get; private set; }
+		public Wall[,] Walls { get; private set; }
+		public MPos Bounds { get; private set; }
 
 		public WallLayer()
 		{
 			Walls = new Wall[0, 0];
-			Size = MPos.Zero;
 		}
 
-		public void SetMapSize(MPos size)
+		public void SetBounds(MPos bounds)
 		{
 			Dispose();
-			Size = new MPos((size.X + 1) * 2 + 1, (size.Y + 1) + 1);
-			Walls = new Wall[Size.X, Size.Y];
+			Bounds = new MPos((bounds.X + 1) * 2 + 1, (bounds.Y + 1) + 1);
+			Walls = new Wall[Bounds.X, Bounds.Y];
 		}
 
 		public void Set(Wall wall)
@@ -48,9 +47,9 @@ namespace WarriorsSnuggery
 			byte s = 0;
 
 			bool left = pos.X >= 2;
-			bool right = pos.X < Size.X - 3;
+			bool right = pos.X < Bounds.X - 3;
 			bool top = pos.Y > 0;
-			bool bottom = pos.Y < Size.Y - 2;
+			bool bottom = pos.Y < Bounds.Y - 2;
 
 			/*
 
@@ -187,7 +186,7 @@ namespace WarriorsSnuggery
 		public void Dispose()
 		{
 			Walls = new Wall[0, 0];
-			Size = MPos.Zero;
+			Bounds = MPos.Zero;
 			foreach (var wall in WallList)
 				wall.Dispose();
 			WallList.Clear();

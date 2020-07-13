@@ -5,31 +5,29 @@ namespace WarriorsSnuggery
 {
 	public sealed class ShroudLayer : IDisposable
 	{
-		bool[,,] shroudRevealed; // First: Team Second: X Third: Y
+		public bool RevealAll;
+		public MPos Bounds { get; private set; }
 
+		bool[,,] shroudRevealed; // First: Team Second: X Third: Y
 		byte[,] shroudAlpha;
-		public bool AllRevealed;
-		public MPos Size;
 
 		public ShroudLayer()
 		{
 			shroudRevealed = new bool[0, 0, 0];
 			shroudAlpha = new byte[0, 0];
-			Size = MPos.Zero;
 		}
 
-		public void SetMapDimensions(MPos size, bool allShroudRevealed)
+		public void SetBounds(MPos bounds)
 		{
 			Dispose();
-			Size = size * new MPos(2, 2);
-			shroudRevealed = new bool[Settings.MaxTeams, size.X * 2, size.Y * 2];
-			shroudAlpha = new byte[size.X * 2, size.Y * 2];
-			AllRevealed = allShroudRevealed;
+			Bounds = bounds * new MPos(2, 2);
+			shroudRevealed = new bool[Settings.MaxTeams, bounds.X * 2, bounds.Y * 2];
+			shroudAlpha = new byte[bounds.X * 2, bounds.Y * 2];
 		}
 
 		public bool ShroudRevealed(int team, int x, int y)
 		{
-			return AllRevealed || shroudRevealed[team, x, y];
+			return RevealAll || shroudRevealed[team, x, y];
 		}
 
 		public bool ShroudRevealed(int team, MPos position)
@@ -44,8 +42,8 @@ namespace WarriorsSnuggery
 
 			for (int i = 0; i < values.Length; i++)
 			{
-				var x = (int)Math.Floor(i / (float)Size.X);
-				var y = i % Size.X;
+				var x = (int)Math.Floor(i / (float)Bounds.X);
+				var y = i % Bounds.X;
 
 				shroudRevealed[team, x, y] = values[i];
 			}
@@ -53,16 +51,16 @@ namespace WarriorsSnuggery
 
 		public void RevealShroudRectangular(int team, MPos position, int radius)
 		{
-			if (AllRevealed)
+			if (RevealAll)
 				return;
 
 			for (int x = position.X - radius; x < position.X + radius; x++)
 			{
-				if (x >= 0 && x < Size.X)
+				if (x >= 0 && x < Bounds.X)
 				{
 					for (int y = position.Y - radius; y < position.Y + radius; y++)
 					{
-						if (y >= 0 && y < Size.Y)
+						if (y >= 0 && y < Bounds.Y)
 						{
 							shroudRevealed[team, x, y] = true;
 						}
@@ -78,19 +76,17 @@ namespace WarriorsSnuggery
 
 		public void RevealShroudCircular(int team, MPos position, int radius, bool ignoreLock = false)
 		{
-			if (AllRevealed)
+			if (RevealAll)
 				return;
 
 			for (int x = position.X - radius; x < position.X + radius; x++)
 			{
-				if (x >= 0 && x < Size.X)
+				if (x >= 0 && x < Bounds.X)
 				{
 					for (int y = position.Y - radius; y < position.Y + radius; y++)
 					{
-						if (y >= 0 && y < Size.Y)
-						{
+						if (y >= 0 && y < Bounds.Y)
 							shroudRevealed[team, x, y] = shroudRevealed[team, x, y] || Math.Pow(x - position.X, 2) + Math.Pow(y - position.Y, 2) <= radius * radius;
-						}
 					}
 				}
 			}
@@ -114,8 +110,8 @@ namespace WarriorsSnuggery
 		{
 			var shroud = team + "=";
 
-			for (int x = 0; x < Size.X; x++)
-				for (int y = 0; y < Size.Y; y++)
+			for (int x = 0; x < Bounds.X; x++)
+				for (int y = 0; y < Bounds.Y; y++)
 					shroud += ShroudRevealed(team, x, y).GetHashCode() + ",";
 
 			shroud = shroud.TrimEnd(',');
@@ -126,7 +122,7 @@ namespace WarriorsSnuggery
 		public void Dispose()
 		{
 			shroudRevealed = new bool[0, 0, 0];
-			Size = MPos.Zero;
+			Bounds = MPos.Zero;
 		}
 	}
 }

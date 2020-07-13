@@ -22,7 +22,7 @@ namespace WarriorsSnuggery
 			lastCameraZoom = MPos.Zero;
 		}
 
-		public static void SetMapDimensions(MPos size, ShroudLayer shroud)
+		public static void SetBounds(MPos size, ShroudLayer shroud)
 		{
 			VisibilitySolver.size = size;
 			VisibilitySolver.shroud = shroud;
@@ -82,7 +82,7 @@ namespace WarriorsSnuggery
 
 		static bool checkShroud(int x, int y)
 		{
-			if (shroud.AllRevealed)
+			if (shroud.RevealAll)
 				return true;
 
 			// As shroud has a doubled tilesize, we have to check 4 tiles.
@@ -100,7 +100,7 @@ namespace WarriorsSnuggery
 			if (position.X < lastCameraPosition.X || position.Y < lastCameraPosition.Y || position.X >= lastCameraPosition.X + lastCameraZoom.X || position.Y >= lastCameraPosition.Y + lastCameraZoom.Y)
 				return false;
 
-			if (shroud.AllRevealed)
+			if (shroud.RevealAll)
 				return true;
 
 			return visible[position.X, position.Y];
@@ -114,7 +114,7 @@ namespace WarriorsSnuggery
 			if (position.X < lastCameraPosition.X || position.Y < lastCameraPosition.Y || position.X >= lastCameraPosition.X + lastCameraZoom.X || position.Y >= lastCameraPosition.Y + lastCameraZoom.Y)
 				return false;
 
-			if (shroud.AllRevealed)
+			if (shroud.RevealAll)
 				return true;
 
 			if (position.X < 0)

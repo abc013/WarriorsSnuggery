@@ -88,17 +88,17 @@ namespace WarriorsSnuggery
 				o.Render();
 			BatchRenderer.Render();
 
-			if (!world.ShroudLayer.AllRevealed)
+			if (!world.ShroudLayer.RevealAll)
 			{
 				var bounds = VisibilitySolver.GetBounds(out var position);
 
 				for (int x = (position.X) * 2; x < (position.X + bounds.X) * 2; x++)
 				{
-					if (x >= 0 && x < world.ShroudLayer.Size.X)
+					if (x >= 0 && x < world.ShroudLayer.Bounds.X)
 					{
 						for (int y = (position.Y) * 2; y < (position.Y + bounds.Y) * 2; y++)
 						{
-							if (y >= 0 && y < world.ShroudLayer.Size.Y)
+							if (y >= 0 && y < world.ShroudLayer.Bounds.Y)
 							{
 								var alpha = world.ShroudLayer.ShroudAlpha(new MPos(x, y), Actor.PlayerTeam);
 								if (alpha > 0f)

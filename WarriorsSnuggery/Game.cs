@@ -293,7 +293,7 @@ namespace WarriorsSnuggery
 
 					if (KeyInput.IsKeyDown("period", 5))
 					{
-						World.ShroudLayer.AllRevealed = true;
+						World.ShroudLayer.RevealAll = true;
 						WorldRenderer.CheckVisibility(Camera.LookAt, Camera.DefaultZoom);
 					}
 					if (KeyInput.IsKeyDown("x", 5))
@@ -364,7 +364,7 @@ namespace WarriorsSnuggery
 
 					break;
 				case GameMode.KILL_ENEMIES:
-					var actor = World.Actors.Find(a => (a.WorldPart != null && a.WorldPart.KillForVictory) && !(a.Team == Actor.PlayerTeam || a.Team == Actor.NeutralTeam));
+					var actor = World.Actors.Find(a => a.WorldPart != null && a.WorldPart.KillForVictory && !(a.Team == Actor.PlayerTeam || a.Team == Actor.NeutralTeam));
 
 					if (actor == null)
 						VictoryConditionsMet();

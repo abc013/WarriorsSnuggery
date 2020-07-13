@@ -11,19 +11,19 @@ namespace WarriorsSnuggery
 	{
 		public const float SectorSize = 2;
 		public PhysicsSector[,] Sectors;
-		public MPos Size;
+		public MPos Bounds { get; private set; }
 
 		public PhysicsLayer()
 		{
 			Sectors = new PhysicsSector[0, 0];
 		}
 
-		public void SetMapDimensions(MPos size)
+		public void SetBounds(MPos bounds)
 		{
-			Size = new MPos((int)Math.Ceiling(size.X / SectorSize), (int)Math.Ceiling(size.Y / SectorSize));
-			Sectors = new PhysicsSector[Size.X, Size.Y];
-			for (int x = 0; x < Size.X; x++)
-				for (int y = 0; y < Size.Y; y++)
+			Bounds = new MPos((int)Math.Ceiling(bounds.X / SectorSize), (int)Math.Ceiling(bounds.Y / SectorSize));
+			Sectors = new PhysicsSector[Bounds.X, Bounds.Y];
+			for (int x = 0; x < Bounds.X; x++)
+				for (int y = 0; y < Bounds.Y; y++)
 					Sectors[x, y] = new PhysicsSector(new MPos(x, y));
 		}
 
@@ -77,11 +77,11 @@ namespace WarriorsSnuggery
 
 				var x = point.X / (SectorSize * 1024);
 				if (x < 0) x = 0;
-				if (x >= Size.X) x = Size.X - 1;
+				if (x >= Bounds.X) x = Bounds.X - 1;
 
 				var y = point.Y / (SectorSize * 1024);
 				if (y < 0) y = 0;
-				if (y >= Size.Y) y = Size.Y - 1;
+				if (y >= Bounds.Y) y = Bounds.Y - 1;
 
 				sectorPositions[i] = new MPos((int)Math.Floor(x), (int)Math.Floor(y));
 			}

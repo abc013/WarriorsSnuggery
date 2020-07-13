@@ -84,6 +84,17 @@ namespace WarriorsSnuggery
 			addObjects();
 		}
 
+		public void SetBounds(MPos bounds)
+		{
+			TerrainLayer.SetBounds(bounds);
+			WallLayer.SetBounds(bounds);
+			PhysicsLayer.SetBounds(bounds);
+			ShroudLayer.SetBounds(bounds);
+			ShroudLayer.RevealAll = Game.Type != GameType.NORMAL && Game.Type != GameType.TEST;
+
+			VisibilitySolver.SetBounds(bounds, ShroudLayer);
+		}
+
 		public void Tick()
 		{
 			if (LocalPlayer != null && !Game.Editor && Camera.LockedToPlayer)
@@ -108,18 +119,20 @@ namespace WarriorsSnuggery
 			if (actorsToAdd.Any())
 			{
 				foreach (var actor in actorsToAdd)
+				{
 					actor.CheckVisibility();
-
-				Actors.AddRange(actorsToAdd);
+					Actors.Add(actor);
+				}
 				actorsToAdd.Clear();
 			}
 
 			if (objectsToAdd.Any())
 			{
 				foreach (var @object in objectsToAdd)
+				{
 					@object.CheckVisibility();
-
-				Objects.AddRange(objectsToAdd);
+					Objects.Add(@object);
+				}
 				objectsToAdd.Clear();
 			}
 
@@ -224,7 +237,7 @@ namespace WarriorsSnuggery
 				Add(obj);
 		}
 
-		public List<Actor> getActorsToAdd()
+		public List<Actor> GetActorsToAdd()
 		{
 			return actorsToAdd;
 		}

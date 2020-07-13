@@ -8,18 +8,18 @@ namespace WarriorsSnuggery
 	public sealed class TerrainLayer : ITickRenderable, IDisposable
 	{
 		public Terrain[,] Terrain { get; private set; }
-		MPos size;
+		MPos bounds;
 
 		public TerrainLayer()
 		{
 			Terrain = new Terrain[0, 0];
 		}
 
-		public void SetMapDimensions(MPos size)
+		public void SetBounds(MPos bounds)
 		{
 			Dispose();
-			this.size = size;
-			Terrain = new Terrain[size.X, size.Y];
+			this.bounds = bounds;
+			Terrain = new Terrain[bounds.X, bounds.Y];
 		}
 
 		public void Set(Terrain terrain)
@@ -31,15 +31,15 @@ namespace WarriorsSnuggery
 
 		public void Tick()
 		{
-			var bounds = VisibilitySolver.GetBounds(out var position);
+			var visibilityBounds = VisibilitySolver.GetBounds(out var position);
 
-			for (int x = position.X; x < position.X + bounds.X; x++)
+			for (int x = position.X; x < position.X + visibilityBounds.X; x++)
 			{
-				if (x >= 0 && x < size.X)
+				if (x >= 0 && x < bounds.X)
 				{
-					for (int y = position.Y; y < position.Y + bounds.Y; y++)
+					for (int y = position.Y; y < position.Y + visibilityBounds.Y; y++)
 					{
-						if (y >= 0 && y < size.Y)
+						if (y >= 0 && y < bounds.Y)
 							Terrain[x, y].Tick();
 					}
 				}
@@ -48,16 +48,16 @@ namespace WarriorsSnuggery
 
 		public void Render()
 		{
-			var bounds = VisibilitySolver.GetBounds(out var position);
+			var visibilityBounds = VisibilitySolver.GetBounds(out var position);
 			var renderList = new List<Terrain>();
 
-			for (int x = position.X; x < position.X + bounds.X; x++)
+			for (int x = position.X; x < position.X + visibilityBounds.X; x++)
 			{
-				if (x >= 0 && x < size.X)
+				if (x >= 0 && x < bounds.X)
 				{
-					for (int y = position.Y; y < position.Y + bounds.Y; y++)
+					for (int y = position.Y; y < position.Y + visibilityBounds.Y; y++)
 					{
-						if (y >= 0 && y < size.Y)
+						if (y >= 0 && y < bounds.Y)
 							renderList.Add(Terrain[x, y]);
 					}
 				}

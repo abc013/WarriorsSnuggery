@@ -65,7 +65,7 @@ namespace WarriorsSnuggery
 
 			generator.Generate();
 
-			var actors = game.World.getActorsToAdd().FindAll(a => !(a.Team == Actor.PlayerTeam || a.Team == Actor.NeutralTeam));
+			var actors = game.World.GetActorsToAdd().FindAll(a => !(a.Team == Actor.PlayerTeam || a.Team == Actor.NeutralTeam));
 
 			foreach (var actor in actors)
 			{

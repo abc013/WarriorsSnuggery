@@ -54,12 +54,7 @@ namespace WarriorsSnuggery
 		public void Load()
 		{
 			Camera.SetBounds(Bounds);
-			world.TerrainLayer.SetMapDimensions(Bounds);
-			world.WallLayer.SetMapSize(Bounds);
-			world.PhysicsLayer.SetMapDimensions(Bounds);
-			world.ShroudLayer.SetMapDimensions(Bounds, Type.DefaultType == GameType.MAINMENU || Type.DefaultType == GameType.MENU || Type.DefaultType == GameType.EDITOR || Type.DefaultType == GameType.TUTORIAL);
-
-			VisibilitySolver.SetMapDimensions(Bounds, world.ShroudLayer);
+			world.SetBounds(Bounds);
 
 			tilesWithAssignedGenerator = new int[Bounds.X, Bounds.Y];
 
@@ -177,7 +172,7 @@ namespace WarriorsSnuggery
 			writer.WriteLine(builder);
 			builder.Clear();
 
-			var wallSize = world.WallLayer.Size;
+			var wallSize = world.WallLayer.Bounds;
 			var builder2 = new StringBuilder(6 + wallSize.X * wallSize.Y * 6, 6 + wallSize.X * wallSize.Y * 12);
 			builder2.Append("Walls=");
 			for (int y = 0; y < wallSize.Y - 1; y++)

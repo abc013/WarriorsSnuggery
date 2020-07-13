@@ -245,8 +245,8 @@ namespace WarriorsSnuggery.UI
 					pos4 = new MPos(pos4.X > game.World.Map.Bounds.X ? game.World.Map.Bounds.X : pos4.X, pos4.Y > game.World.Map.Bounds.Y ? game.World.Map.Bounds.Y : pos4.Y);
 					pos4 = new MPos(pos4.X * 2 + (horizontal ? 0 : 1), pos4.Y);
 
-					if (pos4.X >= game.World.WallLayer.Size.X) pos4 = new MPos(game.World.WallLayer.Size.X - 1, pos4.Y);
-					if (pos4.Y >= game.World.WallLayer.Size.Y) pos4 = new MPos(pos4.X, game.World.WallLayer.Size.Y - 1);
+					if (pos4.X >= game.World.WallLayer.Bounds.X) pos4 = new MPos(game.World.WallLayer.Bounds.X - 1, pos4.Y);
+					if (pos4.Y >= game.World.WallLayer.Bounds.Y) pos4 = new MPos(pos4.X, game.World.WallLayer.Bounds.Y - 1);
 					game.World.WallLayer.Remove(pos4);
 				}
 			}
