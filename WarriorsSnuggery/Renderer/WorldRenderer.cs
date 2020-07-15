@@ -229,19 +229,19 @@ namespace WarriorsSnuggery
 
 		static void checkAll()
 		{
-			foreach (var a in world.Actors)
+			foreach (var a in world.ActorLayer.Actors)
 				a.CheckVisibility();
 			foreach (var o in world.Objects)
 				o.CheckVisibility();
-			foreach (var p in world.Particles)
+			foreach (var p in world.ParticleLayer.Particles)
 				p.CheckVisibility();
-			foreach (var w in world.Weapons)
+			foreach (var w in world.WeaponLayer.Weapons)
 				w.CheckVisibility();
 		}
 
 		static void checkActors(CPos topLeft, CPos bottomRight)
 		{
-			var actors = world.Actors.Where(a => a.GraphicPosition.X > topLeft.X && a.GraphicPosition.X < bottomRight.X && a.GraphicPosition.Y > topLeft.Y && a.GraphicPosition.Y < bottomRight.Y);
+			var actors = world.ActorLayer.Actors.Where(a => a.GraphicPosition.X > topLeft.X && a.GraphicPosition.X < bottomRight.X && a.GraphicPosition.Y > topLeft.Y && a.GraphicPosition.Y < bottomRight.Y);
 			foreach (var a in actors)
 				a.CheckVisibility();
 
@@ -249,11 +249,11 @@ namespace WarriorsSnuggery
 			foreach (var o in objects)
 				o.CheckVisibility();
 
-			var particles = world.Particles.Where(a => a.GraphicPosition.X > topLeft.X && a.GraphicPosition.X < bottomRight.X && a.GraphicPosition.Y > topLeft.Y && a.GraphicPosition.Y < bottomRight.Y);
+			var particles = world.ParticleLayer.Particles.Where(a => a.GraphicPosition.X > topLeft.X && a.GraphicPosition.X < bottomRight.X && a.GraphicPosition.Y > topLeft.Y && a.GraphicPosition.Y < bottomRight.Y);
 			foreach (var p in particles)
 				p.CheckVisibility();
 
-			var weapons = world.Weapons.Where(a => a.GraphicPosition.X > topLeft.X && a.GraphicPosition.X < bottomRight.X && a.GraphicPosition.Y > topLeft.Y && a.GraphicPosition.Y < bottomRight.Y);
+			var weapons = world.WeaponLayer.Weapons.Where(a => a.GraphicPosition.X > topLeft.X && a.GraphicPosition.X < bottomRight.X && a.GraphicPosition.Y > topLeft.Y && a.GraphicPosition.Y < bottomRight.Y);
 			foreach (var w in weapons)
 				w.CheckVisibility();
 		}

@@ -33,7 +33,7 @@ namespace WarriorsSnuggery.Objects.Particles
 				var y = Math.Cos(angle) * length * i;
 				var pos = new CPos((int)x, (int)y, 0);
 
-				particles[i] = ParticleCreator.Create(Type, position + pos, height, world.Game.SharedRandom);
+				particles[i] = ParticleCreator.Create(world, Type, position + pos, height, world.Game.SharedRandom);
 			}
 			return particles;
 		}

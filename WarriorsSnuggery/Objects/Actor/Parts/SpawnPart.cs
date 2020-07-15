@@ -115,7 +115,7 @@ namespace WarriorsSnuggery.Objects.Parts
 			if (self.World.Game.SharedRandom.NextDouble() > info.Probability)
 				return;
 
-			PhysicsObject @object;
+			var height = self.Height + info.Offset.Z;
 			switch (info.Type)
 			{
 				case SpawnPartTypes.ACTOR:
@@ -123,19 +123,25 @@ namespace WarriorsSnuggery.Objects.Parts
 
 					if (info.InheritsBot && self.IsBot)
 						actor.BotPart.Target = self.BotPart.Target;
-					@object = actor;
+					actor.Height = height;
+
+					self.World.Add(actor);
 					break;
 				case SpawnPartTypes.PARTICLE:
-					@object = ParticleCreator.Create(info.Name, randomPosition(), self.Height + info.Offset.Z, self.World.Game.SharedRandom);
+					var particle = ParticleCreator.Create(self.World, info.Name, randomPosition(), self.Height + info.Offset.Z, self.World.Game.SharedRandom);
+					particle.Height = height;
+
+					self.World.Add(particle);
 					break;
 				case SpawnPartTypes.WEAPON:
-					@object = WeaponCreator.Create(self.World, info.Name, randomPosition(), self);
+					var weapon = WeaponCreator.Create(self.World, info.Name, randomPosition(), self);
+					weapon.Height = height;
+
+					self.World.Add(weapon);
 					break;
 				default:
 					return;
 			}
-			@object.Height = self.Height + info.Offset.Z;
-			self.World.Add(@object);
 		}
 
 		CPos randomPosition()

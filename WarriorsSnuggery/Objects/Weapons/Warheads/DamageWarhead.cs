@@ -44,7 +44,7 @@ namespace WarriorsSnuggery.Objects.Weapons
 				if (!AgainstWalls)
 				{
 					var physics = new RayPhysics(world);
-					foreach (var actor in world.Actors)
+					foreach (var actor in world.ActorLayer.Actors)
 					{
 						if (!actor.IsAlive || actor.Health == null || actor == weapon.Origin)
 							continue;

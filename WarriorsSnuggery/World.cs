@@ -21,14 +21,14 @@ namespace WarriorsSnuggery
 		public readonly ShroudLayer ShroudLayer;
 		public readonly SmudgeLayer SmudgeLayer;
 
-		public readonly List<Actor> Actors = new List<Actor>();
-		public readonly List<Weapon> Weapons = new List<Weapon>();
-		public readonly List<Particle> Particles = new List<Particle>();
+		public readonly ActorLayer ActorLayer;
+		public readonly WeaponLayer WeaponLayer;
+		public readonly ParticleLayer ParticleLayer;
+
 		public readonly List<PhysicsObject> Objects = new List<PhysicsObject>();
 		public List<PhysicsObject> ToRender { get; private set; }
 
 		readonly List<PhysicsObject> objectsToAdd = new List<PhysicsObject>();
-		readonly List<Actor> actorsToAdd = new List<Actor>();
 
 		public Actor LocalPlayer;
 
@@ -42,13 +42,18 @@ namespace WarriorsSnuggery
 		{
 			Game = game;
 
-			TerrainLayer = new TerrainLayer();
-			WallLayer = new WallLayer();
-			PhysicsLayer = new PhysicsLayer();
-			ShroudLayer = new ShroudLayer();
+			Map = new Map(this, game.MapType, seed, stats.Level, stats.Difficulty);
+
+			var bounds = Map.Bounds;
+			TerrainLayer = new TerrainLayer(bounds);
+			WallLayer = new WallLayer(bounds);
+			PhysicsLayer = new PhysicsLayer(bounds);
+			ShroudLayer = new ShroudLayer(bounds);
 			SmudgeLayer = new SmudgeLayer();
 
-			Map = new Map(this, game.MapType, seed, stats.Level, stats.Difficulty);
+			ActorLayer = new ActorLayer(bounds);
+			WeaponLayer = new WeaponLayer();
+			ParticleLayer = new ParticleLayer(bounds);
 		}
 
 		public void Load()
@@ -81,21 +86,13 @@ namespace WarriorsSnuggery
 				Camera.Position(new MPos(Map.Bounds.X / 2, Map.Bounds.Y / 2).ToCPos(), true);
 			}
 
-			if (actorsToAdd.Any())
-				Game.Teams = actorsToAdd.Max(a => a.Team);
-
-			addObjects();
-		}
-
-		public void SetBounds(MPos bounds)
-		{
-			TerrainLayer.SetBounds(bounds);
-			WallLayer.SetBounds(bounds);
-			PhysicsLayer.SetBounds(bounds);
-			ShroudLayer.SetBounds(bounds);
 			ShroudLayer.RevealAll = Game.Type != GameType.NORMAL && Game.Type != GameType.TEST;
 
-			VisibilitySolver.SetBounds(bounds, ShroudLayer);
+			// First tick, does only add objects
+			ActorLayer.Tick();
+			WeaponLayer.Tick();
+			ParticleLayer.Tick();
+			addObjects();
 		}
 
 		public void Tick()
@@ -103,38 +100,23 @@ namespace WarriorsSnuggery
 			if (LocalPlayer != null && !Game.Editor && Camera.LockedToPlayer)
 				Camera.Position(LocalPlayer.GraphicPosition + (Game.ScreenControl.Focused is UI.DefaultScreen ? Camera.CamPlayerOffset : CPos.Zero));
 
-			foreach (var actor in Actors)
-				actor.Tick();
 			foreach (var @object in Objects)
 				@object.Tick();
-			foreach (var particle in Particles)
-				particle.Tick();
-			foreach (var weapon in Weapons)
-				weapon.Tick();
+
+			ActorLayer.Tick();
+			ParticleLayer.Tick();
+			WeaponLayer.Tick();
 
 			TerrainLayer.Tick();
 			SmudgeLayer.Tick();
 
 			addObjects();
+			prepareRenderList();
 		}
 
 		void addObjects()
 		{
-			int removed = 0;
-			removed += Actors.RemoveAll(a => a.Disposed);
-			removed += Weapons.RemoveAll(o => o.Disposed);
-			removed += Particles.RemoveAll(o => o.Disposed);
-			removed += Objects.RemoveAll(o => o.Disposed);
-
-			if (actorsToAdd.Any())
-			{
-				foreach (var actor in actorsToAdd)
-				{
-					actor.CheckVisibility();
-					Actors.Add(actor);
-				}
-				actorsToAdd.Clear();
-			}
+			Objects.RemoveAll(o => o.Disposed);
 
 			if (objectsToAdd.Any())
 			{
@@ -142,20 +124,18 @@ namespace WarriorsSnuggery
 				{
 					@object.CheckVisibility();
 
-					if (@object is Particle)
-						Particles.Add((Particle)@object);
-					else if (@object is Weapon)
-						Weapons.Add((Weapon)@object);
-					else
-						Objects.Add(@object);
+					Objects.Add(@object);
 				}
 				objectsToAdd.Clear();
 			}
+		}
 
+		void prepareRenderList()
+		{
 			ToRender = Objects.ToList(); // Copy array
-			ToRender.AddRange(Actors);
-			ToRender.AddRange(Weapons);
-			ToRender.AddRange(Particles);
+			ToRender.AddRange(ActorLayer.Actors);
+			ToRender.AddRange(WeaponLayer.Weapons);
+			ToRender.AddRange(ParticleLayer.Particles);
 			ToRender.AddRange(WallLayer.WallList);
 
 			ToRender = ToRender.OrderBy(e => e.GraphicPosition.Z + (e.Position.Y - 512) * 2).ToList();
@@ -234,30 +214,30 @@ namespace WarriorsSnuggery
 			return false;
 		}
 
+		public void Add(Weapon weapon)
+		{
+			WeaponLayer.Add(weapon);
+		}
+
+		public void Add(Actor actor)
+		{
+			ActorLayer.Add(actor);
+			PhysicsLayer.UpdateSectors(actor, true);
+		}
+
+		public void Add(Particle particle)
+		{
+			ParticleLayer.Add(particle);
+		}
+
+		public void Add(Particle[] particles)
+		{
+			ParticleLayer.Add(particles);
+		}
+
 		public void Add(PhysicsObject @object)
 		{
-			if (@object == null)
-				return;
-
-			if (@object is Actor)
-				actorsToAdd.Add(@object as Actor);
-			else
-				objectsToAdd.Add(@object);
-
-			// Make sure that no weapons are added to the sectors, as they will not influence any movement
-			if (!(@object is Weapon))
-				PhysicsLayer.UpdateSectors(@object, true);
-		}
-
-		public void Add(PhysicsObject[] objects)
-		{
-			foreach (var obj in objects)
-				Add(obj);
-		}
-
-		public List<Actor> GetActorsToAdd()
-		{
-			return actorsToAdd;
+			objectsToAdd.Add(@object);
 		}
 
 		public Terrain TerrainAt(CPos pos)
@@ -294,26 +274,18 @@ namespace WarriorsSnuggery
 
 		public void Dispose()
 		{
-			foreach (var a in Actors)
-				a.Dispose();
-			Actors.Clear();
-
 			foreach (var o in Objects)
 				o.Dispose();
 			Objects.Clear();
 
-			foreach (var p in Particles)
-				p.Dispose();
-			Particles.Clear();
+			ActorLayer.Clear();
+			ParticleLayer.Clear();
+			WeaponLayer.Clear();
 
-			foreach (var w in Weapons)
-				w.Dispose();
-			Weapons.Clear();
-
-			TerrainLayer.Dispose();
-			WallLayer.Dispose();
-			ShroudLayer.Dispose();
-			SmudgeLayer.Dispose();
+			TerrainLayer.Clear();
+			WallLayer.Clear();
+			ShroudLayer.Clear();
+			SmudgeLayer.Clear();
 		}
 	}
 }

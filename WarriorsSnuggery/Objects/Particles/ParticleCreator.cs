@@ -15,17 +15,17 @@ namespace WarriorsSnuggery.Objects.Particles
 				Types.Add(node.Key, new ParticleType(node.Children.ToArray()));
 		}
 
-		public static Particle Create(string name, CPos position, int height, Random random)
+		public static Particle Create(World world, string name, CPos position, int height, Random random)
 		{
 			if (!Types.ContainsKey(name))
 				throw new MissingInfoException(name);
 
-			return Create(Types[name], position, height, random);
+			return Create(world, Types[name], position, height, random);
 		}
 
-		public static Particle Create(ParticleType type, CPos position, int height, Random random)
+		public static Particle Create(World world, ParticleType type, CPos position, int height, Random random)
 		{
-			return new Particle(position, height, type, random);
+			return new Particle(world, position, height, type, random);
 		}
 	}
 }

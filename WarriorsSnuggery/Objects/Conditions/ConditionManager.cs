@@ -26,7 +26,7 @@ namespace WarriorsSnuggery.Objects.Conditions
 
 		public void Tick()
 		{
-			items["Enemies"] = game.World.Actors.Any(a => a.Team != Actor.PlayerTeam && a.Team != Actor.NeutralTeam);
+			items["Enemies"] = game.World.ActorLayer.Actors.Any(a => a.Team != Actor.PlayerTeam && a.Team != Actor.NeutralTeam);
 			items["KeyFound"] = game.World.KeyFound;
 		}
 

@@ -8,6 +8,9 @@ namespace WarriorsSnuggery.Objects.Particles
 		public readonly bool AffectedByObjects;
 		public readonly ParticleType Type;
 		readonly Random random;
+		readonly World world;
+
+		public ParticleSector Sector;
 
 		int current;
 		int dissolve;
@@ -16,10 +19,11 @@ namespace WarriorsSnuggery.Objects.Particles
 		CPos transform_velocity;
 		VAngle rotate_velocity;
 
-		public Particle(CPos pos, int height, ParticleType type, Random random) : base(pos, type.Texture != null ? (BatchRenderable)new BatchSequence(type.Texture.GetTextures(), type.Color + new Color(variety(type.ColorVariety.R), variety(type.ColorVariety.G), variety(type.ColorVariety.B), variety(type.ColorVariety.A)), tick: type.Texture.Tick) : new BatchObject(type.MeshSize * MasterRenderer.PixelMultiplier + variety(type.MeshSizeVariety), type.Color + new Color(variety(type.ColorVariety.R), variety(type.ColorVariety.G), variety(type.ColorVariety.B), variety(type.ColorVariety.A))))
+		public Particle(World world, CPos pos, int height, ParticleType type, Random random) : base(pos, type.Texture != null ? (BatchRenderable)new BatchSequence(type.Texture.GetTextures(), type.Color + new Color(variety(type.ColorVariety.R), variety(type.ColorVariety.G), variety(type.ColorVariety.B), variety(type.ColorVariety.A)), tick: type.Texture.Tick) : new BatchObject(type.MeshSize * MasterRenderer.PixelMultiplier + variety(type.MeshSizeVariety), type.Color + new Color(variety(type.ColorVariety.R), variety(type.ColorVariety.G), variety(type.ColorVariety.B), variety(type.ColorVariety.A))))
 		{
 			Height = height;
 			Type = type;
+			this.world = world;
 			this.random = random;
 
 			AffectedByObjects = type.AffectedByObjects;
@@ -142,7 +146,10 @@ namespace WarriorsSnuggery.Objects.Particles
 			Rotation += rotate_velocity;
 
 			Position += new CPos(transform_velocity.X, transform_velocity.Y, 0);
-			
+
+			if (transform_velocity != CPos.Zero)
+				world.ParticleLayer.Update(this);
+
 			if (Height + transform_velocity.Z < 0)
 				Height = 0;
 			else
@@ -168,6 +175,13 @@ namespace WarriorsSnuggery.Objects.Particles
 				RenderShadow();
 
 			base.Render();
+		}
+
+		public override void Dispose()
+		{
+			base.Dispose();
+
+			world.ParticleLayer.Remove(this);
 		}
 	}
 }

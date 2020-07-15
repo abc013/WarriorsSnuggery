@@ -32,7 +32,7 @@ namespace WarriorsSnuggery
 		{
 			if (--countdown < 0)
 			{
-				var actor = game.World.Actors.FirstOrDefault(a => !(a.Team == Actor.PlayerTeam || a.Team == Actor.NeutralTeam) && a.WorldPart != null && a.WorldPart.KillForVictory);
+				var actor = game.World.ActorLayer.Actors.FirstOrDefault(a => !(a.Team == Actor.PlayerTeam || a.Team == Actor.NeutralTeam) && a.WorldPart != null && a.WorldPart.KillForVictory);
 
 				if (actor == null)
 					countdown = Settings.UpdatesPerSecond * 10;
@@ -65,13 +65,10 @@ namespace WarriorsSnuggery
 
 			generator.Generate();
 
-			var actors = game.World.GetActorsToAdd().FindAll(a => !(a.Team == Actor.PlayerTeam || a.Team == Actor.NeutralTeam));
+			var actors = game.World.ActorLayer.Actors.FindAll(a => !(a.Team == Actor.PlayerTeam || a.Team == Actor.NeutralTeam) && a.IsBot);
 
 			foreach (var actor in actors)
-			{
-				if (actor.IsBot)
-					actor.BotPart.Target = new Objects.Weapons.Target(game.World.LocalPlayer);
-			}
+				actor.BotPart.Target = new Objects.Weapons.Target(game.World.LocalPlayer);
 		}
 
 		public int CurrentWave()

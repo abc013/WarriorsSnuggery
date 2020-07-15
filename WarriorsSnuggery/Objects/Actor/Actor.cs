@@ -9,6 +9,9 @@ namespace WarriorsSnuggery.Objects
 {
 	public sealed class Actor : PhysicsObject
 	{
+		public const byte PlayerTeam = 2;
+		public const byte NeutralTeam = 0;
+
 		public readonly World World;
 
 		public readonly bool IsPlayer;
@@ -18,8 +21,7 @@ namespace WarriorsSnuggery.Objects
 
 		public bool IsAlive = true;
 
-		public const byte PlayerTeam = 2;
-		public const byte NeutralTeam = 0;
+		public ActorSector Sector;
 
 		public byte Team;
 		public float Angle;
@@ -235,6 +237,7 @@ namespace WarriorsSnuggery.Objects
 			CurrentAction = ActorAction.MOVING;
 			Angle = (old - position).FlatAngle;
 			World.PhysicsLayer.UpdateSectors(this);
+			World.ActorLayer.Update(this);
 
 			Parts.ForEach(p => p.OnMove(old, Velocity));
 		}
@@ -427,6 +430,7 @@ namespace WarriorsSnuggery.Objects
 			base.Dispose();
 
 			Parts.ForEach(p => p.OnDispose());
+			World.ActorLayer.Remove(this);
 		}
 	}
 }

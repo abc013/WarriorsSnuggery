@@ -13,14 +13,10 @@ namespace WarriorsSnuggery
 		public PhysicsSector[,] Sectors;
 		public MPos Bounds { get; private set; }
 
-		public PhysicsLayer()
-		{
-			Sectors = new PhysicsSector[0, 0];
-		}
-
-		public void SetBounds(MPos bounds)
+		public PhysicsLayer(MPos bounds)
 		{
 			Bounds = new MPos((int)Math.Ceiling(bounds.X / SectorSize), (int)Math.Ceiling(bounds.Y / SectorSize));
+			
 			Sectors = new PhysicsSector[Bounds.X, Bounds.Y];
 			for (int x = 0; x < Bounds.X; x++)
 				for (int y = 0; y < Bounds.Y; y++)
@@ -55,7 +51,7 @@ namespace WarriorsSnuggery
 			if (physics == null || physics.Shape == Shape.NONE)
 				return new PhysicsSector[0];
 
-			var position = physics.Position;
+			var position = physics.Position - Map.Offset;
 			// Add margin to be sure.
 			var radiusX = physics.RadiusX + 10;
 			var radiusY = physics.RadiusY + 10;

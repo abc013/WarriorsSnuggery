@@ -133,7 +133,7 @@ namespace WarriorsSnuggery.UI
 
 		void selectNewEnemy()
 		{
-			targetedEnemy = game.World.Actors.Find(a => a.Team != Actor.PlayerTeam && a.Team != Actor.NeutralTeam && !a.Disposed && a.WorldPart != null && a.WorldPart.KillForVictory);
+			targetedEnemy = game.World.ActorLayer.Actors.Find(a => a.Team != Actor.PlayerTeam && a.Team != Actor.NeutralTeam && !a.Disposed && a.WorldPart != null && a.WorldPart.KillForVictory);
 		}
 
 		public override void Hide()

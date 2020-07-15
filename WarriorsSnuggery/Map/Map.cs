@@ -24,6 +24,8 @@ namespace WarriorsSnuggery
 		public readonly MapInfo Type;
 		public readonly int Seed;
 
+		public static readonly CPos Offset = new CPos(-512, -512, 0);
+
 		// Map Information
 		public MPos Bounds { get; private set; }
 		public MPos Center { get { return Bounds / new MPos(2, 2); } }
@@ -54,7 +56,7 @@ namespace WarriorsSnuggery
 		public void Load()
 		{
 			Camera.SetBounds(Bounds);
-			world.SetBounds(Bounds);
+			VisibilitySolver.SetBounds(Bounds, world.ShroudLayer);
 
 			tilesWithAssignedGenerator = new int[Bounds.X, Bounds.Y];
 
@@ -191,12 +193,12 @@ namespace WarriorsSnuggery
 			builder2.Clear();
 
 			writer.WriteLine("Actors=");
-			for (int i = 0; i < world.Actors.Count; i++)
+			for (int i = 0; i < world.ActorLayer.Actors.Count; i++)
 			{
-				var a = world.Actors[i];
+				var a = world.ActorLayer.Actors[i];
 				writer.WriteLine("\t" + i + "=" + a.Position.X + "," + a.Position.Y + "," + a.Position.Z);
 				writer.WriteLine("\t\t" + "Type=" + ActorCreator.GetName(a.Type));
-				if (a.Team != Objects.Actor.NeutralTeam)
+				if (a.Team != Actor.NeutralTeam)
 					writer.WriteLine("\t\t" + "Team=" + a.Team);
 				if (a.Health != null && a.Health.HP != a.Health.MaxHP)
 					writer.WriteLine("\t\t" + "Health=" + a.Health.RelativeHP.ToString(Settings.FloatFormat));

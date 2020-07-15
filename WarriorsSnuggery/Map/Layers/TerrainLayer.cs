@@ -1,23 +1,16 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using WarriorsSnuggery.Objects;
 
 namespace WarriorsSnuggery
 {
-	public sealed class TerrainLayer : ITickRenderable, IDisposable
+	public sealed class TerrainLayer : ITickRenderable
 	{
 		public Terrain[,] Terrain { get; private set; }
-		MPos bounds;
+		readonly MPos bounds;
 
-		public TerrainLayer()
+		public TerrainLayer(MPos bounds)
 		{
-			Terrain = new Terrain[0, 0];
-		}
-
-		public void SetBounds(MPos bounds)
-		{
-			Dispose();
 			this.bounds = bounds;
 			Terrain = new Terrain[bounds.X, bounds.Y];
 		}
@@ -68,7 +61,7 @@ namespace WarriorsSnuggery
 				terrain.Render();
 		}
 
-		public void Dispose()
+		public void Clear()
 		{
 			Terrain = new Terrain[0, 0];
 		}

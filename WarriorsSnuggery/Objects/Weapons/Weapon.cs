@@ -87,5 +87,12 @@ namespace WarriorsSnuggery.Objects.Weapons
 			if (dispose)
 				Dispose();
 		}
+
+		public override void Dispose()
+		{
+			base.Dispose();
+
+			World.WeaponLayer.Remove(this);
+		}
 	}
 }

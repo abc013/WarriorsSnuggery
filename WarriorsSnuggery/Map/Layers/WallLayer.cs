@@ -1,23 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using WarriorsSnuggery.Objects;
 
 namespace WarriorsSnuggery
 {
-	public sealed class WallLayer : IRenderable, IDisposable
+	public sealed class WallLayer : IRenderable
 	{
 		public readonly List<Wall> WallList = new List<Wall>();
 		public Wall[,] Walls { get; private set; }
 		public MPos Bounds { get; private set; }
 
-		public WallLayer()
+		public WallLayer(MPos bounds)
 		{
-			Walls = new Wall[0, 0];
-		}
-
-		public void SetBounds(MPos bounds)
-		{
-			Dispose();
 			Bounds = new MPos((bounds.X + 1) * 2 + 1, (bounds.Y + 1) + 1);
 			Walls = new Wall[Bounds.X, Bounds.Y];
 		}
@@ -183,10 +176,11 @@ namespace WarriorsSnuggery
 				wall.Render();
 		}
 
-		public void Dispose()
+		public void Clear()
 		{
 			Walls = new Wall[0, 0];
 			Bounds = MPos.Zero;
+
 			foreach (var wall in WallList)
 				wall.Dispose();
 			WallList.Clear();

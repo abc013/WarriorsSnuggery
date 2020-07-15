@@ -3,24 +3,18 @@ using WarriorsSnuggery.Graphics;
 
 namespace WarriorsSnuggery
 {
-	public sealed class ShroudLayer : IDisposable
+	public sealed class ShroudLayer
 	{
 		public bool RevealAll;
 		public MPos Bounds { get; private set; }
 
-		bool[,,] shroudRevealed; // First: Team Second: X Third: Y
-		byte[,] shroudAlpha;
+		readonly bool[,,] shroudRevealed; // First: Team Second: X Third: Y
+		readonly byte[,] shroudAlpha;
 
-		public ShroudLayer()
+		public ShroudLayer(MPos bounds)
 		{
-			shroudRevealed = new bool[0, 0, 0];
-			shroudAlpha = new byte[0, 0];
-		}
-
-		public void SetBounds(MPos bounds)
-		{
-			Dispose();
 			Bounds = bounds * new MPos(2, 2);
+
 			shroudRevealed = new bool[Settings.MaxTeams, bounds.X * 2, bounds.Y * 2];
 			shroudAlpha = new byte[bounds.X * 2, bounds.Y * 2];
 		}
@@ -119,9 +113,8 @@ namespace WarriorsSnuggery
 			return shroud;
 		}
 
-		public void Dispose()
+		public void Clear()
 		{
-			shroudRevealed = new bool[0, 0, 0];
 			Bounds = MPos.Zero;
 		}
 	}

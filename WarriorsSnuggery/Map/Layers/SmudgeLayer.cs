@@ -3,7 +3,7 @@ using WarriorsSnuggery.Objects.Weapons;
 
 namespace WarriorsSnuggery
 {
-	public sealed class SmudgeLayer : ITickRenderDisposable
+	public sealed class SmudgeLayer : ITickRenderable
 	{
 		readonly List<Smudge> smudgeList = new List<Smudge>();
 
@@ -43,7 +43,7 @@ namespace WarriorsSnuggery
 			smudgeList.RemoveAll(s => s.Disposed);
 		}
 
-		public void Dispose()
+		public void Clear()
 		{
 			foreach (var smudge in smudgeList)
 				smudge.Disposed = true;
