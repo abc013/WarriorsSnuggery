@@ -17,7 +17,7 @@ dotnet build
 For more information about the `dotnet build` command, visit [this documentation](https://docs.microsoft.com/en-us/dotnet/core/tools/dotnet-build).
 
 
-If you want to edit and compile the code in an IDE, Visual Studio 2019 is highly recommended.
+If you want to edit and compile the code in an IDE, Visual Studio 2019 or Visual Studio Code is highly recommended (the solution is prepared for the use of those).
 
 for any issues or build failures, feel free to [open an issue](https://github.com/abc013/WarriorsSnuggery/issues/new)!
 
