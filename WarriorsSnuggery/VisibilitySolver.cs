@@ -45,7 +45,7 @@ namespace WarriorsSnuggery
 		public static void LookAtUpdated()
 		{
 			var pos = Camera.LookAt;
-			var zoom = Camera.CurrentZoom;
+			var zoom = Camera.CurrentZoom * 1.5f;
 			lastCameraPosition = LookAt(pos, zoom);
 
 			Array.Clear(visible, 0, visible.Length);

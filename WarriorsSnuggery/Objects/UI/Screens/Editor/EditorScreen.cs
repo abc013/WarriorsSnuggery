@@ -226,11 +226,15 @@ namespace WarriorsSnuggery.UI
 
 		void remove()
 		{
-			var remove = game.World.ActorLayer.Actors.Find(a => (a.Position - MouseInput.GamePosition).FlatDist < 512);
-			if (remove != null)
+			var removeSectors = game.World.ActorLayer.GetSectors(MouseInput.GamePosition, 512);
+			foreach (var sector in removeSectors)
 			{
-				remove.Dispose();
-				return;
+				var remove = sector.Actors.Find(a => (a.Position - MouseInput.GamePosition).SquaredFlatDist < 512 * 512);
+				if (remove != null)
+				{
+					remove.Dispose();
+					return;
+				}
 			}
 
 			// TODO weapon and particle removal for future

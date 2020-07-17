@@ -9,6 +9,7 @@ namespace WarriorsSnuggery
 	{
 		public const int SectorSize = 4;
 		public readonly List<Particle> Particles = new List<Particle>();
+		public readonly List<Particle> VisibleParticles = new List<Particle>();
 
 		readonly List<Particle> particlesToRemove = new List<Particle>();
 		readonly List<Particle> particlesToAdd = new List<Particle>();
@@ -53,6 +54,9 @@ namespace WarriorsSnuggery
 				newSector.Enter(particle);
 			}
 
+			if (particle.CheckVisibility())
+				VisibleParticles.Add(particle);
+
 			particle.Sector = newSector;
 		}
 
@@ -61,8 +65,32 @@ namespace WarriorsSnuggery
 			var position = particle.Position - Map.Offset;
 			var x = (int)Math.Floor(position.X / 4096f);
 			var y = (int)Math.Floor(position.Y / 4096f);
+			x = Math.Clamp(x, 0, bounds.X - 1);
+			y = Math.Clamp(y, 0, bounds.Y - 1);
 
 			return sectors[x, y];
+		}
+
+		public ParticleSector[] GetSectors(CPos position, int radius)
+		{
+			var topleft = position - new CPos(radius, radius, 0) - Map.Offset;
+			var botright = position + new CPos(radius, radius, 0) - Map.Offset;
+
+			return getSectors(topleft, botright);
+		}
+
+		ParticleSector[] getSectors(CPos topleft, CPos botright)
+		{
+			var pos1 = new MPos((int)Math.Clamp(Math.Floor(topleft.X / 4096f), 0, bounds.X - 1), (int)Math.Clamp(Math.Floor(topleft.Y / 4096f), 0, bounds.Y - 1));
+			var pos2 = new MPos((int)Math.Clamp(Math.Ceiling(botright.X / 4096f), 0, bounds.X - 1), (int)Math.Clamp(Math.Ceiling(botright.Y / 4096f), 0, bounds.Y - 1));
+
+			var sectors = new ParticleSector[(pos2.X - pos1.X + 1) * (pos2.Y - pos1.Y + 1)];
+			var i = 0;
+			for (var x = pos1.X; x < pos2.X + 1; x++)
+				for (var y = pos1.Y; y < pos2.Y + 1; y++)
+					sectors[i++] = this.sectors[x, y];
+
+			return sectors;
 		}
 
 		public void Remove(Particle particle)
@@ -94,9 +122,34 @@ namespace WarriorsSnuggery
 				foreach (var particle in particlesToRemove)
 				{
 					Particles.Remove(particle);
+					if (particle.CheckVisibility())
+						VisibleParticles.Remove(particle);
 					particle.Sector.Leave(particle);
 				}
 				particlesToRemove.Clear();
+			}
+		}
+
+		public void CheckVisibility()
+		{
+			foreach (var p in Particles)
+				p.CheckVisibility();
+			VisibleParticles.Clear();
+			VisibleParticles.AddRange(Particles);
+		}
+
+		public void CheckVisibility(CPos topleft, CPos bottomright)
+		{
+			VisibleParticles.Clear();
+			var sectors = getSectors(topleft, bottomright);
+
+			foreach (var sector in sectors)
+			{
+				foreach (var p in sector.Particles)
+				{
+					if (p.CheckVisibility())
+						VisibleParticles.Add(p);
+				}
 			}
 		}
 
@@ -112,21 +165,21 @@ namespace WarriorsSnuggery
 	{
 		public readonly MPos Position;
 
-		readonly List<Particle> objects = new List<Particle>();
+		public readonly List<Particle> Particles = new List<Particle>();
 
 		public ParticleSector(MPos position)
 		{
 			Position = position;
 		}
 
-		public void Enter(Particle obj)
+		public void Enter(Particle particle)
 		{
-			objects.Add(obj);
+			Particles.Add(particle);
 		}
 
-		public void Leave(Particle obj)
+		public void Leave(Particle particle)
 		{
-			objects.Remove(obj);
+			Particles.Remove(particle);
 		}
 	}
 }

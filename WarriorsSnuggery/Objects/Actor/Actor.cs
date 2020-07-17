@@ -233,7 +233,6 @@ namespace WarriorsSnuggery.Objects
 			if (Physics != null)
 				Physics.Position = position;
 
-			CheckVisibility();
 			CurrentAction = ActorAction.MOVING;
 			Angle = (old - position).FlatAngle;
 			World.PhysicsLayer.UpdateSectors(this);
@@ -258,12 +257,17 @@ namespace WarriorsSnuggery.Objects
 			Effects.Add(new EffectPart(this, spell));
 		}
 
-		public override void CheckVisibility()
+		public override bool CheckVisibility()
 		{
+			if (Disposed)
+				return visible;
+
 			if (WorldPart != null)
 				visible = VisibilitySolver.IsVisible(GraphicPosition + WorldPart.VisibilityBoxOffset, WorldPart.VisibilityBox);
 			else
 				visible = VisibilitySolver.IsVisible(GraphicPosition, new MPos(512, 512));
+
+			return visible;
 		}
 
 		public override void Render()

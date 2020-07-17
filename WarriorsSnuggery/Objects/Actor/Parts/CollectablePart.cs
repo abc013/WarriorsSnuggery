@@ -68,17 +68,15 @@ namespace WarriorsSnuggery.Objects.Parts
 	public class CollectablePart : ActorPart
 	{
 		readonly CollectablePartInfo info;
-		readonly SimplePhysics physics;
 		bool activated;
 		int cooldown;
 		Actor lastActor;
-		bool updatePhysics = true;
-		PhysicsSector[] sectors;
+		bool updateSectors = true;
+		ActorSector[] sectors;
 
 		public CollectablePart(Actor self, CollectablePartInfo info) : base(self)
 		{
 			this.info = info;
-			physics = new SimplePhysics(self.Position, 0, Shape.CIRCLE, info.Radius, info.Radius, info.Radius);
 		}
 
 		public override void Tick()
@@ -114,22 +112,15 @@ namespace WarriorsSnuggery.Objects.Parts
 			}
 			else
 			{
-				if (updatePhysics)
-				{
-					physics.Position = self.Position;
-					physics.Height = self.Height;
-					sectors = self.World.PhysicsLayer.GetSectors(physics);
-					updatePhysics = false;
-				}
+				if (updateSectors)
+					sectors = self.World.ActorLayer.GetSectors(self.Position, info.Radius);
 
+				var squared = info.Radius * info.Radius;
 				foreach (var sector in sectors)
 				{
-					foreach (var @object in sector.GetObjects())
+					foreach (var actor in sector.Actors)
 					{
-						if (!(@object is Actor actor))
-							continue;
-
-						if (actor != self && actor.IsAlive && actor.WorldPart != null && actor.WorldPart.CanTrigger && (actor.Position - self.Position).SquaredFlatDist < info.Radius * info.Radius)
+						if (actor != self && actor.IsAlive && actor.WorldPart != null && actor.WorldPart.CanTrigger && (actor.Position - self.Position).SquaredFlatDist < squared)
 							activate(actor);
 					}
 				}
@@ -266,7 +257,7 @@ namespace WarriorsSnuggery.Objects.Parts
 
 		public override void OnMove(CPos old, CPos speed)
 		{
-			updatePhysics = true;
+			updateSectors = true;
 		}
 	}
 }

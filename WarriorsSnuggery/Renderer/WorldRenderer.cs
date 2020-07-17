@@ -71,8 +71,7 @@ namespace WarriorsSnuggery
 					var sidealpha = Math.Abs(o.Position.X - pos.X) / 4096f;
 					if (sidealpha > alpha)
 						alpha = sidealpha;
-					if (alpha < 0.5f) alpha = 0.5f;
-					if (alpha > 1f) alpha = 1f;
+					alpha = Math.Clamp(alpha, 0.5f, 1f);
 
 					o.SetColor(new Color(1f, 1f, 1f, alpha));
 					o.Render();
@@ -187,7 +186,7 @@ namespace WarriorsSnuggery
 			// TODO determine margins in some way
 			var topLeft = pos - zoomPos - new CPos(3072, 3072, 0);
 			var bottomRight = pos + zoomPos + new CPos(3072, 3072, 0);
-			checkActors(topLeft, bottomRight);
+			check(topLeft, bottomRight);
 
 			var botLeft = VisibilitySolver.LookAt(pos, zoom);
 			var topRight = botLeft + VisibilitySolver.Zoom(zoom);
@@ -229,33 +228,29 @@ namespace WarriorsSnuggery
 
 		static void checkAll()
 		{
-			foreach (var a in world.ActorLayer.Actors)
-				a.CheckVisibility();
+			world.ActorLayer.CheckVisibility();
 			foreach (var o in world.Objects)
 				o.CheckVisibility();
-			foreach (var p in world.ParticleLayer.Particles)
-				p.CheckVisibility();
+			world.ParticleLayer.CheckVisibility();
 			foreach (var w in world.WeaponLayer.Weapons)
 				w.CheckVisibility();
 		}
 
-		static void checkActors(CPos topLeft, CPos bottomRight)
+		static void check(CPos topLeft, CPos bottomRight)
 		{
-			var actors = world.ActorLayer.Actors.Where(a => a.GraphicPosition.X > topLeft.X && a.GraphicPosition.X < bottomRight.X && a.GraphicPosition.Y > topLeft.Y && a.GraphicPosition.Y < bottomRight.Y);
-			foreach (var a in actors)
-				a.CheckVisibility();
+			world.ActorLayer.CheckVisibility(topLeft, bottomRight);
 
 			var objects = world.Objects.Where(a => a.GraphicPosition.X > topLeft.X && a.GraphicPosition.X < bottomRight.X && a.GraphicPosition.Y > topLeft.Y && a.GraphicPosition.Y < bottomRight.Y);
 			foreach (var o in objects)
 				o.CheckVisibility();
 
-			var particles = world.ParticleLayer.Particles.Where(a => a.GraphicPosition.X > topLeft.X && a.GraphicPosition.X < bottomRight.X && a.GraphicPosition.Y > topLeft.Y && a.GraphicPosition.Y < bottomRight.Y);
-			foreach (var p in particles)
-				p.CheckVisibility();
+			world.ParticleLayer.CheckVisibility(topLeft, bottomRight);
 
 			var weapons = world.WeaponLayer.Weapons.Where(a => a.GraphicPosition.X > topLeft.X && a.GraphicPosition.X < bottomRight.X && a.GraphicPosition.Y > topLeft.Y && a.GraphicPosition.Y < bottomRight.Y);
 			foreach (var w in weapons)
 				w.CheckVisibility();
+
+			// TODO: check smudge as well
 		}
 
 		static void checkAllTerrain(bool checkEdges = false)

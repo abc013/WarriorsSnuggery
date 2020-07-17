@@ -133,9 +133,9 @@ namespace WarriorsSnuggery
 		void prepareRenderList()
 		{
 			ToRender = Objects.ToList(); // Copy array
-			ToRender.AddRange(ActorLayer.Actors);
+			ToRender.AddRange(ActorLayer.VisibleActors);
 			ToRender.AddRange(WeaponLayer.Weapons);
-			ToRender.AddRange(ParticleLayer.Particles);
+			ToRender.AddRange(ParticleLayer.VisibleParticles);
 			ToRender.AddRange(WallLayer.WallList);
 
 			ToRender = ToRender.OrderBy(e => e.GraphicPosition.Z + (e.Position.Y - 512) * 2).ToList();

@@ -14,7 +14,7 @@ namespace WarriorsSnuggery
 
 	public interface ICheckVisible
 	{
-		void CheckVisibility();
+		bool CheckVisibility();
 	}
 
 	public interface ITickRenderable : ITick, IRenderable { }

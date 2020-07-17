@@ -44,39 +44,44 @@ namespace WarriorsSnuggery.Objects.Weapons
 				if (!AgainstWalls)
 				{
 					var physics = new RayPhysics(world);
-					foreach (var actor in world.ActorLayer.Actors)
+					var maxDist = maxRange * weapon.DamageRangeModifier;
+					var sectors = world.ActorLayer.GetSectors(target.Position, (int)maxDist);
+					foreach (var sector in sectors)
 					{
-						if (!actor.IsAlive || actor.Health == null || actor == weapon.Origin)
-							continue;
+						foreach (var actor in sector.Actors)
+						{
+							if (!actor.IsAlive || actor.Health == null || actor == weapon.Origin)
+								continue;
 
-						if (weapon.Origin != null && actor.Team == weapon.Origin.Team)
-							continue;
+							if (weapon.Origin != null && actor.Team == weapon.Origin.Team)
+								continue;
 
-						var dist = (target.Position - actor.Position).FlatDist;
-						if (dist > maxRange * weapon.DamageRangeModifier) continue;
-						if (dist < 1f) dist = 1;
+							var dist = (target.Position - actor.Position).FlatDist;
+							if (dist > maxDist) continue;
+							if (dist < 1f) dist = 1;
 
-						float damagemultiplier = FalloffHelper.GetMultiplier(Falloff, RangeSteps, dist, weapon.DamageRangeModifier);
+							float damagemultiplier = FalloffHelper.GetMultiplier(Falloff, RangeSteps, dist, weapon.DamageRangeModifier);
 
-						physics.Start = actor.Position;
-						physics.Target = target.Position;
-						var pen = physics.GetWallPenetrationValue();
+							physics.Start = actor.Position;
+							physics.Target = target.Position;
+							var pen = physics.GetWallPenetrationValue();
 
-						if (pen == 0f)
-							continue;
+							if (pen == 0f)
+								continue;
 
-						var damage = (int)Math.Floor(damagemultiplier * Damage * weapon.DamageModifier * pen);
+							var damage = (int)Math.Floor(damagemultiplier * Damage * weapon.DamageModifier * pen);
 
-						if (damage == 0)
-							continue;
+							if (damage == 0)
+								continue;
 
-						if (actor.WorldPart != null && actor.WorldPart.ShowDamage)
-							world.Add(new ActionText(actor.Position + new CPos(0, 0, 1024), new CPos(0, -15, 30), 50, ActionText.ActionTextType.SCALE, new Color(1f, 1 - (damage / (Damage * 1.5f)), 0).ToString() + damage));
+							if (actor.WorldPart != null && actor.WorldPart.ShowDamage)
+								world.Add(new ActionText(actor.Position + new CPos(0, 0, 1024), new CPos(0, -15, 30), 50, ActionText.ActionTextType.SCALE, new Color(1f, 1 - (damage / (Damage * 1.5f)), 0).ToString() + damage));
 
-						if (weapon.Origin != null)
-							actor.Damage(weapon.Origin, damage);
-						else
-							actor.Damage(damage);
+							if (weapon.Origin != null)
+								actor.Damage(weapon.Origin, damage);
+							else
+								actor.Damage(damage);
+						}
 					}
 				}
 				else

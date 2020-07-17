@@ -34,37 +34,42 @@ namespace WarriorsSnuggery.Objects.Weapons
 			if (Acceleration != 0)
 			{
 				var physics = new RayPhysics(world);
-				foreach (var actor in world.ActorLayer.Actors)
+				var maxDist = maxRange * weapon.DamageRangeModifier;
+				var sectors = world.ActorLayer.GetSectors(target.Position, (int)maxDist);
+				foreach (var sector in sectors)
 				{
-					if (!actor.IsAlive || actor.Health == null || actor == weapon.Origin)
-						continue;
+					foreach (var actor in world.ActorLayer.Actors)
+					{
+						if (!actor.IsAlive || actor.Health == null || actor == weapon.Origin)
+							continue;
 
-					if (weapon.Origin != null && actor.Team == weapon.Origin.Team)
-						continue;
+						if (weapon.Origin != null && actor.Team == weapon.Origin.Team)
+							continue;
 
-					var dist = (target.Position - actor.Position).FlatDist;
-					if (dist > maxRange * weapon.DamageRangeModifier) continue;
-					if (dist < 1f) dist = 1;
+						var dist = (target.Position - actor.Position).FlatDist;
+						if (dist > maxRange * weapon.DamageRangeModifier) continue;
+						if (dist < 1f) dist = 1;
 
-					float multiplier = FalloffHelper.GetMultiplier(Falloff, RangeSteps, dist, weapon.DamageRangeModifier);
+						float multiplier = FalloffHelper.GetMultiplier(Falloff, RangeSteps, dist, weapon.DamageRangeModifier);
 
-					physics.Start = actor.Position;
-					physics.Target = target.Position;
-					var pen = physics.GetWallPenetrationValue();
+						physics.Start = actor.Position;
+						physics.Target = target.Position;
+						var pen = physics.GetWallPenetrationValue();
 
-					if (pen == 0f)
-						continue;
+						if (pen == 0f)
+							continue;
 
-					var acceleration = (int)Math.Floor(multiplier * Acceleration * weapon.DamageModifier * pen);
+						var acceleration = (int)Math.Floor(multiplier * Acceleration * weapon.DamageModifier * pen);
 
-					if (acceleration == 0)
-						continue;
+						if (acceleration == 0)
+							continue;
 
-					var angle = (target.Position - actor.Position).FlatAngle;
-					actor.Accelerate(angle, true, acceleration);
+						var angle = (target.Position - actor.Position).FlatAngle;
+						actor.Accelerate(angle, true, acceleration);
 
-					if (UseHeight)
-						actor.AccelerateHeight(true, true, acceleration);
+						if (UseHeight)
+							actor.AccelerateHeight(true, true, acceleration);
+					}
 				}
 			}
 		}

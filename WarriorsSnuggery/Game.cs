@@ -352,7 +352,7 @@ namespace WarriorsSnuggery
 
 					break;
 				case GameMode.KILL_ENEMIES:
-					var actor = World.ActorLayer.Actors.Find(a => a.WorldPart != null && a.WorldPart.KillForVictory && !(a.Team == Actor.PlayerTeam || a.Team == Actor.NeutralTeam));
+					var actor = World.ActorLayer.NonNeutralActors.Find(a => a.Team != Actor.PlayerTeam && a.WorldPart != null && a.WorldPart.KillForVictory && !(a.Team == Actor.PlayerTeam || a.Team == Actor.NeutralTeam));
 
 					if (actor == null)
 						VictoryConditionsMet();
@@ -393,7 +393,7 @@ namespace WarriorsSnuggery
 				return null;
 
 			// Look for actors in range.
-			var valid = World.ActorLayer.Actors.Where(a => a.IsAlive && a.Team != team && a.WorldPart != null && a.WorldPart.Targetable && a.WorldPart.InTargetBox(pos) && VisibilitySolver.IsVisible(a.Position)).ToArray();
+			var valid = World.ActorLayer.NonNeutralActors.Where(a => a.IsAlive && a.Team != team && a.WorldPart != null && a.WorldPart.Targetable && a.WorldPart.InTargetBox(pos) && VisibilitySolver.IsVisible(a.Position)).ToArray();
 
 			// If any, pick one and fire the weapon on it.
 			if (!valid.Any())

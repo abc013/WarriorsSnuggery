@@ -173,12 +173,14 @@ namespace WarriorsSnuggery.Objects
 			renderable.SetColor(color);
 		}
 
-		public override void CheckVisibility()
+		public override bool CheckVisibility()
 		{
 			renderable.Visible = VisibilitySolver.IsVisibleIgnoringBounds(new MPos(LayerPosition.X / 2, LayerPosition.Y - 1));
 
 			if (!isHorizontal)
 				renderable.Visible |= VisibilitySolver.IsVisibleIgnoringBounds(new MPos(LayerPosition.X / 2, LayerPosition.Y));
+			
+			return renderable.Visible;
 		}
 	}
 }

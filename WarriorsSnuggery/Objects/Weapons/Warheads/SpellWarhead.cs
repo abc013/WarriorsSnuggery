@@ -43,36 +43,41 @@ namespace WarriorsSnuggery.Objects.Weapons
 				}
 
 				var physics = new RayPhysics(world);
-				foreach (var actor in world.ActorLayer.Actors)
+				var maxDist = maxRange * weapon.DamageRangeModifier;
+				var sectors = world.ActorLayer.GetSectors(target.Position, (int)maxDist);
+				foreach (var sector in sectors)
 				{
-					if (!actor.IsAlive || actor.Health == null || actor == weapon.Origin)
-						continue;
-
-					if (weapon.Origin != null && actor.Team == weapon.Origin.Team)
-						continue;
-
-					var dist = (target.Position - actor.Position).FlatDist;
-					if (dist > maxRange * weapon.DamageRangeModifier) continue;
-					if (dist < 1f) dist = 1;
-
-					var probability = Probability * FalloffHelper.GetMultiplier(ProbabilityFalloff, RangeSteps, dist, weapon.DamageRangeModifier);
-
-					if (!IgnoreWalls)
+					foreach (var actor in world.ActorLayer.Actors)
 					{
-						physics.Start = actor.Position;
-						physics.Target = target.Position;
-						var pen = physics.GetWallPenetrationValue();
-
-						if (pen == 0f)
+						if (!actor.IsAlive || actor.Health == null || actor == weapon.Origin)
 							continue;
 
-						probability *= Probability;
+						if (weapon.Origin != null && actor.Team == weapon.Origin.Team)
+							continue;
+
+						var dist = (target.Position - actor.Position).FlatDist;
+						if (dist > maxRange * weapon.DamageRangeModifier) continue;
+						if (dist < 1f) dist = 1;
+
+						var probability = Probability * FalloffHelper.GetMultiplier(ProbabilityFalloff, RangeSteps, dist, weapon.DamageRangeModifier);
+
+						if (!IgnoreWalls)
+						{
+							physics.Start = actor.Position;
+							physics.Target = target.Position;
+							var pen = physics.GetWallPenetrationValue();
+
+							if (pen == 0f)
+								continue;
+
+							probability *= Probability;
+						}
+
+						if (probability == 0 || Program.SharedRandom.NextDouble() > probability)
+							continue;
+
+						actor.CastSpell(Spell);
 					}
-
-					if (probability == 0 || Program.SharedRandom.NextDouble() > probability)
-						continue;
-
-					actor.CastSpell(Spell);
 				}
 			}
 		}

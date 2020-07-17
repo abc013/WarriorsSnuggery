@@ -45,10 +45,18 @@ namespace WarriorsSnuggery.Objects.Parts
 		readonly ParticleForcePartInfo info;
 		readonly ParticleForce force;
 
+		ParticleSector[] sectors;
+
 		public ParticleForcePart(Actor self, ParticleForcePartInfo info) : base(self)
 		{
 			this.info = info;
 			force = new ParticleForce(info.ForceType, info.Strength, info.UseHeight);
+			sectors = self.World.ParticleLayer.GetSectors(self.Position, info.MaxRange);
+		}
+
+		public override void OnMove(CPos old, CPos speed)
+		{
+			sectors = self.World.ParticleLayer.GetSectors(self.Position, info.MaxRange);
 		}
 
 		public override void Tick()
@@ -56,23 +64,27 @@ namespace WarriorsSnuggery.Objects.Parts
 			if (info.MaxRange <= 0 || (info.AffectOnlyWhenPlayer && !self.IsPlayer))
 				return;
 
-			foreach (var particle in self.World.ParticleLayer.Particles)
+			foreach (var sector in sectors)
 			{
-				if (!particle.AffectedByObjects)
-					continue; // TODO cache affectable particles
+				foreach (var particle in sector.Particles)
+				{
+					if (!particle.AffectedByObjects)
+						continue;
 
-				var dist = (particle.Position - self.GraphicPosition).SquaredFlatDist;
-				if (dist > info.MaxRangeSquared || dist < info.MinRangeSquared)
-					continue;
+					var dist = (particle.Position - self.GraphicPosition).SquaredFlatDist;
+					if (dist > info.MaxRangeSquared || dist < info.MinRangeSquared)
+						continue;
 
-				if (info.AffectedTypes.Length != 0 && !info.AffectedTypes.Contains(particle.Type))
-					continue;
+					if (info.AffectedTypes.Length != 0 && !info.AffectedTypes.Contains(particle.Type))
+						continue;
 
-				var ratio = (float) (1 - dist / (double)info.MaxRangeSquared);
+					var ratio = (float)(1 - dist / (double)info.MaxRangeSquared);
 
-				particle.AffectVelocity(force, ratio, self.GraphicPosition);
-				if (info.AffectRotation)
-					particle.AffectRotation(force, ratio, self.GraphicPosition);
+					// rather cache affections (as own class) in particle and then apply all at once, saving performance
+					particle.AffectVelocity(force, ratio, self.GraphicPosition);
+					if (info.AffectRotation)
+						particle.AffectRotation(force, ratio, self.GraphicPosition);
+				}
 			}
 		}
 	}

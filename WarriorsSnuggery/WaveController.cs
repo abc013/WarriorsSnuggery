@@ -32,9 +32,7 @@ namespace WarriorsSnuggery
 		{
 			if (--countdown < 0)
 			{
-				var actor = game.World.ActorLayer.Actors.FirstOrDefault(a => !(a.Team == Actor.PlayerTeam || a.Team == Actor.NeutralTeam) && a.WorldPart != null && a.WorldPart.KillForVictory);
-
-				if (actor == null)
+				if (game.World.ActorLayer.NonNeutralActors.Any(a => a.Team != Actor.PlayerTeam && a.WorldPart != null && a.WorldPart.KillForVictory))
 					countdown = Settings.UpdatesPerSecond * 10;
 			}
 			else if (countdown == 0)
@@ -65,7 +63,7 @@ namespace WarriorsSnuggery
 
 			generator.Generate();
 
-			var actors = game.World.ActorLayer.Actors.FindAll(a => !(a.Team == Actor.PlayerTeam || a.Team == Actor.NeutralTeam) && a.IsBot);
+			var actors = game.World.ActorLayer.NonNeutralActors.FindAll(a => a.Team != Actor.PlayerTeam && a.IsBot);
 
 			foreach (var actor in actors)
 				actor.BotPart.Target = new Objects.Weapons.Target(game.World.LocalPlayer);

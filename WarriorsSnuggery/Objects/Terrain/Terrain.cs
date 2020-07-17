@@ -74,12 +74,12 @@ namespace WarriorsSnuggery.Objects
 			overlay?.PushToBatchRenderer();
 		}
 
-		public void CheckVisibility()
+		public bool CheckVisibility()
 		{
-			CheckVisibility(false);
+			return CheckVisibility(false);
 		}
 
-		public void CheckVisibility(bool checkEdges = false)
+		public bool CheckVisibility(bool checkEdges = false)
 		{
 			renderable.Visible = VisibilitySolver.IsVisible(Position);
 			if (!firstChecked || checkEdges)
@@ -87,6 +87,8 @@ namespace WarriorsSnuggery.Objects
 				CheckEdgeVisibility();
 				firstChecked = true;
 			}
+
+			return renderable.Visible;
 		}
 
 		public void CheckEdgeVisibility()

@@ -137,10 +137,17 @@ namespace WarriorsSnuggery.Objects
 			}
 		}
 
-		public virtual void CheckVisibility()
+		public virtual bool CheckVisibility()
 		{
 			if (Renderable != null)
-				Renderable.Visible = VisibilitySolver.IsVisible(Position);
+			{
+				if (!Disposed && Renderable != null)
+					Renderable.Visible = VisibilitySolver.IsVisible(Position);
+
+				return Renderable.Visible;
+			}
+
+			return false;
 		}
 
 		public override string ToString()

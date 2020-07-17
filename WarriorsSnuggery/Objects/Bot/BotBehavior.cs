@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using System.Threading;
 using WarriorsSnuggery.Objects.Weapons;
 
 namespace WarriorsSnuggery.Objects.Bot
@@ -116,18 +117,18 @@ namespace WarriorsSnuggery.Objects.Bot
 			var range = Self.RevealsShroudPart == null ? 5120 : Self.RevealsShroudPart.Range * 512;
 
 			// Find all possible targets in range
-			var targets = World.ActorLayer.Actors.FindAll(a => a.Team != Actor.NeutralTeam && a.Team != Self.Team && (a.Position - Self.Position).SquaredFlatDist <= range * range);
-
-			if (!targets.Any())
-				return;
+			var sectors = World.ActorLayer.GetSectors(Self.Position, range);
 
 			// Loop through and find the best target
-			foreach (var actor in targets)
+			foreach (var sector in sectors)
 			{
-				if (actor.Health == null || !actor.IsAlive)
-					continue;
+				foreach (var actor in sector.Actors)
+				{
+					if (actor.Health == null || !actor.IsAlive || actor.Team == Self.Team || actor.Team == Actor.NeutralTeam)
+						continue;
 
-				CheckTarget(actor);
+					CheckTarget(actor);
+				}
 			}
 		}
 
