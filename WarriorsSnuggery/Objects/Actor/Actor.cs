@@ -43,6 +43,7 @@ namespace WarriorsSnuggery.Objects
 		public readonly ActorType Type;
 
 		public WPos TerrainPosition;
+		public Terrain CurrentTerrain;
 
 		int localTick;
 		int reloadDelay;
@@ -79,6 +80,7 @@ namespace WarriorsSnuggery.Objects
 
 			ObjectID = world.Game.NextObjectID;
 			TerrainPosition = position.ToWPos();
+			CurrentTerrain = world.TerrainAt(TerrainPosition);
 
 			// Parts
 			foreach (var partinfo in type.PartInfos)
@@ -186,7 +188,7 @@ namespace WarriorsSnuggery.Objects
 
 			if (World.ActorInWorld(pos, this) && !intersects && !(terrain == null || (terrain.Type.Speed.Equals(0) && Height == 0)))
 			{
-				acceptMove(pos, height);
+				acceptMove(pos, height, terrain);
 				return;
 			}
 
@@ -201,7 +203,7 @@ namespace WarriorsSnuggery.Objects
 
 			if (World.ActorInWorld(posX, this) && !intersects && !(terrain == null || (terrain.Type.Speed.Equals(0) && Height == 0)))
 			{
-				acceptMove(posX, height);
+				acceptMove(posX, height, terrain);
 				Velocity = new CPos(Velocity.X, 0, Velocity.Z);
 				return;
 			}
@@ -216,7 +218,7 @@ namespace WarriorsSnuggery.Objects
 
 			if (World.ActorInWorld(posY, this) && !intersects && !(terrain == null || (terrain.Type.Speed.Equals(0) && Height == 0)))
 			{
-				acceptMove(posY, height);
+				acceptMove(posY, height, terrain);
 				Velocity = new CPos(0, Velocity.Y, Velocity.Z);
 				return;
 			}
@@ -224,12 +226,13 @@ namespace WarriorsSnuggery.Objects
 			denyMove();
 		}
 
-		void acceptMove(CPos position, int height)
+		void acceptMove(CPos position, int height, Terrain terrain)
 		{
 			var old = Position;
 			Height = height;
 			Position = position;
 			TerrainPosition = Position.ToWPos();
+			CurrentTerrain = terrain;
 			if (Physics != null)
 				Physics.Position = position;
 
@@ -310,7 +313,7 @@ namespace WarriorsSnuggery.Objects
 				if (Mobility.Velocity != CPos.Zero)
 					move();
 
-				if (WorldPart != null && Mobility.CanFly)
+				if (Mobility.CanFly && WorldPart != null)
 				{
 					if (Height > WorldPart.Height + WorldPart.Hover * 64)
 						AccelerateHeight(false);
@@ -323,7 +326,7 @@ namespace WarriorsSnuggery.Objects
 					Height = 0;
 			}
 
-			if (Health != null && Health.HP <= 0)
+			if (Health != null)
 			{
 				if (Health.HP <= 0)
 					Killed(null);

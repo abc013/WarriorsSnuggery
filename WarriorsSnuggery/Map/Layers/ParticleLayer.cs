@@ -31,14 +31,11 @@ namespace WarriorsSnuggery
 
 		public void Add(Particle particle)
 		{
-			particle.CheckVisibility();
 			particlesToAdd.Add(particle);
 		}
 
 		public void Add(Particle[] particles)
 		{
-			foreach (var particle in particles)
-				particle.CheckVisibility();
 			particlesToAdd.AddRange(particles);
 		}
 
@@ -54,7 +51,7 @@ namespace WarriorsSnuggery
 				newSector.Enter(particle);
 			}
 
-			if (particle.CheckVisibility())
+			if (particle.CheckVisibility() && !VisibleParticles.Contains(particle))
 				VisibleParticles.Add(particle);
 
 			particle.Sector = newSector;

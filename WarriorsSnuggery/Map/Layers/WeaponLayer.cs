@@ -8,6 +8,7 @@ namespace WarriorsSnuggery
 	{
 		// There are not many weapons ingame, so no sectors are needed
 		public readonly List<Weapon> Weapons = new List<Weapon>();
+		public readonly List<Weapon> VisibleWeapons = new List<Weapon>();
 
 		readonly List<Weapon> weaponsToRemove = new List<Weapon>();
 		readonly List<Weapon> weaponsToAdd = new List<Weapon>();
@@ -18,7 +19,6 @@ namespace WarriorsSnuggery
 
 		public void Add(Weapon weapon)
 		{
-			weapon.CheckVisibility();
 			weaponsToAdd.Add(weapon);
 		}
 
@@ -31,6 +31,9 @@ namespace WarriorsSnuggery
 		{
 			if (weaponsToAdd.Any())
 			{
+				foreach (var weapon in weaponsToAdd)
+					if (weapon.CheckVisibility())
+						VisibleWeapons.Add(weapon);
 				Weapons.AddRange(weaponsToAdd);
 				weaponsToAdd.Clear();
 			}
@@ -45,8 +48,31 @@ namespace WarriorsSnuggery
 			if (weaponsToRemove.Any())
 			{
 				foreach (var weapon in weaponsToRemove)
+				{
 					Weapons.Remove(weapon);
+					if (weapon.CheckVisibility())
+						VisibleWeapons.Remove(weapon);
+				}
 				weaponsToRemove.Clear();
+			}
+		}
+
+		public void CheckVisibility()
+		{
+			foreach (var w in Weapons)
+				w.CheckVisibility();
+			VisibleWeapons.Clear();
+			VisibleWeapons.AddRange(Weapons);
+		}
+
+		public void CheckVisibility(CPos topLeft, CPos bottomRight)
+		{
+			VisibleWeapons.Clear();
+
+			foreach (var w in Weapons.Where(a => a.GraphicPosition.X > topLeft.X && a.GraphicPosition.X < bottomRight.X && a.GraphicPosition.Y > topLeft.Y && a.GraphicPosition.Y < bottomRight.Y))
+			{
+				if (w.CheckVisibility())
+					VisibleWeapons.Add(w);
 			}
 		}
 

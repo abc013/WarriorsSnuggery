@@ -1,6 +1,5 @@
 using OpenToolkit.Windowing.Common.Input;
 using System;
-using System.Linq;
 using WarriorsSnuggery.Audio;
 using WarriorsSnuggery.Graphics;
 using WarriorsSnuggery.Maps;
@@ -389,17 +388,32 @@ namespace WarriorsSnuggery
 
 		public Actor FindValidTarget(CPos pos, int team)
 		{
+			const int range = 5120;
+
 			if (KeyInput.IsKeyDown(Key.ShiftLeft, 0))
 				return null;
 
 			// Look for actors in range.
-			var valid = World.ActorLayer.NonNeutralActors.Where(a => a.IsAlive && a.Team != team && a.WorldPart != null && a.WorldPart.Targetable && a.WorldPart.InTargetBox(pos) && VisibilitySolver.IsVisible(a.Position)).ToArray();
+			var sectors = World.ActorLayer.GetSectors(pos, range);
+			var currentRange = long.MaxValue;
+			Actor validTarget = null;
+			foreach (var sector in sectors)
+			{
+				foreach (var actor in sector.Actors)
+				{
+					if (actor.Team == team || actor.WorldPart == null || !actor.WorldPart.Targetable || !actor.WorldPart.InTargetBox(pos) || !VisibilitySolver.IsVisible(actor.Position))
+					continue;
 
-			// If any, pick one and fire the weapon on it.
-			if (!valid.Any())
-				return null;
+					var dist = (actor.Position - pos).SquaredFlatDist;
+					if (dist < currentRange)
+					{
+						currentRange = dist;
+						validTarget = actor;
+					}
+				}
+			}
 
-			return valid.OrderByDescending(a => (pos - a.Position).Dist).First();
+			return validTarget;
 		}
 
 		public void SwitchEditor()

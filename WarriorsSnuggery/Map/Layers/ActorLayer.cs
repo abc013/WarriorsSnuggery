@@ -47,9 +47,9 @@ namespace WarriorsSnuggery
 				newSector.Enter(actor);
 			}
 
-			if (actor.CheckVisibility())
+			if (actor.CheckVisibility() && !VisibleActors.Contains(actor))
 				VisibleActors.Add(actor);
-
+			
 			actor.Sector = newSector;
 		}
 
@@ -131,6 +131,8 @@ namespace WarriorsSnuggery
 		{
 			foreach (var a in Actors)
 				a.CheckVisibility();
+			VisibleActors.Clear();
+			VisibleActors.AddRange(Actors);
 		}
 
 		public void CheckVisibility(CPos topleft, CPos bottomright)

@@ -68,22 +68,17 @@ namespace WarriorsSnuggery.Objects.Bot
 		{
 			get
 			{
-				if (Self.Physics.Shape != Physics.Shape.NONE && Self.Physics.RadiusX > 0)
+				var sectors = World.ActorLayer.GetSectors(Self.Position, 2560);
+				foreach (var sector in sectors)
 				{
-					foreach (var sector in Self.PhysicsSectors)
+					foreach (var actor in sector.Actors)
 					{
-						foreach (var obj in sector.GetObjects())
-						{
-							if (!(obj is Actor) || obj == Self)
-								continue;
+						if (actor == Self || actor.Team != Self.Team)
+							continue;
 
-							if ((obj as Actor).Team != Self.Team)
-								continue;
-
-							var dist = Self.Position - obj.Position;
-							if (dist.Dist < (Self.Physics.RadiusX + obj.Physics.RadiusX) * 2)
-								return dist.FlatAngle;
-						}
+						var dist = Self.Position - actor.Position;
+						if (dist.SquaredFlatDist < 1024 * 1024)
+							return dist.FlatAngle;
 					}
 				}
 

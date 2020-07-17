@@ -207,48 +207,33 @@ namespace WarriorsSnuggery
 
 		static void checkAllWalls()
 		{
-			if (world.WallLayer == null)
-				return;
-
-			foreach (var wall in world.WallLayer.WallList)
-				wall.CheckVisibility();
+			world.WallLayer.CheckVisibility();
 		}
 
 		static void checkWalls(MPos bottomleft, MPos topright)
 		{
-			if (world.WallLayer == null)
-				return;
-
-			for (int x = bottomleft.X; x < topright.X * 2 + 1; x++)
-			{
-				for (int y = bottomleft.Y; y < topright.Y + 1; y++)
-					world.WallLayer.Walls[x, y]?.CheckVisibility();
-			}
+			world.WallLayer.CheckVisibility(bottomleft, topright);
 		}
 
 		static void checkAll()
 		{
 			world.ActorLayer.CheckVisibility();
+			world.ParticleLayer.CheckVisibility();
+			world.WeaponLayer.CheckVisibility();
+
 			foreach (var o in world.Objects)
 				o.CheckVisibility();
-			world.ParticleLayer.CheckVisibility();
-			foreach (var w in world.WeaponLayer.Weapons)
-				w.CheckVisibility();
 		}
 
 		static void check(CPos topLeft, CPos bottomRight)
 		{
 			world.ActorLayer.CheckVisibility(topLeft, bottomRight);
+			world.ParticleLayer.CheckVisibility(topLeft, bottomRight);
+			world.WeaponLayer.CheckVisibility(topLeft, bottomRight);
 
 			var objects = world.Objects.Where(a => a.GraphicPosition.X > topLeft.X && a.GraphicPosition.X < bottomRight.X && a.GraphicPosition.Y > topLeft.Y && a.GraphicPosition.Y < bottomRight.Y);
 			foreach (var o in objects)
 				o.CheckVisibility();
-
-			world.ParticleLayer.CheckVisibility(topLeft, bottomRight);
-
-			var weapons = world.WeaponLayer.Weapons.Where(a => a.GraphicPosition.X > topLeft.X && a.GraphicPosition.X < bottomRight.X && a.GraphicPosition.Y > topLeft.Y && a.GraphicPosition.Y < bottomRight.Y);
-			foreach (var w in weapons)
-				w.CheckVisibility();
 
 			// TODO: check smudge as well
 		}

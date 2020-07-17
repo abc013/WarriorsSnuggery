@@ -9,13 +9,13 @@ namespace WarriorsSnuggery
 {
 	public sealed class PhysicsLayer
 	{
-		public const float SectorSize = 2;
+		public const int SectorSize = 2;
 		public PhysicsSector[,] Sectors;
 		public MPos Bounds { get; private set; }
 
 		public PhysicsLayer(MPos bounds)
 		{
-			Bounds = new MPos((int)Math.Ceiling(bounds.X / SectorSize), (int)Math.Ceiling(bounds.Y / SectorSize));
+			Bounds = new MPos((int)Math.Ceiling(bounds.X / (float)SectorSize), (int)Math.Ceiling(bounds.Y / (float)SectorSize));
 			
 			Sectors = new PhysicsSector[Bounds.X, Bounds.Y];
 			for (int x = 0; x < Bounds.X; x++)
@@ -71,11 +71,11 @@ namespace WarriorsSnuggery
 			{
 				var point = points[i];
 
-				var x = point.X / (SectorSize * 1024);
+				var x = point.X / (SectorSize * 1024f);
 				if (x < 0) x = 0;
 				if (x >= Bounds.X) x = Bounds.X - 1;
 
-				var y = point.Y / (SectorSize * 1024);
+				var y = point.Y / (SectorSize * 1024f);
 				if (y < 0) y = 0;
 				if (y >= Bounds.Y) y = Bounds.Y - 1;
 
@@ -125,14 +125,19 @@ namespace WarriorsSnuggery
 			objects.Remove(obj);
 		}
 
-		public bool Check(PhysicsObject obj, Actor[] toIgnore = null)
+		public bool Check(PhysicsObject obj, Actor toIgnore)
 		{
-			return objects.Any((o) => o.Physics != obj.Physics && (toIgnore == null || !toIgnore.Contains(o)) && o.Physics.Intersects(obj.Physics));
+			return objects.Any((o) => o.Physics != obj.Physics && o != toIgnore && o.Physics.Intersects(obj.Physics));
 		}
 
-		public PhysicsObject[] GetObjects(PhysicsObject[] ignoreObjects = null)
+		public IEnumerable<PhysicsObject> GetObjects()
 		{
-			return objects.Where((o) => (ignoreObjects == null || !ignoreObjects.Contains(o))).ToArray();
+			return objects;
+		}
+
+		public IEnumerable<PhysicsObject> GetObjects(PhysicsObject[] ignoreObjects)
+		{
+			return objects.Where((o) => ignoreObjects == null || !ignoreObjects.Contains(o));
 		}
 
 		public void RenderDebug()

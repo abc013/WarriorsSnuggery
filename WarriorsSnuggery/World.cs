@@ -134,9 +134,9 @@ namespace WarriorsSnuggery
 		{
 			ToRender = Objects.ToList(); // Copy array
 			ToRender.AddRange(ActorLayer.VisibleActors);
-			ToRender.AddRange(WeaponLayer.Weapons);
+			ToRender.AddRange(WeaponLayer.VisibleWeapons);
 			ToRender.AddRange(ParticleLayer.VisibleParticles);
-			ToRender.AddRange(WallLayer.WallList);
+			ToRender.AddRange(WallLayer.VisibleWalls);
 
 			ToRender = ToRender.OrderBy(e => e.GraphicPosition.Z + (e.Position.Y - 512) * 2).ToList();
 		}
@@ -194,18 +194,38 @@ namespace WarriorsSnuggery
 			}
 		}
 
-		public bool CheckCollision(PhysicsObject obj, Actor[] toIgnore = null)
+		public bool CheckCollision(PhysicsObject obj, Actor toIgnore = null)
 		{
 			if (obj.Physics == null || obj.Physics.RadiusX == 0 || obj.Physics.Shape == Physics.Shape.NONE)
 				return false;
 
+			var top = PhysicsLayer.Bounds.Y;
+			var left = PhysicsLayer.Bounds.X;
+			var bot = 0;
+			var right = 0;
 			foreach (var p in obj.PhysicsSectors)
 			{
 				if (p.Check(obj, toIgnore))
 					return true;
+
+				if (p.Position.X < left)
+					left = p.Position.X;
+				if (p.Position.Y < top)
+					top = p.Position.Y;
+
+				if (p.Position.X > right)
+					right = p.Position.X;
+				if (p.Position.Y > bot)
+					bot = p.Position.Y;
 			}
-			
-			foreach (var wall in WallLayer.WallList)
+
+			var walls = WallLayer.WallList.Where(
+				w => (w.LayerPosition.X >= left * PhysicsLayer.SectorSize * 2 - 2)
+			 && (w.LayerPosition.X < (right + 1) * PhysicsLayer.SectorSize * 2 + 2)
+			 && (w.LayerPosition.Y >= top * PhysicsLayer.SectorSize - 1)
+			 && (w.LayerPosition.Y < (bot + 1) * PhysicsLayer.SectorSize + 1));
+
+			foreach (var wall in walls)
 			{
 				if (obj.Physics.Intersects(wall.Physics))
 					return true;

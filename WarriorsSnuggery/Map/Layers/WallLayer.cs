@@ -6,6 +6,7 @@ namespace WarriorsSnuggery
 	public sealed class WallLayer : IRenderable
 	{
 		public readonly List<Wall> WallList = new List<Wall>();
+		public readonly List<Wall> VisibleWalls = new List<Wall>();
 		public Wall[,] Walls { get; private set; }
 		public MPos Bounds { get; private set; }
 
@@ -21,6 +22,8 @@ namespace WarriorsSnuggery
 			Walls[wall.LayerPosition.X, wall.LayerPosition.Y] = wall;
 			notifyNeighbors(wall.LayerPosition, true, wall.Type.IgnoreForNearby);
 			WallList.Add(wall);
+			if (wall.CheckVisibility())
+				VisibleWalls.Add(wall);
 		}
 
 		public void Remove(MPos pos)
@@ -168,6 +171,29 @@ namespace WarriorsSnuggery
 
 			if (added)
 				Walls[pos.X, pos.Y].SetNeighborState(s, true);
+		}
+
+		public void CheckVisibility()
+		{
+			foreach (var w in WallList)
+				w.CheckVisibility();
+			VisibleWalls.Clear();
+			VisibleWalls.AddRange(WallList);
+		}
+
+		public void CheckVisibility(MPos bottomleft, MPos topright)
+		{
+			VisibleWalls.Clear();
+
+			for (int x = bottomleft.X; x < topright.X * 2 + 1; x++)
+			{
+				for (int y = bottomleft.Y; y < topright.Y + 1; y++)
+				{
+					var wall = Walls[x, y];
+					if (wall != null && wall.CheckVisibility())
+						VisibleWalls.Add(wall);
+				}
+			}
 		}
 
 		public void Render()

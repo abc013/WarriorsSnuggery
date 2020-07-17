@@ -71,12 +71,12 @@ namespace WarriorsSnuggery.Objects.Parts
 		bool activated;
 		int cooldown;
 		Actor lastActor;
-		bool updateSectors = true;
 		ActorSector[] sectors;
 
 		public CollectablePart(Actor self, CollectablePartInfo info) : base(self)
 		{
 			this.info = info;
+			updateSectors();
 		}
 
 		public override void Tick()
@@ -112,9 +112,6 @@ namespace WarriorsSnuggery.Objects.Parts
 			}
 			else
 			{
-				if (updateSectors)
-					sectors = self.World.ActorLayer.GetSectors(self.Position, info.Radius);
-
 				var squared = info.Radius * info.Radius;
 				foreach (var sector in sectors)
 				{
@@ -257,7 +254,12 @@ namespace WarriorsSnuggery.Objects.Parts
 
 		public override void OnMove(CPos old, CPos speed)
 		{
-			updateSectors = true;
+			updateSectors();
+		}
+
+		void updateSectors()
+		{
+			sectors = self.World.ActorLayer.GetSectors(self.Position, info.Radius);
 		}
 	}
 }

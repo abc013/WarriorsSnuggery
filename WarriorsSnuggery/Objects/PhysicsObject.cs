@@ -147,7 +147,7 @@ namespace WarriorsSnuggery.Objects
 				return Renderable.Visible;
 			}
 
-			return false;
+			return true;
 		}
 
 		public override string ToString()
