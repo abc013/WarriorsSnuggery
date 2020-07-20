@@ -7,6 +7,7 @@ using WarriorsSnuggery.Objects.Particles;
 using WarriorsSnuggery.Objects.Parts;
 using WarriorsSnuggery.Objects.Weapons;
 using WarriorsSnuggery.Trophies;
+using WarriorsSnuggery.UI;
 
 namespace WarriorsSnuggery
 {
@@ -75,8 +76,6 @@ namespace WarriorsSnuggery
 						ShroudLayer.RevealShroudList(i, Game.Statistics.Shroud[i]);
 				}
 
-				Camera.Position(LocalPlayer.GraphicPosition + (Game.ScreenControl.Focused is UI.DefaultScreen ? Camera.CamPlayerOffset : CPos.Zero), true);
-
 				if (Game.Type == GameType.NORMAL)
 					Add(new ActionText(LocalPlayer.Position + new CPos(0, 0, 1024), new CPos(0, -15, 30), 300, ActionText.ActionTextType.TRANSFORM, @"Level" + Game.Statistics.Level));
 			}
@@ -97,9 +96,6 @@ namespace WarriorsSnuggery
 
 		public void Tick()
 		{
-			if (LocalPlayer != null && !Game.Editor && Camera.LockedToPlayer)
-				Camera.Position(LocalPlayer.GraphicPosition + (Game.ScreenControl.Focused is UI.DefaultScreen ? Camera.CamPlayerOffset : CPos.Zero));
-
 			foreach (var @object in Objects)
 				@object.Tick();
 

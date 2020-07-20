@@ -58,6 +58,9 @@ namespace WarriorsSnuggery.Objects.Parts
 
 		public override void Tick()
 		{
+			if (self.World.Game.Editor)
+				return;
+
 			if (Velocity != CPos.Zero)
 			{
 				if (self.World.Game.Type == GameType.EDITOR)

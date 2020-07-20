@@ -14,10 +14,7 @@
 			return new RevealsShroudPart(self, this);
 		}
 
-		public RevealsShroudPartInfo(string internalName, MiniTextNode[] nodes) : base(internalName, nodes)
-		{
-
-		}
+		public RevealsShroudPartInfo(string internalName, MiniTextNode[] nodes) : base(internalName, nodes) { }
 	}
 
 	public class RevealsShroudPart : ActorPart
@@ -49,6 +46,9 @@
 
 		public override void Tick()
 		{
+			if (self.World.Game.Editor)
+				return;
+
 			tick--;
 			if (firstActive)
 			{

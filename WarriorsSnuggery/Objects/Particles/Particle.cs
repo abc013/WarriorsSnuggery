@@ -158,14 +158,9 @@ namespace WarriorsSnuggery.Objects.Particles
 			if (current-- <= 0)
 			{
 				if (dissolve-- <= 0)
-				{
 					Dispose();
-					return;
-				}
 				else
-				{
 					Renderable.SetColor(new Color(Type.Color.R, Type.Color.G, Type.Color.B, Type.Color.A * dissolve / Type.DissolveDuration));
-				}
 			}
 		}
 

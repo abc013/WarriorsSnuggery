@@ -1,6 +1,8 @@
 ﻿using OpenToolkit.Windowing.Common.Input;
 using System;
 using System.Linq;
+using WarriorsSnuggery.Graphics;
+using WarriorsSnuggery.UI;
 
 namespace WarriorsSnuggery.Objects.Parts
 {
@@ -9,10 +11,27 @@ namespace WarriorsSnuggery.Objects.Parts
 	/// </summary>
 	class PlayerPart : ActorPart
 	{
+		bool firstTick = true;
+
 		public PlayerPart(Actor self) : base(self) { }
 
 		public override void Tick()
 		{
+			if (self.World.Game.Editor)
+				return;
+
+			if (firstTick && Camera.LockedToPlayer)
+			{
+				firstTick = false;
+				positionCamera();
+			}
+
+			if (KeyInput.IsKeyDown(Settings.GetKey("CameraLock"), 5))
+			{
+				Camera.LockedToPlayer = !Camera.LockedToPlayer;
+				positionCamera();
+			}
+
 			var vertical = 0;
 			if (KeyInput.IsKeyDown(Settings.GetKey("MoveUp")))
 				vertical += 1;
@@ -66,9 +85,7 @@ namespace WarriorsSnuggery.Objects.Parts
 		void attackTarget(CPos pos)
 		{
 			if (KeyInput.IsKeyDown(Key.ShiftLeft, 0))
-			{
 				self.Attack(pos, 0);
-			}
 			else
 			{
 				var actor = self.World.Game.FindValidTarget(pos, self.Team);
@@ -78,6 +95,11 @@ namespace WarriorsSnuggery.Objects.Parts
 				else
 					self.Attack(actor);
 			}
+		}
+
+		void positionCamera()
+		{
+			Camera.Position(self.Position + (self.World.Game.ScreenControl.Focused is DefaultScreen ? Camera.CamPlayerOffset : CPos.Zero));
 		}
 
 		public override void OnDamage(Actor damager, int damage)
@@ -93,6 +115,12 @@ namespace WarriorsSnuggery.Objects.Parts
 		public override void OnKill(Actor killed)
 		{
 			self.World.Game.Statistics.Kills++;
+		}
+
+		public override void OnMove(CPos old, CPos speed)
+		{
+			if (Camera.LockedToPlayer)
+				positionCamera();
 		}
 	}
 }

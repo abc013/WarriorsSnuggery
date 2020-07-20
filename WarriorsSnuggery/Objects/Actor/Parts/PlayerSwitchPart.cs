@@ -27,6 +27,9 @@
 
 		public override void Tick()
 		{
+			if (self.World.Game.Editor)
+				return;
+
 			if (CurrentTick-- == 0 && !self.Disposed)
 				switchPlayer();
 		}

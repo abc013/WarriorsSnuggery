@@ -91,6 +91,9 @@ namespace WarriorsSnuggery.Objects.Parts
 
 		public override void Tick()
 		{
+			if (self.World.Game.Editor && info.Type != SpawnPartTypes.PARTICLE)
+				return;
+
 			if (info.Occasion == Occasion.TICK && curTick-- < 0)
 				create();
 		}

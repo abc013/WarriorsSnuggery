@@ -225,7 +225,7 @@ namespace WarriorsSnuggery
 				}
 
 				// camera input
-				if (!ScreenControl.CursorOnUI() && !(Camera.LockedToPlayer && World.PlayerAlive))
+				if (!ScreenControl.CursorOnUI() && !(Camera.LockedToPlayer && World.PlayerAlive && !Editor))
 				{
 					var mouse = MouseInput.WindowPosition;
 
@@ -250,9 +250,6 @@ namespace WarriorsSnuggery
 				// Key input
 				if (KeyInput.IsKeyDown(Key.Q, 5))
 					Audio.AudioManager.PlaySound("test");
-
-				if (KeyInput.IsKeyDown(Settings.GetKey("CameraLock"), 5))
-					Camera.LockedToPlayer = !Camera.LockedToPlayer;
 
 				if (KeyInput.IsKeyDown("altright", 5))
 					Settings.PartyMode = !Settings.PartyMode;

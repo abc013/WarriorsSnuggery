@@ -95,7 +95,7 @@ namespace WarriorsSnuggery.Objects.Weapons
 
 		public override void Tick()
 		{
-			if (Disposed)
+			if (Disposed || World.Game.Editor)
 				return;
 
 			if (buildupduration-- == 0)
@@ -104,8 +104,7 @@ namespace WarriorsSnuggery.Objects.Weapons
 			if (duration == 0 && projectileType.BeamCooldown != null)
 				useTexture(projectileType.BeamCooldown);
 
-			curTick--;
-			if (curTick < 0)
+			if (curTick-- < 0)
 			{
 				frame++;
 				if (frame >= renderables.Length)

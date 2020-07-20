@@ -61,7 +61,7 @@ namespace WarriorsSnuggery.Objects.Weapons
 		{
 			base.Tick();
 
-			if (InRange(TargetPosition))
+			if (!World.Game.Editor && InRange(TargetPosition))
 				Detonate(new Target(TargetPosition, Height));
 		}
 

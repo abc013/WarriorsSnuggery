@@ -33,6 +33,9 @@
 
 		public override void Tick()
 		{
+			if (self.World.Game.Editor)
+				return;
+
 			if (tick-- <= 0)
 			{
 				if (self.Health == null)

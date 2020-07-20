@@ -26,6 +26,9 @@ namespace WarriorsSnuggery.Objects.Parts
 
 		public override void Tick()
 		{
+			if (self.World.Game.Editor)
+				return;
+
 			bot.Tick();
 		}
 

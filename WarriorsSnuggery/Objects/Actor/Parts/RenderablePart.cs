@@ -3,10 +3,7 @@ namespace WarriorsSnuggery.Objects.Parts
 {
 	public abstract class RenderablePart : ActorPart
 	{
-		public RenderablePart(Actor self) : base(self)
-		{
-
-		}
+		public RenderablePart(Actor self) : base(self) { }
 
 		public abstract int FacingFromAngle(float angle);
 

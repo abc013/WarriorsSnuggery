@@ -22,6 +22,9 @@ namespace WarriorsSnuggery.Objects.Weapons
 
 		public override void Tick()
 		{
+			if (World.Game.Editor)
+				return;
+
 			if (Program.SharedRandom.NextDouble() > projectileType.HitChance)
 			{
 				Dispose();

@@ -54,6 +54,9 @@ namespace WarriorsSnuggery.Objects.Weapons
 		{
 			base.Tick();
 
+			if (World.Game.Editor)
+				return;
+
 			if (projectileType.OrientateToTarget)
 				Rotation = new VAngle(0, 0, -(TargetPosition - GraphicPosition).FlatAngle);
 
