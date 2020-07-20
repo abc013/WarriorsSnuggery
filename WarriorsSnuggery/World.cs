@@ -7,7 +7,6 @@ using WarriorsSnuggery.Objects.Particles;
 using WarriorsSnuggery.Objects.Parts;
 using WarriorsSnuggery.Objects.Weapons;
 using WarriorsSnuggery.Trophies;
-using WarriorsSnuggery.UI;
 
 namespace WarriorsSnuggery
 {
@@ -286,6 +285,12 @@ namespace WarriorsSnuggery
 			var size = Map.Bounds.ToCPos();
 
 			return pos.X >= -512 && pos.X < size.X - 512 && pos.Y >= -512 && pos.Y < size.Y - 512;
+		}
+
+		public void Save(string directory, string name, bool isSavegame)
+		{
+			var saver = new MapSaver(this, isSavegame);
+			saver.Save(directory, name);
 		}
 
 		public void Dispose()

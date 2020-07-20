@@ -166,7 +166,7 @@ namespace WarriorsSnuggery
 
 		void saveMap(World world)
 		{
-			world.Map.SaveFile(FileExplorer.Saves + SaveName + "_map.yaml", SaveName + "_map");
+			world.Save(FileExplorer.Saves, SaveName + "_map", true);
 		}
 
 		public void Delete()

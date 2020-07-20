@@ -9,7 +9,7 @@ namespace WarriorsSnuggery
 	{
 		public static readonly IFormatProvider FloatFormat = CultureInfo.InvariantCulture;
 
-		public const int MaxTeams = 8;
+		public const byte MaxTeams = 8;
 
 		public const string Version = "(Release) 2.4";
 
