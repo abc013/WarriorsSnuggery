@@ -4,7 +4,7 @@ using WarriorsSnuggery.Objects.Weapons;
 
 namespace WarriorsSnuggery
 {
-	public class WeaponLayer
+	public sealed class WeaponLayer
 	{
 		// There are not many weapons ingame, so no sectors are needed
 		public readonly List<Weapon> Weapons = new List<Weapon>();

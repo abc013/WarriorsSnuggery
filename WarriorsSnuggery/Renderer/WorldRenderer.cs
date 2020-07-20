@@ -221,6 +221,8 @@ namespace WarriorsSnuggery
 			world.ParticleLayer.CheckVisibility();
 			world.WeaponLayer.CheckVisibility();
 
+			world.SmudgeLayer.CheckVisibility();
+
 			foreach (var o in world.Objects)
 				o.CheckVisibility();
 		}
@@ -230,6 +232,8 @@ namespace WarriorsSnuggery
 			world.ActorLayer.CheckVisibility(topLeft, bottomRight);
 			world.ParticleLayer.CheckVisibility(topLeft, bottomRight);
 			world.WeaponLayer.CheckVisibility(topLeft, bottomRight);
+
+			world.SmudgeLayer.CheckVisibility(topLeft, bottomRight);
 
 			var objects = world.Objects.Where(a => a.GraphicPosition.X > topLeft.X && a.GraphicPosition.X < bottomRight.X && a.GraphicPosition.Y > topLeft.Y && a.GraphicPosition.Y < bottomRight.Y);
 			foreach (var o in objects)

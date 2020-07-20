@@ -1,25 +1,30 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using WarriorsSnuggery.Objects.Weapons;
 
 namespace WarriorsSnuggery
 {
-	public sealed class SmudgeLayer : ITickRenderable
+	public sealed class SmudgeLayer
 	{
-		readonly List<Smudge> smudgeList = new List<Smudge>();
+		public readonly List<Smudge> Smudge = new List<Smudge>();
+		readonly List<Smudge> visibleSmudge = new List<Smudge>();
+		readonly List<Smudge> toRemove = new List<Smudge>();
 
 		public SmudgeLayer() { }
 
 		public void Add(Smudge smudge)
 		{
-			smudgeList.Add(smudge);
+			Smudge.Add(smudge);
+			if (smudge.CheckVisibility())
+				visibleSmudge.Add(smudge);
 
-			if (smudgeList.Count > 128)
+			if (Smudge.Count > 256)
 			{
-				for (int i = 0; i < smudgeList.Count; i++)
+				for (int i = 0; i < Smudge.Count; i++)
 				{
-					if (!smudgeList[i].IsDissolving)
+					if (!Smudge[i].IsDissolving)
 					{
-						smudgeList[i].BeginDissolve();
+						Smudge[i].BeginDissolve();
 						break;
 					}
 				}
@@ -28,26 +33,54 @@ namespace WarriorsSnuggery
 
 		public void Render()
 		{
-			foreach (var smudge in smudgeList)
+			foreach (var smudge in visibleSmudge)
 				smudge.Render();
 		}
 
 		public void Tick()
 		{
-			for (int i = 0; i < smudgeList.Count; i++)
+			foreach (var smudge in Smudge)
 			{
-				var smudge = smudgeList[i];
 				smudge.Tick();
+				if (smudge.Disposed)
+					toRemove.Add(smudge);
 			}
 
-			smudgeList.RemoveAll(s => s.Disposed);
+			if (toRemove.Any())
+			{
+				foreach (var smudge in toRemove)
+				{
+					Smudge.Remove(smudge);
+					visibleSmudge.Remove(smudge);
+				}
+				toRemove.Clear();
+			}
+		}
+
+		public void CheckVisibility()
+		{
+			foreach (var s in Smudge)
+				s.CheckVisibility();
+			visibleSmudge.Clear();
+			visibleSmudge.AddRange(Smudge);
+		}
+
+		public void CheckVisibility(CPos topLeft, CPos bottomRight)
+		{
+			visibleSmudge.Clear();
+
+			foreach (var w in Smudge.Where(a => a.GraphicPosition.X > topLeft.X && a.GraphicPosition.X < bottomRight.X && a.GraphicPosition.Y > topLeft.Y && a.GraphicPosition.Y < bottomRight.Y))
+			{
+				if (w.CheckVisibility())
+					visibleSmudge.Add(w);
+			}
 		}
 
 		public void Clear()
 		{
-			foreach (var smudge in smudgeList)
+			foreach (var smudge in Smudge)
 				smudge.Disposed = true;
-			smudgeList.Clear();
+			Smudge.Clear();
 		}
 	}
 }
