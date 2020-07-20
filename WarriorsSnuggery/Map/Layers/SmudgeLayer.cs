@@ -81,6 +81,7 @@ namespace WarriorsSnuggery
 			foreach (var smudge in Smudge)
 				smudge.Disposed = true;
 			Smudge.Clear();
+			visibleSmudge.Clear();
 		}
 	}
 }
