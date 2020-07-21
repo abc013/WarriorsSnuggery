@@ -69,7 +69,7 @@ namespace WarriorsSnuggery.Maps
 
 						break;
 					case "Actors":
-						var actorNodes = rule.Children.ToArray();
+						var actorNodes = rule.Children;
 
 						foreach (var actor in actorNodes)
 						{
@@ -87,14 +87,14 @@ namespace WarriorsSnuggery.Maps
 						}
 						break;
 					case "Weapons":
-						var weaponNodes = rule.Children.ToArray();
+						var weaponNodes = rule.Children;
 
 						foreach (var weapon in weaponNodes)
 						{
 							try
 							{
 								var id = uint.Parse(weapon.Key);
-								weapons.Add(new WeaponInit(path, id, weapon.Children));
+								weapons.Add(new WeaponInit(id, weapon.Children));
 							}
 							catch (Exception e)
 							{
@@ -103,13 +103,13 @@ namespace WarriorsSnuggery.Maps
 						}
 						break;
 					case "Particles":
-						var particleNodes = rule.Children.ToArray();
+						var particleNodes = rule.Children;
 
 						foreach (var particle in particleNodes)
 						{
 							try
 							{
-								particles.Add(new ParticleInit(path, particle.Children));
+								particles.Add(new ParticleInit(particle.Children));
 							}
 							catch (Exception e)
 							{
@@ -197,7 +197,7 @@ namespace WarriorsSnuggery.Maps
 
 			// generate Particles
 			foreach (var particle in particles)
-				world.Add(ParticleCreator.Create(world, particle, world.Game.SharedRandom));
+				world.Add(ParticleCreator.Create(world, particle));
 		}
 
 		public bool IsInMap(MPos position, MPos mapSize)

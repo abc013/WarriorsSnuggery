@@ -42,5 +42,13 @@ namespace WarriorsSnuggery.Objects.Particles
 			if (Texture != null)
 				SpriteManager.AddTexture(Texture);
 		}
+
+		public BatchRenderable GetRenderable()
+		{
+			if (Texture == null)
+				return new BatchObject(MeshSize * MasterRenderer.PixelMultiplier + ParticleUtils.Variety(MeshSizeVariety), Color + ParticleUtils.Variety(ColorVariety));
+
+			return new BatchSequence(Texture.GetTextures(), Color + ParticleUtils.Variety(ColorVariety), Texture.Tick);
+		}
 	}
 }

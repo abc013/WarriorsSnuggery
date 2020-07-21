@@ -1,7 +1,5 @@
-﻿using Microsoft.CodeAnalysis;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using WarriorsSnuggery.Loader;
 
 namespace WarriorsSnuggery.Objects.Weapons
 {
@@ -28,15 +26,17 @@ namespace WarriorsSnuggery.Objects.Weapons
 		{
 			World = world;
 			Type = type;
-			Origin = origin;
-			Team = origin == null ? Actor.NeutralTeam : origin.Team;
-			ID = id;
-
-			Height = origin.ActiveWeapon != null ? origin.ActiveWeapon.WeaponHeightPosition : origin.Height;
 
 			Target = target;
 			TargetPosition = target.Position;
 			TargetHeight = target.Height;
+
+			Origin = origin;
+			Team = origin == null ? Actor.NeutralTeam : origin.Team;
+
+			ID = id;
+
+			Height = origin.ActiveWeapon != null ? origin.ActiveWeapon.WeaponHeightPosition : origin.Height;
 
 			var effects = origin.Effects.Where(e => e.Active);
 
@@ -67,8 +67,11 @@ namespace WarriorsSnuggery.Objects.Weapons
 
 			Height = init.Height;
 
-			Origin = world.ActorLayer.ToAdd().FirstOrDefault(a => a.ID == init.OriginID);
-			var TargetActor = world.ActorLayer.ToAdd().FirstOrDefault(a => a.ID == init.TargetID);
+			var originID = init.Convert("Origin", uint.MaxValue);
+			Origin = world.ActorLayer.ToAdd().FirstOrDefault(a => a.ID == originID);
+
+			var targetID = init.Convert("TargetActor", uint.MaxValue);
+			var TargetActor = world.ActorLayer.ToAdd().FirstOrDefault(a => a.ID == targetID);
 
 			if (TargetActor == null)
 			{
@@ -121,6 +124,13 @@ namespace WarriorsSnuggery.Objects.Weapons
 				Dispose();
 		}
 
+		public override void Dispose()
+		{
+			base.Dispose();
+
+			World.WeaponLayer.Remove(this);
+		}
+
 		public virtual List<string> Save()
 		{
 			var list = new List<string>
@@ -145,13 +155,6 @@ namespace WarriorsSnuggery.Objects.Weapons
 			list.Add("TargetHeight=" + TargetHeight);
 
 			return list;
-		}
-
-		public override void Dispose()
-		{
-			base.Dispose();
-
-			World.WeaponLayer.Remove(this);
 		}
 	}
 }

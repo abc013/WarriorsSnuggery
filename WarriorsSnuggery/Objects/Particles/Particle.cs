@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using WarriorsSnuggery.Graphics;
 
 namespace WarriorsSnuggery.Objects.Particles
 {
@@ -9,7 +8,6 @@ namespace WarriorsSnuggery.Objects.Particles
 	{
 		public readonly bool AffectedByObjects;
 		public readonly ParticleType Type;
-		readonly Random random;
 		readonly World world;
 
 		public ParticleSector Sector;
@@ -18,54 +16,44 @@ namespace WarriorsSnuggery.Objects.Particles
 		int dissolve;
 
 		// Z is height
-		CPos transform_velocity;
+		CPos velocity;
+		Vector velocity_left;
+
 		VAngle rotate_velocity;
 
-		public Particle(World world, CPos pos, int height, ParticleType type, Random random) : base(pos, type.Texture != null ? (BatchRenderable)new BatchSequence(type.Texture.GetTextures(), type.Color + new Color(variety(type.ColorVariety.R), variety(type.ColorVariety.G), variety(type.ColorVariety.B), variety(type.ColorVariety.A)), tick: type.Texture.Tick) : new BatchObject(type.MeshSize * MasterRenderer.PixelMultiplier + variety(type.MeshSizeVariety), type.Color + new Color(variety(type.ColorVariety.R), variety(type.ColorVariety.G), variety(type.ColorVariety.B), variety(type.ColorVariety.A))))
+		public Particle(World world, CPos pos, int height, ParticleType type) : base(pos, type.GetRenderable())
 		{
 			Height = height;
 			Type = type;
 			this.world = world;
-			this.random = random;
 
 			AffectedByObjects = type.AffectedByObjects;
 			current = type.Duration;
 			dissolve = type.DissolveDuration;
 
-			Renderable.SetColor(type.Color);
-
-			transform_velocity = new CPos(random.Next(-type.RandomVelocity.X, type.RandomVelocity.X), random.Next(-type.RandomVelocity.Y, type.RandomVelocity.Y), random.Next(-type.RandomVelocity.Z, type.RandomVelocity.Z));
-			rotate_velocity = new VAngle(random.Next(-type.RandomRotation.X, type.RandomRotation.X), random.Next(-type.RandomRotation.Y, type.RandomRotation.Y), random.Next(-type.RandomRotation.Z, type.RandomRotation.Z));
+			velocity = ParticleUtils.Variety(type.RandomVelocity);
+			rotate_velocity = ParticleUtils.AngleVariety(type.RandomRotation);
 		}
 
-		public Particle(World world, ParticleInit init, Random random) : base(init.Position, init.Type.Texture != null ? (BatchRenderable)new BatchSequence(init.Type.Texture.GetTextures(), init.Type.Color + new Color(variety(init.Type.ColorVariety.R), variety(init.Type.ColorVariety.G), variety(init.Type.ColorVariety.B), variety(init.Type.ColorVariety.A)), tick: init.Type.Texture.Tick) : new BatchObject(init.Type.MeshSize * MasterRenderer.PixelMultiplier + variety(init.Type.MeshSizeVariety), init.Type.Color + new Color(variety(init.Type.ColorVariety.R), variety(init.Type.ColorVariety.G), variety(init.Type.ColorVariety.B), variety(init.Type.ColorVariety.A))))
+		public Particle(World world, ParticleInit init) : base(init.Position, init.Type.GetRenderable())
 		{
 			this.world = world;
 			Type = init.Type;
-			this.random = random;
 
 			Height = init.Height;
 			AffectedByObjects = Type.AffectedByObjects;
+
 			current = init.Convert("Duration", Type.Duration);
 			dissolve = init.Convert("DissolveDuration", Type.DissolveDuration);
 
-			Renderable.SetColor(Type.Color);
-
-			transform_velocity = init.Convert("Velocity", CPos.Zero);
+			velocity = init.Convert("Velocity", CPos.Zero);
 			rotate_velocity = init.Convert("RotationVelocity", VAngle.Zero);
 		}
 
-		static float variety(float variation)
-		{
-			return ((float)Program.SharedRandom.NextDouble() - 0.5f) * variation;
-		}
-
-		float xLeft;
-		float yLeft;
-		float zLeft;
-
 		public void AffectVelocity(ParticleForce force, float ratio, CPos origin)
 		{
+			var random = ParticleUtils.Random;
+
 			var useZ = force.UseHeight;
 
 			var angle = (Position - origin).FlatAngle;
@@ -89,19 +77,19 @@ namespace WarriorsSnuggery.Objects.Particles
 						zFloat = ((float)random.NextDouble() - 0.5f) * force.Strength * ratio;
 					break;
 				case ParticleForceType.DRAG:
-					xFloat = -force.Strength * ratio * transform_velocity.X / 256;
-					if (Math.Abs(xFloat) > Math.Abs(transform_velocity.X))
-						xFloat = -transform_velocity.X * ratio;
+					xFloat = -force.Strength * ratio * velocity.X / 256;
+					if (Math.Abs(xFloat) > Math.Abs(velocity.X))
+						xFloat = -velocity.X * ratio;
 
-					yFloat = -force.Strength * ratio * transform_velocity.Y / 256;
-					if (Math.Abs(yFloat) > Math.Abs(transform_velocity.Y))
-						yFloat = -transform_velocity.Y * ratio;
+					yFloat = -force.Strength * ratio * velocity.Y / 256;
+					if (Math.Abs(yFloat) > Math.Abs(velocity.Y))
+						yFloat = -velocity.Y * ratio;
 
 					if (useZ)
 					{
-						zFloat = -force.Strength * ratio * transform_velocity.Z / 256;
-						if (Math.Abs(zFloat) > Math.Abs(transform_velocity.Z))
-							zFloat = -transform_velocity.Z * ratio;
+						zFloat = -force.Strength * ratio * velocity.Z / 256;
+						if (Math.Abs(zFloat) > Math.Abs(velocity.Z))
+							zFloat = -velocity.Z * ratio;
 					}
 					break;
 				case ParticleForceType.VORTEX:
@@ -111,17 +99,23 @@ namespace WarriorsSnuggery.Objects.Particles
 					zFloat = 0; // Vortex is only 2D
 					break;
 			}
-			var x = (int)Math.Round(xFloat + xLeft);
-			var y = (int)Math.Round(yFloat + yLeft);
-			var z = (int)Math.Round(zFloat + zLeft);
-			xLeft = (xFloat + xLeft) - x;
-			yLeft = (yFloat + yLeft) - y;
-			zLeft = (zFloat + zLeft) - z;
-			transform_velocity += new CPos(x, y, z);
+
+			xFloat += velocity_left.X;
+			yFloat += velocity_left.Y;
+			zFloat += velocity_left.Z;
+
+			var x = (int)Math.Round(xFloat);
+			var y = (int)Math.Round(yFloat);
+			var z = (int)Math.Round(zFloat);
+
+			velocity_left = new Vector(xFloat - x, yFloat - y, zFloat - z);
+			velocity += new CPos(x, y, z);
 		}
 
 		public void AffectRotation(ParticleForce force, float ratio, CPos origin)
 		{
+			var random = ParticleUtils.Random;
+
 			var angle = (origin - Position).FlatAngle - 2 * (float)Math.PI + Rotation.CastToAngleRange().Z;
 
 			if (angle < -Math.PI)
@@ -161,18 +155,17 @@ namespace WarriorsSnuggery.Objects.Particles
 		{
 			base.Tick();
 
-			transform_velocity += new CPos(0, 0, -Type.Gravity);
+			velocity += new CPos(0, 0, -Type.Gravity);
 			Rotation += rotate_velocity;
 
-			Position += new CPos(transform_velocity.X, transform_velocity.Y, 0);
+			Position += new CPos(velocity.X, velocity.Y, 0);
 
-			if (transform_velocity != CPos.Zero)
+			if (velocity != CPos.Zero)
 				world.ParticleLayer.Update(this);
 
-			if (Height + transform_velocity.Z < 0)
+			Height += velocity.Z;
+			if (Height < 0)
 				Height = 0;
-			else
-				Height += transform_velocity.Z;
 
 			if (current-- <= 0)
 			{
@@ -191,6 +184,13 @@ namespace WarriorsSnuggery.Objects.Particles
 			base.Render();
 		}
 
+		public override void Dispose()
+		{
+			base.Dispose();
+
+			world.ParticleLayer.Remove(this);
+		}
+
 		public List<string> Save()
 		{
 			var list = new List<string>
@@ -200,18 +200,11 @@ namespace WarriorsSnuggery.Objects.Particles
 				"Type=" + ParticleCreator.Types.FirstOrDefault(t => t.Value == Type).Key,
 				"Duration=" + current,
 				"DissolveDuration=" + dissolve,
-				"Velocity=" + transform_velocity,
+				"Velocity=" + velocity,
 				"RotationVelocity=" + rotate_velocity
 			};
 
 			return list;
-		}
-
-		public override void Dispose()
-		{
-			base.Dispose();
-
-			world.ParticleLayer.Remove(this);
 		}
 	}
 }

@@ -1,6 +1,4 @@
-﻿using System.Linq;
-using System.Threading;
-using WarriorsSnuggery.Objects.Weapons;
+﻿using WarriorsSnuggery.Objects.Weapons;
 
 namespace WarriorsSnuggery.Objects.Bot
 {

@@ -19,7 +19,7 @@ namespace WarriorsSnuggery.Objects.Weapons
 			if (!Types.ContainsKey(name))
 				throw new MissingInfoException(name);
 
-			return Create(world, Types[name], new Target(target, 0), origin);
+			return Create(world, Types[name], new Target(target, 0), origin, id);
 		}
 
 		public static Weapon Create(World world, WeaponType type, Target target, Actor origin, uint id = uint.MaxValue)

@@ -2,7 +2,6 @@
 
 namespace WarriorsSnuggery.Objects.Particles
 {
-
 	public enum ParticleAreaSpawnType
 	{
 		RANDOM,
@@ -34,29 +33,31 @@ namespace WarriorsSnuggery.Objects.Particles
 		{
 			return AreaType switch
 			{
-				ParticleAreaSpawnType.CIRCLE => createCircle(world, world.Game.SharedRandom, position, height),
-				ParticleAreaSpawnType.BOX => createBox(world, world.Game.SharedRandom, position, height),
-				_ => createRandom(world, world.Game.SharedRandom, position, height),
+				ParticleAreaSpawnType.CIRCLE => createCircle(world, position, height),
+				ParticleAreaSpawnType.BOX => createBox(world, position, height),
+				_ => createRandom(world, position, height),
 			};
 		}
 
-		Particle[] createRandom(World world, Random random, CPos position, int height)
+		Particle[] createRandom(World world, CPos position, int height)
 		{
+			var random = Program.SharedRandom;
+
 			var particles = new Particle[Count];
 			for (int i = 0; i < Count; i++)
 			{
-				var ran = Program.SharedRandom.Next(Radius * 2) - Radius;
-				var angle = Program.SharedRandom.NextDouble() * Math.PI * 2;
+				var ran = random.Next(-Radius, Radius);
+				var angle = random.NextDouble() * Math.PI * 2;
 				var x = Math.Sin(angle) * ran;
 				var y = Math.Cos(angle) * ran;
 				var pos = new CPos((int)x, (int)y, 0);
 
-				particles[i] = ParticleCreator.Create(world, Type, position + pos, height, random);
+				particles[i] = ParticleCreator.Create(world, Type, position + pos, height);
 			}
 			return particles;
 		}
 
-		Particle[] createCircle(World world, Random random, CPos position, int height)
+		Particle[] createCircle(World world, CPos position, int height)
 		{
 			var particles = new Particle[Count];
 			var step = (float)(Math.PI * 2) / Count;
@@ -66,12 +67,12 @@ namespace WarriorsSnuggery.Objects.Particles
 				var y = Math.Cos(step * i) * Radius;
 				var pos = new CPos((int)x, (int)y, 0);
 
-				particles[i] = ParticleCreator.Create(world, Type, position + pos, height, random);
+				particles[i] = ParticleCreator.Create(world, Type, position + pos, height);
 			}
 			return particles;
 		}
 
-		Particle[] createBox(World world, Random random, CPos position, int height)
+		Particle[] createBox(World world, CPos position, int height)
 		{
 			var particles = new Particle[Count];
 			var step = (Radius * 2) / (Count / 4);
@@ -104,7 +105,7 @@ namespace WarriorsSnuggery.Objects.Particles
 				}
 				var pos = new CPos(x, y, 0);
 
-				particles[i] = ParticleCreator.Create(world, Type, position + pos, height, random);
+				particles[i] = ParticleCreator.Create(world, Type, position + pos, height);
 			}
 			return particles;
 		}

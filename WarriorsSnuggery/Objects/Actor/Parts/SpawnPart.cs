@@ -131,7 +131,7 @@ namespace WarriorsSnuggery.Objects.Parts
 					self.World.Add(actor);
 					break;
 				case SpawnPartTypes.PARTICLE:
-					var particle = ParticleCreator.Create(self.World, info.Name, randomPosition(), self.Height + info.Offset.Z, self.World.Game.SharedRandom);
+					var particle = ParticleCreator.Create(self.World, info.Name, randomPosition(), self.Height + info.Offset.Z);
 					particle.Height = height;
 
 					self.World.Add(particle);
