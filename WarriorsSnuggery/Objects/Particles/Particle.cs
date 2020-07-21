@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using WarriorsSnuggery.Graphics;
 
 namespace WarriorsSnuggery.Objects.Particles
@@ -34,6 +36,23 @@ namespace WarriorsSnuggery.Objects.Particles
 
 			transform_velocity = new CPos(random.Next(-type.RandomVelocity.X, type.RandomVelocity.X), random.Next(-type.RandomVelocity.Y, type.RandomVelocity.Y), random.Next(-type.RandomVelocity.Z, type.RandomVelocity.Z));
 			rotate_velocity = new VAngle(random.Next(-type.RandomRotation.X, type.RandomRotation.X), random.Next(-type.RandomRotation.Y, type.RandomRotation.Y), random.Next(-type.RandomRotation.Z, type.RandomRotation.Z));
+		}
+
+		public Particle(World world, ParticleInit init, Random random) : base(init.Position, init.Type.Texture != null ? (BatchRenderable)new BatchSequence(init.Type.Texture.GetTextures(), init.Type.Color + new Color(variety(init.Type.ColorVariety.R), variety(init.Type.ColorVariety.G), variety(init.Type.ColorVariety.B), variety(init.Type.ColorVariety.A)), tick: init.Type.Texture.Tick) : new BatchObject(init.Type.MeshSize * MasterRenderer.PixelMultiplier + variety(init.Type.MeshSizeVariety), init.Type.Color + new Color(variety(init.Type.ColorVariety.R), variety(init.Type.ColorVariety.G), variety(init.Type.ColorVariety.B), variety(init.Type.ColorVariety.A))))
+		{
+			this.world = world;
+			Type = init.Type;
+			this.random = random;
+
+			Height = init.Height;
+			AffectedByObjects = Type.AffectedByObjects;
+			current = init.Convert("Duration", Type.Duration);
+			dissolve = init.Convert("DissolveDuration", Type.DissolveDuration);
+
+			Renderable.SetColor(Type.Color);
+
+			transform_velocity = init.Convert("Velocity", CPos.Zero);
+			rotate_velocity = init.Convert("RotationVelocity", VAngle.Zero);
 		}
 
 		static float variety(float variation)
@@ -170,6 +189,22 @@ namespace WarriorsSnuggery.Objects.Particles
 				RenderShadow();
 
 			base.Render();
+		}
+
+		public List<string> Save()
+		{
+			var list = new List<string>
+			{
+				"Position=" + Position,
+				"Height=" + Height,
+				"Type=" + ParticleCreator.Types.FirstOrDefault(t => t.Value == Type).Key,
+				"Duration=" + current,
+				"DissolveDuration=" + dissolve,
+				"Velocity=" + transform_velocity,
+				"RotationVelocity=" + rotate_velocity
+			};
+
+			return list;
 		}
 
 		public override void Dispose()

@@ -31,37 +31,27 @@ namespace WarriorsSnuggery.Loader
 
 			if (t == typeof(int))
 			{
-				int i;
-
-				if (int.TryParse(s, out i) || s == "")
+				if (int.TryParse(s, out var i) || s == "")
 					return i;
 			}
 			if (t == typeof(uint))
 			{
-				uint i;
-
-				if (uint.TryParse(s, out i) || s == "")
+				if (uint.TryParse(s, out var i) || s == "")
 					return i;
 			}
 			else if (t == typeof(byte))
 			{
-				byte i;
-
-				if (byte.TryParse(s, out i))
+				if (byte.TryParse(s, out var i))
 					return i;
 			}
 			else if (t == typeof(short))
 			{
-				short i;
-
-				if (short.TryParse(s, out i))
+				if (short.TryParse(s, out var i))
 					return i;
 			}
 			else if (t == typeof(float))
 			{
-				float i;
-
-				if (float.TryParse(s, NumberStyles.Float, CultureInfo.InvariantCulture, out i))
+				if (float.TryParse(s, NumberStyles.Float, Settings.FloatFormat, out var i))
 					return i;
 			}
 			else if (t == typeof(bool))
@@ -226,7 +216,7 @@ namespace WarriorsSnuggery.Loader
 			{
 				var parts = s.Split(',');
 
-				if (parts.Length >= 3 && parts.Length <= 4)
+				if (parts.Length == 3)
 				{
 					float x;
 					float y;
@@ -234,6 +224,20 @@ namespace WarriorsSnuggery.Loader
 
 					if (float.TryParse(parts[0], NumberStyles.Float, Settings.FloatFormat, out x) && float.TryParse(parts[1], NumberStyles.Float, Settings.FloatFormat, out y) && float.TryParse(parts[2], NumberStyles.Float, Settings.FloatFormat, out z))
 						return new Vector(x, y, z);
+				}
+			}
+			else if (t == typeof(VAngle))
+			{
+				var parts = s.Split(',');
+
+				if (parts.Length == 3)
+				{
+					float x;
+					float y;
+					float z;
+
+					if (float.TryParse(parts[0], NumberStyles.Float, Settings.FloatFormat, out x) && float.TryParse(parts[1], NumberStyles.Float, Settings.FloatFormat, out y) && float.TryParse(parts[2], NumberStyles.Float, Settings.FloatFormat, out z))
+						return new VAngle(x, y, z);
 				}
 			}
 			else if (t == typeof(SoundType))

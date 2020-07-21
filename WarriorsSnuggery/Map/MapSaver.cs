@@ -130,6 +130,16 @@ namespace WarriorsSnuggery
 		void writeParticles(StreamWriter writer)
 		{
 			writer.WriteLine("Particles=");
+			var i = 0;
+			foreach (var particle in world.ParticleLayer.Particles)
+			{
+				var list = particle.Save();
+
+				writer.WriteLine("\t" + i + "=");
+
+				foreach (var rule in list)
+					writer.WriteLine("\t\t" + rule);
+			}
 		}
 	}
 }

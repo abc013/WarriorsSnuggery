@@ -27,5 +27,10 @@ namespace WarriorsSnuggery.Objects.Particles
 		{
 			return new Particle(world, position, height, type, random);
 		}
+
+		public static Particle Create(World world, ParticleInit init, Random random)
+		{
+			return new Particle(world, init, random);
+		}
 	}
 }

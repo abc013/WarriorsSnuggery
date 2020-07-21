@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using WarriorsSnuggery.Objects;
+using WarriorsSnuggery.Objects.Particles;
 using WarriorsSnuggery.Objects.Parts;
 using WarriorsSnuggery.Objects.Weapons;
 
@@ -19,8 +20,9 @@ namespace WarriorsSnuggery.Maps
 
 		readonly List<ActorNode> actors;
 		readonly List<WeaponInit> weapons;
+		readonly List<ParticleInit> particles;
 
-		Piece(MPos size, ushort[] groundData, short[] wallData, string name, string innerName, string path, List<ActorNode> actors, List<WeaponInit> weapons)
+		Piece(MPos size, ushort[] groundData, short[] wallData, string name, string innerName, string path, List<ActorNode> actors, List<WeaponInit> weapons, List<ParticleInit> particles)
 		{
 			Size = size;
 			Name = name;
@@ -31,6 +33,7 @@ namespace WarriorsSnuggery.Maps
 			this.wallData = wallData;
 			this.actors = actors;
 			this.weapons = weapons;
+			this.particles = particles;
 		}
 
 		public static Piece Load(string innerName, string path, MiniTextNode[] nodes)
@@ -43,6 +46,7 @@ namespace WarriorsSnuggery.Maps
 			string name = "unknown";
 			var actors = new List<ActorNode>();
 			var weapons = new List<WeaponInit>();
+			var particles = new List<ParticleInit>();
 
 			foreach (var rule in nodes)
 			{
@@ -98,6 +102,21 @@ namespace WarriorsSnuggery.Maps
 							}
 						}
 						break;
+					case "Particles":
+						var particleNodes = rule.Children.ToArray();
+
+						foreach (var particle in particleNodes)
+						{
+							try
+							{
+								particles.Add(new ParticleInit(path, particle.Children));
+							}
+							catch (Exception e)
+							{
+								throw new InvalidPieceException(string.Format(@"unable to load particle '{0}' in piece '{1}'.", particle.Key, name), e);
+							}
+						}
+						break;
 				}
 			}
 
@@ -107,7 +126,7 @@ namespace WarriorsSnuggery.Maps
 			if (wallData.Length != (size.X + 1) * (size.Y + 1) * 2 * 2)
 				throw new InvalidPieceException(string.Format(@"The count of given walls ({0}) is smaller as the size ({1}) on the piece '{2}'", groundData.Length, size.X * size.Y, name));
 
-			return new Piece(size, groundData, wallData, name, innerName, path, actors, weapons);
+			return new Piece(size, groundData, wallData, name, innerName, path, actors, weapons, particles);
 		}
 
 		public void PlacePiece(MPos position, World world)
@@ -148,8 +167,10 @@ namespace WarriorsSnuggery.Maps
 
 			if (!world.Map.Type.FromSave)
 			{
-				world.Game.CurrentActorID = actors.Max(n => n.ID) + 1;
-				world.Game.CurrentWeaponID = weapons.Max(n => n.ID) + 1;
+				if (actors.Any())
+					world.Game.CurrentActorID = actors.Max(n => n.ID) + 1;
+				if (weapons.Any())
+					world.Game.CurrentWeaponID = weapons.Max(n => n.ID) + 1;
 			}
 			// generate Actors
 			foreach (var actor in actors)
@@ -172,10 +193,11 @@ namespace WarriorsSnuggery.Maps
 
 			// generate Weapons
 			foreach (var weapon in weapons)
-			{
-				var w = WeaponCreator.Create(world, weapon);
-				world.Add(w);
-			}
+				world.Add(WeaponCreator.Create(world, weapon));
+
+			// generate Particles
+			foreach (var particle in particles)
+				world.Add(ParticleCreator.Create(world, particle, world.Game.SharedRandom));
 		}
 
 		public bool IsInMap(MPos position, MPos mapSize)
