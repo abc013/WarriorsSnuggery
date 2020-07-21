@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using WarriorsSnuggery.Objects;
 using WarriorsSnuggery.Objects.Parts;
+using WarriorsSnuggery.Objects.Weapons;
 
 namespace WarriorsSnuggery.Maps
 {
@@ -15,9 +17,10 @@ namespace WarriorsSnuggery.Maps
 		readonly ushort[] groundData;
 		readonly short[] wallData;
 
-		readonly ActorNode[] actors;
+		readonly List<ActorNode> actors;
+		readonly List<WeaponInit> weapons;
 
-		Piece(MPos size, ushort[] groundData, short[] wallData, string name, string innerName, string path, ActorNode[] actors)
+		Piece(MPos size, ushort[] groundData, short[] wallData, string name, string innerName, string path, List<ActorNode> actors, List<WeaponInit> weapons)
 		{
 			Size = size;
 			Name = name;
@@ -27,6 +30,7 @@ namespace WarriorsSnuggery.Maps
 			this.groundData = groundData;
 			this.wallData = wallData;
 			this.actors = actors;
+			this.weapons = weapons;
 		}
 
 		public static Piece Load(string innerName, string path, MiniTextNode[] nodes)
@@ -37,7 +41,8 @@ namespace WarriorsSnuggery.Maps
 			short[] wallData = new short[0];
 
 			string name = "unknown";
-			ActorNode[] actors = new ActorNode[0];
+			var actors = new List<ActorNode>();
+			var weapons = new List<WeaponInit>();
 
 			foreach (var rule in nodes)
 			{
@@ -61,24 +66,37 @@ namespace WarriorsSnuggery.Maps
 						break;
 					case "Actors":
 						var actorNodes = rule.Children.ToArray();
-						var actorList = new List<ActorNode>();
 
 						foreach (var actor in actorNodes)
 						{
 							try
 							{
-								var id = int.Parse(actor.Key);
+								var id = uint.Parse(actor.Key);
 								var position = actor.Convert<CPos>();
 
-								actorList.Add(new ActorNode(id, position, actor.Children.ToArray()));
+								actors.Add(new ActorNode(id, position, actor.Children.ToArray()));
 							}
 							catch (Exception e)
 							{
 								throw new InvalidPieceException(string.Format(@"unable to load actor '{0}' in piece '{1}'.", actor.Key, name), e);
 							}
 						}
+						break;
+					case "Weapons":
+						var weaponNodes = rule.Children.ToArray();
 
-						actors = actorList.ToArray();
+						foreach (var weapon in weaponNodes)
+						{
+							try
+							{
+								var id = uint.Parse(weapon.Key);
+								weapons.Add(new WeaponInit(path, id, weapon.Children));
+							}
+							catch (Exception e)
+							{
+								throw new InvalidPieceException(string.Format(@"unable to load weapon '{0}' in piece '{1}'.", weapon.Key, name), e);
+							}
+						}
 						break;
 				}
 			}
@@ -89,7 +107,7 @@ namespace WarriorsSnuggery.Maps
 			if (wallData.Length != (size.X + 1) * (size.Y + 1) * 2 * 2)
 				throw new InvalidPieceException(string.Format(@"The count of given walls ({0}) is smaller as the size ({1}) on the piece '{2}'", groundData.Length, size.X * size.Y, name));
 
-			return new Piece(size, groundData, wallData, name, innerName, path, actors);
+			return new Piece(size, groundData, wallData, name, innerName, path, actors, weapons);
 		}
 
 		public void PlacePiece(MPos position, World world)
@@ -128,13 +146,20 @@ namespace WarriorsSnuggery.Maps
 				}
 			}
 
+			if (!world.Map.Type.FromSave)
+			{
+				world.Game.CurrentActorID = actors.Max(n => n.ID) + 1;
+				world.Game.CurrentWeaponID = weapons.Max(n => n.ID) + 1;
+			}
 			// generate Actors
 			foreach (var actor in actors)
 			{
-				var a = ActorCreator.Create(world, actor.Type, actor.Position + position.ToCPos(), actor.Team, actor.IsBot, actor.IsPlayer, actor.Health);
+				var a = world.Map.Type.FromSave ? 
+					ActorCreator.Create(world, actor.Type, actor.Position + position.ToCPos(), actor.Team, actor.IsBot, actor.IsPlayer, actor.Health, actor.ID) : 
+					ActorCreator.Create(world, actor.Type, actor.Position + position.ToCPos(), actor.Team, actor.IsBot, actor.IsPlayer, actor.Health);
 				if (actor.IsPlayer) world.LocalPlayer = a;
 				if (actor.BotTarget.X != int.MaxValue)
-					a.BotPart.Target = new Objects.Weapons.Target(actor.BotTarget, 0);
+					a.BotPart.Target = new Target(actor.BotTarget, 0);
 				if (actor.IsPlayerSwitch)
 				{
 					var part = (PlayerSwitchPart)a.Parts.Find(p => p is PlayerSwitchPart);
@@ -143,6 +168,13 @@ namespace WarriorsSnuggery.Maps
 					part.RelativeHP = actor.RelativeHP;
 				}
 				world.Add(a);
+			}
+
+			// generate Weapons
+			foreach (var weapon in weapons)
+			{
+				var w = WeaponCreator.Create(world, weapon);
+				world.Add(w);
 			}
 		}
 

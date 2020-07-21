@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace WarriorsSnuggery.Objects.Weapons
 {
@@ -9,7 +10,7 @@ namespace WarriorsSnuggery.Objects.Weapons
 		Vector speed;
 		float angle;
 
-		public MagicWeapon(World world, WeaponType type, Target target, Actor origin) : base(world, type, target, origin)
+		public MagicWeapon(World world, WeaponType type, Target target, Actor origin, uint id) : base(world, type, target, origin, id)
 		{
 			projectileType = (MagicProjectileType)type.Projectile;
 
@@ -21,6 +22,17 @@ namespace WarriorsSnuggery.Objects.Weapons
 			if ((Position - TargetPosition).Dist > type.MaxRange * RangeModifier)
 				TargetPosition = Position + new CPos((int)(Math.Cos(angle) * type.MaxRange * RangeModifier), (int)(Math.Sin(angle) * type.MaxRange * RangeModifier), 0) + getInaccuracy();
 
+		}
+
+		public MagicWeapon(World world, WeaponInit init) : base(world, init)
+		{
+			projectileType = (MagicProjectileType)Type.Projectile;
+
+			angle = (Position - TargetPosition).FlatAngle;
+
+			speed = init.Convert("Speed", Vector.Zero);
+			if (speed == Vector.Zero)
+				calculateSpeed(angle);
 		}
 
 		public override void Tick()
@@ -109,6 +121,15 @@ namespace WarriorsSnuggery.Objects.Weapons
 			}
 
 			return CPos.Zero;
+		}
+
+		public override List<string> Save()
+		{
+			var list = base.Save();
+
+			list.Add("Speed=" + speed);
+			
+			return list;
 		}
 	}
 }

@@ -4,7 +4,7 @@ namespace WarriorsSnuggery.Maps
 {
 	public class ActorNode
 	{
-		public readonly int ID;
+		public readonly uint ID;
 		public readonly CPos Position;
 
 		public readonly ActorType Type;
@@ -19,7 +19,7 @@ namespace WarriorsSnuggery.Maps
 		public readonly ActorType ToActor;
 		public readonly float RelativeHP = 1f;
 
-		public ActorNode(int id, CPos position, MiniTextNode[] nodes)
+		public ActorNode(uint id, CPos position, MiniTextNode[] nodes)
 		{
 			ID = id;
 			Position = position;

@@ -1,5 +1,5 @@
-using OpenToolkit.Graphics.ES20;
 using System;
+using System.Collections.Generic;
 using WarriorsSnuggery.Graphics;
 using WarriorsSnuggery.Physics;
 
@@ -14,25 +14,25 @@ namespace WarriorsSnuggery.Objects.Weapons
 		BatchRenderable[] renderables;
 		int renderabledistance;
 		int tick;
-
-		public CPos OriginPos;
-		public int OriginHeight;
 		int curTick;
 		int frame;
+
+		CPos originPos;
+		int originHeight;
 
 		int impactInterval;
 		int duration;
 		int buildupduration;
 		int endduration;
 
-		public BeamWeapon(World world, WeaponType type, Target target, Actor origin) : base(world, type, target, origin)
+		public BeamWeapon(World world, WeaponType type, Target target, Actor origin, uint id) : base(world, type, target, origin, id)
 		{
 			projectileType = (BeamProjectileType)type.Projectile;
 			impactInterval = projectileType.ImpactInterval;
 			rayPhysics = new RayPhysics(world)
 			{
-				Start = OriginPos,
 				Target = TargetPosition,
+				TargetHeight = TargetHeight
 			};
 
 			setPosition();
@@ -49,7 +49,37 @@ namespace WarriorsSnuggery.Objects.Weapons
 			if (projectileType.BeamSound != null)
 			{
 				sound = new Sound(projectileType.BeamSound);
-				sound.Play(OriginPos, true);
+				sound.Play(originPos, true);
+			}
+		}
+
+		public BeamWeapon(World world, WeaponInit init) : base(world, init)
+		{
+			projectileType = (BeamProjectileType)Type.Projectile;
+			rayPhysics = new RayPhysics(world)
+			{
+				Target = TargetPosition,
+				TargetHeight = TargetHeight
+			};
+
+			originPos = init.Convert("OriginPosition", TargetPosition);
+			originHeight = init.Convert("OriginHeight", TargetHeight);
+			setPosition();
+
+			impactInterval = init.Convert("ImpactInterval", projectileType.ImpactInterval);
+			duration = init.Convert("Duration", projectileType.BeamDuration);
+			buildupduration = init.Convert("BuildupDuration", projectileType.StartupDuration);
+			endduration = init.Convert("EndDuration", projectileType.CooldownDuration);
+
+			if (buildupduration > 0 && projectileType.BeamStartUp != null)
+				useTexture(projectileType.BeamStartUp);
+			else
+				useTexture(projectileType.Beam);
+
+			if (projectileType.BeamSound != null)
+			{
+				sound = new Sound(projectileType.BeamSound);
+				sound.Play(originPos, true);
 			}
 		}
 
@@ -68,8 +98,8 @@ namespace WarriorsSnuggery.Objects.Weapons
 
 		public override void Render()
 		{
-			var distance = (OriginPos - GraphicPosition - new CPos(0, OriginHeight, -OriginHeight)).FlatDist;
-			var angle = (OriginPos - GraphicPosition - new CPos(0, OriginHeight, -OriginHeight)).FlatAngle;
+			var distance = (originPos - GraphicPosition - new CPos(0, originHeight, -originHeight)).FlatDist;
+			var angle = (originPos - GraphicPosition - new CPos(0, originHeight, -originHeight)).FlatAngle;
 			var fit = distance / renderabledistance;
 
 			var curFrame = frame;
@@ -81,7 +111,7 @@ namespace WarriorsSnuggery.Objects.Weapons
 				var posY = (int)(Math.Sin(angle) * i * renderabledistance);
 
 				renderable.SetRotation(new VAngle(0, 0, -angle) + new VAngle(0, 0, 270));
-				renderable.SetPosition(OriginPos + new CPos(posX, posY, 0) - new CPos(0, OriginHeight, -OriginHeight));
+				renderable.SetPosition(originPos + new CPos(posX, posY, 0) - new CPos(0, originHeight, -originHeight));
 				renderable.PushToBatchRenderer();
 
 				curFrame--;
@@ -121,18 +151,18 @@ namespace WarriorsSnuggery.Objects.Weapons
 			Position = rayPhysics.End;
 			Height = rayPhysics.EndHeight;
 
-			var dist = (OriginPos - Position).SquaredFlatDist;
+			var dist = (originPos - Position).SquaredFlatDist;
 
-			sound?.SetPosition(OriginPos + (Position - OriginPos) / new CPos(2, 2, 1));
+			sound?.SetPosition(originPos + (Position - originPos) / new CPos(2, 2, 1));
 
 			if (dist > (Type.MaxRange * RangeModifier) * (Type.MaxRange * RangeModifier))
 			{
-				var angle = (OriginPos - TargetPosition).FlatAngle;
-				Position = OriginPos + new CPos((int)(Math.Cos(angle) * Type.MaxRange * RangeModifier), (int)(Math.Sin(angle) * Type.MaxRange * RangeModifier), 0);
+				var angle = (originPos - TargetPosition).FlatAngle;
+				Position = originPos + new CPos((int)(Math.Cos(angle) * Type.MaxRange * RangeModifier), (int)(Math.Sin(angle) * Type.MaxRange * RangeModifier), 0);
 				Height = 0;
 			}
 
-			if (projectileType.Directed && dist > (OriginPos - TargetPosition).SquaredFlatDist)
+			if (projectileType.Directed && dist > (originPos - TargetPosition).SquaredFlatDist)
 			{
 				Position = TargetPosition;
 				Height = 0;
@@ -150,10 +180,13 @@ namespace WarriorsSnuggery.Objects.Weapons
 
 		void setPosition()
 		{
-			OriginHeight = Origin.ActiveWeapon.WeaponHeightPosition;
-			OriginPos = Origin.ActiveWeapon.WeaponOffsetPosition;
-			rayPhysics.Start = OriginPos;
-			rayPhysics.StartHeight = OriginHeight;
+			if (Origin != null)
+			{
+				originHeight = Origin.ActiveWeapon.WeaponHeightPosition;
+				originPos = Origin.ActiveWeapon.WeaponOffsetPosition;
+			}
+			rayPhysics.Start = originPos;
+			rayPhysics.StartHeight = originHeight;
 		}
 
 		public void Move(CPos target, int height)
@@ -178,6 +211,20 @@ namespace WarriorsSnuggery.Objects.Weapons
 			var dy = (int)-(Math.Sin(angle) * projectileType.MovementSpeed);
 			TargetPosition += new CPos(dx, dy, 0);
 
+		}
+
+		public override List<string> Save()
+		{
+			var list = base.Save();
+
+			list.Add("OriginPosition=" + originPos);
+			list.Add("OriginHeight=" + originHeight);
+			list.Add("ImpactInterval=" + impactInterval);
+			list.Add("Duration=" + duration);
+			list.Add("BuildupDuration=" + buildupduration);
+			list.Add("EndDuration=" + endduration);
+
+			return list;
 		}
 
 		public override void Dispose()

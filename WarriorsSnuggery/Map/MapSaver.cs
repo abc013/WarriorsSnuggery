@@ -75,9 +75,11 @@ namespace WarriorsSnuggery
 		void writeActors(StreamWriter writer)
 		{
 			writer.WriteLine("Actors=");
+			var i = 0u;
 			foreach (var a in world.ActorLayer.Actors)
 			{
-				writer.WriteLine("\t" + a.ObjectID + "=" + a.Position);
+				var id = isSavegame ? a.ID : i++;
+				writer.WriteLine("\t" + id + "=" + a.Position);
 				writer.WriteLine("\t\t" + "Type=" + ActorCreator.GetName(a.Type));
 
 				if (a.Team != Actor.NeutralTeam)
@@ -113,6 +115,16 @@ namespace WarriorsSnuggery
 		void writeWeapons(StreamWriter writer)
 		{
 			writer.WriteLine("Weapons=");
+			var i = 0;
+			foreach(var weapon in world.WeaponLayer.Weapons)
+			{
+				var list = weapon.Save();
+
+				writer.WriteLine("\t" + i + "=");
+
+				foreach(var rule in list)
+					writer.WriteLine("\t\t" + rule);
+			}
 		}
 
 		void writeParticles(StreamWriter writer)

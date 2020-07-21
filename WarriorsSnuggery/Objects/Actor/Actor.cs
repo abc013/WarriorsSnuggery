@@ -17,7 +17,7 @@ namespace WarriorsSnuggery.Objects
 		public readonly bool IsPlayer;
 		public readonly bool IsBot;
 		public readonly bool IsPlayerSwitch;
-		public readonly uint ObjectID;
+		public readonly uint ID;
 
 		public bool IsAlive = true;
 
@@ -69,7 +69,7 @@ namespace WarriorsSnuggery.Objects
 		}
 		public ActorAction CurrentAction;
 
-		public Actor(World world, ActorType type, CPos position, byte team, bool isBot, bool isPlayer = false) : base(position, null, type.Physics == null ? null : new SimplePhysics(position, 0, type.Physics.Shape, type.Physics.Size.X, type.Physics.Size.Y, type.Physics.Size.Z))
+		public Actor(World world, ActorType type, CPos position, byte team, bool isBot, bool isPlayer, uint id) : base(position, null, type.Physics == null ? null : new SimplePhysics(position, 0, type.Physics.Shape, type.Physics.Size.X, type.Physics.Size.Y, type.Physics.Size.Z))
 		{
 			World = world;
 			Type = type;
@@ -78,7 +78,7 @@ namespace WarriorsSnuggery.Objects
 			CurrentAction = ActorAction.IDLING;
 			IsBot = isBot;
 
-			ObjectID = world.Game.NextObjectID;
+			ID = id;
 			TerrainPosition = position.ToWPos();
 			CurrentTerrain = world.TerrainAt(TerrainPosition);
 

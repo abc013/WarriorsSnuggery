@@ -30,17 +30,20 @@ namespace WarriorsSnuggery.Objects
 			return Types.FirstOrDefault(t => t.Value == type).Key;
 		}
 
-		public static Actor Create(World world, string name, CPos position, byte team = 0, bool isBot = false, bool isPlayer = false, float health = 1f)
+		public static Actor Create(World world, string name, CPos position, byte team = 0, bool isBot = false, bool isPlayer = false, float health = 1f, uint id = uint.MaxValue)
 		{
 			if (!Types.ContainsKey(name))
 				throw new MissingInfoException(name);
 
-			return Create(world, Types[name], position, team, isBot, isPlayer, health);
+			return Create(world, Types[name], position, team, isBot, isPlayer, health, id);
 		}
 
-		public static Actor Create(World world, ActorType type, CPos position, byte team = 0, bool isBot = false, bool isPlayer = false, float health = 1f)
+		public static Actor Create(World world, ActorType type, CPos position, byte team = 0, bool isBot = false, bool isPlayer = false, float health = 1f, uint id = uint.MaxValue)
 		{
-			var actor = new Actor(world, type, position, team, isBot, isPlayer);
+			if (id == uint.MaxValue)
+				id = world.Game.NextActorID;
+
+			var actor = new Actor(world, type, position, team, isBot, isPlayer, id);
 			if (actor.Health != null)
 				actor.Health.RelativeHP = health;
 

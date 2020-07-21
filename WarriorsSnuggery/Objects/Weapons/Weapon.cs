@@ -1,5 +1,7 @@
-﻿using System.Linq;
-using WarriorsSnuggery.Physics;
+﻿using Microsoft.CodeAnalysis;
+using System.Collections.Generic;
+using System.Linq;
+using WarriorsSnuggery.Loader;
 
 namespace WarriorsSnuggery.Objects.Weapons
 {
@@ -7,12 +9,13 @@ namespace WarriorsSnuggery.Objects.Weapons
 	{
 		protected readonly World World;
 
+		public readonly uint ID;
+
 		public readonly Actor Origin;
+		public readonly byte Team;
 		public Target Target;
 		public CPos TargetPosition;
 		public int TargetHeight;
-
-		protected Actor TargetActor;
 
 		protected readonly WeaponType Type;
 
@@ -21,11 +24,13 @@ namespace WarriorsSnuggery.Objects.Weapons
 		public readonly float DamageRangeModifier = 1f;
 		public readonly float RangeModifier = 1f;
 
-		protected Weapon(World world, WeaponType type, Target target, Actor origin) : base(origin.ActiveWeapon != null ? origin.ActiveWeapon.WeaponOffsetPosition : origin.GraphicPosition, type.Projectile.GetTexture(), SimplePhysics.Empty)
+		protected Weapon(World world, WeaponType type, Target target, Actor origin, uint id) : base(origin.ActiveWeapon != null ? origin.ActiveWeapon.WeaponOffsetPosition : origin.GraphicPosition, type.Projectile.GetTexture())
 		{
 			World = world;
 			Type = type;
 			Origin = origin;
+			Team = origin == null ? Actor.NeutralTeam : origin.Team;
+			ID = id;
 
 			Height = origin.ActiveWeapon != null ? origin.ActiveWeapon.WeaponHeightPosition : origin.Height;
 
@@ -33,28 +38,56 @@ namespace WarriorsSnuggery.Objects.Weapons
 			TargetPosition = target.Position;
 			TargetHeight = target.Height;
 
-			if (origin != null)
-			{
-				var effects = origin.Effects.Where(e => e.Active);
+			var effects = origin.Effects.Where(e => e.Active);
 
-				foreach (var effect in effects.Where(e => e.Spell.Type == Spells.EffectType.INACCURACY))
-					InaccuracyModifier *= effect.Spell.Value;
+			foreach (var effect in effects.Where(e => e.Spell.Type == Spells.EffectType.INACCURACY))
+				InaccuracyModifier *= effect.Spell.Value;
 
-				foreach (var effect in effects.Where(e => e.Spell.Type == Spells.EffectType.DAMAGE))
-					DamageModifier *= effect.Spell.Value;
+			foreach (var effect in effects.Where(e => e.Spell.Type == Spells.EffectType.DAMAGE))
+				DamageModifier *= effect.Spell.Value;
 
-				foreach (var effect in effects.Where(e => e.Spell.Type == Spells.EffectType.DAMAGERANGE))
-					DamageRangeModifier *= effect.Spell.Value;
+			foreach (var effect in effects.Where(e => e.Spell.Type == Spells.EffectType.DAMAGERANGE))
+				DamageRangeModifier *= effect.Spell.Value;
 
-				foreach (var effect in effects.Where(e => e.Spell.Type == Spells.EffectType.RANGE))
-					RangeModifier *= effect.Spell.Value;
-			}
+			foreach (var effect in effects.Where(e => e.Spell.Type == Spells.EffectType.RANGE))
+				RangeModifier *= effect.Spell.Value;
 
 			if (Type.FireSound != null)
 			{
 				var sound = new Sound(Type.FireSound);
 				sound.Play(Position, false);
 			}
+		}
+
+		protected Weapon(World world, WeaponInit init) : base(init.Position, init.Type.Projectile.GetTexture())
+		{
+			World = world;
+			Type = init.Type;
+			ID = init.ID;
+
+			Height = init.Height;
+
+			Origin = world.ActorLayer.ToAdd().FirstOrDefault(a => a.ID == init.OriginID);
+			var TargetActor = world.ActorLayer.ToAdd().FirstOrDefault(a => a.ID == init.TargetID);
+
+			if (TargetActor == null)
+			{
+				var targetPos = init.Convert("OriginalTargetPosition", CPos.Zero);
+				var targetHeight = init.Convert("OriginalTargetHeight", 0);
+				Target = new Target(targetPos, targetHeight);
+			}
+			else
+				Target = new Target(TargetActor);
+
+			TargetPosition = init.Convert("TargetPosition", CPos.Zero);
+			TargetHeight = init.Convert("TargetHeight", 0);
+			
+			Team = init.Convert("Team", Team);
+
+			InaccuracyModifier = init.Convert("InaccuracyModifier", InaccuracyModifier);
+			DamageModifier = init.Convert("DamageModifier", DamageModifier);
+			DamageRangeModifier = init.Convert("DamageRangeModifier", DamageRangeModifier);
+			RangeModifier = init.Convert("RangeModifier", RangeModifier);
 		}
 
 		public override void Tick()
@@ -86,6 +119,32 @@ namespace WarriorsSnuggery.Objects.Weapons
 
 			if (dispose)
 				Dispose();
+		}
+
+		public virtual List<string> Save()
+		{
+			var list = new List<string>
+			{
+				"Position=" + Position,
+				"Height=" + Height,
+				"Type=" +  WeaponCreator.Types.FirstOrDefault(t => t.Value == Type).Key,
+				"Team=" + Team,
+				"InaccuracyModifier=" + InaccuracyModifier.ToString(Settings.FloatFormat),
+				"DamageModifier=" + DamageModifier.ToString(Settings.FloatFormat),
+				"DamageRangeModifier=" + DamageRangeModifier.ToString(Settings.FloatFormat),
+				"RangeModifier=" + RangeModifier.ToString(Settings.FloatFormat)
+			};
+			if (Origin != null)
+				list.Add("Origin=" + Origin.ID);
+			if (Target.Type == TargetType.ACTOR)
+				list.Add("TargetActor=" + Target.Actor.ID);
+
+			list.Add("OriginalTargetPosition=" + Target.Position);
+			list.Add("OriginalTargetHeight=" + Target.Height);
+			list.Add("TargetPosition=" + TargetPosition);
+			list.Add("TargetHeight=" + TargetHeight);
+
+			return list;
 		}
 
 		public override void Dispose()

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using WarriorsSnuggery.Physics;
 
 namespace WarriorsSnuggery.Objects.Weapons
@@ -11,7 +12,7 @@ namespace WarriorsSnuggery.Objects.Weapons
 		Vector speed;
 		Vector speedLeft;
 
-		public BulletWeapon(World world, WeaponType type, Target target, Actor origin) : base(world, type, target, origin)
+		public BulletWeapon(World world, WeaponType type, Target target, Actor origin, uint id) : base(world, type, target, origin, id)
 		{
 			projectileType = (BulletProjectileType)type.Projectile;
 
@@ -28,6 +29,23 @@ namespace WarriorsSnuggery.Objects.Weapons
 
 			if (!projectileType.FlyToTarget)
 				TargetPosition = Position + new CPos((int)(Math.Cos(angle) * type.MaxRange * RangeModifier), (int)(Math.Sin(angle) * type.MaxRange * RangeModifier), 0) + getInaccuracy();
+
+			if (projectileType.OrientateToTarget)
+				Rotation = new VAngle(0, 0, angle);
+
+			rayPhysics = new RayPhysics(world);
+		}
+
+		public BulletWeapon(World world, WeaponInit init) : base(world, init)
+		{
+			projectileType = (BulletProjectileType)Type.Projectile;
+
+			var angle = (Position - TargetPosition).FlatAngle;
+
+			speed = init.Convert("Speed", Vector.Zero);
+			speedLeft = init.Convert("SpeedLeft", Vector.Zero);
+			if (speed == Vector.Zero)
+				calculateStartSpeed(angle);
 
 			if (projectileType.OrientateToTarget)
 				Rotation = new VAngle(0, 0, angle);
@@ -112,6 +130,16 @@ namespace WarriorsSnuggery.Objects.Weapons
 			}
 
 			return CPos.Zero;
+		}
+
+		public override List<string> Save()
+		{
+			var list = base.Save();
+
+			list.Add("Speed=" + speed);
+			list.Add("SpeedLeft=" + speedLeft);
+
+			return list;
 		}
 	}
 }

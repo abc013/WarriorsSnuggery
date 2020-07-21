@@ -79,8 +79,11 @@ namespace WarriorsSnuggery
 		bool instantExit;
 		GameType instantExitType;
 
-		public uint NextObjectID { get { return nextObjectID++; } }
-		uint nextObjectID;
+		public uint NextActorID { get { return CurrentActorID++; } }
+		public uint CurrentActorID;
+
+		public uint NextWeaponID { get { return CurrentWeaponID++; } }
+		public uint CurrentWeaponID;
 
 		public Game(GameStatistics statistics, MapInfo map, int seed = -1)
 		{

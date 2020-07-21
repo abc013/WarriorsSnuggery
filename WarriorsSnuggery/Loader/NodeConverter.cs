@@ -36,6 +36,13 @@ namespace WarriorsSnuggery.Loader
 				if (int.TryParse(s, out i) || s == "")
 					return i;
 			}
+			if (t == typeof(uint))
+			{
+				uint i;
+
+				if (uint.TryParse(s, out i) || s == "")
+					return i;
+			}
 			else if (t == typeof(byte))
 			{
 				byte i;
@@ -213,6 +220,20 @@ namespace WarriorsSnuggery.Loader
 						if (parts.Length == 4 && int.TryParse(parts[3], out a) || parts.Length == 3)
 							return new Color(r, g, b, a);
 					}
+				}
+			}
+			else if (t == typeof(Vector))
+			{
+				var parts = s.Split(',');
+
+				if (parts.Length >= 3 && parts.Length <= 4)
+				{
+					float x;
+					float y;
+					float z;
+
+					if (float.TryParse(parts[0], NumberStyles.Float, Settings.FloatFormat, out x) && float.TryParse(parts[1], NumberStyles.Float, Settings.FloatFormat, out y) && float.TryParse(parts[2], NumberStyles.Float, Settings.FloatFormat, out z))
+						return new Vector(x, y, z);
 				}
 			}
 			else if (t == typeof(SoundType))

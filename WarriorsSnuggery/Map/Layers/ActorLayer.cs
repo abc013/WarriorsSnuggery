@@ -150,6 +150,11 @@ namespace WarriorsSnuggery
 			}
 		}
 
+		public List<Actor> ToAdd()
+		{
+			return actorsToAdd;
+		}
+
 		public void Clear()
 		{
 			foreach (var actor in Actors)

@@ -14,7 +14,7 @@ namespace WarriorsSnuggery.Objects.Weapons
 				Types.Add(weapon.Key, new WeaponType(weapon.Children.ToArray()));
 		}
 
-		public static Weapon Create(World world, string name, CPos target, Actor origin)
+		public static Weapon Create(World world, string name, CPos target, Actor origin, uint id = uint.MaxValue)
 		{
 			if (!Types.ContainsKey(name))
 				throw new MissingInfoException(name);
@@ -22,16 +22,32 @@ namespace WarriorsSnuggery.Objects.Weapons
 			return Create(world, Types[name], new Target(target, 0), origin);
 		}
 
-		public static Weapon Create(World world, WeaponType type, Target target, Actor origin)
+		public static Weapon Create(World world, WeaponType type, Target target, Actor origin, uint id = uint.MaxValue)
 		{
+			if (id == uint.MaxValue)
+				id = world.Game.NextWeaponID;
+
 			if (type.Projectile is BeamProjectileType)
-				return new BeamWeapon(world, type, target, origin);
+				return new BeamWeapon(world, type, target, origin, id);
 			else if (type.Projectile is BulletProjectileType)
-				return new BulletWeapon(world, type, target, origin);
+				return new BulletWeapon(world, type, target, origin, id);
 			else if (type.Projectile is MagicProjectileType)
-				return new MagicWeapon(world, type, target, origin);
+				return new MagicWeapon(world, type, target, origin, id);
 			else
-				return new InstantHitWeapon(world, type, target, origin);
+				return new InstantHitWeapon(world, type, target, origin, id);
+		}
+
+		public static Weapon Create(World world, WeaponInit init)
+		{
+			var type = init.Type;
+			if (type.Projectile is BeamProjectileType)
+				return new BeamWeapon(world, init);
+			else if (type.Projectile is BulletProjectileType)
+				return new BulletWeapon(world, init);
+			else if (type.Projectile is MagicProjectileType)
+				return new MagicWeapon(world, init);
+			else
+				return new InstantHitWeapon(world, init);
 		}
 	}
 }

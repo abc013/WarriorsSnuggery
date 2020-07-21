@@ -17,7 +17,7 @@
 
 		public void Impact(World world, Weapon weapon, Target target)
 		{
-			world.Add(ActorCreator.Create(world, Type, target.Position, weapon.Origin == null ? Actor.NeutralTeam : weapon.Origin.Team, IsBot));
+			world.Add(ActorCreator.Create(world, Type, target.Position, weapon.Team, IsBot));
 		}
 	}
 }
