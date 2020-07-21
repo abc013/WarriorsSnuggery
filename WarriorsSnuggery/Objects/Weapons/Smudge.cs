@@ -2,7 +2,7 @@ using WarriorsSnuggery.Graphics;
 
 namespace WarriorsSnuggery.Objects.Weapons
 {
-	public class Smudge : PhysicsObject
+	public class Smudge : PositionableObject
 	{
 		public bool IsDissolving;
 

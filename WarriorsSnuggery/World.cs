@@ -25,10 +25,10 @@ namespace WarriorsSnuggery
 		public readonly WeaponLayer WeaponLayer;
 		public readonly ParticleLayer ParticleLayer;
 
-		public readonly List<PhysicsObject> Objects = new List<PhysicsObject>();
-		public List<PhysicsObject> ToRender { get; private set; }
+		public readonly List<PositionableObject> Objects = new List<PositionableObject>();
+		readonly List<PositionableObject> objectsToAdd = new List<PositionableObject>();
 
-		readonly List<PhysicsObject> objectsToAdd = new List<PhysicsObject>();
+		public List<PositionableObject> ToRender { get; private set; }
 
 		public Actor LocalPlayer;
 
@@ -250,7 +250,7 @@ namespace WarriorsSnuggery
 			ParticleLayer.Add(particles);
 		}
 
-		public void Add(PhysicsObject @object)
+		public void Add(PositionableObject @object)
 		{
 			objectsToAdd.Add(@object);
 		}

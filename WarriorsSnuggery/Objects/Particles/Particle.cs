@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace WarriorsSnuggery.Objects.Particles
 {
-	public class Particle : PhysicsObject
+	public class Particle : PositionableObject
 	{
 		public readonly bool AffectedByObjects;
 		public readonly ParticleType Type;

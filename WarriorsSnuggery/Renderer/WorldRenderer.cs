@@ -62,7 +62,7 @@ namespace WarriorsSnuggery
 			world.SmudgeLayer.Render();
 			BatchRenderer.Render();
 
-			foreach (PhysicsObject o in world.ToRender)
+			foreach (var o in world.ToRender)
 			{
 				CPos pos = world.Game.Editor ? MouseInput.GamePosition : world.LocalPlayer == null ? CPos.Zero : world.LocalPlayer.Position;
 				if (((o is Actor actor && actor.WorldPart != null && actor.WorldPart.Hideable) || (o is Wall wall && wall.LayerPosition.X % 2 != 0 && wall.Type.Height >= 512)) && o.Position.Y > pos.Y && Math.Abs(o.Position.X - pos.X) < 4096)

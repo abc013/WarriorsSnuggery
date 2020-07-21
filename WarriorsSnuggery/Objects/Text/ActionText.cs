@@ -3,7 +3,7 @@ using WarriorsSnuggery.Graphics;
 
 namespace WarriorsSnuggery.Objects
 {
-	public class ActionText : PhysicsObject
+	public class ActionText : PositionableObject
 	{
 		public enum ActionTextType
 		{
@@ -17,7 +17,7 @@ namespace WarriorsSnuggery.Objects
 		readonly TextBlock text;
 		readonly ActionTextType type;
 
-		public ActionText(CPos pos, CPos velocity, int tick, ActionTextType type, params string[] lines) : base(pos)
+		public ActionText(CPos pos, CPos velocity, int tick, ActionTextType type, params string[] lines) : base(pos, null)
 		{
 			current = tick;
 			length = tick;
