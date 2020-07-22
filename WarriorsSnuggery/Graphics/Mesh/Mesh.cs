@@ -19,7 +19,7 @@ namespace WarriorsSnuggery.Graphics
 			var h = (texture.Y + texture.Height) / (float)Settings.SheetSize - Settings.SheetHalfPixel;
 			var scale = texture.Height / 48f;
 			var correction = texture.Width / (float)texture.Height;
-			var color4 = Color.White.toColor4();
+			var color4 = Color.White.ToColor4();
 			var id = SpriteManager.SheetIndex(texture.SheetID);
 
 			Vertex[] vertices =
@@ -39,7 +39,7 @@ namespace WarriorsSnuggery.Graphics
 
 		public static Vertex[] Frame()
 		{
-			var color = Color.White.toColor4();
+			var color = Color.White.ToColor4();
 			var scale = 1;
 
 			Vertex[] vertices =
@@ -85,7 +85,7 @@ namespace WarriorsSnuggery.Graphics
 			var y = texture.Y / (float)Settings.SheetSize + Settings.SheetHalfPixel;
 			var w = (texture.X + size.X * texture.Width) / Settings.SheetSize - Settings.SheetHalfPixel;
 			var h = (texture.Y + size.Y * texture.Height) / Settings.SheetSize - Settings.SheetHalfPixel;
-			var color4 = color.toColor4();
+			var color4 = color.ToColor4();
 			var id = SpriteManager.SheetIndex(texture.SheetID);
 
 			Vertex[] vertices =
@@ -103,7 +103,7 @@ namespace WarriorsSnuggery.Graphics
 
 		public static Vertex[] Line(float size, Color color)
 		{
-			var color4 = color.toColor4();
+			var color4 = color.ToColor4();
 
 			Vertex[] vertices =
 			{
@@ -117,7 +117,7 @@ namespace WarriorsSnuggery.Graphics
 		public static Vertex[] Plane(float scale, Color color)
 		{
 			scale /= 2;
-			var color4 = color.toColor4();
+			var color4 = color.ToColor4();
 
 			Vertex[] vertices =
 			{
@@ -135,7 +135,7 @@ namespace WarriorsSnuggery.Graphics
 		public static Vertex[] Circle(float size, Color color, int resolution = 360)
 		{
 			size /= 2;
-			var color4 = color.toColor4();
+			var color4 = color.ToColor4();
 
 			var vertices = new Vertex[resolution * 2];
 			for (int i = 0; i < resolution * 2; i++)

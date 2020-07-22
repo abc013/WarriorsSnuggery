@@ -7,13 +7,7 @@ namespace WarriorsSnuggery
 	{
 		public static readonly Vector Zero = new Vector();
 
-		public float Dist
-		{
-			get
-			{
-				return (float)Math.Sqrt(X * X + Y * Y + Z * Z);
-			}
-		}
+		public float Dist => (float)Math.Sqrt(X * X + Y * Y + Z * Z);
 
 		public readonly float X;
 		public readonly float Y;

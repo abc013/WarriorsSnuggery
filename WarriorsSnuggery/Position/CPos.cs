@@ -10,18 +10,9 @@ namespace WarriorsSnuggery
 		public readonly int Y;
 		public readonly int Z;
 
-		public float Dist
-		{
-			get { return (float)Math.Sqrt(X * (double)X + Y * (double)Y + Z * (double)Z); }
-		}
-		public float FlatDist
-		{
-			get { return (float)Math.Sqrt(X * (double)X + Y * (double)Y); }
-		}
-		public long SquaredFlatDist
-		{
-			get { return X * (long)X + Y * (long)Y; }
-		}
+		public float Dist => (float)Math.Sqrt(X * (double)X + Y * (double)Y + Z * (double)Z);
+		public float FlatDist => (float)Math.Sqrt(X * (double)X + Y * (double)Y);
+		public long SquaredFlatDist => X * (long)X + Y * (long)Y;
 
 		public float FlatAngle
 		{

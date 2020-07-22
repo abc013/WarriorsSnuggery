@@ -59,17 +59,17 @@ namespace WarriorsSnuggery
 			return lhf.R == rhf.R && lhf.G == rhf.G && lhf.B == rhf.B && lhf.A == rhf.A;
 		}
 
-		public Color4 toColor4()
+		public Color4 ToColor4()
 		{
 			return new Color4(R, G, B, A);
 		}
 
-		public Vector4 toVector4()
+		public Vector4 ToVector4()
 		{
 			return new Vector4(R, G, B, A);
 		}
 
-		public System.Drawing.Color toSysColor()
+		public System.Drawing.Color ToSysColor()
 		{
 			return System.Drawing.Color.FromArgb((int)(A * 255f), (int)(R * 255f), (int)(G * 255f), (int)(B * 255f));
 		}
