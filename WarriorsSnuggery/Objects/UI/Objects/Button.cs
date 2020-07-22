@@ -12,8 +12,6 @@ namespace WarriorsSnuggery.UI
 		readonly Action action;
 		readonly MPos gameBounds;
 
-		bool mouseOnButton;
-
 		public Button(CPos pos, string text, string type, Action action) : base(pos, new Vector((2 * margin + FontManager.Pixel16.Width * text.Length) / 2048f, (2 * margin + FontManager.Pixel16.Height) / 2048f, 0), PanelManager.Get(type))
 		{
 			gameBounds = new MPos(FontManager.Pixel16.Width * text.Length / 2 + margin, FontManager.Pixel16.Height / 2 + margin);
@@ -24,12 +22,10 @@ namespace WarriorsSnuggery.UI
 
 		public override void Render()
 		{
-			if (mouseOnButton)
+			if (ContainsMouse)
 			{
 				if (MouseInput.IsLeftDown)
-				{
 					Color = new Color(0.5f, 0.5f, 0.5f);
-				}
 				else
 				{
 					Color = Color.White;
@@ -50,16 +46,9 @@ namespace WarriorsSnuggery.UI
 		{
 			base.Tick();
 
-			checkMouse();
-		}
+			CheckMouse(gameBounds.X, gameBounds.Y);
 
-		void checkMouse()
-		{
-			var mousePosition = MouseInput.WindowPosition;
-
-			mouseOnButton = mousePosition.X > Position.X - gameBounds.X && mousePosition.X < Position.X + gameBounds.X && mousePosition.Y > Position.Y - gameBounds.Y && mousePosition.Y < Position.Y + gameBounds.Y;
-
-			if (MouseInput.IsLeftClicked && mouseOnButton && action != null)
+			if (MouseInput.IsLeftClicked && ContainsMouse && action != null)
 				action();
 		}
 	}

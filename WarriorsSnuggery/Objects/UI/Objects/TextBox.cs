@@ -12,10 +12,7 @@ namespace WarriorsSnuggery.UI
 		public bool Selected;
 		public string Text
 		{
-			get
-			{
-				return realText;
-			}
+			get => realText;
 			set
 			{
 				realText = value;
@@ -27,7 +24,6 @@ namespace WarriorsSnuggery.UI
 		public readonly bool OnlyNumbers;
 		public readonly bool IsPath;
 
-		bool mouseOnBox;
 		readonly TextLine text;
 		readonly MPos gameBounds;
 
@@ -54,9 +50,11 @@ namespace WarriorsSnuggery.UI
 
 		public override void Tick()
 		{
-			checkMouse();
-			if (MouseInput.IsLeftClicked)
-				Selected = mouseOnBox;
+			CheckMouse(gameBounds.X, gameBounds.Y);
+			if (ContainsMouse && MouseInput.IsLeftClicked)
+				Selected = true;
+			else if (MouseInput.IsLeftClicked)
+				Selected = false;
 
 			if (Selected)
 			{
@@ -96,12 +94,6 @@ namespace WarriorsSnuggery.UI
 					OnType?.Invoke();
 				}
 			}
-		}
-
-		void checkMouse()
-		{
-			var mousePosition = MouseInput.WindowPosition;
-			mouseOnBox = mousePosition.X > Position.X - gameBounds.X && mousePosition.X < Position.X + gameBounds.X && mousePosition.Y > Position.Y - gameBounds.Y && mousePosition.Y < Position.Y + gameBounds.Y;
 		}
 	}
 }

@@ -8,8 +8,8 @@ namespace WarriorsSnuggery.UI
 
 		public float Value
 		{
-			get { return slider.Value; }
-			set { slider.Value = value; }
+			get => slider.Value;
+			set => slider.Value = value;
 		}
 
 		public SliderBar(CPos position, int size, PanelType type, Action onChanged) : base(position, new Vector(size * MasterRenderer.PixelMultiplier / 2, MasterRenderer.PixelMultiplier, 0), type)
@@ -40,7 +40,6 @@ namespace WarriorsSnuggery.UI
 
 		readonly Action onChanged;
 
-		bool mouseOnSlider;
 		bool drag;
 		int currentPosition;
 
@@ -48,7 +47,7 @@ namespace WarriorsSnuggery.UI
 
 		public float Value
 		{
-			get { return (currentPosition / (float)limit + 1f) / 2; }
+			get => (currentPosition / (float)limit + 1f) / 2;
 			set
 			{
 				currentPosition = (int)((value - 0.5f) * limit) * 2;
@@ -70,7 +69,17 @@ namespace WarriorsSnuggery.UI
 		{
 			base.Tick();
 
-			checkMouse();
+			CheckMouse(gameBounds.X, gameBounds.Y);
+
+			if (ContainsMouse)
+				UIRenderer.SetTooltip(tooltip);
+			else
+				UIRenderer.DisableTooltip(tooltip);
+
+			if (MouseInput.IsLeftDown && ContainsMouse)
+				drag = true;
+			else if (!MouseInput.IsLeftDown)
+				drag = false;
 
 			if (drag)
 			{
@@ -88,22 +97,6 @@ namespace WarriorsSnuggery.UI
 				UIRenderer.DisableTooltip(tooltip);
 				tooltip = new Tooltip(Position, Math.Round(Value, 1).ToString());
 			}
-		}
-
-		void checkMouse()
-		{
-			var mousePosition = MouseInput.WindowPosition;
-			mouseOnSlider = mousePosition.X > Position.X - gameBounds.X && mousePosition.X < Position.X + gameBounds.X && mousePosition.Y > Position.Y - gameBounds.Y && mousePosition.Y < Position.Y + gameBounds.Y;
-
-			if (mouseOnSlider)
-				UIRenderer.SetTooltip(tooltip);
-			else
-				UIRenderer.DisableTooltip(tooltip);
-
-			if (MouseInput.IsLeftDown && mouseOnSlider)
-				drag = true;
-			else if (!MouseInput.IsLeftDown)
-				drag = false;
 		}
 	}
 }

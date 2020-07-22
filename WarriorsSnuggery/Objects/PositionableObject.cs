@@ -9,7 +9,7 @@ namespace WarriorsSnuggery.Objects
 
 		public virtual int Height
 		{
-			get { return height; }
+			get => height;
 			set
 			{
 				height = value;
@@ -21,7 +21,7 @@ namespace WarriorsSnuggery.Objects
 
 		public virtual CPos Position
 		{
-			get { return position; }
+			get => position;
 			set
 			{
 				position = value;
@@ -33,7 +33,7 @@ namespace WarriorsSnuggery.Objects
 
 		public virtual CPos Offset
 		{
-			get { return offset; }
+			get => offset;
 			set
 			{
 				offset = value;
@@ -43,19 +43,13 @@ namespace WarriorsSnuggery.Objects
 		}
 		CPos offset;
 
-		public virtual CPos GraphicPosition
-		{
-			get { return new CPos(position.X + offset.X, position.Y + offset.Y - height, position.Z + offset.Z + height); }
-		}
+		public virtual CPos GraphicPosition => new CPos(position.X + offset.X, position.Y + offset.Y - height, position.Z + offset.Z + height);
 
-		public virtual CPos GraphicPositionWithoutHeight
-		{
-			get { return new CPos(position.X + offset.X, position.Y + offset.Y, position.Z + offset.Z); }
-		}
+		public virtual CPos GraphicPositionWithoutHeight => new CPos(position.X + offset.X, position.Y + offset.Y, position.Z + offset.Z);
 
 		public virtual VAngle Rotation
 		{
-			get { return rotation; }
+			get => rotation;
 			set
 			{
 				rotation = value;
@@ -67,7 +61,7 @@ namespace WarriorsSnuggery.Objects
 
 		public virtual float Scale
 		{
-			get { return scale; }
+			get => scale;
 			set
 			{
 				scale = value;

@@ -77,14 +77,16 @@ namespace WarriorsSnuggery.Physics
 						if (wall == null)
 							continue;
 
-						var lines = wall.Physics.GetLines();
+						var physics = wall.Physics;
+
+						var lines = physics.GetLines();
 						foreach (var line in lines)
 						{
 							var end = getIntersection(line.Start, line.End, out var t1);
 							if (end != invalid && t1 < closestT1)
 							{
 								var height = calculateHeight(end);
-								if (height <= wall.Physics.Height + wall.Physics.HeightRadius || height >= wall.Physics.Height - wall.Physics.HeightRadius)
+								if (height <= physics.Height + physics.HeightRadius || height >= physics.Height - physics.HeightRadius)
 								{
 									// HACK for damage: Don't hit the wall directly
 									closestIntersect = end - new CPos(sx * 4, sy * 4, 0);
@@ -161,13 +163,15 @@ namespace WarriorsSnuggery.Physics
 					var hit = false;
 					foreach (var obj in objs)
 					{
-						if (obj.Physics.Shape == Shape.CIRCLE)
+						var physics = obj.Physics;
+
+						if (physics.Shape == Shape.CIRCLE)
 						{
-							var end = getIntersection(obj.Physics.Position, obj.Physics.RadiusX, out var t1, out var t2, out var end2);
+							var end = getIntersection(physics.Position, physics.RadiusX, out var t1, out var t2, out var end2);
 							if (end != invalid && t1 < closestT1)
 							{
 								var height = calculateHeight(end);
-								if (height <= obj.Physics.Height + obj.Physics.HeightRadius && height >= obj.Physics.Height - obj.Physics.HeightRadius)
+								if (height <= physics.Height + physics.HeightRadius && height >= physics.Height - physics.HeightRadius)
 								{
 									closestIntersect = end;
 									closestT1 = t1;
@@ -177,7 +181,7 @@ namespace WarriorsSnuggery.Physics
 								else if (t2 < closestT1)
 								{
 									height = calculateHeight(end2);
-									if (height <= obj.Physics.Height + obj.Physics.HeightRadius && height >= obj.Physics.Height - obj.Physics.HeightRadius)
+									if (height <= physics.Height + physics.HeightRadius && height >= physics.Height - physics.HeightRadius)
 									{
 										closestIntersect = end2;
 										closestT1 = t2;
@@ -189,13 +193,13 @@ namespace WarriorsSnuggery.Physics
 						}
 						else
 						{
-							foreach (var line in obj.Physics.GetLines())
+							foreach (var line in physics.GetLines())
 							{
 								var end = getIntersection(line.Start, line.End, out var t1);
 								if (end != invalid && t1 < closestT1)
 								{
 									var height = calculateHeight(end);
-									if (height <= obj.Physics.Height + obj.Physics.HeightRadius && height >= obj.Physics.Height - obj.Physics.HeightRadius)
+									if (height <= physics.Height + physics.HeightRadius && height >= physics.Height - physics.HeightRadius)
 									{
 										closestIntersect = end;
 										closestT1 = t1;

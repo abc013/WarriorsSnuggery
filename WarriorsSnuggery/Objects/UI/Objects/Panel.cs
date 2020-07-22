@@ -2,80 +2,57 @@
 
 namespace WarriorsSnuggery.UI
 {
-	public class Panel : IPositionable, ITickRenderable
+	public class Panel : UIObject
 	{
-		public virtual CPos Position
+		public override CPos Position
 		{
-			get
-			{
-				return position;
-			}
+			get => base.Position;
 			set
 			{
-				position = value;
-				background.SetPosition(position);
-				border.SetPosition(position);
-				if (Highlight != null)
-					Highlight.SetPosition(position);
+				base.Position = value;
+				background.SetPosition(value);
+				border.SetPosition(value);
+				Highlight?.SetPosition(value);
 			}
 		}
-		CPos position;
 
-		public virtual VAngle Rotation
+		public override VAngle Rotation
 		{
-			get
-			{
-				return rotation;
-			}
+			get => base.Rotation;
 			set
 			{
-				rotation = value;
-				background.SetRotation(rotation);
-				border.SetRotation(rotation);
-				if (Highlight != null)
-					Highlight.SetRotation(rotation);
+				base.Rotation = value;
+				background.SetRotation(value);
+				border.SetRotation(value);
+				Highlight?.SetRotation(value);
 			}
 		}
-		VAngle rotation;
 
-		public virtual float Scale
+		public override float Scale
 		{
-			get
-			{
-				return scale;
-			}
+			get => base.Scale;
 			set
 			{
-				scale = value;
-				background.SetScale(scale);
-				border.SetScale(scale);
-				if (Highlight != null)
-					Highlight.SetScale(scale);
+				base.Scale = value;
+				background.SetScale(value);
+				border.SetScale(value);
+				Highlight?.SetScale(value);
 			}
 		}
-		float scale = 1f;
 
-		public virtual Color Color
+		public override Color Color
 		{
-			get
-			{
-				return color;
-			}
+			get => base.Color;
 			set
 			{
-				color = value;
-				background.SetColor(color);
-				border.SetColor(color);
-				if (Highlight != null)
-					Highlight.SetColor(color);
+				base.Color = value;
+				background.SetColor(value);
+				border.SetColor(value);
+				Highlight?.SetColor(value);
 			}
 		}
-		Color color = Color.White;
 
-		public virtual MPos Bounds
-		{
-			get; private set;
-		}
+		public virtual MPos Bounds { get; private set; }
 
 		readonly BatchObject background;
 		readonly BatchObject border;
@@ -89,14 +66,16 @@ namespace WarriorsSnuggery.UI
 		{
 			background = new BatchObject(Mesh.UIPlane(type.Background, Color.White, bounds), Color.White);
 			border = new BatchObject(Mesh.UIPlane(type.Border, Color.White, bounds + new Vector(type.BorderWidth, type.BorderWidth, 0)), Color.White);
-			if (background2 != null) Highlight = background2;
+
+			if (background2 != null)
+				Highlight = background2;
 
 			Bounds = new MPos((int)((bounds.X + type.BorderWidth) * MasterRenderer.PixelMultiplier * 512), (int)((bounds.Y + type.BorderWidth) * MasterRenderer.PixelMultiplier * 512));
 
 			Position = position;
 		}
 
-		public virtual void Render()
+		public override void Render()
 		{
 			border.PushToBatchRenderer();
 			background.PushToBatchRenderer();
@@ -105,6 +84,6 @@ namespace WarriorsSnuggery.UI
 				Highlight.PushToBatchRenderer();
 		}
 
-		public virtual void Tick() { }
+		public override void Tick() { }
 	}
 }

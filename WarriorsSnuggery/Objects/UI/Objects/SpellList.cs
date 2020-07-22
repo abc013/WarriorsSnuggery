@@ -8,10 +8,7 @@ namespace WarriorsSnuggery.UI
 		readonly BatchObject selector;
 		public int CurrentSpell
 		{
-			get
-			{
-				return currentSpell;
-			}
+			get => currentSpell;
 			set
 			{
 				currentSpell = value;

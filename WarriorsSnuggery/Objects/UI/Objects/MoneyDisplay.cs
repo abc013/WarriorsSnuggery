@@ -3,43 +3,40 @@ using WarriorsSnuggery.Objects;
 
 namespace WarriorsSnuggery.UI
 {
-	public class MoneyDisplay : IPositionable, ITickRenderable
+	public class MoneyDisplay : UIObject
 	{
-		public virtual CPos Position
+		public override CPos Position
 		{
-			get { return position; }
+			get => base.Position;
 			set
 			{
-				position = value;
-				money.SetPosition(position);
-				moneyText.Position = position;
+				base.Position = value;
+				money.SetPosition(value);
+				moneyText.Position = value;
 			}
 		}
-		CPos position;
 
-		public virtual VAngle Rotation
+		public override VAngle Rotation
 		{
-			get { return rotation; }
+			get => base.Rotation;
 			set
 			{
-				rotation = value;
-				money.SetRotation(rotation);
-				moneyText.Rotation = rotation;
+				base.Rotation = value;
+				money.SetRotation(value);
+				moneyText.Rotation = value;
 			}
 		}
-		VAngle rotation;
 
-		public virtual float Scale
+		public override float Scale
 		{
-			get { return scale; }
+			get => base.Scale;
 			set
 			{
-				scale = value;
-				money.SetScale(scale);
-				moneyText.Scale = scale;
+				base.Scale = value;
+				money.SetScale(value);
+				moneyText.Scale = value;
 			}
 		}
-		float scale = 1f;
 
 		readonly Game game;
 		readonly BatchObject money;
@@ -57,7 +54,7 @@ namespace WarriorsSnuggery.UI
 			moneyText.SetText(game.Statistics.Money);
 		}
 
-		public void Tick()
+		public override void Tick()
 		{
 			if (lastCash != game.Statistics.Money)
 			{
@@ -70,7 +67,7 @@ namespace WarriorsSnuggery.UI
 				moneyText.Scale = (cashCooldown / 10f) + 1f;
 		}
 
-		public void Render()
+		public override void Render()
 		{
 			money.PushToBatchRenderer();
 			moneyText.Render();

@@ -10,7 +10,7 @@ namespace WarriorsSnuggery.Objects
 
 		public override int Height
 		{
-			get { return base.Height; }
+			get => base.Height;
 			set
 			{
 				base.Height = value;
@@ -22,7 +22,7 @@ namespace WarriorsSnuggery.Objects
 
 		public override CPos Position
 		{
-			get { return base.Position; }
+			get => base.Position;
 			set
 			{
 				base.Position = value;
@@ -30,11 +30,6 @@ namespace WarriorsSnuggery.Objects
 				if (Physics != null)
 					Physics.Position = value;
 			}
-		}
-
-		public PhysicsObject(CPos pos) : base(pos, null)
-		{
-			Physics = SimplePhysics.Empty;
 		}
 
 		public PhysicsObject(CPos pos, BatchRenderable renderable, SimplePhysics physics = null) : base(pos, renderable)

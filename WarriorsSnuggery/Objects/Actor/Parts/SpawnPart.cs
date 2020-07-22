@@ -152,9 +152,17 @@ namespace WarriorsSnuggery.Objects.Parts
 			if (info.AtCenter)
 				return self.Position + new CPos(info.Offset.X, info.Offset.Y, 0);
 
-			var size = info.Radius == 0 ? (self.Physics != null ? self.Physics.RadiusX : 512) : info.Radius;
-			var x = Program.SharedRandom.Next(size) - size / 2;
-			var y = Program.SharedRandom.Next(size) - size / 2;
+			var sizeX = info.Radius;
+			var sizeY = info.Radius;
+
+			if (sizeX == 0)
+			{
+				sizeX = self.Physics.RadiusX;
+				sizeY = self.Physics.RadiusY;
+			}
+
+			var x = self.World.Game.SharedRandom.Next(-sizeX, sizeX);
+			var y = self.World.Game.SharedRandom.Next(-sizeY, sizeY);
 			return self.Position + new CPos(x, y, 0) + new CPos(info.Offset.X, info.Offset.Y, 0);
 		}
 	}

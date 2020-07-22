@@ -233,8 +233,7 @@ namespace WarriorsSnuggery.Objects
 			Position = position;
 			TerrainPosition = Position.ToWPos();
 			CurrentTerrain = terrain;
-			if (Physics != null)
-				Physics.Position = position;
+			Physics.Position = position;
 
 			CurrentAction = ActorAction.MOVING;
 			Angle = (old - position).FlatAngle;

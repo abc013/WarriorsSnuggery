@@ -10,7 +10,6 @@ namespace WarriorsSnuggery.UI
 
 		int blinkTick;
 
-		bool mouseOnBox;
 		public bool Selected;
 
 		public Key Key;
@@ -35,10 +34,12 @@ namespace WarriorsSnuggery.UI
 		{
 			base.Tick();
 
-			checkMouse();
-			if (mouseOnBox && MouseInput.IsLeftClicked)
-				Selected = true;
+			const int width = 1024;
+			const int height = 256;
+			CheckMouse(width, height);
 
+			if (ContainsMouse && MouseInput.IsLeftClicked)
+				Selected = true;
 			else if (MouseInput.IsLeftClicked)
 			{
 				Selected = false;
@@ -58,15 +59,6 @@ namespace WarriorsSnuggery.UI
 					blinkTick = 0;
 				}
 			}
-		}
-
-		void checkMouse()
-		{
-			var mousePosition = MouseInput.WindowPosition;
-
-			var width = 1024;
-			var height = 256;
-			mouseOnBox = mousePosition.X > Position.X - width && mousePosition.X < Position.X + width && mousePosition.Y > Position.Y - height && mousePosition.Y < Position.Y + height;
 		}
 	}
 }

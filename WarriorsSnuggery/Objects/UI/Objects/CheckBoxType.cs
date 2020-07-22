@@ -8,8 +8,8 @@ namespace WarriorsSnuggery.UI
 		public readonly BatchObject Checked;
 		public readonly BatchObject Click;
 
-		public readonly float Height;
-		public readonly float Width;
+		public readonly int Height;
+		public readonly int Width;
 
 		public CheckBoxType(Texture @default, Texture @checked, Texture click, float height, float width)
 		{
@@ -20,8 +20,8 @@ namespace WarriorsSnuggery.UI
 			Click = new BatchObject(click, Color.White);
 			Click.SetScale(1.5f);
 
-			Height = height * 512;
-			Width = width * 512;
+			Height = (int)(height * 512);
+			Width = (int)(width * 512);
 		}
 	}
 }

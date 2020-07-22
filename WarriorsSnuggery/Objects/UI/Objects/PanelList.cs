@@ -12,8 +12,6 @@ namespace WarriorsSnuggery.UI
 		protected readonly MPos intSize;
 		protected readonly MPos itemSize;
 
-		protected bool mouseOnPanel;
-
 		public MPos selected;
 		int scrolled;
 
@@ -66,8 +64,8 @@ namespace WarriorsSnuggery.UI
 			foreach (var o in Container)
 				o.Tick();
 
-			checkMouse();
-			if (mouseOnPanel)
+			CheckMouse(intSize.X, intSize.Y);
+			if (ContainsMouse)
 			{
 				if (Highlight != null)
 				{
@@ -92,16 +90,9 @@ namespace WarriorsSnuggery.UI
 			}
 		}
 
-		void checkMouse()
-		{
-			var mousePosition = MouseInput.WindowPosition;
-
-			mouseOnPanel = mousePosition.X > Position.X - intSize.X && mousePosition.X < Position.X + intSize.X && mousePosition.Y > Position.Y - intSize.Y && mousePosition.Y < Position.Y + intSize.Y;
-		}
-
 		public override void Render()
 		{
-			HighlightVisible = mouseOnPanel;
+			HighlightVisible = ContainsMouse;
 			base.Render();
 
 			foreach (var o in Container)

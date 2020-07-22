@@ -2,53 +2,48 @@ using System;
 
 namespace WarriorsSnuggery.UI
 {
-	public class CheckBox : IPositionable, ITickRenderable
+	public class CheckBox : UIObject
 	{
-		public virtual CPos Position
+		public override CPos Position
 		{
-			get { return position; }
+			get => base.Position;
 			set
 			{
-				position = value;
-				type.Click.SetPosition(position);
-				type.Default.SetPosition(position);
-				type.Checked.SetPosition(position);
+				base.Position = value;
+				type.Click.SetPosition(value);
+				type.Default.SetPosition(value);
+				type.Checked.SetPosition(value);
 			}
 		}
-		CPos position;
 
-		public virtual VAngle Rotation
+		public override VAngle Rotation
 		{
-			get { return rotation; }
+			get => base.Rotation;
 			set
 			{
-				rotation = value;
-				type.Click.SetRotation(rotation);
-				type.Default.SetRotation(rotation);
-				type.Checked.SetRotation(rotation);
+				base.Rotation = value;
+				type.Click.SetRotation(value);
+				type.Default.SetRotation(value);
+				type.Checked.SetRotation(value);
 			}
 		}
-		VAngle rotation;
 
-		public virtual float Scale
+		public override float Scale
 		{
-			get { return scale; }
+			get => base.Scale;
 			set
 			{
-				scale = value;
-				type.Click.SetScale(scale);
-				type.Default.SetScale(scale);
-				type.Checked.SetScale(scale);
+				base.Scale = value;
+				type.Click.SetScale(value);
+				type.Default.SetScale(value);
+				type.Checked.SetScale(value);
 			}
 		}
-		float scale = 1f;
 
 		public bool Checked;
 
 		readonly CheckBoxType type;
 		readonly Action<bool> action;
-
-		bool mouseOnBox;
 
 		public CheckBox(CPos pos, bool @checked, CheckBoxType type, Action<bool> onTicked)
 		{
@@ -58,9 +53,20 @@ namespace WarriorsSnuggery.UI
 			Position = pos;
 		}
 
-		public void Render()
+		public override void Tick()
 		{
-			if (mouseOnBox && MouseInput.IsLeftDown)
+			CheckMouse(type.Width, type.Height);
+
+			if (MouseInput.IsLeftClicked && ContainsMouse)
+			{
+				Checked = !Checked;
+				action?.Invoke(Checked);
+			}
+		}
+
+		public override void Render()
+		{
+			if (ContainsMouse && MouseInput.IsLeftDown)
 			{
 				type.Click.SetPosition(Position);
 				type.Click.PushToBatchRenderer();
@@ -77,24 +83,6 @@ namespace WarriorsSnuggery.UI
 					type.Checked.SetPosition(Position);
 					type.Checked.PushToBatchRenderer();
 				}
-			}
-		}
-
-		public void Tick()
-		{
-			checkMouse();
-		}
-
-		void checkMouse()
-		{
-			var mousePosition = MouseInput.WindowPosition;
-
-			mouseOnBox = mousePosition.X > Position.X - type.Width && mousePosition.X < Position.X + type.Width && mousePosition.Y > Position.Y - type.Height && mousePosition.Y < Position.Y + type.Height;
-
-			if (MouseInput.IsLeftClicked && mouseOnBox)
-			{
-				Checked = !Checked;
-				action?.Invoke(Checked);
 			}
 		}
 	}

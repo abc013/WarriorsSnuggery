@@ -7,10 +7,7 @@ namespace WarriorsSnuggery.UI
 		readonly BatchObject selector;
 		public int CurrentActor
 		{
-			get
-			{
-				return currentActor;
-			}
+			get => currentActor;
 			set
 			{
 				currentActor = value;

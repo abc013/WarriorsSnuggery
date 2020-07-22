@@ -53,7 +53,7 @@ namespace WarriorsSnuggery.Objects
 		byte neighborState;
 		DamageState damageState = DamageState.NONE;
 
-		public Wall(MPos position, WallLayer layer, WallType type) : base(position.ToCPos(), null, type.Blocks ? new SimplePhysics(position.ToCPos() / new CPos(2, 1, 1), 0, position.X % 2 != 0 ? Shape.LINE_HORIZONTAL : Shape.LINE_VERTICAL, 512, 512, type.Height) : SimplePhysics.Empty)
+		public Wall(MPos position, WallLayer layer, WallType type) : base(position.ToCPos(), null, getPhysics(position, type))
 		{
 			LayerPosition = position;
 			this.layer = layer;
@@ -78,6 +78,16 @@ namespace WarriorsSnuggery.Objects
 
 			Type = type;
 			health = type.Health;
+		}
+
+		static SimplePhysics getPhysics(MPos position, WallType type)
+		{
+			if (!type.Blocks)
+				return null;
+
+			var shape = position.X % 2 != 0 ? Shape.LINE_HORIZONTAL : Shape.LINE_VERTICAL;
+
+			return new SimplePhysics(position.ToCPos(), 0, shape, 512, 512, type.Height);
 		}
 
 		public override void Render()

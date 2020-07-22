@@ -3,52 +3,47 @@ using WarriorsSnuggery.Graphics;
 
 namespace WarriorsSnuggery.UI
 {
-	public class PanelItem : ITickRenderable, IDisableTooltip
+	public class PanelItem : UIObject, IDisableTooltip
 	{
 		public virtual bool Visible
 		{
-			get { return renderable.Visible; }
-			set { renderable.Visible = value; }
+			get => renderable.Visible;
+			set => renderable.Visible = value;
 		}
 
-		public virtual CPos Position
+		public override CPos Position
 		{
-			get { return position; }
+			get => base.Position;
 			set
 			{
+				base.Position = value;
 				renderable.SetPosition(value);
-				position = value;
 			}
 		}
-		CPos position;
 
-		public virtual VAngle Rotation
+		public override VAngle Rotation
 		{
-			get { return rotation; }
+			get => base.Rotation;
 			set
 			{
-				rotation = value;
-				renderable.SetRotation(rotation);
+				base.Rotation = value;
+				renderable.SetRotation(value);
 			}
 		}
-		VAngle rotation;
 
-		public virtual float Scale
+		public override float Scale
 		{
-			get { return scale; }
+			get => base.Scale;
 			set
 			{
-				scale = value;
-				renderable.SetScale(scale);
+				base.Scale = value;
+				renderable.SetScale(value);
 			}
 		}
-		float scale = 1f;
 
 		readonly BatchRenderable renderable;
 		readonly Action action;
 		protected readonly MPos size;
-
-		protected bool mouseOnItem;
 
 		protected readonly Tooltip tooltip;
 
@@ -58,7 +53,7 @@ namespace WarriorsSnuggery.UI
 			this.renderable = renderable;
 			this.action = action;
 			this.size = size;
-			position = pos;
+			base.Position = pos;
 		}
 
 		public virtual void SetColor(Color color)
@@ -66,31 +61,19 @@ namespace WarriorsSnuggery.UI
 			renderable.SetColor(color);
 		}
 
-		public virtual void Render()
+		public override void Render()
 		{
 			renderable.PushToBatchRenderer();
 		}
 
-		public virtual void Tick()
+		public override void Tick()
 		{
 			if (!Visible)
 				return;
 
-			checkMouse();
-		}
+			CheckMouse(size.X, size.Y);
 
-		public virtual void DisableTooltip()
-		{
-			UIRenderer.DisableTooltip(tooltip);
-		}
-
-		void checkMouse()
-		{
-			var mousePosition = MouseInput.WindowPosition;
-
-			mouseOnItem = mousePosition.X > position.X - size.X && mousePosition.X < position.X + size.X && mousePosition.Y > position.Y - size.Y && mousePosition.Y < position.Y + size.Y;
-
-			if (mouseOnItem)
+			if (ContainsMouse)
 			{
 				UIRenderer.SetTooltip(tooltip);
 
@@ -98,9 +81,12 @@ namespace WarriorsSnuggery.UI
 					takeAction();
 			}
 			else
-			{
 				UIRenderer.DisableTooltip(tooltip);
-			}
+		}
+
+		public virtual void DisableTooltip()
+		{
+			UIRenderer.DisableTooltip(tooltip);
 		}
 
 		protected virtual void takeAction()

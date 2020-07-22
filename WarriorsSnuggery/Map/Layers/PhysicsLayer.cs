@@ -25,7 +25,7 @@ namespace WarriorsSnuggery
 
 		public void UpdateSectors(PhysicsObject obj, bool @new = false, bool updateSectors = true)
 		{
-			if (obj.Physics == null || obj.Physics.Shape == Physics.Shape.NONE)
+			if (obj.Physics.Shape == Shape.NONE)
 				return;
 
 			var oldSectors = obj.PhysicsSectors;
