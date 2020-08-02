@@ -45,6 +45,9 @@ namespace WarriorsSnuggery.Objects.Parts
 		[Desc("Determines an actor that is used when switching to another actor.", "When left empty, the switch to the next actor will be instant.")]
 		public readonly string PlayerSwitchActor = string.Empty;
 
+		[Desc("Adds this actor the the selection list in the editor.")]
+		public readonly bool ShowInEditor = true;
+
 		public override ActorPart Create(Actor self)
 		{
 			return new WorldPart(self, this);

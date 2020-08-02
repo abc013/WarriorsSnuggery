@@ -1,5 +1,7 @@
+using System.Linq;
 using WarriorsSnuggery.Graphics;
 using WarriorsSnuggery.Objects;
+using WarriorsSnuggery.Objects.Parts;
 
 namespace WarriorsSnuggery.UI
 {
@@ -76,6 +78,11 @@ namespace WarriorsSnuggery.UI
 			foreach (var pair in ActorCreator.Types)
 			{
 				var a = pair.Value;
+
+				var worldTrait = a.PartInfos.FirstOrDefault(p => p is WorldPartInfo);
+				if (worldTrait != null && !(worldTrait as WorldPartInfo).ShowInEditor)
+					continue;
+
 				var sprite = a.GetPreviewSprite();
 				var scale = (sprite.Width > sprite.Height ? 24f / sprite.Width : 24f / sprite.Height) - 0.1f;
 				actors.Add(new PanelItem(CPos.Zero, new BatchObject(sprite, Color.White), new MPos(512, 512), a.Playable == null ? pair.Key : a.Playable.Name, new string[0], () => actorSelected = a)
