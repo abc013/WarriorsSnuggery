@@ -8,8 +8,6 @@ namespace WarriorsSnuggery.UI
 	{
 		readonly Game game;
 
-		readonly MoneyDisplay money;
-
 		readonly List<string> actorTypes = new List<string>();
 		readonly PanelList actors;
 
@@ -20,6 +18,8 @@ namespace WarriorsSnuggery.UI
 		{
 			this.game = game;
 			Title.Position = new CPos(0, -4096, 0);
+
+			Content.Add(new Panel(new CPos(0, 920, 0), new Vector(8, 2, 0), PanelManager.Get("wooden")));
 
 			actors = new PanelList(new CPos(0, -2048, 0), new MPos(8120, 1024), new MPos(1024, 1024), PanelManager.Get("stone"));
 			foreach (var a in ActorCreator.Types.Values)
@@ -39,15 +39,16 @@ namespace WarriorsSnuggery.UI
 				actors.Add(item);
 				actorTypes.Add(a.Playable.InternalName);
 			}
+			Content.Add(actors);
 
-			Content.Add(new Panel(new CPos(0, 920, 0), new Vector(8, 2, 0), PanelManager.Get("wooden")));
 			Content.Add(new Button(new CPos(-6144, 3072, 0), "Buy", "wooden", () => buyActor(selected)));
-
 			Content.Add(new Button(new CPos(0, 6144, 0), "Resume", "wooden", () => { game.Pause(false); game.ScreenControl.ShowScreen(ScreenType.DEFAULT); }));
 
 			information = new TextBlock(new CPos(-7900, 0, 0), FontManager.Pixel16, TextLine.OffsetType.LEFT, "Select an actor for further information.", "", "", "Cost: -");
+			Content.Add(information);
 
-			money = new MoneyDisplay(game, new CPos(-(int)(WindowInfo.UnitWidth / 2 * 1024) + 1024, 7192, 0));
+			var money = new MoneyDisplay(game, new CPos(-(int)(WindowInfo.UnitWidth / 2 * 1024) + 1024, 7192, 0));
+			Content.Add(money);
 		}
 
 		void selectActor(ActorType actor)
@@ -82,29 +83,12 @@ namespace WarriorsSnuggery.UI
 			game.ScreenControl.UpdateActors();
 		}
 
-		public override void Render()
-		{
-			base.Render();
-
-			actors.Render();
-			information.Render();
-			money.Render();
-		}
-
 		public override void Tick()
 		{
 			base.Tick();
 
-			actors.Tick();
-
 			if (KeyInput.IsKeyDown("escape", 10))
-			{
-				game.Pause(false);
-				game.ChangeScreen(ScreenType.DEFAULT);
-			}
-
-			information.Tick();
-			money.Tick();
+				game.ChangeScreen(ScreenType.DEFAULT, false);
 		}
 
 		public override void Hide()

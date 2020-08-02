@@ -67,10 +67,7 @@ namespace WarriorsSnuggery.UI
 				panel.Tick();
 
 			if (KeyInput.IsKeyDown("escape", 10))
-			{
-				game.Pause(false);
-				game.ChangeScreen(ScreenType.DEFAULT);
-			}
+				game.ChangeScreen(ScreenType.DEFAULT, false);
 
 			money.Tick();
 		}

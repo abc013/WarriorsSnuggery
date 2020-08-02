@@ -20,7 +20,6 @@ namespace WarriorsSnuggery.UI
 			Title.Position = new CPos(0, -4096, 0);
 
 			mapSelection = new PanelList(new CPos(0, 1024, 0), new MPos(4096, 4096), new MPos(512, 512), PanelManager.Get("wooden"));
-
 			foreach (var piece in PieceManager.GetPieces())
 			{
 				mapSelection.Add(new PanelItem(CPos.Zero, new BatchObject(UITextureManager.Get("UI_map")[0], Color.White), new MPos(512, 512), piece.Name, new[] { Color.Grey + "[" + piece.Size.X + "," + piece.Size.Y + "]" },
@@ -30,6 +29,7 @@ namespace WarriorsSnuggery.UI
 					Hide();
 				}));
 			}
+			Content.Add(mapSelection);
 			Content.Add(new Button(new CPos(4096, 6144, 0), "Back", "wooden", () => game.ChangeScreen(ScreenType.MENU)));
 			Content.Add(new Button(new CPos(0, 6144, 0), "New Piece", "wooden", () => { createPieceScreen.ActiveScreen = true; }));
 			Content.Add(new Button(new CPos(-4096, 6144, 0), "Delete Piece", "wooden", () => { }));
@@ -50,8 +50,6 @@ namespace WarriorsSnuggery.UI
 				return;
 			}
 			base.Render();
-
-			mapSelection.Render();
 		}
 
 		public override void Tick()
@@ -63,8 +61,6 @@ namespace WarriorsSnuggery.UI
 			}
 
 			base.Tick();
-
-			mapSelection.Tick();
 
 			if (KeyInput.IsKeyDown("escape", 10))
 				game.ChangeScreen(ScreenType.MENU);

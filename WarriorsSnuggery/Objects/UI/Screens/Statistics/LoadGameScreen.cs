@@ -14,6 +14,7 @@ namespace WarriorsSnuggery.UI
 			Title.Position = new CPos(0, -4096, 0);
 
 			list = new GameSaveList(new CPos(0, 1024, 0), new MPos((int)(WindowInfo.UnitWidth * 128), 4096), PanelManager.Get("wooden"));
+			Content.Add(list);
 
 			Content.Add(new Button(new CPos(4096, 6144, 0), "Back", "wooden", () => game.ChangeScreen(ScreenType.MENU)));
 			void loadAction()
@@ -55,24 +56,19 @@ namespace WarriorsSnuggery.UI
 		{
 			if (game.Type == GameType.MAINMENU)
 				onAgree();
-
-			void onDecline()
-			{
-				game.ScreenControl.ShowScreen(ScreenType.LOAD);
-			}
 			game.ScreenControl.SetDecision(onDecline, onAgree, text);
 			game.ScreenControl.ShowScreen(ScreenType.DECISION);
 		}
 
 		void humanAgreeOnDelete(Action onAgree, string text)
 		{
-			void onDecline()
-			{
-				game.ScreenControl.ShowScreen(ScreenType.LOAD);
-			}
-
 			game.ScreenControl.SetDecision(onDecline, onAgree, text);
 			game.ScreenControl.ShowScreen(ScreenType.DECISION);
+		}
+
+		void onDecline()
+		{
+			game.ScreenControl.ShowScreen(ScreenType.LOAD);
 		}
 
 		public void UpdateList()
@@ -80,18 +76,9 @@ namespace WarriorsSnuggery.UI
 			list.Refresh();
 		}
 
-		public override void Render()
-		{
-			base.Render();
-
-			list.Render();
-		}
-
 		public override void Tick()
 		{
 			base.Tick();
-
-			list.Tick();
 
 			if (KeyInput.IsKeyDown("escape", 10))
 				game.ChangeScreen(ScreenType.MENU);

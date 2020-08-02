@@ -51,6 +51,8 @@ namespace WarriorsSnuggery.UI
 			Title.Position += new CPos(0, -7120, 0);
 
 			mousePosition = new TextLine(new CPos((int)(WindowInfo.UnitWidth * 512 - 1024), -7172, 0), FontManager.Pixel16, TextLine.OffsetType.RIGHT);
+			Content.Add(mousePosition);
+
 			save = new Button(new CPos((int)(WindowInfo.UnitWidth * 512 - 2048), -5120, 0), "Save", "wooden", savePiece);
 			saved = new TextLine(new CPos((int)(WindowInfo.UnitWidth * 512 - 2048), -5120, 0), FontManager.Pixel16, TextLine.OffsetType.MIDDLE);
 			saved.SetText("Save");
@@ -59,16 +61,19 @@ namespace WarriorsSnuggery.UI
 			 {
 				 deselectBoxes(Selected.TILE);
 			 });
+			Content.Add(showTiles);
 
 			showActors = CheckBoxCreator.Create("actor_editor", new CPos((int)(WindowInfo.UnitWidth * 512 - 1760), -2536, 0), false, (b) =>
 			 {
 				 deselectBoxes(Selected.ACTOR);
 			 });
+			Content.Add(showActors);
 
 			showWalls = CheckBoxCreator.Create("wall_editor", new CPos((int)(WindowInfo.UnitWidth * 512 - 1024), -2536, 0), false, (b) =>
 			 {
 				 deselectBoxes(Selected.WALL);
 			 });
+			Content.Add(showWalls);
 
 			tiles = new PanelList(new CPos((int)(WindowInfo.UnitWidth * 512 - 2048), 2048, 0), new MPos(2048, 4096), new MPos(512, 512), PanelManager.Get("wooden"));
 			foreach (var a in TerrainCreator.Types.Values)
@@ -154,12 +159,6 @@ namespace WarriorsSnuggery.UI
 				saved.Render();
 			}
 
-			mousePosition.Render();
-
-			showTiles.Render();
-			showActors.Render();
-			showWalls.Render();
-
 			switch (currentSelected)
 			{
 				case Selected.ACTOR:
@@ -206,12 +205,7 @@ namespace WarriorsSnuggery.UI
 			if (game.Type == GameType.EDITOR)
 				save.Tick();
 
-			mousePosition.Tick();
 			mousePosition.WriteText(Color.White + "" + MouseInput.GamePosition.ToMPos() + Color.Grey + " | " + MouseInput.GamePosition);
-
-			showTiles.Tick();
-			showActors.Tick();
-			showWalls.Tick();
 
 			switch (currentSelected)
 			{

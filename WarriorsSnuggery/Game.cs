@@ -462,10 +462,14 @@ namespace WarriorsSnuggery
 			return script.GetState();
 		}
 
-		public void ChangeScreen(ScreenType screen, bool pause = false)
+		public void ChangeScreen(ScreenType screen, bool pause)
 		{
-			if (pause)
-				Pause(true);
+			Pause(pause);
+			ChangeScreen(screen);
+		}
+
+		public void ChangeScreen(ScreenType screen)
+		{
 			ScreenControl.ShowScreen(screen);
 
 			if (screen == ScreenType.DEFEAT)

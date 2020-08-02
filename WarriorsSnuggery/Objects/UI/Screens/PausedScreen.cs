@@ -19,10 +19,7 @@ namespace WarriorsSnuggery.UI
 			base.Tick();
 
 			if (KeyInput.IsKeyDown("p", 10))
-			{
-				game.Pause(false);
-				game.ChangeScreen(ScreenType.DEFAULT);
-			}
+				game.ChangeScreen(ScreenType.DEFAULT, false);
 		}
 	}
 }

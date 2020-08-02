@@ -47,7 +47,7 @@ namespace WarriorsSnuggery.UI
 			seedInput = new TextBox(new CPos(1024, 3072, 0), getSeed(), "wooden", 7, true);
 			Content.Add(new Button(new CPos(6144, 3072, 0), "Generate", "wooden", () => { seedInput.Text = getSeed(); }));
 
-			Content.Add(new Button(new CPos(-4096, 6144, 0), "Cancel", "wooden", () => { game.Pause(false); game.ChangeScreen(ScreenType.DEFAULT); }));
+			Content.Add(new Button(new CPos(-4096, 6144, 0), "Cancel", "wooden", () => game.ChangeScreen(ScreenType.DEFAULT, false)));
 			Content.Add(new Button(new CPos(4096, 6144, 0), "Proceed", "wooden", () =>
 			{
 				if (nameInput.Text != string.Empty)
@@ -74,10 +74,7 @@ namespace WarriorsSnuggery.UI
 			seedInput.Tick();
 
 			if (KeyInput.IsKeyDown("escape", 10))
-			{
-				game.Pause(false);
-				game.ChangeScreen(ScreenType.DEFAULT);
-			}
+				game.ChangeScreen(ScreenType.DEFAULT, false);
 		}
 
 		public override void Render()

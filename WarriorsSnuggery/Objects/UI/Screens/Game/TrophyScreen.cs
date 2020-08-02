@@ -32,10 +32,13 @@ namespace WarriorsSnuggery.UI
 
 				trophies.Add(item);
 			}
-
-			information = new TextBlock(new CPos(-7900, 512, 0), FontManager.Pixel16, TextLine.OffsetType.LEFT, "Select a trophy for further information.", "", "");
+			Content.Add(trophies);
 
 			Content.Add(new Panel(new CPos(0, 1024, 0), new Vector(8, 1, 0), PanelManager.Get("stone")));
+
+			information = new TextBlock(new CPos(-7900, 512, 0), FontManager.Pixel16, TextLine.OffsetType.LEFT, "Select a trophy for further information.", "", "");
+			Content.Add(information);
+
 			Content.Add(new Button(new CPos(0, 6144, 0), "Resume", "wooden", () => { game.Pause(false); game.ScreenControl.ShowScreen(ScreenType.DEFAULT); }));
 		}
 
@@ -45,7 +48,7 @@ namespace WarriorsSnuggery.UI
 			{
 				information.Lines[0].WriteText(Color.Red + "Locked Trophy");
 				information.Lines[1].WriteText(Color.Grey + " ");
-				information.Lines[1].WriteText(Color.Grey + " ");
+				information.Lines[2].WriteText(Color.Grey + " ");
 				return;
 			}
 
@@ -54,26 +57,12 @@ namespace WarriorsSnuggery.UI
 			information.Lines[2].WriteText(Color.Grey + (trophy.MaxManaIncrease != 0 ? "Gives " + Color.Blue + trophy.MaxManaIncrease + Color.Grey + " additional mana storage!" : " "));
 		}
 
-		public override void Render()
-		{
-			base.Render();
-
-			trophies.Render();
-			information.Render();
-		}
-
 		public override void Tick()
 		{
 			base.Tick();
 
-			trophies.Tick();
-			information.Tick();
-
 			if (KeyInput.IsKeyDown("escape", 10))
-			{
-				game.Pause(false);
-				game.ChangeScreen(ScreenType.DEFAULT);
-			}
+				game.ChangeScreen(ScreenType.DEFAULT, false);
 		}
 
 		public override void Show()

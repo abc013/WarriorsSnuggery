@@ -18,6 +18,7 @@ namespace WarriorsSnuggery.UI
 			Title.Position = new CPos(0, -2048, 0);
 
 			text = new TextLine(CPos.Zero, FontManager.Pixel16, TextLine.OffsetType.MIDDLE);
+			Content.Add(text);
 		}
 
 		public void SetAction(Action onDecline, Action onAgree, string text)
@@ -27,33 +28,24 @@ namespace WarriorsSnuggery.UI
 			this.onDecline = onDecline;
 			this.onAgree = onAgree;
 
+			Content.Remove(decline);
+			Content.Remove(agree);
+
 			decline = new Button(new CPos(-2048, 1024, 0), "Nope", "wooden", onDecline);
 			agree = new Button(new CPos(2048, 1024, 0), "Yup", "wooden", onAgree);
+
+			Content.Add(decline);
+			Content.Add(agree);
 		}
 
 		public override void Tick()
 		{
 			base.Tick();
 			if (KeyInput.IsKeyDown("escape", 5))
-			{
 				onDecline();
-			}
+
 			if (KeyInput.IsKeyDown("enter", 5))
-			{
 				onAgree();
-			}
-
-			decline.Tick();
-			agree.Tick();
-		}
-
-		public override void Render()
-		{
-			base.Render();
-
-			text.Render();
-			decline.Render();
-			agree.Render();
 		}
 	}
 }
