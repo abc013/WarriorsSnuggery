@@ -34,6 +34,7 @@ namespace WarriorsSnuggery
 				foreach (var weapon in weaponsToAdd)
 					if (weapon.CheckVisibility())
 						VisibleWeapons.Add(weapon);
+
 				Weapons.AddRange(weaponsToAdd);
 				weaponsToAdd.Clear();
 			}
@@ -50,8 +51,7 @@ namespace WarriorsSnuggery
 				foreach (var weapon in weaponsToRemove)
 				{
 					Weapons.Remove(weapon);
-					if (weapon.CheckVisibility())
-						VisibleWeapons.Remove(weapon);
+					VisibleWeapons.Remove(weapon);
 				}
 				weaponsToRemove.Clear();
 			}

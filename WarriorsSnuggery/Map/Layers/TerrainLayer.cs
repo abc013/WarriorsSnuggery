@@ -55,9 +55,8 @@ namespace WarriorsSnuggery
 					}
 				}
 			}
-			var renderEnum = renderList.OrderBy(t => t.Type.OverlapHeight);
 
-			foreach (var terrain in renderEnum)
+			foreach (var terrain in renderList.OrderBy(t => t.Type.OverlapHeight))
 				terrain.Render();
 		}
 

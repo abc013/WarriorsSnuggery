@@ -117,10 +117,11 @@ namespace WarriorsSnuggery
 				foreach (var actor in actorsToRemove)
 				{
 					Actors.Remove(actor);
+					VisibleActors.Remove(actor);
+
 					if (actor.Team != Actor.NeutralTeam)
 						NonNeutralActors.Remove(actor);
-					if (actor.CheckVisibility())
-						VisibleActors.Remove(actor);
+
 					actor.Sector.Leave(actor);
 				}
 				actorsToRemove.Clear();

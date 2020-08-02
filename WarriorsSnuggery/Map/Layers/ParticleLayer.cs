@@ -119,8 +119,8 @@ namespace WarriorsSnuggery
 				foreach (var particle in particlesToRemove)
 				{
 					Particles.Remove(particle);
-					if (particle.CheckVisibility())
-						VisibleParticles.Remove(particle);
+					VisibleParticles.Remove(particle);
+
 					particle.Sector.Leave(particle);
 				}
 				particlesToRemove.Clear();

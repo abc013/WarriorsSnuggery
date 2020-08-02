@@ -337,7 +337,7 @@ namespace WarriorsSnuggery.Objects
 		public override bool CheckVisibility()
 		{
 			if (Disposed)
-				return visible;
+				return false;
 
 			if (WorldPart != null)
 				visible = VisibilitySolver.IsVisible(GraphicPosition + WorldPart.VisibilityBoxOffset, WorldPart.VisibilityBox);
