@@ -74,11 +74,11 @@ namespace WarriorsSnuggery.Objects.Parts
 		int cooldown;
 		Actor lastActor;
 		ActorSector[] sectors;
+		bool firstTick = true;
 
 		public CollectablePart(Actor self, CollectablePartInfo info) : base(self)
 		{
 			this.info = info;
-			updateSectors();
 		}
 
 		public override void OnLoad(List<MiniTextNode> nodes)
@@ -113,6 +113,12 @@ namespace WarriorsSnuggery.Objects.Parts
 
 			if (activated && !info.MultipleActivations)
 				return;
+
+			if (firstTick)
+			{
+				firstTick = false;
+				updateSectors();
+			}
 
 			if (activated)
 			{
