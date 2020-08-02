@@ -20,7 +20,7 @@ namespace WarriorsSnuggery.Objects.Actors
 
 		public void Add(string name, object value, object defaultValue)
 		{
-			if (value == defaultValue)
+			if (value.Equals(defaultValue))
 				return;
 
 			values.Add((name, value));

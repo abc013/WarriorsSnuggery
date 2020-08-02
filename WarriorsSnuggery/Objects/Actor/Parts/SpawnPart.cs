@@ -135,7 +135,11 @@ namespace WarriorsSnuggery.Objects.Parts
 				}
 				for (int i = 0; i < info.Count; i++)
 					createObject();
+
+				return;
 			}
+
+			curTick = 0;
 		}
 
 		void createObject()
