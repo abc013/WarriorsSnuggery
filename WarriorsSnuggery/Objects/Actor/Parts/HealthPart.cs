@@ -1,4 +1,8 @@
-﻿namespace WarriorsSnuggery.Objects.Parts
+﻿using System.Collections.Generic;
+using System.Linq;
+using WarriorsSnuggery.Objects.Actors;
+
+namespace WarriorsSnuggery.Objects.Parts
 {
 	[Desc("Attach this to an actor to make it vulnerable and to have health.")]
 	public class HealthPartInfo : PartInfo
@@ -24,33 +28,18 @@
 	{
 		readonly HealthPartInfo info;
 
-		public int MaxHP
-		{
-			get { return info.MaxHealth; }
-		}
-		public int StartHealth
-		{
-			get { return info.StartHealth; }
-		}
+		public int MaxHP => info.MaxHealth;
+		public int StartHealth => info.StartHealth;
 
 		public float RelativeHP
 		{
-			get
-			{
-				return health / (float)MaxHP;
-			}
-			set
-			{
-				health = (int)(value * MaxHP);
-			}
+			get => health / (float)MaxHP;
+			set => health = (int)(value * MaxHP);
 		}
 
 		public int HP
 		{
-			get
-			{
-				return health;
-			}
+			get => health;
 			set
 			{
 				health = value;
@@ -67,6 +56,28 @@
 			this.info = info;
 
 			HP = StartHealth;
+		}
+
+		public override void OnLoad(List<MiniTextNode> nodes)
+		{
+			var parent = nodes.FirstOrDefault(n => n.Key == "HealthPart" && n.Value == info.InternalName);
+			if (parent == null)
+				return;
+
+			foreach (var node in parent.Children)
+			{
+				if (node.Key == "Health")
+					HP = node.Convert<int>();
+			}
+		}
+
+		public override PartSaver OnSave()
+		{
+			var saver = new PartSaver(this);
+
+			saver.Add("Health", HP, StartHealth);
+
+			return saver;
 		}
 
 		public override void Tick()

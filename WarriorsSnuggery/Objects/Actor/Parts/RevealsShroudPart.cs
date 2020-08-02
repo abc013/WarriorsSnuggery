@@ -1,4 +1,8 @@
-﻿namespace WarriorsSnuggery.Objects.Parts
+﻿using System.Collections.Generic;
+using System.Linq;
+using WarriorsSnuggery.Objects.Actors;
+
+namespace WarriorsSnuggery.Objects.Parts
 {
 	[Desc("Adds a weapon to the object.", "IMPORTANT NOTE: Currently, shroud is only supported for teams 0-9. If you use higher team values, the game will crash!")]
 	public class RevealsShroudPartInfo : PartInfo
@@ -32,6 +36,28 @@
 		{
 			this.info = info;
 			firstActive = true;
+		}
+
+		public override void OnLoad(List<MiniTextNode> nodes)
+		{
+			var parent = nodes.FirstOrDefault(n => n.Key == "RevealsShroudPart" && n.Value == info.InternalName);
+			if (parent == null)
+				return;
+
+			foreach (var node in parent.Children)
+			{
+				if (node.Key == "Tick")
+					tick = node.Convert<int>();
+			}
+		}
+
+		public override PartSaver OnSave()
+		{
+			var saver = new PartSaver(this);
+
+			saver.Add("Tick", tick, 0);
+
+			return saver;
 		}
 
 		public override void OnMove(CPos old, CPos speed)

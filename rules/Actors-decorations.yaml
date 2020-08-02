@@ -85,6 +85,7 @@ firepot=
 		Name=fire
 		Type=PARTICLE
 		Tick=1
+		Radius=100
 		Offset=0,-64,576
 #	World=
 #		IdleSound=

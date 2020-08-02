@@ -49,5 +49,17 @@ namespace WarriorsSnuggery.Objects
 
 			return actor;
 		}
+
+		public static Actor Create(World world, ActorInit init, bool overrideID, CPos offset)
+		{
+			var id = init.ID;
+			if (overrideID)
+				id = world.Game.NextActorID;
+
+			var actor = new Actor(world, init, id);
+			actor.Position += offset;
+
+			return actor;
+		}
 	}
 }

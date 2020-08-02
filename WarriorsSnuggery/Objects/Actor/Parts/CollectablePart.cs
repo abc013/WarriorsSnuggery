@@ -1,4 +1,7 @@
-﻿using WarriorsSnuggery.Objects.Conditions;
+﻿using System.Collections.Generic;
+using System.Linq;
+using WarriorsSnuggery.Objects.Actors;
+using WarriorsSnuggery.Objects.Conditions;
 using WarriorsSnuggery.Objects.Particles;
 
 namespace WarriorsSnuggery.Objects.Parts
@@ -76,6 +79,31 @@ namespace WarriorsSnuggery.Objects.Parts
 		{
 			this.info = info;
 			updateSectors();
+		}
+
+		public override void OnLoad(List<MiniTextNode> nodes)
+		{
+			var parent = nodes.FirstOrDefault(n => n.Key == "CollectablePart" && n.Value == info.InternalName);
+			if (parent == null)
+				return;
+
+			foreach (var node in parent.Children)
+			{
+				if (node.Key == "Activated")
+					activated = node.Convert<bool>();
+				if (node.Key == "Cooldown")
+					cooldown = node.Convert<int>();
+			}
+		}
+
+		public override PartSaver OnSave()
+		{
+			var saver = new PartSaver(this);
+
+			saver.Add("Activated", activated, false);
+			saver.Add("Cooldown", cooldown, 0);
+
+			return saver;
 		}
 
 		public override void Tick()

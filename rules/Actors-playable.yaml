@@ -5,7 +5,7 @@ playerswitch=
 		Tick=1
 		Name=beam
 		Type=PARTICLE
-		Radius=512
+		Radius=256
 	PlayerSwitch=
 
 heal_playable=

@@ -2,18 +2,21 @@
 using System;
 using System.Linq;
 using WarriorsSnuggery.Graphics;
+using WarriorsSnuggery.Objects.Actors;
 using WarriorsSnuggery.UI;
 
 namespace WarriorsSnuggery.Objects.Parts
 {
-	/// <summary>
-	/// Controls player input.
-	/// </summary>
 	class PlayerPart : ActorPart
 	{
 		bool firstTick = true;
 
 		public PlayerPart(Actor self) : base(self) { }
+
+		public override PartSaver OnSave()
+		{
+			return new PartSaver(this, true);
+		}
 
 		public override void Tick()
 		{

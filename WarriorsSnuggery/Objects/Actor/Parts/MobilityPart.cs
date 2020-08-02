@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using WarriorsSnuggery.Objects.Actors;
 
 namespace WarriorsSnuggery.Objects.Parts
 {
@@ -44,16 +46,38 @@ namespace WarriorsSnuggery.Objects.Parts
 		public CPos oldVelocity;
 		public Sound sound;
 
-		public bool CanFly
-		{
-			get { return info.CanFly; }
-		}
+		public bool CanFly => info.CanFly;
 
 		public MobilityPart(Actor self, MobilityPartInfo info) : base(self)
 		{
 			this.info = info;
 			if (info.Sound != null)
 				sound = new Sound(info.Sound);
+		}
+
+		public override void OnLoad(List<MiniTextNode> nodes)
+		{
+			var parent = nodes.FirstOrDefault(n => n.Key == "MobilityPart" && n.Value == info.InternalName);
+			if (parent == null)
+				return;
+
+			foreach (var node in parent.Children)
+			{
+				if (node.Key == "Force")
+					Force = node.Convert<CPos>();
+				if (node.Key == "Velocity")
+					Velocity = node.Convert<CPos>();
+			}
+		}
+
+		public override PartSaver OnSave()
+		{
+			var saver = new PartSaver(this);
+
+			saver.Add("Force", Force, CPos.Zero);
+			saver.Add("Velocity", Velocity, CPos.Zero);
+
+			return saver;
 		}
 
 		public override void Tick()

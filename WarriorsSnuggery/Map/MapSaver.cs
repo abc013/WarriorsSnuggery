@@ -1,13 +1,11 @@
 ﻿using System.IO;
 using System.Text;
-using WarriorsSnuggery.Objects;
-using WarriorsSnuggery.Objects.Parts;
 
 namespace WarriorsSnuggery
 {
 	public class MapSaver
 	{
-		public const int MapFormat = 0;
+		public const int MapFormat = 1;
 
 		readonly World world;
 		readonly MPos bounds;
@@ -79,36 +77,9 @@ namespace WarriorsSnuggery
 			foreach (var a in world.ActorLayer.Actors)
 			{
 				var id = isSavegame ? a.ID : i++;
-				writer.WriteLine("\t" + id + "=" + a.Position);
-				writer.WriteLine("\t\t" + "Type=" + ActorCreator.GetName(a.Type));
-
-				if (a.Team != Actor.NeutralTeam)
-					writer.WriteLine("\t\t" + "Team=" + a.Team);
-				if (a.Health != null && a.Health.HP != a.Health.MaxHP)
-					writer.WriteLine("\t\t" + "Health=" + a.Health.RelativeHP.ToString(Settings.FloatFormat));
-
-				if (a.IsBot)
-				{
-					writer.WriteLine("\t\t" + "IsBot=" + a.IsBot);
-
-					if (a.BotPart.Target != null)
-						writer.WriteLine("\t\t" + "BotTarget=" + a.BotPart.Target.Position);
-				}
-
-				if (isSavegame)
-				{
-					if (a.IsPlayer)
-						writer.WriteLine("\t\t" + "IsPlayer=true");
-					if (a.IsPlayerSwitch)
-					{
-						writer.WriteLine("\t\t" + "IsPlayerSwitch=true");
-						var part = (PlayerSwitchPart)a.Parts.Find(p => p is PlayerSwitchPart);
-
-						writer.WriteLine("\t\t" + "Duration=" + part.CurrentTick);
-						writer.WriteLine("\t\t" + "ToActor=" + ActorCreator.GetName(part.ActorType));
-						writer.WriteLine("\t\t" + "RelativeHP=" + part.RelativeHP);
-					}
-				}
+				writer.WriteLine("\t" + id + "=");
+				foreach (var node in a.Save())
+					writer.WriteLine("\t\t" + node);
 			}
 		}
 

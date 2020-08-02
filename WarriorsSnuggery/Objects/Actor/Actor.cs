@@ -41,6 +41,7 @@ namespace WarriorsSnuggery.Objects
 		public readonly BotPart BotPart;
 
 		public readonly ActorType Type;
+		ActorInit init;
 
 		public WPos TerrainPosition;
 		public Terrain CurrentTerrain;
@@ -48,19 +49,13 @@ namespace WarriorsSnuggery.Objects
 		int localTick;
 		int reloadDelay;
 
-		public bool WeaponReloading
-		{
-			get { return reloadDelay > 0; }
-		}
+		public bool WeaponReloading => reloadDelay > 0;
 
 		bool visible;
 
 		CPos Velocity
 		{
-			get
-			{
-				return Mobility == null ? CPos.Zero : Mobility.Velocity;
-			}
+			get => Mobility == null ? CPos.Zero : Mobility.Velocity;
 			set
 			{
 				if (Mobility != null)
@@ -69,18 +64,19 @@ namespace WarriorsSnuggery.Objects
 		}
 		public ActorAction CurrentAction;
 
-		public Actor(World world, ActorType type, CPos position, byte team, bool isBot, bool isPlayer, uint id) : base(position, null, type.Physics == null ? null : new SimplePhysics(position, 0, type.Physics.Shape, type.Physics.Size.X, type.Physics.Size.Y, type.Physics.Size.Z))
+		public Actor(World world, ActorType type, CPos position, byte team, bool isBot, bool isPlayer, uint id) : base(position, null, getPhysics(position, type))
 		{
 			World = world;
 			Type = type;
 			Team = team;
 			IsPlayer = isPlayer;
-			CurrentAction = ActorAction.IDLING;
 			IsBot = isBot;
 
 			ID = id;
 			TerrainPosition = position.ToWPos();
 			CurrentTerrain = world.TerrainAt(TerrainPosition);
+
+			CurrentAction = ActorAction.IDLING;
 
 			// Parts
 			foreach (var partinfo in type.PartInfos)
@@ -108,6 +104,85 @@ namespace WarriorsSnuggery.Objects
 				BotPart = new BotPart(this, behavior);
 				Parts.Add(BotPart);
 			}
+		}
+
+		public Actor(World world, ActorInit init, uint overrideID) : base(init.Position, null, getPhysics(init.Position, init.Type))
+		{
+			World = world;
+			Type = init.Type;
+
+			Height = init.Height;
+
+			Team = init.Convert("Team", (byte)0);
+			IsPlayer = init.Nodes.Any(n => n.Key == "PlayerPart");
+			IsBot = init.Nodes.Any(n => n.Key == "BotPart");
+
+			ID = overrideID;
+			this.init = init;
+			TerrainPosition = init.Position.ToWPos();
+			CurrentTerrain = world.TerrainAt(TerrainPosition);
+
+			CurrentAction = ActorAction.IDLING;
+
+			// Parts
+			foreach (var partinfo in Type.PartInfos)
+				Parts.Add(partinfo.Create(this));
+
+			Mobility = (MobilityPart)Parts.Find(p => p is MobilityPart);
+			Health = (HealthPart)Parts.Find(p => p is HealthPart);
+
+			RevealsShroudPart = (RevealsShroudPart)Parts.Find(p => p is RevealsShroudPart);
+
+			ActiveWeapon = (WeaponPart)Parts.Find(p => p is WeaponPart);
+
+			WorldPart = (WorldPart)Parts.Find(p => p is WorldPart);
+			if (WorldPart != null)
+				Height = WorldPart.Height;
+
+			IsPlayerSwitch = Parts.Any(p => p is PlayerSwitchPart);
+
+			if (IsPlayer)
+				Parts.Add(new PlayerPart(this));
+
+			if (IsBot)
+			{
+				var behavior = WorldPart == null ? Bot.BotBehaviorType.TYPICAL : WorldPart.BotBehavior;
+				BotPart = new BotPart(this, behavior);
+				Parts.Add(BotPart);
+			}
+		}
+
+		static SimplePhysics getPhysics(CPos position, ActorType type)
+		{
+			if (type.Physics == null)
+				return null;
+
+			var info = type.Physics;
+			return new SimplePhysics(position, 0, info.Shape, info.Size.X, info.Size.Y, info.Size.Z);
+		}
+
+		public void OnLoad()
+		{
+			foreach (var part in Parts)
+				part.OnLoad(init.Nodes);
+
+			init = null;
+		}
+
+		public List<string> Save()
+		{
+			var list = new List<string>
+			{
+				"Type=" + ActorCreator.GetName(Type),
+				"Position=" + Position,
+				"Height=" + Height,
+				"Team=" + Team
+			};
+
+			foreach (var part in Parts)
+				list.AddRange(part.OnSave().GetSave());
+
+			return list;
 		}
 
 		public void Accelerate(CPos acceleration, bool forced = false)

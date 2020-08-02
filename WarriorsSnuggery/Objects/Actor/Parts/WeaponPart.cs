@@ -1,4 +1,7 @@
-﻿using WarriorsSnuggery.Objects.Weapons;
+﻿using System.Collections.Generic;
+using System.Linq;
+using WarriorsSnuggery.Objects.Actors;
+using WarriorsSnuggery.Objects.Weapons;
 
 namespace WarriorsSnuggery.Objects.Parts
 {
@@ -28,16 +31,8 @@ namespace WarriorsSnuggery.Objects.Parts
 		readonly WeaponPartInfo info;
 		public readonly WeaponType Type;
 
-		public CPos WeaponOffsetPosition
-		{
-			get { return self.GraphicPositionWithoutHeight + info.Offset; }
-			set { }
-		}
-		public int WeaponHeightPosition
-		{
-			get { return self.Height + info.Height; }
-			set { }
-		}
+		public CPos WeaponOffsetPosition => self.GraphicPositionWithoutHeight + info.Offset;
+		public int WeaponHeightPosition => self.Height + info.Height;
 
 		public CPos Target;
 		public int TargetHeight;
@@ -53,6 +48,28 @@ namespace WarriorsSnuggery.Objects.Parts
 		{
 			this.info = info;
 			Type = info.Type;
+		}
+
+		public override void OnLoad(List<MiniTextNode> nodes)
+		{
+			foreach (var node in nodes.Where(n => n.Key == "WeaponPart" && n.Value == info.InternalName))
+			{
+				if (node.Key == "BeamWeapon")
+				{
+					var id = node.Convert<int>();
+					beam = (BeamWeapon)self.World.WeaponLayer.Weapons.FirstOrDefault(w => w.ID == id);
+				}
+			}
+		}
+
+		public override PartSaver OnSave()
+		{
+			var saver = new PartSaver(this);
+
+			if (beam != null)
+				saver.Add("BeamWeapon", beam.ID, -1);
+			
+			return saver;
 		}
 
 		public void OnAttack(Target target)
@@ -78,7 +95,6 @@ namespace WarriorsSnuggery.Objects.Parts
 
 			if (beam != null)
 			{
-
 				if (beam.Disposed)
 				{
 					beam = null;

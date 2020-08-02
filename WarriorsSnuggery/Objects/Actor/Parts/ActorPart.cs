@@ -1,4 +1,6 @@
-﻿using WarriorsSnuggery.Objects.Weapons;
+﻿using System.Collections.Generic;
+using WarriorsSnuggery.Objects.Actors;
+using WarriorsSnuggery.Objects.Weapons;
 
 namespace WarriorsSnuggery.Objects.Parts
 {
@@ -22,6 +24,16 @@ namespace WarriorsSnuggery.Objects.Parts
 		protected ActorPart(Actor self)
 		{
 			this.self = self;
+		}
+
+		public virtual void OnLoad(List<MiniTextNode> nodes)
+		{
+
+		}
+
+		public virtual PartSaver OnSave()
+		{
+			return new PartSaver(this);
 		}
 
 		public virtual void Tick()

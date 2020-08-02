@@ -60,68 +60,24 @@ namespace WarriorsSnuggery.Objects.Parts
 	{
 		readonly WorldPartInfo info;
 
-		public MPos VisibilityBox
-		{
-			get { return info.VisibilityBox; }
-			set { }
-		}
-		public CPos VisibilityBoxOffset
-		{
-			get { return info.VisibilityBoxOffset; }
-			set { }
-		}
+		public MPos VisibilityBox => info.VisibilityBox;
+		public CPos VisibilityBoxOffset => info.VisibilityBoxOffset;
 
-		public bool ShowDamage
-		{
-			get { return info.ShowDamage; }
-			set { }
-		}
+		public bool ShowDamage => info.ShowDamage;
 
-		public bool Targetable
-		{
-			get { return info.Targetable; }
-			set { }
-		}
+		public bool Targetable => info.Targetable;
 
-		public bool CanTrigger
-		{
-			get { return info.CanTrigger; }
-			set { }
-		}
-		public bool KillForVictory
-		{
-			get { return info.KillForVictory; }
-			set { }
-		}
+		public bool CanTrigger => info.CanTrigger;
+		public bool KillForVictory => info.KillForVictory;
 
-		public int Height
-		{
-			get { return info.Height; }
-			set { }
-		}
+		public int Height => info.Height;
 
-		public int Hover
-		{
-			get { return info.Hover; }
-			set { }
-		}
+		public int Hover => info.Hover;
 
-		public bool Hideable
-		{
-			get { return info.Hideable; }
-			set { }
-		}
-		public BotBehaviorType BotBehavior
-		{
-			get { return info.BotBehavior; }
-			set { }
-		}
+		public bool Hideable => info.Hideable;
+		public BotBehaviorType BotBehavior => info.BotBehavior;
 
-		public string PlayerSwitchActor
-		{
-			get { return info.PlayerSwitchActor; }
-			set { }
-		}
+		public string PlayerSwitchActor => info.PlayerSwitchActor;
 
 		readonly Sound sound;
 

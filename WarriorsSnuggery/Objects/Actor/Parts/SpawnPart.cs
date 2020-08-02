@@ -1,4 +1,7 @@
-﻿using WarriorsSnuggery.Objects.Conditions;
+﻿using System.Collections.Generic;
+using System.Linq;
+using WarriorsSnuggery.Objects.Actors;
+using WarriorsSnuggery.Objects.Conditions;
 using WarriorsSnuggery.Objects.Particles;
 using WarriorsSnuggery.Objects.Weapons;
 
@@ -75,6 +78,28 @@ namespace WarriorsSnuggery.Objects.Parts
 		public SpawnPart(Actor self, SpawnPartInfo info) : base(self)
 		{
 			this.info = info;
+		}
+
+		public override void OnLoad(List<MiniTextNode> nodes)
+		{
+			var parent = nodes.FirstOrDefault(n => n.Key == "SpawnPart" && n.Value == info.InternalName);
+			if (parent == null)
+				return;
+
+			foreach (var node in parent.Children)
+			{
+				if (node.Key == "Tick")
+					curTick = node.Convert<int>();
+			}
+		}
+
+		public override PartSaver OnSave()
+		{
+			var saver = new PartSaver(this);
+
+			saver.Add("Tick", curTick, 0);
+
+			return saver;
 		}
 
 		public override void OnDamage(Actor damager, int damage)
