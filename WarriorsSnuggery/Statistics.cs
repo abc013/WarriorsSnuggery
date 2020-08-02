@@ -138,7 +138,7 @@ namespace WarriorsSnuggery
 				writer.WriteLine("Seed=" + Seed);
 				writer.WriteLine("Mana=" + Mana);
 				writer.WriteLine("Actor=" + Actor);
-				writer.WriteLine("\tHealth=" + RelativeHP.ToString(Settings.FloatFormat));
+				writer.WriteLine("\tHealth=" + RelativeHP);
 				writer.WriteLine("UnlockedSpells=");
 				foreach (var unlock in UnlockedSpells)
 					writer.WriteLine("\t" + unlock + "=");

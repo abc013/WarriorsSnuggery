@@ -14,6 +14,8 @@ namespace WarriorsSnuggery
 		public readonly string Key;
 		public readonly string Value;
 
+		public MiniTextNode(string file, short order, string key, object value) : this(file, order, key, value.ToString()) { }
+
 		public MiniTextNode(string file, short order, string key, string value)
 		{
 			this.file = file;

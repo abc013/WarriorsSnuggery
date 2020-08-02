@@ -46,7 +46,15 @@ namespace WarriorsSnuggery
 			Seed = seed;
 			random = new Random(seed);
 
-			Bounds = type.CustomSize != MPos.Zero ? type.CustomSize : MapUtils.RandomMapBounds(random, difficulty, level, MapUtils.MinimumMapBounds, MapUtils.MaximumMapBounds);
+			Bounds = determineBounds(difficulty, level);
+		}
+
+		MPos determineBounds(int difficulty, int level)
+		{
+			if (Type.CustomSize != MPos.Zero)
+				return Type.CustomSize;
+
+			return MapUtils.RandomMapBounds(random, difficulty, level);
 		}
 
 		public void Load()

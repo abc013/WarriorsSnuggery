@@ -139,10 +139,10 @@ namespace WarriorsSnuggery.Objects.Weapons
 				"Height=" + Height,
 				"Type=" +  WeaponCreator.Types.FirstOrDefault(t => t.Value == Type).Key,
 				"Team=" + Team,
-				"InaccuracyModifier=" + InaccuracyModifier.ToString(Settings.FloatFormat),
-				"DamageModifier=" + DamageModifier.ToString(Settings.FloatFormat),
-				"DamageRangeModifier=" + DamageRangeModifier.ToString(Settings.FloatFormat),
-				"RangeModifier=" + RangeModifier.ToString(Settings.FloatFormat)
+				"InaccuracyModifier=" + InaccuracyModifier,
+				"DamageModifier=" + DamageModifier,
+				"DamageRangeModifier=" + DamageRangeModifier,
+				"RangeModifier=" + RangeModifier
 			};
 			if (Origin != null)
 				list.Add("Origin=" + Origin.ID);

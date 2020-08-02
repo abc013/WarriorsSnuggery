@@ -3,6 +3,7 @@ using OpenToolkit.Windowing.Common;
 using OpenToolkit.Windowing.Desktop;
 using System;
 using System.Diagnostics;
+using System.Globalization;
 using WarriorsSnuggery.Audio;
 
 namespace WarriorsSnuggery
@@ -28,6 +29,9 @@ namespace WarriorsSnuggery
 		{
 			IsDebug = Debugger.IsAttached;
 			AppDomain.CurrentDomain.UnhandledException += handleError;
+
+			// Use invariant culture because of floats
+			CultureInfo.CurrentCulture = CultureInfo.InvariantCulture;
 
 			run(args);
 

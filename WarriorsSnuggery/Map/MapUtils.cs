@@ -70,8 +70,11 @@ namespace WarriorsSnuggery.Maps
 			return pos;
 		}
 
-		public static MPos RandomMapBounds(Random random, int difficulty, int level, MPos minimum, MPos maximum)
+		public static MPos RandomMapBounds(Random random, int difficulty, int level)
 		{
+			var minimum = MinimumMapBounds;
+			var maximum = MaximumMapBounds;
+
 			// Multiplier, in about a range from 1 to 10
 			var multipier = Math.Sqrt((difficulty + 1) * (level + 1));
 

@@ -51,7 +51,7 @@ namespace WarriorsSnuggery.Loader
 			}
 			else if (t == typeof(float))
 			{
-				if (float.TryParse(s, NumberStyles.Float, Settings.FloatFormat, out var i))
+				if (float.TryParse(s, out var i))
 					return i;
 			}
 			else if (t == typeof(bool))
@@ -222,7 +222,7 @@ namespace WarriorsSnuggery.Loader
 					float y;
 					float z;
 
-					if (float.TryParse(parts[0], NumberStyles.Float, Settings.FloatFormat, out x) && float.TryParse(parts[1], NumberStyles.Float, Settings.FloatFormat, out y) && float.TryParse(parts[2], NumberStyles.Float, Settings.FloatFormat, out z))
+					if (float.TryParse(parts[0], out x) && float.TryParse(parts[1], out y) && float.TryParse(parts[2], out z))
 						return new Vector(x, y, z);
 				}
 			}
@@ -236,7 +236,7 @@ namespace WarriorsSnuggery.Loader
 					float y;
 					float z;
 
-					if (float.TryParse(parts[0], NumberStyles.Float, Settings.FloatFormat, out x) && float.TryParse(parts[1], NumberStyles.Float, Settings.FloatFormat, out y) && float.TryParse(parts[2], NumberStyles.Float, Settings.FloatFormat, out z))
+					if (float.TryParse(parts[0], out x) && float.TryParse(parts[1], out y) && float.TryParse(parts[2], out z))
 						return new VAngle(x, y, z);
 				}
 			}

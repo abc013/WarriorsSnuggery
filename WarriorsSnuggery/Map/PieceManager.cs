@@ -17,9 +17,7 @@ namespace WarriorsSnuggery.Maps
 		static List<Piece> searchFiles(List<Piece> list, string path, bool catchFilesInDirectory = true)
 		{
 			foreach (var dir in Directory.GetDirectories(path))
-			{
 				searchFiles(list, dir);
-			}
 
 			if (catchFilesInDirectory)
 			{
@@ -40,13 +38,13 @@ namespace WarriorsSnuggery.Maps
 
 		public static void RefreshPiece(string piece)
 		{
-			var path = FileExplorer.FindPath(FileExplorer.Maps, piece, ".yaml");
-			var nodes = RuleReader.Read(path, piece + ".yaml").ToArray();
-
 			var existingPiece = pieces.FirstOrDefault(p => p.InnerName == piece);
 
 			if (existingPiece != null)
 				pieces.Remove(existingPiece);
+
+			var path = FileExplorer.FindPath(FileExplorer.Maps, piece, ".yaml");
+			var nodes = RuleReader.Read(path, piece + ".yaml").ToArray();
 
 			pieces.Add(Piece.Load(piece, path, nodes));
 		}

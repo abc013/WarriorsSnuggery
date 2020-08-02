@@ -1,14 +1,10 @@
 using OpenToolkit.Windowing.Common.Input;
-using System;
 using System.Collections.Generic;
-using System.Globalization;
 
 namespace WarriorsSnuggery
 {
 	public static class Settings
 	{
-		public static readonly IFormatProvider FloatFormat = CultureInfo.InvariantCulture;
-
 		public const byte MaxTeams = 8;
 
 		public const string Version = "(Release) 2.4";
@@ -173,7 +169,7 @@ namespace WarriorsSnuggery
 			writer.WriteLine("MaxSheets=" + MaxSheets);
 			writer.WriteLine("SheetSize=" + SheetSize);
 			writer.WriteLine("FrameLimiter=" + FrameLimiter);
-			writer.WriteLine("ScrollSpeed=" + ScrollSpeed.ToString(FloatFormat));
+			writer.WriteLine("ScrollSpeed=" + ScrollSpeed);
 			writer.WriteLine("EdgeScrolling=" + EdgeScrolling);
 			writer.WriteLine("DeveloperMode=" + DeveloperMode.GetHashCode());
 			writer.WriteLine("Fullscreen=" + Fullscreen.GetHashCode());
@@ -183,9 +179,9 @@ namespace WarriorsSnuggery
 			writer.WriteLine("EnablePixeling=" + EnablePixeling.GetHashCode());
 			writer.WriteLine("EnableTextShadowing=" + EnableTextShadowing.GetHashCode());
 			writer.WriteLine("FirstStarted=" + 0);
-			writer.WriteLine("MasterVolume=" + MasterVolume.ToString(FloatFormat));
-			writer.WriteLine("EffectsVolume=" + EffectsVolume.ToString(FloatFormat));
-			writer.WriteLine("MusicVolume=" + MusicVolume.ToString(FloatFormat));
+			writer.WriteLine("MasterVolume=" + MasterVolume);
+			writer.WriteLine("EffectsVolume=" + EffectsVolume);
+			writer.WriteLine("MusicVolume=" + MusicVolume);
 
 			writer.WriteLine("Keys=");
 			foreach (var key in KeyDictionary)

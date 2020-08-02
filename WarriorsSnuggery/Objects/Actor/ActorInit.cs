@@ -35,13 +35,13 @@ namespace WarriorsSnuggery.Objects
 
 			var list = new List<MiniTextNode>();
 			var order = (short)(textNode.Order + 1);
-			list.Add(new MiniTextNode("ActorInit", order, "Team", node.Team + ""));
+			list.Add(new MiniTextNode("ActorInit", order, "Team", node.Team));
 			list.Add(new MiniTextNode("ActorInit", order, "Type", ActorCreator.GetName(node.Type)));
 			if (node.IsBot)
 			{
 				var parent = new MiniTextNode("ActorInit", order, "BotPart", string.Empty);
 				list.Add(parent);
-				parent.Children.Add(new MiniTextNode("ActorInit", (short)(order + 1), "TargetPosition", node.BotTarget.ToString()));
+				parent.Children.Add(new MiniTextNode("ActorInit", (short)(order + 1), "TargetPosition", node.BotTarget));
 			}
 			if (node.IsPlayer)
 				list.Add(new MiniTextNode("ActorInit", order, "PlayerPart", string.Empty));
@@ -49,15 +49,15 @@ namespace WarriorsSnuggery.Objects
 			{
 				var parent = new MiniTextNode("ActorInit", order, "HealthPart", string.Empty);
 				list.Add(parent);
-				parent.Children.Add(new MiniTextNode("ActorInit", (short)(order + 1), "Health", node.Health.ToString(Settings.FloatFormat)));
+				parent.Children.Add(new MiniTextNode("ActorInit", (short)(order + 1), "Health", node.Health));
 			}
 			if (node.IsPlayerSwitch)
 			{
 				var parent = new MiniTextNode("ActorInit", order, "PlayerSwitchPart", string.Empty);
 				list.Add(parent);
-				parent.Children.Add(new MiniTextNode("ActorInit", (short)(order + 1), "RelativeHP", node.RelativeHP.ToString(Settings.FloatFormat)));
+				parent.Children.Add(new MiniTextNode("ActorInit", (short)(order + 1), "RelativeHP", node.RelativeHP));
 				parent.Children.Add(new MiniTextNode("ActorInit", (short)(order + 1), "ActorType", ActorCreator.GetName(node.ToActor)));
-				parent.Children.Add(new MiniTextNode("ActorInit", (short)(order + 1), "CurrentTick", node.Duration + ""));
+				parent.Children.Add(new MiniTextNode("ActorInit", (short)(order + 1), "CurrentTick", node.Duration));
 			}
 
 			Nodes = list;
