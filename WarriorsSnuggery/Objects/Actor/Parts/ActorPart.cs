@@ -33,7 +33,7 @@ namespace WarriorsSnuggery.Objects.Parts
 
 		public virtual PartSaver OnSave()
 		{
-			return new PartSaver(this);
+			return new PartSaver(this, string.Empty);
 		}
 
 		public virtual void Tick()

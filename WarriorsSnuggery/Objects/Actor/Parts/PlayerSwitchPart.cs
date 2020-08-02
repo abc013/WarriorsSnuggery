@@ -48,7 +48,7 @@ namespace WarriorsSnuggery.Objects.Parts
 
 		public override PartSaver OnSave()
 		{
-			var saver = new PartSaver(this);
+			var saver = new PartSaver(this, string.Empty);
 
 			saver.Add("RelativeHP", RelativeHP, 1f);
 			saver.Add("ActorType", ActorCreator.GetName(ActorType), null);

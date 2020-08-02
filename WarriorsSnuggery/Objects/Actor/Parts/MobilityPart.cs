@@ -72,7 +72,7 @@ namespace WarriorsSnuggery.Objects.Parts
 
 		public override PartSaver OnSave()
 		{
-			var saver = new PartSaver(this);
+			var saver = new PartSaver(this, info.InternalName);
 
 			saver.Add("Force", Force, CPos.Zero);
 			saver.Add("Velocity", Velocity, CPos.Zero);

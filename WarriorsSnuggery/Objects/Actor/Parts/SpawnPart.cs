@@ -95,7 +95,7 @@ namespace WarriorsSnuggery.Objects.Parts
 
 		public override PartSaver OnSave()
 		{
-			var saver = new PartSaver(this);
+			var saver = new PartSaver(this, info.InternalName);
 
 			saver.Add("Tick", curTick, 0);
 

@@ -64,7 +64,7 @@ namespace WarriorsSnuggery.Objects.Parts
 
 		public override PartSaver OnSave()
 		{
-			var saver = new PartSaver(this);
+			var saver = new PartSaver(this, info.InternalName);
 
 			if (beam != null)
 				saver.Add("BeamWeapon", beam.ID, -1);

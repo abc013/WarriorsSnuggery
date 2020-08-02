@@ -55,7 +55,7 @@ namespace WarriorsSnuggery.Objects.Parts
 
 		public override PartSaver OnSave()
 		{
-			var saver = new PartSaver(this, true);
+			var saver = new PartSaver(this, string.Empty, true);
 
 			if (Target == null)
 				return saver;

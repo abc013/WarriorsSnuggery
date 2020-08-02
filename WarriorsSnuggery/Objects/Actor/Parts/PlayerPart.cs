@@ -15,7 +15,7 @@ namespace WarriorsSnuggery.Objects.Parts
 
 		public override PartSaver OnSave()
 		{
-			return new PartSaver(this, true);
+			return new PartSaver(this, string.Empty, true);
 		}
 
 		public override void Tick()

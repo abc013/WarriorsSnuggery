@@ -21,11 +21,11 @@ namespace WarriorsSnuggery.Loader
 			}
 		}
 
-		public static PartInfo GetPart(string name, MiniTextNode[] nodes)
+		public static PartInfo GetPart(int currentPart, string name, MiniTextNode[] nodes)
 		{
 			var split = name.Split('@');
-			var internalName = string.Empty;
-			if (split.Length == 1)
+			var internalName = currentPart.ToString();
+			if (split.Length == 1 || string.IsNullOrWhiteSpace(split[1]))
 			{
 				name = split[0];
 			}

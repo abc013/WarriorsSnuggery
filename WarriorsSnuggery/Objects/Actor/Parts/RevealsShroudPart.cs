@@ -27,10 +27,7 @@ namespace WarriorsSnuggery.Objects.Parts
 		int tick;
 		bool firstActive;
 
-		public int Range
-		{
-			get { return info.Range; }
-		}
+		public int Range => info.Range;
 
 		public RevealsShroudPart(Actor self, RevealsShroudPartInfo info) : base(self)
 		{
@@ -53,7 +50,7 @@ namespace WarriorsSnuggery.Objects.Parts
 
 		public override PartSaver OnSave()
 		{
-			var saver = new PartSaver(this);
+			var saver = new PartSaver(this, info.InternalName);
 
 			saver.Add("Tick", tick, 0);
 
