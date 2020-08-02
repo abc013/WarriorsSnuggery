@@ -1,5 +1,4 @@
-﻿using System;
-using WarriorsSnuggery.Physics;
+﻿using WarriorsSnuggery.Physics;
 
 namespace WarriorsSnuggery.Objects.Weapons
 {
@@ -15,7 +14,7 @@ namespace WarriorsSnuggery.Objects.Weapons
 			if (diff.FlatDist > type.MaxRange * RangeModifier)
 			{
 				var angle = diff.FlatAngle;
-				TargetPosition = Position + new CPos((int)(Math.Cos(angle) * type.MaxRange * RangeModifier), (int)(Math.Sin(angle) * type.MaxRange * RangeModifier), 0);
+				TargetPosition = clampToMaxRange(Position, angle);
 				Target = new Target(TargetPosition, 0);
 			}
 		}

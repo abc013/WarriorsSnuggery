@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace WarriorsSnuggery.Objects.Weapons
@@ -105,6 +106,28 @@ namespace WarriorsSnuggery.Objects.Weapons
 		{
 			RenderShadow();
 			base.Render();
+		}
+
+		protected CPos clampToMaxRange(CPos origin, float angle)
+		{
+			var maxRadius = Type.MaxRange * RangeModifier;
+
+			var x = (int)(Math.Cos(angle) * maxRadius);
+			var y = (int)(Math.Sin(angle) * maxRadius);
+
+			return origin + new CPos(x, y, 0);
+		}
+
+		protected CPos getInaccuracy(int inaccuracy)
+		{
+			if (inaccuracy <= 0)
+				return CPos.Zero;
+
+			var random = World.Game.SharedRandom;
+			var x = (int)(random.Next(-inaccuracy, inaccuracy) * InaccuracyModifier);
+			var y = (int)(random.Next(-inaccuracy, inaccuracy) * InaccuracyModifier);
+
+			return new CPos(x, y, 0);
 		}
 
 		public virtual bool InRange(CPos position, int range = 128)

@@ -157,8 +157,7 @@ namespace WarriorsSnuggery.Objects.Weapons
 
 			if (dist > (Type.MaxRange * RangeModifier) * (Type.MaxRange * RangeModifier))
 			{
-				var angle = (originPos - TargetPosition).FlatAngle;
-				Position = originPos + new CPos((int)(Math.Cos(angle) * Type.MaxRange * RangeModifier), (int)(Math.Sin(angle) * Type.MaxRange * RangeModifier), 0);
+				Position = clampToMaxRange(originPos, (originPos - TargetPosition).FlatAngle);
 				Height = 0;
 			}
 

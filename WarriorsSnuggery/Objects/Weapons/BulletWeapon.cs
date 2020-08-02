@@ -16,19 +16,16 @@ namespace WarriorsSnuggery.Objects.Weapons
 		{
 			projectileType = (BulletProjectileType)type.Projectile;
 
-			TargetPosition += getInaccuracy();
-
 			var angle = (Position - TargetPosition).FlatAngle;
-			if ((Position - TargetPosition).Dist > type.MaxRange * RangeModifier)
+			if (!projectileType.FlyToTarget || (Position - TargetPosition).Dist > type.MaxRange * RangeModifier)
 			{
-				TargetPosition = Position + new CPos((int)(Math.Cos(angle) * type.MaxRange * RangeModifier), (int)(Math.Sin(angle) * type.MaxRange * RangeModifier), 0) + getInaccuracy();
+				TargetPosition = clampToMaxRange(Position, angle);
 				angle = (Position - TargetPosition).FlatAngle;
 			}
 
-			calculateStartSpeed(angle);
+			TargetPosition += getInaccuracy(projectileType.Inaccuracy);
 
-			if (!projectileType.FlyToTarget)
-				TargetPosition = Position + new CPos((int)(Math.Cos(angle) * type.MaxRange * RangeModifier), (int)(Math.Sin(angle) * type.MaxRange * RangeModifier), 0) + getInaccuracy();
+			calculateStartSpeed(angle);
 
 			if (projectileType.OrientateToTarget)
 				Rotation = new VAngle(0, 0, angle);
@@ -117,19 +114,6 @@ namespace WarriorsSnuggery.Objects.Weapons
 
 			if ((beforePos - rayPhysics.End).Dist < (beforePos - Position).Dist)
 				Detonate(new Target(rayPhysics.End, rayPhysics.EndHeight));
-		}
-
-		CPos getInaccuracy()
-		{
-			if (projectileType.Inaccuracy > 0)
-			{
-				var ranX = (Program.SharedRandom.Next(projectileType.Inaccuracy) - projectileType.Inaccuracy / 2) * InaccuracyModifier;
-				var ranY = (Program.SharedRandom.Next(projectileType.Inaccuracy) - projectileType.Inaccuracy / 2) * InaccuracyModifier;
-
-				return new CPos((int)ranX, (int)ranY, 0);
-			}
-
-			return CPos.Zero;
 		}
 
 		public override List<string> Save()

@@ -6,7 +6,6 @@ namespace WarriorsSnuggery.Objects.Particles
 {
 	public class Particle : PositionableObject
 	{
-		public readonly bool AffectedByObjects;
 		public readonly ParticleType Type;
 		readonly World world;
 
@@ -27,7 +26,6 @@ namespace WarriorsSnuggery.Objects.Particles
 			Type = type;
 			this.world = world;
 
-			AffectedByObjects = type.AffectedByObjects;
 			current = type.Duration;
 			dissolve = type.DissolveDuration;
 
@@ -41,7 +39,6 @@ namespace WarriorsSnuggery.Objects.Particles
 			Type = init.Type;
 
 			Height = init.Height;
-			AffectedByObjects = Type.AffectedByObjects;
 
 			current = init.Convert("Duration", Type.Duration);
 			dissolve = init.Convert("DissolveDuration", Type.DissolveDuration);

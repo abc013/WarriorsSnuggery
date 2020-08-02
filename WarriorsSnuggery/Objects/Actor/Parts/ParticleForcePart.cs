@@ -68,7 +68,7 @@ namespace WarriorsSnuggery.Objects.Parts
 			{
 				foreach (var particle in sector.Particles)
 				{
-					if (!particle.AffectedByObjects)
+					if (!particle.Type.AffectedByObjects)
 						continue;
 
 					var dist = (particle.Position - self.GraphicPosition).SquaredFlatDist;

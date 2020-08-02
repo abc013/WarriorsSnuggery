@@ -215,10 +215,10 @@ namespace WarriorsSnuggery
 			}
 
 			var walls = WallLayer.WallList.Where(
-				w => (w.LayerPosition.X >= left * PhysicsLayer.SectorSize * 2 - 2)
-			 && (w.LayerPosition.X < (right + 1) * PhysicsLayer.SectorSize * 2 + 2)
-			 && (w.LayerPosition.Y >= top * PhysicsLayer.SectorSize - 1)
-			 && (w.LayerPosition.Y < (bot + 1) * PhysicsLayer.SectorSize + 1));
+				w => (w.TerrainPosition.X >= left * PhysicsLayer.SectorSize - 2)
+			 && (w.TerrainPosition.X < (right + 1) * PhysicsLayer.SectorSize + 2)
+			 && (w.TerrainPosition.Y >= top * PhysicsLayer.SectorSize - 1)
+			 && (w.TerrainPosition.Y < (bot + 1) * PhysicsLayer.SectorSize + 1));
 
 			foreach (var wall in walls)
 			{

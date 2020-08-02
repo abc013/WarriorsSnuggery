@@ -14,14 +14,13 @@ namespace WarriorsSnuggery.Objects.Weapons
 		{
 			projectileType = (MagicProjectileType)type.Projectile;
 
-			TargetPosition += getInaccuracy();
-
 			angle = (Position - TargetPosition).FlatAngle;
 			calculateSpeed(angle);
 
 			if ((Position - TargetPosition).Dist > type.MaxRange * RangeModifier)
-				TargetPosition = Position + new CPos((int)(Math.Cos(angle) * type.MaxRange * RangeModifier), (int)(Math.Sin(angle) * type.MaxRange * RangeModifier), 0) + getInaccuracy();
+				TargetPosition = clampToMaxRange(Position, angle);
 
+			TargetPosition += getInaccuracy(projectileType.Inaccuracy);
 		}
 
 		public MagicWeapon(World world, WeaponInit init) : base(world, init)
@@ -108,19 +107,6 @@ namespace WarriorsSnuggery.Objects.Weapons
 
 			if (World.CheckCollision(this, Origin))
 				Detonate(new Target(Position, Height));
-		}
-
-		CPos getInaccuracy()
-		{
-			if (projectileType.Inaccuracy > 0)
-			{
-				var ranX = (Program.SharedRandom.Next(projectileType.Inaccuracy) - projectileType.Inaccuracy / 2) * InaccuracyModifier;
-				var ranY = (Program.SharedRandom.Next(projectileType.Inaccuracy) - projectileType.Inaccuracy / 2) * InaccuracyModifier;
-
-				return new CPos((int)ranX, (int)ranY, 0);
-			}
-
-			return CPos.Zero;
 		}
 
 		public override List<string> Save()

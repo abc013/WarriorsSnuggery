@@ -20,22 +20,27 @@ namespace WarriorsSnuggery.Objects
 			HEAVY
 		}
 
+		public readonly WallType Type;
+
 		public readonly MPos LayerPosition;
+		public readonly MPos TerrainPosition;
 		readonly CPos renderPos;
+
+		readonly bool isHorizontal;
+
 		readonly WallLayer layer;
 
-		public readonly WallType Type;
 		BatchObject renderable;
 		Color color = Color.White;
 
-		readonly bool isHorizontal;
 		public int Health
 		{
-			get { return health; }
+			get => health;
 			set
 			{
 				if (Type.Invincible)
 					return;
+
 				if (value >= Type.Health)
 					value = Type.Health;
 
@@ -45,10 +50,7 @@ namespace WarriorsSnuggery.Objects
 		}
 
 		int health;
-		float healthPercentage
-		{
-			get { return health / (float)Type.Health; }
-		}
+		float healthPercentage => health / (float)Type.Health;
 
 		byte neighborState;
 		DamageState damageState = DamageState.NONE;
@@ -56,12 +58,19 @@ namespace WarriorsSnuggery.Objects
 		public Wall(MPos position, WallLayer layer, WallType type) : base(position.ToCPos(), null, getPhysics(position, type))
 		{
 			LayerPosition = position;
+			TerrainPosition = LayerPosition / new MPos(2, 1);
+
 			this.layer = layer;
 
-			var pos = position.ToCPos() / new CPos(2, 1, 1);
+			Type = type;
+			health = type.Health;
+
+			isHorizontal = LayerPosition.X % 2 != 0;
+
+			var pos = LayerPosition.ToCPos() / new CPos(2, 1, 1);
 			renderPos = pos;
 			Position = pos + new CPos(0, -512, 0);
-			isHorizontal = position.X % 2 != 0;
+
 			if (isHorizontal)
 			{
 				Physics.Position += new CPos(0, 512, 0);
@@ -75,9 +84,6 @@ namespace WarriorsSnuggery.Objects
 			}
 			if (type.IsOnFloor)
 				Height -= 2048;
-
-			Type = type;
-			health = type.Health;
 		}
 
 		static SimplePhysics getPhysics(MPos position, WallType type)
@@ -124,27 +130,22 @@ namespace WarriorsSnuggery.Objects
 
 		void checkDamageState()
 		{
-			if (Type.Invincible)
-				return;
-
+			bool newRenderable = false;
 			if (healthPercentage < 0.25f)
 			{
-				var newRenderable = Type.DamagedImage1 != null && damageState != DamageState.HEAVY;
+				newRenderable = Type.DamagedImage1 != null && damageState != DamageState.HEAVY;
 
 				damageState = DamageState.HEAVY;
-
-				if (newRenderable)
-					setRenderable();
 			}
 			else if (healthPercentage < 0.75f)
 			{
-				var newRenderable = Type.DamagedImage2 != null && damageState != DamageState.LIGHT;
+				newRenderable = Type.DamagedImage2 != null && damageState != DamageState.LIGHT;
 
 				damageState = DamageState.LIGHT;
-
-				if (newRenderable)
-					setRenderable();
 			}
+
+			if (newRenderable)
+				setRenderable();
 		}
 
 		public void SetNeighborState(byte nS, bool enabled)
@@ -185,10 +186,10 @@ namespace WarriorsSnuggery.Objects
 
 		public override bool CheckVisibility()
 		{
-			renderable.Visible = VisibilitySolver.IsVisibleIgnoringBounds(new MPos(LayerPosition.X / 2, LayerPosition.Y - 1));
+			renderable.Visible = VisibilitySolver.IsVisibleIgnoringBounds(TerrainPosition - new MPos(0, 1));
 
 			if (!isHorizontal)
-				renderable.Visible |= VisibilitySolver.IsVisibleIgnoringBounds(new MPos(LayerPosition.X / 2, LayerPosition.Y));
+				renderable.Visible |= VisibilitySolver.IsVisibleIgnoringBounds(TerrainPosition);
 			
 			return renderable.Visible;
 		}
