@@ -1,4 +1,5 @@
-﻿using WarriorsSnuggery.Graphics;
+﻿using System;
+using WarriorsSnuggery.Graphics;
 using WarriorsSnuggery.Objects;
 using WarriorsSnuggery.Trophies;
 
@@ -22,8 +23,8 @@ namespace WarriorsSnuggery.UI
 				var value = TrophyManager.Trophies[key];
 
 				var sprite = value.Image.GetTextures()[0];
-				var scale = (sprite.Width > sprite.Height ? 24f / sprite.Width : 24f / sprite.Height) - 0.1f;
-				var item = new PanelItem(CPos.Zero, new BatchObject(sprite, Color.White), new MPos(512, 512), value.Name, new string[0], () => selectTrophy(key, value))
+				var scale = 24f / Math.Max(sprite.Width, sprite.Height) - 0.1f;
+				var item = new PanelItem(new BatchObject(sprite, Color.White), new MPos(512, 512), value.Name, new string[0], () => selectTrophy(key, value))
 				{
 					Scale = scale * 2f
 				};

@@ -57,27 +57,18 @@ namespace WarriorsSnuggery.UI
 			saved = new TextLine(new CPos((int)(WindowInfo.UnitWidth * 512 - 2048), -5120, 0), FontManager.Pixel16, TextLine.OffsetType.MIDDLE);
 			saved.SetText("Save");
 
-			showTiles = CheckBoxCreator.Create("terrain_editor", new CPos((int)(WindowInfo.UnitWidth * 512 - 2496), -2536, 0), false, (b) =>
-			 {
-				 deselectBoxes(Selected.TILE);
-			 });
+			showTiles = CheckBoxCreator.Create("terrain_editor", new CPos((int)(WindowInfo.UnitWidth * 512 - 2496), -2536, 0), false, (b) => deselectBoxes(Selected.TILE));
 			Content.Add(showTiles);
 
-			showActors = CheckBoxCreator.Create("actor_editor", new CPos((int)(WindowInfo.UnitWidth * 512 - 1760), -2536, 0), false, (b) =>
-			 {
-				 deselectBoxes(Selected.ACTOR);
-			 });
+			showActors = CheckBoxCreator.Create("actor_editor", new CPos((int)(WindowInfo.UnitWidth * 512 - 1760), -2536, 0), false, (b) => deselectBoxes(Selected.ACTOR));
 			Content.Add(showActors);
 
-			showWalls = CheckBoxCreator.Create("wall_editor", new CPos((int)(WindowInfo.UnitWidth * 512 - 1024), -2536, 0), false, (b) =>
-			 {
-				 deselectBoxes(Selected.WALL);
-			 });
+			showWalls = CheckBoxCreator.Create("wall_editor", new CPos((int)(WindowInfo.UnitWidth * 512 - 1024), -2536, 0), false, (b) => deselectBoxes(Selected.WALL));
 			Content.Add(showWalls);
 
 			tiles = new PanelList(new CPos((int)(WindowInfo.UnitWidth * 512 - 2048), 2048, 0), new MPos(2048, 4096), new MPos(512, 512), PanelManager.Get("wooden"));
 			foreach (var a in TerrainCreator.Types.Values)
-				tiles.Add(new PanelItem(CPos.Zero, new BatchObject(a.Texture, Color.White), new MPos(512, 512), a.ID.ToString(), new string[0], () => terrainSelected = a));
+				tiles.Add(new PanelItem(new BatchObject(a.Texture, Color.White), new MPos(512, 512), a.ID.ToString(), new string[0], () => terrainSelected = a));
 
 			actors = new PanelList(new CPos((int)(WindowInfo.UnitWidth * 512 - 2048), 2048, 0), new MPos(2048, 4096), new MPos(512, 512), PanelManager.Get("wooden"));
 			foreach (var pair in ActorCreator.Types)
@@ -90,7 +81,7 @@ namespace WarriorsSnuggery.UI
 
 				var sprite = a.GetPreviewSprite();
 				var scale = (sprite.Width > sprite.Height ? 24f / sprite.Width : 24f / sprite.Height) - 0.1f;
-				actors.Add(new PanelItem(CPos.Zero, new BatchObject(sprite, Color.White), new MPos(512, 512), a.Playable == null ? pair.Key : a.Playable.Name, new string[0], () => actorSelected = a)
+				actors.Add(new PanelItem(new BatchObject(sprite, Color.White), new MPos(512, 512), a.Playable == null ? pair.Key : a.Playable.Name, new string[0], () => actorSelected = a)
 				{
 					Scale = scale
 				});
@@ -98,7 +89,7 @@ namespace WarriorsSnuggery.UI
 
 			walls = new PanelList(new CPos((int)(WindowInfo.UnitWidth * 512 - 2048), 2048, 0), new MPos(2048, 4096), new MPos(512, 1024), PanelManager.Get("wooden"));
 			foreach (var a in WallCreator.Types.Values)
-				walls.Add(new PanelItem(CPos.Zero, new BatchObject(a.GetTexture(true, 0), Color.White), new MPos(512, 512), a.ID.ToString(), new string[0], () => wallSelected = a));
+				walls.Add(new PanelItem(new BatchObject(a.GetTexture(true, 0), Color.White), new MPos(512, 512), a.ID.ToString(), new string[0], () => wallSelected = a));
 
 			wallBox = CheckBoxCreator.Create("wooden", new CPos((int)(WindowInfo.UnitWidth * 512 - 2048), 6244, 0), false, (b) => horizontal = b);
 			wallText = new TextLine(new CPos((int)(WindowInfo.UnitWidth * 512 - 2048), 6756, 0), FontManager.Pixel16, TextLine.OffsetType.MIDDLE);

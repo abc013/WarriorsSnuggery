@@ -27,24 +27,28 @@ namespace WarriorsSnuggery.UI
 			Content.Add(name);
 
 			nameInput = new TextBox(new CPos(1024, 0, 0), "Name", "wooden", 15, isPath: true);
+			Content.Add(nameInput);
 
 			var difficulty = new TextLine(new CPos(-2048, 1024, 0), FontManager.Pixel16, TextLine.OffsetType.RIGHT);
 			difficulty.SetText("Difficulty: ");
 			Content.Add(difficulty);
 
 			difficultyInput = new SliderBar(new CPos(1024, 1024, 0), 116, PanelManager.Get("wooden"), () => { });
+			Content.Add(difficultyInput);
 
 			var hardcore = new TextLine(new CPos(-2048, 2048, 0), FontManager.Pixel16, TextLine.OffsetType.RIGHT);
 			hardcore.SetText("Hardcore (one life): ");
 			Content.Add(hardcore);
 
 			hardcoreInput = CheckBoxCreator.Create("wooden", new CPos(1024, 2048, 0), false);
+			Content.Add(hardcoreInput);
 
 			var seed = new TextLine(new CPos(-2048, 3072, 0), FontManager.Pixel16, TextLine.OffsetType.RIGHT);
 			seed.SetText("Seed: ");
 			Content.Add(seed);
 
 			seedInput = new TextBox(new CPos(1024, 3072, 0), getSeed(), "wooden", 7, true);
+			Content.Add(seedInput);
 			Content.Add(new Button(new CPos(6144, 3072, 0), "Generate", "wooden", () => { seedInput.Text = getSeed(); }));
 
 			Content.Add(new Button(new CPos(-4096, 6144, 0), "Cancel", "wooden", () => game.ChangeScreen(ScreenType.DEFAULT, false)));
@@ -68,23 +72,8 @@ namespace WarriorsSnuggery.UI
 		{
 			base.Tick();
 
-			nameInput.Tick();
-			difficultyInput.Tick();
-			hardcoreInput.Tick();
-			seedInput.Tick();
-
 			if (KeyInput.IsKeyDown("escape", 10))
 				game.ChangeScreen(ScreenType.DEFAULT, false);
-		}
-
-		public override void Render()
-		{
-			base.Render();
-
-			nameInput.Render();
-			difficultyInput.Render();
-			hardcoreInput.Render();
-			seedInput.Render();
 		}
 	}
 }

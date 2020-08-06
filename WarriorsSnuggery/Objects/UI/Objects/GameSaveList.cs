@@ -10,7 +10,7 @@ namespace WarriorsSnuggery.UI
 			this.size = size;
 			foreach (var statistic in GameSaveManager.Statistics)
 				if (statistic.Name != "DEFAULT")
-					Add(new GameSaveItem(CPos.Zero, statistic, size.X, () => { }));
+					Add(new GameSaveItem(statistic, size.X, () => { }));
 		}
 
 		public void Refresh()
@@ -20,7 +20,7 @@ namespace WarriorsSnuggery.UI
 			foreach (var statistic in GameSaveManager.Statistics)
 			{
 				if (statistic.Name != "DEFAULT")
-					Add(new GameSaveItem(CPos.Zero, statistic, size.X, () => { }));
+					Add(new GameSaveItem(statistic, size.X, () => { }));
 			}
 		}
 

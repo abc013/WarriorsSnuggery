@@ -43,7 +43,7 @@ namespace WarriorsSnuggery.UI
 				actorTypes.Add(a);
 				var sprite = a.GetPreviewSprite();
 				var scale = (sprite.Width > sprite.Height ? 24f / sprite.Width : 24f / sprite.Height) - 0.1f;
-				var item = new PanelItem(CPos.Zero, new BatchObject(sprite, Color.White), new MPos(512, 512), a.Playable.Name, new[] { Color.Grey + "Cost: " + Color.Yellow + a.Playable.Cost }, () => { changePlayer(a); })
+				var item = new PanelItem(new BatchObject(sprite, Color.White), new MPos(512, 512), a.Playable.Name, new[] { Color.Grey + "Cost: " + Color.Yellow + a.Playable.Cost }, () => { changePlayer(a); })
 				{
 					Scale = scale
 				};
@@ -58,7 +58,7 @@ namespace WarriorsSnuggery.UI
 			int index = 0;
 			foreach (var effect in Spells.SpellTreeLoader.SpellTree)
 			{
-				var item = new SpellListItem(CPos.Zero, new MPos(256, 256), effect, game.SpellManager.spellCasters[index], game, true);
+				var item = new SpellListItem(new MPos(256, 256), effect, game.SpellManager.spellCasters[index], game, true);
 
 				spellList.Add(item);
 				index++;

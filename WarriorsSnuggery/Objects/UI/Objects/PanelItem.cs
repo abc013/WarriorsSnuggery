@@ -47,8 +47,10 @@ namespace WarriorsSnuggery.UI
 
 		protected readonly Tooltip tooltip;
 
-		public PanelItem(CPos pos, BatchRenderable renderable, MPos size, string title, string[] text, Action action)
+		public PanelItem(BatchRenderable renderable, MPos size, string title, string[] text, Action action)
 		{
+			var pos = CPos.Zero;
+
 			tooltip = new Tooltip(pos, title, text);
 			this.renderable = renderable;
 			this.action = action;

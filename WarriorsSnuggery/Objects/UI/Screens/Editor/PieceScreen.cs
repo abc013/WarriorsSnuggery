@@ -22,7 +22,7 @@ namespace WarriorsSnuggery.UI
 			mapSelection = new PanelList(new CPos(0, 1024, 0), new MPos(4096, 4096), new MPos(512, 512), PanelManager.Get("wooden"));
 			foreach (var piece in PieceManager.GetPieces())
 			{
-				mapSelection.Add(new PanelItem(CPos.Zero, new BatchObject(UITextureManager.Get("UI_map")[0], Color.White), new MPos(512, 512), piece.Name, new[] { Color.Grey + "[" + piece.Size.X + "," + piece.Size.Y + "]" },
+				mapSelection.Add(new PanelItem(new BatchObject(UITextureManager.Get("UI_map")[0], Color.White), new MPos(512, 512), piece.Name, new[] { Color.Grey + "[" + piece.Size.X + "," + piece.Size.Y + "]" },
 				() =>
 				{
 					GameController.CreateNew(new GameStatistics(GameSaveManager.DefaultStatistic), GameType.EDITOR, custom: MapInfo.EditorMapTypeFromPiece(piece.InnerName, piece.Size));
@@ -86,22 +86,18 @@ namespace WarriorsSnuggery.UI
 			var size = new TextLine(new CPos(0, -1024, 0), FontManager.Pixel16, TextLine.OffsetType.MIDDLE);
 			size.SetText("Size of Piece");
 			Content.Add(size);
+
 			sizeX = new TextBox(new CPos(1024, 0, 0), "16", "wooden", 2, true);
+			Content.Add(sizeX);
 			sizeY = new TextBox(new CPos(-1024, 0, 0), "16", "wooden", 2, true);
+			Content.Add(sizeY);
 			name = new TextBox(new CPos(0, 1536, 0), "unnamed piece", "wooden", 20, isPath: true);
+			Content.Add(name);
+
 			var warning = new TextLine(new CPos(0, 2548, 0), FontManager.Pixel16, TextLine.OffsetType.MIDDLE);
 			warning.SetColor(Color.Red);
 			warning.SetText("Warning: by using an name for an already existing map, you override it!");
 			Content.Add(warning);
-		}
-
-		public override void Render()
-		{
-			base.Render();
-
-			sizeX.Render();
-			sizeY.Render();
-			name.Render();
 		}
 
 		public override void Tick()
@@ -110,10 +106,6 @@ namespace WarriorsSnuggery.UI
 
 			if (KeyInput.IsKeyDown("escape", 10))
 				ActiveScreen = false;
-
-			sizeX.Tick();
-			sizeY.Tick();
-			name.Tick();
 		}
 
 		void create()
@@ -124,8 +116,7 @@ namespace WarriorsSnuggery.UI
 			var size = new MPos(int.Parse(sizeX.Text), int.Parse(sizeY.Text));
 			var path = FileExplorer.Maps + @"\maps";
 
-			if (!Directory.Exists(path))
-				Directory.CreateDirectory(path);
+			Directory.CreateDirectory(path);
 
 			using (var stream = new StreamWriter(FileExplorer.CreateFile(path + "\\", name.Text, ".yaml")))
 			{

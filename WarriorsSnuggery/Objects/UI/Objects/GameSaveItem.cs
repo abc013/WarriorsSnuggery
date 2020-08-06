@@ -26,8 +26,10 @@ namespace WarriorsSnuggery.UI
 		readonly TextLine score;
 		readonly TextLine level;
 
-		public GameSaveItem(CPos pos, GameStatistics stats, int width, Action action) : base(pos, new BatchObject(UITextureManager.Get("UI_save")[0], Color.White), new MPos(width, 1024), stats.Name, new[] { Color.Grey + "Difficulty: " + stats.Difficulty, Color.Grey + "Money: " + stats.Money }, action)
+		public GameSaveItem(GameStatistics stats, int width, Action action) : base(new BatchObject(UITextureManager.Get("UI_save")[0], Color.White), new MPos(width, 1024), stats.Name, new[] { Color.Grey + "Difficulty: " + stats.Difficulty, Color.Grey + "Money: " + stats.Money }, action)
 		{
+			var pos = CPos.Zero;
+
 			Stats = stats;
 			Scale *= 2;
 			
