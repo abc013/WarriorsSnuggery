@@ -8,11 +8,11 @@ namespace WarriorsSnuggery.UI
 	public class DefaultScreen : Screen
 	{
 		readonly Game game;
-		readonly TextLine health;
-		readonly TextLine mana;
+		readonly UITextLine health;
+		readonly UITextLine mana;
 
 		readonly MoneyDisplay money;
-		readonly TextLine waveText;
+		readonly UITextLine waveText;
 		readonly Panel background;
 		readonly ActorList actorList;
 		readonly List<ActorType> actorTypes = new List<ActorType>();
@@ -33,7 +33,7 @@ namespace WarriorsSnuggery.UI
 				Title.SetColor(Color.Green);
 
 			// SECTION ACTORS
-			actorList = new ActorList(new CPos((int)(WindowInfo.UnitWidth * 512) - 512, -1536, 0), new MPos(512, 5120), new MPos(512, 512), PanelManager.Get("wooden"));
+			actorList = new ActorList(new CPos((int)(WindowInfo.UnitWidth * 512) - 512, -1536, 0), new MPos(512, 5 * 1024), new MPos(512, 512), PanelManager.Get("wooden"));
 
 			foreach (var a in ActorCreator.Types.Values)
 			{
@@ -54,7 +54,7 @@ namespace WarriorsSnuggery.UI
 			}
 
 			// SECTION EFFECTS
-			spellList = new SpellList(new CPos(0, (int)(WindowInfo.UnitHeight * 512) - 3072 - 128, 0), new MPos(8192, 512), new MPos(512, 512), PanelManager.Get("stone"));
+			spellList = new SpellList(new CPos(0, (int)(WindowInfo.UnitHeight * 512) - 3072 - 128, 0), new MPos(8 * 1024, 512), new MPos(512, 512), PanelManager.Get("stone"));
 			int index = 0;
 			foreach (var effect in Spells.SpellTreeLoader.SpellTree)
 			{
@@ -64,51 +64,50 @@ namespace WarriorsSnuggery.UI
 				index++;
 			}
 
-			background = new Panel(new CPos(0, (int)(WindowInfo.UnitHeight * 512) - 1024, 0), new Vector(16, 2, 0), PanelManager.Get("wooden"));
+			background = new Panel(new CPos(0, (int)(WindowInfo.UnitHeight * 512) - 1024, 0), new MPos(16 * 1024, 2 * 1024), PanelManager.Get("wooden"));
 
 			// SECTION MONEY
 			money = new MoneyDisplay(game, new CPos(6120 + 128 + 1536, 8192 - 1024, 0));
 			// SECTION MENUS
-			var pause = new TextLine(new CPos(-2560, 8192 - 256, 0), FontManager.Pixel16, TextLine.OffsetType.MIDDLE);
+			var pause = new UITextLine(new CPos(-2560, 8192 - 256, 0), FontManager.Pixel16, TextOffset.MIDDLE);
 			pause.WriteText("Pause: '" + new Color(0.5f, 0.5f, 1f) + "P" + Color.White + "'");
 			Content.Add(pause);
 
-			var menu = new TextLine(new CPos(2560, 8192 - 256, 0), FontManager.Pixel16, TextLine.OffsetType.MIDDLE);
+			var menu = new UITextLine(new CPos(2560, 8192 - 256, 0), FontManager.Pixel16, TextOffset.MIDDLE);
 			menu.WriteText("Menu: '" + new Color(0.5f, 0.5f, 1f) + "Escape" + Color.White + "'");
 			Content.Add(pause);
 
 			// SECTION HEALTH
-			health = new TextLine(new CPos(0, 8192 - 2048, 0), FontManager.Papyrus24, TextLine.OffsetType.MIDDLE);
+			health = new UITextLine(new CPos(0, 8192 - 2048, 0), FontManager.Papyrus24, TextOffset.MIDDLE);
 
 			// SECTION MANA
-			mana = new TextLine(new CPos(0, 8192 - 1024, 0), FontManager.Papyrus24, TextLine.OffsetType.MIDDLE);
+			mana = new UITextLine(new CPos(0, 8192 - 1024, 0), FontManager.Papyrus24, TextOffset.MIDDLE);
 
 			// SECTION MISSION
-			var missionText = new TextLine(new CPos(0, -8192 + 512, 0), FontManager.Pixel16, TextLine.OffsetType.MIDDLE);
+			var missionText = new UITextLine(new CPos(0, -8192 + 512, 0), FontManager.Pixel16, TextOffset.MIDDLE);
+			var missionContent = "No mission.";
 			switch (game.Mode)
 			{
-				case GameMode.NONE:
-					missionText.SetText("No mission.");
-					break;
 				case GameMode.TUTORIAL:
-					missionText.SetText("Step on blue pads and get to the exit!");
+					missionContent = "Step on blue pads and get to the exit!";
 					break;
 				case GameMode.FIND_EXIT:
-					missionText.SetText("Search for the exit and gain access to it!");
+					missionContent = "Search for the exit and gain access to it!";
 					break;
 				case GameMode.WAVES:
-					missionText.SetText("Defend your position from incoming waves!");
+					missionContent = "Defend your position from incoming waves!";
 					break;
 				case GameMode.KILL_ENEMIES:
-					missionText.SetText("Wipe out all enemies on the map!");
+					missionContent = "Wipe out all enemies on the map!";
 					break;
 			}
+			missionText.SetText(missionContent);
 			Content.Add(missionText);
 
-			var levelText = new TextLine(new CPos((int)-(WindowInfo.UnitWidth * 512) + 776, 8192 - 2048, 0), FontManager.Pixel16);
+			var levelText = new UITextLine(new CPos((int)-(WindowInfo.UnitWidth * 512) + 776, 8192 - 2048, 0), FontManager.Pixel16);
 			levelText.SetText("Level " + game.Statistics.Level + "/" + game.Statistics.FinalLevel);
 			Content.Add(levelText);
-			waveText = new TextLine(new CPos((int)-(WindowInfo.UnitWidth * 512) + 776, 8192 - 1536, 0), FontManager.Pixel16);
+			waveText = new UITextLine(new CPos((int)-(WindowInfo.UnitWidth * 512) + 776, 8192 - 1536, 0), FontManager.Pixel16);
 
 			enemyArrow = new BatchObject(UITextureManager.Get("UI_enemy_arrow")[0], Color.White);
 		}
@@ -116,7 +115,7 @@ namespace WarriorsSnuggery.UI
 		public void SetWave(int wave, int final)
 		{
 			if (wave == final)
-				waveText.SetColor(Color.Green);
+				waveText.Color = Color.Green;
 			waveText.SetText("Wave " + wave + "/" + final);
 		}
 

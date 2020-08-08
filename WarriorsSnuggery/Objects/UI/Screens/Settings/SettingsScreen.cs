@@ -21,15 +21,15 @@ namespace WarriorsSnuggery.UI
 			Title.Position = new CPos(0, -4096, 0);
 
 			// Window
-			var fullscreen = new TextLine(new CPos(-6096, -3000, 0), FontManager.Pixel16);
+			var fullscreen = new UITextLine(new CPos(-6096, -3000, 0), FontManager.Pixel16);
 			fullscreen.SetText("Fullscreen:");
 			Content.Add(fullscreen);
-			var width = new TextLine(new CPos(-6096, -2300, 0), FontManager.Pixel16);
+			var width = new UITextLine(new CPos(-6096, -2300, 0), FontManager.Pixel16);
 			if (Settings.Fullscreen)
 				width.SetColor(new Color(128, 128, 128));
 			width.SetText("Width:");
 			Content.Add(width);
-			var height = new TextLine(new CPos(-6096, -1600, 0), FontManager.Pixel16);
+			var height = new UITextLine(new CPos(-6096, -1600, 0), FontManager.Pixel16);
 			if (Settings.Fullscreen)
 				height.SetColor(new Color(128, 128, 128));
 			height.SetText("Height:");
@@ -63,13 +63,13 @@ namespace WarriorsSnuggery.UI
 			Content.Add(heightWrite);
 
 			// Graphics
-			var vSync = new TextLine(new CPos(-512, -3000, 0), FontManager.Pixel16);
+			var vSync = new UITextLine(new CPos(-512, -3000, 0), FontManager.Pixel16);
 			vSync.SetText("Enable V-Sync:");
 			Content.Add(vSync);
-			var pixeling = new TextLine(new CPos(-512, -2300, 0), FontManager.Pixel16);
+			var pixeling = new UITextLine(new CPos(-512, -2300, 0), FontManager.Pixel16);
 			pixeling.SetText("Enable Pixeling:");
 			Content.Add(pixeling);
-			var textshadow = new TextLine(new CPos(-512, -1600, 0), FontManager.Pixel16);
+			var textshadow = new UITextLine(new CPos(-512, -1600, 0), FontManager.Pixel16);
 			textshadow.SetText("Enable text shadows:");
 			Content.Add(textshadow);
 
@@ -79,44 +79,32 @@ namespace WarriorsSnuggery.UI
 				Window.SetVSync();
 			});
 			Content.Add(vSyncCheck);
-			pixelingCheck = CheckBoxCreator.Create("wooden", new CPos(6656, -2300, 0), Settings.EnablePixeling, (b) =>
-			{
-				Settings.EnablePixeling = b;
-			});
+			pixelingCheck = CheckBoxCreator.Create("wooden", new CPos(6656, -2300, 0), Settings.EnablePixeling, (b) => Settings.EnablePixeling = b);
 			Content.Add(pixelingCheck);
-			textshadowCheck = CheckBoxCreator.Create("wooden", new CPos(6656, -1600, 0), Settings.EnableTextShadowing, (b) =>
-			{
-				Settings.EnableTextShadowing = b;
-			});
+			textshadowCheck = CheckBoxCreator.Create("wooden", new CPos(6656, -1600, 0), Settings.EnableTextShadowing, (b) => Settings.EnableTextShadowing = b);
 			Content.Add(textshadowCheck);
 
 			// Scrolling
-			var scrollSpeed = new TextLine(new CPos(-6144, -600, 0), FontManager.Pixel16);
+			var scrollSpeed = new UITextLine(new CPos(-6144, -600, 0), FontManager.Pixel16);
 			scrollSpeed.SetText("Camera panning speed:");
 			Content.Add(scrollSpeed);
-			var edgeScrolling = new TextLine(new CPos(-6144, 100, 0), FontManager.Pixel16);
+			var edgeScrolling = new UITextLine(new CPos(-6144, 100, 0), FontManager.Pixel16);
 			edgeScrolling.SetText("Edge Panning (0 = disabled):");
 			Content.Add(edgeScrolling);
 
-			panningSlider = new SliderBar(new CPos(5120, -600, 0), 100, PanelManager.Get("wooden"), () =>
-			{
-				Settings.ScrollSpeed = (int)(panningSlider.Value * 10);
-			})
+			panningSlider = new SliderBar(new CPos(5120, -600, 0), 4096, PanelManager.Get("wooden"), () => Settings.ScrollSpeed = (int)(panningSlider.Value * 10))
 			{
 				Value = Settings.ScrollSpeed / 10f
 			};
 			Content.Add(panningSlider);
-			edgePanningSlider = new SliderBar(new CPos(5120, 100, 0), 100, PanelManager.Get("wooden"), () =>
-			{
-				Settings.EdgeScrolling = (int)(edgePanningSlider.Value * 10);
-			})
+			edgePanningSlider = new SliderBar(new CPos(5120, 100, 0), 4096, PanelManager.Get("wooden"), () => Settings.EdgeScrolling = (int)(edgePanningSlider.Value * 10))
 			{
 				Value = Settings.EdgeScrolling / 10f
 			};
 			Content.Add(edgePanningSlider);
 
 			// Additional features
-			var frameLimiter = new TextLine(new CPos(-6144, 1000, 0), FontManager.Pixel16);
+			var frameLimiter = new UITextLine(new CPos(-6144, 1000, 0), FontManager.Pixel16);
 			frameLimiter.SetText("Framelimiter (0 = disabled):");
 			Content.Add(frameLimiter);
 
@@ -129,7 +117,7 @@ namespace WarriorsSnuggery.UI
 			};
 			Content.Add(frameLimiterWrite);
 
-			var developerMode = new TextLine(new CPos(-6144, 1900, 0), FontManager.Pixel16);
+			var developerMode = new UITextLine(new CPos(-6144, 1900, 0), FontManager.Pixel16);
 			developerMode.SetText("Enable Developermode:");
 			Content.Add(developerMode);
 			developerModeCheck = CheckBoxCreator.Create("wooden", new CPos(5120, 1900, 0), Settings.DeveloperMode, (b) =>
@@ -139,17 +127,17 @@ namespace WarriorsSnuggery.UI
 			Content.Add(developerModeCheck);
 
 			// Volume
-			var masterVol = new TextLine(new CPos(-6144, 2800, 0), FontManager.Pixel16);
+			var masterVol = new UITextLine(new CPos(-6144, 2800, 0), FontManager.Pixel16);
 			masterVol.SetText("Master Volume:");
 			Content.Add(masterVol);
-			var effectVol = new TextLine(new CPos(-6144, 3700, 0), FontManager.Pixel16);
+			var effectVol = new UITextLine(new CPos(-6144, 3700, 0), FontManager.Pixel16);
 			effectVol.SetText("Effects Volume:");
 			Content.Add(effectVol);
-			var musicVol = new TextLine(new CPos(-6144, 4600, 0), FontManager.Pixel16);
+			var musicVol = new UITextLine(new CPos(-6144, 4600, 0), FontManager.Pixel16);
 			musicVol.SetText("Music Volume:");
 			Content.Add(musicVol);
 
-			masterVolumeSlider = new SliderBar(new CPos(5120, 2800, 0), 100, PanelManager.Get("wooden"), () =>
+			masterVolumeSlider = new SliderBar(new CPos(5120, 2800, 0), 4096, PanelManager.Get("wooden"), () =>
 			{
 				Settings.MasterVolume = (float)Math.Round(masterVolumeSlider.Value, 2);
 				AudioController.Music.SetVolume();
@@ -158,7 +146,7 @@ namespace WarriorsSnuggery.UI
 				Value = Settings.MasterVolume
 			};
 			Content.Add(masterVolumeSlider);
-			effectVolumeSlider = new SliderBar(new CPos(5120, 3700, 0), 100, PanelManager.Get("wooden"), () =>
+			effectVolumeSlider = new SliderBar(new CPos(5120, 3700, 0), 4096, PanelManager.Get("wooden"), () =>
 			{
 				Settings.EffectsVolume = (float)Math.Round(effectVolumeSlider.Value, 2);
 			})
@@ -166,7 +154,7 @@ namespace WarriorsSnuggery.UI
 				Value = Settings.EffectsVolume
 			};
 			Content.Add(effectVolumeSlider);
-			musicVolumeSlider = new SliderBar(new CPos(5120, 4600, 0), 100, PanelManager.Get("wooden"), () =>
+			musicVolumeSlider = new SliderBar(new CPos(5120, 4600, 0), 4096, PanelManager.Get("wooden"), () =>
 			{
 				Settings.MusicVolume = (float)Math.Round(musicVolumeSlider.Value, 2);
 				AudioController.Music.SetVolume();
@@ -176,7 +164,7 @@ namespace WarriorsSnuggery.UI
 			};
 			Content.Add(musicVolumeSlider);
 
-			var warning = new TextLine(new CPos(0, 5450, 0), FontManager.Pixel16, TextLine.OffsetType.MIDDLE);
+			var warning = new UITextLine(new CPos(0, 5450, 0), FontManager.Pixel16, TextOffset.MIDDLE);
 			warning.SetColor(Color.Red);
 			warning.SetText("Some changes only take effect after restarting and can cause visual bugs.");
 			Content.Add(warning);

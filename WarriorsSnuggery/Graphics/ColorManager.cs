@@ -45,6 +45,14 @@ namespace WarriorsSnuggery.Graphics
 			fullscreen_rect?.SetScale(WindowInfo.Ratio);
 		}
 
+		public static void DrawLineRect(CPos pos, CPos radius, Color color)
+		{
+			DrawLine(pos - radius, pos + new CPos(-radius.X, radius.Y, 0), color);
+			DrawLine(pos - radius, pos + new CPos(radius.X, -radius.Y, 0), color);
+			DrawLine(pos - new CPos(-radius.X, radius.Y, 0), pos + radius, color);
+			DrawLine(pos - new CPos(radius.X, -radius.Y, 0), pos + radius, color);
+		}
+
 		public static void DrawLine(CPos start, CPos end, Color color)
 		{
 			var s = (start - end).FlatDist / 1024f;

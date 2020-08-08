@@ -43,19 +43,20 @@ namespace WarriorsSnuggery.UI
 
 		readonly BatchRenderable renderable;
 		readonly Action action;
-		protected readonly MPos size;
 
 		protected readonly Tooltip tooltip;
 
-		public PanelItem(BatchRenderable renderable, MPos size, string title, string[] text, Action action)
+		public PanelItem(BatchRenderable renderable, MPos bounds, string title, string[] text, Action action)
 		{
 			var pos = CPos.Zero;
 
 			tooltip = new Tooltip(pos, title, text);
 			this.renderable = renderable;
 			this.action = action;
-			this.size = size;
 			base.Position = pos;
+
+			Bounds = bounds;
+			SelectableBounds = bounds;
 		}
 
 		public virtual void SetColor(Color color)
@@ -73,7 +74,7 @@ namespace WarriorsSnuggery.UI
 			if (!Visible)
 				return;
 
-			CheckMouse(size.X, size.Y);
+			CheckMouse();
 
 			if (ContainsMouse)
 			{

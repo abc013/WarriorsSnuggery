@@ -1,3 +1,4 @@
+using OpenToolkit.Graphics.OpenGL;
 using OpenToolkit.Mathematics;
 using System.Collections.Generic;
 using WarriorsSnuggery.Graphics;
@@ -10,7 +11,8 @@ namespace WarriorsSnuggery
 
 		static Matrix4 matrix;
 
-		public static BatchRenderer BatchRenderer = new BatchRenderer();
+		public static readonly BatchRenderer BatchRenderer = new BatchRenderer();
+		public static readonly BatchRenderer DebugRenderer = new BatchRenderer();
 
 		static readonly List<IRenderable> beforeRender = new List<IRenderable>();
 		static readonly List<IRenderable> afterRender = new List<IRenderable>();
@@ -20,15 +22,19 @@ namespace WarriorsSnuggery
 		public static Cursor Cursor;
 		public static void Reset(Game game)
 		{
+			// This means first reset
 			if (Cursor == null)
 			{
 				Cursor = new Cursor();
+
 				BatchRenderer.SetTextures(SpriteManager.Sheets, SpriteManager.CurrentSheet);
+				DebugRenderer.SetTextures(new[] { 0 });
 			}
 
 			Cursor.Current = CursorType.DEFAULT;
 			UIRenderer.game = game;
 			BatchRenderer.Clear();
+
 			Update();
 
 			ClearRenderLists();
@@ -108,6 +114,18 @@ namespace WarriorsSnuggery
 
 			BatchRenderer.Render();
 			MasterRenderer.BatchRenderer = null;
+
+			if (Settings.EnableDebug)
+			{
+				DebugRenderer.SetCurrent();
+				MasterRenderer.PrimitiveType = PrimitiveType.Lines;
+
+				game.ScreenControl.DebugRender();
+
+				DebugRenderer.Render();
+				MasterRenderer.PrimitiveType = PrimitiveType.Triangles;
+				MasterRenderer.BatchRenderer = null;
+			}
 		}
 	}
 }

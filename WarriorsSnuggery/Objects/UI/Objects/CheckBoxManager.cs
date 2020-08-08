@@ -20,9 +20,9 @@ namespace WarriorsSnuggery.UI
 			return types[name];
 		}
 
-		public static CheckBox Create(string name, CPos position, bool ticked, Action<bool> onTicked = null)
+		public static CheckBox Create(string name, CPos position, bool ticked = false, Action<bool> onTicked = null)
 		{
-			return new CheckBox(position, ticked, GetType(name), onTicked);
+			return new CheckBox(position, GetType(name), ticked, onTicked);
 		}
 	}
 }

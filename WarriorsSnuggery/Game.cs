@@ -59,12 +59,12 @@ namespace WarriorsSnuggery
 
 		readonly MissionScriptBase script;
 
-		readonly TextLine tick;
-		readonly TextLine render;
-		readonly TextLine visibility;
-		readonly TextLine version;
+		readonly UITextLine tick;
+		readonly UITextLine render;
+		readonly UITextLine visibility;
+		readonly UITextLine version;
 
-		readonly TextLine infoText;
+		readonly UITextLine infoText;
 		int infoTextDuration;
 
 		public uint LocalTick;
@@ -134,15 +134,17 @@ namespace WarriorsSnuggery
 				waveController = new WaveController(this);
 
 			var corner = (int)(WindowInfo.UnitWidth / 2 * 1024);
-			version = new TextLine(new CPos(corner, 6192, 0), FontManager.Pixel16, TextLine.OffsetType.RIGHT);
-			version.SetColor(Color.Yellow);
+			version = new UITextLine(new CPos(corner, 6192, 0), FontManager.Pixel16, TextOffset.RIGHT)
+			{
+				Color = Color.Yellow
+			};
 			version.SetText(Settings.Version);
 
-			visibility = new TextLine(new CPos(corner, 6692, 0), FontManager.Pixel16, TextLine.OffsetType.RIGHT);
-			tick = new TextLine(new CPos(corner, 7692, 0), FontManager.Pixel16, TextLine.OffsetType.RIGHT);
-			render = new TextLine(new CPos(corner, 7192, 0), FontManager.Pixel16, TextLine.OffsetType.RIGHT);
+			visibility = new UITextLine(new CPos(corner, 6692, 0), FontManager.Pixel16, TextOffset.RIGHT);
+			tick = new UITextLine(new CPos(corner, 7692, 0), FontManager.Pixel16, TextOffset.RIGHT);
+			render = new UITextLine(new CPos(corner, 7192, 0), FontManager.Pixel16, TextOffset.RIGHT);
 
-			infoText = new TextLine(new CPos(-corner + 1024, 7192, 0), FontManager.Pixel16);
+			infoText = new UITextLine(new CPos(-corner + 1024, 7192, 0), FontManager.Pixel16);
 		}
 
 		public void AddInfoMessage(int duration, string text)

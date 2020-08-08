@@ -10,7 +10,7 @@ namespace WarriorsSnuggery.UI
 		readonly Game game;
 
 		readonly PanelList trophies;
-		readonly TextBlock information;
+		readonly UITextBlock information;
 
 		public TrophyScreen(Game game) : base("Trophy Collection")
 		{
@@ -35,9 +35,9 @@ namespace WarriorsSnuggery.UI
 			}
 			Content.Add(trophies);
 
-			Content.Add(new Panel(new CPos(0, 1024, 0), new Vector(8, 1, 0), PanelManager.Get("stone")));
+			Content.Add(new Panel(new CPos(0, 1024, 0), new MPos(8 * 1024, 1024), PanelManager.Get("stone")));
 
-			information = new TextBlock(new CPos(-7900, 512, 0), FontManager.Pixel16, TextLine.OffsetType.LEFT, "Select a trophy for further information.", "", "");
+			information = new UITextBlock(new CPos(-7900, 512, 0), FontManager.Pixel16, TextOffset.LEFT, "Select a trophy for further information.", "", "");
 			Content.Add(information);
 
 			Content.Add(new Button(new CPos(0, 6144, 0), "Resume", "wooden", () => { game.Pause(false); game.ScreenControl.ShowScreen(ScreenType.DEFAULT); }));

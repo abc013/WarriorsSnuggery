@@ -6,13 +6,7 @@ namespace WarriorsSnuggery.Objects
 {
 	public class TextLine : IPositionable, ITickRenderable
 	{
-		public enum OffsetType
-		{
-			RIGHT,
-			MIDDLE,
-			LEFT
-		}
-		readonly OffsetType offset;
+		readonly TextOffset offset;
 		readonly Font font;
 		readonly List<TextRenderable> chars = new List<TextRenderable>();
 
@@ -22,7 +16,7 @@ namespace WarriorsSnuggery.Objects
 
 		public virtual CPos Position
 		{
-			get { return position; }
+			get => position;
 			set
 			{
 				position = value;
@@ -34,7 +28,7 @@ namespace WarriorsSnuggery.Objects
 
 		public virtual VAngle Rotation
 		{
-			get { return rotation; }
+			get => rotation;
 			set
 			{
 				rotation = value;
@@ -47,7 +41,7 @@ namespace WarriorsSnuggery.Objects
 
 		public virtual float Scale
 		{
-			get { return scale; }
+			get => scale;
 			set
 			{
 				scale = value;
@@ -58,7 +52,7 @@ namespace WarriorsSnuggery.Objects
 		}
 		float scale = 1f;
 
-		public TextLine(CPos pos, Font font, OffsetType type = OffsetType.LEFT)
+		public TextLine(CPos pos, Font font, TextOffset type = TextOffset.LEFT)
 		{
 			Position = pos;
 			this.font = font;
@@ -209,12 +203,12 @@ namespace WarriorsSnuggery.Objects
 			int width = 0;
 			switch (offset)
 			{
-				case OffsetType.MIDDLE:
+				case TextOffset.MIDDLE:
 					for (int i = 0; i < (chars.Count - 1); i++)
 						width -= charWidth(String[i]);
 					width /= 2;
 					break;
-				case OffsetType.RIGHT:
+				case TextOffset.RIGHT:
 					for (int i = 0; i < chars.Count - 1; i++)
 						width -= charWidth(String[i]);
 					break;

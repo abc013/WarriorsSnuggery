@@ -92,7 +92,7 @@ namespace WarriorsSnuggery.UI
 		readonly Button back;
 		readonly Button create;
 		readonly TextBox @new;
-		readonly TextLine warning;
+		readonly UITextLine warning;
 
 		public NewSaveGameScreen(Game game) : base("New Save")
 		{
@@ -101,10 +101,12 @@ namespace WarriorsSnuggery.UI
 
 			back = new Button(new CPos(4096, 6144, 0), "Back", "wooden", () => ActiveScreen = false);
 			create = new Button(new CPos(0, 6144, 0), "Save", "wooden", save);
-			@new = new TextBox(CPos.Zero, "Name", "wooden", 20, isPath: true);
-			@new.OnEnter = save;
+			@new = new TextBox(CPos.Zero, "Name", "wooden", 20, isPath: true)
+			{
+				OnEnter = save
+			};
 
-			warning = new TextLine(new CPos(0, 1024, 0), FontManager.Pixel16, TextLine.OffsetType.MIDDLE);
+			warning = new UITextLine(new CPos(0, 1024, 0), FontManager.Pixel16, TextOffset.MIDDLE);
 			warning.WriteText(Color.Red + "WARNING: " + Color.White + "You have to save over the just created save!");
 		}
 

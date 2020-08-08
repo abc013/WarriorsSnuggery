@@ -6,45 +6,39 @@ namespace WarriorsSnuggery.Objects
 	{
 		public CPos Position
 		{
-			get { return position; }
+			get => position;
 			set
 			{
 				position = value;
 
 				for (int i = 0; i < Lines.Length; i++)
-				{
 					Lines[i].Position = position + new CPos(0, (font.Gap + font.Height) * i, 0);
-				}
 			}
 		}
 		CPos position;
 
 		public VAngle Rotation
 		{
-			get { return rotation; }
+			get => rotation;
 			set
 			{
 				rotation = value;
 
 				for (int i = 0; i < Lines.Length; i++)
-				{
 					Lines[i].Rotation = rotation;
-				}
 			}
 		}
 		VAngle rotation;
 
 		public float Scale
 		{
-			get { return scale; }
+			get => scale;
 			set
 			{
 				scale = value;
 
 				for (int i = 0; i < Lines.Length; i++)
-				{
 					Lines[i].Scale = scale;
-				}
 			}
 		}
 		float scale = 1f;
@@ -52,7 +46,7 @@ namespace WarriorsSnuggery.Objects
 		readonly Font font;
 		public readonly TextLine[] Lines = new TextLine[0];
 
-		public TextBlock(CPos position, Font font, TextLine.OffsetType type, params string[] text)
+		public TextBlock(CPos position, Font font, TextOffset offset, params string[] text)
 		{
 			Position = position;
 			this.font = font;
@@ -60,7 +54,7 @@ namespace WarriorsSnuggery.Objects
 
 			for (int i = 0; i < text.Length; i++)
 			{
-				Lines[i] = new TextLine(position + new CPos(0, (font.Gap + font.Height) * i, 0), font, type);
+				Lines[i] = new TextLine(position + new CPos(0, (font.Gap + font.Height) * i, 0), font, offset);
 				Lines[i].WriteText(text[i]);
 			}
 		}

@@ -17,7 +17,7 @@ namespace WarriorsSnuggery.Graphics
 			var y = texture.Y / (float)Settings.SheetSize + Settings.SheetHalfPixel;
 			var w = (texture.X + texture.Width) / (float)Settings.SheetSize - Settings.SheetHalfPixel;
 			var h = (texture.Y + texture.Height) / (float)Settings.SheetSize - Settings.SheetHalfPixel;
-			var scale = texture.Height / 48f;
+			var scale = texture.Height * MasterRenderer.PixelMultiplier / 2;
 			var correction = texture.Width / (float)texture.Height;
 			var color4 = Color.White.ToColor4();
 			var id = SpriteManager.SheetIndex(texture.SheetID);
@@ -55,7 +55,14 @@ namespace WarriorsSnuggery.Graphics
 			return vertices;
 		}
 
-		public static Vertex[] UIPlane(Texture texture, Color color, Vector size)
+		public static Vertex[] UIPanel(Texture texture, Color color, MPos bounds)
+		{
+			Vector size = new Vector(bounds.X / (1024f), bounds.Y / (1024f), 0);
+
+			return UIPanel(texture, color, size);
+		}
+
+		public static Vertex[] UIPanel(Texture texture, Color color, Vector size)
 		{
 			var countX = (int)Math.Ceiling(size.X);
 			var countY = (int)Math.Ceiling(size.Y);
@@ -71,7 +78,7 @@ namespace WarriorsSnuggery.Graphics
 					var scaleY = Math.Min(1f, size.Y - y);
 					var lSize = new Vector(scaleX, scaleY, 0);
 					var lOffset = sOffset + new Vector(x * 2, y * 2, 0);
-					Array.Copy(uiPlanePart(texture, color, lOffset, lSize), 0, vertices, index, 6);
+					Array.Copy(uiPanelPiece(texture, color, lOffset, lSize), 0, vertices, index, 6);
 					index += 6;
 				}
 			}
@@ -79,7 +86,7 @@ namespace WarriorsSnuggery.Graphics
 			return vertices;
 		}
 
-		static Vertex[] uiPlanePart(Texture texture, Color color, Vector offset, Vector size)
+		static Vertex[] uiPanelPiece(Texture texture, Color color, Vector offset, Vector size)
 		{
 			var x = texture.X / (float)Settings.SheetSize + Settings.SheetHalfPixel;
 			var y = texture.Y / (float)Settings.SheetSize + Settings.SheetHalfPixel;

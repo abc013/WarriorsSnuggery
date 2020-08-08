@@ -1,6 +1,5 @@
 ﻿using System;
 using WarriorsSnuggery.Graphics;
-using WarriorsSnuggery.Objects;
 
 namespace WarriorsSnuggery.UI
 {
@@ -22,9 +21,9 @@ namespace WarriorsSnuggery.UI
 		public readonly GameStatistics Stats;
 		public bool Selected;
 
-		readonly TextLine name;
-		readonly TextLine score;
-		readonly TextLine level;
+		readonly UITextLine name;
+		readonly UITextLine score;
+		readonly UITextLine level;
 
 		public GameSaveItem(GameStatistics stats, int width, Action action) : base(new BatchObject(UITextureManager.Get("UI_save")[0], Color.White), new MPos(width, 1024), stats.Name, new[] { Color.Grey + "Difficulty: " + stats.Difficulty, Color.Grey + "Money: " + stats.Money }, action)
 		{
@@ -33,16 +32,18 @@ namespace WarriorsSnuggery.UI
 			Stats = stats;
 			Scale *= 2;
 			
-			name = new TextLine(pos - new CPos(3072, 512, 0), FontManager.Pixel16);
+			name = new UITextLine(pos - new CPos(3072, 512, 0), FontManager.Pixel16);
 			name.SetText(stats.Name);
 
-			score = new TextLine(pos - new CPos(3072, 0, 0), FontManager.Pixel16);
-			score.SetColor(Color.Yellow);
+			score = new UITextLine(pos - new CPos(3072, 0, 0), FontManager.Pixel16)
+			{
+				Color = Color.Yellow
+			};
 			score.SetText(stats.CalculateScore());
 
-			level = new TextLine(pos - new CPos(-1152, 0, 0), FontManager.Papyrus24);
+			level = new UITextLine(pos - new CPos(-1152, 0, 0), FontManager.Papyrus24);
 			if (stats.Level >= stats.FinalLevel)
-				level.SetColor(new Color(0, 200, 0));
+				level.Color = new Color(0, 200, 0);
 			level.SetText(stats.Level + "/" + stats.FinalLevel);
 			level.Scale = 1.4f;
 		}

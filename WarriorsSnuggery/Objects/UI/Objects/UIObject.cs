@@ -1,4 +1,6 @@
-﻿namespace WarriorsSnuggery.UI
+﻿using WarriorsSnuggery.Graphics;
+
+namespace WarriorsSnuggery.UI
 {
 	public class UIObject : IPositionable, ITickRenderable
 	{
@@ -30,17 +32,33 @@
 		}
 		Color color = Color.White;
 
+		public virtual MPos Bounds { get; protected set; }
+
+		protected MPos SelectableBounds;
+
 		protected bool ContainsMouse;
 
 		public virtual void Tick() { }
 
 		public virtual void Render() { }
 
-		protected void CheckMouse(int width, int height)
+		public virtual void DebugRender()
 		{
-			var mousePosition = MouseInput.WindowPosition;
+			if (Bounds != MPos.Zero)
+				ColorManager.DrawLineRect(Position, new CPos(Bounds.X, Bounds.Y, 0), Color.Red);
 
-			ContainsMouse = mousePosition.X > Position.X - width && mousePosition.X < Position.X + width && mousePosition.Y > Position.Y - height && mousePosition.Y < Position.Y + height;
+			if (SelectableBounds != MPos.Zero)
+				ColorManager.DrawLineRect(Position, new CPos(SelectableBounds.X, SelectableBounds.Y, 0), Color.Blue);
+		}
+
+		protected void CheckMouse()
+		{
+			var w = SelectableBounds.X;
+			var h = SelectableBounds.Y;
+
+			var mouse = MouseInput.WindowPosition;
+
+			ContainsMouse = mouse.X > Position.X - w && mouse.X < Position.X + w && mouse.Y > Position.Y - h && mouse.Y < Position.Y + h;
 		}
 	}
 }

@@ -19,14 +19,14 @@ namespace WarriorsSnuggery.UI
 		readonly CheckBox rasterizationBox;
 		readonly CheckBox isBot;
 		readonly TextBox team;
-		readonly TextLine wallText;
-		readonly TextLine rasterizationText;
-		readonly TextLine botText;
-		readonly TextLine teamText;
+		readonly UITextLine wallText;
+		readonly UITextLine rasterizationText;
+		readonly UITextLine botText;
+		readonly UITextLine teamText;
 
-		readonly TextLine mousePosition;
+		readonly UITextLine mousePosition;
 		readonly Button save;
-		readonly TextLine saved;
+		readonly UITextLine saved;
 		int savedTick;
 
 		readonly Game game;
@@ -50,11 +50,11 @@ namespace WarriorsSnuggery.UI
 			this.game = game;
 			Title.Position += new CPos(0, -7120, 0);
 
-			mousePosition = new TextLine(new CPos((int)(WindowInfo.UnitWidth * 512 - 1024), -7172, 0), FontManager.Pixel16, TextLine.OffsetType.RIGHT);
+			mousePosition = new UITextLine(new CPos((int)(WindowInfo.UnitWidth * 512 - 1024), -7172, 0), FontManager.Pixel16, TextOffset.RIGHT);
 			Content.Add(mousePosition);
 
 			save = new Button(new CPos((int)(WindowInfo.UnitWidth * 512 - 2048), -5120, 0), "Save", "wooden", savePiece);
-			saved = new TextLine(new CPos((int)(WindowInfo.UnitWidth * 512 - 2048), -5120, 0), FontManager.Pixel16, TextLine.OffsetType.MIDDLE);
+			saved = new UITextLine(new CPos((int)(WindowInfo.UnitWidth * 512 - 2048), -5120, 0), FontManager.Pixel16, TextOffset.MIDDLE);
 			saved.SetText("Save");
 
 			showTiles = CheckBoxCreator.Create("terrain_editor", new CPos((int)(WindowInfo.UnitWidth * 512 - 2496), -2536, 0), false, (b) => deselectBoxes(Selected.TILE));
@@ -92,12 +92,12 @@ namespace WarriorsSnuggery.UI
 				walls.Add(new PanelItem(new BatchObject(a.GetTexture(true, 0), Color.White), new MPos(512, 512), a.ID.ToString(), new string[0], () => wallSelected = a));
 
 			wallBox = CheckBoxCreator.Create("wooden", new CPos((int)(WindowInfo.UnitWidth * 512 - 2048), 6244, 0), false, (b) => horizontal = b);
-			wallText = new TextLine(new CPos((int)(WindowInfo.UnitWidth * 512 - 2048), 6756, 0), FontManager.Pixel16, TextLine.OffsetType.MIDDLE);
+			wallText = new UITextLine(new CPos((int)(WindowInfo.UnitWidth * 512 - 2048), 6756, 0), FontManager.Pixel16, TextOffset.MIDDLE);
 			wallText.SetText("place vertical");
-			rasterizationBox = CheckBoxCreator.Create("wooden", new CPos((int)(WindowInfo.UnitWidth * 512 - 2048), 6244, 0), false, (b) => { });
-			rasterizationText = new TextLine(new CPos((int)(WindowInfo.UnitWidth * 512 - 2048), 6756, 0), FontManager.Pixel16, TextLine.OffsetType.MIDDLE);
+			rasterizationBox = CheckBoxCreator.Create("wooden", new CPos((int)(WindowInfo.UnitWidth * 512 - 2048), 6244, 0));
+			rasterizationText = new UITextLine(new CPos((int)(WindowInfo.UnitWidth * 512 - 2048), 6756, 0), FontManager.Pixel16, TextOffset.MIDDLE);
 			rasterizationText.SetText("align to grid");
-			isBot = CheckBoxCreator.Create("wooden", new CPos((int)((WindowInfo.UnitWidth * 512) - 1024), -4196, 0), false, (b) => { });
+			isBot = CheckBoxCreator.Create("wooden", new CPos((int)((WindowInfo.UnitWidth * 512) - 1024), -4196, 0));
 			team = new TextBox(new CPos((int)((WindowInfo.UnitWidth * 512) - 1024), -3372, 0), "0", "wooden", 1, true);
 			team.OnEnter = () =>
 			{
@@ -108,9 +108,9 @@ namespace WarriorsSnuggery.UI
 				if (num >= Settings.MaxTeams)
 					team.Text = "" + (Settings.MaxTeams - 1);
 			};
-			teamText = new TextLine(new CPos((int)(WindowInfo.UnitWidth * 512 - 1536), -3372, 0), FontManager.Pixel16, TextLine.OffsetType.RIGHT);
+			teamText = new UITextLine(new CPos((int)(WindowInfo.UnitWidth * 512 - 1536), -3372, 0), FontManager.Pixel16, TextOffset.RIGHT);
 			teamText.SetText("Team:");
-			botText = new TextLine(new CPos((int)(WindowInfo.UnitWidth * 512 - 1536), -4196, 0), FontManager.Pixel16, TextLine.OffsetType.RIGHT);
+			botText = new UITextLine(new CPos((int)(WindowInfo.UnitWidth * 512 - 1536), -4196, 0), FontManager.Pixel16, TextOffset.RIGHT);
 			botText.SetText("Is bot:");
 		}
 
@@ -146,7 +146,7 @@ namespace WarriorsSnuggery.UI
 			{
 				savedTick--;
 				saved.Scale = 1.7f - savedTick / 15f;
-				saved.SetColor(new Color(1f, 1f, 1f, savedTick / 15f));
+				saved.Color = new Color(1f, 1f, 1f, savedTick / 15f);
 				saved.Render();
 			}
 

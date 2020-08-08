@@ -12,9 +12,9 @@ namespace WarriorsSnuggery.UI
 			set => slider.Value = value;
 		}
 
-		public SliderBar(CPos position, int size, PanelType type, Action onChanged) : base(position, new Vector(size * MasterRenderer.PixelMultiplier / 2, MasterRenderer.PixelMultiplier, 0), type)
+		public SliderBar(CPos position, int length, PanelType type, Action onChanged) : base(position, new MPos(length / 2, (int)(1024 * MasterRenderer.PixelMultiplier)), type)
 		{
-			slider = new Slider(position, size, type, onChanged);
+			slider = new Slider(position, length, type, onChanged);
 		}
 
 		public override void Render()
@@ -22,6 +22,13 @@ namespace WarriorsSnuggery.UI
 			base.Render();
 
 			slider.Render();
+		}
+
+		public override void DebugRender()
+		{
+			base.DebugRender();
+
+			slider.DebugRender();
 		}
 
 		public override void Tick()
@@ -35,8 +42,7 @@ namespace WarriorsSnuggery.UI
 	public class Slider : Panel
 	{
 		readonly CPos centerPosition;
-		readonly int limit;
-		readonly MPos gameBounds;
+		readonly int length;
 
 		readonly Action onChanged;
 
@@ -47,21 +53,21 @@ namespace WarriorsSnuggery.UI
 
 		public float Value
 		{
-			get => (currentPosition / (float)limit + 1f) / 2;
+			get => (currentPosition / (float)length + 1f) / 2;
 			set
 			{
-				currentPosition = (int)((value - 0.5f) * limit) * 2;
+				currentPosition = (int)((value - 0.5f) * length) * 2;
 				Position = new CPos(centerPosition.X + currentPosition, centerPosition.Y, 0);
 				tooltip = new Tooltip(Position, Math.Round(Value, 1).ToString());
 			}
 		}
 
-		public Slider(CPos position, int limit, PanelType type, Action onChanged) : base(position, new Vector(MasterRenderer.PixelMultiplier, 4 * MasterRenderer.PixelMultiplier, 0), type)
+		public Slider(CPos position, int length, PanelType type, Action onChanged) : base(position, new MPos((int)(1024 * MasterRenderer.PixelMultiplier), (int)(1024 * 4 * MasterRenderer.PixelMultiplier)), type)
 		{
-			gameBounds = new MPos((int)(2 * MasterRenderer.PixelMultiplier * 1024), (int)(8 * MasterRenderer.PixelMultiplier * 1024));
+			SelectableBounds = Bounds;
 			centerPosition = position;
 			this.onChanged = onChanged;
-			this.limit = (int)(limit * MasterRenderer.PixelMultiplier * 512);
+			this.length = length / 2;
 			tooltip = new Tooltip(position, Math.Round(Value, 1).ToString());
 		}
 
@@ -69,7 +75,7 @@ namespace WarriorsSnuggery.UI
 		{
 			base.Tick();
 
-			CheckMouse(gameBounds.X, gameBounds.Y);
+			CheckMouse();
 
 			if (ContainsMouse)
 				UIRenderer.SetTooltip(tooltip);
@@ -84,11 +90,11 @@ namespace WarriorsSnuggery.UI
 			if (drag)
 			{
 				var xPos = MouseInput.WindowPosition.X;
-				if (xPos < centerPosition.X - limit)
-					xPos = centerPosition.X - limit;
+				if (xPos < centerPosition.X - length)
+					xPos = centerPosition.X - length;
 
-				if (xPos > centerPosition.X + limit)
-					xPos = centerPosition.X + limit;
+				if (xPos > centerPosition.X + length)
+					xPos = centerPosition.X + length;
 
 				currentPosition = xPos - centerPosition.X;
 				Position = new CPos(xPos, Position.Y, Position.Z);
@@ -96,6 +102,7 @@ namespace WarriorsSnuggery.UI
 				onChanged?.Invoke();
 				UIRenderer.DisableTooltip(tooltip);
 				tooltip = new Tooltip(Position, Math.Round(Value, 1).ToString());
+				UIRenderer.SetTooltip(tooltip);
 			}
 		}
 	}

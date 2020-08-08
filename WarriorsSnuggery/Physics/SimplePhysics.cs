@@ -156,10 +156,7 @@ namespace WarriorsSnuggery.Physics
 
 					break;
 				case Shape.RECTANGLE:
-					ColorManager.DrawLine(Position - new CPos(RadiusX, RadiusY, 0), Position + new CPos(-RadiusX, RadiusY, 0), Color.Magenta);
-					ColorManager.DrawLine(Position - new CPos(RadiusX, RadiusY, 0), Position + new CPos(RadiusX, -RadiusY, 0), Color.Magenta);
-					ColorManager.DrawLine(Position - new CPos(-RadiusX, RadiusY, 0), Position + new CPos(RadiusX, RadiusY, 0), Color.Magenta);
-					ColorManager.DrawLine(Position - new CPos(RadiusX, -RadiusY, 0), Position + new CPos(RadiusX, RadiusY, 0), Color.Magenta);
+					ColorManager.DrawLineRect(Position, new CPos(RadiusX, RadiusY, 0), Color.Magenta);
 					break;
 				case Shape.LINE_HORIZONTAL:
 					ColorManager.DrawLine(Position - new CPos(2 * RadiusX, RadiusY, 0), Position + new CPos(0, -RadiusY, 0), Color.Magenta);

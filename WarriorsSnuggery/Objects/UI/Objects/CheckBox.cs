@@ -45,17 +45,21 @@ namespace WarriorsSnuggery.UI
 		readonly CheckBoxType type;
 		readonly Action<bool> action;
 
-		public CheckBox(CPos pos, bool @checked, CheckBoxType type, Action<bool> onTicked)
+		public CheckBox(CPos pos, CheckBoxType type, bool @checked, Action<bool> onTicked)
 		{
 			Checked = @checked;
 			this.type = type;
+
+			SelectableBounds = new MPos(type.Width, type.Height);
+			Bounds = SelectableBounds;
+
 			action = onTicked;
 			Position = pos;
 		}
 
 		public override void Tick()
 		{
-			CheckMouse(type.Width, type.Height);
+			CheckMouse();
 
 			if (MouseInput.IsLeftClicked && ContainsMouse)
 			{

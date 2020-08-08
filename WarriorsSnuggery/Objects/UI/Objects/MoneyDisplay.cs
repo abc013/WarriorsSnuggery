@@ -1,5 +1,4 @@
 ﻿using WarriorsSnuggery.Graphics;
-using WarriorsSnuggery.Objects;
 
 namespace WarriorsSnuggery.UI
 {
@@ -40,7 +39,7 @@ namespace WarriorsSnuggery.UI
 
 		readonly Game game;
 		readonly BatchObject money;
-		readonly TextLine moneyText;
+		readonly UITextLine moneyText;
 		int cashCooldown;
 		int lastCash;
 
@@ -50,7 +49,7 @@ namespace WarriorsSnuggery.UI
 			money = new BatchObject(UITextureManager.Get("UI_money")[0], Color.White);
 			money.SetPosition(position);
 
-			moneyText = new TextLine(position + new CPos(1024, 0, 0), FontManager.Papyrus24);
+			moneyText = new UITextLine(position + new CPos(1024, 0, 0), FontManager.Papyrus24);
 			moneyText.SetText(game.Statistics.Money);
 		}
 

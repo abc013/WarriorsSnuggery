@@ -24,20 +24,18 @@ namespace WarriorsSnuggery.UI
 		public readonly bool OnlyNumbers;
 		public readonly bool IsPath;
 
-		readonly TextLine text;
-		readonly MPos gameBounds;
+		readonly UITextLine text;
 
 		public Action OnEnter;
 		public Action OnType;
 
-		public TextBox(CPos pos, string text, string type, int maximumLength = 10, bool onlyNumbers = false, bool isPath = false) : base(pos, new Vector((2 * margin + FontManager.Pixel16.Width * maximumLength) / 2048f, (2 * margin + FontManager.Pixel16.Height) / 2048f, 0), PanelManager.Get(type))
+		public TextBox(CPos pos, string text, string type, int maximumLength = 10, bool onlyNumbers = false, bool isPath = false) : base(pos, new MPos(margin + FontManager.Pixel16.Width * maximumLength / 2, margin + FontManager.Pixel16.Height / 2), PanelManager.Get(type))
 		{
-			gameBounds = new MPos((FontManager.Pixel16.Width * maximumLength) / 2 + margin, FontManager.Pixel16.Height / 2 + margin);
 			realText = text;
 			MaximumLength = maximumLength;
 			OnlyNumbers = onlyNumbers;
 			IsPath = isPath;
-			this.text = new TextLine(pos + new CPos(128, 0, 0), FontManager.Pixel16, Objects.TextLine.OffsetType.MIDDLE);
+			this.text = new UITextLine(pos + new CPos(128, 0, 0), FontManager.Pixel16, TextOffset.MIDDLE);
 			this.text.SetText(text);
 		}
 
@@ -50,7 +48,7 @@ namespace WarriorsSnuggery.UI
 
 		public override void Tick()
 		{
-			CheckMouse(gameBounds.X, gameBounds.Y);
+			CheckMouse();
 			if (ContainsMouse && MouseInput.IsLeftClicked)
 				Selected = true;
 			else if (MouseInput.IsLeftClicked)

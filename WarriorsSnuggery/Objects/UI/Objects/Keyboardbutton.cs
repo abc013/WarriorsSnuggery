@@ -6,7 +6,10 @@ namespace WarriorsSnuggery.UI
 {
 	public class KeyboardButton : Panel
 	{
-		readonly TextLine keyDisplay;
+		const int width = 1024;
+		const int height = 256;
+
+		readonly UITextLine keyDisplay;
 
 		int blinkTick;
 
@@ -14,13 +17,18 @@ namespace WarriorsSnuggery.UI
 
 		public Key Key;
 
-		public KeyboardButton(CPos position, Key key, Color color, PanelType type) : base(position, new Vector(1.5f, 0.25f, 0), type)
+		public KeyboardButton(CPos position, Key key, Color color, PanelType type) : base(position, new MPos(width + 512, height), type)
 		{
 			Key = key;
 
-			keyDisplay = new TextLine(position, FontManager.Pixel16, TextLine.OffsetType.MIDDLE);
-			keyDisplay.SetColor(color);
+			keyDisplay = new UITextLine(position, FontManager.Pixel16, TextOffset.MIDDLE)
+			{
+				Color = color
+			};
 			keyDisplay.SetText(key);
+
+			Bounds = new MPos(width + 512, height);
+			SelectableBounds = new MPos(width, height);
 		}
 
 		public override void Render()
@@ -34,9 +42,7 @@ namespace WarriorsSnuggery.UI
 		{
 			base.Tick();
 
-			const int width = 1024;
-			const int height = 256;
-			CheckMouse(width, height);
+			CheckMouse();
 
 			if (ContainsMouse && MouseInput.IsLeftClicked)
 				Selected = true;

@@ -8,14 +8,12 @@ namespace WarriorsSnuggery.UI
 	{
 		const int margin = 64;
 
-		readonly TextLine text;
+		readonly UITextLine text;
 		readonly Action action;
-		readonly MPos gameBounds;
 
-		public Button(CPos pos, string text, string type, Action action) : base(pos, new Vector((2 * margin + FontManager.Pixel16.Width * text.Length) / 2048f, (2 * margin + FontManager.Pixel16.Height) / 2048f, 0), PanelManager.Get(type))
+		public Button(CPos pos, string text, string type, Action action) : base(pos, new MPos(margin + FontManager.Pixel16.Width * text.Length / 2, margin + FontManager.Pixel16.Height / 2), PanelManager.Get(type))
 		{
-			gameBounds = new MPos(FontManager.Pixel16.Width * text.Length / 2 + margin, FontManager.Pixel16.Height / 2 + margin);
-			this.text = new TextLine(pos + new CPos(margin, 0, 0), FontManager.Pixel16, TextLine.OffsetType.MIDDLE);
+			this.text = new UITextLine(pos + new CPos(margin, 0, 0), FontManager.Pixel16, TextOffset.MIDDLE);
 			this.text.WriteText(text);
 			this.action = action;
 		}
@@ -46,7 +44,7 @@ namespace WarriorsSnuggery.UI
 		{
 			base.Tick();
 
-			CheckMouse(gameBounds.X, gameBounds.Y);
+			CheckMouse();
 
 			if (MouseInput.IsLeftClicked && ContainsMouse && action != null)
 				action();

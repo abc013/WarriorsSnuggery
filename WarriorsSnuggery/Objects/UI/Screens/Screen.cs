@@ -6,15 +6,15 @@ namespace WarriorsSnuggery.UI
 {
 	public abstract class Screen : ITickRenderable
 	{
-		protected readonly TextLine Title;
+		protected readonly UITextLine Title;
 
-		protected readonly List<ITickRenderable> Content = new List<ITickRenderable>();
+		protected readonly List<UIObject> Content = new List<UIObject>();
 
 		readonly Color darkness;
 
 		public Screen(string title, int darkness = 128)
 		{
-			Title = new TextLine(CPos.Zero, FontManager.Papyrus24, TextLine.OffsetType.MIDDLE);
+			Title = new UITextLine(CPos.Zero, FontManager.Papyrus24, TextOffset.MIDDLE);
 			Title.SetText(title);
 			Title.Scale = 1.2f;
 
@@ -43,6 +43,12 @@ namespace WarriorsSnuggery.UI
 
 			foreach (var content in Content)
 				content.Render();
+		}
+
+		public virtual void DebugRender()
+		{
+			foreach (var content in Content)
+				content.DebugRender();
 		}
 	}
 }

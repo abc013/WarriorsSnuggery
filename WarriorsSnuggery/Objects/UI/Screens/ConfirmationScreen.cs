@@ -6,7 +6,7 @@ namespace WarriorsSnuggery.UI
 {
 	public class ConfirmationScreen : Screen
 	{
-		readonly TextLine text;
+		readonly UITextLine text;
 
 		Action onDecline;
 		Action onAgree;
@@ -17,7 +17,7 @@ namespace WarriorsSnuggery.UI
 		{
 			Title.Position = new CPos(0, -2048, 0);
 
-			text = new TextLine(CPos.Zero, FontManager.Pixel16, TextLine.OffsetType.MIDDLE);
+			text = new UITextLine(CPos.Zero, FontManager.Pixel16, TextOffset.MIDDLE);
 			Content.Add(text);
 		}
 

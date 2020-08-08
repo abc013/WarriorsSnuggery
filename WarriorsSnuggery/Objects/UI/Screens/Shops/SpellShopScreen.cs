@@ -21,7 +21,7 @@ namespace WarriorsSnuggery.UI
 
 			Content.Add(new Button(new CPos(0, 6144, 0), "Resume", "wooden", () => { game.Pause(false); game.ScreenControl.ShowScreen(ScreenType.DEFAULT); }));
 
-			Content.Add(new Panel(new CPos(0, 256, 0), new Vector(8f, 3f, 0), PanelManager.Get("wooden")));
+			Content.Add(new Panel(new CPos(0, 256, 0), new MPos(8 * 1024, 3 * 1024), PanelManager.Get("wooden")));
 
 			money = new MoneyDisplay(game, new CPos(-(int)(WindowInfo.UnitWidth / 2 * 1024) + 1024, 7192, 0));
 
@@ -98,7 +98,7 @@ namespace WarriorsSnuggery.UI
 		bool mouseOnItem;
 		bool available;
 
-		public SpellNode(CPos position, SpellTreeNode node, Game game, SpellShopScreen screen) : base(position, new Vector(8 * MasterRenderer.PixelMultiplier, 8 * MasterRenderer.PixelMultiplier, 0), PanelManager.Get("stone"))
+		public SpellNode(CPos position, SpellTreeNode node, Game game, SpellShopScreen screen) : base(position, new MPos((int)(1024 * 8 * MasterRenderer.PixelMultiplier), (int)(1024 * 8 * MasterRenderer.PixelMultiplier)), PanelManager.Get("stone"))
 		{
 			this.node = node;
 			this.game = game;

@@ -52,25 +52,30 @@ namespace WarriorsSnuggery.UI
 			}
 		}
 
-		public virtual MPos Bounds { get; private set; }
-
 		readonly BatchObject background;
 		readonly BatchObject border;
 		public readonly BatchObject Highlight;
 
 		public bool HighlightVisible;
 
-		public Panel(CPos position, Vector bounds, PanelType type) : this(position, bounds, type, type.Background2 != null ? new BatchObject(Mesh.UIPlane(type.Background2, Color.White, bounds), Color.White) : null) { }
-
-		public Panel(CPos position, Vector bounds, PanelType type, BatchObject background2)
+		public Panel(CPos position, MPos bounds, PanelType type) : this(position, bounds, type, null)
 		{
-			background = new BatchObject(Mesh.UIPlane(type.Background, Color.White, bounds), Color.White);
-			border = new BatchObject(Mesh.UIPlane(type.Border, Color.White, bounds + new Vector(type.BorderWidth, type.BorderWidth, 0)), Color.White);
+			if (type.Background2 != null)
+			{
+				Highlight = new BatchObject(Mesh.UIPanel(type.Background2, Color.White, bounds), Color.White);
+				Highlight.SetPosition(Position);
+			}
+		}
 
-			if (background2 != null)
-				Highlight = background2;
+		public Panel(CPos position, MPos bounds, PanelType type, BatchObject background2)
+		{
+			background = new BatchObject(Mesh.UIPanel(type.Background, Color.White, bounds), Color.White);
+			border = new BatchObject(Mesh.UIPanel(type.Border, Color.White, bounds + new MPos((int)(type.BorderWidth * 1024), (int)(type.BorderWidth * 1024))), Color.White);
 
-			Bounds = new MPos((int)((bounds.X + type.BorderWidth) * MasterRenderer.PixelMultiplier * 512), (int)((bounds.Y + type.BorderWidth) * MasterRenderer.PixelMultiplier * 512));
+			Highlight = background2;
+
+			Bounds = new MPos(bounds.X + (int)(type.BorderWidth * 1024), bounds.Y + (int)(type.BorderWidth * 1024));
+			SelectableBounds = bounds;
 
 			Position = position;
 		}
@@ -83,7 +88,5 @@ namespace WarriorsSnuggery.UI
 			if (HighlightVisible && Highlight != null)
 				Highlight.PushToBatchRenderer();
 		}
-
-		public override void Tick() { }
 	}
 }

@@ -113,10 +113,10 @@ namespace WarriorsSnuggery
 			BatchRenderer.Render();
 			MasterRenderer.BatchRenderer = null;
 
-			DebugRenderer.SetCurrent();
-			MasterRenderer.PrimitiveType = PrimitiveType.Lines;
 			if (Settings.DeveloperMode)
 			{
+				DebugRenderer.SetCurrent();
+				MasterRenderer.PrimitiveType = PrimitiveType.Lines;
 				foreach (var sector in world.PhysicsLayer.Sectors)
 					sector.RenderDebug();
 
@@ -125,10 +125,11 @@ namespace WarriorsSnuggery
 					if (wall != null)
 						wall.Physics.RenderDebug();
 				}
+
+				DebugRenderer.Render();
+				MasterRenderer.BatchRenderer = null;
+				MasterRenderer.PrimitiveType = PrimitiveType.Triangles;
 			}
-			DebugRenderer.Render();
-			MasterRenderer.BatchRenderer = null;
-			MasterRenderer.PrimitiveType = PrimitiveType.Triangles;
 
 			Ambient = world.Map.Type.Ambient;
 		}

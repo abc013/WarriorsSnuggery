@@ -83,7 +83,7 @@ namespace WarriorsSnuggery.UI
 			Content.Add(new Button(new CPos(4096, 6144, 0), "Cancel", "wooden", () => { ActiveScreen = false; }));
 			Content.Add(new Button(new CPos(-4096, 6144, 0), "Create", "wooden", () => { create(); }));
 
-			var size = new TextLine(new CPos(0, -1024, 0), FontManager.Pixel16, TextLine.OffsetType.MIDDLE);
+			var size = new UITextLine(new CPos(0, -1024, 0), FontManager.Pixel16, TextOffset.MIDDLE);
 			size.SetText("Size of Piece");
 			Content.Add(size);
 
@@ -94,8 +94,10 @@ namespace WarriorsSnuggery.UI
 			name = new TextBox(new CPos(0, 1536, 0), "unnamed piece", "wooden", 20, isPath: true);
 			Content.Add(name);
 
-			var warning = new TextLine(new CPos(0, 2548, 0), FontManager.Pixel16, TextLine.OffsetType.MIDDLE);
-			warning.SetColor(Color.Red);
+			var warning = new UITextLine(new CPos(0, 2548, 0), FontManager.Pixel16, TextOffset.MIDDLE)
+			{
+				Color = Color.Red
+			};
 			warning.SetText("Warning: by using an name for an already existing map, you override it!");
 			Content.Add(warning);
 		}

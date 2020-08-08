@@ -174,6 +174,14 @@ namespace WarriorsSnuggery.UI
 			Focused.Render();
 		}
 
+		public void DebugRender()
+		{
+			if (Focused == null)
+				return;
+
+			Focused.DebugRender();
+		}
+
 		public void Tick()
 		{
 			if (Focused == null)

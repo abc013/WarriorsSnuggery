@@ -34,7 +34,7 @@ namespace WarriorsSnuggery
 
 			this.title = new TextLine(CPos.Zero, font);
 			this.title.WriteText(title);
-			this.text = new TextBlock(CPos.Zero, font, TextLine.OffsetType.LEFT, text);
+			this.text = new TextBlock(CPos.Zero, font, TextOffset.LEFT, text);
 			Position = pos;
 
 			var xChars = this.title.String.Length;
