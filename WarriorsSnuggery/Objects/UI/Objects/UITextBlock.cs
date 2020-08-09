@@ -41,5 +41,10 @@ namespace WarriorsSnuggery.UI
 		{
 			block.Render();
 		}
+
+		public override void DebugRender()
+		{
+
+		}
 	}
 }

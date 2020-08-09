@@ -6,12 +6,12 @@ namespace WarriorsSnuggery.UI
 {
 	public class Button : Panel
 	{
-		const int margin = 64;
+		const int margin = UIUtils.TextMargin;
 
 		readonly UITextLine text;
 		readonly Action action;
 
-		public Button(CPos pos, string text, string type, Action action) : base(pos, new MPos(margin + FontManager.Pixel16.Width * text.Length / 2, margin + FontManager.Pixel16.Height / 2), PanelManager.Get(type))
+		public Button(CPos pos, string text, string type, Action action) : base(pos, new MPos(margin + FontManager.Pixel16.GetWidth(text), margin + FontManager.Pixel16.Height / 2), PanelManager.Get(type))
 		{
 			this.text = new UITextLine(pos + new CPos(margin, 0, 0), FontManager.Pixel16, TextOffset.MIDDLE);
 			this.text.WriteText(text);

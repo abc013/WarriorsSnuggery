@@ -1,4 +1,5 @@
-﻿using WarriorsSnuggery.Graphics;
+﻿using System.Linq;
+using WarriorsSnuggery.Graphics;
 
 namespace WarriorsSnuggery.Objects
 {
@@ -46,17 +47,23 @@ namespace WarriorsSnuggery.Objects
 		readonly Font font;
 		public readonly TextLine[] Lines = new TextLine[0];
 
+		public MPos Bounds { get; private set; }
+
 		public TextBlock(CPos position, Font font, TextOffset offset, params string[] text)
 		{
-			Position = position;
 			this.font = font;
 			Lines = new TextLine[text.Length];
 
 			for (int i = 0; i < text.Length; i++)
 			{
-				Lines[i] = new TextLine(position + new CPos(0, (font.Gap + font.Height) * i, 0), font, offset);
+				Lines[i] = new TextLine(position, font, offset);
 				Lines[i].WriteText(text[i]);
 			}
+			Position = position;
+
+			var width = Lines.Length == 0 ? 0 : Lines.Max(s => font.GetWidth(s.Text));
+
+			Bounds = new MPos(width * 2, text.Length * (font.Height + font.Gap));
 		}
 
 		public void Render()

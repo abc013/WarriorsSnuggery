@@ -69,13 +69,14 @@ namespace WarriorsSnuggery.UI
 
 		public Panel(CPos position, MPos bounds, PanelType type, BatchObject background2)
 		{
+			SelectableBounds = bounds;
 			background = new BatchObject(Mesh.UIPanel(type.Background, Color.White, bounds), Color.White);
-			border = new BatchObject(Mesh.UIPanel(type.Border, Color.White, bounds + new MPos((int)(type.BorderWidth * 1024), (int)(type.BorderWidth * 1024))), Color.White);
+
+			Bounds = new MPos(bounds.X + type.BorderWidth, bounds.Y + type.BorderWidth);
+			border = new BatchObject(Mesh.UIPanel(type.Border, Color.White, Bounds), Color.White);
 
 			Highlight = background2;
 
-			Bounds = new MPos(bounds.X + (int)(type.BorderWidth * 1024), bounds.Y + (int)(type.BorderWidth * 1024));
-			SelectableBounds = bounds;
 
 			Position = position;
 		}

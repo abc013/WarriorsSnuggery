@@ -6,14 +6,12 @@ namespace WarriorsSnuggery
 {
 	public class Tooltip : IRenderable
 	{
-		const int margin = 64;
+		const int margin = 256;
+		const int lineWidth = 16;
 
 		public CPos Position
 		{
-			get
-			{
-				return position;
-			}
+			get => position;
 			set
 			{
 				position = value;
@@ -26,7 +24,7 @@ namespace WarriorsSnuggery
 		readonly TextLine title;
 		readonly TextBlock text;
 
-		readonly CPos size;
+		readonly MPos bounds;
 
 		public Tooltip(CPos pos, string title, params string[] text)
 		{
@@ -37,30 +35,30 @@ namespace WarriorsSnuggery
 			this.text = new TextBlock(CPos.Zero, font, TextOffset.LEFT, text);
 			Position = pos;
 
-			var xChars = this.title.String.Length;
+			var width = font.GetWidth(this.title.Text);
 			if (text.Length != 0)
 			{
-				var maxInText = this.text.Lines.Max(s => s.String.Length);
+				var textWidth = this.text.Lines.Max(s => font.GetWidth(s.Text));
 
-				if (maxInText > xChars)
-					xChars = maxInText;
+				if (textWidth > width)
+					width = textWidth;
 			}
 
-			size = new CPos((xChars + 1) * font.Width + 2 * margin, (text.Length + 1) * font.Height + 2 * margin, 0);
+			bounds = new MPos(width * 2, text.Length * (font.Height + font.Gap));
 		}
 
 		public void Render()
 		{
 			Position = MouseInput.WindowPosition + new CPos(256, 0, 0);
-			if (Position.X + size.X > WindowInfo.UnitWidth * 512)
-				Position -= new CPos(size.X, 0, 0);
+			if (Position.X + bounds.X > WindowInfo.UnitWidth * 512)
+				Position -= new CPos(bounds.X, 0, 0);
 
-			ColorManager.DrawRect(position - new CPos(-margin, margin, 0), position + size, new Color(0, 0, 0, 0.8f));
+			ColorManager.DrawRect(position - new CPos(margin, margin, 0), position + new CPos(bounds.X + 2 * margin, bounds.Y + 2 * margin, 0), new Color(0, 0, 0, 0.8f));
 			ColorManager.LineWidth = 3f;
-			ColorManager.DrawDot(position, Color.White);
-			ColorManager.DrawDot(position + new CPos(0, size.Y, 0), Color.White);
-			ColorManager.DrawDot(position + new CPos(size.X, 0, 0), Color.White);
-			ColorManager.DrawDot(position + new CPos(size.X, size.Y, 0), Color.White);
+			ColorManager.DrawRect(position - new CPos(margin + lineWidth, margin + lineWidth, 0), position - new CPos(margin - lineWidth, -(bounds.Y + 2 * margin + lineWidth), 0), Color.White);
+			ColorManager.DrawRect(position - new CPos(margin + lineWidth, margin + lineWidth, 0), position - new CPos(-(bounds.X + 2 * margin + lineWidth), margin - lineWidth, 0), Color.White);
+			ColorManager.DrawRect(position - new CPos(margin + lineWidth, -(bounds.Y + 2 * margin + lineWidth), 0), position - new CPos(-(bounds.X + 2 * margin + lineWidth), -(bounds.Y + 2 * margin - lineWidth), 0), Color.White);
+			ColorManager.DrawRect(position - new CPos(-(bounds.X + 2 * margin + lineWidth), margin + lineWidth, 0), position - new CPos(-(bounds.X + 2 * margin - lineWidth), -(bounds.Y + 2 * margin + lineWidth), 0), Color.White);
 			ColorManager.ResetLineWidth();
 			title.Render();
 			text.Render();
@@ -68,8 +66,8 @@ namespace WarriorsSnuggery
 
 		void setPosition()
 		{
-			title.Position = position + new CPos(font.Width, font.Height / 2, 0);
-			text.Position = position + new CPos(font.Width, font.Height / 2 * 3, 0);
+			title.Position = position + new CPos(0, font.Height / 2, 0);
+			text.Position = position + new CPos(0, 3 * font.Height / 2 + font.Gap, 0); 
 		}
 	}
 }

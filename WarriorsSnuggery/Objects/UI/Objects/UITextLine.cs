@@ -27,8 +27,8 @@ namespace WarriorsSnuggery.UI
 
 		public override Color Color
 		{
-			get => Color.White;
-			set => line.SetColor(value);
+			get => line.Color;
+			set => line.Color = value;
 		}
 
 		public UITextLine(CPos pos, Font font, TextOffset offset = TextOffset.LEFT)
@@ -39,21 +39,24 @@ namespace WarriorsSnuggery.UI
 		public void SetText(object text)
 		{
 			line.SetText(text);
+			Bounds = line.Bounds;
 		}
 
 		public void WriteText(object text, bool add = false, bool colored = true)
 		{
 			line.WriteText(text, add, colored);
+			Bounds = line.Bounds;
 		}
 
 		public void AddText(object text)
 		{
 			line.AddText(text);
+			Bounds = line.Bounds;
 		}
 
 		public void SetColor(Color color)
 		{
-			line.SetColor(color);
+			line.Color = color;
 		}
 
 		public override void Tick()
@@ -64,6 +67,21 @@ namespace WarriorsSnuggery.UI
 		public override void Render()
 		{
 			line.Render();
+		}
+
+		public override void DebugRender()
+		{
+			var position = Position;
+			if (line.Offset == TextOffset.LEFT)
+				position += new CPos(Bounds.X, 0, 0);
+			else if (line.Offset == TextOffset.RIGHT)
+				position += new CPos(-Bounds.X, 0, 0);
+
+			if (Bounds != MPos.Zero)
+				ColorManager.DrawLineRect(position, new CPos(Bounds.X, Bounds.Y, 0), Color.Red);
+
+			if (SelectableBounds != MPos.Zero)
+				ColorManager.DrawLineRect(position, new CPos(SelectableBounds.X, SelectableBounds.Y, 0), Color.Blue);
 		}
 	}
 }

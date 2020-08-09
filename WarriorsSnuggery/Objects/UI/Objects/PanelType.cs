@@ -7,9 +7,9 @@ namespace WarriorsSnuggery.UI
 		public readonly Texture Background;
 		public readonly Texture Background2;
 		public readonly Texture Border;
-		public readonly float BorderWidth;
+		public readonly int BorderWidth;
 
-		public PanelType(Texture background, Texture background2, Texture border, float borderWidth)
+		public PanelType(Texture background, Texture background2, Texture border, int borderWidth)
 		{
 			Background = background;
 			Background2 = background2;

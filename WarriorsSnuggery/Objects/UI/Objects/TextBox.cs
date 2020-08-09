@@ -7,7 +7,7 @@ namespace WarriorsSnuggery.UI
 {
 	public class TextBox : Panel
 	{
-		const int margin = 64;
+		const int margin = UIUtils.TextMargin;
 
 		public bool Selected;
 		public string Text
