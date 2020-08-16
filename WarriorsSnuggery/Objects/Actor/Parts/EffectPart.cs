@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
 using WarriorsSnuggery.Spells;
 
 namespace WarriorsSnuggery.Objects.Parts
@@ -27,14 +26,11 @@ namespace WarriorsSnuggery.Objects.Parts
 			}
 		}
 
-		public EffectPart(Actor self, List<MiniTextNode> nodes, uint id)
+		public EffectPart(Actor self, List<MiniTextNode> nodes)
 		{
 			this.self = self;
-			var parent = nodes.FirstOrDefault(n => n.Key == "EffectPart" && n.Value == id.ToString());
-			if (parent == null)
-				return;
 
-			foreach(var child in parent.Children)
+			foreach(var child in nodes)
 			{
 				switch (child.Key)
 				{
@@ -58,11 +54,11 @@ namespace WarriorsSnuggery.Objects.Parts
 			}
 		}
 
-		public List<string> Save(uint id)
+		public List<string> Save()
 		{
 			var list = new List<string>
 			{
-				id.ToString() + "=",
+				"EffectPart=",
 				"\tSpell=",
 				"\t\tCooldown=" + Spell.Cooldown,
 				"\t\tDuration=" + Spell.Duration,
@@ -71,15 +67,14 @@ namespace WarriorsSnuggery.Objects.Parts
 				"\t\tValue=" + Spell.Value
 			};
 
-			//if (Spell.Particles != null)
-			//{
-			//	if (Spell.Particles as spaw)
-			//}
+			// TODO: also save particles/ParticleSpawner
 
 			if (tick != 0)
 				list.Add("\tTick=" + tick);
+
 			if (particleTick != 0)
 				list.Add("\tParticleTick=" + particleTick);
+
 			if (!Active)
 				list.Add("\tActive=" + Active);
 

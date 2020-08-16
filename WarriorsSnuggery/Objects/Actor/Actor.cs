@@ -166,6 +166,10 @@ namespace WarriorsSnuggery.Objects
 			foreach (var part in Parts)
 				part.OnLoad(init.Nodes);
 
+			var effects = init.Nodes.Where(n => n.Key == "EffectPart");
+			foreach (var effect in effects)
+				Effects.Add(new EffectPart(this, effect.Children));
+
 			init = null;
 		}
 
@@ -181,6 +185,9 @@ namespace WarriorsSnuggery.Objects
 
 			foreach (var part in Parts)
 				list.AddRange(part.OnSave().GetSave());
+
+			foreach (var part in Effects)
+				list.AddRange(part.Save());
 
 			return list;
 		}
