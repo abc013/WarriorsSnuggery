@@ -86,7 +86,7 @@ namespace WarriorsSnuggery.Physics
 							if (end != invalid && t1 < closestT1)
 							{
 								var height = calculateHeight(end);
-								if (height <= physics.Height + physics.HeightRadius || height >= physics.Height - physics.HeightRadius)
+								if (height <= physics.Height + physics.HeightRadius && height >= physics.Height - physics.HeightRadius)
 								{
 									// HACK for damage: Don't hit the wall directly
 									closestIntersect = end - new CPos(sx * 4, sy * 4, 0);
