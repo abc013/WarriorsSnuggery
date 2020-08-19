@@ -88,8 +88,11 @@ namespace WarriorsSnuggery.Objects.Parts
 				}
 			}
 
-			var random = Program.SharedRandom;
-			variation = new Color((float)(random.NextDouble() - 0.5f) * info.ColorVariation.R, (float)(random.NextDouble() - 0.5f) * info.ColorVariation.G, (float)(random.NextDouble() - 0.5f) * info.ColorVariation.B, 0f);
+			if (info.ColorVariation != Color.Black)
+			{
+				var random = Program.SharedRandom;
+				variation = new Color((float)(random.NextDouble() - 0.5f) * info.ColorVariation.R, (float)(random.NextDouble() - 0.5f) * info.ColorVariation.G, (float)(random.NextDouble() - 0.5f) * info.ColorVariation.B, 0f);
+			}
 			cachedColor = info.Color + variation;
 		}
 

@@ -80,8 +80,11 @@ namespace WarriorsSnuggery.Objects.Parts
 				renderables[i] = new BatchSequence(anim, Color.White, info.Tick, startRandom: info.StartRandom);
 			}
 
-			var random = Program.SharedRandom;
-			variation = new Color((float)(random.NextDouble() - 0.5f) * info.ColorVariation.R, (float)(random.NextDouble() - 0.5f) * info.ColorVariation.G, (float)(random.NextDouble() - 0.5f) * info.ColorVariation.B, 0f);
+			if (info.ColorVariation != Color.Black)
+			{
+				var random = Program.SharedRandom;
+				variation = new Color((float)(random.NextDouble() - 0.5f) * info.ColorVariation.R, (float)(random.NextDouble() - 0.5f) * info.ColorVariation.G, (float)(random.NextDouble() - 0.5f) * info.ColorVariation.B, 0f);
+			}
 			cachedColor = info.Color + variation;
 		}
 
