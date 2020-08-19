@@ -1,5 +1,5 @@
 plains=
-	PlayModes=FIND_EXIT, KILL_ENEMIES
+	DefaultModes=FIND_EXIT, KILL_ENEMIES
 	ToLevel=10
 	TerrainGenerationBase=0
 		Terrain=0
@@ -69,7 +69,7 @@ plains=
 		PositionType=SPAWN
 
 stones=
-	PlayModes=FIND_EXIT, KILL_ENEMIES, WAVES
+	DefaultModes=FIND_EXIT, KILL_ENEMIES, WAVES
 	FromLevel=5
 	TerrainGenerationBase=0
 		Terrain=4
@@ -170,7 +170,7 @@ stones=
 		PositionType=SPAWN
 
 city1=
-	PlayModes=FIND_EXIT, KILL_ENEMIES, WAVES
+	DefaultModes=FIND_EXIT, KILL_ENEMIES, WAVES
 	FromLevel=2
 	TerrainGenerationBase=0
 		Terrain=0
