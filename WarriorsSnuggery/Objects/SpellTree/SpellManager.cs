@@ -7,13 +7,21 @@ namespace WarriorsSnuggery.Spells
 		readonly Game game;
 		public readonly SpellCaster[] spellCasters;
 
-		public SpellManager(Game game)
+		public SpellManager(Game game, GameStatistics stats)
 		{
 			this.game = game;
 
 			spellCasters = new SpellCaster[SpellTreeLoader.SpellTree.Count];
 			for (int i = 0; i < spellCasters.Length; i++)
-				spellCasters[i] = new SpellCaster(game, SpellTreeLoader.SpellTree[i]);
+			{
+				var values = (0f, 0f);
+
+				if (stats.SpellCasters.ContainsKey(i))
+					values = stats.SpellCasters[i];
+
+				spellCasters[i] = new SpellCaster(game, SpellTreeLoader.SpellTree[i], values);
+
+			}
 		}
 
 		public void Tick()
@@ -38,8 +46,8 @@ namespace WarriorsSnuggery.Spells
 		readonly Game game;
 		readonly SpellTreeNode node;
 
-		int recharge;
 		int duration;
+		int recharge;
 
 		public bool Activated;
 		public bool Recharging;
@@ -48,10 +56,20 @@ namespace WarriorsSnuggery.Spells
 		public float RechargeProgress => 1 - recharge / (float)node.Spell.Cooldown;
 		public bool Ready => !(Activated || Recharging);
 
-		public SpellCaster(Game game, SpellTreeNode node)
+		public SpellCaster(Game game, SpellTreeNode node, (float, float) values)
 		{
 			this.game = game;
 			this.node = node;
+
+			if (values.Item1 != 0 || values.Item2 != 0)
+			{
+				duration = (int)((1 - values.Item1) * node.Spell.Duration);
+				recharge = (int)((1 - values.Item2) * node.Spell.Cooldown);
+				if (duration > 0)
+					Activated = true;
+				else if (recharge > 0)
+					Recharging = true;
+			}
 		}
 
 		public void Tick()

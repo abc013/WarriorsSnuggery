@@ -27,6 +27,8 @@ namespace WarriorsSnuggery
 		public int Waves;
 		public List<bool[]> Shroud;
 
+		public readonly Dictionary<int, (float, float)> SpellCasters = new Dictionary<int, (float, float)>();
+
 		public readonly List<string> UnlockedSpells = new List<string>();
 		public readonly List<string> UnlockedActors = new List<string>();
 		public readonly List<string> UnlockedTrophies = new List<string>();
@@ -59,6 +61,8 @@ namespace WarriorsSnuggery
 			MapType = save.MapType;
 			Waves = save.Waves;
 			Shroud = save.Shroud;
+
+			SpellCasters = save.SpellCasters;
 
 			UnlockedSpells = save.UnlockedSpells.ToList();
 			UnlockedActors = save.UnlockedActors.ToList();
@@ -135,6 +139,20 @@ namespace WarriorsSnuggery
 				for (int i = 0; i < Settings.MaxTeams; i++)
 					writer.WriteLine("\t" + world.ShroudLayer.ToString(i));
 
+				writer.WriteLine("SpellCasters=");
+				for (int i = 0; i < world.Game.SpellManager.spellCasters.Length; i++)
+				{
+					var caster = world.Game.SpellManager.spellCasters[i];
+					if (caster.Ready)
+						continue;
+
+					writer.WriteLine("\t" + "Caster=" + i);
+					if (caster.RechargeProgress != 0f)
+						writer.WriteLine("\t\tRecharge=" + caster.RechargeProgress);
+					else
+						writer.WriteLine("\t\tRemaining=" + caster.RemainingDuration);
+				}
+
 				writer.WriteLine("Seed=" + Seed);
 				writer.WriteLine("Mana=" + Mana);
 				writer.WriteLine("Actor=" + Actor);
@@ -161,12 +179,7 @@ namespace WarriorsSnuggery
 				writer.Close();
 			}
 			if (withMap)
-				saveMap(world);
-		}
-
-		void saveMap(World world)
-		{
-			world.Save(FileExplorer.Saves, SaveName + "_map", true);
+				world.Save(FileExplorer.Saves, SaveName + "_map", true);
 		}
 
 		public void Delete()
@@ -280,6 +293,33 @@ namespace WarriorsSnuggery
 							else
 								throw new YamlUnknownNodeException(node2.Key, name + ".yaml");
 						}
+						break;
+					case "SpellCasters":
+
+						foreach (var node2 in node.Children)
+						{
+							var id = node2.Convert<int>();
+
+							var recharge = 0f;
+							var duration = 0f;
+							foreach (var node3 in node2.Children)
+							{
+								switch(node3.Key)
+								{
+									case "Recharge":
+										recharge = node3.Convert<float>();
+
+										break;
+									case "Remaining":
+										duration = node3.Convert<float>();
+
+										break;
+								}
+							}
+
+							statistic.SpellCasters.Add(id, (duration, recharge));
+						}
+
 						break;
 					case "UnlockedSpells":
 						foreach (var node2 in node.Children)

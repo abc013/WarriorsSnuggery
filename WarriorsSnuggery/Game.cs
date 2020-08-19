@@ -115,7 +115,7 @@ namespace WarriorsSnuggery
 			Log.WriteDebug("Editor: " + Editor);
 			Log.WriteDebug("GameType: " + Type);
 
-			SpellManager = new SpellManager(this);
+			SpellManager = new SpellManager(this, statistics);
 			ConditionManager = new ConditionManager(this);
 
 			ScreenControl = new ScreenControl(this);
