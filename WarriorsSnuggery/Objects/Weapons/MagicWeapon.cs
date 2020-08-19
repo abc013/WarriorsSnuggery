@@ -1,37 +1,39 @@
 ﻿using System;
 using System.Collections.Generic;
+using WarriorsSnuggery.Physics;
 
 namespace WarriorsSnuggery.Objects.Weapons
 {
 	class MagicWeapon : Weapon
 	{
 		readonly MagicProjectileType projectileType;
+		readonly RayPhysics rayPhysics;
 
 		Vector speed;
-		float angle;
+		Vector speedLeft;
 
 		public MagicWeapon(World world, WeaponType type, Target target, Actor origin, uint id) : base(world, type, target, origin, id)
 		{
 			projectileType = (MagicProjectileType)type.Projectile;
 
-			angle = (Position - TargetPosition).FlatAngle;
-			calculateSpeed(angle);
-
-			if ((Position - TargetPosition).Dist > type.MaxRange * RangeModifier)
-				TargetPosition = clampToMaxRange(Position, angle);
+			Angle = (Position - TargetPosition).FlatAngle;
+			calculateSpeed();
 
 			TargetPosition += getInaccuracy(projectileType.Inaccuracy);
+
+			rayPhysics = new RayPhysics(world);
 		}
 
 		public MagicWeapon(World world, WeaponInit init) : base(world, init)
 		{
 			projectileType = (MagicProjectileType)Type.Projectile;
 
-			angle = (Position - TargetPosition).FlatAngle;
-
 			speed = init.Convert("Speed", Vector.Zero);
+			speedLeft = init.Convert("SpeedLeft", Vector.Zero);
 			if (speed == Vector.Zero)
-				calculateSpeed(angle);
+				calculateSpeed();
+
+			rayPhysics = new RayPhysics(world);
 		}
 
 		public override void Tick()
@@ -49,7 +51,7 @@ namespace WarriorsSnuggery.Objects.Weapons
 				TargetPosition = Target.Position;
 				TargetHeight = Target.Height;
 				calculateAngle();
-				calculateSpeed(angle);
+				calculateSpeed();
 			}
 
 			Move();
@@ -63,28 +65,30 @@ namespace WarriorsSnuggery.Objects.Weapons
 			if (projectileType.Turbulence != 0)
 				calculateTurbulence();
 
-			var diff = (Position - TargetPosition).FlatAngle - angle;
+			var diff = (Position - TargetPosition).FlatAngle - Angle;
 
 			if (Math.Abs(diff) > projectileType.FloatTurnSpeed)
 				diff = Math.Sign(diff) * projectileType.FloatTurnSpeed;
 
-			angle += diff;
+			Angle += diff;
 		}
 
 		void calculateTurbulence()
 		{
 			var dist = (Position - TargetPosition).FlatDist;
 
-			angle += (float)(Program.SharedRandom.NextDouble() - 0.5f) * projectileType.Turbulence * dist / (Type.MaxRange * 1024f);
+			Angle += (float)(Program.SharedRandom.NextDouble() - 0.5f) * projectileType.Turbulence * dist / (Type.MaxRange * 1024f);
 		}
 
-		void calculateSpeed(float angle)
+		void calculateSpeed()
 		{
-			var x = (float)Math.Cos(angle) * projectileType.Speed;
-			var y = (float)Math.Sin(angle) * projectileType.Speed;
+			var x = (float)Math.Cos(Angle) * projectileType.Speed;
+			var y = (float)Math.Sin(Angle) * projectileType.Speed;
 
 			var zDiff = TargetHeight - Height;
 			var dDiff = (int)(Position - TargetPosition).FlatDist;
+			if (dDiff > Type.MaxRange)
+				dDiff = Type.MaxRange;
 
 			var angle2 = new CPos(-dDiff, -zDiff, 0).FlatAngle;
 			var z = (float)Math.Sin(angle2) * projectileType.Speed;
@@ -94,19 +98,31 @@ namespace WarriorsSnuggery.Objects.Weapons
 
 		public void Move()
 		{
-			var curSpeed = new CPos((int)speed.X, (int)speed.Y, (int)speed.Z);
-			Position = new CPos(Position.X + curSpeed.X, Position.Y + curSpeed.Y, Position.Z);
-			Physics.Position = Position;
-			Height += curSpeed.Z;
-			Physics.Height = Height;
+			var beforePos = Position;
+			var beforeHeight = Height;
+
+			var curSpeed = speed + speedLeft;
+			var x = (int)curSpeed.X;
+			var y = (int)curSpeed.Y;
+			var z = (int)curSpeed.Z;
+			DistanceTravelled += (int)new CPos(x, y, 0).FlatDist;
+
+			speedLeft = new Vector(curSpeed.X - x, curSpeed.Y - y, curSpeed.Z - z);
+
+			Position = new CPos(Position.X + x, Position.Y + y, Position.Z);
+			Height += z;
 
 			if (Height < 0 || !World.IsInWorld(Position))
 				Detonate(new Target(Position, 0));
 
-			World.PhysicsLayer.UpdateSectors(this, updateSectors: false);
+			rayPhysics.Start = beforePos;
+			rayPhysics.StartHeight = beforeHeight;
+			rayPhysics.Target = Position;
+			rayPhysics.TargetHeight = Height;
+			rayPhysics.CalculateEnd(new[] { Origin });
 
-			if (World.CheckCollision(this, Origin))
-				Detonate(new Target(Position, Height));
+			if ((beforePos - rayPhysics.End).Dist < (beforePos - Position).Dist)
+				Detonate(new Target(rayPhysics.End, rayPhysics.EndHeight));
 		}
 
 		public override List<string> Save()
@@ -114,7 +130,8 @@ namespace WarriorsSnuggery.Objects.Weapons
 			var list = base.Save();
 
 			list.Add("Speed=" + speed);
-			
+			list.Add("SpeedLeft=" + speedLeft);
+
 			return list;
 		}
 	}

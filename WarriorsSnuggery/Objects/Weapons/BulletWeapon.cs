@@ -17,18 +17,15 @@ namespace WarriorsSnuggery.Objects.Weapons
 			projectileType = (BulletProjectileType)type.Projectile;
 
 			var angle = (Position - TargetPosition).FlatAngle;
-			if (!projectileType.FlyToTarget || (Position - TargetPosition).Dist > type.MaxRange * RangeModifier)
-			{
-				TargetPosition = clampToMaxRange(Position, angle);
-				angle = (Position - TargetPosition).FlatAngle;
-			}
+
+			Angle = angle;
 
 			TargetPosition += getInaccuracy(projectileType.Inaccuracy);
 
-			calculateStartSpeed(angle);
+			calculateStartSpeed();
 
 			if (projectileType.OrientateToTarget)
-				Rotation = new VAngle(0, 0, angle);
+				Rotation = new VAngle(0, 0, Angle);
 
 			rayPhysics = new RayPhysics(world);
 		}
@@ -37,30 +34,30 @@ namespace WarriorsSnuggery.Objects.Weapons
 		{
 			projectileType = (BulletProjectileType)Type.Projectile;
 
-			var angle = (Position - TargetPosition).FlatAngle;
-
 			speed = init.Convert("Speed", Vector.Zero);
 			speedLeft = init.Convert("SpeedLeft", Vector.Zero);
 			if (speed == Vector.Zero)
-				calculateStartSpeed(angle);
+				calculateStartSpeed();
 
 			if (projectileType.OrientateToTarget)
-				Rotation = new VAngle(0, 0, angle);
+				Rotation = new VAngle(0, 0, Angle);
 
 			rayPhysics = new RayPhysics(world);
 		}
 
-		void calculateStartSpeed(float angle)
+		void calculateStartSpeed()
 		{
-			var x = (float)Math.Cos(angle) * projectileType.Speed;
-			var y = (float)Math.Sin(angle) * projectileType.Speed;
+			var x = (float)Math.Cos(Angle) * projectileType.Speed;
+			var y = (float)Math.Sin(Angle) * projectileType.Speed;
 
 			var zDiff = TargetHeight - Height;
 			var dDiff = (int)(Position - TargetPosition).FlatDist;
+			if (dDiff > Type.MaxRange)
+				dDiff = Type.MaxRange;
 
 			var angle2 = new CPos(-dDiff, -zDiff, 0).FlatAngle;
 			var z = (float)Math.Sin(angle2) * projectileType.Speed;
-			var plusZ = (dDiff / projectileType.Speed) * -projectileType.Force.Z / 2;
+			var plusZ = (int)((dDiff / (float)projectileType.Speed) * -projectileType.Force.Z / 2f);
 
 			speed = new Vector(x, y, z + plusZ);
 		}
@@ -90,6 +87,8 @@ namespace WarriorsSnuggery.Objects.Weapons
 			var x = (int)curSpeed.X;
 			var y = (int)curSpeed.Y;
 			var z = (int)curSpeed.Z;
+			DistanceTravelled += (int)new CPos(x, y, 0).FlatDist;
+
 			speedLeft = new Vector(curSpeed.X - x, curSpeed.Y - y, curSpeed.Z - z);
 
 			Position = new CPos(Position.X + x, Position.Y + y, Position.Z);

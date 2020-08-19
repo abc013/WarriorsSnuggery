@@ -12,6 +12,10 @@ namespace WarriorsSnuggery.Objects.Weapons
 
 		public readonly Actor Origin;
 		public readonly byte Team;
+
+		public float Angle;
+		public int DistanceTravelled;
+
 		public Target Target;
 		public CPos TargetPosition;
 		public int TargetHeight;
@@ -83,6 +87,9 @@ namespace WarriorsSnuggery.Objects.Weapons
 			else
 				Target = new Target(TargetActor);
 
+			Angle = init.Convert("Angle", 0f);
+			DistanceTravelled = init.Convert("DistanceTravelled", 0);
+
 			TargetPosition = init.Convert("TargetPosition", CPos.Zero);
 			TargetHeight = init.Convert("TargetHeight", 0);
 			
@@ -98,8 +105,11 @@ namespace WarriorsSnuggery.Objects.Weapons
 		{
 			base.Tick();
 
-			if (!World.Game.Editor && InRange(TargetPosition))
-				Detonate(new Target(TargetPosition, Height));
+			if (Height < 0 || !World.IsInWorld(Position))
+				Detonate(new Target(Position, 0));
+
+			if (!World.Game.Editor &&  DistanceTravelled >= Type.MaxRange)
+				Detonate(new Target(Position, Height));
 		}
 
 		public override void Render()
@@ -135,7 +145,7 @@ namespace WarriorsSnuggery.Objects.Weapons
 			return (Position - position).SquaredFlatDist <= range * range;
 		}
 
-		public virtual void Detonate(Target finalTarget, bool dispose = true, bool detonateOnce = false)
+		public virtual void Detonate(Target finalTarget, bool dispose = true)
 		{
 			if (Disposed)
 				return;
@@ -171,6 +181,11 @@ namespace WarriorsSnuggery.Objects.Weapons
 				list.Add("Origin=" + Origin.ID);
 			if (Target.Type == TargetType.ACTOR)
 				list.Add("TargetActor=" + Target.Actor.ID);
+
+			if (Angle != 0)
+				list.Add("Angle=" + Angle);
+			if (DistanceTravelled != 0)
+				list.Add("DistanceTravelled=" + DistanceTravelled);
 
 			list.Add("OriginalTargetPosition=" + Target.Position);
 			list.Add("OriginalTargetHeight=" + Target.Height);
