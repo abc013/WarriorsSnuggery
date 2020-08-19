@@ -29,7 +29,20 @@ namespace WarriorsSnuggery.Loader
 		{
 			var s = node.Value;
 
-			if (t == typeof(int))
+			if (t.IsEnum)
+			{
+				object @enum;
+				try
+				{
+					@enum = Enum.Parse(t, s.Trim(), true);
+				}
+				catch (Exception e)
+				{
+					throw new InvalidEnumConversionException(file, node, t, e);
+				}
+				return @enum;
+			}
+			else if (t == typeof(int))
 			{
 				if (int.TryParse(s, out var i) || s == "")
 					return i;
@@ -250,16 +263,17 @@ namespace WarriorsSnuggery.Loader
 			}
 			else if (t == typeof(Objects.Particles.ParticleSpawner))
 			{
+				var children = node.Children.ToArray();
 				switch (s)
 				{
 					case "Point":
-						return new Objects.Particles.AreaParticleSpawner(node.Children.ToArray());
+						return new Objects.Particles.AreaParticleSpawner(children);
 					case "Line":
-						return new Objects.Particles.LineParticleSpawner(node.Children.ToArray());
+						return new Objects.Particles.LineParticleSpawner(children);
 					case "Area":
-						return new Objects.Particles.AreaParticleSpawner(node.Children.ToArray());
+						return new Objects.Particles.AreaParticleSpawner(children);
 					case "List":
-						return new Objects.Particles.ListParticleSpawner(node.Children.ToArray());
+						return new Objects.Particles.ListParticleSpawner(children);
 				}
 			}
 			else if (t == typeof(Graphics.TextureInfo))
@@ -320,16 +334,17 @@ namespace WarriorsSnuggery.Loader
 			}
 			else if (t == typeof(Objects.Weapons.IProjectileType))
 			{
+				var children = node.Children.ToArray();
 				switch (s)
 				{
 					case "Bullet":
-						return new Objects.Weapons.BulletProjectileType(node.Children.ToArray());
+						return new Objects.Weapons.BulletProjectileType(children);
 					case "Magic":
-						return new Objects.Weapons.MagicProjectileType(node.Children.ToArray());
+						return new Objects.Weapons.MagicProjectileType(children);
 					case "Beam":
-						return new Objects.Weapons.BeamProjectileType(node.Children.ToArray());
+						return new Objects.Weapons.BeamProjectileType(children);
 					case "InstantHit":
-						return new Objects.Weapons.InstantHitProjectileType(node.Children.ToArray());
+						return new Objects.Weapons.InstantHitProjectileType(children);
 				}
 			}
 			else if (t == typeof(Objects.Weapons.IWarhead[]))
@@ -338,28 +353,29 @@ namespace WarriorsSnuggery.Loader
 				var i = 0;
 				foreach (var child in node.Children)
 				{
+					var children = child.Children.ToArray();
 					switch (child.Key)
 					{
 						case "Sound":
-							array[i++] = new Objects.Weapons.SoundWarhead(child.Children.ToArray());
+							array[i++] = new Objects.Weapons.SoundWarhead(children);
 							break;
 						case "Smudge":
-							array[i++] = new Objects.Weapons.SmudgeWarhead(child.Children.ToArray());
+							array[i++] = new Objects.Weapons.SmudgeWarhead(children);
 							break;
 						case "Damage":
-							array[i++] = new Objects.Weapons.DamageWarhead(child.Children.ToArray());
+							array[i++] = new Objects.Weapons.DamageWarhead(children);
 							break;
 						case "Particle":
-							array[i++] = new Objects.Weapons.ParticleWarhead(child.Children.ToArray());
+							array[i++] = new Objects.Weapons.ParticleWarhead(children);
 							break;
 						case "Actor":
-							array[i++] = new Objects.Weapons.ActorWarhead(child.Children.ToArray());
+							array[i++] = new Objects.Weapons.ActorWarhead(children);
 							break;
 						case "Spell":
-							array[i++] = new Objects.Weapons.SpellWarhead(child.Children.ToArray());
+							array[i++] = new Objects.Weapons.SpellWarhead(children);
 							break;
 						case "Force":
-							array[i++] = new Objects.Weapons.ForceWarhead(child.Children.ToArray());
+							array[i++] = new Objects.Weapons.ForceWarhead(children);
 							break;
 					}
 				}
@@ -405,19 +421,6 @@ namespace WarriorsSnuggery.Loader
 					convert[i] = Convert<Objects.Particles.ParticleSpawner>(file, node.Children[i]);
 
 				return convert;
-			}
-			else if (t.IsEnum)
-			{
-				object @enum;
-				try
-				{
-					@enum = Enum.Parse(t, s.Trim(), true);
-				}
-				catch (Exception e)
-				{
-					throw new InvalidEnumConversionException(file, node, t, e);
-				}
-				return @enum;
 			}
 
 			throw new InvalidConversionException(file, node, t);
