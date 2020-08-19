@@ -33,6 +33,12 @@ namespace WarriorsSnuggery.Objects.Parts
 		[Desc("Use Sprite as preview in e.g. the editor.")]
 		public readonly bool UseAsPreview;
 
+		[Desc("Color to multiply the sprite with.")]
+		public readonly Color Color = Color.White;
+
+		[Desc("Random Color to add to the sprite.", "Alpha will not be applied.")]
+		public readonly Color ColorVariation = Color.Black;
+
 		public override ActorPart Create(Actor self)
 		{
 			return new SpritePart(self, this);
@@ -50,7 +56,8 @@ namespace WarriorsSnuggery.Objects.Parts
 		readonly SpritePartInfo info;
 
 		readonly BatchRenderable[] renderables;
-		Color color = Color.White;
+		readonly Color variation;
+		Color cachedColor;
 
 		public SpritePart(Actor self, SpritePartInfo info) : base(self)
 		{
@@ -80,6 +87,10 @@ namespace WarriorsSnuggery.Objects.Parts
 					renderables[i] = new BatchObject(anim[0], Color.White);
 				}
 			}
+
+			var random = Program.SharedRandom;
+			variation = new Color((float)(random.NextDouble() - 0.5f) * info.ColorVariation.R, (float)(random.NextDouble() - 0.5f) * info.ColorVariation.G, (float)(random.NextDouble() - 0.5f) * info.ColorVariation.B, 0f);
+			cachedColor = info.Color + variation;
 		}
 
 		public override int FacingFromAngle(float angle)
@@ -115,14 +126,14 @@ namespace WarriorsSnuggery.Objects.Parts
 
 				self.Offset = info.Offset;
 				renderable.SetPosition(self.GraphicPosition);
-				renderable.SetColor(color);
+				renderable.SetColor(cachedColor);
 				renderable.PushToBatchRenderer();
 			}
 		}
 
 		public override void SetColor(Color color)
 		{
-			this.color = color;
+			cachedColor = color * (info.Color + variation);
 		}
 	}
 }

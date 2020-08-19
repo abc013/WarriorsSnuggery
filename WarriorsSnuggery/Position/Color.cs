@@ -29,6 +29,10 @@ namespace WarriorsSnuggery
 
 		public static Color operator -(Color lhs, Color rhs) { return new Color(lhs.R - rhs.R, lhs.G - rhs.G, lhs.B - rhs.B, lhs.A - rhs.A); }
 
+		public static Color operator *(Color lhs, Color rhs) { return new Color(lhs.R * rhs.R, lhs.G * rhs.G, lhs.B * rhs.B, lhs.A * rhs.A); }
+
+		public static Color operator /(Color lhs, Color rhs) { return new Color(lhs.R / rhs.R, lhs.G / rhs.G, lhs.B / rhs.B, lhs.A / rhs.A); }
+
 		public static implicit operator Color(System.Drawing.Color color)
 		{
 			return new Color(color.R, color.G, color.B, color.A);
