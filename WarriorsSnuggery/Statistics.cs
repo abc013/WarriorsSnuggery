@@ -207,7 +207,7 @@ namespace WarriorsSnuggery
 				writer.WriteLine("Difficulty=" + Difficulty);
 				writer.WriteLine("Hardcore=" + Hardcore);
 				writer.WriteLine("Money=" + Money);
-				writer.WriteLine("LevelAim=" + FinalLevel);
+				writer.WriteLine("FinalLevel=" + FinalLevel);
 				writer.WriteLine("MaxMana=" + MaxMana);
 				writer.WriteLine("Kills=" + Kills);
 				writer.WriteLine("Deaths=" + Deaths);
@@ -238,7 +238,7 @@ namespace WarriorsSnuggery
 				writer.WriteLine("Seed=" + Seed);
 				writer.WriteLine("Mana=" + Mana);
 				writer.WriteLine("Actor=" + Actor);
-				writer.WriteLine("\tHealth=" + Health);
+				writer.WriteLine("Health=" + Health);
 
 				writer.WriteLine("UnlockedSpells=");
 				foreach (var unlock in UnlockedSpells)
