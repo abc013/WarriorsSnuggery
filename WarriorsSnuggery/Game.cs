@@ -222,11 +222,11 @@ namespace WarriorsSnuggery
 				// party mode
 				if (Settings.PartyMode)
 				{
-					var sin1 = (float)Math.Sin(LocalTick / 8f) / 2 + 0.25f;
-					var sin2 = (float)Math.Sin(LocalTick / 8f + 2 * Math.PI / 3) / 2 + 0.25f;
-					var sin3 = (float)Math.Sin(LocalTick / 8f + 4 * Math.PI / 3) / 2 + 0.25f;
+					var sin1 = (float)Math.Sin(LocalTick / 8f) / 2 + 0.8f;
+					var sin2 = (float)Math.Sin(LocalTick / 8f + 2 * Math.PI / 3) / 2 + 0.8f;
+					var sin3 = (float)Math.Sin(LocalTick / 8f + 4 * Math.PI / 3) / 2 + 0.8f;
 
-					WorldRenderer.Ambient = new Color(sin1 * WorldRenderer.Ambient.R, sin2 * WorldRenderer.Ambient.R, sin3 * WorldRenderer.Ambient.R);
+					WorldRenderer.Ambient = new Color(sin1, sin2, sin3);
 				}
 
 				// camera input
