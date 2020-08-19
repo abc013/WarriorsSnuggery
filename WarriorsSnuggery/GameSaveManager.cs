@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.IO;
 
 namespace WarriorsSnuggery
 {
@@ -7,44 +6,37 @@ namespace WarriorsSnuggery
 	{
 		public static GameStatistics DefaultStatistic;
 
-		public static List<GameStatistics> Statistics = new List<GameStatistics>();
+		public static readonly List<GameStatistics> Statistics = new List<GameStatistics>();
 
 		public static void Load()
 		{
-			foreach (var file in Directory.GetFiles(FileExplorer.Saves))
+			foreach (var file in FileExplorer.FilesIn(FileExplorer.Saves))
 			{
-				if (!file.Replace(".yaml", "").EndsWith("_map")) //make sure that we don't add any maps
-					Statistics.Add(GameStatistics.LoadGameStatistic(file.Remove(0, file.LastIndexOf('\\') + 1).Replace(".yaml", "")));
+				if (!file.EndsWith("_map")) //make sure that we don't add any maps
+					Statistics.Add(new GameStatistics(file));
 			}
 		}
 
 		public static void Reload()
 		{
 			Statistics.Clear();
+
 			Load();
 		}
 
 		public static void Delete(GameStatistics save)
 		{
 			save.Delete();
+
 			Reload();
 		}
 
 		public static void SaveOnNewName(GameStatistics statistic, string name, Game game)
 		{
-			statistic.Update(game);
-			var stats = statistic.Copy();
-
-			stats.SetName(name);
-			stats.Save(game.World);
+			statistic.SetName(name);
+			statistic.Save(game.World);
 
 			Reload();
-		}
-
-		public static void Save(GameStatistics save, Game game)
-		{
-			save.Update(game);
-			save.Save(game.World);
 		}
 	}
 }

@@ -18,7 +18,6 @@ namespace WarriorsSnuggery.UI
 
 			if (game.Statistics.Hardcore)
 			{
-				game.Statistics.Save(game.World);
 				game.Statistics.Delete();
 				Content.Add(new Button(new CPos(0, 5120, 0), "Return to Main Menu", "wooden", () => GameController.CreateReturn(GameType.MAINMENU)));
 			}

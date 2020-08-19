@@ -55,7 +55,7 @@ namespace WarriorsSnuggery.UI
 			Content.Add(new Button(new CPos(4096, 6144, 0), "Proceed", "wooden", () =>
 			{
 				if (nameInput.Text != string.Empty)
-					GameController.CreateNew(GameStatistics.CreateGameStatistic((int)Math.Round(difficultyInput.Value * 10), hardcoreInput.Checked, nameInput.Text, int.Parse(seedInput.Text)));
+					GameController.CreateNew(new GameStatistics((int)Math.Round(difficultyInput.Value * 10), hardcoreInput.Checked, nameInput.Text, int.Parse(seedInput.Text)));
 			}));
 		}
 

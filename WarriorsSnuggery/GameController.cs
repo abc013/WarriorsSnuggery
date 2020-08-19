@@ -20,17 +20,17 @@ namespace WarriorsSnuggery
 
 			PieceManager.RefreshPieces();
 
-			MapCreator.LoadTypes(FileExplorer.Maps, "maps.yaml");
+			MapCreator.LoadMaps(FileExplorer.Maps, "maps.yaml");
 
 			GameSaveManager.Load();
-			GameSaveManager.DefaultStatistic = GameStatistics.LoadGameStatistic("DEFAULT");
+			GameSaveManager.DefaultStatistic = new GameStatistics("DEFAULT");
 
 			createFirst();
 		}
 
 		static void createFirst()
 		{
-			var map = Program.MapType != null ? MapCreator.GetType(Program.MapType) : MapCreator.FindMainMenuMap(0);
+			var map = Program.MapType != null ? MapCreator.GetType(Program.MapType) : MapCreator.FindMap(GameType.MAINMENU, 0);
 
 			game = new Game(new GameStatistics(GameSaveManager.DefaultStatistic), map);
 			game.Load();
@@ -46,13 +46,7 @@ namespace WarriorsSnuggery
 			game.Finish();
 			game.Dispose();
 
-			game = type switch
-			{
-				GameType.TUTORIAL => new Game(stats, MapCreator.FindTutorial()),
-				GameType.MENU => new Game(stats, MapCreator.FindMainMap(stats.Level)),
-				GameType.MAINMENU => new Game(stats, MapCreator.FindMainMenuMap(stats.Level)),
-				_ => new Game(stats, MapCreator.FindMap(stats.Level)),
-			};
+			game = new Game(stats, MapCreator.FindMap(type, stats.Level));
 			game.Load();
 		}
 
@@ -74,13 +68,7 @@ namespace WarriorsSnuggery
 			game.Finish();
 			game.Dispose();
 
-			game = type switch
-			{
-				GameType.TUTORIAL => new Game(stats, MapCreator.FindTutorial()),
-				GameType.MENU => new Game(stats, MapCreator.FindMainMap(stats.Level)),
-				GameType.MAINMENU => new Game(stats, MapCreator.FindMainMenuMap(stats.Level)),
-				_ => new Game(stats, MapCreator.FindMap(stats.Level)),
-			};
+			game = new Game(stats, MapCreator.FindMap(type, stats.Level));
 			game.Load();
 		}
 
@@ -101,13 +89,7 @@ namespace WarriorsSnuggery
 				}
 			}
 
-			game = type switch
-			{
-				GameType.TUTORIAL => new Game(stats, custom ?? MapCreator.FindTutorial()),
-				GameType.MENU => new Game(stats, custom ?? MapCreator.FindMainMap(stats.Level)),
-				GameType.MAINMENU => new Game(stats, custom ?? MapCreator.FindMainMenuMap(stats.Level)),
-				_ => new Game(stats, custom ?? MapCreator.FindMap(stats.Level)),
-			};
+			game = new Game(stats, custom ?? MapCreator.FindMap(type, stats.Level));
 			game.Load();
 		}
 

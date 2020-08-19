@@ -172,8 +172,8 @@ namespace WarriorsSnuggery
 			else
 				ChangeScreen(ScreenType.DEFAULT);
 
-			if (World.LocalPlayer != null && World.LocalPlayer.Health != null && Statistics.RelativeHP > 0)
-				World.LocalPlayer.Health.RelativeHP = Statistics.RelativeHP;
+			if (World.LocalPlayer != null && World.LocalPlayer.Health != null && Statistics.Health > 0)
+				World.LocalPlayer.Health.RelativeHP = Statistics.Health;
 
 			WorldRenderer.CheckVisibilityAll();
 			MasterRenderer.UpdateView();
@@ -369,7 +369,7 @@ namespace WarriorsSnuggery
 
 			Statistics.Level++;
 			if (World.PlayerAlive && World.LocalPlayer.Health != null)
-				Statistics.RelativeHP = World.LocalPlayer.Health.RelativeHP;
+				Statistics.Health = World.LocalPlayer.Health.RelativeHP;
 
 			ChangeScreen(ScreenType.VICTORY);
 		}

@@ -1,12 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using WarriorsSnuggery.Loader;
 
 namespace WarriorsSnuggery.Maps
 {
 	[Desc("These rules contain information about a map that can be generated.")]
 	public class MapInfo
 	{
+		public readonly string Name;
+
 		[Desc("Type of the map.")]
 		public readonly GameType DefaultType = GameType.NORMAL;
 		[Desc("Possible modes on this map.")]
@@ -36,7 +39,7 @@ namespace WarriorsSnuggery.Maps
 		[Desc("Terrain Generator as basis. Required for the game to function.")]
 		public readonly TerrainGeneratorInfo TerrainGenerationBase = null;
 		[Desc("Generators to use. To add, just do it like traits.")]
-		public readonly MapGeneratorInfo[] GeneratorInfos = new MapGeneratorInfo[0];
+		public readonly List<MapGeneratorInfo> GeneratorInfos = new List<MapGeneratorInfo>();
 
 		[Desc("Determines the file of a script that will be executed during the game.", "Ending of the filename must be '.cs'.")]
 		public readonly string MissionScript;
@@ -44,7 +47,67 @@ namespace WarriorsSnuggery.Maps
 		[Desc("Variable used to determine wether this map comes from an save. DO NOT ALTER.")]
 		public readonly bool FromSave;
 
-		public MapInfo(string overridePiece, int wall, MPos customSize, Color ambient, GameType defaultType, GameMode[] defaultModes, int level, int fromLevel, int toLevel, TerrainGeneratorInfo baseTerrainGeneration, MapGeneratorInfo[] genInfos, MPos spawnPoint, bool fromSave, bool allowWeapons, string missionScript)
+		public MapInfo(string name, List<MiniTextNode> nodes)
+		{
+			Name = name;
+
+			var fields = PartLoader.GetFields(this);
+
+			foreach (var node in nodes)
+			{
+				switch (node.Key)
+				{
+					case "DefaultModes":
+						var modeArray = node.Convert<string[]>();
+
+						DefaultModes = new GameMode[modeArray.Length];
+						for (int i = 0; i < DefaultModes.Length; i++)
+							DefaultModes[i] = (GameMode)Enum.Parse(typeof(GameMode), modeArray[i]);
+
+						break;
+					case "TerrainGenerationBase":
+						TerrainGenerationBase = new TerrainGeneratorInfo(node.Convert<int>(), node.Children.ToArray());
+
+						break;
+					case "PathGeneration":
+						GeneratorInfos.Add(new PathGeneratorInfo(node.Convert<int>(), node.Children.ToArray()));
+
+						break;
+					case "GridGeneration":
+						GeneratorInfos.Add(new GridGeneratorInfo(node.Convert<int>(), node.Children.ToArray()));
+
+						break;
+					case "PieceGeneration":
+						GeneratorInfos.Add(new PieceGeneratorInfo(node.Convert<int>(), node.Children.ToArray()));
+
+						break;
+					case "ImportantPieceGeneration":
+						GeneratorInfos.Add(new ImportantPieceGeneratorInfo(node.Convert<int>(), node.Children.ToArray()));
+
+						break;
+					case "TerrainGeneration":
+						GeneratorInfos.Add(new TerrainGeneratorInfo(node.Convert<int>(), node.Children.ToArray()));
+
+						break;
+					case "PatrolGeneration":
+						GeneratorInfos.Add(new PatrolGeneratorInfo(node.Convert<int>(), node.Children.ToArray()));
+
+						break;
+					default:
+						PartLoader.SetValue(this, fields, node);
+
+						break;
+				}
+			}
+
+			if (TerrainGenerationBase == null)
+				throw new YamlMissingNodeException(name, "BaseTerrainGeneration");
+
+			// The highest value has the highest priority
+			GeneratorInfos = GeneratorInfos.OrderByDescending(g => g.ID).ToList();
+		}
+
+		public MapInfo(string overridePiece, int wall, MPos customSize, Color ambient, GameType defaultType, GameMode[] defaultModes, int level, int fromLevel, int toLevel, TerrainGeneratorInfo baseTerrainGeneration, List<MapGeneratorInfo> genInfos, MPos spawnPoint, bool fromSave, bool allowWeapons, string missionScript)
 		{
 			OverridePiece = overridePiece;
 			Wall = wall;
@@ -63,23 +126,18 @@ namespace WarriorsSnuggery.Maps
 			MissionScript = missionScript;
 		}
 
-		public MapInfo(MiniTextNode[] nodes)
-		{
-			Loader.PartLoader.SetValues(this, nodes);
-		}
-
 		public static MapInfo MapTypeFromSave(GameStatistics stats)
 		{
 			var piece = stats.SaveName + "_map";
 			var size = RuleReader.Read(FileExplorer.Saves, stats.SaveName + "_map.yaml").First(n => n.Key == "Size").Convert<MPos>();
-			var type = MapCreator.GetType(stats.MapType);
-			var mapGeneratorInfos = type == null ? new MapGeneratorInfo[0] : type.GeneratorInfos;
-			return new MapInfo(piece, 0, size, Color.White, stats.Type, new[] { stats.Mode }, -1, 0, int.MaxValue, new TerrainGeneratorInfo(0, new MiniTextNode[0]), mapGeneratorInfos, MPos.Zero, true, true, stats.Script);
+			var type = MapCreator.GetType(stats.CurrentMapType);
+			var mapGeneratorInfos = type == null ? new List<MapGeneratorInfo>() : type.GeneratorInfos;
+			return new MapInfo(piece, 0, size, Color.White, stats.CurrentType, new[] { stats.CurrentMode }, -1, 0, int.MaxValue, new TerrainGeneratorInfo(0, new MiniTextNode[0]), mapGeneratorInfos, MPos.Zero, true, true, stats.Script);
 		}
 
 		public static MapInfo EditorMapTypeFromPiece(string piece, MPos size)
 		{
-			return new MapInfo(piece, 0, size, Color.White, GameType.EDITOR, new[] { GameMode.NONE }, -1, 0, int.MaxValue, new TerrainGeneratorInfo(0, new MiniTextNode[0]), new MapGeneratorInfo[0], MPos.Zero, false, true, null);
+			return new MapInfo(piece, 0, size, Color.White, GameType.EDITOR, new[] { GameMode.NONE }, -1, 0, int.MaxValue, new TerrainGeneratorInfo(0, new MiniTextNode[0]), new List<MapGeneratorInfo>(), MPos.Zero, false, true, null);
 		}
 
 		public static MapInfo ConvertGameType(MapInfo map, GameType type)
@@ -90,146 +148,45 @@ namespace WarriorsSnuggery.Maps
 
 	public class MapCreator
 	{
-		public static void LoadTypes(string directory, string file)
-		{
-			var infos = RuleReader.Read(directory, file);
+		static readonly Dictionary<string, MapInfo> mapsNames = new Dictionary<string, MapInfo>();
+		static readonly Dictionary<GameType, List<MapInfo>> mapsTypes = new Dictionary<GameType, List<MapInfo>>();
 
-			foreach (var terrain in infos)
+		public static void LoadMaps(string directory, string file)
+		{
+			foreach (GameType type in Enum.GetValues(typeof(GameType)))
+				mapsTypes.Add(type, new List<MapInfo>());
+
+			var mapNodes = RuleReader.Read(directory, file);
+
+			foreach (var mapNode in mapNodes)
 			{
-				var playType = GameType.NORMAL;
-				var playModes = new[] { GameMode.NONE };
-				var level = -1;
-				var fromLevel = 0;
-				var toLevel = int.MaxValue;
-				var name = terrain.Key;
-				var wall = 0;
-				var ambient = Color.White;
-				var customSize = MPos.Zero;
-				var genInfos = new List<MapGeneratorInfo>();
-				var spawnPoint = new MPos(-1, -1);
-				TerrainGeneratorInfo baseterrain = null;
-				var allowWeapons = true;
-				var missionScript = string.Empty;
+				var map = new MapInfo(mapNode.Key, mapNode.Children);
 
-				foreach (var child in terrain.Children)
-				{
-					switch (child.Key)
-					{
-						case "PlayType":
-							playType = child.Convert<GameType>();
+				mapsNames.Add(mapNode.Key, map);
 
-							break;
-						case "PlayModes":
-							var modeArray = child.Convert<string[]>();
-
-							playModes = new GameMode[modeArray.Length];
-							for (int i = 0; i < playModes.Length; i++)
-							{
-								playModes[i] = (GameMode)Enum.Parse(typeof(GameMode), modeArray[i]);
-							}
-							break;
-						case "FromLevel":
-							fromLevel = child.Convert<int>();
-
-							break;
-						case "ToLevel":
-							toLevel = child.Convert<int>();
-
-							break;
-						case "Level":
-							level = child.Convert<int>();
-
-							break;
-						case "SpawnPoint":
-							spawnPoint = child.Convert<MPos>();
-
-							break;
-						case "Wall":
-							wall = child.Convert<int>();
-
-							break;
-						case "TerrainGenerationBase":
-							baseterrain = new TerrainGeneratorInfo(child.Convert<int>(), child.Children.ToArray());
-
-							break;
-						case "PathGeneration":
-							genInfos.Add(new PathGeneratorInfo(child.Convert<int>(), child.Children.ToArray()));
-
-							break;
-						case "GridGeneration":
-							genInfos.Add(new GridGeneratorInfo(child.Convert<int>(), child.Children.ToArray()));
-
-							break;
-						case "PieceGeneration":
-							genInfos.Add(new PieceGeneratorInfo(child.Convert<int>(), child.Children.ToArray()));
-
-							break;
-						case "ImportantPieceGeneration":
-							genInfos.Add(new ImportantPieceGeneratorInfo(child.Convert<int>(), child.Children.ToArray()));
-
-							break;
-						case "TerrainGeneration":
-							genInfos.Add(new TerrainGeneratorInfo(child.Convert<int>(), child.Children.ToArray()));
-
-							break;
-						case "PatrolGeneration":
-							genInfos.Add(new PatrolGeneratorInfo(child.Convert<int>(), child.Children.ToArray()));
-
-							break;
-						case "CustomSize":
-							customSize = child.Convert<MPos>();
-
-							break;
-						case "Ambient":
-							ambient = child.Convert<Color>();
-
-							break;
-						case "AllowWeapons":
-							allowWeapons = child.Convert<bool>();
-
-							break;
-						case "MissionScript":
-							missionScript = child.Value.Trim();
-
-							break;
-						default:
-							throw new YamlUnknownNodeException(child.Key, terrain.Key);
-					}
-				}
-
-				// The highest value has the highest priority
-				genInfos = genInfos.OrderByDescending(g => g.ID).ToList();
-
-				if (baseterrain == null)
-					throw new YamlMissingNodeException(terrain.Key, "BaseTerrainGeneration");
-
-				AddType(new MapInfo(string.Empty, wall, customSize, ambient, playType, playModes, level, fromLevel, toLevel, baseterrain, genInfos.ToArray(), spawnPoint, false, allowWeapons, missionScript), name);
+				mapsTypes[map.DefaultType].Add(map);
 			}
-		}
-
-		static readonly Dictionary<string, MapInfo> types = new Dictionary<string, MapInfo>();
-
-		public static void AddType(MapInfo type, string name)
-		{
-			types.Add(name, type);
 		}
 
 		public static MapInfo GetType(string name)
 		{
-			return types[name];
+			return mapsNames[name];
 		}
 
 		public static string GetName(MapInfo info, GameStatistics stats)
 		{
 			if (info.FromSave)
-				return stats.MapType;
+				return stats.CurrentMapType;
 
-			return types.FirstOrDefault(t => t.Value == info).Key;
+			return mapsNames.FirstOrDefault(t => t.Value == info).Key;
 		}
 
-		public static MapInfo FindMainMenuMap(int level)
+		public static MapInfo FindMap(GameType type, int level)
 		{
-			var levels = types.Values.Where(a => a.DefaultType == GameType.MAINMENU);
+			if (type == GameType.TUTORIAL)
+				return findTutorial();
+
+			var levels = mapsTypes[type];
 
 			var explicitLevels = levels.Where(a => level == a.Level);
 			if (explicitLevels.Any())
@@ -242,39 +199,9 @@ namespace WarriorsSnuggery.Maps
 			return implicitLevels.ElementAt(Program.SharedRandom.Next(implicitLevels.Count()));
 		}
 
-		public static MapInfo FindMainMap(int level)
+		static MapInfo findTutorial()
 		{
-			var levels = types.Values.Where(a => a.DefaultType == GameType.MENU);
-
-			var mainLevels = levels.Where(a => level == a.Level);
-			if (mainLevels.Any())
-				return mainLevels.ElementAt(Program.SharedRandom.Next(mainLevels.Count()));
-
-			var mainTypes = levels.Where(a => level >= a.FromLevel && level <= a.ToLevel && a.FromLevel >= 0 && a.Level == -1);
-			if (!mainTypes.Any())
-				throw new MissingFieldException(string.Format("There are no available Main Maps (Level:{0}).", level));
-
-			return mainTypes.ElementAt(Program.SharedRandom.Next(mainTypes.Count()));
-		}
-
-		public static MapInfo FindMap(int level)
-		{
-			var levels = types.Values.Where(a => a.DefaultType == GameType.NORMAL);
-
-			var explicitLevels = levels.Where(a => level == a.Level);
-			if (explicitLevels.Any())
-				return explicitLevels.ElementAt(Program.SharedRandom.Next(explicitLevels.Count()));
-
-			var mainTypes = levels.Where(a => level >= a.FromLevel && level <= a.ToLevel && a.FromLevel >= 0 && a.Level == -1);
-			if (!mainTypes.Any())
-				throw new MissingFieldException(string.Format("There are no Maps available."));
-
-			return mainTypes.ElementAt(Program.SharedRandom.Next(mainTypes.Count()));
-		}
-
-		public static MapInfo FindTutorial()
-		{
-			var implicitLevels = types.Values.Where(a => a.DefaultType == GameType.TUTORIAL);
+			var implicitLevels = mapsTypes[GameType.TUTORIAL];
 
 			if (!implicitLevels.Any())
 				throw new MissingFieldException(string.Format("There are no Tutorial Maps available."));

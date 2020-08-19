@@ -65,14 +65,8 @@ namespace WarriorsSnuggery.UI
 				score.Render();
 				level.Render();
 			}
-			if (Selected)
-			{
-				base.SetColor(new Color(1.5f, 1.5f, 1.5f));
-			}
-			else
-			{
-				base.SetColor(Color.White);
-			}
+
+			SetColor(Selected ? new Color(1.5f, 1.5f, 1.5f) : Color.White);
 		}
 
 		public override void Tick()

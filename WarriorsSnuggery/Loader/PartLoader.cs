@@ -1,39 +1,45 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using WarriorsSnuggery.Objects.Parts;
 
 namespace WarriorsSnuggery.Loader
 {
 	public static class PartLoader
 	{
-		public static void SetValues(object info, MiniTextNode[] nodes)
+
+		public static void SetValues(object obj, MiniTextNode[] nodes)
 		{
-			var fields = info.GetType().GetFields().Where(f => f.IsInitOnly);
+			var fields = GetFields(obj);
+
 			foreach (var node in nodes)
-			{
-				var field = fields.FirstOrDefault(f => f.Name == node.Key);
-				if (field != null)
-				{
-					field.SetValue(info, node.Convert(field.FieldType));
-					continue;
-				}
-				throw new YamlUnknownNodeException(node.Key, info.GetType().Name);
-			}
+				SetValue(obj, fields, node);
+		}
+
+		public static IEnumerable<FieldInfo> GetFields(object obj, bool onlyReadonly = true)
+		{
+			return obj.GetType().GetFields().Where(f => !onlyReadonly || f.IsInitOnly);
+		}
+
+		public static void SetValue(object obj, IEnumerable<FieldInfo> fields, MiniTextNode node)
+		{
+			var field = fields.FirstOrDefault(f => f.Name == node.Key);
+
+			if (field == null)
+				throw new YamlUnknownNodeException(node.Key, obj.GetType().Name);
+
+			field.SetValue(obj, node.Convert(field.FieldType));
 		}
 
 		public static PartInfo GetPart(int currentPart, string name, MiniTextNode[] nodes)
 		{
 			var split = name.Split('@');
 			var internalName = currentPart.ToString();
-			if (split.Length == 1 || string.IsNullOrWhiteSpace(split[1]))
-			{
-				name = split[0];
-			}
-			else
-			{
-				name = split[0];
+
+			name = split[0];
+			if (split.Length > 1 && !string.IsNullOrWhiteSpace(split[1]))
 				internalName = split[1];
-			}
 
 			try
 			{
