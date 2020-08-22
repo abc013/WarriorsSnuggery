@@ -116,6 +116,11 @@ namespace WarriorsSnuggery
 			if (Settings.DeveloperMode)
 			{
 				DebugRenderer.SetCurrent();
+				if (world.Map.Noises.Any())
+				{
+					world.Map.Noises.First().Value.Render();
+					DebugRenderer.Render();
+				}
 				MasterRenderer.PrimitiveType = PrimitiveType.Lines;
 				foreach (var sector in world.PhysicsLayer.Sectors)
 					sector.RenderDebug();

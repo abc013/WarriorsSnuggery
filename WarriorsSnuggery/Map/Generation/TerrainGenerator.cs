@@ -38,58 +38,20 @@ namespace WarriorsSnuggery.Maps
 
 		public override void Generate()
 		{
-			float[] noise = null;
-			switch (info.NoiseType)
-			{
-				case NoiseType.CLOUDS:
-					noise = Noise.GenerateClouds(map.Bounds, random, info.Strength, info.Scale);
-					break;
-				case NoiseType.NOISE:
-					noise = Noise.GenerateNoise(map.Bounds, random, info.Scale);
-					break;
-				case NoiseType.MAZE:
-					noise = new float[map.Bounds.X * map.Bounds.Y];
-					var maze = Maze.GenerateMaze(map.Bounds * new MPos(2, 2) + new MPos(1, 1), random, new MPos(1, 1), info.Strength);
-
-					for (int x = 0; x < map.Bounds.X; x++)
-					{
-						for (int y = 0; y < map.Bounds.Y; y++)
-						{
-							noise[x * map.Bounds.Y + y] = maze[x, y].GetHashCode();
-						}
-					}
-					break;
-				case NoiseType.NONE:
-					noise = new float[map.Bounds.X * map.Bounds.Y];
-
-					if (info.Strength > 0)
-					{
-						for (int x = 0; x < map.Bounds.X; x++)
-						{
-							for (int y = 0; y < map.Bounds.Y; y++)
-							{
-								noise[x * map.Bounds.Y + y] = 1;
-							}
-						}
-					}
-					break;
-			}
+			float[] noise;
+			if (info.NoiseMapID > 0)
+				noise = map.Noises[info.NoiseMapID].Values;
+			else
+				noise = new float[map.Bounds.X * map.Bounds.Y];
 
 			for (int x = 0; x < map.Bounds.X; x++)
 			{
 				for (int y = 0; y < map.Bounds.Y; y++)
 				{
-					// Intensity and contrast
 					var single = noise[y * map.Bounds.X + x];
-					single += info.Intensity;
-					single = (single - 0.5f) * info.Contrast + 0.5f;
-
-					// Fit to area of 0 to 1.
-					if (single > 1f) single = 1f;
-					if (single < 0f) single = 0f;
 
 					// If less than half, don't change terrain
-					if (single < (float)random.NextDouble() * info.EdgeNoise + (1 - info.EdgeNoise) * 0.5f)
+					if (info.NoiseMapID >= 0 && single < (float)random.NextDouble() * info.EdgeNoise + (1 - info.EdgeNoise) * 0.5f)
 						continue;
 
 					if (!map.AcquireCell(new MPos(x, y), info.ID))
@@ -127,9 +89,7 @@ namespace WarriorsSnuggery.Maps
 									continue;
 
 								if (!dirtyCells[p.X, p.Y] && map.AcquireCell(p, info.ID))
-								{
 									world.TerrainLayer.Set(TerrainCreator.Create(world, new MPos(p.X, p.Y), info.BorderTerrain[0]));
-								}
 							}
 						}
 					}
@@ -159,17 +119,8 @@ namespace WarriorsSnuggery.Maps
 		[Desc("Unique ID for the generator.")]
 		public readonly new int ID;
 
-		[Desc("Type of noise to use.")]
-		public readonly NoiseType NoiseType = NoiseType.NONE;
-		[Desc("Strength of the noise [Clouds].", "count of additional pathways [Maze].")]
-		public readonly int Strength = 4;
-		[Desc("Scale of the noise [Noise, Clouds].")]
-		public readonly float Scale = 1f;
-
-		[Desc("Intensity parameter.")]
-		public readonly float Intensity = 0f;
-		[Desc("Contrast parameter.")]
-		public readonly float Contrast = 1f;
+		[Desc("ID for the noisemap.", "Set to a negative value to not use one.")]
+		public readonly int NoiseMapID = -1;
 
 		[Desc("Noise used for the edge.")]
 		public readonly float EdgeNoise = 0f;

@@ -1,7 +1,7 @@
 boss1=
 	DefaultModes=KILL_ENEMIES
 	Level=5
-	TerrainGenerationBase=
+	TerrainGenerationBase=0
 		Terrain=0
 	ImportantPieceGeneration=10
 		Pieces=boss_forest
@@ -13,7 +13,7 @@ boss1=
 boss2=
 	DefaultModes=KILL_ENEMIES
 	Level=10
-	TerrainGenerationBase=
+	TerrainGenerationBase=0
 		Terrain=0
 	ImportantPieceGeneration=10
 		Pieces=boss_slime

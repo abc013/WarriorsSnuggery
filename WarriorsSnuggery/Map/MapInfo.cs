@@ -38,8 +38,11 @@ namespace WarriorsSnuggery.Maps
 
 		[Desc("Terrain Generator as basis. Required for the game to function.")]
 		public readonly TerrainGeneratorInfo TerrainGenerationBase = null;
-		[Desc("Generators to use. To add, just do it like traits.")]
+		[Desc("Generators to use.", "Add generators as if they where traits.")]
 		public readonly List<MapGeneratorInfo> GeneratorInfos = new List<MapGeneratorInfo>();
+
+		[Desc("Noises that are referenced by the generators.", "Add Noisemaps as if they where traits.")]
+		public readonly List<NoiseMapInfo> NoiseMapInfos = new List<NoiseMapInfo>();
 
 		[Desc("Determines the file of a script that will be executed during the game.", "Ending of the filename must be '.cs'.")]
 		public readonly string MissionScript;
@@ -91,6 +94,10 @@ namespace WarriorsSnuggery.Maps
 						break;
 					case "PatrolGeneration":
 						GeneratorInfos.Add(new PatrolGeneratorInfo(node.Convert<int>(), node.Children.ToArray()));
+
+						break;
+					case "NoiseMap":
+						NoiseMapInfos.Add(new NoiseMapInfo(node.Convert<int>(), node.Children.ToArray()));
 
 						break;
 					default:

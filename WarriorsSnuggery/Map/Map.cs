@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using WarriorsSnuggery.Graphics;
 using WarriorsSnuggery.Maps;
 
@@ -22,18 +23,19 @@ namespace WarriorsSnuggery
 
 		public static readonly CPos Offset = new CPos(-512, -512, 0);
 
-		// Map Information
-		public MPos Bounds { get; private set; }
-		public MPos Center { get { return Bounds / new MPos(2, 2); } }
-		public MPos DefaultEdgeDistance { get { return Bounds / new MPos(8, 8); } }
-
-		public CPos TopLeftCorner { get { return new CPos(-512, -512, 0); } }
-		public CPos TopRightCorner { get { return new CPos(-512 + Bounds.X * 1024, -512, 0); } }
-		public CPos BottomLeftCorner { get { return new CPos(-512, -512 + Bounds.Y * 1024, 0); } }
-		public CPos BottomRightCorner { get { return new CPos(-512 + Bounds.X * 1024, -512 + Bounds.Y * 1024, 0); } }
-
-		public CPos PlayerSpawn;
+		public CPos PlayerSpawn { get; private set; }
 		public MPos Exit;
+
+		public MPos Bounds { get; private set; }
+		public MPos Center => Bounds / new MPos(2, 2);
+		public MPos DefaultEdgeDistance => Bounds / new MPos(8, 8);
+
+		public CPos TopLeftCorner => Offset;
+		public CPos TopRightCorner => new CPos(Offset.X + (Bounds.X * 1024), Offset.Y, 0);
+		public CPos BottomLeftCorner => new CPos(Offset.X, Offset.Y + (Bounds.Y * 1024), 0);
+		public CPos BottomRightCorner => new CPos(Offset.X + (Bounds.X * 1024), Offset.Y + (Bounds.Y * 1024), 0);
+
+		public readonly Dictionary<int, NoiseMap> Noises = new Dictionary<int, NoiseMap>();
 
 		int[,] tilesWithAssignedGenerator;
 
@@ -64,35 +66,33 @@ namespace WarriorsSnuggery
 
 			tilesWithAssignedGenerator = new int[Bounds.X, Bounds.Y];
 
-			// Important Parts
-			if (!string.IsNullOrEmpty(Type.OverridePiece))
+			// Check whether from save first. Saves must have a OverridePiece, the saved map.
+			if (Type.FromSave)
 			{
-				if (Type.FromSave)
-				{
-					var input = Piece.Load(Type.OverridePiece, string.Empty, RuleReader.Read(FileExplorer.Saves, Type.OverridePiece + ".yaml").ToArray());
-					GeneratePiece(input, MPos.Zero, 100, true);
-				}
-				else
-				{
-					GeneratePiece(PieceManager.GetPiece(Type.OverridePiece), MPos.Zero, 100, true);
-				}
+				var path = FileExplorer.Saves;
+				var file = Type.OverridePiece + ".yaml";
+
+				var input = new Piece(Type.OverridePiece, path + file, RuleReader.Read(path, file));
+				GeneratePiece(input, MPos.Zero, 100, true);
+				return;
 			}
-			else // If there is nothing important to generate, then generate base terrain
+
+			// NoiseMaps
+			foreach (var info in Type.NoiseMapInfos)
+			{
+				var noiseMap = new NoiseMap(Bounds, Seed, info);
+				Noises.Add(info.ID, noiseMap);
+				MapPrinter.PrintNoiseMap(noiseMap);
+			}
+
+			if (!string.IsNullOrEmpty(Type.OverridePiece))
+				GeneratePiece(PieceManager.GetPiece(Type.OverridePiece), MPos.Zero, 100, true);
+			else
 				Type.TerrainGenerationBase.GetGenerator(random, this, world).Generate();
 
-
 			// Generators
-			if (!Type.FromSave)
-			{
-				foreach (var info in Type.GeneratorInfos)
-				{
-					var generator = info.GetGenerator(random, this, world);
-					if (generator != null)
-						generator.Generate();
-				}
-			}
-
-			//MapPrinter.PrintMapGeneration("debug", TerrainGenerationArray, TilesWithAssignedGenerator, Type.GeneratorInfos.Length);
+			foreach (var info in Type.GeneratorInfos)
+				info.GetGenerator(random, this, world)?.Generate();
 			// empty data because it is not needed anymore
 			tilesWithAssignedGenerator = null;
 		}

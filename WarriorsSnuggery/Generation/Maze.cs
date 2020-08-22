@@ -18,10 +18,9 @@ namespace WarriorsSnuggery
 
 	public static class Maze
 	{
-		public static bool[,] GenerateMaze(MPos size, Random random, MPos start, int multiplePossibilities = 0)
+		public static float[] GenerateMaze(MPos size, Random random, MPos start, int multiplePossibilities = 0)
 		{
 			var fields = new MazeField[size.X, size.Y];
-			var maze = new bool[size.X, size.Y];
 
 			for (int x = 0; x < size.X; x++)
 			{
@@ -33,7 +32,6 @@ namespace WarriorsSnuggery
 					};
 
 					fields[x, y] = field;
-					maze[x, y] = field.IsWall;
 				}
 			}
 
@@ -43,13 +41,12 @@ namespace WarriorsSnuggery
 			MazeField last = startField;
 			while ((last = link(fields, random, last, size)) != startField) { }
 
+			var maze = new float[size.X * size.Y];
+
 			for (int x = 0; x < size.X; x++)
-			{
 				for (int y = 0; y < size.Y; y++)
-				{
-					maze[x, y] = fields[x, y].IsWall && (multiplePossibilities == 0 || random.Next(multiplePossibilities) != 0);
-				}
-			}
+					maze[x * size.Y + y] = (fields[x, y].IsWall && (multiplePossibilities == 0 || random.Next(multiplePossibilities) != 0)) ? 1 : 0;
+
 			return maze;
 		}
 
@@ -69,33 +66,25 @@ namespace WarriorsSnuggery
 				{
 					case 1:
 						if (last.Position.X + 2 < size.X)
-						{
 							pos = new MPos(last.Position.X + 2, last.Position.Y);
-						}
 						else
 							continue;
 						break;
 					case 2:
 						if (last.Position.Y + 2 < size.Y)
-						{
 							pos = new MPos(last.Position.X, last.Position.Y + 2);
-						}
 						else
 							continue;
 						break;
 					case 4:
 						if (last.Position.X - 2 >= 0)
-						{
 							pos = new MPos(last.Position.X - 2, last.Position.Y);
-						}
 						else
 							continue;
 						break;
 					case 8:
 						if (last.Position.Y - 2 >= 0)
-						{
 							pos = new MPos(last.Position.X, last.Position.Y - 2);
-						}
 						else
 							continue;
 						break;

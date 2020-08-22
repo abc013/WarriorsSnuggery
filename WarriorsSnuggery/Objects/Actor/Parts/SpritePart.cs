@@ -77,15 +77,11 @@ namespace WarriorsSnuggery.Objects.Parts
 				if (anim.Length == 0)
 					throw new YamlInvalidNodeException(string.Format(@"Animation Frame count is zero. Make sure you set the bounds properly."));
 
+				var index = 0;
 				if (info.Random)
-				{
-					var ran = self.World.Game.SharedRandom.Next(anim.Length);
-					renderables[i] = new BatchObject(anim[ran], Color.White);
-				}
-				else
-				{
-					renderables[i] = new BatchObject(anim[0], Color.White);
-				}
+					index = self.World.Game.SharedRandom.Next(anim.Length);
+
+				renderables[i] = new BatchObject(anim[index], Color.White);
 			}
 
 			if (info.ColorVariation != Color.Black)

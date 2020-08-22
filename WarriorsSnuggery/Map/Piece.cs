@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using WarriorsSnuggery.Loader;
 using WarriorsSnuggery.Objects;
 using WarriorsSnuggery.Objects.Particles;
 using WarriorsSnuggery.Objects.Weapons;
@@ -19,86 +20,49 @@ namespace WarriorsSnuggery.Maps
 		readonly ushort[] groundData;
 		readonly short[] wallData;
 
-		readonly List<ActorInit> actors;
-		readonly List<WeaponInit> weapons;
-		readonly List<ParticleInit> particles;
+		readonly List<ActorInit> actors = new List<ActorInit>();
+		readonly List<WeaponInit> weapons = new List<WeaponInit>();
+		readonly List<ParticleInit> particles = new List<ParticleInit>();
 
-		Piece(int mapFormat, MPos size, ushort[] groundData, short[] wallData, string name, string innerName, string path, List<ActorInit> actors, List<WeaponInit> weapons, List<ParticleInit> particles)
+		public Piece(string innerName, string path, List<MiniTextNode> nodes)
 		{
-			MapFormat = mapFormat;
-			Size = size;
-			Name = name;
 			InnerName = innerName;
 			Path = path;
 
-			this.groundData = groundData;
-			this.wallData = wallData;
-			this.actors = actors;
-			this.weapons = weapons;
-			this.particles = particles;
-		}
+			var fields = PartLoader.GetFields(this);
 
-		public static Piece Load(string innerName, string path, MiniTextNode[] nodes)
-		{
-			var mapFormat = 0;
-			var size = MPos.Zero;
-
-			var groundData = new ushort[0];
-			var wallData = new short[0];
-
-			var name = "unknown";
-			var actors = new List<ActorInit>();
-			var weapons = new List<WeaponInit>();
-			var particles = new List<ParticleInit>();
-
-			foreach (var rule in nodes)
+			foreach (var node in nodes)
 			{
-				switch (rule.Key)
+				switch (node.Key)
 				{
-					case "MapFormat":
-						mapFormat = rule.Convert<int>();
-
-						break;
-					case "Size":
-						size = rule.Convert<MPos>();
-
-						break;
 					case "Terrain":
-						groundData = rule.Convert<ushort[]>();
+						groundData = node.Convert<ushort[]>();
 
 						break;
 					case "Walls":
-						wallData = rule.Convert<short[]>();
-
-						break;
-					case "Name":
-						name = rule.Convert<string>();
+						wallData = node.Convert<short[]>();
 
 						break;
 					case "Actors":
-						var actorNodes = rule.Children;
-
-						foreach (var actor in actorNodes)
+						foreach (var actor in node.Children)
 						{
 							try
 							{
 								var id = uint.Parse(actor.Key);
 
-								if (mapFormat == 0)
+								if (MapFormat == 0)
 									actors.Add(new ActorInit(id, actor));
 								else
 									actors.Add(new ActorInit(id, actor.Children));
 							}
 							catch (Exception e)
 							{
-								throw new InvalidPieceException(string.Format(@"unable to load actor '{0}' in piece '{1}'.", actor.Key, name), e);
+								throw new InvalidPieceException(string.Format(@"unable to load actor '{0}' in piece '{1}'.", actor.Key, Name), e);
 							}
 						}
 						break;
 					case "Weapons":
-						var weaponNodes = rule.Children;
-
-						foreach (var weapon in weaponNodes)
+						foreach (var weapon in node.Children)
 						{
 							try
 							{
@@ -107,14 +71,12 @@ namespace WarriorsSnuggery.Maps
 							}
 							catch (Exception e)
 							{
-								throw new InvalidPieceException(string.Format(@"unable to load weapon '{0}' in piece '{1}'.", weapon.Key, name), e);
+								throw new InvalidPieceException(string.Format(@"unable to load weapon '{0}' in piece '{1}'.", weapon.Key, Name), e);
 							}
 						}
 						break;
 					case "Particles":
-						var particleNodes = rule.Children;
-
-						foreach (var particle in particleNodes)
+						foreach (var particle in node.Children)
 						{
 							try
 							{
@@ -122,32 +84,30 @@ namespace WarriorsSnuggery.Maps
 							}
 							catch (Exception e)
 							{
-								throw new InvalidPieceException(string.Format(@"unable to load particle '{0}' in piece '{1}'.", particle.Key, name), e);
+								throw new InvalidPieceException(string.Format(@"unable to load particle '{0}' in piece '{1}'.", particle.Key, Name), e);
 							}
 						}
+						break;
+					default:
+						PartLoader.SetValue(this, fields, node);
+
 						break;
 				}
 			}
 
-			if (groundData.Length != size.X * size.Y)
-				throw new InvalidPieceException(string.Format(@"The count of given terrains ({0}) is not the size ({1}) of the piece '{2}'", groundData.Length, size.X * size.Y, name));
+			if (groundData.Length != Size.X * Size.Y)
+				throw new InvalidPieceException(string.Format(@"The count of given terrains ({0}) is not the size ({1}) of the piece '{2}'", groundData.Length, Size.X * Size.Y, Name));
 
-			if (wallData.Length != (size.X + 1) * (size.Y + 1) * 2 * 2)
-				throw new InvalidPieceException(string.Format(@"The count of given walls ({0}) is smaller as the size ({1}) on the piece '{2}'", groundData.Length, size.X * size.Y, name));
-
-			return new Piece(mapFormat, size, groundData, wallData, name, innerName, path, actors, weapons, particles);
+			if (wallData.Length != (Size.X + 1) * (Size.Y + 1) * 2 * 2)
+				throw new InvalidPieceException(string.Format(@"The count of given walls ({0}) is smaller as the size ({1}) on the piece '{2}'", groundData.Length, Size.X * Size.Y, Name));
 		}
 
 		public void PlacePiece(MPos position, World world)
 		{
 			// generate Terrain
 			for (int y = position.Y; y < (Size.Y + position.Y); y++)
-			{
 				for (int x = position.X; x < (Size.X + position.X); x++)
-				{
 					world.TerrainLayer.Set(TerrainCreator.Create(world, new MPos(x, y), groundData[(y - position.Y) * Size.X + (x - position.X)]));
-				}
-			}
 
 			// generate Walls
 			if (wallData.Length != 0)

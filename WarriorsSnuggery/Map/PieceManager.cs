@@ -7,17 +7,17 @@ namespace WarriorsSnuggery.Maps
 {
 	public static class PieceManager
 	{
-		static List<Piece> pieces;
+		public static readonly List<Piece> Pieces = new List<Piece>();
 
 		public static void RefreshPieces()
 		{
-			pieces = searchFiles(new List<Piece>(), FileExplorer.Maps, false);
+			searchFiles(FileExplorer.Maps, false);
 		}
 
-		static List<Piece> searchFiles(List<Piece> list, string path, bool catchFilesInDirectory = true)
+		static void searchFiles(string path, bool catchFilesInDirectory = true)
 		{
 			foreach (var dir in Directory.GetDirectories(path))
-				searchFiles(list, dir);
+				searchFiles(dir);
 
 			if (catchFilesInDirectory)
 			{
@@ -27,41 +27,34 @@ namespace WarriorsSnuggery.Maps
 					var name = file.Remove(0, file.LastIndexOf('\\') + 1);
 					name = name.Remove(name.Length - 5);
 
-					var nodes = RuleReader.Read(path + @"\", name + ".yaml").ToArray();
+					var nodes = RuleReader.Read(path + @"\", name + ".yaml");
 
-					list.Add(Piece.Load(name, path, nodes));
+					Pieces.Add(new Piece(name, path, nodes));
 				}
 			}
-
-			return list;
 		}
 
 		public static void RefreshPiece(string piece)
 		{
-			var existingPiece = pieces.FirstOrDefault(p => p.InnerName == piece);
+			var existingPiece = Pieces.FirstOrDefault(p => p.InnerName == piece);
 
 			if (existingPiece != null)
-				pieces.Remove(existingPiece);
+				Pieces.Remove(existingPiece);
 
 			var path = FileExplorer.FindPath(FileExplorer.Maps, piece, ".yaml");
-			var nodes = RuleReader.Read(path, piece + ".yaml").ToArray();
+			var nodes = RuleReader.Read(path, piece + ".yaml");
 
-			pieces.Add(Piece.Load(piece, path, nodes));
+			Pieces.Add(new Piece(piece, path, nodes));
 		}
 
 		public static Piece GetPiece(string piece)
 		{
-			var existingPiece = pieces.FirstOrDefault(p => p.InnerName == piece);
+			var existingPiece = Pieces.FirstOrDefault(p => p.InnerName == piece);
 
 			if (existingPiece == null)
 				throw new MissingPieceException(piece);
 
 			return existingPiece;
-		}
-
-		public static Piece[] GetPieces()
-		{
-			return pieces.ToArray();
 		}
 	}
 }
