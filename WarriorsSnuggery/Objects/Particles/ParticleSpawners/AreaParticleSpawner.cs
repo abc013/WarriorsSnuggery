@@ -21,7 +21,7 @@ namespace WarriorsSnuggery.Objects.Particles
 		[Desc("Radius for spawn area.")]
 		public readonly int Radius = 0;
 
-		[Desc("Type of spawning area.", "Available: RANDOM, CIRCLE, BOX")]
+		[Desc("Type of spawning area.")]
 		public readonly ParticleAreaSpawnType AreaType = ParticleAreaSpawnType.RANDOM;
 
 		public AreaParticleSpawner(MiniTextNode[] nodes) : base()

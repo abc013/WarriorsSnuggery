@@ -36,7 +36,7 @@ namespace WarriorsSnuggery.Objects.Parts
 		[Desc("offset of the visibility box.", "This is used to determine when to hide the actor after it is out of sight.")]
 		public readonly CPos VisibilityBoxOffset = CPos.Zero;
 
-		[Desc("Selects the bot behavior that will be used if the actor is controlled by a bot.", "Possible: TYPICAL, PANIC, MOTH, HIDE_AND_SEEK")]
+		[Desc("Selects the bot behavior that will be used if the actor is controlled by a bot.")]
 		public readonly BotBehaviorType BotBehavior = BotBehaviorType.TYPICAL;
 
 		[Desc("Selects a sound that will always be played while the actor is alive.")]

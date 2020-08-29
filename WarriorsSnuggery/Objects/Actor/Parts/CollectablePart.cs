@@ -32,7 +32,7 @@ namespace WarriorsSnuggery.Objects.Parts
 	[Desc("Attach to an actor to make it trigger an effect when an actor gets near.")]
 	public class CollectablePartInfo : PartInfo
 	{
-		[Desc("Type of the effect on triggering.", "Possible: NONE, MONEY, HEALTH, NEXT_LEVEL, NEXT_LEVEL_INSTANT, TUTORIAL_LEVEL, MAIN_LEVEL, MAINMENU_LEVEL, TEXT, SPAWNOBJECT, NEW_GAME, NEW_STORY_GAME, NEW_CUSTOM_GAME, SPELL_SHOP, ACTOR_SHOP, TROPHY_COLLECTION, KEY, TROPHY;")]
+		[Desc("Type of the effect on triggering.")]
 		public readonly CollectableType Type = CollectableType.NONE;
 		[Desc("Scanradius for triggering.")]
 		public readonly int Radius = 512;

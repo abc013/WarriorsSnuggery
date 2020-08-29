@@ -104,7 +104,7 @@ namespace WarriorsSnuggery.Maps
 
 		[Desc("Position on the map, if PositionType is set on 'POSITION'.")]
 		public readonly MPos Position = MPos.Zero;
-		[Desc("Position type.", "Possible: POSITION, SPAWN, EXIT")]
+		[Desc("Position type.")]
 		public readonly PositionType PositionType = PositionType.POSITION;
 
 		public ImportantPieceGeneratorInfo(int id, MiniTextNode[] nodes) : base(id)

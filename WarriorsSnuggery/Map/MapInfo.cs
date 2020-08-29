@@ -107,6 +107,10 @@ namespace WarriorsSnuggery.Maps
 				}
 			}
 
+			// For the documentation
+			if (name == "empty")
+				return;
+
 			if (TerrainGenerationBase == null)
 				throw new YamlMissingNodeException(name, "BaseTerrainGeneration");
 

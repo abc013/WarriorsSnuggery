@@ -8,7 +8,7 @@ namespace WarriorsSnuggery.Objects.Parts
 		[Desc("Only affect particles of the types given here.", "If empty, all will be affected.")]
 		public readonly ParticleType[] AffectedTypes = new ParticleType[0];
 
-		[Desc("Type of the force.", "Available: FORCE, TURBULENCE, VORTEX, DRAG")]
+		[Desc("Type of the force.")]
 		public readonly ParticleForceType ForceType = ParticleForceType.FORCE;
 		[Desc("Strength of the force.")]
 		public readonly float Strength = 1f;

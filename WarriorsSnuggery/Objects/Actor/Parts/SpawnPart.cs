@@ -39,11 +39,11 @@ namespace WarriorsSnuggery.Objects.Parts
 		[Desc("Object will inherit Bot from the dead object.")]
 		public readonly bool InheritsBot;
 
-		[Desc("Type of the object.", "This can be set either to ACTOR, PARTICLE, WEAPON or NONE.")]
+		[Desc("Type of the object.")]
 		public readonly SpawnPartTypes Type;
 		[Desc("Condition to spawn.")]
 		public readonly Condition Condition;
-		[Desc("Defines when the objects should be spawned.", "possible: DAMAGE, DEATH, TICK")]
+		[Desc("Defines when the objects should be spawned.")]
 		public readonly Occasion Occasion;
 
 		[Desc("Offset from the center of idling object where the objects spawn.", "Z-coordinate will be used for height.")]

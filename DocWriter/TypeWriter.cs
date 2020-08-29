@@ -1,7 +1,9 @@
-﻿using System;
+﻿using Microsoft.CodeAnalysis.CSharp.Syntax;
+using System;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Runtime.InteropServices.ComTypes;
 
 namespace WarriorsSnuggery
 {
@@ -27,12 +29,31 @@ namespace WarriorsSnuggery
 
 				var varname = variable.Name;
 				var vartype = getNameOfType(variable.FieldType.Name);
-				var vardesc = ((DescAttribute)variable.GetCustomAttribute(typeof(DescAttribute))).Desc;
+				var vardesc = getDescription(variable);
 				var value = variable.GetValue(obj);
 
 				cells[i] = new TableCell(varname, vartype, vardesc, value == null ? "Not given" : value.ToString());
 			}
 			HTMLWriter.WriteTable(writer, cells, true);
+		}
+
+		static string[] getDescription(FieldInfo variable)
+		{
+			var desc = ((DescAttribute)variable.GetCustomAttribute(typeof(DescAttribute))).Desc;
+
+			var type = variable.FieldType.IsArray ? variable.FieldType.GetElementType() : variable.FieldType;
+			if (!type.IsEnum)
+				return desc;
+
+			var enumNames = Enum.GetNames(type);
+			var newDesc = "Available options: " + string.Join(", ", enumNames);
+
+			var array = new string[desc.Length + 1];
+			for (int i = 0; i < desc.Length; i++)
+				array[i] = desc[i];
+			array[^1] = newDesc;
+
+			return array;
 		}
 
 		public static void WriteAll(StreamWriter writer, string @namespace, string endsWith, object[] args)
