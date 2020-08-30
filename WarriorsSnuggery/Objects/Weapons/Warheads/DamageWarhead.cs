@@ -1,4 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using WarriorsSnuggery.Loader;
+using WarriorsSnuggery.Objects.Parts;
 using WarriorsSnuggery.Physics;
 
 namespace WarriorsSnuggery.Objects.Weapons
@@ -17,11 +21,29 @@ namespace WarriorsSnuggery.Objects.Weapons
 		[Desc("Range steps used for falloff.", "Defines at which range the falloff points are defined.")]
 		public readonly int[] RangeSteps = new[] { 0, 256, 512, 1024, 2048, 3096 };
 
+		[Desc("Modifiers for each armor.", "The value will be multiplied with the range.")]
+		public readonly Dictionary<string, float> ArmorModifiers = new Dictionary<string, float>();
+
 		readonly int maxRange;
 
 		public DamageWarhead(MiniTextNode[] nodes)
 		{
-			Loader.PartLoader.SetValues(this, nodes);
+			var fields = PartLoader.GetFields(this);
+
+			foreach (var node in nodes)
+			{
+				switch(node.Key)
+				{
+					case "ArmorModifiers":
+						foreach (var node2 in node.Children)
+							ArmorModifiers.Add(node2.Key, node2.Convert<float>());
+
+						break;
+					default:
+						PartLoader.SetValue(this, fields, node);
+						break;
+				}
+			}
 
 			if (RangeSteps.Length != Falloff.Length)
 				throw new YamlInvalidNodeException(string.Format("Range step length ({0}) does not match with given falloff values ({1}).", RangeSteps.Length, Falloff.Length));
@@ -31,80 +53,93 @@ namespace WarriorsSnuggery.Objects.Weapons
 
 		public void Impact(World world, Weapon weapon, Target target)
 		{
-			if (Damage != 0)
+			if (Damage == 0)
+				return;
+
+			var maxDist = maxRange * weapon.DamageRangeModifier;
+			if (!AgainstWalls)
 			{
-				if (target.Type == TargetType.ACTOR && !AgainstWalls)
+				if (target.Type == TargetType.ACTOR)
 				{
-					target.Actor.Damage(weapon.Origin, Damage);
-					if (target.Actor.WorldPart != null && target.Actor.WorldPart.ShowDamage)
-						world.Add(new ActionText(target.Actor.Position + new CPos(0, 0, 1024), new CPos(0, -15, 30), 50, ActionText.ActionTextType.SCALE, new Color(1f, 0.4f, 0).ToString() + Damage));
+					damageActor(world, weapon, target.Actor, Damage);
 					return;
 				}
 
-				if (!AgainstWalls)
+				var physics = new RayPhysics(world);
+				var sectors = world.ActorLayer.GetSectors(target.Position, (int)maxDist);
+				foreach (var sector in sectors)
 				{
-					var physics = new RayPhysics(world);
-					var maxDist = maxRange * weapon.DamageRangeModifier;
-					var sectors = world.ActorLayer.GetSectors(target.Position, (int)maxDist);
-					foreach (var sector in sectors)
+					foreach (var actor in sector.Actors)
 					{
-						foreach (var actor in sector.Actors)
-						{
-							if (!actor.IsAlive || actor.Health == null || actor == weapon.Origin)
-								continue;
-
-							if (actor.Team == weapon.Team)
-								continue;
-
-							var dist = (target.Position - actor.Position).FlatDist;
-							if (dist > maxDist) continue;
-							if (dist < 1f) dist = 1;
-
-							float damagemultiplier = FalloffHelper.GetMultiplier(Falloff, RangeSteps, dist, weapon.DamageRangeModifier);
-
-							physics.Start = actor.Position;
-							physics.Target = target.Position;
-							var pen = physics.GetWallPenetrationValue();
-
-							if (pen == 0f)
-								continue;
-
-							var damage = (int)Math.Floor(damagemultiplier * Damage * weapon.DamageModifier * pen);
-
-							if (damage == 0)
-								continue;
-
-							if (actor.WorldPart != null && actor.WorldPart.ShowDamage)
-								world.Add(new ActionText(actor.Position + new CPos(0, 0, 1024), new CPos(0, -15, 30), 50, ActionText.ActionTextType.SCALE, new Color(1f, 1 - (damage / (Damage * 1.5f)), 0).ToString() + damage));
-
-							if (weapon.Origin != null)
-								actor.Damage(weapon.Origin, damage);
-							else
-								actor.Damage(damage);
-						}
-					}
-				}
-				else
-				{
-					foreach (var wall in world.WallLayer.Walls)
-					{
-						if (wall == null || wall.Type.Invincible)
+						if (!actor.IsAlive || actor.Health == null || actor == weapon.Origin)
 							continue;
 
-						var dist = (target.Position - wall.Position).FlatDist;
-						if (dist > 32 * 1024) continue;
-						if (dist < 1) dist = 1;
+						if (actor.Team == weapon.Team)
+							continue;
+
+						var dist = (target.Position - actor.Position).FlatDist;
+						if (dist > maxDist) continue;
+						if (dist < 1f) dist = 1;
 
 						float damagemultiplier = FalloffHelper.GetMultiplier(Falloff, RangeSteps, dist, weapon.DamageRangeModifier);
-						var damage = (int)Math.Floor(damagemultiplier * Damage * weapon.DamageModifier);
 
-						if (damage == 0)
+						physics.Start = actor.Position;
+						physics.Target = target.Position;
+						var pen = physics.GetWallPenetrationValue();
+
+						if (pen == 0f)
 							continue;
 
-						wall.Damage(damage);
+						var damage = (int)Math.Floor(damagemultiplier * Damage * weapon.DamageModifier * pen);
+
+						damageActor(world, weapon, actor, damage);
 					}
 				}
 			}
+			else
+			{
+				foreach (var wall in world.WallLayer.GetRange(target.Position, (int)maxDist))
+				{
+					if (wall == null || wall.Type.Invincible)
+						continue;
+
+					var dist = (target.Position - wall.Position).FlatDist;
+					if (dist > maxDist) continue;
+					if (dist < 1) dist = 1;
+
+					float damagemultiplier = FalloffHelper.GetMultiplier(Falloff, RangeSteps, dist, weapon.DamageRangeModifier);
+					var damage = (int)Math.Floor(damagemultiplier * Damage * weapon.DamageModifier);
+
+					if (damage == 0)
+						continue;
+
+					wall.Damage(damage);
+				}
+			}
+		}
+
+		void damageActor(World world, Weapon weapon, Actor actor, int damage)
+		{
+			var armor = actor.Parts.FirstOrDefault(p => p is ArmorPart);
+
+			if (armor != null)
+			{
+				var armorPart = armor as ArmorPart;
+
+				if (ArmorModifiers.ContainsKey(armorPart.Name))
+					damage = (int)(damage * ArmorModifiers[armorPart.Name]);
+			}
+
+			if (damage == 0)
+				return;
+
+			if (weapon.Origin != null)
+				actor.Damage(weapon.Origin, damage);
+			else
+				actor.Damage(damage);
+
+			if (actor.WorldPart != null && actor.WorldPart.ShowDamage)
+				world.Add(new ActionText(actor.Position + new CPos(0, 0, 1024), new CPos(0, -15, 30), 50, ActionText.ActionTextType.SCALE, new Color(1f, 0.4f, 0).ToString() + damage));
 		}
 	}
 }

@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Linq;
+using System.Collections.Generic;
 using WarriorsSnuggery.Objects;
 
 namespace WarriorsSnuggery
@@ -9,11 +11,24 @@ namespace WarriorsSnuggery
 		public readonly List<Wall> VisibleWalls = new List<Wall>();
 		public Wall[,] Walls { get; private set; }
 		public MPos Bounds { get; private set; }
+		MPos mapBounds;
 
 		public WallLayer(MPos bounds)
 		{
+			mapBounds = bounds;
 			Bounds = new MPos((bounds.X + 1) * 2 + 1, (bounds.Y + 1) + 1);
 			Walls = new Wall[Bounds.X, Bounds.Y];
+		}
+
+		public List<Wall> GetRange(CPos position, int radius)
+		{
+			var topleft = position - new CPos(radius, radius, 0) - Map.Offset;
+			var botright = position + new CPos(radius, radius, 0) - Map.Offset;
+
+			var pos1 = new MPos((int)Math.Clamp(Math.Floor(topleft.X / 1024f), 0, mapBounds.X), (int)Math.Clamp(Math.Floor(topleft.Y / 1024f), 0, mapBounds.Y));
+			var pos2 = new MPos((int)Math.Clamp(Math.Ceiling(botright.X / 1024f), 0, mapBounds.X), (int)Math.Clamp(Math.Ceiling(botright.Y / 1024f), 0, mapBounds.Y));
+
+			return WallList.Where(w => w.TerrainPosition.X >= pos1.X && w.TerrainPosition.X < pos2.X && w.TerrainPosition.Y >= pos1.Y && w.TerrainPosition.Y < pos2.Y).ToList();
 		}
 
 		public void Set(Wall wall)
@@ -205,6 +220,7 @@ namespace WarriorsSnuggery
 		public void Clear()
 		{
 			Walls = new Wall[0, 0];
+			mapBounds = MPos.Zero;
 			Bounds = MPos.Zero;
 
 			foreach (var wall in WallList)
