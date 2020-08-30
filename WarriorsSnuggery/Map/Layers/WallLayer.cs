@@ -43,12 +43,15 @@ namespace WarriorsSnuggery
 
 		public void Remove(MPos pos)
 		{
-			if (Walls[pos.X, pos.Y] == null)
+			var wall = Walls[pos.X, pos.Y];
+
+			if (wall == null)
 				return;
 
-			var toRemove = Walls[pos.X, pos.Y];
+			var toRemove = wall;
 			toRemove.Dispose();
 			WallList.Remove(toRemove);
+			VisibleWalls.Remove(toRemove);
 			Walls[pos.X, pos.Y] = null;
 			notifyNeighbors(pos, false, false);
 		}
