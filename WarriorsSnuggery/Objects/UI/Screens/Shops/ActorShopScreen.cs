@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using OpenToolkit.Windowing.Common.Input;
+using System.Collections.Generic;
 using WarriorsSnuggery.Graphics;
 using WarriorsSnuggery.Objects;
 
@@ -83,11 +84,9 @@ namespace WarriorsSnuggery.UI
 			game.ScreenControl.UpdateActors();
 		}
 
-		public override void Tick()
+		public override void KeyDown(Key key, bool isControl, bool isShift, bool isAlt)
 		{
-			base.Tick();
-
-			if (KeyInput.IsKeyDown("escape", 10))
+			if (key == Key.Escape)
 				game.ChangeScreen(ScreenType.DEFAULT, false);
 		}
 

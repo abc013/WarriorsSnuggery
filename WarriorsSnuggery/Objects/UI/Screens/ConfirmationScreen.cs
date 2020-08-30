@@ -1,4 +1,5 @@
-﻿using System;
+﻿using OpenToolkit.Windowing.Common.Input;
+using System;
 using WarriorsSnuggery.Graphics;
 using WarriorsSnuggery.Objects;
 
@@ -38,13 +39,12 @@ namespace WarriorsSnuggery.UI
 			Content.Add(agree);
 		}
 
-		public override void Tick()
+		public override void KeyDown(Key key, bool isControl, bool isShift, bool isAlt)
 		{
-			base.Tick();
-			if (KeyInput.IsKeyDown("escape", 5))
+			if (key == Key.Escape)
 				onDecline();
 
-			if (KeyInput.IsKeyDown("enter", 5))
+			if (key == Key.Enter)
 				onAgree();
 		}
 	}

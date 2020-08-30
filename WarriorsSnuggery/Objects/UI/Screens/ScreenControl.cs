@@ -1,4 +1,5 @@
-﻿using System;
+﻿using OpenToolkit.Windowing.Common.Input;
+using System;
 using System.Collections.Generic;
 
 namespace WarriorsSnuggery.UI
@@ -160,34 +161,27 @@ namespace WarriorsSnuggery.UI
 
 		public bool CursorOnUI()
 		{
-			if (Focused == null)
-				return false;
-
-			return Focused.CursorOnUI();
+			return Focused != null && Focused.CursorOnUI();
 		}
 
 		public void Render()
 		{
-			if (Focused == null)
-				return;
-
-			Focused.Render();
+			Focused?.Render();
 		}
 
 		public void DebugRender()
 		{
-			if (Focused == null)
-				return;
-
-			Focused.DebugRender();
+			Focused?.DebugRender();
 		}
 
 		public void Tick()
 		{
-			if (Focused == null)
-				return;
+			Focused?.Tick();
+		}
 
-			Focused.Tick();
+		public void KeyDown(Key key, bool isControl, bool isShift, bool isAlt)
+		{
+			Focused?.KeyDown(key, isControl, isShift, isAlt);
 		}
 
 		public void DisposeScreens()

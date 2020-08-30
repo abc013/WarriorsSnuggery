@@ -1,4 +1,5 @@
-﻿using WarriorsSnuggery.Graphics;
+﻿using OpenToolkit.Windowing.Common.Input;
+using WarriorsSnuggery.Graphics;
 using WarriorsSnuggery.Objects;
 
 namespace WarriorsSnuggery.UI
@@ -82,6 +83,12 @@ namespace WarriorsSnuggery.UI
 			if (KeyInput.IsKeyDown("escape", 10))
 				game.ChangeScreen(ScreenType.MENU);
 		}
+
+		public override void KeyDown(Key key, bool isControl, bool isShift, bool isAlt)
+		{
+			if (key == Key.Escape)
+				game.ChangeScreen(ScreenType.MENU);
+		}
 	}
 
 	class NewSaveGameScreen : Screen
@@ -121,6 +128,12 @@ namespace WarriorsSnuggery.UI
 			warning.Tick();
 
 			if (KeyInput.IsKeyDown("escape", 10))
+				game.ChangeScreen(ScreenType.MENU);
+		}
+
+		public override void KeyDown(Key key, bool isControl, bool isShift, bool isAlt)
+		{
+			if (key == Key.Escape)
 				game.ChangeScreen(ScreenType.MENU);
 		}
 

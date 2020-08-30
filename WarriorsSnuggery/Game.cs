@@ -209,25 +209,7 @@ namespace WarriorsSnuggery
 			{
 				// screen control
 				if (ScreenControl.FocusedType != ScreenType.DEFEAT)
-				{
-					if (KeyInput.IsKeyDown(Settings.GetKey("Pause"), 10) && !(KeyInput.IsKeyDown(Key.ControlLeft) || KeyInput.IsKeyDown(Key.ControlRight)))
-						ChangeScreen(ScreenType.PAUSED, true);
-
-					if (KeyInput.IsKeyDown("escape", 10))
-						ChangeScreen(ScreenType.MENU, true);
-
 					CheckVictory();
-				}
-
-				// party mode
-				if (Settings.PartyMode)
-				{
-					var sin1 = (float)Math.Sin(LocalTick / 8f) / 2 + 0.8f;
-					var sin2 = (float)Math.Sin(LocalTick / 8f + 2 * Math.PI / 3) / 2 + 0.8f;
-					var sin3 = (float)Math.Sin(LocalTick / 8f + 4 * Math.PI / 3) / 2 + 0.8f;
-
-					WorldRenderer.Ambient = new Color(sin1, sin2, sin3);
-				}
 
 				// camera input
 				if (!ScreenControl.CursorOnUI() && !(Camera.LockedToPlayer && World.PlayerAlive && !Editor))
@@ -252,45 +234,6 @@ namespace WarriorsSnuggery
 						Camera.Move(add);
 				}
 
-				// Key input
-				if (KeyInput.IsKeyDown(Key.KeypadPlus, 5))
-					Settings.CurrentMap++;
-				if (KeyInput.IsKeyDown(Key.KeypadMinus, 5) && Settings.CurrentMap >= -1)
-					Settings.CurrentMap--;
-
-				if (KeyInput.IsKeyDown("altright", 5))
-					Settings.PartyMode = !Settings.PartyMode;
-
-				if (KeyInput.IsKeyDown("altleft", 0))
-				{
-					if (KeyInput.IsKeyDown("v", 5) && Type != GameType.EDITOR)
-						World.LocalPlayer.Health.HP = 0;
-
-					if (KeyInput.IsKeyDown("b", 5) && Type != GameType.EDITOR)
-						World.LocalPlayer.Health.HP += 100;
-
-					if (KeyInput.IsKeyDown("n", 5))
-					{
-						Statistics.Mana += 100;
-						if (Statistics.Mana > Statistics.MaxMana)
-							Statistics.Mana = Statistics.MaxMana;
-					}
-
-					if (KeyInput.IsKeyDown("m", 5))
-						Statistics.Money += 100;
-
-					if (KeyInput.IsKeyDown("comma", 5))
-						Settings.EnableInfoScreen = !Settings.EnableInfoScreen;
-
-					if (KeyInput.IsKeyDown("period", 5))
-					{
-						World.ShroudLayer.RevealAll = true;
-						WorldRenderer.CheckVisibility(Camera.LookAt, Camera.DefaultZoom);
-					}
-					if (KeyInput.IsKeyDown("x", 5))
-						SwitchEditor();
-				}
-
 				// Zooming
 				if (!Editor && Type != GameType.EDITOR)
 				{
@@ -298,6 +241,16 @@ namespace WarriorsSnuggery
 						Camera.Zoom(Settings.ScrollSpeed / 20 * (4 - (Camera.CurrentZoom - Camera.DefaultZoom) / 2));
 					else
 						Camera.Zoom(Settings.ScrollSpeed / 20 * (-(Camera.CurrentZoom - Camera.DefaultZoom) / 2));
+				}
+
+				// party mode
+				if (Settings.PartyMode)
+				{
+					var sin1 = (float)Math.Sin(LocalTick / 8f) / 2 + 0.8f;
+					var sin2 = (float)Math.Sin(LocalTick / 8f + 2 * Math.PI / 3) / 2 + 0.8f;
+					var sin3 = (float)Math.Sin(LocalTick / 8f + 4 * Math.PI / 3) / 2 + 0.8f;
+
+					WorldRenderer.Ambient = new Color(sin1, sin2, sin3);
 				}
 
 				SpellManager.Tick();
@@ -342,6 +295,66 @@ namespace WarriorsSnuggery
 
 			if (ScreenControl.FocusedType == ScreenType.START)
 				Pause(true);
+		}
+
+		public void KeyDown(Key key, bool isControl, bool isShift, bool isAlt)
+		{
+			ScreenControl.KeyDown(key, isControl, isShift, isAlt);
+
+			if (Paused || Finished)
+				return;
+
+			// screen control
+			if (ScreenControl.FocusedType != ScreenType.DEFEAT)
+			{
+				if (key == Settings.GetKey("Pause") && !isControl)
+					ChangeScreen(ScreenType.PAUSED, true);
+
+				if (key == Key.Escape)
+					ChangeScreen(ScreenType.MENU, true);
+			}
+
+			// Key input
+			if (key == Key.KeypadPlus)
+				Settings.CurrentMap++;
+			if (key == Key.KeypadMinus && Settings.CurrentMap >= -1)
+				Settings.CurrentMap--;
+
+			if (key == Key.AltRight)
+				Settings.PartyMode = !Settings.PartyMode;
+
+			if (isAlt)
+			{
+				if (Type != GameType.EDITOR)
+				{
+					if (key == Key.V)
+						World.LocalPlayer.Health.HP = 0;
+
+					if (key == Key.B)
+						World.LocalPlayer.Health.HP += 100;
+				}
+
+				if (key == Key.N)
+				{
+					Statistics.Mana += 100;
+					Statistics.Mana = Math.Clamp(Statistics.Mana, 0, Statistics.MaxMana);
+				}
+
+				if (key == Key.M)
+					Statistics.Money += 100;
+
+				if (key == Key.Comma)
+					Settings.EnableInfoScreen = !Settings.EnableInfoScreen;
+
+				if (key == Key.Period)
+				{
+					World.ShroudLayer.RevealAll = true;
+					WorldRenderer.CheckVisibility(Camera.LookAt, Camera.DefaultZoom);
+				}
+
+				if (key == Key.X)
+					SwitchEditor();
+			}
 		}
 
 		public void CheckVictory()

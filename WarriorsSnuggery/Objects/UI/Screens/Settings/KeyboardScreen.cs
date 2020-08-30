@@ -1,4 +1,5 @@
-﻿using WarriorsSnuggery.Graphics;
+﻿using OpenToolkit.Windowing.Common.Input;
+using WarriorsSnuggery.Graphics;
 using WarriorsSnuggery.Objects;
 
 namespace WarriorsSnuggery.UI
@@ -104,11 +105,9 @@ namespace WarriorsSnuggery.UI
 			Log.WriteDebug("Saved key bindings.");
 		}
 
-		public override void Tick()
+		public override void KeyDown(Key key, bool isControl, bool isShift, bool isAlt)
 		{
-			base.Tick();
-
-			if (KeyInput.IsKeyDown("escape", 10))
+			if (key == Key.Escape)
 				game.ChangeScreen(ScreenType.SETTINGS);
 		}
 	}

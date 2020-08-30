@@ -1,3 +1,4 @@
+using OpenToolkit.Windowing.Common.Input;
 using System;
 using System.Collections.Generic;
 using WarriorsSnuggery.Graphics;
@@ -66,10 +67,13 @@ namespace WarriorsSnuggery.UI
 			foreach (var panel in tree)
 				panel.Tick();
 
-			if (KeyInput.IsKeyDown("escape", 10))
-				game.ChangeScreen(ScreenType.DEFAULT, false);
-
 			money.Tick();
+		}
+
+		public override void KeyDown(Key key, bool isControl, bool isShift, bool isAlt)
+		{
+			if (key == Key.Escape)
+				game.ChangeScreen(ScreenType.DEFAULT, false);
 		}
 
 		public void UpdateAvailability()

@@ -1,3 +1,4 @@
+using OpenToolkit.Windowing.Common.Input;
 using System.IO;
 using System.Linq;
 using WarriorsSnuggery.Graphics;
@@ -49,6 +50,7 @@ namespace WarriorsSnuggery.UI
 				createPieceScreen.Render();
 				return;
 			}
+
 			base.Render();
 		}
 
@@ -61,8 +63,11 @@ namespace WarriorsSnuggery.UI
 			}
 
 			base.Tick();
+		}
 
-			if (KeyInput.IsKeyDown("escape", 10))
+		public override void KeyDown(Key key, bool isControl, bool isShift, bool isAlt)
+		{
+			if (key == Key.Escape)
 				game.ChangeScreen(ScreenType.MENU);
 		}
 	}

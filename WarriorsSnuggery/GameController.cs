@@ -1,4 +1,5 @@
-﻿using WarriorsSnuggery.Maps;
+﻿using OpenToolkit.Windowing.Common.Input;
+using WarriorsSnuggery.Maps;
 
 namespace WarriorsSnuggery
 {
@@ -104,6 +105,11 @@ namespace WarriorsSnuggery
 				game.ChangeScreen(UI.ScreenType.PAUSED);
 
 			game.Pause(true);
+		}
+
+		public static void KeyDown(Key key, bool isControl, bool isShift, bool isAlt)
+		{
+			game.KeyDown(key, isControl, isShift, isAlt);
 		}
 
 		public static void Exit()

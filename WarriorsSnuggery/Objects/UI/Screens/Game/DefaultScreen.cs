@@ -1,3 +1,4 @@
+using OpenToolkit.Windowing.Common.Input;
 using System;
 using System.Collections.Generic;
 using WarriorsSnuggery.Graphics;
@@ -223,27 +224,34 @@ namespace WarriorsSnuggery.UI
 
 				mana.SetText(game.Statistics.Mana + "/" + game.Statistics.MaxMana);
 				manaPercentage = game.Statistics.Mana / (float)game.Statistics.MaxMana;
-
-				if (KeyInput.IsKeyDown("shiftleft"))
-				{
-					actorList.CurrentActor += MouseInput.WheelState;
-
-					if (!KeyInput.IsKeyDown("controlleft") && MouseInput.IsRightClicked)
-						changePlayer(actorTypes[actorList.CurrentActor]);
-				}
-				else
-				{
-					spellList.CurrentSpell += MouseInput.WheelState;
-
-					if (!KeyInput.IsKeyDown("controlleft") && MouseInput.IsRightClicked)
-						game.SpellManager.Activate(spellList.CurrentSpell);
-				}
 			}
 
 			money.Tick();
 
 			actorList.Tick();
 			spellList.Tick();
+		}
+
+		public override void KeyDown(Key key, bool isControl, bool isShift, bool isAlt)
+		{
+			var player = game.World.LocalPlayer;
+			if (player != null)
+			{
+				if (key == Key.ShiftLeft)
+				{
+					actorList.CurrentActor += MouseInput.WheelState;
+
+					if (key != Key.ControlLeft && MouseInput.IsRightClicked)
+						changePlayer(actorTypes[actorList.CurrentActor]);
+				}
+				else
+				{
+					spellList.CurrentSpell += MouseInput.WheelState;
+
+					if (key != Key.ControlLeft && MouseInput.IsRightClicked)
+						game.SpellManager.Activate(spellList.CurrentSpell);
+				}
+			}
 		}
 
 		void setEnemyArrow()

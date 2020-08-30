@@ -1,3 +1,4 @@
+using OpenToolkit.Windowing.Common.Input;
 using System;
 
 namespace WarriorsSnuggery.UI
@@ -74,11 +75,9 @@ namespace WarriorsSnuggery.UI
 			game.ScreenControl.ShowScreen(ScreenType.DECISION);
 		}
 
-		public override void Tick()
+		public override void KeyDown(Key key, bool isControl, bool isShift, bool isAlt)
 		{
-			base.Tick();
-
-			if (KeyInput.IsKeyDown("escape", 10))
+			if (key == Key.Escape)
 			{
 				game.Pause(false);
 				game.ChangeScreen(ScreenType.DEFAULT);

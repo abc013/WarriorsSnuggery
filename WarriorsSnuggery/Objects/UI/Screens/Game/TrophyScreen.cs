@@ -1,4 +1,5 @@
-﻿using System;
+﻿using OpenToolkit.Windowing.Common.Input;
+using System;
 using WarriorsSnuggery.Graphics;
 using WarriorsSnuggery.Objects;
 using WarriorsSnuggery.Trophies;
@@ -58,11 +59,9 @@ namespace WarriorsSnuggery.UI
 			information.Lines[2].WriteText(Color.Grey + (trophy.MaxManaIncrease != 0 ? "Gives " + Color.Blue + trophy.MaxManaIncrease + Color.Grey + " additional mana storage!" : " "));
 		}
 
-		public override void Tick()
+		public override void KeyDown(Key key, bool isControl, bool isShift, bool isAlt)
 		{
-			base.Tick();
-
-			if (KeyInput.IsKeyDown("escape", 10))
+			if (key == Key.Escape)
 				game.ChangeScreen(ScreenType.DEFAULT, false);
 		}
 

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using OpenToolkit.Windowing.Common.Input;
+using System.Collections.Generic;
 using WarriorsSnuggery.Graphics;
 using WarriorsSnuggery.Objects;
 
@@ -29,6 +30,8 @@ namespace WarriorsSnuggery.UI
 		public virtual void Show() { }
 
 		public virtual void Hide() { }
+
+		public virtual void KeyDown(Key key, bool isControl, bool isShift, bool isAlt) { }
 
 		public virtual void Tick()
 		{
