@@ -207,6 +207,21 @@ namespace WarriorsSnuggery.UI
 			var player = game.World.LocalPlayer;
 			if (player != null)
 			{
+				if (KeyInput.IsKeyDown(Key.ShiftLeft))
+				{
+					actorList.CurrentActor += MouseInput.WheelState;
+
+					if (!KeyInput.IsKeyDown(Key.ControlLeft) && MouseInput.IsRightClicked)
+						changePlayer(actorTypes[actorList.CurrentActor]);
+				}
+				else
+				{
+					spellList.CurrentSpell += MouseInput.WheelState;
+
+					if (!KeyInput.IsKeyDown(Key.ControlLeft) && MouseInput.IsRightClicked)
+						game.SpellManager.Activate(spellList.CurrentSpell);
+				}
+
 				if (player.Health != null)
 				{
 					var max = player.Health.MaxHP;
@@ -230,28 +245,6 @@ namespace WarriorsSnuggery.UI
 
 			actorList.Tick();
 			spellList.Tick();
-		}
-
-		public override void KeyDown(Key key, bool isControl, bool isShift, bool isAlt)
-		{
-			var player = game.World.LocalPlayer;
-			if (player != null)
-			{
-				if (key == Key.ShiftLeft)
-				{
-					actorList.CurrentActor += MouseInput.WheelState;
-
-					if (key != Key.ControlLeft && MouseInput.IsRightClicked)
-						changePlayer(actorTypes[actorList.CurrentActor]);
-				}
-				else
-				{
-					spellList.CurrentSpell += MouseInput.WheelState;
-
-					if (key != Key.ControlLeft && MouseInput.IsRightClicked)
-						game.SpellManager.Activate(spellList.CurrentSpell);
-				}
-			}
 		}
 
 		void setEnemyArrow()
