@@ -69,15 +69,17 @@ namespace WarriorsSnuggery.UI
 					OnType?.Invoke();
 					return;
 				}
-				if (realText.Length <= MaximumLength && !string.IsNullOrEmpty(Window.StringInput))
+
+				var input = Window.StringInput;
+				if (realText.Length <= MaximumLength && !string.IsNullOrEmpty(input))
 				{
-					if (OnlyNumbers && !int.TryParse(Window.StringInput + "", out _))
+					if (OnlyNumbers && !int.TryParse(input + "", out _))
 						return;
 
-					var toAdd = Window.StringInput;
+					var toAdd = string.Empty;
 					if (IsPath)
 					{
-						foreach (var @char in Window.StringInput)
+						foreach (var @char in input)
 						{
 							if (!KeyInput.InvalidFileNameChars.Contains(@char))
 								toAdd += @char;
