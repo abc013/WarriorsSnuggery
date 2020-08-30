@@ -253,8 +253,10 @@ namespace WarriorsSnuggery
 				}
 
 				// Key input
-				if (KeyInput.IsKeyDown(Key.Q, 5))
-					Audio.AudioManager.PlaySound("test");
+				if (KeyInput.IsKeyDown(Key.KeypadPlus, 5))
+					Settings.CurrentMap++;
+				if (KeyInput.IsKeyDown(Key.KeypadMinus, 5) && Settings.CurrentMap >= -1)
+					Settings.CurrentMap--;
 
 				if (KeyInput.IsKeyDown("altright", 5))
 					Settings.PartyMode = !Settings.PartyMode;

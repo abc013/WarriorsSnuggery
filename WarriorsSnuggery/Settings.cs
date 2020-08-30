@@ -54,6 +54,8 @@ namespace WarriorsSnuggery
 
 		public static Dictionary<string, Key> KeyDictionary = new Dictionary<string, Key>();
 
+		public static int CurrentMap = -1;
+
 		public static Key GetKey(string value)
 		{
 			if (!KeyDictionary.ContainsKey(value))

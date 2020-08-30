@@ -19,11 +19,11 @@ namespace WarriorsSnuggery
 
 		public static int ScreenRefreshRate;
 
-		public static float Ratio { get { return Width / (float)Height; } }
+		public static float Ratio => Width / (float)Height;
 
 		public const float UnitHeight = Camera.DefaultZoom;
 
-		public static float UnitWidth { get { return Camera.DefaultZoom * Ratio; } private set { } }
+		public static float UnitWidth { get => Camera.DefaultZoom * Ratio; private set { } }
 
 		public static bool Focused = true;
 	}
