@@ -25,8 +25,8 @@ namespace WarriorsSnuggery
 			var topleft = position - new CPos(radius, radius, 0) - Map.Offset;
 			var botright = position + new CPos(radius, radius, 0) - Map.Offset;
 
-			var pos1 = new MPos((int)Math.Clamp(Math.Floor(topleft.X / 1024f), 0, mapBounds.X), (int)Math.Clamp(Math.Floor(topleft.Y / 1024f), 0, mapBounds.Y));
-			var pos2 = new MPos((int)Math.Clamp(Math.Ceiling(botright.X / 1024f), 0, mapBounds.X), (int)Math.Clamp(Math.Ceiling(botright.Y / 1024f), 0, mapBounds.Y));
+			var pos1 = new MPos((int)Math.Clamp(Math.Floor(topleft.X / 1024f), 0, mapBounds.X + 1), (int)Math.Clamp(Math.Floor(topleft.Y / 1024f), 0, mapBounds.Y + 1));
+			var pos2 = new MPos((int)Math.Clamp(Math.Ceiling(botright.X / 1024f), 0, mapBounds.X + 1), (int)Math.Clamp(Math.Ceiling(botright.Y / 1024f), 0, mapBounds.Y + 1));
 
 			return WallList.Where(w => w.TerrainPosition.X >= pos1.X && w.TerrainPosition.X < pos2.X && w.TerrainPosition.Y >= pos1.Y && w.TerrainPosition.Y < pos2.Y).ToList();
 		}
