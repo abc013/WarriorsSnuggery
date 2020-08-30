@@ -1,4 +1,5 @@
-﻿using System;
+﻿using OpenToolkit.Windowing.Common.Input;
+using System;
 using System.Collections.Generic;
 using WarriorsSnuggery.Graphics;
 
@@ -75,12 +76,12 @@ namespace WarriorsSnuggery.UI
 					Highlight.SetPosition(Position + new CPos(-SelectableBounds.X + x * 2 * itemSize.X + itemSize.X, -SelectableBounds.Y + y * 2 * itemSize.Y + itemSize.Y, 0));
 				}
 
-				if ((scrolled < Math.Floor(Container.Count / (float)Size.X - Size.Y) + 1) && (KeyInput.IsKeyDown("down", 5) || MouseInput.WheelState > 0))
+				if ((scrolled < Math.Floor(Container.Count / (float)Size.X - Size.Y) + 1) && (KeyInput.IsKeyDown(Key.Down, 5) || MouseInput.WheelState > 0))
 				{
 					scrolled++;
 					UpdatePositions();
 				}
-				if (scrolled != 0 && (KeyInput.IsKeyDown("up", 5) || MouseInput.WheelState < 0))
+				if (scrolled != 0 && (KeyInput.IsKeyDown(Key.Up, 5) || MouseInput.WheelState < 0))
 				{
 					scrolled--;
 					UpdatePositions();

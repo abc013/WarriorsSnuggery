@@ -87,7 +87,7 @@ namespace WarriorsSnuggery.Objects.Parts
 
 		void attackTarget(CPos pos)
 		{
-			if (KeyInput.IsKeyDown(Key.ShiftLeft, 0))
+			if (KeyInput.IsKeyDown(Key.ShiftLeft))
 				self.Attack(pos, 0);
 			else
 			{

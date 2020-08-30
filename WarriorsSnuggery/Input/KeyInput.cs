@@ -16,19 +16,6 @@ namespace WarriorsSnuggery
 			InvalidFileNameChars = Path.GetInvalidFileNameChars();
 		}
 
-		public static bool IsKeyDown(string key, int coolDownWhenHit = 0)
-		{
-			if (HitCooldown > 0 || !State.IsAnyKeyDown || !WindowInfo.Focused)
-				return false;
-
-			bool hit = State.IsKeyDown(ToKey(key));
-
-			if (hit)
-				HitCooldown = coolDownWhenHit;
-
-			return hit;
-		}
-
 		public static Key ToKey(string key)
 		{
 			return (Key)Enum.Parse(typeof(Key), key, true);

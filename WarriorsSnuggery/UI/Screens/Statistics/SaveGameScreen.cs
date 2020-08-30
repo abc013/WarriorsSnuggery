@@ -80,7 +80,7 @@ namespace WarriorsSnuggery.UI
 			}
 			base.Tick();
 
-			if (KeyInput.IsKeyDown("escape", 10))
+			if (KeyInput.IsKeyDown(Key.Escape, 10))
 				game.ChangeScreen(ScreenType.MENU);
 		}
 
@@ -127,7 +127,7 @@ namespace WarriorsSnuggery.UI
 			@new.Tick();
 			warning.Tick();
 
-			if (KeyInput.IsKeyDown("escape", 10))
+			if (KeyInput.IsKeyDown(Key.Escape, 10))
 				game.ChangeScreen(ScreenType.MENU);
 		}
 

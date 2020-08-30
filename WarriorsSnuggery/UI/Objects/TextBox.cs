@@ -1,4 +1,5 @@
-﻿using System;
+﻿using OpenToolkit.Windowing.Common.Input;
+using System;
 using System.Linq;
 using WarriorsSnuggery.Graphics;
 using WarriorsSnuggery.Objects;
@@ -56,13 +57,13 @@ namespace WarriorsSnuggery.UI
 
 			if (Selected)
 			{
-				if (KeyInput.IsKeyDown("Enter", 7))
+				if (KeyInput.IsKeyDown(Key.Enter, 7))
 				{
 					Selected = false;
 					OnEnter?.Invoke();
 					return;
 				}
-				if (Text.Length > 0 && (KeyInput.IsKeyDown("Back", 5) || KeyInput.IsKeyDown("Delete", 5)))
+				if (Text.Length > 0 && (KeyInput.IsKeyDown(Key.Back, 5) || KeyInput.IsKeyDown(Key.Delete, 5)))
 				{
 					realText = Text[0..^1];
 					text.SetText(Text);

@@ -218,16 +218,16 @@ namespace WarriorsSnuggery
 
 					var add = CPos.Zero;
 
-					if (KeyInput.IsKeyDown(Settings.GetKey("CameraUp"), 0) || (mouse.Y < 0 && mouse.Y < -Camera.DefaultZoom * 512 + 64 * Settings.EdgeScrolling))
+					if (KeyInput.IsKeyDown(Settings.GetKey("CameraUp")) || (mouse.Y < 0 && mouse.Y < -Camera.DefaultZoom * 512 + 64 * Settings.EdgeScrolling))
 						add = new CPos(add.X, add.Y - 1, 0);
 
-					if (KeyInput.IsKeyDown(Settings.GetKey("CameraDown"), 0) || (mouse.Y > 0 && mouse.Y > Camera.DefaultZoom * 512 - 64 * Settings.EdgeScrolling))
+					if (KeyInput.IsKeyDown(Settings.GetKey("CameraDown")) || (mouse.Y > 0 && mouse.Y > Camera.DefaultZoom * 512 - 64 * Settings.EdgeScrolling))
 						add = new CPos(add.X, add.Y + 1, 0);
 
-					if (KeyInput.IsKeyDown(Settings.GetKey("CameraRight"), 0) || (mouse.X > 0 && mouse.X > Camera.DefaultZoom * WindowInfo.Ratio * 512 - 64 * Settings.EdgeScrolling))
+					if (KeyInput.IsKeyDown(Settings.GetKey("CameraRight")) || (mouse.X > 0 && mouse.X > Camera.DefaultZoom * WindowInfo.Ratio * 512 - 64 * Settings.EdgeScrolling))
 						add = new CPos(add.X + 1, add.Y, 0);
 
-					if (KeyInput.IsKeyDown(Settings.GetKey("CameraLeft"), 0) || (mouse.X < 0 && mouse.X < -Camera.DefaultZoom * WindowInfo.Ratio * 512 + 64 * Settings.EdgeScrolling))
+					if (KeyInput.IsKeyDown(Settings.GetKey("CameraLeft")) || (mouse.X < 0 && mouse.X < -Camera.DefaultZoom * WindowInfo.Ratio * 512 + 64 * Settings.EdgeScrolling))
 						add = new CPos(add.X - 1, add.Y, 0);
 
 					if (add != CPos.Zero)
@@ -237,7 +237,7 @@ namespace WarriorsSnuggery
 				// Zooming
 				if (!Editor && Type != GameType.EDITOR)
 				{
-					if (KeyInput.IsKeyDown("controlleft") && MouseInput.IsRightDown)
+					if (KeyInput.IsKeyDown(Key.ControlLeft) && MouseInput.IsRightDown)
 						Camera.Zoom(Settings.ScrollSpeed / 20 * (4 - (Camera.CurrentZoom - Camera.DefaultZoom) / 2));
 					else
 						Camera.Zoom(Settings.ScrollSpeed / 20 * (-(Camera.CurrentZoom - Camera.DefaultZoom) / 2));
@@ -407,7 +407,7 @@ namespace WarriorsSnuggery
 		{
 			const int range = 5120;
 
-			if (KeyInput.IsKeyDown(Key.ShiftLeft, 0))
+			if (KeyInput.IsKeyDown(Key.ShiftLeft))
 				return null;
 
 			// Look for actors in range.

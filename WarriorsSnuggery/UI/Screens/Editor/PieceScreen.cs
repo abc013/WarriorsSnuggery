@@ -111,7 +111,7 @@ namespace WarriorsSnuggery.UI
 		{
 			base.Tick();
 
-			if (KeyInput.IsKeyDown("escape", 10))
+			if (KeyInput.IsKeyDown(Key.Escape, 10))
 				ActiveScreen = false;
 		}
 
