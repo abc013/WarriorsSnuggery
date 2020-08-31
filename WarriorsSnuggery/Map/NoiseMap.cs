@@ -78,7 +78,7 @@ namespace WarriorsSnuggery.Maps
 				for (var y = 0; y < Bounds.Y; y++)
 				{
 					var value = Values[x * Bounds.Y + y];
-					ColorManager.DrawQuad(new CPos(x * 1024, y * 1024, 0), 512, new Color(value, value, value));
+					ColorManager.DrawQuad(new CPos(x * 1024, y * 1024, 0), 512, new Color(value, value, value, 0.8f));
 				}
 			}
 		}

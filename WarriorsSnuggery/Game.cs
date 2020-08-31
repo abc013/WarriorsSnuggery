@@ -315,9 +315,9 @@ namespace WarriorsSnuggery
 			}
 
 			// Key input
-			if (key == Key.KeypadPlus)
+			if (key == Key.KeypadPlus || key == Key.PageUp)
 				Settings.CurrentMap++;
-			if (key == Key.KeypadMinus && Settings.CurrentMap >= -1)
+			if ((key == Key.KeypadMinus || key == Key.PageDown) && Settings.CurrentMap >= -1)
 				Settings.CurrentMap--;
 
 			if (key == Key.AltRight)
