@@ -7,6 +7,17 @@ namespace WarriorsSnuggery.UI
 {
 	public class PanelList : Panel, IDisableTooltip
 	{
+		public override CPos Position
+		{
+			get => base.Position;
+			set
+			{
+				base.Position = value;
+
+				UpdatePositions();
+			}
+		}
+
 		public readonly List<PanelItem> Container = new List<PanelItem>();
 		public readonly MPos Size;
 

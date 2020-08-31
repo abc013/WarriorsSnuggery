@@ -61,6 +61,7 @@ namespace WarriorsSnuggery.Objects.Parts
 		int currentFacing;
 		readonly Color variation;
 		Color cachedColor;
+		float angle;
 
 		public AnimatedSpritePart(Actor self, AnimatedSpritePartInfo info) : base(self)
 		{
@@ -119,6 +120,11 @@ namespace WarriorsSnuggery.Objects.Parts
 
 		public override void Tick()
 		{
+			if (self.Angle != angle)
+			{
+				angle = self.Angle;
+				currentFacing = FacingFromAngle(angle);
+			}
 			renderable = GetRenderable(self.CurrentAction, currentFacing);
 			renderable?.Tick();
 		}

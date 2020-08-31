@@ -6,6 +6,21 @@ namespace WarriorsSnuggery.UI
 	{
 		readonly Slider slider;
 
+		public override CPos Position
+		{
+			get => base.Position;
+			set
+			{
+				base.Position = value;
+
+				if (slider != null)
+				{
+					slider.CenterPosition = value;
+					slider.Value = slider.Value;
+				}
+			}
+		}
+
 		public float Value
 		{
 			get => slider.Value;
@@ -39,9 +54,9 @@ namespace WarriorsSnuggery.UI
 		}
 	}
 
-	public class Slider : Panel
+	class Slider : Panel
 	{
-		readonly CPos centerPosition;
+		public CPos CenterPosition;
 		readonly int length;
 
 		readonly Action onChanged;
@@ -57,7 +72,7 @@ namespace WarriorsSnuggery.UI
 			set
 			{
 				currentPosition = (int)((value - 0.5f) * length) * 2;
-				Position = new CPos(centerPosition.X + currentPosition, centerPosition.Y, 0);
+				Position = new CPos(CenterPosition.X + currentPosition, CenterPosition.Y, 0);
 				tooltip = new Tooltip(Position, Math.Round(Value, 1).ToString());
 			}
 		}
@@ -65,7 +80,7 @@ namespace WarriorsSnuggery.UI
 		public Slider(CPos position, int length, PanelType type, Action onChanged) : base(position, new MPos((int)(1024 * MasterRenderer.PixelMultiplier), (int)(1024 * 4 * MasterRenderer.PixelMultiplier)), type)
 		{
 			SelectableBounds = Bounds;
-			centerPosition = position;
+			CenterPosition = position;
 			this.onChanged = onChanged;
 			this.length = length / 2;
 			tooltip = new Tooltip(position, Math.Round(Value, 1).ToString());
@@ -90,13 +105,13 @@ namespace WarriorsSnuggery.UI
 			if (drag)
 			{
 				var xPos = MouseInput.WindowPosition.X;
-				if (xPos < centerPosition.X - length)
-					xPos = centerPosition.X - length;
+				if (xPos < CenterPosition.X - length)
+					xPos = CenterPosition.X - length;
 
-				if (xPos > centerPosition.X + length)
-					xPos = centerPosition.X + length;
+				if (xPos > CenterPosition.X + length)
+					xPos = CenterPosition.X + length;
 
-				currentPosition = xPos - centerPosition.X;
+				currentPosition = xPos - CenterPosition.X;
 				Position = new CPos(xPos, Position.Y, Position.Z);
 
 				onChanged?.Invoke();

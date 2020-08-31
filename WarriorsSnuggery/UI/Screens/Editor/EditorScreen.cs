@@ -1,33 +1,23 @@
-using System.Linq;
+using System;
 using WarriorsSnuggery.Graphics;
 using WarriorsSnuggery.Objects;
-using WarriorsSnuggery.Objects.Parts;
+using WarriorsSnuggery.UI.Objects;
 
 namespace WarriorsSnuggery.UI
 {
 	public class EditorScreen : Screen
 	{
+		readonly CheckBox showNone;
 		readonly CheckBox showTiles;
 		readonly CheckBox showActors;
 		readonly CheckBox showWalls;
 
-		readonly PanelList tiles;
-		readonly PanelList actors;
-		readonly PanelList walls;
-
-		readonly CheckBox wallBox;
-		readonly CheckBox rasterizationBox;
-		readonly CheckBox isBot;
-		readonly TextBox team;
-		readonly UITextLine wallText;
-		readonly UITextLine rasterizationText;
-		readonly UITextLine botText;
-		readonly UITextLine teamText;
+		readonly TerrainEditorWidget terrainWidget;
+		readonly ActorEditorWidget actorWidget;
+		readonly WallEditorWidget wallWidget;
 
 		readonly UITextLine mousePosition;
 		readonly Button save;
-		readonly UITextLine saved;
-		int savedTick;
 
 		readonly Game game;
 
@@ -40,10 +30,6 @@ namespace WarriorsSnuggery.UI
 		}
 
 		Selected currentSelected = Selected.NONE;
-		TerrainType terrainSelected;
-		ActorType actorSelected;
-		WallType wallSelected;
-		bool horizontal;
 
 		public EditorScreen(Game game) : base("Editor", 0)
 		{
@@ -54,68 +40,32 @@ namespace WarriorsSnuggery.UI
 			Content.Add(mousePosition);
 
 			save = new Button(new CPos((int)(WindowInfo.UnitWidth * 512 - 2048), -5120, 0), "Save", "wooden", savePiece);
-			saved = new UITextLine(new CPos((int)(WindowInfo.UnitWidth * 512 - 2048), -5120, 0), FontManager.Pixel16, TextOffset.MIDDLE);
-			saved.SetText("Save");
 
-			showTiles = CheckBoxCreator.Create("terrain_editor", new CPos((int)(WindowInfo.UnitWidth * 512 - 2496), -2536, 0), false, (b) => deselectBoxes(Selected.TILE));
+			var checkBoxPosition = new CPos((int)(WindowInfo.UnitWidth * 512) - 1024, -6144, 0);
+
+			showNone = CheckBoxCreator.Create("wooden", checkBoxPosition - new CPos(736 * 3, 0, 0), false, (b) => deselectBoxes(Selected.NONE));
+			showNone.Checked = true;
+			Content.Add(showNone);
+
+			showTiles = CheckBoxCreator.Create("terrain_editor", checkBoxPosition - new CPos(736 * 2, 0, 0), false, (b) => deselectBoxes(Selected.TILE));
 			Content.Add(showTiles);
 
-			showActors = CheckBoxCreator.Create("actor_editor", new CPos((int)(WindowInfo.UnitWidth * 512 - 1760), -2536, 0), false, (b) => deselectBoxes(Selected.ACTOR));
+			showActors = CheckBoxCreator.Create("actor_editor", checkBoxPosition - new CPos(736, 0, 0), false, (b) => deselectBoxes(Selected.ACTOR));
 			Content.Add(showActors);
 
-			showWalls = CheckBoxCreator.Create("wall_editor", new CPos((int)(WindowInfo.UnitWidth * 512 - 1024), -2536, 0), false, (b) => deselectBoxes(Selected.WALL));
+			showWalls = CheckBoxCreator.Create("wall_editor", checkBoxPosition, false, (b) => deselectBoxes(Selected.WALL));
 			Content.Add(showWalls);
 
-			tiles = new PanelList(new CPos((int)(WindowInfo.UnitWidth * 512 - 2048), 2048, 0), new MPos(2048, 4096), new MPos(512, 512), PanelManager.Get("wooden"));
-			foreach (var a in TerrainCreator.Types.Values)
-				tiles.Add(new PanelItem(new BatchObject(a.Texture, Color.White), new MPos(512, 512), a.ID.ToString(), new string[0], () => terrainSelected = a));
+			var widgetPosition = new CPos((int)(WindowInfo.UnitWidth * 512) - 2048, -3584, 0);
 
-			actors = new PanelList(new CPos((int)(WindowInfo.UnitWidth * 512 - 2048), 2048, 0), new MPos(2048, 4096), new MPos(512, 512), PanelManager.Get("wooden"));
-			foreach (var pair in ActorCreator.Types)
-			{
-				var a = pair.Value;
-
-				var worldTrait = a.PartInfos.FirstOrDefault(p => p is WorldPartInfo);
-				if (worldTrait != null && !(worldTrait as WorldPartInfo).ShowInEditor)
-					continue;
-
-				var sprite = a.GetPreviewSprite();
-				var scale = (sprite.Width > sprite.Height ? 24f / sprite.Width : 24f / sprite.Height) - 0.1f;
-				actors.Add(new PanelItem(new BatchObject(sprite, Color.White), new MPos(512, 512), a.Playable == null ? pair.Key : a.Playable.Name, new string[0], () => actorSelected = a)
-				{
-					Scale = scale
-				});
-			}
-
-			walls = new PanelList(new CPos((int)(WindowInfo.UnitWidth * 512 - 2048), 2048, 0), new MPos(2048, 4096), new MPos(512, 1024), PanelManager.Get("wooden"));
-			foreach (var a in WallCreator.Types.Values)
-				walls.Add(new PanelItem(new BatchObject(a.GetTexture(true, 0), Color.White), new MPos(512, 512), a.ID.ToString(), new string[0], () => wallSelected = a));
-
-			wallBox = CheckBoxCreator.Create("wooden", new CPos((int)(WindowInfo.UnitWidth * 512 - 2048), 6244, 0), false, (b) => horizontal = b);
-			wallText = new UITextLine(new CPos((int)(WindowInfo.UnitWidth * 512 - 2048), 6756, 0), FontManager.Pixel16, TextOffset.MIDDLE);
-			wallText.SetText("place vertical");
-			rasterizationBox = CheckBoxCreator.Create("wooden", new CPos((int)(WindowInfo.UnitWidth * 512 - 2048), 6244, 0));
-			rasterizationText = new UITextLine(new CPos((int)(WindowInfo.UnitWidth * 512 - 2048), 6756, 0), FontManager.Pixel16, TextOffset.MIDDLE);
-			rasterizationText.SetText("align to grid");
-			isBot = CheckBoxCreator.Create("wooden", new CPos((int)((WindowInfo.UnitWidth * 512) - 1024), -4196, 0));
-			team = new TextBox(new CPos((int)((WindowInfo.UnitWidth * 512) - 1024), -3372, 0), "0", "wooden", 1, true);
-			team.OnEnter = () =>
-			{
-				if (team.Text == string.Empty)
-					team.Text = "0";
-
-				var num = byte.Parse(team.Text);
-				if (num >= Settings.MaxTeams)
-					team.Text = "" + (Settings.MaxTeams - 1);
-			};
-			teamText = new UITextLine(new CPos((int)(WindowInfo.UnitWidth * 512 - 1536), -3372, 0), FontManager.Pixel16, TextOffset.RIGHT);
-			teamText.SetText("Team:");
-			botText = new UITextLine(new CPos((int)(WindowInfo.UnitWidth * 512 - 1536), -4196, 0), FontManager.Pixel16, TextOffset.RIGHT);
-			botText.SetText("Is bot:");
+			terrainWidget = new TerrainEditorWidget(widgetPosition);
+			actorWidget = new ActorEditorWidget(widgetPosition);
+			wallWidget = new WallEditorWidget(widgetPosition);
 		}
 
 		void deselectBoxes(Selected selected)
 		{
+			showNone.Checked = selected == Selected.NONE;
 			showActors.Checked = selected == Selected.ACTOR;
 			showTiles.Checked = selected == Selected.TILE;
 			showWalls.Checked = selected == Selected.WALL;
@@ -130,9 +80,9 @@ namespace WarriorsSnuggery.UI
 
 		public override void Hide()
 		{
-			tiles.DisableTooltip();
-			actors.DisableTooltip();
-			walls.DisableTooltip();
+			terrainWidget.DisableTooltip();
+			actorWidget.DisableTooltip();
+			wallWidget.DisableTooltip();
 		}
 
 		public override void Render()
@@ -142,32 +92,34 @@ namespace WarriorsSnuggery.UI
 			if (game.Type == GameType.EDITOR)
 				save.Render();
 
-			if (savedTick > 0)
+			switch (currentSelected)
 			{
-				savedTick--;
-				saved.Scale = 1.7f - savedTick / 15f;
-				saved.Color = new Color(1f, 1f, 1f, savedTick / 15f);
-				saved.Render();
+				case Selected.TILE:
+					terrainWidget.Render();
+					break;
+				case Selected.ACTOR:
+					actorWidget.Render();
+					break;
+				case Selected.WALL:
+					wallWidget.Render();
+					break;
 			}
+		}
+
+		public override void DebugRender()
+		{
+			base.DebugRender();
 
 			switch (currentSelected)
 			{
-				case Selected.ACTOR:
-					actors.Render();
-					rasterizationBox.Render();
-					rasterizationText.Render();
-					isBot.Render();
-					team.Render();
-					botText.Render();
-					teamText.Render();
-					break;
 				case Selected.TILE:
-					tiles.Render();
+					terrainWidget.DebugRender();
+					break;
+				case Selected.ACTOR:
+					actorWidget.DebugRender();
 					break;
 				case Selected.WALL:
-					walls.Render();
-					wallBox.Render();
-					wallText.Render();
+					wallWidget.DebugRender();
 					break;
 			}
 		}
@@ -200,18 +152,14 @@ namespace WarriorsSnuggery.UI
 
 			switch (currentSelected)
 			{
-				case Selected.ACTOR:
-					actors.Tick();
-					rasterizationBox.Tick();
-					isBot.Tick();
-					team.Tick();
-					break;
 				case Selected.TILE:
-					tiles.Tick();
+					terrainWidget.Tick();
+					break;
+				case Selected.ACTOR:
+					actorWidget.Tick();
 					break;
 				case Selected.WALL:
-					walls.Tick();
-					wallBox.Tick();
+					wallWidget.Tick();
 					break;
 			}
 		}
@@ -221,7 +169,7 @@ namespace WarriorsSnuggery.UI
 			var removeSectors = game.World.ActorLayer.GetSectors(MouseInput.GamePosition, 512);
 			foreach (var sector in removeSectors)
 			{
-				var remove = sector.Actors.Find(a => (a.Position - MouseInput.GamePosition).SquaredFlatDist < 512 * 512);
+				var remove = sector.Actors.Find(a => !a.IsPlayer && (a.Position - MouseInput.GamePosition).SquaredFlatDist < 512 * 512);
 				if (remove != null)
 				{
 					remove.Dispose();
@@ -234,7 +182,7 @@ namespace WarriorsSnuggery.UI
 			var pos4 = MouseInput.GamePosition.ToMPos();
 			pos4 = new MPos(pos4.X < 0 ? 0 : pos4.X, pos4.Y < 0 ? 0 : pos4.Y);
 			pos4 = new MPos(pos4.X > bounds.X ? bounds.X : pos4.X, pos4.Y > bounds.Y ? bounds.Y : pos4.Y);
-			pos4 = new MPos(pos4.X * 2 + (horizontal ? 0 : 1), pos4.Y);
+			pos4 = new MPos(pos4.X * 2 + (wallWidget.Horizontal ? 0 : 1), pos4.Y);
 
 			var wallLayer = game.World.WallLayer;
 			if (pos4.X >= wallLayer.Bounds.X)
@@ -251,52 +199,58 @@ namespace WarriorsSnuggery.UI
 				return;
 
 			var pos = MouseInput.GamePosition;
-			pos = rasterizationBox.Checked ? new CPos(pos.X - pos.X % 512, pos.Y - pos.Y % 512, 0) : pos;
+			pos = actorWidget.Rasterization ? new CPos(pos.X - pos.X % 512, pos.Y - pos.Y % 512, 0) : pos;
 			var mpos = MouseInput.GamePosition.ToMPos();
+			mpos = new MPos(mpos.X < 0 ? 0 : mpos.X, mpos.Y < 0 ? 0 : mpos.Y);
 
 			switch (currentSelected)
 			{
 				case Selected.ACTOR:
-					if (actorSelected == null)
+					if (actorWidget.CurrentType == null)
 						return;
 
-					game.World.Add(ActorCreator.Create(game.World, actorSelected, pos, byte.Parse(team.Text), isBot.Checked));
+					var team = Math.Clamp(actorWidget.Team, (byte)0, Settings.MaxTeams);
+					var actor = ActorCreator.Create(game.World, actorWidget.CurrentType, pos, team, actorWidget.Bot, false, actorWidget.RelativeHP);
+					actor.Angle = actorWidget.RelativeFacing * 2 * (float)Math.PI;
+
+					game.World.Add(actor);
 					break;
 				case Selected.TILE:
-					if (terrainSelected == null)
+					if (terrainWidget.CurrentType == null)
 						return;
 
-					mpos = new MPos(mpos.X < 0 ? 0 : mpos.X, mpos.Y < 0 ? 0 : mpos.Y);
-					var terrain = TerrainCreator.Create(game.World, mpos, terrainSelected.ID);
+					var terrain = TerrainCreator.Create(game.World, mpos, terrainWidget.CurrentType.ID);
 					game.World.TerrainLayer.Set(terrain);
 
 					WorldRenderer.CheckTerrainAround(mpos, true);
 
 					break;
 				case Selected.WALL:
-					if (wallSelected == null)
+					if (wallWidget.CurrentType == null)
 						return;
-
-					mpos = new MPos(mpos.X < 0 ? 0 : mpos.X, mpos.Y < 0 ? 0 : mpos.Y);
 
 					var bounds = game.World.Map.Bounds;
 					if (mpos.X > bounds.X || mpos.Y > bounds.Y)
 						return;
 
-					mpos = new MPos(mpos.X * 2 + (horizontal ? 0 : 1), mpos.Y);
+					mpos = new MPos(mpos.X * 2 + (wallWidget.Horizontal ? 0 : 1), mpos.Y);
+
+					var type = wallWidget.CurrentType;
 
 					var wallLayer = game.World.WallLayer;
-					if (wallLayer.Walls[mpos.X, mpos.Y] != null && wallLayer.Walls[mpos.X, mpos.Y].Type.ID == wallSelected.ID)
+					if (wallLayer.Walls[mpos.X, mpos.Y] != null && wallLayer.Walls[mpos.X, mpos.Y].Type.ID == type.ID)
 						return;
 
-					wallLayer.Set(WallCreator.Create(mpos, wallLayer, wallSelected.ID));
+					var wall = WallCreator.Create(mpos, wallLayer, type.ID);
+					wall.Health = (int)(type.Health * wallWidget.RelativeHP);
+
+					wallLayer.Set(wall);
 					break;
 			}
 		}
 
 		void savePiece()
 		{
-			savedTick = 15;
 			game.World.Save(FileExplorer.FindPath(FileExplorer.Maps, game.MapType.OverridePiece, ".yaml"), game.MapType.OverridePiece, false);
 			Maps.PieceManager.RefreshPiece(game.MapType.OverridePiece);
 			game.AddInfoMessage(150, "Map saved!");

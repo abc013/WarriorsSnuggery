@@ -10,6 +10,18 @@ namespace WarriorsSnuggery.UI
 	{
 		const int margin = UIUtils.TextMargin;
 
+		public override CPos Position
+		{
+			get => base.Position;
+			set
+			{
+				base.Position = value;
+
+				if (text != null)
+					text.Position = value + new CPos(128, 0, 0);
+			}
+		}
+
 		public bool Selected;
 		public string Text
 		{
@@ -72,14 +84,16 @@ namespace WarriorsSnuggery.UI
 				}
 
 				var input = Window.StringInput;
-				if (realText.Length <= MaximumLength && !string.IsNullOrEmpty(input))
+				if (realText.Length < MaximumLength && !string.IsNullOrEmpty(input))
 				{
 					if (OnlyNumbers && !int.TryParse(input + "", out _))
 						return;
 
-					var toAdd = string.Empty;
+					var toAdd = input;
 					if (IsPath)
 					{
+						toAdd = string.Empty;
+
 						foreach (var @char in input)
 						{
 							if (!KeyInput.InvalidFileNameChars.Contains(@char))
