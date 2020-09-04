@@ -76,76 +76,44 @@ namespace WarriorsSnuggery.Objects
 
 		public Texture GetTexture(bool horizontal, byte neighborState)
 		{
-			var half = textures.Length / 2;
-
-			if (ConsiderWallsNearby)
-			{
-				var add = 0;
-				var checks1 = (byte) (horizontal ? 0b00101011 : 0b00100011);
-				var checks2 = (byte) (horizontal ? 0b10010100 : 0b01011000);
-
-				//var state = Convert.ToString(neighborState, 2).PadLeft(8, '0');
-				if (neighborState == 0 || (neighborState & checks1) != 0 && (neighborState & checks2) != 0)
-				{
-					//Console.WriteLine("normal " + state);
-				}
-				else if ((neighborState & checks2) == 0)
-				{
-					//Console.WriteLine("left " + state);
-					add = 1;
-				}
-				else
-				{
-					//Console.WriteLine("right " + state);
-					add = 2;
-				}
-
-				var count = half / 3;
-
-				var ran = Program.SharedRandom.Next(count);
-				return horizontal ? textures[half + add * count + ran] : textures[add * count + ran];
-			}
-
-			var ran2 = Program.SharedRandom.Next(half);
-			return horizontal ? textures[half + ran2] : textures[ran2];
+			return getTexture(horizontal, neighborState, textures);
 		}
 
 		public Texture GetDamagedTexture(bool horizontal, bool heavily, byte neighborState)
 		{
-			var texture = heavily ? damagedTextures2 : damagedTextures1;
+			return getTexture(horizontal, neighborState, heavily ? damagedTextures2 : damagedTextures1);
+		}
 
-			var half = texture.Length / 2;
+		Texture getTexture(bool horizontal, byte neighborState, Texture[] usedTextures)
+		{
+			var half = usedTextures.Length / 2;
+			var offset = horizontal ? half : 0;
 
 			if (ConsiderWallsNearby)
 			{
-				var add = 0;
-				var checks1 = (byte)(horizontal ? 0b00101010 : 0b00100011);
-				var checks2 = (byte)(horizontal ? 0b10010100 : 0b11000100);
-
-				//var state = Convert.ToString(neighborState, 2).PadLeft(8, '0');
-				if ((neighborState & checks1) != 0 && (neighborState & checks2) != 0 || neighborState == 0)
-				{
-					//Console.WriteLine("normal " + state);
-				}
-				else if ((neighborState & checks2) == 0)
-				{
-					//Console.WriteLine("left " + state);
-					add = 1;
-				}
-				else
-				{
-					//Console.WriteLine("right " + state);
-					add = 2;
-				}
-
+				var add = getNeighborState(neighborState);
 				var count = half / 3;
 
 				var ran = Program.SharedRandom.Next(count);
-				return horizontal ? texture[half + add * count + ran] : texture[add * count + ran];
+				return usedTextures[offset + add * count + ran];
 			}
 
-			var random = Program.SharedRandom.Next(half);
-			return horizontal ? texture[half + random] : texture[random];
+			var halfRan = Program.SharedRandom.Next(half);
+			return usedTextures[offset + halfRan];
+		}
+
+		int getNeighborState(byte neighborState)
+		{
+			const byte checks1 = 0b11100000;
+			const byte checks2 = 0b00011100;
+
+			if (neighborState == 0 || (neighborState & checks1) != 0 && (neighborState & checks2) != 0)
+				return 0;
+
+			if ((neighborState & checks2) == 0)
+				return 1;
+
+			return 2;
 		}
 	}
 
