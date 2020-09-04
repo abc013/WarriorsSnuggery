@@ -73,12 +73,17 @@ namespace WarriorsSnuggery.Maps
 
 		public void Render()
 		{
-			for (var x = 0; x < Bounds.X; x++)
+			var bounds = VisibilitySolver.GetBounds(out var position);
+
+			position = new MPos(Math.Clamp(position.X, 0, Bounds.X), Math.Clamp(position.Y, 0, Bounds.Y));
+			bounds = new MPos(Math.Clamp(position.X + bounds.X, 0, Bounds.X), Math.Clamp(position.Y + bounds.Y, 0, Bounds.Y));
+
+			for (var x = position.X; x < bounds.X; x++)
 			{
-				for (var y = 0; y < Bounds.Y; y++)
+				for (var y = position.Y; y < bounds.Y; y++)
 				{
-					var value = Values[x * Bounds.Y + y];
-					ColorManager.DrawQuad(new CPos(x * 1024, y * 1024, 0), 512, new Color(value, value, value, 0.8f));
+					var value = Values[y * Bounds.X + x];
+					ColorManager.DrawQuad(new CPos(x * 1024, y * 1024, 0), 256, new Color(value, value, value, 0.8f));
 				}
 			}
 		}
