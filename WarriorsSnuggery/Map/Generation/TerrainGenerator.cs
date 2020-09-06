@@ -3,6 +3,47 @@ using WarriorsSnuggery.Objects;
 
 namespace WarriorsSnuggery.Maps
 {
+	[Desc("Generator used for generating random flocks of terrain or actors on the map.")]
+	public class TerrainGeneratorInfo : MapGeneratorInfo
+	{
+		[Desc("Unique ID for the generator.")]
+		public readonly new int ID;
+
+		[Desc("ID for the noisemap.", "Set to a negative value to not use one.")]
+		public readonly int NoiseMapID = -1;
+
+		[Desc("Range steps used for the ProbabilitySteps.", "Defines at which range the probability points are defined.", "The range goes from 0.0 to 1.0.")]
+		public readonly float[] RangeSteps = new[] { 1f };
+		[Desc("Terrain override percentage at each range step.")]
+		public readonly float[] ProbabilitySteps = new[] { 1f };
+
+		[Desc("Terrain to use.")]
+		public readonly ushort[] Terrain = new ushort[] { 0 };
+		[Desc("Allows spawning of pieces.")]
+		public readonly bool SpawnPieces = true;
+		[Desc("Information about the actors to be spawned on that terrain.")]
+		public readonly ActorProbabilityInfo[] SpawnActors;
+
+		[Desc("Border thickness.")]
+		public readonly int Border = 0;
+		[Desc("Terrain to use for borders.")]
+		public readonly ushort[] BorderTerrain = new ushort[0];
+
+		public TerrainGeneratorInfo(int id, MiniTextNode[] nodes) : base(id)
+		{
+			ID = id;
+			Loader.PartLoader.SetValues(this, nodes);
+
+			if (RangeSteps.Length != ProbabilitySteps.Length)
+				throw new YamlInvalidNodeException($"Range step length ({RangeSteps.Length}) does not match with given provabability values ({ProbabilitySteps.Length}).");
+		}
+
+		public override MapGenerator GetGenerator(Random random, Map map, World world)
+		{
+			return new TerrainGenerator(random, map, world, this);
+		}
+	}
+
 	[Desc("Information about objects that can be spawned with the TerrainGenerator.")]
 	public class ActorProbabilityInfo
 	{
@@ -31,6 +72,7 @@ namespace WarriorsSnuggery.Maps
 	public class TerrainGenerator : MapGenerator
 	{
 		readonly TerrainGeneratorInfo info;
+
 		public TerrainGenerator(Random random, Map map, World world, TerrainGeneratorInfo info) : base(random, map, world)
 		{
 			this.info = info;
@@ -38,20 +80,17 @@ namespace WarriorsSnuggery.Maps
 
 		public override void Generate()
 		{
-			float[] noise;
-			if (info.NoiseMapID > 0)
-				noise = map.Noises[info.NoiseMapID].Values;
-			else
-				noise = new float[map.Bounds.X * map.Bounds.Y];
+			float[] noise = GeneratorUtils.GetNoise(map, info.NoiseMapID);
 
 			for (int x = 0; x < map.Bounds.X; x++)
 			{
 				for (int y = 0; y < map.Bounds.Y; y++)
 				{
-					var single = noise[y * map.Bounds.X + x];
+					var value = noise[y * map.Bounds.X + x];
+					var randomValue = random.NextDouble();
+					var limit = GeneratorUtils.Multiplier(info.ProbabilitySteps, info.RangeSteps, value);
 
-					// If less than half, don't change terrain
-					if (info.NoiseMapID >= 0 && single < (float)random.NextDouble() * info.EdgeNoise + (1 - info.EdgeNoise) * 0.5f)
+					if (randomValue > limit)
 						continue;
 
 					if (!map.AcquireCell(new MPos(x, y), info.ID))
@@ -59,7 +98,7 @@ namespace WarriorsSnuggery.Maps
 
 					dirtyCells[x, y] = true;
 					//terrainGenerationArray[x, y] = info.ID;
-					var number = (int)Math.Floor(single * (info.Terrain.Length - 1));
+					var number = (int)Math.Floor(value * (info.Terrain.Length - 1));
 					world.TerrainLayer.Set(TerrainCreator.Create(world, new MPos(x, y), info.Terrain[number]));
 
 					if (info.SpawnActors != null)
@@ -110,42 +149,6 @@ namespace WarriorsSnuggery.Maps
 		protected override void ClearDirty()
 		{
 			throw new NotImplementedException();
-		}
-	}
-
-	[Desc("Generator used for generating random flocks of terrain or actors on the map.")]
-	public class TerrainGeneratorInfo : MapGeneratorInfo
-	{
-		[Desc("Unique ID for the generator.")]
-		public readonly new int ID;
-
-		[Desc("ID for the noisemap.", "Set to a negative value to not use one.")]
-		public readonly int NoiseMapID = -1;
-
-		[Desc("Noise used for the edge.")]
-		public readonly float EdgeNoise = 0f;
-
-		[Desc("Terrain to use.")]
-		public readonly ushort[] Terrain = new ushort[] { 0 };
-		[Desc("Allows spawning of pieces.")]
-		public readonly bool SpawnPieces = true;
-		[Desc("Information about the actors to be spawned on that terrain.")]
-		public readonly ActorProbabilityInfo[] SpawnActors;
-
-		[Desc("Border thickness.")]
-		public readonly int Border = 0;
-		[Desc("Terrain to use for borders.")]
-		public readonly ushort[] BorderTerrain = new ushort[0];
-
-		public TerrainGeneratorInfo(int id, MiniTextNode[] nodes) : base(id)
-		{
-			ID = id;
-			Loader.PartLoader.SetValues(this, nodes);
-		}
-
-		public override MapGenerator GetGenerator(Random random, Map map, World world)
-		{
-			return new TerrainGenerator(random, map, world, this);
 		}
 	}
 }
