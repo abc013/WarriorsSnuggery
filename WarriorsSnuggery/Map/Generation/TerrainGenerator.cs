@@ -80,7 +80,7 @@ namespace WarriorsSnuggery.Maps
 
 		public override void Generate()
 		{
-			float[] noise = GeneratorUtils.GetNoise(map, info.NoiseMapID);
+			var noise = GeneratorUtils.GetNoise(map, info.NoiseMapID);
 
 			for (int x = 0; x < map.Bounds.X; x++)
 			{
@@ -134,6 +134,8 @@ namespace WarriorsSnuggery.Maps
 					}
 				}
 			}
+
+			MapPrinter.PrintGeneratorMap(map.Bounds, noise, dirtyCells, info.ID);
 		}
 
 		protected override void MarkDirty()

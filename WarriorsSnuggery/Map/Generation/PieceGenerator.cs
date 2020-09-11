@@ -4,6 +4,37 @@ using System.Linq;
 
 namespace WarriorsSnuggery.Maps
 {
+	[Desc("Generator used to randomly spread pieces across the map.", "It is not guaranteed that the MinimumCount can be fullfilled.")]
+	public class PieceGeneratorInfo : MapGeneratorInfo
+	{
+		[Desc("Unique ID for the generator.")]
+		public readonly new int ID;
+
+		[Desc("Pieces to possibly spawn.")]
+		public readonly string[] Pieces = new string[0];
+
+		[Desc("maximum bounds for finer piecespawning.", "If set to zero, size will be determined automatically.")]
+		public readonly MPos MaxBounds = new MPos(0, 0);
+		[Desc("Searches for more spawning opportunities by shifting.", "The lower the value, the finer the search.")]
+		public readonly int ShiftStep = 2;
+
+		[Desc("Minimum count of pieces on the map per 32x32 field.")]
+		public readonly int MinimumCount = 1;
+		[Desc("Maximum count of pieces on the map per 32x32 field.")]
+		public readonly int MaximumCount = 4;
+
+		public PieceGeneratorInfo(int id, MiniTextNode[] nodes) : base(id)
+		{
+			ID = id;
+			Loader.PartLoader.SetValues(this, nodes);
+		}
+
+		public override MapGenerator GetGenerator(Random random, Map map, World world)
+		{
+			return new PieceGenerator(random, map, world, this);
+		}
+	}
+
 	public class PieceGenerator : MapGenerator
 	{
 		readonly PieceGeneratorInfo info;
@@ -25,9 +56,8 @@ namespace WarriorsSnuggery.Maps
 			{
 				var blockSizes = new MPos[info.Pieces.Length];
 				for (int i = 0; i < blockSizes.Length; i++)
-				{
 					blockSizes[i] = PieceManager.GetPiece(info.Pieces[i]).Size;
-				}
+
 				var x = blockSizes.Max(b => b.X);
 				var y = blockSizes.Max(b => b.Y);
 				searchBlocks = new MPos(x, y);
@@ -177,37 +207,6 @@ namespace WarriorsSnuggery.Maps
 			searchBlocks = MPos.Zero;
 			possiblePlaces.Clear();
 			positions = 0;
-		}
-	}
-
-	[Desc("Generator used to randomly spread pieces across the map.", "It is not guaranteed that the MinimumCount can be fullfilled.")]
-	public class PieceGeneratorInfo : MapGeneratorInfo
-	{
-		[Desc("Unique ID for the generator.")]
-		public readonly new int ID;
-
-		[Desc("Pieces to possibly spawn.")]
-		public readonly string[] Pieces = new string[0];
-
-		[Desc("maximum bounds for finer piecespawning.", "If set to zero, size will be determined automatically.")]
-		public readonly MPos MaxBounds = new MPos(0, 0);
-		[Desc("Searches for more spawning opportunities by shifting.", "The lower the value, the finer the search.")]
-		public readonly int ShiftStep = 2;
-
-		[Desc("Minimum count of pieces on the map per 32x32 field.")]
-		public readonly int MinimumCount = 1;
-		[Desc("Maximum count of pieces on the map per 32x32 field.")]
-		public readonly int MaximumCount = 4;
-
-		public PieceGeneratorInfo(int id, MiniTextNode[] nodes) : base(id)
-		{
-			ID = id;
-			Loader.PartLoader.SetValues(this, nodes);
-		}
-
-		public override MapGenerator GetGenerator(Random random, Map map, World world)
-		{
-			return new PieceGenerator(random, map, world, this);
 		}
 	}
 }

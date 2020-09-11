@@ -5,6 +5,59 @@ using WarriorsSnuggery.Objects;
 
 namespace WarriorsSnuggery.Maps
 {
+
+	[Desc("Generator used for spawning enemies on the map.")]
+	public class PatrolGeneratorInfo : MapGeneratorInfo
+	{
+		[Desc("Unique ID for the generator.")]
+		public readonly new int ID;
+
+		[Desc("Bounds of the patrol group to determine a valid spawnlocation.")]
+		public readonly int SpawnBounds = 3;
+		[Desc("Minimum number of patrols per 32x32 field.")]
+		public readonly int MinimumPatrols = 1;
+		[Desc("Maximum number of patrols per 32x32 field.")]
+		public readonly int MaximumPatrols = 4;
+		[Desc("Patrols to possibly spawn.")]
+		public readonly PatrolProbabilityInfo[] Patrols;
+		public readonly float PatrolProbabilities;
+
+		[Desc("Use Patrols in the WAVES GameMode.", "Please note by setting to true, the Generator will not be used in other GameModes.")]
+		public readonly bool UseForWaves;
+
+		public PatrolGeneratorInfo(int id, MiniTextNode[] nodes) : base(id)
+		{
+			Loader.PartLoader.SetValues(this, nodes);
+
+			if (id >= 0)
+				PatrolProbabilities = Patrols.Sum(p => p.Probability);
+		}
+
+		public override MapGenerator GetGenerator(Random random, Map map, World world)
+		{
+			if (world.Game.Mode == GameMode.WAVES)
+				return null;
+
+			return new PatrolGenerator(random, map, world, this);
+		}
+	}
+
+	[Desc("Information used for determining what actors will be spawned in the PatrolGenerator.")]
+	public class PatrolProbabilityInfo
+	{
+		[Desc("Distance between the spawned objects in CPos size.", "Should be smaller than half of the size of the SpawnBounds.")]
+		public readonly int DistanceBetweenObjects = 1024;
+		[Desc("What the patrol consists of.")]
+		public readonly string[] ActorTypes = new string[0];
+		[Desc("Probability that this patrol will be spawned.", "This value will be set in relation with all other patrol probabilities.")]
+		public readonly float Probability = 1f;
+
+		public PatrolProbabilityInfo(MiniTextNode[] nodes)
+		{
+			Loader.PartLoader.SetValues(this, nodes);
+		}
+	}
+
 	public class PatrolGenerator : MapGenerator
 	{
 		readonly PatrolGeneratorInfo info;
@@ -135,58 +188,6 @@ namespace WarriorsSnuggery.Maps
 		{
 			positions.Clear();
 			spawns = null;
-		}
-	}
-
-	[Desc("Generator used for spawning enemies on the map.")]
-	public class PatrolGeneratorInfo : MapGeneratorInfo
-	{
-		[Desc("Unique ID for the generator.")]
-		public readonly new int ID;
-
-		[Desc("Bounds of the patrol group to determine a valid spawnlocation.")]
-		public readonly int SpawnBounds = 3;
-		[Desc("Minimum number of patrols per 32x32 field.")]
-		public readonly int MinimumPatrols = 1;
-		[Desc("Maximum number of patrols per 32x32 field.")]
-		public readonly int MaximumPatrols = 4;
-		[Desc("Patrols to possibly spawn.")]
-		public readonly PatrolProbabilityInfo[] Patrols;
-		public readonly float PatrolProbabilities;
-
-		[Desc("Use Patrols in the WAVES GameMode.", "Please note by setting to true, the Generator will not be used in other GameModes.")]
-		public readonly bool UseForWaves;
-
-		public PatrolGeneratorInfo(int id, MiniTextNode[] nodes) : base(id)
-		{
-			Loader.PartLoader.SetValues(this, nodes);
-
-			if (id >= 0)
-				PatrolProbabilities = Patrols.Sum(p => p.Probability);
-		}
-
-		public override MapGenerator GetGenerator(Random random, Map map, World world)
-		{
-			if (world.Game.Mode == GameMode.WAVES)
-				return null;
-
-			return new PatrolGenerator(random, map, world, this);
-		}
-	}
-
-	[Desc("Information used for determining what actors will be spawned in the PatrolGenerator.")]
-	public class PatrolProbabilityInfo
-	{
-		[Desc("Distance between the spawned objects in CPos size.", "Should be smaller than half of the size of the SpawnBounds.")]
-		public readonly int DistanceBetweenObjects = 1024;
-		[Desc("What the patrol consists of.")]
-		public readonly string[] ActorTypes = new string[0];
-		[Desc("Probability that this patrol will be spawned.", "This value will be set in relation with all other patrol probabilities.")]
-		public readonly float Probability = 1f;
-
-		public PatrolProbabilityInfo(MiniTextNode[] nodes)
-		{
-			Loader.PartLoader.SetValues(this, nodes);
 		}
 	}
 }

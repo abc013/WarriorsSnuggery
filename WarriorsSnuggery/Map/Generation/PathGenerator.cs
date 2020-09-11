@@ -4,6 +4,48 @@ using WarriorsSnuggery.Objects;
 
 namespace WarriorsSnuggery.Maps
 {
+
+	[Desc("Generator used for making paths.")]
+	public sealed class PathGeneratorInfo : MapGeneratorInfo
+	{
+		[Desc("Unique ID for the generator.")]
+		public readonly new int ID;
+
+		[Desc("Width of the path.")]
+		public readonly int Width = 2;
+
+		[Desc("Terrain to use as roadtiles.")]
+		public readonly ushort[] Types = new ushort[] { 0 };
+
+		[Desc("Uses the entrance as start point for the paths.", "If false, random points at the map edges will be used.")]
+		public readonly bool FromEntrance = true;
+		[Desc("Uses the exit as end point for the paths.", "If false, random points at the map edges will be used.")]
+		public readonly bool ToExit = false;
+		[Desc("Maximum count of paths.")]
+		public readonly int MaxCount = 5;
+		[Desc("Minimum count of paths.")]
+		public readonly int MinCount = 1;
+
+		[Desc("Defines to what percentage the road should be overgrown.")]
+		public readonly float Ruinous = 0.1f;
+		[Desc("Defines to what percentage the road should be overgrown.", "The first value will be used in the mid, the last at the edges of the map. Those in between will be used on linear scale.")]
+		public readonly float[] RuinousFalloff = new[] { 0f, 0f, 0.1f, 0.2f, 0.3f, 0.8f };
+
+		[Desc("If true, the road will not go as straight line but a curvy one.")]
+		public readonly bool Curvy = true;
+
+		public PathGeneratorInfo(int id, MiniTextNode[] nodes) : base(id)
+		{
+			ID = id;
+			Loader.PartLoader.SetValues(this, nodes);
+		}
+
+		public override MapGenerator GetGenerator(Random random, Map map, World world)
+		{
+			return new PathGenerator(random, map, world, this);
+		}
+	}
+
 	public class PathGenerator : MapGenerator
 	{
 		readonly PathGeneratorInfo info;
@@ -12,9 +54,9 @@ namespace WarriorsSnuggery.Maps
 
 		readonly List<MPos> points = new List<MPos>();
 
-		public PathGenerator(Random random, Map map, World world, PathGeneratorInfo type) : base(random, map, world)
+		public PathGenerator(Random random, Map map, World world, PathGeneratorInfo info) : base(random, map, world)
 		{
-			this.info = type;
+			this.info = info;
 
 			noise = new float[map.Bounds.X, map.Bounds.Y];
 		}
@@ -23,13 +65,10 @@ namespace WarriorsSnuggery.Maps
 		{
 			var rawnoise = Noise.GenerateClouds(map.Bounds, random);
 			for (int y = 0; y < map.Bounds.Y; y++)
-			{
 				for (int x = 0; x < map.Bounds.X; x++)
-				{
 					noise[x, y] = rawnoise[y * map.Bounds.X + x];
-				}
-			}
-			var count = random.Next(info.MaxCount - info.MinCount) + info.MinCount;
+
+			var count = random.Next(info.MinCount, info.MaxCount);
 			for (int i = 0; i < count; i++)
 			{
 				MPos start = info.FromEntrance ? map.PlayerSpawn.ToMPos() : MapUtils.RandomPositionInMap(random, 1, map.Bounds);
@@ -40,6 +79,8 @@ namespace WarriorsSnuggery.Maps
 
 			MarkDirty();
 			DrawDirty();
+
+			MapPrinter.PrintGeneratorMap(map.Bounds, rawnoise, dirtyCells, info.ID);
 			ClearDirty();
 		}
 
@@ -47,6 +88,8 @@ namespace WarriorsSnuggery.Maps
 		{
 			dirtyCells = dirt;
 			DrawDirty();
+
+			MapPrinter.PrintGeneratorMap(map.Bounds, new float[map.Bounds.X * map.Bounds.Y], dirtyCells, info.ID);
 			ClearDirty();
 		}
 
@@ -101,9 +144,8 @@ namespace WarriorsSnuggery.Maps
 					currentPosition = preferred;
 				}
 				else
-				{
 					currentPosition += new MPos(x, y);
-				}
+
 				points.Add(currentPosition);
 			}
 		}
@@ -123,9 +165,7 @@ namespace WarriorsSnuggery.Maps
 							if (y >= 0 && y < map.Bounds.Y)
 							{
 								if (map.AcquireCell(new MPos(x, y), info.ID))
-								{
 									dirtyCells[x, y] = true;
-								}
 							}
 						}
 					}
@@ -162,9 +202,7 @@ namespace WarriorsSnuggery.Maps
 						ruinous += info.RuinousFalloff[low] * (1 - percent) + info.RuinousFalloff[high] * percent;
 					}
 					else
-					{
 						ruinous += info.RuinousFalloff[0];
-					}
 
 					if (random.NextDouble() > ruinous)
 					{
@@ -178,47 +216,6 @@ namespace WarriorsSnuggery.Maps
 		protected override void ClearDirty()
 		{
 			dirtyCells = new bool[map.Bounds.X, map.Bounds.Y];
-		}
-	}
-
-	[Desc("Generator used for making paths.")]
-	public sealed class PathGeneratorInfo : MapGeneratorInfo
-	{
-		[Desc("Unique ID for the generator.")]
-		public readonly new int ID;
-
-		[Desc("Width of the path.")]
-		public readonly int Width = 2;
-
-		[Desc("Terrain to use as roadtiles.")]
-		public readonly ushort[] Types = new ushort[] { 0 };
-
-		[Desc("Uses the entrance as start point for the paths.", "If false, random points at the map edges will be used.")]
-		public readonly bool FromEntrance = true;
-		[Desc("Uses the exit as end point for the paths.", "If false, random points at the map edges will be used.")]
-		public readonly bool ToExit = false;
-		[Desc("Maximum count of paths.")]
-		public readonly int MaxCount = 5;
-		[Desc("Minimum count of paths.")]
-		public readonly int MinCount = 1;
-
-		[Desc("Defines to what percentage the road should be overgrown.")]
-		public readonly float Ruinous = 0.1f;
-		[Desc("Defines to what percentage the road should be overgrown.", "The first value will be used in the mid, the last at the edges of the map. Those in between will be used on linear scale.")]
-		public readonly float[] RuinousFalloff = new[] { 0f, 0f, 0.1f, 0.2f, 0.3f, 0.8f };
-
-		[Desc("If true, the road will not go as straight line but a curvy one.")]
-		public readonly bool Curvy = true;
-
-		public PathGeneratorInfo(int id, MiniTextNode[] nodes) : base(id)
-		{
-			ID = id;
-			Loader.PartLoader.SetValues(this, nodes);
-		}
-
-		public override MapGenerator GetGenerator(Random random, Map map, World world)
-		{
-			return new PathGenerator(random, map, world, this);
 		}
 	}
 }

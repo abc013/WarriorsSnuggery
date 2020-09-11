@@ -2,6 +2,39 @@
 
 namespace WarriorsSnuggery.Maps
 {
+	public enum PositionType
+	{
+		POSITION,
+		SPAWN,
+		EXIT
+	}
+
+	[Desc("Generator used to generate pieces that must be on the map.")]
+	public class ImportantPieceGeneratorInfo : MapGeneratorInfo
+	{
+		[Desc("Unique ID for the generator.")]
+		public readonly new int ID;
+
+		[Desc("Pieces of which one is chosen to be spawned.")]
+		public readonly string[] Pieces = new string[0];
+
+		[Desc("Position on the map, if PositionType is set on 'POSITION'.")]
+		public readonly MPos Position = MPos.Zero;
+		[Desc("Position type.")]
+		public readonly PositionType PositionType = PositionType.POSITION;
+
+		public ImportantPieceGeneratorInfo(int id, MiniTextNode[] nodes) : base(id)
+		{
+			ID = id;
+			Loader.PartLoader.SetValues(this, nodes);
+		}
+
+		public override MapGenerator GetGenerator(Random random, Map map, World world)
+		{
+			return new ImportantPieceGenerator(random, map, world, this);
+		}
+	}
+
 	public class ImportantPieceGenerator : MapGenerator
 	{
 		readonly ImportantPieceGeneratorInfo info;
@@ -83,39 +116,6 @@ namespace WarriorsSnuggery.Maps
 		protected override void ClearDirty()
 		{
 			throw new NotImplementedException();
-		}
-	}
-
-	public enum PositionType
-	{
-		POSITION,
-		SPAWN,
-		EXIT
-	}
-
-	[Desc("Generator used to generate pieces that must be on the map.")]
-	public class ImportantPieceGeneratorInfo : MapGeneratorInfo
-	{
-		[Desc("Unique ID for the generator.")]
-		public readonly new int ID;
-
-		[Desc("Pieces of which one is chosen to be spawned.")]
-		public readonly string[] Pieces = new string[0];
-
-		[Desc("Position on the map, if PositionType is set on 'POSITION'.")]
-		public readonly MPos Position = MPos.Zero;
-		[Desc("Position type.")]
-		public readonly PositionType PositionType = PositionType.POSITION;
-
-		public ImportantPieceGeneratorInfo(int id, MiniTextNode[] nodes) : base(id)
-		{
-			ID = id;
-			Loader.PartLoader.SetValues(this, nodes);
-		}
-
-		public override MapGenerator GetGenerator(Random random, Map map, World world)
-		{
-			return new ImportantPieceGenerator(random, map, world, this);
 		}
 	}
 }

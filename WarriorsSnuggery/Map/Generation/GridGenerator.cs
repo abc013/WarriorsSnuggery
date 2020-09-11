@@ -4,11 +4,58 @@ using System.Linq;
 
 namespace WarriorsSnuggery.Maps
 {
+	[Desc("Generator used for generating grid-based towns or structures.")]
+	public sealed class GridGeneratorInfo : MapGeneratorInfo
+	{
+		[Desc("Unique ID for the generator.")]
+		public readonly new int ID;
+
+		[Desc("Size of the Cells in the grid.", "Must be a multiplex of GridSize.")]
+		public readonly int CellSize = 4;
+		[Desc("Size of the edges of the grid.")]
+		public readonly int LineSize = 2;
+		[Desc("Decides wether the grid is aligned rectangular or has random roads.")]
+		public readonly bool Rectangular = true;
+
+		public int Ratio => CellSize / LineSize;
+
+		[Desc("Minimum dimensions of the grid in tiles.")]
+		public readonly int MinimumDimensions = 16;
+		[Desc("Maximum dimensions of the grid in tiles.")]
+		public readonly int MaximumDimensions = 48;
+
+		[Desc("Dimensions fit the map dimensions.")]
+		public readonly bool FillMap = false;
+
+		[Desc("Sets the Generator used for generating roads.", "Does not generate any roads when the ID is incorrect.")]
+		public readonly int PathGeneratorID = 0;
+
+		[Desc("1x1 Dimension tiles.")]
+		public readonly string[] Tile1x1;
+		[Desc("2x1 Dimension tiles.")]
+		public readonly string[] Tile2x1;
+		[Desc("1x2 Dimension tiles.")]
+		public readonly string[] Tile1x2;
+		[Desc("2x2 Dimension tiles.")]
+		public readonly string[] Tile2x2;
+
+		public GridGeneratorInfo(int id, MiniTextNode[] nodes) : base(id)
+		{
+			ID = id;
+			Loader.PartLoader.SetValues(this, nodes);
+		}
+
+		public override MapGenerator GetGenerator(Random random, Map map, World world)
+		{
+			return new GridGenerator(random, map, world, this);
+		}
+	}
+
 	public class GridGenerator : MapGenerator
 	{
 		readonly GridGeneratorInfo info;
 
-		bool[,] road;
+		readonly bool[,] road;
 		List<Cell> cells;
 		List<PieceCell> pieceCells;
 
@@ -23,23 +70,17 @@ namespace WarriorsSnuggery.Maps
 		{
 			var spawn = info.FillMap ? MPos.Zero : map.Center - new MPos(info.MinimumDimensions, info.MinimumDimensions);
 			if (spawn.X < 0)
-			{
 				spawn = new MPos(0, spawn.Y);
-			}
+
 			if (spawn.Y < 0)
-			{
 				spawn = new MPos(spawn.X, 0);
-			}
 
 			var bounds = info.FillMap ? map.Bounds : new MPos(random.Next(info.MaximumDimensions - info.MinimumDimensions) + info.MinimumDimensions, random.Next(info.MaximumDimensions - info.MinimumDimensions) + info.MinimumDimensions);
 			if (spawn.X + bounds.X >= map.Bounds.X)
-			{
 				bounds = new MPos(map.Bounds.X - spawn.X, bounds.Y);
-			}
+
 			if (spawn.Y + bounds.Y >= map.Bounds.Y)
-			{
 				bounds = new MPos(bounds.X, map.Bounds.Y - spawn.Y);
-			}
 
 			// If smaller than map bounds, abort
 			if (bounds.X < info.MinimumDimensions || bounds.Y < info.MinimumDimensions)
@@ -49,12 +90,8 @@ namespace WarriorsSnuggery.Maps
 			cells = cellLoop(baseCell, 16);
 
 			for (int x = spawn.X; x < spawn.X + bounds.X; x++)
-			{
 				for (int y = spawn.Y; y < spawn.Y + bounds.Y; y++)
-				{
 					road[x, y] = true;
-				}
-			}
 
 			pieceCells = new List<PieceCell>();
 			foreach (var cell in cells)
@@ -81,18 +118,15 @@ namespace WarriorsSnuggery.Maps
 				else
 				{
 					foreach (var child in childs)
-					{
 						cells.AddRange(cellLoop(child, depth - 1));
-					}
 				}
 			}
 			else
-			{
 				cells.Add(cell);
-			}
 
 			return cells;
 		}
+
 		List<PieceCell> pieceLoop(PieceCell cell)
 		{
 			var cells = new List<PieceCell>();
@@ -104,9 +138,7 @@ namespace WarriorsSnuggery.Maps
 			else
 			{
 				foreach (var child in childs)
-				{
 					cells.AddRange(pieceLoop(child));
-				}
 			}
 
 			return cells;
@@ -178,6 +210,8 @@ namespace WarriorsSnuggery.Maps
 
 				map.GeneratePiece(toUse, piece.Position, info.ID);
 			}
+
+			MapPrinter.PrintGeneratorMap(map.Bounds, new float[map.Bounds.X * map.Bounds.Y], dirtyCells, info.ID);
 		}
 
 		Piece getPiece(string[] choices)
@@ -189,68 +223,11 @@ namespace WarriorsSnuggery.Maps
 
 		protected override void ClearDirty()
 		{
-			dirtyCells = new bool[map.Bounds.X, map.Bounds.Y];
-			road = new bool[map.Bounds.X, map.Bounds.Y];
+			Array.Clear(dirtyCells, 0, dirtyCells.Length);
+			Array.Clear(road, 0, road.Length);
 
 			cells.Clear();
 			pieceCells.Clear();
-		}
-	}
-
-	[Desc("Generator used for generating grid-based towns or structures.")]
-	public sealed class GridGeneratorInfo : MapGeneratorInfo
-	{
-		[Desc("Unique ID for the generator.")]
-		public readonly new int ID;
-
-		[Desc("Size of the Cells in the grid.", "Must be a multiplex of GridSize.")]
-		public readonly int CellSize = 4;
-		[Desc("Size of the edges of the grid.")]
-		public readonly int LineSize = 2;
-		[Desc("Decides wether the grid is aligned rectangular or has random roads.")]
-		public readonly bool Rectangular = true;
-
-		public int Ratio
-		{
-			get
-			{
-				return CellSize / LineSize;
-			}
-			set
-			{
-
-			}
-		}
-
-		[Desc("Minimum dimensions of the grid in tiles.")]
-		public readonly int MinimumDimensions = 16;
-		[Desc("Maximum dimensions of the grid in tiles.")]
-		public readonly int MaximumDimensions = 48;
-
-		[Desc("Dimensions fit the map dimensions.")]
-		public readonly bool FillMap = false;
-
-		[Desc("Sets the Generator used for generating roads.", "Does not generate any roads when the ID is incorrect.")]
-		public readonly int PathGeneratorID = 0;
-
-		[Desc("1x1 Dimension tiles.")]
-		public readonly string[] Tile1x1;
-		[Desc("2x1 Dimension tiles.")]
-		public readonly string[] Tile2x1;
-		[Desc("1x2 Dimension tiles.")]
-		public readonly string[] Tile1x2;
-		[Desc("2x2 Dimension tiles.")]
-		public readonly string[] Tile2x2;
-
-		public GridGeneratorInfo(int id, MiniTextNode[] nodes) : base(id)
-		{
-			ID = id;
-			Loader.PartLoader.SetValues(this, nodes);
-		}
-
-		public override MapGenerator GetGenerator(Random random, Map map, World world)
-		{
-			return new GridGenerator(random, map, world, this);
 		}
 	}
 
@@ -284,14 +261,10 @@ namespace WarriorsSnuggery.Maps
 			if (cellCount < 2)
 			{
 				if (secondTry)
-				{
 					return null;
-				}
-				else
-				{
-					divideHorizontal = !divideHorizontal;
-					return Divide(random, true);
-				}
+
+				divideHorizontal = !divideHorizontal;
+				return Divide(random, true);
 			}
 
 			var cells = new PieceCell[2];
@@ -367,15 +340,11 @@ namespace WarriorsSnuggery.Maps
 				//If there are no paths currently and the following fields are too small to get paths inbetween, dont divide
 				if (pathCount < 0 && (cellCount - 1) <= info.Ratio)
 				{
-					if (!otherSidetried)
-					{
-						divideHorizontal = !divideHorizontal;
-						return Divide(random, depth, true);
-					}
-					else
-					{
+					if (otherSidetried)
 						return null;
-					}
+
+					divideHorizontal = !divideHorizontal;
+					return Divide(random, depth, true);
 				}
 				else if (pathCount < 0)
 				{

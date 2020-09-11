@@ -20,5 +20,26 @@ namespace WarriorsSnuggery.Maps
 			}
 			image.Save(FileExplorer.Logs + "debugMaps/noisemap" + map.ID + ".png");
 		}
+
+		public static void PrintGeneratorMap(MPos bounds, float[] noise, bool[,] dirty, int id)
+		{
+			using var image = new Bitmap(bounds.X, bounds.Y);
+
+			for (int x = 0; x < bounds.X; x++)
+			{
+				for (int y = 0; y < bounds.Y; y++)
+				{
+					System.Drawing.Color color = Color.Red;
+					if (dirty[x, y])
+					{
+						var value = (int)(noise[x * bounds.Y + y] * 255);
+						color = System.Drawing.Color.FromArgb(value, value, value);
+					}
+
+					image.SetPixel(x, y, color);
+				}
+			}
+			image.Save(FileExplorer.Logs + "debugMaps/generator" + id + ".png");
+		}
 	}
 }
