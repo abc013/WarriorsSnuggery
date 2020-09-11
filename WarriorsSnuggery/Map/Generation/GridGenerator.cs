@@ -100,9 +100,69 @@ namespace WarriorsSnuggery.Maps
 				pieceCells.AddRange(pieceLoop(piece));
 			}
 
-			MarkDirty();
-			DrawDirty();
-			ClearDirty();
+			foreach (var cell in cells)
+			{
+				var blocked = false;
+				for (int x = cell.Position.X; x < cell.Position.X + cell.Size.X; x++)
+				{
+					for (int y = cell.Position.Y; y < cell.Position.Y + cell.Size.Y; y++)
+					{
+						if (!map.CanAcquireCell(new MPos(x, y), info.ID))
+							blocked = true;
+					}
+				}
+
+				if (blocked)
+					continue;
+
+				for (int x = cell.Position.X; x < cell.Position.X + cell.Size.X; x++)
+				{
+					for (int y = cell.Position.Y; y < cell.Position.Y + cell.Size.Y; y++)
+					{
+						if (map.AcquireCell(new MPos(x, y), info.ID))
+							dirtyCells[x, y] = true;
+
+						road[x, y] = false;
+					}
+				}
+			}
+
+			// Roads
+			var type = map.Type.GeneratorInfos.Where(i => i.ID == info.PathGeneratorID && i is PathGeneratorInfo).FirstOrDefault();
+			if (type != null)
+			{
+				for (int x = 0; x < map.Bounds.X; x++)
+				{
+					for (int y = 0; y < map.Bounds.Y; y++)
+					{
+						if (!(road[x, y] && map.AcquireCell(new MPos(x, y), info.PathGeneratorID)))
+							road[x, y] = false;
+					}
+				}
+				var generator = new PathGenerator(random, map, world, type as PathGeneratorInfo);
+				generator.Generate(road);
+			}
+			// Pieces
+			foreach (var piece in pieceCells)
+			{
+				Piece toUse;
+				var x = piece.Size.X / info.CellSize;
+				var y = piece.Size.Y / info.CellSize;
+
+				// TODO also allow tiles bigger than 2x2
+				if (x == 1 && y == 1)
+					toUse = getPiece(info.Tile1x1);
+				else if (x == 1 && y == 2)
+					toUse = getPiece(info.Tile1x2);
+				else if (x == 2 && y == 1)
+					toUse = getPiece(info.Tile2x1);
+				else
+					toUse = getPiece(info.Tile2x2);
+
+				map.GeneratePiece(toUse, piece.Position, info.ID);
+			}
+
+			MapPrinter.PrintGeneratorMap(map.Bounds, new float[map.Bounds.X * map.Bounds.Y], dirtyCells, info.ID);
 		}
 
 		List<Cell> cellLoop(Cell cell, int depth)
@@ -144,90 +204,11 @@ namespace WarriorsSnuggery.Maps
 			return cells;
 		}
 
-		protected override void MarkDirty()
-		{
-			foreach (var cell in cells)
-			{
-				var blocked = false;
-				for (int x = cell.Position.X; x < cell.Position.X + cell.Size.X; x++)
-				{
-					for (int y = cell.Position.Y; y < cell.Position.Y + cell.Size.Y; y++)
-					{
-						if (!map.CanAcquireCell(new MPos(x, y), info.ID))
-							blocked = true;
-					}
-				}
-
-				if (blocked)
-					continue;
-
-				for (int x = cell.Position.X; x < cell.Position.X + cell.Size.X; x++)
-				{
-					for (int y = cell.Position.Y; y < cell.Position.Y + cell.Size.Y; y++)
-					{
-						if (map.AcquireCell(new MPos(x, y), info.ID))
-							dirtyCells[x, y] = true;
-
-						road[x, y] = false;
-					}
-				}
-			}
-		}
-
-		protected override void DrawDirty()
-		{
-			// Roads
-			var type = map.Type.GeneratorInfos.Where(i => i.ID == info.PathGeneratorID && i is PathGeneratorInfo).FirstOrDefault();
-			if (type != null)
-			{
-				for (int x = 0; x < map.Bounds.X; x++)
-				{
-					for (int y = 0; y < map.Bounds.Y; y++)
-					{
-						if (!(road[x, y] && map.AcquireCell(new MPos(x, y), info.PathGeneratorID)))
-							road[x, y] = false;
-					}
-				}
-				var generator = new PathGenerator(random, map, world, type as PathGeneratorInfo);
-				generator.Generate(road);
-			}
-			// Pieces
-			foreach (var piece in pieceCells)
-			{
-				Piece toUse;
-				var x = piece.Size.X / info.CellSize;
-				var y = piece.Size.Y / info.CellSize;
-
-				// TODO also allow tiles bigger than 2x2
-				if (x == 1 && y == 1)
-					toUse = getPiece(info.Tile1x1);
-				else if (x == 1 && y == 2)
-					toUse = getPiece(info.Tile1x2);
-				else if (x == 2 && y == 1)
-					toUse = getPiece(info.Tile2x1);
-				else
-					toUse = getPiece(info.Tile2x2);
-
-				map.GeneratePiece(toUse, piece.Position, info.ID);
-			}
-
-			MapPrinter.PrintGeneratorMap(map.Bounds, new float[map.Bounds.X * map.Bounds.Y], dirtyCells, info.ID);
-		}
-
 		Piece getPiece(string[] choices)
 		{
 			var choice = choices[random.Next(choices.Length)];
 
 			return PieceManager.GetPiece(choice);
-		}
-
-		protected override void ClearDirty()
-		{
-			Array.Clear(dirtyCells, 0, dirtyCells.Length);
-			Array.Clear(road, 0, road.Length);
-
-			cells.Clear();
-			pieceCells.Clear();
 		}
 	}
 

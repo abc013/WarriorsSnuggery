@@ -20,10 +20,6 @@ namespace WarriorsSnuggery.Maps
 		}
 
 		public abstract void Generate();
-
-		protected abstract void MarkDirty();
-		protected abstract void DrawDirty();
-		protected abstract void ClearDirty();
 	}
 
 	public abstract class MapGeneratorInfo

@@ -65,13 +65,6 @@ namespace WarriorsSnuggery.Maps
 			searchBounds = new MPos((int)Math.Floor(map.Bounds.X / (float)searchBlocks.X), (int)Math.Floor(map.Bounds.Y / (float)searchBlocks.Y));
 			positions = searchBounds.X * searchBounds.Y;
 
-			MarkDirty();
-			DrawDirty();
-			ClearDirty();
-		}
-
-		protected override void MarkDirty()
-		{
 			// usual grid
 			for (int i = 0; i < positions; i++)
 			{
@@ -179,10 +172,7 @@ namespace WarriorsSnuggery.Maps
 						possiblePlaces.Add(new MPos(xStart, yStart));
 				}
 			}
-		}
 
-		protected override void DrawDirty()
-		{
 			var multiplier = map.Bounds.X * map.Bounds.Y / (float)(32 * 32);
 			var count = random.Next((int)(info.MinimumCount * multiplier), (int)(info.MaximumCount * multiplier));
 			for (int i = 0; i < count; i++)
@@ -200,13 +190,6 @@ namespace WarriorsSnuggery.Maps
 
 				possiblePlaces.RemoveAt(position);
 			}
-		}
-
-		protected override void ClearDirty()
-		{
-			searchBlocks = MPos.Zero;
-			possiblePlaces.Clear();
-			positions = 0;
 		}
 	}
 }

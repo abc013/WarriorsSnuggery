@@ -11,6 +11,9 @@ namespace WarriorsSnuggery.Maps
 		[Desc("Unique ID for the generator.")]
 		public readonly new int ID;
 
+		[Desc("ID for the noisemap.", "Set to a negative value to not use one.")]
+		public readonly int NoiseMapID = -1;
+
 		[Desc("Width of the path.")]
 		public readonly int Width = 2;
 
@@ -50,23 +53,19 @@ namespace WarriorsSnuggery.Maps
 	{
 		readonly PathGeneratorInfo info;
 
-		readonly float[,] noise;
-
+		readonly float[] noise;
 		readonly List<MPos> points = new List<MPos>();
 
 		public PathGenerator(Random random, Map map, World world, PathGeneratorInfo info) : base(random, map, world)
 		{
 			this.info = info;
 
-			noise = new float[map.Bounds.X, map.Bounds.Y];
+			noise = GeneratorUtils.GetNoise(map, info.NoiseMapID);
 		}
 
 		public override void Generate()
 		{
 			var rawnoise = Noise.GenerateClouds(map.Bounds, random);
-			for (int y = 0; y < map.Bounds.Y; y++)
-				for (int x = 0; x < map.Bounds.X; x++)
-					noise[x, y] = rawnoise[y * map.Bounds.X + x];
 
 			var count = random.Next(info.MinCount, info.MaxCount);
 			for (int i = 0; i < count; i++)
@@ -77,20 +76,18 @@ namespace WarriorsSnuggery.Maps
 				generateSingle(start, end);
 			}
 
-			MarkDirty();
-			DrawDirty();
+			markDirty();
+			drawDirty();
 
 			MapPrinter.PrintGeneratorMap(map.Bounds, rawnoise, dirtyCells, info.ID);
-			ClearDirty();
 		}
 
 		public void Generate(bool[,] dirt)
 		{
 			dirtyCells = dirt;
-			DrawDirty();
+			drawDirty();
 
 			MapPrinter.PrintGeneratorMap(map.Bounds, new float[map.Bounds.X * map.Bounds.Y], dirtyCells, info.ID);
-			ClearDirty();
 		}
 
 		void generateSingle(MPos start, MPos end)
@@ -129,9 +126,9 @@ namespace WarriorsSnuggery.Maps
 					MPos preferred = new MPos(x, y) + currentPosition;
 
 					// If out of bounds, make the value high af so the field can't be taken
-					var val1 = preferred.IsInRange(MPos.Zero, map.Bounds - new MPos(1, 1)) ? noise[preferred.X, preferred.Y] : 10f;
-					var val2 = a1.IsInRange(MPos.Zero, map.Bounds - new MPos(1, 1)) ? noise[a1.X, a1.Y] : 10f;
-					var val3 = a2.IsInRange(MPos.Zero, map.Bounds - new MPos(1, 1)) ? noise[a2.X, a2.Y] : 10f;
+					var val1 = preferred.IsInRange(MPos.Zero, map.Bounds - new MPos(1, 1)) ? noise[preferred.X * map.Bounds.Y + preferred.Y] : 10f;
+					var val2 = a1.IsInRange(MPos.Zero, map.Bounds - new MPos(1, 1)) ? noise[a1.X * map.Bounds.Y + a1.Y] : 10f;
+					var val3 = a2.IsInRange(MPos.Zero, map.Bounds - new MPos(1, 1)) ? noise[a2.X * map.Bounds.Y + a2.Y] : 10f;
 
 					if (preferred != end)
 					{
@@ -150,7 +147,7 @@ namespace WarriorsSnuggery.Maps
 			}
 		}
 
-		protected override void MarkDirty()
+		void markDirty()
 		{
 			var width = (int)Math.Floor(info.Width / 2f);
 			var width2 = info.Width - width;
@@ -173,7 +170,7 @@ namespace WarriorsSnuggery.Maps
 			}
 		}
 
-		protected override void DrawDirty()
+		void drawDirty()
 		{
 			float distBetween = map.Center.Dist / info.RuinousFalloff.Length;
 			for (int x = 0; x < map.Bounds.X; x++)
@@ -211,11 +208,6 @@ namespace WarriorsSnuggery.Maps
 					}
 				}
 			}
-		}
-
-		protected override void ClearDirty()
-		{
-			dirtyCells = new bool[map.Bounds.X, map.Bounds.Y];
 		}
 	}
 }

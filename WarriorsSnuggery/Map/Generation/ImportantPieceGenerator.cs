@@ -102,20 +102,5 @@ namespace WarriorsSnuggery.Maps
 
 			map.Exit = pos + Piece.Size / new MPos(2, 2);
 		}
-
-		protected override void MarkDirty()
-		{
-			throw new NotImplementedException();
-		}
-
-		protected override void DrawDirty()
-		{
-			throw new NotImplementedException();
-		}
-
-		protected override void ClearDirty()
-		{
-			throw new NotImplementedException();
-		}
 	}
 }

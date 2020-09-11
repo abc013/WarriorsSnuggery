@@ -137,20 +137,5 @@ namespace WarriorsSnuggery.Maps
 
 			MapPrinter.PrintGeneratorMap(map.Bounds, noise, dirtyCells, info.ID);
 		}
-
-		protected override void MarkDirty()
-		{
-			throw new NotImplementedException();
-		}
-
-		protected override void DrawDirty()
-		{
-			throw new NotImplementedException();
-		}
-
-		protected override void ClearDirty()
-		{
-			throw new NotImplementedException();
-		}
 	}
 }

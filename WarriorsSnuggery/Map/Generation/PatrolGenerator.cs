@@ -73,13 +73,6 @@ namespace WarriorsSnuggery.Maps
 
 		public override void Generate()
 		{
-			MarkDirty();
-			DrawDirty();
-			ClearDirty();
-		}
-
-		protected override void MarkDirty()
-		{
 			for (int a = 0; a < Math.Floor(map.Bounds.X / (float)info.SpawnBounds); a++)
 			{
 				for (int b = 0; b < Math.Floor(map.Bounds.X / (float)info.SpawnBounds); b++)
@@ -121,10 +114,7 @@ namespace WarriorsSnuggery.Maps
 				spawns[i] = positions[posIndex];
 				positions.RemoveAt(posIndex);
 			}
-		}
 
-		protected override void DrawDirty()
-		{
 			foreach (var spawn in spawns)
 			{
 				var mid = spawn.ToCPos();
@@ -182,12 +172,6 @@ namespace WarriorsSnuggery.Maps
 			}
 
 			return info.Patrols.FirstOrDefault();
-		}
-
-		protected override void ClearDirty()
-		{
-			positions.Clear();
-			spawns = null;
 		}
 	}
 }
