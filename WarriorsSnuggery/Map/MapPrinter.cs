@@ -30,7 +30,7 @@ namespace WarriorsSnuggery.Maps
 				for (int y = 0; y < bounds.Y; y++)
 				{
 					System.Drawing.Color color = Color.Red;
-					if (dirty[x, y])
+					if (!dirty[x, y])
 					{
 						var value = (int)(noise[x * bounds.Y + y] * 255);
 						color = System.Drawing.Color.FromArgb(value, value, value);
