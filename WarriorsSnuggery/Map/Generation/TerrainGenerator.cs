@@ -38,9 +38,9 @@ namespace WarriorsSnuggery.Maps
 				throw new YamlInvalidNodeException($"Range step length ({RangeSteps.Length}) does not match with given provabability values ({ProbabilitySteps.Length}).");
 		}
 
-		public override MapGenerator GetGenerator(Random random, Map map, World world)
+		public override MapGenerator GetGenerator(Random random, MapLoader loader)
 		{
-			return new TerrainGenerator(random, map, world, this);
+			return new TerrainGenerator(random, loader, this);
 		}
 	}
 
@@ -73,42 +73,41 @@ namespace WarriorsSnuggery.Maps
 	{
 		readonly TerrainGeneratorInfo info;
 
-		public TerrainGenerator(Random random, Map map, World world, TerrainGeneratorInfo info) : base(random, map, world)
+		public TerrainGenerator(Random random, MapLoader loader, TerrainGeneratorInfo info) : base(random, loader)
 		{
 			this.info = info;
 		}
 
 		public override void Generate()
 		{
-			var noise = GeneratorUtils.GetNoise(map, info.NoiseMapID);
+			var noise = GeneratorUtils.GetNoise(loader, info.NoiseMapID);
 
-			for (int x = 0; x < map.Bounds.X; x++)
+			for (int x = 0; x < Bounds.X; x++)
 			{
-				for (int y = 0; y < map.Bounds.Y; y++)
+				for (int y = 0; y < Bounds.Y; y++)
 				{
-					var value = noise[y * map.Bounds.X + x];
+					var value = noise[y * Bounds.X + x];
 					var randomValue = random.NextDouble();
 					var limit = GeneratorUtils.Multiplier(info.ProbabilitySteps, info.RangeSteps, value);
 
 					if (randomValue > limit)
 						continue;
 
-					if (!map.AcquireCell(new MPos(x, y), info.ID))
+					if (!loader.AcquireCell(new MPos(x, y), info.ID))
 						continue;
 
 					dirtyCells[x, y] = true;
 					//terrainGenerationArray[x, y] = info.ID;
 					var number = (int)Math.Floor(value * (info.Terrain.Length - 1));
-					world.TerrainLayer.Set(TerrainCreator.Create(world, new MPos(x, y), info.Terrain[number]));
+					loader.SetTerrain(x, y, info.Terrain[number]);
 
 					if (info.SpawnActors != null)
 					{
 						foreach (var a in info.SpawnActors)
 						{
-							var ran = random.NextDouble();
-							if (ran <= a.Probability)
+							if (random.NextDouble() <= a.Probability)
 							{
-								world.Add(ActorCreator.Create(world, a.Type, new CPos(1024 * x + random.Next(896) - 448, 1024 * y + random.Next(896) - 448, 0), a.Team, a.IsBot, health: a.Health));
+								loader.AddActor(new CPos(1024 * x + random.Next(896) - 448, 1024 * y + random.Next(896) - 448, 0), a);
 								break; // If an actor is already spawned, we don't want any other actor to spawn because they will probably overlap
 							}
 						}
@@ -124,18 +123,18 @@ namespace WarriorsSnuggery.Maps
 
 								if (p.X < 0 || p.Y < 0)
 									continue;
-								if (p.X >= map.Bounds.X || p.Y >= map.Bounds.Y)
+								if (p.X >= Bounds.X || p.Y >= Bounds.Y)
 									continue;
 
-								if (!dirtyCells[p.X, p.Y] && map.AcquireCell(p, info.ID))
-									world.TerrainLayer.Set(TerrainCreator.Create(world, new MPos(p.X, p.Y), info.BorderTerrain[0]));
+								if (!dirtyCells[p.X, p.Y] && loader.AcquireCell(p, info.ID))
+									loader.SetTerrain(x, y, info.BorderTerrain[random.Next(info.BorderTerrain.Length)]);
 							}
 						}
 					}
 				}
 			}
 
-			MapPrinter.PrintGeneratorMap(map.Bounds, noise, dirtyCells, info.ID);
+			MapPrinter.PrintGeneratorMap(Bounds, noise, dirtyCells, info.ID);
 		}
 	}
 }

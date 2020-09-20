@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using WarriorsSnuggery.Objects;
 
 namespace WarriorsSnuggery.Maps
 {
@@ -43,9 +42,9 @@ namespace WarriorsSnuggery.Maps
 			Loader.PartLoader.SetValues(this, nodes);
 		}
 
-		public override MapGenerator GetGenerator(Random random, Map map, World world)
+		public override MapGenerator GetGenerator(Random random, MapLoader loader)
 		{
-			return new PathGenerator(random, map, world, this);
+			return new PathGenerator(random, loader, this);
 		}
 	}
 
@@ -56,22 +55,20 @@ namespace WarriorsSnuggery.Maps
 		readonly float[] noise;
 		readonly List<MPos> points = new List<MPos>();
 
-		public PathGenerator(Random random, Map map, World world, PathGeneratorInfo info) : base(random, map, world)
+		public PathGenerator(Random random, MapLoader loader, PathGeneratorInfo info) : base(random, loader)
 		{
 			this.info = info;
 
-			noise = GeneratorUtils.GetNoise(map, info.NoiseMapID);
+			noise = GeneratorUtils.GetNoise(loader, info.NoiseMapID);
 		}
 
 		public override void Generate()
 		{
-			var rawnoise = Noise.GenerateClouds(map.Bounds, random);
-
 			var count = random.Next(info.MinCount, info.MaxCount);
 			for (int i = 0; i < count; i++)
 			{
-				MPos start = info.FromEntrance ? map.PlayerSpawn.ToMPos() : MapUtils.RandomPositionInMap(random, 1, map.Bounds);
-				MPos end = info.ToExit ? map.Exit : MapUtils.RandomPositionFromEdge(random, 1, map.Bounds);
+				MPos start = info.FromEntrance ? PlayerSpawn.ToMPos() : MapUtils.RandomPositionInMap(random, 1, Bounds);
+				MPos end = info.ToExit ? Exit.ToMPos() : MapUtils.RandomPositionFromEdge(random, 1, Bounds);
 
 				generateSingle(start, end);
 			}
@@ -79,7 +76,7 @@ namespace WarriorsSnuggery.Maps
 			markDirty();
 			drawDirty();
 
-			MapPrinter.PrintGeneratorMap(map.Bounds, rawnoise, dirtyCells, info.ID);
+			MapPrinter.PrintGeneratorMap(Bounds, noise, dirtyCells, info.ID);
 		}
 
 		public void Generate(bool[,] dirt)
@@ -87,7 +84,7 @@ namespace WarriorsSnuggery.Maps
 			dirtyCells = dirt;
 			drawDirty();
 
-			MapPrinter.PrintGeneratorMap(map.Bounds, new float[map.Bounds.X * map.Bounds.Y], dirtyCells, info.ID);
+			MapPrinter.PrintGeneratorMap(Bounds, new float[Bounds.X * Bounds.Y], dirtyCells, info.ID);
 		}
 
 		void generateSingle(MPos start, MPos end)
@@ -126,9 +123,9 @@ namespace WarriorsSnuggery.Maps
 					MPos preferred = new MPos(x, y) + currentPosition;
 
 					// If out of bounds, make the value high af so the field can't be taken
-					var val1 = preferred.IsInRange(MPos.Zero, map.Bounds - new MPos(1, 1)) ? noise[preferred.X * map.Bounds.Y + preferred.Y] : 10f;
-					var val2 = a1.IsInRange(MPos.Zero, map.Bounds - new MPos(1, 1)) ? noise[a1.X * map.Bounds.Y + a1.Y] : 10f;
-					var val3 = a2.IsInRange(MPos.Zero, map.Bounds - new MPos(1, 1)) ? noise[a2.X * map.Bounds.Y + a2.Y] : 10f;
+					var val1 = preferred.IsInRange(MPos.Zero, Bounds - new MPos(1, 1)) ? noise[preferred.X * Bounds.Y + preferred.Y] : 10f;
+					var val2 = a1.IsInRange(MPos.Zero, Bounds - new MPos(1, 1)) ? noise[a1.X * Bounds.Y + a1.Y] : 10f;
+					var val3 = a2.IsInRange(MPos.Zero, Bounds - new MPos(1, 1)) ? noise[a2.X * Bounds.Y + a2.Y] : 10f;
 
 					if (preferred != end)
 					{
@@ -155,13 +152,13 @@ namespace WarriorsSnuggery.Maps
 			{
 				for (int x = point.X - width; x < point.X + width2; x++)
 				{
-					if (x >= 0 && x < map.Bounds.X)
+					if (x >= 0 && x < Bounds.X)
 					{
 						for (int y = point.Y - width; y < point.Y + width2; y++)
 						{
-							if (y >= 0 && y < map.Bounds.Y)
+							if (y >= 0 && y < Bounds.Y)
 							{
-								if (map.AcquireCell(new MPos(x, y), info.ID))
+								if (loader.AcquireCell(new MPos(x, y), info.ID))
 									dirtyCells[x, y] = true;
 							}
 						}
@@ -172,10 +169,10 @@ namespace WarriorsSnuggery.Maps
 
 		void drawDirty()
 		{
-			float distBetween = map.Center.Dist / info.RuinousFalloff.Length;
-			for (int x = 0; x < map.Bounds.X; x++)
+			float distBetween = Center.Dist / info.RuinousFalloff.Length;
+			for (int x = 0; x < Bounds.X; x++)
 			{
-				for (int y = 0; y < map.Bounds.Y; y++)
+				for (int y = 0; y < Bounds.Y; y++)
 				{
 					if (!dirtyCells[x, y])
 						continue;
@@ -184,7 +181,7 @@ namespace WarriorsSnuggery.Maps
 					var ruinousLength = info.RuinousFalloff.Length;
 					if (ruinousLength > 1)
 					{
-						var dist = (new MPos(x, y) - map.Center).Dist;
+						var dist = (new MPos(x, y) - Center).Dist;
 
 						var low = (int)Math.Floor(dist / distBetween);
 						if (low >= ruinousLength)
@@ -204,7 +201,7 @@ namespace WarriorsSnuggery.Maps
 					if (random.NextDouble() > ruinous)
 					{
 						var ran = random.Next(info.Types.Length);
-						world.TerrainLayer.Set(TerrainCreator.Create(world, new MPos(x, y), info.Types[ran]));
+						loader.SetTerrain(x, y, info.Types[ran]);
 					}
 				}
 			}

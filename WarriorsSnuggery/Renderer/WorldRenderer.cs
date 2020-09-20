@@ -116,9 +116,9 @@ namespace WarriorsSnuggery
 			if (Settings.DeveloperMode)
 			{
 				DebugRenderer.SetCurrent();
-				if (Settings.CurrentMap >= 0 && world.Map.Noises.ContainsKey(Settings.CurrentMap))
+				if (Settings.CurrentMap >= 0 && world.Map.NoiseMaps.ContainsKey(Settings.CurrentMap))
 				{
-					world.Map.Noises[Settings.CurrentMap].Render();
+					world.Map.NoiseMaps[Settings.CurrentMap].Render();
 					DebugRenderer.Render();
 				}
 				MasterRenderer.PrimitiveType = PrimitiveType.Lines;

@@ -29,9 +29,9 @@ namespace WarriorsSnuggery.Maps
 			Loader.PartLoader.SetValues(this, nodes);
 		}
 
-		public override MapGenerator GetGenerator(Random random, Map map, World world)
+		public override MapGenerator GetGenerator(Random random, MapLoader loader)
 		{
-			return new PieceGenerator(random, map, world, this);
+			return new PieceGenerator(random, loader, this);
 		}
 	}
 
@@ -44,7 +44,7 @@ namespace WarriorsSnuggery.Maps
 		int positions;
 		readonly List<MPos> possiblePlaces = new List<MPos>();
 
-		public PieceGenerator(Random random, Map map, World world, PieceGeneratorInfo info) : base(random, map, world)
+		public PieceGenerator(Random random, MapLoader loader, PieceGeneratorInfo info) : base(random, loader)
 		{
 			this.info = info;
 		}
@@ -62,14 +62,14 @@ namespace WarriorsSnuggery.Maps
 				var y = blockSizes.Max(b => b.Y);
 				searchBlocks = new MPos(x, y);
 			}
-			searchBounds = new MPos((int)Math.Floor(map.Bounds.X / (float)searchBlocks.X), (int)Math.Floor(map.Bounds.Y / (float)searchBlocks.Y));
+			searchBounds = new MPos((int)Math.Floor(Bounds.X / (float)searchBlocks.X), (int)Math.Floor(Bounds.Y / (float)searchBlocks.Y));
 			positions = searchBounds.X * searchBounds.Y;
 
 			// usual grid
 			for (int i = 0; i < positions; i++)
 			{
 				var xStart = (i % searchBounds.X) * searchBounds.X;
-				if (xStart >= map.Bounds.X)
+				if (xStart >= Bounds.X)
 					break;
 
 				var yStart = (int)Math.Floor(i / (float)searchBounds.X) * searchBounds.Y;
@@ -77,7 +77,7 @@ namespace WarriorsSnuggery.Maps
 				var canAcquire = true;
 				for (var x = xStart; x < xStart + searchBlocks.X; x++)
 				{
-					if (x >= map.Bounds.X)
+					if (x >= Bounds.X)
 						break;
 
 					if (!canAcquire)
@@ -85,10 +85,10 @@ namespace WarriorsSnuggery.Maps
 
 					for (var y = yStart; y < yStart + searchBlocks.Y; y++)
 					{
-						if (y >= map.Bounds.Y)
+						if (y >= Bounds.Y)
 							break;
 
-						if (!map.CanAcquireCell(new MPos(x, y), info.ID))
+						if (!loader.CanAcquireCell(new MPos(x, y), info.ID))
 						{
 							canAcquire = false;
 							break;
@@ -106,7 +106,7 @@ namespace WarriorsSnuggery.Maps
 				for (int i = 0; i < positions; i++)
 				{
 					var xStart = (i % searchBounds.X) * searchBounds.X + step;
-					if (xStart >= map.Bounds.X)
+					if (xStart >= Bounds.X)
 						break;
 
 					var yStart = (int)Math.Floor(i / (float)searchBounds.X) * searchBounds.Y;
@@ -114,7 +114,7 @@ namespace WarriorsSnuggery.Maps
 					var canAcquire = true;
 					for (var x = xStart; x < xStart + searchBlocks.X; x++)
 					{
-						if (x >= map.Bounds.X)
+						if (x >= Bounds.X)
 							break;
 
 						if (!canAcquire)
@@ -122,10 +122,10 @@ namespace WarriorsSnuggery.Maps
 
 						for (var y = yStart; y < yStart + searchBlocks.Y; y++)
 						{
-							if (y >= map.Bounds.Y)
+							if (y >= Bounds.Y)
 								break;
 
-							if (!map.CanAcquireCell(new MPos(x, y), info.ID))
+							if (!loader.CanAcquireCell(new MPos(x, y), info.ID))
 							{
 								canAcquire = false;
 								break;
@@ -143,13 +143,13 @@ namespace WarriorsSnuggery.Maps
 				{
 					var xStart = (i % searchBounds.X) * searchBounds.X;
 					var yStart = (int)Math.Floor(i / (float)searchBounds.X) * searchBounds.Y + step;
-					if (yStart >= map.Bounds.Y)
+					if (yStart >= Bounds.Y)
 						break;
 
 					var canAcquire = true;
 					for (var x = xStart; x < xStart + searchBlocks.X; x++)
 					{
-						if (x >= map.Bounds.X)
+						if (x >= Bounds.X)
 							break;
 
 						if (!canAcquire)
@@ -157,10 +157,10 @@ namespace WarriorsSnuggery.Maps
 
 						for (var y = yStart; y < yStart + searchBlocks.Y; y++)
 						{
-							if (y >= map.Bounds.Y)
+							if (y >= Bounds.Y)
 								break;
 
-							if (!map.CanAcquireCell(new MPos(x, y), info.ID))
+							if (!loader.CanAcquireCell(new MPos(x, y), info.ID))
 							{
 								canAcquire = false;
 								break;
@@ -173,7 +173,7 @@ namespace WarriorsSnuggery.Maps
 				}
 			}
 
-			var multiplier = map.Bounds.X * map.Bounds.Y / (float)(32 * 32);
+			var multiplier = Bounds.X * Bounds.Y / (float)(32 * 32);
 			var count = random.Next((int)(info.MinimumCount * multiplier), (int)(info.MaximumCount * multiplier));
 			for (int i = 0; i < count; i++)
 			{
@@ -185,7 +185,7 @@ namespace WarriorsSnuggery.Maps
 
 				var position = random.Next(possiblePlaces.Count);
 
-				if (!map.GeneratePiece(input, possiblePlaces[position], info.ID, cancelIfAcquiredBySameID: true))
+				if (!loader.GeneratePiece(input, possiblePlaces[position], info.ID, cancelIfAcquiredBySameID: true))
 					i--;
 
 				possiblePlaces.RemoveAt(position);

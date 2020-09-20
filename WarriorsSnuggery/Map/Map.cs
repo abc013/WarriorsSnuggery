@@ -23,8 +23,8 @@ namespace WarriorsSnuggery
 
 		public static readonly CPos Offset = new CPos(-512, -512, 0);
 
-		public CPos PlayerSpawn { get; private set; }
-		public MPos Exit;
+		public CPos PlayerSpawn;
+		public CPos Exit;
 
 		public MPos Bounds { get; private set; }
 		public MPos Center => Bounds / new MPos(2, 2);
@@ -35,9 +35,7 @@ namespace WarriorsSnuggery
 		public CPos BottomLeftCorner => new CPos(Offset.X, Offset.Y + (Bounds.Y * 1024), 0);
 		public CPos BottomRightCorner => new CPos(Offset.X + (Bounds.X * 1024), Offset.Y + (Bounds.Y * 1024), 0);
 
-		public readonly Dictionary<int, NoiseMap> Noises = new Dictionary<int, NoiseMap>();
-
-		int[,] tilesWithAssignedGenerator;
+		public Dictionary<int, NoiseMap> NoiseMaps;
 
 		public Map(World world, MapInfo type, int seed, int level, int difficulty)
 		{
@@ -64,91 +62,12 @@ namespace WarriorsSnuggery
 			Camera.SetBounds(Bounds);
 			VisibilitySolver.SetBounds(Bounds, world.ShroudLayer);
 
-			tilesWithAssignedGenerator = new int[Bounds.X, Bounds.Y];
+			var mapLoader = new MapLoader(world, this);
+			NoiseMaps = mapLoader.NoiseMaps;
 
-			// Check whether from save first. Saves must have a OverridePiece, the saved map.
-			if (Type.FromSave)
-			{
-				var path = FileExplorer.Saves;
-				var file = Type.OverridePiece + ".yaml";
+			mapLoader.Generate();
 
-				var input = new Piece(Type.OverridePiece, path + file, RuleReader.Read(path, file));
-				GeneratePiece(input, MPos.Zero, 100, true);
-				return;
-			}
-
-			// NoiseMaps
-			foreach (var info in Type.NoiseMapInfos)
-			{
-				var noiseMap = new NoiseMap(Bounds, Seed, info);
-				Noises.Add(info.ID, noiseMap);
-				MapPrinter.PrintNoiseMap(noiseMap);
-			}
-
-			if (!string.IsNullOrEmpty(Type.OverridePiece))
-				GeneratePiece(PieceManager.GetPiece(Type.OverridePiece), MPos.Zero, 100, true);
-			else
-				Type.TerrainGenerationBase.GetGenerator(random, this, world).Generate();
-
-			// Generators
-			foreach (var info in Type.GeneratorInfos)
-				info.GetGenerator(random, this, world)?.Generate();
-			// empty data because it is not needed anymore
-			tilesWithAssignedGenerator = null;
-		}
-
-		public bool AcquireCell(MPos pos, int id)
-		{
-			if (tilesWithAssignedGenerator[pos.X, pos.Y] > id)
-				return false;
-
-			tilesWithAssignedGenerator[pos.X, pos.Y] = id;
-			return true;
-		}
-
-		public bool CanAcquireCell(MPos pos, int id)
-		{
-			if (tilesWithAssignedGenerator[pos.X, pos.Y] > id)
-				return false;
-
-			return true;
-		}
-
-		public bool GeneratePiece(Piece piece, MPos position, int ID, bool important = false, bool playerSpawn = false, bool cancelIfAcquiredBySameID = false)
-		{
-			if (!piece.IsInMap(position, Bounds))
-			{
-				Log.WriteDebug(string.Format("Piece '{0}' at Position '{1}' could not be created because it overlaps to the world's edge.", piece.Name, position));
-				return false;
-			}
-
-			for (int x = position.X; x < (piece.Size.X + position.X); x++)
-			{
-				for (int y = position.Y; y < (piece.Size.Y + position.Y); y++)
-				{
-					if (important)
-						AcquireCell(new MPos(x, y), ID);
-					else if (!CanAcquireCell(new MPos(x, y), ID) || (cancelIfAcquiredBySameID && tilesWithAssignedGenerator[x, y] == ID))
-						return false;
-				}
-			}
-			if (!important)
-			{
-				for (int x = position.X; x < (piece.Size.X + position.X); x++)
-				{
-					for (int y = position.Y; y < (piece.Size.Y + position.Y); y++)
-					{
-						AcquireCell(new MPos(x, y), ID);
-					}
-				}
-			}
-
-			piece.PlacePiece(position, world);
-
-			if (playerSpawn)
-				PlayerSpawn = new CPos(position.X * 1024 + piece.Size.X * 512, position.Y * 1024 + piece.Size.Y * 512, 0);
-
-			return true;
+			mapLoader.Apply();
 		}
 	}
 }

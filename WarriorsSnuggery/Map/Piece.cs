@@ -102,12 +102,12 @@ namespace WarriorsSnuggery.Maps
 				throw new InvalidPieceException(string.Format(@"The count of given walls ({0}) is smaller as the size ({1}) on the piece '{2}'", groundData.Length, Size.X * Size.Y, Name));
 		}
 
-		public void PlacePiece(MPos position, World world)
+		public void PlacePiece(MPos position, MapLoader loader, World world)
 		{
 			// generate Terrain
 			for (int y = position.Y; y < (Size.Y + position.Y); y++)
 				for (int x = position.X; x < (Size.X + position.X); x++)
-					world.TerrainLayer.Set(TerrainCreator.Create(world, new MPos(x, y), groundData[(y - position.Y) * Size.X + (x - position.X)]));
+					loader.SetTerrain(x, y, groundData[(y - position.Y) * Size.X + (x - position.X)]);
 
 			// generate Walls
 			if (wallData.Length != 0)
@@ -134,7 +134,7 @@ namespace WarriorsSnuggery.Maps
 				}
 			}
 
-			if (!world.Map.Type.FromSave)
+			if (!loader.FromSave)
 			{
 				if (actors.Any())
 					world.Game.CurrentActorID = actors.Max(n => n.ID) + 1;
@@ -146,13 +146,9 @@ namespace WarriorsSnuggery.Maps
 			// generate Actors
 			foreach (var init in actors)
 			{
-				var actor = ActorCreator.Create(world, init, !world.Map.Type.FromSave, position.ToCPos());
+				var actor = loader.AddActor(init, !loader.FromSave, position.ToCPos());
 				generatedActors.Add(actor);
-				world.Add(actor);
 			}
-
-			if (world.Map.Type.FromSave)
-				world.LocalPlayer = world.ActorLayer.ToAdd().Find(a => a.IsPlayer);
 
 			// generate Weapons
 			foreach (var weapon in weapons)

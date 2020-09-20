@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using WarriorsSnuggery.Objects;
 
 namespace WarriorsSnuggery.Maps
 {
@@ -33,12 +32,12 @@ namespace WarriorsSnuggery.Maps
 				PatrolProbabilities = Patrols.Sum(p => p.Probability);
 		}
 
-		public override MapGenerator GetGenerator(Random random, Map map, World world)
+		public override MapGenerator GetGenerator(Random random, MapLoader loader)
 		{
-			if (world.Game.Mode == GameMode.WAVES)
+			if (loader.GameMode == GameMode.WAVES)
 				return null;
 
-			return new PatrolGenerator(random, map, world, this);
+			return new PatrolGenerator(random, loader, this);
 		}
 	}
 
@@ -66,29 +65,29 @@ namespace WarriorsSnuggery.Maps
 
 		MPos[] spawns;
 
-		public PatrolGenerator(Random random, Map map, World world, PatrolGeneratorInfo info) : base(random, map, world)
+		public PatrolGenerator(Random random, MapLoader loader, PatrolGeneratorInfo info) : base(random, loader)
 		{
 			this.info = info;
 		}
 
 		public override void Generate()
 		{
-			for (int a = 0; a < Math.Floor(map.Bounds.X / (float)info.SpawnBounds); a++)
+			for (int a = 0; a < Math.Floor(Bounds.X / (float)info.SpawnBounds); a++)
 			{
-				for (int b = 0; b < Math.Floor(map.Bounds.X / (float)info.SpawnBounds); b++)
+				for (int b = 0; b < Math.Floor(Bounds.X / (float)info.SpawnBounds); b++)
 				{
 					var blocked = false;
 					for (int x = a * info.SpawnBounds; x < a * info.SpawnBounds + info.SpawnBounds; x++)
 					{
-						if (x < map.TopLeftCorner.X || x >= map.TopRightCorner.X)
+						if (x < TopLeftCorner.X || x >= TopRightCorner.X)
 							continue;
 
 						for (int y = a * info.SpawnBounds; y < a * info.SpawnBounds + info.SpawnBounds; y++)
 						{
-							if (y < map.TopLeftCorner.Y || y >= map.BottomLeftCorner.Y)
+							if (y < TopLeftCorner.Y || y >= BottomLeftCorner.Y)
 								continue;
 
-							if (!info.UseForWaves && !map.CanAcquireCell(new MPos(x, y), info.ID))
+							if (!info.UseForWaves && !loader.CanAcquireCell(new MPos(x, y), info.ID))
 								blocked = true;
 						}
 					}
@@ -98,7 +97,7 @@ namespace WarriorsSnuggery.Maps
 				}
 			}
 
-			var multiplier = map.Bounds.X * map.Bounds.Y / (float)(32 * 32) + (world.Game.Statistics.Difficulty - 5) / 10f;
+			var multiplier = Bounds.X * Bounds.Y / (float)(32 * 32) + (loader.Statistics.Difficulty - 5) / 10f;
 			var count = random.Next((int)(info.MinimumPatrols * multiplier), (int)(info.MaximumPatrols * multiplier));
 			if (positions.Count < count)
 			{
@@ -125,9 +124,7 @@ namespace WarriorsSnuggery.Maps
 				{
 					var spawnPosition = CPos.Zero;
 					if (j == 0)
-					{
 						spawnPosition = mid;
-					}
 					else if (j < 7)
 					{
 						var angle = 60 * j / 180f * Math.PI;
@@ -147,15 +144,15 @@ namespace WarriorsSnuggery.Maps
 
 					if (spawnPosition.X < patrol.DistanceBetweenObjects / 2)
 						spawnPosition = new CPos(patrol.DistanceBetweenObjects / 2, spawnPosition.Y, 0);
-					if (spawnPosition.X >= map.Bounds.X * 1024 - patrol.DistanceBetweenObjects / 2)
-						spawnPosition = new CPos(map.Bounds.X * 1024 - patrol.DistanceBetweenObjects / 2, spawnPosition.Y, 0);
+					if (spawnPosition.X >= Bounds.X * 1024 - patrol.DistanceBetweenObjects / 2)
+						spawnPosition = new CPos(Bounds.X * 1024 - patrol.DistanceBetweenObjects / 2, spawnPosition.Y, 0);
 
 					if (spawnPosition.Y < patrol.DistanceBetweenObjects / 2)
 						spawnPosition = new CPos(spawnPosition.X, patrol.DistanceBetweenObjects / 2, 0);
-					if (spawnPosition.Y >= map.Bounds.Y * 1024 - patrol.DistanceBetweenObjects / 2)
-						spawnPosition = new CPos(spawnPosition.X, map.Bounds.Y * 1024 - patrol.DistanceBetweenObjects / 2, 0);
+					if (spawnPosition.Y >= Bounds.Y * 1024 - patrol.DistanceBetweenObjects / 2)
+						spawnPosition = new CPos(spawnPosition.X, Bounds.Y * 1024 - patrol.DistanceBetweenObjects / 2, 0);
 
-					world.Add(ActorCreator.Create(world, patrol.ActorTypes[j], spawnPosition, 1, true));
+					loader.AddActor(spawnPosition, patrol.ActorTypes[j], 1, true);
 				}
 			}
 		}

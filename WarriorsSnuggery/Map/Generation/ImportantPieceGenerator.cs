@@ -29,9 +29,9 @@ namespace WarriorsSnuggery.Maps
 			Loader.PartLoader.SetValues(this, nodes);
 		}
 
-		public override MapGenerator GetGenerator(Random random, Map map, World world)
+		public override MapGenerator GetGenerator(Random random, MapLoader loader)
 		{
-			return new ImportantPieceGenerator(random, map, world, this);
+			return new ImportantPieceGenerator(random, loader, this);
 		}
 	}
 
@@ -40,7 +40,7 @@ namespace WarriorsSnuggery.Maps
 		readonly ImportantPieceGeneratorInfo info;
 
 		public Piece Piece;
-		public ImportantPieceGenerator(Random random, Map map, World world, ImportantPieceGeneratorInfo info) : base(random, map, world)
+		public ImportantPieceGenerator(Random random, MapLoader loader, ImportantPieceGeneratorInfo info) : base(random, loader)
 		{
 			this.info = info;
 		}
@@ -52,13 +52,13 @@ namespace WarriorsSnuggery.Maps
 			switch (info.PositionType)
 			{
 				case PositionType.POSITION:
-					map.GeneratePiece(Piece, info.Position, info.ID, true);
+					loader.GenerateCrucialPiece(Piece, info.Position, info.ID);
 					break;
 				case PositionType.SPAWN:
 					spawnSpawn();
 					break;
 				case PositionType.EXIT:
-					if (world.Game.Mode == GameMode.FIND_EXIT)
+					if (loader.GameMode == GameMode.FIND_EXIT)
 						exitSpawn();
 					break;
 			}
@@ -66,20 +66,21 @@ namespace WarriorsSnuggery.Maps
 
 		void spawnSpawn()
 		{
-			var spawnArea = map.Bounds - Piece.Size;
+			var spawnArea = Bounds - Piece.Size;
 			var half = spawnArea / new MPos(2, 2);
 			var eigth = spawnArea / new MPos(8, 8);
 			var pos = half + new MPos(random.Next(eigth.X) - eigth.X / 2, random.Next(eigth.Y) - eigth.Y / 2);
 
-			map.GeneratePiece(Piece, pos, 100, true, true);
+			loader.GenerateCrucialPiece(Piece, pos);
+			loader.PlayerSpawn = new CPos(pos.X * 1024 + Piece.Size.X * 512, pos.Y * 1024 + Piece.Size.Y * 512, 0);
 		}
 
 		void exitSpawn()
 		{
-			var spawnArea = map.Bounds - Piece.Size;
+			var spawnArea = Bounds - Piece.Size;
 			var pos = new MPos(-1, -1);
 
-			while (pos.X < 0 || !map.GeneratePiece(Piece, pos, 100, true))
+			while (pos.X < 0 || !loader.GeneratePiece(Piece, pos, 100, true))
 			{
 				// Picking a random side, 0 = x, 1 = y, 2 = -x, 3 = -y;
 				var side = (byte)random.Next(4);
@@ -100,7 +101,7 @@ namespace WarriorsSnuggery.Maps
 				}
 			}
 
-			map.Exit = pos + Piece.Size / new MPos(2, 2);
+			loader.Exit = pos.ToCPos() + new CPos(Piece.Size.X * 512, Piece.Size.Y * 512, 0);
 		}
 	}
 }

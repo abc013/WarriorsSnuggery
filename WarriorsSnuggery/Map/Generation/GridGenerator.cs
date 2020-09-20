@@ -45,9 +45,9 @@ namespace WarriorsSnuggery.Maps
 			Loader.PartLoader.SetValues(this, nodes);
 		}
 
-		public override MapGenerator GetGenerator(Random random, Map map, World world)
+		public override MapGenerator GetGenerator(Random random, MapLoader loader)
 		{
-			return new GridGenerator(random, map, world, this);
+			return new GridGenerator(random, loader, this);
 		}
 	}
 
@@ -59,28 +59,28 @@ namespace WarriorsSnuggery.Maps
 		List<Cell> cells;
 		List<PieceCell> pieceCells;
 
-		public GridGenerator(Random random, Map map, World world, GridGeneratorInfo info) : base(random, map, world)
+		public GridGenerator(Random random, MapLoader loader, GridGeneratorInfo info) : base(random, loader)
 		{
 			this.info = info;
 
-			road = new bool[map.Bounds.X, map.Bounds.Y];
+			road = new bool[Bounds.X, Bounds.Y];
 		}
 
 		public override void Generate()
 		{
-			var spawn = info.FillMap ? MPos.Zero : map.Center - new MPos(info.MinimumDimensions, info.MinimumDimensions);
+			var spawn = info.FillMap ? MPos.Zero : Center - new MPos(info.MinimumDimensions, info.MinimumDimensions);
 			if (spawn.X < 0)
 				spawn = new MPos(0, spawn.Y);
 
 			if (spawn.Y < 0)
 				spawn = new MPos(spawn.X, 0);
 
-			var bounds = info.FillMap ? map.Bounds : new MPos(random.Next(info.MaximumDimensions - info.MinimumDimensions) + info.MinimumDimensions, random.Next(info.MaximumDimensions - info.MinimumDimensions) + info.MinimumDimensions);
-			if (spawn.X + bounds.X >= map.Bounds.X)
-				bounds = new MPos(map.Bounds.X - spawn.X, bounds.Y);
+			var bounds = info.FillMap ? Bounds : new MPos(random.Next(info.MaximumDimensions - info.MinimumDimensions) + info.MinimumDimensions, random.Next(info.MaximumDimensions - info.MinimumDimensions) + info.MinimumDimensions);
+			if (spawn.X + bounds.X >= Bounds.X)
+				bounds = new MPos(Bounds.X - spawn.X, bounds.Y);
 
-			if (spawn.Y + bounds.Y >= map.Bounds.Y)
-				bounds = new MPos(bounds.X, map.Bounds.Y - spawn.Y);
+			if (spawn.Y + bounds.Y >= Bounds.Y)
+				bounds = new MPos(bounds.X, Bounds.Y - spawn.Y);
 
 			// If smaller than map bounds, abort
 			if (bounds.X < info.MinimumDimensions || bounds.Y < info.MinimumDimensions)
@@ -107,7 +107,7 @@ namespace WarriorsSnuggery.Maps
 				{
 					for (int y = cell.Position.Y; y < cell.Position.Y + cell.Size.Y; y++)
 					{
-						if (!map.CanAcquireCell(new MPos(x, y), info.ID))
+						if (!loader.CanAcquireCell(new MPos(x, y), info.ID))
 							blocked = true;
 					}
 				}
@@ -119,7 +119,7 @@ namespace WarriorsSnuggery.Maps
 				{
 					for (int y = cell.Position.Y; y < cell.Position.Y + cell.Size.Y; y++)
 					{
-						if (map.AcquireCell(new MPos(x, y), info.ID))
+						if (loader.AcquireCell(new MPos(x, y), info.ID))
 							dirtyCells[x, y] = true;
 
 						road[x, y] = false;
@@ -128,18 +128,18 @@ namespace WarriorsSnuggery.Maps
 			}
 
 			// Roads
-			var type = map.Type.GeneratorInfos.Where(i => i.ID == info.PathGeneratorID && i is PathGeneratorInfo).FirstOrDefault();
+			var type = loader.Infos.FirstOrDefault(i => i.ID == info.PathGeneratorID && i is PathGeneratorInfo);
 			if (type != null)
 			{
-				for (int x = 0; x < map.Bounds.X; x++)
+				for (int x = 0; x < Bounds.X; x++)
 				{
-					for (int y = 0; y < map.Bounds.Y; y++)
+					for (int y = 0; y < Bounds.Y; y++)
 					{
-						if (!(road[x, y] && map.AcquireCell(new MPos(x, y), info.PathGeneratorID)))
+						if (!(road[x, y] && loader.AcquireCell(new MPos(x, y), info.PathGeneratorID)))
 							road[x, y] = false;
 					}
 				}
-				var generator = new PathGenerator(random, map, world, type as PathGeneratorInfo);
+				var generator = new PathGenerator(random, loader, type as PathGeneratorInfo);
 				generator.Generate(road);
 			}
 			// Pieces
@@ -159,10 +159,10 @@ namespace WarriorsSnuggery.Maps
 				else
 					toUse = getPiece(info.Tile2x2);
 
-				map.GeneratePiece(toUse, piece.Position, info.ID);
+				loader.GeneratePiece(toUse, piece.Position, info.ID);
 			}
 
-			MapPrinter.PrintGeneratorMap(map.Bounds, new float[map.Bounds.X * map.Bounds.Y], dirtyCells, info.ID);
+			MapPrinter.PrintGeneratorMap(Bounds, new float[Bounds.X * Bounds.Y], dirtyCells, info.ID);
 		}
 
 		List<Cell> cellLoop(Cell cell, int depth)
