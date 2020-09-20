@@ -30,7 +30,8 @@ namespace WarriorsSnuggery.Maps
 
 		readonly int[,] generatorReservations;
 
-		readonly ushort[,] terrainIDs;
+		readonly ushort[,] terrainInformation;
+		readonly (short, short)[,] wallInformation;
 
 		public MapLoader(World world, Map map)
 		{
@@ -47,7 +48,8 @@ namespace WarriorsSnuggery.Maps
 			}
 
 			generatorReservations = new int[Bounds.X, Bounds.Y];
-			terrainIDs = new ushort[Bounds.X, Bounds.Y];
+			terrainInformation = new ushort[Bounds.X, Bounds.Y];
+			wallInformation = new (short, short)[world.WallLayer.Bounds.X, world.WallLayer.Bounds.Y];
 		}
 
 		public void Generate()
@@ -80,8 +82,40 @@ namespace WarriorsSnuggery.Maps
 		public void Apply()
 		{
 			for (int x = 0; x < Bounds.X; x++)
+			{
 				for (int y = 0; y < Bounds.Y; y++)
-					world.TerrainLayer.Set(TerrainCreator.Create(world, new MPos(x, y), terrainIDs[x, y]));
+				{
+					world.TerrainLayer.Set(TerrainCreator.Create(world, new MPos(x, y), terrainInformation[x, y]));
+
+					for (int i = 0; i < 2; i++)
+							applyWall(new MPos(x * 2 + i, y));
+				}
+			}
+
+			// Generate walls that are at the edge of the map
+			for (int y = 0; y < Bounds.Y; y++)
+			{
+				for (int i = 0; i < 2; i++)
+					applyWall(new MPos(Bounds.X * 2 + i, y));
+			}
+
+			for (int x = 0; x < Bounds.X + 1; x++)
+			{
+				for (int i = 0; i < 2; i++)
+					applyWall(new MPos(x * 2 + i, Bounds.Y));
+			}
+		}
+
+		void applyWall(MPos pos)
+		{
+			var info = wallInformation[pos.X, pos.Y];
+			if (info.Item1 == 0 && info.Item2 == 0)
+				return;
+
+			var wall = WallCreator.Create(pos, world.WallLayer, info.Item1);
+			wall.Health = info.Item2;
+
+			world.WallLayer.Set(wall);
 		}
 
 		public bool AcquireCell(MPos pos, int id)
@@ -103,7 +137,12 @@ namespace WarriorsSnuggery.Maps
 
 		public void SetTerrain(int x, int y, ushort id)
 		{
-			terrainIDs[x, y] = id;
+			terrainInformation[x, y] = id;
+		}
+
+		public void SetWall(int x, int y, short id, short health)
+		{
+			wallInformation[x, y] = (id, health);
 		}
 
 		public Actor AddActor(CPos pos, ActorProbabilityInfo info)
@@ -128,6 +167,15 @@ namespace WarriorsSnuggery.Maps
 			world.Add(actor);
 
 			return actor;
+		}
+
+		public bool WallExists(int x, int y)
+		{
+			var info = wallInformation[x, y];
+			if (info.Item1 == 0 && info.Item2 == 0)
+				return false;
+
+			return true;
 		}
 
 		public bool GenerateCrucialPiece(Piece piece, MPos position, int ID = int.MaxValue)

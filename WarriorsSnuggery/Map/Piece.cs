@@ -122,14 +122,9 @@ namespace WarriorsSnuggery.Maps
 						dataPos *= 2;
 
 						if (wallData[dataPos] >= 0)
-						{
-							var wall = WallCreator.Create(new MPos(x, y), world.WallLayer, wallData[dataPos]);
-							world.WallLayer.Set(wall);
-
-							wall.Health = wallData[dataPos + 1];
-						}
-						else if (world.WallLayer.Walls[x, y] != null && x != position.X * 2 && y != position.Y && y != maxY - 1 && !(x >= maxX - 2))
-							world.WallLayer.Remove(new MPos(x, y));
+							loader.SetWall(x, y, wallData[dataPos], wallData[dataPos + 1]);
+						else if (loader.WallExists(x, y) && x != position.X * 2 && y != position.Y && y != maxY - 1 && !(x >= maxX - 2))
+							loader.SetWall(x, y, 0, 0);
 					}
 				}
 			}
