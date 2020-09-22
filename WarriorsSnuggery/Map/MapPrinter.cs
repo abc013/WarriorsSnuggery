@@ -1,4 +1,5 @@
 ﻿using System.Drawing;
+using System.IO;
 
 namespace WarriorsSnuggery.Maps
 {
@@ -18,7 +19,10 @@ namespace WarriorsSnuggery.Maps
 					image.SetPixel(x, y, color);
 				}
 			}
-			image.Save(FileExplorer.Logs + "debugMaps/noisemap" + map.ID + ".png");
+			var path = FileExplorer.Logs + "debugMaps/";
+			checkDirectory(path);
+
+			image.Save(path + $"noisemap{map.ID}.png");
 		}
 
 		public static void PrintGeneratorMap(MPos bounds, float[] noise, bool[,] dirty, int id)
@@ -39,7 +43,18 @@ namespace WarriorsSnuggery.Maps
 					image.SetPixel(x, y, color);
 				}
 			}
-			image.Save(FileExplorer.Logs + "debugMaps/generator" + id + ".png");
+			var path = FileExplorer.Logs + "debugMaps/";
+			checkDirectory(path);
+
+			image.Save(path + $"generator{id}.png");
+		}
+
+		static void checkDirectory(string path)
+		{
+			if (Directory.Exists(path))
+				return;
+
+			Directory.CreateDirectory(path);
 		}
 	}
 }
