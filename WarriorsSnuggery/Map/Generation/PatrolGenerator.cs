@@ -48,6 +48,8 @@ namespace WarriorsSnuggery.Maps
 		public readonly int DistanceBetweenObjects = 1024;
 		[Desc("What the patrol consists of.")]
 		public readonly string[] ActorTypes = new string[0];
+		[Desc("Team that the patrol belongs to.")]
+		public readonly byte Team = 1;
 		[Desc("Probability that this patrol will be spawned.", "This value will be set in relation with all other patrol probabilities.")]
 		public readonly float Probability = 1f;
 
@@ -152,7 +154,7 @@ namespace WarriorsSnuggery.Maps
 					if (spawnPosition.Y >= Bounds.Y * 1024 - patrol.DistanceBetweenObjects / 2)
 						spawnPosition = new CPos(spawnPosition.X, Bounds.Y * 1024 - patrol.DistanceBetweenObjects / 2, 0);
 
-					loader.AddActor(spawnPosition, patrol.ActorTypes[j], 1, true);
+					loader.AddActor(spawnPosition, patrol.ActorTypes[j], patrol.Team, true);
 				}
 			}
 		}
