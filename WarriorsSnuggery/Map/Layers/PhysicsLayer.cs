@@ -144,8 +144,6 @@ namespace WarriorsSnuggery
 		{
 			var pos = (Position * new MPos(2, 2)).ToCPos() + new CPos(512, 512, 0);
 			ColorManager.DrawLineRect(pos, new CPos(1000, 1000, 0), new Color(0, 0, 1f, 0.2f));
-			foreach (var obj in objects)
-				obj.Physics.RenderDebug();
 		}
 	}
 }

@@ -125,11 +125,14 @@ namespace WarriorsSnuggery
 				foreach (var sector in world.PhysicsLayer.Sectors)
 					sector.RenderDebug();
 
-				foreach (var wall in world.WallLayer.Walls)
-				{
-					if (wall != null)
-						wall.Physics.RenderDebug();
-				}
+				foreach (var actor in world.ActorLayer.VisibleActors)
+					actor.Physics.RenderDebug();
+
+				foreach (var weapon in world.WeaponLayer.VisibleWeapons)
+					weapon.Physics.RenderDebug();
+
+				foreach (var wall in world.WallLayer.VisibleWalls)
+					wall.Physics.RenderDebug();
 
 				DebugRenderer.Render();
 				MasterRenderer.BatchRenderer = null;
