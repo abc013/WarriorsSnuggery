@@ -65,7 +65,7 @@ namespace WarriorsSnuggery
 			foreach (var o in world.ToRender)
 			{
 				CPos pos = world.Game.Editor ? MouseInput.GamePosition : world.LocalPlayer == null ? CPos.Zero : world.LocalPlayer.Position;
-				if (((o is Actor actor && actor.WorldPart != null && actor.WorldPart.Hideable) || (o is Wall wall && wall.LayerPosition.X % 2 != 0 && wall.Type.Height >= 512)) && o.Position.Y > pos.Y && Math.Abs(o.Position.X - pos.X) < 4096)
+				if (((o is Actor actor && actor.WorldPart != null && actor.WorldPart.Hideable) || (o is Wall wall && wall.IsHorizontal && wall.Type.Height >= 512)) && o.Position.Y > pos.Y && Math.Abs(o.Position.X - pos.X) < 4096)
 				{
 					var alpha = o.Position.Y - pos.Y < 1024 ? 1 - (o.Position.Y - pos.Y) / 1024f : (o.Position.Y - pos.Y - 1024) / 1024f;
 					var sidealpha = Math.Abs(o.Position.X - pos.X) / 4096f;
@@ -130,6 +130,10 @@ namespace WarriorsSnuggery
 					if (wall != null)
 						wall.Physics.RenderDebug();
 				}
+
+				foreach (var line in world.ShroudLayer.lines)
+					ColorManager.DrawLine(line.Item1, line.Item2, Color.Yellow);
+				world.ShroudLayer.lines.Clear();
 
 				DebugRenderer.Render();
 				MasterRenderer.BatchRenderer = null;

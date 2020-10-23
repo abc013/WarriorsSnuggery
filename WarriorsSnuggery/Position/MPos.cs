@@ -53,12 +53,12 @@ namespace WarriorsSnuggery
 			return angle;
 		}
 
-		public bool IsInRange(MPos minimum, MPos range)
+		public bool IsInRange(MPos minimum, MPos maximum)
 		{
 			if (X < minimum.X) return false;
 			if (Y < minimum.Y) return false;
-			if (X > range.X) return false;
-			if (Y > range.Y) return false;
+			if (X > maximum.X) return false;
+			if (Y > maximum.Y) return false;
 
 			return true;
 		}
