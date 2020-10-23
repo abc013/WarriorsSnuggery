@@ -88,21 +88,21 @@ namespace WarriorsSnuggery
 	}
 
 	[Serializable]
-	class InvalidNodeException : Exception
+	class InvalidTextNodeException : Exception
 	{
-		public InvalidNodeException() { }
+		public InvalidTextNodeException() { }
 
-		public InvalidNodeException(string text) : base(text)
+		public InvalidTextNodeException(string text) : base(text)
 		{
 
 		}
 
-		public InvalidNodeException(string text, Exception innerException) : base(text, innerException)
+		public InvalidTextNodeException(string text, Exception innerException) : base(text, innerException)
 		{
 
 		}
 
-		protected InvalidNodeException(SerializationInfo info, StreamingContext context) : base(info, context)
+		protected InvalidTextNodeException(SerializationInfo info, StreamingContext context) : base(info, context)
 		{
 
 		}
@@ -124,37 +124,6 @@ namespace WarriorsSnuggery
 		}
 
 		protected InvalidNodeFormatException(SerializationInfo info, StreamingContext context) : base(info, context)
-		{
-
-		}
-	}
-
-	[Serializable]
-	class InvalidNodeRuleExeption : Exception
-	{
-		public InvalidNodeRuleExeption() { }
-
-		public InvalidNodeRuleExeption(string rule) : base($"unable to convert '{rule}' to a valid rule.")
-		{
-
-		}
-
-		public InvalidNodeRuleExeption(string rule, Exception innerException) : base($"unable to convert '{rule}' to a valid rule.", innerException)
-		{
-
-		}
-
-		public InvalidNodeRuleExeption(string rule, int tabs) : base($"'{rule}' has invalid intendation (difference: {tabs}).")
-		{
-
-		}
-
-		public InvalidNodeRuleExeption(string rule, int tabs, Exception innerException) : base($"'{rule}' has invalid intendation (difference: {tabs}).", innerException)
-		{
-
-		}
-
-		protected InvalidNodeRuleExeption(SerializationInfo info, StreamingContext context) : base(info, context)
 		{
 
 		}

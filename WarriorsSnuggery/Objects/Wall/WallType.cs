@@ -54,14 +54,14 @@ namespace WarriorsSnuggery.Objects
 				textures = SpriteManager.AddTexture(new TextureInfo(Image, TextureType.ANIMATION, 0, 24, 48));
 
 				if (textures.Length < (ConsiderWallsNearby ? 6 : 2))
-					throw new InvalidNodeException(string.Format("Texture '{0}' of Wall '{1}' has not enough textures!", Image, id));
+					throw new InvalidTextNodeException(string.Format("Texture '{0}' of Wall '{1}' has not enough textures!", Image, id));
 
 				if (DamagedImage1 != null)
 				{
 					damagedTextures1 = SpriteManager.AddTexture(new TextureInfo(DamagedImage1, TextureType.ANIMATION, 0, 24, 48));
 
 					if (textures.Length < (ConsiderWallsNearby ? 6 : 2))
-						throw new InvalidNodeException(string.Format("DamageTexture '{0}' of Wall '{1}' has not enough textures!", Image, id));
+						throw new InvalidTextNodeException(string.Format("DamageTexture '{0}' of Wall '{1}' has not enough textures!", Image, id));
 				}
 
 				if (DamagedImage2 != null)
@@ -69,7 +69,7 @@ namespace WarriorsSnuggery.Objects
 					damagedTextures2 = SpriteManager.AddTexture(new TextureInfo(DamagedImage2, TextureType.ANIMATION, 0, 24, 48));
 
 					if (textures.Length < (ConsiderWallsNearby ? 6 : 2))
-						throw new InvalidNodeException(string.Format("DamageTexture '{0}' of Wall '{1}' has not enough textures!", Image, id));
+						throw new InvalidTextNodeException(string.Format("DamageTexture '{0}' of Wall '{1}' has not enough textures!", Image, id));
 				}
 			}
 		}

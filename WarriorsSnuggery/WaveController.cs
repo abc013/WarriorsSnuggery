@@ -28,7 +28,7 @@ namespace WarriorsSnuggery
 				currentWave = game.Statistics.Waves;
 
 			if (generators.Length == 0)
-				throw new InvalidNodeException("The GameMode WAVES can not be executed because there are no available PatrolGenerators for it.");
+				throw new InvalidTextNodeException("The GameMode WAVES can not be executed because there are no available PatrolGenerators for it.");
 		}
 
 		public void Tick()

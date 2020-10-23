@@ -27,7 +27,7 @@ namespace WarriorsSnuggery.Objects.Weapons
 			Loader.PartLoader.SetValues(this, nodes);
 
 			if (RangeSteps.Length != ProbabilityFalloff.Length)
-				throw new InvalidNodeException(string.Format("Range step length ({0}) does not match with given falloff values ({1}).", RangeSteps.Length, ProbabilityFalloff.Length));
+				throw new InvalidTextNodeException(string.Format("Range step length ({0}) does not match with given falloff values ({1}).", RangeSteps.Length, ProbabilityFalloff.Length));
 
 			maxRange = FalloffHelper.GetMax(ProbabilityFalloff, RangeSteps);
 		}

@@ -59,7 +59,7 @@ namespace WarriorsSnuggery
 		public static Key GetKey(string value)
 		{
 			if (!KeyDictionary.ContainsKey(value))
-				throw new InvalidNodeException(string.Format("Unable to find keyboard key with name {0}.", value));
+				throw new InvalidTextNodeException(string.Format("Unable to find keyboard key with name {0}.", value));
 
 			return KeyDictionary[value];
 		}
@@ -78,7 +78,7 @@ namespace WarriorsSnuggery
 
 		static void load()
 		{
-			foreach (var node in RuleReader.Read(FileExplorer.MainDirectory, "Settings.yaml"))
+			foreach (var node in RuleReader.FromFile(FileExplorer.MainDirectory, "Settings.yaml"))
 			{
 				switch (node.Key)
 				{

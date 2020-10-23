@@ -14,7 +14,7 @@ namespace WarriorsSnuggery
 
 		public static void LoadRules()
 		{
-			var rules = RuleReader.Read(FileExplorer.Rules, "Rules.yaml");
+			var rules = RuleReader.FromFile(FileExplorer.Rules, "Rules.yaml");
 			var terrainFiles = new string[0];
 			var terrainPaths = new string[0];
 

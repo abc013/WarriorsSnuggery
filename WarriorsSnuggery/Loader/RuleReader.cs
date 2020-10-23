@@ -1,78 +1,91 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 
 namespace WarriorsSnuggery
 {
 	public static class RuleReader
 	{
-		public static List<MiniTextNode> FindAndRead(string directory, string file, string suffix)
+		public static List<MiniTextNode> FromFile(string directory, string file, bool useIncludes = true)
 		{
-			return Read(FileExplorer.FindPath(directory, file, suffix), file + suffix);
-		}
+			var lines = File.ReadAllLines(directory + file);
 
-		public static List<MiniTextNode> Read(string directory, string file)
-		{
-			List<MiniTextNode> list;
-			List<string> filesToInclude;
+			startLoop(file, lines, out var list, out var filesToInclude);
 
-			using (var input = new StreamReader(directory + file, true))
-			{
-				loop(file, input, out list, out filesToInclude);
-				input.Close();
-			}
+			if (!useIncludes)
+				return list;
+
 			// Read included files as well and add them to the list
 			foreach (var fileToInclude in filesToInclude)
-				list.AddRange(Read(directory, fileToInclude));
+				list.AddRange(FromFile(directory, fileToInclude));
 
 			return list;
 		}
 
-		static void loop(string file, StreamReader input, out List<MiniTextNode> list, out List<string> filesToInclude)
+		static void startLoop(string file, string[] lines, out List<MiniTextNode> nodes, out List<string> toInclude)
 		{
-			var startOfFile = true;
+			toInclude = new List<string>();
+
+			int offset;
+
+			for (offset = 0; offset < lines.Length; offset++)
+			{
+				var line = lines[offset];
+
+				if (isEmptyOrComment(line))
+					continue;
+
+				if (line.StartsWith("@INCLUDE "))
+					toInclude.Add(line.Remove(0, 9).Trim());
+				else
+					break;
+			}
+
+			loop(file, lines, offset, out nodes);
+		}
+
+		static void loop(string file, string[] lines, int offset, out List<MiniTextNode> list)
+		{
 			MiniTextNode before = null;
 
 			list = new List<MiniTextNode>();
-			filesToInclude = new List<string>();
-			while (!input.EndOfStream)
+			for (int i = offset; i < lines.Length; i++)
 			{
-				var @in = input.ReadLine();
+				var line = lines[i];
 
-				if (string.IsNullOrWhiteSpace(@in) || @in.StartsWith("#", StringComparison.CurrentCulture))
+				if (isEmptyOrComment(line))
 					continue;
 
-				if (startOfFile && @in.StartsWith("@INCLUDE"))
-				{
-					filesToInclude.Add(@in.Remove(0, 8).Trim());
-					continue;
-				}
-				startOfFile = false;
-
-				var now = readLine(file, @in, before);
+				var now = nodeFromLine(file, line, offset, before);
 				if (now.Parent == null)
 					list.Add(now);
 
 				before = now;
 			}
 		}
-
-		static MiniTextNode readLine(string file, string line, MiniTextNode before)
+		
+		static bool isEmptyOrComment(string input)
 		{
-			var @order = (short)line.LastIndexOf('\t');
-			var strings = line.Split('=');
+			if (string.IsNullOrWhiteSpace(input) || input.StartsWith('#'))
+				return true;
 
-			if (strings.Length != 2)
-				throw new InvalidNodeRuleExeption(line);
+			return false;
+		}
 
-			var key = strings[0].Trim();
-			var value = strings[1].Trim();
-			var yamlnode = new MiniTextNode(file, @order, key, value);
+		static MiniTextNode nodeFromLine(string file, string line, int lineNumber, MiniTextNode before)
+		{
+			var @order = (short)line.Count(c => c == '\t');
+			var strings = line.Split('=', 2);
+
+			if (strings.Length < 2)
+				throw new InvalidTextNodeException($"Missing '=' in '{line}'. ['{file}', line {lineNumber}]");
+
+			var yamlnode = new MiniTextNode(file, @order, strings[0].Trim(), strings[1].Trim());
 
 			if (before == null)
 			{
-				if (@order >= 0)
-					throw new InvalidNodeRuleExeption(line);
+				if (@order > 0)
+					throw new InvalidTextNodeException($"'{line}' has invalid intendation at beginning of file: {@order}. ['{file}', line {lineNumber}]");
 
 				return yamlnode;
 			}
@@ -81,6 +94,7 @@ namespace WarriorsSnuggery
 			{
 				yamlnode.Parent = before;
 				before.Children.Add(yamlnode);
+
 				return yamlnode;
 			}
 
@@ -99,7 +113,7 @@ namespace WarriorsSnuggery
 				return yamlnode;
 			}
 
-			throw new InvalidNodeRuleExeption(line, -@order + before.Order);
+			throw new InvalidTextNodeException($"'{line}' has invalid intendation (difference: {-@order + before.Order}). ['{file}', line {lineNumber}]");
 		}
 	}
 }

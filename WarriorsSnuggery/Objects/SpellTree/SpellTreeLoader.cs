@@ -8,7 +8,7 @@ namespace WarriorsSnuggery.Spells
 
 		public static void Load(string path, string file)
 		{
-			var nodes = RuleReader.Read(path, file);
+			var nodes = RuleReader.FromFile(path, file);
 
 			List<SpellTreeNode> spelltree = new List<SpellTreeNode>();
 

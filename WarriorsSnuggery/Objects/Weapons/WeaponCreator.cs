@@ -8,7 +8,7 @@ namespace WarriorsSnuggery.Objects.Weapons
 
 		public static void Load(string directory, string file)
 		{
-			var weapons = RuleReader.Read(directory, file);
+			var weapons = RuleReader.FromFile(directory, file);
 
 			foreach (var weapon in weapons)
 				Types.Add(weapon.Key, new WeaponType(weapon.Children.ToArray()));

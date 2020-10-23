@@ -8,7 +8,7 @@ namespace WarriorsSnuggery.Trophies
 
 		public static void Load(string directory, string file)
 		{
-			var trophies = RuleReader.Read(directory, file);
+			var trophies = RuleReader.FromFile(directory, file);
 
 			foreach (var trophy in trophies)
 				Trophies.Add(trophy.Key, new Trophy(trophy.Children.ToArray()));

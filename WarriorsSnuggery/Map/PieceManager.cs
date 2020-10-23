@@ -27,7 +27,7 @@ namespace WarriorsSnuggery.Maps
 					var name = file.Remove(0, file.LastIndexOf('\\') + 1);
 					name = name.Remove(name.Length - 5);
 
-					var nodes = RuleReader.Read(path + @"\", name + ".yaml");
+					var nodes = RuleReader.FromFile(path + @"\", name + ".yaml");
 
 					Pieces.Add(new Piece(name, path, nodes));
 				}
@@ -42,7 +42,7 @@ namespace WarriorsSnuggery.Maps
 				Pieces.Remove(existingPiece);
 
 			var path = FileExplorer.FindPath(FileExplorer.Maps, piece, ".yaml");
-			var nodes = RuleReader.Read(path, piece + ".yaml");
+			var nodes = RuleReader.FromFile(path, piece + ".yaml");
 
 			Pieces.Add(new Piece(piece, path, nodes));
 		}

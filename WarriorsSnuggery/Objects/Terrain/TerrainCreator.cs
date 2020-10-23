@@ -8,7 +8,7 @@ namespace WarriorsSnuggery.Objects
 
 		public static void LoadTypes(string directory, string file)
 		{
-			var terrains = RuleReader.Read(directory, file);
+			var terrains = RuleReader.FromFile(directory, file);
 
 			foreach (var terrain in terrains)
 			{

@@ -84,7 +84,7 @@ namespace WarriorsSnuggery
 
 			var fields = PartLoader.GetFields(this, false);
 
-			foreach (var node in RuleReader.FindAndRead(FileExplorer.Saves, file, ".yaml"))
+			foreach (var node in RuleReader.FromFile(FileExplorer.FindPath(FileExplorer.Saves, file, ".yaml"), file + ".yaml"))
 			{
 				switch (node.Key)
 				{

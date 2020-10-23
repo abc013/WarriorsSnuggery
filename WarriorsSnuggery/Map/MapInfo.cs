@@ -140,7 +140,7 @@ namespace WarriorsSnuggery.Maps
 		public static MapInfo MapTypeFromSave(GameStatistics stats)
 		{
 			var piece = stats.SaveName + "_map";
-			var size = RuleReader.Read(FileExplorer.Saves, stats.SaveName + "_map.yaml").First(n => n.Key == "Size").Convert<MPos>();
+			var size = RuleReader.FromFile(FileExplorer.Saves, stats.SaveName + "_map.yaml").First(n => n.Key == "Size").Convert<MPos>();
 			var type = MapCreator.GetType(stats.CurrentMapType);
 			var mapGeneratorInfos = type == null ? new List<MapGeneratorInfo>() : type.GeneratorInfos;
 			return new MapInfo(piece, 0, size, Color.White, stats.CurrentType, new[] { stats.CurrentMode }, -1, 0, int.MaxValue, new TerrainGeneratorInfo(0, new MiniTextNode[0]), mapGeneratorInfos, MPos.Zero, true, true, stats.Script);
@@ -167,7 +167,7 @@ namespace WarriorsSnuggery.Maps
 			foreach (GameType type in Enum.GetValues(typeof(GameType)))
 				mapsTypes.Add(type, new List<MapInfo>());
 
-			var mapNodes = RuleReader.Read(directory, file);
+			var mapNodes = RuleReader.FromFile(directory, file);
 
 			foreach (var mapNode in mapNodes)
 			{

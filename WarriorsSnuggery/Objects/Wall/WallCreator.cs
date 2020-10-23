@@ -8,7 +8,7 @@ namespace WarriorsSnuggery.Objects
 
 		public static void Load(string directory, string file)
 		{
-			var walls = RuleReader.Read(directory, file);
+			var walls = RuleReader.FromFile(directory, file);
 
 			foreach (var wall in walls)
 			{

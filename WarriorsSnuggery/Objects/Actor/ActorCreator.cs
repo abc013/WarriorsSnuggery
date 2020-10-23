@@ -10,7 +10,7 @@ namespace WarriorsSnuggery.Objects
 
 		public static void Load(string directory, string file)
 		{
-			var actors = RuleReader.Read(directory, file);
+			var actors = RuleReader.FromFile(directory, file);
 
 			foreach (var actor in actors)
 			{
