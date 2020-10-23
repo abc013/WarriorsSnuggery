@@ -155,7 +155,7 @@ namespace WarriorsSnuggery.Objects
 			}
 			catch (Exception e)
 			{
-				throw new YamlInvalidNodeException("Unable to create Textcolor.", e);
+				throw new InvalidNodeException("Unable to create Textcolor.", e);
 			}
 		}
 

@@ -46,7 +46,7 @@ namespace WarriorsSnuggery.Objects.Weapons
 			}
 
 			if (RangeSteps.Length != Falloff.Length)
-				throw new YamlInvalidNodeException(string.Format("Range step length ({0}) does not match with given falloff values ({1}).", RangeSteps.Length, Falloff.Length));
+				throw new InvalidNodeException(string.Format("Range step length ({0}) does not match with given falloff values ({1}).", RangeSteps.Length, Falloff.Length));
 
 			maxRange = FalloffHelper.GetMax(Falloff, RangeSteps);
 		}

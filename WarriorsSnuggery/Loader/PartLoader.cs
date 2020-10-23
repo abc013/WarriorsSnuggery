@@ -27,7 +27,7 @@ namespace WarriorsSnuggery.Loader
 			var field = fields.FirstOrDefault(f => f.Name == node.Key);
 
 			if (field == null)
-				throw new YamlUnknownNodeException(node.Key, obj.GetType().Name);
+				throw new UnknownNodeException(node.Key, obj.GetType().Name);
 
 			field.SetValue(obj, node.Convert(field.FieldType));
 		}
@@ -49,7 +49,7 @@ namespace WarriorsSnuggery.Loader
 			}
 			catch (Exception e)
 			{
-				throw new YamlUnknownPartException(name, e);
+				throw new UnknownPartException(name, e);
 			}
 		}
 	}

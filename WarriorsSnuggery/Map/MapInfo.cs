@@ -112,7 +112,7 @@ namespace WarriorsSnuggery.Maps
 				return;
 
 			if (TerrainGenerationBase == null)
-				throw new YamlMissingNodeException(name, "BaseTerrainGeneration");
+				throw new MissingNodeException(name, "BaseTerrainGeneration");
 
 			// The highest value has the highest priority
 			GeneratorInfos = GeneratorInfos.OrderByDescending(g => g.ID).ToList();

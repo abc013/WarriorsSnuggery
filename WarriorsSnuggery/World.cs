@@ -142,7 +142,7 @@ namespace WarriorsSnuggery
 				return;
 
 			if (!TrophyManager.Trophies.ContainsKey(collected))
-				throw new YamlInvalidNodeException("Unable to get Trophy with internal name " + collected);
+				throw new InvalidNodeException("Unable to get Trophy with internal name " + collected);
 
 			Game.AddInfoMessage(250, "Trophy collected!");
 			Game.Statistics.UnlockedTrophies.Add(collected);

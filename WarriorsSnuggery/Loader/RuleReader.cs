@@ -23,9 +23,7 @@ namespace WarriorsSnuggery
 			}
 			// Read included files as well and add them to the list
 			foreach (var fileToInclude in filesToInclude)
-			{
 				list.AddRange(Read(directory, fileToInclude));
-			}
 
 			return list;
 		}
@@ -41,7 +39,7 @@ namespace WarriorsSnuggery
 			{
 				var @in = input.ReadLine();
 
-				if (@in.Trim().Equals(string.Empty) || @in.StartsWith("#", StringComparison.CurrentCulture))
+				if (string.IsNullOrWhiteSpace(@in) || @in.StartsWith("#", StringComparison.CurrentCulture))
 					continue;
 
 				if (startOfFile && @in.StartsWith("@INCLUDE"))
@@ -49,10 +47,7 @@ namespace WarriorsSnuggery
 					filesToInclude.Add(@in.Remove(0, 8).Trim());
 					continue;
 				}
-				else
-				{
-					startOfFile = false;
-				}
+				startOfFile = false;
 
 				var now = readLine(file, @in, before);
 				if (now.Parent == null)
@@ -64,11 +59,11 @@ namespace WarriorsSnuggery
 
 		static MiniTextNode readLine(string file, string line, MiniTextNode before)
 		{
-			var @order = (short)line.LastIndexOf("\t", StringComparison.CurrentCulture);
+			var @order = (short)line.LastIndexOf('\t');
 			var strings = line.Split('=');
 
 			if (strings.Length != 2)
-				throw new YamlInvalidRuleExeption(line);
+				throw new InvalidNodeRuleExeption(line);
 
 			var key = strings[0].Trim();
 			var value = strings[1].Trim();
@@ -77,7 +72,7 @@ namespace WarriorsSnuggery
 			if (before == null)
 			{
 				if (@order >= 0)
-					throw new YamlInvalidRuleExeption(line);
+					throw new InvalidNodeRuleExeption(line);
 
 				return yamlnode;
 			}
@@ -92,10 +87,9 @@ namespace WarriorsSnuggery
 			if (@order - before.Order <= 0)
 			{
 				var parent = before;
-				for (short i = (short)(@order - before.Order); i <= 0; i++)
-				{
+				for (var i = @order - before.Order; i <= 0; i++)
 					parent = parent.Parent;
-				}
+
 				if (parent == null)
 					return yamlnode;
 
@@ -105,7 +99,7 @@ namespace WarriorsSnuggery
 				return yamlnode;
 			}
 
-			throw new YamlInvalidRuleExeption(line, -@order + before.Order);
+			throw new InvalidNodeRuleExeption(line, -@order + before.Order);
 		}
 	}
 }

@@ -131,10 +131,6 @@ namespace WarriorsSnuggery
 						wall.Physics.RenderDebug();
 				}
 
-				foreach (var line in world.ShroudLayer.lines)
-					ColorManager.DrawLine(line.Item1, line.Item2, Color.Yellow);
-				world.ShroudLayer.lines.Clear();
-
 				DebugRenderer.Render();
 				MasterRenderer.BatchRenderer = null;
 				MasterRenderer.PrimitiveType = PrimitiveType.Triangles;

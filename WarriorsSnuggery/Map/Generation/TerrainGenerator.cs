@@ -35,7 +35,7 @@ namespace WarriorsSnuggery.Maps
 			Loader.PartLoader.SetValues(this, nodes);
 
 			if (RangeSteps.Length != ProbabilitySteps.Length)
-				throw new YamlInvalidNodeException($"Range step length ({RangeSteps.Length}) does not match with given provabability values ({ProbabilitySteps.Length}).");
+				throw new InvalidNodeException($"Range step length ({RangeSteps.Length}) does not match with given provabability values ({ProbabilitySteps.Length}).");
 		}
 
 		public override MapGenerator GetGenerator(Random random, MapLoader loader)
@@ -65,7 +65,7 @@ namespace WarriorsSnuggery.Maps
 			Loader.PartLoader.SetValues(this, nodes);
 
 			if (Type == null)
-				throw new YamlMissingNodeException("SpawnActors", "Type");
+				throw new MissingNodeException("SpawnActors", "Type");
 		}
 	}
 

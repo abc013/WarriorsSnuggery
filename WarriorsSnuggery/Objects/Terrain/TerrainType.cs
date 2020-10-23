@@ -69,7 +69,7 @@ namespace WarriorsSnuggery.Objects
 			if (!documentation)
 			{
 				if ((Sprite == null || Sprite == string.Empty))
-					throw new YamlMissingNodeException(ID.ToString(), "Image");
+					throw new MissingNodeException(ID.ToString(), "Image");
 
 				sprite = SpriteManager.AddTexture(new TextureInfo(Sprite, TextureType.ANIMATION, 10, 24, 24));
 				if (Overlaps)

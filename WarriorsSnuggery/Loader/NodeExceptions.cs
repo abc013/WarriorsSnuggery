@@ -8,44 +8,38 @@ namespace WarriorsSnuggery
 	{
 		public InvalidPieceException() { }
 
-		public InvalidPieceException(string text)
-		  : base(text)
+		public InvalidPieceException(string text) : base(text)
 		{
 
 		}
 
-		public InvalidPieceException(string text, Exception innerException)
-			: base(text, innerException)
+		public InvalidPieceException(string text, Exception innerException) : base(text, innerException)
 		{
 
 		}
 
-		protected InvalidPieceException(SerializationInfo info, StreamingContext context)
-		  : base(info, context)
+		protected InvalidPieceException(SerializationInfo info, StreamingContext context) : base(info, context)
 		{
 
 		}
 	}
 
 	[Serializable]
-	public class MissingPieceException : Exception
+	public class TextNodeException : Exception
 	{
-		public MissingPieceException() { }
+		public TextNodeException() { }
 
-		public MissingPieceException(string piece)
-		  : base(string.Format(@"The piece '{0}' does not exist.", piece))
+		public TextNodeException(string piece) : base($"The piece '{piece}' does not exist.")
 		{
 
 		}
 
-		public MissingPieceException(string piece, Exception innerException)
-			: base(string.Format(@"The piece '{0}' does not exist.", piece), innerException)
+		public TextNodeException(string piece, Exception innerException) : base($"The piece '{piece}' does not exist.", innerException)
 		{
 
 		}
 
-		protected MissingPieceException(SerializationInfo info, StreamingContext context)
-		  : base(info, context)
+		protected TextNodeException(SerializationInfo info, StreamingContext context) : base(info, context)
 		{
 
 		}
@@ -56,176 +50,153 @@ namespace WarriorsSnuggery
 	{
 		public MissingInfoException() { }
 
-		public MissingInfoException(string type)
-		  : base(string.Format(@"The type '{0}' does not exist.", type))
+		public MissingInfoException(string type) : base($"The type '{type}' does not exist.")
 		{
 
 		}
 
-		public MissingInfoException(string type, Exception innerException)
-			: base(string.Format(@"The type '{0}' does not exist.", type), innerException)
+		public MissingInfoException(string type, Exception innerException) : base($"The type '{type}' does not exist.", innerException)
 		{
 
 		}
 
-		protected MissingInfoException(SerializationInfo info, StreamingContext context)
-		  : base(info, context)
-		{
-
-		}
-	}
-
-	[Serializable]
-	class YamlMissingNodeException : Exception
-	{
-		public YamlMissingNodeException() { }
-
-		public YamlMissingNodeException(string rule, string missing)
-		  : base(string.Format(@"The rule '{0}' is missing the required field '{1}'", rule, missing))
-		{
-
-		}
-
-		public YamlMissingNodeException(string rule, string missing, Exception innerException)
-			: base(string.Format(@"The rule '{0}' is missing the required field '{1}'", rule, missing), innerException)
-		{
-
-		}
-
-		protected YamlMissingNodeException(SerializationInfo info, StreamingContext context)
-		  : base(info, context)
+		protected MissingInfoException(SerializationInfo info, StreamingContext context) : base(info, context)
 		{
 
 		}
 	}
 
 	[Serializable]
-	class YamlInvalidNodeException : Exception
+	class MissingNodeException : Exception
 	{
-		public YamlInvalidNodeException() { }
+		public MissingNodeException() { }
 
-		public YamlInvalidNodeException(string text)
-		  : base(text)
+		public MissingNodeException(string rule, string missing) : base($"The rule '{rule}' is missing the required field '{missing}'")
 		{
 
 		}
 
-		public YamlInvalidNodeException(string text, Exception innerException)
-			: base(text, innerException)
+		public MissingNodeException(string rule, string missing, Exception innerException) : base($"The rule '{rule}' is missing the required field '{missing}'", innerException)
 		{
 
 		}
 
-		protected YamlInvalidNodeException(SerializationInfo info, StreamingContext context)
-		  : base(info, context)
+		protected MissingNodeException(SerializationInfo info, StreamingContext context) : base(info, context)
 		{
 
 		}
 	}
 
 	[Serializable]
-	class YamlInvalidFormatException : Exception
+	class InvalidNodeException : Exception
 	{
-		public YamlInvalidFormatException() { }
+		public InvalidNodeException() { }
 
-		public YamlInvalidFormatException(string rule, Type convertTo)
-		  : base(string.Format(@"unable to convert '{0}' to the type '{1}' .", rule, convertTo.Name))
+		public InvalidNodeException(string text) : base(text)
 		{
 
 		}
 
-		public YamlInvalidFormatException(string rule, Type convertTo, Exception innerException)
-			: base(string.Format(@"unable to convert '{0}' to the type '{1}' .", rule, convertTo.Name), innerException)
+		public InvalidNodeException(string text, Exception innerException) : base(text, innerException)
 		{
 
 		}
 
-		protected YamlInvalidFormatException(SerializationInfo info, StreamingContext context)
-		  : base(info, context)
+		protected InvalidNodeException(SerializationInfo info, StreamingContext context) : base(info, context)
 		{
 
 		}
 	}
 
 	[Serializable]
-	class YamlInvalidRuleExeption : Exception
+	class InvalidNodeFormatException : Exception
 	{
-		public YamlInvalidRuleExeption() { }
+		public InvalidNodeFormatException() { }
 
-		public YamlInvalidRuleExeption(string rule)
-		  : base(string.Format(@"unable to convert '{0}' to a valid rule.", rule))
+		public InvalidNodeFormatException(string rule, Type convertTo) : base($"unable to convert '{rule}' to the type '{convertTo.Name}'.")
 		{
 
 		}
 
-		public YamlInvalidRuleExeption(string rule, Exception innerException)
-		  : base(string.Format(@"unable to convert '{0}' to a valid rule.", rule), innerException)
+		public InvalidNodeFormatException(string rule, Type convertTo, Exception innerException) : base($"unable to convert '{rule}' to the type '{convertTo.Name}'.", innerException)
 		{
 
 		}
 
-		public YamlInvalidRuleExeption(string rule, int tabs)
-		  : base(string.Format(@"'{0}' has wrong spacing (difference: {1}).", rule, tabs))
-		{
-
-		}
-
-		public YamlInvalidRuleExeption(string rule, int tabs, Exception innerException)
-		  : base(string.Format(@"'{0}' has wrong spacing (difference: {1}).", rule, tabs), innerException)
-		{
-
-		}
-
-		protected YamlInvalidRuleExeption(SerializationInfo info, StreamingContext context)
-		  : base(info, context)
+		protected InvalidNodeFormatException(SerializationInfo info, StreamingContext context) : base(info, context)
 		{
 
 		}
 	}
 
 	[Serializable]
-	class YamlUnknownNodeException : Exception
+	class InvalidNodeRuleExeption : Exception
 	{
-		public YamlUnknownNodeException() { }
+		public InvalidNodeRuleExeption() { }
 
-		public YamlUnknownNodeException(string rule, string parent)
-			: base(string.Format(@"The properties '{0}' in '{1}' does not exist.", rule, parent))
+		public InvalidNodeRuleExeption(string rule) : base($"unable to convert '{rule}' to a valid rule.")
 		{
 
 		}
 
-		public YamlUnknownNodeException(string rule, string parent, Exception innerException)
-			: base(string.Format(@"The properties '{0}' in '{1}' does not exist.", rule, parent), innerException)
+		public InvalidNodeRuleExeption(string rule, Exception innerException) : base($"unable to convert '{rule}' to a valid rule.", innerException)
 		{
 
 		}
 
-		protected YamlUnknownNodeException(SerializationInfo info, StreamingContext context)
-		  : base(info, context)
+		public InvalidNodeRuleExeption(string rule, int tabs) : base($"'{rule}' has invalid intendation (difference: {tabs}).")
+		{
+
+		}
+
+		public InvalidNodeRuleExeption(string rule, int tabs, Exception innerException) : base($"'{rule}' has invalid intendation (difference: {tabs}).", innerException)
+		{
+
+		}
+
+		protected InvalidNodeRuleExeption(SerializationInfo info, StreamingContext context) : base(info, context)
 		{
 
 		}
 	}
 
 	[Serializable]
-	class YamlUnknownPartException : Exception
+	class UnknownNodeException : Exception
 	{
-		public YamlUnknownPartException() { }
+		public UnknownNodeException() { }
 
-		public YamlUnknownPartException(string name)
-			: base(string.Format(@"The part '{0}' does not exist.", name))
+		public UnknownNodeException(string rule, string parent) : base($"The properties '{rule}' in '{parent}' does not exist.")
 		{
 
 		}
 
-		public YamlUnknownPartException(string name, Exception innerException)
-			: base(string.Format(@"The part '{0}' does not exist.", name), innerException)
+		public UnknownNodeException(string rule, string parent, Exception innerException) : base($"The properties '{rule}' in '{parent}' does not exist.", innerException)
 		{
 
 		}
 
-		protected YamlUnknownPartException(SerializationInfo info, StreamingContext context)
-		  : base(info, context)
+		protected UnknownNodeException(SerializationInfo info, StreamingContext context) : base(info, context)
+		{
+
+		}
+	}
+
+	[Serializable]
+	class UnknownPartException : Exception
+	{
+		public UnknownPartException() { }
+
+		public UnknownPartException(string name) : base($"The part '{name}' does not exist.")
+		{
+
+		}
+
+		public UnknownPartException(string name, Exception innerException) : base($"The part '{name}' does not exist.", innerException)
+		{
+
+		}
+
+		protected UnknownPartException(SerializationInfo info, StreamingContext context) : base(info, context)
 		{
 
 		}

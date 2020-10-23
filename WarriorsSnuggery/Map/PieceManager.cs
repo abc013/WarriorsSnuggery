@@ -52,7 +52,7 @@ namespace WarriorsSnuggery.Maps
 			var existingPiece = Pieces.FirstOrDefault(p => p.InnerName == piece);
 
 			if (existingPiece == null)
-				throw new MissingPieceException(piece);
+				throw new TextNodeException(piece);
 
 			return existingPiece;
 		}
