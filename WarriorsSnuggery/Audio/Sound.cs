@@ -1,4 +1,5 @@
-﻿using WarriorsSnuggery.Audio;
+﻿using System.Collections.Generic;
+using WarriorsSnuggery.Audio;
 using WarriorsSnuggery.Graphics;
 
 namespace WarriorsSnuggery
@@ -23,7 +24,7 @@ namespace WarriorsSnuggery
 
 		public readonly AudioBuffer Buffer;
 
-		public SoundType(MiniTextNode[] nodes, bool isDocumentation = false)
+		public SoundType(List<MiniTextNode> nodes, bool isDocumentation = false)
 		{
 			Loader.PartLoader.SetValues(this, nodes);
 

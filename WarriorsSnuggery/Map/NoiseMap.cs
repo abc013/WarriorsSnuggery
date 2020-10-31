@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using WarriorsSnuggery.Graphics;
 
 namespace WarriorsSnuggery.Maps
@@ -21,7 +22,7 @@ namespace WarriorsSnuggery.Maps
 		[Desc("Contrast parameter.")]
 		public readonly float Contrast = 1f;
 
-		public NoiseMapInfo(int id, MiniTextNode[] nodes)
+		public NoiseMapInfo(int id, List<MiniTextNode> nodes)
 		{
 			ID = id;
 			Loader.PartLoader.SetValues(this, nodes);

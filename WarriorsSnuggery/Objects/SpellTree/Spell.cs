@@ -1,4 +1,5 @@
-﻿using WarriorsSnuggery.Objects.Particles;
+﻿using System.Collections.Generic;
+using WarriorsSnuggery.Objects.Particles;
 
 namespace WarriorsSnuggery.Spells
 {
@@ -40,7 +41,7 @@ namespace WarriorsSnuggery.Spells
 		[Desc("Play sound when triggered.")]
 		public readonly SoundType Sound;
 
-		public Spell(MiniTextNode[] nodes)
+		public Spell(List<MiniTextNode> nodes)
 		{
 			Loader.PartLoader.SetValues(this, nodes);
 		}

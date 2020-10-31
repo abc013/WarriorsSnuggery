@@ -19,7 +19,7 @@ namespace WarriorsSnuggery.Objects.Parts
 			return new RegenerationPart(self, this);
 		}
 
-		public RegenerationPartInfo(string internalName, MiniTextNode[] nodes) : base(internalName, nodes)
+		public RegenerationPartInfo(string internalName, List<MiniTextNode> nodes) : base(internalName, nodes)
 		{
 
 		}

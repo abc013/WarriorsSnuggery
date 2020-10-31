@@ -11,7 +11,7 @@ namespace WarriorsSnuggery.Objects.Particles
 			var nodes = RuleReader.FromFile(directory, file);
 
 			foreach (var node in nodes)
-				Types.Add(node.Key, new ParticleType(node.Children.ToArray()));
+				Types.Add(node.Key, new ParticleType(node.Children));
 		}
 
 		public static Particle Create(World world, string name, CPos position, int height)

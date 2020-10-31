@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace WarriorsSnuggery.Maps
 {
@@ -23,7 +24,7 @@ namespace WarriorsSnuggery.Maps
 		[Desc("Position type.")]
 		public readonly PositionType PositionType = PositionType.POSITION;
 
-		public ImportantPieceGeneratorInfo(int id, MiniTextNode[] nodes) : base(id)
+		public ImportantPieceGeneratorInfo(int id, List<MiniTextNode> nodes) : base(id)
 		{
 			ID = id;
 			Loader.PartLoader.SetValues(this, nodes);

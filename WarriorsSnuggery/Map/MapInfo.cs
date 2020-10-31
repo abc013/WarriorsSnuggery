@@ -69,35 +69,35 @@ namespace WarriorsSnuggery.Maps
 
 						break;
 					case nameof(TerrainGenerationBase):
-						TerrainGenerationBase = new TerrainGeneratorInfo(node.Convert<int>(), node.Children.ToArray());
+						TerrainGenerationBase = new TerrainGeneratorInfo(node.Convert<int>(), node.Children);
 
 						break;
 					case "PathGeneration":
-						GeneratorInfos.Add(new PathGeneratorInfo(node.Convert<int>(), node.Children.ToArray()));
+						GeneratorInfos.Add(new PathGeneratorInfo(node.Convert<int>(), node.Children));
 
 						break;
 					case "GridGeneration":
-						GeneratorInfos.Add(new GridGeneratorInfo(node.Convert<int>(), node.Children.ToArray()));
+						GeneratorInfos.Add(new GridGeneratorInfo(node.Convert<int>(), node.Children));
 
 						break;
 					case "PieceGeneration":
-						GeneratorInfos.Add(new PieceGeneratorInfo(node.Convert<int>(), node.Children.ToArray()));
+						GeneratorInfos.Add(new PieceGeneratorInfo(node.Convert<int>(), node.Children));
 
 						break;
 					case "ImportantPieceGeneration":
-						GeneratorInfos.Add(new ImportantPieceGeneratorInfo(node.Convert<int>(), node.Children.ToArray()));
+						GeneratorInfos.Add(new ImportantPieceGeneratorInfo(node.Convert<int>(), node.Children));
 
 						break;
 					case "TerrainGeneration":
-						GeneratorInfos.Add(new TerrainGeneratorInfo(node.Convert<int>(), node.Children.ToArray()));
+						GeneratorInfos.Add(new TerrainGeneratorInfo(node.Convert<int>(), node.Children));
 
 						break;
 					case "PatrolGeneration":
-						GeneratorInfos.Add(new PatrolGeneratorInfo(node.Convert<int>(), node.Children.ToArray()));
+						GeneratorInfos.Add(new PatrolGeneratorInfo(node.Convert<int>(), node.Children));
 
 						break;
 					case "NoiseMap":
-						NoiseMapInfos.Add(new NoiseMapInfo(node.Convert<int>(), node.Children.ToArray()));
+						NoiseMapInfos.Add(new NoiseMapInfo(node.Convert<int>(), node.Children));
 
 						break;
 					default:
@@ -143,12 +143,12 @@ namespace WarriorsSnuggery.Maps
 			var size = RuleReader.FromFile(FileExplorer.Saves, stats.SaveName + "_map.yaml").First(n => n.Key == "Size").Convert<MPos>();
 			var type = MapCreator.GetType(stats.CurrentMapType);
 			var mapGeneratorInfos = type == null ? new List<MapGeneratorInfo>() : type.GeneratorInfos;
-			return new MapInfo(piece, 0, size, Color.White, stats.CurrentType, new[] { stats.CurrentMode }, -1, 0, int.MaxValue, new TerrainGeneratorInfo(0, new MiniTextNode[0]), mapGeneratorInfos, MPos.Zero, true, true, stats.Script);
+			return new MapInfo(piece, 0, size, Color.White, stats.CurrentType, new[] { stats.CurrentMode }, -1, 0, int.MaxValue, new TerrainGeneratorInfo(0, new List<MiniTextNode>()), mapGeneratorInfos, MPos.Zero, true, true, stats.Script);
 		}
 
 		public static MapInfo EditorMapTypeFromPiece(string piece, MPos size)
 		{
-			return new MapInfo(piece, 0, size, Color.White, GameType.EDITOR, new[] { GameMode.NONE }, -1, 0, int.MaxValue, new TerrainGeneratorInfo(0, new MiniTextNode[0]), new List<MapGeneratorInfo>(), MPos.Zero, false, true, null);
+			return new MapInfo(piece, 0, size, Color.White, GameType.EDITOR, new[] { GameMode.NONE }, -1, 0, int.MaxValue, new TerrainGeneratorInfo(0, new List<MiniTextNode>()), new List<MapGeneratorInfo>(), MPos.Zero, false, true, null);
 		}
 
 		public static MapInfo ConvertGameType(MapInfo map, GameType type)

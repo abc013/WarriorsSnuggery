@@ -10,7 +10,7 @@ namespace WarriorsSnuggery.Objects.Parts
 
 		public abstract ActorPart Create(Actor self);
 
-		protected PartInfo(string internalName, MiniTextNode[] nodes)
+		protected PartInfo(string internalName, List<MiniTextNode> nodes)
 		{
 			InternalName = internalName;
 			Loader.PartLoader.SetValues(this, nodes);

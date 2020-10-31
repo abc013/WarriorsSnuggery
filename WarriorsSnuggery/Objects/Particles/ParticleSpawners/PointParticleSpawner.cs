@@ -1,4 +1,6 @@
-﻿namespace WarriorsSnuggery.Objects.Particles
+﻿using System.Collections.Generic;
+
+namespace WarriorsSnuggery.Objects.Particles
 {
 	[Desc("Spawns all particles at one point.")]
 	public class PointParticleSpawner : ParticleSpawner
@@ -12,9 +14,9 @@
 		[Desc("Offset of the spawning point.")]
 		public readonly CPos Offset = CPos.Zero;
 
-		public PointParticleSpawner(MiniTextNode[] nodes) : base()
+		public PointParticleSpawner(List<MiniTextNode> nodes) : base(nodes)
 		{
-			Loader.PartLoader.SetValues(this, nodes);
+			
 		}
 
 		public override Particle[] Create(World world, CPos position, int height)

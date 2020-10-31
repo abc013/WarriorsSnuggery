@@ -36,7 +36,7 @@ namespace WarriorsSnuggery.Maps
 		[Desc("If true, the road will not go as straight line but a curvy one.")]
 		public readonly bool Curvy = true;
 
-		public PathGeneratorInfo(int id, MiniTextNode[] nodes) : base(id)
+		public PathGeneratorInfo(int id, List<MiniTextNode> nodes) : base(id)
 		{
 			ID = id;
 			Loader.PartLoader.SetValues(this, nodes);

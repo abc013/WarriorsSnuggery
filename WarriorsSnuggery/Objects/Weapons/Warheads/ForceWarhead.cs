@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using WarriorsSnuggery.Physics;
 
 namespace WarriorsSnuggery.Objects.Weapons
@@ -19,7 +20,7 @@ namespace WarriorsSnuggery.Objects.Weapons
 
 		readonly int maxRange;
 
-		public ForceWarhead(MiniTextNode[] nodes)
+		public ForceWarhead(List<MiniTextNode> nodes)
 		{
 			Loader.PartLoader.SetValues(this, nodes);
 

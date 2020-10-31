@@ -1,4 +1,5 @@
-﻿using WarriorsSnuggery.Objects.Bot;
+﻿using System.Collections.Generic;
+using WarriorsSnuggery.Objects.Bot;
 
 namespace WarriorsSnuggery.Objects.Parts
 {
@@ -53,7 +54,7 @@ namespace WarriorsSnuggery.Objects.Parts
 			return new WorldPart(self, this);
 		}
 
-		public WorldPartInfo(string internalName, MiniTextNode[] nodes) : base(internalName, nodes)
+		public WorldPartInfo(string internalName, List<MiniTextNode> nodes) : base(internalName, nodes)
 		{
 
 		}

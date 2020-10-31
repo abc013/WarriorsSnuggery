@@ -1,4 +1,5 @@
-﻿using WarriorsSnuggery.Graphics;
+﻿using System.Collections.Generic;
+using WarriorsSnuggery.Graphics;
 
 namespace WarriorsSnuggery.Objects.Weapons
 {
@@ -13,7 +14,7 @@ namespace WarriorsSnuggery.Objects.Weapons
 		[Desc("Start dissolving the smudge immediately.")]
 		public readonly bool StartDissolve = false;
 
-		public SmudgeWarhead(MiniTextNode[] nodes)
+		public SmudgeWarhead(List<MiniTextNode> nodes)
 		{
 			Loader.PartLoader.SetValues(this, nodes);
 

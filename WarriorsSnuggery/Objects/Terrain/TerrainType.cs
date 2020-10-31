@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using WarriorsSnuggery.Graphics;
 
 namespace WarriorsSnuggery.Objects
@@ -58,7 +59,7 @@ namespace WarriorsSnuggery.Objects
 		[Desc("If true, weapons will leave behind smudge on impact.")]
 		public readonly bool SpawnSmudge = true;
 
-		public TerrainType(ushort id, MiniTextNode[] nodes, bool documentation = false)
+		public TerrainType(ushort id, List<MiniTextNode> nodes, bool documentation = false)
 		{
 			ID = id;
 

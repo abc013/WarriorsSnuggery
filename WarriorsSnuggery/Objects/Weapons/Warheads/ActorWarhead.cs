@@ -1,4 +1,6 @@
-﻿namespace WarriorsSnuggery.Objects.Weapons
+﻿using System.Collections.Generic;
+
+namespace WarriorsSnuggery.Objects.Weapons
 {
 	public class ActorWarhead : IWarhead
 	{
@@ -10,7 +12,7 @@
 		[Desc("Actor uses the team of its origin.")]
 		public readonly bool UseTeam = true;
 
-		public ActorWarhead(MiniTextNode[] nodes)
+		public ActorWarhead(List<MiniTextNode> nodes)
 		{
 			Loader.PartLoader.SetValues(this, nodes);
 		}

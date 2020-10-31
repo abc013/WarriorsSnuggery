@@ -18,7 +18,7 @@ namespace WarriorsSnuggery.Objects.Parts
 			return new RevealsShroudPart(self, this);
 		}
 
-		public RevealsShroudPartInfo(string internalName, MiniTextNode[] nodes) : base(internalName, nodes) { }
+		public RevealsShroudPartInfo(string internalName, List<MiniTextNode> nodes) : base(internalName, nodes) { }
 	}
 
 	public class RevealsShroudPart : ActorPart

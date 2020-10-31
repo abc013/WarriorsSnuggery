@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using WarriorsSnuggery.Loader;
 using WarriorsSnuggery.Objects.Parts;
 
 namespace WarriorsSnuggery.Objects
@@ -25,7 +26,7 @@ namespace WarriorsSnuggery.Objects
 					if (!currentPartCounts.ContainsKey(child.Key))
 						currentPartCounts[child.Key] = 0;
 
-					partinfos.Add(Loader.PartLoader.GetPart(currentPartCounts[child.Key]++, child.Key, child.Children.ToArray()));
+					partinfos.Add(PartLoader.GetPart(currentPartCounts[child.Key]++, child.Key, child.Children));
 				}
 
 				Types.Add(name, new ActorType(partinfos.ToArray()));

@@ -8,8 +8,7 @@ namespace WarriorsSnuggery.Loader
 {
 	public static class PartLoader
 	{
-
-		public static void SetValues(object obj, MiniTextNode[] nodes)
+		public static void SetValues(object obj, List<MiniTextNode> nodes)
 		{
 			var fields = GetFields(obj);
 
@@ -32,7 +31,7 @@ namespace WarriorsSnuggery.Loader
 			field.SetValue(obj, node.Convert(field.FieldType));
 		}
 
-		public static PartInfo GetPart(int currentPart, string name, MiniTextNode[] nodes)
+		public static PartInfo GetPart(int currentPart, string name, List<MiniTextNode> nodes)
 		{
 			var split = name.Split('@');
 			var internalName = currentPart.ToString();

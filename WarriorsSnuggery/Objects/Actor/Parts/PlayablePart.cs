@@ -1,4 +1,6 @@
-﻿namespace WarriorsSnuggery.Objects.Parts
+﻿using System.Collections.Generic;
+
+namespace WarriorsSnuggery.Objects.Parts
 {
 	[Desc("Attach this to an actor to make it playable by the player.")]
 	public class PlayablePartInfo : PartInfo
@@ -21,7 +23,7 @@
 			return new PlayablePart(self, this);
 		}
 
-		public PlayablePartInfo(string internalName, MiniTextNode[] nodes) : base(internalName, nodes)
+		public PlayablePartInfo(string internalName, List<MiniTextNode> nodes) : base(internalName, nodes)
 		{
 
 		}

@@ -122,7 +122,7 @@ namespace WarriorsSnuggery
 			writer.WriteLine("\t\t<hr>");
 		}
 
-		public static void WriteTable(StreamWriter writer, TableCell[] cells, bool showValues)
+		public static void WriteTable(StreamWriter writer, List<TableCell> cells, bool showValues)
 		{
 			writer.WriteLine("\t\t<table>");
 
@@ -169,38 +169,38 @@ namespace WarriorsSnuggery
 	{
 		public static void WriteActors(StreamWriter writer)
 		{
-			TypeWriter.WriteAll(writer, "WarriorsSnuggery.Objects.Parts", "PartInfo", new object[] { string.Empty, new MiniTextNode[0] });
+			TypeWriter.WriteAll(writer, "WarriorsSnuggery.Objects.Parts", "PartInfo", new object[] { string.Empty, new List<MiniTextNode>() });
 		}
 
 		public static void WriteParticles(StreamWriter writer)
 		{
 			HTMLWriter.WriteHead(writer, "ParticleSpawners");
-			TypeWriter.WriteAll(writer, "WarriorsSnuggery.Objects.Particles", "ParticleSpawner", new[] { new MiniTextNode[0] });
+			TypeWriter.WriteAll(writer, "WarriorsSnuggery.Objects.Particles", "ParticleSpawner", new[] { new List<MiniTextNode>() });
 
 			HTMLWriter.WriteHead(writer, "Particle");
-			TypeWriter.Write(writer, "WarriorsSnuggery.Objects.Particles.ParticleType", new[] { new MiniTextNode[0] });
+			TypeWriter.Write(writer, "WarriorsSnuggery.Objects.Particles.ParticleType", new[] { new List<MiniTextNode>() });
 		}
 
 		public static void WriteTerrain(StreamWriter writer)
 		{
-			TypeWriter.Write(writer, "WarriorsSnuggery.Objects.TerrainType", new object[] { (ushort)0, new MiniTextNode[0], true });
+			TypeWriter.Write(writer, "WarriorsSnuggery.Objects.TerrainType", new object[] { (ushort)0, new List<MiniTextNode>(), true });
 		}
 
 		public static void WriteWalls(StreamWriter writer)
 		{
-			TypeWriter.Write(writer, "WarriorsSnuggery.Objects.WallType", new object[] { (short)0, new MiniTextNode[0], true });
+			TypeWriter.Write(writer, "WarriorsSnuggery.Objects.WallType", new object[] { (short)0, new List<MiniTextNode>(), true });
 		}
 
 		public static void WriteWeapons(StreamWriter writer)
 		{
 			HTMLWriter.WriteHead(writer, "WeaponType");
-			TypeWriter.Write(writer, "WarriorsSnuggery.Objects.Weapons.WeaponType", new[] { new MiniTextNode[0] });
+			TypeWriter.Write(writer, "WarriorsSnuggery.Objects.Weapons.WeaponType", new[] { new List<MiniTextNode>() });
 
 			HTMLWriter.WriteHead(writer, "ProjectileTypes");
-			TypeWriter.WriteAll(writer, "WarriorsSnuggery.Objects.Weapons", "ProjectileType", new[] { new MiniTextNode[0] });
+			TypeWriter.WriteAll(writer, "WarriorsSnuggery.Objects.Weapons", "ProjectileType", new[] { new List<MiniTextNode>() });
 
 			HTMLWriter.WriteHead(writer, "Warheads");
-			TypeWriter.WriteAll(writer, "WarriorsSnuggery.Objects.Weapons", "Warhead", new[] { new MiniTextNode[0] });
+			TypeWriter.WriteAll(writer, "WarriorsSnuggery.Objects.Weapons", "Warhead", new[] { new List<MiniTextNode>() });
 		}
 
 		public static void WriteMaps(StreamWriter writer)
@@ -209,28 +209,28 @@ namespace WarriorsSnuggery
 			TypeWriter.Write(writer, "WarriorsSnuggery.Maps.MapInfo", new object[] { "empty", new List<MiniTextNode>() });
 
 			HTMLWriter.WriteHead(writer, "MapGenerators");
-			TypeWriter.WriteAll(writer, "WarriorsSnuggery.Maps", "GeneratorInfo", new object[] { -1, new MiniTextNode[0] });
+			TypeWriter.WriteAll(writer, "WarriorsSnuggery.Maps", "GeneratorInfo", new object[] { -1, new List<MiniTextNode>() });
 		}
 
 		public static void WriteSpells(StreamWriter writer)
 		{
 			HTMLWriter.WriteHead(writer, "SpellNode");
-			TypeWriter.Write(writer, "WarriorsSnuggery.Spells.SpellTreeNode", new object[] { new MiniTextNode[0], "", true });
+			TypeWriter.Write(writer, "WarriorsSnuggery.Spells.SpellTreeNode", new object[] { new List<MiniTextNode>(), "", true });
 
 			HTMLWriter.WriteHead(writer, "Spell");
-			TypeWriter.Write(writer, "WarriorsSnuggery.Spells.Spell", new[] { new MiniTextNode[0] });
+			TypeWriter.Write(writer, "WarriorsSnuggery.Spells.Spell", new[] { new List<MiniTextNode>() });
 		}
 
 		public static void WriteTrophies(StreamWriter writer)
 		{
 			HTMLWriter.WriteHead(writer, "Trophy");
-			TypeWriter.Write(writer, "WarriorsSnuggery.Trophies.Trophy", new object[] { new MiniTextNode[0] });
+			TypeWriter.Write(writer, "WarriorsSnuggery.Trophies.Trophy", new object[] { new List<MiniTextNode>() });
 		}
 
 		public static void WriteSounds(StreamWriter writer)
 		{
 			HTMLWriter.WriteHead(writer, "Sound");
-			TypeWriter.Write(writer, "WarriorsSnuggery.SoundType", new object[] { new MiniTextNode[0], true });
+			TypeWriter.Write(writer, "WarriorsSnuggery.SoundType", new object[] { new List<MiniTextNode>(), true });
 		}
 	}
 }

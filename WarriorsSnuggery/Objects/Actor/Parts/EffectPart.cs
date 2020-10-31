@@ -35,7 +35,7 @@ namespace WarriorsSnuggery.Objects.Parts
 				switch (child.Key)
 				{
 					case "Spell":
-						Spell = new Spell(child.Children.ToArray());
+						Spell = new Spell(child.Children);
 
 						break;
 					case "Tick":

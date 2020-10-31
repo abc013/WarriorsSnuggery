@@ -13,7 +13,7 @@ namespace WarriorsSnuggery.Spells
 			List<SpellTreeNode> spelltree = new List<SpellTreeNode>();
 
 			foreach (var node in nodes)
-				spelltree.Add(new SpellTreeNode(node.Children.ToArray(), node.Key));
+				spelltree.Add(new SpellTreeNode(node.Children, node.Key));
 
 			SpellTree.AddRange(spelltree);
 		}

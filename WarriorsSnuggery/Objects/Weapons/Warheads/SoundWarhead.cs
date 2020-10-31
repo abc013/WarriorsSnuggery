@@ -1,11 +1,13 @@
-﻿namespace WarriorsSnuggery.Objects.Weapons
+﻿using System.Collections.Generic;
+
+namespace WarriorsSnuggery.Objects.Weapons
 {
 	public class SoundWarhead : IWarhead
 	{
 		[Desc("Sound to play on impact.")]
 		public readonly SoundType Sound;
 
-		public SoundWarhead(MiniTextNode[] nodes)
+		public SoundWarhead(List<MiniTextNode> nodes)
 		{
 			Loader.PartLoader.SetValues(this, nodes);
 		}

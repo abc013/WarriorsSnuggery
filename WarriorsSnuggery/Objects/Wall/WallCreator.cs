@@ -14,7 +14,7 @@ namespace WarriorsSnuggery.Objects
 			{
 				var id = short.Parse(wall.Key);
 
-				Types.Add(id, new WallType(id, wall.Children.ToArray()));
+				Types.Add(id, new WallType(id, wall.Children));
 			}
 		}
 

@@ -28,7 +28,7 @@ namespace WarriorsSnuggery.Objects.Parts
 			return new MobilityPart(self, this);
 		}
 
-		public MobilityPartInfo(string internalName, MiniTextNode[] nodes) : base(internalName, nodes)
+		public MobilityPartInfo(string internalName, List<MiniTextNode> nodes) : base(internalName, nodes)
 		{
 			if (Acceleration == 0)
 				Acceleration = Speed;

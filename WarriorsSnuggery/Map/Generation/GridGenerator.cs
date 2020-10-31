@@ -14,7 +14,7 @@ namespace WarriorsSnuggery.Maps
 		[Desc("A selection of pieces. The game will choose a random one.")]
 		public readonly string[] Pieces;
 
-		public GridPiece(MiniTextNode[] nodes)
+		public GridPiece(List<MiniTextNode> nodes)
 		{
 			Loader.PartLoader.SetValues(this, nodes);
 		}
@@ -49,7 +49,7 @@ namespace WarriorsSnuggery.Maps
 		[Desc("List of various pieces to spawn with their size respectively.")]
 		public readonly GridPiece[] Pieces = new GridPiece[0];
 
-		public GridGeneratorInfo(int id, MiniTextNode[] nodes) : base(id)
+		public GridGeneratorInfo(int id, List<MiniTextNode> nodes) : base(id)
 		{
 			ID = id;
 
@@ -64,7 +64,7 @@ namespace WarriorsSnuggery.Maps
 						for (int i = 0; i < node.Children.Count; i++)
 						{
 							var node2 = node.Children[i];
-							Pieces[i] = new GridPiece(node2.Children.ToArray());
+							Pieces[i] = new GridPiece(node2.Children);
 						}
 
 						break;

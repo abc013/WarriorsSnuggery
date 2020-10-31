@@ -13,7 +13,7 @@ namespace WarriorsSnuggery.Objects
 			foreach (var terrain in terrains)
 			{
 				var id = ushort.Parse(terrain.Key);
-				Types.Add(id, new TerrainType(id, terrain.Children.ToArray()));
+				Types.Add(id, new TerrainType(id, terrain.Children));
 			}
 		}
 

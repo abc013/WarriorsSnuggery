@@ -1,4 +1,5 @@
-﻿using WarriorsSnuggery.Graphics;
+﻿using System.Collections.Generic;
+using WarriorsSnuggery.Graphics;
 
 namespace WarriorsSnuggery.Trophies
 {
@@ -17,7 +18,7 @@ namespace WarriorsSnuggery.Trophies
 		[Desc("Gives a condition with the following name when collected.")]
 		public readonly string ConditionName;
 
-		public Trophy(MiniTextNode[] nodes)
+		public Trophy(List<MiniTextNode> nodes)
 		{
 			Loader.PartLoader.SetValues(this, nodes);
 

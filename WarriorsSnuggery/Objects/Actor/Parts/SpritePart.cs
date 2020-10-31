@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using WarriorsSnuggery.Graphics;
 using WarriorsSnuggery.Objects.Conditions;
 
@@ -44,7 +45,7 @@ namespace WarriorsSnuggery.Objects.Parts
 			return new SpritePart(self, this);
 		}
 
-		public SpritePartInfo(string internalName, MiniTextNode[] nodes) : base(internalName, nodes)
+		public SpritePartInfo(string internalName, List<MiniTextNode> nodes) : base(internalName, nodes)
 		{
 			if (Name != null)
 				Textures = SpriteManager.AddTexture(new TextureInfo(Name, TextureType.ANIMATION, 0, Dimensions.X, Dimensions.Y));

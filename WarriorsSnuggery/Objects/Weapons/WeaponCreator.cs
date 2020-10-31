@@ -11,7 +11,7 @@ namespace WarriorsSnuggery.Objects.Weapons
 			var weapons = RuleReader.FromFile(directory, file);
 
 			foreach (var weapon in weapons)
-				Types.Add(weapon.Key, new WeaponType(weapon.Children.ToArray()));
+				Types.Add(weapon.Key, new WeaponType(weapon.Children));
 		}
 
 		public static Weapon Create(World world, string name, CPos target, Actor origin, uint id = uint.MaxValue)

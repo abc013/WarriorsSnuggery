@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -19,18 +20,17 @@ namespace WarriorsSnuggery
 			var type = assembly.GetType(typeName);
 
 			var obj = Activator.CreateInstance(type, args);
-			var variables = type.GetFields().Where(f => f.IsInitOnly && f.GetCustomAttribute(typeof(DescAttribute)) != null).ToArray();
-			var cells = new TableCell[variables.Length];
-			for (int i = 0; i < variables.Length; i++)
-			{
-				var variable = variables[i];
+			var variables = type.GetFields().Where(f => f.IsInitOnly && f.GetCustomAttribute(typeof(DescAttribute)) != null);
+			var cells = new List<TableCell>();
 
+			foreach (var variable in variables)
+			{
 				var varname = variable.Name;
 				var vartype = getNameOfType(variable.FieldType.Name);
 				var vardesc = getDescription(variable);
 				var value = variable.GetValue(obj);
 
-				cells[i] = new TableCell(varname, vartype, vardesc, value == null ? "Not given" : value.ToString());
+				cells.Add(new TableCell(varname, vartype, vardesc, value == null ? "Not given" : value.ToString()));
 			}
 			HTMLWriter.WriteTable(writer, cells, true);
 		}

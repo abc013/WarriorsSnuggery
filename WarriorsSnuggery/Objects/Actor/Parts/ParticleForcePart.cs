@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using WarriorsSnuggery.Objects.Particles;
 
 namespace WarriorsSnuggery.Objects.Parts
@@ -28,7 +29,7 @@ namespace WarriorsSnuggery.Objects.Parts
 		[Desc("Determines whether the force should only applied if the actor is a player.")]
 		public readonly bool AffectOnlyWhenPlayer = false;
 
-		public ParticleForcePartInfo(string internalName, MiniTextNode[] nodes) : base(internalName, nodes)
+		public ParticleForcePartInfo(string internalName, List<MiniTextNode> nodes) : base(internalName, nodes)
 		{
 			MaxRangeSquared = MaxRange * MaxRange;
 			MinRangeSquared = MinRange * MinRange;

@@ -1,4 +1,5 @@
-﻿using WarriorsSnuggery.Graphics;
+﻿using System.Collections.Generic;
+using WarriorsSnuggery.Graphics;
 
 namespace WarriorsSnuggery.Objects.Particles
 {
@@ -35,7 +36,7 @@ namespace WarriorsSnuggery.Objects.Particles
 		[Desc("Regulates whether force can be applied on the particle from other objects.")]
 		public readonly bool AffectedByObjects = false;
 
-		public ParticleType(MiniTextNode[] nodes)
+		public ParticleType(List<MiniTextNode> nodes)
 		{
 			Loader.PartLoader.SetValues(this, nodes);
 

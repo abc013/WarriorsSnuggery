@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using WarriorsSnuggery.Graphics;
 
 namespace WarriorsSnuggery.Objects
@@ -41,7 +42,7 @@ namespace WarriorsSnuggery.Objects
 		[Desc("Wall is only on floor and basically has no height.")]
 		public readonly bool IsOnFloor;
 
-		public WallType(short id, MiniTextNode[] nodes, bool documentation = false)
+		public WallType(short id, List<MiniTextNode> nodes, bool documentation = false)
 		{
 			ID = id;
 			Loader.PartLoader.SetValues(this, nodes);

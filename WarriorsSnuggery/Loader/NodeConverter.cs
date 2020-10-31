@@ -255,7 +255,7 @@ namespace WarriorsSnuggery.Loader
 			}
 			else if (t == typeof(SoundType))
 			{
-				return new SoundType(node.Children.ToArray());
+				return new SoundType(node.Children);
 			}
 			else if (t == typeof(Objects.Conditions.Condition))
 			{
@@ -263,7 +263,7 @@ namespace WarriorsSnuggery.Loader
 			}
 			else if (t == typeof(Objects.Particles.ParticleSpawner))
 			{
-				var children = node.Children.ToArray();
+				var children = node.Children;
 				switch (s)
 				{
 					case "Point":
@@ -330,11 +330,11 @@ namespace WarriorsSnuggery.Loader
 			}
 			else if (t == typeof(Spells.Spell))
 			{
-				return new Spells.Spell(node.Children.ToArray());
+				return new Spells.Spell(node.Children);
 			}
 			else if (t == typeof(Objects.Weapons.IProjectileType))
 			{
-				var children = node.Children.ToArray();
+				var children = node.Children;
 				switch (s)
 				{
 					case "Bullet":
@@ -353,7 +353,7 @@ namespace WarriorsSnuggery.Loader
 				var i = 0;
 				foreach (var child in node.Children)
 				{
-					var children = child.Children.ToArray();
+					var children = child.Children;
 					switch (child.Key)
 					{
 						case "Sound":
@@ -386,7 +386,7 @@ namespace WarriorsSnuggery.Loader
 				var convert = new Maps.ActorProbabilityInfo[node.Children.Count];
 
 				for (int i = 0; i < node.Children.Count; i++)
-					convert[i] = new Maps.ActorProbabilityInfo(node.Children[i].Children.ToArray());
+					convert[i] = new Maps.ActorProbabilityInfo(node.Children[i].Children);
 
 				return convert;
 			}
@@ -395,7 +395,7 @@ namespace WarriorsSnuggery.Loader
 				var convert = new Maps.PatrolProbabilityInfo[node.Children.Count];
 
 				for (int i = 0; i < node.Children.Count; i++)
-					convert[i] = new Maps.PatrolProbabilityInfo(node.Children[i].Children.ToArray());
+					convert[i] = new Maps.PatrolProbabilityInfo(node.Children[i].Children);
 
 				return convert;
 			}

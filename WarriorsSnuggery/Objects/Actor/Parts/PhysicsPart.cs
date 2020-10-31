@@ -1,4 +1,5 @@
-﻿using WarriorsSnuggery.Physics;
+﻿using System.Collections.Generic;
+using WarriorsSnuggery.Physics;
 
 namespace WarriorsSnuggery.Objects.Parts
 {
@@ -15,7 +16,7 @@ namespace WarriorsSnuggery.Objects.Parts
 			return new PhysicsPart(self, this);
 		}
 
-		public PhysicsPartInfo(string internalName, MiniTextNode[] nodes) : base(internalName, nodes)
+		public PhysicsPartInfo(string internalName, List<MiniTextNode> nodes) : base(internalName, nodes)
 		{
 
 		}

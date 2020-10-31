@@ -1,4 +1,5 @@
-﻿using WarriorsSnuggery.Graphics;
+﻿using System.Collections.Generic;
+using WarriorsSnuggery.Graphics;
 using WarriorsSnuggery.Objects.Particles;
 
 namespace WarriorsSnuggery.Objects.Weapons
@@ -15,7 +16,7 @@ namespace WarriorsSnuggery.Objects.Weapons
 		[Desc("Determines whether only the target should be damaged when hit.")]
 		public readonly bool Splash = true;
 
-		public InstantHitProjectileType(MiniTextNode[] nodes)
+		public InstantHitProjectileType(List<MiniTextNode> nodes)
 		{
 			Loader.PartLoader.SetValues(this, nodes);
 		}
@@ -52,7 +53,7 @@ namespace WarriorsSnuggery.Objects.Weapons
 		[Desc("Decides whether the projectile flies till the end of maximum range or only till the target position.")]
 		public readonly bool FlyToTarget;
 
-		public BulletProjectileType(MiniTextNode[] nodes)
+		public BulletProjectileType(List<MiniTextNode> nodes)
 		{
 			Loader.PartLoader.SetValues(this, nodes);
 
@@ -97,7 +98,7 @@ namespace WarriorsSnuggery.Objects.Weapons
 		[Desc("Turbulence to build in.")]
 		public readonly int Turbulence = 0;
 
-		public MagicProjectileType(MiniTextNode[] nodes)
+		public MagicProjectileType(List<MiniTextNode> nodes)
 		{
 			Loader.PartLoader.SetValues(this, nodes);
 			FloatTurnSpeed = TurnSpeed / (float)(180 * System.Math.PI);
@@ -145,7 +146,7 @@ namespace WarriorsSnuggery.Objects.Weapons
 		[Desc("Determines the speed of the beam target when being moved.")]
 		public readonly int MovementSpeed = 5;
 
-		public BeamProjectileType(MiniTextNode[] nodes)
+		public BeamProjectileType(List<MiniTextNode> nodes)
 		{
 			Loader.PartLoader.SetValues(this, nodes);
 

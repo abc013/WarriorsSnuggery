@@ -17,7 +17,7 @@ namespace WarriorsSnuggery.Objects.Parts
 			return new HealthPart(self, this);
 		}
 
-		public HealthPartInfo(string internalName, MiniTextNode[] nodes) : base(internalName, nodes)
+		public HealthPartInfo(string internalName, List<MiniTextNode> nodes) : base(internalName, nodes)
 		{
 			if (StartHealth <= 0 || StartHealth > MaxHealth)
 				StartHealth = MaxHealth;

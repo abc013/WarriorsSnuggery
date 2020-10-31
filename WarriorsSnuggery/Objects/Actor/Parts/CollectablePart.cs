@@ -59,7 +59,7 @@ namespace WarriorsSnuggery.Objects.Parts
 		[Desc("Text lines for the effect.", "Commas are used to separate the lines.", "When using TROPHY, the name of the trophy must be given here.")]
 		public readonly string[] Text;
 
-		public CollectablePartInfo(string internalName, MiniTextNode[] nodes) : base(internalName, nodes) { }
+		public CollectablePartInfo(string internalName, List<MiniTextNode> nodes) : base(internalName, nodes) { }
 
 		public override ActorPart Create(Actor self)
 		{

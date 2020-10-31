@@ -94,7 +94,7 @@ namespace WarriorsSnuggery.Objects
 				ID = id;
 				Position = position;
 
-				Loader.PartLoader.SetValues(this, nodes.ToArray());
+				Loader.PartLoader.SetValues(this, nodes);
 			}
 		}
 	}

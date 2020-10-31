@@ -24,7 +24,7 @@ namespace WarriorsSnuggery.Maps
 		[Desc("Use Patrols in the WAVES GameMode.", "Please note by setting to true, the Generator will not be used in other GameModes.")]
 		public readonly bool UseForWaves;
 
-		public PatrolGeneratorInfo(int id, MiniTextNode[] nodes) : base(id)
+		public PatrolGeneratorInfo(int id, List<MiniTextNode> nodes) : base(id)
 		{
 			Loader.PartLoader.SetValues(this, nodes);
 
@@ -53,7 +53,7 @@ namespace WarriorsSnuggery.Maps
 		[Desc("Probability that this patrol will be spawned.", "This value will be set in relation with all other patrol probabilities.")]
 		public readonly float Probability = 1f;
 
-		public PatrolProbabilityInfo(MiniTextNode[] nodes)
+		public PatrolProbabilityInfo(List<MiniTextNode> nodes)
 		{
 			Loader.PartLoader.SetValues(this, nodes);
 		}

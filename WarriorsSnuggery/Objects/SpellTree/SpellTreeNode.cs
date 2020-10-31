@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using WarriorsSnuggery.Graphics;
 
 namespace WarriorsSnuggery.Spells
@@ -32,7 +33,7 @@ namespace WarriorsSnuggery.Spells
 			get { return new CPos(-6584, -2048, 0) + new CPos(Position.X * 1024, Position.Y * 1024, 0); }
 		}
 
-		public SpellTreeNode(MiniTextNode[] nodes, string name, bool documentation = false)
+		public SpellTreeNode(List<MiniTextNode> nodes, string name, bool documentation = false)
 		{
 			Loader.PartLoader.SetValues(this, nodes);
 

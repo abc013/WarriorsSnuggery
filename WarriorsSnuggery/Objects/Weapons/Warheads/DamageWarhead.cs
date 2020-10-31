@@ -26,7 +26,7 @@ namespace WarriorsSnuggery.Objects.Weapons
 
 		readonly int maxRange;
 
-		public DamageWarhead(MiniTextNode[] nodes)
+		public DamageWarhead(List<MiniTextNode> nodes)
 		{
 			var fields = PartLoader.GetFields(this);
 

@@ -10,7 +10,7 @@ namespace WarriorsSnuggery.Objects.Parts
 		[Desc("Time it takes to switch actor in ticks.")]
 		public readonly int SwitchDuration = 120;
 
-		public PlayerSwitchPartInfo(string internalName, MiniTextNode[] nodes) : base(internalName, nodes) { }
+		public PlayerSwitchPartInfo(string internalName, List<MiniTextNode> nodes) : base(internalName, nodes) { }
 
 		public override ActorPart Create(Actor self)
 		{

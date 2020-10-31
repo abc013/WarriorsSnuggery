@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace WarriorsSnuggery.Objects.Particles
 {
@@ -24,9 +25,9 @@ namespace WarriorsSnuggery.Objects.Particles
 		[Desc("Type of spawning area.")]
 		public readonly ParticleAreaSpawnType AreaType = ParticleAreaSpawnType.RANDOM;
 
-		public AreaParticleSpawner(MiniTextNode[] nodes) : base()
+		public AreaParticleSpawner(List<MiniTextNode> nodes) : base(nodes)
 		{
-			Loader.PartLoader.SetValues(this, nodes);
+
 		}
 
 		public override Particle[] Create(World world, CPos position, int height)

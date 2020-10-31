@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using WarriorsSnuggery.Objects;
 
 namespace WarriorsSnuggery.Maps
@@ -29,7 +30,7 @@ namespace WarriorsSnuggery.Maps
 		[Desc("Terrain to use for borders.")]
 		public readonly ushort[] BorderTerrain = new ushort[0];
 
-		public TerrainGeneratorInfo(int id, MiniTextNode[] nodes) : base(id)
+		public TerrainGeneratorInfo(int id, List<MiniTextNode> nodes) : base(id)
 		{
 			ID = id;
 			Loader.PartLoader.SetValues(this, nodes);
@@ -60,7 +61,7 @@ namespace WarriorsSnuggery.Maps
 		[Desc("Determines whether the actor spawned is a bot.")]
 		public readonly bool IsBot = false;
 
-		public ActorProbabilityInfo(MiniTextNode[] nodes)
+		public ActorProbabilityInfo(List<MiniTextNode> nodes)
 		{
 			Loader.PartLoader.SetValues(this, nodes);
 

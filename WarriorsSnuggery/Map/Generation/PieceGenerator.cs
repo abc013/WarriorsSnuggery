@@ -23,7 +23,7 @@ namespace WarriorsSnuggery.Maps
 		[Desc("Maximum count of pieces on the map per 32x32 field.")]
 		public readonly int MaximumCount = 4;
 
-		public PieceGeneratorInfo(int id, MiniTextNode[] nodes) : base(id)
+		public PieceGeneratorInfo(int id, List<MiniTextNode> nodes) : base(id)
 		{
 			ID = id;
 			Loader.PartLoader.SetValues(this, nodes);

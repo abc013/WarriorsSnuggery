@@ -1,4 +1,6 @@
-﻿namespace WarriorsSnuggery.Objects.Weapons
+﻿using System.Collections.Generic;
+
+namespace WarriorsSnuggery.Objects.Weapons
 {
 	public class WeaponType
 	{
@@ -23,7 +25,7 @@
 		[Desc("Contains all different kinds of warheads that will impact when the weapon hits the target.")]
 		public readonly IWarhead[] Warheads;
 
-		public WeaponType(MiniTextNode[] nodes)
+		public WeaponType(List<MiniTextNode> nodes)
 		{
 			Loader.PartLoader.SetValues(this, nodes);
 		}
