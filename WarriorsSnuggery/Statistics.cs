@@ -88,14 +88,14 @@ namespace WarriorsSnuggery
 			{
 				switch (node.Key)
 				{
-					case "Shroud":
+					case nameof(Shroud):
 						Shroud = new List<bool[]>();
 
 						foreach (var node2 in node.Children)
 							Shroud.Add(node2.Convert<bool[]>());
 
 						break;
-					case "SpellCasters":
+					case nameof(SpellCasters):
 
 						foreach (var node2 in node.Children)
 						{
@@ -122,22 +122,22 @@ namespace WarriorsSnuggery
 						}
 
 						break;
-					case "UnlockedSpells":
+					case nameof(UnlockedSpells):
 						foreach (var node2 in node.Children)
 							UnlockedSpells.Add(node2.Key);
 
 						break;
-					case "UnlockedActors":
+					case nameof(UnlockedActors):
 						foreach (var node2 in node.Children)
 							UnlockedActors.Add(node2.Key);
 
 						break;
-					case "UnlockedTrophies":
+					case nameof(UnlockedTrophies):
 						foreach (var node2 in node.Children)
 							UnlockedTrophies.Add(node2.Key);
 
 						break;
-					case "Script":
+					case nameof(Script):
 						Script = node.Convert<string>();
 						ScriptValues = node.Children.ToArray();
 

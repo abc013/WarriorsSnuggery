@@ -60,7 +60,7 @@ namespace WarriorsSnuggery.Maps
 			{
 				switch (node.Key)
 				{
-					case "DefaultModes":
+					case nameof(DefaultModes):
 						var modeArray = node.Convert<string[]>();
 
 						DefaultModes = new GameMode[modeArray.Length];
@@ -68,7 +68,7 @@ namespace WarriorsSnuggery.Maps
 							DefaultModes[i] = (GameMode)Enum.Parse(typeof(GameMode), modeArray[i]);
 
 						break;
-					case "TerrainGenerationBase":
+					case nameof(TerrainGenerationBase):
 						TerrainGenerationBase = new TerrainGeneratorInfo(node.Convert<int>(), node.Children.ToArray());
 
 						break;

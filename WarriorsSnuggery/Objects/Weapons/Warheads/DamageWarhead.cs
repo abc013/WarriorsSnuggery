@@ -34,7 +34,7 @@ namespace WarriorsSnuggery.Objects.Weapons
 			{
 				switch(node.Key)
 				{
-					case "ArmorModifiers":
+					case nameof(ArmorModifiers):
 						foreach (var node2 in node.Children)
 							ArmorModifiers.Add(node2.Key, node2.Convert<float>());
 
