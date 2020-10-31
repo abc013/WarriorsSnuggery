@@ -1,9 +1,25 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using WarriorsSnuggery.Loader;
 
 namespace WarriorsSnuggery.Maps
 {
+	[Desc("Generator used for generating grid-based towns or structures.")]
+	public sealed class GridPiece
+	{
+		[Desc("Size of the piece in cells.")]
+		public readonly MPos Size = MPos.Zero;
+
+		[Desc("A selection of pieces. The game will choose a random one.")]
+		public readonly string[] Pieces;
+
+		public GridPiece(MiniTextNode[] nodes)
+		{
+			Loader.PartLoader.SetValues(this, nodes);
+		}
+	}
+
 	[Desc("Generator used for generating grid-based towns or structures.")]
 	public sealed class GridGeneratorInfo : MapGeneratorInfo
 	{
@@ -30,19 +46,33 @@ namespace WarriorsSnuggery.Maps
 		[Desc("Sets the Generator used for generating roads.", "Does not generate any roads when the ID is incorrect.")]
 		public readonly int PathGeneratorID = 0;
 
-		[Desc("1x1 Dimension tiles.")]
-		public readonly string[] Tile1x1;
-		[Desc("2x1 Dimension tiles.")]
-		public readonly string[] Tile2x1;
-		[Desc("1x2 Dimension tiles.")]
-		public readonly string[] Tile1x2;
-		[Desc("2x2 Dimension tiles.")]
-		public readonly string[] Tile2x2;
+		[Desc("List of various pieces to spawn with their size respectively.")]
+		public readonly GridPiece[] Pieces = new GridPiece[0];
 
 		public GridGeneratorInfo(int id, MiniTextNode[] nodes) : base(id)
 		{
 			ID = id;
-			Loader.PartLoader.SetValues(this, nodes);
+
+			var fields = PartLoader.GetFields(this);
+
+			foreach (var node in nodes)
+			{
+				switch (node.Key)
+				{
+					case nameof(Pieces):
+						Pieces = new GridPiece[node.Children.Count];
+						for (int i = 0; i < node.Children.Count; i++)
+						{
+							var node2 = node.Children[i];
+							Pieces[i] = new GridPiece(node2.Children.ToArray());
+						}
+
+						break;
+					default:
+						PartLoader.SetValue(this, fields, node);
+						break;
+				}
+			}
 		}
 
 		public override MapGenerator GetGenerator(Random random, MapLoader loader)
@@ -145,21 +175,14 @@ namespace WarriorsSnuggery.Maps
 			// Pieces
 			foreach (var piece in pieceCells)
 			{
-				Piece toUse;
-				var x = piece.Size.X / info.CellSize;
-				var y = piece.Size.Y / info.CellSize;
+				var size = piece.Size / new MPos(info.CellSize, info.CellSize);
 
-				// TODO also allow tiles bigger than 2x2
-				if (x == 1 && y == 1)
-					toUse = getPiece(info.Tile1x1);
-				else if (x == 1 && y == 2)
-					toUse = getPiece(info.Tile1x2);
-				else if (x == 2 && y == 1)
-					toUse = getPiece(info.Tile2x1);
-				else
-					toUse = getPiece(info.Tile2x2);
+				var fitting = info.Pieces.FirstOrDefault(p => p.Size == size);
 
-				loader.GeneratePiece(toUse, piece.Position, info.ID);
+				if (fitting == null)
+					continue;
+
+				loader.GeneratePiece(getPiece(fitting.Pieces), piece.Position, info.ID);
 			}
 
 			MapPrinter.PrintGeneratorMap(Bounds, new float[Bounds.X * Bounds.Y], dirtyCells, info.ID);
