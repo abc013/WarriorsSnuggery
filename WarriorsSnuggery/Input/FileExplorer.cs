@@ -117,7 +117,7 @@ namespace WarriorsSnuggery
 			return File.Create(path + name + suffix);
 		}
 
-		public static void WriteScreenshot(float[] array, int width, int height)
+		public static void WriteScreenshot(byte[] array, int width, int height)
 		{
 			var file = Logs + "screenshot_" + DateTime.Now.ToString("HHmmss_ddMMyyyy") + ".png";
 			Loader.BitmapSaver.Save(file, array, new MPos(width, height), true);
