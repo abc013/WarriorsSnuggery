@@ -299,17 +299,23 @@ namespace WarriorsSnuggery
 
 		public void KeyDown(Keys key, bool isControl, bool isShift, bool isAlt)
 		{
+			if (ScreenControl.FocusedType != ScreenType.PAUSED && ScreenControl.FocusedType != ScreenType.DEFEAT)
+			{
+				if (key == Settings.GetKey("Pause") && !isControl)
+				{
+					ChangeScreen(ScreenType.PAUSED, true);
+					return;
+				}
+			}
+
 			ScreenControl.KeyDown(key, isControl, isShift, isAlt);
 
 			if (Paused || Finished)
 				return;
 
 			// screen control
-			if (ScreenControl.FocusedType != ScreenType.DEFEAT)
+			 if (ScreenControl.FocusedType != ScreenType.DEFEAT)
 			{
-				if (key == Settings.GetKey("Pause") && !isControl)
-					ChangeScreen(ScreenType.PAUSED, true);
-
 				if (key == Keys.Escape)
 					ChangeScreen(ScreenType.MENU, true);
 			}
