@@ -1,4 +1,4 @@
-﻿using OpenToolkit.Windowing.Common.Input;
+﻿using OpenTK.Windowing.GraphicsLibraryFramework;
 using WarriorsSnuggery.Graphics;
 using WarriorsSnuggery.Objects;
 
@@ -79,14 +79,11 @@ namespace WarriorsSnuggery.UI
 				return;
 			}
 			base.Tick();
-
-			if (KeyInput.IsKeyDown(Key.Escape, 10))
-				game.ChangeScreen(ScreenType.MENU);
 		}
 
-		public override void KeyDown(Key key, bool isControl, bool isShift, bool isAlt)
+		public override void KeyDown(Keys key, bool isControl, bool isShift, bool isAlt)
 		{
-			if (key == Key.Escape)
+			if (key == Keys.Escape)
 				game.ChangeScreen(ScreenType.MENU);
 		}
 	}
@@ -126,14 +123,11 @@ namespace WarriorsSnuggery.UI
 			create.Tick();
 			@new.Tick();
 			warning.Tick();
-
-			if (KeyInput.IsKeyDown(Key.Escape, 10))
-				game.ChangeScreen(ScreenType.MENU);
 		}
 
-		public override void KeyDown(Key key, bool isControl, bool isShift, bool isAlt)
+		public override void KeyDown(Keys key, bool isControl, bool isShift, bool isAlt)
 		{
-			if (key == Key.Escape)
+			if (key == Keys.Escape)
 				game.ChangeScreen(ScreenType.MENU);
 		}
 

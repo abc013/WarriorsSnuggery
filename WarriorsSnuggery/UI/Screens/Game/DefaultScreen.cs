@@ -1,4 +1,4 @@
-using OpenToolkit.Windowing.Common.Input;
+using OpenTK.Windowing.GraphicsLibraryFramework;
 using System;
 using System.Collections.Generic;
 using WarriorsSnuggery.Graphics;
@@ -207,18 +207,18 @@ namespace WarriorsSnuggery.UI
 			var player = game.World.LocalPlayer;
 			if (player != null)
 			{
-				if (KeyInput.IsKeyDown(Key.ShiftLeft))
+				if (KeyInput.IsKeyDown(Keys.LeftShift))
 				{
 					actorList.CurrentActor += MouseInput.WheelState;
 
-					if (!KeyInput.IsKeyDown(Key.ControlLeft) && MouseInput.IsRightClicked)
+					if (!KeyInput.IsKeyDown(Keys.LeftControl) && MouseInput.IsRightClicked)
 						changePlayer(actorTypes[actorList.CurrentActor]);
 				}
 				else
 				{
 					spellList.CurrentSpell += MouseInput.WheelState;
 
-					if (!KeyInput.IsKeyDown(Key.ControlLeft) && MouseInput.IsRightClicked)
+					if (!KeyInput.IsKeyDown(Keys.LeftControl) && MouseInput.IsRightClicked)
 						game.SpellManager.Activate(spellList.CurrentSpell);
 				}
 

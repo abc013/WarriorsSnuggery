@@ -1,11 +1,12 @@
-using OpenToolkit.Mathematics;
-using OpenToolkit.Windowing.Common;
-using OpenToolkit.Windowing.Common.Input;
-using OpenToolkit.Windowing.Desktop;
-using OpenToolkit.Windowing.GraphicsLibraryFramework;
+using OpenTK.Mathematics;
+using OpenTK.Windowing.Common;
+using OpenTK.Windowing.GraphicsLibraryFramework;
+using OpenTK.Windowing.Desktop;
 using System;
 using WarriorsSnuggery.Audio;
 using WarriorsSnuggery.Graphics;
+using OpenTK.Windowing.Common.Input;
+using WarriorsSnuggery.Loader;
 
 namespace WarriorsSnuggery
 {
@@ -33,7 +34,7 @@ namespace WarriorsSnuggery
 		static Window current;
 
 		public static string StringInput;
-		public static Key KeyInput;
+		public static Keys KeyInput;
 
 		public static uint GlobalTick;
 		public static uint GlobalRender;
@@ -49,7 +50,7 @@ namespace WarriorsSnuggery
 			// Initialize values
 			unsafe
 			{
-				var mode = GLFW.GetVideoMode(CurrentMonitor.ToUnsafePtr<OpenToolkit.Windowing.GraphicsLibraryFramework.Monitor>());
+				var mode = GLFW.GetVideoMode(CurrentMonitor.ToUnsafePtr<OpenTK.Windowing.GraphicsLibraryFramework.Monitor>());
 				WindowInfo.ScreenWidth = mode->Width;
 				WindowInfo.ScreenHeight = mode->Height;
 				WindowInfo.ScreenRefreshRate = mode->RefreshRate;
@@ -116,7 +117,8 @@ namespace WarriorsSnuggery
 			SpriteManager.InitSheets();
 
 			var watch = Timer.Start();
-			//Icon = new WindowIcon(new OpenToolkit.Windowing.Common.Input.Image(FileExplorer.Misc + "/warsnu.ico"));
+			//loadIcon();
+
 			FontManager.Load();
 
 			watch.StopAndWrite("Loading Fonts");
@@ -140,6 +142,16 @@ namespace WarriorsSnuggery
 			Console.WriteLine(" Done!");
 		}
 
+		//void loadIcon()
+		//{
+		//	var floatData = BitmapLoader.LoadTexture(FileExplorer.Misc + "/warsnu.png", out var width, out var height);
+		//	var byteData = new byte[floatData.Length];
+		//	for (int i = 0; i < floatData.Length; i++)
+		//		byteData[i] = (byte)(floatData[i] / 255);
+
+		//	Icon = new WindowIcon(new OpenTK.Windowing.Common.Input.Image(width, height, byteData));
+		//}
+
 		public static double TPS;
 		public static long TMS;
 		protected override void OnUpdateFrame(FrameEventArgs e)
@@ -159,7 +171,7 @@ namespace WarriorsSnuggery
 
 			MouseInput.WheelState = 0;
 			StringInput = string.Empty;
-			KeyInput = Key.End;
+			KeyInput = Keys.End;
 
 			if (GlobalTick % 20 == 0)
 			{
@@ -243,13 +255,13 @@ namespace WarriorsSnuggery
 		{
 			KeyInput = e.Key;
 
-			if (e.Key == Key.N)
+			if (e.Key == Keys.N)
 				AudioController.Music.Next();
 
-			if (e.Alt && e.Key == Key.F4)
+			if (e.Alt && e.Key == Keys.F4)
 				Program.Exit();
 
-			if (e.Control && e.Key == Key.P)
+			if (e.Control && e.Key == Keys.P)
 			{
 				MasterRenderer.CreateScreenshot();
 				GameController.AddInfoMessage(150, "Screenshot!");

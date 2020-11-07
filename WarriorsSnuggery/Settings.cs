@@ -1,4 +1,4 @@
-using OpenToolkit.Windowing.Common.Input;
+using OpenTK.Windowing.GraphicsLibraryFramework;
 using System.Collections.Generic;
 
 namespace WarriorsSnuggery
@@ -52,11 +52,11 @@ namespace WarriorsSnuggery
 
 		public static float MusicVolume = 0.5f;
 
-		public static Dictionary<string, Key> KeyDictionary = new Dictionary<string, Key>();
+		public static Dictionary<string, Keys> KeyDictionary = new Dictionary<string, Keys>();
 
 		public static int CurrentMap = -1;
 
-		public static Key GetKey(string value)
+		public static Keys GetKey(string value)
 		{
 			if (!KeyDictionary.ContainsKey(value))
 				throw new InvalidTextNodeException(string.Format("Unable to find keyboard key with name {0}.", value));
@@ -149,18 +149,18 @@ namespace WarriorsSnuggery
 		static void defaultKeys()
 		{
 			KeyDictionary.Clear();
-			KeyDictionary.Add("Pause", Key.P);
-			KeyDictionary.Add("CameraLock", Key.L);
-			KeyDictionary.Add("MoveUp", Key.W);
-			KeyDictionary.Add("MoveDown", Key.S);
-			KeyDictionary.Add("MoveLeft", Key.A);
-			KeyDictionary.Add("MoveRight", Key.D);
-			KeyDictionary.Add("MoveAbove", Key.E);
-			KeyDictionary.Add("MoveBelow", Key.R);
-			KeyDictionary.Add("CameraUp", Key.Up);
-			KeyDictionary.Add("CameraDown", Key.Down);
-			KeyDictionary.Add("CameraLeft", Key.Left);
-			KeyDictionary.Add("CameraRight", Key.Right);
+			KeyDictionary.Add("Pause", Keys.P);
+			KeyDictionary.Add("CameraLock", Keys.L);
+			KeyDictionary.Add("MoveUp", Keys.W);
+			KeyDictionary.Add("MoveDown", Keys.S);
+			KeyDictionary.Add("MoveLeft", Keys.A);
+			KeyDictionary.Add("MoveRight", Keys.D);
+			KeyDictionary.Add("MoveAbove", Keys.E);
+			KeyDictionary.Add("MoveBelow", Keys.R);
+			KeyDictionary.Add("CameraUp", Keys.Up);
+			KeyDictionary.Add("CameraDown", Keys.Down);
+			KeyDictionary.Add("CameraLeft", Keys.Left);
+			KeyDictionary.Add("CameraRight", Keys.Right);
 		}
 
 		public static void Save()

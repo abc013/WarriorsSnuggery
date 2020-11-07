@@ -1,4 +1,4 @@
-using OpenToolkit.Windowing.Common.Input;
+using OpenTK.Windowing.GraphicsLibraryFramework;
 using System;
 using System.Collections.Generic;
 using WarriorsSnuggery.Graphics;
@@ -70,9 +70,9 @@ namespace WarriorsSnuggery.UI
 			money.Tick();
 		}
 
-		public override void KeyDown(Key key, bool isControl, bool isShift, bool isAlt)
+		public override void KeyDown(Keys key, bool isControl, bool isShift, bool isAlt)
 		{
-			if (key == Key.Escape)
+			if (key == Keys.Escape)
 				game.ChangeScreen(ScreenType.DEFAULT, false);
 		}
 

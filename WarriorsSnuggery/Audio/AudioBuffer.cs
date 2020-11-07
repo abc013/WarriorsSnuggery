@@ -1,4 +1,4 @@
-﻿using OpenToolkit.Audio.OpenAL;
+﻿using OpenTK.Audio.OpenAL;
 using System;
 using System.Runtime.InteropServices;
 using WarriorsSnuggery.Loader;

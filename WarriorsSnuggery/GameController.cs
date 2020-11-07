@@ -1,4 +1,4 @@
-﻿using OpenToolkit.Windowing.Common.Input;
+﻿using OpenTK.Windowing.GraphicsLibraryFramework;
 using WarriorsSnuggery.Maps;
 
 namespace WarriorsSnuggery
@@ -107,7 +107,7 @@ namespace WarriorsSnuggery
 			game.Pause(true);
 		}
 
-		public static void KeyDown(Key key, bool isControl, bool isShift, bool isAlt)
+		public static void KeyDown(Keys key, bool isControl, bool isShift, bool isAlt)
 		{
 			game.KeyDown(key, isControl, isShift, isAlt);
 		}

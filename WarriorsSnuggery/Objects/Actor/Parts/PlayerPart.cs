@@ -1,4 +1,4 @@
-﻿using OpenToolkit.Windowing.Common.Input;
+﻿using OpenTK.Windowing.GraphicsLibraryFramework;
 using System;
 using System.Linq;
 using WarriorsSnuggery.Graphics;
@@ -52,7 +52,7 @@ namespace WarriorsSnuggery.Objects.Parts
 			if (horizontal != 0)
 				self.Accelerate((3 + horizontal) * 0.5f * (float)Math.PI);
 
-			if (KeyInput.IsKeyDown(Key.AltLeft))
+			if (KeyInput.IsKeyDown(Keys.LeftAlt))
 			{
 				if (KeyInput.IsKeyDown(Settings.GetKey("MoveAbove")))
 					self.AccelerateHeight(true);
@@ -87,7 +87,7 @@ namespace WarriorsSnuggery.Objects.Parts
 
 		void attackTarget(CPos pos)
 		{
-			if (KeyInput.IsKeyDown(Key.ShiftLeft))
+			if (KeyInput.IsKeyDown(Keys.LeftShift))
 				self.Attack(pos, 0);
 			else
 			{

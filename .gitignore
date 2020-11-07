@@ -290,3 +290,12 @@ runtimes/
 /publish_win_x64
 /publish_win_x86
 /publish_linux_x64
+/OpenTK.Windowing.GraphicsLibraryFramework.dll
+/OpenTK.Windowing.Desktop.dll
+/OpenTK.Windowing.Common.dll
+/OpenTK.OpenAL.dll
+/OpenTK.Mathematics.dll
+/OpenTK.Input.dll
+/OpenTK.Graphics.dll
+/OpenTK.Core.dll
+/OpenTK.Compute.dll

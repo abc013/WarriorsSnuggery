@@ -1,4 +1,4 @@
-﻿using OpenToolkit.Windowing.Common.Input;
+﻿using OpenTK.Windowing.GraphicsLibraryFramework;
 using System;
 using WarriorsSnuggery.Graphics;
 using WarriorsSnuggery.Objects;
@@ -39,12 +39,12 @@ namespace WarriorsSnuggery.UI
 			Content.Add(agree);
 		}
 
-		public override void KeyDown(Key key, bool isControl, bool isShift, bool isAlt)
+		public override void KeyDown(Keys key, bool isControl, bool isShift, bool isAlt)
 		{
-			if (key == Key.Escape)
+			if (key == Keys.Escape)
 				onDecline();
 
-			if (key == Key.Enter)
+			if (key == Keys.Enter)
 				onAgree();
 		}
 	}

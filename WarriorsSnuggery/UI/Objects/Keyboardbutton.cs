@@ -1,4 +1,4 @@
-using OpenToolkit.Windowing.Common.Input;
+using OpenTK.Windowing.GraphicsLibraryFramework;
 using WarriorsSnuggery.Graphics;
 using WarriorsSnuggery.Objects;
 
@@ -15,9 +15,9 @@ namespace WarriorsSnuggery.UI
 
 		public bool Selected;
 
-		public Key Key;
+		public Keys Key;
 
-		public KeyboardButton(CPos position, Key key, Color color, PanelType type) : base(position, new MPos(width + 512, height), type)
+		public KeyboardButton(CPos position, Keys key, Color color, PanelType type) : base(position, new MPos(width + 512, height), type)
 		{
 			Key = key;
 
@@ -57,7 +57,7 @@ namespace WarriorsSnuggery.UI
 				if (blinkTick-- < 0)
 					blinkTick = 20;
 
-				if (Window.KeyInput != Key.End)
+				if (Window.KeyInput != Keys.End)
 				{
 					Key = Window.KeyInput;
 					keyDisplay.SetText(Key);

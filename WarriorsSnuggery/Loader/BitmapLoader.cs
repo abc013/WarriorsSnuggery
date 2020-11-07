@@ -24,21 +24,6 @@ namespace WarriorsSnuggery.Loader
 			return r;
 		}
 
-		public static float[] LoadTexture(string filename, int x, int y, int width, int height)
-		{
-			if (!File.Exists(filename))
-				throw new FileNotFoundException("The file `" + filename + "` has not been found.");
-
-			float[] r;
-
-			using (var bitmap = new Bitmap(filename))
-			{
-				r = LoadTexture(bitmap, new Rectangle(x, y, width, height));
-			}
-
-			return r;
-		}
-
 		// https://stackoverflow.com/questions/4747428/getting-rgb-array-from-image-in-c-sharp original
 		public static float[] LoadTexture(Bitmap bmp, Rectangle size)
 		{

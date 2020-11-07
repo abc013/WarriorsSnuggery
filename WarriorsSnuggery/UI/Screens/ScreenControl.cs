@@ -1,4 +1,4 @@
-﻿using OpenToolkit.Windowing.Common.Input;
+﻿using OpenTK.Windowing.GraphicsLibraryFramework;
 using System;
 using System.Collections.Generic;
 
@@ -179,7 +179,7 @@ namespace WarriorsSnuggery.UI
 			Focused?.Tick();
 		}
 
-		public void KeyDown(Key key, bool isControl, bool isShift, bool isAlt)
+		public void KeyDown(Keys key, bool isControl, bool isShift, bool isAlt)
 		{
 			Focused?.KeyDown(key, isControl, isShift, isAlt);
 		}

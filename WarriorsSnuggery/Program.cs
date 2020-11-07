@@ -1,6 +1,6 @@
-using OpenToolkit.Graphics.OpenGL;
-using OpenToolkit.Windowing.Common;
-using OpenToolkit.Windowing.Desktop;
+using OpenTK.Graphics.OpenGL;
+using OpenTK.Windowing.Common;
+using OpenTK.Windowing.Desktop;
 using System;
 using System.Diagnostics;
 using System.Globalization;
@@ -80,7 +80,7 @@ namespace WarriorsSnuggery
 				Title = Title,
 				API = ContextAPI.OpenGL,
 				APIVersion = new Version(3, 2),
-				Size = new OpenToolkit.Mathematics.Vector2i(Settings.Width, Settings.Height),
+				Size = new OpenTK.Mathematics.Vector2i(Settings.Width, Settings.Height),
 			};
 			window = new Window(settings1, settings2);
 

@@ -1,4 +1,4 @@
-using OpenToolkit.Windowing.Common.Input;
+using OpenTK.Windowing.GraphicsLibraryFramework;
 using System;
 using WarriorsSnuggery.Audio;
 using WarriorsSnuggery.Graphics;
@@ -237,7 +237,7 @@ namespace WarriorsSnuggery
 				// Zooming
 				if (!Editor && Type != GameType.EDITOR)
 				{
-					if (KeyInput.IsKeyDown(Key.ControlLeft) && MouseInput.IsRightDown)
+					if (KeyInput.IsKeyDown(Keys.LeftControl) && MouseInput.IsRightDown)
 						Camera.Zoom(Settings.ScrollSpeed / 20 * (4 - (Camera.CurrentZoom - Camera.DefaultZoom) / 2));
 					else
 						Camera.Zoom(Settings.ScrollSpeed / 20 * (-(Camera.CurrentZoom - Camera.DefaultZoom) / 2));
@@ -297,7 +297,7 @@ namespace WarriorsSnuggery
 				Pause(true);
 		}
 
-		public void KeyDown(Key key, bool isControl, bool isShift, bool isAlt)
+		public void KeyDown(Keys key, bool isControl, bool isShift, bool isAlt)
 		{
 			ScreenControl.KeyDown(key, isControl, isShift, isAlt);
 
@@ -310,49 +310,49 @@ namespace WarriorsSnuggery
 				if (key == Settings.GetKey("Pause") && !isControl)
 					ChangeScreen(ScreenType.PAUSED, true);
 
-				if (key == Key.Escape)
+				if (key == Keys.Escape)
 					ChangeScreen(ScreenType.MENU, true);
 			}
 
 			// Key input
-			if (key == Key.KeypadPlus || key == Key.PageUp)
+			if (key == Keys.KeyPadAdd || key == Keys.PageUp)
 				Settings.CurrentMap++;
-			if ((key == Key.KeypadMinus || key == Key.PageDown) && Settings.CurrentMap >= -1)
+			if ((key == Keys.KeyPadSubtract || key == Keys.PageDown) && Settings.CurrentMap >= -1)
 				Settings.CurrentMap--;
 
-			if (key == Key.AltRight)
+			if (key == Keys.RightAlt)
 				Settings.PartyMode = !Settings.PartyMode;
 
 			if (isAlt)
 			{
 				if (Type != GameType.EDITOR)
 				{
-					if (key == Key.V)
+					if (key == Keys.V)
 						World.LocalPlayer.Health.HP = 0;
 
-					if (key == Key.B)
+					if (key == Keys.B)
 						World.LocalPlayer.Health.HP += 100;
 				}
 
-				if (key == Key.N)
+				if (key == Keys.N)
 				{
 					Statistics.Mana += 100;
 					Statistics.Mana = Math.Clamp(Statistics.Mana, 0, Statistics.MaxMana);
 				}
 
-				if (key == Key.M)
+				if (key == Keys.M)
 					Statistics.Money += 100;
 
-				if (key == Key.Comma)
+				if (key == Keys.Comma)
 					Settings.EnableInfoScreen = !Settings.EnableInfoScreen;
 
-				if (key == Key.Period)
+				if (key == Keys.Period)
 				{
 					World.ShroudLayer.RevealAll = true;
 					WorldRenderer.CheckVisibility(Camera.LookAt, Camera.DefaultZoom);
 				}
 
-				if (key == Key.X)
+				if (key == Keys.X)
 					SwitchEditor();
 			}
 		}
@@ -407,7 +407,7 @@ namespace WarriorsSnuggery
 		{
 			const int range = 5120;
 
-			if (KeyInput.IsKeyDown(Key.ShiftLeft))
+			if (KeyInput.IsKeyDown(Keys.LeftShift))
 				return null;
 
 			// Look for actors in range.

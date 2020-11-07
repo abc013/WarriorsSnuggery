@@ -1,4 +1,4 @@
-using OpenToolkit.Windowing.Common.Input;
+using OpenTK.Windowing.GraphicsLibraryFramework;
 using WarriorsSnuggery.Graphics;
 using WarriorsSnuggery.Objects;
 
@@ -15,9 +15,9 @@ namespace WarriorsSnuggery.UI
 			Content.Add(paused);
 		}
 
-		public override void KeyDown(Key key, bool isControl, bool isShift, bool isAlt)
+		public override void KeyDown(Keys key, bool isControl, bool isShift, bool isAlt)
 		{
-			if (key == Key.P)
+			if (key == Keys.P)
 				game.ChangeScreen(ScreenType.DEFAULT, false);
 		}
 	}

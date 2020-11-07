@@ -1,4 +1,4 @@
-using OpenToolkit.Windowing.Common.Input;
+using OpenTK.Windowing.GraphicsLibraryFramework;
 using System.IO;
 using System.Linq;
 using WarriorsSnuggery.Graphics;
@@ -65,9 +65,14 @@ namespace WarriorsSnuggery.UI
 			base.Tick();
 		}
 
-		public override void KeyDown(Key key, bool isControl, bool isShift, bool isAlt)
+		public override void KeyDown(Keys key, bool isControl, bool isShift, bool isAlt)
 		{
-			if (key == Key.Escape)
+			if (createPieceScreen.ActiveScreen)
+			{
+				createPieceScreen.KeyDown(key, isControl, isShift, isAlt);
+				return;
+			}
+			if (key == Keys.Escape)
 				game.ChangeScreen(ScreenType.MENU);
 		}
 	}
@@ -107,11 +112,9 @@ namespace WarriorsSnuggery.UI
 			Content.Add(warning);
 		}
 
-		public override void Tick()
+		public override void KeyDown(Keys key, bool isControl, bool isShift, bool isAlt)
 		{
-			base.Tick();
-
-			if (KeyInput.IsKeyDown(Key.Escape, 10))
+			if (key == Keys.Escape)
 				ActiveScreen = false;
 		}
 

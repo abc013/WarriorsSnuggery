@@ -1,4 +1,4 @@
-using OpenToolkit.Windowing.Common.Input;
+using OpenTK.Windowing.GraphicsLibraryFramework;
 using System;
 using System.IO;
 
@@ -16,12 +16,12 @@ namespace WarriorsSnuggery
 			InvalidFileNameChars = Path.GetInvalidFileNameChars();
 		}
 
-		public static Key ToKey(string key)
+		public static Keys ToKey(string key)
 		{
-			return (Key)Enum.Parse(typeof(Key), key, true);
+			return (Keys)Enum.Parse(typeof(Keys), key, true);
 		}
 
-		public static bool IsKeyDown(Key key, int coolDownWhenHit = 0)
+		public static bool IsKeyDown(Keys key, int coolDownWhenHit = 0)
 		{
 			if (HitCooldown > 0 || !State.IsAnyKeyDown || !WindowInfo.Focused)
 				return false;

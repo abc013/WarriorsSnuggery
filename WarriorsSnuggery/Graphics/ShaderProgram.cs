@@ -1,4 +1,4 @@
-using OpenToolkit.Graphics.OpenGL;
+using OpenTK.Graphics.OpenGL;
 using System;
 using System.Collections.Generic;
 using System.IO;
