@@ -7,10 +7,10 @@ namespace WarriorsSnuggery.Objects.Weapons
 		[Desc("Time until the weapon has been reloaded.")]
 		public readonly int Reload;
 
-		[Desc("Time to wait until the weapon is fired.")]
+		[Desc("Time to wait until the weapon is fired.", "This parameter has to be set in order to use the StartsAttacking condition.")]
 		public readonly int PreparationDelay;
 
-		[Desc("Time to wait after the weapon is fired.")]
+		[Desc("Time to wait after the weapon is fired.", "This parameter has to be set in order to use the EndsAttacking condition.")]
 		public readonly int CooldownDelay;
 
 		[Desc("Maximal Range the weapon can travel.")]

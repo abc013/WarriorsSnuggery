@@ -1,3 +1,4 @@
+using OpenTK.Graphics.ES20;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -62,7 +63,8 @@ namespace WarriorsSnuggery.Objects
 					Mobility.Velocity = value;
 			}
 		}
-		public ActorAction CurrentAction;
+		ActorAction upcoming;
+		public ActorAction CurrentAction = ActorAction.Default;
 
 		public Actor(World world, ActorType type, CPos position, byte team, bool isBot, bool isPlayer, uint id) : base(position, null, getPhysics(position, type))
 		{
@@ -75,8 +77,6 @@ namespace WarriorsSnuggery.Objects
 			ID = id;
 			TerrainPosition = position.ToWPos();
 			CurrentTerrain = world.TerrainAt(TerrainPosition);
-
-			CurrentAction = ActorAction.IDLING;
 
 			// Parts
 			foreach (var partinfo in type.PartInfos)
@@ -121,8 +121,6 @@ namespace WarriorsSnuggery.Objects
 			this.init = init;
 			TerrainPosition = init.Position.ToWPos();
 			CurrentTerrain = world.TerrainAt(TerrainPosition);
-
-			CurrentAction = ActorAction.IDLING;
 
 			// Parts
 			foreach (var partinfo in Type.PartInfos)
@@ -233,6 +231,9 @@ namespace WarriorsSnuggery.Objects
 			if (!IsAlive || Height > 0 && !Mobility.CanFly)
 				return false;
 
+			if (CurrentAction.Type == ActionType.END_ATTACK || CurrentAction.Type == ActionType.ATTACK)
+				return false;
+
 			if (Effects.Any(e => e.Active && e.Spell.Type == Spells.EffectType.STUN))
 				return false;
 
@@ -317,18 +318,30 @@ namespace WarriorsSnuggery.Objects
 			CurrentTerrain = terrain;
 			Physics.Position = position;
 
-			CurrentAction = ActorAction.MOVING;
+
 			Angle = (old - position).FlatAngle;
 			World.PhysicsLayer.UpdateSectors(this);
 			World.ActorLayer.Update(this);
 
 			Parts.ForEach(p => p.OnMove(old, Velocity));
+
+			if (CurrentAction.Type == ActionType.MOVE)
+			{
+				CurrentAction.ExtendAction(1);
+				return;
+			}
+
+			var action = new ActorAction(ActionType.MOVE, true);
+			action.ExtendAction(1);
+			QueueAction(action);
 		}
 
 		void denyMove()
 		{
 			Physics.Position = Position;
 			Velocity = CPos.Zero;
+
+			CurrentAction = ActorAction.Default;
 
 			Parts.ForEach(p => p.OnStop());
 		}
@@ -378,10 +391,22 @@ namespace WarriorsSnuggery.Objects
 		{
 			base.Tick();
 			localTick++;
-			CurrentAction = ActorAction.IDLING;
 
 			if (!IsAlive)
 				return;
+
+			if (CurrentAction.Tick())
+			{
+				if (upcoming != null)
+				{
+					CurrentAction = upcoming;
+					upcoming = null;
+				}
+				else
+				{
+					CurrentAction = ActorAction.Default;
+				}
+			}
 
 			reloadDelay--;
 			if (reloadDelay < 0) reloadDelay = 0;
@@ -422,23 +447,42 @@ namespace WarriorsSnuggery.Objects
 			Effects.RemoveAll(e => !e.Active);
 		}
 
+		public bool QueueAction(ActorAction action, bool setUpcoming = false)
+		{
+			if (action.ActionOver)
+				return true;
+
+			if (CurrentAction.Skippable || CurrentAction.ActionOver)
+			{
+				CurrentAction = action;
+				return true;
+			}
+
+			if (!setUpcoming || upcoming != null)
+				return false;
+
+			upcoming = action;
+
+			return true;
+		}
+
 		public override void SetColor(Color color)
 		{
 			foreach (var part in Parts.Where(p => p is RenderablePart))
 				((RenderablePart)part).SetColor(color);
 		}
 
-		public void Attack(Actor target)
+		public void PrepareAttack(Actor target)
 		{
-			Attack(new Target(target));
+			PrepareAttack(new Target(target));
 		}
 
-		public void Attack(CPos target, int height)
+		public void PrepareAttack(CPos target, int height)
 		{
-			Attack(new Target(target, height));
+			PrepareAttack(new Target(target, height));
 		}
 
-		public void Attack(Target target)
+		public void PrepareAttack(Target target)
 		{
 			if (reloadDelay != 0 || ActiveWeapon == null || !IsAlive)
 				return;
@@ -446,7 +490,15 @@ namespace WarriorsSnuggery.Objects
 			if (World.Game.Editor && IsPlayer || !World.Map.Type.AllowWeapons)
 				return;
 
+			if (CurrentAction.Type == ActionType.PREPARE_ATTACK)
+				return;
+
 			if (Effects.Any(e => e.Active && e.Spell.Type == Spells.EffectType.STUN))
+				return;
+
+			var action = new ActorAction(ActionType.PREPARE_ATTACK, true);
+			action.ExtendAction(ActiveWeapon.Type.PreparationDelay);
+			if (!QueueAction(action))
 				return;
 
 			Angle = (Position - target.Position).FlatAngle;
@@ -454,10 +506,20 @@ namespace WarriorsSnuggery.Objects
 			ActiveWeapon.OnAttack(target);
 		}
 
-		public void AttackWith(Target target, Weapon weapon)
+		public void AttackWith(Target target, Weapon weapon, int duration = 0, int cooldownduration = 0)
 		{
 			if (World.Game.Editor && IsPlayer || !World.Map.Type.AllowWeapons)
 				return;
+
+			var action = new ActorAction(ActionType.ATTACK, false);
+			action.ExtendAction(duration);
+			QueueAction(action);
+
+			var cooldownAction = new ActorAction(ActionType.END_ATTACK, false);
+			cooldownAction.ExtendAction(cooldownduration);
+			QueueAction(cooldownAction, duration != 0);
+
+			World.Add(weapon);
 
 			Parts.ForEach(p => p.OnAttack(target.Position, weapon));
 
@@ -466,7 +528,6 @@ namespace WarriorsSnuggery.Objects
 				reloadModifier *= effect.Spell.Value;
 
 			reloadDelay = (int)(ActiveWeapon.Type.Reload * reloadModifier);
-			CurrentAction = ActorAction.ATTACKING;
 		}
 
 		public void Kill(Actor killed)

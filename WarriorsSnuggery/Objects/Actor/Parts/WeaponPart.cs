@@ -42,7 +42,6 @@ namespace WarriorsSnuggery.Objects.Parts
 		bool attackOrdered;
 		Target target;
 		int prep;
-		int post;
 
 		public WeaponPart(Actor self, WeaponPartInfo info) : base(self)
 		{
@@ -59,6 +58,13 @@ namespace WarriorsSnuggery.Objects.Parts
 					var id = node.Convert<int>();
 					beam = (BeamWeapon)self.World.WeaponLayer.Weapons.FirstOrDefault(w => w.ID == id);
 				}
+				else if (node.Key == "PreparationTick")
+					prep = node.Convert<int>();
+				else if (node.Key == "Target")
+				{
+					var pos = node.Convert<CPos>();
+					target = new Target(new CPos(pos.X, pos.Y, 0), pos.Z);
+				}
 			}
 		}
 
@@ -68,18 +74,27 @@ namespace WarriorsSnuggery.Objects.Parts
 
 			if (beam != null)
 				saver.Add("BeamWeapon", beam.ID, -1);
+
+			saver.Add("PreparationTick", prep, 0);
+
+			if (target != null)
+			{
+				// TODO: also support actor targeting
+				saver.Add("Target", target.Position + new CPos(0, 0, target.Height), CPos.Zero);
+			}
 			
 			return saver;
 		}
 
 		public void OnAttack(Target target)
 		{
-			if (attackOrdered)
-				return;
-
 			attackOrdered = true;
 			this.target = target;
-			prep = Type.PreparationDelay;
+
+			if (Type.PreparationDelay != 0)
+				prep = Type.PreparationDelay;
+			else
+				attack();
 		}
 
 		public override void Tick()
@@ -90,32 +105,27 @@ namespace WarriorsSnuggery.Objects.Parts
 			if (attackOrdered && prep-- <= 0)
 				attack();
 
-			if (prep > 0 || post-- > 0 || (beam != null && !beam.Disposed))
-				self.CurrentAction = ActorAction.ATTACKING;
-
 			if (beam != null)
 			{
 				if (beam.Disposed)
-				{
 					beam = null;
-					return;
-				}
-
-				beam.Move(Target, TargetHeight);
+				else
+					beam.Move(Target, TargetHeight);
 			}
 		}
 
 		void attack()
 		{
 			attackOrdered = false;
-			post = Type.CooldownDelay;
+
+			if (Type.PreparationDelay != 0 && self.CurrentAction.Type != ActionType.PREPARE_ATTACK)
+				return;
 
 			var weapon = WeaponCreator.Create(self.World, info.Type, target, self);
 			Target = weapon.TargetPosition;
 			beam = weapon as BeamWeapon;
 
-			self.World.Add(weapon);
-			self.AttackWith(target, weapon);
+			self.AttackWith(target, weapon, info.Type.Projectile is BeamProjectileType projectileType ? projectileType.BeamDuration : 1, info.Type.CooldownDelay);
 		}
 
 		public override void OnDispose()

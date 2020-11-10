@@ -41,7 +41,7 @@ namespace WarriorsSnuggery.Objects.Bot
 
 					if (DistToTarget < range * 1.1f)
 					{
-						Self.Attack(Target);
+						Self.PrepareAttack(Target);
 						hide = true;
 					}
 					else if (!CanMove)

@@ -33,9 +33,9 @@ namespace WarriorsSnuggery.Objects.Bot
 					Self.Accelerate(angle);
 
 				if (!PerfectTarget() && Program.SharedRandom.Next(100) == 0)
-					Self.Attack(new Target(randomPosition(), 0));
+					Self.PrepareAttack(new Target(randomPosition(), 0));
 				else
-					Self.Attack(new Target((Target.Position + randomPosition()) / new CPos(2, 2, 2), Target.Height));
+					Self.PrepareAttack(new Target((Target.Position + randomPosition()) / new CPos(2, 2, 2), Target.Height));
 			}
 			else
 			{
@@ -57,7 +57,7 @@ namespace WarriorsSnuggery.Objects.Bot
 					Self.ActiveWeapon.Target = Target.Position;
 					int range = Self.ActiveWeapon.Type.MaxRange;
 					if (DistToTarget < range * 1.1f)
-						Self.Attack(Target);
+						Self.PrepareAttack(Target);
 					else if (!CanMove)
 						SearchTarget();
 				}

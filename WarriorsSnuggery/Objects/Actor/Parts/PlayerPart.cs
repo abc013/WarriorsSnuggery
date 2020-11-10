@@ -88,15 +88,15 @@ namespace WarriorsSnuggery.Objects.Parts
 		void attackTarget(CPos pos)
 		{
 			if (KeyInput.IsKeyDown(Keys.LeftShift))
-				self.Attack(pos, 0);
+				self.PrepareAttack(pos, 0);
 			else
 			{
 				var actor = self.World.Game.FindValidTarget(pos, self.Team);
 
 				if (actor == null)
-					self.Attack(pos, 0);
+					self.PrepareAttack(pos, 0);
 				else
-					self.Attack(actor);
+					self.PrepareAttack(actor);
 			}
 		}
 

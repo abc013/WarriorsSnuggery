@@ -8,7 +8,7 @@ namespace WarriorsSnuggery.Objects.Conditions
 	public class ConditionManager
 	{
 		readonly Game game;
-		readonly Dictionary<string, bool> items;
+		readonly Dictionary<string, bool> items; // TODO: use hashcode
 
 		public ConditionManager(Game game)
 		{
@@ -53,11 +53,15 @@ namespace WarriorsSnuggery.Objects.Conditions
 				case "IsBot":
 					return condition.Negate != actor.IsBot;
 				case "IsIdling":
-					return condition.Negate != (actor.CurrentAction == ActorAction.IDLING);
+					return condition.Negate != (actor.CurrentAction.Type == ActionType.IDLE);
 				case "IsMoving":
-					return condition.Negate != (actor.CurrentAction == ActorAction.MOVING);
+					return condition.Negate != (actor.CurrentAction.Type == ActionType.MOVE);
+				case "StartsAttacking":
+					return condition.Negate != (actor.CurrentAction.Type == ActionType.PREPARE_ATTACK);
 				case "IsAttacking":
-					return condition.Negate != (actor.CurrentAction == ActorAction.ATTACKING);
+					return condition.Negate != (actor.CurrentAction.Type == ActionType.ATTACK);
+				case "EndsAttacking":
+					return condition.Negate != (actor.CurrentAction.Type == ActionType.END_ATTACK);
 				case "IsAlive":
 					if (actor.Health == null)
 						return !condition.Negate;
