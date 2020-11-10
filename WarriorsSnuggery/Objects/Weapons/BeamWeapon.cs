@@ -37,7 +37,7 @@ namespace WarriorsSnuggery.Objects.Weapons
 
 			setPosition();
 
-			duration = projectileType.BeamDuration;
+			duration = type.ShootDuration;
 			buildupduration = projectileType.StartupDuration;
 			endduration = projectileType.CooldownDuration;
 
@@ -67,7 +67,7 @@ namespace WarriorsSnuggery.Objects.Weapons
 			setPosition();
 
 			impactInterval = init.Convert("ImpactInterval", projectileType.ImpactInterval);
-			duration = init.Convert("Duration", projectileType.BeamDuration);
+			duration = init.Convert("Duration", Type.ShootDuration);
 			buildupduration = init.Convert("BuildupDuration", projectileType.StartupDuration);
 			endduration = init.Convert("EndDuration", projectileType.CooldownDuration);
 

@@ -506,18 +506,18 @@ namespace WarriorsSnuggery.Objects
 			ActiveWeapon.OnAttack(target);
 		}
 
-		public void AttackWith(Target target, Weapon weapon, int duration = 0, int cooldownduration = 0)
+		public void AttackWith(Target target, Weapon weapon)
 		{
 			if (World.Game.Editor && IsPlayer || !World.Map.Type.AllowWeapons)
 				return;
 
 			var action = new ActorAction(ActionType.ATTACK, false);
-			action.ExtendAction(duration);
+			action.ExtendAction(ActiveWeapon.Type.ShootDuration);
 			QueueAction(action);
-
+			
 			var cooldownAction = new ActorAction(ActionType.END_ATTACK, false);
-			cooldownAction.ExtendAction(cooldownduration);
-			QueueAction(cooldownAction, duration != 0);
+			cooldownAction.ExtendAction(ActiveWeapon.Type.CooldownDelay);
+			QueueAction(cooldownAction, ActiveWeapon.Type.ShootDuration != 0); // Directly use when shootDuration is 0
 
 			World.Add(weapon);
 

@@ -117,7 +117,7 @@ namespace WarriorsSnuggery.Objects.Weapons
 	{
 		[Desc("Texture of the Beam.")]
 		public readonly TextureInfo Beam;
-		[Desc("Texture of the Beam.", "This texture will show up when launching the weapob.")]
+		[Desc("Texture of the Beam.", "This texture will show up when launching the weapon.")]
 		public readonly TextureInfo BeamStartUp;
 		[Desc("Texture of the Beam.", "This texture will show up as cooldown animation.")]
 		public readonly TextureInfo BeamCooldown;
@@ -134,8 +134,6 @@ namespace WarriorsSnuggery.Objects.Weapons
 		[Desc("Interval in which the beam will detonate its warhead.", "Works only if the WeaponFireType is BEAM or DIRECTEDBEAM.")]
 		public readonly int ImpactInterval;
 
-		[Desc("Determines how long a beam will be fired.")]
-		public readonly int BeamDuration;
 		[Desc("Determines how the beam needs to be fired up.")]
 		public readonly int StartupDuration;
 		[Desc("Determines how long the beam stays after ending.")]

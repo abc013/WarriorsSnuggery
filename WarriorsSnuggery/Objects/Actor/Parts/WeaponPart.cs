@@ -125,7 +125,7 @@ namespace WarriorsSnuggery.Objects.Parts
 			Target = weapon.TargetPosition;
 			beam = weapon as BeamWeapon;
 
-			self.AttackWith(target, weapon, info.Type.Projectile is BeamProjectileType projectileType ? projectileType.BeamDuration : 1, info.Type.CooldownDelay);
+			self.AttackWith(target, weapon);
 		}
 
 		public override void OnDispose()
