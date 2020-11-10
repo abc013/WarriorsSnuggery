@@ -18,7 +18,7 @@ namespace WarriorsSnuggery.Objects.Parts
 		}
 	}
 
-	public class PlayerSwitchPart : ActorPart
+	public class PlayerSwitchPart : ActorPart, ITick, INoticeKilled
 	{
 		public float RelativeHP = 1f;
 		public ActorType ActorType;
@@ -57,7 +57,7 @@ namespace WarriorsSnuggery.Objects.Parts
 			return saver;
 		}
 
-		public override void Tick()
+		public void Tick()
 		{
 			if (self.World.Game.Editor)
 				return;
@@ -66,7 +66,7 @@ namespace WarriorsSnuggery.Objects.Parts
 				switchPlayer();
 		}
 
-		public override void OnKilled(Actor killer)
+		public void OnKilled(Actor killer)
 		{
 			switchPlayer();
 		}

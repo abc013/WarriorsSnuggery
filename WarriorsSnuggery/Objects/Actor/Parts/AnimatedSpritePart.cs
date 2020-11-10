@@ -53,7 +53,7 @@ namespace WarriorsSnuggery.Objects.Parts
 		}
 	}
 
-	public class AnimatedSpritePart : RenderablePart
+	public class AnimatedSpritePart : RenderablePart, ITick, INoticeMove, INoticeAttack
 	{
 		readonly AnimatedSpritePartInfo info;
 
@@ -109,17 +109,17 @@ namespace WarriorsSnuggery.Objects.Parts
 			return renderables[facing];
 		}
 
-		public override void OnMove(CPos old, CPos speed)
+		public void OnMove(CPos old, CPos speed)
 		{
 			currentFacing = FacingFromAngle(self.Angle);
 		}
 
-		public override void OnAttack(CPos target, Weapon weapon)
+		public void OnAttack(CPos target, Weapon weapon)
 		{
 			currentFacing = FacingFromAngle(self.Angle);
 		}
 
-		public override void Tick()
+		public void Tick()
 		{
 			if (self.Angle != angle)
 			{

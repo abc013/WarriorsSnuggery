@@ -7,7 +7,7 @@ using WarriorsSnuggery.UI;
 
 namespace WarriorsSnuggery.Objects.Parts
 {
-	class PlayerPart : ActorPart
+	class PlayerPart : ActorPart, ITick, INoticeDamage, INoticeKilled, INoticeKill, INoticeMove
 	{
 		bool firstTick = true;
 
@@ -18,7 +18,7 @@ namespace WarriorsSnuggery.Objects.Parts
 			return new PartSaver(this, string.Empty, true);
 		}
 
-		public override void Tick()
+		public void Tick()
 		{
 			if (self.World.Game.Editor)
 				return;
@@ -105,22 +105,22 @@ namespace WarriorsSnuggery.Objects.Parts
 			Camera.Position(self.Position + (self.World.Game.ScreenControl.Focused is DefaultScreen ? Camera.CamPlayerOffset : CPos.Zero));
 		}
 
-		public override void OnDamage(Actor damager, int damage)
+		public void OnDamage(Actor damager, int damage)
 		{
 			self.World.PlayerDamagedTick = 0;
 		}
 
-		public override void OnKilled(Actor killer)
+		public void OnKilled(Actor killer)
 		{
 			self.World.PlayerKilled();
 		}
 
-		public override void OnKill(Actor killed)
+		public void OnKill(Actor killed)
 		{
 			self.World.Game.Statistics.Kills++;
 		}
 
-		public override void OnMove(CPos old, CPos speed)
+		public void OnMove(CPos old, CPos speed)
 		{
 			if (Camera.LockedToPlayer)
 				positionCamera();

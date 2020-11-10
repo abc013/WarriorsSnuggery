@@ -26,7 +26,7 @@ namespace WarriorsSnuggery.Objects.Parts
 		}
 	}
 
-	public class WeaponPart : ActorPart
+	public class WeaponPart : ActorPart, ITick, INoticeDispose
 	{
 		readonly WeaponPartInfo info;
 		public readonly WeaponType Type;
@@ -97,7 +97,7 @@ namespace WarriorsSnuggery.Objects.Parts
 				attack();
 		}
 
-		public override void Tick()
+		public void Tick()
 		{
 			if (self.World.Game.Editor)
 				return;
@@ -128,7 +128,7 @@ namespace WarriorsSnuggery.Objects.Parts
 			self.AttackWith(target, weapon);
 		}
 
-		public override void OnDispose()
+		public void OnDispose()
 		{
 			if (beam != null && !beam.Disposed)
 				beam.Dispose();

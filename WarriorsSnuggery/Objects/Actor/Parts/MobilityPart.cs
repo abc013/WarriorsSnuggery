@@ -37,7 +37,7 @@ namespace WarriorsSnuggery.Objects.Parts
 		}
 	}
 
-	public class MobilityPart : ActorPart
+	public class MobilityPart : ActorPart, ITick, INoticeAcceleration
 	{
 		readonly MobilityPartInfo info;
 
@@ -80,7 +80,7 @@ namespace WarriorsSnuggery.Objects.Parts
 			return saver;
 		}
 
-		public override void Tick()
+		public void Tick()
 		{
 			if (self.World.Game.Editor)
 				return;
@@ -133,12 +133,12 @@ namespace WarriorsSnuggery.Objects.Parts
 			sound?.SetPosition(self.Position);
 		}
 
-		public new void OnAccelerate(CPos acceleration)
+		public void OnAccelerate(CPos acceleration)
 		{
 			Force += acceleration;
 		}
 
-		public new int OnAccelerate(float angle, int customAcceleration)
+		public int OnAccelerate(float angle, int customAcceleration)
 		{
 			var acceleration = customAcceleration == 0 ? info.Acceleration * 2 : customAcceleration;
 			var x = (int)Math.Ceiling(Math.Cos(angle) * acceleration);

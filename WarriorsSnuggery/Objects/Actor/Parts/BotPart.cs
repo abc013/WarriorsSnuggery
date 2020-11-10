@@ -6,7 +6,7 @@ using WarriorsSnuggery.Objects.Weapons;
 
 namespace WarriorsSnuggery.Objects.Parts
 {
-	public class BotPart : ActorPart
+	public class BotPart : ActorPart, ITick, INoticeDamage, INoticeKill
 	{
 		readonly BotBehavior bot;
 
@@ -68,7 +68,7 @@ namespace WarriorsSnuggery.Objects.Parts
 			return saver;
 		}
 
-		public override void Tick()
+		public void Tick()
 		{
 			if (self.World.Game.Editor)
 				return;
@@ -76,12 +76,12 @@ namespace WarriorsSnuggery.Objects.Parts
 			bot.Tick();
 		}
 
-		public override void OnDamage(Actor damager, int damage)
+		public void OnDamage(Actor damager, int damage)
 		{
 			bot.OnDamage(damager, damage);
 		}
 
-		public override void OnKill(Actor killer)
+		public void OnKill(Actor killer)
 		{
 			bot.OnKill(killer);
 		}

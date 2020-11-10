@@ -1,7 +1,7 @@
 ﻿
 namespace WarriorsSnuggery.Objects.Parts
 {
-	public abstract class RenderablePart : ActorPart
+	public abstract class RenderablePart : ActorPart, IRenderable
 	{
 		public RenderablePart(Actor self) : base(self) { }
 
@@ -9,7 +9,7 @@ namespace WarriorsSnuggery.Objects.Parts
 
 		public abstract Graphics.BatchRenderable GetRenderable(ActorAction action, int facing);
 
-		public abstract override void Render();
+		public abstract void Render();
 
 		public abstract void SetColor(Color color);
 	}

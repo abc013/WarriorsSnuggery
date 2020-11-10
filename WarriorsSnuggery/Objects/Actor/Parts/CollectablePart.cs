@@ -67,7 +67,7 @@ namespace WarriorsSnuggery.Objects.Parts
 		}
 	}
 
-	public class CollectablePart : ActorPart
+	public class CollectablePart : ActorPart, ITick, INoticeMove
 	{
 		readonly CollectablePartInfo info;
 		bool activated;
@@ -106,7 +106,7 @@ namespace WarriorsSnuggery.Objects.Parts
 			return saver;
 		}
 
-		public override void Tick()
+		public void Tick()
 		{
 			if (self.World.Game.Editor)
 				return;
@@ -285,7 +285,7 @@ namespace WarriorsSnuggery.Objects.Parts
 			}
 		}
 
-		public override void OnMove(CPos old, CPos speed)
+		public void OnMove(CPos old, CPos speed)
 		{
 			updateSectors();
 		}

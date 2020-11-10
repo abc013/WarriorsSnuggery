@@ -21,7 +21,7 @@ namespace WarriorsSnuggery.Objects.Parts
 		public RevealsShroudPartInfo(string internalName, List<MiniTextNode> nodes) : base(internalName, nodes) { }
 	}
 
-	public class RevealsShroudPart : ActorPart
+	public class RevealsShroudPart : ActorPart, ITick, INoticeMove
 	{
 		readonly RevealsShroudPartInfo info;
 		int tick;
@@ -57,7 +57,7 @@ namespace WarriorsSnuggery.Objects.Parts
 			return saver;
 		}
 
-		public override void OnMove(CPos old, CPos speed)
+		public void OnMove(CPos old, CPos speed)
 		{
 			if (tick < 0)
 			{
@@ -67,7 +67,7 @@ namespace WarriorsSnuggery.Objects.Parts
 			}
 		}
 
-		public override void Tick()
+		public void Tick()
 		{
 			if (self.World.Game.Editor)
 				return;

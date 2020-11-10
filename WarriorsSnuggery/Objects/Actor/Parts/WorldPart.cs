@@ -60,7 +60,7 @@ namespace WarriorsSnuggery.Objects.Parts
 		}
 	}
 
-	public class WorldPart : ActorPart
+	public class WorldPart : ActorPart, INoticeMove, INoticeDispose
 	{
 		readonly WorldPartInfo info;
 
@@ -101,12 +101,12 @@ namespace WarriorsSnuggery.Objects.Parts
 			return diff.X > info.TargetBoxCorner1.X && diff.X < info.TargetBoxCorner2.X && diff.Y > -info.TargetBoxCorner1.Y && diff.Y < -info.TargetBoxCorner2.Y;
 		}
 
-		public override void OnMove(CPos old, CPos speed)
+		public void OnMove(CPos old, CPos speed)
 		{
 			sound?.SetPosition(self.Position);
 		}
 
-		public override void OnDispose()
+		public void OnDispose()
 		{
 			sound?.Stop();
 		}

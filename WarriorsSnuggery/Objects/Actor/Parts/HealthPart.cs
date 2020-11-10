@@ -24,7 +24,7 @@ namespace WarriorsSnuggery.Objects.Parts
 		}
 	}
 
-	public class HealthPart : ActorPart
+	public class HealthPart : ActorPart, ITick
 	{
 		readonly HealthPartInfo info;
 
@@ -80,7 +80,7 @@ namespace WarriorsSnuggery.Objects.Parts
 			return saver;
 		}
 
-		public override void Tick()
+		public void Tick()
 		{
 			if (self.World.Game.Editor)
 				return;

@@ -70,7 +70,7 @@ namespace WarriorsSnuggery.Objects.Parts
 		}
 	}
 
-	public class SpawnPart : ActorPart
+	public class SpawnPart : ActorPart, ITick, INoticeDamage, INoticeKilled
 	{
 		readonly SpawnPartInfo info;
 		int curTick;
@@ -102,19 +102,19 @@ namespace WarriorsSnuggery.Objects.Parts
 			return saver;
 		}
 
-		public override void OnDamage(Actor damager, int damage)
+		public void OnDamage(Actor damager, int damage)
 		{
 			if (info.Occasion == Occasion.DAMAGE && damage > info.DamageThreshold)
 				create();
 		}
 
-		public override void OnKilled(Actor killer)
+		public void OnKilled(Actor killer)
 		{
 			if (info.Occasion == Occasion.DEATH)
 				create();
 		}
 
-		public override void Tick()
+		public void Tick()
 		{
 			if (self.World.Game.Editor && info.Type != SpawnPartTypes.PARTICLE)
 				return;

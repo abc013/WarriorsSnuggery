@@ -25,7 +25,7 @@ namespace WarriorsSnuggery.Objects.Parts
 		}
 	}
 
-	public class RegenerationPart : ActorPart
+	public class RegenerationPart : ActorPart, ITick, INoticeDamage
 	{
 		readonly RegenerationPartInfo info;
 		int tick;
@@ -57,7 +57,7 @@ namespace WarriorsSnuggery.Objects.Parts
 			return saver;
 		}
 
-		public override void Tick()
+		public void Tick()
 		{
 			if (self.World.Game.Editor)
 				return;
@@ -72,7 +72,7 @@ namespace WarriorsSnuggery.Objects.Parts
 			}
 		}
 
-		public override void OnDamage(Actor damager, int damage)
+		public void OnDamage(Actor damager, int damage)
 		{
 			tick = info.TimeAfterHit;
 		}

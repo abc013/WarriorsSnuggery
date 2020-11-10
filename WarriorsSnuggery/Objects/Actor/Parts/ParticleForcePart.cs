@@ -41,7 +41,7 @@ namespace WarriorsSnuggery.Objects.Parts
 		}
 	}
 
-	public class ParticleForcePart : ActorPart
+	public class ParticleForcePart : ActorPart, ITick, INoticeMove
 	{
 		readonly ParticleForcePartInfo info;
 		readonly ParticleForce force;
@@ -55,12 +55,12 @@ namespace WarriorsSnuggery.Objects.Parts
 			sectors = self.World.ParticleLayer.GetSectors(self.Position, info.MaxRange);
 		}
 
-		public override void OnMove(CPos old, CPos speed)
+		public void OnMove(CPos old, CPos speed)
 		{
 			sectors = self.World.ParticleLayer.GetSectors(self.Position, info.MaxRange);
 		}
 
-		public override void Tick()
+		public void Tick()
 		{
 			if (info.MaxRange <= 0 || (info.AffectOnlyWhenPlayer && !self.IsPlayer))
 				return;
