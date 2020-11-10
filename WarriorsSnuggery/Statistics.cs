@@ -186,7 +186,7 @@ namespace WarriorsSnuggery
 			return score;
 		}
 
-		public void Save(World world, bool withMap = true)
+		public void Save(World world)
 		{
 			var scriptState = world.Game.GetScriptState(out Script);
 
@@ -263,8 +263,8 @@ namespace WarriorsSnuggery
 				writer.Flush();
 				writer.Close();
 			}
-			if (withMap)
-				world.Save(FileExplorer.Saves, SaveName + "_map", true);
+
+			world.Save(FileExplorer.Saves, SaveName + "_map", true);
 		}
 
 		public void Delete()

@@ -289,8 +289,7 @@ namespace WarriorsSnuggery
 
 		public void Save(string directory, string name, bool isSavegame)
 		{
-			var saver = new MapSaver(this, isSavegame);
-			saver.Save(directory, name);
+			new WorldSaver(this, isSavegame).Save(directory, name);
 		}
 
 		public void Dispose()

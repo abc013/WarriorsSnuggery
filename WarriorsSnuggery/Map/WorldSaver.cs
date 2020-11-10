@@ -3,7 +3,7 @@ using System.Text;
 
 namespace WarriorsSnuggery
 {
-	public class MapSaver
+	public class WorldSaver
 	{
 		public const int MapFormat = 1;
 
@@ -11,7 +11,7 @@ namespace WarriorsSnuggery
 		readonly MPos bounds;
 		readonly bool isSavegame;
 
-		public MapSaver(World world, bool isSavegame)
+		public WorldSaver(World world, bool isSavegame)
 		{
 			this.world = world;
 			bounds = world.Map.Bounds;
@@ -26,66 +26,86 @@ namespace WarriorsSnuggery
 			writer.WriteLine("Name=" + name);
 			writer.WriteLine("Size=" + bounds);
 
-			var builder = new StringBuilder(8 + bounds.X * bounds.Y * 3, 8 + bounds.X * bounds.Y * 4);
-			builder.Append("Terrain=");
-			for (int y = 0; y < bounds.Y; y++)
-			{
-				for (int x = 0; x < bounds.X; x++)
-				{
-					builder.Append(world.TerrainLayer.Terrain[x, y].Type.ID);
-					if (x == bounds.X - 1 && y == bounds.Y - 1)
-						break;
-					builder.Append(",");
-				}
-			}
-			writer.WriteLine(builder);
-			builder.Clear();
+			writeTerrainLayer(writer);
+			writeWallLayer(writer);
+			writeActorLayer(writer);
 
-			var wallSize = world.WallLayer.Bounds;
-			var builder2 = new StringBuilder(6 + wallSize.X * wallSize.Y * 6, 6 + wallSize.X * wallSize.Y * 12);
-			builder2.Append("Walls=");
-			for (int y = 0; y < wallSize.Y - 1; y++)
-			{
-				for (int x = 0; x < wallSize.X - 1; x++)
-				{
-					var wall = world.WallLayer.Walls[x, y];
-					if (wall == null)
-						builder2.Append("-1,0,");
-					else
-						builder2.Append(wall.Type.ID + "," + wall.Health + ",");
-				}
-			}
-			builder2.Remove(builder2.Length - 1, 1);
-			writer.WriteLine(builder2);
-			builder2.Clear();
-
-			writeActors(writer);
 			if (isSavegame)
 			{
-				writeWeapons(writer);
-				writeParticles(writer); 
+				writeWeaponLayer(writer);
+				writeParticleLayer(writer); 
 			}
 
 			writer.Flush();
 			writer.Close();
 		}
 
-		void writeActors(StreamWriter writer)
+		void writeTerrainLayer(StreamWriter writer)
+		{
+			const string text = "Terrain=";
+
+			var builder = new StringBuilder(text.Length + bounds.X * bounds.Y * 2, text.Length + bounds.X * bounds.Y * 4);
+			builder.Append(text);
+
+			for (int y = 0; y < bounds.Y; y++)
+			{
+				for (int x = 0; x < bounds.X; x++)
+				{
+					builder.Append(world.TerrainLayer.Terrain[x, y].Type.ID);
+					builder.Append(',');
+				}
+			}
+
+			builder.Remove(builder.Length - 1, 1);
+			writer.WriteLine(builder);
+			builder.Clear();
+		}
+
+		void writeWallLayer(StreamWriter writer)
+		{
+			const string text = "Walls=";
+
+			var wallSize = world.WallLayer.Bounds;
+			var builder = new StringBuilder(text.Length + wallSize.X * wallSize.Y * 5, text.Length + wallSize.X * wallSize.Y * 12);
+
+			builder.Append(text);
+			for (int y = 0; y < wallSize.Y - 1; y++)
+			{
+				for (int x = 0; x < wallSize.X - 1; x++)
+				{
+					var wall = world.WallLayer.Walls[x, y];
+					if (wall == null)
+						builder.Append("-1,0,");
+					else
+						builder.Append(wall.Type.ID + "," + wall.Health + ",");
+				}
+			}
+
+			builder.Remove(builder.Length - 1, 1);
+			writer.WriteLine(builder);
+			builder.Clear();
+		}
+
+		void writeActorLayer(StreamWriter writer)
 		{
 			writer.WriteLine("Actors=");
+
 			var i = 0u;
 			foreach (var a in world.ActorLayer.Actors)
 			{
 				var id = isSavegame ? a.ID : i++;
+
 				writer.WriteLine("\t" + id + "=");
+
 				foreach (var node in a.Save())
 					writer.WriteLine("\t\t" + node);
 			}
 		}
 
-		void writeWeapons(StreamWriter writer)
+		void writeWeaponLayer(StreamWriter writer)
 		{
 			writer.WriteLine("Weapons=");
+
 			var i = 0;
 			foreach(var weapon in world.WeaponLayer.Weapons)
 			{
@@ -98,9 +118,10 @@ namespace WarriorsSnuggery
 			}
 		}
 
-		void writeParticles(StreamWriter writer)
+		void writeParticleLayer(StreamWriter writer)
 		{
 			writer.WriteLine("Particles=");
+
 			var i = 0;
 			foreach (var particle in world.ParticleLayer.Particles)
 			{
