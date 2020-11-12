@@ -247,8 +247,6 @@ namespace WarriorsSnuggery
 			var objects = world.Objects.Where(a => a.GraphicPosition.X > topLeft.X && a.GraphicPosition.X < bottomRight.X && a.GraphicPosition.Y > topLeft.Y && a.GraphicPosition.Y < bottomRight.Y);
 			foreach (var o in objects)
 				o.CheckVisibility();
-
-			// TODO: check smudge as well
 		}
 
 		static void checkAllTerrain(bool checkEdges = false)

@@ -10,6 +10,12 @@ namespace WarriorsSnuggery.Maps
 		[Desc("Unique ID for the generator.")]
 		public readonly new int ID;
 
+		[Desc("NoiseMap used to find a spot where the piece is generated.")]
+		public readonly int NoiseMapID = -1;
+
+		[Desc("All numbers above this limit in the NoiseMap can be used for placing a piece.")]
+		public readonly float NoiseMapLimit = 0;
+
 		[Desc("Pieces to possibly spawn.")]
 		public readonly string[] Pieces = new string[0];
 
@@ -51,6 +57,8 @@ namespace WarriorsSnuggery.Maps
 
 		public override void Generate()
 		{
+			var noise = GeneratorUtils.GetNoise(loader, info.NoiseMapID);
+
 			searchBlocks = info.MaxBounds;
 			if (searchBlocks == MPos.Zero)
 			{
@@ -87,6 +95,13 @@ namespace WarriorsSnuggery.Maps
 					{
 						if (y >= Bounds.Y)
 							break;
+
+						var value = noise[y * Bounds.X + x];
+						if (info.NoiseMapLimit > value)
+						{
+							canAcquire = false;
+							break;
+						}
 
 						if (!loader.CanAcquireCell(new MPos(x, y), info.ID))
 						{
