@@ -44,36 +44,7 @@ namespace WarriorsSnuggery
 			}
 		}
 
-		public void RevealShroudRectangular(World world, int team, CPos position, int radius, bool ignoreLock = false)
-		{
-			if (RevealAll)
-				return;
-
-			var isPlayerTeam = team == Objects.Actor.PlayerTeam;
-
-			var shroudPos = (position * new CPos(2, 2, 0)).ToMPos();
-			for (int x = shroudPos.X - radius; x < shroudPos.X + radius; x++)
-			{
-				if (x >= 0 && x < Bounds.X)
-				{
-					for (int y = shroudPos.Y - radius; y < shroudPos.Y + radius; y++)
-					{
-						if (y >= 0 && y < Bounds.Y)
-						{
-							shroudRevealed[team, x, y] = true;
-							if (isPlayerTeam)
-								VisibilitySolver.ShroudRevealed(x, y);
-						}
-					}
-				}
-			}
-
-			// Camera automatically updates shroud, so we don't want to do that if we move anyways TODO how about other actors?
-			if (!Camera.LockedToPlayer || ignoreLock)
-				WorldRenderer.CheckVisibility(Camera.LookAt, Camera.DefaultZoom);
-		}
-
-		public void RevealShroudCircular(World world, int team, CPos position, int radius, bool ignoreLock = false)
+		public void RevealShroudCircular(World world, int team, CPos position, int height, int radius, bool ignoreLock = false)
 		{
 			if (RevealAll)
 				return;
@@ -84,7 +55,7 @@ namespace WarriorsSnuggery
 
 			var radiusSquared = radius * radius;
 
-			var triangles = getTriangles(world, position, shroudPos, radius);
+			var triangles = getTriangles(world, position, height, shroudPos, radius);
 
 			for (int x = shroudPos.X - radius; x < shroudPos.X + radius; x++)
 			{
@@ -127,7 +98,7 @@ namespace WarriorsSnuggery
 				WorldRenderer.CheckVisibility(Camera.LookAt, Camera.DefaultZoom);
 		}
 
-		List<Triangle> getTriangles(World world, CPos position, MPos shroudPos, int radius)
+		List<Triangle> getTriangles(World world, CPos position, int height, MPos shroudPos, int radius)
 		{
 			var outerRadius = (float)Math.Sqrt(2) * radius * 736;
 
@@ -140,6 +111,12 @@ namespace WarriorsSnuggery
 			var walls = world.WallLayer.GetRange(pos1, pos2);
 			foreach (var wall in walls)
 			{
+				if (wall.Type.IsTransparent || wall.Type.IsOnFloor)
+					continue;
+
+				if (height > wall.Type.Height)
+					continue;
+
 				var angleA = (position - wall.EndPointA).FlatAngle;
 				var angleB = (position - wall.EndPointB).FlatAngle;
 

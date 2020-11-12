@@ -26,7 +26,7 @@ namespace WarriorsSnuggery.Objects
 
 		[Desc("If yes, this wall will block objects with physics.")]
 		public readonly bool Blocks = true;
-		[Desc("Height of the wall.")]
+		[Desc("Height of the wall.", "This will allow players flying above this height to pass the wall and also see behind it.")]
 		public readonly int Height = 1024;
 
 		[Desc("Health of the wall.", "If 0 or negative, the wall is invincible.")]
@@ -41,6 +41,9 @@ namespace WarriorsSnuggery.Objects
 
 		[Desc("Wall is only on floor and basically has no height.")]
 		public readonly bool IsOnFloor;
+
+		[Desc("Wall is transparent.", "This is used for checking whether the player can see through this wall.")]
+		public readonly bool IsTransparent;
 
 		public WallType(short id, List<MiniTextNode> nodes, bool documentation = false)
 		{

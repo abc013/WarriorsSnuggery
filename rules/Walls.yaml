@@ -31,6 +31,7 @@
 	Height=256
 	Health=200
 	WallOnDeath=9
+	IsTransparent=true
 
 3=
 	Image=fence0
@@ -43,6 +44,7 @@
 	Height=256
 	Health=150
 	WallOnDeath=10
+	IsTransparent=true
 
 4=
 	Image=walls0_damaged0
@@ -68,6 +70,7 @@
 	Blocks=false
 	DamagePenetration=1
 	Health=250
+	IsTransparent=true
 
 9=
 	Image=walls_rubble0
