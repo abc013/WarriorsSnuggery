@@ -60,7 +60,7 @@ namespace WarriorsSnuggery
 		public void Load()
 		{
 			Camera.SetBounds(Bounds);
-			VisibilitySolver.SetBounds(Bounds, world.ShroudLayer);
+			VisibilitySolver.SetBounds(this, world.ShroudLayer);
 
 			var mapLoader = new MapLoader(world, this);
 			NoiseMaps = mapLoader.NoiseMaps;
