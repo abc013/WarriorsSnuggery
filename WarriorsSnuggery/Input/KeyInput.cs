@@ -23,6 +23,9 @@ namespace WarriorsSnuggery
 
 		public static bool IsKeyDown(Keys key, int coolDownWhenHit = 0)
 		{
+			if (State == null)
+				return false;
+
 			if (HitCooldown > 0 || !State.IsAnyKeyDown || !WindowInfo.Focused)
 				return false;
 
