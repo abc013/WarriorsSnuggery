@@ -61,7 +61,7 @@ namespace WarriorsSnuggery.Objects.Parts
 		{
 			if (tick < 0)
 			{
-				self.World.ShroudLayer.RevealShroudCircular(self.Team, (self.Position * new CPos(2, 2, 0)).ToMPos(), info.Range);
+				self.World.ShroudLayer.RevealShroudCircular(self.World, self.Team, self.Position, info.Range);
 				tick = info.Interval;
 			}
 		}
@@ -74,7 +74,7 @@ namespace WarriorsSnuggery.Objects.Parts
 			tick--;
 			if (firstActive)
 			{
-				self.World.ShroudLayer.RevealShroudCircular(self.Team, (self.Position * new CPos(2, 2, 0)).ToMPos(), info.Range, true);
+				self.World.ShroudLayer.RevealShroudCircular(self.World, self.Team, self.Position, info.Range, true);
 				firstActive = false;
 			}
 		}

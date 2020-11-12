@@ -28,6 +28,14 @@ namespace WarriorsSnuggery
 			var pos1 = new MPos((int)Math.Clamp(Math.Floor(topleft.X / 1024f), 0, mapBounds.X + 1), (int)Math.Clamp(Math.Floor(topleft.Y / 1024f), 0, mapBounds.Y + 1));
 			var pos2 = new MPos((int)Math.Clamp(Math.Ceiling(botright.X / 1024f), 0, mapBounds.X + 1), (int)Math.Clamp(Math.Ceiling(botright.Y / 1024f), 0, mapBounds.Y + 1));
 
+			return GetRange(pos1, pos2);
+		}
+
+		public List<Wall> GetRange(MPos topleft, MPos botright)
+		{
+			var pos1 = new MPos(Math.Clamp(topleft.X, 0, mapBounds.X + 1), Math.Clamp(topleft.Y, 0, mapBounds.Y + 1));
+			var pos2 = new MPos(Math.Clamp(botright.X, 0, mapBounds.X + 1), Math.Clamp(botright.Y, 0, mapBounds.Y + 1));
+
 			return WallList.Where(w => w.TerrainPosition.X >= pos1.X && w.TerrainPosition.X < pos2.X && w.TerrainPosition.Y >= pos1.Y && w.TerrainPosition.Y < pos2.Y).ToList();
 		}
 

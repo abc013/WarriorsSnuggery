@@ -30,6 +30,9 @@ namespace WarriorsSnuggery.Objects
 
 		readonly WallLayer layer;
 
+		public CPos EndPointA => Physics.Position - (IsHorizontal ? new CPos(2 * Physics.RadiusX, Physics.RadiusY, 0) : new CPos(Physics.RadiusX, 2 * Physics.RadiusY, 0));
+		public CPos EndPointB => Physics.Position - (IsHorizontal ? new CPos(0, Physics.RadiusY, 0) : new CPos(Physics.RadiusX, 0, 0));
+
 		BatchObject renderable;
 		Color color = Color.White;
 
@@ -55,15 +58,15 @@ namespace WarriorsSnuggery.Objects
 		byte neighborState;
 		DamageState damageState = DamageState.NONE;
 
-		public Wall(MPos position, WallLayer layer, WallType type) : base(position.ToCPos(), null, getPhysics(position, type))
+		public Wall(MPos position, WallLayer layer, WallType type) : base(CPos.Zero, null, getPhysics(position, type))
 		{
-			LayerPosition = position;
-			TerrainPosition = LayerPosition / new MPos(2, 1);
-
 			this.layer = layer;
 
 			Type = type;
 			health = type.Health;
+
+			LayerPosition = position;
+			TerrainPosition = LayerPosition / new MPos(2, 1);
 
 			IsHorizontal = LayerPosition.X % 2 != 0;
 
