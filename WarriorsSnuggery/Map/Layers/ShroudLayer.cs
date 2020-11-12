@@ -43,7 +43,7 @@ namespace WarriorsSnuggery
 			}
 		}
 
-		public void RevealShroudRectangular(int team, MPos position, int radius)
+		public void RevealShroudRectangular(int team, MPos position, int radius, bool ignoreLock = false)
 		{
 			if (RevealAll)
 				return;
@@ -55,16 +55,14 @@ namespace WarriorsSnuggery
 					for (int y = position.Y - radius; y < position.Y + radius; y++)
 					{
 						if (y >= 0 && y < Bounds.Y)
-						{
 							shroudRevealed[team, x, y] = true;
-						}
 					}
 				}
 			}
 
 			VisibilitySolver.ShroudUpdated();
 			// Camera automatically updates shroud, so we don't want to do that if we move anyways TODO how about other actors?
-			if (!Camera.LockedToPlayer)
+			if (!Camera.LockedToPlayer || ignoreLock)
 				WorldRenderer.CheckVisibility(Camera.LookAt, Camera.DefaultZoom);
 		}
 
@@ -73,14 +71,24 @@ namespace WarriorsSnuggery
 			if (RevealAll)
 				return;
 
+			var radiusSquared = radius * radius;
+
 			for (int x = position.X - radius; x < position.X + radius; x++)
 			{
 				if (x >= 0 && x < Bounds.X)
 				{
+					var dx = x - position.X;
+					dx *= dx;
+
 					for (int y = position.Y - radius; y < position.Y + radius; y++)
 					{
 						if (y >= 0 && y < Bounds.Y)
-							shroudRevealed[team, x, y] = shroudRevealed[team, x, y] || Math.Pow(x - position.X, 2) + Math.Pow(y - position.Y, 2) <= radius * radius;
+						{
+							var dy = y - position.Y;
+							dy *= dy;
+
+							shroudRevealed[team, x, y] = shroudRevealed[team, x, y] || dx + dy <= radiusSquared;
+						}
 					}
 				}
 			}

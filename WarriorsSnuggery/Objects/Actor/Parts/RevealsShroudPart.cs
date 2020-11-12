@@ -61,7 +61,6 @@ namespace WarriorsSnuggery.Objects.Parts
 		{
 			if (tick < 0)
 			{
-				// Use Rectangular as Circular is sill unperformant
 				self.World.ShroudLayer.RevealShroudCircular(self.Team, (self.Position * new CPos(2, 2, 0)).ToMPos(), info.Range);
 				tick = info.Interval;
 			}
