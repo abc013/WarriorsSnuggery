@@ -5,7 +5,7 @@
 		public static float[] GetNoise(MapLoader loader, int id)
 		{
 			if (id < 0)
-				return new float[loader.Bounds.X * loader.Bounds.Y];
+				return loader.Empty;
 
 			return loader.NoiseMaps[id].Values;
 		}

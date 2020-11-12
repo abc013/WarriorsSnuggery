@@ -26,6 +26,7 @@ namespace WarriorsSnuggery.Maps
 		public GameStatistics Statistics => world.Game.Statistics;
 
 		public readonly Random Random;
+		public readonly float[] Empty;
 		public readonly Dictionary<int, NoiseMap> NoiseMaps = new Dictionary<int, NoiseMap>();
 
 		readonly int[,] generatorReservations;
@@ -46,6 +47,7 @@ namespace WarriorsSnuggery.Maps
 				NoiseMaps.Add(info.ID, noiseMap);
 				MapPrinter.PrintNoiseMap(noiseMap);
 			}
+			Empty = new float[Bounds.X * Bounds.Y];
 
 			generatorReservations = new int[Bounds.X, Bounds.Y];
 			terrainInformation = new ushort[Bounds.X, Bounds.Y];
