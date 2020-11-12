@@ -100,7 +100,7 @@ namespace WarriorsSnuggery
 
 		List<Triangle> getTriangles(World world, CPos position, int height, MPos shroudPos, int radius)
 		{
-			var outerRadius = (float)Math.Sqrt(2) * radius * 736;
+			var outerRadius = (float)Math.Sqrt(2) * radius * 1024;
 
 			var pos1 = (shroudPos - new MPos(radius, radius)) / new MPos(2, 2);
 			// Why MPos(1, 1) here? -> when 7/2=3, but we want 4. Thus (7+1)/2=4. (8+1)/2=4 so works for this case as well.
