@@ -66,6 +66,7 @@ namespace WarriorsSnuggery
 		readonly UITextLine version;
 
 		readonly UITextLine infoText;
+
 		int infoTextDuration;
 
 		public uint LocalTick;
@@ -235,7 +236,7 @@ namespace WarriorsSnuggery
 				}
 
 				// Zooming
-				if (!Editor && Type != GameType.EDITOR)
+				if (!ScreenControl.CursorOnUI() && !Editor && Type != GameType.EDITOR)
 				{
 					if (KeyInput.IsKeyDown(Keys.LeftControl) && MouseInput.IsRightDown)
 						Camera.Zoom(Settings.ScrollSpeed / 20 * (4 - (Camera.CurrentZoom - Camera.DefaultZoom) / 2));
@@ -301,8 +302,11 @@ namespace WarriorsSnuggery
 		{
 			if (key == Settings.GetKey("Pause") && !isControl && ScreenControl.FocusedType != ScreenType.PAUSED && ScreenControl.FocusedType != ScreenType.DEFEAT)
 			{
-				ChangeScreen(ScreenType.PAUSED, true);
-				return;
+				if (!(ScreenControl.ChatOpen && ScreenControl.CursorOnUI()))
+				{
+					ChangeScreen(ScreenType.PAUSED, true);
+					return;
+				}
 			}
 
 			ScreenControl.KeyDown(key, isControl, isShift, isAlt);

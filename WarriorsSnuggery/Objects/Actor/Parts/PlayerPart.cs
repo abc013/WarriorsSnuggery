@@ -23,6 +23,9 @@ namespace WarriorsSnuggery.Objects.Parts
 			if (self.World.Game.Editor)
 				return;
 
+			if (self.World.Game.ScreenControl.ChatOpen && self.World.Game.ScreenControl.CursorOnUI())
+				return;
+
 			if (firstTick && Camera.LockedToPlayer)
 			{
 				firstTick = false;

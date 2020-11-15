@@ -11,11 +11,16 @@ namespace WarriorsSnuggery.UI
 		public Screen Focused;
 		public ScreenType FocusedType;
 
+		public ChatBox Chat;
+		public bool ChatOpen;
+
 		readonly Dictionary<ScreenType, Screen> screens = new Dictionary<ScreenType, Screen>();
 
 		public ScreenControl(Game game)
 		{
 			Game = game;
+
+			Chat = new ChatBox(new CPos(0, 4096, 0));
 		}
 
 		public void Load()
@@ -161,27 +166,50 @@ namespace WarriorsSnuggery.UI
 
 		public bool CursorOnUI()
 		{
-			return Focused != null && Focused.CursorOnUI();
+			return ChatOpen && Chat.MouseOnChat || Focused != null && Focused.CursorOnUI();
 		}
 
 		public void Render()
 		{
 			Focused?.Render();
+
+			if (ChatOpen)
+				Chat.Render();
 		}
 
 		public void DebugRender()
 		{
 			Focused?.DebugRender();
+
+			if (ChatOpen)
+				Chat.DebugRender();
 		}
 
 		public void Tick()
 		{
-			Focused?.Tick();
+			if (ChatOpen)
+				Chat.Tick();
+			else
+				Focused?.Tick();
 		}
 
 		public void KeyDown(Keys key, bool isControl, bool isShift, bool isAlt)
 		{
-			Focused?.KeyDown(key, isControl, isShift, isAlt);
+			if (!ChatOpen)
+			{
+				Focused?.KeyDown(key, isControl, isShift, isAlt);
+
+				if (key == Keys.Enter && isShift)
+				{
+					ChatOpen = true;
+					Chat.OpenChat();
+				}
+			}
+			else if (key == Keys.Escape || key == Keys.Enter && isShift)
+			{
+				ChatOpen = false;
+				Chat.CloseChat();
+			}
 		}
 
 		public void DisposeScreens()

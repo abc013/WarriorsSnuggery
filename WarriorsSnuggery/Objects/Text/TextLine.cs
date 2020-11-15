@@ -83,12 +83,26 @@ namespace WarriorsSnuggery.Objects
 		{
 			var colorPairs = new Dictionary<int, Color>();
 			var text = obj.ToString();
+			var currentIndex = 0;
 
-			while (colored && text.IndexOf("COLOR(") >= 0)
+			while (colored && text.IndexOf("COLOR(", currentIndex) >= 0)
 			{
 				var index = text.IndexOf("COLOR(");
 				var endindex = text.Remove(0, index).IndexOf(')');
-				var color = recognizeColor(text.Remove(0, index).Remove(endindex + 1));
+
+				if (endindex < 0)
+				{
+					currentIndex = index + 6;
+					continue;
+				}
+
+				var color = recognizeColor(text.Remove(0, index).Remove(endindex + 1), out var success);
+
+				if (!success)
+				{
+					currentIndex = index + 6;
+					continue;
+				}
 
 				colorPairs.Add(index, color);
 
@@ -139,18 +153,29 @@ namespace WarriorsSnuggery.Objects
 			setCharPositions(width);
 		}
 
-		Color recognizeColor(string text)
+		Color recognizeColor(string text, out bool success)
 		{
+			success = true;
+
 			text = text.Remove(0, 6);
 			text = text.Replace(')', ' ');
+
 			var values = text.Split('|');
+
+			if (values.Length != 3 && values.Length != 4)
+			{
+				success = false;
+				return Color.Black;
+			}
 
 			try
 			{
-				var r = float.Parse(values[0]);
-				var g = float.Parse(values[1]);
-				var b = float.Parse(values[2]);
-				var a = float.Parse(values[3]);
+				success &= float.TryParse(values[0], out var r);
+				success &= float.TryParse(values[1], out var g);
+				success &= float.TryParse(values[2], out var b);
+				var a = 1.0f;
+				if (values.Length == 4)
+					success &= float.TryParse(values[3], out a);
 				return new Color(r, g, b, a);
 			}
 			catch (Exception e)
