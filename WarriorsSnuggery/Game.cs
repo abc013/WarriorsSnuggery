@@ -366,7 +366,7 @@ namespace WarriorsSnuggery
 			{
 				// FIND_EXIT and TUTORIAL will meet conditions when entering the exit
 				case GameMode.WAVES:
-					if (waveController.Done())
+					if (waveController.Done)
 						VictoryConditionsMet();
 
 					break;
@@ -403,7 +403,7 @@ namespace WarriorsSnuggery
 
 		public int CurrentWave()
 		{
-			return waveController != null ? waveController.CurrentWave() : 0;
+			return waveController != null ? waveController.CurrentWave : 0;
 		}
 
 		public void SwitchEditor()

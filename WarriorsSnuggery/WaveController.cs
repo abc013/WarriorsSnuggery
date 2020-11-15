@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using WarriorsSnuggery.Maps;
 using WarriorsSnuggery.Objects;
@@ -8,12 +9,17 @@ namespace WarriorsSnuggery
 	public class WaveController
 	{
 		readonly int waves;
-		int currentWave;
+		public int CurrentWave { get; private set; }
+		public bool Done => CurrentWave > waves;
+
+		List<Actor> waveActors;
 
 		readonly Game game;
 
 		readonly MapGeneratorInfo[] generators;
 		readonly MapLoader loader;
+
+		bool awaitingNextWave;
 		int countdown;
 
 		public WaveController(Game game)
@@ -25,61 +31,75 @@ namespace WarriorsSnuggery
 			loader = new MapLoader(game.World, game.World.Map);
 
 			if (game.MapType.FromSave && game.Statistics.Waves > 0)
-				currentWave = game.Statistics.Waves;
+				CurrentWave = game.Statistics.Waves;
 
 			if (generators.Length == 0)
 				throw new InvalidTextNodeException("The GameMode WAVES can not be executed because there are no available PatrolGenerators for it.");
+
+			AwaitNextWave();
 		}
 
 		public void Tick()
 		{
-			if (--countdown < 0)
+			if (Done)
+				return;
+
+			if (!awaitingNextWave)
 			{
-				if (game.World.ActorLayer.NonNeutralActors.Any(a => a.Team != Actor.PlayerTeam && a.WorldPart != null && a.WorldPart.KillForVictory))
-					countdown = Settings.UpdatesPerSecond * 10;
+				// In case of a savegame
+				if (waveActors == null)
+					waveActors = game.World.ActorLayer.Actors.Where(a => a.Team != Actor.PlayerTeam && a.IsBot && a.WorldPart != null && a.WorldPart.KillForVictory).ToList();
+
+				if (waveActors.Any(a => a.IsAlive))
+					return;
+
+				AwaitNextWave();
 			}
-			else if (countdown == 0)
-				CreateNextWave();
+
+			if (awaitingNextWave && countdown-- < 0)
+			{
+				nextWave();
+				awaitingNextWave = false;
+			}
 			else
 			{
 				var seconds = countdown / Settings.UpdatesPerSecond + 1;
 				if ((countdown + 1) % Settings.UpdatesPerSecond == 0)
 				{
-					if (currentWave == waves)
+					if (CurrentWave == waves)
 						game.AddInfoMessage(200, Color.Yellow + "Transfer in " + seconds + " second" + (seconds > 1 ? "s" : string.Empty));
 					else
-						game.AddInfoMessage(200, Color.White + "Wave " + (currentWave + 1) + " in " + (seconds % 2 == 0 ? Color.White : Color.Red) + seconds + " second" + (seconds > 1 ? "s" : string.Empty));
+						game.AddInfoMessage(200, Color.White + "Wave " + (CurrentWave + 1) + " in " + (seconds % 2 == 0 ? Color.White : Color.Red) + seconds + " second" + (seconds > 1 ? "s" : string.Empty));
 				}
 			}
 		}
 
-		public void CreateNextWave()
+		public void AwaitNextWave()
 		{
-			if (++currentWave > waves)
+			awaitingNextWave = true;
+			// Give 10 seconds
+			countdown = Settings.UpdatesPerSecond * 10;
+		}
+
+		void nextWave()
+		{
+			if (++CurrentWave > waves)
 				return;
 
-			game.AddInfoMessage(200, ((currentWave == waves) ? Color.Green : Color.White) + "Wave " + currentWave + "/" + waves);
+			game.AddInfoMessage(200, ((CurrentWave == waves) ? Color.Green : Color.White) + "Wave " + CurrentWave + "/" + waves);
 			if (game.ScreenControl.FocusedType == UI.ScreenType.DEFAULT && !game.Editor)
-				((UI.DefaultScreen)game.ScreenControl.Focused).SetWave(currentWave, waves);
+				((UI.DefaultScreen)game.ScreenControl.Focused).SetWave(CurrentWave, waves);
 			var generatorInfo = (PatrolGeneratorInfo)generators[game.SharedRandom.Next(generators.Length)];
 			var generator = new PatrolGenerator(game.SharedRandom, loader, generatorInfo);
 
 			generator.Generate();
 
-			var actors = game.World.ActorLayer.NonNeutralActors.FindAll(a => a.Team != Actor.PlayerTeam && a.IsBot);
+			var actors = game.World.ActorLayer.ToAdd().Where(a => a.Team != Actor.PlayerTeam && a.IsBot);
 
 			foreach (var actor in actors)
 				actor.BotPart.Target = new Objects.Weapons.Target(game.World.LocalPlayer);
-		}
 
-		public int CurrentWave()
-		{
-			return currentWave;
-		}
-
-		public bool Done()
-		{
-			return currentWave > waves;
+			waveActors = actors.Where(a => a.WorldPart != null && a.WorldPart.KillForVictory).ToList();
 		}
 	}
 }
