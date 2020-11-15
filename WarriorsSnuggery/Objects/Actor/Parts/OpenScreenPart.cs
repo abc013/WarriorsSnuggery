@@ -3,47 +3,49 @@ using WarriorsSnuggery.Objects.Conditions;
 
 namespace WarriorsSnuggery.Objects.Parts
 {
-	public enum PortalType
+	public enum ScreenType
 	{
-		NEXT_LEVEL,
-		TUTORIAL_LEVEL,
-		MAIN_LEVEL,
-		MAINMENU_LEVEL
+		NEW_GAME,
+		NEW_STORY_GAME,
+		NEW_CUSTOM_GAME,
+		SPELL_SHOP,
+		ACTOR_SHOP,
+		TROPHY_COLLECTION
 	}
 
-	[Desc("Attach to an actor to make it trigger a level transfer when an actor gets near.")]
-	public class PortalPartInfo : PartInfo
+	[Desc("Attach to an actor to open a screen when an actor gets near.")]
+	public class OpenScreenPartInfo : PartInfo
 	{
-		[Desc("Selects to what type of level to go next.")]
-		public readonly PortalType Type = PortalType.NEXT_LEVEL;
+		[Desc("Selects to what type of screen to open.")]
+		public readonly ScreenType Type = ScreenType.TROPHY_COLLECTION;
 		[Desc("Scanradius for triggering.")]
 		public readonly int Radius = 512;
 
-		[Desc("Determines whether to skip the win screen and continue immediately.")]
-		public readonly bool Instant;
+		[Desc("Determines whether to pause the game.")]
+		public readonly bool Pause = true;
 
 		[Desc("Activate only by Player.")]
 		public readonly bool OnlyByPlayer;
 		[Desc("Activate only by the following Condition.")]
 		public readonly Condition Condition;
 
-		public PortalPartInfo(string internalName, List<MiniTextNode> nodes) : base(internalName, nodes) { }
+		public OpenScreenPartInfo(string internalName, List<MiniTextNode> nodes) : base(internalName, nodes) { }
 
 		public override ActorPart Create(Actor self)
 		{
-			return new PortalPart(self, this);
+			return new OpenScreenPart(self, this);
 		}
 	}
 
-	public class PortalPart : ActorPart, ITick, INoticeMove
+	public class OpenScreenPart : ActorPart, ITick, INoticeMove
 	{
-		readonly PortalPartInfo info;
+		readonly OpenScreenPartInfo info;
 		bool activated;
 		Actor lastActor;
 		ActorSector[] sectors;
 		bool firstTick = true;
 
-		public PortalPart(Actor self, PortalPartInfo info) : base(self)
+		public OpenScreenPart(Actor self, OpenScreenPartInfo info) : base(self)
 		{
 			this.info = info;
 		}
@@ -102,31 +104,28 @@ namespace WarriorsSnuggery.Objects.Parts
 			bool invokeFunction(Actor a)
 			{
 				var game = a.World.Game;
+
+				game.Pause(info.Pause);
 				switch (info.Type)
 				{
-					case PortalType.NEXT_LEVEL:
-						if (game.Type == GameType.TEST)
-						{
-							game.InstantLevelChange(GameType.MAINMENU);
-							return true;
-						}
-
-						game.VictoryConditionsMet();
-
-						if (info.Instant)
-							game.InstantLevelChange(GameType.NORMAL);
+					case ScreenType.NEW_STORY_GAME:
+						game.ScreenControl.ShowScreen(UI.ScreenType.NEW_STORY_GAME);
 
 						return true;
-					case PortalType.TUTORIAL_LEVEL:
-						game.InstantLevelChange(GameType.TUTORIAL);
+					case ScreenType.NEW_CUSTOM_GAME:
+						game.ScreenControl.ShowScreen(UI.ScreenType.NEW_CUSTOM_GAME);
 
 						return true;
-					case PortalType.MAIN_LEVEL:
-						game.InstantLevelChange(GameType.MENU);
+					case ScreenType.SPELL_SHOP:
+						game.ScreenControl.ShowScreen(UI.ScreenType.SPELL_SHOP);
 
 						return true;
-					case PortalType.MAINMENU_LEVEL:
-						game.InstantLevelChange(GameType.MAINMENU);
+					case ScreenType.ACTOR_SHOP:
+						game.ScreenControl.ShowScreen(UI.ScreenType.ACTOR_SHOP);
+
+						return true;
+					case ScreenType.TROPHY_COLLECTION:
+						game.ScreenControl.ShowScreen(UI.ScreenType.TROPHY_COLLECTION);
 
 						return true;
 				}

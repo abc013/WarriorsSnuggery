@@ -14,12 +14,6 @@ namespace WarriorsSnuggery.Objects.Parts
 		MANA,
 		TEXT,
 		SPAWNOBJECT,
-		NEW_GAME,
-		NEW_STORY_GAME,
-		NEW_CUSTOM_GAME,
-		SPELL_SHOP,
-		ACTOR_SHOP,
-		TROPHY_COLLECTION,
 		KEY,
 		TROPHY
 	}
@@ -199,31 +193,6 @@ namespace WarriorsSnuggery.Objects.Parts
 						return true;
 					case CollectableType.MONEY:
 						a.World.Game.Statistics.Money += info.Value;
-
-						return true;
-					case CollectableType.NEW_STORY_GAME:
-						game.Pause(true);
-						game.ScreenControl.ShowScreen(UI.ScreenType.NEW_STORY_GAME);
-
-						return true;
-					case CollectableType.NEW_CUSTOM_GAME:
-						game.Pause(true);
-						game.ScreenControl.ShowScreen(UI.ScreenType.NEW_CUSTOM_GAME);
-
-						return true;
-					case CollectableType.SPELL_SHOP:
-						game.Pause(true);
-						game.ScreenControl.ShowScreen(UI.ScreenType.SPELL_SHOP);
-
-						return true;
-					case CollectableType.ACTOR_SHOP:
-						game.Pause(true);
-						game.ScreenControl.ShowScreen(UI.ScreenType.ACTOR_SHOP);
-
-						return true;
-					case CollectableType.TROPHY_COLLECTION:
-						game.Pause(true);
-						game.ScreenControl.ShowScreen(UI.ScreenType.TROPHY_COLLECTION);
 
 						return true;
 					case CollectableType.TEXT:
