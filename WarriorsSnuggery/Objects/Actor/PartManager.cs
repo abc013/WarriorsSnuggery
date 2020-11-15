@@ -6,12 +6,12 @@ namespace WarriorsSnuggery.Objects
 {
 	public class PartManager
 	{
-		static readonly Func<Type, IPartList> CreatePartList = t =>
+		static readonly Func<Type, IPartList> createPartList = t =>
 			(IPartList)typeof(PartList<>).MakeGenericType(t).GetConstructor(Type.EmptyTypes).Invoke(null);
 
 		public readonly List<ActorPart> Parts = new List<ActorPart>();
 
-		readonly Dictionary<Type, IPartList> PartCache = new Dictionary<Type, IPartList>();
+		readonly Dictionary<Type, IPartList> partCache = new Dictionary<Type, IPartList>();
 
 		public PartManager() { }
 
@@ -25,30 +25,30 @@ namespace WarriorsSnuggery.Objects
 
 		void innerAdd(Type type, ActorPart part)
 		{
-			if (!PartCache.ContainsKey(type))
-				PartCache.Add(type, CreatePartList(type));
+			if (!partCache.ContainsKey(type))
+				partCache.Add(type, createPartList(type));
 
-			PartCache[type].Add(part);
+			partCache[type].Add(part);
 		}
 
 		public List<T> Get<T>()
 		{
 			var type = typeof(T);
 
-			if (!PartCache.ContainsKey(type))
+			if (!partCache.ContainsKey(type))
 				throw new Exception("Tried to get invalid type '{type}' from a PartManager.");
 
-			return ((PartList<T>)PartCache[type]).Get();
+			return ((PartList<T>)partCache[type]).Get();
 		}
 
 		public List<T> GetOrDefault<T>()
 		{
 			var type = typeof(T);
 
-			if (!PartCache.ContainsKey(type))
+			if (!partCache.ContainsKey(type))
 				return new List<T>();
 
-			return ((PartList<T>)PartCache[type]).Get();
+			return ((PartList<T>)partCache[type]).Get();
 		}
 
 		class PartList<T> : IPartList

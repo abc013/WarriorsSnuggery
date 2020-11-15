@@ -63,12 +63,12 @@ namespace WarriorsSnuggery
 			}
 
 			if (Debugger.IsAttached)
-				Start(types);
+				start(types);
 			else
 			{
 				try
 				{
-					Start(types);
+					start(types);
 				}
 				catch (Exception)
 				{
@@ -85,7 +85,7 @@ namespace WarriorsSnuggery
 			Console.ReadKey();
 		}
 
-		static void Start(DocumentationType[] types)
+		static void start(DocumentationType[] types)
 		{
 			using var writer = new StreamWriter(FileExplorer.MainDirectory + "Documentation.html");
 

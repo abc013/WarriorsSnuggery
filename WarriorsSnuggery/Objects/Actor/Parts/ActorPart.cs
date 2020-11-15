@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using WarriorsSnuggery.Objects.Actors;
-using WarriorsSnuggery.Objects.Weapons;
 
 namespace WarriorsSnuggery.Objects.Parts
 {

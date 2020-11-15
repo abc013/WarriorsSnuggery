@@ -5,8 +5,6 @@ using OpenTK.Windowing.Desktop;
 using System;
 using WarriorsSnuggery.Audio;
 using WarriorsSnuggery.Graphics;
-using OpenTK.Windowing.Common.Input;
-using WarriorsSnuggery.Loader;
 
 namespace WarriorsSnuggery
 {
