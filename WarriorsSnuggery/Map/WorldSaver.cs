@@ -1,4 +1,6 @@
-﻿using System.IO;
+﻿using System.Collections.Generic;
+using System.IO;
+using System.Reflection;
 using System.Text;
 
 namespace WarriorsSnuggery
@@ -132,6 +134,42 @@ namespace WarriorsSnuggery
 				foreach (var rule in list)
 					writer.WriteLine("\t\t" + rule);
 			}
+		}
+
+		public static List<string> GetSaveFields<T>(T @object, bool inherit = true)
+		{
+			var list = new List<string>();
+
+			var props = typeof(T).GetProperties(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
+			foreach (var prop in props)
+			{
+				var attributes = prop.GetCustomAttributes(inherit);
+				foreach (var attribute in attributes)
+				{
+					if (!(attribute is SaveAttribute saveAttribute))
+						continue;
+
+					var key = string.IsNullOrEmpty(saveAttribute.Name) ? prop.Name : saveAttribute.Name;
+					var value = prop.GetValue(@object);
+					list.Add($"{key}={value}");
+				}
+			}
+			var varis = typeof(T).GetFields(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
+			foreach (var vari in varis)
+			{
+				var attributes = vari.GetCustomAttributes(inherit);
+				foreach (var attribute in attributes)
+				{
+					if (!(attribute is SaveAttribute saveAttribute))
+						continue;
+
+					var key = string.IsNullOrEmpty(saveAttribute.Name) ? vari.Name : saveAttribute.Name;
+					var value = vari.GetValue(@object);
+					list.Add($"{key}={value}");
+				}
+			}
+
+			return list;
 		}
 	}
 }

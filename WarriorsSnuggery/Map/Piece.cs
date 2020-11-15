@@ -105,15 +105,15 @@ namespace WarriorsSnuggery.Maps
 		public void PlacePiece(MPos position, MapLoader loader, World world)
 		{
 			// generate Terrain
-			for (int y = position.Y; y < (Size.Y + position.Y); y++)
-				for (int x = position.X; x < (Size.X + position.X); x++)
-					loader.SetTerrain(x, y, groundData[(y - position.Y) * Size.X + (x - position.X)]);
+			for (int y = 0; y < Size.Y; y++)
+				for (int x = 0; x < Size.X; x++)
+					loader.SetTerrain(x + position.X, y + position.Y, groundData[y * Size.X + x]);
 
 			// generate Walls
 			if (wallData.Length != 0)
 			{
-				var maxY = (Size.Y + 1 + position.Y);
 				var maxX = (Size.X + 1 + position.X) * 2;
+				var maxY = (Size.Y + 1 + position.Y);
 				for (int y = position.Y; y < maxY; y++)
 				{
 					for (int x = position.X * 2; x < maxX; x++)
@@ -140,10 +140,7 @@ namespace WarriorsSnuggery.Maps
 			var generatedActors = new List<Actor>();
 			// generate Actors
 			foreach (var init in actors)
-			{
-				var actor = loader.AddActor(init, !loader.FromSave, position.ToCPos());
-				generatedActors.Add(actor);
-			}
+				generatedActors.Add(loader.AddActor(init, !loader.FromSave, position.ToCPos()));
 
 			// generate Weapons
 			foreach (var weapon in weapons)

@@ -11,20 +11,30 @@ namespace WarriorsSnuggery.Objects.Weapons
 		public readonly uint ID;
 
 		public readonly Actor Origin;
+		[Save]
 		public readonly byte Team;
 
+		[Save]
 		public float Angle;
+		[Save]
 		public int DistanceTravelled;
 
 		public Target Target;
+		[Save]
 		public CPos TargetPosition;
+		[Save]
 		public int TargetHeight;
 
+		[Save]
 		protected readonly WeaponType Type;
 
+		[Save]
 		public readonly float InaccuracyModifier = 1f;
+		[Save]
 		public readonly float DamageModifier = 1f;
+		[Save]
 		public readonly float DamageRangeModifier = 1f;
+		[Save]
 		public readonly float RangeModifier = 1f;
 
 		protected Weapon(World world, WeaponType type, Target target, Actor origin, uint id) : base(origin.ActiveWeapon != null ? origin.ActiveWeapon.WeaponOffsetPosition : origin.GraphicPosition, type.Projectile.GetTexture())
@@ -166,31 +176,15 @@ namespace WarriorsSnuggery.Objects.Weapons
 
 		public virtual List<string> Save()
 		{
-			var list = new List<string>
-			{
-				"Position=" + Position,
-				"Height=" + Height,
-				"Type=" +  WeaponCreator.Types.FirstOrDefault(t => t.Value == Type).Key,
-				"Team=" + Team,
-				"InaccuracyModifier=" + InaccuracyModifier,
-				"DamageModifier=" + DamageModifier,
-				"DamageRangeModifier=" + DamageRangeModifier,
-				"RangeModifier=" + RangeModifier
-			};
+			var list = WorldSaver.GetSaveFields(this);
+
 			if (Origin != null)
 				list.Add("Origin=" + Origin.ID);
 			if (Target.Type == TargetType.ACTOR)
 				list.Add("TargetActor=" + Target.Actor.ID);
 
-			if (Angle != 0)
-				list.Add("Angle=" + Angle);
-			if (DistanceTravelled != 0)
-				list.Add("DistanceTravelled=" + DistanceTravelled);
-
 			list.Add("OriginalTargetPosition=" + Target.Position);
 			list.Add("OriginalTargetHeight=" + Target.Height);
-			list.Add("TargetPosition=" + TargetPosition);
-			list.Add("TargetHeight=" + TargetHeight);
 
 			return list;
 		}

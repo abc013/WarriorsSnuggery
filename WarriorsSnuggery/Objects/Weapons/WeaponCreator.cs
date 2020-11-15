@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 
 namespace WarriorsSnuggery.Objects.Weapons
 {
@@ -12,6 +13,11 @@ namespace WarriorsSnuggery.Objects.Weapons
 
 			foreach (var weapon in weapons)
 				Types.Add(weapon.Key, new WeaponType(weapon.Children));
+		}
+
+		public static string GetName(WeaponType type)
+		{
+			return Types.First(t => t.Value == type).Key;
 		}
 
 		public static Weapon Create(World world, string name, CPos target, Actor origin, uint id = uint.MaxValue)

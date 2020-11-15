@@ -1,5 +1,3 @@
-using Microsoft.CodeAnalysis.Operations;
-using OpenTK.Graphics.ES20;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -25,7 +23,9 @@ namespace WarriorsSnuggery.Objects
 
 		public ActorSector Sector;
 
+		[Save]
 		public byte Team;
+		[Save]
 		public float Angle;
 
 		public readonly List<ActorPart> Parts = new List<ActorPart>();
@@ -49,6 +49,7 @@ namespace WarriorsSnuggery.Objects
 
 		public readonly BotPart BotPart;
 
+		[Save]
 		public readonly ActorType Type;
 		ActorInit init;
 
@@ -201,13 +202,7 @@ namespace WarriorsSnuggery.Objects
 
 		public List<string> Save()
 		{
-			var list = new List<string>
-			{
-				"Type=" + ActorCreator.GetName(Type),
-				"Position=" + Position,
-				"Height=" + Height,
-				"Team=" + Team
-			};
+			var list = WorldSaver.GetSaveFields(this);
 
 			foreach (var part in Parts)
 				list.AddRange(part.OnSave().GetSave());

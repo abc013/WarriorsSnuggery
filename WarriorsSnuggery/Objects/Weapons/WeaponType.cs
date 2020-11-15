@@ -32,5 +32,10 @@ namespace WarriorsSnuggery.Objects.Weapons
 		{
 			Loader.PartLoader.SetValues(this, nodes);
 		}
+
+		public override string ToString()
+		{
+			return WeaponCreator.GetName(this);
+		}
 	}
 }

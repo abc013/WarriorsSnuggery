@@ -51,5 +51,10 @@ namespace WarriorsSnuggery.Objects.Particles
 
 			return new BatchSequence(Texture.GetTextures(), Color + ParticleUtils.Variety(ColorVariety), Texture.Tick);
 		}
+
+		public override string ToString()
+		{
+			return ParticleCreator.GetName(this);
+		}
 	}
 }

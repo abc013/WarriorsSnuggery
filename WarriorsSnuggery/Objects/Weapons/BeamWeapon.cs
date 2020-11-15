@@ -17,12 +17,18 @@ namespace WarriorsSnuggery.Objects.Weapons
 		int curTick;
 		int frame;
 
+		[Save("OriginPosition")]
 		CPos originPos;
+		[Save("OriginHeight")]
 		int originHeight;
 
+		[Save("ImpactInterval")]
 		int impactInterval;
+		[Save("Duration")]
 		int duration;
+		[Save("BuildupDuration")]
 		int buildupduration;
+		[Save("EndDuration")]
 		int endduration;
 
 		public BeamWeapon(World world, WeaponType type, Target target, Actor origin, uint id) : base(world, type, target, origin, id)
@@ -215,13 +221,7 @@ namespace WarriorsSnuggery.Objects.Weapons
 		public override List<string> Save()
 		{
 			var list = base.Save();
-
-			list.Add("OriginPosition=" + originPos);
-			list.Add("OriginHeight=" + originHeight);
-			list.Add("ImpactInterval=" + impactInterval);
-			list.Add("Duration=" + duration);
-			list.Add("BuildupDuration=" + buildupduration);
-			list.Add("EndDuration=" + endduration);
+			list.AddRange(WorldSaver.GetSaveFields(this, false));
 
 			return list;
 		}

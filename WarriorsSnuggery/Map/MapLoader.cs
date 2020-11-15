@@ -90,7 +90,7 @@ namespace WarriorsSnuggery.Maps
 					world.TerrainLayer.Set(TerrainCreator.Create(world, new MPos(x, y), terrainInformation[x, y]));
 
 					for (int i = 0; i < 2; i++)
-							applyWall(new MPos(x * 2 + i, y));
+						applyWall(new MPos(x * 2 + i, y));
 				}
 			}
 

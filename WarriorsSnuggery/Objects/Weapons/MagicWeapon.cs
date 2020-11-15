@@ -9,7 +9,9 @@ namespace WarriorsSnuggery.Objects.Weapons
 		readonly MagicProjectileType projectileType;
 		readonly RayPhysics rayPhysics;
 
+		[Save("Speed")]
 		Vector speed;
+		[Save("SpeedLeft")]
 		Vector speedLeft;
 
 		public MagicWeapon(World world, WeaponType type, Target target, Actor origin, uint id) : base(world, type, target, origin, id)
@@ -128,9 +130,7 @@ namespace WarriorsSnuggery.Objects.Weapons
 		public override List<string> Save()
 		{
 			var list = base.Save();
-
-			list.Add("Speed=" + speed);
-			list.Add("SpeedLeft=" + speedLeft);
+			list.AddRange(WorldSaver.GetSaveFields(this, false));
 
 			return list;
 		}

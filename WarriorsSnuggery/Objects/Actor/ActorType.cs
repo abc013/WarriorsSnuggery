@@ -36,6 +36,11 @@ namespace WarriorsSnuggery.Objects
 
 			return RuleLoader.Questionmark[0];
 		}
+
+		public override string ToString()
+		{
+			return ActorCreator.GetName(this);
+		}
 	}
 
 }

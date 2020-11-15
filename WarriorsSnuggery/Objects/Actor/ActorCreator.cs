@@ -35,7 +35,7 @@ namespace WarriorsSnuggery.Objects
 
 		public static string GetName(ActorType type)
 		{
-			return Types.FirstOrDefault(t => t.Value == type).Key;
+			return Types.First(t => t.Value == type).Key;
 		}
 
 		public static Actor Create(World world, string name, CPos position, byte team = 0, bool isBot = false, bool isPlayer = false, float health = 1f, uint id = uint.MaxValue)

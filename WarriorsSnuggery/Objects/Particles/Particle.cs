@@ -1,23 +1,27 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace WarriorsSnuggery.Objects.Particles
 {
 	public class Particle : PositionableObject
 	{
+		[Save]
 		public readonly ParticleType Type;
 		readonly World world;
 
 		public ParticleSector Sector;
 
+		[Save("Duration")]
 		int current;
+		[Save("DissolveDuration")]
 		int dissolve;
 
 		// Z is height
+		[Save("Velocity")]
 		CPos velocity;
 		Vector velocity_left;
 
+		[Save("RotationVelocity")]
 		VAngle rotate_velocity;
 
 		public Particle(World world, CPos pos, int height, ParticleType type) : base(pos, type.GetRenderable())
@@ -190,18 +194,7 @@ namespace WarriorsSnuggery.Objects.Particles
 
 		public List<string> Save()
 		{
-			var list = new List<string>
-			{
-				"Position=" + Position,
-				"Height=" + Height,
-				"Type=" + ParticleCreator.Types.FirstOrDefault(t => t.Value == Type).Key,
-				"Duration=" + current,
-				"DissolveDuration=" + dissolve,
-				"Velocity=" + velocity,
-				"RotationVelocity=" + rotate_velocity
-			};
-
-			return list;
+			return WorldSaver.GetSaveFields(this);
 		}
 	}
 }

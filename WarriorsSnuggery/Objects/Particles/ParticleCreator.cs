@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 
 namespace WarriorsSnuggery.Objects.Particles
 {
@@ -12,6 +13,11 @@ namespace WarriorsSnuggery.Objects.Particles
 
 			foreach (var node in nodes)
 				Types.Add(node.Key, new ParticleType(node.Children));
+		}
+
+		public static string GetName(ParticleType type)
+		{
+			return Types.First(t => t.Value == type).Key;
 		}
 
 		public static Particle Create(World world, string name, CPos position, int height)

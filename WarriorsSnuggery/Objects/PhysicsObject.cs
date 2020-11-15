@@ -8,6 +8,7 @@ namespace WarriorsSnuggery.Objects
 		public PhysicsSector[] PhysicsSectors = new PhysicsSector[0];
 		public readonly SimplePhysics Physics;
 
+		[Save]
 		public override int Height
 		{
 			get => base.Height;
@@ -20,6 +21,7 @@ namespace WarriorsSnuggery.Objects
 			}
 		}
 
+		[Save]
 		public override CPos Position
 		{
 			get => base.Position;
