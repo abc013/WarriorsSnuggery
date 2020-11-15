@@ -12,11 +12,6 @@ namespace WarriorsSnuggery.Objects.Parts
 		MONEY,
 		HEALTH,
 		MANA,
-		NEXT_LEVEL,
-		NEXT_LEVEL_INSTANT,
-		TUTORIAL_LEVEL,
-		MAIN_LEVEL,
-		MAINMENU_LEVEL,
 		TEXT,
 		SPAWNOBJECT,
 		NEW_GAME,
@@ -204,42 +199,6 @@ namespace WarriorsSnuggery.Objects.Parts
 						return true;
 					case CollectableType.MONEY:
 						a.World.Game.Statistics.Money += info.Value;
-
-						return true;
-					case CollectableType.NEXT_LEVEL:
-						if (game.Type == GameType.TEST)
-						{
-							game.InstantLevelChange(GameType.MAINMENU);
-						}
-						else
-						{
-							game.Statistics.Money += info.Value;
-							game.VictoryConditionsMet();
-						}
-						return true;
-					case CollectableType.NEXT_LEVEL_INSTANT:
-						if (game.Type == GameType.TEST)
-						{
-							game.InstantLevelChange(GameType.MAINMENU);
-						}
-						else
-						{
-							game.Statistics.Money += info.Value;
-							game.InstantLevelChange(GameType.NORMAL);
-						}
-
-						return true;
-					case CollectableType.TUTORIAL_LEVEL:
-						game.InstantLevelChange(GameType.TUTORIAL);
-
-						return true;
-					case CollectableType.MAIN_LEVEL:
-						game.Statistics.Money += info.Value;
-						game.InstantLevelChange(GameType.MENU);
-
-						return true;
-					case CollectableType.MAINMENU_LEVEL:
-						game.InstantLevelChange(GameType.MAINMENU);
 
 						return true;
 					case CollectableType.NEW_STORY_GAME:
