@@ -107,26 +107,26 @@ namespace WarriorsSnuggery.Objects.Parts
 					case PortalType.NEXT_LEVEL:
 						if (game.Type == GameType.TEST)
 						{
-							game.InstantLevelChange(GameType.MAINMENU);
+							game.ChangeLevelAfterTick(GameType.MAINMENU);
 							return true;
 						}
 
 						game.VictoryConditionsMet();
 
 						if (info.Instant)
-							game.InstantLevelChange(GameType.NORMAL);
+							game.ChangeLevelAfterTick(GameType.NORMAL);
 
 						return true;
 					case PortalType.TUTORIAL_LEVEL:
-						game.InstantLevelChange(GameType.TUTORIAL);
+						game.ChangeLevelAfterTick(GameType.TUTORIAL);
 
 						return true;
 					case PortalType.MAIN_LEVEL:
-						game.InstantLevelChange(GameType.MENU);
+						game.ChangeLevelAfterTick(GameType.MENU);
 
 						return true;
 					case PortalType.MAINMENU_LEVEL:
-						game.InstantLevelChange(GameType.MAINMENU);
+						game.ChangeLevelAfterTick(GameType.MAINMENU);
 
 						return true;
 				}

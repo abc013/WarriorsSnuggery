@@ -1,4 +1,5 @@
-﻿using System;
+﻿using OpenTK.Windowing.GraphicsLibraryFramework;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using WarriorsSnuggery.Graphics;
@@ -278,6 +279,36 @@ namespace WarriorsSnuggery
 			var size = Map.Bounds.ToCPos();
 
 			return pos.X >= -512 + actor.Physics.RadiusX && pos.X < size.X - 512 - actor.Physics.RadiusX && pos.Y >= -512 + actor.Physics.RadiusY && pos.Y < size.Y - 512 - actor.Physics.RadiusY;
+		}
+
+		public Actor FindValidTarget(CPos pos, int team)
+		{
+			const int range = 5120;
+
+			if (KeyInput.IsKeyDown(Keys.LeftShift))
+				return null;
+
+			// Look for actors in range.
+			var sectors = ActorLayer.GetSectors(pos, range);
+			var currentRange = long.MaxValue;
+			Actor validTarget = null;
+			foreach (var sector in sectors)
+			{
+				foreach (var actor in sector.Actors)
+				{
+					if (actor.Team == team || actor.WorldPart == null || !actor.WorldPart.Targetable || !actor.WorldPart.InTargetBox(pos) || !VisibilitySolver.IsVisible(actor.Position))
+						continue;
+
+					var dist = (actor.Position - pos).SquaredFlatDist;
+					if (dist < currentRange)
+					{
+						currentRange = dist;
+						validTarget = actor;
+					}
+				}
+			}
+
+			return validTarget;
 		}
 
 		public bool IsInWorld(CPos pos)

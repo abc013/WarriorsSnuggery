@@ -13,6 +13,7 @@ namespace WarriorsSnuggery
 {
 	public enum GameType
 	{
+		NONE,
 		NORMAL,
 		EDITOR,
 		MENU,
@@ -76,13 +77,12 @@ namespace WarriorsSnuggery
 		public bool Finished;
 		public GameState State;
 
-		bool instantExit;
-		GameType instantExitType;
+		GameType nextLevelType = GameType.NONE;
 
-		public uint NextActorID { get { return CurrentActorID++; } }
+		public uint NextActorID => CurrentActorID++;
 		public uint CurrentActorID;
 
-		public uint NextWeaponID { get { return CurrentWeaponID++; } }
+		public uint NextWeaponID => CurrentWeaponID++;
 		public uint CurrentWeaponID;
 
 		public Game(GameStatistics statistics, MapInfo map, int seed = -1)
@@ -107,10 +107,10 @@ namespace WarriorsSnuggery
 			Editor = Type == GameType.EDITOR;
 
 			// Determine state of the game
-			if (Type != GameType.NORMAL && Type != GameType.TEST && Type != GameType.TUTORIAL)
-				State = GameState.NONE;
-			else
+			if (Type == GameType.NORMAL || Type == GameType.TEST || Type == GameType.TUTORIAL)
 				State = GameState.UNKNOWN;
+			else
+				State = GameState.NONE;
 
 			Log.WriteDebug("Editor: " + Editor);
 			Log.WriteDebug("GameType: " + Type);
@@ -143,7 +143,6 @@ namespace WarriorsSnuggery
 			visibility = new UITextLine(new CPos(corner, 6692, 0), FontManager.Pixel16, TextOffset.RIGHT);
 			tick = new UITextLine(new CPos(corner, 7692, 0), FontManager.Pixel16, TextOffset.RIGHT);
 			render = new UITextLine(new CPos(corner, 7192, 0), FontManager.Pixel16, TextOffset.RIGHT);
-
 			infoText = new UITextLine(new CPos(-corner + 1024, 7192, 0), FontManager.Pixel16);
 		}
 
@@ -197,9 +196,10 @@ namespace WarriorsSnuggery
 
 		public void Tick()
 		{
-			if (Finished && instantExit)
+			if (nextLevelType != GameType.NONE)
 			{
-				GameController.CreateNext(instantExitType);
+				Log.WriteDebug("Instant level change initiated.");
+				GameController.CreateNext(nextLevelType);
 				return;
 			}
 
@@ -299,13 +299,10 @@ namespace WarriorsSnuggery
 
 		public void KeyDown(Keys key, bool isControl, bool isShift, bool isAlt)
 		{
-			if (ScreenControl.FocusedType != ScreenType.PAUSED && ScreenControl.FocusedType != ScreenType.DEFEAT)
+			if (key == Settings.GetKey("Pause") && !isControl && ScreenControl.FocusedType != ScreenType.PAUSED && ScreenControl.FocusedType != ScreenType.DEFEAT)
 			{
-				if (key == Settings.GetKey("Pause") && !isControl)
-				{
-					ChangeScreen(ScreenType.PAUSED, true);
-					return;
-				}
+				ChangeScreen(ScreenType.PAUSED, true);
+				return;
 			}
 
 			ScreenControl.KeyDown(key, isControl, isShift, isAlt);
@@ -314,7 +311,7 @@ namespace WarriorsSnuggery
 				return;
 
 			// screen control
-			 if (ScreenControl.FocusedType != ScreenType.DEFEAT)
+			if (ScreenControl.FocusedType != ScreenType.DEFEAT)
 			{
 				if (key == Keys.Escape)
 					ChangeScreen(ScreenType.MENU, true);
@@ -409,36 +406,6 @@ namespace WarriorsSnuggery
 			return waveController != null ? waveController.CurrentWave() : 0;
 		}
 
-		public Actor FindValidTarget(CPos pos, int team)
-		{
-			const int range = 5120;
-
-			if (KeyInput.IsKeyDown(Keys.LeftShift))
-				return null;
-
-			// Look for actors in range.
-			var sectors = World.ActorLayer.GetSectors(pos, range);
-			var currentRange = long.MaxValue;
-			Actor validTarget = null;
-			foreach (var sector in sectors)
-			{
-				foreach (var actor in sector.Actors)
-				{
-					if (actor.Team == team || actor.WorldPart == null || !actor.WorldPart.Targetable || !actor.WorldPart.InTargetBox(pos) || !VisibilitySolver.IsVisible(actor.Position))
-					continue;
-
-					var dist = (actor.Position - pos).SquaredFlatDist;
-					if (dist < currentRange)
-					{
-						currentRange = dist;
-						validTarget = actor;
-					}
-				}
-			}
-
-			return validTarget;
-		}
-
 		public void SwitchEditor()
 		{
 			Log.WriteDebug("Editor Switched: " + Editor);
@@ -459,12 +426,9 @@ namespace WarriorsSnuggery
 		}
 
 		// Instant travel to next level
-		public void InstantLevelChange(GameType newType)
+		public void ChangeLevelAfterTick(GameType newType)
 		{
-			Finish();
-
-			instantExit = true;
-			instantExitType = newType;
+			nextLevelType = newType;
 		}
 
 		public void Finish()

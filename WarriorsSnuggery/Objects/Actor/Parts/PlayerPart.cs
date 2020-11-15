@@ -62,7 +62,7 @@ namespace WarriorsSnuggery.Objects.Parts
 
 			if (self.ActiveWeapon != null)
 			{
-				var actor = self.World.Game.FindValidTarget(MouseInput.GamePosition, self.Team);
+				var actor = self.World.FindValidTarget(MouseInput.GamePosition, self.Team);
 
 				if (actor == null)
 				{
@@ -91,7 +91,7 @@ namespace WarriorsSnuggery.Objects.Parts
 				self.PrepareAttack(pos, 0);
 			else
 			{
-				var actor = self.World.Game.FindValidTarget(pos, self.Team);
+				var actor = self.World.FindValidTarget(pos, self.Team);
 
 				if (actor == null)
 					self.PrepareAttack(pos, 0);
