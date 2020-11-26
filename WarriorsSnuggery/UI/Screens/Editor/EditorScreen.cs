@@ -3,7 +3,7 @@ using WarriorsSnuggery.Graphics;
 using WarriorsSnuggery.Objects;
 using WarriorsSnuggery.UI.Objects;
 
-namespace WarriorsSnuggery.UI
+namespace WarriorsSnuggery.UI.Screens
 {
 	public class EditorScreen : Screen
 	{

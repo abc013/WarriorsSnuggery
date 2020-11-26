@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using WarriorsSnuggery.Graphics;
 using WarriorsSnuggery.Objects;
 
-namespace WarriorsSnuggery.UI
+namespace WarriorsSnuggery.UI.Screens
 {
 	public class ActorShopScreen : Screen
 	{
@@ -43,7 +43,7 @@ namespace WarriorsSnuggery.UI
 			Content.Add(actors);
 
 			Content.Add(new Button(new CPos(-6144, 3072, 0), "Buy", "wooden", () => buyActor(selected)));
-			Content.Add(new Button(new CPos(0, 6144, 0), "Resume", "wooden", () => { game.Pause(false); game.ScreenControl.ShowScreen(ScreenType.DEFAULT); }));
+			Content.Add(new Button(new CPos(0, 6144, 0), "Resume", "wooden", () => game.ShowScreen(ScreenType.DEFAULT, false)));
 
 			information = new UITextBlock(new CPos(-7900, 0, 0), FontManager.Pixel16, TextOffset.LEFT, "Select an actor for further information.", "", "", "Cost: -");
 			Content.Add(information);
@@ -87,7 +87,7 @@ namespace WarriorsSnuggery.UI
 		public override void KeyDown(Keys key, bool isControl, bool isShift, bool isAlt)
 		{
 			if (key == Keys.Escape)
-				game.ChangeScreen(ScreenType.DEFAULT, false);
+				game.ShowScreen(ScreenType.DEFAULT, false);
 		}
 
 		public override void Hide()

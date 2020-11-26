@@ -5,9 +5,9 @@ using WarriorsSnuggery.Graphics;
 using WarriorsSnuggery.Maps;
 using WarriorsSnuggery.Objects;
 
-namespace WarriorsSnuggery.UI
+namespace WarriorsSnuggery.UI.Screens
 {
-	public class PieceScreen : Screen
+	public class PieceSelectionScreen : Screen
 	{
 		readonly Game game;
 
@@ -15,7 +15,7 @@ namespace WarriorsSnuggery.UI
 
 		readonly CreatePieceScreen createPieceScreen;
 
-		public PieceScreen(Game game) : base("Piece Selection")
+		public PieceSelectionScreen(Game game) : base("Piece Selection")
 		{
 			this.game = game;
 			Title.Position = new CPos(0, -4096, 0);
@@ -31,7 +31,7 @@ namespace WarriorsSnuggery.UI
 				}));
 			}
 			Content.Add(mapSelection);
-			Content.Add(new Button(new CPos(4096, 6144, 0), "Back", "wooden", () => game.ChangeScreen(ScreenType.MENU)));
+			Content.Add(new Button(new CPos(4096, 6144, 0), "Back", "wooden", () => game.ShowScreen(ScreenType.MENU)));
 			Content.Add(new Button(new CPos(0, 6144, 0), "New Piece", "wooden", () => { createPieceScreen.ActiveScreen = true; }));
 			Content.Add(new Button(new CPos(-4096, 6144, 0), "Delete Piece", "wooden", () => { }));
 
@@ -73,7 +73,7 @@ namespace WarriorsSnuggery.UI
 				return;
 			}
 			if (key == Keys.Escape)
-				game.ChangeScreen(ScreenType.MENU);
+				game.ShowScreen(ScreenType.MENU);
 		}
 	}
 

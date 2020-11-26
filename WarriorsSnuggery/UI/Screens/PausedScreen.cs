@@ -2,7 +2,7 @@ using OpenTK.Windowing.GraphicsLibraryFramework;
 using WarriorsSnuggery.Graphics;
 using WarriorsSnuggery.Objects;
 
-namespace WarriorsSnuggery.UI
+namespace WarriorsSnuggery.UI.Screens
 {
 	public class PausedScreen : Screen
 	{
@@ -18,7 +18,7 @@ namespace WarriorsSnuggery.UI
 		public override void KeyDown(Keys key, bool isControl, bool isShift, bool isAlt)
 		{
 			if (key == Keys.P)
-				game.ChangeScreen(ScreenType.DEFAULT, false);
+				game.ShowScreen(ScreenType.DEFAULT, false);
 		}
 	}
 }

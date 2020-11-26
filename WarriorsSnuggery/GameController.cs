@@ -1,5 +1,6 @@
 ﻿using OpenTK.Windowing.GraphicsLibraryFramework;
 using WarriorsSnuggery.Maps;
+using WarriorsSnuggery.UI.Screens;
 
 namespace WarriorsSnuggery
 {
@@ -102,7 +103,7 @@ namespace WarriorsSnuggery
 		public static void Pause()
 		{
 			if (!game.Paused)
-				game.ChangeScreen(UI.ScreenType.PAUSED);
+				game.ShowScreen(ScreenType.PAUSED);
 
 			game.Pause(true);
 		}

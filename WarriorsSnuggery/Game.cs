@@ -6,8 +6,9 @@ using WarriorsSnuggery.Maps;
 using WarriorsSnuggery.Objects;
 using WarriorsSnuggery.Objects.Conditions;
 using WarriorsSnuggery.Spells;
-using WarriorsSnuggery.UI;
 using WarriorsSnuggery.Scripting;
+using WarriorsSnuggery.UI;
+using WarriorsSnuggery.UI.Screens;
 
 namespace WarriorsSnuggery
 {
@@ -163,14 +164,9 @@ namespace WarriorsSnuggery
 
 			World.Load();
 
-			ScreenControl.Load();
+			ScreenControl.InitScreen();
 
 			timer.StopAndWrite("Loading Game");
-
-			if (Window.GlobalTick == 0 && Settings.FirstStarted)
-				ChangeScreen(ScreenType.START, true);
-			else
-				ChangeScreen(ScreenType.DEFAULT);
 
 			if (World.LocalPlayer != null && World.LocalPlayer.Health != null && Statistics.Health > 0)
 				World.LocalPlayer.Health.RelativeHP = Statistics.Health;
@@ -292,10 +288,10 @@ namespace WarriorsSnuggery
 			if (infoTextDuration-- < 120)
 				infoText.Position -= new CPos(48, 0, 0);
 
-			ScreenControl.Tick();
+			if (Window.GlobalTick == 0 && Settings.FirstStarted)
+				ShowScreen(ScreenType.START, true);
 
-			if (ScreenControl.FocusedType == ScreenType.START)
-				Pause(true);
+			ScreenControl.Tick();
 		}
 
 		public void KeyDown(Keys key, bool isControl, bool isShift, bool isAlt)
@@ -304,7 +300,7 @@ namespace WarriorsSnuggery
 			{
 				if (!(ScreenControl.ChatOpen && ScreenControl.CursorOnUI()))
 				{
-					ChangeScreen(ScreenType.PAUSED, true);
+					ShowScreen(ScreenType.PAUSED, true);
 					return;
 				}
 			}
@@ -318,7 +314,7 @@ namespace WarriorsSnuggery
 			if (ScreenControl.FocusedType != ScreenType.DEFEAT)
 			{
 				if (key == Keys.Escape)
-					ChangeScreen(ScreenType.MENU, true);
+					ShowScreen(ScreenType.MENU, true);
 			}
 
 			// Key input
@@ -393,7 +389,7 @@ namespace WarriorsSnuggery
 			if (World.PlayerAlive && World.LocalPlayer.Health != null)
 				Statistics.Health = World.LocalPlayer.Health.RelativeHP;
 
-			ChangeScreen(ScreenType.VICTORY);
+			ShowScreen(ScreenType.VICTORY);
 		}
 
 		public void DefeatConditionsMet()
@@ -402,7 +398,7 @@ namespace WarriorsSnuggery
 			script?.OnLose();
 			Finish();
 
-			ChangeScreen(ScreenType.DEFEAT);
+			ShowScreen(ScreenType.DEFEAT);
 		}
 
 		public int CurrentWave()
@@ -416,17 +412,7 @@ namespace WarriorsSnuggery
 
 			Editor = !Editor;
 
-			Screen defaultScreen;
-			if (Editor)
-				defaultScreen = new EditorScreen(this);
-			else if (Type == GameType.MENU || Type == GameType.MAINMENU)
-				defaultScreen = null;
-			else
-				defaultScreen = new DefaultScreen(this);
-
-			ScreenControl.NewDefaultScreen(defaultScreen);
-
-			ChangeScreen(ScreenType.DEFAULT);
+			ShowScreen(Editor ? ScreenType.EDITOR : ScreenType.DEFAULT);
 		}
 
 		// Instant travel to next level
@@ -453,18 +439,21 @@ namespace WarriorsSnuggery
 			return script.GetState();
 		}
 
-		public void ChangeScreen(ScreenType screen, bool pause)
+		public void ShowScreen(ScreenType screen, bool pause)
 		{
 			Pause(pause);
-			ChangeScreen(screen);
+			ShowScreen(screen);
 		}
 
-		public void ChangeScreen(ScreenType screen)
+		public void ShowScreen(ScreenType screen)
 		{
 			ScreenControl.ShowScreen(screen);
+		}
 
-			if (screen == ScreenType.DEFEAT)
-				ScreenControl.NewDefaultScreen(ScreenControl.Focused);
+		public void ShowDecisionScreen(Action onDecline, Action onAgree, string text)
+		{
+			ScreenControl.SetDecision(onDecline, onAgree, text);
+			ScreenControl.ShowScreen(ScreenType.DECISION);
 		}
 
 		public void RefreshSaveGameScreens()

@@ -3,7 +3,7 @@ using System;
 using WarriorsSnuggery.Graphics;
 using WarriorsSnuggery.Objects;
 
-namespace WarriorsSnuggery.UI
+namespace WarriorsSnuggery.UI.Screens
 {
 	public class NewGameScreen : Screen
 	{
@@ -52,7 +52,7 @@ namespace WarriorsSnuggery.UI
 			Content.Add(seedInput);
 			Content.Add(new Button(new CPos(6144, 3072, 0), "Generate", "wooden", () => { seedInput.Text = getSeed(); }));
 
-			Content.Add(new Button(new CPos(-4096, 6144, 0), "Cancel", "wooden", () => game.ChangeScreen(ScreenType.DEFAULT, false)));
+			Content.Add(new Button(new CPos(-4096, 6144, 0), "Cancel", "wooden", () => game.ShowScreen(ScreenType.DEFAULT, false)));
 			Content.Add(new Button(new CPos(4096, 6144, 0), "Proceed", "wooden", () =>
 			{
 				if (nameInput.Text != string.Empty)
@@ -72,7 +72,7 @@ namespace WarriorsSnuggery.UI
 		public override void KeyDown(Keys key, bool isControl, bool isShift, bool isAlt)
 		{
 			if (key == Keys.Escape)
-				game.ChangeScreen(ScreenType.DEFAULT, false);
+				game.ShowScreen(ScreenType.DEFAULT, false);
 		}
 	}
 }

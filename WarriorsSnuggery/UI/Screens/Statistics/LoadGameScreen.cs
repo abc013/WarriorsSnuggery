@@ -1,7 +1,7 @@
 ﻿using OpenTK.Windowing.GraphicsLibraryFramework;
 using System;
 
-namespace WarriorsSnuggery.UI
+namespace WarriorsSnuggery.UI.Screens
 {
 	class LoadGameScreen : Screen
 	{
@@ -16,7 +16,7 @@ namespace WarriorsSnuggery.UI
 
 			list = new GameSaveList(new CPos(0, 1024, 0), new MPos((int)(WindowInfo.UnitWidth * 128), 4096), PanelManager.Get("wooden"));
 
-			Content.Add(new Button(new CPos(4096, 6144, 0), "Back", "wooden", () => game.ChangeScreen(ScreenType.MENU)));
+			Content.Add(new Button(new CPos(4096, 6144, 0), "Back", "wooden", () => game.ShowScreen(ScreenType.MENU)));
 			void loadAction()
 			{
 				var stats = list.GetStatistic();
@@ -39,7 +39,7 @@ namespace WarriorsSnuggery.UI
 					{
 						GameSaveManager.Delete(stats);
 						game.RefreshSaveGameScreens();
-						game.ScreenControl.ShowScreen(ScreenType.LOAD);
+						game.ShowScreen(ScreenType.LOADGAME);
 						Log.WriteDebug("Deleting a game save: " + stats.SaveName);
 					}, "Are you sure to delete this save?");
 				}
@@ -58,19 +58,18 @@ namespace WarriorsSnuggery.UI
 		{
 			if (game.Type == GameType.MAINMENU)
 				onAgree();
-			game.ScreenControl.SetDecision(onDecline, onAgree, text);
-			game.ScreenControl.ShowScreen(ScreenType.DECISION);
+
+			game.ShowDecisionScreen(onDecline, onAgree, text);
 		}
 
 		void humanAgreeOnDelete(Action onAgree, string text)
 		{
-			game.ScreenControl.SetDecision(onDecline, onAgree, text);
-			game.ScreenControl.ShowScreen(ScreenType.DECISION);
+			game.ShowDecisionScreen(onDecline, onAgree, text);
 		}
 
 		void onDecline()
 		{
-			game.ScreenControl.ShowScreen(ScreenType.LOAD);
+			game.ShowScreen(ScreenType.LOADGAME);
 		}
 
 		public void UpdateList()
@@ -81,7 +80,7 @@ namespace WarriorsSnuggery.UI
 		public override void KeyDown(Keys key, bool isControl, bool isShift, bool isAlt)
 		{
 			if (key == Keys.Escape)
-				game.ChangeScreen(ScreenType.MENU);
+				game.ShowScreen(ScreenType.MENU);
 		}
 	}
 }

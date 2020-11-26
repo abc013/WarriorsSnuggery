@@ -2,7 +2,7 @@
 using WarriorsSnuggery.Graphics;
 using WarriorsSnuggery.Objects;
 
-namespace WarriorsSnuggery.UI
+namespace WarriorsSnuggery.UI.Screens
 {
 	class SaveGameScreen : Screen
 	{
@@ -19,7 +19,7 @@ namespace WarriorsSnuggery.UI
 
 			list = new GameSaveList(new CPos(0, 1024, 0), new MPos((int)(WindowInfo.UnitWidth * 128), 4096), PanelManager.Get("wooden"));
 
-			Content.Add(new Button(new CPos(4096, 6144, 0), "Back", "wooden", () => game.ChangeScreen(ScreenType.MENU)));
+			Content.Add(new Button(new CPos(4096, 6144, 0), "Back", "wooden", () => game.ShowScreen(ScreenType.MENU)));
 			Content.Add(new Button(new CPos(0, 6144, 0), "Save", "wooden", () => { saveGame(); game.RefreshSaveGameScreens(); }));
 			Content.Add(new Button(new CPos(-4096, 6144, 0), "New Save", "wooden", () => createSaveScreen.ActiveScreen = true));
 
@@ -43,17 +43,16 @@ namespace WarriorsSnuggery.UI
 
 			void action1()
 			{
-				game.ScreenControl.ShowScreen(ScreenType.SAVE);
+				game.ShowScreen(ScreenType.SAVEGAME);
 			}
 			void action2()
 			{
-				game.ScreenControl.ShowScreen(ScreenType.MENU);
+				game.ShowScreen(ScreenType.MENU);
 				GameSaveManager.SaveOnNewName(@new, stats.Name, game);
 				game.AddInfoMessage(150, "Game Saved!");
 				Log.WriteDebug("Overrided a game: " + stats.SaveName);
 			}
-			game.ScreenControl.SetDecision(action1, action2, "Are you sure you want to override?");
-			game.ScreenControl.ShowScreen(ScreenType.DECISION);
+			game.ShowDecisionScreen(action1, action2, "Are you sure you want to override?");
 		}
 
 		public void UpdateList()
@@ -84,7 +83,7 @@ namespace WarriorsSnuggery.UI
 		public override void KeyDown(Keys key, bool isControl, bool isShift, bool isAlt)
 		{
 			if (key == Keys.Escape)
-				game.ChangeScreen(ScreenType.MENU);
+				game.ShowScreen(ScreenType.MENU);
 		}
 	}
 
@@ -128,7 +127,7 @@ namespace WarriorsSnuggery.UI
 		public override void KeyDown(Keys key, bool isControl, bool isShift, bool isAlt)
 		{
 			if (key == Keys.Escape)
-				game.ChangeScreen(ScreenType.MENU);
+				game.ShowScreen(ScreenType.MENU);
 		}
 
 		public override void Render()

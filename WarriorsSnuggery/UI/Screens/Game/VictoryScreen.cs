@@ -1,11 +1,11 @@
 ﻿using WarriorsSnuggery.Graphics;
 using WarriorsSnuggery.Objects;
 
-namespace WarriorsSnuggery.UI
+namespace WarriorsSnuggery.UI.Screens
 {
-	class WinScreen : Screen
+	class VictoryScreen : Screen
 	{
-		public WinScreen(Game game) : base("Level Cleared.")
+		public VictoryScreen(Game game) : base("Level Cleared.")
 		{
 			Title.Position = new CPos(0, -2048, 0);
 

@@ -2,21 +2,21 @@
 using WarriorsSnuggery.Graphics;
 using WarriorsSnuggery.Objects;
 
-namespace WarriorsSnuggery.UI
+namespace WarriorsSnuggery.UI.Screens
 {
-	class KeyboardScreen : Screen
+	class KeySettingsScreen : Screen
 	{
 		readonly Game game;
 
 		readonly KeyboardButton up, down, right, left, above, below, pause, camUp, camDown, camRight, camLeft, @lock;
 
-		public KeyboardScreen(Game game) : base("Key Bindings")
+		public KeySettingsScreen(Game game) : base("Key Bindings")
 		{
 			this.game = game;
 
 			Title.Position = new CPos(0, -4096, 0);
 
-			Content.Add(new Button(new CPos(0, 6144, 0), "Save & Back", "wooden", () => game.ChangeScreen(ScreenType.SETTINGS)));
+			Content.Add(new Button(new CPos(0, 6144, 0), "Save & Back", "wooden", () => game.ShowScreen(ScreenType.SETTINGS)));
 
 			var type = PanelManager.Get("wooden");
 
@@ -108,7 +108,7 @@ namespace WarriorsSnuggery.UI
 		public override void KeyDown(Keys key, bool isControl, bool isShift, bool isAlt)
 		{
 			if (key == Keys.Escape)
-				game.ChangeScreen(ScreenType.SETTINGS);
+				game.ShowScreen(ScreenType.SETTINGS);
 		}
 	}
 }

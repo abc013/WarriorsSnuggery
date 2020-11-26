@@ -4,7 +4,7 @@ using WarriorsSnuggery.Graphics;
 using WarriorsSnuggery.Objects;
 using WarriorsSnuggery.Trophies;
 
-namespace WarriorsSnuggery.UI
+namespace WarriorsSnuggery.UI.Screens
 {
 	public class TrophyScreen : Screen
 	{
@@ -41,7 +41,7 @@ namespace WarriorsSnuggery.UI
 			information = new UITextBlock(new CPos(-7900, 512, 0), FontManager.Pixel16, TextOffset.LEFT, "Select a trophy for further information.", "", "");
 			Content.Add(information);
 
-			Content.Add(new Button(new CPos(0, 6144, 0), "Resume", "wooden", () => { game.Pause(false); game.ScreenControl.ShowScreen(ScreenType.DEFAULT); }));
+			Content.Add(new Button(new CPos(0, 6144, 0), "Resume", "wooden", () => game.ShowScreen(ScreenType.DEFAULT, false)));
 		}
 
 		void selectTrophy(string name, Trophy trophy)
@@ -62,7 +62,7 @@ namespace WarriorsSnuggery.UI
 		public override void KeyDown(Keys key, bool isControl, bool isShift, bool isAlt)
 		{
 			if (key == Keys.Escape)
-				game.ChangeScreen(ScreenType.DEFAULT, false);
+				game.ShowScreen(ScreenType.DEFAULT, false);
 		}
 
 		public override void Show()

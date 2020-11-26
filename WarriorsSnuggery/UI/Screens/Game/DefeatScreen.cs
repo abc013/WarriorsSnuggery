@@ -1,11 +1,11 @@
 using WarriorsSnuggery.Graphics;
 using WarriorsSnuggery.Objects;
 
-namespace WarriorsSnuggery.UI
+namespace WarriorsSnuggery.UI.Screens
 {
-	public class FailureScreen : Screen
+	public class DefeatScreen : Screen
 	{
-		public FailureScreen(Game game) : base("Level Failed.")
+		public DefeatScreen(Game game) : base("Level Failed.")
 		{
 			Title.SetColor(Color.Red);
 

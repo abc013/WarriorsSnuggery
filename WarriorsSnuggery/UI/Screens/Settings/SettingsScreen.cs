@@ -4,7 +4,7 @@ using WarriorsSnuggery.Audio;
 using WarriorsSnuggery.Graphics;
 using WarriorsSnuggery.Objects;
 
-namespace WarriorsSnuggery.UI
+namespace WarriorsSnuggery.UI.Screens
 {
 	public class SettingsScreen : Screen
 	{
@@ -171,8 +171,8 @@ namespace WarriorsSnuggery.UI
 			Content.Add(warning);
 
 			Content.Add(new Button(new CPos(-5120, 6144, 0), "Apply", "wooden", Save));
-			Content.Add(new Button(new CPos(5120, 6144, 0), "Save & Back", "wooden", () => game.ChangeScreen(ScreenType.MENU)));
-			Content.Add(new Button(new CPos(0, 6144, 0), "Key Bindings", "wooden", () => game.ChangeScreen(ScreenType.KEYSETTINGS)));
+			Content.Add(new Button(new CPos(5120, 6144, 0), "Save & Back", "wooden", () => game.ShowScreen(ScreenType.MENU)));
+			Content.Add(new Button(new CPos(0, 6144, 0), "Key Bindings", "wooden", () => game.ShowScreen(ScreenType.KEYSETTINGS)));
 		}
 
 		public override void Hide()
@@ -210,7 +210,7 @@ namespace WarriorsSnuggery.UI
 		public override void KeyDown(Keys key, bool isControl, bool isShift, bool isAlt)
 		{
 			if (key == Keys.Escape)
-				game.ChangeScreen(ScreenType.MENU);
+				game.ShowScreen(ScreenType.MENU);
 		}
 	}
 }

@@ -1,7 +1,7 @@
 using WarriorsSnuggery.Graphics;
 using WarriorsSnuggery.Objects;
 
-namespace WarriorsSnuggery.UI
+namespace WarriorsSnuggery.UI.Screens
 {
 	public class StartScreen : Screen
 	{
@@ -10,7 +10,7 @@ namespace WarriorsSnuggery.UI
 			var ws = new UIImage(new CPos(0, -3072, 0), new BatchObject(UITextureManager.Get("logo")[0], Color.White), 0.8f);
 			Content.Add(ws);
 
-			Content.Add(new Button(new CPos(4096, 6144, 0), "Okay", "wooden", () => game.ChangeScreen(ScreenType.DEFAULT, false)));
+			Content.Add(new Button(new CPos(4096, 6144, 0), "Okay", "wooden", () => game.ShowScreen(ScreenType.DEFAULT, false)));
 			Content.Add(new Button(new CPos(-4096, 6144, 0), "Exit", "wooden", Program.Exit));
 
 			var warning = new UITextBlock(new CPos(0, 4096, 0), FontManager.Pixel16, TextOffset.MIDDLE, new Color(0.5f, 0.5f, 1f) + "WS is still under development. If you encounter any bugs, please report them.", new Color(0.5f, 0.5f, 1f) + "Thank you!");

@@ -1,25 +1,25 @@
-﻿namespace WarriorsSnuggery.UI
+﻿namespace WarriorsSnuggery.UI.Screens
 {
 	public enum ScreenType
 	{
-		NONE,
+		EMPTY,
 		PAUSED,
 		MENU,
 		DEFAULT,
 		VICTORY,
 		DEFEAT,
 		EDITOR,
-		EDITORSELECTION,
+		PIECESELECTION,
 		KEYSETTINGS,
 		SETTINGS,
-		SPELL_SHOP,
-		ACTOR_SHOP,
-		TROPHY_COLLECTION,
+		SPELLSHOP,
+		ACTORSHOP,
+		TROPHY,
 		START,
-		SAVE,
-		LOAD,
+		SAVEGAME,
+		LOADGAME,
 		DECISION,
-		NEW_STORY_GAME,
+		NEWGAME,
 		NEW_CUSTOM_GAME
 	}
 }

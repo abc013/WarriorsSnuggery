@@ -1,7 +1,7 @@
 using OpenTK.Windowing.GraphicsLibraryFramework;
 using System;
 
-namespace WarriorsSnuggery.UI
+namespace WarriorsSnuggery.UI.Screens
 {
 	public class MenuScreen : Screen
 	{
@@ -15,7 +15,7 @@ namespace WarriorsSnuggery.UI
 			Title.Position = new CPos(0, -2048, 0);
 
 			var height = -1024;
-			Content.Add(new Button(new CPos(0, height, 0), "Resume", "wooden", () => { game.Pause(false); game.ScreenControl.ShowScreen(ScreenType.DEFAULT); }));
+			Content.Add(new Button(new CPos(0, height, 0), "Resume", "wooden", () => game.ShowScreen(ScreenType.DEFAULT, false)));
 
 			height += 1024;
 			switch (game.Type)
@@ -47,18 +47,18 @@ namespace WarriorsSnuggery.UI
 			if (game.Type != GameType.EDITOR && game.Type != GameType.TUTORIAL && game.Type != GameType.TEST)
 			{
 				height += 1024;
-				Content.Add(new Button(new CPos(game.Type == GameType.MAINMENU ? 0 : -2048, height, 0), "Load Game", "wooden", () => game.ChangeScreen(ScreenType.LOAD)));
+				Content.Add(new Button(new CPos(game.Type == GameType.MAINMENU ? 0 : -2048, height, 0), "Load Game", "wooden", () => game.ShowScreen(ScreenType.LOADGAME)));
 				if (game.Type != GameType.MAINMENU)
-					Content.Add(new Button(new CPos(2048, height, 0), "Save Game", "wooden", () => game.ChangeScreen(ScreenType.SAVE)));
+					Content.Add(new Button(new CPos(2048, height, 0), "Save Game", "wooden", () => game.ShowScreen(ScreenType.SAVEGAME)));
 			}
 
 			height += 1024;
-			Content.Add(new Button(new CPos(0, height, 0), "Settings", "wooden", () => game.ChangeScreen(ScreenType.SETTINGS)));
+			Content.Add(new Button(new CPos(0, height, 0), "Settings", "wooden", () => game.ShowScreen(ScreenType.SETTINGS)));
 
 			if (game.Type == GameType.MAINMENU || game.Type == GameType.EDITOR)
 			{
 				height += 1024;
-				Content.Add(new Button(new CPos(0, height, 0), "Editor", "wooden", () => game.ChangeScreen(ScreenType.EDITORSELECTION)));
+				Content.Add(new Button(new CPos(0, height, 0), "Editor", "wooden", () => game.ShowScreen(ScreenType.PIECESELECTION)));
 			}
 
 			height += 1024;
@@ -69,19 +69,15 @@ namespace WarriorsSnuggery.UI
 		{
 			void onDecline()
 			{
-				game.ScreenControl.ShowScreen(ScreenType.MENU);
+				game.ShowScreen(ScreenType.MENU);
 			}
-			game.ScreenControl.SetDecision(onDecline, onAgree, text);
-			game.ScreenControl.ShowScreen(ScreenType.DECISION);
+			game.ShowDecisionScreen(onDecline, onAgree, text);
 		}
 
 		public override void KeyDown(Keys key, bool isControl, bool isShift, bool isAlt)
 		{
 			if (key == Keys.Escape)
-			{
-				game.Pause(false);
-				game.ChangeScreen(ScreenType.DEFAULT);
-			}
+				game.ShowScreen(ScreenType.DEFAULT, false);
 		}
 	}
 }

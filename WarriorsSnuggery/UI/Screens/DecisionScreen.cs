@@ -3,9 +3,9 @@ using System;
 using WarriorsSnuggery.Graphics;
 using WarriorsSnuggery.Objects;
 
-namespace WarriorsSnuggery.UI
+namespace WarriorsSnuggery.UI.Screens
 {
-	public class ConfirmationScreen : Screen
+	public class DecisionScreen : Screen
 	{
 		readonly UITextLine text;
 
@@ -14,7 +14,7 @@ namespace WarriorsSnuggery.UI
 		Button decline;
 		Button agree;
 
-		public ConfirmationScreen() : base("Are you sure?")
+		public DecisionScreen(Game game) : base("Are you sure?")
 		{
 			Title.Position = new CPos(0, -2048, 0);
 

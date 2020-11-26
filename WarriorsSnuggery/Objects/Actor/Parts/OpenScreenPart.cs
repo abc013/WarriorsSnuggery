@@ -109,23 +109,23 @@ namespace WarriorsSnuggery.Objects.Parts
 				switch (info.Type)
 				{
 					case ScreenType.NEW_STORY_GAME:
-						game.ScreenControl.ShowScreen(UI.ScreenType.NEW_STORY_GAME);
+						game.ShowScreen(UI.Screens.ScreenType.NEWGAME);
 
 						return true;
 					case ScreenType.NEW_CUSTOM_GAME:
-						game.ScreenControl.ShowScreen(UI.ScreenType.NEW_CUSTOM_GAME);
+						game.ShowScreen(UI.Screens.ScreenType.NEWGAME);
 
 						return true;
 					case ScreenType.SPELL_SHOP:
-						game.ScreenControl.ShowScreen(UI.ScreenType.SPELL_SHOP);
+						game.ShowScreen(UI.Screens.ScreenType.SPELLSHOP);
 
 						return true;
 					case ScreenType.ACTOR_SHOP:
-						game.ScreenControl.ShowScreen(UI.ScreenType.ACTOR_SHOP);
+						game.ShowScreen(UI.Screens.ScreenType.ACTORSHOP);
 
 						return true;
 					case ScreenType.TROPHY_COLLECTION:
-						game.ScreenControl.ShowScreen(UI.ScreenType.TROPHY_COLLECTION);
+						game.ShowScreen(UI.Screens.ScreenType.TROPHY);
 
 						return true;
 				}

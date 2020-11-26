@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using WarriorsSnuggery.Graphics;
 using WarriorsSnuggery.Spells;
 
-namespace WarriorsSnuggery.UI
+namespace WarriorsSnuggery.UI.Screens
 {
 	public class SpellShopScreen : Screen
 	{
@@ -20,7 +20,7 @@ namespace WarriorsSnuggery.UI
 			this.game = game;
 			Title.Position = new CPos(0, -4096, 0);
 
-			Content.Add(new Button(new CPos(0, 6144, 0), "Resume", "wooden", () => { game.Pause(false); game.ScreenControl.ShowScreen(ScreenType.DEFAULT); }));
+			Content.Add(new Button(new CPos(0, 6144, 0), "Resume", "wooden", () => game.ShowScreen(ScreenType.DEFAULT, false)));
 
 			Content.Add(new Panel(new CPos(0, 256, 0), new MPos(8 * 1024, 3 * 1024), PanelManager.Get("wooden")));
 
@@ -73,7 +73,7 @@ namespace WarriorsSnuggery.UI
 		public override void KeyDown(Keys key, bool isControl, bool isShift, bool isAlt)
 		{
 			if (key == Keys.Escape)
-				game.ChangeScreen(ScreenType.DEFAULT, false);
+				game.ShowScreen(ScreenType.DEFAULT, false);
 		}
 
 		public void UpdateAvailability()
