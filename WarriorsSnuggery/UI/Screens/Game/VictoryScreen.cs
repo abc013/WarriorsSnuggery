@@ -5,12 +5,12 @@ namespace WarriorsSnuggery.UI.Screens
 {
 	class VictoryScreen : Screen
 	{
-		public VictoryScreen(Game game) : base("Level Cleared.")
+		public VictoryScreen(Game game) : base("Victory!")
 		{
 			Title.Position = new CPos(0, -2048, 0);
 
 			var won = new UITextLine(new CPos(0, 0, 0), FontManager.Pixel16, TextOffset.MIDDLE);
-			won.WriteText("Level has been successfully cleared from any enemy opposition.");
+			won.WriteText("Level has been successfully completed. Congratulations!");
 			Content.Add(won);
 			var score = new UITextLine(new CPos(0, 1024, 0), FontManager.Pixel16, TextOffset.MIDDLE);
 			score.WriteText("Score: " + Color.Cyan + game.Statistics.CalculateScore());

@@ -5,7 +5,7 @@ namespace WarriorsSnuggery.UI.Screens
 {
 	public class DefeatScreen : Screen
 	{
-		public DefeatScreen(Game game) : base("Level Failed.")
+		public DefeatScreen(Game game) : base("Defeat.")
 		{
 			Title.SetColor(Color.Red);
 
