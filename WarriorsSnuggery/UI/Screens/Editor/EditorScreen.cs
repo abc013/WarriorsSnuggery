@@ -74,8 +74,11 @@ namespace WarriorsSnuggery.UI.Screens
 
 		public override bool CursorOnUI()
 		{
+			if (currentSelected == Selected.NONE)
+				return false;
+
 			var mouse = MouseInput.WindowPosition;
-			return mouse.X > WindowInfo.UnitWidth * 512 - 4096 - 128 && mouse.X < WindowInfo.UnitWidth * 512 - 64;
+			return mouse.X > WindowInfo.UnitWidth * 512 - 4096 - 128 && mouse.X < WindowInfo.UnitWidth * 512 - 64 && mouse.Y < -2048 + 4096 + 512 && mouse.Y > -6120 - 4096 + 512;
 		}
 
 		public override void Hide()
@@ -177,7 +180,6 @@ namespace WarriorsSnuggery.UI.Screens
 				}
 			}
 
-			// TODO weapon and particle removal for future
 			var bounds = game.World.Map.Bounds;
 			var pos4 = MouseInput.GamePosition.ToMPos();
 			pos4 = new MPos(pos4.X < 0 ? 0 : pos4.X, pos4.Y < 0 ? 0 : pos4.Y);
@@ -195,7 +197,7 @@ namespace WarriorsSnuggery.UI.Screens
 
 		void place()
 		{
-			if (!game.World.IsInWorld(MouseInput.GamePosition) && currentSelected != Selected.WALL)
+			if (!game.World.IsInWorld(MouseInput.GamePosition))
 				return;
 
 			var pos = MouseInput.GamePosition;
@@ -219,6 +221,9 @@ namespace WarriorsSnuggery.UI.Screens
 					if (terrainWidget.CurrentType == null)
 						return;
 
+					if (game.World.TerrainLayer.Terrain[mpos.X, mpos.Y].Type == terrainWidget.CurrentType)
+						return;
+
 					var terrain = TerrainCreator.Create(game.World, mpos, terrainWidget.CurrentType.ID);
 					game.World.TerrainLayer.Set(terrain);
 
@@ -238,11 +243,15 @@ namespace WarriorsSnuggery.UI.Screens
 					var type = wallWidget.CurrentType;
 
 					var wallLayer = game.World.WallLayer;
-					if (wallLayer.Walls[mpos.X, mpos.Y] != null && wallLayer.Walls[mpos.X, mpos.Y].Type.ID == type.ID)
+
+					var plannedHealth = (int)(type.Health * wallWidget.RelativeHP);
+
+					var currentWall = wallLayer.Walls[mpos.X, mpos.Y];
+					if (currentWall != null && currentWall.Type.ID == type.ID && currentWall.Health == plannedHealth)
 						return;
 
 					var wall = WallCreator.Create(mpos, wallLayer, type.ID);
-					wall.Health = (int)(type.Health * wallWidget.RelativeHP);
+					wall.Health = plannedHealth;
 
 					wallLayer.Set(wall);
 					break;

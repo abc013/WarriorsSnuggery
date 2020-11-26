@@ -296,6 +296,8 @@ namespace WarriorsSnuggery
 
 		public void KeyDown(Keys key, bool isControl, bool isShift, bool isAlt)
 		{
+			var screenTypeBefore = ScreenControl.FocusedType;
+
 			if (key == Settings.GetKey("Pause") && !isControl && ScreenControl.FocusedType != ScreenType.PAUSED && ScreenControl.FocusedType != ScreenType.DEFEAT)
 			{
 				if (!(ScreenControl.ChatOpen && ScreenControl.CursorOnUI()))
@@ -311,7 +313,7 @@ namespace WarriorsSnuggery
 				return;
 
 			// screen control
-			if (ScreenControl.FocusedType != ScreenType.DEFEAT)
+			if (ScreenControl.FocusedType != ScreenType.DEFEAT && screenTypeBefore != ScreenType.MENU)
 			{
 				if (key == Keys.Escape)
 					ShowScreen(ScreenType.MENU, true);
