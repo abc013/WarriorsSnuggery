@@ -193,12 +193,10 @@ namespace WarriorsSnuggery.Objects
 				if (edges[i] != null)
 					continue;
 
-				var rotation = new VAngle(0, 0, i * -90);
-				var position = Position.ToCPos() + edgePositions[i];
 				if (i % 2 != 0 && Type.Texture_Edge2 != null)
-					edges[i] = new StaticBatchRenderable(position, rotation, Type.Texture_Edge2, Color.White);
+					edges[i] = new StaticBatchRenderable(calculateEdgeOffset(i, false), new VAngle(0, 0, i * -90), Type.Texture_Edge2, Color.White);
 				else
-					edges[i] = new StaticBatchRenderable(position, rotation, Type.Texture_Edge, Color.White);
+					edges[i] = new StaticBatchRenderable(calculateEdgeOffset(i, true), new VAngle(0, 0, i * -90), Type.Texture_Edge, Color.White);
 			}
 
 			for (int i = 0; i < 4; i++)
@@ -212,8 +210,28 @@ namespace WarriorsSnuggery.Objects
 				if (corners[i] != null)
 					continue;
 
-				corners[i] = new StaticBatchRenderable(Position.ToCPos() + cornerPositions[i], new VAngle(0, 0, i * -90), Type.Texture_Corner, Color.White);
+				corners[i] = new StaticBatchRenderable(calculateCornerOffset(i), new VAngle(0, 0, i * -90), Type.Texture_Corner, Color.White);
 			}
+		}
+
+		CPos calculateEdgeOffset(int rot, bool isHorizontal)
+		{
+			var position = Position.ToCPos() + edgePositions[rot];
+
+			var offset = isHorizontal ? Type.EdgeOffset : Type.VerticalEdgeOffset;
+			if (rot % 2 != 0)
+				return position + (rot == 1 ? new CPos(-offset.Y, 0, 0) : new CPos(offset.Y, 0, 0));
+
+			return position + (rot == 0 ? new CPos(0, offset.Y, 0) : new CPos(0, -offset.Y, 0));
+		}
+
+		CPos calculateCornerOffset(int rot)
+		{
+			var position = Position.ToCPos() + cornerPositions[rot];
+			if (rot % 2 != 0)
+				return position + (rot == 1 ? -Type.CornerOffset : Type.CornerOffset);
+
+			return position + (rot == 0 ? new CPos(-Type.CornerOffset.X, Type.CornerOffset.Y, 0) : new CPos(Type.CornerOffset.X, -Type.CornerOffset.Y, 0));
 		}
 	}
 }

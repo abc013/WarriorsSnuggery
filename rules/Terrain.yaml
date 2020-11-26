@@ -2,15 +2,20 @@
 	Sprite=grass2
 	OverlapHeight=10
 	EdgeSprite=grass2_edges_h
+	EdgeSpriteBounds=24,5
 	VerticalEdgeSprite=grass2_edges_v
+	VerticalEdgeSpriteBounds=24,5
 	CornerSprite=grass2_corners
+	CornerSpriteBounds=6,6
 	Speed=1.0
 
 1=
 	Sprite=sand
 	OverlapHeight=7
 	EdgeSprite=sand_edges
+	EdgeSpriteBounds=24,6
 	CornerSprite=sand_corners
+	CornerSpriteBounds=6,6
 	Speed=1.1
 
 2=
@@ -35,13 +40,17 @@
 	Speed=1.1
 	OverlapHeight=5
 	EdgeSprite=stone2_edges
+	EdgeSpriteBounds=24,2
 	CornerSprite=stone2_corners
+	CornerSpriteBounds=3,3
 
 6=
 	Sprite=brickstone1
 	OverlapHeight=4
 	EdgeSprite=brickstone1_edges
+	EdgeSpriteBounds=24,2
 	CornerSprite=brickstone1_corners
+	CornerSpriteBounds=2,2
 	Speed=1.2
 
 7=
@@ -52,22 +61,29 @@
 	Sprite=grass
 	OverlapHeight=9
 	EdgeSprite=grass_edges_h
+	EdgeSpriteBounds=24,5
 	VerticalEdgeSprite=grass_edges_v
+	VerticalEdgeSpriteBounds=24,5
 	CornerSprite=grass_corners
+	CornerSpriteBounds=5,5
 	Speed=0.9
 
 9=
 	Sprite=dark_stone
 	OverlapHeight=6
 	EdgeSprite=dark_stone_edges
+	EdgeSpriteBounds=24,6
 	CornerSprite=dark_stone_corners
+	CornerSpriteBounds=6,6
 	Speed=1.0
 
 10=
 	Sprite=light_stone
 	OverlapHeight=3
 	EdgeSprite=light_stone_edges
+	EdgeSpriteBounds=24,5
 	CornerSprite=light_stone_corners
+	CornerSpriteBounds=5,5
 	Speed=1.0
 
 11=

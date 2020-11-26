@@ -7,41 +7,42 @@ namespace WarriorsSnuggery.Objects
 	{
 		public readonly ushort ID;
 
-		public Texture Texture
-		{
-			get { return sprite[Program.SharedRandom.Next(sprite.Length)]; }
-		}
+		public Texture Texture => sprite[Program.SharedRandom.Next(sprite.Length)];
 		readonly Texture[] sprite;
 
 		[Desc("Random base texture.")]
 		public readonly string Sprite;
 
-		public Texture Texture_Edge
-		{
-			get { return edgeSprite[Program.SharedRandom.Next(edgeSprite.Length)]; }
-		}
+		public Texture Texture_Edge => edgeSprite[Program.SharedRandom.Next(edgeSprite.Length)];
 		readonly Texture[] edgeSprite;
+
+		public CPos EdgeOffset => textureOffset(EdgeSpriteBounds);
 
 		[Desc("Edge of the tile.")]
 		public readonly string EdgeSprite;
+		[Desc("Bounds of the edge texture.")]
+		public readonly MPos EdgeSpriteBounds;
 
-		public Texture Texture_Edge2 // For vertical edges
-		{
-			get { return verticalEdgeSprite?[Program.SharedRandom.Next(verticalEdgeSprite.Length)]; }
-		}
+		// For vertical edges
+		public Texture Texture_Edge2 => verticalEdgeSprite?[Program.SharedRandom.Next(verticalEdgeSprite.Length)];
 		readonly Texture[] verticalEdgeSprite;
+
+		public CPos VerticalEdgeOffset => textureOffset(VerticalEdgeSpriteBounds);
 
 		[Desc("(possible) Vertical Edge of the tile.")]
 		public readonly string VerticalEdgeSprite;
+		[Desc("Bounds of the vertical edge texture.")]
+		public readonly MPos VerticalEdgeSpriteBounds;
 
-		public Texture Texture_Corner
-		{
-			get { return cornerSprite[Program.SharedRandom.Next(cornerSprite.Length)]; }
-		}
+		public Texture Texture_Corner => cornerSprite[Program.SharedRandom.Next(cornerSprite.Length)];
 		readonly Texture[] cornerSprite;
+
+		public CPos CornerOffset => textureOffset(CornerSpriteBounds);
 
 		[Desc("Corner of the tile.")]
 		public readonly string CornerSprite;
+		[Desc("Bounds of the corner texture.")]
+		public readonly MPos CornerSpriteBounds;
 
 		public Texture[] Texture_Overlay { get; }
 
@@ -67,27 +68,32 @@ namespace WarriorsSnuggery.Objects
 
 			Overlaps = EdgeSprite != null;
 
-			if (!documentation)
+			if (documentation)
+				return;
+			
+			if (Sprite == null || Sprite == string.Empty)
+				throw new MissingNodeException(ID.ToString(), "Image");
+
+			sprite = SpriteManager.AddTexture(new TextureInfo(Sprite, TextureType.ANIMATION, 10, 24, 24));
+			if (Overlaps)
 			{
-				if ((Sprite == null || Sprite == string.Empty))
-					throw new MissingNodeException(ID.ToString(), "Image");
+				if (EdgeSprite != null)
+					edgeSprite = SpriteManager.AddTexture(new TextureInfo(EdgeSprite, TextureType.ANIMATION, 10, EdgeSpriteBounds.X, EdgeSpriteBounds.Y));
 
-				sprite = SpriteManager.AddTexture(new TextureInfo(Sprite, TextureType.ANIMATION, 10, 24, 24));
-				if (Overlaps)
-				{
-					if (EdgeSprite != null)
-						edgeSprite = SpriteManager.AddTexture(new TextureInfo(EdgeSprite, TextureType.ANIMATION, 10, 24, 24));
+				if (CornerSprite != null)
+					cornerSprite = SpriteManager.AddTexture(new TextureInfo(CornerSprite, TextureType.ANIMATION, 10, CornerSpriteBounds.X, CornerSpriteBounds.Y));
 
-					if (CornerSprite != null)
-						cornerSprite = SpriteManager.AddTexture(new TextureInfo(CornerSprite, TextureType.ANIMATION, 10, 24, 24));
-
-					if (VerticalEdgeSprite != null)
-						verticalEdgeSprite = SpriteManager.AddTexture(new TextureInfo(VerticalEdgeSprite, TextureType.ANIMATION, 10, 24, 24));
-				}
-
-				if (Overlay != null)
-					Texture_Overlay = SpriteManager.AddTexture(Overlay);
+				if (VerticalEdgeSprite != null)
+					verticalEdgeSprite = SpriteManager.AddTexture(new TextureInfo(VerticalEdgeSprite, TextureType.ANIMATION, 10, VerticalEdgeSpriteBounds.X, VerticalEdgeSpriteBounds.Y));
 			}
+
+			if (Overlay != null)
+				Texture_Overlay = SpriteManager.AddTexture(Overlay);
+		}
+
+		CPos textureOffset(MPos bounds)
+		{
+			return new CPos(512, 512, 0) - new CPos((int)((bounds.X % 24) * MasterRenderer.PixelMultiplier * 512), (int)((bounds.Y % 24) * MasterRenderer.PixelMultiplier * 512), 0);
 		}
 	}
 }
