@@ -25,7 +25,7 @@ for any issues or build failures, feel free to [open an issue](https://github.co
 ### Framework: [.NET Core 3.1](https://dotnet.microsoft.com/download/dotnet-core/3.1)
 - [Roslyn Compiler](https://github.com/dotnet/roslyn)
 - [OpenTK](https://github.com/opentk/opentk)
-- [OpenAL-Soft](https://kcat.strangesoft.net/openal.html)
+- [OpenAL-Soft](https://openal-soft.org/)
 - System.Drawing.Common
 - System.Runtime.Loader
 
