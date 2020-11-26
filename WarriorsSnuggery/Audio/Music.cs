@@ -6,11 +6,7 @@
 		int length;
 		bool paused;
 
-		public bool Done
-		{
-			get { return length <= 0; }
-			set { }
-		}
+		public bool Done => length <= 0;
 
 		readonly AudioBuffer buffer;
 		AudioSource source;

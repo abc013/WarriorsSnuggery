@@ -4,15 +4,18 @@ namespace WarriorsSnuggery.Audio
 {
 	public class AudioDevice
 	{
+		const int miscSourceCount = 4;
+		const int gameSourceCount = 60;
+
 		public readonly ALDevice device;
 		public readonly ALContext context;
-		public readonly AudioSource[] Sources;
+		public readonly AudioSource[] MiscSources;
 		public readonly AudioSource[] GameSources;
 		readonly bool initialized;
 
 		public AudioDevice()
 		{
-			device = ALC.OpenDevice("");
+			device = ALC.OpenDevice(string.Empty);
 
 			if (device.Equals(ALDevice.Null))
 				return;
@@ -24,14 +27,15 @@ namespace WarriorsSnuggery.Audio
 			if (error != ALError.NoError)
 				throw new FailingSoundDeviceException(string.Format("Failed to open audio device. Error code: {0}.", error));
 
-			initialized = true;
-			Sources = new AudioSource[4];
-			for (int i = 0; i < 4; i++)
-				Sources[i] = new AudioSource();
+			MiscSources = new AudioSource[miscSourceCount];
+			for (int i = 0; i < miscSourceCount; i++)
+				MiscSources[i] = new AudioSource();
 
-			GameSources = new AudioSource[12];
-			for (int i = 0; i < 12; i++)
+			GameSources = new AudioSource[gameSourceCount];
+			for (int i = 0; i < gameSourceCount; i++)
 				GameSources[i] = new AudioSource();
+
+			initialized = true;
 		}
 
 		public AudioSource Play(AudioBuffer buffer, bool inGame, float volume, float pitch, Vector position, bool loops)
@@ -39,33 +43,17 @@ namespace WarriorsSnuggery.Audio
 			if (!initialized)
 				return null;
 
-			if (!inGame)
+			var sourcesToUse = inGame ? GameSources : MiscSources;
+			foreach (var source in sourcesToUse)
 			{
-				foreach (var source in Sources)
-				{
-					if (!source.CheckUsed())
-					{
-						source.SetPosition(position);
-						source.SetVolume(volume, Settings.MasterVolume);
-						source.SetPitch(pitch);
-						source.Start(buffer, loops);
-						return source;
-					}
-				}
-			}
-			else
-			{
-				foreach (var source in GameSources)
-				{
-					if (!source.CheckUsed())
-					{
-						source.SetPosition(position);
-						source.SetVolume(volume, Settings.EffectsVolume * Settings.MasterVolume);
-						source.SetPitch(pitch);
-						source.Start(buffer, loops);
-						return source;
-					}
-				}
+				if (source.IsUsed())
+					continue;
+
+				source.SetPosition(position);
+				source.SetVolume(volume, (inGame ? Settings.EffectsVolume : 1) * Settings.MasterVolume);
+				source.SetPitch(pitch);
+				source.Start(buffer, loops);
+				return source;
 			}
 
 			return null;
@@ -78,7 +66,7 @@ namespace WarriorsSnuggery.Audio
 
 			if (!game)
 			{
-				foreach (var source in Sources)
+				foreach (var source in MiscSources)
 					source.Stop();
 			}
 
@@ -93,7 +81,7 @@ namespace WarriorsSnuggery.Audio
 
 			if (!game)
 			{
-				foreach (var source in Sources)
+				foreach (var source in MiscSources)
 					source.Pause(pause);
 			}
 
@@ -106,7 +94,7 @@ namespace WarriorsSnuggery.Audio
 			if (!initialized)
 				return;
 
-			foreach (var source in Sources)
+			foreach (var source in MiscSources)
 				source.Dispose();
 
 			foreach (var source in GameSources)

@@ -494,6 +494,8 @@ namespace WarriorsSnuggery
 
 			ScreenControl.DisposeScreens();
 
+			AudioController.StopAll(true);
+
 			Log.WriteDebug("Current game disposed!");
 			Log.DebugIndentation--;
 		}

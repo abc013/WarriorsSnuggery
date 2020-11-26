@@ -46,7 +46,7 @@ namespace WarriorsSnuggery.Audio
 			AL.Source(source, ALSource3f.Position, position.X, position.Y, position.Z);
 		}
 
-		public bool CheckUsed()
+		public bool IsUsed()
 		{
 			Used = AL.GetSourceState(source) == ALSourceState.Playing;
 			return Used;
