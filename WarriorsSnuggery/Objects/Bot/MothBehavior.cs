@@ -1,12 +1,10 @@
-﻿using System;
-using WarriorsSnuggery.Objects.Weapons;
+﻿using WarriorsSnuggery.Objects.Weapons;
 
 namespace WarriorsSnuggery.Objects.Bot
 {
 	public class MothBotBehavior : BotBehavior
 	{
-		int currentCycle;
-		float mothAngle;
+		int tick;
 
 		public MothBotBehavior(World world, Actor self) : base(world, self) { }
 
@@ -18,22 +16,15 @@ namespace WarriorsSnuggery.Objects.Bot
 			if (!CanMove && !CanAttack)
 				return;
 
-			currentCycle++;
-			if (Target != null)
-				mothAngle = AngleToTarget + (float)Math.PI / 2;
-			else if (currentCycle % 5 == 0)
-				mothAngle = Program.SharedRandom.Next();
-
-			var curAngle = mothAngle + (float)Math.Sin(currentCycle / 30f) / 5f;
-
 			if (!PerfectTarget())
 			{
+				if (tick++ % 20 == 0 && (Target == null || Target.Actor == null))
+					Target = new Target(randomPosition(), 0);
+
 				SearchTarget();
 
 				if (CanMove && Target != null && DistToTarget > 712)
 					Self.Accelerate(AngleToTarget);
-				else
-					Self.Accelerate(curAngle);
 
 				return;
 			}
@@ -50,30 +41,41 @@ namespace WarriorsSnuggery.Objects.Bot
 
 			if (CanMove)
 			{
-				var range = 5120;
-				if (CanAttack)
-					range = Self.ActiveWeapon.Type.MaxRange;
-				else if (Self.RevealsShroudPart != null)
-					range = Self.RevealsShroudPart.Range * 512;
-
-				if (DistToTarget > range * 2f)
+				if (DistToMapEdge > 1536)
 				{
-					Target = null;
-					return;
-				}
+					var range = 5120;
+					if (CanAttack)
+						range = Self.ActiveWeapon.Type.MaxRange;
+					else if (Self.RevealsShroudPart != null)
+						range = Self.RevealsShroudPart.Range * 512;
 
-				if (DistToTarget > range * 0.5f)
-					Self.Accelerate(AngleToTarget);
-				else if (DistToTarget < range * 0.4f)
-					Self.Accelerate(-AngleToTarget);
+					var angle = -AngleToNearActor;
+					if (float.IsInfinity(angle))
+						angle = AngleToTarget;
+
+					if (DistToTarget > range * 0.9f)
+						Self.Accelerate(angle);
+					else if (DistToTarget < range * 0.8f)
+						Self.Accelerate(-angle);
+				}
 				else
-					Self.Accelerate(curAngle);
+				{
+					Self.Accelerate(AngleToMapMid);
+				}
 			}
+		}
+
+		CPos randomPosition()
+		{
+			var x = Program.SharedRandom.Next(2048) - 1024;
+			var y = Program.SharedRandom.Next(2048) - 1024;
+
+			return Self.Position + new CPos(x, y, 0);
 		}
 
 		public override void OnDamage(Actor damager, int damage)
 		{
-			if (damager == null || damager.Health == null)
+			if (damager == null)
 				return;
 
 			if (Target == null || Target.Actor == null)
