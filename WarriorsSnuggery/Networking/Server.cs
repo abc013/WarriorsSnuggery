@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Net;
 using System.Net.Sockets;
-using System.Text;
 using System.Threading;
 
 namespace WarriorsSnuggery.Networking
@@ -87,7 +86,7 @@ namespace WarriorsSnuggery.Networking
 		void checkPending(TcpClient client)
 		{
 			var stream = client.GetStream();
-			var bytes = Encoding.ASCII.GetBytes("Hello");
+			var bytes = NetworkUtils.ToBytes("hello");
 			var data = new byte[bytes.Length + 1];
 			data[0] = 0;
 			Array.Copy(bytes, 0, data, 0, bytes.Length);

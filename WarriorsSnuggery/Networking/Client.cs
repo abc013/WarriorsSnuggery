@@ -1,7 +1,7 @@
-﻿using System;
+﻿using System.Collections.Generic;
 using System.Net.Sockets;
-using System.Text;
 using System.Threading;
+using WarriorsSnuggery.Networking.Orders;
 
 namespace WarriorsSnuggery.Networking
 {
@@ -11,6 +11,8 @@ namespace WarriorsSnuggery.Networking
 		readonly NetworkStream stream;
 
 		readonly string password;
+
+		readonly List<IOrder> orders = new List<IOrder>();
 
 		bool isPending = true;
 		bool isActive = true;
@@ -29,14 +31,23 @@ namespace WarriorsSnuggery.Networking
 		{
 			while (isActive && client.Connected)
 			{
-				if (client.Available > 0)
+				// If pending, wait for possible answer.
+				if (isPending)
 				{
-					if (isPending)
+					if (client.Available > 0)
 						checkPending();
-					else
-						receive();
+
+					continue;
 				}
+
+				if (client.Available > 0)
+					receiveOrder();
+
+				foreach (var order in orders)
+					dispatchOrder(order);
+				orders.Clear();
 			}
+			isActive = false;
 		}
 
 		void checkPending()
@@ -50,7 +61,7 @@ namespace WarriorsSnuggery.Networking
 			if (package.Content[0] == 1)
 			{
 				Log.WriteDebug("Server package received. Password required. Sending password...");
-				var response = new NetworkPackage(PackageType.WELCOME, Encoding.ASCII.GetBytes(password));
+				var response = new NetworkPackage(PackageType.WELCOME, NetworkUtils.ToBytes(password));
 				stream.Write(response.AsBytes());
 				return;
 			}
@@ -60,7 +71,7 @@ namespace WarriorsSnuggery.Networking
 			isPending = false;
 		}
 
-		void receive()
+		void receiveOrder()
 		{
 			var package = new NetworkPackage(client.GetStream());
 
@@ -71,12 +82,41 @@ namespace WarriorsSnuggery.Networking
 				return;
 			}
 
+			if (package.Type == PackageType.ERROR)
+			{
+				var message = NetworkUtils.ToString(package.Content);
+				Log.WriteDebug($"Server error. Error message: {message}");
+				Close();
+				return;
+			}
+
+			if (package.Type == PackageType.MESSAGE)
+			{
+				GameController.AddInfoMessage(1000, NetworkUtils.ToString(package.Content));
+			}
+
 			Log.WriteDebug("Data received.");
 		}
 
-		public void Send()
+		public void Send(IOrder order)
 		{
+			if (order.Immediate)
+			{
+				dispatchOrder(order);
+				return;
+			}
+			
+			orders.Add(order);
+		}
 
+		bool dispatchOrder(IOrder order)
+		{
+			if (!isPending || !isActive)
+				return false;
+
+			var package = order.GeneratePackage();
+			stream.Write(package.AsBytes());
+			return true;
 		}
 
 		public void Close()

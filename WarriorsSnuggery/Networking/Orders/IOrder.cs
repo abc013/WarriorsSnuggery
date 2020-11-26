@@ -1,6 +1,9 @@
 ﻿namespace WarriorsSnuggery.Networking.Orders
 {
-	interface IOrder
+	public interface IOrder
 	{
+		bool Immediate { get; }
+
+		NetworkPackage GeneratePackage();
 	}
 }
