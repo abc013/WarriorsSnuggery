@@ -44,7 +44,7 @@ namespace WarriorsSnuggery.Networking
 			{
 				if (AllowConnections)
 				{
-					if (server.Pending() && connected.Count < playerCount)
+					if (server.Pending())
 						connect(new ServerClient(this, server.AcceptTcpClient()));
 
 					pending.RemoveAll(c => connected.Contains(c) || !c.Connected);
@@ -94,6 +94,10 @@ namespace WarriorsSnuggery.Networking
 
 		internal int getClientID()
 		{
+			// Server is full, connect and send message. No ID required here.
+			if (availableIDs.Count == 0)
+				return -1;
+
 			var id = availableIDs[0];
 			availableIDs.RemoveAt(0);
 
