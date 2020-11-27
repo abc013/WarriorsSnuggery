@@ -286,6 +286,9 @@ runtimes/
 /Microsoft.Win32.SystemEvents.dll
 /Microsoft.CodeAnalysis.dll
 /Microsoft.CodeAnalysis.CSharp.dll
+/System.Runtime.CompilerServices.Unsafe.dll
+/System.Reflection.Metadata.dll
+/System.Collections.Immutable.dll
 /libglfw.so.3.3
 /WarriorsSnuggery/Properties/launchSettings.json
 /publish_win_x64
