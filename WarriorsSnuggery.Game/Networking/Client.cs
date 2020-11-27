@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Net.Sockets;
 using System.Threading;
 using WarriorsSnuggery.Networking.Orders;
@@ -7,6 +8,8 @@ namespace WarriorsSnuggery.Networking
 {
 	public class Client
 	{
+		public int ID { get; private set; } = -1;
+
 		readonly TcpClient client;
 		readonly NetworkStream stream;
 
@@ -14,6 +17,7 @@ namespace WarriorsSnuggery.Networking
 
 		readonly List<IOrder> orders = new List<IOrder>();
 
+		public bool GameReady = false;
 		bool isPending = true;
 		bool isActive = true;
 
@@ -24,7 +28,7 @@ namespace WarriorsSnuggery.Networking
 			stream = client.GetStream();
 			this.password = password;
 
-			new Thread(new ThreadStart(loop)).Start();
+			new Thread(new ThreadStart(loop)) { IsBackground = true }.Start();
 		}
 
 		void loop()
@@ -40,12 +44,15 @@ namespace WarriorsSnuggery.Networking
 					continue;
 				}
 
-				if (client.Available > 0)
+				while (client.Available > 0)
 					receiveOrder();
 
-				foreach (var order in orders)
-					dispatchOrder(order);
-				orders.Clear();
+				lock (orders)
+				{
+					foreach (var order in orders)
+						dispatchOrder(order);
+					orders.Clear();
+				}
 			}
 			isActive = false;
 		}
@@ -54,20 +61,28 @@ namespace WarriorsSnuggery.Networking
 		{
 			var package = new NetworkPackage(stream);
 
+			if (!isPending)
+				return;
+
+			if (checkDisconnect(package))
+				return;
+
 			if (package.Type != PackageType.WELCOME)
 				return;
 
 			// Needs password
 			if (package.Content[0] == 1)
 			{
-				Log.WriteDebug("Server package received. Password required. Sending password...");
+				Log.WriteDebug("Password required. Sending password...");
 				var response = new NetworkPackage(PackageType.WELCOME, NetworkUtils.ToBytes(password));
 				stream.Write(response.AsBytes());
 				return;
 			}
 
+			ID = BitConverter.ToInt32(package.Content, 1);
+
 			// Server connection established
-			Log.WriteDebug("Server package received. Connected.");
+			Log.WriteDebug($"Connection established (ID: {ID}).");
 			isPending = false;
 		}
 
@@ -75,11 +90,23 @@ namespace WarriorsSnuggery.Networking
 		{
 			var package = new NetworkPackage(client.GetStream());
 
+			if (checkDisconnect(package))
+				return;
+
+			if (!GameReady)
+				return;
+
+			GameController.Receive(package);
+		}
+
+		bool checkDisconnect(NetworkPackage package)
+		{
 			if (package.Type == PackageType.GOODBYE)
 			{
-				Log.WriteDebug("Server closing. Closing connection...");
+				var message = NetworkUtils.ToString(package.Content);
+				Log.WriteDebug($"Connection closed: {message}");
 				Close();
-				return;
+				return true;
 			}
 
 			if (package.Type == PackageType.ERROR)
@@ -87,15 +114,10 @@ namespace WarriorsSnuggery.Networking
 				var message = NetworkUtils.ToString(package.Content);
 				Log.WriteDebug($"Server error. Error message: {message}");
 				Close();
-				return;
+				return true;
 			}
 
-			if (package.Type == PackageType.MESSAGE)
-			{
-				GameController.AddInfoMessage(1000, NetworkUtils.ToString(package.Content));
-			}
-
-			Log.WriteDebug("Data received.");
+			return false;
 		}
 
 		public void Send(IOrder order)
@@ -105,13 +127,16 @@ namespace WarriorsSnuggery.Networking
 				dispatchOrder(order);
 				return;
 			}
-			
-			orders.Add(order);
+
+			lock (orders)
+			{
+				orders.Add(order);
+			}
 		}
 
 		bool dispatchOrder(IOrder order)
 		{
-			if (!isPending || !isActive)
+			if (isPending || !isActive)
 				return false;
 
 			var package = order.GeneratePackage();
@@ -121,6 +146,9 @@ namespace WarriorsSnuggery.Networking
 
 		public void Close()
 		{
+			var package = new NetworkPackage(PackageType.GOODBYE, new byte[0]);
+			stream.Write(package.AsBytes());
+
 			isActive = false;
 		}
 	}

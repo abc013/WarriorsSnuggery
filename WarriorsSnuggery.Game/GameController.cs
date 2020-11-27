@@ -4,12 +4,18 @@ using WarriorsSnuggery.Graphics;
 using WarriorsSnuggery.Loader;
 using WarriorsSnuggery.Maps;
 using WarriorsSnuggery.Maps.Pieces;
+using WarriorsSnuggery.Networking;
+using WarriorsSnuggery.Networking.Orders;
 using WarriorsSnuggery.UI.Screens;
 
 namespace WarriorsSnuggery
 {
 	public static class GameController
 	{
+		static Server localServer;
+
+		static Client client;
+
 		static Game game;
 		static Game nextGame;
 
@@ -19,6 +25,7 @@ namespace WarriorsSnuggery
 		{
 			RuleLoader.Load();
 			PieceManager.Load();
+
 			GameSaveManager.Load();
 		}
 
@@ -27,8 +34,36 @@ namespace WarriorsSnuggery
 			game.Tick();
 		}
 
+		static void createLocalServer()
+		{
+			localServer = new Server("localhost", "1234", playerCount: 1);
+		}
+
+		public static void Connect(string address, int port = 5050, string password = "")
+		{
+			client = new Client(address, port, password);
+		}
+
+		public static void SendOrder(IOrder order)
+		{
+			client.Send(order);
+		}
+
+		public static void Receive(NetworkPackage package)
+		{
+			if (package.Type == PackageType.MESSAGE)
+			{
+				var message = NetworkUtils.ToString(package.Content);
+				game.ScreenControl.ShowInformation(100, message); // TODO
+			}
+		}
+
+
 		public static void CreateFirst()
 		{
+			createLocalServer();
+			Connect("127.0.0.1", password: "1234");
+
 			var mission = MissionType.MAIN_MENU;
 			var mode = InteractionMode.NONE;
 			var map = MapCache.FindMap(mission, 0, Program.SharedRandom);
@@ -51,6 +86,8 @@ namespace WarriorsSnuggery
 
 			game = new Game(GameSaveManager.DefaultSave.Clone(), map, mission, mode);
 			game.Load();
+
+			client.GameReady = true;
 		}
 
 		public static void CreateMainMenu()
@@ -167,6 +204,8 @@ namespace WarriorsSnuggery
 				game.Finish();
 				game.Dispose();
 			}
+
+			localServer.Close();
 		}
 	}
 }

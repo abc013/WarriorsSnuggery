@@ -101,6 +101,9 @@ namespace WarriorsSnuggery
 		[DefaultValue(true)]
 		public static bool LockCameraToPlayer;
 
+		[DefaultValue("Being")]
+		public static string Name;
+
 		public static readonly Dictionary<string, Keys> KeyDictionary = new Dictionary<string, Keys>();
 
 		public static readonly List<string> PackageList = new List<string>();

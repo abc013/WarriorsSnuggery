@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net;
 using System.Net.Sockets;
 using System.Threading;
@@ -10,13 +11,15 @@ namespace WarriorsSnuggery.Networking
 	{
 		readonly TcpListener server;
 
-		readonly List<TcpClient> pending = new List<TcpClient>();
-		readonly List<TcpClient> connected = new List<TcpClient>();
+		readonly List<ServerClient> pending = new List<ServerClient>();
+		readonly List<ServerClient> connected = new List<ServerClient>();
 
 		readonly string name;
 		readonly string password;
 		bool requiresPassword => !string.IsNullOrEmpty(password);
+
 		readonly int playerCount;
+		readonly List<int> availableIDs;
 
 		public bool AllowConnections = true;
 
@@ -28,8 +31,9 @@ namespace WarriorsSnuggery.Networking
 			this.name = name;
 			this.password = password;
 			this.playerCount = playerCount;
+			availableIDs = Enumerable.Range(1, playerCount).ToList();
 
-			new Thread(new ThreadStart(loop)).Start();
+			new Thread(new ThreadStart(loop)) { IsBackground = true }.Start();
 		}
 
 		void loop()
@@ -40,86 +44,198 @@ namespace WarriorsSnuggery.Networking
 			{
 				if (AllowConnections)
 				{
-					if (server.Pending() && playerCount == connected.Count)
-						connect(server.AcceptTcpClient());
+					if (server.Pending())
+						connect(new ServerClient(this, server.AcceptTcpClient()));
 
-					pending.RemoveAll(c => connected.Contains(c));
+					pending.RemoveAll(c => connected.Contains(c) || !c.Connected);
 
 					foreach (var client in pending)
 					{
 						if (playerCount == connected.Count)
+						{
+							client.Disconnect("Server is full.");
+							continue;
+						}
+
+						if (!client.PackageAvailable)
 							continue;
 
-						if (client.Available > 0)
-							checkPending(client);
+						var packages = client.GetPackages();
+
+						if (packages.Count > 1)
+						{
+							client.Disconnect("Received more than one packages while pending.");
+							continue;
+						}
+
+						checkPassword(client, packages[0]);
 					}
 				}
 
 				foreach (var client in connected)
 				{
-					if (client.Available > 0)
-						receive(client);
+					if (!client.PackageAvailable)
+						continue;
+
+					foreach(var package in client.GetPackages())
+						receive(client, package);
 				}
 				connected.RemoveAll(c => !c.Connected);
 			}
 
+			foreach (var client in pending)
+				client.Disconnect("Server closing.");
+
+			foreach (var client in connected)
+				client.Disconnect("Server closing.");
+
 			server.Stop();
 		}
 
-		void connect(TcpClient client)
+		internal int getClientID()
 		{
-			Log.WriteDebug("New client detected.");
+			// Server is full, connect and send message. No ID required here.
+			if (availableIDs.Count == 0)
+				return -1;
+
+			var id = availableIDs[0];
+			availableIDs.RemoveAt(0);
+
+			return id;
+		}
+
+		internal void freeClientID(int id)
+		{
+			availableIDs.Add(id);
+		}
+
+		void connect(ServerClient client)
+		{
+			Log.WriteDebug($"New client detected (ID: {client.ID}).");
+
 			pending.Add(client);
 
 			if (requiresPassword)
 			{
 				Log.WriteDebug("Sending password request...");
-				var package = new NetworkPackage(PackageType.WELCOME, BitConverter.GetBytes(!requiresPassword));
-				client.GetStream().Write(package.AsBytes());
+				client.Send(new NetworkPackage(PackageType.WELCOME, new byte[] { 1 }));
 				return;
 			}
 
 			// No password required. We can send the data directly...
-			checkPending(client);
+			accept(client);
 		}
 
-		void checkPending(TcpClient client)
+		void checkPassword(ServerClient client, NetworkPackage package)
 		{
-			var stream = client.GetStream();
-			var bytes = NetworkUtils.ToBytes("hello");
+			if (password != NetworkUtils.ToString(package.Content))
+			{
+				Log.WriteDebug($"Client {client.ID}: disconnected. wrong password.");
+				client.Disconnect("Wrong password.");
+				return;
+			}
+
+			accept(client);
+		}
+
+		void accept(ServerClient client)
+		{
+			Log.WriteDebug($"Client {client.ID}: connected. Sending data...");
+
+			var bytes = BitConverter.GetBytes(client.ID);
 			var data = new byte[bytes.Length + 1];
 			data[0] = 0;
-			Array.Copy(bytes, 0, data, 0, bytes.Length);
-			Log.WriteDebug("Client connected. Sending data...");
+			Array.Copy(bytes, 0, data, 1, bytes.Length);
 
-			var package = new NetworkPackage(PackageType.WELCOME, data);
-			stream.Write(package.AsBytes());
+			client.Send(new NetworkPackage(PackageType.WELCOME, data));
 
 			connected.Add(client);
 		}
 
-		void receive(TcpClient client)
+		void receive(ServerClient client, NetworkPackage package)
 		{
-			var package = new NetworkPackage(client.GetStream());
-
 			if (package.Type == PackageType.GOODBYE)
 			{
-				Log.WriteDebug("Client closing. Closing connection...");
-				client.Close();
+				Log.WriteDebug($"Client {client.ID}: Closing.");
+				client.Disconnect("Client requested disconnect.");
 				return;
 			}
 
-			Log.WriteDebug("Command reveived.");
+			if (package.Type == PackageType.MESSAGE)
+			{
+				var msg = NetworkUtils.ToString(package.Content);
+				Log.WriteDebug($"Client {client.ID}: Message received: {msg}");
+				broadcast(package);
+				return;
+			}
+
+			Log.WriteDebug($"Client {client.ID}: Command received (Type: {package.Type}).");
 		}
 
-		public void Send()
+		void broadcast(NetworkPackage package)
 		{
+			foreach (var client in connected)
+				send(client, package);
+		}
 
+		void send(ServerClient client, NetworkPackage package)
+		{
+			client.Send(package);
 		}
 
 		public void Close()
 		{
 			isActive = false;
+		}
+
+		class ServerClient
+		{
+			public readonly int ID;
+
+			public bool Connected => client.Connected;
+
+			public bool PackageAvailable => stream.DataAvailable;
+
+			readonly Server server;
+
+			readonly TcpClient client;
+			readonly NetworkStream stream;
+
+			public ServerClient(Server server, TcpClient client)
+			{
+				ID = server.getClientID();
+
+				this.server = server;
+				this.client = client;
+
+				client.NoDelay = true;
+
+				stream = client.GetStream();
+			}
+
+			public List<NetworkPackage> GetPackages()
+			{
+				var packages = new List<NetworkPackage>();
+				while (stream.DataAvailable)
+					packages.Add(new NetworkPackage(stream));
+
+				return packages;
+			}
+
+			public void Send(NetworkPackage package)
+			{
+				stream.Write(package.AsBytes());
+			}
+
+			public void Disconnect(string message)
+			{
+				var package = new NetworkPackage(PackageType.GOODBYE, NetworkUtils.ToBytes(message));
+
+				Send(package);
+				client.Close();
+
+				server.freeClientID(ID);
+			}
 		}
 	}
 }
