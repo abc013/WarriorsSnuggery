@@ -8,7 +8,8 @@ namespace WarriorsSnuggery.Networking
 		WELCOME = 0x0,
 		MESSAGE = 0x1,
 		GOODBYE = 0x2,
-		ERROR = 0x3
+		ERROR = 0x3,
+		PAUSE = 0x4
 	}
 
 	public class NetworkPackage
