@@ -56,6 +56,8 @@ namespace WarriorsSnuggery
 
 		public static int CurrentMap = -1;
 
+		public static string Name = "Being";
+
 		public static Keys GetKey(string value)
 		{
 			if (!KeyDictionary.ContainsKey(value))

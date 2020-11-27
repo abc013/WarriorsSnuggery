@@ -39,6 +39,7 @@ namespace WarriorsSnuggery
 		public static int DebugIndentation;
 		public static void WriteDebug(string text)
 		{
+			Console.WriteLine(text);
 			debugWriter.WriteLine(new string('\t', DebugIndentation) + text);
 			debugWriter.Flush();
 		}

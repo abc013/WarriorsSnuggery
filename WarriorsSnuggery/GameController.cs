@@ -1,20 +1,18 @@
 ﻿using OpenTK.Windowing.GraphicsLibraryFramework;
 using WarriorsSnuggery.Maps;
+using WarriorsSnuggery.Networking;
+using WarriorsSnuggery.Networking.Orders;
 using WarriorsSnuggery.UI.Screens;
 
 namespace WarriorsSnuggery
 {
 	public static class GameController
 	{
+		static Server localServer;
+
+		static Client client;
+
 		static Game game;
-
-		public static void Tick()
-		{
-			KeyInput.Tick();
-			MouseInput.Tick();
-
-			game.Tick();
-		}
 
 		public static void Load()
 		{
@@ -24,10 +22,15 @@ namespace WarriorsSnuggery
 
 			MapCreator.LoadMaps(FileExplorer.Maps, "maps.yaml");
 
+			createLocalServer();
+			Connect("127.0.0.1", password: "1234");
+
 			GameSaveManager.Load();
 			GameSaveManager.DefaultStatistic = new GameStatistics("DEFAULT");
 
 			createFirst();
+
+			client.GameReady = true;
 		}
 
 		static void createFirst()
@@ -46,6 +49,38 @@ namespace WarriorsSnuggery
 
 			if (Program.StartEditor)
 				game.SwitchEditor();
+		}
+
+		public static void Tick()
+		{
+			KeyInput.Tick();
+			MouseInput.Tick();
+
+			game.Tick();
+		}
+
+		static void createLocalServer()
+		{
+			localServer = new Server("localhost", "1234", playerCount: 1);
+		}
+
+		public static void Connect(string address, int port = 5050, string password = "")
+		{
+			client = new Client(address, port, password);
+		}
+
+		public static void SendOrder(IOrder order)
+		{
+			client.Send(order);
+		}
+
+		public static void Receive(NetworkPackage package)
+		{
+			if (package.Type == PackageType.MESSAGE)
+			{
+				var message = NetworkUtils.ToString(package.Content);
+				game.ScreenControl.Chat.ReceiveText(message);
+			}
 		}
 
 		public static void CreateReturn(GameType type)
@@ -128,6 +163,8 @@ namespace WarriorsSnuggery
 				game.Finish();
 				game.Dispose();
 			}
+
+			localServer.Close();
 		}
 	}
 }

@@ -1,4 +1,5 @@
 ﻿using WarriorsSnuggery.Graphics;
+using WarriorsSnuggery.Networking.Orders;
 
 namespace WarriorsSnuggery.UI
 {
@@ -39,11 +40,16 @@ namespace WarriorsSnuggery.UI
 			if (string.IsNullOrWhiteSpace(input.Text))
 				return;
 
-			panel.Add(input.Text);
+			GameController.SendOrder(new ChatOrder(Settings.Name + ':' + input.Text));
 			input.Text = string.Empty;
 		}
 
 		public void SendText(string message)
+		{
+			GameController.SendOrder(new ChatOrder(Settings.Name + ':' + message));
+		}
+
+		public void ReceiveText(string message)
 		{
 			panel.Add(message);
 		}
