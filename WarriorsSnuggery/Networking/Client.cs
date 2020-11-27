@@ -47,9 +47,12 @@ namespace WarriorsSnuggery.Networking
 				while (client.Available > 0)
 					receiveOrder();
 
-				foreach (var order in orders)
-					dispatchOrder(order);
-				orders.Clear();
+				lock (orders)
+				{
+					foreach (var order in orders)
+						dispatchOrder(order);
+					orders.Clear();
+				}
 			}
 			isActive = false;
 		}
@@ -124,8 +127,11 @@ namespace WarriorsSnuggery.Networking
 				dispatchOrder(order);
 				return;
 			}
-			
-			orders.Add(order);
+
+			lock (orders)
+			{
+				orders.Add(order);
+			}
 		}
 
 		bool dispatchOrder(IOrder order)
