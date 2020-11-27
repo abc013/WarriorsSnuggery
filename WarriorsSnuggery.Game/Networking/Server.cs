@@ -154,22 +154,23 @@ namespace WarriorsSnuggery.Networking
 
 		void receive(ServerClient client, NetworkPackage package)
 		{
-			if (package.Type == PackageType.GOODBYE)
+			switch (package.Type)
 			{
-				Log.WriteDebug($"Client {client.ID}: Closing.");
-				client.Disconnect("Client requested disconnect.");
-				return;
+				case PackageType.GOODBYE:
+					Log.WriteDebug($"Client {client.ID}: Closing.");
+					client.Disconnect("Client requested disconnect.");
+					return;
+				case PackageType.MESSAGE:
+					var msg = NetworkUtils.ToString(package.Content);
+					Log.WriteDebug($"Client {client.ID}: Message received: {msg}");
+					broadcast(package);
+					break;
+				case PackageType.PAUSE:
+					var pause = package.Content[0] == 1;
+					Log.WriteDebug($"Client {client.ID}: Requested {(pause ? "" : "un")}pause.");
+					broadcast(package);
+					break;
 			}
-
-			if (package.Type == PackageType.MESSAGE)
-			{
-				var msg = NetworkUtils.ToString(package.Content);
-				Log.WriteDebug($"Client {client.ID}: Message received: {msg}");
-				broadcast(package);
-				return;
-			}
-
-			Log.WriteDebug($"Client {client.ID}: Command received (Type: {package.Type}).");
 		}
 
 		void broadcast(NetworkPackage package)

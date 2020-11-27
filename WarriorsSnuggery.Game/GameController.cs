@@ -51,10 +51,17 @@ namespace WarriorsSnuggery
 
 		public static void Receive(NetworkPackage package)
 		{
-			if (package.Type == PackageType.MESSAGE)
+			switch (package.Type)
 			{
-				var message = NetworkUtils.ToString(package.Content);
-				game.ScreenControl.ShowInformation(100, message); // TODO
+				case PackageType.MESSAGE:
+					var message = NetworkUtils.ToString(package.Content);
+					game.ScreenControl.ShowInformation(100, message); // TODO
+					break;
+				case PackageType.PAUSE:
+					var pause = package.Content[0] == 1;
+					game.ReceivePause(pause);
+
+					break;
 			}
 		}
 

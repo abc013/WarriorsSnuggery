@@ -9,6 +9,7 @@ using WarriorsSnuggery.Spells;
 using WarriorsSnuggery.Scripting;
 using WarriorsSnuggery.UI.Screens;
 using WarriorsSnuggery.Objects.Actors;
+using WarriorsSnuggery.Networking.Orders;
 
 namespace WarriorsSnuggery
 {
@@ -129,6 +130,11 @@ namespace WarriorsSnuggery
 		}
 
 		public void Pause(bool paused)
+		{
+			GameController.SendOrder(new PauseOrder(paused));
+		}
+
+		public void ReceivePause(bool paused)
 		{
 			Paused = paused;
 			AudioController.PauseAll(paused, true);
