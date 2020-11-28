@@ -17,7 +17,6 @@ namespace WarriorsSnuggery.Networking
 
 		readonly List<IOrder> orders = new List<IOrder>();
 
-		public bool GameReady = false;
 		bool isPending = true;
 		bool isActive = true;
 
@@ -91,9 +90,6 @@ namespace WarriorsSnuggery.Networking
 			var package = new NetworkPackage(client.GetStream());
 
 			if (checkDisconnect(package))
-				return;
-
-			if (!GameReady)
 				return;
 
 			GameController.Receive(package);

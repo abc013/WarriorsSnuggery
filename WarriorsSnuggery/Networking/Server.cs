@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Net;
 using System.Net.Sockets;
 using System.Threading;
@@ -19,7 +18,7 @@ namespace WarriorsSnuggery.Networking
 		bool requiresPassword => !string.IsNullOrEmpty(password);
 
 		readonly int playerCount;
-		readonly List<int> availableIDs;
+		int nextID = 0;
 
 		public bool AllowConnections = true;
 
@@ -31,7 +30,6 @@ namespace WarriorsSnuggery.Networking
 			this.name = name;
 			this.password = password;
 			this.playerCount = playerCount;
-			availableIDs = Enumerable.Range(1, playerCount).ToList();
 
 			new Thread(new ThreadStart(loop)) { IsBackground = true }.Start();
 		}
@@ -45,7 +43,7 @@ namespace WarriorsSnuggery.Networking
 				if (AllowConnections)
 				{
 					if (server.Pending())
-						connect(new ServerClient(this, server.AcceptTcpClient()));
+						connect(new ServerClient(nextID++, server.AcceptTcpClient()));
 
 					pending.RemoveAll(c => connected.Contains(c) || !c.Connected);
 
@@ -74,7 +72,7 @@ namespace WarriorsSnuggery.Networking
 
 				foreach (var client in connected)
 				{
-					if (!client.PackageAvailable)
+					if (!client.Connected || !client.PackageAvailable)
 						continue;
 
 					foreach(var package in client.GetPackages())
@@ -90,23 +88,6 @@ namespace WarriorsSnuggery.Networking
 				client.Disconnect("Server closing.");
 
 			server.Stop();
-		}
-
-		internal int getClientID()
-		{
-			// Server is full, connect and send message. No ID required here.
-			if (availableIDs.Count == 0)
-				return -1;
-
-			var id = availableIDs[0];
-			availableIDs.RemoveAt(0);
-
-			return id;
-		}
-
-		internal void freeClientID(int id)
-		{
-			availableIDs.Add(id);
 		}
 
 		void connect(ServerClient client)
@@ -197,16 +178,12 @@ namespace WarriorsSnuggery.Networking
 
 			public bool PackageAvailable => stream.DataAvailable;
 
-			readonly Server server;
-
 			readonly TcpClient client;
 			readonly NetworkStream stream;
 
-			public ServerClient(Server server, TcpClient client)
+			public ServerClient(int id, TcpClient client)
 			{
-				ID = server.getClientID();
-
-				this.server = server;
+				ID = id;
 				this.client = client;
 
 				client.NoDelay = true;
@@ -217,6 +194,10 @@ namespace WarriorsSnuggery.Networking
 			public List<NetworkPackage> GetPackages()
 			{
 				var packages = new List<NetworkPackage>();
+
+				if (!Connected)
+					return packages;
+
 				while (stream.DataAvailable)
 					packages.Add(new NetworkPackage(stream));
 
@@ -225,17 +206,21 @@ namespace WarriorsSnuggery.Networking
 
 			public void Send(NetworkPackage package)
 			{
+				if (!Connected)
+					return;
+
 				stream.Write(package.AsBytes());
 			}
 
 			public void Disconnect(string message)
 			{
+				if (!Connected)
+					return;
+
 				var package = new NetworkPackage(PackageType.GOODBYE, NetworkUtils.ToBytes(message));
 
 				Send(package);
 				client.Close();
-
-				server.freeClientID(ID);
 			}
 		}
 	}
