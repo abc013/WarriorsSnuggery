@@ -80,6 +80,26 @@ namespace WarriorsSnuggery.Loader
 			{
 				return s.Trim();
 			}
+			else if (t.IsArray && t.GetElementType().IsEnum)
+			{
+				var parts = s.Split(',');
+
+				for (int i = 0; i < parts.Length; i++)
+					parts[i] = parts[i].Trim();
+
+				var elementType = t.GetElementType();
+				var enums = Array.CreateInstance(elementType, parts.Length);
+				try
+				{
+					for (int i = 0; i < parts.Length; i++)
+						enums.SetValue(Enum.Parse(elementType, parts[i], true), i);
+				}
+				catch (Exception e)
+				{
+					throw new InvalidEnumConversionException(file, node, t, e);
+				}
+				return enums;
+			}
 			else if (t == typeof(int[]))
 			{
 				var parts = s.Split(',');
