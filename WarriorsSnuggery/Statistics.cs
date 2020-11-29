@@ -11,6 +11,7 @@ namespace WarriorsSnuggery
 		// Paths
 		public string Name;
 		public string SaveName;
+		public string MapSaveName => SaveName + "_map";
 		// Changing Values
 		public int Level;
 		public int Money;
@@ -264,7 +265,7 @@ namespace WarriorsSnuggery
 				writer.Close();
 			}
 
-			world.Save(FileExplorer.Saves, SaveName + "_map", true);
+			world.Save(FileExplorer.Saves, MapSaveName, true);
 		}
 
 		public void Delete()
@@ -272,8 +273,8 @@ namespace WarriorsSnuggery
 			if (File.Exists(FileExplorer.Saves + SaveName + ".yaml"))
 				File.Delete(FileExplorer.Saves + SaveName + ".yaml");
 
-			if (File.Exists(FileExplorer.Saves + SaveName + "_map.yaml"))
-				File.Delete(FileExplorer.Saves + SaveName + "_map.yaml");
+			if (File.Exists(FileExplorer.Saves + MapSaveName + ".yaml"))
+				File.Delete(FileExplorer.Saves + MapSaveName + ".yaml");
 		}
 
 		public void SetName(string name)

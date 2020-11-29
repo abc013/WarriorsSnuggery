@@ -34,17 +34,20 @@ namespace WarriorsSnuggery.Maps
 			}
 		}
 
-		public static void RefreshPiece(string piece)
+		public static Piece ReloadPiece(string name)
 		{
-			var existingPiece = Pieces.FirstOrDefault(p => p.InnerName == piece);
+			var existingPiece = Pieces.FirstOrDefault(p => p.InnerName == name);
 
 			if (existingPiece != null)
 				Pieces.Remove(existingPiece);
 
-			var path = FileExplorer.FindPath(FileExplorer.Maps, piece, ".yaml");
-			var nodes = RuleReader.FromFile(path, piece + ".yaml");
+			var path = FileExplorer.FindPath(FileExplorer.Maps, name, ".yaml");
+			var nodes = RuleReader.FromFile(path, name + ".yaml");
 
-			Pieces.Add(new Piece(piece, path, nodes));
+			var piece = new Piece(name, path, nodes);
+			Pieces.Add(piece);
+
+			return piece;
 		}
 
 		public static Piece GetPiece(string piece)

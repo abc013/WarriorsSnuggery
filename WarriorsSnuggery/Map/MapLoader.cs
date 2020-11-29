@@ -20,7 +20,7 @@ namespace WarriorsSnuggery.Maps
 		public CPos Exit { get => map.Exit; set => map.Exit = value; }
 
 		public List<MapGeneratorInfo> Infos => map.Type.GeneratorInfos;
-		public bool FromSave => map.Type.FromSave;
+		public bool FromSave => map.Type.IsSave;
 
 		public GameMode GameMode => world.Game.Mode;
 		public GameStatistics Statistics => world.Game.Statistics;
@@ -57,7 +57,7 @@ namespace WarriorsSnuggery.Maps
 		public void Generate()
 		{
 			// Check whether from save first. Saves must have a OverridePiece: the saved map.
-			if (map.Type.FromSave)
+			if (map.Type.IsSave)
 			{
 				var path = FileExplorer.Saves;
 				var file = map.Type.OverridePiece + ".yaml";

@@ -10,7 +10,7 @@ namespace WarriorsSnuggery.Maps
 	{
 		public readonly string Name;
 
-		[Desc("Type of the map.")]
+		[Desc("Type of the map. This determines when the map is chosen for generation.")]
 		public readonly GameType DefaultType = GameType.NORMAL;
 		[Desc("Possible modes on this map.")]
 		public readonly GameMode[] DefaultModes = new[] { GameMode.NONE };
@@ -48,9 +48,9 @@ namespace WarriorsSnuggery.Maps
 		public readonly string MissionScript;
 
 		[Desc("Variable used to determine wether this map comes from an save. DO NOT ALTER.")]
-		public readonly bool FromSave;
+		public readonly bool IsSave;
 
-		public MapInfo(string name, List<MiniTextNode> nodes)
+		MapInfo(string name, List<MiniTextNode> nodes)
 		{
 			Name = name;
 
@@ -118,7 +118,7 @@ namespace WarriorsSnuggery.Maps
 			GeneratorInfos = GeneratorInfos.OrderByDescending(g => g.ID).ToList();
 		}
 
-		public MapInfo(string overridePiece, int wall, MPos customSize, Color ambient, GameType defaultType, GameMode[] defaultModes, int level, int fromLevel, int toLevel, TerrainGeneratorInfo baseTerrainGeneration, List<MapGeneratorInfo> genInfos, MPos spawnPoint, bool fromSave, bool allowWeapons, string missionScript)
+		MapInfo(string overridePiece, int wall, MPos customSize, Color ambient, GameType defaultType, GameMode[] defaultModes, int level, int fromLevel, int toLevel, TerrainGeneratorInfo baseTerrainGeneration, List<MapGeneratorInfo> genInfos, MPos spawnPoint, bool isSave, bool allowWeapons, string missionScript)
 		{
 			OverridePiece = overridePiece;
 			Wall = wall;
@@ -132,28 +132,29 @@ namespace WarriorsSnuggery.Maps
 			TerrainGenerationBase = baseTerrainGeneration;
 			GeneratorInfos = genInfos;
 			SpawnPoint = spawnPoint;
-			FromSave = fromSave;
+			IsSave = isSave;
 			AllowWeapons = allowWeapons;
 			MissionScript = missionScript;
 		}
 
-		public static MapInfo MapTypeFromSave(GameStatistics stats)
+		public static MapInfo FromRules(MiniTextNode parent)
 		{
-			var piece = stats.SaveName + "_map";
-			var size = RuleReader.FromFile(FileExplorer.Saves, stats.SaveName + "_map.yaml").First(n => n.Key == "Size").Convert<MPos>();
+			return new MapInfo(parent.Key, parent.Children);
+		}
+
+		public static MapInfo FromSave(GameStatistics stats)
+		{
+			var size = RuleReader.FromFile(FileExplorer.Saves, stats.MapSaveName + ".yaml").First(n => n.Key == "Size").Convert<MPos>();
+
 			var type = MapCreator.GetType(stats.CurrentMapType);
 			var mapGeneratorInfos = type == null ? new List<MapGeneratorInfo>() : type.GeneratorInfos;
-			return new MapInfo(piece, 0, size, Color.White, stats.CurrentType, new[] { stats.CurrentMode }, -1, 0, int.MaxValue, new TerrainGeneratorInfo(0, new List<MiniTextNode>()), mapGeneratorInfos, MPos.Zero, true, true, stats.Script);
+
+			return new MapInfo(stats.MapSaveName, 0, size, Color.White, stats.CurrentType, new[] { stats.CurrentMode }, -1, 0, int.MaxValue, new TerrainGeneratorInfo(0, new List<MiniTextNode>()), mapGeneratorInfos, MPos.Zero, true, true, stats.Script);
 		}
 
-		public static MapInfo EditorMapTypeFromPiece(string piece, MPos size)
+		public static MapInfo FromPiece(Piece piece, GameType type = GameType.NONE)
 		{
-			return new MapInfo(piece, 0, size, Color.White, GameType.EDITOR, new[] { GameMode.NONE }, -1, 0, int.MaxValue, new TerrainGeneratorInfo(0, new List<MiniTextNode>()), new List<MapGeneratorInfo>(), MPos.Zero, false, true, null);
-		}
-
-		public static MapInfo ConvertGameType(MapInfo map, GameType type)
-		{
-			return new MapInfo(map.OverridePiece, map.Wall, map.CustomSize, map.Ambient, type, map.DefaultModes, map.Level, map.FromLevel, map.ToLevel, map.TerrainGenerationBase, map.GeneratorInfos, map.SpawnPoint, map.FromSave, map.AllowWeapons, null);
+			return new MapInfo(piece.InnerName, 0, piece.Size, Color.White, type, new[] { GameMode.NONE }, -1, 0, int.MaxValue, new TerrainGeneratorInfo(0, new List<MiniTextNode>()), new List<MapGeneratorInfo>(), MPos.Zero, false, true, null);
 		}
 	}
 
@@ -171,9 +172,9 @@ namespace WarriorsSnuggery.Maps
 
 			foreach (var mapNode in mapNodes)
 			{
-				var map = new MapInfo(mapNode.Key, mapNode.Children);
+				var map = MapInfo.FromRules(mapNode);
 
-				mapsNames.Add(mapNode.Key, map);
+				mapsNames.Add(map.Name, map);
 
 				mapsTypes[map.DefaultType].Add(map);
 			}
@@ -186,7 +187,7 @@ namespace WarriorsSnuggery.Maps
 
 		public static string GetName(MapInfo info, GameStatistics stats)
 		{
-			if (info.FromSave)
+			if (info.IsSave)
 				return stats.CurrentMapType;
 
 			return mapsNames.FirstOrDefault(t => t.Value == info).Key;

@@ -63,7 +63,7 @@ namespace WarriorsSnuggery
 
 			if (Game.Type != GameType.EDITOR)
 			{
-				if (!Map.Type.FromSave)
+				if (!Map.Type.IsSave)
 				{
 					var start = Map.PlayerSpawn != new CPos(-1024, -1024, 0) ? Map.PlayerSpawn : new MPos(Map.Bounds.X / 2, Map.Bounds.Y / 2).ToCPos();
 

@@ -32,14 +32,6 @@ namespace WarriorsSnuggery
 		NONE
 	}
 
-	public enum GameState
-	{
-		UNKNOWN,
-		VICTORY,
-		DEFEAT,
-		NONE
-	}
-
 	public sealed class Game : ITick, IDisposable
 	{
 		public Random SharedRandom;
@@ -77,7 +69,6 @@ namespace WarriorsSnuggery
 		public bool Editor;
 
 		public bool Finished;
-		public GameState State;
 
 		GameType nextLevelType = GameType.NONE;
 
@@ -87,12 +78,15 @@ namespace WarriorsSnuggery
 		public uint NextWeaponID => CurrentWeaponID++;
 		public uint CurrentWeaponID;
 
-		public Game(GameStatistics statistics, MapInfo map, int seed = -1)
+		public Game(GameStatistics statistics, MapInfo map, GameType type, int seed = -1)
 		{
 			Log.WriteDebug("Loading new game...");
 			Log.DebugIndentation++;
 
+			Log.WriteDebug("GameType: " + type);
+
 			MapType = map;
+			Type = type;
 
 			// If seed negative, calculate it.
 			Seed = seed < 0 ? statistics.Seed + statistics.Level : seed;
@@ -103,19 +97,9 @@ namespace WarriorsSnuggery
 			// In case of success, use this statistic.
 			Statistics = statistics;
 
-			Type = MapType.DefaultType;
 			Mode = MapType.DefaultModes[SharedRandom.Next(MapType.DefaultModes.Length)];
 
 			Editor = Type == GameType.EDITOR;
-
-			// Determine state of the game
-			if (Type == GameType.NORMAL || Type == GameType.TEST || Type == GameType.TUTORIAL)
-				State = GameState.UNKNOWN;
-			else
-				State = GameState.NONE;
-
-			Log.WriteDebug("Editor: " + Editor);
-			Log.WriteDebug("GameType: " + Type);
 
 			SpellManager = new SpellManager(this, statistics);
 			ConditionManager = new ConditionManager(this);
@@ -174,7 +158,7 @@ namespace WarriorsSnuggery
 			WorldRenderer.CheckVisibilityAll();
 			MasterRenderer.UpdateView();
 
-			if (World.Map.Type.FromSave)
+			if (World.Map.Type.IsSave)
 				script?.LoadState(Statistics.ScriptValues);
 			else
 				script?.OnStart();
@@ -383,7 +367,6 @@ namespace WarriorsSnuggery
 
 		public void VictoryConditionsMet()
 		{
-			State = GameState.VICTORY;
 			script?.OnWin();
 			Finish();
 
@@ -396,7 +379,6 @@ namespace WarriorsSnuggery
 
 		public void DefeatConditionsMet()
 		{
-			State = GameState.DEFEAT;
 			script?.OnLose();
 			Finish();
 

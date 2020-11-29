@@ -26,7 +26,7 @@ namespace WarriorsSnuggery.UI.Screens
 				mapSelection.Add(new PanelItem(new BatchObject(UITextureManager.Get("UI_map")[0], Color.White), new MPos(512, 512), piece.Name, new[] { Color.Grey + "[" + piece.Size.X + "," + piece.Size.Y + "]" },
 				() =>
 				{
-					GameController.CreateNew(new GameStatistics(GameSaveManager.DefaultStatistic), GameType.EDITOR, custom: MapInfo.EditorMapTypeFromPiece(piece.InnerName, piece.Size));
+					GameController.CreateNew(new GameStatistics(GameSaveManager.DefaultStatistic), GameType.EDITOR, custom: MapInfo.FromPiece(piece));
 					Hide();
 				}));
 			}
@@ -124,23 +124,10 @@ namespace WarriorsSnuggery.UI.Screens
 				return;
 
 			var size = new MPos(int.Parse(sizeX.Text), int.Parse(sizeY.Text));
-			var path = FileExplorer.Maps + @"\maps";
+			var name2 = name.Text;
 
-			Directory.CreateDirectory(path);
-
-			using (var stream = new StreamWriter(FileExplorer.CreateFile(path + "\\", name.Text, ".yaml")))
-			{
-				stream.WriteLine("Name=" + name.Text);
-				stream.WriteLine("Size=" + size.X + "," + size.Y);
-				var terrain = string.Join(",", Enumerable.Repeat("0", size.X * size.Y));
-				stream.WriteLine("Terrain=" + terrain);
-				var walls = string.Join(",", Enumerable.Repeat("-1", (size.X + 1) * (size.Y + 1) * 2 * 2));
-				stream.WriteLine("Walls=" + walls);
-			}
-			// Load piece into cache
-			PieceManager.RefreshPiece(name.Text);
-
-			GameController.CreateNew(new GameStatistics(GameSaveManager.DefaultStatistic), GameType.EDITOR, custom: MapInfo.EditorMapTypeFromPiece(name.Text, size));
+			var piece = WorldCreator.CreateEmpty(name2, size);
+			GameController.CreateNew(new GameStatistics(GameSaveManager.DefaultStatistic), GameType.EDITOR, custom: MapInfo.FromPiece(piece));
 		}
 	}
 }

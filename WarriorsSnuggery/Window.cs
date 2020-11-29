@@ -48,7 +48,7 @@ namespace WarriorsSnuggery
 			// Initialize values
 			unsafe
 			{
-				var mode = GLFW.GetVideoMode(CurrentMonitor.ToUnsafePtr<OpenTK.Windowing.GraphicsLibraryFramework.Monitor>());
+				var mode = GLFW.GetVideoMode(CurrentMonitor.ToUnsafePtr<Monitor>());
 				WindowInfo.ScreenWidth = mode->Width;
 				WindowInfo.ScreenHeight = mode->Height;
 				WindowInfo.ScreenRefreshRate = mode->RefreshRate;

@@ -30,7 +30,7 @@ namespace WarriorsSnuggery
 			generators = game.MapType.GeneratorInfos.Where(g => g is PatrolGeneratorInfo info && info.UseForWaves).ToArray();
 			loader = new MapLoader(game.World, game.World.Map);
 
-			if (game.MapType.FromSave && game.Statistics.Waves > 0)
+			if (game.MapType.IsSave && game.Statistics.Waves > 0)
 				CurrentWave = game.Statistics.Waves;
 
 			if (generators.Length == 0)

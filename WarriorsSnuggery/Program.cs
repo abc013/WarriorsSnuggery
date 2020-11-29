@@ -129,6 +129,7 @@ namespace WarriorsSnuggery
 			AudioController.Exit();
 			Window.CloseWindow();
 
+			Log.WriteDebug("Game closing.");
 			watch.StopAndWrite("Disposing");
 		}
 

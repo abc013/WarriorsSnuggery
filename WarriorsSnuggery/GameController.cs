@@ -32,9 +32,16 @@ namespace WarriorsSnuggery
 
 		static void createFirst()
 		{
-			var map = Program.MapType != null ? MapCreator.GetType(Program.MapType) : MapCreator.FindMap(GameType.MAINMENU, 0);
+			var type = GameType.MAINMENU;
+			var map = MapCreator.FindMap(type, 0);
 
-			game = new Game(new GameStatistics(GameSaveManager.DefaultStatistic), map);
+			if (!string.IsNullOrEmpty(Program.MapType))
+			{
+				map = MapCreator.GetType(Program.MapType);
+				type = map.DefaultType;
+			}
+
+			game = new Game(new GameStatistics(GameSaveManager.DefaultStatistic), map, type);
 			game.Load();
 
 			if (Program.StartEditor)
@@ -48,7 +55,7 @@ namespace WarriorsSnuggery
 			game.Finish();
 			game.Dispose();
 
-			game = new Game(stats, MapCreator.FindMap(type, stats.Level));
+			game = new Game(stats, MapCreator.FindMap(type, stats.Level), type);
 			game.Load();
 		}
 
@@ -59,7 +66,7 @@ namespace WarriorsSnuggery
 			game.Finish();
 			game.Dispose();
 
-			game = new Game(stats, game.MapType, game.Seed);
+			game = new Game(stats, game.MapType, game.Type, game.Seed);
 			game.Load();
 		}
 
@@ -70,7 +77,7 @@ namespace WarriorsSnuggery
 			game.Finish();
 			game.Dispose();
 
-			game = new Game(stats, MapCreator.FindMap(type, stats.Level));
+			game = new Game(stats, MapCreator.FindMap(type, stats.Level), type);
 			game.Load();
 		}
 
@@ -81,9 +88,10 @@ namespace WarriorsSnuggery
 
 			if (loadStatsMap)
 			{
+				type = stats.CurrentType;
 				try
 				{
-					custom = MapInfo.MapTypeFromSave(stats);
+					custom = MapInfo.FromSave(stats);
 				}
 				catch (System.IO.FileNotFoundException)
 				{
@@ -91,7 +99,7 @@ namespace WarriorsSnuggery
 				}
 			}
 
-			game = new Game(stats, custom ?? MapCreator.FindMap(type, stats.Level));
+			game = new Game(stats, custom ?? MapCreator.FindMap(type, stats.Level), type);
 			game.Load();
 		}
 
