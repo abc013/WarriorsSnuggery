@@ -116,27 +116,30 @@ namespace WarriorsSnuggery.Objects
 
 				Text += text.ToString();
 
+				var color = Color.White;
 				int charlength = chars.Count;
 				for (int i = chars.Count; i < Text.Length; i++)
 				{
 					if (colorPairs.ContainsKey(i - charlength))
-						Color = colorPairs[i - charlength];
+						color = colorPairs[i - charlength];
 
-					chars.Add(new TextRenderable(Position, font, Text[i], Color, width));
+					chars.Add(new TextRenderable(Position, font, Text[i], color, width));
 					width += font.GetWidth(Text[i]);
 				}
 			}
 			else
 			{
 				Text = text;
+
+				var color = Color.White;
 				for (int i = 0; i < text.Length; i++)
 				{
 					if (colorPairs.ContainsKey(i))
-						Color = colorPairs[i];
+						color = colorPairs[i];
 
 					var @char = text[i];
 					if (chars.Count <= i)
-						chars.Add(new TextRenderable(Position, font, @char, Color, width));
+						chars.Add(new TextRenderable(Position, font, @char, color, width));
 					else
 					{
 						var localchar = chars[i];

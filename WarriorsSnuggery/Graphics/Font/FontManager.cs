@@ -9,13 +9,14 @@ namespace WarriorsSnuggery.Graphics
 
 		public static PrivateFontCollection Collection { get; private set; }
 
+		public const char UnknownCharacter = '?';
 		public const string Characters = @" qwertyuiopasdfghjklzxcvbnmäöüQWERTYUIOPASDFGHJKLZXCVBNMÄÖÜ0123456789µ§!""#%&/()=?^*@${[]}\~¨'¯-_.:,;<>|°+↓↑←→∞";
 
 		public static void Load()
 		{
 			Collection = new PrivateFontCollection();
 
-			Collection.AddFontFile(FileExplorer.Misc + @"Fonts\PAPYRUS.ttf");
+			Collection.AddFontFile(FileExplorer.Misc + @"Fonts\Papyrus.ttf");
 			Papyrus24 = new Font(new FontInfo(24, "Papyrus"));
 
 			Collection.AddFontFile(FileExplorer.Misc + @"Fonts\Pixel.ttf");

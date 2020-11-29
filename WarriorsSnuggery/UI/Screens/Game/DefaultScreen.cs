@@ -76,7 +76,7 @@ namespace WarriorsSnuggery.UI.Screens
 
 			var menu = new UITextLine(new CPos(2560, 8192 - 256, 0), FontManager.Pixel16, TextOffset.MIDDLE);
 			menu.WriteText("Menu: '" + new Color(0.5f, 0.5f, 1f) + "Escape" + Color.White + "'");
-			Content.Add(pause);
+			Content.Add(menu);
 
 			// SECTION HEALTH
 			health = new UITextLine(new CPos(0, 8192 - 2048, 0), FontManager.Papyrus24, TextOffset.MIDDLE);

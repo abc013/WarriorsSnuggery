@@ -21,7 +21,10 @@
 
 		public int GetWidth(char c)
 		{
-			int pixelSize = char.IsWhiteSpace(c) ? Info.SpaceSize.X / 2 + 1 : Info.CharSizes[FontManager.Characters.IndexOf(c)].X;
+			if (!FontManager.Characters.Contains(c))
+				c = FontManager.UnknownCharacter;
+
+			var pixelSize = char.IsWhiteSpace(c) ? Info.SpaceSize.X / 2 + 1 : Info.CharSizes[FontManager.Characters.IndexOf(c)].X;
 
 			return (int)(512 * pixelSize * PixelMultiplier);
 		}
@@ -38,6 +41,9 @@
 
 		public Texture GetTexture(char c)
 		{
+			if (!FontManager.Characters.Contains(c))
+				c = FontManager.UnknownCharacter;
+
 			return characters[FontManager.Characters.IndexOf(c)];
 		}
 	}
