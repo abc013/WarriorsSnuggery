@@ -206,7 +206,7 @@ namespace WarriorsSnuggery
 		public static void WriteMaps(StreamWriter writer)
 		{
 			HTMLWriter.WriteHead(writer, "Map");
-			TypeWriter.Write(writer, "WarriorsSnuggery.Maps.MapInfo", new object[] { "empty", new List<MiniTextNode>() });
+			TypeWriter.Write(writer, "WarriorsSnuggery.Maps.MapInfo", Array.Empty<object>());
 
 			HTMLWriter.WriteHead(writer, "MapGenerators");
 			TypeWriter.WriteAll(writer, "WarriorsSnuggery.Maps", "GeneratorInfo", new object[] { -1, new List<MiniTextNode>() });

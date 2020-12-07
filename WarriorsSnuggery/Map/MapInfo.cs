@@ -50,7 +50,10 @@ namespace WarriorsSnuggery.Maps
 		[Desc("Variable used to determine wether this map comes from an save. DO NOT ALTER.")]
 		public readonly bool IsSave;
 
-		public MapInfo(string name, List<MiniTextNode> nodes)
+		// For the DocWriter
+		public MapInfo() { }
+
+		MapInfo(string name, List<MiniTextNode> nodes)
 		{
 			Name = name;
 
