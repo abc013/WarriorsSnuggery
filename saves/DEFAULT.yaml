@@ -7,5 +7,5 @@ MaxMana=200
 Deaths=0
 Kills=0
 Mana=50
-Actor=heal_playable
+Actor=human_playable
 Health=0.7
