@@ -290,57 +290,56 @@ namespace WarriorsSnuggery.Objects
 			if (movement == CPos.Zero)
 				return;
 
-			var oldpos = Position;
-			var oldHeight = Height;
-
-			var pos = new CPos(Position.X + movement.X, Position.Y + movement.Y, Position.Z);
 			var height = Height + movement.Z;
 
-			Position = pos;
-			Height = height;
-			var intersects = World.CheckCollision(this);
-			Position = oldpos;
-			Height = oldHeight;
-			var terrain = World.TerrainAt(pos);
-
-			if (World.ActorInWorld(pos, this) && !intersects && !(terrain == null || (terrain.Type.Speed.Equals(0) && Height == 0)))
-			{
-				acceptMove(pos, height, terrain);
+			// Move in both x and y direction
+			var pos = new CPos(Position.X + movement.X, Position.Y + movement.Y, Position.Z);
+			if (pos != Position && checkMove(pos, height, Velocity))
 				return;
+
+			// Move only in x direction
+			if (movement.X != 0)
+			{
+				var posX = new CPos(Position.X + movement.X, Position.Y, Position.Z);
+				if (posX != Position && checkMove(posX, height, new CPos(Velocity.X, 0, Velocity.Z)))
+					return;
 			}
 
-			var posX = new CPos(Position.X + movement.X, Position.Y, Position.Z);
-
-			Position = posX;
-			Height = height;
-			intersects = World.CheckCollision(this);
-			Position = oldpos;
-			Height = oldHeight;
-			terrain = World.TerrainAt(posX);
-
-			if (World.ActorInWorld(posX, this) && !intersects && !(terrain == null || (terrain.Type.Speed.Equals(0) && Height == 0)))
+			// Move only in y direction
+			if (movement.Y != 0)
 			{
-				acceptMove(posX, height, terrain);
-				Velocity = new CPos(Velocity.X, 0, Velocity.Z);
-				return;
-			}
-
-			var posY = new CPos(Position.X, Position.Y + movement.Y, Position.Z);
-
-			Position = posY;
-			intersects = World.CheckCollision(this);
-			Position = oldpos;
-			Height = oldHeight;
-			terrain = World.TerrainAt(posY);
-
-			if (World.ActorInWorld(posY, this) && !intersects && !(terrain == null || (terrain.Type.Speed.Equals(0) && Height == 0)))
-			{
-				acceptMove(posY, height, terrain);
-				Velocity = new CPos(0, Velocity.Y, Velocity.Z);
-				return;
+				var posY = new CPos(Position.X, Position.Y + movement.Y, Position.Z);
+				if (posY != Position && checkMove(posY, height, new CPos(0, Velocity.Y, Velocity.Z)))
+					return;
 			}
 
 			denyMove();
+		}
+
+		bool checkMove(CPos pos, int height, CPos velocity)
+		{
+			var oldPos = Position;
+			var oldHeight = Height;
+
+			Height = height;
+			Position = pos;
+
+			var intersects = World.CheckCollision(this);
+
+			Position = oldPos;
+			Height = oldHeight;
+
+			if (intersects || !World.ActorInWorld(pos, this))
+				return false;
+
+			var terrain = World.TerrainAt(pos);
+			if (terrain != null && height == 0 && terrain.Type.Speed == 0)
+				return false;
+
+			acceptMove(pos, height, terrain);
+			Velocity = velocity;
+
+			return true;
 		}
 
 		void acceptMove(CPos position, int height, Terrain terrain)
@@ -351,7 +350,6 @@ namespace WarriorsSnuggery.Objects
 			TerrainPosition = Position.ToWPos();
 			CurrentTerrain = terrain;
 			Physics.Position = position;
-
 
 			Angle = (old - position).FlatAngle;
 			World.PhysicsLayer.UpdateSectors(this);
@@ -445,8 +443,8 @@ namespace WarriorsSnuggery.Objects
 				}
 			}
 
-			reloadDelay--;
-			if (reloadDelay < 0) reloadDelay = 0;
+			if (reloadDelay-- < 0)
+				reloadDelay = 0;
 
 			if (WorldPart != null && WorldPart.Hover > 0)
 				Height += (int)(Math.Sin(localTick / 32f) * WorldPart.Hover * 0.5f);

@@ -3,7 +3,6 @@ using System;
 using System.Linq;
 using WarriorsSnuggery.Graphics;
 using WarriorsSnuggery.Objects.Actors;
-using WarriorsSnuggery.UI;
 using WarriorsSnuggery.UI.Screens;
 
 namespace WarriorsSnuggery.Objects.Parts
