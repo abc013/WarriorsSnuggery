@@ -252,21 +252,23 @@ namespace WarriorsSnuggery
 
 				var tickColor = Color.White;
 				if (Window.TPS < Settings.UpdatesPerSecond - 5)
-					tickColor = new Color(256, 192, 192);
+					tickColor = new Color(255, 192, 192);
 				else if (Window.TPS > Settings.UpdatesPerSecond + 5)
-					tickColor = new Color(256, 192, 192);
+					tickColor = new Color(192, 255, 192);
 
 				tick.SetColor(tickColor);
-				tick.SetText("Tick " + Window.TPS.ToString("F1") + " @ " + Window.TMS + " ms");
+				tick.SetText("Tick " + Window.TPS.ToString("F1") + " @ " + Window.TMS.ToString("00") + " ms");
+
+				var frameCount = Settings.FrameLimiter == 0 ? WindowInfo.ScreenRefreshRate : Settings.FrameLimiter;
 
 				var renderColor = Color.White;
-				if (Window.FPS < Settings.FrameLimiter - 20)
-					renderColor = new Color(256, 192, 192);
-				else if (Window.FPS > Settings.FrameLimiter + 5)
-					renderColor = new Color(256, 192, 192);
+				if (Window.FPS < frameCount - 5)
+					renderColor = new Color(255, 192, 192);
+				else if (Window.FPS > frameCount + 5)
+					renderColor = new Color(192, 255, 192);
 
 				render.SetColor(renderColor);
-				render.SetText("Render " + Window.FPS.ToString("F1") + " @ " + Window.FMS + " ms");
+				render.SetText("Render " + Window.FPS.ToString("F1") + " @ " + Window.FMS.ToString("00") + " ms");
 			}
 
 			if (infoTextDuration-- < 120)

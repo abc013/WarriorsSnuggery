@@ -40,6 +40,14 @@ namespace WarriorsSnuggery
 		public static bool Ready;
 		public static bool Stopped;
 
+		public static long TMS;
+		public static double TPS;
+
+		public static long FMS;
+		public static double FPS;
+
+		readonly Timer timer;
+
 		public Window(GameWindowSettings settings1, NativeWindowSettings settings2) : base(settings1, settings2)
 		{
 			current = this;
@@ -55,6 +63,9 @@ namespace WarriorsSnuggery
 			}
 			setScreen();
 			setVSync();
+
+			timer = Timer.Start();
+			timer.Stop();
 		}
 
 		public static void CloseWindow()
@@ -114,52 +125,38 @@ namespace WarriorsSnuggery
 			MasterRenderer.Initialize();
 			SpriteManager.InitSheets();
 
-			var watch = Timer.Start();
-			//loadIcon();
+			timer.Restart();
 
 			FontManager.Load();
 
-			watch.StopAndWrite("Loading Fonts");
-			watch.Restart();
+			timer.StopAndWrite("Loading Fonts");
+			timer.Restart();
 
 			AudioController.Load();
 
-			watch.StopAndWrite("Loading Sound");
-			watch.Restart();
+			timer.StopAndWrite("Loading Sound");
+			timer.Restart();
 
 			GameController.Load();
 
-			watch.StopAndWrite("Loading Rules");
-			watch.Restart();
+			timer.StopAndWrite("Loading Rules");
+			timer.Restart();
 
 			SpriteManager.CreateTextures();
 
-			watch.StopAndWrite("Loading Textures");
+			timer.StopAndWrite("Loading Textures");
 
 			Ready = true;
 			Console.WriteLine(" Done!");
 		}
 
-		//void loadIcon()
-		//{
-		//	var floatData = BitmapLoader.LoadTexture(FileExplorer.Misc + "/warsnu.png", out var width, out var height);
-		//	var byteData = new byte[floatData.Length];
-		//	for (int i = 0; i < floatData.Length; i++)
-		//		byteData[i] = (byte)(floatData[i] / 255);
-
-		//	Icon = new WindowIcon(new OpenTK.Windowing.Common.Input.Image(width, height, byteData));
-		//}
-
-		public static double TPS;
-		public static long TMS;
 		protected override void OnUpdateFrame(FrameEventArgs e)
 		{
 			if (!Ready)
 				return;
 
-			Timer watch = null;
 			if (GlobalTick % 20 == 0)
-				watch = Timer.Start();
+				timer.Restart();
 
 			MouseInput.State = MouseState;
 			WarriorsSnuggery.KeyInput.State = KeyboardState;
@@ -173,24 +170,22 @@ namespace WarriorsSnuggery
 
 			if (GlobalTick % 20 == 0)
 			{
+				TMS = timer.Stop();
 				TPS = 1 / e.Time;
-				TMS = watch.Stop();
+
 				Log.WritePerformance(TMS, " tick " + GlobalTick);
 			}
 
 			GlobalTick++;
 		}
 
-		public static double FPS;
-		public static long FMS;
 		protected override void OnRenderFrame(FrameEventArgs e)
 		{
 			if (!Ready || Stopped)
 				return;
 
-			Timer watch = null;
 			if (GlobalRender % 20 == 0)
-				watch = Timer.Start();
+				timer.Restart();
 
 			MasterRenderer.Render();
 
@@ -201,8 +196,9 @@ namespace WarriorsSnuggery
 
 			if (GlobalRender % 20 == 0)
 			{
+				FMS = timer.Stop();
 				FPS = 1 / e.Time;
-				FMS = watch.Stop();
+
 				Log.WritePerformance(FMS, " render " + GlobalRender);
 				Title = Program.Title + " | " + MasterRenderer.RenderCalls + " Calls | " + MasterRenderer.Batches + " Batches | " + MasterRenderer.BatchCalls + " BatchCalls";
 			}
