@@ -5,7 +5,7 @@ namespace WarriorsSnuggery.Graphics
 {
 	public class Batch : IDisposable
 	{
-		public int Size = Settings.BatchSize * Vertex.Size;
+		public readonly static int Size = Settings.BatchSize * Vertex.Size;
 		public int CurrentSize;
 
 		readonly int vertexarrayID;
@@ -26,8 +26,22 @@ namespace WarriorsSnuggery.Graphics
 
 				GL.BufferData(BufferTarget.ArrayBuffer, Size, IntPtr.Zero, BufferUsageHint.DynamicDraw);
 				Program.CheckGraphicsError("BatchInit_3");
+
+				// position
+				GL.EnableVertexAttribArray(0);
+				GL.VertexAttribPointer(0, 4, VertexAttribPointerType.Float, true, Vertex.Size, 0);
+				Program.CheckGraphicsError("BatchInit_4");
+
+				// texture coordinates
+				GL.EnableVertexAttribArray(1);
+				GL.VertexAttribPointer(1, 4, VertexAttribPointerType.Float, true, Vertex.Size, 16);
+				Program.CheckGraphicsError("BatchInit_5");
+
+				// color
+				GL.EnableVertexAttribArray(2);
+				GL.VertexAttribPointer(2, 4, VertexAttribPointerType.Float, true, Vertex.Size, 32);
+				Program.CheckGraphicsError("BatchInit_6");
 			}
-			FullBind();
 			Clear();
 		}
 
@@ -76,7 +90,7 @@ namespace WarriorsSnuggery.Graphics
 			lock (MasterRenderer.GLLock)
 			{
 				GL.BufferSubData(BufferTarget.ArrayBuffer, IntPtr.Zero, Size, data);
-				Program.CheckGraphicsError("BatchClear_1");
+				Program.CheckGraphicsError("BatchClear");
 			}
 		}
 
@@ -86,29 +100,7 @@ namespace WarriorsSnuggery.Graphics
 			{
 				GL.BindVertexArray(vertexarrayID);
 				GL.BindBuffer(BufferTarget.ArrayBuffer, bufferID);
-				Program.CheckGraphicsError("BatchBind_1");
-			}
-		}
-
-		public void FullBind()
-		{
-			Bind();
-			lock (MasterRenderer.GLLock)
-			{
-				// position
-				GL.EnableVertexAttribArray(0);
-				GL.VertexAttribPointer(0, 4, VertexAttribPointerType.Float, true, Vertex.Size, 0);
-				Program.CheckGraphicsError("BatchBind_2");
-
-				// texture coordinates
-				GL.EnableVertexAttribArray(1);
-				GL.VertexAttribPointer(1, 4, VertexAttribPointerType.Float, true, Vertex.Size, 16);
-				Program.CheckGraphicsError("BatchBind_3");
-
-				// color
-				GL.EnableVertexAttribArray(2);
-				GL.VertexAttribPointer(2, 4, VertexAttribPointerType.Float, true, Vertex.Size, 32);
-				Program.CheckGraphicsError("BatchBind_4");
+				Program.CheckGraphicsError("BatchBind");
 			}
 		}
 
@@ -117,17 +109,18 @@ namespace WarriorsSnuggery.Graphics
 			if (CurrentSize == 0)
 				return;
 
-			MasterRenderer.Batches++;
 			lock (MasterRenderer.GLLock)
 			{
-				GL.DrawArrays(MasterRenderer.PrimitiveType, 0, Size);
+				GL.DrawArrays(MasterRenderer.PrimitiveType, 0, CurrentSize);
 			}
+			MasterRenderer.Batches++;
 		}
 
 		public void Dispose()
 		{
 			if (disposed)
 				return;
+
 			disposed = true;
 
 			lock (MasterRenderer.GLLock)
