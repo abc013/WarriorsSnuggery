@@ -74,6 +74,16 @@ slime_damage=
 	DissolveDuration=200
 	RandomVelocity=10,10,40
 
+slime_trail=
+	Color=63,255,63,127
+	ColorVariety=0,127,0,16
+	MeshSize=1
+	MeshSizeVariety=0.1
+	Duration=30
+	DissolveDuration=30
+	RandomVelocity=5,5,5
+	Gravity=0
+
 barrel_splash=
 	Color=63,255,63,196
 	MeshSize=2
