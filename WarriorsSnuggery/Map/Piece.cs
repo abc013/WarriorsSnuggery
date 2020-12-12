@@ -129,7 +129,7 @@ namespace WarriorsSnuggery.Maps
 				}
 			}
 
-			if (!loader.FromSave)
+			if (loader.FromSave)
 			{
 				if (actors.Any())
 					world.Game.CurrentActorID = actors.Max(n => n.ID) + 1;

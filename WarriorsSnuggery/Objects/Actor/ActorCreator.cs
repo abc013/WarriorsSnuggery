@@ -38,20 +38,17 @@ namespace WarriorsSnuggery.Objects
 			return Types.First(t => t.Value == type).Key;
 		}
 
-		public static Actor Create(World world, string name, CPos position, byte team = 0, bool isBot = false, bool isPlayer = false, float health = 1f, uint id = uint.MaxValue)
+		public static Actor Create(World world, string name, CPos position, byte team = 0, bool isBot = false, bool isPlayer = false, float health = 1f)
 		{
 			if (!Types.ContainsKey(name))
 				throw new MissingInfoException(name);
 
-			return Create(world, Types[name], position, team, isBot, isPlayer, health, id);
+			return Create(world, Types[name], position, team, isBot, isPlayer, health);
 		}
 
-		public static Actor Create(World world, ActorType type, CPos position, byte team = 0, bool isBot = false, bool isPlayer = false, float health = 1f, uint id = uint.MaxValue)
+		public static Actor Create(World world, ActorType type, CPos position, byte team = 0, bool isBot = false, bool isPlayer = false, float health = 1f)
 		{
-			if (id == uint.MaxValue)
-				id = world.Game.NextActorID;
-
-			var init = new ActorInit(id, type, position, 0, team, isBot, isPlayer);
+			var init = new ActorInit(world.Game.NextActorID, type, position, 0, team, isBot, isPlayer);
 
 			var actor = new Actor(world, init);
 			if (actor.Health != null)
@@ -66,7 +63,7 @@ namespace WarriorsSnuggery.Objects
 			if (overrideID)
 				actor = new Actor(world, init, world.Game.NextActorID);
 			else
-				actor = new Actor(world, init, init.ID);
+				actor = new Actor(world, init);
 
 			actor.Position += offset;
 
