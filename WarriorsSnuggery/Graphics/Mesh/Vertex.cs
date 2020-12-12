@@ -9,9 +9,9 @@ namespace WarriorsSnuggery.Graphics
 
 		readonly Vector4 position;
 		readonly Vector4 textureCoordinate;
-		readonly Color4 color;
+		readonly Color color;
 
-		public Vertex(Vector4 position, Vector4 textureCoordinate, Color4 color)
+		public Vertex(Vector4 position, Vector4 textureCoordinate, Color color)
 		{
 			this.position = position;
 			this.textureCoordinate = textureCoordinate;

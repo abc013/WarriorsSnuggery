@@ -12,11 +12,15 @@ namespace WarriorsSnuggery.Graphics
 		public StaticBatchRenderable(CPos position, VAngle rotation, Vertex[] vertices, Color color)
 		{
 			var vec = position.ToVector();
-			var t2 = Matrix4.CreateTranslation(vec.X, vec.Y, vec.Z);
-			var r1 = Matrix4.CreateRotationX(rotation.X);
-			var r2 = Matrix4.CreateRotationY(rotation.Y);
-			var r3 = Matrix4.CreateRotationZ(rotation.Z);
-			var matrix = r1 * r2 * r3 * t2;
+
+			var matrix = Matrix4.CreateTranslation(vec.X, vec.Y, vec.Z);
+			if (rotation != Vector3.Zero)
+			{
+				var r1 = Matrix4.CreateRotationX(rotation.X);
+				var r2 = Matrix4.CreateRotationY(rotation.Y);
+				var r3 = Matrix4.CreateRotationZ(rotation.Z);
+				matrix = r1 * r2 * r3 * matrix;
+			}
 
 			this.vertices = new Vertex[vertices.Length];
 			for (int i = 0; i < vertices.Length; i++)

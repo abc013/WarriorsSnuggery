@@ -19,17 +19,17 @@ namespace WarriorsSnuggery.Graphics
 			var h = (texture.Y + texture.Height) / (float)Settings.SheetSize - Settings.SheetHalfPixel;
 			var scale = texture.Height * MasterRenderer.PixelMultiplier / 2;
 			var correction = texture.Width / (float)texture.Height;
-			var color4 = Color.White.ToColor4();
+			var color = Color.White;
 			var id = SpriteManager.SheetIndex(texture.SheetID);
 
 			Vertex[] vertices =
 			{
-				new Vertex(new Vector(scale * correction,  scale,  0), new Vector4(w, y, id, 0), color4),
-				new Vertex(new Vector(-scale * correction, -scale, 0), new Vector4(x, h, id, 0), color4),
-				new Vertex(new Vector(scale * correction,  -scale, 0), new Vector4(w, h, id, 0), color4),
-				new Vertex(new Vector(-scale * correction, scale,  0), new Vector4(x, y, id, 0), color4),
-				new Vertex(new Vector(-scale * correction, -scale, 0), new Vector4(x, h, id, 0), color4),
-				new Vertex(new Vector(scale * correction,  scale,  0), new Vector4(w, y, id, 0), color4),
+				new Vertex(new Vector(scale * correction,  scale,  0), new Vector4(w, y, id, 0), color),
+				new Vertex(new Vector(-scale * correction, -scale, 0), new Vector4(x, h, id, 0), color),
+				new Vertex(new Vector(scale * correction,  -scale, 0), new Vector4(w, h, id, 0), color),
+				new Vertex(new Vector(-scale * correction, scale,  0), new Vector4(x, y, id, 0), color),
+				new Vertex(new Vector(-scale * correction, -scale, 0), new Vector4(x, h, id, 0), color),
+				new Vertex(new Vector(scale * correction,  scale,  0), new Vector4(w, y, id, 0), color),
 			};
 
 			meshCache[texture] = vertices;
@@ -39,7 +39,7 @@ namespace WarriorsSnuggery.Graphics
 
 		public static Vertex[] Frame()
 		{
-			var color = Color.White.ToColor4();
+			var color = Color.White;
 			var scale = 1;
 
 			Vertex[] vertices =
@@ -92,17 +92,16 @@ namespace WarriorsSnuggery.Graphics
 			var y = texture.Y / (float)Settings.SheetSize + Settings.SheetHalfPixel;
 			var w = (texture.X + size.X * texture.Width) / Settings.SheetSize - Settings.SheetHalfPixel;
 			var h = (texture.Y + size.Y * texture.Height) / Settings.SheetSize - Settings.SheetHalfPixel;
-			var color4 = color.ToColor4();
 			var id = SpriteManager.SheetIndex(texture.SheetID);
 
 			Vertex[] vertices =
 			{
-				new Vertex(new Vector(offset.X + size.X * 2, offset.Y + size.Y * 2,  0), new Vector4(w, y, id, 0), color4),
-				new Vertex(new Vector(offset.X, offset.Y, 0), new Vector4(x, h, id, 0), color4),
-				new Vertex(new Vector(offset.X + size.X * 2, offset.Y, 0), new Vector4(w, h, id, 0), color4),
-				new Vertex(new Vector(offset.X, offset.Y + size.Y * 2,  0), new Vector4(x, y, id, 0), color4),
-				new Vertex(new Vector(offset.X, offset.Y, 0), new Vector4(x, h, id, 0), color4),
-				new Vertex(new Vector(offset.X + size.X * 2, offset.Y + size.Y * 2, 0), new Vector4(w, y, id, 0), color4),
+				new Vertex(new Vector(offset.X + size.X * 2, offset.Y + size.Y * 2,  0), new Vector4(w, y, id, 0), color),
+				new Vertex(new Vector(offset.X, offset.Y, 0), new Vector4(x, h, id, 0), color),
+				new Vertex(new Vector(offset.X + size.X * 2, offset.Y, 0), new Vector4(w, h, id, 0), color),
+				new Vertex(new Vector(offset.X, offset.Y + size.Y * 2,  0), new Vector4(x, y, id, 0), color),
+				new Vertex(new Vector(offset.X, offset.Y, 0), new Vector4(x, h, id, 0), color),
+				new Vertex(new Vector(offset.X + size.X * 2, offset.Y + size.Y * 2, 0), new Vector4(w, y, id, 0), color),
 			};
 
 			return vertices;
@@ -110,12 +109,10 @@ namespace WarriorsSnuggery.Graphics
 
 		public static Vertex[] Line(float size, Color color)
 		{
-			var color4 = color.ToColor4();
-
 			Vertex[] vertices =
 			{
-				new Vertex(new Vector(0, 0, 0), new Vector4(-1), color4),
-				new Vertex(new Vector(0, size, 0), new Vector4(-1), color4),
+				new Vertex(new Vector(0, 0, 0), new Vector4(-1), color),
+				new Vertex(new Vector(0, size, 0), new Vector4(-1), color),
 			};
 
 			return vertices;
@@ -124,16 +121,15 @@ namespace WarriorsSnuggery.Graphics
 		public static Vertex[] Plane(float scale, Color color)
 		{
 			scale /= 2;
-			var color4 = color.ToColor4();
 
 			Vertex[] vertices =
 			{
-				new Vertex(new Vector(scale,  scale,  0), new Vector4(-1), color4),
-				new Vertex(new Vector(-scale, -scale, 0), new Vector4(-1), color4),
-				new Vertex(new Vector(scale,  -scale, 0), new Vector4(-1), color4),
-				new Vertex(new Vector(-scale, scale,  0), new Vector4(-1), color4),
-				new Vertex(new Vector(-scale, -scale, 0), new Vector4(-1), color4),
-				new Vertex(new Vector(scale,  scale,  0), new Vector4(-1), color4),
+				new Vertex(new Vector(scale,  scale,  0), new Vector4(-1), color),
+				new Vertex(new Vector(-scale, -scale, 0), new Vector4(-1), color),
+				new Vertex(new Vector(scale,  -scale, 0), new Vector4(-1), color),
+				new Vertex(new Vector(-scale, scale,  0), new Vector4(-1), color),
+				new Vertex(new Vector(-scale, -scale, 0), new Vector4(-1), color),
+				new Vertex(new Vector(scale,  scale,  0), new Vector4(-1), color),
 			};
 
 			return vertices;
@@ -142,16 +138,15 @@ namespace WarriorsSnuggery.Graphics
 		public static Vertex[] Circle(float size, Color color, int resolution = 360)
 		{
 			size /= 2;
-			var color4 = color.ToColor4();
 
 			var vertices = new Vertex[resolution * 2];
 			for (int i = 0; i < resolution * 2; i++)
 			{
 				var x = ((float)Math.Cos(i * Math.PI / resolution * 2)) * size;
 				var y = ((float)Math.Sin(i * Math.PI / resolution * 2)) * size;
-				vertices[i] = new Vertex(new Vector(x, y, 0), new Vector4(-1), color4);
+				vertices[i] = new Vertex(new Vector(x, y, 0), new Vector4(-1), color);
 				if (i != 0 && i != resolution * 2 - 1)
-					vertices[++i] = new Vertex(new Vector(x, y, 0), new Vector4(-1), color4);
+					vertices[++i] = new Vertex(new Vector(x, y, 0), new Vector4(-1), color);
 			}
 			return vertices;
 		}
@@ -168,17 +163,18 @@ namespace WarriorsSnuggery.Graphics
 			var w = (texture.X + texture.Width) / (float)Settings.SheetSize - Settings.SheetHalfPixel;
 			var h = (texture.Y + texture.Height) / (float)Settings.SheetSize - Settings.SheetHalfPixel;
 			var correction = texture.Width / (float)texture.Height;
+			var color = Color.White;
 			var id = SpriteManager.SheetIndex(texture.SheetID);
 			var scale = MasterRenderer.PixelMultiplier * font.Info.Size / 1.5f;
 
 			Vertex[] vertices =
 			{
-				new Vertex(new Vector(scale * correction,  scale,  0), new Vector4(w, y, id, 0), Color.White),
-				new Vertex(new Vector(-scale * correction, -scale, 0), new Vector4(x, h, id, 0), Color.White),
-				new Vertex(new Vector(scale * correction,  -scale, 0), new Vector4(w, h, id, 0), Color.White),
-				new Vertex(new Vector(-scale * correction, scale,  0), new Vector4(x, y, id, 0), Color.White),
-				new Vertex(new Vector(-scale * correction, -scale, 0), new Vector4(x, h, id, 0), Color.White),
-				new Vertex(new Vector(scale * correction,  scale,  0), new Vector4(w, y, id, 0), Color.White),
+				new Vertex(new Vector(scale * correction,  scale,  0), new Vector4(w, y, id, 0), color),
+				new Vertex(new Vector(-scale * correction, -scale, 0), new Vector4(x, h, id, 0), color),
+				new Vertex(new Vector(scale * correction,  -scale, 0), new Vector4(w, h, id, 0), color),
+				new Vertex(new Vector(-scale * correction, scale,  0), new Vector4(x, y, id, 0), color),
+				new Vertex(new Vector(-scale * correction, -scale, 0), new Vector4(x, h, id, 0), color),
+				new Vertex(new Vector(scale * correction,  scale,  0), new Vector4(w, y, id, 0), color),
 			};
 
 			meshCache[texture] = vertices;

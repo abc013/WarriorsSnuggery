@@ -90,12 +90,21 @@ namespace WarriorsSnuggery.Graphics
 
 			if (MatrixChanged)
 			{
-				var t2 = Matrix4.CreateTranslation(Position.X, Position.Y, Position.Z);
-				var r1 = Matrix4.CreateRotationX(Rotation.X);
-				var r2 = Matrix4.CreateRotationY(Rotation.Y);
-				var r3 = Matrix4.CreateRotationZ(Rotation.Z);
-				var s1 = Matrix4.CreateScale(Scale);
-				var matrix = r1 * r2 * r3 * s1 * t2;
+				var matrix = Matrix4.CreateTranslation(Position.X, Position.Y, Position.Z);
+
+				if (Scale != Vector3.Zero)
+				{
+					var s1 = Matrix4.CreateScale(Scale);
+					matrix = s1 * matrix;
+				}
+
+				if (Rotation != Vector3.Zero)
+				{
+					var r1 = Matrix4.CreateRotationX(Rotation.X);
+					var r2 = Matrix4.CreateRotationY(Rotation.Y);
+					var r3 = Matrix4.CreateRotationZ(Rotation.Z);
+					matrix = r1 * r2 * r3 * matrix;
+				}
 
 				for (int i = 0; i < vertices.Length; i++)
 					calculated[i] = vertices[i].Apply(matrix, Color);
