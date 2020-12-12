@@ -66,10 +66,10 @@ namespace WarriorsSnuggery.Objects.Weapons
 							continue;
 
 						var angle = (target.Position - actor.Position).FlatAngle;
-						actor.Accelerate(angle, true, acceleration);
+						actor.Push(angle, acceleration);
 
 						if (UseHeight)
-							actor.AccelerateHeight(true, true, acceleration);
+							actor.Push(acceleration);
 					}
 				}
 			}

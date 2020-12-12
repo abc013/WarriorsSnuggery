@@ -37,7 +37,7 @@ namespace WarriorsSnuggery.Objects.Parts
 		}
 	}
 
-	public class MobilityPart : ActorPart, ITick, INoticeAcceleration
+	public class MobilityPart : ActorPart, ITick
 	{
 		readonly MobilityPartInfo info;
 
@@ -133,16 +133,11 @@ namespace WarriorsSnuggery.Objects.Parts
 			sound?.SetPosition(self.Position);
 		}
 
-		public void OnAccelerate(CPos acceleration)
-		{
-			Force += acceleration;
-		}
-
 		public int OnAccelerate(float angle, int customAcceleration)
 		{
-			var acceleration = customAcceleration == 0 ? info.Acceleration * 2 : customAcceleration;
-			var x = (int)Math.Ceiling(Math.Cos(angle) * acceleration);
-			var y = (int)Math.Ceiling(Math.Sin(angle) * acceleration);
+			var acceleration = customAcceleration == 0 ? info.Acceleration : customAcceleration;
+			var x = (int)Math.Round(Math.Cos(angle) * acceleration);
+			var y = (int)Math.Round(Math.Sin(angle) * acceleration);
 
 			Force += new CPos(x, y, 0);
 
@@ -151,7 +146,10 @@ namespace WarriorsSnuggery.Objects.Parts
 
 		public int OnAccelerateHeight(bool up, int customAcceleration)
 		{
-			var acceleration = (up ? 1 : -1) * (customAcceleration == 0 ? info.Acceleration * 2 : customAcceleration);
+			var acceleration = customAcceleration == 0 ? info.Acceleration : customAcceleration;
+
+			if (!up)
+				acceleration *= -1;
 
 			Force += new CPos(0, 0, acceleration);
 

@@ -72,6 +72,7 @@ namespace WarriorsSnuggery.Objects
 					Mobility.Velocity = value;
 			}
 		}
+
 		ActorAction upcoming;
 		public ActorAction CurrentAction = ActorAction.Default;
 
@@ -213,40 +214,47 @@ namespace WarriorsSnuggery.Objects
 			return list;
 		}
 
-		public void Accelerate(CPos acceleration, bool forced = false)
+		public void Push(float angle, int power)
 		{
 			if (Mobility == null || World.Game.Editor)
 				return;
 
-			if (!forced && !canMove())
-				return;
-
-			Mobility.OnAccelerate(acceleration);
-			foreach (var part in accelerationParts)
-				part.OnAccelerate(acceleration);
+			accelerate(angle, power);
 		}
 
-		public void Accelerate(float angle, bool forced = false, int customAcceleration = 0)
+		public void Accelerate(float angle)
 		{
-			if (Mobility == null || World.Game.Editor)
+			if (Mobility == null || World.Game.Editor || !canMove())
 				return;
 
-			if (!forced && !canMove())
-				return;
+			accelerate(angle);
+		}
 
+		void accelerate(float angle, int customAcceleration = 0)
+		{
 			var acceleration = Mobility.OnAccelerate(angle, customAcceleration);
 			foreach (var part in accelerationParts)
 				part.OnAccelerate(angle, acceleration);
 		}
 
-		public void AccelerateHeight(bool up, bool forced = false, int customAcceleration = 0)
+		public void Push(int power)
 		{
 			if (Mobility == null || World.Game.Editor)
 				return;
 
-			if (!forced && (!Mobility.CanFly || !canMove()))
+			accelerate(true, power);
+		}
+
+		public void AccelerateHeight(bool up)
+		{
+			if (Mobility == null || World.Game.Editor || !Mobility.CanFly || !canMove())
 				return;
 
+			accelerate(up);
+		}
+
+		void accelerate(bool up, int customAcceleration = 0)
+		{
 			var acceleration = Mobility.OnAccelerateHeight(up, customAcceleration);
 			foreach (var part in accelerationParts)
 				part.OnAccelerate(new CPos(0, 0, acceleration));
@@ -397,16 +405,16 @@ namespace WarriorsSnuggery.Objects
 
 		public override void Render()
 		{
-			if (visible)
-			{
-				if (Effects.Any(e => e.Active && e.Spell.Type == Spells.EffectType.INVISIBILITY))
-					return;
+			if (!visible)
+				return;
 
-				base.Render();
+			if (Effects.Any(e => e.Active && e.Spell.Type == Spells.EffectType.INVISIBILITY))
+				return;
 
-				foreach (var part in renderParts)
-					part.Render();
-			}
+			base.Render();
+
+			foreach (var part in renderParts)
+				part.Render();
 		}
 
 		public void RenderDebug()
