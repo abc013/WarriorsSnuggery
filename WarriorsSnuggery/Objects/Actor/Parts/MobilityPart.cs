@@ -139,7 +139,7 @@ namespace WarriorsSnuggery.Objects.Parts
 			var x = (int)Math.Round(Math.Cos(angle) * acceleration);
 			var y = (int)Math.Round(Math.Sin(angle) * acceleration);
 
-			Force += new CPos(x, y, 0);
+			Force += new CPos(x * 2, y * 2, 0);
 
 			return acceleration;
 		}
@@ -151,7 +151,7 @@ namespace WarriorsSnuggery.Objects.Parts
 			if (!up)
 				acceleration *= -1;
 
-			Force += new CPos(0, 0, acceleration);
+			Force += new CPos(0, 0, acceleration * 2);
 
 			return acceleration;
 		}
