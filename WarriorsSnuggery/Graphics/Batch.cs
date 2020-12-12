@@ -42,7 +42,6 @@ namespace WarriorsSnuggery.Graphics
 				GL.VertexAttribPointer(2, 4, VertexAttribPointerType.Float, true, Vertex.Size, 32);
 				Program.CheckGraphicsError("BatchInit_6");
 			}
-			Clear();
 		}
 
 		public void SetData(Vertex[] data, int length)
@@ -59,7 +58,9 @@ namespace WarriorsSnuggery.Graphics
 				GL.BufferSubData(BufferTarget.ArrayBuffer, new IntPtr(0), length * Vertex.Size, data);
 				Program.CheckGraphicsError("BatchData_1");
 			}
+
 			CurrentSize = length;
+
 			MasterRenderer.BatchCalls++;
 		}
 
@@ -77,21 +78,11 @@ namespace WarriorsSnuggery.Graphics
 				GL.BufferSubData(BufferTarget.ArrayBuffer, new IntPtr(start * Vertex.Size), length * Vertex.Size, data);
 				Program.CheckGraphicsError("BatchData_2");
 			}
+
 			if (CurrentSize < start + length)
 				CurrentSize = start + length;
+
 			MasterRenderer.BatchCalls++;
-		}
-
-		public void Clear()
-		{
-			var data = new Vertex[Size];
-			Bind();
-
-			lock (MasterRenderer.GLLock)
-			{
-				GL.BufferSubData(BufferTarget.ArrayBuffer, IntPtr.Zero, Size, data);
-				Program.CheckGraphicsError("BatchClear");
-			}
 		}
 
 		public void Bind()

@@ -33,7 +33,6 @@ namespace WarriorsSnuggery
 
 			Cursor.Current = CursorType.DEFAULT;
 			UIRenderer.game = game;
-			BatchRenderer.Clear();
 
 			Update();
 

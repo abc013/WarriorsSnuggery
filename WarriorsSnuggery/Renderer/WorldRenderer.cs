@@ -34,7 +34,6 @@ namespace WarriorsSnuggery
 			}
 			game = @new;
 			world = game.World;
-			BatchRenderer.Clear();
 
 			VisibilitySolver.Reset();
 			Camera.Reset();

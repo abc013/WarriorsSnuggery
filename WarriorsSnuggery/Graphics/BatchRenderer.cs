@@ -108,12 +108,6 @@ namespace WarriorsSnuggery.Graphics
 			added = false;
 		}
 
-		public void Clear()
-		{
-			foreach (var batch in batches)
-				batch.Clear();
-		}
-
 		public void Dispose()
 		{
 			foreach (var batch in batches)
