@@ -13,6 +13,26 @@ namespace WarriorsSnuggery.Objects
 		public readonly CPos Position;
 		public readonly int Height;
 
+		public readonly byte Team;
+		public readonly bool IsBot;
+		public readonly bool IsPlayer;
+
+		public ActorInit(uint id, ActorType type, CPos position, int height, byte team, bool isBot, bool isPlayer)
+		{
+			ID = id;
+			Type = type;
+
+			Position = position;
+			Height = height;
+
+			Team = team;
+			IsBot = isBot;
+			IsPlayer = isPlayer;
+
+			// Empty list
+			Nodes = new List<MiniTextNode>();
+		}
+
 		public ActorInit(uint id, List<MiniTextNode> nodes)
 		{
 			ID = id;
@@ -21,6 +41,10 @@ namespace WarriorsSnuggery.Objects
 			Type = Convert<ActorType>("Type", null);
 			Position = Convert("Position", CPos.Zero);
 			Height = Convert("Height", 0);
+
+			Team = Convert("Team", (byte)0);
+			IsPlayer = Nodes.Any(n => n.Key == "PlayerPart");
+			IsBot = Nodes.Any(n => n.Key == "BotPart");
 		}
 
 		public ActorInit(uint id, MiniTextNode textNode)
@@ -32,6 +56,10 @@ namespace WarriorsSnuggery.Objects
 			var node = new ActorNode(id, Position, textNode.Children);
 
 			Type = node.Type;
+
+			Team = node.Team;
+			IsPlayer = node.IsPlayer;
+			IsBot = node.IsBot;
 
 			var list = new List<MiniTextNode>();
 			var order = (short)(textNode.Order + 1);

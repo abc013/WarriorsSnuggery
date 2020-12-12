@@ -51,7 +51,9 @@ namespace WarriorsSnuggery.Objects
 			if (id == uint.MaxValue)
 				id = world.Game.NextActorID;
 
-			var actor = new Actor(world, type, position, team, isBot, isPlayer, id);
+			var init = new ActorInit(id, type, position, 0, team, isBot, isPlayer);
+
+			var actor = new Actor(world, init);
 			if (actor.Health != null)
 				actor.Health.RelativeHP = health;
 
@@ -60,11 +62,12 @@ namespace WarriorsSnuggery.Objects
 
 		public static Actor Create(World world, ActorInit init, bool overrideID, CPos offset)
 		{
-			var id = init.ID;
+			Actor actor;
 			if (overrideID)
-				id = world.Game.NextActorID;
+				actor = new Actor(world, init, world.Game.NextActorID);
+			else
+				actor = new Actor(world, init, init.ID);
 
-			var actor = new Actor(world, init, id);
 			actor.Position += offset;
 
 			return actor;

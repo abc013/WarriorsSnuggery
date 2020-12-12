@@ -76,74 +76,30 @@ namespace WarriorsSnuggery.Objects
 		ActorAction upcoming;
 		public ActorAction CurrentAction = ActorAction.Default;
 
-		public Actor(World world, ActorType type, CPos position, byte team, bool isBot, bool isPlayer, uint id) : base(position, null, getPhysics(position, type))
+		public Actor(World world, ActorInit init, uint overrideID) : this(world, init)
 		{
-			World = world;
-			Type = type;
-			Team = team;
-			IsPlayer = isPlayer;
-			IsBot = isBot;
-
-			ID = id;
-			TerrainPosition = position.ToWPos();
-			CurrentTerrain = world.TerrainAt(TerrainPosition);
-
-			// Parts
-			foreach (var partinfo in type.PartInfos)
-				Parts.Add(partinfo.Create(this));
-
-			Mobility = (MobilityPart)Parts.Find(p => p is MobilityPart);
-			Health = (HealthPart)Parts.Find(p => p is HealthPart);
-
-			RevealsShroudPart = (RevealsShroudPart)Parts.Find(p => p is RevealsShroudPart);
-
-			ActiveWeapon = (WeaponPart)Parts.Find(p => p is WeaponPart);
-
-			WorldPart = (WorldPart)Parts.Find(p => p is WorldPart);
-			if (WorldPart != null)
-				Height = WorldPart.Height;
-
-			IsPlayerSwitch = Parts.Any(p => p is PlayerSwitchPart);
-
-			if (isPlayer)
-				Parts.Add(new PlayerPart(this));
-
-			if (isBot)
-			{
-				var behavior = WorldPart == null ? Bot.BotBehaviorType.TYPICAL : WorldPart.BotBehavior;
-				BotPart = new BotPart(this, behavior);
-				Parts.Add(BotPart);
-			}
-
-			PartManager = new PartManager();
-			foreach (var part in Parts)
-				PartManager.Add(part);
-
-			tickParts = PartManager.GetOrDefault<ITick>();
-			renderParts = PartManager.GetOrDefault<IRenderable>();
-			accelerationParts = PartManager.GetOrDefault<INoticeAcceleration>();
-			moveParts = PartManager.GetOrDefault<INoticeMove>();
-			stopParts = PartManager.GetOrDefault<INoticeStop>();
+			ID = overrideID;
 		}
 
-		public Actor(World world, ActorInit init, uint overrideID) : base(init.Position, null, getPhysics(init.Position, init.Type))
+		public Actor(World world, ActorInit init) : base(init.Position, null, getPhysics(init.Position, init.Type))
 		{
 			World = world;
+
 			Type = init.Type;
+			Team = init.Team;
+			IsPlayer = init.IsPlayer;
+			IsBot = init.IsBot;
 
 			Height = init.Height;
 
-			Team = init.Convert("Team", (byte)0);
-			IsPlayer = init.Nodes.Any(n => n.Key == "PlayerPart");
-			IsBot = init.Nodes.Any(n => n.Key == "BotPart");
-
-			ID = overrideID;
+			ID = init.ID;
 			this.init = init;
+
 			TerrainPosition = init.Position.ToWPos();
 			CurrentTerrain = world.TerrainAt(TerrainPosition);
 
 			// Parts
-			foreach (var partinfo in Type.PartInfos)
+			foreach (var partinfo in init.Type.PartInfos)
 				Parts.Add(partinfo.Create(this));
 
 			Mobility = (MobilityPart)Parts.Find(p => p is MobilityPart);
