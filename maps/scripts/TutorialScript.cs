@@ -58,7 +58,9 @@ namespace Mission
 					{
 						var x = 20 * 1024 - 512;
 						var y = 6 * 1024 - 512 + i * 128;
-						game.World.Add(new Particle(world, new CPos(x, y, 0), 0, ParticleCreator.Types["beam"]));
+
+						var init = new ParticleInit(ParticleCreator.Types["beam"], new CPos(x, y, 0), 0);
+						game.World.Add(new Particle(world, init));
 					}
 				}
 			}
@@ -96,7 +98,9 @@ namespace Mission
 			{
 				var x = random.Next(1024) - 512 + position.X;
 				var y = random.Next(1024) - 512 + position.Y;
-				game.World.Add(new Particle(world, new CPos(x, y, 0), random.Next(1024), ParticleCreator.Types["beam"]));
+
+				var init = new ParticleInit(ParticleCreator.Types["beam"], new CPos(x, y, 0), random.Next(1024));
+				game.World.Add(new Particle(world, init));
 			}
 
 			game.World.Add(ActorCreator.Create(game.World, type, position));
@@ -116,7 +120,10 @@ namespace Mission
 			{
 				var x1 = random.Next(4096 - 512) + 38 * 1024 - 256;
 				var y1 = random.Next(1024 * 6) + 256;
-				game.World.Add(new Particle(world, new CPos(x1, y1, 0), random.Next(1024), ParticleCreator.Types["beam"]));
+
+				var init = new ParticleInit(ParticleCreator.Types["beam"], new CPos(x1, y1, 0), random.Next(1024));
+				game.World.Add(new Particle(world, init));
+
 				game.World.Add(ActorCreator.Create(game.World, types[random.Next(types.Length)], new CPos(x1, y1, 0)));
 			}
 
@@ -124,7 +131,10 @@ namespace Mission
 			{
 				var x2 = random.Next(4096 - 512) + 38 * 1024 - 256;
 				var y2 = random.Next(1024 * 6) + 1024 * 9 - 256;
-				game.World.Add(new Particle(world, new CPos(x2, y2, 0), random.Next(1024), ParticleCreator.Types["beam"]));
+
+				var init = new ParticleInit(ParticleCreator.Types["beam"], new CPos(x2, y2, 0), random.Next(1024));
+				game.World.Add(new Particle(world, init));
+
 				game.World.Add(ActorCreator.Create(game.World, types[random.Next(types.Length)], new CPos(x2, y2, 0)));
 			}
 		}

@@ -30,7 +30,9 @@ namespace WarriorsSnuggery.Objects.Particles
 
 		public static Particle Create(World world, ParticleType type, CPos position, int height)
 		{
-			return new Particle(world, position, height, type);
+			var init = new ParticleInit(type, position, height);
+
+			return new Particle(world, init);
 		}
 
 		public static Particle Create(World world, ParticleInit init)

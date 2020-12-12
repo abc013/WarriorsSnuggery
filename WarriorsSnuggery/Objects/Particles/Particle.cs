@@ -24,19 +24,6 @@ namespace WarriorsSnuggery.Objects.Particles
 		[Save("RotationVelocity")]
 		VAngle rotate_velocity;
 
-		public Particle(World world, CPos pos, int height, ParticleType type) : base(pos, type.GetRenderable())
-		{
-			Height = height;
-			Type = type;
-			this.world = world;
-
-			current = type.Duration;
-			dissolve = type.DissolveDuration;
-
-			velocity = ParticleUtils.Variety(type.RandomVelocity);
-			rotate_velocity = ParticleUtils.AngleVariety(type.RandomRotation);
-		}
-
 		public Particle(World world, ParticleInit init) : base(init.Position, init.Type.GetRenderable())
 		{
 			this.world = world;
@@ -47,8 +34,8 @@ namespace WarriorsSnuggery.Objects.Particles
 			current = init.Convert("Duration", Type.Duration);
 			dissolve = init.Convert("DissolveDuration", Type.DissolveDuration);
 
-			velocity = init.Convert("Velocity", CPos.Zero);
-			rotate_velocity = init.Convert("RotationVelocity", VAngle.Zero);
+			velocity = init.Convert("Velocity", ParticleUtils.Variety(Type.RandomVelocity));
+			rotate_velocity = init.Convert("RotationVelocity", ParticleUtils.AngleVariety(Type.RandomRotation));
 		}
 
 		public void AffectVelocity(ParticleForce force, float ratio, CPos origin)
