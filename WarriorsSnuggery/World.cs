@@ -152,6 +152,7 @@ namespace WarriorsSnuggery
 
 		public void FinishPlayerSwitch(Actor @new, ActorType type)
 		{
+			LocalPlayer.FollowupActor = @new;
 			LocalPlayer = @new;
 			Add(@new);
 
@@ -175,6 +176,8 @@ namespace WarriorsSnuggery
 			switchPart.RelativeHP = health;
 			switchPart.ActorType = to;
 			LocalPlayer.Dispose();
+
+			LocalPlayer.FollowupActor = switchActor;
 			LocalPlayer = switchActor;
 			Add(switchActor);
 		}

@@ -32,35 +32,13 @@ namespace WarriorsSnuggery.Objects.Bot
 			}
 		}
 
-		protected float AngleToMapMid
-		{
-			get
-			{
-				return (Self.Position - World.Map.Center.ToCPos()).FlatAngle;
-			}
-		}
+		protected float AngleToMapMid => (Self.Position - World.Map.Center.ToCPos()).FlatAngle;
 
-		protected float DistToTarget
-		{
-			get { return (Target.Position - Self.Position).FlatDist; }
-			set { }
-		}
-		protected float AngleToTarget
-		{
-			get { return (Self.Position - Target.Position).FlatAngle; }
-			set { }
-		}
+		protected float DistToTarget => (Target.Position - Self.Position).FlatDist;
+		protected float AngleToTarget => (Self.Position - Target.Position).FlatAngle;
 
-		protected bool CanMove
-		{
-			get { return Self.Mobility != null; }
-			set { }
-		}
-		protected bool CanAttack
-		{
-			get { return Self.ActiveWeapon != null; }
-			set { }
-		}
+		protected bool CanMove => Self.Mobility != null;
+		protected bool CanAttack => Self.ActiveWeapon != null;
 
 		protected float AngleToNearActor
 		{
@@ -99,7 +77,17 @@ namespace WarriorsSnuggery.Objects.Bot
 
 		protected bool PerfectTarget()
 		{
-			return Target != null && Target.Actor != null && Target.Actor.IsAlive && !Target.Actor.Disposed;
+			if (Target == null || Target.Actor == null)
+				return false;
+
+			if (Target.Actor.IsAlive && !Target.Actor.Disposed)
+				return true;
+
+			if (Target.Actor.FollowupActor == null)
+				return false;
+
+			Target = new Target(Target.Actor.FollowupActor);
+			return true;
 		}
 
 		protected virtual void SearchTarget()
