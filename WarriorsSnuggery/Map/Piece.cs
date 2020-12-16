@@ -17,6 +17,9 @@ namespace WarriorsSnuggery.Maps
 		public readonly string InnerName;
 		public readonly string Path;
 
+		public uint MaxActorID => actors.Max(n => n.ID);
+		public uint MaxWeaponID => weapons.Max(n => n.ID);
+
 		readonly ushort[] groundData;
 		readonly short[] wallData;
 
@@ -102,7 +105,7 @@ namespace WarriorsSnuggery.Maps
 				throw new InvalidPieceException(string.Format(@"The count of given walls ({0}) is smaller as the size ({1}) on the piece '{2}'", groundData.Length, Size.X * Size.Y, Name));
 		}
 
-		public void PlacePiece(MPos position, MapLoader loader, World world)
+		public void PlacePiece(MPos position, MapLoader loader)
 		{
 			// generate Terrain
 			for (int y = 0; y < Size.Y; y++)
@@ -129,25 +132,17 @@ namespace WarriorsSnuggery.Maps
 				}
 			}
 
-			if (loader.FromSave)
-			{
-				if (actors.Any())
-					world.Game.CurrentActorID = actors.Max(n => n.ID) + 1;
-				if (weapons.Any())
-					world.Game.CurrentWeaponID = weapons.Max(n => n.ID) + 1;
-			}
-
 			// generate Actors
 			foreach (var init in actors)
 				loader.AddActor(init, position.ToCPos());
 
 			// generate Weapons
-			foreach (var weapon in weapons)
-				world.Add(WeaponCreator.Create(world, weapon));
+			foreach (var init in weapons)
+				loader.AddWeapon(init);
 
 			// generate Particles
-			foreach (var particle in particles)
-				world.Add(ParticleCreator.Create(world, particle));
+			foreach (var init in particles)
+				loader.AddParticle(init);
 		}
 
 		public bool IsInMap(MPos position, MPos mapSize)

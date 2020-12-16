@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using WarriorsSnuggery.Objects;
+using WarriorsSnuggery.Objects.Particles;
+using WarriorsSnuggery.Objects.Weapons;
 
 namespace WarriorsSnuggery.Maps
 {
@@ -34,6 +36,8 @@ namespace WarriorsSnuggery.Maps
 		readonly ushort[,] terrainInformation;
 		readonly (short id, short health)[,] wallInformation;
 		readonly List<(ActorInit init, CPos offset)> actorInformation = new List<(ActorInit init, CPos offset)>();
+		readonly List<WeaponInit> weaponInformation = new List<WeaponInit>();
+		readonly List<ParticleInit> particleInformation = new List<ParticleInit>();
 
 		public MapLoader(World world, Map map)
 		{
@@ -119,6 +123,12 @@ namespace WarriorsSnuggery.Maps
 
 			foreach (var actor in actors)
 				actor.OnLoad();
+
+			foreach (var init in weaponInformation)
+				world.Add(WeaponCreator.Create(world, init));
+
+			foreach (var init in particleInformation)
+				world.Add(ParticleCreator.Create(world, init));
 		}
 
 		void applyWall(MPos pos)
@@ -180,10 +190,20 @@ namespace WarriorsSnuggery.Maps
 			actorInformation.Add((init, offset));
 		}
 
+		public void AddWeapon(WeaponInit init)
+		{
+			weaponInformation.Add(init);
+		}
+
+		public void AddParticle(ParticleInit init)
+		{
+			particleInformation.Add(init);
+		}
+
 		public bool WallExists(int x, int y)
 		{
-			var info = wallInformation[x, y];
-			if (info.Item1 == 0 && info.Item2 == 0)
+			var (id, health) = wallInformation[x, y];
+			if (id == 0 && health == 0)
 				return false;
 
 			return true;
@@ -213,11 +233,17 @@ namespace WarriorsSnuggery.Maps
 					}
 				}
 			}
+			else if (FromSave)
+			{
+				world.Game.CurrentActorID = piece.MaxActorID + 1;
+				world.Game.CurrentWeaponID = piece.MaxWeaponID + 1;
+			}
+
 			for (int x = position.X; x < (piece.Size.X + position.X); x++)
 				for (int y = position.Y; y < (piece.Size.Y + position.Y); y++)
 					AcquireCell(new MPos(x, y), ID);
 
-			piece.PlacePiece(position, this, world);
+			piece.PlacePiece(position, this);
 
 			return true;
 		}
