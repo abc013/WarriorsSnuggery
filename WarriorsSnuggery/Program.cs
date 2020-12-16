@@ -18,6 +18,7 @@ namespace WarriorsSnuggery
 		public static bool NoFullscreen;
 
 		public static bool StartEditor;
+		public static bool DisableShroud;
 		public static bool IgnoreTech;
 		public static string MapType;
 
@@ -57,6 +58,8 @@ namespace WarriorsSnuggery
 					noGLErrors = true;
 				else if (arg == "-editor")
 					StartEditor = true;
+				else if (arg == "-no-shroud")
+					DisableShroud = true;
 				else if (arg == "-ignore-tech")
 					IgnoreTech = true;
 				else if (arg == "-map-type")

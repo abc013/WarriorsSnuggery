@@ -85,7 +85,7 @@ namespace WarriorsSnuggery
 				Camera.Position(new MPos(Map.Bounds.X / 2, Map.Bounds.Y / 2).ToCPos(), true);
 			}
 
-			ShroudLayer.RevealAll = Game.Type != GameType.NORMAL && Game.Type != GameType.TEST;
+			ShroudLayer.RevealAll = Game.Type != GameType.NORMAL && Game.Type != GameType.TEST || Program.DisableShroud;
 
 			// First tick, does only add objects
 			ActorLayer.Tick();
