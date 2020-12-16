@@ -137,10 +137,9 @@ namespace WarriorsSnuggery.Maps
 					world.Game.CurrentWeaponID = weapons.Max(n => n.ID) + 1;
 			}
 
-			var generatedActors = new List<Actor>();
 			// generate Actors
 			foreach (var init in actors)
-				generatedActors.Add(loader.AddActor(init, !loader.FromSave, position.ToCPos()));
+				loader.AddActor(init, position.ToCPos());
 
 			// generate Weapons
 			foreach (var weapon in weapons)
@@ -149,9 +148,6 @@ namespace WarriorsSnuggery.Maps
 			// generate Particles
 			foreach (var particle in particles)
 				world.Add(ParticleCreator.Create(world, particle));
-
-			foreach (var actor in generatedActors)
-				actor.OnLoad();
 		}
 
 		public bool IsInMap(MPos position, MPos mapSize)

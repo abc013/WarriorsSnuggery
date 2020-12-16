@@ -38,7 +38,7 @@ namespace WarriorsSnuggery.Objects
 			return Types.First(t => t.Value == type).Key;
 		}
 
-		public static Actor Create(World world, string name, CPos position, byte team = 0, bool isBot = false, bool isPlayer = false, float health = 1f)
+		public static Actor Create(World world, string name, CPos position, byte team = 0, bool isBot = false, bool isPlayer = false, float health = -1f)
 		{
 			if (!Types.ContainsKey(name))
 				throw new MissingInfoException(name);
@@ -46,28 +46,30 @@ namespace WarriorsSnuggery.Objects
 			return Create(world, Types[name], position, team, isBot, isPlayer, health);
 		}
 
-		public static Actor Create(World world, ActorType type, CPos position, byte team = 0, bool isBot = false, bool isPlayer = false, float health = 1f)
+		public static Actor Create(World world, ActorType type, CPos position, byte team = 0, bool isBot = false, bool isPlayer = false, float health = -1f)
 		{
-			var init = new ActorInit(world.Game.NextActorID, type, position, 0, team, isBot, isPlayer);
-
-			var actor = new Actor(world, init);
-			if (actor.Health != null)
-				actor.Health.RelativeHP = health;
-
-			return actor;
+			return new Actor(world, CreateInit(world, type, position, team, isBot, isPlayer, health));
 		}
 
 		public static Actor Create(World world, ActorInit init, bool overrideID, CPos offset)
 		{
-			Actor actor;
-			if (overrideID)
-				actor = new Actor(world, init, world.Game.NextActorID);
-			else
-				actor = new Actor(world, init);
+			var actor = overrideID ? new Actor(world, init, world.Game.NextActorID) : new Actor(world, init);
 
 			actor.Position += offset;
-
 			return actor;
+		}
+
+		public static ActorInit CreateInit(World world, string name, CPos position, byte team = 0, bool isBot = false, bool isPlayer = false, float health = -1f)
+		{
+			if (!Types.ContainsKey(name))
+				throw new MissingInfoException(name);
+
+			return CreateInit(world, Types[name], position, team, isBot, isPlayer, health);
+		}
+
+		public static ActorInit CreateInit(World world, ActorType type, CPos position, byte team = 0, bool isBot = false, bool isPlayer = false, float health = -1f)
+		{
+			return new ActorInit(world.Game.NextActorID, type, position, 0, team, isBot, isPlayer, health);
 		}
 	}
 }

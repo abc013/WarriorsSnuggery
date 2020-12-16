@@ -32,7 +32,8 @@ namespace WarriorsSnuggery.Maps
 		readonly int[,] generatorReservations;
 
 		readonly ushort[,] terrainInformation;
-		readonly (short, short)[,] wallInformation;
+		readonly (short id, short health)[,] wallInformation;
+		readonly List<(ActorInit init, CPos offset)> actorInformation = new List<(ActorInit init, CPos offset)>();
 
 		public MapLoader(World world, Map map)
 		{
@@ -106,16 +107,29 @@ namespace WarriorsSnuggery.Maps
 				for (int i = 0; i < 2; i++)
 					applyWall(new MPos(x * 2 + i, Bounds.Y));
 			}
+
+			var actors = new List<Actor>();
+
+			foreach (var (init, offset) in actorInformation)
+			{
+				var actor = ActorCreator.Create(world, init, !FromSave, offset);
+				actors.Add(actor);
+				world.Add(actor);
+			}
+
+			foreach (var actor in actors)
+				actor.OnLoad();
 		}
 
 		void applyWall(MPos pos)
 		{
-			var info = wallInformation[pos.X, pos.Y];
-			if (info.Item1 == 0 && info.Item2 == 0)
+			var (id, health) = wallInformation[pos.X, pos.Y];
+
+			if (id == 0 && health == 0)
 				return;
 
-			var wall = WallCreator.Create(pos, world.WallLayer, info.Item1);
-			wall.Health = info.Item2;
+			var wall = WallCreator.Create(pos, world.WallLayer, id);
+			wall.Health = health;
 
 			world.WallLayer.Set(wall);
 		}
@@ -147,28 +161,23 @@ namespace WarriorsSnuggery.Maps
 			wallInformation[x, y] = (id, health);
 		}
 
-		public Actor AddActor(CPos pos, ActorProbabilityInfo info)
+		public void AddActor(CPos pos, ActorProbabilityInfo info)
 		{
-			var actor = ActorCreator.Create(world, info.Type, pos, info.Team, info.IsBot, health: info.Health);
-			world.Add(actor);
+			var init = ActorCreator.CreateInit(world, info.Type, pos, info.Team, info.IsBot, health: info.Health);
 
-			return actor;
+			actorInformation.Add((init, CPos.Zero));
 		}
 
-		public Actor AddActor(CPos position, string name, byte team = 0, bool isBot = false, float health = 1f)
+		public void AddActor(CPos position, string name, byte team = 0, bool isBot = false, float health = 1f)
 		{
-			var actor = ActorCreator.Create(world, name, position, team, isBot, false, health);
-			world.Add(actor);
+			var init = ActorCreator.CreateInit(world, name, position, team, isBot, false, health);
 
-			return actor;
+			actorInformation.Add((init, CPos.Zero));
 		}
 		
-		public Actor AddActor(ActorInit init, bool overrideID, CPos offset)
+		public void AddActor(ActorInit init, CPos offset)
 		{
-			var actor = ActorCreator.Create(world, init, overrideID, offset);
-			world.Add(actor);
-
-			return actor;
+			actorInformation.Add((init, offset));
 		}
 
 		public bool WallExists(int x, int y)

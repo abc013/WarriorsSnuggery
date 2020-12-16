@@ -17,7 +17,10 @@ namespace WarriorsSnuggery.Objects
 		public readonly bool IsBot;
 		public readonly bool IsPlayer;
 
-		public ActorInit(uint id, ActorType type, CPos position, int height, byte team, bool isBot, bool isPlayer)
+		// HACK: save health here temporarily.
+		public readonly float Health = -1f;
+
+		public ActorInit(uint id, ActorType type, CPos position, int height, byte team, bool isBot, bool isPlayer, float health = -1f)
 		{
 			ID = id;
 			Type = type;
@@ -28,6 +31,8 @@ namespace WarriorsSnuggery.Objects
 			Team = team;
 			IsBot = isBot;
 			IsPlayer = isPlayer;
+
+			Health = health;
 
 			// Empty list
 			Nodes = new List<MiniTextNode>();
@@ -75,9 +80,12 @@ namespace WarriorsSnuggery.Objects
 				list.Add(new MiniTextNode("ActorInit", order, "PlayerPart", string.Empty));
 			if (node.Health != 1f)
 			{
-				var parent = new MiniTextNode("ActorInit", order, "HealthPart", string.Empty);
-				list.Add(parent);
-				parent.Children.Add(new MiniTextNode("ActorInit", (short)(order + 1), "Health", node.Health));
+				if (Type.PartInfos.FirstOrDefault(p => p is Parts.HealthPartInfo) is Parts.HealthPartInfo health)
+				{
+					var parent = new MiniTextNode("ActorInit", order, "HealthPart", string.Empty);
+					list.Add(parent);
+					parent.Children.Add(new MiniTextNode("ActorInit", (short)(order + 1), "Health", node.Health * health.MaxHealth));
+				}
 			}
 			if (node.IsPlayerSwitch)
 			{

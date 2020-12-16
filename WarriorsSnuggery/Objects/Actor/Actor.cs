@@ -106,7 +106,10 @@ namespace WarriorsSnuggery.Objects
 				Parts.Add(partinfo.Create(this));
 
 			Mobility = (MobilityPart)Parts.Find(p => p is MobilityPart);
+
 			Health = (HealthPart)Parts.Find(p => p is HealthPart);
+			if (Health != null && init.Health >= 0f)
+				Health.RelativeHP = init.Health;
 
 			RevealsShroudPart = (RevealsShroudPart)Parts.Find(p => p is RevealsShroudPart);
 
