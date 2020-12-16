@@ -141,7 +141,7 @@ namespace WarriorsSnuggery.Networking
 					Log.WriteDebug($"Client {client.ID}: Closing.");
 					client.Disconnect("Client requested disconnect.");
 					return;
-				case PackageType.MESSAGE:
+				case PackageType.CHAT:
 					var msg = NetworkUtils.ToString(package.Content);
 					Log.WriteDebug($"Client {client.ID}: Message received: {msg}");
 					broadcast(package);
