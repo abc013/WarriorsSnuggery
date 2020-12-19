@@ -22,8 +22,8 @@ namespace WarriorsSnuggery
 		public int Deaths;
 		public int MaxMana;
 
-		public GameMode CurrentMode;
-		public GameType CurrentType;
+		public ObjectiveType CurrentObjective;
+		public MissionType CurrentMission;
 		public string CurrentMapType;
 		public int Waves;
 		public List<bool[]> Shroud;
@@ -57,8 +57,8 @@ namespace WarriorsSnuggery
 			Kills = save.Kills;
 			Deaths = save.Deaths;
 
-			CurrentMode = save.CurrentMode;
-			CurrentType = save.CurrentType;
+			CurrentObjective = save.CurrentObjective;
+			CurrentMission = save.CurrentMission;
 			CurrentMapType = save.CurrentMapType;
 			Waves = save.Waves;
 			Shroud = save.Shroud;
@@ -196,13 +196,14 @@ namespace WarriorsSnuggery
 			else
 				Health = world.LocalPlayer.Health == null ? 1 : world.LocalPlayer.Health.RelativeHP;
 
-			CurrentMode = world.Game.Mode;
-			CurrentType = world.Game.Type;
+			CurrentObjective = world.Game.ObjectiveType;
+			CurrentMission = world.Game.MissionType;
 			CurrentMapType = MapCreator.GetName(world.Map.Type, world.Game.Statistics);
 			Waves = world.Game.CurrentWave();
 
 			using (var writer = new StreamWriter(FileExplorer.Saves + SaveName + ".yaml", false))
 			{
+				// TODO: use nameof
 				writer.WriteLine("Name=" + Name);
 				writer.WriteLine("Level=" + Level);
 				writer.WriteLine("Difficulty=" + Difficulty);
@@ -212,8 +213,8 @@ namespace WarriorsSnuggery
 				writer.WriteLine("MaxMana=" + MaxMana);
 				writer.WriteLine("Kills=" + Kills);
 				writer.WriteLine("Deaths=" + Deaths);
-				writer.WriteLine("CurrentMode=" + CurrentMode);
-				writer.WriteLine("CurrentType=" + CurrentType);
+				writer.WriteLine("CurrentObjective=" + CurrentObjective);
+				writer.WriteLine("CurrentMission=" + CurrentMission);
 				writer.WriteLine("CurrentMapType=" + CurrentMapType);
 				if (Waves != 0)
 					writer.WriteLine("Waves=" + Waves);

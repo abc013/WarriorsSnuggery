@@ -1,5 +1,5 @@
 boss1=
-	DefaultModes=KILL_ENEMIES
+	AvailableObjectives=KILL_ENEMIES
 	Level=5
 	TerrainGenerationBase=0
 		Terrain=0
@@ -11,7 +11,7 @@ boss1=
 	SpawnPoint=15,15
 
 boss2=
-	DefaultModes=KILL_ENEMIES
+	AvailableObjectives=KILL_ENEMIES
 	Level=10
 	TerrainGenerationBase=0
 		Terrain=0

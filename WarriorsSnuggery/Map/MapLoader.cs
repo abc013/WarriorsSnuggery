@@ -24,7 +24,7 @@ namespace WarriorsSnuggery.Maps
 		public List<MapGeneratorInfo> Infos => map.Type.GeneratorInfos;
 		public bool FromSave => map.Type.IsSave;
 
-		public GameMode GameMode => world.Game.Mode;
+		public ObjectiveType ObjectiveType => world.Game.ObjectiveType;
 		public GameStatistics Statistics => world.Game.Statistics;
 
 		public readonly Random Random;

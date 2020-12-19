@@ -61,7 +61,7 @@ namespace WarriorsSnuggery
 		{
 			Map.Load();
 
-			if (Game.Type != GameType.EDITOR)
+			if (Game.InteractionMode != InteractionMode.EDITOR)
 			{
 				if (!Map.Type.IsSave)
 				{
@@ -76,16 +76,19 @@ namespace WarriorsSnuggery
 						ShroudLayer.RevealShroudList(i, Game.Statistics.Shroud[i]);
 				}
 
-				if (Game.Type == GameType.NORMAL)
+				if (Game.IsCampaign && !Game.IsMenu)
 					Add(new ActionText(LocalPlayer.Position + new CPos(0, 0, 1024), new CPos(0, -15, 30), 300, ActionText.ActionTextType.TRANSFORM, @"Level" + Game.Statistics.Level));
+
+				ShroudLayer.RevealAll = Program.DisableShroud;
+				ShroudLayer.RevealAll |= Game.IsMenu || Game.MissionType == MissionType.TUTORIAL;
 			}
 			else
 			{
+				ShroudLayer.RevealAll = true;
+
 				PlayerAlive = false;
 				Camera.Position(new MPos(Map.Bounds.X / 2, Map.Bounds.Y / 2).ToCPos(), true);
 			}
-
-			ShroudLayer.RevealAll = Game.Type != GameType.NORMAL && Game.Type != GameType.TEST || Program.DisableShroud;
 
 			// First tick, does only add objects
 			ActorLayer.Tick();

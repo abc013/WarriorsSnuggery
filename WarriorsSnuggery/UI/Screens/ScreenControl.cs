@@ -24,7 +24,13 @@ namespace WarriorsSnuggery.UI.Screens
 
 		public void InitScreen()
 		{
-			var defaultScreen = game.Type == GameType.EDITOR ? new EditorScreen(game) : (Screen)new DefaultScreen(game);
+			if (game.InteractionMode == InteractionMode.NONE)
+			{
+				cachedScreens.Add(ScreenType.DEFAULT, null);
+				return;
+			}
+
+			var defaultScreen = game.InteractionMode == InteractionMode.EDITOR ? new EditorScreen(game) : (Screen)new DefaultScreen(game);
 			cachedScreens.Add(ScreenType.DEFAULT, defaultScreen);
 
 			ShowScreen(ScreenType.DEFAULT);

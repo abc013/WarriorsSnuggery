@@ -87,7 +87,7 @@ namespace WarriorsSnuggery.Objects.Parts
 
 			if (Velocity != CPos.Zero)
 			{
-				if (self.World.Game.Type == GameType.EDITOR)
+				if (self.World.Game.InteractionMode == InteractionMode.EDITOR)
 					return;
 
 				if (self.Height == 0 || CanFly)

@@ -30,7 +30,7 @@ namespace WarriorsSnuggery.Maps
 		[Desc("Position type.")]
 		public readonly PositionType PositionType = PositionType.POSITION;
 		[Desc("Determines when to generate this piece. If set to NONE, it will always be generated.")]
-		public readonly GameMode[] SpawnOnMode = new [] { GameMode.NONE };
+		public readonly ObjectiveType[] SpawnOnObjectives = new [] { ObjectiveType.NONE };
 
 		public ImportantPieceGeneratorInfo(int id, List<MiniTextNode> nodes) : base(id)
 		{
@@ -58,7 +58,7 @@ namespace WarriorsSnuggery.Maps
 		{
 			var noise = GeneratorUtils.GetNoise(loader, info.NoiseMapID);
 
-			if (!info.SpawnOnMode.Contains(GameMode.NONE) && !info.SpawnOnMode.Contains(loader.GameMode))
+			if (!info.SpawnOnObjectives.Contains(ObjectiveType.NONE) && !info.SpawnOnObjectives.Contains(loader.ObjectiveType))
 				return;
 
 			var pieceIndex = info.Pieces[random.Next(info.Pieces.Length)];

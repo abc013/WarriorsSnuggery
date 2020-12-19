@@ -105,28 +105,31 @@ namespace WarriorsSnuggery.Objects.Parts
 				switch (info.Type)
 				{
 					case PortalType.NEXT_LEVEL:
-						if (game.Type == GameType.TEST)
+						if (game.MissionType == MissionType.TEST)
 						{
-							game.ChangeLevelAfterTick(GameType.MAINMENU);
+							game.ChangeLevelAfterTick(MissionType.MAIN_MENU, InteractionMode.NONE);
+							return true;
+						}
+
+						if (info.Instant)
+						{
+							game.ChangeLevelAfterTick(game.CampaignType);
 							return true;
 						}
 
 						game.VictoryConditionsMet();
-
-						if (info.Instant)
-							game.ChangeLevelAfterTick(GameType.NORMAL);
-
 						return true;
 					case PortalType.TUTORIAL_LEVEL:
-						game.ChangeLevelAfterTick(GameType.TUTORIAL);
+						game.ChangeLevelAfterTick(MissionType.TUTORIAL);
 
 						return true;
 					case PortalType.MAIN_LEVEL:
-						game.ChangeLevelAfterTick(GameType.MENU);
+
+						game.ChangeLevelAfterTick(game.MenuType);
 
 						return true;
 					case PortalType.MAINMENU_LEVEL:
-						game.ChangeLevelAfterTick(GameType.MAINMENU);
+						game.ChangeLevelAfterTick(MissionType.MAIN_MENU, InteractionMode.NONE);
 
 						return true;
 				}

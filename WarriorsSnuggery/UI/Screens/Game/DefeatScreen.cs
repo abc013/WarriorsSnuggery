@@ -19,16 +19,23 @@ namespace WarriorsSnuggery.UI.Screens
 			if (game.Statistics.Hardcore)
 			{
 				game.Statistics.Delete();
-				Content.Add(new Button(new CPos(0, 5120, 0), "Return to Main Menu", "wooden", () => GameController.CreateReturn(GameType.MAINMENU)));
+				Content.Add(new Button(new CPos(0, 5120, 0), "Return to Main Menu", "wooden", GameController.CreateMainMenu));
 			}
 			else
 			{
-				Content.Add(new Button(new CPos(-2048, 5120, 0), "Restart Map", "wooden", () => GameController.CreateRestart()));
+				Content.Add(new Button(new CPos(-2048, 5120, 0), "Restart Map", "wooden", GameController.CreateRestart));
 
-				if (game.Type == GameType.TEST)
-					Content.Add(new Button(new CPos(2048, 5120, 0), "Main Menu", "wooden", () => GameController.CreateReturn(GameType.MAINMENU)));
-				else
-					Content.Add(new Button(new CPos(2048, 5120, 0), "Menu", "wooden", () => GameController.CreateReturn(GameType.MENU)));
+				switch (game.MissionType)
+				{
+					case MissionType.TEST:
+						Content.Add(new Button(new CPos(2048, 5120, 0), "Main Menu", "wooden", GameController.CreateMainMenu));
+						break;
+					case MissionType.STORY:
+					case MissionType.NORMAL:
+					case MissionType.TUTORIAL:
+						Content.Add(new Button(new CPos(2048, 5120, 0), "Menu", "wooden", GameController.CreateMenu));
+						break;
+				}
 			}
 		}
 	}

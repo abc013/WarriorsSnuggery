@@ -56,7 +56,7 @@ namespace WarriorsSnuggery.UI.Screens
 
 		void humanAgreeOnLoad(Action onAgree, string text)
 		{
-			if (game.Type == GameType.MAINMENU)
+			if (game.MissionType == MissionType.MAIN_MENU)
 				onAgree();
 
 			game.ShowDecisionScreen(onDecline, onAgree, text);

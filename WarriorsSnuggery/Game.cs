@@ -12,17 +12,6 @@ using WarriorsSnuggery.UI.Screens;
 
 namespace WarriorsSnuggery
 {
-	public enum GameType
-	{
-		NONE,
-		NORMAL,
-		EDITOR,
-		MENU,
-		MAINMENU,
-		TUTORIAL,
-		TEST
-	}
-
 	public enum GameMode
 	{
 		WAVES,
@@ -42,9 +31,50 @@ namespace WarriorsSnuggery
 		public readonly GameStatistics OldStatistics;
 		public readonly GameStatistics Statistics;
 		public readonly MapInfo MapType;
-		public readonly GameType Type;
-		public readonly GameMode Mode;
 		public readonly int Seed;
+
+		public readonly MissionType MissionType;
+
+		public bool IsMenu => MissionType == MissionType.MAIN_MENU || MissionType == MissionType.STORY_MENU || MissionType == MissionType.NORMAL_MENU || MissionType == MissionType.TUTORIAL_MENU;
+		public bool IsCampaign => MissionType == MissionType.STORY || MissionType == MissionType.STORY_MENU || MissionType == MissionType.NORMAL || MissionType == MissionType.NORMAL_MENU;
+
+		public MissionType MenuType
+		{
+			get
+			{
+				if (MissionType == MissionType.STORY || MissionType == MissionType.STORY_MENU)
+					return MissionType.STORY_MENU;
+
+				if (MissionType == MissionType.NORMAL || MissionType == MissionType.NORMAL_MENU)
+					return MissionType.NORMAL_MENU;
+
+				if (MissionType == MissionType.TUTORIAL || MissionType == MissionType.TUTORIAL_MENU)
+					return MissionType.TUTORIAL_MENU;
+
+				return MissionType;
+			}
+		}
+
+		public MissionType CampaignType
+		{
+			get
+			{
+				if (MissionType == MissionType.STORY || MissionType == MissionType.STORY_MENU)
+					return MissionType.STORY;
+
+				if (MissionType == MissionType.NORMAL || MissionType == MissionType.NORMAL_MENU)
+					return MissionType.NORMAL;
+
+				if (MissionType == MissionType.TUTORIAL || MissionType == MissionType.TUTORIAL_MENU)
+					return MissionType.TUTORIAL;
+
+				return MissionType;
+			}
+		}
+
+		public readonly InteractionMode InteractionMode;
+
+		public readonly ObjectiveType ObjectiveType;
 
 		public readonly SpellManager SpellManager;
 		public readonly ConditionManager ConditionManager;
@@ -70,7 +100,9 @@ namespace WarriorsSnuggery
 
 		public bool Finished;
 
-		GameType nextLevelType = GameType.NONE;
+		MissionType nextLevelType;
+		InteractionMode nextInteractionMode;
+		bool nextLevel;
 
 		public uint NextActorID => CurrentActorID++;
 		public uint CurrentActorID;
@@ -78,28 +110,31 @@ namespace WarriorsSnuggery
 		public uint NextWeaponID => CurrentWeaponID++;
 		public uint CurrentWeaponID;
 
-		public Game(GameStatistics statistics, MapInfo map, GameType type, int seed = -1)
+		public Game(GameStatistics statistics, MapInfo map, MissionType missionType, InteractionMode interactionMode, int seed = -1)
 		{
 			Log.WriteDebug("Loading new game...");
 			Log.DebugIndentation++;
 
-			Log.WriteDebug("GameType: " + type);
+			Log.WriteDebug("MissionType: " + missionType);
+			Log.WriteDebug("InteractionMode: " + interactionMode);
+
+			MissionType = missionType;
+			InteractionMode = interactionMode;
 
 			MapType = map;
-			Type = type;
 
 			// If seed negative, calculate it.
 			Seed = seed < 0 ? statistics.Seed + statistics.Level : seed;
 			SharedRandom = new Random(Seed);
+
+			ObjectiveType = MapType.AvailableObjectives[SharedRandom.Next(map.AvailableObjectives.Length)];
 
 			// In case of death, use this statistic.
 			OldStatistics = statistics.Copy();
 			// In case of success, use this statistic.
 			Statistics = statistics;
 
-			Mode = MapType.DefaultModes[SharedRandom.Next(MapType.DefaultModes.Length)];
-
-			Editor = Type == GameType.EDITOR;
+			Editor = InteractionMode == InteractionMode.EDITOR;
 
 			SpellManager = new SpellManager(this, statistics);
 			ConditionManager = new ConditionManager(this);
@@ -116,7 +151,7 @@ namespace WarriorsSnuggery
 			else
 				Log.WriteDebug("No mission script existing.");
 
-			if (Mode == GameMode.WAVES)
+			if (ObjectiveType == ObjectiveType.SURVIVE_WAVES)
 				waveController = new WaveController(this);
 
 			var corner = (int)(WindowInfo.UnitWidth / 2 * 1024);
@@ -177,10 +212,10 @@ namespace WarriorsSnuggery
 
 		public void Tick()
 		{
-			if (nextLevelType != GameType.NONE)
+			if (nextLevel)
 			{
 				Log.WriteDebug("Instant level change initiated.");
-				GameController.CreateNext(nextLevelType);
+				GameController.CreateNext(nextLevelType, nextInteractionMode);
 				return;
 			}
 
@@ -216,7 +251,7 @@ namespace WarriorsSnuggery
 				}
 
 				// Zooming
-				if (!ScreenControl.CursorOnUI() && !Editor && Type != GameType.EDITOR)
+				if (!ScreenControl.CursorOnUI() && !Editor && InteractionMode != InteractionMode.EDITOR)
 				{
 					if (KeyInput.IsKeyDown(Keys.LeftControl) && MouseInput.IsRightDown)
 						Camera.Zoom(Settings.ScrollSpeed / 20 * (4 - (Camera.CurrentZoom - Camera.DefaultZoom) / 2));
@@ -240,7 +275,7 @@ namespace WarriorsSnuggery
 
 				script?.Tick();
 
-				if (Mode == GameMode.WAVES)
+				if (ObjectiveType == ObjectiveType.SURVIVE_WAVES)
 					waveController.Tick();
 			}
 
@@ -316,7 +351,7 @@ namespace WarriorsSnuggery
 
 			if (isAlt)
 			{
-				if (Type != GameType.EDITOR)
+				if (InteractionMode != InteractionMode.EDITOR)
 				{
 					if (key == Keys.V)
 						World.LocalPlayer.Health.HP = 0;
@@ -350,15 +385,15 @@ namespace WarriorsSnuggery
 
 		public void CheckVictory()
 		{
-			switch (Mode)
+			switch (ObjectiveType)
 			{
-				// FIND_EXIT and TUTORIAL will meet conditions when entering the exit
-				case GameMode.WAVES:
+				// FIND_EXIT will meet conditions when entering the exit
+				case ObjectiveType.SURVIVE_WAVES:
 					if (waveController.Done)
 						VictoryConditionsMet();
 
 					break;
-				case GameMode.KILL_ENEMIES:
+				case ObjectiveType.KILL_ENEMIES:
 					var actor = World.ActorLayer.NonNeutralActors.Find(a => a.Team != Actor.PlayerTeam && a.WorldPart != null && a.WorldPart.KillForVictory && !(a.Team == Actor.PlayerTeam || a.Team == Actor.NeutralTeam));
 
 					if (actor == null)
@@ -402,9 +437,11 @@ namespace WarriorsSnuggery
 		}
 
 		// Instant travel to next level
-		public void ChangeLevelAfterTick(GameType newType)
+		public void ChangeLevelAfterTick(MissionType newType, InteractionMode newMode = InteractionMode.INGAME)
 		{
 			nextLevelType = newType;
+			nextInteractionMode = newMode;
+			nextLevel = true;
 		}
 
 		public void Finish()

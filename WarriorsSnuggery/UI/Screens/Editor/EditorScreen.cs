@@ -92,7 +92,7 @@ namespace WarriorsSnuggery.UI.Screens
 		{
 			base.Render();
 
-			if (game.Type == GameType.EDITOR)
+			if (game.InteractionMode == InteractionMode.EDITOR)
 				save.Render();
 
 			switch (currentSelected)
@@ -148,7 +148,7 @@ namespace WarriorsSnuggery.UI.Screens
 					remove();
 			}
 
-			if (game.Type == GameType.EDITOR)
+			if (game.InteractionMode == InteractionMode.EDITOR)
 				save.Tick();
 
 			mousePosition.WriteText(Color.White + "" + MouseInput.GamePosition.ToMPos() + Color.Grey + " | " + MouseInput.GamePosition);

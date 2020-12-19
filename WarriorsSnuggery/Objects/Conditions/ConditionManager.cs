@@ -16,10 +16,10 @@ namespace WarriorsSnuggery.Objects.Conditions
 			items = new Dictionary<string, bool>()
 			{
 				{ "Enemies", true },
-				{ "MissionKillEnemies", game.Mode == GameMode.KILL_ENEMIES },
-				{ "MissionFindExit", game.Mode == GameMode.FIND_EXIT },
-				{ "MissionWaves", game.Mode == GameMode.WAVES },
-				{ "IsMenu", game.Type == GameType.MAINMENU || game.Type == GameType.MENU },
+				{ "MissionKillEnemies", game.ObjectiveType == ObjectiveType.KILL_ENEMIES },
+				{ "MissionFindExit", game.ObjectiveType == ObjectiveType.FIND_EXIT },
+				{ "MissionWaves", game.ObjectiveType == ObjectiveType.SURVIVE_WAVES },
+				{ "IsMenu", game.IsMenu },
 				{ "KeyFound", false }
 			};
 		}

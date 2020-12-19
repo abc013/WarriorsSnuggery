@@ -86,20 +86,17 @@ namespace WarriorsSnuggery.UI.Screens
 
 			// SECTION MISSION
 			var missionText = new UITextLine(new CPos(0, -8192 + 512, 0), FontManager.Pixel16, TextOffset.MIDDLE);
-			var missionContent = "No mission.";
-			switch (game.Mode)
+			var missionContent = string.Empty;
+			switch (game.ObjectiveType)
 			{
-				case GameMode.TUTORIAL:
-					missionContent = "Step on blue pads and get to the exit!";
-					break;
-				case GameMode.FIND_EXIT:
+				case ObjectiveType.FIND_EXIT:
 					missionContent = "Search for the exit and gain access to it!";
 					break;
-				case GameMode.WAVES:
-					missionContent = "Defend your position from incoming waves!";
-					break;
-				case GameMode.KILL_ENEMIES:
+				case ObjectiveType.KILL_ENEMIES:
 					missionContent = "Wipe out all enemies on the map!";
+					break;
+				case ObjectiveType.SURVIVE_WAVES:
+					missionContent = "Defend your position from incoming waves!";
 					break;
 			}
 			missionText.SetText(missionContent);
@@ -230,12 +227,16 @@ namespace WarriorsSnuggery.UI.Screens
 					health.SetText(cur + "/" + max);
 					healthPercentage = player.Health.RelativeHP;
 				}
-				if (game.Type != GameType.NORMAL || game.World.PlayerDamagedTick < Settings.UpdatesPerSecond * 60)
-					targetedEnemy = null;
-				else if (targetedEnemy != null && targetedEnemy.IsAlive)
-					setEnemyArrow();
-				else
-					selectNewEnemy();
+
+				if (game.IsCampaign && !game.IsMenu)
+				{
+					if (game.World.PlayerDamagedTick < Settings.UpdatesPerSecond * 60)
+						targetedEnemy = null;
+					else if (targetedEnemy != null && targetedEnemy.IsAlive)
+						setEnemyArrow();
+					else
+						selectNewEnemy();
+				}
 
 				mana.SetText(game.Statistics.Mana + "/" + game.Statistics.MaxMana);
 				manaPercentage = game.Statistics.Mana / (float)game.Statistics.MaxMana;

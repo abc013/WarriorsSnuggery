@@ -32,63 +32,66 @@ namespace WarriorsSnuggery
 
 		static void createFirst()
 		{
-			var type = GameType.MAINMENU;
+			var type = MissionType.MAIN_MENU;
+			var mode = InteractionMode.NONE;
 			var map = MapCreator.FindMap(type, 0);
 
 			if (!string.IsNullOrEmpty(Program.MapType))
 			{
+				mode = InteractionMode.INGAME;
 				map = MapCreator.GetType(Program.MapType);
-				type = map.DefaultType;
+				type = map.MissionTypes.Length > 0 ? map.MissionTypes[0] : MissionType.TEST;
 			}
 
-			game = new Game(new GameStatistics(GameSaveManager.DefaultStatistic), map, type);
-			game.Load();
-
 			if (Program.StartEditor)
-				game.SwitchEditor();
+				mode = InteractionMode.EDITOR;
+
+			game = new Game(new GameStatistics(GameSaveManager.DefaultStatistic), map, type, mode);
+			game.Load();
 		}
 
-		public static void CreateReturn(GameType type)
+		public static void CreateMainMenu()
 		{
+			const MissionType mission = MissionType.MAIN_MENU;
+
+			finishAndLoad(new Game(GameSaveManager.DefaultStatistic, MapCreator.FindMap(mission, 0), mission, InteractionMode.NONE));
+		}
+
+		public static void CreateMenu()
+		{
+			var mission = game.MenuType;
 			var stats = game.OldStatistics;
 
-			game.Finish();
-			game.Dispose();
-
-			game = new Game(stats, MapCreator.FindMap(type, stats.Level), type);
-			game.Load();
+			finishAndLoad(new Game(stats, MapCreator.FindMap(mission, stats.Level), mission, InteractionMode.INGAME));
 		}
 
 		public static void CreateRestart()
 		{
 			var stats = game.OldStatistics;
 
-			game.Finish();
-			game.Dispose();
-
-			game = new Game(stats, game.MapType, game.Type, game.Seed);
-			game.Load();
+			finishAndLoad(new Game(stats, game.MapType, game.MissionType, game.InteractionMode, game.Seed));
 		}
 
-		public static void CreateNext(GameType type)
+		public static void CreateNext()
+		{
+			var mission = game.CampaignType;
+			var stats = game.Statistics;
+
+			finishAndLoad(new Game(stats, MapCreator.FindMap(mission, stats.Level), mission, InteractionMode.INGAME));
+		}
+
+		public static void CreateNext(MissionType type, InteractionMode mode = InteractionMode.INGAME)
 		{
 			var stats = game.Statistics;
 
-			game.Finish();
-			game.Dispose();
-
-			game = new Game(stats, MapCreator.FindMap(type, stats.Level), type);
-			game.Load();
+			finishAndLoad(new Game(stats, MapCreator.FindMap(type, stats.Level), type, mode));
 		}
 
-		public static void CreateNew(GameStatistics stats, GameType type = GameType.NORMAL, MapInfo custom = null, bool loadStatsMap = false)
+		public static void CreateNew(GameStatistics stats, MissionType type = MissionType.NORMAL, InteractionMode mode = InteractionMode.INGAME, MapInfo custom = null, bool loadStatsMap = false)
 		{
-			game.Finish();
-			game.Dispose();
-
 			if (loadStatsMap)
 			{
-				type = stats.CurrentType;
+				type = stats.CurrentMission;
 				try
 				{
 					custom = MapInfo.FromSave(stats);
@@ -99,7 +102,15 @@ namespace WarriorsSnuggery
 				}
 			}
 
-			game = new Game(stats, custom ?? MapCreator.FindMap(type, stats.Level), type);
+			finishAndLoad(new Game(stats, custom ?? MapCreator.FindMap(type, stats.Level), type, mode));
+		}
+
+		static void finishAndLoad(Game @new)
+		{
+			game.Finish();
+			game.Dispose();
+
+			game = @new;
 			game.Load();
 		}
 

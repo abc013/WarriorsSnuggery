@@ -1,5 +1,5 @@
 main1=
-	DefaultType=MENU
+	MissionTypes=STORY_MENU, NORMAL_MENU
 	CustomSize=50,50
 	SpawnPoint=25,20
 	TerrainGenerationBase=0
@@ -11,7 +11,7 @@ main1=
 	AllowWeapons=false
 
 main2=
-	DefaultType=MAINMENU
+	MissionTypes=MAIN_MENU
 	CustomSize=16,16
 	TerrainGenerationBase=0
 		Terrain=0
@@ -22,9 +22,9 @@ main2=
 	AllowWeapons=false
 
 tutorial=
+	MissionTypes=TUTORIAL
+	AvailableObjectives=FIND_EXIT
 	MissionScript=TutorialScript
-	DefaultType=TUTORIAL
-	DefaultModes=TUTORIAL
 	CustomSize=48,16
 	SpawnPoint=3,9
 	TerrainGenerationBase=0

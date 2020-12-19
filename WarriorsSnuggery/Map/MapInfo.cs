@@ -10,10 +10,10 @@ namespace WarriorsSnuggery.Maps
 	{
 		public readonly string Name;
 
-		[Desc("Type of the map. This determines when the map is chosen for generation.")]
-		public readonly GameType DefaultType = GameType.NORMAL;
-		[Desc("Possible modes on this map.")]
-		public readonly GameMode[] DefaultModes = new[] { GameMode.NONE };
+		[Desc("Determines when to use the map.")]
+		public readonly MissionType[] MissionTypes = new MissionType[0];
+		[Desc("Selection of possible objectives on this map. One of them will be chosen randomly when generating the map.")]
+		public readonly ObjectiveType[] AvailableObjectives = new[] { ObjectiveType.NONE };
 
 		[Desc("Single level where this map must be generated.")]
 		public readonly int Level = -1;
@@ -63,14 +63,6 @@ namespace WarriorsSnuggery.Maps
 			{
 				switch (node.Key)
 				{
-					case nameof(DefaultModes):
-						var modeArray = node.Convert<string[]>();
-
-						DefaultModes = new GameMode[modeArray.Length];
-						for (int i = 0; i < DefaultModes.Length; i++)
-							DefaultModes[i] = (GameMode)Enum.Parse(typeof(GameMode), modeArray[i]);
-
-						break;
 					case nameof(TerrainGenerationBase):
 						TerrainGenerationBase = new TerrainGeneratorInfo(node.Convert<int>(), node.Children);
 
@@ -121,14 +113,14 @@ namespace WarriorsSnuggery.Maps
 			GeneratorInfos = GeneratorInfos.OrderByDescending(g => g.ID).ToList();
 		}
 
-		MapInfo(string overridePiece, int wall, MPos customSize, Color ambient, GameType defaultType, GameMode[] defaultModes, int level, int fromLevel, int toLevel, TerrainGeneratorInfo baseTerrainGeneration, List<MapGeneratorInfo> genInfos, MPos spawnPoint, bool isSave, bool allowWeapons, string missionScript)
+		MapInfo(string overridePiece, int wall, MPos customSize, Color ambient, MissionType[] missionTypes, ObjectiveType[] availableObjectives, int level, int fromLevel, int toLevel, TerrainGeneratorInfo baseTerrainGeneration, List<MapGeneratorInfo> genInfos, MPos spawnPoint, bool isSave, bool allowWeapons, string missionScript)
 		{
 			OverridePiece = overridePiece;
 			Wall = wall;
 			CustomSize = customSize;
 			Ambient = ambient;
-			DefaultType = defaultType;
-			DefaultModes = defaultModes;
+			MissionTypes = missionTypes;
+			AvailableObjectives = availableObjectives;
 			Level = level;
 			FromLevel = fromLevel;
 			ToLevel = toLevel;
@@ -152,23 +144,23 @@ namespace WarriorsSnuggery.Maps
 			var type = MapCreator.GetType(stats.CurrentMapType);
 			var mapGeneratorInfos = type == null ? new List<MapGeneratorInfo>() : type.GeneratorInfos;
 
-			return new MapInfo(stats.MapSaveName, 0, size, Color.White, stats.CurrentType, new[] { stats.CurrentMode }, -1, 0, int.MaxValue, new TerrainGeneratorInfo(0, new List<MiniTextNode>()), mapGeneratorInfos, MPos.Zero, true, true, stats.Script);
+			return new MapInfo(stats.MapSaveName, 0, size, Color.White, new[] { stats.CurrentMission }, new[] { stats.CurrentObjective }, -1, 0, int.MaxValue, new TerrainGeneratorInfo(0, new List<MiniTextNode>()), mapGeneratorInfos, MPos.Zero, true, true, stats.Script);
 		}
 
-		public static MapInfo FromPiece(Piece piece, GameType type = GameType.NONE)
+		public static MapInfo FromPiece(Piece piece, MissionType type = MissionType.TEST, ObjectiveType objective = ObjectiveType.NONE)
 		{
-			return new MapInfo(piece.InnerName, 0, piece.Size, Color.White, type, new[] { GameMode.NONE }, -1, 0, int.MaxValue, new TerrainGeneratorInfo(0, new List<MiniTextNode>()), new List<MapGeneratorInfo>(), MPos.Zero, false, true, null);
+			return new MapInfo(piece.InnerName, 0, piece.Size, Color.White, new[] { type }, new[] { objective }, -1, 0, int.MaxValue, new TerrainGeneratorInfo(0, new List<MiniTextNode>()), new List<MapGeneratorInfo>(), MPos.Zero, false, true, null);
 		}
 	}
 
 	public class MapCreator
 	{
 		static readonly Dictionary<string, MapInfo> mapsNames = new Dictionary<string, MapInfo>();
-		static readonly Dictionary<GameType, List<MapInfo>> mapsTypes = new Dictionary<GameType, List<MapInfo>>();
+		static readonly Dictionary<MissionType, List<MapInfo>> mapsTypes = new Dictionary<MissionType, List<MapInfo>>();
 
 		public static void LoadMaps(string directory, string file)
 		{
-			foreach (GameType type in Enum.GetValues(typeof(GameType)))
+			foreach (MissionType type in Enum.GetValues(typeof(MissionType)))
 				mapsTypes.Add(type, new List<MapInfo>());
 
 			var mapNodes = RuleReader.FromFile(directory, file);
@@ -179,7 +171,8 @@ namespace WarriorsSnuggery.Maps
 
 				mapsNames.Add(map.Name, map);
 
-				mapsTypes[map.DefaultType].Add(map);
+				foreach (var missionType in map.MissionTypes)
+					mapsTypes[missionType].Add(map);
 			}
 		}
 
@@ -196,32 +189,22 @@ namespace WarriorsSnuggery.Maps
 			return mapsNames.FirstOrDefault(t => t.Value == info).Key;
 		}
 
-		public static MapInfo FindMap(GameType type, int level)
+		public static MapInfo FindMap(MissionType type, int level)
 		{
-			if (type == GameType.TUTORIAL)
-				return findTutorial();
+			// TODO: make this dependent on seed
+			var random = Program.SharedRandom;
 
 			var levels = mapsTypes[type];
 
 			var explicitLevels = levels.Where(a => level == a.Level);
 			if (explicitLevels.Any())
-				return explicitLevels.ElementAt(Program.SharedRandom.Next(explicitLevels.Count()));
+				return explicitLevels.ElementAt(random.Next(explicitLevels.Count()));
 
 			var implicitLevels = levels.Where(a => level >= a.FromLevel && level <= a.ToLevel && a.FromLevel >= 0 && a.Level == -1);
 			if (!implicitLevels.Any())
-				throw new MissingFieldException(string.Format("There are no available Main Maps (Level:{0}).", level));
+				throw new MissingFieldException($"There are no available maps of type '{type}' (current level: {level}).");
 
-			return implicitLevels.ElementAt(Program.SharedRandom.Next(implicitLevels.Count()));
-		}
-
-		static MapInfo findTutorial()
-		{
-			var implicitLevels = mapsTypes[GameType.TUTORIAL];
-
-			if (!implicitLevels.Any())
-				throw new MissingFieldException(string.Format("There are no Tutorial Maps available."));
-
-			return implicitLevels.ElementAt(Program.SharedRandom.Next(implicitLevels.Count()));
+			return implicitLevels.ElementAt(random.Next(implicitLevels.Count()));
 		}
 	}
 }

@@ -34,7 +34,8 @@ namespace WarriorsSnuggery.Maps
 
 		public override MapGenerator GetGenerator(Random random, MapLoader loader)
 		{
-			if (loader.GameMode == GameMode.WAVES)
+			// TODO move elsewhere
+			if (loader.ObjectiveType == ObjectiveType.SURVIVE_WAVES)
 				return null;
 
 			return new PatrolGenerator(random, loader, this);
