@@ -1,4 +1,4 @@
-﻿namespace WarriorsSnuggery
+﻿namespace DocWriter
 {
 	public class TableCell
 	{

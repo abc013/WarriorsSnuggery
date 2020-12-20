@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Reflection;
+using WarriorsSnuggery;
 
-namespace WarriorsSnuggery
+namespace DocWriter
 {
 	public static class TypeWriter
 	{
@@ -15,14 +15,14 @@ namespace WarriorsSnuggery
 			assembly = Assembly.Load("WarriorsSnuggery");
 		}
 
-		public static void Write(StreamWriter writer, string typeName, object[] args)
+		public static void Write(string typeName, object[] args)
 		{
 			var type = assembly.GetType(typeName);
 
 			var attrib = type.GetCustomAttribute(typeof(DescAttribute));
 			var description = attrib == null ? null : ((DescAttribute)attrib).Desc;
 			if (description != null)
-				HTMLWriter.WriteDescription(writer, description);
+				HTMLWriter.WriteDescription(description);
 
 			var obj = Activator.CreateInstance(type, args);
 			var variables = type.GetFields().Where(f => f.IsInitOnly && f.GetCustomAttribute(typeof(DescAttribute)) != null);
@@ -37,7 +37,7 @@ namespace WarriorsSnuggery
 
 				cells.Add(new TableCell(varname, vartype, vardesc, value == null ? "Not given" : value.ToString()));
 			}
-			HTMLWriter.WriteTable(writer, cells, true);
+			HTMLWriter.WriteTable(cells, true);
 		}
 
 		static string[] getDescription(FieldInfo variable)
@@ -59,7 +59,7 @@ namespace WarriorsSnuggery
 			return array;
 		}
 
-		public static void WriteAll(StreamWriter writer, string @namespace, string endsWith, object[] args)
+		public static void WriteAll(string @namespace, string endsWith, object[] args)
 		{
 			var infos = assembly.GetTypes().Where(t => !t.IsAbstract && !t.IsInterface && t.Namespace == @namespace && t.Name.EndsWith(endsWith));
 
@@ -69,9 +69,9 @@ namespace WarriorsSnuggery
 				var attrib = info.GetCustomAttribute(typeof(DescAttribute));
 				var name = info.Name.Replace(endsWith, "");
 
-				HTMLWriter.WriteHeader(writer, name, 3);
+				HTMLWriter.WriteHeader(name, 3);
 
-				Write(writer, info.FullName, args);
+				Write(info.FullName, args);
 
 				Console.Write((first ? "" : ", ") + name);
 				first = false;

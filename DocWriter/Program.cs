@@ -2,30 +2,19 @@
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using WarriorsSnuggery;
 
-namespace WarriorsSnuggery
+namespace DocWriter
 {
-	public enum DocumentationType
-	{
-		ALL,
-		ACTORS,
-		PARTICLES,
-		WEAPONS,
-		TERRAIN,
-		WALLS,
-		MAPS,
-		SPELLS,
-		TROPHIES,
-		SOUNDS
-	}
-
 	static class Program
 	{
-		public const string Title = "Warrior's Snuggery";
+		public const string Title = WarriorsSnuggery.Program.Title + " - Rule Documentation";
 
 		public static bool DarkMode;
 		public static void Main()
 		{
+			Console.Title = Title;
+
 			FileExplorer.InitPaths();
 			TypeWriter.Initialize();
 			Console.ForegroundColor = ConsoleColor.White;
@@ -91,10 +80,12 @@ namespace WarriorsSnuggery
 		{
 			using var writer = new StreamWriter(FileExplorer.MainDirectory + "Documentation.html");
 
-			Console.WriteLine("Generating document, please wait...");
-			HTMLWriter.WriteHead(writer);
+			HTMLWriter.SetWriter(writer);
 
-			HTMLWriter.WriteIndex(writer, types);
+			Console.WriteLine("Generating document, please wait...");
+			HTMLWriter.WriteHead();
+
+			HTMLWriter.WriteIndex(types);
 
 			int id = 1;
 			foreach (var type in types)
@@ -102,10 +93,10 @@ namespace WarriorsSnuggery
 				Console.ForegroundColor = ConsoleColor.White;
 				Console.WriteLine("Reading " + type + "...");
 				Console.ResetColor();
-				HTMLWriter.WriteDoc(writer, type, id++);
+				HTMLWriter.WriteDoc(type, id++);
 			}
 
-			HTMLWriter.WriteEnd(writer);
+			HTMLWriter.WriteEnd();
 
 			writer.Flush();
 			writer.Close();
