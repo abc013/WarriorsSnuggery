@@ -19,6 +19,11 @@ namespace WarriorsSnuggery
 		{
 			var type = assembly.GetType(typeName);
 
+			var attrib = type.GetCustomAttribute(typeof(DescAttribute));
+			var description = attrib == null ? null : ((DescAttribute)attrib).Desc;
+			if (description != null)
+				HTMLWriter.WriteDescription(writer, description);
+
 			var obj = Activator.CreateInstance(type, args);
 			var variables = type.GetFields().Where(f => f.IsInitOnly && f.GetCustomAttribute(typeof(DescAttribute)) != null);
 			var cells = new List<TableCell>();
@@ -64,7 +69,7 @@ namespace WarriorsSnuggery
 				var attrib = info.GetCustomAttribute(typeof(DescAttribute));
 				var name = info.Name.Replace(endsWith, "");
 
-				HTMLWriter.WriteRuleHead(writer, name, attrib == null ? new string[] { "No Description." } : ((DescAttribute)attrib).Desc, false);
+				HTMLWriter.WriteHead(writer, name, false);
 
 				Write(writer, info.FullName, args);
 

@@ -107,19 +107,17 @@ namespace WarriorsSnuggery
 			}
 		}
 
-		public static void WriteRuleHead(StreamWriter writer, string rule, string[] description, bool h2 = true)
+		public static void WriteHead(StreamWriter writer, string head, bool h2 = true)
 		{
-			writer.WriteLine("\t\t<" + (h2 ? "h2" : "h3") + ">" + rule + "</h2>");
-			writer.WriteLine("\t\t<hr color=\"" + Colors[2] + "\">");
+			writer.WriteLine("\t\t<" + (h2 ? "h2" : "h3") + ">" + head + "</h2>");
+			writer.WriteLine("\t\t<hr>");
+		}
+
+		public static void WriteDescription(StreamWriter writer, string[] description)
+		{
 			foreach (var descLine in description)
 				writer.WriteLine("\t\t" + descLine + "<br><br>");
 			writer.WriteLine();
-		}
-
-		public static void WriteHead(StreamWriter writer, string head)
-		{
-			writer.WriteLine("\t\t<h2>" + head + "</h2>");
-			writer.WriteLine("\t\t<hr>");
 		}
 
 		public static void WriteTable(StreamWriter writer, List<TableCell> cells, bool showValues)
