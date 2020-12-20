@@ -100,7 +100,7 @@ namespace WarriorsSnuggery.Graphics
 			WorldRenderer.CheckVisibility(oldLookAt, LookAt);
 		}
 
-		public static void Position(CPos pos, bool ignoreLock = false)
+		public static void Position(CPos pos, bool ignoreLock = false, bool tinyMove = false)
 		{
 			if (!ignoreLock && Locked || LookAt == pos)
 				return;
@@ -111,7 +111,7 @@ namespace WarriorsSnuggery.Graphics
 			calculatePosition();
 			updateView();
 
-			WorldRenderer.CheckVisibility(oldLookAt, LookAt);
+			WorldRenderer.CheckVisibility(oldLookAt, LookAt, tinyMove);
 		}
 
 		static void calculatePosition()

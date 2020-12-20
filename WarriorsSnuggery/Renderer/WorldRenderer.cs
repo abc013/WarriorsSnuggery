@@ -174,12 +174,22 @@ namespace WarriorsSnuggery
 			checkAllWalls();
 		}
 
-		public static void CheckVisibility(CPos oldPos, CPos newPos)
+		public static void CheckVisibility(CPos oldPos, CPos newPos, bool tinyMove = true)
 		{
 			var zoom = Camera.CurrentZoom;
 
-			CheckVisibility(oldPos, zoom);
-			CheckVisibility(newPos, zoom);
+			if (tinyMove)
+			{
+				var diff = oldPos - newPos;
+				var greaterDiff = Math.Max(Math.Abs(diff.X), Math.Abs(diff.Y));
+				var checkZoom = zoom + greaterDiff / 2048f;
+				CheckVisibility(oldPos + diff / new CPos(2, 2, 2), checkZoom);
+			}
+			else
+			{
+				CheckVisibility(oldPos, zoom);
+				CheckVisibility(newPos, zoom);
+			}
 		}
 
 		public static void CheckVisibility(float oldZoom, float newZoom)

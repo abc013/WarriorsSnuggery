@@ -29,13 +29,13 @@ namespace WarriorsSnuggery.Objects.Parts
 			if (firstTick && Camera.LockedToPlayer)
 			{
 				firstTick = false;
-				positionCamera();
+				positionCamera(false);
 			}
 
 			if (KeyInput.IsKeyDown(Settings.GetKey("CameraLock"), 5))
 			{
 				Camera.LockedToPlayer = !Camera.LockedToPlayer;
-				positionCamera();
+				positionCamera(false);
 			}
 
 			var vertical = 0;
@@ -103,9 +103,9 @@ namespace WarriorsSnuggery.Objects.Parts
 			}
 		}
 
-		void positionCamera()
+		void positionCamera(bool tinyMove)
 		{
-			Camera.Position(self.Position + (self.World.Game.ScreenControl.Focused is DefaultScreen ? Camera.CamPlayerOffset : CPos.Zero));
+			Camera.Position(self.Position + (self.World.Game.ScreenControl.Focused is DefaultScreen ? Camera.CamPlayerOffset : CPos.Zero), tinyMove: tinyMove);
 		}
 
 		public void OnDamage(Actor damager, int damage)
@@ -126,7 +126,7 @@ namespace WarriorsSnuggery.Objects.Parts
 		public void OnMove(CPos old, CPos speed)
 		{
 			if (Camera.LockedToPlayer)
-				positionCamera();
+				positionCamera(true);
 		}
 	}
 }
