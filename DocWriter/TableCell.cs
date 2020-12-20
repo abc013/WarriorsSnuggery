@@ -2,7 +2,7 @@
 {
 	public class TableCell
 	{
-		public static readonly TableCell Head = new TableCell("Name", "Type", new[] { "Description" }, "Value");
+		public static readonly TableCell Head = new TableCell("Name", "Type", new[] { "Description" }, "Default Value");
 
 		public readonly string Name;
 		public readonly string Type;

@@ -21,6 +21,8 @@ namespace WarriorsSnuggery
 
 	static class Program
 	{
+		public const string Title = "Warrior's Snuggery";
+
 		public static bool DarkMode;
 		public static void Main()
 		{
@@ -92,12 +94,15 @@ namespace WarriorsSnuggery
 			Console.WriteLine("Generating document, please wait...");
 			HTMLWriter.WriteHead(writer);
 
+			HTMLWriter.WriteIndex(writer, types);
+
+			int id = 1;
 			foreach (var type in types)
 			{
 				Console.ForegroundColor = ConsoleColor.White;
 				Console.WriteLine("Reading " + type + "...");
 				Console.ResetColor();
-				HTMLWriter.WriteDoc(writer, type);
+				HTMLWriter.WriteDoc(writer, type, id++);
 			}
 
 			HTMLWriter.WriteEnd(writer);

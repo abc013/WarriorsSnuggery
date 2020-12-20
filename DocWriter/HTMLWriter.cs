@@ -24,10 +24,11 @@ namespace WarriorsSnuggery
 		{
 			writer.WriteLine("<html>");
 			writer.WriteLine("\t<head>");
-			writer.WriteLine("\t\t<title>Rule Documentation</title>");
+			writer.WriteLine($"\t\t<title>{Program.Title} - Rule Documentation</title>");
 			writeStyle(writer);
 			writer.WriteLine("\t</head>");
 			writer.WriteLine("\t<body>");
+			writer.WriteLine("<img src=\"misc/UI/logo.png\"/>");
 		}
 
 		static void writeStyle(StreamWriter writer)
@@ -38,7 +39,7 @@ namespace WarriorsSnuggery
 				writer.WriteLine("body { background-color: #000000; color: #BBBBBB; }");
 				writer.WriteLine("table { margin: 10px; box-shadow: 1px 0px 10px " + Colors[0] + "; width: 70%; border-collapse: collapse; }");
 				writer.WriteLine("td { border: 1px solid " + Colors[2] + "; padding: 8px; }");
-				writer.WriteLine("th { border: 1px solid " + Colors[2] + "; padding: 8px; color: #DDDD55; }");
+				writer.WriteLine("th { border: 1px solid " + Colors[2] + "; padding: 8px; color: #DDDDFF; }");
 				writer.WriteLine("tr:nth-child(even) { background-color: " + Colors[0] + "; }");
 				writer.WriteLine("tr { background-color: " + Colors[1] + "; color: #DDDDDD; }");
 				writer.WriteLine("hr { color: " + Colors[2] + "; }");
@@ -59,12 +60,32 @@ namespace WarriorsSnuggery
 			writer.WriteLine("\t\t</style>");
 		}
 
-		public static void WriteDoc(StreamWriter writer, DocumentationType type)
+		public static void WriteIndex(StreamWriter writer, DocumentationType[] types)
 		{
-			writer.WriteLine();
-			writer.WriteLine("\t\t<h1>" + type.ToString().ToLower(System.Globalization.CultureInfo.CurrentCulture) + "</h1>");
-			writer.WriteLine("\t\t<hr>");
-			writer.WriteLine();
+			WriteHeader(writer, "Table of Contents", 1);
+
+			writer.WriteLine($"\t\t<ul>");
+
+			int id = 1;
+			foreach (var type in types)
+			{
+				var name = type.ToString();
+
+				writer.WriteLine($"\t\t<li><h4><a href=\"#{id}\">");
+				writer.WriteLine($"\t\t\t{id}. {name.Substring(0, 1) + name[1..].ToLower()}");
+				writer.WriteLine($"\t\t</a></h4></li>");
+
+				id++;
+			}
+
+			writer.WriteLine($"\t\t</ul>");
+		}
+
+		public static void WriteDoc(StreamWriter writer, DocumentationType type, int id)
+		{
+			var name = type.ToString();
+
+			WriteHeader(writer, $"{id}. {name.Substring(0, 1) + name[1..].ToLower()}", 1, id);
 
 			switch (type)
 			{
@@ -107,9 +128,10 @@ namespace WarriorsSnuggery
 			}
 		}
 
-		public static void WriteHead(StreamWriter writer, string head, bool h2 = true)
+		public static void WriteHeader(StreamWriter writer, string head, int importance = 2, int id = -1)
 		{
-			writer.WriteLine("\t\t<" + (h2 ? "h2" : "h3") + ">" + head + "</h2>");
+			var idString = id > 0 ? $" id=\"{id}\"" : string.Empty;
+			writer.WriteLine($"\t\t<h{importance}{idString}> {head} </h{importance}>");
 			writer.WriteLine("\t\t<hr>");
 		}
 
@@ -157,7 +179,7 @@ namespace WarriorsSnuggery
 
 		public static void WriteEnd(StreamWriter writer)
 		{
-			writer.WriteLine("\t<p>Warrior's Snuggery Rules Document. Generated for " + Settings.Version + " at " + DateTime.Now + ".</p>");
+			writer.WriteLine($"\t<p>{Program.Title} Rules Document. Generated for {Settings.Version} at {DateTime.Now}.</p>");
 			writer.WriteLine("\t</body>");
 			writer.WriteLine("</html>");
 		}
@@ -172,10 +194,10 @@ namespace WarriorsSnuggery
 
 		public static void WriteParticles(StreamWriter writer)
 		{
-			HTMLWriter.WriteHead(writer, "ParticleSpawners");
+			HTMLWriter.WriteHeader(writer, "ParticleSpawners");
 			TypeWriter.WriteAll(writer, "WarriorsSnuggery.Objects.Particles", "ParticleSpawner", new[] { new List<MiniTextNode>() });
 
-			HTMLWriter.WriteHead(writer, "Particle");
+			HTMLWriter.WriteHeader(writer, "Particle");
 			TypeWriter.Write(writer, "WarriorsSnuggery.Objects.Particles.ParticleType", new[] { new List<MiniTextNode>() });
 		}
 
@@ -191,46 +213,46 @@ namespace WarriorsSnuggery
 
 		public static void WriteWeapons(StreamWriter writer)
 		{
-			HTMLWriter.WriteHead(writer, "WeaponType");
+			HTMLWriter.WriteHeader(writer, "WeaponType");
 			TypeWriter.Write(writer, "WarriorsSnuggery.Objects.Weapons.WeaponType", new[] { new List<MiniTextNode>() });
 
-			HTMLWriter.WriteHead(writer, "ProjectileTypes");
+			HTMLWriter.WriteHeader(writer, "ProjectileTypes");
 			TypeWriter.WriteAll(writer, "WarriorsSnuggery.Objects.Weapons", "ProjectileType", new[] { new List<MiniTextNode>() });
 
-			HTMLWriter.WriteHead(writer, "Warheads");
+			HTMLWriter.WriteHeader(writer, "Warheads");
 			TypeWriter.WriteAll(writer, "WarriorsSnuggery.Objects.Weapons", "Warhead", new[] { new List<MiniTextNode>() });
 		}
 
 		public static void WriteMaps(StreamWriter writer)
 		{
-			HTMLWriter.WriteHead(writer, "Map");
+			HTMLWriter.WriteHeader(writer, "Map");
 			TypeWriter.Write(writer, "WarriorsSnuggery.Maps.MapInfo", Array.Empty<object>());
 
-			HTMLWriter.WriteHead(writer, "NoiseMap");
+			HTMLWriter.WriteHeader(writer, "NoiseMap");
 			TypeWriter.Write(writer, "WarriorsSnuggery.Maps.NoiseMapInfo", new object[] { -1, new List<MiniTextNode>() });
 
-			HTMLWriter.WriteHead(writer, "Generators");
+			HTMLWriter.WriteHeader(writer, "Generators");
 			TypeWriter.WriteAll(writer, "WarriorsSnuggery.Maps.Generators", "GeneratorInfo", new object[] { -1, new List<MiniTextNode>() });
 		}
 
 		public static void WriteSpells(StreamWriter writer)
 		{
-			HTMLWriter.WriteHead(writer, "SpellNode");
+			HTMLWriter.WriteHeader(writer, "SpellNode");
 			TypeWriter.Write(writer, "WarriorsSnuggery.Spells.SpellTreeNode", new object[] { new List<MiniTextNode>(), "", true });
 
-			HTMLWriter.WriteHead(writer, "Spell");
+			HTMLWriter.WriteHeader(writer, "Spell");
 			TypeWriter.Write(writer, "WarriorsSnuggery.Spells.Spell", new[] { new List<MiniTextNode>() });
 		}
 
 		public static void WriteTrophies(StreamWriter writer)
 		{
-			HTMLWriter.WriteHead(writer, "Trophy");
+			HTMLWriter.WriteHeader(writer, "Trophy");
 			TypeWriter.Write(writer, "WarriorsSnuggery.Trophies.Trophy", new object[] { new List<MiniTextNode>() });
 		}
 
 		public static void WriteSounds(StreamWriter writer)
 		{
-			HTMLWriter.WriteHead(writer, "Sound");
+			HTMLWriter.WriteHeader(writer, "Sound");
 			TypeWriter.Write(writer, "WarriorsSnuggery.SoundType", new object[] { new List<MiniTextNode>(), true });
 		}
 	}

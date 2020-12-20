@@ -69,7 +69,7 @@ namespace WarriorsSnuggery
 				var attrib = info.GetCustomAttribute(typeof(DescAttribute));
 				var name = info.Name.Replace(endsWith, "");
 
-				HTMLWriter.WriteHead(writer, name, false);
+				HTMLWriter.WriteHeader(writer, name, 3);
 
 				Write(writer, info.FullName, args);
 
