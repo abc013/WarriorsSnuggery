@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -33,9 +34,9 @@ namespace DocWriter
 				var varname = variable.Name;
 				var vartype = getNameOfType(variable.FieldType.Name);
 				var vardesc = getDescription(variable);
-				var value = variable.GetValue(obj);
+				var value = getValue(variable, obj);
 
-				cells.Add(new TableCell(varname, vartype, vardesc, value == null ? "Not given" : value.ToString()));
+				cells.Add(new TableCell(varname, vartype, vardesc, value));
 			}
 			HTMLWriter.WriteTable(cells, true);
 		}
@@ -83,8 +84,36 @@ namespace DocWriter
 		{
 			name = name.Replace("Single", "Float");
 			name = name.Replace("Int32", "Integer");
+			name = name.Replace("UInt16", "Positive Integer");
 
 			return name;
+		}
+
+		static string getValue(FieldInfo info, object obj)
+		{
+			var value = info.GetValue(obj);
+
+			if (value == null)
+				return "Not given";
+
+			if (info.FieldType.IsArray)
+			{
+				var result = string.Empty;
+
+				var list = value as IEnumerable;
+
+				foreach(var listObj in list)
+					result += $"{listObj}, ";
+
+				return string.IsNullOrEmpty(result) ? "Not given" : result.Remove(result.Length - 2);
+			}
+			else if (info.FieldType == typeof(Color))
+			{
+				var color = (Color)value;
+				return $"{color.R}, {color.G}, {color.B}, {color.A}";
+			}
+
+			return value.ToString();
 		}
 	}
 }
