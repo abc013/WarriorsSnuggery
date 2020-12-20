@@ -60,7 +60,8 @@ namespace WarriorsSnuggery
 				}
 			}
 
-			VisibilitySolver.ShroudUpdated();
+			if (team == Objects.Actor.PlayerTeam)
+				VisibilitySolver.ShroudUpdated();
 			// Camera automatically updates shroud, so we don't want to do that if we move anyways TODO how about other actors?
 			if (!Camera.LockedToPlayer || ignoreLock)
 				WorldRenderer.CheckVisibility(Camera.LookAt, Camera.DefaultZoom);
@@ -93,7 +94,8 @@ namespace WarriorsSnuggery
 				}
 			}
 
-			VisibilitySolver.ShroudUpdated();
+			if (team == Objects.Actor.PlayerTeam)
+				VisibilitySolver.ShroudUpdated();
 			// Camera automatically updates shroud, so we don't want to do that if we move anyways 
 			if (!Camera.LockedToPlayer || ignoreLock)
 				WorldRenderer.CheckVisibility(Camera.LookAt, Camera.DefaultZoom);
