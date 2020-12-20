@@ -1,4 +1,5 @@
-﻿using WarriorsSnuggery.Graphics;
+﻿using System;
+using WarriorsSnuggery.Graphics;
 
 namespace WarriorsSnuggery.Objects
 {
@@ -6,6 +7,19 @@ namespace WarriorsSnuggery.Objects
 	{
 		protected readonly BatchRenderable Renderable;
 		public bool Disposed;
+
+		public virtual bool Visible
+		{
+			get => visible;
+			set
+			{
+				if (Renderable != null)
+					Renderable.Visible = value;
+
+				visible = value;
+			}
+		}
+		bool visible = true;
 
 		public virtual int Height
 		{
@@ -106,19 +120,22 @@ namespace WarriorsSnuggery.Objects
 
 		public virtual bool CheckVisibility()
 		{
-			if (Disposed)
-				return false;
+			if (Renderable == null || Disposed)
+			{
+				Visible = false;
+				return Visible;
+			}
 
-			if (Renderable == null)
-				return true;
-
-			Renderable.Visible = VisibilitySolver.IsVisible(Position);
-			return Renderable.Visible;
+			Visible = VisibilitySolver.IsVisible(Position);
+			return Visible;
 		}
 
 		public virtual void Dispose()
 		{
 			Disposed = true;
+			Visible = false;
+
+			GC.SuppressFinalize(this);
 		}
 	}
 }

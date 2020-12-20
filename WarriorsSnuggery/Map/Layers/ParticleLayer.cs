@@ -51,7 +51,8 @@ namespace WarriorsSnuggery
 				newSector.Enter(particle);
 			}
 
-			if (particle.CheckVisibility() && !VisibleParticles.Contains(particle))
+			var wasVisible = particle.Visible;
+			if (particle.CheckVisibility() && !wasVisible)
 				VisibleParticles.Add(particle);
 
 			particle.Sector = newSector;
@@ -130,24 +131,30 @@ namespace WarriorsSnuggery
 		public void CheckVisibility()
 		{
 			foreach (var p in Particles)
-				p.CheckVisibility();
-			VisibleParticles.Clear();
-			VisibleParticles.AddRange(Particles);
+			{
+				var wasVisible = p.Visible;
+				if (p.CheckVisibility() && !wasVisible)
+					VisibleParticles.Add(p);
+			}
+
+			VisibleParticles.RemoveAll(p => !p.Visible);
 		}
 
 		public void CheckVisibility(CPos topleft, CPos bottomright)
 		{
-			VisibleParticles.Clear();
 			var sectors = getSectors(topleft, bottomright);
 
 			foreach (var sector in sectors)
 			{
 				foreach (var p in sector.Particles)
 				{
-					if (p.CheckVisibility())
+					var wasVisible = p.Visible;
+					if (p.CheckVisibility() && !wasVisible)
 						VisibleParticles.Add(p);
 				}
 			}
+
+			VisibleParticles.RemoveAll(p => !p.Visible);
 		}
 
 		public void Clear()

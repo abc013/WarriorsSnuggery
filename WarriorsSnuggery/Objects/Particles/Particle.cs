@@ -36,6 +36,9 @@ namespace WarriorsSnuggery.Objects.Particles
 
 			velocity = init.Convert("Velocity", ParticleUtils.Variety(Type.RandomVelocity));
 			rotate_velocity = init.Convert("RotationVelocity", ParticleUtils.AngleVariety(Type.RandomRotation));
+
+			// Set invisible first and check later for visibility
+			Visible = false;
 		}
 
 		public void AffectVelocity(ParticleForce force, float ratio, CPos origin)
