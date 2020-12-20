@@ -19,7 +19,7 @@ namespace WarriorsSnuggery.Objects.Weapons
 		public override void Tick()
 		{
 			base.Tick();
-			Renderable?.Tick();
+
 			if (IsDissolving)
 			{
 				if (dissolveTime-- > 0)
