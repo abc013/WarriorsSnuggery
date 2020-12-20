@@ -208,8 +208,11 @@ namespace WarriorsSnuggery
 			HTMLWriter.WriteHead(writer, "Map");
 			TypeWriter.Write(writer, "WarriorsSnuggery.Maps.MapInfo", Array.Empty<object>());
 
-			HTMLWriter.WriteHead(writer, "MapGenerators");
-			TypeWriter.WriteAll(writer, "WarriorsSnuggery.Maps", "GeneratorInfo", new object[] { -1, new List<MiniTextNode>() });
+			HTMLWriter.WriteHead(writer, "NoiseMap");
+			TypeWriter.Write(writer, "WarriorsSnuggery.Maps.NoiseMapInfo", new object[] { -1, new List<MiniTextNode>() });
+
+			HTMLWriter.WriteHead(writer, "Generators");
+			TypeWriter.WriteAll(writer, "WarriorsSnuggery.Maps.Generators", "GeneratorInfo", new object[] { -1, new List<MiniTextNode>() });
 		}
 
 		public static void WriteSpells(StreamWriter writer)

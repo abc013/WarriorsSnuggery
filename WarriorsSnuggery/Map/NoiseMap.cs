@@ -4,7 +4,7 @@ using WarriorsSnuggery.Graphics;
 
 namespace WarriorsSnuggery.Maps
 {
-	[Desc("Trait designed to give information about noise that will be used by various generators.")]
+	[Desc("This object is designed to give information about noise that will be used by various generators.")]
 	public sealed class NoiseMapInfo
 	{
 		[Desc("Unique ID that belongs to this noise.")]
