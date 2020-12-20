@@ -26,14 +26,14 @@ namespace WarriorsSnuggery
 		public CPos PlayerSpawn;
 		public CPos Exit;
 
-		public MPos Bounds { get; private set; }
-		public MPos Center => Bounds / new MPos(2, 2);
-		public MPos DefaultEdgeDistance => Bounds / new MPos(8, 8);
+		public readonly MPos Bounds;
+		public readonly MPos Center;
+		public readonly MPos DefaultEdgeDistance;
 
-		public CPos TopLeftCorner => Offset;
-		public CPos TopRightCorner => new CPos(Offset.X + (Bounds.X * 1024), Offset.Y, 0);
-		public CPos BottomLeftCorner => new CPos(Offset.X, Offset.Y + (Bounds.Y * 1024), 0);
-		public CPos BottomRightCorner => new CPos(Offset.X + (Bounds.X * 1024), Offset.Y + (Bounds.Y * 1024), 0);
+		public readonly CPos TopLeftCorner;
+		public readonly CPos TopRightCorner;
+		public readonly CPos BottomLeftCorner;
+		public readonly CPos BottomRightCorner;
 
 		public Dictionary<int, NoiseMap> NoiseMaps;
 
@@ -47,6 +47,15 @@ namespace WarriorsSnuggery
 			random = new Random(seed);
 
 			Bounds = determineBounds(difficulty, level);
+
+			// Cache positions
+			Center = Bounds / new MPos(2, 2);
+			DefaultEdgeDistance = Bounds / new MPos(8, 8);
+
+			TopLeftCorner = Offset;
+			TopRightCorner = new CPos(Offset.X + (Bounds.X * 1024), Offset.Y, 0);
+			BottomLeftCorner = new CPos(Offset.X, Offset.Y + (Bounds.Y * 1024), 0);
+			BottomRightCorner = new CPos(Offset.X + (Bounds.X * 1024), Offset.Y + (Bounds.Y * 1024), 0);
 		}
 
 		MPos determineBounds(int difficulty, int level)
