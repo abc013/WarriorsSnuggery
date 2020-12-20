@@ -3,10 +3,12 @@
   <PropertyGroup>
     <OutputType>Exe</OutputType>
     <TargetFramework>netcoreapp3.1</TargetFramework>
+    <ApplicationIcon>warsnu.ico</ApplicationIcon>
     <OutDir>..\</OutDir>
   </PropertyGroup>
 
   <ItemGroup>
+    <Content Include="warsnu.ico" />
     <ProjectReference Include="..\WarriorsSnuggery\WarriorsSnuggery.csproj" />
   </ItemGroup>
 

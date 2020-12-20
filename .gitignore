@@ -64,6 +64,13 @@ launchSettings.json
 /System*.dll
 /Microsoft*.dll
 /libglfw.so.3.3
+/System*.so
+/System*.a
+/System*.dylib
+/lib*.so
+/lib*.dylib
+/createdump
+/mscordaccore*.dll
 
 # Published DLLs
 /publish_win_x64
