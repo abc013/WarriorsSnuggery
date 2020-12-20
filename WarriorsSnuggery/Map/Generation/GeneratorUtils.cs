@@ -1,4 +1,4 @@
-﻿namespace WarriorsSnuggery.Maps
+﻿namespace WarriorsSnuggery.Maps.Generators
 {
 	public static class GeneratorUtils
 	{

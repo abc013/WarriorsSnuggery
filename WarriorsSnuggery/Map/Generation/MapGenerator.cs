@@ -1,7 +1,19 @@
 ﻿using System;
 
-namespace WarriorsSnuggery.Maps
+namespace WarriorsSnuggery.Maps.Generators
 {
+	public abstract class MapGeneratorInfo
+	{
+		public readonly int ID;
+
+		public MapGeneratorInfo(int id)
+		{
+			ID = id;
+		}
+
+		public abstract MapGenerator GetGenerator(Random random, MapLoader loader);
+	}
+
 	public abstract class MapGenerator
 	{
 		protected readonly Random random;
@@ -28,17 +40,5 @@ namespace WarriorsSnuggery.Maps
 		}
 
 		public abstract void Generate();
-	}
-
-	public abstract class MapGeneratorInfo
-	{
-		public readonly int ID;
-
-		public MapGeneratorInfo(int id)
-		{
-			ID = id;
-		}
-
-		public abstract MapGenerator GetGenerator(Random random, MapLoader loader);
 	}
 }

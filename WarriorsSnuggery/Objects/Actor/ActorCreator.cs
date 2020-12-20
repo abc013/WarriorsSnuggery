@@ -16,20 +16,20 @@ namespace WarriorsSnuggery.Objects
 			foreach (var actor in actors)
 			{
 				var name = actor.Key;
-
-				var partinfos = new List<PartInfo>();
+				var parts = new PartInfo[actor.Children.Count];
 
 				var currentPartCounts = new Dictionary<string, int>();
-
-				foreach (var child in actor.Children)
+				for (int i = 0; i < parts.Length; i++)
 				{
+					var child = actor.Children[i];
+
 					if (!currentPartCounts.ContainsKey(child.Key))
 						currentPartCounts[child.Key] = 0;
 
-					partinfos.Add(PartLoader.GetPart(currentPartCounts[child.Key]++, child.Key, child.Children));
+					parts[i] = PartLoader.GetPart(currentPartCounts[child.Key]++, child.Key, child.Children);
 				}
 
-				Types.Add(name, new ActorType(partinfos.ToArray()));
+				Types.Add(name, new ActorType(parts));
 			}
 		}
 

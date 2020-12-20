@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using WarriorsSnuggery.Maps.Generators;
 using WarriorsSnuggery.Objects;
 using WarriorsSnuggery.Objects.Particles;
 using WarriorsSnuggery.Objects.Weapons;
@@ -21,7 +22,7 @@ namespace WarriorsSnuggery.Maps
 		public CPos PlayerSpawn { get => map.PlayerSpawn; set => map.PlayerSpawn = value; }
 		public CPos Exit { get => map.Exit; set => map.Exit = value; }
 
-		public List<MapGeneratorInfo> Infos => map.Type.GeneratorInfos;
+		public MapGeneratorInfo[] Infos => map.Type.Generators;
 		public bool FromSave => map.Type.IsSave;
 
 		public ObjectiveType ObjectiveType => world.Game.ObjectiveType;
@@ -46,7 +47,7 @@ namespace WarriorsSnuggery.Maps
 
 			Random = new Random(map.Seed);
 			// NoiseMaps
-			foreach (var info in map.Type.NoiseMapInfos)
+			foreach (var info in map.Type.NoiseMaps)
 			{
 				var noiseMap = new NoiseMap(Bounds, map.Seed, info);
 				NoiseMaps.Add(info.ID, noiseMap);
@@ -82,7 +83,7 @@ namespace WarriorsSnuggery.Maps
 				map.Type.TerrainGenerationBase.GetGenerator(Random, this).Generate();
 
 			// Generators
-			foreach (var info in map.Type.GeneratorInfos)
+			foreach (var info in map.Type.Generators)
 				info.GetGenerator(Random, this)?.Generate();
 		}
 
@@ -171,7 +172,7 @@ namespace WarriorsSnuggery.Maps
 			wallInformation[x, y] = (id, health);
 		}
 
-		public void AddActor(CPos pos, ActorProbabilityInfo info)
+		public void AddActor(CPos pos, Generators.ActorProbabilityInfo info)
 		{
 			var init = ActorCreator.CreateInit(world, info.Type, pos, info.Team, info.IsBot, health: info.Health);
 

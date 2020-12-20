@@ -2,10 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using WarriorsSnuggery.Loader;
+using WarriorsSnuggery.Maps.Generators;
 
 namespace WarriorsSnuggery.Maps
 {
-	[Desc("These rules contain information about a map that can be generated.")]
+	[Desc("These rules contain information about how to generate a map.", "Apart from static attributes, there are also NoiseMaps and Generators. Those are used to generate unique maps for every level and seed.")]
 	public class MapInfo
 	{
 		public readonly string Name;
@@ -36,13 +37,13 @@ namespace WarriorsSnuggery.Maps
 		[Desc("Wall type to use when surrounding the map with walls.")]
 		public readonly int Wall = 0;
 
-		[Desc("Terrain Generator as basis. Required for the game to function.")]
+		[Desc("Terrain Generator as basis. Required for the game to function. This is the first generator to be used.")]
 		public readonly TerrainGeneratorInfo TerrainGenerationBase = null;
-		[Desc("Generators to use.", "Add generators as if they where traits.")]
-		public readonly List<MapGeneratorInfo> GeneratorInfos = new List<MapGeneratorInfo>();
+		[Desc("Generators that determine how the map should look like", "The generators are used in the order in which they are written, which means from top to bottom.")]
+		public readonly MapGeneratorInfo[] Generators = new MapGeneratorInfo[0];
 
-		[Desc("Noises that are referenced by the generators.", "Add Noisemaps as if they where traits.")]
-		public readonly List<NoiseMapInfo> NoiseMapInfos = new List<NoiseMapInfo>();
+		[Desc("Noises that are referenced by the generators.")]
+		public readonly NoiseMapInfo[] NoiseMaps = new NoiseMapInfo[0];
 
 		[Desc("Determines the file of a script that will be executed during the game.", "Ending of the filename must be '.cs'.")]
 		public readonly string MissionScript;
@@ -67,32 +68,24 @@ namespace WarriorsSnuggery.Maps
 						TerrainGenerationBase = new TerrainGeneratorInfo(node.Convert<int>(), node.Children);
 
 						break;
-					case "PathGeneration":
-						GeneratorInfos.Add(new PathGeneratorInfo(node.Convert<int>(), node.Children));
+					case nameof(Generators):
+						Generators = new MapGeneratorInfo[node.Children.Count];
+
+						for (int i = 0; i < Generators.Length; i++)
+						{
+							var child = node.Children[i];
+							Generators[i] = GeneratorLoader.GetGenerator(child.Key, child.Convert<int>(), child.Children);
+						}
 
 						break;
-					case "GridGeneration":
-						GeneratorInfos.Add(new GridGeneratorInfo(node.Convert<int>(), node.Children));
+					case nameof(NoiseMaps):
+						NoiseMaps = new NoiseMapInfo[node.Children.Count];
 
-						break;
-					case "PieceGeneration":
-						GeneratorInfos.Add(new PieceGeneratorInfo(node.Convert<int>(), node.Children));
-
-						break;
-					case "ImportantPieceGeneration":
-						GeneratorInfos.Add(new ImportantPieceGeneratorInfo(node.Convert<int>(), node.Children));
-
-						break;
-					case "TerrainGeneration":
-						GeneratorInfos.Add(new TerrainGeneratorInfo(node.Convert<int>(), node.Children));
-
-						break;
-					case "PatrolGeneration":
-						GeneratorInfos.Add(new PatrolGeneratorInfo(node.Convert<int>(), node.Children));
-
-						break;
-					case "NoiseMap":
-						NoiseMapInfos.Add(new NoiseMapInfo(node.Convert<int>(), node.Children));
+						for (int i = 0; i < NoiseMaps.Length; i++)
+						{
+							var child = node.Children[i];
+							NoiseMaps[i] = new NoiseMapInfo(child.Convert<int>(), child.Children);
+						}
 
 						break;
 					default:
@@ -108,12 +101,9 @@ namespace WarriorsSnuggery.Maps
 
 			if (TerrainGenerationBase == null)
 				throw new MissingNodeException(name, "BaseTerrainGeneration");
-
-			// The highest value has the highest priority
-			GeneratorInfos = GeneratorInfos.OrderByDescending(g => g.ID).ToList();
 		}
 
-		MapInfo(string overridePiece, int wall, MPos customSize, Color ambient, MissionType[] missionTypes, ObjectiveType[] availableObjectives, int level, int fromLevel, int toLevel, TerrainGeneratorInfo baseTerrainGeneration, List<MapGeneratorInfo> genInfos, MPos spawnPoint, bool isSave, bool allowWeapons, string missionScript)
+		MapInfo(string overridePiece, int wall, MPos customSize, Color ambient, MissionType[] missionTypes, ObjectiveType[] availableObjectives, int level, int fromLevel, int toLevel, TerrainGeneratorInfo baseTerrainGeneration, MapGeneratorInfo[] generators, MPos spawnPoint, bool isSave, bool allowWeapons, string missionScript)
 		{
 			OverridePiece = overridePiece;
 			Wall = wall;
@@ -125,7 +115,7 @@ namespace WarriorsSnuggery.Maps
 			FromLevel = fromLevel;
 			ToLevel = toLevel;
 			TerrainGenerationBase = baseTerrainGeneration;
-			GeneratorInfos = genInfos;
+			Generators = generators;
 			SpawnPoint = spawnPoint;
 			IsSave = isSave;
 			AllowWeapons = allowWeapons;
@@ -142,14 +132,14 @@ namespace WarriorsSnuggery.Maps
 			var size = RuleReader.FromFile(FileExplorer.Saves, stats.MapSaveName + ".yaml").First(n => n.Key == "Size").Convert<MPos>();
 
 			var type = MapCreator.GetType(stats.CurrentMapType);
-			var mapGeneratorInfos = type == null ? new List<MapGeneratorInfo>() : type.GeneratorInfos;
+			var mapGeneratorInfos = type == null ? new MapGeneratorInfo[0] : type.Generators;
 
 			return new MapInfo(stats.MapSaveName, 0, size, Color.White, new[] { stats.CurrentMission }, new[] { stats.CurrentObjective }, -1, 0, int.MaxValue, new TerrainGeneratorInfo(0, new List<MiniTextNode>()), mapGeneratorInfos, MPos.Zero, true, true, stats.Script);
 		}
 
 		public static MapInfo FromPiece(Piece piece, MissionType type = MissionType.TEST, ObjectiveType objective = ObjectiveType.NONE)
 		{
-			return new MapInfo(piece.InnerName, 0, piece.Size, Color.White, new[] { type }, new[] { objective }, -1, 0, int.MaxValue, new TerrainGeneratorInfo(0, new List<MiniTextNode>()), new List<MapGeneratorInfo>(), MPos.Zero, false, true, null);
+			return new MapInfo(piece.InnerName, 0, piece.Size, Color.White, new[] { type }, new[] { objective }, -1, 0, int.MaxValue, new TerrainGeneratorInfo(0, new List<MiniTextNode>()), new MapGeneratorInfo[0], MPos.Zero, false, true, null);
 		}
 	}
 

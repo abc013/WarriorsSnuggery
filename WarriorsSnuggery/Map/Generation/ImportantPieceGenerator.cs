@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace WarriorsSnuggery.Maps
+namespace WarriorsSnuggery.Maps.Generators
 {
 	public enum PositionType
 	{

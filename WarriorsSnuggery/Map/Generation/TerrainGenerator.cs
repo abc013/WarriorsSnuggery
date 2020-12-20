@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using WarriorsSnuggery.Objects;
 
-namespace WarriorsSnuggery.Maps
+namespace WarriorsSnuggery.Maps.Generators
 {
 	[Desc("Generator used for generating random flocks of terrain or actors on the map.")]
 	public class TerrainGeneratorInfo : MapGeneratorInfo

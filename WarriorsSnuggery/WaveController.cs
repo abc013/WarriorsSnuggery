@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using WarriorsSnuggery.Maps;
+using WarriorsSnuggery.Maps.Generators;
 using WarriorsSnuggery.Objects;
 
 namespace WarriorsSnuggery
@@ -27,7 +28,7 @@ namespace WarriorsSnuggery
 			this.game = game;
 
 			waves = Math.Min((int)Math.Ceiling(Math.Sqrt((game.Statistics.Difficulty / 2 + 1) * game.Statistics.Level)), 10) + 1;
-			generators = game.MapType.GeneratorInfos.Where(g => g is PatrolGeneratorInfo info && info.UseForWaves).ToArray();
+			generators = game.MapType.Generators.Where(g => g is PatrolGeneratorInfo info && info.UseForWaves).ToArray();
 			loader = new MapLoader(game.World, game.World.Map);
 
 			if (game.MapType.IsSave && game.Statistics.Waves > 0)

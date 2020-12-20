@@ -401,21 +401,21 @@ namespace WarriorsSnuggery.Loader
 				}
 				return array;
 			}
-			else if (t == typeof(Maps.ActorProbabilityInfo[]))
+			else if (t == typeof(Maps.Generators.ActorProbabilityInfo[]))
 			{
-				var convert = new Maps.ActorProbabilityInfo[node.Children.Count];
+				var convert = new Maps.Generators.ActorProbabilityInfo[node.Children.Count];
 
 				for (int i = 0; i < node.Children.Count; i++)
-					convert[i] = new Maps.ActorProbabilityInfo(node.Children[i].Children);
+					convert[i] = new Maps.Generators.ActorProbabilityInfo(node.Children[i].Children);
 
 				return convert;
 			}
-			else if (t == typeof(Maps.PatrolProbabilityInfo[]))
+			else if (t == typeof(Maps.Generators.PatrolProbabilityInfo[]))
 			{
-				var convert = new Maps.PatrolProbabilityInfo[node.Children.Count];
+				var convert = new Maps.Generators.PatrolProbabilityInfo[node.Children.Count];
 
 				for (int i = 0; i < node.Children.Count; i++)
-					convert[i] = new Maps.PatrolProbabilityInfo(node.Children[i].Children);
+					convert[i] = new Maps.Generators.PatrolProbabilityInfo(node.Children[i].Children);
 
 				return convert;
 			}

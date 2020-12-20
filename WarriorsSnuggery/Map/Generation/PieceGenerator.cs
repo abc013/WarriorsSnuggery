@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace WarriorsSnuggery.Maps
+namespace WarriorsSnuggery.Maps.Generators
 {
 	[Desc("Generator used to randomly spread pieces across the map.", "It is not guaranteed that the MinimumCount can be fullfilled.")]
 	public class PieceGeneratorInfo : MapGeneratorInfo

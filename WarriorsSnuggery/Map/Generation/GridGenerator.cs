@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using WarriorsSnuggery.Loader;
 
-namespace WarriorsSnuggery.Maps
+namespace WarriorsSnuggery.Maps.Generators
 {
 	[Desc("Generator used for generating grid-based towns or structures.")]
 	public sealed class GridPiece

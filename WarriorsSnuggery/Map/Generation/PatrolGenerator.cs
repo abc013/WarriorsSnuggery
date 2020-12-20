@@ -2,9 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace WarriorsSnuggery.Maps
+namespace WarriorsSnuggery.Maps.Generators
 {
-
 	[Desc("Generator used for spawning enemies on the map.")]
 	public class PatrolGeneratorInfo : MapGeneratorInfo
 	{
