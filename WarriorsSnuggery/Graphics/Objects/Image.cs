@@ -12,7 +12,7 @@ namespace WarriorsSnuggery.Graphics
 			this.texture = texture;
 		}
 
-		public void createBuffer(Vertex[] vertices)
+		public static void createBuffer(Vertex[] vertices)
 		{
 			lock (MasterRenderer.GLLock)
 			{

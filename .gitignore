@@ -77,6 +77,7 @@ launchSettings.json
 /publish_win_x86
 /publish_linux_x64
 runtimes/
+ref/
 /WindowsBase.dll
 /ucrtbase.dll
 /SOS_README.md

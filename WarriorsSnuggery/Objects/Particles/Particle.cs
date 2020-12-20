@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace WarriorsSnuggery.Objects.Particles
 {
-	public class Particle : PositionableObject
+	public sealed class Particle : PositionableObject
 	{
 		[Save]
 		public readonly ParticleType Type;

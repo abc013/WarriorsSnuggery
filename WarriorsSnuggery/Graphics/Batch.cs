@@ -119,7 +119,7 @@ namespace WarriorsSnuggery.Graphics
 				GL.DeleteVertexArray(vertexarrayID);
 				GL.DeleteBuffer(bufferID);
 			}
-			GC.SuppressFinalize(true);
+			GC.SuppressFinalize(this);
 		}
 	}
 }

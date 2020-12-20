@@ -6,7 +6,7 @@ namespace WarriorsSnuggery.Graphics
 {
 	public static class Mesh
 	{
-		public static Dictionary<Texture, Vertex[]> meshCache = new Dictionary<Texture, Vertex[]>();
+		static readonly Dictionary<Texture, Vertex[]> meshCache = new Dictionary<Texture, Vertex[]>();
 
 		public static Vertex[] Image(Texture texture)
 		{
