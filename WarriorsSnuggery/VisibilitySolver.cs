@@ -84,6 +84,14 @@ namespace WarriorsSnuggery
 			}
 		}
 
+		public static void ShroudRevealed(int x, int y)
+		{
+			if (map == null)
+				return;
+
+			visible[x / 2, y / 2] = true;
+		}
+
 		static bool checkShroud(int x, int y)
 		{
 			if (shroud.RevealAll)
