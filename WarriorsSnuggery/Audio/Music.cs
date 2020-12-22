@@ -1,26 +1,54 @@
-﻿namespace WarriorsSnuggery.Audio
+﻿using OpenTK.Audio.OpenAL;
+using System;
+using System.IO;
+
+namespace WarriorsSnuggery.Audio
 {
 	public class Music
 	{
 		public readonly int Length;
-		int length;
+		int currentLength;
 		bool paused;
 
-		public bool Done => length <= 0;
+		readonly BinaryReader reader;
 
-		readonly AudioBuffer buffer;
-		AudioSource source;
+		readonly int bufferSize;
 
-		public Music(string name)
+		public bool Done => currentLength <= 0;
+
+		readonly ALFormat format;
+		readonly int sampleRate;
+
+		readonly MusicAudioBufferRotator rotator;
+
+		MusicAudioSource source;
+		bool firstTick = true;
+
+		public Music(string path)
 		{
-			buffer = AudioManager.GetBuffer(name);
-			Length = buffer.Length;
+			reader = Loader.WavLoader.OpenWavFile(path, out int channels, out sampleRate, out int bitDepth, out int dataSize, out format);
+
+			bufferSize = sampleRate * channels * bitDepth/8;
+
+			Length = AudioUtils.GetLengthInTicks(dataSize, channels, sampleRate, bitDepth);
+
+			rotator = new MusicAudioBufferRotator(dataSize, bufferSize, channels, sampleRate, bitDepth);
+
+			// Fill first 3 buffers
+			fillBuffer();
+			fillBuffer();
+			fillBuffer();
 		}
 
 		public void Play()
 		{
-			length = Length;
-			source = AudioController.Play(buffer, false, Settings.MusicVolume, 1f, Vector.Zero, false);
+			currentLength = Length;
+			source = AudioController.MusicSource();
+			source.SetVolume(Settings.MusicVolume, Settings.MasterVolume);
+
+			// Queue first 2 buffers
+			source.QueueBuffer(nextBuffer());
+			source.QueueBuffer(nextBuffer());
 		}
 
 		public void SetVolume()
@@ -30,8 +58,54 @@
 
 		public void Tick()
 		{
+			if (firstTick)
+			{
+				source.Start();
+				Console.WriteLine("Start!");
+			}
+			firstTick = false;
+
 			if (!paused)
-				length--;
+			{
+				currentLength--;
+				if (!Done)
+				{
+					// Let the rotation begin!
+					var buffers = source.BuffersProcessed();
+					for (int i = 0; i < buffers; i++)
+					{
+						if (rotator.CurrentWriteRotation < rotator.MaxRotations)
+						{
+							// Fill next buffer
+							fillBuffer();
+						}
+
+						source.UnqueueBuffer();
+						if (rotator.CurrentReadRotation < rotator.MaxRotations)
+						{
+							// Unqueue last buffer and queue next one
+							source.QueueBuffer(nextBuffer());
+						}
+
+						Console.WriteLine($"{rotator.CurrentWriteRotation}|{rotator.CurrentReadRotation}/{rotator.MaxRotations}");
+					}
+
+					// If something in tick took too long, the source stops playing automatically. Recognize stop and restart playing.
+					if (buffers >= MusicAudioBufferRotator.BufferCount - 1)
+						source.Start();
+				}
+			}
+		}
+
+		void fillBuffer()
+		{
+			var dataArray = reader.ReadBytes(bufferSize);
+			rotator.WriteAndRotate(dataArray, format, sampleRate);
+		}
+
+		MusicAudioBuffer nextBuffer()
+		{
+			return rotator.ReadAndRotate();
 		}
 
 		public void Pause(bool pause)
@@ -44,6 +118,12 @@
 		{
 			source?.Stop();
 			source = null;
+		}
+
+		public void Dispose()
+		{
+			rotator.Dispose();
+			reader.Dispose();
 		}
 	}
 }

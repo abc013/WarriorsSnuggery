@@ -9,8 +9,9 @@ namespace WarriorsSnuggery.Audio
 
 		public readonly ALDevice device;
 		public readonly ALContext context;
-		public readonly AudioSource[] MiscSources;
-		public readonly AudioSource[] GameSources;
+		public readonly MusicAudioSource MusicSource;
+		public readonly GameAudioSource[] MiscSources;
+		public readonly GameAudioSource[] GameSources;
 		readonly bool initialized;
 
 		public AudioDevice()
@@ -27,18 +28,33 @@ namespace WarriorsSnuggery.Audio
 			if (error != ALError.NoError)
 				throw new FailingSoundDeviceException(string.Format("Failed to open audio device. Error code: {0}.", error));
 
-			MiscSources = new AudioSource[miscSourceCount];
-			for (int i = 0; i < miscSourceCount; i++)
-				MiscSources[i] = new AudioSource();
+			MusicSource = new MusicAudioSource();
 
-			GameSources = new AudioSource[gameSourceCount];
+			MiscSources = new GameAudioSource[miscSourceCount];
+			for (int i = 0; i < miscSourceCount; i++)
+				MiscSources[i] = new GameAudioSource();
+
+			GameSources = new GameAudioSource[gameSourceCount];
 			for (int i = 0; i < gameSourceCount; i++)
-				GameSources[i] = new AudioSource();
+				GameSources[i] = new GameAudioSource();
 
 			initialized = true;
 		}
 
-		public AudioSource Play(AudioBuffer buffer, bool inGame, float volume, float pitch, Vector position, bool loops)
+		public GameAudioSource Play(GameAudioBuffer buffer, bool inGame, float volume, float pitch, Vector position, bool loops)
+		{
+			var source = Find(inGame);
+			if (source == null)
+				return null;
+
+			source.SetPosition(position);
+			source.SetVolume(volume, (inGame ? Settings.EffectsVolume : 1) * Settings.MasterVolume);
+			source.SetPitch(pitch);
+			source.Start(buffer, loops);
+			return source;
+		}
+
+		public GameAudioSource Find(bool inGame)
 		{
 			if (!initialized)
 				return null;
@@ -49,10 +65,6 @@ namespace WarriorsSnuggery.Audio
 				if (source.IsUsed())
 					continue;
 
-				source.SetPosition(position);
-				source.SetVolume(volume, (inGame ? Settings.EffectsVolume : 1) * Settings.MasterVolume);
-				source.SetPitch(pitch);
-				source.Start(buffer, loops);
 				return source;
 			}
 

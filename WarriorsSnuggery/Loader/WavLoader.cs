@@ -1,12 +1,28 @@
-﻿using System.IO;
+﻿using OpenTK.Audio.OpenAL;
+using System.IO;
+using WarriorsSnuggery.Audio;
 
 namespace WarriorsSnuggery.Loader
 {
 	public static class WavLoader
 	{
-		public static unsafe void LoadWavFile(string path, out byte[] data, out int channels, out int sampleRate, out int bitDepth)
+		public static unsafe void LoadWavFile(string path, out byte[] data, out int channels, out int sampleRate, out int bitDepth, out ALFormat format)
 		{
-			using var reader = new BinaryReader(new FileStream(path, FileMode.Open));
+			var reader = open(path, out channels, out sampleRate, out bitDepth, out var dataSize, out format);
+
+			data = reader.ReadBytes(dataSize);
+
+			reader.Dispose();
+		}
+
+		public static unsafe BinaryReader OpenWavFile(string path, out int channels, out int sampleRate, out int bitDepth, out int dataSize, out ALFormat format)
+		{
+			return open(path, out channels, out sampleRate, out bitDepth, out dataSize, out format);
+		}
+
+		static unsafe BinaryReader open(string path, out int channels, out int sampleRate, out int bitDepth, out int dataSize, out ALFormat format)
+		{
+			var reader = new BinaryReader(new FileStream(path, FileMode.Open));
 
 			int chunkID = reader.ReadInt32();
 			int fileSize = reader.ReadInt32();
@@ -28,8 +44,32 @@ namespace WarriorsSnuggery.Loader
 			}
 
 			int dataID = reader.ReadInt32();
-			int dataSize = reader.ReadInt32();
-			data = reader.ReadBytes(dataSize);
+			dataSize = reader.ReadInt32();
+
+			if (channels == 1)
+			{
+				if (bitDepth == 8)
+					format = ALFormat.Mono8;
+				else if (bitDepth == 16)
+					format = ALFormat.Mono16;
+				else
+					throw new InvalidSoundFileException(string.Format("Invalid .WAV file: Bitdepth is {0}, supported are 8 and 16.", bitDepth));
+			}
+			else if (channels == 2)
+			{
+				if (bitDepth == 8)
+					format = ALFormat.Stereo8;
+				else if (bitDepth == 16)
+					format = ALFormat.Stereo16;
+				else
+					throw new InvalidSoundFileException(string.Format("Invalid .WAV file: Bitdepth is {0}, supported are 8 and 16.", bitDepth));
+			}
+			else
+			{
+				throw new InvalidSoundFileException(string.Format("Invalid .WAV file: Number of channels is {0}, supported are mono and stereo.", channels));
+			}
+
+			return reader;
 		}
 
 		/*static double bytesToDouble(byte firstByte, byte secondByte)

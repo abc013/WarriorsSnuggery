@@ -2,32 +2,29 @@
 
 namespace WarriorsSnuggery.Audio
 {
-	public class AudioSource
+	public abstract class AudioSource
 	{
-		public AudioBuffer Buffer { get; private set; }
-		public bool Used;
+		public bool Used { get; private set; }
 
-		readonly int source;
+		protected readonly int Source;
+
 		float volume;
 
 		public AudioSource()
 		{
-			source = AL.GenSource();
+			Source = AL.GenSource();
 		}
 
-		public void Start(AudioBuffer buffer, bool loops)
+		protected void Start()
 		{
 			Used = true;
-			Buffer = buffer;
 
-			AL.BindBufferToSource(source, buffer.GetID());
-			AL.Source(source, ALSourceb.Looping, loops);
-			AL.SourcePlay(source);
+			AL.SourcePlay(Source);
 		}
 
 		public void SetPitch(float pitch)
 		{
-			AL.Source(source, ALSourcef.Pitch, pitch);
+			AL.Source(Source, ALSourcef.Pitch, pitch);
 		}
 
 		public void SetVolume(float volume, float master)
@@ -38,45 +35,53 @@ namespace WarriorsSnuggery.Audio
 
 		public void UpdateVolume(float master)
 		{
-			AL.Source(source, ALSourcef.Gain, volume * master);
+			AL.Source(Source, ALSourcef.Gain, volume * master);
 		}
 
 		public void SetPosition(Vector position)
 		{
-			AL.Source(source, ALSource3f.Position, position.X, position.Y, position.Z);
+			AL.Source(Source, ALSource3f.Position, position.X, position.Y, position.Z);
 		}
 
 		public bool IsUsed()
 		{
-			Used = AL.GetSourceState(source) == ALSourceState.Playing;
+			Used = AL.GetSourceState(Source) == ALSourceState.Playing;
+
+			if (!Used)
+				ResetData();
+
 			return Used;
 		}
 
 		public void Stop()
 		{
-			AL.SourceStop(source);
+			AL.SourceStop(Source);
 
 			Used = false;
-			Buffer = null;
 
+			ResetData();
+		}
+
+		protected virtual void ResetData()
+		{
 			volume = 1f;
 
-			AL.Source(source, ALSourcef.Gain, 1f);
-			AL.Source(source, ALSourcef.Pitch, 1f);
-			AL.Source(source, ALSourceb.Looping, false);
+			AL.Source(Source, ALSourcef.Gain, 1f);
+			AL.Source(Source, ALSourcef.Pitch, 1f);
+			AL.Source(Source, ALSourceb.Looping, false);
 		}
 
 		public void Pause(bool pause)
 		{
 			if (pause)
-				AL.SourcePause(source);
-			else if (AL.GetSourceState(source) == ALSourceState.Paused)
-				AL.SourcePlay(source);
+				AL.SourcePause(Source);
+			else if (AL.GetSourceState(Source) == ALSourceState.Paused)
+				AL.SourcePlay(Source);
 		}
 
 		public void Dispose()
 		{
-			AL.DeleteSource(source);
+			AL.DeleteSource(Source);
 		}
 	}
 }

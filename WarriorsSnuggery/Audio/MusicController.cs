@@ -2,50 +2,59 @@
 {
 	public class MusicController
 	{
-		public readonly Music[] music;
+		public readonly string[] files;
+		readonly bool hasMusic;
+
 		int current = 0;
+		Music currentMusic;
 
 		public MusicController(string[] names)
 		{
-			music = new Music[names.Length];
+			files = new string[names.Length];
 			for (int i = 0; i < names.Length; i++)
-			{
-				AudioManager.LoadSound(names[i], FileExplorer.Misc + @"music\");
-				music[i] = new Music(names[i]);
-			}
+				files[i] = FileExplorer.Misc + @"music\" + names[i] + ".wav";
 
-			if (music.Length != 0)
-				music[current].Play();
+			hasMusic = files.Length != 0;
+
+			if (hasMusic)
+				Next();
 		}
 
 		public void SetVolume()
 		{
-			if (music.Length != 0)
-				music[current].SetVolume();
+			if (hasMusic && currentMusic != null)
+				currentMusic.SetVolume();
 		}
 
 		public void Tick()
 		{
-			if (music.Length == 0)
+			if (!hasMusic)
 				return;
 
-			music[current].Tick();
-			if (music[current].Done)
-				Next();
+			if (currentMusic != null)
+			{
+				currentMusic.Tick();
+				if (currentMusic.Done)
+					Next();
+			}
 		}
 
 		public void Next()
 		{
-			if (music.Length == 0)
+			if (!hasMusic)
 				return;
 
-			music[current].Stop();
+			if (currentMusic != null)
+			{
+				currentMusic.Stop();
+				currentMusic.Dispose();
+			}
 
-			current++;
-			if (current == music.Length)
+			currentMusic = new Music(files[current++]);
+			currentMusic.Play();
+
+			if (current == files.Length)
 				current = 0;
-
-			music[current].Play();
 		}
 	}
 }

@@ -4,19 +4,19 @@ namespace WarriorsSnuggery.Audio
 {
 	public static class AudioManager
 	{
-		static readonly Dictionary<string, AudioBuffer> buffers = new Dictionary<string, AudioBuffer>();
+		static readonly Dictionary<string, GameAudioBuffer> buffers = new Dictionary<string, GameAudioBuffer>();
 
-		public static AudioSource PlaySound(string name)
+		public static GameAudioSource PlaySound(string name)
 		{
 			return AudioController.Play(buffers[name], false, 1f, 1f, Vector.Zero, false);
 		}
 
-		public static AudioSource PlaySound(string name, bool inGame, float volume, float pitch, Vector position, bool loops = false)
+		public static GameAudioSource PlaySound(string name, bool inGame, float volume, float pitch, Vector position, bool loops = false)
 		{
 			return AudioController.Play(buffers[name], inGame, volume, pitch, position, loops);
 		}
 
-		public static AudioBuffer GetBuffer(string name)
+		public static GameAudioBuffer GetBuffer(string name)
 		{
 			return buffers[name];
 		}
@@ -26,7 +26,7 @@ namespace WarriorsSnuggery.Audio
 			if (buffers.ContainsKey(name))
 				return;
 
-			buffers.Add(name, new AudioBuffer(path + name + ".wav"));
+			buffers.Add(name, new GameAudioBuffer(path + name + ".wav"));
 		}
 
 		public static void Dispose()

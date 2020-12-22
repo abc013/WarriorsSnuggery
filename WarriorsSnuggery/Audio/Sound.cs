@@ -22,7 +22,7 @@ namespace WarriorsSnuggery
 		[Desc("Name of the audio file.")]
 		public readonly string Name;
 
-		public readonly AudioBuffer Buffer;
+		public readonly GameAudioBuffer Buffer;
 
 		public SoundType(List<MiniTextNode> nodes, bool isDocumentation = false)
 		{
@@ -42,7 +42,7 @@ namespace WarriorsSnuggery
 		readonly bool inGame;
 		readonly float defaultVolume;
 		readonly float defaultPitch;
-		AudioSource source;
+		GameAudioSource source;
 		float dist;
 
 		public Sound(SoundType info, bool inGame = true)

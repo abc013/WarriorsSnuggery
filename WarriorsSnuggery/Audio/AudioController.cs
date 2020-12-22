@@ -17,9 +17,14 @@
 			Music.Tick();
 		}
 
-		public static AudioSource Play(AudioBuffer buffer, bool inGame, float volume, float pitch, Vector position, bool loops)
+		public static GameAudioSource Play(GameAudioBuffer buffer, bool inGame, float volume, float pitch, Vector position, bool loops)
 		{
 			return device.Play(buffer, inGame, volume, pitch, position, loops);
+		}
+
+		public static MusicAudioSource MusicSource()
+		{
+			return device.MusicSource;
 		}
 
 		public static void StopAll(bool game)
