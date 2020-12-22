@@ -1,5 +1,4 @@
 ﻿using OpenTK.Audio.OpenAL;
-using System;
 using System.IO;
 
 namespace WarriorsSnuggery.Audio
@@ -59,10 +58,8 @@ namespace WarriorsSnuggery.Audio
 		public void Tick()
 		{
 			if (firstTick)
-			{
 				source.Start();
-				Console.WriteLine("Start!");
-			}
+
 			firstTick = false;
 
 			if (!paused)
@@ -74,20 +71,14 @@ namespace WarriorsSnuggery.Audio
 					var buffers = source.BuffersProcessed();
 					for (int i = 0; i < buffers; i++)
 					{
+						// Fill next buffer
 						if (rotator.CurrentWriteRotation < rotator.MaxRotations)
-						{
-							// Fill next buffer
 							fillBuffer();
-						}
 
 						source.UnqueueBuffer();
+						// Unqueue last buffer and queue next one
 						if (rotator.CurrentReadRotation < rotator.MaxRotations)
-						{
-							// Unqueue last buffer and queue next one
 							source.QueueBuffer(nextBuffer());
-						}
-
-						Console.WriteLine($"{rotator.CurrentWriteRotation}|{rotator.CurrentReadRotation}/{rotator.MaxRotations}");
 					}
 
 					// If something in tick took too long, the source stops playing automatically. Recognize stop and restart playing.
