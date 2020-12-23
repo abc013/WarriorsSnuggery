@@ -30,7 +30,7 @@ namespace WarriorsSnuggery
 
 		public readonly GameStatistics OldStatistics;
 		public readonly GameStatistics Statistics;
-		public readonly MapInfo MapType;
+		public readonly MapType MapType;
 		public readonly int Seed;
 
 		public readonly MissionType MissionType;
@@ -110,7 +110,7 @@ namespace WarriorsSnuggery
 		public uint NextWeaponID => CurrentWeaponID++;
 		public uint CurrentWeaponID;
 
-		public Game(GameStatistics statistics, MapInfo map, MissionType missionType, InteractionMode interactionMode, int seed = -1)
+		public Game(GameStatistics statistics, MapType map, MissionType missionType, InteractionMode interactionMode, int seed = -1)
 		{
 			Log.WriteDebug("Loading new game...");
 			Log.DebugIndentation++;

@@ -198,7 +198,11 @@ namespace WarriorsSnuggery
 
 			CurrentObjective = world.Game.ObjectiveType;
 			CurrentMission = world.Game.MissionType;
-			CurrentMapType = MapCreator.GetName(world.Map.Type, world.Game.Statistics);
+
+			var stats = world.Game.Statistics;
+			var mapType = world.Map.Type;
+			CurrentMapType = mapType.IsSave ? stats.CurrentMapType : MapCreator.GetName(mapType);
+
 			Waves = world.Game.CurrentWave();
 
 			using (var writer = new StreamWriter(FileExplorer.Saves + SaveName + ".yaml", false))

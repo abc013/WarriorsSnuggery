@@ -32,21 +32,21 @@ namespace WarriorsSnuggery
 
 		static void createFirst()
 		{
-			var type = MissionType.MAIN_MENU;
+			var mission = MissionType.MAIN_MENU;
 			var mode = InteractionMode.NONE;
-			var map = MapCreator.FindMap(type, 0);
+			var map = MapCreator.FindMap(mission, 0);
 
 			if (!string.IsNullOrEmpty(Program.MapType))
 			{
 				mode = InteractionMode.INGAME;
 				map = MapCreator.GetType(Program.MapType);
-				type = map.MissionTypes.Length > 0 ? map.MissionTypes[0] : MissionType.TEST;
+				mission = map.MissionTypes.Length > 0 ? map.MissionTypes[0] : MissionType.TEST;
 			}
 
 			if (Program.StartEditor)
 				mode = InteractionMode.EDITOR;
 
-			game = new Game(new GameStatistics(GameSaveManager.DefaultStatistic), map, type, mode);
+			game = new Game(new GameStatistics(GameSaveManager.DefaultStatistic), map, mission, mode);
 			game.Load();
 		}
 
@@ -87,14 +87,14 @@ namespace WarriorsSnuggery
 			finishAndLoad(new Game(stats, MapCreator.FindMap(type, stats.Level), type, mode));
 		}
 
-		public static void CreateNew(GameStatistics stats, MissionType type = MissionType.NORMAL, InteractionMode mode = InteractionMode.INGAME, MapInfo custom = null, bool loadStatsMap = false)
+		public static void CreateNew(GameStatistics stats, MissionType type = MissionType.NORMAL, InteractionMode mode = InteractionMode.INGAME, MapType custom = null, bool loadStatsMap = false)
 		{
 			if (loadStatsMap)
 			{
 				type = stats.CurrentMission;
 				try
 				{
-					custom = MapInfo.FromSave(stats);
+					custom = MapType.FromSave(stats);
 				}
 				catch (System.IO.FileNotFoundException)
 				{

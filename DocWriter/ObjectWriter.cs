@@ -47,7 +47,7 @@ namespace DocWriter
 		public static void WriteMaps()
 		{
 			HTMLWriter.WriteHeader("Map");
-			TypeWriter.Write("WarriorsSnuggery.Maps.MapInfo", Array.Empty<object>());
+			TypeWriter.Write("WarriorsSnuggery.Maps.MapType", Array.Empty<object>());
 
 			HTMLWriter.WriteHeader("NoiseMap");
 			TypeWriter.Write("WarriorsSnuggery.Maps.NoiseMapInfo", new object[] { -1, emptyTextNodes });

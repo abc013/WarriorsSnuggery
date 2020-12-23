@@ -18,7 +18,7 @@ namespace WarriorsSnuggery
 		readonly World world;
 		readonly Random random;
 
-		public readonly MapInfo Type;
+		public readonly MapType Type;
 		public readonly int Seed;
 
 		public static readonly CPos Offset = new CPos(-512, -512, 0);
@@ -37,7 +37,7 @@ namespace WarriorsSnuggery
 
 		public Dictionary<int, NoiseMap> NoiseMaps;
 
-		public Map(World world, MapInfo type, int seed, int level, int difficulty)
+		public Map(World world, MapType type, int seed, int level, int difficulty)
 		{
 			this.world = world;
 

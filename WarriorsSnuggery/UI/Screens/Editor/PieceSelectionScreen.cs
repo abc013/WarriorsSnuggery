@@ -24,7 +24,7 @@ namespace WarriorsSnuggery.UI.Screens
 				mapSelection.Add(new PanelItem(new BatchObject(UITextureManager.Get("UI_map")[0], Color.White), new MPos(512, 512), piece.Name, new[] { Color.Grey + "[" + piece.Size.X + "," + piece.Size.Y + "]" },
 				() =>
 				{
-					GameController.CreateNew(new GameStatistics(GameSaveManager.DefaultStatistic), MissionType.TEST, InteractionMode.EDITOR, custom: MapInfo.FromPiece(piece));
+					GameController.CreateNew(new GameStatistics(GameSaveManager.DefaultStatistic), MissionType.TEST, InteractionMode.EDITOR, custom: MapType.FromPiece(piece));
 					Hide();
 				}));
 			}
@@ -125,7 +125,7 @@ namespace WarriorsSnuggery.UI.Screens
 			var name2 = name.Text;
 
 			var piece = WorldCreator.CreateEmpty(name2, size);
-			GameController.CreateNew(new GameStatistics(GameSaveManager.DefaultStatistic), MissionType.TEST, InteractionMode.EDITOR, custom: MapInfo.FromPiece(piece));
+			GameController.CreateNew(new GameStatistics(GameSaveManager.DefaultStatistic), MissionType.TEST, InteractionMode.EDITOR, custom: MapType.FromPiece(piece));
 		}
 	}
 }
