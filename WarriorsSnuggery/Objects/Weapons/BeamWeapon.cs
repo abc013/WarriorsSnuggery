@@ -183,6 +183,11 @@ namespace WarriorsSnuggery.Objects.Weapons
 				Dispose();
 		}
 
+		public override bool CheckVisibility()
+		{
+			return VisibilitySolver.IsVisible(GraphicPosition) || VisibilitySolver.IsVisible(originPos);
+		}
+
 		void setPosition()
 		{
 			if (Origin != null)
