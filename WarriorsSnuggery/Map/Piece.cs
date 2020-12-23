@@ -17,8 +17,8 @@ namespace WarriorsSnuggery.Maps
 		public readonly string InnerName;
 		public readonly string Path;
 
-		public uint MaxActorID => actors.Max(n => n.ID);
-		public uint MaxWeaponID => weapons.Max(n => n.ID);
+		public uint MaxActorID => actors.Count > 0 ? actors.Max(n => n.ID) : 0;
+		public uint MaxWeaponID => weapons.Count > 0 ? weapons.Max(n => n.ID) : 0;
 
 		readonly ushort[] groundData;
 		readonly short[] wallData;

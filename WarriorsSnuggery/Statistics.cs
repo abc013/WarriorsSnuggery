@@ -26,6 +26,7 @@ namespace WarriorsSnuggery
 		public MissionType CurrentMission;
 		public string CurrentMapType;
 		public int Waves;
+		public bool KeyFound;
 		public List<bool[]> Shroud;
 
 		public readonly Dictionary<int, (float, float)> SpellCasters = new Dictionary<int, (float, float)>();
@@ -61,6 +62,7 @@ namespace WarriorsSnuggery
 			CurrentMission = save.CurrentMission;
 			CurrentMapType = save.CurrentMapType;
 			Waves = save.Waves;
+			KeyFound = save.KeyFound;
 			Shroud = save.Shroud;
 
 			SpellCasters = new Dictionary<int, (float, float)>(save.SpellCasters);
@@ -204,6 +206,7 @@ namespace WarriorsSnuggery
 			CurrentMapType = mapType.IsSave ? stats.CurrentMapType : MapCreator.GetName(mapType);
 
 			Waves = world.Game.CurrentWave();
+			KeyFound = world.KeyFound;
 
 			using (var writer = new StreamWriter(FileExplorer.Saves + SaveName + ".yaml", false))
 			{
@@ -221,6 +224,8 @@ namespace WarriorsSnuggery
 				writer.WriteLine($"{nameof(CurrentMapType)}= {CurrentMapType}");
 				if (Waves != 0)
 					writer.WriteLine($"{nameof(Waves)}= {Waves}");
+				if (KeyFound)
+					writer.WriteLine($"{nameof(KeyFound)}= {KeyFound}");
 
 				writer.WriteLine($"{nameof(Shroud)}=");
 				for (int i = 0; i < Settings.MaxTeams; i++)

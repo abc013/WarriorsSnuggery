@@ -68,8 +68,13 @@ namespace WarriorsSnuggery
 		public static void CreateRestart()
 		{
 			var stats = game.OldStatistics;
+			var mapType = game.MapType;
 
-			finishAndLoad(new Game(stats, game.MapType, game.MissionType, game.InteractionMode, game.Seed));
+			// Don't start at last saved position, start right from the beginning
+			if (mapType.IsSave)
+				mapType = MapCreator.GetType(stats.CurrentMapType);
+
+			finishAndLoad(new Game(stats, mapType, game.MissionType, game.InteractionMode, game.Seed));
 		}
 
 		public static void CreateNext()

@@ -61,6 +61,8 @@ namespace WarriorsSnuggery
 		{
 			Map.Load();
 
+			KeyFound = Game.Statistics.KeyFound;
+
 			if (Game.InteractionMode != InteractionMode.EDITOR)
 			{
 				if (!Map.Type.IsSave)
@@ -74,6 +76,8 @@ namespace WarriorsSnuggery
 				{
 					for(int i = 0; i < Game.Statistics.Shroud.Count; i++)
 						ShroudLayer.RevealShroudList(i, Game.Statistics.Shroud[i]);
+
+					LocalPlayer = ActorLayer.ToAdd().First(a => a.IsPlayer);
 				}
 
 				if (Game.IsCampaign && !Game.IsMenu)
