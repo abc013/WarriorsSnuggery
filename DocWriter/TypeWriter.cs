@@ -16,10 +16,8 @@ namespace DocWriter
 			assembly = Assembly.Load("WarriorsSnuggery");
 		}
 
-		public static void Write(string typeName, object[] args)
+		public static void Write(Type type, object[] args)
 		{
-			var type = assembly.GetType(typeName);
-
 			var attrib = type.GetCustomAttribute(typeof(DescAttribute));
 			var description = attrib == null ? null : ((DescAttribute)attrib).Desc;
 			if (description != null)
@@ -72,7 +70,7 @@ namespace DocWriter
 
 				HTMLWriter.WriteHeader(name, 3);
 
-				Write(info.FullName, args);
+				Write(info, args);
 
 				Console.Write((first ? "" : ", ") + name);
 				first = false;
