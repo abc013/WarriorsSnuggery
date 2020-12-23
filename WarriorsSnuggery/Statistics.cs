@@ -207,63 +207,62 @@ namespace WarriorsSnuggery
 
 			using (var writer = new StreamWriter(FileExplorer.Saves + SaveName + ".yaml", false))
 			{
-				// TODO: use nameof
-				writer.WriteLine("Name=" + Name);
-				writer.WriteLine("Level=" + Level);
-				writer.WriteLine("Difficulty=" + Difficulty);
-				writer.WriteLine("Hardcore=" + Hardcore);
-				writer.WriteLine("Money=" + Money);
-				writer.WriteLine("FinalLevel=" + FinalLevel);
-				writer.WriteLine("MaxMana=" + MaxMana);
-				writer.WriteLine("Kills=" + Kills);
-				writer.WriteLine("Deaths=" + Deaths);
-				writer.WriteLine("CurrentObjective=" + CurrentObjective);
-				writer.WriteLine("CurrentMission=" + CurrentMission);
-				writer.WriteLine("CurrentMapType=" + CurrentMapType);
+				writer.WriteLine($"{nameof(Name)}= {Name}");
+				writer.WriteLine($"{nameof(Level)}= {Level}");
+				writer.WriteLine($"{nameof(Difficulty)}= {Difficulty}");
+				writer.WriteLine($"{nameof(Hardcore)}= {Hardcore}");
+				writer.WriteLine($"{nameof(Money)}= {Money}");
+				writer.WriteLine($"{nameof(FinalLevel)}= {FinalLevel}");
+				writer.WriteLine($"{nameof(MaxMana)}= {MaxMana}");
+				writer.WriteLine($"{nameof(Kills)}= {Kills}");
+				writer.WriteLine($"{nameof(Deaths)}= {Deaths}");
+				writer.WriteLine($"{nameof(CurrentObjective)}= {CurrentObjective}");
+				writer.WriteLine($"{nameof(CurrentMission)}= {CurrentMission}");
+				writer.WriteLine($"{nameof(CurrentMapType)}= {CurrentMapType}");
 				if (Waves != 0)
-					writer.WriteLine("Waves=" + Waves);
+					writer.WriteLine($"{nameof(Waves)}= {Waves}");
 
-				writer.WriteLine("Shroud=");
+				writer.WriteLine($"{nameof(Shroud)}=");
 				for (int i = 0; i < Settings.MaxTeams; i++)
 					writer.WriteLine("\t" + world.ShroudLayer.ToString(i));
 
-				writer.WriteLine("SpellCasters=");
+				writer.WriteLine($"{nameof(SpellCasters)}=");
 				for (int i = 0; i < world.Game.SpellManager.spellCasters.Length; i++)
 				{
 					var caster = world.Game.SpellManager.spellCasters[i];
 					if (caster.Ready)
 						continue;
 
-					writer.WriteLine("\t" + "Caster=" + i);
+					writer.WriteLine("\t" + "Caster= " + i);
 					if (caster.RechargeProgress != 0f)
-						writer.WriteLine("\t\tRecharge=" + caster.RechargeProgress);
+						writer.WriteLine("\t\tRecharge= " + caster.RechargeProgress);
 					else
-						writer.WriteLine("\t\tRemaining=" + caster.RemainingDuration);
+						writer.WriteLine("\t\tRemaining= " + caster.RemainingDuration);
 				}
 
-				writer.WriteLine("Seed=" + Seed);
-				writer.WriteLine("Mana=" + Mana);
-				writer.WriteLine("Actor=" + Actor);
-				writer.WriteLine("Health=" + Health);
+				writer.WriteLine($"{nameof(Seed)}= {Seed}");
+				writer.WriteLine($"{nameof(Mana)}= {Mana}");
+				writer.WriteLine($"{nameof(Actor)}= {Actor}");
+				writer.WriteLine($"{nameof(Health)}= {Health}");
 
-				writer.WriteLine("UnlockedSpells=");
+				writer.WriteLine($"{nameof(UnlockedSpells)}=");
 				foreach (var unlock in UnlockedSpells)
 					writer.WriteLine("\t" + unlock + "=");
 
-				writer.WriteLine("UnlockedActors=");
+				writer.WriteLine($"{nameof(UnlockedActors)}=");
 				foreach (var unlock in UnlockedActors)
 					writer.WriteLine("\t" + unlock + "=");
 
-				writer.WriteLine("UnlockedTrophies=");
+				writer.WriteLine($"{nameof(UnlockedTrophies)}=");
 				foreach (var unlock in UnlockedTrophies)
 					writer.WriteLine("\t" + unlock + "=");
 
 				if (scriptState != null)
 				{
-					writer.WriteLine("Script=" + Script);
+					writer.WriteLine($"{nameof(Script)}= {Script}");
 					int i = 0;
 					foreach(var obj in scriptState)
-						writer.WriteLine("\t" + i++ + "=" + obj.ToString());
+						writer.WriteLine("\t" + i++ + "= " + obj.ToString());
 				}
 
 				writer.Flush();
