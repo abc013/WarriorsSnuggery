@@ -52,16 +52,13 @@ namespace WarriorsSnuggery
 
 			MasterRenderer.Uniform(MasterRenderer.TextureShader, ref Camera.Matrix, Ambient);
 
-			if (world.ToRender == null)
-				return;
-
 			world.TerrainLayer.Render();
 			BatchRenderer.Render();
 
 			world.SmudgeLayer.Render();
 			BatchRenderer.Render();
 
-			foreach (var o in world.ToRender)
+			foreach (var o in prepareRenderList())
 			{
 				CPos pos = world.Game.Editor ? MouseInput.GamePosition : world.LocalPlayer == null ? CPos.Zero : world.LocalPlayer.Position;
 				if (((o is Actor actor && actor.WorldPart != null && actor.WorldPart.Hideable) || (o is Wall wall && wall.IsHorizontal && wall.Type.Height >= 512)) && o.Position.Y > pos.Y && Math.Abs(o.Position.X - pos.X) < 4096)
@@ -139,6 +136,17 @@ namespace WarriorsSnuggery
 			}
 
 			Ambient = world.Map.Type.Ambient;
+		}
+
+		static List<PositionableObject> prepareRenderList()
+		{
+			var render = world.Objects.ToList(); // Copy array
+			render.AddRange(world.ActorLayer.VisibleActors);
+			render.AddRange(world.WeaponLayer.VisibleWeapons);
+			render.AddRange(world.ParticleLayer.VisibleParticles);
+			render.AddRange(world.WallLayer.VisibleWalls);
+			
+			return render.OrderBy(e => e.GraphicPosition.Z + (e.Position.Y - 512) * 2).ToList();
 		}
 
 		public static void ClearRenderLists()

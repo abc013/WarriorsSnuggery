@@ -29,11 +29,9 @@ namespace WarriorsSnuggery
 		public readonly List<PositionableObject> Objects = new List<PositionableObject>();
 		readonly List<PositionableObject> objectsToAdd = new List<PositionableObject>();
 
-		public List<PositionableObject> ToRender { get; private set; }
-
 		public Actor LocalPlayer;
 
-		public bool PlayerSwitching { get { return LocalPlayer.IsPlayerSwitch; } }
+		public bool PlayerSwitching => LocalPlayer.IsPlayerSwitch;
 		public bool PlayerAlive = true;
 
 		public int PlayerDamagedTick = 0;
@@ -114,7 +112,6 @@ namespace WarriorsSnuggery
 			SmudgeLayer.Tick();
 
 			addObjects();
-			prepareRenderList();
 		}
 
 		void addObjects()
@@ -131,17 +128,6 @@ namespace WarriorsSnuggery
 				}
 				objectsToAdd.Clear();
 			}
-		}
-
-		void prepareRenderList()
-		{
-			ToRender = Objects.ToList(); // Copy array
-			ToRender.AddRange(ActorLayer.VisibleActors);
-			ToRender.AddRange(WeaponLayer.VisibleWeapons);
-			ToRender.AddRange(ParticleLayer.VisibleParticles);
-			ToRender.AddRange(WallLayer.VisibleWalls);
-
-			ToRender = ToRender.OrderBy(e => e.GraphicPosition.Z + (e.Position.Y - 512) * 2).ToList();
 		}
 
 		public void TrophyCollected(string collected)
