@@ -34,6 +34,12 @@
 			}
 		}
 
+		public void Reset()
+		{
+			curTick = tick;
+			curObj = 0;
+		}
+
 		public override void PushToBatchRenderer()
 		{
 

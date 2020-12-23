@@ -57,8 +57,8 @@ namespace WarriorsSnuggery.Objects.Parts
 	{
 		readonly AnimatedSpritePartInfo info;
 
-		readonly BatchRenderable[] renderables;
-		BatchRenderable renderable;
+		readonly BatchSequence[] renderables;
+		BatchSequence renderable;
 		int currentFacing;
 		readonly Color variation;
 		Color cachedColor;
@@ -67,7 +67,7 @@ namespace WarriorsSnuggery.Objects.Parts
 		public AnimatedSpritePart(Actor self, AnimatedSpritePartInfo info) : base(self)
 		{
 			this.info = info;
-			renderables = new BatchRenderable[info.Facings];
+			renderables = new BatchSequence[info.Facings];
 			var frameCountPerIdleAnim = info.Textures.Length / info.Facings;
 
 			if (frameCountPerIdleAnim * info.Facings != info.Textures.Length)
@@ -101,7 +101,7 @@ namespace WarriorsSnuggery.Objects.Parts
 			return facing;
 		}
 
-		public override BatchRenderable GetRenderable(ActorAction action, int facing)
+		public override BatchSequence GetRenderable(ActorAction action, int facing)
 		{
 			if (info.Condition != null && !info.Condition.True(self))
 				return null;
@@ -126,7 +126,12 @@ namespace WarriorsSnuggery.Objects.Parts
 				angle = self.Angle;
 				currentFacing = FacingFromAngle(angle);
 			}
+			var last = renderable;
 			renderable = GetRenderable(self.CurrentAction, currentFacing);
+
+			if (last == null)
+				renderable?.Reset();
+
 			renderable?.Tick();
 		}
 

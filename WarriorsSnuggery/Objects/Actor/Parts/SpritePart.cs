@@ -56,14 +56,14 @@ namespace WarriorsSnuggery.Objects.Parts
 	{
 		readonly SpritePartInfo info;
 
-		readonly BatchRenderable[] renderables;
+		readonly BatchObject[] renderables;
 		readonly Color variation;
 		Color cachedColor;
 
 		public SpritePart(Actor self, SpritePartInfo info) : base(self)
 		{
 			this.info = info;
-			renderables = new BatchRenderable[info.Facings];
+			renderables = new BatchObject[info.Facings];
 			var frameCountPerIdleAnim = info.Textures.Length / info.Facings;
 
 			if (frameCountPerIdleAnim * info.Facings != info.Textures.Length)
@@ -104,7 +104,7 @@ namespace WarriorsSnuggery.Objects.Parts
 			return facing;
 		}
 
-		public override BatchRenderable GetRenderable(ActorAction action, int facing)
+		public override BatchObject GetRenderable(ActorAction action, int facing)
 		{
 			if (info.Condition != null && !info.Condition.True(self))
 				return null;
