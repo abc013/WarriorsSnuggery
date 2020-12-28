@@ -71,7 +71,7 @@ namespace WarriorsSnuggery.UI.Screens
 
 			FocusedType = type;
 			Focused = cachedScreens[type];
-			Focused.Show();
+			Focused?.Show();
 		}
 
 		void createScreen(ScreenType type)
