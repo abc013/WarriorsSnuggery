@@ -12,6 +12,7 @@ main1=
 
 main2=
 	MissionTypes=MAIN_MENU
+	MissionScript=MainMenuScript
 	CustomSize=16,16
 	TerrainGenerationBase=0
 		Terrain=0
