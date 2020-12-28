@@ -5,7 +5,7 @@ using WarriorsSnuggery.Objects;
 
 namespace WarriorsSnuggery.UI.Screens
 {
-	public class NewGameScreen : Screen
+	public class NewNormalGameScreen : Screen
 	{
 		readonly Game game;
 
@@ -14,13 +14,13 @@ namespace WarriorsSnuggery.UI.Screens
 		readonly CheckBox hardcoreInput;
 		readonly TextBox seedInput;
 
-		public NewGameScreen(Game game) : base("New Game")
+		public NewNormalGameScreen(Game game) : base("Free Play")
 		{
 			this.game = game;
 			Title.Position = new CPos(0, -4096, 0);
 
 			var create = new UITextLine(new CPos(0, -2048, 0), FontManager.Pixel16, TextOffset.MIDDLE);
-			create.SetText("Please adjust the parameters as you wish.");
+			create.SetText("Free play. Please adjust the parameters as you wish.");
 			Content.Add(create);
 
 			var name = new UITextLine(new CPos(-2048, 0, 0), FontManager.Pixel16, TextOffset.RIGHT);

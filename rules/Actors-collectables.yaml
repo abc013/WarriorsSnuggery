@@ -31,7 +31,7 @@ apple=
 			RandomVolume=0.2
 			RandomPitch=0.4
 
-new_game_pad=
+new_story_game_pad=
 	Sprite=
 		Name=exit
 		Dimensions=24,24
@@ -39,6 +39,17 @@ new_game_pad=
 		UseAsPreview=true
 	OpenScreen=
 		Type=NEW_STORY_GAME
+		Radius=512
+		OnlyByPlayer=yes
+
+new_normal_game_pad=
+	Sprite=
+		Name=exit
+		Dimensions=24,24
+		Offset=0,0,-2048
+		UseAsPreview=true
+	OpenScreen=
+		Type=NEW_NORMAL_GAME
 		Radius=512
 		OnlyByPlayer=yes
 

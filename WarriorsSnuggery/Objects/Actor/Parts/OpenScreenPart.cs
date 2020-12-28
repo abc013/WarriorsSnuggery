@@ -5,9 +5,8 @@ namespace WarriorsSnuggery.Objects.Parts
 {
 	public enum ScreenType
 	{
-		NEW_GAME,
 		NEW_STORY_GAME,
-		NEW_CUSTOM_GAME,
+		NEW_NORMAL_GAME,
 		SPELL_SHOP,
 		ACTOR_SHOP,
 		TROPHY_COLLECTION
@@ -109,11 +108,11 @@ namespace WarriorsSnuggery.Objects.Parts
 				switch (info.Type)
 				{
 					case ScreenType.NEW_STORY_GAME:
-						game.ShowScreen(UI.Screens.ScreenType.NEWGAME);
+						game.ShowScreen(UI.Screens.ScreenType.NEWSTORYGAME);
 
 						return true;
-					case ScreenType.NEW_CUSTOM_GAME:
-						game.ShowScreen(UI.Screens.ScreenType.NEWGAME);
+					case ScreenType.NEW_NORMAL_GAME:
+						game.ShowScreen(UI.Screens.ScreenType.NEWNORMALGAME);
 
 						return true;
 					case ScreenType.SPELL_SHOP:
