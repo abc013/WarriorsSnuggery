@@ -32,58 +32,61 @@ namespace WarriorsSnuggery.Maps
 	public sealed class NoiseMap
 	{
 		public readonly int ID;
-		public readonly float[] Values;
-		public readonly MPos Bounds;
+		readonly float[] values;
+		readonly MPos bounds;
 
 		public NoiseMap(MPos bounds, int seed, NoiseMapInfo info)
 		{
-			Bounds = bounds;
+			this.bounds = bounds;
 			ID = info.ID;
+
 			var random = new Random(seed + info.ID);
 
 			switch (info.NoiseType)
 			{
 				case NoiseType.CLOUDS:
-					Values = Noise.GenerateClouds(bounds, random, info.Strength, info.Scale);
+					values = Noise.GenerateClouds(bounds, random, info.Strength, info.Scale);
 					break;
 				case NoiseType.NOISE:
-					Values = Noise.GenerateNoise(bounds, random, info.Scale);
+					values = Noise.GenerateNoise(bounds, random, info.Scale);
 					break;
 				case NoiseType.MAZE:
-					Values = Maze.GenerateMaze(bounds * new MPos(2, 2) + new MPos(1, 1), random, new MPos(1, 1), info.Strength);
+					values = Maze.GenerateMaze(bounds * new MPos(2, 2) + new MPos(1, 1), random, new MPos(1, 1), info.Strength);
 					break;
 				case NoiseType.NONE:
-					Values = new float[bounds.X * bounds.Y];
+					values = new float[bounds.X * bounds.Y];
 
 					if (info.Strength > 0)
-						Array.Fill(Values, 1);
+						Array.Fill(values, 1);
 
 					break;
 			}
 
-			for (int i = 0; i < Values.Length; i++)
+			for (int i = 0; i < values.Length; i++)
 			{
 				// Intensity and contrast
-				var value = Values[i] + info.Intensity;
+				var value = values[i] + info.Intensity;
 				value = (value - 0.5f) * info.Contrast + 0.5f;
 
 				// Fit to area of 0 to 1.
-				Values[i] = Math.Clamp(value, 0f, 1f);
+				values[i] = Math.Clamp(value, 0f, 1f);
 			}
 		}
+
+		public float this[int x, int y] => values[y * bounds.X + x];
 
 		public void Render()
 		{
 			var bounds = VisibilitySolver.GetBounds(out var position);
 
-			position = new MPos(Math.Clamp(position.X, 0, Bounds.X), Math.Clamp(position.Y, 0, Bounds.Y));
-			bounds = new MPos(Math.Clamp(position.X + bounds.X, 0, Bounds.X), Math.Clamp(position.Y + bounds.Y, 0, Bounds.Y));
+			position = new MPos(Math.Clamp(position.X, 0, this.bounds.X), Math.Clamp(position.Y, 0, this.bounds.Y));
+			bounds = new MPos(Math.Clamp(position.X + bounds.X, 0, this.bounds.X), Math.Clamp(position.Y + bounds.Y, 0, this.bounds.Y));
 
 			for (var x = position.X; x < bounds.X; x++)
 			{
 				for (var y = position.Y; y < bounds.Y; y++)
 				{
-					var value = Values[y * Bounds.X + x];
+					var value = values[y * this.bounds.X + x];
 					ColorManager.DrawQuad(new CPos(x * 1024, y * 1024, 0), 256, new Color(value, value, value, 0.8f));
 				}
 			}

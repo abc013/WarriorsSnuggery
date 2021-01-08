@@ -87,7 +87,7 @@ namespace WarriorsSnuggery.Maps.Generators
 			{
 				for (int y = 0; y < Bounds.Y; y++)
 				{
-					var value = noise[y * Bounds.X + x];
+					var value = noise[x, y];
 					var randomValue = random.NextDouble();
 					var limit = GeneratorUtils.Multiplier(info.ProbabilitySteps, info.RangeSteps, value);
 

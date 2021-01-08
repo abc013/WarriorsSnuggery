@@ -2,12 +2,12 @@
 {
 	public static class GeneratorUtils
 	{
-		public static float[] GetNoise(MapLoader loader, int id)
+		public static NoiseMap GetNoise(MapLoader loader, int id)
 		{
 			if (id < 0)
-				return loader.Empty;
+				return loader.EmptyNoiseMap;
 
-			return loader.NoiseMaps[id].Values;
+			return loader.NoiseMaps[id];
 		}
 
 		public static float Multiplier(float[] probability, float[] steps, float value)

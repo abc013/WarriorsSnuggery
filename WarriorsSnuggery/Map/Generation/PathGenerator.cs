@@ -52,7 +52,7 @@ namespace WarriorsSnuggery.Maps.Generators
 	{
 		readonly PathGeneratorInfo info;
 
-		readonly float[] noise;
+		readonly NoiseMap noise;
 		readonly List<MPos> points = new List<MPos>();
 
 		public PathGenerator(Random random, MapLoader loader, PathGeneratorInfo info) : base(random, loader)
@@ -84,7 +84,7 @@ namespace WarriorsSnuggery.Maps.Generators
 			dirtyCells = dirt;
 			drawDirty();
 
-			MapPrinter.PrintGeneratorMap(Bounds, new float[Bounds.X * Bounds.Y], dirtyCells, info.ID);
+			MapPrinter.PrintGeneratorMap(Bounds, noise, dirtyCells, info.ID);
 		}
 
 		void generateSingle(MPos start, MPos end)
@@ -123,9 +123,9 @@ namespace WarriorsSnuggery.Maps.Generators
 					MPos preferred = new MPos(x, y) + currentPosition;
 
 					// If out of bounds, make the value high af so the field can't be taken
-					var val1 = preferred.IsInRange(MPos.Zero, Bounds - new MPos(1, 1)) ? noise[preferred.X * Bounds.Y + preferred.Y] : 10f;
-					var val2 = a1.IsInRange(MPos.Zero, Bounds - new MPos(1, 1)) ? noise[a1.X * Bounds.Y + a1.Y] : 10f;
-					var val3 = a2.IsInRange(MPos.Zero, Bounds - new MPos(1, 1)) ? noise[a2.X * Bounds.Y + a2.Y] : 10f;
+					var val1 = preferred.IsInRange(MPos.Zero, Bounds - new MPos(1, 1)) ? noise[preferred.X, preferred.Y] : 10f;
+					var val2 = a1.IsInRange(MPos.Zero, Bounds - new MPos(1, 1)) ? noise[a1.X, a1.Y] : 10f;
+					var val3 = a2.IsInRange(MPos.Zero, Bounds - new MPos(1, 1)) ? noise[a2.X, a2.Y] : 10f;
 
 					if (preferred != end)
 					{

@@ -91,7 +91,7 @@ namespace WarriorsSnuggery.Maps.Generators
 			loader.PlayerSpawn = new CPos(pos.X * 1024 + Piece.Size.X * 512, pos.Y * 1024 + Piece.Size.Y * 512, 0);
 		}
 
-		void generateKey(float[] noise)
+		void generateKey(NoiseMap noise)
 		{
 			var exitExists = loader.Exit == CPos.Zero;
 			var mapLength = Bounds.Dist * 256;
@@ -109,7 +109,7 @@ namespace WarriorsSnuggery.Maps.Generators
 				if (exitExists && (pos.ToCPos() - loader.Exit).SquaredFlatDist < mapLength)
 					continue;
 
-				if (info.NoiseMapID >= 0 && random.NextDouble() > noise[pos.Y * Bounds.X + pos.X] + 0.1f)
+				if (info.NoiseMapID >= 0 && random.NextDouble() > noise[pos.X, pos.Y] + 0.1f)
 					continue;
 
 				success = loader.GeneratePiece(Piece, pos, 100, true);
@@ -117,7 +117,7 @@ namespace WarriorsSnuggery.Maps.Generators
 			while (!success);
 		}
 
-		void generateExit(float[] noise)
+		void generateExit(NoiseMap noise)
 		{
 			var spawnArea = Bounds - Piece.Size;
 
@@ -127,7 +127,7 @@ namespace WarriorsSnuggery.Maps.Generators
 			{
 				pos = getPosNearBorder(spawnArea);
 
-				if (info.NoiseMapID >= 0 && random.NextDouble() > noise[pos.Y * Bounds.X + pos.X] + 0.1f)
+				if (info.NoiseMapID >= 0 && random.NextDouble() > noise[pos.X, pos.Y] + 0.1f)
 					continue;
 
 				success = loader.GeneratePiece(Piece, pos, 100, true);

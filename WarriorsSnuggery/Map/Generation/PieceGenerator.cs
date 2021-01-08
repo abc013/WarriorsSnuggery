@@ -96,7 +96,7 @@ namespace WarriorsSnuggery.Maps.Generators
 						if (y >= Bounds.Y)
 							break;
 
-						var value = noise[y * Bounds.X + x];
+						var value = noise[x, y];
 						if (info.NoiseMapLimit > value)
 						{
 							canAcquire = false;

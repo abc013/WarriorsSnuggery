@@ -185,7 +185,7 @@ namespace WarriorsSnuggery.Maps.Generators
 				loader.GeneratePiece(getPiece(fitting.Pieces), piece.Position, info.ID);
 			}
 
-			MapPrinter.PrintGeneratorMap(Bounds, new float[Bounds.X * Bounds.Y], dirtyCells, info.ID);
+			MapPrinter.PrintGeneratorMap(Bounds, loader.EmptyNoiseMap, dirtyCells, info.ID);
 		}
 
 		List<Cell> cellLoop(Cell cell, int depth)

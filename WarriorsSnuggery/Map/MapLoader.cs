@@ -29,7 +29,7 @@ namespace WarriorsSnuggery.Maps
 		public GameStatistics Statistics => world.Game.Statistics;
 
 		public readonly Random Random;
-		public readonly float[] Empty;
+		public readonly NoiseMap EmptyNoiseMap;
 		public readonly Dictionary<int, NoiseMap> NoiseMaps = new Dictionary<int, NoiseMap>();
 
 		readonly int[,] generatorReservations;
@@ -50,10 +50,13 @@ namespace WarriorsSnuggery.Maps
 			foreach (var info in map.Type.NoiseMaps)
 			{
 				var noiseMap = new NoiseMap(Bounds, map.Seed, info);
+
 				NoiseMaps.Add(info.ID, noiseMap);
-				MapPrinter.PrintNoiseMap(noiseMap);
+				MapPrinter.PrintNoiseMap(Bounds, noiseMap);
 			}
-			Empty = new float[Bounds.X * Bounds.Y];
+
+			// Empty NoiseMap
+			EmptyNoiseMap = new NoiseMap(Bounds, 0, new NoiseMapInfo(0, new List<MiniTextNode>()));
 
 			generatorReservations = new int[Bounds.X, Bounds.Y];
 			terrainInformation = new ushort[Bounds.X, Bounds.Y];
