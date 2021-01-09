@@ -36,7 +36,7 @@ namespace WarriorsSnuggery.Maps
 
 		readonly ushort[,] terrainInformation;
 		readonly (short id, short health)[,] wallInformation;
-		readonly List<(ActorInit init, CPos offset)> actorInformation = new List<(ActorInit init, CPos offset)>();
+		readonly Dictionary<MPos, List<(ActorInit init, CPos offset)>> actorInformation = new Dictionary<MPos, List<(ActorInit init, CPos offset)>>();
 		readonly List<WeaponInit> weaponInformation = new List<WeaponInit>();
 		readonly List<ParticleInit> particleInformation = new List<ParticleInit>();
 
@@ -118,11 +118,14 @@ namespace WarriorsSnuggery.Maps
 
 			var actors = new List<Actor>();
 
-			foreach (var (init, offset) in actorInformation)
+			foreach (var list in actorInformation.Values)
 			{
-				var actor = ActorCreator.Create(world, init, !FromSave, offset);
-				actors.Add(actor);
-				world.Add(actor);
+				foreach (var (init, offset) in list)
+				{
+					var actor = ActorCreator.Create(world, init, !FromSave, offset);
+					actors.Add(actor);
+					world.Add(actor);
+				}
 			}
 
 			foreach (var actor in actors)
@@ -148,10 +151,13 @@ namespace WarriorsSnuggery.Maps
 			world.WallLayer.Set(wall);
 		}
 
-		public bool AcquireCell(MPos pos, int id)
+		public bool AcquireCell(MPos pos, int id, bool check = true, bool removeActors = true)
 		{
-			if (!CanAcquireCell(pos, id))
+			if (check && !CanAcquireCell(pos, id))
 				return false;
+
+			if (removeActors)
+				RemoveActors(pos);
 
 			generatorReservations[pos.X, pos.Y] = id;
 			return true;
@@ -191,23 +197,47 @@ namespace WarriorsSnuggery.Maps
 			wallInformation[x, y] = (id, health);
 		}
 
-		public void AddActor(CPos pos, Generators.ActorProbabilityInfo info)
+		public void AddActor(CPos pos, ActorProbabilityInfo info)
 		{
 			var init = ActorCreator.CreateInit(world, info.Type, pos, info.Team, info.IsBot, health: info.Health);
 
-			actorInformation.Add((init, CPos.Zero));
+			AddActor(init, CPos.Zero);
 		}
 
 		public void AddActor(CPos position, string name, byte team = 0, bool isBot = false, float health = 1f)
 		{
 			var init = ActorCreator.CreateInit(world, name, position, team, isBot, false, health);
 
-			actorInformation.Add((init, CPos.Zero));
+			AddActor(init, CPos.Zero);
 		}
 		
 		public void AddActor(ActorInit init, CPos offset)
 		{
-			actorInformation.Add((init, offset));
+			var pos = (init.Position + offset);
+
+			if (pos.X < 0 && pos.X >= -512)
+				pos = new CPos(0, pos.Y, pos.Z);
+			if (pos.Y < 0 && pos.Y >= -512)
+				pos = new CPos(pos.X, 0, pos.Z);
+
+			var mpos = pos.ToMPos();
+			if (actorInformation.ContainsKey(mpos))
+			{
+				actorInformation[mpos].Add((init, offset));
+				return;
+			}
+
+			var list = new List<(ActorInit init, CPos offset)>
+			{
+				(init, offset)
+			};
+
+			actorInformation.Add(mpos, list);
+		}
+
+		public void RemoveActors(MPos pos)
+		{
+			actorInformation.Remove(pos);
 		}
 
 		public void AddWeapon(WeaponInit init)
@@ -255,7 +285,7 @@ namespace WarriorsSnuggery.Maps
 
 			for (int x = position.X; x < (piece.Size.X + position.X); x++)
 				for (int y = position.Y; y < (piece.Size.Y + position.Y); y++)
-					AcquireCell(new MPos(x, y), ID);
+					AcquireCell(new MPos(x, y), ID, false);
 
 			piece.PlacePiece(position, this);
 
