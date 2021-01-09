@@ -48,7 +48,6 @@ namespace WarriorsSnuggery.Maps.Generators
 	{
 		readonly ImportantPieceGeneratorInfo info;
 
-		public Piece Piece;
 		public ImportantPieceGenerator(Random random, MapLoader loader, ImportantPieceGeneratorInfo info) : base(random, loader)
 		{
 			this.info = info;
@@ -56,48 +55,53 @@ namespace WarriorsSnuggery.Maps.Generators
 
 		public override void Generate()
 		{
-			var noise = GeneratorUtils.GetNoise(loader, info.NoiseMapID);
-
 			if (!info.SpawnOnObjectives.Contains(ObjectiveType.NONE) && !info.SpawnOnObjectives.Contains(loader.ObjectiveType))
 				return;
 
 			var pieceIndex = info.Pieces[random.Next(info.Pieces.Length)];
-			Piece = PieceManager.GetPiece(pieceIndex);
+			var piece = PieceManager.GetPiece(pieceIndex);
+
+			var noise = GeneratorUtils.GetNoise(loader, info.NoiseMapID);
+
 			switch (info.PositionType)
 			{
 				case PositionType.POSITION:
-					loader.GenerateCrucialPiece(Piece, info.Position, info.ID);
+					loader.GenerateCrucialPiece(piece, info.Position, info.ID);
+					markDirty(info.Position, piece);
 					break;
 				case PositionType.SPAWN:
-					generateSpawn();
+					generateSpawn(piece);
 					break;
 				case PositionType.KEY:
-					generateKey(noise);
+					generateKey(piece, noise);
 					break;
 				case PositionType.EXIT:
-					generateExit(noise);
+					generateExit(piece, noise);
 					break;
 			}
+
+			MapPrinter.PrintGeneratorMap(Bounds, noise, dirtyCells, info.ID);
 		}
 
-		void generateSpawn()
+		void generateSpawn(Piece piece)
 		{
-			var spawnArea = Bounds - Piece.Size;
+			var spawnArea = Bounds - piece.Size;
 			var half = spawnArea / new MPos(2, 2);
 			var eigth = spawnArea / new MPos(8, 8);
 			var pos = half + new MPos(random.Next(eigth.X) - eigth.X / 2, random.Next(eigth.Y) - eigth.Y / 2);
 
-			loader.GenerateCrucialPiece(Piece, pos);
-			loader.PlayerSpawn = new CPos(pos.X * 1024 + Piece.Size.X * 512, pos.Y * 1024 + Piece.Size.Y * 512, 0);
+			loader.GenerateCrucialPiece(piece, pos);
+			loader.PlayerSpawn = new CPos(pos.X * 1024 + piece.Size.X * 512, pos.Y * 1024 + piece.Size.Y * 512, 0);
+			markDirty(pos, piece);
 		}
 
-		void generateKey(NoiseMap noise)
+		void generateKey(Piece piece, NoiseMap noise)
 		{
 			var exitExists = loader.Exit == CPos.Zero;
 			var mapLength = Bounds.Dist * 256;
 
 			var dist = random.Next(8);
-			var spawnArea = Bounds - (Piece.Size + new MPos(dist, dist));
+			var spawnArea = Bounds - (piece.Size + new MPos(dist, dist));
 
 			MPos pos;
 			var success = false;
@@ -112,14 +116,16 @@ namespace WarriorsSnuggery.Maps.Generators
 				if (info.NoiseMapID >= 0 && random.NextDouble() > noise[pos.X, pos.Y] + 0.1f)
 					continue;
 
-				success = loader.GeneratePiece(Piece, pos, 100, true);
+				success = loader.GenerateCrucialPiece(piece, pos);
+				if (success)
+					markDirty(pos, piece);
 			}
 			while (!success);
 		}
 
-		void generateExit(NoiseMap noise)
+		void generateExit(Piece piece, NoiseMap noise)
 		{
-			var spawnArea = Bounds - Piece.Size;
+			var spawnArea = Bounds - piece.Size;
 
 			MPos pos;
 			var success = false;
@@ -130,11 +136,13 @@ namespace WarriorsSnuggery.Maps.Generators
 				if (info.NoiseMapID >= 0 && random.NextDouble() > noise[pos.X, pos.Y] + 0.1f)
 					continue;
 
-				success = loader.GeneratePiece(Piece, pos, 100, true);
+				success = loader.GenerateCrucialPiece(piece, pos);
+				if (success)
+					markDirty(pos, piece);
 			}
 			while (!success);
 
-			loader.Exit = pos.ToCPos() + new CPos(Piece.Size.X * 512, Piece.Size.Y * 512, 0);
+			loader.Exit = pos.ToCPos() + new CPos(piece.Size.X * 512, piece.Size.Y * 512, 0);
 		}
 
 		MPos getPosNearBorder(MPos spawnArea)
@@ -159,6 +167,13 @@ namespace WarriorsSnuggery.Maps.Generators
 			}
 
 			return pos;
+		}
+
+		void markDirty(MPos position, Piece piece)
+		{
+			for (int x = position.X; x < piece.Size.X + position.X; x++)
+				for (int y = position.Y; y < piece.Size.Y + position.Y; y++)
+					dirtyCells[x, y] = true;
 		}
 	}
 }

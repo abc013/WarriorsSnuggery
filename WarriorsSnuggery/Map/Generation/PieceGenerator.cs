@@ -202,9 +202,20 @@ namespace WarriorsSnuggery.Maps.Generators
 
 				if (!loader.GeneratePiece(input, possiblePlaces[position], info.ID, cancelIfAcquiredBySameID: true))
 					i--;
+				else
+					markDirty(possiblePlaces[position], input);
 
 				possiblePlaces.RemoveAt(position);
 			}
+
+			MapPrinter.PrintGeneratorMap(Bounds, noise, dirtyCells, info.ID);
+		}
+
+		void markDirty(MPos position, Piece piece)
+		{
+			for (int x = position.X; x < piece.Size.X + position.X; x++)
+				for (int y = position.Y; y < piece.Size.Y + position.Y; y++)
+					dirtyCells[x, y] = true;
 		}
 	}
 }

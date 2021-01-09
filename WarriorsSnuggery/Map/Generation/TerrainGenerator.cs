@@ -98,7 +98,7 @@ namespace WarriorsSnuggery.Maps.Generators
 						continue;
 
 					dirtyCells[x, y] = true;
-					//terrainGenerationArray[x, y] = info.ID;
+
 					var number = (int)Math.Floor(value * (info.Terrain.Length - 1));
 					loader.SetTerrain(x, y, info.Terrain[number]);
 

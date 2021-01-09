@@ -81,7 +81,7 @@ namespace WarriorsSnuggery.Maps
 			}
 
 			if (!string.IsNullOrEmpty(map.Type.OverridePiece))
-				GeneratePiece(PieceManager.GetPiece(map.Type.OverridePiece), MPos.Zero, 100, true);
+				GenerateCrucialPiece(PieceManager.GetPiece(map.Type.OverridePiece), MPos.Zero);
 			else
 				map.Type.TerrainGenerationBase.GetGenerator(Random, this).Generate();
 
