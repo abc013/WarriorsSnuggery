@@ -30,5 +30,3 @@ for any issues or build failures, feel free to [open an issue](https://github.co
 - System.Runtime.Loader
 
 The dependencies are available on NuGet.
-
-## Important: You run Warrior's Snuggery at your own risk!
