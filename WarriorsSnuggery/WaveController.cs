@@ -17,7 +17,7 @@ namespace WarriorsSnuggery
 
 		readonly Game game;
 
-		readonly MapGeneratorInfo[] generators;
+		readonly IMapGeneratorInfo[] generators;
 		readonly MapLoader loader;
 
 		bool awaitingNextWave;

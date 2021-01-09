@@ -2,41 +2,35 @@
 
 namespace WarriorsSnuggery.Maps.Generators
 {
-	public abstract class MapGeneratorInfo
+	public interface IMapGeneratorInfo
 	{
-		public readonly int ID;
-
-		public MapGeneratorInfo(int id)
-		{
-			ID = id;
-		}
+		int ID { get; }
 
 		public abstract MapGenerator GetGenerator(Random random, MapLoader loader);
 	}
 
 	public abstract class MapGenerator
 	{
-		protected readonly Random random;
+		protected MPos Bounds => Loader.Bounds;
+		protected MPos Center => Loader.Center;
+		protected CPos TopLeftCorner => Loader.TopLeftCorner;
+		protected CPos TopRightCorner => Loader.TopRightCorner;
+		protected CPos BottomLeftCorner => Loader.BottomLeftCorner;
+		protected CPos BottomRightCorner => Loader.BottomRightCorner;
+		protected CPos PlayerSpawn => Loader.PlayerSpawn;
+		protected CPos Exit => Loader.Exit;
 
-		protected readonly MapLoader loader;
+		protected readonly Random Random;
+		protected readonly MapLoader Loader;
 
-		protected MPos Bounds => loader.Bounds;
-		public MPos Center => loader.Center;
-		public CPos TopLeftCorner => loader.TopLeftCorner;
-		public CPos TopRightCorner => loader.TopRightCorner;
-		public CPos BottomLeftCorner => loader.BottomLeftCorner;
-		public CPos BottomRightCorner => loader.BottomRightCorner;
-		public CPos PlayerSpawn => loader.PlayerSpawn;
-		public CPos Exit => loader.Exit;
-
-		protected bool[,] dirtyCells;
+		protected bool[,] UsedCells;
 
 		protected MapGenerator(Random random, MapLoader loader)
 		{
-			this.random = random;
-			this.loader = loader;
+			Random = random;
+			Loader = loader;
 
-			dirtyCells = new bool[Bounds.X, Bounds.Y];
+			UsedCells = new bool[Bounds.X, Bounds.Y];
 		}
 
 		public abstract void Generate();

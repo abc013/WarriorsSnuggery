@@ -22,7 +22,7 @@ namespace WarriorsSnuggery.Maps
 		public CPos PlayerSpawn { get => map.PlayerSpawn; set => map.PlayerSpawn = value; }
 		public CPos Exit { get => map.Exit; set => map.Exit = value; }
 
-		public MapGeneratorInfo[] Infos => map.Type.Generators;
+		public IMapGeneratorInfo[] Infos => map.Type.Generators;
 		public bool FromSave => map.Type.IsSave;
 
 		public ObjectiveType ObjectiveType => world.Game.ObjectiveType;
@@ -150,7 +150,7 @@ namespace WarriorsSnuggery.Maps
 
 		public bool AcquireCell(MPos pos, int id)
 		{
-			if (generatorReservations[pos.X, pos.Y] > id)
+			if (!CanAcquireCell(pos, id))
 				return false;
 
 			generatorReservations[pos.X, pos.Y] = id;
@@ -159,10 +159,26 @@ namespace WarriorsSnuggery.Maps
 
 		public bool CanAcquireCell(MPos pos, int id)
 		{
-			if (generatorReservations[pos.X, pos.Y] > id)
-				return false;
+			return canAcquireCell(pos.X, pos.Y, id);
+		}
+
+		public bool CanAcquireArea(MPos pos, MPos bounds, int id, bool idInclusive = false)
+		{
+			for (int x = pos.X; x < pos.X + bounds.X; x++)
+			{
+				for (int y = pos.Y; y < pos.Y + bounds.Y; y++)
+				{
+					if (!canAcquireCell(x, y, id) || (idInclusive && generatorReservations[x, y] == id))
+						return false;
+				}
+			}
 
 			return true;
+		}
+
+		bool canAcquireCell(int x, int y, int id)
+		{
+			return generatorReservations[x, y] < id;
 		}
 
 		public void SetTerrain(int x, int y, ushort id)
@@ -218,7 +234,7 @@ namespace WarriorsSnuggery.Maps
 			return GeneratePiece(piece, position, ID, true);
 		}
 
-		public bool GeneratePiece(Piece piece, MPos position, int ID, bool important = false, bool cancelIfAcquiredBySameID = false)
+		public bool GeneratePiece(Piece piece, MPos position, int ID, bool important = false, bool idInclusive = false)
 		{
 			if (!piece.IsInMap(position, Bounds))
 			{
@@ -228,14 +244,8 @@ namespace WarriorsSnuggery.Maps
 
 			if (!important)
 			{
-				for (int x = position.X; x < (piece.Size.X + position.X); x++)
-				{
-					for (int y = position.Y; y < (piece.Size.Y + position.Y); y++)
-					{
-						if (!CanAcquireCell(new MPos(x, y), ID) || (cancelIfAcquiredBySameID && generatorReservations[x, y] == ID))
-							return false;
-					}
-				}
+				if (!CanAcquireArea(position, piece.Size, ID, idInclusive))
+					return false;
 			}
 			else if (FromSave)
 			{

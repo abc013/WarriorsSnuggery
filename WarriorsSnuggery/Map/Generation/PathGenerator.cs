@@ -5,10 +5,10 @@ namespace WarriorsSnuggery.Maps.Generators
 {
 
 	[Desc("Generator used for making paths.")]
-	public sealed class PathGeneratorInfo : MapGeneratorInfo
+	public sealed class PathGeneratorInfo : IMapGeneratorInfo
 	{
-		[Desc("Unique ID for the generator.")]
-		public readonly new int ID;
+		public int ID => id;
+		readonly int id;
 
 		[Desc("ID for the noisemap.", "Set to a negative value to not use one.")]
 		public readonly int NoiseMapID = -1;
@@ -36,13 +36,13 @@ namespace WarriorsSnuggery.Maps.Generators
 		[Desc("If true, the road will not go as straight line but a curvy one.")]
 		public readonly bool Curvy = true;
 
-		public PathGeneratorInfo(int id, List<MiniTextNode> nodes) : base(id)
+		public PathGeneratorInfo(int id, List<MiniTextNode> nodes)
 		{
-			ID = id;
+			this.id = id;
 			Loader.PartLoader.SetValues(this, nodes);
 		}
 
-		public override MapGenerator GetGenerator(Random random, MapLoader loader)
+		public MapGenerator GetGenerator(Random random, MapLoader loader)
 		{
 			return new PathGenerator(random, loader, this);
 		}
@@ -64,11 +64,11 @@ namespace WarriorsSnuggery.Maps.Generators
 
 		public override void Generate()
 		{
-			var count = random.Next(info.MinCount, info.MaxCount);
+			var count = Random.Next(info.MinCount, info.MaxCount);
 			for (int i = 0; i < count; i++)
 			{
-				MPos start = info.FromEntrance ? PlayerSpawn.ToMPos() : MapUtils.RandomPositionInMap(random, 1, Bounds);
-				MPos end = info.ToExit ? Exit.ToMPos() : MapUtils.RandomPositionFromEdge(random, 1, Bounds);
+				MPos start = info.FromEntrance ? PlayerSpawn.ToMPos() : MapUtils.RandomPositionInMap(Random, 1, Bounds);
+				MPos end = info.ToExit ? Exit.ToMPos() : MapUtils.RandomPositionFromEdge(Random, 1, Bounds);
 
 				generateSingle(start, end);
 			}
@@ -76,15 +76,15 @@ namespace WarriorsSnuggery.Maps.Generators
 			markDirty();
 			drawDirty();
 
-			MapPrinter.PrintGeneratorMap(Bounds, noise, dirtyCells, info.ID);
+			MapPrinter.PrintGeneratorMap(Bounds, noise, UsedCells, info.ID);
 		}
 
 		public void Generate(bool[,] dirt)
 		{
-			dirtyCells = dirt;
+			UsedCells = dirt;
 			drawDirty();
 
-			MapPrinter.PrintGeneratorMap(Bounds, noise, dirtyCells, info.ID);
+			MapPrinter.PrintGeneratorMap(Bounds, noise, UsedCells, info.ID);
 		}
 
 		void generateSingle(MPos start, MPos end)
@@ -158,8 +158,8 @@ namespace WarriorsSnuggery.Maps.Generators
 						{
 							if (y >= 0 && y < Bounds.Y)
 							{
-								if (loader.AcquireCell(new MPos(x, y), info.ID))
-									dirtyCells[x, y] = true;
+								if (Loader.AcquireCell(new MPos(x, y), info.ID))
+									UsedCells[x, y] = true;
 							}
 						}
 					}
@@ -174,7 +174,7 @@ namespace WarriorsSnuggery.Maps.Generators
 			{
 				for (int y = 0; y < Bounds.Y; y++)
 				{
-					if (!dirtyCells[x, y])
+					if (!UsedCells[x, y])
 						continue;
 
 					var ruinous = info.Ruinous;
@@ -198,10 +198,10 @@ namespace WarriorsSnuggery.Maps.Generators
 					else
 						ruinous += info.RuinousFalloff[0];
 
-					if (random.NextDouble() > ruinous)
+					if (Random.NextDouble() > ruinous)
 					{
-						var ran = random.Next(info.Types.Length);
-						loader.SetTerrain(x, y, info.Types[ran]);
+						var ran = Random.Next(info.Types.Length);
+						Loader.SetTerrain(x, y, info.Types[ran]);
 					}
 				}
 			}

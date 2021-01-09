@@ -40,7 +40,7 @@ namespace WarriorsSnuggery.Maps
 		[Desc("Terrain Generator as basis. Required for the game to function. This is the first generator to be used.")]
 		public readonly TerrainGeneratorInfo TerrainGenerationBase = null;
 		[Desc("Generators that determine how the map should look like", "The generators are used in the order in which they are written, which means from top to bottom.")]
-		public readonly MapGeneratorInfo[] Generators = new MapGeneratorInfo[0];
+		public readonly IMapGeneratorInfo[] Generators = new IMapGeneratorInfo[0];
 
 		[Desc("Noises that are referenced by the generators.")]
 		public readonly NoiseMapInfo[] NoiseMaps = new NoiseMapInfo[0];
@@ -69,7 +69,7 @@ namespace WarriorsSnuggery.Maps
 
 						break;
 					case nameof(Generators):
-						Generators = new MapGeneratorInfo[node.Children.Count];
+						Generators = new IMapGeneratorInfo[node.Children.Count];
 
 						for (int i = 0; i < Generators.Length; i++)
 						{
@@ -99,7 +99,7 @@ namespace WarriorsSnuggery.Maps
 				throw new MissingNodeException(name, "BaseTerrainGeneration");
 		}
 
-		MapType(string overridePiece, int wall, MPos customSize, Color ambient, MissionType[] missionTypes, ObjectiveType[] availableObjectives, int level, int fromLevel, int toLevel, TerrainGeneratorInfo baseTerrainGeneration, MapGeneratorInfo[] generators, MPos spawnPoint, bool isSave, bool allowWeapons, string missionScript)
+		MapType(string overridePiece, int wall, MPos customSize, Color ambient, MissionType[] missionTypes, ObjectiveType[] availableObjectives, int level, int fromLevel, int toLevel, TerrainGeneratorInfo baseTerrainGeneration, IMapGeneratorInfo[] generators, MPos spawnPoint, bool isSave, bool allowWeapons, string missionScript)
 		{
 			OverridePiece = overridePiece;
 			Wall = wall;
@@ -128,14 +128,14 @@ namespace WarriorsSnuggery.Maps
 			var size = RuleReader.FromFile(FileExplorer.Saves, stats.MapSaveName + ".yaml").First(n => n.Key == "Size").Convert<MPos>();
 
 			var type = MapCreator.GetType(stats.CurrentMapType);
-			var mapGeneratorInfos = type == null ? new MapGeneratorInfo[0] : type.Generators;
+			var mapGeneratorInfos = type == null ? new IMapGeneratorInfo[0] : type.Generators;
 
 			return new MapType(stats.MapSaveName, 0, size, Color.White, new[] { stats.CurrentMission }, new[] { stats.CurrentObjective }, -1, 0, int.MaxValue, new TerrainGeneratorInfo(0, new List<MiniTextNode>()), mapGeneratorInfos, MPos.Zero, true, true, stats.Script);
 		}
 
 		public static MapType FromPiece(Piece piece, MissionType type = MissionType.TEST, ObjectiveType objective = ObjectiveType.NONE)
 		{
-			return new MapType(piece.InnerName, 0, piece.Size, Color.White, new[] { type }, new[] { objective }, -1, 0, int.MaxValue, new TerrainGeneratorInfo(0, new List<MiniTextNode>()), new MapGeneratorInfo[0], MPos.Zero, false, true, null);
+			return new MapType(piece.InnerName, 0, piece.Size, Color.White, new[] { type }, new[] { objective }, -1, 0, int.MaxValue, new TerrainGeneratorInfo(0, new List<MiniTextNode>()), new IMapGeneratorInfo[0], MPos.Zero, false, true, null);
 		}
 	}
 }

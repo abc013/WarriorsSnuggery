@@ -21,10 +21,10 @@ namespace WarriorsSnuggery.Maps.Generators
 	}
 
 	[Desc("Generator used for generating grid-based towns or structures.")]
-	public sealed class GridGeneratorInfo : MapGeneratorInfo
+	public sealed class GridGeneratorInfo : IMapGeneratorInfo
 	{
-		[Desc("Unique ID for the generator.")]
-		public readonly new int ID;
+		public int ID => id;
+		readonly int id;
 
 		[Desc("Size of the Cells in the grid.", "Must be a multiplex of GridSize.")]
 		public readonly int CellSize = 4;
@@ -49,9 +49,9 @@ namespace WarriorsSnuggery.Maps.Generators
 		[Desc("List of various pieces to spawn with their size respectively.")]
 		public readonly GridPiece[] Pieces = new GridPiece[0];
 
-		public GridGeneratorInfo(int id, List<MiniTextNode> nodes) : base(id)
+		public GridGeneratorInfo(int id, List<MiniTextNode> nodes)
 		{
-			ID = id;
+			this.id = id;
 
 			var fields = PartLoader.GetFields(this);
 
@@ -75,7 +75,7 @@ namespace WarriorsSnuggery.Maps.Generators
 			}
 		}
 
-		public override MapGenerator GetGenerator(Random random, MapLoader loader)
+		public MapGenerator GetGenerator(Random random, MapLoader loader)
 		{
 			return new GridGenerator(random, loader, this);
 		}
@@ -105,7 +105,7 @@ namespace WarriorsSnuggery.Maps.Generators
 			if (spawn.Y < 0)
 				spawn = new MPos(spawn.X, 0);
 
-			var bounds = info.FillMap ? Bounds : new MPos(random.Next(info.MaximumDimensions - info.MinimumDimensions) + info.MinimumDimensions, random.Next(info.MaximumDimensions - info.MinimumDimensions) + info.MinimumDimensions);
+			var bounds = info.FillMap ? Bounds : new MPos(Random.Next(info.MaximumDimensions - info.MinimumDimensions) + info.MinimumDimensions, Random.Next(info.MaximumDimensions - info.MinimumDimensions) + info.MinimumDimensions);
 			if (spawn.X + bounds.X >= Bounds.X)
 				bounds = new MPos(Bounds.X - spawn.X, bounds.Y);
 
@@ -137,7 +137,7 @@ namespace WarriorsSnuggery.Maps.Generators
 				{
 					for (int y = cell.Position.Y; y < cell.Position.Y + cell.Size.Y; y++)
 					{
-						if (!loader.CanAcquireCell(new MPos(x, y), info.ID))
+						if (!Loader.CanAcquireCell(new MPos(x, y), info.ID))
 							blocked = true;
 					}
 				}
@@ -149,8 +149,8 @@ namespace WarriorsSnuggery.Maps.Generators
 				{
 					for (int y = cell.Position.Y; y < cell.Position.Y + cell.Size.Y; y++)
 					{
-						if (loader.AcquireCell(new MPos(x, y), info.ID))
-							dirtyCells[x, y] = true;
+						if (Loader.AcquireCell(new MPos(x, y), info.ID))
+							UsedCells[x, y] = true;
 
 						road[x, y] = false;
 					}
@@ -158,18 +158,18 @@ namespace WarriorsSnuggery.Maps.Generators
 			}
 
 			// Roads
-			var type = loader.Infos.FirstOrDefault(i => i.ID == info.PathGeneratorID && i is PathGeneratorInfo);
+			var type = Loader.Infos.FirstOrDefault(i => i.ID == info.PathGeneratorID && i is PathGeneratorInfo);
 			if (type != null)
 			{
 				for (int x = 0; x < Bounds.X; x++)
 				{
 					for (int y = 0; y < Bounds.Y; y++)
 					{
-						if (!(road[x, y] && loader.AcquireCell(new MPos(x, y), info.PathGeneratorID)))
+						if (!(road[x, y] && Loader.AcquireCell(new MPos(x, y), info.PathGeneratorID)))
 							road[x, y] = false;
 					}
 				}
-				var generator = new PathGenerator(random, loader, type as PathGeneratorInfo);
+				var generator = new PathGenerator(Random, Loader, type as PathGeneratorInfo);
 				generator.Generate(road);
 			}
 			// Pieces
@@ -182,10 +182,10 @@ namespace WarriorsSnuggery.Maps.Generators
 				if (fitting == null)
 					continue;
 
-				loader.GeneratePiece(getPiece(fitting.Pieces), piece.Position, info.ID);
+				Loader.GeneratePiece(getPiece(fitting.Pieces), piece.Position, info.ID);
 			}
 
-			MapPrinter.PrintGeneratorMap(Bounds, loader.EmptyNoiseMap, dirtyCells, info.ID);
+			MapPrinter.PrintGeneratorMap(Bounds, Loader.EmptyNoiseMap, UsedCells, info.ID);
 		}
 
 		List<Cell> cellLoop(Cell cell, int depth)
@@ -194,7 +194,7 @@ namespace WarriorsSnuggery.Maps.Generators
 
 			if (depth > 0)
 			{
-				var childs = cell.Divide(random, depth);
+				var childs = cell.Divide(Random, depth);
 
 				if (childs == null)
 					cells.Add(cell);
@@ -214,7 +214,7 @@ namespace WarriorsSnuggery.Maps.Generators
 		{
 			var cells = new List<PieceCell>();
 
-			var childs = cell.Divide(random);
+			var childs = cell.Divide(Random);
 
 			if (childs == null)
 				cells.Add(cell);
@@ -229,7 +229,7 @@ namespace WarriorsSnuggery.Maps.Generators
 
 		Piece getPiece(string[] choices)
 		{
-			var choice = choices[random.Next(choices.Length)];
+			var choice = choices[Random.Next(choices.Length)];
 
 			return PieceManager.GetPiece(choice);
 		}

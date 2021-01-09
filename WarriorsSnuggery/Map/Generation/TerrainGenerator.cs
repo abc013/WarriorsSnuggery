@@ -5,10 +5,10 @@ using WarriorsSnuggery.Objects;
 namespace WarriorsSnuggery.Maps.Generators
 {
 	[Desc("Generator used for generating random flocks of terrain or actors on the map.")]
-	public class TerrainGeneratorInfo : MapGeneratorInfo
+	public class TerrainGeneratorInfo : IMapGeneratorInfo
 	{
-		[Desc("Unique ID for the generator.")]
-		public readonly new int ID;
+		public int ID => id;
+		readonly int id;
 
 		[Desc("ID for the noisemap.", "Set to a negative value to not use one.")]
 		public readonly int NoiseMapID = -1;
@@ -30,16 +30,16 @@ namespace WarriorsSnuggery.Maps.Generators
 		[Desc("Terrain to use for borders.")]
 		public readonly ushort[] BorderTerrain = new ushort[0];
 
-		public TerrainGeneratorInfo(int id, List<MiniTextNode> nodes) : base(id)
+		public TerrainGeneratorInfo(int id, List<MiniTextNode> nodes)
 		{
-			ID = id;
+			this.id = id;
 			Loader.PartLoader.SetValues(this, nodes);
 
 			if (RangeSteps.Length != ProbabilitySteps.Length)
 				throw new InvalidTextNodeException($"Range step length ({RangeSteps.Length}) does not match with given provabability values ({ProbabilitySteps.Length}).");
 		}
 
-		public override MapGenerator GetGenerator(Random random, MapLoader loader)
+		public MapGenerator GetGenerator(Random random, MapLoader loader)
 		{
 			return new TerrainGenerator(random, loader, this);
 		}
@@ -81,34 +81,34 @@ namespace WarriorsSnuggery.Maps.Generators
 
 		public override void Generate()
 		{
-			var noise = GeneratorUtils.GetNoise(loader, info.NoiseMapID);
+			var noise = GeneratorUtils.GetNoise(Loader, info.NoiseMapID);
 
 			for (int x = 0; x < Bounds.X; x++)
 			{
 				for (int y = 0; y < Bounds.Y; y++)
 				{
 					var value = noise[x, y];
-					var randomValue = random.NextDouble();
+					var randomValue = Random.NextDouble();
 					var limit = GeneratorUtils.Multiplier(info.ProbabilitySteps, info.RangeSteps, value);
 
 					if (randomValue > limit)
 						continue;
 
-					if (!loader.AcquireCell(new MPos(x, y), info.ID))
+					if (!Loader.AcquireCell(new MPos(x, y), info.ID))
 						continue;
 
-					dirtyCells[x, y] = true;
+					UsedCells[x, y] = true;
 
 					var number = (int)Math.Floor(value * (info.Terrain.Length - 1));
-					loader.SetTerrain(x, y, info.Terrain[number]);
+					Loader.SetTerrain(x, y, info.Terrain[number]);
 
 					if (info.SpawnActors != null)
 					{
 						foreach (var a in info.SpawnActors)
 						{
-							if (random.NextDouble() <= a.Probability)
+							if (Random.NextDouble() <= a.Probability)
 							{
-								loader.AddActor(new CPos(1024 * x + random.Next(896) - 448, 1024 * y + random.Next(896) - 448, 0), a);
+								Loader.AddActor(new CPos(1024 * x + Random.Next(896) - 448, 1024 * y + Random.Next(896) - 448, 0), a);
 								break; // If an actor is already spawned, we don't want any other actor to spawn because they will probably overlap
 							}
 						}
@@ -127,15 +127,15 @@ namespace WarriorsSnuggery.Maps.Generators
 								if (p.X >= Bounds.X || p.Y >= Bounds.Y)
 									continue;
 
-								if (!dirtyCells[p.X, p.Y] && loader.AcquireCell(p, info.ID))
-									loader.SetTerrain(x, y, info.BorderTerrain[random.Next(info.BorderTerrain.Length)]);
+								if (!UsedCells[p.X, p.Y] && Loader.AcquireCell(p, info.ID))
+									Loader.SetTerrain(x, y, info.BorderTerrain[Random.Next(info.BorderTerrain.Length)]);
 							}
 						}
 					}
 				}
 			}
 
-			MapPrinter.PrintGeneratorMap(Bounds, noise, dirtyCells, info.ID);
+			MapPrinter.PrintGeneratorMap(Bounds, noise, UsedCells, info.ID);
 		}
 	}
 }

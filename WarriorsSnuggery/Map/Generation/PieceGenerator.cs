@@ -5,10 +5,10 @@ using System.Linq;
 namespace WarriorsSnuggery.Maps.Generators
 {
 	[Desc("Generator used to randomly spread pieces across the map.", "It is not guaranteed that the MinimumCount can be fullfilled.")]
-	public class PieceGeneratorInfo : MapGeneratorInfo
+	public class PieceGeneratorInfo : IMapGeneratorInfo
 	{
-		[Desc("Unique ID for the generator.")]
-		public readonly new int ID;
+		public int ID => id;
+		readonly int id;
 
 		[Desc("NoiseMap used to find a spot where the piece is generated.")]
 		public readonly int NoiseMapID = -1;
@@ -29,13 +29,13 @@ namespace WarriorsSnuggery.Maps.Generators
 		[Desc("Maximum count of pieces on the map per 32x32 field.")]
 		public readonly int MaximumCount = 4;
 
-		public PieceGeneratorInfo(int id, List<MiniTextNode> nodes) : base(id)
+		public PieceGeneratorInfo(int id, List<MiniTextNode> nodes)
 		{
-			ID = id;
+			this.id = id;
 			Loader.PartLoader.SetValues(this, nodes);
 		}
 
-		public override MapGenerator GetGenerator(Random random, MapLoader loader)
+		public MapGenerator GetGenerator(Random random, MapLoader loader)
 		{
 			return new PieceGenerator(random, loader, this);
 		}
@@ -57,7 +57,7 @@ namespace WarriorsSnuggery.Maps.Generators
 
 		public override void Generate()
 		{
-			var noise = GeneratorUtils.GetNoise(loader, info.NoiseMapID);
+			var noise = GeneratorUtils.GetNoise(Loader, info.NoiseMapID);
 
 			searchBlocks = info.MaxBounds;
 			if (searchBlocks == MPos.Zero)
@@ -103,7 +103,7 @@ namespace WarriorsSnuggery.Maps.Generators
 							break;
 						}
 
-						if (!loader.CanAcquireCell(new MPos(x, y), info.ID))
+						if (!Loader.CanAcquireCell(new MPos(x, y), info.ID))
 						{
 							canAcquire = false;
 							break;
@@ -140,7 +140,7 @@ namespace WarriorsSnuggery.Maps.Generators
 							if (y >= Bounds.Y)
 								break;
 
-							if (!loader.CanAcquireCell(new MPos(x, y), info.ID))
+							if (!Loader.CanAcquireCell(new MPos(x, y), info.ID))
 							{
 								canAcquire = false;
 								break;
@@ -175,7 +175,7 @@ namespace WarriorsSnuggery.Maps.Generators
 							if (y >= Bounds.Y)
 								break;
 
-							if (!loader.CanAcquireCell(new MPos(x, y), info.ID))
+							if (!Loader.CanAcquireCell(new MPos(x, y), info.ID))
 							{
 								canAcquire = false;
 								break;
@@ -189,18 +189,18 @@ namespace WarriorsSnuggery.Maps.Generators
 			}
 
 			var multiplier = Bounds.X * Bounds.Y / (float)(32 * 32);
-			var count = random.Next((int)(info.MinimumCount * multiplier), (int)(info.MaximumCount * multiplier));
+			var count = Random.Next((int)(info.MinimumCount * multiplier), (int)(info.MaximumCount * multiplier));
 			for (int i = 0; i < count; i++)
 			{
 				if (!possiblePlaces.Any())
 					break;
 
-				var piece = info.Pieces[random.Next(info.Pieces.Length)];
+				var piece = info.Pieces[Random.Next(info.Pieces.Length)];
 				var input = PieceManager.GetPiece(piece);
 
-				var position = random.Next(possiblePlaces.Count);
+				var position = Random.Next(possiblePlaces.Count);
 
-				if (!loader.GeneratePiece(input, possiblePlaces[position], info.ID, cancelIfAcquiredBySameID: true))
+				if (!Loader.GeneratePiece(input, possiblePlaces[position], info.ID, idInclusive: true))
 					i--;
 				else
 					markDirty(possiblePlaces[position], input);
@@ -208,14 +208,14 @@ namespace WarriorsSnuggery.Maps.Generators
 				possiblePlaces.RemoveAt(position);
 			}
 
-			MapPrinter.PrintGeneratorMap(Bounds, noise, dirtyCells, info.ID);
+			MapPrinter.PrintGeneratorMap(Bounds, noise, UsedCells, info.ID);
 		}
 
 		void markDirty(MPos position, Piece piece)
 		{
 			for (int x = position.X; x < piece.Size.X + position.X; x++)
 				for (int y = position.Y; y < piece.Size.Y + position.Y; y++)
-					dirtyCells[x, y] = true;
+					UsedCells[x, y] = true;
 		}
 	}
 }

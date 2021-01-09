@@ -5,10 +5,10 @@ using System.Linq;
 namespace WarriorsSnuggery.Maps.Generators
 {
 	[Desc("Generator used for spawning enemies on the map.")]
-	public class PatrolGeneratorInfo : MapGeneratorInfo
+	public class PatrolGeneratorInfo : IMapGeneratorInfo
 	{
-		[Desc("Unique ID for the generator.")]
-		public readonly new int ID;
+		public int ID => id;
+		readonly int id;
 
 		[Desc("Bounds of the patrol group to determine a valid spawnlocation.")]
 		public readonly int SpawnBounds = 3;
@@ -23,15 +23,16 @@ namespace WarriorsSnuggery.Maps.Generators
 		[Desc("Use Patrols in the WAVES GameMode.", "Please note by setting to true, the Generator will not be used in other GameModes.")]
 		public readonly bool UseForWaves;
 
-		public PatrolGeneratorInfo(int id, List<MiniTextNode> nodes) : base(id)
+		public PatrolGeneratorInfo(int id, List<MiniTextNode> nodes)
 		{
+			this.id = id;
 			Loader.PartLoader.SetValues(this, nodes);
 
 			if (id >= 0)
 				PatrolProbabilities = Patrols.Sum(p => p.Probability);
 		}
 
-		public override MapGenerator GetGenerator(Random random, MapLoader loader)
+		public MapGenerator GetGenerator(Random random, MapLoader loader)
 		{
 			// TODO move elsewhere
 			if (loader.ObjectiveType == ObjectiveType.SURVIVE_WAVES)
@@ -78,29 +79,13 @@ namespace WarriorsSnuggery.Maps.Generators
 			{
 				for (int b = 0; b < Math.Floor(Bounds.X / (float)info.SpawnBounds); b++)
 				{
-					var blocked = false;
-					for (int x = a * info.SpawnBounds; x < a * info.SpawnBounds + info.SpawnBounds; x++)
-					{
-						if (x < TopLeftCorner.X || x >= TopRightCorner.X)
-							continue;
-
-						for (int y = a * info.SpawnBounds; y < a * info.SpawnBounds + info.SpawnBounds; y++)
-						{
-							if (y < TopLeftCorner.Y || y >= BottomLeftCorner.Y)
-								continue;
-
-							if (!info.UseForWaves && !loader.CanAcquireCell(new MPos(x, y), info.ID))
-								blocked = true;
-						}
-					}
-
-					if (!blocked)
+					if (!areaBlocked(a, b))
 						positions.Add(new MPos(a * info.SpawnBounds, b * info.SpawnBounds));
 				}
 			}
 
-			var multiplier = Bounds.X * Bounds.Y / (float)(32 * 32) + (loader.Statistics.Difficulty - 5) / 10f;
-			var count = random.Next((int)(info.MinimumPatrols * multiplier), (int)(info.MaximumPatrols * multiplier));
+			var multiplier = Bounds.X * Bounds.Y / (float)(32 * 32) + (Loader.Statistics.Difficulty - 5) / 10f;
+			var count = Random.Next((int)(info.MinimumPatrols * multiplier), (int)(info.MaximumPatrols * multiplier));
 			if (positions.Count < count)
 			{
 				Log.WriteDebug(string.Format("Unable to spawn Patrol count ({0}) because there are not enough available spawn points ({1}).", count, positions.Count));
@@ -111,7 +96,7 @@ namespace WarriorsSnuggery.Maps.Generators
 
 			for (int i = 0; i < count; i++)
 			{
-				var posIndex = random.Next(positions.Count);
+				var posIndex = Random.Next(positions.Count);
 				spawns[i] = positions[posIndex];
 				positions.RemoveAt(posIndex);
 			}
@@ -154,14 +139,37 @@ namespace WarriorsSnuggery.Maps.Generators
 					if (spawnPosition.Y >= Bounds.Y * 1024 - patrol.DistanceBetweenObjects / 2)
 						spawnPosition = new CPos(spawnPosition.X, Bounds.Y * 1024 - patrol.DistanceBetweenObjects / 2, 0);
 
-					loader.AddActor(spawnPosition, patrol.ActorTypes[j], patrol.Team, true);
+					Loader.AddActor(spawnPosition, patrol.ActorTypes[j], patrol.Team, true);
 				}
 			}
 		}
 
+		bool areaBlocked(int a, int b)
+		{
+			if (info.UseForWaves)
+				return false;
+
+			for (int x = a * info.SpawnBounds; x < a * info.SpawnBounds + info.SpawnBounds; x++)
+			{
+				if (x < TopLeftCorner.X || x >= TopRightCorner.X)
+					continue;
+
+				for (int y = b * info.SpawnBounds; y < b * info.SpawnBounds + info.SpawnBounds; y++)
+				{
+					if (y < TopLeftCorner.Y || y >= BottomLeftCorner.Y)
+						continue;
+
+					if (!Loader.CanAcquireCell(new MPos(x, y), info.ID))
+						return true;
+				}
+			}
+
+			return false;
+		}
+
 		PatrolProbabilityInfo getPatrol()
 		{
-			var probability = random.NextDouble() * info.PatrolProbabilities;
+			var probability = Random.NextDouble() * info.PatrolProbabilities;
 			for (int i = 0; i < info.Patrols.Length; i++)
 			{
 				probability -= info.Patrols[i].Probability;

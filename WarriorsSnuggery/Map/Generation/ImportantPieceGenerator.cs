@@ -13,10 +13,10 @@ namespace WarriorsSnuggery.Maps.Generators
 	}
 
 	[Desc("Generator used to generate pieces that must be on the map.")]
-	public class ImportantPieceGeneratorInfo : MapGeneratorInfo
+	public class ImportantPieceGeneratorInfo : IMapGeneratorInfo
 	{
-		[Desc("Unique ID for the generator.")]
-		public readonly new int ID;
+		public int ID => id;
+		readonly int id;
 
 		[Desc("NoiseMap that influences the placement of the piece. There will always be a little chance (10%) to ensure that the piece is placed.", "This setting only influences 'EXIT' and 'KEY' position modes.")]
 		public readonly int NoiseMapID = -1;
@@ -32,13 +32,13 @@ namespace WarriorsSnuggery.Maps.Generators
 		[Desc("Determines when to generate this piece. If set to NONE, it will always be generated.")]
 		public readonly ObjectiveType[] SpawnOnObjectives = new [] { ObjectiveType.NONE };
 
-		public ImportantPieceGeneratorInfo(int id, List<MiniTextNode> nodes) : base(id)
+		public ImportantPieceGeneratorInfo(int id, List<MiniTextNode> nodes)
 		{
-			ID = id;
+			this.id = id;
 			Loader.PartLoader.SetValues(this, nodes);
 		}
 
-		public override MapGenerator GetGenerator(Random random, MapLoader loader)
+		public MapGenerator GetGenerator(Random random, MapLoader loader)
 		{
 			return new ImportantPieceGenerator(random, loader, this);
 		}
@@ -55,18 +55,18 @@ namespace WarriorsSnuggery.Maps.Generators
 
 		public override void Generate()
 		{
-			if (!info.SpawnOnObjectives.Contains(ObjectiveType.NONE) && !info.SpawnOnObjectives.Contains(loader.ObjectiveType))
+			if (!info.SpawnOnObjectives.Contains(ObjectiveType.NONE) && !info.SpawnOnObjectives.Contains(Loader.ObjectiveType))
 				return;
 
-			var pieceIndex = info.Pieces[random.Next(info.Pieces.Length)];
+			var pieceIndex = info.Pieces[Random.Next(info.Pieces.Length)];
 			var piece = PieceManager.GetPiece(pieceIndex);
 
-			var noise = GeneratorUtils.GetNoise(loader, info.NoiseMapID);
+			var noise = GeneratorUtils.GetNoise(Loader, info.NoiseMapID);
 
 			switch (info.PositionType)
 			{
 				case PositionType.POSITION:
-					loader.GenerateCrucialPiece(piece, info.Position, info.ID);
+					Loader.GenerateCrucialPiece(piece, info.Position, info.ID);
 					markDirty(info.Position, piece);
 					break;
 				case PositionType.SPAWN:
@@ -80,7 +80,7 @@ namespace WarriorsSnuggery.Maps.Generators
 					break;
 			}
 
-			MapPrinter.PrintGeneratorMap(Bounds, noise, dirtyCells, info.ID);
+			MapPrinter.PrintGeneratorMap(Bounds, noise, UsedCells, info.ID);
 		}
 
 		void generateSpawn(Piece piece)
@@ -88,19 +88,19 @@ namespace WarriorsSnuggery.Maps.Generators
 			var spawnArea = Bounds - piece.Size;
 			var half = spawnArea / new MPos(2, 2);
 			var eigth = spawnArea / new MPos(8, 8);
-			var pos = half + new MPos(random.Next(eigth.X) - eigth.X / 2, random.Next(eigth.Y) - eigth.Y / 2);
+			var pos = half + new MPos(Random.Next(eigth.X) - eigth.X / 2, Random.Next(eigth.Y) - eigth.Y / 2);
 
-			loader.GenerateCrucialPiece(piece, pos);
-			loader.PlayerSpawn = new CPos(pos.X * 1024 + piece.Size.X * 512, pos.Y * 1024 + piece.Size.Y * 512, 0);
+			Loader.GenerateCrucialPiece(piece, pos);
+			Loader.PlayerSpawn = new CPos(pos.X * 1024 + piece.Size.X * 512, pos.Y * 1024 + piece.Size.Y * 512, 0);
 			markDirty(pos, piece);
 		}
 
 		void generateKey(Piece piece, NoiseMap noise)
 		{
-			var exitExists = loader.Exit == CPos.Zero;
+			var exitExists = Loader.Exit == CPos.Zero;
 			var mapLength = Bounds.Dist * 256;
 
-			var dist = random.Next(8);
+			var dist = Random.Next(8);
 			var spawnArea = Bounds - (piece.Size + new MPos(dist, dist));
 
 			MPos pos;
@@ -110,13 +110,13 @@ namespace WarriorsSnuggery.Maps.Generators
 				pos = getPosNearBorder(spawnArea);
 
 				// Don't spawn near exits
-				if (exitExists && (pos.ToCPos() - loader.Exit).SquaredFlatDist < mapLength)
+				if (exitExists && (pos.ToCPos() - Loader.Exit).SquaredFlatDist < mapLength)
 					continue;
 
-				if (info.NoiseMapID >= 0 && random.NextDouble() > noise[pos.X, pos.Y] + 0.1f)
+				if (info.NoiseMapID >= 0 && Random.NextDouble() > noise[pos.X, pos.Y] + 0.1f)
 					continue;
 
-				success = loader.GenerateCrucialPiece(piece, pos);
+				success = Loader.GenerateCrucialPiece(piece, pos);
 				if (success)
 					markDirty(pos, piece);
 			}
@@ -133,36 +133,36 @@ namespace WarriorsSnuggery.Maps.Generators
 			{
 				pos = getPosNearBorder(spawnArea);
 
-				if (info.NoiseMapID >= 0 && random.NextDouble() > noise[pos.X, pos.Y] + 0.1f)
+				if (info.NoiseMapID >= 0 && Random.NextDouble() > noise[pos.X, pos.Y] + 0.1f)
 					continue;
 
-				success = loader.GenerateCrucialPiece(piece, pos);
+				success = Loader.GenerateCrucialPiece(piece, pos);
 				if (success)
 					markDirty(pos, piece);
 			}
 			while (!success);
 
-			loader.Exit = pos.ToCPos() + new CPos(piece.Size.X * 512, piece.Size.Y * 512, 0);
+			Loader.Exit = pos.ToCPos() + new CPos(piece.Size.X * 512, piece.Size.Y * 512, 0);
 		}
 
 		MPos getPosNearBorder(MPos spawnArea)
 		{
 			var pos = MPos.Zero;
 			// Picking a random side, 0 = x, 1 = y, 2 = -x, 3 = -y;
-			var side = (byte)random.Next(4);
+			var side = (byte)Random.Next(4);
 			switch (side)
 			{
 				case 0:
-					pos = new MPos(random.Next(2), random.Next(spawnArea.X));
+					pos = new MPos(Random.Next(2), Random.Next(spawnArea.X));
 					break;
 				case 1:
-					pos = new MPos(random.Next(spawnArea.Y), random.Next(2));
+					pos = new MPos(Random.Next(spawnArea.Y), Random.Next(2));
 					break;
 				case 2:
-					pos = new MPos(spawnArea.X - random.Next(2), random.Next(spawnArea.X));
+					pos = new MPos(spawnArea.X - Random.Next(2), Random.Next(spawnArea.X));
 					break;
 				case 3:
-					pos = new MPos(random.Next(spawnArea.X), spawnArea.Y - random.Next(2));
+					pos = new MPos(Random.Next(spawnArea.X), spawnArea.Y - Random.Next(2));
 					break;
 			}
 
@@ -173,7 +173,7 @@ namespace WarriorsSnuggery.Maps.Generators
 		{
 			for (int x = position.X; x < piece.Size.X + position.X; x++)
 				for (int y = position.Y; y < piece.Size.Y + position.Y; y++)
-					dirtyCells[x, y] = true;
+					UsedCells[x, y] = true;
 		}
 	}
 }
