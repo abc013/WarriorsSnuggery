@@ -12,7 +12,7 @@ namespace WarriorsSnuggery
 		static Game game;
 		static World world;
 
-		static BatchObject shroud;
+		static bool first = true;
 
 		public static readonly BatchRenderer BatchRenderer = new BatchRenderer();
 		public static readonly BatchRenderer DebugRenderer = new BatchRenderer();
@@ -24,13 +24,14 @@ namespace WarriorsSnuggery
 
 		public static void Reset(Game @new)
 		{
-			// This means first reset
-			if (shroud == null)
+			if (first)
 			{
-				shroud = new BatchObject(RuleLoader.ShroudTexture[0], Color.White);
+				Shroud.Load();
 
 				BatchRenderer.SetTextures(SpriteManager.Sheets, SpriteManager.CurrentSheet);
 				DebugRenderer.SetTextures(new[] { 0 });
+
+				first = false;
 			}
 			game = @new;
 			world = game.World;
@@ -94,19 +95,14 @@ namespace WarriorsSnuggery
 						{
 							if (y >= 0 && y < world.ShroudLayer.Bounds.Y)
 							{
-								var alpha = world.ShroudLayer.ShroudAlpha(new MPos(x, y), Actor.PlayerTeam);
-								if (alpha > 0f)
-								{
-									shroud.SetColor(new Color(1f, 1f, 1f, alpha));
-									shroud.SetPosition(new CPos(x * 512 - 256, y * 512 - 256, 0));
-									shroud.PushToBatchRenderer();
-								}
+								world.ShroudLayer.Shroud[x, y].Render();
 							}
 						}
 					}
 				}
 			}
 			BatchRenderer.Render();
+
 			MasterRenderer.BatchRenderer = null;
 
 			if (Settings.DeveloperMode)
@@ -145,7 +141,7 @@ namespace WarriorsSnuggery
 			render.AddRange(world.WeaponLayer.VisibleWeapons);
 			render.AddRange(world.ParticleLayer.VisibleParticles);
 			render.AddRange(world.WallLayer.VisibleWalls);
-			
+
 			return render.OrderBy(e => e.GraphicPosition.Z + (e.Position.Y - 512) * 2).ToList();
 		}
 

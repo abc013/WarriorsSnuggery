@@ -69,6 +69,7 @@ namespace WarriorsSnuggery
 			}
 
 			ShroudTexture = SpriteManager.AddTexture(new TextureInfo("shroud"));
+
 			Questionmark = SpriteManager.AddTexture(new TextureInfo("questionmark"));
 
 			for (int j = 0; j < terrainFiles.Length; j++)

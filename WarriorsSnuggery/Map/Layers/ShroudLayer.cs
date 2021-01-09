@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using WarriorsSnuggery.Graphics;
+using WarriorsSnuggery.Objects;
 
 namespace WarriorsSnuggery
 {
@@ -10,14 +11,19 @@ namespace WarriorsSnuggery
 		public MPos Bounds { get; private set; }
 
 		readonly bool[,,] shroudRevealed; // First: Team Second: X Third: Y
-		readonly byte[,] shroudAlpha;
+		public readonly Shroud[,] Shroud;
+		readonly List<Shroud> changingShroud = new List<Shroud>();
 
 		public ShroudLayer(MPos bounds)
 		{
 			Bounds = bounds * new MPos(2, 2);
 
-			shroudRevealed = new bool[Settings.MaxTeams, bounds.X * 2, bounds.Y * 2];
-			shroudAlpha = new byte[bounds.X * 2, bounds.Y * 2];
+			shroudRevealed = new bool[Settings.MaxTeams, Bounds.X, Bounds.Y];
+
+			Shroud = new Shroud[Bounds.X, Bounds.Y];
+			for (int x = 0; x < Bounds.X; x++)
+				for (int y = 0; y < Bounds.Y; y++)
+					Shroud[x, y] = new Shroud(new MPos(x, y));
 		}
 
 		public bool ShroudRevealed(int team, int x, int y)
@@ -35,11 +41,16 @@ namespace WarriorsSnuggery
 			if (values == null)
 				return;
 
+			var isPlayerTeam = team == Actor.PlayerTeam;
+
 			for (int i = 0; i < values.Length; i++)
 			{
 				var x = (int)Math.Floor(i / (float)Bounds.X);
 				var y = i % Bounds.X;
 
+				if (isPlayerTeam && Shroud[x, y].ChangeState(values[i]))
+					changingShroud.Add(Shroud[x, y]);
+				
 				shroudRevealed[team, x, y] = values[i];
 			}
 		}
@@ -49,7 +60,7 @@ namespace WarriorsSnuggery
 			if (RevealAll)
 				return;
 
-			var isPlayerTeam = team == Objects.Actor.PlayerTeam;
+			var isPlayerTeam = team == Actor.PlayerTeam;
 
 			var shroudPos = (position * new CPos(2, 2, 0)).ToMPos();
 
@@ -74,6 +85,9 @@ namespace WarriorsSnuggery
 							if (shroudRevealed[team, x, y])
 								continue;
 
+							if (dx + dy > radiusSquared)
+								continue;
+
 							bool isInTriangle = false;
 							var p = new CPos(x * 512 - 256, y * 512 - 256, 0);
 							foreach(var triangle in triangles)
@@ -85,9 +99,17 @@ namespace WarriorsSnuggery
 								}
 							}
 
-							shroudRevealed[team, x, y] = !isInTriangle && dx + dy <= radiusSquared;
+							var result = !isInTriangle;
+
+							shroudRevealed[team, x, y] = result;
+
 							if (isPlayerTeam)
+							{
+								if (Shroud[x, y].ChangeState(result))
+									changingShroud.Add(Shroud[x, y]);
+
 								VisibilitySolver.ShroudRevealed(x, y);
+							}
 						}
 					}
 				}
@@ -130,13 +152,17 @@ namespace WarriorsSnuggery
 			return triangles;
 		}
 
-		public float ShroudAlpha(MPos position, int team)
+		public void Tick()
 		{
-			var alpha = shroudAlpha[position.X, position.Y];
-			if (alpha < 4 && shroudRevealed[team, position.X, position.Y])
-				shroudAlpha[position.X, position.Y]++;
+			foreach (var shroud in changingShroud)
+				shroud.Tick();
 
-			return 1 - alpha / 4f;
+			changingShroud.RemoveAll(s => s.StateAchieved);
+		}
+
+		public void Clear()
+		{
+			Bounds = MPos.Zero;
 		}
 
 		public string ToString(int team)
@@ -150,11 +176,6 @@ namespace WarriorsSnuggery
 			shroud = shroud.TrimEnd(',');
 
 			return shroud;
-		}
-
-		public void Clear()
-		{
-			Bounds = MPos.Zero;
 		}
 
 		class Triangle

@@ -110,6 +110,7 @@ namespace WarriorsSnuggery
 
 			TerrainLayer.Tick();
 			SmudgeLayer.Tick();
+			ShroudLayer.Tick();
 
 			addObjects();
 		}
