@@ -66,13 +66,11 @@ namespace WarriorsSnuggery
 
 					shroud.Listener = exists ? new MPos(x, yPos) : new MPos(x, y);
 
-					listenerPositions[shroud.Listener].Add(shroud);
+					var listener = shroud.Listener;
+					listenerPositions[listener].Add(shroud);
 
-					var listenerRevealed = shroudRevealed[Actor.PlayerTeam, shroud.Listener.X, shroud.Listener.Y];
-					if (shroud.ChangeState(listenerRevealed))
-					{
+					if (shroud.ChangeState(shroudRevealed[Actor.PlayerTeam, listener.X, listener.Y]))
 						changingShroud.Add(shroud);
-					}
 				}
 			}
 		}
