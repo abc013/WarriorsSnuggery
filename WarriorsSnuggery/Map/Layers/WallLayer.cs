@@ -9,12 +9,15 @@ namespace WarriorsSnuggery
 	{
 		public readonly List<Wall> WallList = new List<Wall>();
 		public readonly List<Wall> VisibleWalls = new List<Wall>();
+		readonly ShroudLayer shroudLayer;
+
 		public Wall[,] Walls { get; private set; }
 		public MPos Bounds { get; private set; }
 		MPos mapBounds;
 
-		public WallLayer(MPos bounds)
+		public WallLayer(MPos bounds, ShroudLayer shroudLayer)
 		{
+			this.shroudLayer = shroudLayer;
 			mapBounds = bounds;
 			Bounds = new MPos((bounds.X + 1) * 2 + 1, (bounds.Y + 1) + 1);
 			Walls = new Wall[Bounds.X, Bounds.Y];
@@ -47,6 +50,9 @@ namespace WarriorsSnuggery
 			WallList.Add(wall);
 			if (wall.CheckVisibility())
 				VisibleWalls.Add(wall);
+
+			if (wall.IsHorizontal)
+				shroudLayer.SetWall(wall.TerrainPosition, wall.Type.Height, true);
 		}
 
 		public void Remove(MPos pos)
@@ -56,12 +62,14 @@ namespace WarriorsSnuggery
 			if (wall == null)
 				return;
 
-			var toRemove = wall;
-			toRemove.Dispose();
-			WallList.Remove(toRemove);
-			VisibleWalls.Remove(toRemove);
+			wall.Dispose();
+			WallList.Remove(wall);
+			VisibleWalls.Remove(wall);
 			Walls[pos.X, pos.Y] = null;
 			notifyNeighbors(pos, false, false);
+
+			if (wall.IsHorizontal)
+				shroudLayer.SetWall(wall.TerrainPosition, wall.Type.Height, false);
 		}
 
 		void notifyNeighbors(MPos pos, bool added, bool ignoresNearby)

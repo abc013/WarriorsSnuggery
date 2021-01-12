@@ -11,6 +11,7 @@ namespace WarriorsSnuggery.Objects
 			shroudRenderable = new BatchObject(RuleLoader.ShroudTexture[0], Color.White);
 		}
 
+		public MPos Listener;
 		readonly MPos pos;
 
 		bool shroudRevealed;
@@ -23,15 +24,16 @@ namespace WarriorsSnuggery.Objects
 		public Shroud(MPos pos) : base(new CPos(pos.X * 512 - 256, pos.Y * 512 - 256, 0), null)
 		{
 			this.pos = pos;
+			Listener = pos;
 		}
 
 		public bool ChangeState(bool revealed)
 		{
-			var value = shroudRevealed ^ revealed;
+			var changed = shroudRevealed ^ revealed;
 
 			shroudRevealed = revealed;
 
-			return value;
+			return changed;
 		}
 
 		public override void Tick()

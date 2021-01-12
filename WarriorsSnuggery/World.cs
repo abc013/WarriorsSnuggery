@@ -45,9 +45,9 @@ namespace WarriorsSnuggery
 
 			var bounds = Map.Bounds;
 			TerrainLayer = new TerrainLayer(bounds);
-			WallLayer = new WallLayer(bounds);
-			PhysicsLayer = new PhysicsLayer(bounds);
 			ShroudLayer = new ShroudLayer(bounds);
+			WallLayer = new WallLayer(bounds, ShroudLayer);
+			PhysicsLayer = new PhysicsLayer(bounds);
 			SmudgeLayer = new SmudgeLayer();
 
 			ActorLayer = new ActorLayer(bounds);

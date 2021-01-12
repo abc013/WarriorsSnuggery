@@ -12,6 +12,7 @@ namespace WarriorsSnuggery
 
 		readonly bool[,,] shroudRevealed; // First: Team Second: X Third: Y
 		public readonly Shroud[,] Shroud;
+		readonly Dictionary<MPos, List<Shroud>> listenerPositions = new Dictionary<MPos, List<Shroud>>();
 		readonly List<Shroud> changingShroud = new List<Shroud>();
 
 		public ShroudLayer(MPos bounds)
@@ -22,8 +23,58 @@ namespace WarriorsSnuggery
 
 			Shroud = new Shroud[Bounds.X, Bounds.Y];
 			for (int x = 0; x < Bounds.X; x++)
+			{
 				for (int y = 0; y < Bounds.Y; y++)
-					Shroud[x, y] = new Shroud(new MPos(x, y));
+				{
+					var shroud = new Shroud(new MPos(x, y));
+
+					var list = new List<Shroud>()
+					{
+						shroud
+					};
+
+					Shroud[x, y] = shroud;
+
+					listenerPositions.Add(new MPos(x, y), list);
+				}
+			}
+		}
+
+		public void SetWall(MPos pos, int height, bool exists)
+		{
+			if (pos.Y == 0)
+				return;
+
+			var shroudCount = height / 512;
+
+			if (shroudCount == 0)
+				return;
+
+			var xPos = pos.X * 2;
+			var yPos = pos.Y * 2;
+
+			if (yPos - 1 < shroudCount)
+				shroudCount = yPos - 1;
+
+			for (int x = xPos; x < xPos + 2; x++)
+			{
+				for (int y = yPos - shroudCount; y < yPos; y++)
+				{
+					var shroud = Shroud[x, y];
+
+					listenerPositions[shroud.Listener].Remove(shroud);
+
+					shroud.Listener = exists ? new MPos(x, yPos) : new MPos(x, y);
+
+					listenerPositions[shroud.Listener].Add(shroud);
+
+					var listenerRevealed = shroudRevealed[Actor.PlayerTeam, shroud.Listener.X, shroud.Listener.Y];
+					if (shroud.ChangeState(listenerRevealed))
+					{
+						changingShroud.Add(shroud);
+					}
+				}
+			}
 		}
 
 		public bool ShroudRevealed(int team, int x, int y)
@@ -48,9 +99,9 @@ namespace WarriorsSnuggery
 				var x = (int)Math.Floor(i / (float)Bounds.X);
 				var y = i % Bounds.X;
 
-				if (isPlayerTeam && Shroud[x, y].ChangeState(values[i]))
-					changingShroud.Add(Shroud[x, y]);
-				
+				if (isPlayerTeam)
+					changeState(x, y, values[i]);
+
 				shroudRevealed[team, x, y] = values[i];
 			}
 		}
@@ -104,12 +155,7 @@ namespace WarriorsSnuggery
 							shroudRevealed[team, x, y] = result;
 
 							if (isPlayerTeam)
-							{
-								if (Shroud[x, y].ChangeState(result))
-									changingShroud.Add(Shroud[x, y]);
-
-								VisibilitySolver.ShroudRevealed(x, y);
-							}
+								changeState(x, y, result);
 						}
 					}
 				}
@@ -118,6 +164,18 @@ namespace WarriorsSnuggery
 			// Camera automatically updates shroud, so we don't want to do that if we move anyways 
 			if (!Camera.LockedToPlayer || ignoreLock)
 				WorldRenderer.CheckVisibility(Camera.LookAt, Camera.DefaultZoom);
+		}
+
+		void changeState(int x, int y, bool value)
+		{
+			foreach (var shroud in listenerPositions[new MPos(x, y)])
+			{
+				if (shroud.ChangeState(value))
+					changingShroud.Add(shroud);
+			}
+
+			if (value)
+				VisibilitySolver.ShroudRevealed(x, y);
 		}
 
 		List<Triangle> getTriangles(World world, CPos position, int height, MPos shroudPos, int radius)
