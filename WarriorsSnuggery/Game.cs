@@ -433,7 +433,8 @@ namespace WarriorsSnuggery
 
 			Editor = !Editor;
 
-			ShowScreen(Editor ? ScreenType.EDITOR : ScreenType.DEFAULT);
+			// Automatically switches to the correct one
+			ShowScreen(ScreenType.DEFAULT);
 		}
 
 		// Instant travel to next level
@@ -470,7 +471,10 @@ namespace WarriorsSnuggery
 
 		public void ShowScreen(ScreenType screen)
 		{
-			ScreenControl.ShowScreen(screen);
+			if (InteractionMode != InteractionMode.EDITOR && Editor && screen == ScreenType.DEFAULT)
+				ScreenControl.ShowScreen(ScreenType.EDITOR);
+			else
+				ScreenControl.ShowScreen(screen);
 		}
 
 		public void ShowDecisionScreen(Action onDecline, Action onAgree, string text)

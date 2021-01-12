@@ -36,11 +36,6 @@ namespace WarriorsSnuggery.UI.Screens
 			ShowScreen(ScreenType.DEFAULT);
 		}
 
-		public void NewDefaultScreen(Screen screen)
-		{
-			cachedScreens[ScreenType.DEFAULT] = screen;
-		}
-
 		public void SetDecision(Action OnDecline, Action OnAgree, string text)
 		{
 			if (!cachedScreens.ContainsKey(ScreenType.DECISION))
