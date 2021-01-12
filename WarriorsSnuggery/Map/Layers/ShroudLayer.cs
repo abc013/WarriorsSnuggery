@@ -53,6 +53,9 @@ namespace WarriorsSnuggery
 			var xPos = pos.X * 2;
 			var yPos = pos.Y * 2;
 
+			if (xPos >= Bounds.X || yPos >= Bounds.Y)
+				return;
+
 			if (yPos - 1 < shroudCount)
 				shroudCount = yPos - 1;
 
