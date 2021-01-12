@@ -374,7 +374,7 @@ namespace WarriorsSnuggery
 
 				if (key == Keys.Period)
 				{
-					World.ShroudLayer.RevealAll = true;
+					World.ShroudLayer.RevealAll = !World.ShroudLayer.RevealAll;
 					WorldRenderer.CheckVisibility(Camera.LookAt, Camera.DefaultZoom);
 				}
 
