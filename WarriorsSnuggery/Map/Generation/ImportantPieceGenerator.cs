@@ -22,7 +22,7 @@ namespace WarriorsSnuggery.Maps.Generators
 		public readonly int NoiseMapID = -1;
 
 		[Desc("Pieces of which one is chosen to be spawned.")]
-		public readonly string[] Pieces = new string[0];
+		public readonly string[] Pieces = Array.Empty<string>();
 
 		[Desc("Sets where to spawn the piece. This option only works if PositionType is set to 'POSITION'.")]
 		public readonly MPos Position = MPos.Zero;
@@ -31,6 +31,9 @@ namespace WarriorsSnuggery.Maps.Generators
 		public readonly PositionType PositionType = PositionType.POSITION;
 		[Desc("Determines when to generate this piece. If set to NONE, it will always be generated.")]
 		public readonly ObjectiveType[] SpawnOnObjectives = new [] { ObjectiveType.NONE };
+
+		[Desc("Allows this piece to be a waypoint as well. This means that any PathGenerator will take the piece under consideration for pathing.")]
+		public readonly bool IsWaypoint = false;
 
 		public ImportantPieceGeneratorInfo(int id, List<MiniTextNode> nodes)
 		{
@@ -93,6 +96,9 @@ namespace WarriorsSnuggery.Maps.Generators
 			Loader.GenerateCrucialPiece(piece, pos);
 			Loader.PlayerSpawn = new CPos(pos.X * 1024 + piece.Size.X * 512, pos.Y * 1024 + piece.Size.Y * 512, 0);
 			markDirty(pos, piece);
+
+			if (info.IsWaypoint)
+				addWaypoint(piece, pos);
 		}
 
 		void generateKey(Piece piece, NoiseMap noise)
@@ -104,10 +110,11 @@ namespace WarriorsSnuggery.Maps.Generators
 			var spawnArea = Bounds - (piece.Size + new MPos(dist, dist));
 
 			MPos pos;
+			WaypointLocation location;
 			var success = false;
 			do
 			{
-				pos = getPosNearBorder(spawnArea);
+				pos = getPosNearBorder(spawnArea, out location);
 
 				// Don't spawn near exits
 				if (exitExists && (pos.ToCPos() - Loader.Exit).SquaredFlatDist < mapLength)
@@ -121,6 +128,9 @@ namespace WarriorsSnuggery.Maps.Generators
 					markDirty(pos, piece);
 			}
 			while (!success);
+
+			if (info.IsWaypoint)
+				addWaypoint(piece, pos, location);
 		}
 
 		void generateExit(Piece piece, NoiseMap noise)
@@ -128,10 +138,11 @@ namespace WarriorsSnuggery.Maps.Generators
 			var spawnArea = Bounds - piece.Size;
 
 			MPos pos;
+			WaypointLocation location;
 			var success = false;
 			do
 			{
-				pos = getPosNearBorder(spawnArea);
+				pos = getPosNearBorder(spawnArea, out location);
 
 				if (info.NoiseMapID >= 0 && Random.NextDouble() > noise[pos.X, pos.Y] + 0.1f)
 					continue;
@@ -143,26 +154,40 @@ namespace WarriorsSnuggery.Maps.Generators
 			while (!success);
 
 			Loader.Exit = pos.ToCPos() + new CPos(piece.Size.X * 512, piece.Size.Y * 512, 0);
+
+			if (info.IsWaypoint)
+				addWaypoint(piece, pos, location);
 		}
 
-		MPos getPosNearBorder(MPos spawnArea)
+		void addWaypoint(Piece piece, MPos pos, WaypointLocation location = WaypointLocation.CENTER)
+		{
+			var position = pos + new MPos(piece.Size.X / 2, piece.Size.Y / 2);
+			Loader.Waypoints.Add(new Waypoint(position, location, WaypointType.END));
+		}
+
+		MPos getPosNearBorder(MPos spawnArea, out WaypointLocation location)
 		{
 			var pos = MPos.Zero;
+			location = WaypointLocation.CENTER;
 			// Picking a random side, 0 = x, 1 = y, 2 = -x, 3 = -y;
 			var side = (byte)Random.Next(4);
 			switch (side)
 			{
 				case 0:
 					pos = new MPos(Random.Next(2), Random.Next(spawnArea.X));
+					location = WaypointLocation.TOP;
 					break;
 				case 1:
 					pos = new MPos(Random.Next(spawnArea.Y), Random.Next(2));
+					location = WaypointLocation.LEFT;
 					break;
 				case 2:
 					pos = new MPos(spawnArea.X - Random.Next(2), Random.Next(spawnArea.X));
+					location = WaypointLocation.BOTTOM;
 					break;
 				case 3:
 					pos = new MPos(Random.Next(spawnArea.X), spawnArea.Y - Random.Next(2));
+					location = WaypointLocation.RIGHT;
 					break;
 			}
 

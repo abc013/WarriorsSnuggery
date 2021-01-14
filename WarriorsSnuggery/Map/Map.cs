@@ -35,7 +35,8 @@ namespace WarriorsSnuggery
 		public readonly CPos BottomLeftCorner;
 		public readonly CPos BottomRightCorner;
 
-		public Dictionary<int, NoiseMap> NoiseMaps;
+		public Dictionary<int, NoiseMap> NoiseMaps { get; private set; }
+		public List<Waypoint> Waypoints { get; private set; }
 
 		public Map(World world, MapType type, int seed, int level, int difficulty)
 		{
@@ -73,6 +74,7 @@ namespace WarriorsSnuggery
 
 			var mapLoader = new MapLoader(world, this);
 			NoiseMaps = mapLoader.NoiseMaps;
+			Waypoints = mapLoader.Waypoints;
 
 			mapLoader.Generate();
 

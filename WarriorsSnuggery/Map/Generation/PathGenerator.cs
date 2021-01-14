@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace WarriorsSnuggery.Maps.Generators
 {
@@ -19,10 +20,6 @@ namespace WarriorsSnuggery.Maps.Generators
 		[Desc("Terrain to use as roadtiles.")]
 		public readonly ushort[] Types = new ushort[] { 0 };
 
-		[Desc("Uses the entrance as start point for the paths.", "If false, random points at the map edges will be used.")]
-		public readonly bool FromEntrance = true;
-		[Desc("Uses the exit as end point for the paths.", "If false, random points at the map edges will be used.")]
-		public readonly bool ToExit = false;
 		[Desc("Maximum count of paths.")]
 		public readonly int MaxCount = 5;
 		[Desc("Minimum count of paths.")]
@@ -65,12 +62,42 @@ namespace WarriorsSnuggery.Maps.Generators
 		public override void Generate()
 		{
 			var count = Random.Next(info.MinCount, info.MaxCount);
+
+			// To have maximum diversity, we should get each path two nodes plus two extra.
+			var nodesToGenerate = (count * 2 + 2) - Loader.Waypoints.Count;
+			for (int i = 0; i < nodesToGenerate; i++)
+				Loader.Waypoints.Add(MapUtils.RandomPositionFromEdge(Random, 1, Bounds));
+
+			var waypointEnds = Loader.Waypoints.Where(w => w.Type == WaypointType.END).ToList();
+			var waypointPassages = Loader.Waypoints.Where(w => w.Type == WaypointType.PASSAGE).ToList();
 			for (int i = 0; i < count; i++)
 			{
-				MPos start = info.FromEntrance ? PlayerSpawn.ToMPos() : MapUtils.RandomPositionInMap(Random, 1, Bounds);
-				MPos end = info.ToExit ? Exit.ToMPos() : MapUtils.RandomPositionFromEdge(Random, 1, Bounds);
+				Console.WriteLine($"count {count}");
+				var previousIndex = Random.Next(waypointEnds.Count);
+				var previous = waypointEnds[previousIndex];
+				var previousLocation = previous.Location;
+				waypointEnds.RemoveAt(previousIndex);
+				Console.WriteLine(previous.Position);
 
-				generateSingle(start, end);
+				var passageCount = Math.Clamp(Random.Next(3), 0, waypointPassages.Count);
+
+				for (int j = 0; j < passageCount; j++)
+				{
+					var current = waypointPassages[Random.Next(waypointPassages.Count)];
+
+					generateSingle(previous.Position, current.Position);
+
+					previous = current;
+					Console.WriteLine(previous.Position);
+				}
+
+				var otherLocations = waypointEnds.Where(w => w.Location != previousLocation).ToList();
+				var nextIndex = Random.Next(otherLocations.Count);
+				var next = otherLocations[nextIndex];
+				waypointEnds.Remove(next);
+				Console.WriteLine(next.Position);
+
+				generateSingle(previous.Position, next.Position);
 			}
 
 			markDirty();

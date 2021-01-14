@@ -28,7 +28,7 @@ namespace WarriorsSnuggery.Maps.Generators
 			this.id = id;
 			Loader.PartLoader.SetValues(this, nodes);
 
-			if (id >= 0)
+			if (Patrols != null && Patrols.Length != 0)
 				PatrolProbabilities = Patrols.Sum(p => p.Probability);
 		}
 

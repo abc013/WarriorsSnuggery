@@ -30,7 +30,9 @@ namespace WarriorsSnuggery.Maps
 
 		public readonly Random Random;
 		public readonly NoiseMap EmptyNoiseMap;
+
 		public readonly Dictionary<int, NoiseMap> NoiseMaps = new Dictionary<int, NoiseMap>();
+		public readonly List<Waypoint> Waypoints = new List<Waypoint>();
 
 		readonly int[,] generatorReservations;
 

@@ -109,10 +109,12 @@ namespace WarriorsSnuggery
 			{
 				DebugRenderer.SetCurrent();
 				if (Settings.CurrentMap >= 0 && world.Map.NoiseMaps.ContainsKey(Settings.CurrentMap))
-				{
 					world.Map.NoiseMaps[Settings.CurrentMap].Render();
-					DebugRenderer.Render();
-				}
+
+				foreach (var point in world.Map.Waypoints)
+					ColorManager.DrawDot(point.Position.ToCPos(), Color.Red);
+
+				DebugRenderer.Render();
 				MasterRenderer.PrimitiveType = PrimitiveType.Lines;
 				foreach (var sector in world.PhysicsLayer.Sectors)
 					sector.RenderDebug();

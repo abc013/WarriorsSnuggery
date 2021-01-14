@@ -30,7 +30,7 @@ namespace WarriorsSnuggery.Maps
 			return positions.ToArray();
 		}
 
-		public static MPos RandomPositionInMap(Random random, int distanceToMapEdge, MPos bounds)
+		public static Waypoint RandomPositionInMap(Random random, int distanceToMapEdge, MPos bounds)
 		{
 			var xSize = bounds.X - distanceToMapEdge * 2;
 			if (xSize < 0)
@@ -43,31 +43,36 @@ namespace WarriorsSnuggery.Maps
 			var x = distanceToMapEdge + random.Next(xSize);
 			var y = distanceToMapEdge + random.Next(ySize);
 
-			return new MPos(x, y);
+			return new Waypoint(new MPos(x, y), WaypointLocation.CENTER, WaypointType.PASSAGE);
 		}
 
-		public static MPos RandomPositionFromEdge(Random random, int distanceFromMapEdge, MPos bounds)
+		public static Waypoint RandomPositionFromEdge(Random random, int distanceFromMapEdge, MPos bounds)
 		{
 			MPos pos = MPos.Zero;
+			WaypointLocation location = WaypointLocation.CENTER;
 
 			var side = (byte)random.Next(4);
 			switch (side)
 			{
 				case 0:
 					pos = new MPos(distanceFromMapEdge, distanceFromMapEdge + random.Next(bounds.Y - distanceFromMapEdge * 2));
+					location = WaypointLocation.TOP;
 					break;
 				case 1:
 					pos = new MPos(distanceFromMapEdge + random.Next(bounds.X - distanceFromMapEdge * 2), distanceFromMapEdge);
+					location = WaypointLocation.LEFT;
 					break;
 				case 2:
 					pos = new MPos(bounds.X - distanceFromMapEdge - 1, distanceFromMapEdge + random.Next(bounds.Y - distanceFromMapEdge * 2));
+					location = WaypointLocation.BOTTOM;
 					break;
 				case 3:
 					pos = new MPos(distanceFromMapEdge + random.Next(bounds.X - distanceFromMapEdge * 2), bounds.Y - distanceFromMapEdge - 1);
+					location = WaypointLocation.RIGHT;
 					break;
 			}
 
-			return pos;
+			return new Waypoint(pos, location, WaypointType.END);
 		}
 
 		public static MPos RandomMapBounds(Random random, int difficulty, int level)
@@ -87,17 +92,8 @@ namespace WarriorsSnuggery.Maps
 			var valueX = (int)(multipier * sizeMultiplier) + variation;
 			var valueY = valueX;
 
-			if (valueX < minimum.X)
-				valueX = minimum.X;
-
-			if (valueX > maximum.X)
-				valueX = maximum.X;
-
-			if (valueY < minimum.Y)
-				valueY = minimum.Y;
-
-			if (valueY > maximum.Y)
-				valueY = maximum.Y;
+			valueX = Math.Clamp(valueX, minimum.X, maximum.X);
+			valueY = Math.Clamp(valueY, minimum.Y, maximum.Y);
 
 			return new MPos(valueX, valueY);
 		}

@@ -17,7 +17,7 @@ namespace WarriorsSnuggery.Maps.Generators
 		public readonly float NoiseMapLimit = 0;
 
 		[Desc("Pieces to possibly spawn.")]
-		public readonly string[] Pieces = new string[0];
+		public readonly string[] Pieces = Array.Empty<string>();
 
 		[Desc("maximum bounds for finer piecespawning.", "If set to zero, size will be determined automatically.")]
 		public readonly MPos MaxBounds = new MPos(0, 0);
