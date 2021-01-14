@@ -1,0 +1,7 @@
+stone
+slime
+flesh
+spider
+wood
+none
+magic

@@ -57,6 +57,8 @@ s_tree1=
 		Type=PARTICLE
 		Offset=0,-32,256
 		Radius=512
+	Armor=
+		Name=wood
 
 m_tree1=
 	Sprite=
@@ -110,6 +112,8 @@ m_tree1=
 		Radius=712
 	World=
 		Hideable=true
+	Armor=
+		Name=wood
 
 conifer1=
 	Sprite=
@@ -134,6 +138,8 @@ conifer1=
 		Type=ACTOR
 	World=
 		Hideable=true
+	Armor=
+		Name=wood
 
 s_plant1=
 	Sprite=

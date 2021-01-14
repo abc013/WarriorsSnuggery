@@ -36,6 +36,8 @@ fly=
 	RevealsShroud=
 		Range=3
 		Interval=0
+	Armor=
+		Name=none
 
 heal=
 	AnimatedSprite=
@@ -113,6 +115,8 @@ heal=
 	RevealsShroud=
 		Range=8
 		Interval=0
+	Armor=
+		Name=flesh
 
 shadowrunner=
 	AnimatedSprite=
@@ -191,6 +195,8 @@ shadowrunner=
 	RevealsShroud=
 		Range=12
 		Interval=0
+	Armor=
+		Name=magic
 
 blackspider_small=
 	AnimatedSprite=
@@ -250,6 +256,8 @@ blackspider_small=
 			Volume=0.7
 			RandomVolume=0.3
 			RandomPitch=0.5
+	Armor=
+		Name=spider
 
 poisonspider=
 	AnimatedSprite=
@@ -309,6 +317,8 @@ poisonspider=
 			Volume=0.7
 			RandomVolume=0.3
 			RandomPitch=0.5
+	Armor=
+		Name=spider
 
 poisonegg=
 	AnimatedSprite=
@@ -339,6 +349,8 @@ poisonegg=
 		Sound=
 			Name=poisonegg_beep
 			Volume=0.3
+	Armor=
+		Name=none
 
 slime_block=
 	Sprite=
@@ -415,6 +427,8 @@ slime_block=
 	RevealsShroud=
 		Range=2
 		Interval=0
+	Armor=
+		Name=slime
 
 slime_boss=
 	AnimatedSprite=
@@ -445,6 +459,8 @@ slime_boss=
 	RevealsShroud=
 		Range=10
 		Interval=0
+	Armor=
+		Name=slime
 
 slime_big_block=
 	Sprite=
@@ -530,6 +546,8 @@ slime_big_block=
 	RevealsShroud=
 		Range=2
 		Interval=0
+	Armor=
+		Name=slime
 
 slime_small=
 	AnimatedSprite=
@@ -557,6 +575,8 @@ slime_small=
 	RevealsShroud=
 		Range=3
 		Interval=0
+	Armor=
+		Name=slime
 
 slime_medium=
 	AnimatedSprite=
@@ -619,6 +639,8 @@ slime_medium=
 	RevealsShroud=
 		Range=3
 		Interval=0
+	Armor=
+		Name=slime
 
 slime_big=
 	AnimatedSprite=
@@ -682,6 +704,8 @@ slime_big=
 	RevealsShroud=
 		Range=6
 		Interval=0
+	Armor=
+		Name=slime
 
 tower=
 	Sprite=
@@ -726,6 +750,8 @@ tower=
 	RevealsShroud=
 		Range=16
 		Interval=0
+	Armor=
+		Name=stone
 
 cannontower=
 	AnimatedSprite=
@@ -771,6 +797,8 @@ cannontower=
 	RevealsShroud=
 		Range=16
 		Interval=0
+	Armor=
+		Name=stone
 
 magictower=
 	AnimatedSprite=
@@ -835,6 +863,8 @@ magictower=
 		Sound=
 			Name=magictower_destroyed
 			Volume=0.7
+	Armor=
+		Name=stone
 
 machine=
 	Sprite=
@@ -885,3 +915,5 @@ machine=
 	RevealsShroud=
 		Range=24
 		Interval=0
+	Armor=
+		Name=stone

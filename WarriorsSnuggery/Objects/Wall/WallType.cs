@@ -31,7 +31,7 @@ namespace WarriorsSnuggery.Objects
 
 		[Desc("Health of the wall.", "If 0 or negative, the wall is invincible.")]
 		public readonly int Health = 0;
-		public bool Invincible { get { return Health <= 0; } }
+		public bool Invincible => Health <= 0;
 
 		[Desc("Spawns a specific wall when dying.")]
 		public readonly short WallOnDeath = -1;
@@ -44,6 +44,9 @@ namespace WarriorsSnuggery.Objects
 
 		[Desc("Wall is transparent.", "This is used for checking whether the player can see through this wall.")]
 		public readonly bool IsTransparent;
+
+		[Desc("Specifies the armor that the wall has.")]
+		public readonly string Armor;
 
 		public WallType(short id, List<MiniTextNode> nodes, bool documentation = false)
 		{

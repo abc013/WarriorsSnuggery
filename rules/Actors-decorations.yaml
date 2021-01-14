@@ -28,6 +28,9 @@ b_stone1=
 		Name=b_stone1_debris
 		Type=ACTOR
 		AtCenter=true
+	Armor=
+		Name=stone
+
 
 b_stone1_debris=
 	Sprite@1=
@@ -110,6 +113,8 @@ b_bookshelf=
 		Size=512,512,1024
 	World=
 		Hideable=true
+	Armor=
+		Name=wood
 
 table1=
 	Sprite=
@@ -139,6 +144,8 @@ table1=
 			RandomPitch=0.2
 			RandomVolume=0.3
 			Volume=0.6
+	Armor=
+		Name=wood
 
 table1_debris=
 	Sprite=
@@ -147,6 +154,8 @@ table1_debris=
 		UseAsPreview=true
 		Offset=0,0,-512
 		ColorVariation=30,30,30
+	Armor=
+		Name=wood
 
 painting=
 	Sprite=

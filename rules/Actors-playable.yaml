@@ -107,6 +107,8 @@ human_playable=
 	RevealsShroud=
 		Range=8
 		Interval=0
+	Armor=
+		Name=flesh
 
 heal_playable=
 	AnimatedSprite=
@@ -170,6 +172,8 @@ heal_playable=
 	RevealsShroud=
 		Range=8
 		Interval=0
+	Armor=
+		Name=flesh
 
 shadowrunner_playable=
 	AnimatedSprite=
@@ -232,6 +236,8 @@ shadowrunner_playable=
 	RevealsShroud=
 		Range=12
 		Interval=0
+	Armor=
+		Name=magic
 
 blackspider_small_playable=
 	AnimatedSprite=
@@ -288,6 +294,8 @@ blackspider_small_playable=
 		Count=10
 		Name=blood
 		Type=PARTICLE
+	Armor=
+		Name=spider
 
 slime_big_playable=
 	AnimatedSprite=
@@ -339,3 +347,5 @@ slime_big_playable=
 	RevealsShroud=
 		Range=6
 		Interval=0
+	Armor=
+		Name=slime

@@ -28,6 +28,8 @@ bag1=
 		Probability=0.3
 		Name=gold
 		Type=ACTOR
+	Armor=
+		Name=none
 
 chest1=
 	Sprite=
@@ -61,6 +63,8 @@ chest1=
 			RandomPitch=0.2
 			RandomVolume=0.3
 			Volume=0.6
+	Armor=
+		Name=wood
 
 box1=
 	Sprite=
@@ -90,6 +94,8 @@ box1=
 			RandomPitch=0.2
 			RandomVolume=0.3
 			Volume=0.6
+	Armor=
+		Name=wood
 
 box2=
 	Sprite=
@@ -119,6 +125,8 @@ box2=
 			RandomPitch=0.2
 			RandomVolume=0.3
 			Volume=0.6
+	Armor=
+		Name=wood
 
 box1_debris=
 	Sprite=
@@ -172,6 +180,8 @@ barrel=
 			RandomPitch=0.2
 			RandomVolume=0.3
 			Volume=0.6
+	Armor=
+		Name=wood
 
 barrel_mana=
 	Sprite=
@@ -212,6 +222,8 @@ barrel_mana=
 			RandomPitch=0.2
 			RandomVolume=0.3
 			Volume=0.6
+	Armor=
+		Name=wood
 
 barrel_debris=
 	Sprite=
@@ -254,6 +266,8 @@ barrel_poison=
 			RandomPitch=0.2
 			RandomVolume=0.3
 			Volume=0.6
+	Armor=
+		Name=wood
 
 barrel_poison_debris=
 	Sprite=

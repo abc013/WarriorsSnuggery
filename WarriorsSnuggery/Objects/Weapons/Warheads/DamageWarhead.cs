@@ -21,7 +21,7 @@ namespace WarriorsSnuggery.Objects.Weapons
 		[Desc("Range steps used for falloff.", "Defines at which range the falloff points are defined.")]
 		public readonly int[] RangeSteps = new[] { 0, 256, 512, 1024, 2048, 3096 };
 
-		[Desc("Modifiers for each armor.", "The value will be multiplied with the range.")]
+		[Desc("Modifiers for each armor.", "The value will be multiplied with the damage.")]
 		public readonly Dictionary<string, float> ArmorModifiers = new Dictionary<string, float>();
 
 		readonly int maxRange;
@@ -109,6 +109,9 @@ namespace WarriorsSnuggery.Objects.Weapons
 
 					float damagemultiplier = FalloffHelper.GetMultiplier(Falloff, RangeSteps, dist, weapon.DamageRangeModifier);
 					var damage = (int)Math.Floor(damagemultiplier * Damage * weapon.DamageModifier);
+
+					if (ArmorModifiers.ContainsKey(wall.Type.Armor))
+						damage = (int)(damage * ArmorModifiers[wall.Type.Armor]);
 
 					if (damage == 0)
 						continue;

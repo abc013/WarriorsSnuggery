@@ -8,6 +8,7 @@
 	Health=400
 	ConsiderWallsNearby=true
 	WallOnDeath=10
+	Armor=wood
 
 1=
 	Image=walls0
@@ -19,6 +20,7 @@
 	Health=400
 	ConsiderWallsNearby=true
 	WallOnDeath=9
+	Armor=stone
 
 2=
 	Image=handrails
@@ -32,6 +34,7 @@
 	Health=200
 	WallOnDeath=9
 	IsTransparent=true
+	Armor=stone
 
 3=
 	Image=fence0
@@ -45,6 +48,7 @@
 	Health=150
 	WallOnDeath=10
 	IsTransparent=true
+	Armor=wood
 
 4=
 	Image=walls0_damaged0
@@ -52,6 +56,7 @@
 	DamagePenetration=0.3
 	Health=300
 	WallOnDeath=9
+	Armor=stone
 
 5=
 	Image=walls0_damaged1
@@ -59,6 +64,7 @@
 	DamagePenetration=0.3
 	Health=300
 	WallOnDeath=9
+	Armor=stone
 
 8=
 	Image=walls0_gate
@@ -71,6 +77,7 @@
 	DamagePenetration=1
 	Health=250
 	IsTransparent=true
+	Armor=stone
 
 9=
 	Image=walls_rubble0
