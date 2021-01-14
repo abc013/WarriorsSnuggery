@@ -55,17 +55,17 @@ namespace WarriorsSnuggery.Objects.Weapons
 
 			var effects = origin.Effects.Where(e => e.Active);
 
-			foreach (var effect in effects.Where(e => e.Spell.Type == Spells.EffectType.INACCURACY))
-				InaccuracyModifier *= effect.Spell.Value;
+			foreach (var effect in effects.Where(e => e.Effect.Type == Spells.EffectType.INACCURACY))
+				InaccuracyModifier *= effect.Effect.Value;
 
-			foreach (var effect in effects.Where(e => e.Spell.Type == Spells.EffectType.DAMAGE))
-				DamageModifier *= effect.Spell.Value;
+			foreach (var effect in effects.Where(e => e.Effect.Type == Spells.EffectType.DAMAGE))
+				DamageModifier *= effect.Effect.Value;
 
-			foreach (var effect in effects.Where(e => e.Spell.Type == Spells.EffectType.DAMAGERANGE))
-				DamageRangeModifier *= effect.Spell.Value;
+			foreach (var effect in effects.Where(e => e.Effect.Type == Spells.EffectType.DAMAGERANGE))
+				DamageRangeModifier *= effect.Effect.Value;
 
-			foreach (var effect in effects.Where(e => e.Spell.Type == Spells.EffectType.RANGE))
-				RangeModifier *= effect.Spell.Value;
+			foreach (var effect in effects.Where(e => e.Effect.Type == Spells.EffectType.RANGE))
+				RangeModifier *= effect.Effect.Value;
 
 			if (Type.FireSound != null)
 			{

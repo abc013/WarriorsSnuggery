@@ -63,6 +63,9 @@ namespace DocWriter
 
 			HTMLWriter.WriteHeader("Spell");
 			TypeWriter.Write(typeof(WarriorsSnuggery.Spells.Spell), new[] { emptyTextNodes });
+
+			HTMLWriter.WriteHeader("Effect");
+			TypeWriter.Write(typeof(WarriorsSnuggery.Spells.Effect), new[] { emptyTextNodes });
 		}
 
 		public static void WriteTrophies()

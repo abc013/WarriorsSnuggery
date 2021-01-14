@@ -82,8 +82,8 @@ namespace WarriorsSnuggery.Objects.Parts
 			if (MouseInput.IsLeftDown && !self.World.Game.ScreenControl.CursorOnUI())
 				attackTarget(MouseInput.GamePosition);
 
-			foreach (var effect in self.Effects.Where(e => e.Active && e.Spell.Type == Spells.EffectType.MANA))
-				self.World.Game.Statistics.Mana += (int)effect.Spell.Value;
+			foreach (var effect in self.Effects.Where(e => e.Active && e.Effect.Type == Spells.EffectType.MANA))
+				self.World.Game.Statistics.Mana += (int)effect.Effect.Value;
 
 			self.World.PlayerDamagedTick++;
 		}

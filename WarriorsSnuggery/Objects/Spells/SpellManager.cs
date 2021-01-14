@@ -52,8 +52,8 @@ namespace WarriorsSnuggery.Spells
 		public bool Activated;
 		public bool Recharging;
 
-		public float RemainingDuration => 1 - duration / (float)node.Spell.Duration;
-		public float RechargeProgress => 1 - recharge / (float)node.Spell.Cooldown;
+		public float RemainingDuration => 1 - duration / (float)node.Duration;
+		public float RechargeProgress => 1 - recharge / (float)node.Cooldown;
 		public bool Ready => !(Activated || Recharging);
 
 		public SpellCaster(Game game, SpellTreeNode node, (float, float) values)
@@ -63,8 +63,8 @@ namespace WarriorsSnuggery.Spells
 
 			if (values.Item1 != 0 || values.Item2 != 0)
 			{
-				duration = (int)((1 - values.Item1) * node.Spell.Duration);
-				recharge = (int)((1 - values.Item2) * node.Spell.Cooldown);
+				duration = (int)((1 - values.Item1) * node.Duration);
+				recharge = (int)((1 - values.Item2) * node.Cooldown);
 				if (duration > 0)
 					Activated = true;
 				else if (recharge > 0)
@@ -90,14 +90,14 @@ namespace WarriorsSnuggery.Spells
 			if (!Ready || !Unlocked())
 				return false;
 
-			if (game.Statistics.Mana < node.Spell.ManaCost)
+			if (game.Statistics.Mana < node.ManaCost)
 				return false;
 
-			game.Statistics.Mana -= node.Spell.ManaCost;
+			game.Statistics.Mana -= node.ManaCost;
 
 			Activated = true;
-			recharge = node.Spell.Cooldown;
-			duration = node.Spell.Duration;
+			recharge = node.Cooldown;
+			duration = node.Duration;
 
 			actor.CastSpell(node.Spell);
 

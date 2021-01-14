@@ -1,8 +1,9 @@
 # Important: do NOT change the queue of the following rules. If you do so, the game is going to crash.
 Particles=Particles.yaml
+Spells=Spells.yaml
 Weapons=Weapons.yaml
 Actors=Actors.yaml
 Terrain=Terrain.yaml
 Walls=Walls.yaml
-Spells=Spells.yaml
+SpellTree=SpellTree.yaml
 Trophies=Trophies.yaml

@@ -156,7 +156,7 @@ namespace WarriorsSnuggery.Objects
 			foreach (var part in Parts)
 				part.OnLoad(init.Nodes);
 
-			var effects = init.Nodes.Where(n => n.Key == "EffectPart");
+			var effects = init.Nodes.Where(n => n.Key == nameof(EffectPart));
 			foreach (var effect in effects)
 				Effects.Add(new EffectPart(this, effect.Children));
 
@@ -230,7 +230,7 @@ namespace WarriorsSnuggery.Objects
 			if (CurrentAction.Type == ActionType.END_ATTACK || CurrentAction.Type == ActionType.ATTACK)
 				return false;
 
-			if (Effects.Any(e => e.Active && e.Spell.Type == Spells.EffectType.STUN))
+			if (Effects.Any(e => e.Active && e.Effect.Type == Spells.EffectType.STUN))
 				return false;
 
 			return true;
@@ -347,7 +347,14 @@ namespace WarriorsSnuggery.Objects
 			if (World.Game.Editor)
 				return;
 
-			Effects.Add(new EffectPart(this, spell));
+			if (spell.Sound != null)
+			{
+				var sound = new Sound(spell.Sound);
+				sound.Play(Position, false);
+			}
+
+			for (int i = 0; i < spell.Effects.Length; i++)
+				Effects.Add(new EffectPart(this, spell.Effects[i], spell, i));
 		}
 
 		public override bool CheckVisibility()
@@ -368,7 +375,7 @@ namespace WarriorsSnuggery.Objects
 			if (!visible)
 				return;
 
-			if (Effects.Any(e => e.Active && e.Spell.Type == Spells.EffectType.INVISIBILITY))
+			if (Effects.Any(e => e.Active && e.Effect.Type == Spells.EffectType.INVISIBILITY))
 				return;
 
 			base.Render();
@@ -434,8 +441,8 @@ namespace WarriorsSnuggery.Objects
 				if (Health.HP <= 0)
 					Killed(null);
 
-				foreach (var effect in Effects.Where(e => e.Active && e.Spell.Type == Spells.EffectType.HEALTH))
-					Health.HP += (int)effect.Spell.Value;
+				foreach (var effect in Effects.Where(e => e.Active && e.Effect.Type == Spells.EffectType.HEALTH))
+					Health.HP += (int)effect.Effect.Value;
 			}
 
 			foreach (var part in tickParts)
@@ -498,7 +505,7 @@ namespace WarriorsSnuggery.Objects
 			if (CurrentAction.Type == ActionType.PREPARE_ATTACK)
 				return;
 
-			if (Effects.Any(e => e.Active && e.Spell.Type == Spells.EffectType.STUN))
+			if (Effects.Any(e => e.Active && e.Effect.Type == Spells.EffectType.STUN))
 				return;
 
 			var action = new ActorAction(ActionType.PREPARE_ATTACK, true);
@@ -530,8 +537,8 @@ namespace WarriorsSnuggery.Objects
 				part.OnAttack(target.Position, weapon);
 
 			var reloadModifier = 1f;
-			foreach (var effect in Effects.Where(e => e.Active && e.Spell.Type == Spells.EffectType.COOLDOWN))
-				reloadModifier *= effect.Spell.Value;
+			foreach (var effect in Effects.Where(e => e.Active && e.Effect.Type == Spells.EffectType.COOLDOWN))
+				reloadModifier *= effect.Effect.Value;
 
 			reloadDelay = (int)(ActiveWeapon.Type.Reload * reloadModifier);
 		}
@@ -550,7 +557,7 @@ namespace WarriorsSnuggery.Objects
 			if (Health == null || Health.HP <= 0)
 				return;
 
-			if (Effects.Any(e => e.Active && e.Spell.Type == Spells.EffectType.SHIELD))
+			if (Effects.Any(e => e.Active && e.Effect.Type == Spells.EffectType.SHIELD))
 				return;
 
 			Health.HP -= damage;

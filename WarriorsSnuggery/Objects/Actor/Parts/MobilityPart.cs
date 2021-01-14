@@ -119,8 +119,8 @@ namespace WarriorsSnuggery.Objects.Parts
 			Force = CPos.Zero;
 
 			var speedFactor = 1f;
-			foreach (var effect in self.Effects.Where(e => e.Active && e.Spell.Type == Spells.EffectType.SPEED))
-				speedFactor *= effect.Spell.Value;
+			foreach (var effect in self.Effects.Where(e => e.Active && e.Effect.Type == Spells.EffectType.SPEED))
+				speedFactor *= effect.Effect.Value;
 
 			var maxSpeed = speedFactor * info.Speed;
 			if (Math.Abs(Velocity.X) > maxSpeed)

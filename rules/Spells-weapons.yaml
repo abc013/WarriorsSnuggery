@@ -1,0 +1,19 @@
+minor_slowdown=
+	Effects=
+		1=
+			Type=Speed
+			Duration=120
+			Value=0.9
+
+web_stun=
+	Effects=
+		1=
+			Type=STUN
+			Duration=5
+
+web_slowdown=
+	Effects=
+		1=
+			Type=Speed
+			Duration=80
+			Value=0.6

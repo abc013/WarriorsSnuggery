@@ -25,6 +25,7 @@ namespace WarriorsSnuggery.Loader
 			return (T)Convert(file, node, typeof(T));
 		}
 
+		// TODO improve
 		public static object Convert(string file, MiniTextNode node, Type t)
 		{
 			var s = node.Value;
@@ -350,7 +351,11 @@ namespace WarriorsSnuggery.Loader
 			}
 			else if (t == typeof(Spells.Spell))
 			{
-				return new Spells.Spell(node.Children);
+				return Spells.SpellCreator.GetType(s.Trim());
+			}
+			else if (t == typeof(Spells.Effect))
+			{
+				return new Spells.Effect(node.Children);
 			}
 			else if (t == typeof(Objects.Weapons.IProjectileType))
 			{

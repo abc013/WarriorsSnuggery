@@ -18,8 +18,11 @@ namespace WarriorsSnuggery
 			var terrainFiles = new string[0];
 			var terrainPaths = new string[0];
 
-			var uiFiles = new string[0];
-			var uiPaths = new string[0];
+			var spellFiles = new string[0];
+			var spellPaths = new string[0];
+
+			var spellTreeFiles = new string[0];
+			var spellTreePaths = new string[0];
 
 			foreach (var rule in rules)
 			{
@@ -46,8 +49,8 @@ namespace WarriorsSnuggery
 
 						break;
 					case "Terrain":
-						terrainFiles = files;
-						terrainPaths = paths;
+						for (int j = 0; j < files.Length; j++)
+							TerrainCreator.LoadTypes(paths[j], files[j]);
 
 						break;
 					case "Walls":
@@ -56,8 +59,13 @@ namespace WarriorsSnuggery
 
 						break;
 					case "Spells":
-						uiFiles = files;
-						uiPaths = paths;
+						for (int j = 0; j < files.Length; j++)
+							Spells.SpellCreator.Load(paths[j], files[j]);
+
+						break;
+					case "SpellTree":
+						for (int j = 0; j < files.Length; j++)
+							Spells.SpellTreeLoader.Load(paths[j], files[j]);
 
 						break;
 					case "Trophies":
@@ -72,11 +80,6 @@ namespace WarriorsSnuggery
 
 			Questionmark = SpriteManager.AddTexture(new TextureInfo("questionmark"));
 
-			for (int j = 0; j < terrainFiles.Length; j++)
-				TerrainCreator.LoadTypes(terrainPaths[j], terrainFiles[j]);
-
-			for (int j = 0; j < uiFiles.Length; j++)
-				Spells.SpellTreeLoader.Load(uiPaths[j], uiFiles[j]);
 			loadUIRules();
 		}
 

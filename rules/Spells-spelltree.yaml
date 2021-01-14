@@ -1,0 +1,81 @@
+Boost=
+	Effects=
+		1=
+			Type=Speed
+			Value=1.5
+			Duration=300
+			ParticleTick=2
+			Particles=Area
+				Type=glitter
+				Count=2
+				Radius=512
+
+First_hit=
+	Effects=
+		1=
+			Type=Damage
+			Value=6
+			Duration=30
+
+Warm_up=
+	Effects=
+		1=
+			Type=Damage
+			Value=1.337
+			Duration=1200
+
+Anger=
+	Effects=
+		1=
+			Type=Cooldown
+			Value=0.6
+			Duration=1200
+
+Strength=
+	Effects=
+		1=
+			Type=Damage
+			Value=2
+			Duration=600
+
+Bloodlust=
+	Effects=
+		1=
+			Type=SPEED
+			Value=3
+			Duration=240
+
+Blood_thirstiness=
+	Effects=
+		1=
+			Type=HEALTH
+			Value=10
+			Duration=60
+
+Precision=
+	Effects=
+		1=
+			Type=INACCURACY
+			Value=0.5
+			Duration=3000
+
+Range=
+	Effects=
+		1=
+			Type=RANGE
+			Value=1024
+			Duration=1800
+
+Blood_pact=
+	Effects=
+		1=
+			Type=DAMAGE
+			Value=251
+			Duration=300
+
+Blood_armor=
+	Effects=
+		1=
+			Type=SHIELD
+			Value=200
+			Duration=480

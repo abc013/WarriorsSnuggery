@@ -5,25 +5,25 @@ namespace WarriorsSnuggery.Objects.Parts
 {
 	public class EffectPart : ITick
 	{
-		public readonly Spell Spell;
+		public readonly Effect Effect;
 		readonly Actor self;
 
+		// For saving
+		readonly Spell spell;
+		readonly int spellIndex;
+
+		public bool Active => tick > 0;
 		int tick;
-		int particleTick;
-		public bool Active = true;
 
-		public EffectPart(Actor self, Spell spell)
+		public EffectPart(Actor self, Effect effect, Spell spell, int spellIndex)
 		{
-			Spell = spell;
+			Effect = effect;
 			this.self = self;
-			tick = spell.Duration;
-			particleTick = spell.ParticleTick;
 
-			if (Spell.Sound != null)
-			{
-				var sound = new Sound(Spell.Sound);
-				sound.Play(self.Position, false);
-			}
+			this.spell = spell;
+			this.spellIndex = spellIndex;
+
+			tick = effect.Duration;
 		}
 
 		public EffectPart(Actor self, List<MiniTextNode> nodes)
@@ -35,50 +35,35 @@ namespace WarriorsSnuggery.Objects.Parts
 				switch (child.Key)
 				{
 					case "Spell":
-						Spell = new Spell(child.Children);
+						spell = SpellCreator.GetType(child.Value);
+
+						break;
+					case "SpellIndex":
+						spellIndex = child.Convert<int>();
 
 						break;
 					case "Tick":
 						tick = child.Convert<int>();
 
 						break;
-					case "ParticleTick":
-						particleTick = child.Convert<int>();
-
-						break;
-					case "Active":
-						Active = child.Convert<bool>();
-
-						break;
 				}
 			}
+
+			if (spellIndex >= spell.Effects.Length)
+				tick = 0;
+			else
+				Effect = spell.Effects[spellIndex];
 		}
 
 		public List<string> Save()
 		{
-			var list = new List<string>
+			return new List<string>
 			{
-				"EffectPart=",
-				"\tSpell=",
-				"\t\tCooldown=" + Spell.Cooldown,
-				"\t\tDuration=" + Spell.Duration,
-				"\t\tParticleTick=" + Spell.ParticleTick,
-				"\t\tType=" + Spell.Type,
-				"\t\tValue=" + Spell.Value
+				nameof(EffectPart) + "=",
+				"\tSpell=" + SpellCreator.GetName(spell),
+				"\tSpellIndex=" + spellIndex,
+				"\tTick=" + tick
 			};
-
-			// TODO: also save particles/ParticleSpawner
-
-			if (tick != 0)
-				list.Add("\tTick=" + tick);
-
-			if (particleTick != 0)
-				list.Add("\tParticleTick=" + particleTick);
-
-			if (!Active)
-				list.Add("\tActive=" + Active);
-
-			return list;
 		}
 
 		public void Tick()
@@ -86,14 +71,11 @@ namespace WarriorsSnuggery.Objects.Parts
 			if (self.World.Game.Editor)
 				return;
 
-			if (Active && tick-- < 0)
-				Active = false;
+			if (tick-- <= 0)
+				return;
 
-			if (Spell.Particles != null && particleTick-- < 0)
-			{
-				particleTick = Spell.ParticleTick;
-				self.World.Add(Spell.Particles.Create(self.World, self.Position, self.Height));
-			}
+			if (Effect.Particles != null && tick % Effect.ParticleTick == 0)
+				self.World.Add(Effect.Particles.Create(self.World, self.Position, self.Height));
 		}
 	}
 }

@@ -10,12 +10,20 @@ namespace WarriorsSnuggery.Spells
 		public readonly string[] Before;
 		[Desc("Graphical position in the spelltree.")]
 		public readonly MPos Position;
+
 		[Desc("Determines the amount of money which has to be spent in order to buy this spell.")]
 		public readonly int Cost;
+		[Desc("Determines how much mana is used up by casting this spell.")]
+		public readonly int ManaCost;
+
 		[Desc("If true, the spell is unlocked from the beginning.")]
 		public readonly bool Unlocked;
 		[Desc("Description of the spell. Shown in the spell tree window.")]
 		public readonly string Description = "";
+
+		[Desc("Cooldown of the spell.")]
+		public readonly int Cooldown;
+		public int Duration => Spell.MaxDuration;
 
 		public readonly string InnerName;
 		public readonly string Name;
@@ -48,8 +56,8 @@ namespace WarriorsSnuggery.Spells
 		public string[] GetInformation(bool showDesc)
 		{
 			var res = new string[showDesc ? 3 : 2];
-			res[0] = Color.Grey + "Mana use: " + new Color(0.5f, 0.5f, 1f) + Spell.ManaCost;
-			res[1] = Color.Grey + "Reload: " + Color.Green + Math.Round(Spell.Cooldown / (float)Settings.UpdatesPerSecond, 2) + Color.Grey + " Seconds";
+			res[0] = Color.Grey + "Mana use: " + new Color(0.5f, 0.5f, 1f) + ManaCost;
+			res[1] = Color.Grey + "Reload: " + Color.Green + Math.Round(Cooldown / (float)Settings.UpdatesPerSecond, 2) + Color.Grey + " Seconds";
 			if (showDesc)
 				res[2] = Color.Grey + Description;
 
