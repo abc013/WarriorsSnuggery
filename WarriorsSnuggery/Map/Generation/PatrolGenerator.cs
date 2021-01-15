@@ -146,9 +146,6 @@ namespace WarriorsSnuggery.Maps.Generators
 
 		bool areaBlocked(int a, int b)
 		{
-			if (info.UseForWaves)
-				return false;
-
 			for (int x = a * info.SpawnBounds; x < a * info.SpawnBounds + info.SpawnBounds; x++)
 			{
 				if (x < TopLeftCorner.X || x >= TopRightCorner.X)
@@ -178,7 +175,7 @@ namespace WarriorsSnuggery.Maps.Generators
 					return info.Patrols[i];
 			}
 
-			return info.Patrols.FirstOrDefault();
+			return info.Patrols.First();
 		}
 	}
 }
