@@ -129,15 +129,15 @@ namespace WarriorsSnuggery.Maps.Generators
 						spawnPosition = mid + new CPos(deltaX, deltaY, 0);
 					}
 
-					if (spawnPosition.X < patrol.DistanceBetweenObjects / 2)
-						spawnPosition = new CPos(patrol.DistanceBetweenObjects / 2, spawnPosition.Y, 0);
-					if (spawnPosition.X >= Bounds.X * 1024 - patrol.DistanceBetweenObjects / 2)
-						spawnPosition = new CPos(Bounds.X * 1024 - patrol.DistanceBetweenObjects / 2, spawnPosition.Y, 0);
+					if (spawnPosition.X < TopLeftCorner.X + patrol.DistanceBetweenObjects / 2)
+						spawnPosition = new CPos(TopLeftCorner.X + patrol.DistanceBetweenObjects / 2, spawnPosition.Y, 0);
+					else if (spawnPosition.X >= BottomRightCorner.X - patrol.DistanceBetweenObjects / 2)
+						spawnPosition = new CPos(BottomRightCorner.X - patrol.DistanceBetweenObjects / 2, spawnPosition.Y, 0);
 
-					if (spawnPosition.Y < patrol.DistanceBetweenObjects / 2)
-						spawnPosition = new CPos(spawnPosition.X, patrol.DistanceBetweenObjects / 2, 0);
-					if (spawnPosition.Y >= Bounds.Y * 1024 - patrol.DistanceBetweenObjects / 2)
-						spawnPosition = new CPos(spawnPosition.X, Bounds.Y * 1024 - patrol.DistanceBetweenObjects / 2, 0);
+					if (spawnPosition.Y < TopLeftCorner.Y + patrol.DistanceBetweenObjects / 2)
+						spawnPosition = new CPos(spawnPosition.X, TopLeftCorner.Y + patrol.DistanceBetweenObjects / 2, 0);
+					else if (spawnPosition.Y >= BottomRightCorner.Y - patrol.DistanceBetweenObjects / 2)
+						spawnPosition = new CPos(spawnPosition.X, BottomRightCorner.Y - patrol.DistanceBetweenObjects / 2, 0);
 
 					Loader.AddActor(spawnPosition, patrol.ActorTypes[j], patrol.Team, true);
 				}
