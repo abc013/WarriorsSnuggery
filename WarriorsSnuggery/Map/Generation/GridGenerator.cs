@@ -132,17 +132,7 @@ namespace WarriorsSnuggery.Maps.Generators
 
 			foreach (var cell in cells)
 			{
-				var blocked = false;
-				for (int x = cell.Position.X; x < cell.Position.X + cell.Size.X; x++)
-				{
-					for (int y = cell.Position.Y; y < cell.Position.Y + cell.Size.Y; y++)
-					{
-						if (!Loader.CanAcquireCell(new MPos(x, y), info.ID))
-							blocked = true;
-					}
-				}
-
-				if (blocked)
+				if (!Loader.CanAcquireArea(cell.Position, cell.Size, info.ID))
 					continue;
 
 				for (int x = cell.Position.X; x < cell.Position.X + cell.Size.X; x++)
@@ -182,7 +172,7 @@ namespace WarriorsSnuggery.Maps.Generators
 				if (fitting == null)
 					continue;
 
-				Loader.GeneratePiece(getPiece(fitting.Pieces), piece.Position, info.ID);
+				Loader.GeneratePiece(getPiece(fitting.Pieces), piece.Position, info.ID, idInclusive: true);
 			}
 
 			MapPrinter.PrintGeneratorMap(Bounds, Loader.EmptyNoiseMap, UsedCells, info.ID);

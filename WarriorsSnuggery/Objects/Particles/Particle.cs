@@ -78,7 +78,7 @@ namespace WarriorsSnuggery.Objects.Particles
 
 					if (useZ)
 					{
-						zFloat = -force.Strength * ratio * velocity.Z / 256;
+						zFloat = force.Strength * ratio * velocity.Z / 256;
 						if (Math.Abs(zFloat) > Math.Abs(velocity.Z))
 							zFloat = -velocity.Z * ratio;
 					}

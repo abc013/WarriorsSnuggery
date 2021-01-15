@@ -200,7 +200,7 @@ namespace WarriorsSnuggery.Maps.Generators
 
 				var position = Random.Next(possiblePlaces.Count);
 
-				if (!Loader.GeneratePiece(input, possiblePlaces[position], info.ID, idInclusive: true))
+				if (!Loader.GeneratePiece(input, possiblePlaces[position], info.ID))
 					i--;
 				else
 					markDirty(possiblePlaces[position], input);

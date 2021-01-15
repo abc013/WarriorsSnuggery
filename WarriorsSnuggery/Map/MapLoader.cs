@@ -176,7 +176,7 @@ namespace WarriorsSnuggery.Maps
 			{
 				for (int y = pos.Y; y < pos.Y + bounds.Y; y++)
 				{
-					if (!canAcquireCell(x, y, id) || (idInclusive && generatorReservations[x, y] == id))
+					if (!canAcquireCell(x, y, id) && (!idInclusive || generatorReservations[x, y] != id))
 						return false;
 				}
 			}
