@@ -85,6 +85,14 @@ namespace WarriorsSnuggery
 			finishAndLoad(new Game(stats, MapCreator.FindMap(mission, stats.Level), mission, InteractionMode.INGAME));
 		}
 
+		public static void CreateNextMenu()
+		{
+			var mission = game.MenuType;
+			var stats = game.Statistics;
+
+			finishAndLoad(new Game(stats, MapCreator.FindMap(mission, stats.Level), mission, InteractionMode.INGAME));
+		}
+
 		public static void CreateNext(MissionType type, InteractionMode mode = InteractionMode.INGAME)
 		{
 			var stats = game.Statistics;
