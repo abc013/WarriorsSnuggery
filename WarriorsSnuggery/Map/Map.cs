@@ -5,14 +5,6 @@ using WarriorsSnuggery.Maps;
 
 namespace WarriorsSnuggery
 {
-	public enum NoiseType
-	{
-		NONE,
-		NOISE,
-		CLOUDS,
-		MAZE
-	}
-
 	public class Map
 	{
 		readonly World world;
