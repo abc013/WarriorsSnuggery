@@ -1,7 +1,13 @@
 ﻿using System;
 using System.Globalization;
 using System.Linq;
+using WarriorsSnuggery.Graphics;
+using WarriorsSnuggery.Maps.Generators;
 using WarriorsSnuggery.Objects;
+using WarriorsSnuggery.Objects.Conditions;
+using WarriorsSnuggery.Objects.Particles;
+using WarriorsSnuggery.Objects.Weapons;
+using WarriorsSnuggery.Spells;
 
 namespace WarriorsSnuggery.Loader
 {
@@ -25,17 +31,16 @@ namespace WarriorsSnuggery.Loader
 			return (T)Convert(file, node, typeof(T));
 		}
 
-		// TODO improve
 		public static object Convert(string file, MiniTextNode node, Type t)
 		{
-			var s = node.Value;
+			var value = node.Value;
 
 			if (t.IsEnum)
 			{
 				object @enum;
 				try
 				{
-					@enum = Enum.Parse(t, s.Trim(), true);
+					@enum = Enum.Parse(t, value.Trim(), true);
 				}
 				catch (Exception e)
 				{
@@ -45,45 +50,57 @@ namespace WarriorsSnuggery.Loader
 			}
 			else if (t == typeof(int))
 			{
-				if (int.TryParse(s, out var i) || s == "")
+				if (int.TryParse(value, out var i))
 					return i;
+				else
+					throw new InvalidConversionException(file, node, t);
 			}
 			if (t == typeof(uint))
 			{
-				if (uint.TryParse(s, out var i) || s == "")
+				if (uint.TryParse(value, out var i))
 					return i;
+				else
+					throw new InvalidConversionException(file, node, t);
 			}
 			else if (t == typeof(byte))
 			{
-				if (byte.TryParse(s, out var i))
+				if (byte.TryParse(value, out var i))
 					return i;
+				else
+					throw new InvalidConversionException(file, node, t);
 			}
 			else if (t == typeof(short))
 			{
-				if (short.TryParse(s, out var i))
+				if (short.TryParse(value, out var i))
 					return i;
+				else
+					throw new InvalidConversionException(file, node, t);
 			}
 			else if (t == typeof(float))
 			{
-				if (float.TryParse(s, out var i))
+				if (float.TryParse(value, out var i))
 					return i;
+				else
+					throw new InvalidConversionException(file, node, t);
 			}
 			else if (t == typeof(bool))
 			{
-				var v = s.ToLower().Trim();
+				var v = value.ToLower().Trim();
 
 				if (trueBooleans.Contains(v))
 					return true;
 				else if (falseBooleans.Contains(v))
 					return false;
+				else
+					throw new InvalidConversionException(file, node, t);
 			}
 			else if (t == typeof(string))
 			{
-				return s.Trim();
+				return value.Trim();
 			}
 			else if (t.IsArray && t.GetElementType().IsEnum)
 			{
-				var parts = s.Split(',');
+				var parts = value.Split(',');
 
 				for (int i = 0; i < parts.Length; i++)
 					parts[i] = parts[i].Trim();
@@ -103,7 +120,7 @@ namespace WarriorsSnuggery.Loader
 			}
 			else if (t == typeof(int[]))
 			{
-				var parts = s.Split(',');
+				var parts = value.Split(',');
 				var res = new int[parts.Length];
 
 				for (int i = 0; i < parts.Length; i++)
@@ -121,7 +138,7 @@ namespace WarriorsSnuggery.Loader
 			}
 			else if (t == typeof(float[]))
 			{
-				var parts = s.Split(',');
+				var parts = value.Split(',');
 				var res = new float[parts.Length];
 
 				for (int i = 0; i < parts.Length; i++)
@@ -139,7 +156,7 @@ namespace WarriorsSnuggery.Loader
 			}
 			else if (t == typeof(string[]))
 			{
-				var parts = s.Split(',');
+				var parts = value.Split(',');
 
 				for (int i = 0; i < parts.Length; i++)
 					parts[i] = parts[i].Trim();
@@ -148,7 +165,7 @@ namespace WarriorsSnuggery.Loader
 			}
 			else if (t == typeof(bool[]))
 			{
-				var parts = s.Split(',');
+				var parts = value.Split(',');
 				var res = new bool[parts.Length];
 
 				for (int i = 0; i < parts.Length; i++)
@@ -167,7 +184,7 @@ namespace WarriorsSnuggery.Loader
 			}
 			else if (t == typeof(ushort[]))
 			{
-				var parts = s.Split(',');
+				var parts = value.Split(',');
 				var res = new ushort[parts.Length];
 
 				for (int i = 0; i < parts.Length; i++)
@@ -185,7 +202,7 @@ namespace WarriorsSnuggery.Loader
 			}
 			else if (t == typeof(short[]))
 			{
-				var parts = s.Split(',');
+				var parts = value.Split(',');
 				var res = new short[parts.Length];
 
 				for (int i = 0; i < parts.Length; i++)
@@ -203,7 +220,7 @@ namespace WarriorsSnuggery.Loader
 			}
 			else if (t == typeof(MPos))
 			{
-				var parts = s.Split(',');
+				var parts = value.Split(',');
 
 				if (parts.Length == 2)
 				{
@@ -216,7 +233,7 @@ namespace WarriorsSnuggery.Loader
 			}
 			else if (t == typeof(CPos))
 			{
-				var parts = s.Split(',');
+				var parts = value.Split(',');
 
 				if (parts.Length == 3)
 				{
@@ -230,7 +247,7 @@ namespace WarriorsSnuggery.Loader
 			}
 			else if (t == typeof(Color))
 			{
-				var parts = s.Split(',');
+				var parts = value.Split(',');
 
 				if (parts.Length >= 3 && parts.Length <= 4)
 				{
@@ -248,7 +265,7 @@ namespace WarriorsSnuggery.Loader
 			}
 			else if (t == typeof(Vector))
 			{
-				var parts = s.Split(',');
+				var parts = value.Split(',');
 
 				if (parts.Length == 3)
 				{
@@ -262,7 +279,7 @@ namespace WarriorsSnuggery.Loader
 			}
 			else if (t == typeof(VAngle))
 			{
-				var parts = s.Split(',');
+				var parts = value.Split(',');
 
 				if (parts.Length == 3)
 				{
@@ -278,29 +295,30 @@ namespace WarriorsSnuggery.Loader
 			{
 				return new SoundType(node.Children);
 			}
-			else if (t == typeof(Objects.Conditions.Condition))
+			else if (t == typeof(Condition))
 			{
-				return new Objects.Conditions.Condition(node.Value);
+				return new Condition(node.Value);
 			}
-			else if (t == typeof(Objects.Particles.ParticleSpawner))
+			else if (t == typeof(ParticleSpawner))
 			{
+				// TODO: improve
 				var children = node.Children;
-				switch (s)
+				switch (value)
 				{
 					case "Point":
-						return new Objects.Particles.AreaParticleSpawner(children);
+						return new PointParticleSpawner(children);
 					case "Line":
-						return new Objects.Particles.LineParticleSpawner(children);
+						return new LineParticleSpawner(children);
 					case "Area":
-						return new Objects.Particles.AreaParticleSpawner(children);
+						return new AreaParticleSpawner(children);
 					case "List":
-						return new Objects.Particles.ListParticleSpawner(children);
+						return new ListParticleSpawner(children);
 				}
 			}
-			else if (t == typeof(Graphics.TextureInfo))
+			else if (t == typeof(TextureInfo))
 			{
 				var size = MPos.Zero;
-				var name = s.Trim();
+				var name = value.Trim();
 				var randomTexture = false;
 				var tick = 20;
 				bool searchFile = true;
@@ -328,122 +346,129 @@ namespace WarriorsSnuggery.Loader
 				}
 
 				if (size != MPos.Zero)
-					return new Graphics.TextureInfo(name, randomTexture ? Graphics.TextureType.RANDOM : Graphics.TextureType.ANIMATION, tick, size.X, size.Y, searchFile);
+					return new TextureInfo(name, randomTexture ? TextureType.RANDOM : TextureType.ANIMATION, tick, size.X, size.Y, searchFile);
 			}
-			else if (t == typeof(Objects.Weapons.WeaponType))
+			else if (t == typeof(WeaponType))
 			{
-				if (!Objects.Weapons.WeaponCreator.Types.ContainsKey(s))
-					throw new MissingInfoException(s);
+				if (!WeaponCreator.Types.ContainsKey(value))
+					throw new MissingInfoException(value);
 
-				return Objects.Weapons.WeaponCreator.Types[s.Trim()];
+				return WeaponCreator.Types[value.Trim()];
 			}
-			else if (t == typeof(Objects.Particles.ParticleType))
+			else if (t == typeof(ParticleType))
 			{
-				if (!Objects.Particles.ParticleCreator.Types.ContainsKey(s))
-					throw new MissingInfoException(s);
+				if (!ParticleCreator.Types.ContainsKey(value))
+					throw new MissingInfoException(value);
 
-				return Objects.Particles.ParticleCreator.Types[s.Trim()];
+				return ParticleCreator.Types[value.Trim()];
 			}
-			else if (t == typeof(Objects.ActorType))
+			else if (t == typeof(ActorType))
 			{
-				// Called method handles nonexistent actor types
-				return ActorCreator.Types[s.Trim()];
+				if (!ActorCreator.Types.ContainsKey(value))
+					throw new MissingInfoException(value);
+
+				return ActorCreator.Types[value.Trim()];
 			}
-			else if (t == typeof(Spells.Spell))
+			else if (t == typeof(Spell))
 			{
-				return Spells.SpellCreator.GetType(s.Trim());
+				if (!SpellCreator.Types.ContainsKey(value))
+					throw new MissingInfoException(value);
+
+				return SpellCreator.Types[value.Trim()];
 			}
-			else if (t == typeof(Spells.Effect))
+			else if (t == typeof(Effect))
 			{
-				return new Spells.Effect(node.Children);
+				return new Effect(node.Children);
 			}
-			else if (t == typeof(Objects.Weapons.IProjectileType))
+			else if (t == typeof(IProjectileType))
 			{
 				var children = node.Children;
-				switch (s)
+				// TODO: improve
+				switch (value)
 				{
 					case "Bullet":
-						return new Objects.Weapons.BulletProjectileType(children);
+						return new BulletProjectileType(children);
 					case "Magic":
-						return new Objects.Weapons.MagicProjectileType(children);
+						return new MagicProjectileType(children);
 					case "Beam":
-						return new Objects.Weapons.BeamProjectileType(children);
+						return new BeamProjectileType(children);
 					case "InstantHit":
-						return new Objects.Weapons.InstantHitProjectileType(children);
+						return new InstantHitProjectileType(children);
 				}
 			}
-			else if (t == typeof(Objects.Weapons.IWarhead[]))
+			else if (t == typeof(IWarhead[]))
 			{
-				var array = new Objects.Weapons.IWarhead[node.Children.Count];
+				var array = new IWarhead[node.Children.Count];
 				var i = 0;
 				foreach (var child in node.Children)
 				{
+					// TODO: improve
 					var children = child.Children;
 					switch (child.Key)
 					{
 						case "Sound":
-							array[i++] = new Objects.Weapons.SoundWarhead(children);
+							array[i++] = new SoundWarhead(children);
 							break;
 						case "Smudge":
-							array[i++] = new Objects.Weapons.SmudgeWarhead(children);
+							array[i++] = new SmudgeWarhead(children);
 							break;
 						case "Damage":
-							array[i++] = new Objects.Weapons.DamageWarhead(children);
+							array[i++] = new DamageWarhead(children);
 							break;
 						case "Particle":
-							array[i++] = new Objects.Weapons.ParticleWarhead(children);
+							array[i++] = new ParticleWarhead(children);
 							break;
 						case "Actor":
-							array[i++] = new Objects.Weapons.ActorWarhead(children);
+							array[i++] = new ActorWarhead(children);
 							break;
 						case "Spell":
-							array[i++] = new Objects.Weapons.SpellWarhead(children);
+							array[i++] = new SpellWarhead(children);
 							break;
 						case "Force":
-							array[i++] = new Objects.Weapons.ForceWarhead(children);
+							array[i++] = new ForceWarhead(children);
 							break;
 					}
 				}
 				return array;
 			}
-			else if (t == typeof(Maps.Generators.ActorProbabilityInfo[]))
+			else if (t == typeof(ActorProbabilityInfo[]))
 			{
-				var convert = new Maps.Generators.ActorProbabilityInfo[node.Children.Count];
+				var convert = new ActorProbabilityInfo[node.Children.Count];
 
 				for (int i = 0; i < node.Children.Count; i++)
-					convert[i] = new Maps.Generators.ActorProbabilityInfo(node.Children[i].Children);
+					convert[i] = new ActorProbabilityInfo(node.Children[i].Children);
 
 				return convert;
 			}
-			else if (t == typeof(Maps.Generators.PatrolProbabilityInfo[]))
+			else if (t == typeof(PatrolProbabilityInfo[]))
 			{
-				var convert = new Maps.Generators.PatrolProbabilityInfo[node.Children.Count];
+				var convert = new PatrolProbabilityInfo[node.Children.Count];
 
 				for (int i = 0; i < node.Children.Count; i++)
-					convert[i] = new Maps.Generators.PatrolProbabilityInfo(node.Children[i].Children);
+					convert[i] = new PatrolProbabilityInfo(node.Children[i].Children);
 
 				return convert;
 			}
-			else if (t == typeof(Objects.Particles.ParticleType[]))
+			else if (t == typeof(ParticleType[]))
 			{
-				var convert = new Objects.Particles.ParticleType[node.Children.Count];
+				var convert = new ParticleType[node.Children.Count];
 
 				for (int i = 0; i < node.Children.Count; i++)
 				{
-					if (!Objects.Particles.ParticleCreator.Types.ContainsKey(s))
-						throw new MissingInfoException(s);
+					if (!ParticleCreator.Types.ContainsKey(value))
+						throw new MissingInfoException(value);
 
-					convert[i] = Objects.Particles.ParticleCreator.Types[s.Trim()];
+					convert[i] = ParticleCreator.Types[value.Trim()];
 				}
 
 				return convert;
 			}
-			else if (t == typeof(Objects.Particles.ParticleSpawner[]))
+			else if (t == typeof(ParticleSpawner[]))
 			{
-				var convert = new Objects.Particles.ParticleSpawner[node.Children.Count];
+				var convert = new ParticleSpawner[node.Children.Count];
 
 				for (int i = 0; i < node.Children.Count; i++)
-					convert[i] = Convert<Objects.Particles.ParticleSpawner>(file, node.Children[i]);
+					convert[i] = Convert<ParticleSpawner>(file, node.Children[i]);
 
 				return convert;
 			}

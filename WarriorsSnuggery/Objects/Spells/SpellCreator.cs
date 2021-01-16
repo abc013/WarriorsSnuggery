@@ -19,13 +19,5 @@ namespace WarriorsSnuggery.Spells
 		{
 			return Types.First(t => t.Value == type).Key;
 		}
-
-		public static Spell GetType(string name)
-		{
-			if (!Types.ContainsKey(name))
-				throw new MissingInfoException(name);
-
-			return Types[name];
-		}
 	}
 }

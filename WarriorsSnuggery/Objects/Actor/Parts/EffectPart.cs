@@ -35,7 +35,7 @@ namespace WarriorsSnuggery.Objects.Parts
 				switch (child.Key)
 				{
 					case "Spell":
-						spell = SpellCreator.GetType(child.Value);
+						spell = child.Convert<Spell>();
 
 						break;
 					case "SpellIndex":
