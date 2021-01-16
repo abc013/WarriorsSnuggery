@@ -6,7 +6,7 @@
 
   <ItemGroup>
     <Compile Include="..\maps\scripts\*.cs" Link="%(Filename).cs" />
-    <ProjectReference Include="..\WarriorsSnuggery\WarriorsSnuggery.csproj" />
+    <ProjectReference Include="..\WarriorsSnuggery.Game\WarriorsSnuggery.Game.csproj" />
   </ItemGroup>
 
 </Project>

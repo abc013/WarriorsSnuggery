@@ -10,7 +10,7 @@
 
   <ItemGroup>
     <Content Include="warsnu.ico" />
-    <ProjectReference Include="..\WarriorsSnuggery\WarriorsSnuggery.csproj" />
+    <ProjectReference Include="..\WarriorsSnuggery.Game\WarriorsSnuggery.Game.csproj" />
   </ItemGroup>
 
 </Project>
