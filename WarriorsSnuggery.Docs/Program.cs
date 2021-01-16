@@ -2,9 +2,8 @@
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using WarriorsSnuggery;
 
-namespace DocWriter
+namespace WarriorsSnuggery.Docs
 {
 	static class Program
 	{

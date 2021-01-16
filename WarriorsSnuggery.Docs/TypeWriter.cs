@@ -3,9 +3,8 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using WarriorsSnuggery;
 
-namespace DocWriter
+namespace WarriorsSnuggery.Docs
 {
 	public static class TypeWriter
 	{

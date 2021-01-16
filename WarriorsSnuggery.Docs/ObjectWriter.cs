@@ -1,8 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using WarriorsSnuggery;
 
-namespace DocWriter
+namespace WarriorsSnuggery.Docs
 {
 	static class ObjectWriter
 	{

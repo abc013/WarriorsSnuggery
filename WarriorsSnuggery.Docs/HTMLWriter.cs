@@ -1,9 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using WarriorsSnuggery;
 
-namespace DocWriter
+namespace WarriorsSnuggery.Docs
 {
 	public static class HTMLWriter
 	{

@@ -1,4 +1,4 @@
-﻿namespace DocWriter
+﻿namespace WarriorsSnuggery.Docs
 {
 	public enum DocumentationType
 	{
