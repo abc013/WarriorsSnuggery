@@ -42,6 +42,8 @@ bld/
 /DocWriter.runtimeconfig.json
 /DocWriter.runtimeconfig.dev.json
 /DocWriter.deps.json
+/WarriorsSnuggery
+/DocWriter
 /Documentation.html
 /Settings.yaml
 logs/
@@ -76,6 +78,7 @@ launchSettings.json
 /publish_win_x64
 /publish_win_x86
 /publish_linux_x64
+/publish_osx_x64
 runtimes/
 ref/
 /WindowsBase.dll
@@ -100,3 +103,4 @@ ref/
 /clrcompression.dll
 /api-ms-win-crt-*.dll
 /api-ms-win-core-*.dll
+/libSystem.*.a
