@@ -16,7 +16,10 @@ dotnet build
 ```
 For more information about the `dotnet build` command, visit [this documentation](https://docs.microsoft.com/en-us/dotnet/core/tools/dotnet-build).
 
+## Publishing
+For publishing Warrior's Snuggery, `publish.ps1` is used. This is a powershell file, which means it can only be run on Windows for now. Execute it with PowerShell and select the desired runtime. The project is then published to a corresponding folder.
 
+## Recommended IDEs
 If you want to edit and compile the code in an IDE, Visual Studio 2019 or Visual Studio Code is highly recommended (the solution is prepared for the use of those).
 
 for any issues or build failures, feel free to [open an issue](https://github.com/abc013/WarriorsSnuggery/issues/new)!
