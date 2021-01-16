@@ -67,6 +67,8 @@ namespace WarriorsSnuggery
 					i++;
 					MapType = args[i];
 				}
+				else if (arg == "-enable-cheats")
+					Settings.EnableCheats = true;
 			}
 
 			Settings.Initialize(newSettings);

@@ -349,7 +349,8 @@ namespace WarriorsSnuggery
 			if (key == Keys.RightAlt)
 				Settings.PartyMode = !Settings.PartyMode;
 
-			if (isAlt)
+			// Cheats
+			if (Settings.EnableCheats && isAlt)
 			{
 				if (InteractionMode != InteractionMode.EDITOR)
 				{

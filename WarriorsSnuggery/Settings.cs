@@ -24,6 +24,8 @@ namespace WarriorsSnuggery
 
 		public static int EdgeScrolling = 4;
 
+		public static bool EnableCheats = false;
+
 		public static bool DeveloperMode = false;
 
 		public static bool EnableDebug { get { return DeveloperMode; } private set { } }
@@ -105,6 +107,9 @@ namespace WarriorsSnuggery
 					case "EdgeScrolling":
 						EdgeScrolling = node.Convert<int>();
 						break;
+					case "EnableCheats":
+						EnableCheats = node.Convert<bool>();
+						break;
 					case "DeveloperMode":
 						DeveloperMode = node.Convert<bool>();
 						break;
@@ -173,6 +178,7 @@ namespace WarriorsSnuggery
 			writer.WriteLine("FrameLimiter=" + FrameLimiter);
 			writer.WriteLine("ScrollSpeed=" + ScrollSpeed);
 			writer.WriteLine("EdgeScrolling=" + EdgeScrolling);
+			writer.WriteLine("EnableCheats=" + EnableCheats.GetHashCode());
 			writer.WriteLine("DeveloperMode=" + DeveloperMode.GetHashCode());
 			writer.WriteLine("Fullscreen=" + Fullscreen.GetHashCode());
 			writer.WriteLine("Width=" + Width);
