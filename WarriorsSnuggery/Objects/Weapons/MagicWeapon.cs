@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using WarriorsSnuggery.Objects.Weapons.Projectiles;
 using WarriorsSnuggery.Physics;
 
 namespace WarriorsSnuggery.Objects.Weapons
 {
 	class MagicWeapon : Weapon
 	{
-		readonly MagicProjectileType projectileType;
+		readonly MagicProjectile projectile;
 		readonly RayPhysics rayPhysics;
 
 		[Save("Speed")]
@@ -16,19 +17,19 @@ namespace WarriorsSnuggery.Objects.Weapons
 
 		public MagicWeapon(World world, WeaponType type, Target target, Actor origin, uint id) : base(world, type, target, origin, id)
 		{
-			projectileType = (MagicProjectileType)type.Projectile;
+			projectile = (MagicProjectile)type.Projectile;
 
 			Angle = (Position - TargetPosition).FlatAngle;
 			calculateSpeed();
 
-			TargetPosition += getInaccuracy(projectileType.Inaccuracy);
+			TargetPosition += getInaccuracy(projectile.Inaccuracy);
 
 			rayPhysics = new RayPhysics(world);
 		}
 
 		public MagicWeapon(World world, WeaponInit init) : base(world, init)
 		{
-			projectileType = (MagicProjectileType)Type.Projectile;
+			projectile = (MagicProjectile)Type.Projectile;
 
 			speed = init.Convert("Speed", Vector.Zero);
 			speedLeft = init.Convert("SpeedLeft", Vector.Zero);
@@ -45,10 +46,10 @@ namespace WarriorsSnuggery.Objects.Weapons
 			if (World.Game.Editor)
 				return;
 
-			if (projectileType.OrientateToTarget)
+			if (projectile.OrientateToTarget)
 				Rotation = new VAngle(0, 0, -(TargetPosition - GraphicPosition).FlatAngle);
 
-			if (projectileType.FollowTarget)
+			if (projectile.FollowTarget)
 			{
 				TargetPosition = Target.Position;
 				TargetHeight = Target.Height;
@@ -58,19 +59,19 @@ namespace WarriorsSnuggery.Objects.Weapons
 
 			Move();
 
-			if (projectileType.TrailParticles != null)
-				World.Add(projectileType.TrailParticles.Create(World, Position, Height));
+			if (projectile.TrailParticles != null)
+				World.Add(projectile.TrailParticles.Create(World, Position, Height));
 		}
 
 		void calculateAngle()
 		{
-			if (projectileType.Turbulence != 0)
+			if (projectile.Turbulence != 0)
 				calculateTurbulence();
 
 			var diff = (Position - TargetPosition).FlatAngle - Angle;
 
-			if (Math.Abs(diff) > projectileType.FloatTurnSpeed)
-				diff = Math.Sign(diff) * projectileType.FloatTurnSpeed;
+			if (Math.Abs(diff) > projectile.FloatTurnSpeed)
+				diff = Math.Sign(diff) * projectile.FloatTurnSpeed;
 
 			Angle += diff;
 		}
@@ -79,13 +80,13 @@ namespace WarriorsSnuggery.Objects.Weapons
 		{
 			var dist = (Position - TargetPosition).FlatDist;
 
-			Angle += (float)(Program.SharedRandom.NextDouble() - 0.5f) * projectileType.Turbulence * dist / (Type.MaxRange * 1024f);
+			Angle += (float)(Program.SharedRandom.NextDouble() - 0.5f) * projectile.Turbulence * dist / (Type.MaxRange * 1024f);
 		}
 
 		void calculateSpeed()
 		{
-			var x = (float)Math.Cos(Angle) * projectileType.Speed;
-			var y = (float)Math.Sin(Angle) * projectileType.Speed;
+			var x = (float)Math.Cos(Angle) * projectile.Speed;
+			var y = (float)Math.Sin(Angle) * projectile.Speed;
 
 			var zDiff = TargetHeight - Height;
 			var dDiff = (int)(Position - TargetPosition).FlatDist;
@@ -93,7 +94,7 @@ namespace WarriorsSnuggery.Objects.Weapons
 				dDiff = Type.MaxRange;
 
 			var angle2 = new CPos(-dDiff, -zDiff, 0).FlatAngle;
-			var z = (float)Math.Sin(angle2) * projectileType.Speed;
+			var z = (float)Math.Sin(angle2) * projectile.Speed;
 
 			speed = new Vector(x, y, z);
 		}

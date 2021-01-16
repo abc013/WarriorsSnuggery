@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using WarriorsSnuggery.Objects.Weapons.Projectiles;
 using WarriorsSnuggery.Physics;
 
 namespace WarriorsSnuggery.Objects.Weapons
 {
 	class BulletWeapon : Weapon
 	{
-		readonly BulletProjectileType projectileType;
+		readonly BulletProjectile projectile;
 		readonly RayPhysics rayPhysics;
 
 		[Save("Speed")]
@@ -16,17 +17,17 @@ namespace WarriorsSnuggery.Objects.Weapons
 
 		public BulletWeapon(World world, WeaponType type, Target target, Actor origin, uint id) : base(world, type, target, origin, id)
 		{
-			projectileType = (BulletProjectileType)type.Projectile;
+			projectile = (BulletProjectile)type.Projectile;
 
 			var angle = (Position - TargetPosition).FlatAngle;
 
 			Angle = angle;
 
-			TargetPosition += getInaccuracy(projectileType.Inaccuracy);
+			TargetPosition += getInaccuracy(projectile.Inaccuracy);
 
 			calculateStartSpeed();
 
-			if (projectileType.OrientateToTarget)
+			if (projectile.OrientateToTarget)
 				Rotation = new VAngle(0, 0, Angle);
 
 			rayPhysics = new RayPhysics(world);
@@ -34,14 +35,14 @@ namespace WarriorsSnuggery.Objects.Weapons
 
 		public BulletWeapon(World world, WeaponInit init) : base(world, init)
 		{
-			projectileType = (BulletProjectileType)Type.Projectile;
+			projectile = (BulletProjectile)Type.Projectile;
 
 			speed = init.Convert("Speed", Vector.Zero);
 			speedLeft = init.Convert("SpeedLeft", Vector.Zero);
 			if (speed == Vector.Zero)
 				calculateStartSpeed();
 
-			if (projectileType.OrientateToTarget)
+			if (projectile.OrientateToTarget)
 				Rotation = new VAngle(0, 0, Angle);
 
 			rayPhysics = new RayPhysics(world);
@@ -49,8 +50,8 @@ namespace WarriorsSnuggery.Objects.Weapons
 
 		void calculateStartSpeed()
 		{
-			var x = (float)Math.Cos(Angle) * projectileType.Speed;
-			var y = (float)Math.Sin(Angle) * projectileType.Speed;
+			var x = (float)Math.Cos(Angle) * projectile.Speed;
+			var y = (float)Math.Sin(Angle) * projectile.Speed;
 
 			var zDiff = TargetHeight - Height;
 			var dDiff = (int)(Position - TargetPosition).FlatDist;
@@ -58,8 +59,8 @@ namespace WarriorsSnuggery.Objects.Weapons
 				dDiff = Type.MaxRange;
 
 			var angle2 = new CPos(-dDiff, -zDiff, 0).FlatAngle;
-			var z = (float)Math.Sin(angle2) * projectileType.Speed;
-			var plusZ = (int)((dDiff / (float)projectileType.Speed) * -projectileType.Force.Z / 2f);
+			var z = (float)Math.Sin(angle2) * projectile.Speed;
+			var plusZ = (int)((dDiff / (float)projectile.Speed) * -projectile.Force.Z / 2f);
 
 			speed = new Vector(x, y, z + plusZ);
 		}
@@ -71,13 +72,13 @@ namespace WarriorsSnuggery.Objects.Weapons
 			if (World.Game.Editor)
 				return;
 
-			if (projectileType.OrientateToTarget)
+			if (projectile.OrientateToTarget)
 				Rotation = new VAngle(0, 0, -(TargetPosition - GraphicPosition).FlatAngle);
 
 			Move();
 
-			if (projectileType.TrailParticles != null)
-				World.Add(projectileType.TrailParticles.Create(World, Position, Height));
+			if (projectile.TrailParticles != null)
+				World.Add(projectile.TrailParticles.Create(World, Position, Height));
 		}
 
 		public void Move()
@@ -95,14 +96,14 @@ namespace WarriorsSnuggery.Objects.Weapons
 
 			Position = new CPos(Position.X + x, Position.Y + y, Position.Z);
 			Height += z;
-			speed += new Vector(projectileType.Force.X, projectileType.Force.Y, projectileType.Force.Z);
+			speed += new Vector(projectile.Force.X, projectile.Force.Y, projectile.Force.Z);
 
-			if (Math.Abs(speed.X) > projectileType.MaxSpeed)
-				speed = new Vector(Math.Sign(speed.X) * projectileType.MaxSpeed, speed.Y, speed.Z);
-			if (Math.Abs(speed.Y) > projectileType.MaxSpeed)
-				speed = new Vector(speed.X, Math.Sign(speed.Y) * projectileType.MaxSpeed, speed.Z);
-			if (Math.Abs(speed.Z) > projectileType.MaxSpeed)
-				speed = new Vector(speed.X, speed.Y, Math.Sign(speed.Z) * projectileType.MaxSpeed);
+			if (Math.Abs(speed.X) > projectile.MaxSpeed)
+				speed = new Vector(Math.Sign(speed.X) * projectile.MaxSpeed, speed.Y, speed.Z);
+			if (Math.Abs(speed.Y) > projectile.MaxSpeed)
+				speed = new Vector(speed.X, Math.Sign(speed.Y) * projectile.MaxSpeed, speed.Z);
+			if (Math.Abs(speed.Z) > projectile.MaxSpeed)
+				speed = new Vector(speed.X, speed.Y, Math.Sign(speed.Z) * projectile.MaxSpeed);
 
 			if (Height < 0 || !World.IsInWorld(Position))
 				Detonate(new Target(Position, 0));

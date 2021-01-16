@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using WarriorsSnuggery.Objects.Weapons.Projectiles;
 
 namespace WarriorsSnuggery.Objects.Weapons
 {
@@ -23,7 +24,7 @@ namespace WarriorsSnuggery.Objects.Weapons
 		public readonly SoundType FireSound;
 
 		[Desc("Type of the Projectile.")]
-		public readonly IProjectileType Projectile;
+		public readonly IProjectile Projectile;
 
 		[Desc("Contains all different kinds of warheads that will impact when the weapon hits the target.")]
 		public readonly IWarhead[] Warheads;

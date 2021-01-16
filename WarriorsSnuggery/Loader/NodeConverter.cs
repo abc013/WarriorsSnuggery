@@ -7,6 +7,7 @@ using WarriorsSnuggery.Objects;
 using WarriorsSnuggery.Objects.Conditions;
 using WarriorsSnuggery.Objects.Particles;
 using WarriorsSnuggery.Objects.Weapons;
+using WarriorsSnuggery.Objects.Weapons.Projectiles;
 using WarriorsSnuggery.Spells;
 
 namespace WarriorsSnuggery.Loader
@@ -380,20 +381,20 @@ namespace WarriorsSnuggery.Loader
 			{
 				return new Effect(node.Children);
 			}
-			else if (t == typeof(IProjectileType))
+			else if (t == typeof(IProjectile))
 			{
 				var children = node.Children;
 				// TODO: improve
 				switch (value)
 				{
 					case "Bullet":
-						return new BulletProjectileType(children);
+						return new BulletProjectile(children);
 					case "Magic":
-						return new MagicProjectileType(children);
+						return new MagicProjectile(children);
 					case "Beam":
-						return new BeamProjectileType(children);
+						return new BeamProjectile(children);
 					case "InstantHit":
-						return new InstantHitProjectileType(children);
+						return new InstantHitProjectile(children);
 				}
 			}
 			else if (t == typeof(IWarhead[]))

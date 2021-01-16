@@ -1,14 +1,15 @@
-﻿using WarriorsSnuggery.Physics;
+﻿using WarriorsSnuggery.Objects.Weapons.Projectiles;
+using WarriorsSnuggery.Physics;
 
 namespace WarriorsSnuggery.Objects.Weapons
 {
 	class InstantHitWeapon : Weapon
 	{
-		readonly InstantHitProjectileType projectileType;
+		readonly InstantHitProjectile projectile;
 
 		public InstantHitWeapon(World world, WeaponType type, Target target, Actor origin, uint id) : base(world, type, target, origin, id)
 		{
-			projectileType = (InstantHitProjectileType)type.Projectile;
+			projectile = (InstantHitProjectile)type.Projectile;
 
 			var diff = Position - TargetPosition;
 			if (diff.FlatDist > type.MaxRange * RangeModifier)
@@ -21,7 +22,7 @@ namespace WarriorsSnuggery.Objects.Weapons
 
 		public InstantHitWeapon(World world, WeaponInit init) : base(world, init)
 		{
-			projectileType = (InstantHitProjectileType)Type.Projectile;
+			projectile = (InstantHitProjectile)Type.Projectile;
 		}
 
 		public override void Tick()
@@ -29,7 +30,7 @@ namespace WarriorsSnuggery.Objects.Weapons
 			if (World.Game.Editor)
 				return;
 
-			if (Program.SharedRandom.NextDouble() > projectileType.HitChance)
+			if (Program.SharedRandom.NextDouble() > projectile.HitChance)
 			{
 				Dispose();
 				return;
@@ -46,7 +47,7 @@ namespace WarriorsSnuggery.Objects.Weapons
 
 			if ((physics.End - Position).Dist < (Position - Target.Position).Dist)
 				Detonate(new Target(physics.End, physics.EndHeight));
-			else if (projectileType.Splash)
+			else if (projectile.Splash)
 				Detonate(new Target(Target.Position, Target.Height));
 			else
 				Detonate(Target);

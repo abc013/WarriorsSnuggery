@@ -1,13 +1,14 @@
 using System;
 using System.Collections.Generic;
 using WarriorsSnuggery.Graphics;
+using WarriorsSnuggery.Objects.Weapons.Projectiles;
 using WarriorsSnuggery.Physics;
 
 namespace WarriorsSnuggery.Objects.Weapons
 {
 	class BeamWeapon : Weapon
 	{
-		readonly BeamProjectileType projectileType;
+		readonly BeamProjectile projectile;
 		readonly RayPhysics rayPhysics;
 
 		readonly Sound sound;
@@ -33,8 +34,8 @@ namespace WarriorsSnuggery.Objects.Weapons
 
 		public BeamWeapon(World world, WeaponType type, Target target, Actor origin, uint id) : base(world, type, target, origin, id)
 		{
-			projectileType = (BeamProjectileType)type.Projectile;
-			impactInterval = projectileType.ImpactInterval;
+			projectile = (BeamProjectile)type.Projectile;
+			impactInterval = projectile.ImpactInterval;
 			rayPhysics = new RayPhysics(world)
 			{
 				Target = TargetPosition,
@@ -44,24 +45,24 @@ namespace WarriorsSnuggery.Objects.Weapons
 			setPosition();
 
 			duration = type.ShootDuration;
-			buildupduration = projectileType.StartupDuration;
-			endduration = projectileType.CooldownDuration;
+			buildupduration = projectile.StartupDuration;
+			endduration = projectile.CooldownDuration;
 
-			if (buildupduration > 0 && projectileType.BeamStartUp != null)
-				useTexture(projectileType.BeamStartUp);
+			if (buildupduration > 0 && projectile.BeamStartUp != null)
+				useTexture(projectile.BeamStartUp);
 			else
-				useTexture(projectileType.Beam);
+				useTexture(projectile.Beam);
 
-			if (projectileType.BeamSound != null)
+			if (projectile.BeamSound != null)
 			{
-				sound = new Sound(projectileType.BeamSound);
+				sound = new Sound(projectile.BeamSound);
 				sound.Play(originPos, true);
 			}
 		}
 
 		public BeamWeapon(World world, WeaponInit init) : base(world, init)
 		{
-			projectileType = (BeamProjectileType)Type.Projectile;
+			projectile = (BeamProjectile)Type.Projectile;
 			rayPhysics = new RayPhysics(world)
 			{
 				Target = TargetPosition,
@@ -72,19 +73,19 @@ namespace WarriorsSnuggery.Objects.Weapons
 			originHeight = init.Convert("OriginHeight", TargetHeight);
 			setPosition();
 
-			impactInterval = init.Convert("ImpactInterval", projectileType.ImpactInterval);
+			impactInterval = init.Convert("ImpactInterval", projectile.ImpactInterval);
 			duration = init.Convert("Duration", Type.ShootDuration);
-			buildupduration = init.Convert("BuildupDuration", projectileType.StartupDuration);
-			endduration = init.Convert("EndDuration", projectileType.CooldownDuration);
+			buildupduration = init.Convert("BuildupDuration", projectile.StartupDuration);
+			endduration = init.Convert("EndDuration", projectile.CooldownDuration);
 
-			if (buildupduration > 0 && projectileType.BeamStartUp != null)
-				useTexture(projectileType.BeamStartUp);
+			if (buildupduration > 0 && projectile.BeamStartUp != null)
+				useTexture(projectile.BeamStartUp);
 			else
-				useTexture(projectileType.Beam);
+				useTexture(projectile.Beam);
 
-			if (projectileType.BeamSound != null)
+			if (projectile.BeamSound != null)
 			{
-				sound = new Sound(projectileType.BeamSound);
+				sound = new Sound(projectile.BeamSound);
 				sound.Play(originPos, true);
 			}
 		}
@@ -135,10 +136,10 @@ namespace WarriorsSnuggery.Objects.Weapons
 				return;
 
 			if (buildupduration-- == 0)
-				useTexture(projectileType.Beam);
+				useTexture(projectile.Beam);
 
-			if (duration == 0 && projectileType.BeamCooldown != null)
-				useTexture(projectileType.BeamCooldown);
+			if (duration == 0 && projectile.BeamCooldown != null)
+				useTexture(projectile.BeamCooldown);
 
 			if (curTick-- < 0)
 			{
@@ -167,7 +168,7 @@ namespace WarriorsSnuggery.Objects.Weapons
 				Height = 0;
 			}
 
-			if (projectileType.Directed && dist > (originPos - TargetPosition).SquaredFlatDist)
+			if (projectile.Directed && dist > (originPos - TargetPosition).SquaredFlatDist)
 			{
 				Position = TargetPosition;
 				Height = 0;
@@ -176,7 +177,7 @@ namespace WarriorsSnuggery.Objects.Weapons
 			if (duration > 0 && buildupduration <= 0 && impactInterval-- <= 0)
 			{
 				Detonate(new Target(Position, Height), false);
-				impactInterval = projectileType.ImpactInterval;
+				impactInterval = projectile.ImpactInterval;
 			}
 
 			if (buildupduration < 0 && duration-- < 0 && endduration-- < 0)
@@ -202,23 +203,23 @@ namespace WarriorsSnuggery.Objects.Weapons
 		public void Move(CPos target, int height)
 		{
 			var dHeight = height - TargetHeight;
-			if (dHeight > projectileType.MovementSpeed)
-				TargetHeight += projectileType.MovementSpeed;
-			else if (dHeight < -projectileType.MovementSpeed)
-				TargetHeight -= projectileType.MovementSpeed;
+			if (dHeight > projectile.MovementSpeed)
+				TargetHeight += projectile.MovementSpeed;
+			else if (dHeight < -projectile.MovementSpeed)
+				TargetHeight -= projectile.MovementSpeed;
 			else
 				TargetHeight += dHeight;
 
 			var dTarget = target - TargetPosition;
-			if (dTarget.SquaredFlatDist <= projectileType.MovementSpeed * projectileType.MovementSpeed)
+			if (dTarget.SquaredFlatDist <= projectile.MovementSpeed * projectile.MovementSpeed)
 			{
 				TargetPosition = target;
 				return;
 			}
 
 			var angle = dTarget.FlatAngle;
-			var dx = (int)-(Math.Cos(angle) * projectileType.MovementSpeed);
-			var dy = (int)-(Math.Sin(angle) * projectileType.MovementSpeed);
+			var dx = (int)-(Math.Cos(angle) * projectile.MovementSpeed);
+			var dy = (int)-(Math.Sin(angle) * projectile.MovementSpeed);
 			TargetPosition += new CPos(dx, dy, 0);
 
 		}

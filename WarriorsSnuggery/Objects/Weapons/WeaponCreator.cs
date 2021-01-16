@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using WarriorsSnuggery.Objects.Weapons.Projectiles;
 
 namespace WarriorsSnuggery.Objects.Weapons
 {
@@ -33,11 +34,12 @@ namespace WarriorsSnuggery.Objects.Weapons
 			if (id == uint.MaxValue)
 				id = world.Game.NextWeaponID;
 
-			if (type.Projectile is BeamProjectileType)
+			// TODO: improve
+			if (type.Projectile is BeamProjectile)
 				return new BeamWeapon(world, type, target, origin, id);
-			else if (type.Projectile is BulletProjectileType)
+			else if (type.Projectile is BulletProjectile)
 				return new BulletWeapon(world, type, target, origin, id);
-			else if (type.Projectile is MagicProjectileType)
+			else if (type.Projectile is MagicProjectile)
 				return new MagicWeapon(world, type, target, origin, id);
 			else
 				return new InstantHitWeapon(world, type, target, origin, id);
@@ -46,11 +48,11 @@ namespace WarriorsSnuggery.Objects.Weapons
 		public static Weapon Create(World world, WeaponInit init)
 		{
 			var type = init.Type;
-			if (type.Projectile is BeamProjectileType)
+			if (type.Projectile is BeamProjectile)
 				return new BeamWeapon(world, init);
-			else if (type.Projectile is BulletProjectileType)
+			else if (type.Projectile is BulletProjectile)
 				return new BulletWeapon(world, init);
-			else if (type.Projectile is MagicProjectileType)
+			else if (type.Projectile is MagicProjectile)
 				return new MagicWeapon(world, init);
 			else
 				return new InstantHitWeapon(world, init);
