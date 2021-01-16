@@ -37,11 +37,11 @@ namespace DocWriter
 			HTMLWriter.WriteHeader("WeaponType");
 			TypeWriter.Write(typeof(WarriorsSnuggery.Objects.Weapons.WeaponType), new[] { emptyTextNodes });
 
-			HTMLWriter.WriteHeader("ProjectileTypes");
-			TypeWriter.WriteAll("WarriorsSnuggery.Objects.Weapons", "ProjectileType", new[] { emptyTextNodes });
+			HTMLWriter.WriteHeader("Projectiles");
+			TypeWriter.WriteAll("WarriorsSnuggery.Objects.Weapons.Projectiles", "Projectile", new[] { emptyTextNodes });
 
 			HTMLWriter.WriteHeader("Warheads");
-			TypeWriter.WriteAll("WarriorsSnuggery.Objects.Weapons", "Warhead", new[] { emptyTextNodes });
+			TypeWriter.WriteAll("WarriorsSnuggery.Objects.Weapons.Warheads", "Warhead", new[] { emptyTextNodes });
 		}
 
 		public static void WriteMaps()
