@@ -1,6 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
-using WarriorsSnuggery.Objects.Weapons.Projectiles;
 
 namespace WarriorsSnuggery.Objects.Weapons
 {
@@ -34,28 +34,19 @@ namespace WarriorsSnuggery.Objects.Weapons
 			if (id == uint.MaxValue)
 				id = world.Game.NextWeaponID;
 
-			// TODO: improve
-			if (type.Projectile is BeamProjectile)
-				return new BeamWeapon(world, type, target, origin, id);
-			else if (type.Projectile is BulletProjectile)
-				return new BulletWeapon(world, type, target, origin, id);
-			else if (type.Projectile is MagicProjectile)
-				return new MagicWeapon(world, type, target, origin, id);
-			else
-				return new InstantHitWeapon(world, type, target, origin, id);
+			return (Weapon)Activator.CreateInstance(getWeaponType(type), new object[] { world, type, target, origin, id });
 		}
 
 		public static Weapon Create(World world, WeaponInit init)
 		{
-			var type = init.Type;
-			if (type.Projectile is BeamProjectile)
-				return new BeamWeapon(world, init);
-			else if (type.Projectile is BulletProjectile)
-				return new BulletWeapon(world, init);
-			else if (type.Projectile is MagicProjectile)
-				return new MagicWeapon(world, init);
-			else
-				return new InstantHitWeapon(world, init);
+			return (Weapon)Activator.CreateInstance(getWeaponType(init.Type), new object[] { world, init });
+		}
+
+		static Type getWeaponType(WeaponType type)
+		{
+			var name = type.Projectile.GetType().Name[..^10];
+
+			return Type.GetType("WarriorsSnuggery.Objects.Weapons." + name + "Weapon", false, true);
 		}
 	}
 }
