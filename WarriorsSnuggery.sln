@@ -5,7 +5,7 @@ VisualStudioVersion = 16.0.30011.22
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WarriorsSnuggery", "WarriorsSnuggery\WarriorsSnuggery.csproj", "{D8BAC54F-9CF7-45FD-9CBA-1240643C26FF}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DocWriter", "DocWriter\DocWriter.csproj", "{FFAFC94E-537C-40A1-8998-022E3628C0FE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WarriorsSnuggery.Docs", "WarriorsSnuggery.Docs\WarriorsSnuggery.Docs.csproj", "{FFAFC94E-537C-40A1-8998-022E3628C0FE}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WarriorsSnuggeryScripts", "WarriorsSnuggeryScripts\WarriorsSnuggeryScripts.csproj", "{C763A1D1-57CC-4AF8-A64B-89965415AC2E}"
 EndProject
