@@ -9,7 +9,7 @@
 		{
 			device = new AudioDevice();
 			AudioManager.LoadSound("test", FileExplorer.FindPath(FileExplorer.Misc, "test", ".wav"));
-			Music = new MusicController(FileExplorer.FilesIn(FileExplorer.Misc + @"music\", ".wav"));
+			Music = new MusicController(FileExplorer.FilesIn(FileExplorer.Misc + "music" + FileExplorer.Separator, ".wav"));
 		}
 
 		public static void Tick()

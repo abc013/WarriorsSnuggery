@@ -106,8 +106,8 @@ namespace WarriorsSnuggery
 		static int createShader(string name)
 		{
 			var program = new ShaderProgram();
-			program.AddShader(ShaderType.VertexShader, FileExplorer.Shaders + @"\" + name + ".vert");
-			program.AddShader(ShaderType.FragmentShader, FileExplorer.Shaders + @"\" + name + ".frag");
+			program.AddShader(ShaderType.VertexShader, FileExplorer.Shaders + name + ".vert");
+			program.AddShader(ShaderType.FragmentShader, FileExplorer.Shaders + name + ".frag");
 			program.Link();
 
 			shaders[programCount] = program;

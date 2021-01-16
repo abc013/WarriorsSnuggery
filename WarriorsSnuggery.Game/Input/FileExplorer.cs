@@ -7,6 +7,7 @@ namespace WarriorsSnuggery
 	public static class FileExplorer
 	{
 		public static readonly string Path = Directory.GetCurrentDirectory();
+		public static readonly char Separator = System.IO.Path.DirectorySeparatorChar;
 
 		public static string Misc;
 		public static string Rules;
@@ -20,13 +21,13 @@ namespace WarriorsSnuggery
 		{
 			string path = Directory.GetCurrentDirectory();
 
-			MainDirectory = path + @"\";
-			Misc = path + @"\misc\";
-			Rules = path + @"\rules\";
-			Maps = path + @"\maps\";
-			Shaders = path + @"\shaders\";
-			Logs = path + @"\logs\";
-			Saves = path + @"\saves\";
+			MainDirectory = path + Separator;
+			Misc = path + Separator + @"misc" + Separator;
+			Rules = path + Separator + @"rules" + Separator;
+			Maps = path + Separator + @"maps" + Separator;
+			Shaders = path + Separator + @"shaders" + Separator;
+			Logs = path + Separator + @"logs" + Separator;
+			Saves = path + Separator + @"saves" + Separator;
 		}
 
 		public static bool Exists(string path, string name)
@@ -87,7 +88,7 @@ namespace WarriorsSnuggery
 
 			foreach (var directory in Directory.EnumerateDirectories(path))
 			{
-				var found = findUntil(directory + @"\", name, suffix);
+				var found = findUntil(directory + Separator, name, suffix);
 
 				if (found != string.Empty)
 					return found;
@@ -104,7 +105,7 @@ namespace WarriorsSnuggery
 				if (!file.EndsWith(suffix, StringComparison.CurrentCulture))
 					continue;
 
-				var split = file.Split('\\');
+				var split = file.Split(Separator);
 				var name = split[^1];
 				list.Add(name.Remove(name.Length - suffix.Length));
 			}
