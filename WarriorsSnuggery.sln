@@ -7,7 +7,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WarriorsSnuggery", "Warrior
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WarriorsSnuggery.Docs", "WarriorsSnuggery.Docs\WarriorsSnuggery.Docs.csproj", "{FFAFC94E-537C-40A1-8998-022E3628C0FE}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WarriorsSnuggeryScripts", "WarriorsSnuggeryScripts\WarriorsSnuggeryScripts.csproj", "{C763A1D1-57CC-4AF8-A64B-89965415AC2E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WarriorsSnuggery.Scripts", "WarriorsSnuggery.Scripts\WarriorsSnuggery.Scripts.csproj", "{C763A1D1-57CC-4AF8-A64B-89965415AC2E}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{0B53B452-9062-450F-BB70-B1C5362D862F}"
 	ProjectSection(SolutionItems) = preProject
