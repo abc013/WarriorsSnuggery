@@ -303,19 +303,12 @@ namespace WarriorsSnuggery.Loader
 			}
 			else if (t == typeof(ParticleSpawner))
 			{
-				// TODO: improve
-				var children = node.Children;
-				switch (value)
-				{
-					case "Point":
-						return new PointParticleSpawner(children);
-					case "Line":
-						return new LineParticleSpawner(children);
-					case "Area":
-						return new AreaParticleSpawner(children);
-					case "List":
-						return new ListParticleSpawner(children);
-				}
+				var type = Type.GetType("WarriorsSnuggery.Objects.Particles." + value.Trim() + "ParticleSpawner", false, true);
+
+				if (type == null || type.IsInterface)
+					throw new InvalidConversionException(file, node, t);
+
+				return Activator.CreateInstance(type, new[] { node.Children });
 			}
 			else if (t == typeof(TextureInfo))
 			{
@@ -384,19 +377,12 @@ namespace WarriorsSnuggery.Loader
 			}
 			else if (t == typeof(IProjectile))
 			{
-				var children = node.Children;
-				// TODO: improve
-				switch (value)
-				{
-					case "Bullet":
-						return new BulletProjectile(children);
-					case "Magic":
-						return new MagicProjectile(children);
-					case "Beam":
-						return new BeamProjectile(children);
-					case "InstantHit":
-						return new InstantHitProjectile(children);
-				}
+				var type = Type.GetType("WarriorsSnuggery.Objects.Weapons.Projectiles." + value.Trim() + "Projectile", false, true);
+
+				if (type == null || type.IsInterface)
+					throw new InvalidConversionException(file, node, t);
+
+				return Activator.CreateInstance(type, new[] { node.Children });
 			}
 			else if (t == typeof(IWarhead[]))
 			{
@@ -404,32 +390,12 @@ namespace WarriorsSnuggery.Loader
 				var i = 0;
 				foreach (var child in node.Children)
 				{
-					// TODO: improve
-					var children = child.Children;
-					switch (child.Key)
-					{
-						case "Sound":
-							array[i++] = new SoundWarhead(children);
-							break;
-						case "Smudge":
-							array[i++] = new SmudgeWarhead(children);
-							break;
-						case "Damage":
-							array[i++] = new DamageWarhead(children);
-							break;
-						case "Particle":
-							array[i++] = new ParticleWarhead(children);
-							break;
-						case "Actor":
-							array[i++] = new ActorWarhead(children);
-							break;
-						case "Spell":
-							array[i++] = new SpellWarhead(children);
-							break;
-						case "Force":
-							array[i++] = new ForceWarhead(children);
-							break;
-					}
+					var type = Type.GetType("WarriorsSnuggery.Objects.Weapons.Warheads." + child.Key.Trim() + "Warhead", false, true);
+
+					if (type == null || type.IsInterface)
+						throw new InvalidConversionException(file, child, t);
+
+					array[i++] = (IWarhead)Activator.CreateInstance(type, new[] { child.Children });
 				}
 				return array;
 			}
