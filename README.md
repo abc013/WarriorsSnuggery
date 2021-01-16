@@ -22,6 +22,7 @@ For publishing Warrior's Snuggery, `publish.ps1` is used. This is a powershell f
 ## Recommended IDEs
 If you want to edit and compile the code in an IDE, Visual Studio 2019 or Visual Studio Code is highly recommended (the solution is prepared for the use of those).
 
+## Issues and Errors
 for any issues or build failures, feel free to [open an issue](https://github.com/abc013/WarriorsSnuggery/issues/new)!
 
 ## Dependencies
