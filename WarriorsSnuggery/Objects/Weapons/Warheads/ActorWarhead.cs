@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace WarriorsSnuggery.Objects.Weapons
+namespace WarriorsSnuggery.Objects.Weapons.Warheads
 {
 	public class ActorWarhead : IWarhead
 	{

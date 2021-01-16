@@ -5,7 +5,7 @@ using WarriorsSnuggery.Loader;
 using WarriorsSnuggery.Objects.Parts;
 using WarriorsSnuggery.Physics;
 
-namespace WarriorsSnuggery.Objects.Weapons
+namespace WarriorsSnuggery.Objects.Weapons.Warheads
 {
 	public class DamageWarhead : IWarhead
 	{

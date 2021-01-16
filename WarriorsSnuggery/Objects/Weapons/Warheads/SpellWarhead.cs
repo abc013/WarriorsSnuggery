@@ -2,7 +2,7 @@
 using WarriorsSnuggery.Physics;
 using WarriorsSnuggery.Spells;
 
-namespace WarriorsSnuggery.Objects.Weapons
+namespace WarriorsSnuggery.Objects.Weapons.Warheads
 {
 	public class SpellWarhead : IWarhead
 	{

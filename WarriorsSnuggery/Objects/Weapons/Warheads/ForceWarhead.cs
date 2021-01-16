@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using WarriorsSnuggery.Physics;
 
-namespace WarriorsSnuggery.Objects.Weapons
+namespace WarriorsSnuggery.Objects.Weapons.Warheads
 {
 	public class ForceWarhead : IWarhead
 	{

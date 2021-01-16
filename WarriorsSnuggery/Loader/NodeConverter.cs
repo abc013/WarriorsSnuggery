@@ -8,6 +8,7 @@ using WarriorsSnuggery.Objects.Conditions;
 using WarriorsSnuggery.Objects.Particles;
 using WarriorsSnuggery.Objects.Weapons;
 using WarriorsSnuggery.Objects.Weapons.Projectiles;
+using WarriorsSnuggery.Objects.Weapons.Warheads;
 using WarriorsSnuggery.Spells;
 
 namespace WarriorsSnuggery.Loader

@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using WarriorsSnuggery.Graphics;
 
-namespace WarriorsSnuggery.Objects.Weapons
+namespace WarriorsSnuggery.Objects.Weapons.Warheads
 {
 	public class SmudgeWarhead : IWarhead
 	{
