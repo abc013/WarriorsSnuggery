@@ -113,6 +113,7 @@ namespace WarriorsSnuggery.Objects
 			public readonly uint ID;
 			public readonly CPos Position;
 
+#pragma warning disable CS0649
 			public readonly ActorType Type;
 			public readonly float Health = 1f;
 			public readonly byte Team = Actor.NeutralTeam;
@@ -124,6 +125,7 @@ namespace WarriorsSnuggery.Objects
 			public readonly int Duration = 0;
 			public readonly ActorType ToActor;
 			public readonly float RelativeHP = 1f;
+#pragma warning restore CS0649
 
 			public ActorNode(uint id, CPos position, List<MiniTextNode> nodes)
 			{
