@@ -185,7 +185,7 @@ namespace WarriorsSnuggery.Maps.Generators
 						{
 							if (y >= 0 && y < Bounds.Y)
 							{
-								if (Loader.AcquireCell(new MPos(x, y), info.ID))
+								if (Loader.AcquireCell(new MPos(x, y), info.ID, denyPatrols: false))
 									UsedCells[x, y] = true;
 							}
 						}

@@ -2,6 +2,7 @@
 using System.Globalization;
 using System.Linq;
 using WarriorsSnuggery.Graphics;
+using WarriorsSnuggery.Maps;
 using WarriorsSnuggery.Maps.Generators;
 using WarriorsSnuggery.Objects;
 using WarriorsSnuggery.Objects.Conditions;

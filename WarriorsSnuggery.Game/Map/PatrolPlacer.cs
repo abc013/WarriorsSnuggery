@@ -1,15 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using WarriorsSnuggery.Objects;
 
-namespace WarriorsSnuggery.Maps.Generators
+namespace WarriorsSnuggery.Maps
 {
-	[Desc("Generator used for spawning enemies on the map.")]
-	public class PatrolGeneratorInfo : IMapGeneratorInfo
+	[Desc("Used for spawning actor patrols on the map.")]
+	public class PatrolPlacerInfo
 	{
-		public int ID => id;
-		readonly int id;
-
 		[Desc("Bounds of the patrol group to determine a valid spawnlocation.")]
 		public readonly int SpawnBounds = 3;
 		[Desc("Minimum number of patrols per 32x32 field.")]
@@ -17,28 +15,18 @@ namespace WarriorsSnuggery.Maps.Generators
 		[Desc("Maximum number of patrols per 32x32 field.")]
 		public readonly int MaximumPatrols = 4;
 		[Desc("Patrols to possibly spawn.")]
-		public readonly PatrolProbabilityInfo[] Patrols;
+		public readonly PatrolProbabilityInfo[] Patrols = new PatrolProbabilityInfo[0];
 		public readonly float PatrolProbabilities;
 
-		[Desc("Use Patrols in the WAVES GameMode.", "Please note by setting to true, the Generator will not be used in other GameModes.")]
+		[Desc("Only use this PatrolPlacer in the WAVES Gamemode.")]
 		public readonly bool UseForWaves;
 
-		public PatrolGeneratorInfo(int id, List<MiniTextNode> nodes)
+		public PatrolPlacerInfo(List<MiniTextNode> nodes)
 		{
-			this.id = id;
 			Loader.PartLoader.SetValues(this, nodes);
 
-			if (Patrols != null && Patrols.Length != 0)
+			if (Patrols.Length != 0)
 				PatrolProbabilities = Patrols.Sum(p => p.Probability);
-		}
-
-		public MapGenerator GetGenerator(Random random, MapLoader loader)
-		{
-			// TODO move elsewhere
-			if (loader.ObjectiveType == ObjectiveType.SURVIVE_WAVES)
-				return null;
-
-			return new PatrolGenerator(random, loader, this);
 		}
 	}
 
@@ -60,32 +48,48 @@ namespace WarriorsSnuggery.Maps.Generators
 		}
 	}
 
-	public class PatrolGenerator : MapGenerator
+	public class PatrolPlacer
 	{
-		readonly PatrolGeneratorInfo info;
+		readonly Random random;
+
+		readonly World world;
+		readonly MPos bounds;
+
+		readonly PatrolPlacerInfo info;
+
+		bool[,] invalidTerrain;
 
 		readonly List<MPos> positions = new List<MPos>();
-
 		MPos[] spawns;
 
-		public PatrolGenerator(Random random, MapLoader loader, PatrolGeneratorInfo info) : base(random, loader)
+		public PatrolPlacer(Random random, World world, PatrolPlacerInfo info)
 		{
+			this.random = random;
+			this.world = world;
+			bounds = world.Map.Bounds;
 			this.info = info;
 		}
 
-		public override void Generate()
+		public void SetInvalid(bool[,] invalidTerrain)
 		{
-			for (int a = 0; a < Math.Floor(Bounds.X / (float)info.SpawnBounds); a++)
+			this.invalidTerrain = invalidTerrain;
+		}
+
+		public List<Actor> PlacePatrols()
+		{
+			var actors = new List<Actor>();
+
+			for (int a = 0; a < Math.Floor(bounds.X / (float)info.SpawnBounds); a++)
 			{
-				for (int b = 0; b < Math.Floor(Bounds.X / (float)info.SpawnBounds); b++)
+				for (int b = 0; b < Math.Floor(bounds.X / (float)info.SpawnBounds); b++)
 				{
 					if (!areaBlocked(a, b))
 						positions.Add(new MPos(a * info.SpawnBounds, b * info.SpawnBounds));
 				}
 			}
 
-			var multiplier = Bounds.X * Bounds.Y / (float)(32 * 32) + (Loader.Statistics.Difficulty - 5) / 10f;
-			var count = Random.Next((int)(info.MinimumPatrols * multiplier), (int)(info.MaximumPatrols * multiplier));
+			var multiplier = bounds.X * bounds.Y / (float)(32 * 32) + (world.Game.Statistics.Difficulty - 5) / 10f;
+			var count = random.Next((int)(info.MinimumPatrols * multiplier), (int)(info.MaximumPatrols * multiplier));
 			if (positions.Count < count)
 			{
 				Log.WriteDebug(string.Format("Unable to spawn Patrol count ({0}) because there are not enough available spawn points ({1}).", count, positions.Count));
@@ -96,11 +100,12 @@ namespace WarriorsSnuggery.Maps.Generators
 
 			for (int i = 0; i < count; i++)
 			{
-				var posIndex = Random.Next(positions.Count);
+				var posIndex = random.Next(positions.Count);
 				spawns[i] = positions[posIndex];
 				positions.RemoveAt(posIndex);
 			}
 
+			var map = world.Map;
 			foreach (var spawn in spawns)
 			{
 				var mid = spawn.ToCPos();
@@ -129,34 +134,40 @@ namespace WarriorsSnuggery.Maps.Generators
 						spawnPosition = mid + new CPos(deltaX, deltaY, 0);
 					}
 
-					if (spawnPosition.X < TopLeftCorner.X + patrol.DistanceBetweenObjects / 2)
-						spawnPosition = new CPos(TopLeftCorner.X + patrol.DistanceBetweenObjects / 2, spawnPosition.Y, 0);
-					else if (spawnPosition.X >= BottomRightCorner.X - patrol.DistanceBetweenObjects / 2)
-						spawnPosition = new CPos(BottomRightCorner.X - patrol.DistanceBetweenObjects / 2, spawnPosition.Y, 0);
+					if (spawnPosition.X < map.TopLeftCorner.X + patrol.DistanceBetweenObjects / 2)
+						spawnPosition = new CPos(map.TopLeftCorner.X + patrol.DistanceBetweenObjects / 2, spawnPosition.Y, 0);
+					else if (spawnPosition.X >= map.BottomRightCorner.X - patrol.DistanceBetweenObjects / 2)
+						spawnPosition = new CPos(map.BottomRightCorner.X - patrol.DistanceBetweenObjects / 2, spawnPosition.Y, 0);
 
-					if (spawnPosition.Y < TopLeftCorner.Y + patrol.DistanceBetweenObjects / 2)
-						spawnPosition = new CPos(spawnPosition.X, TopLeftCorner.Y + patrol.DistanceBetweenObjects / 2, 0);
-					else if (spawnPosition.Y >= BottomRightCorner.Y - patrol.DistanceBetweenObjects / 2)
-						spawnPosition = new CPos(spawnPosition.X, BottomRightCorner.Y - patrol.DistanceBetweenObjects / 2, 0);
+					if (spawnPosition.Y < map.TopLeftCorner.Y + patrol.DistanceBetweenObjects / 2)
+						spawnPosition = new CPos(spawnPosition.X, map.TopLeftCorner.Y + patrol.DistanceBetweenObjects / 2, 0);
+					else if (spawnPosition.Y >= map.BottomRightCorner.Y - patrol.DistanceBetweenObjects / 2)
+						spawnPosition = new CPos(spawnPosition.X, map.BottomRightCorner.Y - patrol.DistanceBetweenObjects / 2, 0);
 
-					Loader.AddActor(spawnPosition, patrol.ActorTypes[j], patrol.Team, true);
+					var actor = ActorCreator.Create(world, patrol.ActorTypes[j], spawnPosition, patrol.Team, true);
+
+					world.Add(actor);
+					actors.Add(actor);
 				}
 			}
+
+			return actors;
 		}
 
 		bool areaBlocked(int a, int b)
 		{
+			var map = world.Map;
 			for (int x = a * info.SpawnBounds; x < a * info.SpawnBounds + info.SpawnBounds; x++)
 			{
-				if (x < TopLeftCorner.X || x >= TopRightCorner.X)
+				if (x < map.TopLeftCorner.X || x >= map.TopRightCorner.X)
 					continue;
 
 				for (int y = b * info.SpawnBounds; y < b * info.SpawnBounds + info.SpawnBounds; y++)
 				{
-					if (y < TopLeftCorner.Y || y >= BottomLeftCorner.Y)
+					if (y < map.TopLeftCorner.Y || y >= map.BottomLeftCorner.Y)
 						continue;
 
-					if (!Loader.CanAcquireCell(new MPos(x, y), info.ID))
+					if (invalidTerrain[x, y])
 						return true;
 				}
 			}
@@ -166,7 +177,7 @@ namespace WarriorsSnuggery.Maps.Generators
 
 		PatrolProbabilityInfo getPatrol()
 		{
-			var probability = Random.NextDouble() * info.PatrolProbabilities;
+			var probability = random.NextDouble() * info.PatrolProbabilities;
 			for (int i = 0; i < info.Patrols.Length; i++)
 			{
 				probability -= info.Patrols[i].Probability;

@@ -94,7 +94,7 @@ namespace WarriorsSnuggery.Maps.Generators
 					if (randomValue > limit)
 						continue;
 
-					if (!Loader.AcquireCell(new MPos(x, y), info.ID))
+					if (!Loader.AcquireCell(new MPos(x, y), info.ID, denyPatrols: false))
 						continue;
 
 					UsedCells[x, y] = true;
@@ -127,7 +127,7 @@ namespace WarriorsSnuggery.Maps.Generators
 								if (p.X >= Bounds.X || p.Y >= Bounds.Y)
 									continue;
 
-								if (!UsedCells[p.X, p.Y] && Loader.AcquireCell(p, info.ID))
+								if (!UsedCells[p.X, p.Y] && Loader.AcquireCell(p, info.ID, denyPatrols: false))
 									Loader.SetTerrain(x, y, info.BorderTerrain[Random.Next(info.BorderTerrain.Length)]);
 							}
 						}

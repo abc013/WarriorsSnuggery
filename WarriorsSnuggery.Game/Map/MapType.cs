@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using WarriorsSnuggery.Loader;
 using WarriorsSnuggery.Maps.Generators;
@@ -45,6 +44,9 @@ namespace WarriorsSnuggery.Maps
 		[Desc("Noises that are referenced by the generators.")]
 		public readonly NoiseMapInfo[] NoiseMaps = new NoiseMapInfo[0];
 
+		[Desc("Patrol generators used for generating enemies and waves.")]
+		public readonly PatrolPlacerInfo[] PatrolPlacers = new PatrolPlacerInfo[0];
+
 		[Desc("Determines the file of a script that will be executed during the game.", "Ending of the filename must be '.cs'.")]
 		public readonly string MissionScript;
 
@@ -86,6 +88,13 @@ namespace WarriorsSnuggery.Maps
 							var child = node.Children[i];
 							NoiseMaps[i] = new NoiseMapInfo(child.Convert<int>(), child.Children);
 						}
+
+						break;
+					case nameof(PatrolPlacers):
+						PatrolPlacers = new PatrolPlacerInfo[node.Children.Count];
+
+						for (int i = 0; i < PatrolPlacers.Length; i++)
+							PatrolPlacers[i] = new PatrolPlacerInfo(node.Children[i].Children);
 
 						break;
 					default:

@@ -35,6 +35,7 @@ namespace WarriorsSnuggery.Maps
 		public readonly List<Waypoint> Waypoints = new List<Waypoint>();
 
 		readonly int[,] generatorReservations;
+		readonly bool[,] invalidForPatrols;
 
 		readonly ushort[,] terrainInformation;
 		readonly (short id, short health)[,] wallInformation;
@@ -61,6 +62,7 @@ namespace WarriorsSnuggery.Maps
 			EmptyNoiseMap = new NoiseMap(Bounds, 0, new NoiseMapInfo(0, new List<MiniTextNode>()));
 
 			generatorReservations = new int[Bounds.X, Bounds.Y];
+			invalidForPatrols = new bool[Bounds.X, Bounds.Y];
 			terrainInformation = new ushort[Bounds.X, Bounds.Y];
 			wallInformation = new (short, short)[world.WallLayer.Bounds.X, world.WallLayer.Bounds.Y];
 		}
@@ -90,6 +92,19 @@ namespace WarriorsSnuggery.Maps
 			// Generators
 			foreach (var info in map.Type.Generators)
 				info.GetGenerator(Random, this)?.Generate();
+
+			if (world.Game.ObjectiveType != ObjectiveType.SURVIVE_WAVES)
+			{
+				foreach (var info in map.Type.PatrolPlacers)
+				{
+					if (info.UseForWaves)
+						continue;
+
+					var placer = new PatrolPlacer(Random, world, info);
+					placer.SetInvalid(invalidForPatrols);
+					placer.PlacePatrols();
+				}
+			}
 		}
 
 		public void Apply()
@@ -153,7 +168,7 @@ namespace WarriorsSnuggery.Maps
 			world.WallLayer.Set(wall);
 		}
 
-		public bool AcquireCell(MPos pos, int id, bool check = true, bool removeActors = true)
+		public bool AcquireCell(MPos pos, int id, bool check = true, bool removeActors = true, bool denyPatrols = true)
 		{
 			if (check && !CanAcquireCell(pos, id))
 				return false;
@@ -162,6 +177,7 @@ namespace WarriorsSnuggery.Maps
 				RemoveActors(pos);
 
 			generatorReservations[pos.X, pos.Y] = id;
+			invalidForPatrols[pos.X, pos.Y] = denyPatrols;
 			return true;
 		}
 

@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using WarriorsSnuggery.Maps;
-using WarriorsSnuggery.Maps.Generators;
 using WarriorsSnuggery.Objects;
 
 namespace WarriorsSnuggery
@@ -17,8 +16,7 @@ namespace WarriorsSnuggery
 
 		readonly Game game;
 
-		readonly IMapGeneratorInfo[] generators;
-		readonly MapLoader loader;
+		readonly PatrolPlacerInfo[] placers;
 
 		bool awaitingNextWave;
 		int countdown;
@@ -28,13 +26,12 @@ namespace WarriorsSnuggery
 			this.game = game;
 
 			waves = Math.Min((int)Math.Ceiling(Math.Sqrt((game.Statistics.Difficulty / 2 + 1) * game.Statistics.Level)), 10) + 1;
-			generators = game.MapType.Generators.Where(g => g is PatrolGeneratorInfo info && info.UseForWaves).ToArray();
-			loader = new MapLoader(game.World, game.World.Map);
+			placers = game.MapType.PatrolPlacers.Where(p => p.UseForWaves).ToArray();
 
 			if (game.MapType.IsSave && game.Statistics.Waves > 0)
 				CurrentWave = game.Statistics.Waves;
 
-			if (generators.Length == 0)
+			if (placers.Length == 0)
 				throw new InvalidTextNodeException("The GameMode WAVES can not be executed because there are no available PatrolGenerators for it.");
 
 			AwaitNextWave();
@@ -90,13 +87,10 @@ namespace WarriorsSnuggery
 			game.AddInfoMessage(200, ((CurrentWave == waves) ? Color.Green : Color.White) + "Wave " + CurrentWave + "/" + waves);
 			game.ScreenControl.UpdateWave(CurrentWave, waves);
 
-			var generatorInfo = (PatrolGeneratorInfo)generators[game.SharedRandom.Next(generators.Length)];
-			var generator = new PatrolGenerator(game.SharedRandom, loader, generatorInfo);
+			var placerInfo = placers[game.SharedRandom.Next(placers.Length)];
+			var placer = new PatrolPlacer(game.SharedRandom, game.World, placerInfo);
 
-			generator.Generate();
-
-			var actors = game.World.ActorLayer.ToAdd().Where(a => a.Team != Actor.PlayerTeam && a.IsBot);
-
+			var actors = placer.PlacePatrols();
 			foreach (var actor in actors)
 				actor.BotPart.Target = new Objects.Weapons.Target(game.World.LocalPlayer);
 
