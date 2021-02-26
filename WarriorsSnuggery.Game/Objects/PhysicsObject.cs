@@ -5,7 +5,6 @@ namespace WarriorsSnuggery.Objects
 {
 	public class PhysicsObject : PositionableObject
 	{
-		public PhysicsSector[] PhysicsSectors = new PhysicsSector[0];
 		public readonly SimplePhysics Physics;
 
 		[Save]
@@ -16,8 +15,7 @@ namespace WarriorsSnuggery.Objects
 			{
 				base.Height = value;
 
-				if (Physics != null)
-					Physics.Height = value;
+				Physics.Height = value;
 			}
 		}
 
@@ -29,8 +27,7 @@ namespace WarriorsSnuggery.Objects
 			{
 				base.Position = value;
 
-				if (Physics != null)
-					Physics.Position = value;
+				Physics.Position = value;
 			}
 		}
 
@@ -41,7 +38,7 @@ namespace WarriorsSnuggery.Objects
 
 		public override void Dispose()
 		{
-			foreach (var sector in PhysicsSectors)
+			foreach (var sector in Physics.Sectors)
 				sector.Leave(this);
 
 			base.Dispose();

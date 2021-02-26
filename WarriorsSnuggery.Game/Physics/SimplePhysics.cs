@@ -12,6 +12,8 @@ namespace WarriorsSnuggery.Physics
 		public readonly int RadiusY;// only for box and drawing
 		public readonly int HeightRadius;
 
+		public PhysicsSector[] Sectors;
+
 		public CPos Position;
 		public int Height;
 

@@ -19,8 +19,6 @@ namespace WarriorsSnuggery
 
 	public interface ITickRenderable : ITick, IRenderable { }
 
-	public interface ITickRenderDisposable : ITick, IRenderable, IDisposable { }
-
 	public interface IDisableTooltip
 	{
 		void DisableTooltip();

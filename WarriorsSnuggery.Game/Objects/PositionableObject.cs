@@ -1,9 +1,8 @@
-﻿using System;
-using WarriorsSnuggery.Graphics;
+﻿using WarriorsSnuggery.Graphics;
 
 namespace WarriorsSnuggery.Objects
 {
-	public class PositionableObject : ITickRenderDisposable, ICheckVisible, IPositionable
+	public class PositionableObject : ITickRenderable, ICheckVisible, IPositionable
 	{
 		protected readonly BatchRenderable Renderable;
 		public bool Disposed;
@@ -134,8 +133,6 @@ namespace WarriorsSnuggery.Objects
 		{
 			Disposed = true;
 			Visible = false;
-
-			GC.SuppressFinalize(this);
 		}
 	}
 }

@@ -196,7 +196,7 @@ namespace WarriorsSnuggery
 			var left = PhysicsLayer.Bounds.X;
 			var bot = 0;
 			var right = 0;
-			foreach (var p in obj.PhysicsSectors)
+			foreach (var p in obj.Physics.Sectors)
 			{
 				if (p.Check(obj, toIgnore))
 					return true;

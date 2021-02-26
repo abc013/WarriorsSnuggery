@@ -28,8 +28,8 @@ namespace WarriorsSnuggery
 			if (obj.Physics.Shape == Shape.NONE)
 				return;
 
-			var oldSectors = obj.PhysicsSectors;
-			obj.PhysicsSectors = GetSectors(obj.Physics);
+			var oldSectors = obj.Physics.Sectors;
+			obj.Physics.Sectors = GetSectors(obj.Physics);
 
 			if (updateSectors)
 			{
@@ -37,11 +37,11 @@ namespace WarriorsSnuggery
 				{
 					foreach (var sector in oldSectors)
 					{
-						if (!obj.PhysicsSectors.Contains(sector))
+						if (!obj.Physics.Sectors.Contains(sector))
 							sector.Leave(obj);
 					}
 				}
-				foreach (var sector in obj.PhysicsSectors)
+				foreach (var sector in obj.Physics.Sectors)
 					sector.Enter(obj);
 			}
 		}
