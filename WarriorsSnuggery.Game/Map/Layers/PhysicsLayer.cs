@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using WarriorsSnuggery.Graphics;
-using WarriorsSnuggery.Objects;
 using WarriorsSnuggery.Physics;
 
 namespace WarriorsSnuggery
@@ -23,13 +22,13 @@ namespace WarriorsSnuggery
 					Sectors[x, y] = new PhysicsSector(new MPos(x, y));
 		}
 
-		public void UpdateSectors(PhysicsObject obj, bool @new = false, bool updateSectors = true)
+		public void UpdateSectors(SimplePhysics physics, bool @new = false, bool updateSectors = true)
 		{
-			if (obj.Physics.IsEmpty)
+			if (physics.IsEmpty)
 				return;
 
-			var oldSectors = obj.Physics.Sectors;
-			obj.Physics.Sectors = GetSectors(obj.Physics);
+			var oldSectors = physics.Sectors;
+			physics.Sectors = GetSectors(physics);
 
 			if (updateSectors)
 			{
@@ -37,12 +36,12 @@ namespace WarriorsSnuggery
 				{
 					foreach (var sector in oldSectors)
 					{
-						if (!obj.Physics.Sectors.Contains(sector))
-							sector.Leave(obj);
+						if (!physics.Sectors.Contains(sector))
+							sector.Leave(physics);
 					}
 				}
-				foreach (var sector in obj.Physics.Sectors)
-					sector.Enter(obj);
+				foreach (var sector in physics.Sectors)
+					sector.Enter(physics);
 			}
 		}
 
@@ -107,37 +106,32 @@ namespace WarriorsSnuggery
 	{
 		public readonly MPos Position;
 
-		readonly List<PhysicsObject> objects = new List<PhysicsObject>();
+		readonly List<SimplePhysics> physicsList = new List<SimplePhysics>();
 
 		public PhysicsSector(MPos position)
 		{
 			Position = position;
 		}
 
-		public void Enter(PhysicsObject obj)
+		public void Enter(SimplePhysics physics)
 		{
-			if (!objects.Contains(obj))
-				objects.Add(obj);
+			if (!physicsList.Contains(physics))
+				physicsList.Add(physics);
 		}
 
-		public void Leave(PhysicsObject obj)
+		public void Leave(SimplePhysics physics)
 		{
-			objects.Remove(obj);
+			physicsList.Remove(physics);
 		}
 
-		public bool Check(PhysicsObject obj, Actor toIgnore)
+		public bool Check(SimplePhysics physics)
 		{
-			return objects.Any((o) => o.Physics != obj.Physics && o != toIgnore && o.Physics.Intersects(obj.Physics));
+			return physicsList.Any((o) => o != physics && o.Intersects(physics));
 		}
 
-		public IEnumerable<PhysicsObject> GetObjects()
+		public IEnumerable<SimplePhysics> GetObjects(SimplePhysics[] ignore)
 		{
-			return objects;
-		}
-
-		public IEnumerable<PhysicsObject> GetObjects(PhysicsObject[] ignoreObjects)
-		{
-			return objects.Where((o) => ignoreObjects == null || !ignoreObjects.Contains(o));
+			return physicsList.Where((o) => ignore == null || !ignore.Contains(o));
 		}
 
 		public void RenderDebug()

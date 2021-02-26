@@ -288,7 +288,7 @@ namespace WarriorsSnuggery.Objects
 			Height = height;
 			Position = pos;
 
-			var intersects = World.CheckCollision(this);
+			var intersects = World.CheckCollision(Physics);
 
 			Position = oldPos;
 			Height = oldHeight;
@@ -315,7 +315,7 @@ namespace WarriorsSnuggery.Objects
 			CurrentTerrain = terrain;
 
 			Angle = (old - position).FlatAngle;
-			World.PhysicsLayer.UpdateSectors(this);
+			World.PhysicsLayer.UpdateSectors(Physics);
 			World.ActorLayer.Update(this);
 
 			foreach (var part in moveParts)

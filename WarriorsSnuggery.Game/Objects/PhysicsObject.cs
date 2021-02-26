@@ -15,7 +15,7 @@ namespace WarriorsSnuggery.Objects
 		public override void Dispose()
 		{
 			foreach (var sector in Physics.Sectors)
-				sector.Leave(this);
+				sector.Leave(Physics);
 
 			base.Dispose();
 		}

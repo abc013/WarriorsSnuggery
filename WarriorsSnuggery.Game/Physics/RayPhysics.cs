@@ -34,7 +34,7 @@ namespace WarriorsSnuggery.Physics
 			};
 		}
 
-		public void CalculateEnd(Actor[] ignore = null, bool ignoreActors = false)
+		public void CalculateEnd(SimplePhysics[] ignore = null, bool ignoreActors = false)
 		{
 			var diff = Target - Start;
 
@@ -158,13 +158,9 @@ namespace WarriorsSnuggery.Physics
 
 					var sector = world.PhysicsLayer.Sectors[sectorPos.X, sectorPos.Y];
 
-					var objs = sector.GetObjects(ignore);
-
 					var hit = false;
-					foreach (var obj in objs)
+					foreach (var physics in sector.GetObjects(ignore))
 					{
-						var physics = obj.Physics;
-
 						if (physics.Shape == Shape.CIRCLE)
 						{
 							var end = getIntersection(physics.Position, physics.RadiusX, out var t1, out var t2, out var end2);

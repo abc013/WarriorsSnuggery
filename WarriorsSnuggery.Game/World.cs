@@ -7,6 +7,7 @@ using WarriorsSnuggery.Objects;
 using WarriorsSnuggery.Objects.Particles;
 using WarriorsSnuggery.Objects.Parts;
 using WarriorsSnuggery.Objects.Weapons;
+using WarriorsSnuggery.Physics;
 using WarriorsSnuggery.Trophies;
 
 namespace WarriorsSnuggery
@@ -187,18 +188,18 @@ namespace WarriorsSnuggery
 			}
 		}
 
-		public bool CheckCollision(PhysicsObject obj, Actor toIgnore = null)
+		public bool CheckCollision(SimplePhysics physics)
 		{
-			if (obj.Physics.IsEmpty)
+			if (physics.IsEmpty)
 				return false;
 
 			var top = PhysicsLayer.Bounds.Y;
 			var left = PhysicsLayer.Bounds.X;
 			var bot = 0;
 			var right = 0;
-			foreach (var p in obj.Physics.Sectors)
+			foreach (var p in physics.Sectors)
 			{
-				if (p.Check(obj, toIgnore))
+				if (p.Check(physics))
 					return true;
 
 				if (p.Position.X < left)
@@ -220,7 +221,7 @@ namespace WarriorsSnuggery
 
 			foreach (var wall in walls)
 			{
-				if (obj.Physics.Intersects(wall.Physics))
+				if (physics.Intersects(wall.Physics))
 					return true;
 			}
 
@@ -235,7 +236,7 @@ namespace WarriorsSnuggery
 		public void Add(Actor actor)
 		{
 			ActorLayer.Add(actor);
-			PhysicsLayer.UpdateSectors(actor, true);
+			PhysicsLayer.UpdateSectors(actor.Physics, true);
 		}
 
 		public void Add(Particle particle)
