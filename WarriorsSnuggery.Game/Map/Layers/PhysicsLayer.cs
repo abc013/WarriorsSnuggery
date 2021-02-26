@@ -25,7 +25,7 @@ namespace WarriorsSnuggery
 
 		public void UpdateSectors(PhysicsObject obj, bool @new = false, bool updateSectors = true)
 		{
-			if (obj.Physics.Shape == Shape.NONE)
+			if (obj.Physics.IsEmpty)
 				return;
 
 			var oldSectors = obj.Physics.Sectors;
@@ -48,7 +48,7 @@ namespace WarriorsSnuggery
 
 		public PhysicsSector[] GetSectors(SimplePhysics physics)
 		{
-			if (physics == null || physics.Shape == Shape.NONE)
+			if (physics.IsEmpty)
 				return new PhysicsSector[0];
 
 			var position = physics.Position - Map.Offset;

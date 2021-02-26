@@ -84,7 +84,7 @@ namespace WarriorsSnuggery.Objects
 			ID = overrideID;
 		}
 
-		public Actor(World world, ActorInit init) : base(init.Position, null, getPhysics(init.Position, init.Type))
+		public Actor(World world, ActorInit init) : base(init.Position, null)
 		{
 			World = world;
 
@@ -140,15 +140,17 @@ namespace WarriorsSnuggery.Objects
 			accelerationParts = PartManager.GetOrDefault<INoticeAcceleration>();
 			moveParts = PartManager.GetOrDefault<INoticeMove>();
 			stopParts = PartManager.GetOrDefault<INoticeStop>();
+
+			Physics = getPhysics(init.Type);
 		}
 
-		static SimplePhysics getPhysics(CPos position, ActorType type)
+		SimplePhysics getPhysics(ActorType type)
 		{
 			if (type.Physics == null)
-				return null;
+				return SimplePhysics.Empty;
 
 			var info = type.Physics;
-			return new SimplePhysics(position, 0, info.Shape, info.Size.X, info.Size.Y, info.Size.Z);
+			return new SimplePhysics(this, CPos.Zero, 0, info.Shape, info.Size.X, info.Size.Y, info.Size.Z);
 		}
 
 		public void OnLoad()
@@ -311,7 +313,6 @@ namespace WarriorsSnuggery.Objects
 			Position = position;
 			TerrainPosition = Position.ToWPos();
 			CurrentTerrain = terrain;
-			Physics.Position = position;
 
 			Angle = (old - position).FlatAngle;
 			World.PhysicsLayer.UpdateSectors(this);
@@ -333,7 +334,6 @@ namespace WarriorsSnuggery.Objects
 
 		void denyMove()
 		{
-			Physics.Position = Position;
 			Velocity = CPos.Zero;
 
 			CurrentAction = ActorAction.Default;

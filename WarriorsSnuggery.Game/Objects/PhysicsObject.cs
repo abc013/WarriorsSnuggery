@@ -5,35 +5,11 @@ namespace WarriorsSnuggery.Objects
 {
 	public class PhysicsObject : PositionableObject
 	{
-		public readonly SimplePhysics Physics;
+		public SimplePhysics Physics { get; protected set; } = SimplePhysics.Empty;
 
-		[Save]
-		public override int Height
+		public PhysicsObject(CPos pos, BatchRenderable renderable) : base(pos, renderable)
 		{
-			get => base.Height;
-			set
-			{
-				base.Height = value;
 
-				Physics.Height = value;
-			}
-		}
-
-		[Save]
-		public override CPos Position
-		{
-			get => base.Position;
-			set
-			{
-				base.Position = value;
-
-				Physics.Position = value;
-			}
-		}
-
-		public PhysicsObject(CPos pos, BatchRenderable renderable, SimplePhysics physics = null) : base(pos, renderable)
-		{
-			Physics = physics ?? SimplePhysics.Empty;
 		}
 
 		public override void Dispose()

@@ -20,6 +20,7 @@ namespace WarriorsSnuggery.Objects
 		}
 		bool visible = true;
 
+		[Save]
 		public virtual int Height
 		{
 			get => height;
@@ -32,6 +33,7 @@ namespace WarriorsSnuggery.Objects
 		}
 		int height;
 
+		[Save]
 		public virtual CPos Position
 		{
 			get => position;

@@ -58,7 +58,7 @@ namespace WarriorsSnuggery.Objects
 		byte neighborState;
 		DamageState damageState = DamageState.NONE;
 
-		public Wall(MPos position, WallLayer layer, WallType type) : base(CPos.Zero, null, getPhysics(position, type))
+		public Wall(MPos position, WallLayer layer, WallType type) : base(CPos.Zero, null)
 		{
 			this.layer = layer;
 
@@ -76,27 +76,27 @@ namespace WarriorsSnuggery.Objects
 
 			if (IsHorizontal)
 			{
-				Physics.Position += new CPos(0, 512, 0);
 				renderPos += new CPos(-512, -1536, 0);
 			}
 			else
 			{
 				Position += new CPos(0, 0, 2048);
-				Physics.Position += new CPos(0, 1024, 0);
 				renderPos += new CPos(-83, -512, 0);
 			}
 			if (type.IsOnFloor)
 				Height -= 2048;
+
+			Physics = getPhysics(position, type);
 		}
 
-		static SimplePhysics getPhysics(MPos position, WallType type)
+		SimplePhysics getPhysics(MPos position, WallType type)
 		{
 			if (!type.Blocks)
-				return null;
+				return SimplePhysics.Empty;
 
-			var shape = position.X % 2 != 0 ? Shape.LINE_HORIZONTAL : Shape.LINE_VERTICAL;
+			var isHorizontal = position.X % 2 != 0;
 
-			return new SimplePhysics(position.ToCPos(), 0, shape, 512, 512, type.Height);
+			return new SimplePhysics(this, isHorizontal ? new CPos(0, 512, 0) : new CPos(0, 1024, 0), 0, isHorizontal ? Shape.LINE_HORIZONTAL : Shape.LINE_VERTICAL, 512, 512, type.Height);
 		}
 
 		public override void Render()

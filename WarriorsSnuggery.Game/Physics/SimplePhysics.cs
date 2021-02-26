@@ -1,26 +1,35 @@
 using System;
 using WarriorsSnuggery.Graphics;
+using WarriorsSnuggery.Objects;
 
 namespace WarriorsSnuggery.Physics
 {
 	public sealed class SimplePhysics
 	{
-		public static readonly SimplePhysics Empty = new SimplePhysics(CPos.Zero, 0, Shape.NONE, 0, 0, 0);
+		public static readonly SimplePhysics Empty = new SimplePhysics(null, CPos.Zero, 0, Shape.NONE, 0, 0, 0);
 
 		public readonly Shape Shape;
 		public readonly int RadiusX;
 		public readonly int RadiusY;// only for box and drawing
 		public readonly int HeightRadius;
 
-		public PhysicsSector[] Sectors;
+		public readonly CPos Offset;
+		public readonly int HeightOffset;
 
-		public CPos Position;
-		public int Height;
+		readonly PositionableObject positionable;
 
-		public SimplePhysics(CPos position, int height, Shape shape, int radiusX, int radiusY, int heightradius)
+		public PhysicsSector[] Sectors = new PhysicsSector[0];
+
+		public CPos Position => positionable.Position + Offset;
+		public int Height => positionable.Height + HeightOffset;
+
+		public bool IsEmpty => positionable == null || Shape == Shape.NONE;
+
+		public SimplePhysics(PositionableObject positionable, CPos offset, int heightOffset, Shape shape, int radiusX, int radiusY, int heightradius)
 		{
-			Position = position;
-			Height = height;
+			this.positionable = positionable;
+			Offset = offset;
+			HeightOffset = heightOffset;
 			Shape = shape;
 			RadiusX = radiusX;
 			RadiusY = radiusY;
@@ -29,10 +38,7 @@ namespace WarriorsSnuggery.Physics
 
 		public bool Intersects(SimplePhysics other)
 		{
-			if (other == null)
-				return false;
-
-			if (Shape == Shape.NONE || other.Shape == Shape.NONE)
+			if (IsEmpty || other.IsEmpty)
 				return false;
 
 			if (Math.Abs(other.Height - Height) >= other.HeightRadius + HeightRadius)
