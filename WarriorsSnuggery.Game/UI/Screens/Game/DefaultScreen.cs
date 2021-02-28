@@ -9,6 +9,9 @@ namespace WarriorsSnuggery.UI.Screens
 	public class DefaultScreen : Screen
 	{
 		readonly Game game;
+
+		readonly SquareParticleManager particleManager;
+
 		readonly UITextLine health;
 		readonly UITextLine mana;
 
@@ -24,6 +27,8 @@ namespace WarriorsSnuggery.UI.Screens
 		float healthPercentage;
 		float manaPercentage;
 
+		int particleCollector;
+
 		public DefaultScreen(Game game) : base(string.Empty, 0)
 		{
 			this.game = game;
@@ -32,6 +37,9 @@ namespace WarriorsSnuggery.UI.Screens
 				Title.SetColor(Color.Blue);
 			else if (game.Statistics.Level > game.Statistics.FinalLevel)
 				Title.SetColor(Color.Green);
+
+			particleManager = new SquareParticleManager();
+			Content.Add(particleManager);
 
 			// SECTION ACTORS
 			actorList = new ActorList(new CPos((int)(WindowInfo.UnitWidth * 512) - 512, -1536, 0), new MPos(512, 5 * 1024), new MPos(512, 512), PanelManager.Get("wooden"));
@@ -226,6 +234,24 @@ namespace WarriorsSnuggery.UI.Screens
 
 					health.SetText(cur + "/" + max);
 					healthPercentage = player.Health.RelativeHP;
+
+					if (healthPercentage < 0.3f)
+					{
+						var inverse = 0.3f - healthPercentage;
+						particleCollector += (int)(inverse * 50) + 1;
+
+						var count = particleCollector / 10;
+						particleCollector -= count * 10;
+
+						for (int i = 0; i < count; i++)
+						{
+							var particle = particleManager.Add(700);
+							particle.Radius = Program.SharedRandom.Next(150) + (int)(inverse * inverse * 500) + 10;
+							particle.Position = new CPos(Program.SharedRandom.Next((int)(WindowInfo.UnitWidth * 1024)) - (int)(WindowInfo.UnitWidth * 512), (int)-(WindowInfo.UnitHeight * 512), 0);
+							particle.Velocity = new CPos(Program.SharedRandom.Next(-2, 2), Program.SharedRandom.Next(15) + 10, 0);
+							particle.Color = new Color(Program.SharedRandom.Next(64) + 127, 0, 0);
+						}
+					}
 				}
 
 				if (game.IsCampaign && !game.IsMenu)
