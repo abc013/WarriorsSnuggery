@@ -174,5 +174,14 @@ namespace WarriorsSnuggery.Physics
 					break;
 			}
 		}
+
+		public void RemoveSectors()
+		{
+			if (IsEmpty)
+				return;
+
+			foreach (var sector in Sectors)
+				sector.Remove(this);
+		}
 	}
 }

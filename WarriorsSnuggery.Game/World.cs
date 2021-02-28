@@ -199,7 +199,7 @@ namespace WarriorsSnuggery
 			var right = 0;
 			foreach (var p in physics.Sectors)
 			{
-				if (p.Check(physics))
+				if (p.CheckIntersection(physics))
 					return true;
 
 				if (p.Position.X < left)
@@ -236,7 +236,7 @@ namespace WarriorsSnuggery
 		public void Add(Actor actor)
 		{
 			ActorLayer.Add(actor);
-			PhysicsLayer.UpdateSectors(actor.Physics, true);
+			actor.Physics.AddSectors(this);
 		}
 
 		public void Add(Particle particle)

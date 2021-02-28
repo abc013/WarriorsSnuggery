@@ -37,11 +37,11 @@ namespace WarriorsSnuggery
 					foreach (var sector in oldSectors)
 					{
 						if (!physics.Sectors.Contains(sector))
-							sector.Leave(physics);
+							sector.Remove(physics);
 					}
 				}
 				foreach (var sector in physics.Sectors)
-					sector.Enter(physics);
+					sector.Add(physics);
 			}
 		}
 
@@ -113,18 +113,18 @@ namespace WarriorsSnuggery
 			Position = position;
 		}
 
-		public void Enter(SimplePhysics physics)
+		public void Add(SimplePhysics physics)
 		{
 			if (!physicsList.Contains(physics))
 				physicsList.Add(physics);
 		}
 
-		public void Leave(SimplePhysics physics)
+		public void Remove(SimplePhysics physics)
 		{
 			physicsList.Remove(physics);
 		}
 
-		public bool Check(SimplePhysics physics)
+		public bool CheckIntersection(SimplePhysics physics)
 		{
 			return physicsList.Any((o) => o != physics && o.Intersects(physics));
 		}
