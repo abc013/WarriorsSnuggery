@@ -236,7 +236,7 @@ namespace WarriorsSnuggery
 		public void Add(Actor actor)
 		{
 			ActorLayer.Add(actor);
-			actor.Physics.AddSectors(this);
+			PhysicsLayer.UpdateSectors(actor.Physics, true);
 		}
 
 		public void Add(Particle particle)

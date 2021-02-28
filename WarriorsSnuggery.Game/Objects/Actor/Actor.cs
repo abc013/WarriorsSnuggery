@@ -315,7 +315,7 @@ namespace WarriorsSnuggery.Objects
 			CurrentTerrain = terrain;
 
 			Angle = (old - position).FlatAngle;
-			Physics.UpdateSectors(World);
+			World.PhysicsLayer.UpdateSectors(Physics);
 			World.ActorLayer.Update(this);
 
 			foreach (var part in moveParts)

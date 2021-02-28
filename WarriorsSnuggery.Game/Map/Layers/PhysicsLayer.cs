@@ -22,7 +22,7 @@ namespace WarriorsSnuggery
 					Sectors[x, y] = new PhysicsSector(new MPos(x, y));
 		}
 
-		public void UpdateSectors(SimplePhysics physics, bool @new = false, bool updateSectors = true)
+		public void UpdateSectors(SimplePhysics physics, bool @new = false)
 		{
 			if (physics.IsEmpty)
 				return;
@@ -30,19 +30,16 @@ namespace WarriorsSnuggery
 			var oldSectors = physics.Sectors;
 			physics.Sectors = GetSectors(physics);
 
-			if (updateSectors)
+			if (!@new)
 			{
-				if (!@new)
+				foreach (var sector in oldSectors)
 				{
-					foreach (var sector in oldSectors)
-					{
-						if (!physics.Sectors.Contains(sector))
-							sector.Remove(physics);
-					}
+					if (!physics.Sectors.Contains(sector))
+						sector.Remove(physics);
 				}
-				foreach (var sector in physics.Sectors)
-					sector.Add(physics);
 			}
+			foreach (var sector in physics.Sectors)
+				sector.Add(physics);
 		}
 
 		public PhysicsSector[] GetSectors(SimplePhysics physics)
