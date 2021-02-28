@@ -10,6 +10,9 @@ namespace WarriorsSnuggery.Docs
 		public static void WriteActors()
 		{
 			TypeWriter.WriteAll("WarriorsSnuggery.Objects.Parts", "PartInfo", new object[] { string.Empty, emptyTextNodes });
+
+			HTMLWriter.WriteHeader("SimplePhysics");
+			TypeWriter.Write(typeof(WarriorsSnuggery.Physics.SimplePhysicsType), new[] { emptyTextNodes });
 		}
 
 		public static void WriteParticles()
