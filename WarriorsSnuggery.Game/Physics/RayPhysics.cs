@@ -86,7 +86,7 @@ namespace WarriorsSnuggery.Physics
 							if (end != invalid && t1 < closestT1)
 							{
 								var height = calculateHeight(end);
-								if (height <= physics.Height + physics.HeightRadius && height >= physics.Height - physics.HeightRadius)
+								if (height <= physics.Height + physics.Type.HeightRadius && height >= physics.Height - physics.Type.HeightRadius)
 								{
 									// HACK for damage: Don't hit the wall directly
 									closestIntersect = end - new CPos(sx * 4, sy * 4, 0);
@@ -161,13 +161,15 @@ namespace WarriorsSnuggery.Physics
 					var hit = false;
 					foreach (var physics in sector.GetObjects(ignore))
 					{
-						if (physics.Shape == Shape.CIRCLE)
+						var type = physics.Type;
+
+						if (type.Shape == Shape.CIRCLE)
 						{
-							var end = getIntersection(physics.Position, physics.RadiusX, out var t1, out var t2, out var end2);
+							var end = getIntersection(physics.Position, type.RadiusX, out var t1, out var t2, out var end2);
 							if (end != invalid && t1 < closestT1)
 							{
 								var height = calculateHeight(end);
-								if (height <= physics.Height + physics.HeightRadius && height >= physics.Height - physics.HeightRadius)
+								if (height <= physics.Height + type.HeightRadius && height >= physics.Height - type.HeightRadius)
 								{
 									closestIntersect = end;
 									closestT1 = t1;
@@ -177,7 +179,7 @@ namespace WarriorsSnuggery.Physics
 								else if (t2 < closestT1)
 								{
 									height = calculateHeight(end2);
-									if (height <= physics.Height + physics.HeightRadius && height >= physics.Height - physics.HeightRadius)
+									if (height <= physics.Height + type.HeightRadius && height >= physics.Height - type.HeightRadius)
 									{
 										closestIntersect = end2;
 										closestT1 = t2;
@@ -195,7 +197,7 @@ namespace WarriorsSnuggery.Physics
 								if (end != invalid && t1 < closestT1)
 								{
 									var height = calculateHeight(end);
-									if (height <= physics.Height + physics.HeightRadius && height >= physics.Height - physics.HeightRadius)
+									if (height <= physics.Height + type.HeightRadius && height >= physics.Height - type.HeightRadius)
 									{
 										closestIntersect = end;
 										closestT1 = t1;

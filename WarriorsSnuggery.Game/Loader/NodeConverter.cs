@@ -10,6 +10,7 @@ using WarriorsSnuggery.Objects.Particles;
 using WarriorsSnuggery.Objects.Weapons;
 using WarriorsSnuggery.Objects.Weapons.Projectiles;
 using WarriorsSnuggery.Objects.Weapons.Warheads;
+using WarriorsSnuggery.Physics;
 using WarriorsSnuggery.Spells;
 
 namespace WarriorsSnuggery.Loader
@@ -364,6 +365,10 @@ namespace WarriorsSnuggery.Loader
 					throw new MissingInfoException(value);
 
 				return ActorCreator.Types[value.Trim()];
+			}
+			else if (t == typeof(SimplePhysicsType))
+			{
+				return new SimplePhysicsType(node.Children);
 			}
 			else if (t == typeof(Spell))
 			{

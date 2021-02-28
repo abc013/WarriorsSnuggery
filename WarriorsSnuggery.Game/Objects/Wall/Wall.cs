@@ -5,6 +5,7 @@ namespace WarriorsSnuggery.Objects
 {
 	public class Wall : PhysicsObject
 	{
+
 		enum NeighborState : byte
 		{
 			NONE = 0,
@@ -30,8 +31,8 @@ namespace WarriorsSnuggery.Objects
 
 		readonly WallLayer layer;
 
-		public CPos EndPointA => Physics.Position - (IsHorizontal ? new CPos(2 * Physics.RadiusX, Physics.RadiusY, 0) : new CPos(Physics.RadiusX, 2 * Physics.RadiusY, 0));
-		public CPos EndPointB => Physics.Position - (IsHorizontal ? new CPos(0, Physics.RadiusY, 0) : new CPos(Physics.RadiusX, 0, 0));
+		public CPos EndPointA => Physics.Position - (IsHorizontal ? new CPos(2 * Physics.Type.RadiusX, Physics.Type.RadiusY, 0) : new CPos(Physics.Type.RadiusX, 2 * Physics.Type.RadiusY, 0));
+		public CPos EndPointB => Physics.Position - (IsHorizontal ? new CPos(0, Physics.Type.RadiusY, 0) : new CPos(Physics.Type.RadiusX, 0, 0));
 
 		BatchObject renderable;
 		Color color = Color.White;
@@ -91,12 +92,12 @@ namespace WarriorsSnuggery.Objects
 
 		SimplePhysics getPhysics(MPos position, WallType type)
 		{
-			if (!type.Blocks)
+			if (!type.Blocks || type.IsOnFloor)
 				return SimplePhysics.Empty;
 
 			var isHorizontal = position.X % 2 != 0;
 
-			return new SimplePhysics(this, isHorizontal ? new CPos(0, 512, 0) : new CPos(0, 1024, 0), 0, isHorizontal ? Shape.LINE_HORIZONTAL : Shape.LINE_VERTICAL, 512, 512, type.Height);
+			return new SimplePhysics(this, isHorizontal ? type.HorizontalPhysicsType : type.VerticalPhysicsType);
 		}
 
 		public override void Render()

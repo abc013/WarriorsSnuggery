@@ -149,8 +149,7 @@ namespace WarriorsSnuggery.Objects
 			if (type.Physics == null)
 				return SimplePhysics.Empty;
 
-			var info = type.Physics;
-			return new SimplePhysics(this, CPos.Zero, 0, info.Shape, info.Size.X, info.Size.Y, info.Size.Z);
+			return new SimplePhysics(this, type.Physics.Type);
 		}
 
 		public void OnLoad()

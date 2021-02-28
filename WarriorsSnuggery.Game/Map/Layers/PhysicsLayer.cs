@@ -48,9 +48,10 @@ namespace WarriorsSnuggery
 				return new PhysicsSector[0];
 
 			var position = physics.Position - Map.Offset;
+
 			// Add margin to be sure.
-			var radiusX = physics.RadiusX + 10;
-			var radiusY = physics.RadiusY + 10;
+			var radiusX = physics.Type.RadiusX + 10;
+			var radiusY = physics.Type.RadiusY + 10;
 			var points = new MPos[4];
 
 			// Corner points

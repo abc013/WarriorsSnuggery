@@ -276,7 +276,11 @@ namespace WarriorsSnuggery
 		{
 			var size = Map.Bounds.ToCPos();
 
-			return pos.X >= -512 + actor.Physics.RadiusX && pos.X < size.X - 512 - actor.Physics.RadiusX && pos.Y >= -512 + actor.Physics.RadiusY && pos.Y < size.Y - 512 - actor.Physics.RadiusY;
+			if (actor.Physics.IsEmpty)
+				return pos.X >= -512 && pos.X < size.X - 512 && pos.Y >= -512 && pos.Y < size.Y - 512;
+
+			var type = actor.Physics.Type;
+			return pos.X >= -512 + type.RadiusX && pos.X < size.X - 512 - type.RadiusX && pos.Y >= -512 + type.RadiusY && pos.Y < size.Y - 512 - type.RadiusY;
 		}
 
 		public Actor FindValidTarget(CPos pos, int team)

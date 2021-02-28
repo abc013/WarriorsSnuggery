@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using WarriorsSnuggery.Graphics;
+using WarriorsSnuggery.Physics;
 
 namespace WarriorsSnuggery.Objects
 {
@@ -48,6 +49,9 @@ namespace WarriorsSnuggery.Objects
 		[Desc("Specifies the armor that the wall has.")]
 		public readonly string Armor;
 
+		public readonly SimplePhysicsType HorizontalPhysicsType;
+		public readonly SimplePhysicsType VerticalPhysicsType;
+
 		public WallType(short id, List<MiniTextNode> nodes, bool documentation = false)
 		{
 			ID = id;
@@ -78,6 +82,9 @@ namespace WarriorsSnuggery.Objects
 					if (textures.Length < (ConsiderWallsNearby ? 6 : 2))
 						throw new InvalidTextNodeException(string.Format("DamageTexture '{0}' of Wall '{1}' has not enough textures!", Image, id));
 				}
+
+				HorizontalPhysicsType = new SimplePhysicsType(Shape.LINE_HORIZONTAL, 512, 512, Height, new CPos(0, 512, 0), 0);
+				VerticalPhysicsType = new SimplePhysicsType(Shape.LINE_VERTICAL, 512, 512, Height, new CPos(0, 1024, 0), 0);
 			}
 		}
 

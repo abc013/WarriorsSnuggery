@@ -192,7 +192,7 @@ namespace WarriorsSnuggery
 			var walls = world.WallLayer.GetRange(pos1, pos2);
 			foreach (var wall in walls)
 			{
-				if (wall.Type.IsTransparent || wall.Type.IsOnFloor)
+				if (wall.Physics.IsEmpty || wall.Type.IsTransparent)
 					continue;
 
 				if (height > wall.Type.Height)
