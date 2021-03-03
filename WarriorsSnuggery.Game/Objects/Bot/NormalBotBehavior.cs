@@ -100,8 +100,9 @@ namespace WarriorsSnuggery.Objects.Bot
 				Target = new Target(damager.Position, damager.Height);
 		}
 
-		public override void OnKill(Actor killer)
+		public override void OnKill(Actor killed)
 		{
+			base.OnKill(killed);
 			moral += 10;
 		}
 	}

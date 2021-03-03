@@ -1,4 +1,5 @@
-﻿using WarriorsSnuggery.Objects.Weapons;
+﻿using System;
+using WarriorsSnuggery.Objects.Weapons;
 
 namespace WarriorsSnuggery.Objects.Bot
 {
@@ -16,19 +17,19 @@ namespace WarriorsSnuggery.Objects.Bot
 		{
 			get
 			{
-				int x;
+				int x = World.Map.BottomRightCorner.X;
 				if (Self.Position.X > World.Map.Bounds.X * 512 - 256)
-					x = World.Map.BottomRightCorner.X - Self.Position.X;
+					x -= Self.Position.X;
 				else
-					x = World.Map.BottomLeftCorner.X + Self.Position.X;
+					x += Self.Position.X;
 
-				int y;
+				int y = World.Map.BottomLeftCorner.Y;
 				if (Self.Position.Y > World.Map.Bounds.Y * 512 - 256)
-					y = World.Map.BottomLeftCorner.Y - Self.Position.Y;
+					y -= Self.Position.Y;
 				else
-					y = World.Map.TopRightCorner.Y + Self.Position.Y;
+					y += Self.Position.Y;
 
-				return x > y ? y : x;
+				return Math.Min(x, y);
 			}
 		}
 
@@ -60,7 +61,6 @@ namespace WarriorsSnuggery.Objects.Bot
 
 				return float.NegativeInfinity;
 			}
-			set { }
 		}
 
 		protected BotBehavior(World world, Actor self)
@@ -73,20 +73,28 @@ namespace WarriorsSnuggery.Objects.Bot
 
 		public abstract void OnDamage(Actor damager, int damage);
 
-		public abstract void OnKill(Actor killer);
+		public virtual void OnKill(Actor killed)
+		{
+			if (Target == null)
+				return;
 
-		protected bool PerfectTarget()
+			if (killed == Target.Actor)
+			{
+				if (Target.Actor.FollowupActor == null)
+					return;
+
+				Target = new Target(Target.Actor.FollowupActor);
+			}
+		}
+
+		protected virtual bool PerfectTarget()
 		{
 			if (Target == null || Target.Actor == null)
 				return false;
 
-			if (Target.Actor.IsAlive && !Target.Actor.Disposed)
-				return true;
-
-			if (Target.Actor.FollowupActor == null)
+			if (!Target.Actor.IsAlive || Target.Actor.Disposed)
 				return false;
 
-			Target = new Target(Target.Actor.FollowupActor);
 			return true;
 		}
 
