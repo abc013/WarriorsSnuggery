@@ -1,5 +1,4 @@
-﻿using OpenTK.Windowing.GraphicsLibraryFramework;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using WarriorsSnuggery.Graphics;
@@ -264,42 +263,12 @@ namespace WarriorsSnuggery
 			return !IsInWorld(pos) ? null : TerrainAt(pos.ToMPos());
 		}
 
-		public Terrain TerrainAt(MPos position)
+		public Terrain TerrainAt(MPos pos)
 		{
-			if (position.X < 0 || position.Y < 0 || position.X >= Map.Bounds.X || position.Y >= Map.Bounds.Y)
+			if (pos.X < 0 || pos.Y < 0 || pos.X >= Map.Bounds.X || pos.Y >= Map.Bounds.Y)
 				return null;
 
-			return TerrainLayer.Terrain[position.X, position.Y];
-		}
-
-		public Actor FindValidTarget(CPos pos, int team)
-		{
-			const int range = 5120;
-
-			if (KeyInput.IsKeyDown(Keys.LeftShift))
-				return null;
-
-			// Look for actors in range.
-			var sectors = ActorLayer.GetSectors(pos, range);
-			var currentRange = long.MaxValue;
-			Actor validTarget = null;
-			foreach (var sector in sectors)
-			{
-				foreach (var actor in sector.Actors)
-				{
-					if (actor.Team == team || actor.WorldPart == null || !actor.WorldPart.Targetable || !actor.WorldPart.InTargetBox(pos) || !VisibilitySolver.IsVisible(actor.Position))
-						continue;
-
-					var dist = (actor.Position - pos).SquaredFlatDist;
-					if (dist < currentRange)
-					{
-						currentRange = dist;
-						validTarget = actor;
-					}
-				}
-			}
-
-			return validTarget;
+			return TerrainLayer.Terrain[pos.X, pos.Y];
 		}
 
 		public bool IsInWorld(CPos pos)
@@ -320,6 +289,14 @@ namespace WarriorsSnuggery
 
 			var type = actor.Physics.Type;
 			return pos.X >= -512 + type.RadiusX && pos.X < bounds.X - 512 - type.RadiusX && pos.Y >= -512 + type.RadiusY && pos.Y < bounds.Y - 512 - type.RadiusY;
+		}
+
+		public bool IsVisibleTo(Actor eye, Actor target)
+		{
+			if (eye.Team == target.Team)
+				return true;
+
+			return ShroudLayer.ShroudRevealed(eye.Team, (int)(target.Position.X / 512f), (int)(target.Position.Y / 512f));
 		}
 
 		public void Save(string directory, string name, bool isSavegame)

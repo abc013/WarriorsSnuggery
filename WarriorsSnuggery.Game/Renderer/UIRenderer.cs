@@ -2,6 +2,7 @@ using OpenTK.Graphics.OpenGL;
 using OpenTK.Mathematics;
 using System.Collections.Generic;
 using WarriorsSnuggery.Graphics;
+using WarriorsSnuggery.Objects.Parts;
 
 namespace WarriorsSnuggery
 {
@@ -96,7 +97,8 @@ namespace WarriorsSnuggery
 
 			foreach (var r in afterRender)
 				r.Render();
-			var possibleTarget = game.World.LocalPlayer != null && game.World.FindValidTarget(MouseInput.GamePosition, game.World.LocalPlayer.Team) != null;
+
+			var possibleTarget = game.World.LocalPlayer != null && ((PlayerPart)game.World.LocalPlayer.Parts.Find(p => p is PlayerPart)).FindValidTarget(MouseInput.GamePosition) != null;
 
 			if (Settings.EnableDebug)
 			{

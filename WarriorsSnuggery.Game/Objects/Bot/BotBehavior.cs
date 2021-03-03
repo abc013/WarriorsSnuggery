@@ -116,6 +116,9 @@ namespace WarriorsSnuggery.Objects.Bot
 					if (actor.Health == null || !actor.IsAlive || actor.Team == Self.Team || actor.Team == Actor.NeutralTeam)
 						continue;
 
+					if (!World.IsVisibleTo(Self, actor))
+						continue;
+
 					var dist = (actor.Position - Self.Position).SquaredFlatDist;
 					if (dist <= range * range)
 						CheckTarget(actor);

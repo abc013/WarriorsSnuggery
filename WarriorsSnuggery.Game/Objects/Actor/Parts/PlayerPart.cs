@@ -65,7 +65,7 @@ namespace WarriorsSnuggery.Objects.Parts
 
 			if (self.ActiveWeapon != null)
 			{
-				var actor = self.World.FindValidTarget(MouseInput.GamePosition, self.Team);
+				var actor = FindValidTarget(MouseInput.GamePosition);
 
 				if (actor == null)
 				{
@@ -88,13 +88,43 @@ namespace WarriorsSnuggery.Objects.Parts
 			self.World.PlayerDamagedTick++;
 		}
 
+		public Actor FindValidTarget(CPos pos, int team = Actor.PlayerTeam)
+		{
+			const int range = 5120;
+
+			if (KeyInput.IsKeyDown(Keys.LeftShift))
+				return null;
+
+			// Look for actors in range.
+			var sectors = self.World.ActorLayer.GetSectors(pos, range);
+			var currentRange = long.MaxValue;
+			Actor validTarget = null;
+			foreach (var sector in sectors)
+			{
+				foreach (var actor in sector.Actors)
+				{
+					if (actor.Team == team || actor.WorldPart == null || !actor.WorldPart.Targetable || !actor.WorldPart.InTargetBox(pos) || !VisibilitySolver.IsVisible(actor.Position))
+						continue;
+
+					var dist = (actor.Position - pos).SquaredFlatDist;
+					if (dist < currentRange)
+					{
+						currentRange = dist;
+						validTarget = actor;
+					}
+				}
+			}
+
+			return validTarget;
+		}
+
 		void attackTarget(CPos pos)
 		{
 			if (KeyInput.IsKeyDown(Keys.LeftShift))
 				self.PrepareAttack(pos, 0);
 			else
 			{
-				var actor = self.World.FindValidTarget(pos, self.Team);
+				var actor = FindValidTarget(pos);
 
 				if (actor == null)
 					self.PrepareAttack(pos, 0);
