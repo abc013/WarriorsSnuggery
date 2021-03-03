@@ -78,14 +78,14 @@ namespace WarriorsSnuggery
 			var strings = line.Split('=', 2);
 
 			if (strings.Length < 2)
-				throw new InvalidTextNodeException($"Missing '=' in '{line}'. ['{file}', line {lineNumber}]");
+				throw new InvalidNodeException($"Missing '=' in '{line}'. ['{file}', line {lineNumber}]");
 
 			var yamlnode = new MiniTextNode(file, @order, strings[0].Trim(), strings[1].Trim());
 
 			if (before == null)
 			{
 				if (@order > 0)
-					throw new InvalidTextNodeException($"'{line}' has invalid intendation at beginning of file: {@order}. ['{file}', line {lineNumber}]");
+					throw new InvalidNodeException($"'{line}' has invalid intendation at beginning of file: {@order}. ['{file}', line {lineNumber}]");
 
 				return yamlnode;
 			}
@@ -113,7 +113,7 @@ namespace WarriorsSnuggery
 				return yamlnode;
 			}
 
-			throw new InvalidTextNodeException($"'{line}' has invalid intendation (difference: {-@order + before.Order}). ['{file}', line {lineNumber}]");
+			throw new InvalidNodeException($"'{line}' has invalid intendation (difference: {-@order + before.Order}). ['{file}', line {lineNumber}]");
 		}
 	}
 }

@@ -36,7 +36,7 @@ namespace WarriorsSnuggery.Maps.Generators
 			Loader.PartLoader.SetValues(this, nodes);
 
 			if (RangeSteps.Length != ProbabilitySteps.Length)
-				throw new InvalidTextNodeException($"Range step length ({RangeSteps.Length}) does not match with given provabability values ({ProbabilitySteps.Length}).");
+				throw new InvalidNodeException($"Range step length ({RangeSteps.Length}) does not match with given provabability values ({ProbabilitySteps.Length}).");
 		}
 
 		public MapGenerator GetGenerator(Random random, MapLoader loader)

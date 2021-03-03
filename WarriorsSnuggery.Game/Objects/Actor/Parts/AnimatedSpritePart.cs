@@ -71,7 +71,7 @@ namespace WarriorsSnuggery.Objects.Parts
 			var frameCountPerIdleAnim = info.Textures.Length / info.Facings;
 
 			if (frameCountPerIdleAnim * info.Facings != info.Textures.Length)
-				throw new InvalidTextNodeException(string.Format(@"Idle Frame '{0}' count cannot be matched with the given Facings '{1}'.", info.Textures.Length, info.Facings));
+				throw new InvalidNodeException(string.Format(@"Idle Frame '{0}' count cannot be matched with the given Facings '{1}'.", info.Textures.Length, info.Facings));
 
 			for (int i = 0; i < renderables.Length; i++)
 			{

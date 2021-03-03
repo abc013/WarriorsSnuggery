@@ -65,7 +65,7 @@ namespace WarriorsSnuggery.Objects.Parts
 			if (tick-- <= 0)
 			{
 				if (self.Health == null)
-					throw new InvalidTextNodeException("RegenerationPart needs HealthPart to operate.");
+					throw new InvalidNodeException("RegenerationPart needs HealthPart to operate.");
 
 				self.Health.HP += info.Amount;
 				tick = info.Time;

@@ -61,7 +61,7 @@ namespace WarriorsSnuggery
 		public static Keys GetKey(string value)
 		{
 			if (!KeyDictionary.ContainsKey(value))
-				throw new InvalidTextNodeException(string.Format("Unable to find keyboard key with name {0}.", value));
+				throw new InvalidNodeException(string.Format("Unable to find keyboard key with name {0}.", value));
 
 			return KeyDictionary[value];
 		}
