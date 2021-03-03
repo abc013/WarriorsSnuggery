@@ -289,11 +289,11 @@ namespace WarriorsSnuggery.Objects
 
 			var intersects = World.CheckCollision(Physics);
 
-			if (intersects || !World.IsInWorld(this))
-				return false;
-
 			Position = oldPos;
 			Height = oldHeight;
+
+			if (intersects || !World.IsInWorld(this))
+				return false;
 
 			var terrain = World.TerrainAt(pos);
 			if (terrain != null && height == 0 && terrain.Type.Speed == 0)
