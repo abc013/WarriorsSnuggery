@@ -56,7 +56,7 @@ namespace WarriorsSnuggery.Objects
 		public readonly ActorType Type;
 		ActorInit init;
 
-		public WPos TerrainPosition;
+		public MPos TerrainPosition;
 		public Terrain CurrentTerrain;
 
 		int localTick;
@@ -98,7 +98,7 @@ namespace WarriorsSnuggery.Objects
 			ID = init.ID;
 			this.init = init;
 
-			TerrainPosition = init.Position.ToWPos();
+			TerrainPosition = init.Position.ToMPos();
 			CurrentTerrain = world.TerrainAt(TerrainPosition);
 
 			// Parts
@@ -289,11 +289,11 @@ namespace WarriorsSnuggery.Objects
 
 			var intersects = World.CheckCollision(Physics);
 
+			if (intersects || !World.IsInWorld(this))
+				return false;
+
 			Position = oldPos;
 			Height = oldHeight;
-
-			if (intersects || !World.ActorInWorld(pos, this))
-				return false;
 
 			var terrain = World.TerrainAt(pos);
 			if (terrain != null && height == 0 && terrain.Type.Speed == 0)
@@ -310,7 +310,7 @@ namespace WarriorsSnuggery.Objects
 			var old = Position;
 			Height = height;
 			Position = position;
-			TerrainPosition = Position.ToWPos();
+			TerrainPosition = Position.ToMPos();
 			CurrentTerrain = terrain;
 
 			Angle = (old - position).FlatAngle;

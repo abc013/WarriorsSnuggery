@@ -261,26 +261,15 @@ namespace WarriorsSnuggery
 			if (pos.Y < 0 && pos.Y >= -512)
 				pos = new CPos(pos.X, 0, pos.Z);
 
-			return !IsInWorld(pos) ? null : TerrainAt(pos.ToWPos());
+			return !IsInWorld(pos) ? null : TerrainAt(pos.ToMPos());
 		}
 
-		public Terrain TerrainAt(WPos position)
+		public Terrain TerrainAt(MPos position)
 		{
 			if (position.X < 0 || position.Y < 0 || position.X >= Map.Bounds.X || position.Y >= Map.Bounds.Y)
 				return null;
 
 			return TerrainLayer.Terrain[position.X, position.Y];
-		}
-
-		public bool ActorInWorld(CPos pos, Actor actor)
-		{
-			var size = Map.Bounds.ToCPos();
-
-			if (actor.Physics.IsEmpty)
-				return pos.X >= -512 && pos.X < size.X - 512 && pos.Y >= -512 && pos.Y < size.Y - 512;
-
-			var type = actor.Physics.Type;
-			return pos.X >= -512 + type.RadiusX && pos.X < size.X - 512 - type.RadiusX && pos.Y >= -512 + type.RadiusY && pos.Y < size.Y - 512 - type.RadiusY;
 		}
 
 		public Actor FindValidTarget(CPos pos, int team)
@@ -315,9 +304,22 @@ namespace WarriorsSnuggery
 
 		public bool IsInWorld(CPos pos)
 		{
-			var size = Map.Bounds.ToCPos();
+			var bounds = Map.Bounds.ToCPos();
 
-			return pos.X >= -512 && pos.X < size.X - 512 && pos.Y >= -512 && pos.Y < size.Y - 512;
+			return pos.X >= -512 && pos.X < bounds.X - 512 && pos.Y >= -512 && pos.Y < bounds.Y - 512;
+		}
+
+		public bool IsInWorld(Actor actor)
+		{
+			var pos = actor.Position;
+
+			if (actor.Physics.IsEmpty)
+				return IsInWorld(pos);
+
+			var bounds = Map.Bounds.ToCPos();
+
+			var type = actor.Physics.Type;
+			return pos.X >= -512 + type.RadiusX && pos.X < bounds.X - 512 - type.RadiusX && pos.Y >= -512 + type.RadiusY && pos.Y < bounds.Y - 512 - type.RadiusY;
 		}
 
 		public void Save(string directory, string name, bool isSavegame)

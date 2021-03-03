@@ -11,8 +11,9 @@ namespace WarriorsSnuggery
 		public readonly int Z;
 
 		public float Dist => (float)Math.Sqrt(X * (double)X + Y * (double)Y + Z * (double)Z);
-		public float FlatDist => (float)Math.Sqrt(X * (double)X + Y * (double)Y);
+
 		public long SquaredFlatDist => X * (long)X + Y * (long)Y;
+		public float FlatDist => (float)Math.Sqrt(SquaredFlatDist);
 
 		public float FlatAngle
 		{
@@ -58,11 +59,6 @@ namespace WarriorsSnuggery
 		public Vector ToVector()
 		{
 			return new Vector(X / 1024f, -Y / 1024f, Z / 1024f);
-		}
-
-		public WPos ToWPos()
-		{
-			return new WPos(round(X), round(Y), round(Z));
 		}
 
 		public MPos ToMPos()

@@ -9,11 +9,8 @@ namespace WarriorsSnuggery
 		public readonly int X;
 		public readonly int Y;
 
-		public float Dist
-		{
-			get { return (float)Math.Sqrt(X * (double)X + Y * (double)Y); }
-			set { }
-		}
+		public float SquaredDist => X * (long)X + Y * (long)Y;
+		public float Dist => (float)Math.Sqrt(SquaredDist);
 
 		public MPos(int x, int y)
 		{
@@ -61,11 +58,6 @@ namespace WarriorsSnuggery
 			if (Y > maximum.Y) return false;
 
 			return true;
-		}
-
-		public WPos ToWPos()
-		{
-			return new WPos(X, Y, 0);
 		}
 
 		public CPos ToCPos()
