@@ -20,6 +20,7 @@ namespace WarriorsSnuggery
 		public static bool StartEditor;
 		public static bool DisableShroud;
 		public static bool IgnoreTech;
+		public static string Piece;
 		public static string MapType;
 
 		static bool noGLErrors;
@@ -62,11 +63,10 @@ namespace WarriorsSnuggery
 					DisableShroud = true;
 				else if (arg == "-ignore-tech")
 					IgnoreTech = true;
+				else if (arg == "-use-piece")
+					Piece = args[++i];
 				else if (arg == "-map-type")
-				{
-					i++;
-					MapType = args[i];
-				}
+					MapType = args[++i];
 				else if (arg == "-enable-cheats")
 					Settings.EnableCheats = true;
 			}

@@ -36,7 +36,13 @@ namespace WarriorsSnuggery
 			var mode = InteractionMode.NONE;
 			var map = MapCreator.FindMap(mission, 0);
 
-			if (!string.IsNullOrEmpty(Program.MapType))
+			if (!string.IsNullOrEmpty(Program.Piece))
+			{
+				mode = InteractionMode.INGAME;
+				map = MapType.FromPiece(PieceManager.GetPiece(Program.Piece));
+				mission = MissionType.TEST;
+			}
+			else if (!string.IsNullOrEmpty(Program.MapType))
 			{
 				mode = InteractionMode.INGAME;
 				map = MapCreator.GetType(Program.MapType);
@@ -45,6 +51,7 @@ namespace WarriorsSnuggery
 
 			if (Program.StartEditor)
 				mode = InteractionMode.EDITOR;
+
 
 			game = new Game(new GameStatistics(GameSaveManager.DefaultStatistic), map, mission, mode);
 			game.Load();
