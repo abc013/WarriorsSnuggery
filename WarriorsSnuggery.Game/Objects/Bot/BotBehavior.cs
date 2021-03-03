@@ -81,9 +81,9 @@ namespace WarriorsSnuggery.Objects.Bot
 			if (killed == Target.Actor)
 			{
 				if (Target.Actor.FollowupActor == null)
-					return;
-
-				Target = new Target(Target.Actor.FollowupActor);
+					Target = new Target(killed.Position, killed.Height);
+				else
+					Target = new Target(Target.Actor.FollowupActor);
 			}
 		}
 
@@ -128,7 +128,7 @@ namespace WarriorsSnuggery.Objects.Bot
 			if (actor.Team == Self.Team)
 				return;
 
-			if (Target == null || Target.Actor == null || !Target.Actor.IsAlive || !Target.Actor.Disposed)
+			if (!PerfectTarget())
 			{
 				Target = new Target(actor);
 				return;

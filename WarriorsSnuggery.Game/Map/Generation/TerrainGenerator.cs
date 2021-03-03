@@ -7,8 +7,7 @@ namespace WarriorsSnuggery.Maps.Generators
 	[Desc("Generator used for generating random flocks of terrain or actors on the map.")]
 	public class TerrainGeneratorInfo : IMapGeneratorInfo
 	{
-		public int ID => id;
-		readonly int id;
+		public int ID { get; private set; }
 
 		[Desc("ID for the noisemap.", "Set to a negative value to not use one.")]
 		public readonly int NoiseMapID = -1;
@@ -32,7 +31,7 @@ namespace WarriorsSnuggery.Maps.Generators
 
 		public TerrainGeneratorInfo(int id, List<MiniTextNode> nodes)
 		{
-			this.id = id;
+			ID = id;
 			Loader.PartLoader.SetValues(this, nodes);
 
 			if (RangeSteps.Length != ProbabilitySteps.Length)
