@@ -166,6 +166,8 @@ namespace WarriorsSnuggery.UI.Screens
 
 		public override void Render()
 		{
+			base.Render();
+
 			// SECTION BASE
 			background.Render();
 
@@ -201,8 +203,6 @@ namespace WarriorsSnuggery.UI.Screens
 
 			if (targetedEnemy != null)
 				enemyArrow.PushToBatchRenderer();
-
-			base.Render();
 		}
 
 		public override void Tick()
@@ -240,16 +240,17 @@ namespace WarriorsSnuggery.UI.Screens
 						var inverse = 0.3f - healthPercentage;
 						particleCollector += (int)(inverse * 50) + 1;
 
-						var count = particleCollector / 10;
-						particleCollector -= count * 10;
+						var count = particleCollector / 16;
+						particleCollector -= count * 16;
 
-						for (int i = 0; i < count; i++)
+						for (int i = 0; i < count * 2; i++)
 						{
-							var particle = particleManager.Add(700);
-							particle.Radius = Program.SharedRandom.Next(150) + (int)(inverse * inverse * 500) + 10;
-							particle.Position = new CPos(Program.SharedRandom.Next((int)(WindowInfo.UnitWidth * 1024)) - (int)(WindowInfo.UnitWidth * 512), (int)-(WindowInfo.UnitHeight * 512), 0);
-							particle.Velocity = new CPos(Program.SharedRandom.Next(-2, 2), Program.SharedRandom.Next(15) + 10, 0);
-							particle.Color = new Color(Program.SharedRandom.Next(64) + 127, 0, 0);
+							var invert = i % 2 == 0;
+							var particle = particleManager.Add((int)(healthPercentage * 100) + 600);
+							particle.Radius = Program.SharedRandom.Next(150) + (int)(inverse * inverse * 2000) + 10;
+							particle.Position = new CPos(Program.SharedRandom.Next((int)(WindowInfo.UnitWidth * 1024)) - (int)(WindowInfo.UnitWidth * 512), (invert ? 1 : -1) * (int)(WindowInfo.UnitHeight * 512), 0);
+							particle.Velocity = new CPos(Program.SharedRandom.Next(-2, 2), (invert ? -1 : 1) * (Program.SharedRandom.Next(10) + 10), 0);
+							particle.Color = new Color(Program.SharedRandom.Next(96) + 127, 0, 0, 192);
 						}
 					}
 				}
