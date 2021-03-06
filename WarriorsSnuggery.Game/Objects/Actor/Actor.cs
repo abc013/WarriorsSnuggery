@@ -281,6 +281,9 @@ namespace WarriorsSnuggery.Objects
 
 		bool checkMove(CPos pos, int height, CPos velocity)
 		{
+			if (!World.IsInWorld(pos))
+				return false;
+
 			var oldPos = Position;
 			var oldHeight = Height;
 
@@ -292,7 +295,7 @@ namespace WarriorsSnuggery.Objects
 			Position = oldPos;
 			Height = oldHeight;
 
-			if (intersects || !World.IsInWorld(this))
+			if (intersects)
 				return false;
 
 			var terrain = World.TerrainAt(pos);
