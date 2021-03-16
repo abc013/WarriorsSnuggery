@@ -37,11 +37,8 @@ namespace WarriorsSnuggery.Maps
 			return mapNames.FirstOrDefault(t => t.Value == type).Key;
 		}
 
-		public static MapType FindMap(MissionType type, int level)
+		public static MapType FindMap(MissionType type, int level, Random random)
 		{
-			// TODO: make this dependent on seed
-			var random = Program.SharedRandom;
-
 			var levels = mapTypes[type];
 
 			var explicitLevels = levels.Where(a => level == a.Level);

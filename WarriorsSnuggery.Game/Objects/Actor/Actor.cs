@@ -72,6 +72,7 @@ namespace WarriorsSnuggery.Objects
 			}
 		}
 
+		// TODO: needs to be saved
 		ActorAction upcoming;
 		public ActorAction CurrentAction = ActorAction.Default;
 

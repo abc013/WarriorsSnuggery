@@ -1,4 +1,5 @@
 ﻿using OpenTK.Windowing.GraphicsLibraryFramework;
+using System;
 using WarriorsSnuggery.Maps;
 using WarriorsSnuggery.UI.Screens;
 
@@ -34,7 +35,7 @@ namespace WarriorsSnuggery
 		{
 			var mission = MissionType.MAIN_MENU;
 			var mode = InteractionMode.NONE;
-			var map = MapCreator.FindMap(mission, 0);
+			var map = MapCreator.FindMap(mission, 0, Program.SharedRandom);
 
 			if (!string.IsNullOrEmpty(Program.Piece))
 			{
@@ -61,7 +62,7 @@ namespace WarriorsSnuggery
 		{
 			const MissionType mission = MissionType.MAIN_MENU;
 
-			finishAndLoad(new Game(GameSaveManager.DefaultStatistic, MapCreator.FindMap(mission, 0), mission, InteractionMode.NONE));
+			finishAndLoad(new Game(GameSaveManager.DefaultStatistic, MapCreator.FindMap(mission, 0, Program.SharedRandom), mission, InteractionMode.NONE));
 		}
 
 		public static void CreateMenu()
@@ -69,7 +70,7 @@ namespace WarriorsSnuggery
 			var mission = game.MenuType;
 			var stats = game.OldStatistics;
 
-			finishAndLoad(new Game(stats, MapCreator.FindMap(mission, stats.Level), mission, InteractionMode.INGAME));
+			finishAndLoad(new Game(stats, MapCreator.FindMap(mission, stats.Level, new Random(stats.Seed + stats.Level)), mission, InteractionMode.INGAME));
 		}
 
 		public static void CreateRestart()
@@ -89,7 +90,7 @@ namespace WarriorsSnuggery
 			var mission = game.CampaignType;
 			var stats = game.Statistics;
 
-			finishAndLoad(new Game(stats, MapCreator.FindMap(mission, stats.Level), mission, InteractionMode.INGAME));
+			finishAndLoad(new Game(stats, MapCreator.FindMap(mission, stats.Level, new Random(stats.Seed + stats.Level)), mission, InteractionMode.INGAME));
 		}
 
 		public static void CreateNextMenu()
@@ -97,14 +98,14 @@ namespace WarriorsSnuggery
 			var mission = game.MenuType;
 			var stats = game.Statistics;
 
-			finishAndLoad(new Game(stats, MapCreator.FindMap(mission, stats.Level), mission, InteractionMode.INGAME));
+			finishAndLoad(new Game(stats, MapCreator.FindMap(mission, stats.Level, new Random(stats.Seed + stats.Level)), mission, InteractionMode.INGAME));
 		}
 
 		public static void CreateNext(MissionType type, InteractionMode mode = InteractionMode.INGAME)
 		{
 			var stats = game.Statistics;
 
-			finishAndLoad(new Game(stats, MapCreator.FindMap(type, stats.Level), type, mode));
+			finishAndLoad(new Game(stats, MapCreator.FindMap(type, stats.Level, new Random(stats.Seed + stats.Level)), type, mode));
 		}
 
 		public static void CreateNew(GameStatistics stats, MissionType type = MissionType.NORMAL, InteractionMode mode = InteractionMode.INGAME, MapType custom = null, bool loadStatsMap = false)
@@ -122,7 +123,7 @@ namespace WarriorsSnuggery
 				}
 			}
 
-			finishAndLoad(new Game(stats, custom ?? MapCreator.FindMap(type, stats.Level), type, mode));
+			finishAndLoad(new Game(stats, custom ?? MapCreator.FindMap(type, stats.Level, new Random(stats.Seed + stats.Level)), type, mode));
 		}
 
 		static void finishAndLoad(Game @new)
