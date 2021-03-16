@@ -146,7 +146,7 @@ namespace WarriorsSnuggery
 				var attributes = prop.GetCustomAttributes(inherit);
 				foreach (var attribute in attributes)
 				{
-					if (!(attribute is SaveAttribute saveAttribute))
+					if (attribute is not SaveAttribute saveAttribute)
 						continue;
 
 					var key = string.IsNullOrEmpty(saveAttribute.Name) ? prop.Name : saveAttribute.Name;
@@ -160,7 +160,7 @@ namespace WarriorsSnuggery
 				var attributes = vari.GetCustomAttributes(inherit);
 				foreach (var attribute in attributes)
 				{
-					if (!(attribute is SaveAttribute saveAttribute))
+					if (attribute is not SaveAttribute saveAttribute)
 						continue;
 
 					var key = string.IsNullOrEmpty(saveAttribute.Name) ? vari.Name : saveAttribute.Name;

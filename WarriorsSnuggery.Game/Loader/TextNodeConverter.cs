@@ -130,9 +130,8 @@ namespace WarriorsSnuggery.Loader
 				for (int i = 0; i < parts.Length; i++)
 				{
 					var part = parts[i].Trim();
-					int convert;
 
-					if (int.TryParse(part, out convert))
+					if (int.TryParse(part, out int convert))
 						res[i] = convert;
 					else
 						throw new InvalidConversionException(file, node, t);
@@ -148,9 +147,8 @@ namespace WarriorsSnuggery.Loader
 				for (int i = 0; i < parts.Length; i++)
 				{
 					var part = parts[i].Trim();
-					float convert;
 
-					if (float.TryParse(part, NumberStyles.Float, CultureInfo.InvariantCulture, out convert))
+					if (float.TryParse(part, NumberStyles.Float, CultureInfo.InvariantCulture, out float convert))
 						res[i] = convert;
 					else
 						throw new InvalidConversionException(file, node, t);
@@ -194,9 +192,8 @@ namespace WarriorsSnuggery.Loader
 				for (int i = 0; i < parts.Length; i++)
 				{
 					var part = parts[i].Trim();
-					ushort convert;
 
-					if (ushort.TryParse(part, out convert))
+					if (ushort.TryParse(part, out ushort convert))
 						res[i] = convert;
 					else
 						throw new InvalidConversionException(file, node, t);
@@ -212,9 +209,8 @@ namespace WarriorsSnuggery.Loader
 				for (int i = 0; i < parts.Length; i++)
 				{
 					var part = parts[i].Trim();
-					short convert;
 
-					if (short.TryParse(part, out convert))
+					if (short.TryParse(part, out short convert))
 						res[i] = convert;
 					else
 						throw new InvalidConversionException(file, node, t);
@@ -228,10 +224,7 @@ namespace WarriorsSnuggery.Loader
 
 				if (parts.Length == 2)
 				{
-					int x;
-					int y;
-
-					if (int.TryParse(parts[0], out x) && int.TryParse(parts[1], out y))
+					if (int.TryParse(parts[0], out int x) && int.TryParse(parts[1], out int y))
 						return new MPos(x, y);
 				}
 			}
@@ -241,11 +234,7 @@ namespace WarriorsSnuggery.Loader
 
 				if (parts.Length == 3)
 				{
-					int x;
-					int y;
-					int z;
-
-					if (int.TryParse(parts[0], out x) && int.TryParse(parts[1], out y) && int.TryParse(parts[2], out z))
+					if (int.TryParse(parts[0], out int x) && int.TryParse(parts[1], out int y) && int.TryParse(parts[2], out int z))
 						return new CPos(x, y, z);
 				}
 			}
@@ -255,13 +244,9 @@ namespace WarriorsSnuggery.Loader
 
 				if (parts.Length >= 3 && parts.Length <= 4)
 				{
-					int r;
-					int b;
-					int g;
-					var a = 255;
-
-					if (int.TryParse(parts[0], out r) && int.TryParse(parts[1], out g) && int.TryParse(parts[2], out b))
+					if (int.TryParse(parts[0], out int r) && int.TryParse(parts[1], out int g) && int.TryParse(parts[2], out int b))
 					{
+						var a = 255;
 						if (parts.Length == 4 && int.TryParse(parts[3], out a) || parts.Length == 3)
 							return new Color(r, g, b, a);
 					}
@@ -273,11 +258,7 @@ namespace WarriorsSnuggery.Loader
 
 				if (parts.Length == 3)
 				{
-					float x;
-					float y;
-					float z;
-
-					if (float.TryParse(parts[0], out x) && float.TryParse(parts[1], out y) && float.TryParse(parts[2], out z))
+					if (float.TryParse(parts[0], out float x) && float.TryParse(parts[1], out float y) && float.TryParse(parts[2], out float z))
 						return new Vector(x, y, z);
 				}
 			}
@@ -287,11 +268,7 @@ namespace WarriorsSnuggery.Loader
 
 				if (parts.Length == 3)
 				{
-					float x;
-					float y;
-					float z;
-
-					if (float.TryParse(parts[0], out x) && float.TryParse(parts[1], out y) && float.TryParse(parts[2], out z))
+					if (float.TryParse(parts[0], out float x) && float.TryParse(parts[1], out float y) && float.TryParse(parts[2], out float z))
 						return new VAngle(x, y, z);
 				}
 			}

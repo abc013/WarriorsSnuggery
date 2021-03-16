@@ -22,6 +22,7 @@ namespace WarriorsSnuggery.Loader
 		{
 			var reader = new BinaryReader(new FileStream(path, FileMode.Open));
 
+#pragma warning disable IDE0059
 			int chunkID = reader.ReadInt32();
 			int fileSize = reader.ReadInt32();
 			int riffType = reader.ReadInt32();
@@ -43,6 +44,7 @@ namespace WarriorsSnuggery.Loader
 
 			int dataID = reader.ReadInt32();
 			dataSize = reader.ReadInt32();
+#pragma warning restore IDE0059
 
 			if (channels == 1)
 			{

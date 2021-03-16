@@ -74,17 +74,5 @@ namespace WarriorsSnuggery.Loader
 
 		protected UnknownPartException(SerializationInfo info, StreamingContext context) : base(info, context) { }
 	}
-
-	[Serializable]
-	class UnknownGeneratorException : Exception
-	{
-		public UnknownGeneratorException() { }
-
-		public UnknownGeneratorException(string name) : base($"The generator '{name}' does not exist.") { }
-
-		public UnknownGeneratorException(string name, Exception innerException) : base($"The generator '{name}' does not exist.", innerException) { }
-
-		protected UnknownGeneratorException(SerializationInfo info, StreamingContext context) : base(info, context) { }
-	}
 }
 
