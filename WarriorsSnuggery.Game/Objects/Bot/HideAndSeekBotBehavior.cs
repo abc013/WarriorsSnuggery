@@ -25,7 +25,7 @@ namespace WarriorsSnuggery.Objects.Bot
 
 			if (hide)
 			{
-				if (hideDuration-- <= 0 && !Self.WeaponReloading)
+				if (hideDuration-- <= 0 && (Self.ActiveWeapon == null || Self.ActiveWeapon.ReloadDone))
 					hide = false;
 			}
 			else

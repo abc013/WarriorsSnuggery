@@ -43,6 +43,9 @@ namespace WarriorsSnuggery.Objects.Parts
 		Target target;
 		int prep;
 
+		public int Reload;
+		public bool ReloadDone => Reload <= 0;
+
 		public WeaponPart(Actor self, WeaponPartInfo info) : base(self)
 		{
 			this.info = info;
@@ -60,6 +63,8 @@ namespace WarriorsSnuggery.Objects.Parts
 				}
 				else if (node.Key == "PreparationTick")
 					prep = node.Convert<int>();
+				else if (node.Key == nameof(Reload))
+					Reload = node.Convert<int>();
 				else if (node.Key == "Target")
 				{
 					var pos = node.Convert<CPos>();
@@ -76,6 +81,7 @@ namespace WarriorsSnuggery.Objects.Parts
 				saver.Add("BeamWeapon", beam.ID, -1);
 
 			saver.Add("PreparationTick", prep, 0);
+			saver.Add(nameof(Reload), Reload, 0);
 
 			if (target != null)
 			{
@@ -99,6 +105,8 @@ namespace WarriorsSnuggery.Objects.Parts
 
 		public void Tick()
 		{
+			Reload--;
+
 			if (attackOrdered && prep-- <= 0)
 				attack();
 
@@ -122,7 +130,14 @@ namespace WarriorsSnuggery.Objects.Parts
 			Target = weapon.TargetPosition;
 			beam = weapon as BeamWeapon;
 
-			self.AttackWith(target, weapon);
+			if (self.AttackWith(target, weapon))
+			{
+				var reloadModifier = 1f;
+				foreach (var effect in self.Effects.Where(e => e.Active && e.Effect.Type == Spells.EffectType.COOLDOWN))
+					reloadModifier *= effect.Effect.Value;
+
+				Reload = (int)(Type.Reload * reloadModifier);
+			}
 		}
 
 		public void OnDispose()

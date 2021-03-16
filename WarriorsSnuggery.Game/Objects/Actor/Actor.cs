@@ -60,11 +60,6 @@ namespace WarriorsSnuggery.Objects
 		public MPos TerrainPosition;
 		public Terrain CurrentTerrain;
 
-		int localTick;
-		int reloadDelay;
-
-		public bool WeaponReloading => reloadDelay > 0;
-
 		bool visible;
 
 		CPos Velocity
@@ -181,15 +176,12 @@ namespace WarriorsSnuggery.Objects
 
 		public void Push(float angle, int power)
 		{
-			if (Mobility == null || World.Game.Editor)
-				return;
-
 			accelerate(angle, power);
 		}
 
 		public void Accelerate(float angle)
 		{
-			if (Mobility == null || World.Game.Editor || !canMove())
+			if (!canMove())
 				return;
 
 			accelerate(angle);
@@ -197,6 +189,9 @@ namespace WarriorsSnuggery.Objects
 
 		void accelerate(float angle, int customAcceleration = 0)
 		{
+			if (Mobility == null || World.Game.Editor)
+				return;
+
 			var acceleration = Mobility.OnAccelerate(angle, customAcceleration);
 			foreach (var part in accelerationParts)
 				part.OnAccelerate(angle, acceleration);
@@ -204,15 +199,12 @@ namespace WarriorsSnuggery.Objects
 
 		public void Push(int power)
 		{
-			if (Mobility == null || World.Game.Editor)
-				return;
-
 			accelerate(true, power);
 		}
 
 		public void AccelerateHeight(bool up)
 		{
-			if (Mobility == null || World.Game.Editor || !Mobility.CanFly || !canMove())
+			if (!Mobility.CanFly || !canMove())
 				return;
 
 			accelerate(up);
@@ -220,6 +212,9 @@ namespace WarriorsSnuggery.Objects
 
 		void accelerate(bool up, int customAcceleration = 0)
 		{
+			if (Mobility == null || World.Game.Editor)
+				return;
+
 			var acceleration = Mobility.OnAccelerateHeight(up, customAcceleration);
 			foreach (var part in accelerationParts)
 				part.OnAccelerate(new CPos(0, 0, acceleration));
@@ -239,11 +234,8 @@ namespace WarriorsSnuggery.Objects
 			return true;
 		}
 
-		void move()
+		public void MoveTick()
 		{
-			if (!IsAlive || Mobility == null || Velocity == CPos.Zero || World.Game.Editor)
-				return;
-
 			var speedModifier = 1f;
 			if (Height == 0 && World.TerrainAt(Position) != null)
 				speedModifier = World.TerrainAt(Position).Type.Speed;
@@ -258,15 +250,18 @@ namespace WarriorsSnuggery.Objects
 			var height = Height + movement.Z;
 
 			// Move in both x and y direction
-			var pos = new CPos(Position.X + movement.X, Position.Y + movement.Y, Position.Z);
-			if (pos != Position && checkMove(pos, height, Velocity))
-				return;
+			if (movement.X != 0 && movement.Y != 0)
+			{
+				var pos = new CPos(Position.X + movement.X, Position.Y + movement.Y, Position.Z);
+				if (checkMove(pos, height, Velocity))
+					return;
+			}
 
 			// Move only in x direction
 			if (movement.X != 0)
 			{
 				var posX = new CPos(Position.X + movement.X, Position.Y, Position.Z);
-				if (posX != Position && checkMove(posX, height, new CPos(Velocity.X, 0, Velocity.Z)))
+				if (checkMove(posX, height, new CPos(Velocity.X, 0, Velocity.Z)))
 					return;
 			}
 
@@ -274,7 +269,7 @@ namespace WarriorsSnuggery.Objects
 			if (movement.Y != 0)
 			{
 				var posY = new CPos(Position.X, Position.Y + movement.Y, Position.Z);
-				if (posY != Position && checkMove(posY, height, new CPos(0, Velocity.Y, Velocity.Z)))
+				if (checkMove(posY, height, new CPos(0, Velocity.Y, Velocity.Z)))
 					return;
 			}
 
@@ -398,7 +393,6 @@ namespace WarriorsSnuggery.Objects
 		public override void Tick()
 		{
 			base.Tick();
-			localTick++;
 
 			if (!IsAlive)
 				return;
@@ -416,38 +410,9 @@ namespace WarriorsSnuggery.Objects
 				}
 			}
 
-			if (reloadDelay-- < 0)
-				reloadDelay = 0;
-
-			if (WorldPart != null && WorldPart.Hover > 0)
-				Height += (int)(Math.Sin(localTick / 32f) * WorldPart.Hover * 0.5f);
-
-			if (Mobility != null)
-			{
-				if (Mobility.Velocity != CPos.Zero)
-					move();
-
-				if (Mobility.CanFly && WorldPart != null)
-				{
-					if (Height > WorldPart.Height + WorldPart.Hover * 64)
-						AccelerateHeight(false);
-					else if (Height < WorldPart.Height - WorldPart.Hover * 64)
-						AccelerateHeight(true);
-				}
-
-				// Make it impossible to be in the ground.
-				if (Height < 0)
-					Height = 0;
-			}
-
-			if (Health != null)
-			{
-				if (Health.HP <= 0)
-					Killed(null);
-
-				foreach (var effect in Effects.Where(e => e.Active && e.Effect.Type == Spells.EffectType.HEALTH))
-					Health.HP += (int)effect.Effect.Value;
-			}
+			// Make it impossible to be in the ground.
+			if (Height < 0)
+				Height = 0;
 
 			if (World.Game.Editor)
 			{
@@ -508,7 +473,7 @@ namespace WarriorsSnuggery.Objects
 
 		public void PrepareAttack(Target target)
 		{
-			if (reloadDelay != 0 || ActiveWeapon == null || !IsAlive)
+			if (ActiveWeapon == null || !ActiveWeapon.ReloadDone || !IsAlive)
 				return;
 
 			if (World.Game.Editor && IsPlayer || !World.Map.Type.AllowWeapons)
@@ -530,10 +495,12 @@ namespace WarriorsSnuggery.Objects
 			ActiveWeapon.OnAttack(target);
 		}
 
-		public void AttackWith(Target target, Weapon weapon)
+		public bool AttackWith(Target target, Weapon weapon)
 		{
-			if (World.Game.Editor && IsPlayer || !World.Map.Type.AllowWeapons)
-				return;
+			if (!World.Map.Type.AllowWeapons)
+				return false;
+
+			World.Add(weapon);
 
 			var action = new ActorAction(ActionType.ATTACK, false);
 			action.ExtendAction(ActiveWeapon.Type.ShootDuration);
@@ -543,16 +510,10 @@ namespace WarriorsSnuggery.Objects
 			cooldownAction.ExtendAction(ActiveWeapon.Type.CooldownDelay);
 			QueueAction(cooldownAction, ActiveWeapon.Type.ShootDuration != 0); // Directly use when shootDuration is 0
 
-			World.Add(weapon);
-
 			foreach (var part in PartManager.GetOrDefault<INoticeAttack>())
 				part.OnAttack(target.Position, weapon);
 
-			var reloadModifier = 1f;
-			foreach (var effect in Effects.Where(e => e.Active && e.Effect.Type == Spells.EffectType.COOLDOWN))
-				reloadModifier *= effect.Effect.Value;
-
-			reloadDelay = (int)(ActiveWeapon.Type.Reload * reloadModifier);
+			return true;
 		}
 
 		public void Kill(Actor killed)

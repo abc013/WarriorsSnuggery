@@ -82,8 +82,14 @@ namespace WarriorsSnuggery.Objects.Parts
 
 		public void Tick()
 		{
+			foreach (var effect in self.Effects.Where(e => e.Active && e.Effect.Type == Spells.EffectType.HEALTH))
+				HP += (int)effect.Effect.Value;
+
 			if (self.World.Game.LocalTick % 2 == 0 && self.CurrentTerrain != null && self.CurrentTerrain.Type.Damage != 0)
 				HP -= self.CurrentTerrain.Type.Damage;
+
+			if (HP <= 0)
+				self.Killed(null);
 		}
 	}
 }

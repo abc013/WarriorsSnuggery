@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using WarriorsSnuggery.Objects.Bot;
 
 namespace WarriorsSnuggery.Objects.Parts
@@ -21,8 +22,10 @@ namespace WarriorsSnuggery.Objects.Parts
 		[Desc("Height of the actor.")]
 		public readonly int Height;
 
-		[Desc("Hovering of the actor.", "This will create a hover-effect for flying actors.")]
+		[Desc("Hovering strength.", "This will create a hover-effect for flying actors.")]
 		public readonly int Hover;
+		[Desc("Hovering speed.", "If set lower, the hover frequency decreases.")]
+		public readonly int HoverSpeed = 32;
 
 		[Desc("Hides the actor when the cursor/player is behind it so the player can see more.")]
 		public readonly bool Hideable;
@@ -60,7 +63,7 @@ namespace WarriorsSnuggery.Objects.Parts
 		}
 	}
 
-	public class WorldPart : ActorPart, INoticeMove, INoticeDispose
+	public class WorldPart : ActorPart, ITick, INoticeMove, INoticeDispose
 	{
 		readonly WorldPartInfo info;
 
@@ -85,6 +88,8 @@ namespace WarriorsSnuggery.Objects.Parts
 
 		readonly Sound sound;
 
+		int hoverTick;
+
 		public WorldPart(Actor self, WorldPartInfo info) : base(self)
 		{
 			this.info = info;
@@ -99,6 +104,20 @@ namespace WarriorsSnuggery.Objects.Parts
 		{
 			var diff = pos - self.Position;
 			return diff.X > info.TargetBoxCorner1.X && diff.X < info.TargetBoxCorner2.X && diff.Y > -info.TargetBoxCorner1.Y && diff.Y < -info.TargetBoxCorner2.Y;
+		}
+
+		public void Tick()
+		{
+			if (Hover > 0)
+				self.Height += (int)(Math.Sin(hoverTick++ / (float)info.HoverSpeed) * Hover);
+
+			if (self.Mobility != null && self.Mobility.CanFly)
+			{
+				if (Height > Height + Hover * 64)
+					self.AccelerateHeight(false);
+				else if (Height < Height - Hover * 64)
+					self.AccelerateHeight(true);
+			}
 		}
 
 		public void OnMove(CPos old, CPos speed)
