@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using WarriorsSnuggery.Graphics;
+using WarriorsSnuggery.Loader;
 using WarriorsSnuggery.Objects.Particles;
 
 namespace WarriorsSnuggery.Objects.Weapons.Projectiles
@@ -32,9 +33,9 @@ namespace WarriorsSnuggery.Objects.Weapons.Projectiles
 		[Desc("Turbulence to build in.")]
 		public readonly int Turbulence = 0;
 
-		public MagicProjectile(List<MiniTextNode> nodes)
+		public MagicProjectile(List<TextNode> nodes)
 		{
-			Loader.PartLoader.SetValues(this, nodes);
+			Loader.TypeLoader.SetValues(this, nodes);
 			FloatTurnSpeed = TurnSpeed / (float)(180 * System.Math.PI);
 
 			if (Texture != null)

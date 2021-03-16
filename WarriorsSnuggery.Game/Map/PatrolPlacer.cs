@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using WarriorsSnuggery.Loader;
 using WarriorsSnuggery.Objects;
 
 namespace WarriorsSnuggery.Maps
@@ -21,9 +22,9 @@ namespace WarriorsSnuggery.Maps
 		[Desc("Only use this PatrolPlacer in the WAVES Gamemode.")]
 		public readonly bool UseForWaves;
 
-		public PatrolPlacerInfo(List<MiniTextNode> nodes)
+		public PatrolPlacerInfo(List<TextNode> nodes)
 		{
-			Loader.PartLoader.SetValues(this, nodes);
+			TypeLoader.SetValues(this, nodes);
 
 			if (Patrols.Length != 0)
 				PatrolProbabilities = Patrols.Sum(p => p.Probability);
@@ -42,9 +43,9 @@ namespace WarriorsSnuggery.Maps
 		[Desc("Probability that this patrol will be spawned.", "This value will be set in relation with all other patrol probabilities.")]
 		public readonly float Probability = 1f;
 
-		public PatrolProbabilityInfo(List<MiniTextNode> nodes)
+		public PatrolProbabilityInfo(List<TextNode> nodes)
 		{
-			Loader.PartLoader.SetValues(this, nodes);
+			TypeLoader.SetValues(this, nodes);
 		}
 	}
 

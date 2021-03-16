@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using WarriorsSnuggery.Graphics;
+using WarriorsSnuggery.Loader;
 
 namespace WarriorsSnuggery.Objects
 {

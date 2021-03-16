@@ -1,4 +1,6 @@
-﻿namespace WarriorsSnuggery.Scripting
+﻿using WarriorsSnuggery.Loader;
+
+namespace WarriorsSnuggery.Scripting
 {
 	public abstract class MissionScriptBase
 	{
@@ -34,7 +36,7 @@
 			return null;
 		}
 
-		public virtual void LoadState(MiniTextNode[] nodes)
+		public virtual void LoadState(TextNode[] nodes)
 		{
 
 		}

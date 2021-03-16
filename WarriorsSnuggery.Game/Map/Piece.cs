@@ -27,12 +27,12 @@ namespace WarriorsSnuggery.Maps
 		readonly List<WeaponInit> weapons = new List<WeaponInit>();
 		readonly List<ParticleInit> particles = new List<ParticleInit>();
 
-		public Piece(string innerName, string path, List<MiniTextNode> nodes)
+		public Piece(string innerName, string path, List<TextNode> nodes)
 		{
 			InnerName = innerName;
 			Path = path;
 
-			var fields = PartLoader.GetFields(this);
+			var fields = TypeLoader.GetFields(this);
 
 			foreach (var node in nodes)
 			{
@@ -92,7 +92,7 @@ namespace WarriorsSnuggery.Maps
 						}
 						break;
 					default:
-						PartLoader.SetValue(this, fields, node);
+						TypeLoader.SetValue(this, fields, node);
 
 						break;
 				}

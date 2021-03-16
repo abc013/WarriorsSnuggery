@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using WarriorsSnuggery.Audio;
 using WarriorsSnuggery.Graphics;
+using WarriorsSnuggery.Loader;
 
 namespace WarriorsSnuggery
 {
@@ -24,9 +25,9 @@ namespace WarriorsSnuggery
 
 		public readonly GameAudioBuffer Buffer;
 
-		public SoundType(List<MiniTextNode> nodes, bool isDocumentation = false)
+		public SoundType(List<TextNode> nodes, bool isDocumentation = false)
 		{
-			Loader.PartLoader.SetValues(this, nodes);
+			TypeLoader.SetValues(this, nodes);
 
 			if (!isDocumentation)
 			{

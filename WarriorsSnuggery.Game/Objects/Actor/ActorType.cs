@@ -1,6 +1,7 @@
 ﻿using System.Linq;
 using WarriorsSnuggery.Graphics;
 using WarriorsSnuggery.Objects.Parts;
+using WarriorsSnuggery.Loader;
 
 namespace WarriorsSnuggery.Objects
 {

@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using WarriorsSnuggery.Loader;
 using WarriorsSnuggery.Objects.Actors;
 
 namespace WarriorsSnuggery.Objects.Parts
@@ -10,7 +11,7 @@ namespace WarriorsSnuggery.Objects.Parts
 		[Desc("Time it takes to switch actor in ticks.")]
 		public readonly int SwitchDuration = 120;
 
-		public PlayerSwitchPartInfo(string internalName, List<MiniTextNode> nodes) : base(internalName, nodes) { }
+		public PlayerSwitchPartInfo(PartInitSet set) : base(set) { }
 
 		public override ActorPart Create(Actor self)
 		{
@@ -29,7 +30,7 @@ namespace WarriorsSnuggery.Objects.Parts
 			CurrentTick = info.SwitchDuration;
 		}
 
-		public override void OnLoad(List<MiniTextNode> nodes)
+		public override void OnLoad(List<TextNode> nodes)
 		{
 			var parent = nodes.FirstOrDefault(n => n.Key == "PlayerSwitchPart");
 			if (parent == null)

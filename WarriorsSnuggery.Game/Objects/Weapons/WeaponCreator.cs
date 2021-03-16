@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using WarriorsSnuggery.Loader;
 
 namespace WarriorsSnuggery.Objects.Weapons
 {
@@ -10,7 +11,7 @@ namespace WarriorsSnuggery.Objects.Weapons
 
 		public static void Load(string directory, string file)
 		{
-			var weapons = RuleReader.FromFile(directory, file);
+			var weapons = TextNodeLoader.FromFile(directory, file);
 
 			foreach (var weapon in weapons)
 				Types.Add(weapon.Key, new WeaponType(weapon.Children));

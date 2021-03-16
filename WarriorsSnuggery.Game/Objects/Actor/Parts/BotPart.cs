@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using WarriorsSnuggery.Loader;
 using WarriorsSnuggery.Objects.Actors;
 using WarriorsSnuggery.Objects.Bot;
 using WarriorsSnuggery.Objects.Weapons;
@@ -27,7 +28,7 @@ namespace WarriorsSnuggery.Objects.Parts
 			};
 		}
 
-		public override void OnLoad(List<MiniTextNode> nodes)
+		public override void OnLoad(List<TextNode> nodes)
 		{
 			var position = self.Position;
 			var height = self.Height;

@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using WarriorsSnuggery.Loader;
 using WarriorsSnuggery.Objects.Actors;
 
 namespace WarriorsSnuggery.Objects.Parts
@@ -13,12 +14,12 @@ namespace WarriorsSnuggery.Objects.Parts
 		[Desc("Interval in which the game should check for revealled shroud by this actor.")]
 		public readonly int Interval = 0;
 
+		public RevealsShroudPartInfo(PartInitSet set) : base(set) { }
+
 		public override ActorPart Create(Actor self)
 		{
 			return new RevealsShroudPart(self, this);
 		}
-
-		public RevealsShroudPartInfo(string internalName, List<MiniTextNode> nodes) : base(internalName, nodes) { }
 	}
 
 	public class RevealsShroudPart : ActorPart, ITick, INoticeMove
@@ -35,7 +36,7 @@ namespace WarriorsSnuggery.Objects.Parts
 			firstActive = true;
 		}
 
-		public override void OnLoad(List<MiniTextNode> nodes)
+		public override void OnLoad(List<TextNode> nodes)
 		{
 			var parent = nodes.FirstOrDefault(n => n.Key == "RevealsShroudPart" && n.Value == info.InternalName);
 			if (parent == null)

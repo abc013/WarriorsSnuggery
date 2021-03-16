@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using WarriorsSnuggery.Loader;
 using WarriorsSnuggery.Maps.Generators;
 using WarriorsSnuggery.Objects;
 using WarriorsSnuggery.Objects.Particles;
@@ -59,7 +60,7 @@ namespace WarriorsSnuggery.Maps
 			}
 
 			// Empty NoiseMap
-			EmptyNoiseMap = new NoiseMap(Bounds, 0, new NoiseMapInfo(0, new List<MiniTextNode>()));
+			EmptyNoiseMap = new NoiseMap(Bounds, 0, new NoiseMapInfo(0, new List<TextNode>()));
 
 			generatorReservations = new int[Bounds.X, Bounds.Y];
 			invalidForPatrols = new bool[Bounds.X, Bounds.Y];
@@ -75,7 +76,7 @@ namespace WarriorsSnuggery.Maps
 				var path = FileExplorer.Saves;
 				var file = map.Type.OverridePiece + ".yaml";
 
-				var input = new Piece(map.Type.OverridePiece, path + file, RuleReader.FromFile(path, file));
+				var input = new Piece(map.Type.OverridePiece, path + file, TextNodeLoader.FromFile(path, file));
 				GenerateCrucialPiece(input, MPos.Zero);
 
 				// Local player should be somewhere within the piece

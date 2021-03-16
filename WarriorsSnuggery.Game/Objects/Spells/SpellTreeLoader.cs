@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using WarriorsSnuggery.Loader;
 
 namespace WarriorsSnuggery.Spells
 {
@@ -8,10 +9,9 @@ namespace WarriorsSnuggery.Spells
 
 		public static void Load(string path, string file)
 		{
-			var nodes = RuleReader.FromFile(path, file);
+			var nodes = TextNodeLoader.FromFile(path, file);
 
-			List<SpellTreeNode> spelltree = new List<SpellTreeNode>();
-
+			var spelltree = new List<SpellTreeNode>();
 			foreach (var node in nodes)
 				spelltree.Add(new SpellTreeNode(node.Children, node.Key));
 

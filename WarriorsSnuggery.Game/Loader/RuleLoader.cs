@@ -5,16 +5,16 @@ using WarriorsSnuggery.Objects.Weapons;
 using WarriorsSnuggery.Trophies;
 using WarriorsSnuggery.UI;
 
-namespace WarriorsSnuggery
+namespace WarriorsSnuggery.Loader
 {
-	static class RuleLoader
+	public static class RuleLoader
 	{
 		public static Texture[] ShroudTexture;
 		public static Texture[] Questionmark;
 
 		public static void LoadRules()
 		{
-			var rules = RuleReader.FromFile(FileExplorer.Rules, "Rules.yaml");
+			var rules = TextNodeLoader.FromFile(FileExplorer.Rules, "Rules.yaml");
 
 			foreach (var rule in rules)
 			{

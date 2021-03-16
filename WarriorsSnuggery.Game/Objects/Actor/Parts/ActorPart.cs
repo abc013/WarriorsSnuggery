@@ -1,18 +1,31 @@
 ﻿using System.Collections.Generic;
+using WarriorsSnuggery.Loader;
 using WarriorsSnuggery.Objects.Actors;
 
 namespace WarriorsSnuggery.Objects.Parts
 {
+	public sealed class PartInitSet
+	{
+		public readonly string InternalName;
+		public readonly List<TextNode> Nodes;
+
+		public PartInitSet(string internalName, List<TextNode> nodes)
+		{
+			InternalName = internalName;
+			Nodes = nodes;
+		}
+	}
+
 	public abstract class PartInfo
 	{
 		public readonly string InternalName;
 
 		public abstract ActorPart Create(Actor self);
 
-		protected PartInfo(string internalName, List<MiniTextNode> nodes)
+		protected PartInfo(PartInitSet set)
 		{
-			InternalName = internalName;
-			Loader.PartLoader.SetValues(this, nodes);
+			InternalName = set.InternalName;
+			TypeLoader.SetValues(this, set.Nodes);
 		}
 	}
 
@@ -25,7 +38,7 @@ namespace WarriorsSnuggery.Objects.Parts
 			this.self = self;
 		}
 
-		public virtual void OnLoad(List<MiniTextNode> nodes)
+		public virtual void OnLoad(List<TextNode> nodes)
 		{
 
 		}

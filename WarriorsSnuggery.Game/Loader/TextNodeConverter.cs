@@ -5,7 +5,6 @@ using WarriorsSnuggery.Graphics;
 using WarriorsSnuggery.Maps;
 using WarriorsSnuggery.Maps.Generators;
 using WarriorsSnuggery.Objects;
-using WarriorsSnuggery.Objects.Bot;
 using WarriorsSnuggery.Objects.Conditions;
 using WarriorsSnuggery.Objects.Particles;
 using WarriorsSnuggery.Objects.Weapons;
@@ -16,7 +15,7 @@ using WarriorsSnuggery.Spells;
 
 namespace WarriorsSnuggery.Loader
 {
-	public static class NodeConverter
+	public static class TextNodeConverter
 	{
 		public static readonly string[] trueBooleans = new[]
 		{
@@ -31,12 +30,12 @@ namespace WarriorsSnuggery.Loader
 			"no"
 		};
 
-		public static T Convert<T>(string file, MiniTextNode node)
+		public static T Convert<T>(string file, TextNode node)
 		{
 			return (T)Convert(file, node, typeof(T));
 		}
 
-		public static object Convert(string file, MiniTextNode node, Type t)
+		public static object Convert(string file, TextNode node, Type t)
 		{
 			var value = node.Value;
 
@@ -403,6 +402,18 @@ namespace WarriorsSnuggery.Loader
 						throw new InvalidConversionException(file, child, t);
 
 					array[i++] = (IWarhead)Activator.CreateInstance(type, new[] { child.Children });
+				}
+				return array;
+			}
+			else if (t == typeof(IMapGeneratorInfo[]))
+			{
+				var array = new IMapGeneratorInfo[node.Children.Count];
+				var i = 0;
+				foreach (var child in node.Children)
+				{
+					var type = Type.GetType("WarriorsSnuggery.Maps.Generators." + child.Key + "Info", true, true);
+
+					array[i++] = (IMapGeneratorInfo)Activator.CreateInstance(type, new object[] { child.Convert<int>(), child.Children });
 				}
 				return array;
 			}

@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using WarriorsSnuggery.Loader;
 
 namespace WarriorsSnuggery.Objects.Particles
 {
@@ -8,10 +9,7 @@ namespace WarriorsSnuggery.Objects.Particles
 		[Desc("List of ParticleSpawners.")]
 		public readonly ParticleSpawner[] Spawners;
 
-		public ListParticleSpawner(List<MiniTextNode> nodes) : base(nodes)
-		{
-			
-		}
+		public ListParticleSpawner(List<TextNode> nodes) : base(nodes) { }
 
 		public override Particle[] Create(World world, CPos position, int height)
 		{

@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using WarriorsSnuggery.Loader;
 using WarriorsSnuggery.Objects.Actors;
 
 namespace WarriorsSnuggery.Objects.Parts
@@ -14,14 +15,11 @@ namespace WarriorsSnuggery.Objects.Parts
 		[Desc("Time between the regeneration step after a hit.")]
 		public readonly int TimeAfterHit;
 
+		public RegenerationPartInfo(PartInitSet set) : base(set) { }
+
 		public override ActorPart Create(Actor self)
 		{
 			return new RegenerationPart(self, this);
-		}
-
-		public RegenerationPartInfo(string internalName, List<MiniTextNode> nodes) : base(internalName, nodes)
-		{
-
 		}
 	}
 
@@ -35,7 +33,7 @@ namespace WarriorsSnuggery.Objects.Parts
 			this.info = info;
 		}
 
-		public override void OnLoad(List<MiniTextNode> nodes)
+		public override void OnLoad(List<TextNode> nodes)
 		{
 			var parent = nodes.FirstOrDefault(n => n.Key == "RegenerationPart" && n.Value == info.InternalName);
 			if (parent == null)

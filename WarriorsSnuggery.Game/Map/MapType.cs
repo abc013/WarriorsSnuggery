@@ -56,11 +56,11 @@ namespace WarriorsSnuggery.Maps
 		// For the DocWriter
 		public MapType() { }
 
-		MapType(string name, List<MiniTextNode> nodes)
+		MapType(string name, List<TextNode> nodes)
 		{
 			Name = name;
 
-			var fields = PartLoader.GetFields(this);
+			var fields = TypeLoader.GetFields(this);
 
 			foreach (var node in nodes)
 			{
@@ -68,16 +68,6 @@ namespace WarriorsSnuggery.Maps
 				{
 					case nameof(TerrainGenerationBase):
 						TerrainGenerationBase = new TerrainGeneratorInfo(node.Convert<int>(), node.Children);
-
-						break;
-					case nameof(Generators):
-						Generators = new IMapGeneratorInfo[node.Children.Count];
-
-						for (int i = 0; i < Generators.Length; i++)
-						{
-							var child = node.Children[i];
-							Generators[i] = GeneratorLoader.GetGenerator(child.Key, child.Convert<int>(), child.Children);
-						}
 
 						break;
 					case nameof(NoiseMaps):
@@ -98,7 +88,7 @@ namespace WarriorsSnuggery.Maps
 
 						break;
 					default:
-						PartLoader.SetValue(this, fields, node);
+						TypeLoader.SetValue(this, fields, node);
 
 						break;
 				}
@@ -127,24 +117,24 @@ namespace WarriorsSnuggery.Maps
 			MissionScript = missionScript;
 		}
 
-		public static MapType FromRules(MiniTextNode parent)
+		public static MapType FromRules(TextNode parent)
 		{
 			return new MapType(parent.Key, parent.Children);
 		}
 
 		public static MapType FromSave(GameStatistics stats)
 		{
-			var size = RuleReader.FromFile(FileExplorer.Saves, stats.MapSaveName + ".yaml").First(n => n.Key == "Size").Convert<MPos>();
+			var size = TextNodeLoader.FromFile(FileExplorer.Saves, stats.MapSaveName + ".yaml").First(n => n.Key == "Size").Convert<MPos>();
 
 			var type = MapCreator.GetType(stats.CurrentMapType);
 			var mapGeneratorInfos = type == null ? new IMapGeneratorInfo[0] : type.Generators;
 
-			return new MapType(stats.MapSaveName, 0, size, Color.White, new[] { stats.CurrentMission }, new[] { stats.CurrentObjective }, -1, 0, int.MaxValue, new TerrainGeneratorInfo(0, new List<MiniTextNode>()), mapGeneratorInfos, MPos.Zero, true, true, stats.Script);
+			return new MapType(stats.MapSaveName, 0, size, Color.White, new[] { stats.CurrentMission }, new[] { stats.CurrentObjective }, -1, 0, int.MaxValue, new TerrainGeneratorInfo(0, new List<TextNode>()), mapGeneratorInfos, MPos.Zero, true, true, stats.Script);
 		}
 
 		public static MapType FromPiece(Piece piece, MissionType type = MissionType.TEST, ObjectiveType objective = ObjectiveType.NONE)
 		{
-			return new MapType(piece.InnerName, 0, piece.Size, Color.White, new[] { type }, new[] { objective }, -1, 0, int.MaxValue, new TerrainGeneratorInfo(0, new List<MiniTextNode>()), new IMapGeneratorInfo[0], MPos.Zero, false, true, null);
+			return new MapType(piece.InnerName, 0, piece.Size, Color.White, new[] { type }, new[] { objective }, -1, 0, int.MaxValue, new TerrainGeneratorInfo(0, new List<TextNode>()), new IMapGeneratorInfo[0], MPos.Zero, false, true, null);
 		}
 	}
 }

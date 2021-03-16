@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using WarriorsSnuggery.Graphics;
 using WarriorsSnuggery.Objects.Particles;
+using WarriorsSnuggery.Loader;
 
 namespace WarriorsSnuggery.Objects.Weapons.Projectiles
 {
@@ -35,9 +36,9 @@ namespace WarriorsSnuggery.Objects.Weapons.Projectiles
 		[Desc("Determines the speed of the beam target when being moved.")]
 		public readonly int MovementSpeed = 5;
 
-		public BeamProjectile(List<MiniTextNode> nodes)
+		public BeamProjectile(List<TextNode> nodes)
 		{
-			Loader.PartLoader.SetValues(this, nodes);
+			TypeLoader.SetValues(this, nodes);
 
 			if (Beam != null)
 				SpriteManager.AddTexture(Beam);

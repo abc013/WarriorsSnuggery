@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using WarriorsSnuggery.Loader;
 
 namespace WarriorsSnuggery.Maps
 {
@@ -14,7 +15,7 @@ namespace WarriorsSnuggery.Maps
 			foreach (MissionType type in Enum.GetValues(typeof(MissionType)))
 				mapTypes.Add(type, new List<MapType>());
 
-			var mapNodes = RuleReader.FromFile(directory, file);
+			var mapNodes = TextNodeLoader.FromFile(directory, file);
 
 			foreach (var mapNode in mapNodes)
 			{

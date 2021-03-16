@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using WarriorsSnuggery.Loader;
 
 namespace WarriorsSnuggery.Objects.Weapons.Warheads
 {
@@ -7,9 +8,9 @@ namespace WarriorsSnuggery.Objects.Weapons.Warheads
 		[Desc("Sound to play on impact.")]
 		public readonly SoundType Sound;
 
-		public SoundWarhead(List<MiniTextNode> nodes)
+		public SoundWarhead(List<TextNode> nodes)
 		{
-			Loader.PartLoader.SetValues(this, nodes);
+			TypeLoader.SetValues(this, nodes);
 		}
 
 		public void Impact(World world, Weapon weapon, Target target)

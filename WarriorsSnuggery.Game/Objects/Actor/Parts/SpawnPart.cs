@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using WarriorsSnuggery.Loader;
 using WarriorsSnuggery.Objects.Actors;
 using WarriorsSnuggery.Objects.Conditions;
 using WarriorsSnuggery.Objects.Particles;
@@ -59,14 +60,11 @@ namespace WarriorsSnuggery.Objects.Parts
 		[Desc("Spawn object at center of actor, not random.")]
 		public readonly bool AtCenter;
 
+		public SpawnPartInfo(PartInitSet set) : base(set) { }
+
 		public override ActorPart Create(Actor self)
 		{
 			return new SpawnPart(self, this);
-		}
-
-		public SpawnPartInfo(string internalName, List<MiniTextNode> nodes) : base(internalName, nodes)
-		{
-
 		}
 	}
 
@@ -80,7 +78,7 @@ namespace WarriorsSnuggery.Objects.Parts
 			this.info = info;
 		}
 
-		public override void OnLoad(List<MiniTextNode> nodes)
+		public override void OnLoad(List<TextNode> nodes)
 		{
 			var parent = nodes.FirstOrDefault(n => n.Key == "SpawnPart" && n.Value == info.InternalName);
 			if (parent == null)

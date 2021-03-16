@@ -2,11 +2,11 @@
 using System.IO;
 using System.Linq;
 
-namespace WarriorsSnuggery
+namespace WarriorsSnuggery.Loader
 {
-	public static class RuleReader
+	public static class TextNodeLoader
 	{
-		public static List<MiniTextNode> FromFile(string directory, string file, bool useIncludes = true)
+		public static List<TextNode> FromFile(string directory, string file, bool useIncludes = true)
 		{
 			var lines = File.ReadAllLines(directory + file);
 
@@ -22,7 +22,7 @@ namespace WarriorsSnuggery
 			return list;
 		}
 
-		static void startLoop(string file, string[] lines, out List<MiniTextNode> nodes, out List<string> toInclude)
+		static void startLoop(string file, string[] lines, out List<TextNode> nodes, out List<string> toInclude)
 		{
 			toInclude = new List<string>();
 
@@ -44,11 +44,11 @@ namespace WarriorsSnuggery
 			loop(file, lines, offset, out nodes);
 		}
 
-		static void loop(string file, string[] lines, int offset, out List<MiniTextNode> list)
+		static void loop(string file, string[] lines, int offset, out List<TextNode> list)
 		{
-			MiniTextNode before = null;
+			TextNode before = null;
 
-			list = new List<MiniTextNode>();
+			list = new List<TextNode>();
 			for (int i = offset; i < lines.Length; i++)
 			{
 				var line = lines[i];
@@ -72,7 +72,7 @@ namespace WarriorsSnuggery
 			return false;
 		}
 
-		static MiniTextNode nodeFromLine(string file, string line, int lineNumber, MiniTextNode before)
+		static TextNode nodeFromLine(string file, string line, int lineNumber, TextNode before)
 		{
 			var @order = (short)line.Count(c => c == '\t');
 			var strings = line.Split('=', 2);
@@ -80,7 +80,7 @@ namespace WarriorsSnuggery
 			if (strings.Length < 2)
 				throw new InvalidNodeException($"Missing '=' in '{line}'. ['{file}', line {lineNumber}]");
 
-			var yamlnode = new MiniTextNode(file, @order, strings[0].Trim(), strings[1].Trim());
+			var yamlnode = new TextNode(file, @order, strings[0].Trim(), strings[1].Trim());
 
 			if (before == null)
 			{

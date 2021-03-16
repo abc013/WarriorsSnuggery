@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using WarriorsSnuggery.Loader;
 using WarriorsSnuggery.Objects.Particles;
 
 namespace WarriorsSnuggery.Objects.Weapons.Warheads
@@ -8,9 +9,9 @@ namespace WarriorsSnuggery.Objects.Weapons.Warheads
 		[Desc("Particlespawner that will be used to spawn the particles.")]
 		public readonly ParticleSpawner Spawner;
 
-		public ParticleWarhead(List<MiniTextNode> nodes)
+		public ParticleWarhead(List<TextNode> nodes)
 		{
-			Loader.PartLoader.SetValues(this, nodes);
+			TypeLoader.SetValues(this, nodes);
 		}
 
 		public void Impact(World world, Weapon weapon, Target target)

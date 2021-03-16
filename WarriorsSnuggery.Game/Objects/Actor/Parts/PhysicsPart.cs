@@ -1,21 +1,18 @@
-﻿using System.Collections.Generic;
-using WarriorsSnuggery.Physics;
+﻿using WarriorsSnuggery.Physics;
 
 namespace WarriorsSnuggery.Objects.Parts
 {
 	[Desc("Attach this to an actor so it can collide with other actors. For further information, please look for SimplePhysics.")]
 	public class PhysicsPartInfo : PartInfo
 	{
+		[Desc("Type of physics to use.")]
 		public readonly SimplePhysicsType Type;
+
+		public PhysicsPartInfo(PartInitSet set) : base(set) { }
 
 		public override ActorPart Create(Actor self)
 		{
 			return new PhysicsPart(self, this);
-		}
-
-		public PhysicsPartInfo(string internalName, List<MiniTextNode> nodes) : base(internalName, new List<MiniTextNode>())
-		{
-			Type = new SimplePhysicsType(nodes);
 		}
 	}
 

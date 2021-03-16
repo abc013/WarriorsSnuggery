@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using WarriorsSnuggery.Graphics;
+using WarriorsSnuggery.Loader;
 using WarriorsSnuggery.Physics;
 
 namespace WarriorsSnuggery.Objects
@@ -52,10 +53,10 @@ namespace WarriorsSnuggery.Objects
 		public readonly SimplePhysicsType HorizontalPhysicsType;
 		public readonly SimplePhysicsType VerticalPhysicsType;
 
-		public WallType(short id, List<MiniTextNode> nodes, bool documentation = false)
+		public WallType(short id, List<TextNode> nodes, bool documentation = false)
 		{
 			ID = id;
-			Loader.PartLoader.SetValues(this, nodes);
+			Loader.TypeLoader.SetValues(this, nodes);
 
 			if (!documentation)
 			{

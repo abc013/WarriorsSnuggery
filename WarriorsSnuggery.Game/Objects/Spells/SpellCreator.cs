@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using WarriorsSnuggery.Loader;
 
 namespace WarriorsSnuggery.Spells
 {
@@ -9,7 +10,7 @@ namespace WarriorsSnuggery.Spells
 
 		public static void Load(string directory, string file)
 		{
-			var spells = RuleReader.FromFile(directory, file);
+			var spells = TextNodeLoader.FromFile(directory, file);
 
 			foreach (var spell in spells)
 				Types.Add(spell.Key, new Spell(spell.Children));

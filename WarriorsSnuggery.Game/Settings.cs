@@ -1,5 +1,6 @@
 using OpenTK.Windowing.GraphicsLibraryFramework;
 using System.Collections.Generic;
+using WarriorsSnuggery.Loader;
 
 namespace WarriorsSnuggery
 {
@@ -80,7 +81,7 @@ namespace WarriorsSnuggery
 
 		static void load()
 		{
-			foreach (var node in RuleReader.FromFile(FileExplorer.MainDirectory, "Settings.yaml"))
+			foreach (var node in TextNodeLoader.FromFile(FileExplorer.MainDirectory, "Settings.yaml"))
 			{
 				switch (node.Key)
 				{

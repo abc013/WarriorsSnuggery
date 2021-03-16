@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using WarriorsSnuggery.Loader;
 
 namespace WarriorsSnuggery.Maps.Generators
 {
@@ -29,10 +30,10 @@ namespace WarriorsSnuggery.Maps.Generators
 		[Desc("Maximum count of pieces on the map per 32x32 field.")]
 		public readonly int MaximumCount = 4;
 
-		public PieceGeneratorInfo(int id, List<MiniTextNode> nodes)
+		public PieceGeneratorInfo(int id, List<TextNode> nodes)
 		{
 			this.id = id;
-			Loader.PartLoader.SetValues(this, nodes);
+			TypeLoader.SetValues(this, nodes);
 		}
 
 		public MapGenerator GetGenerator(Random random, MapLoader loader)

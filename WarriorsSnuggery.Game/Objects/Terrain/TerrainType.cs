@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using WarriorsSnuggery.Graphics;
+using WarriorsSnuggery.Loader;
 
 namespace WarriorsSnuggery.Objects
 {
@@ -60,11 +61,11 @@ namespace WarriorsSnuggery.Objects
 		[Desc("If true, weapons will leave behind smudge on impact.")]
 		public readonly bool SpawnSmudge = true;
 
-		public TerrainType(ushort id, List<MiniTextNode> nodes, bool documentation = false)
+		public TerrainType(ushort id, List<TextNode> nodes, bool documentation = false)
 		{
 			ID = id;
 
-			Loader.PartLoader.SetValues(this, nodes);
+			Loader.TypeLoader.SetValues(this, nodes);
 
 			Overlaps = EdgeSprite != null;
 

@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using WarriorsSnuggery.Loader;
 
 namespace WarriorsSnuggery.Objects.Particles
 {
@@ -7,7 +8,7 @@ namespace WarriorsSnuggery.Objects.Particles
 	{
 		readonly bool fromSave;
 
-		public readonly List<MiniTextNode> Nodes;
+		public readonly List<TextNode> Nodes;
 
 		public readonly ParticleType Type;
 		public readonly CPos Position;
@@ -20,10 +21,10 @@ namespace WarriorsSnuggery.Objects.Particles
 			Height = height;
 
 			// Empty list
-			Nodes = new List<MiniTextNode>();
+			Nodes = new List<TextNode>();
 		}
 
-		public ParticleInit(List<MiniTextNode> nodes)
+		public ParticleInit(List<TextNode> nodes)
 		{
 			fromSave = true;
 

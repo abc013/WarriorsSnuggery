@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using WarriorsSnuggery.Graphics;
+using WarriorsSnuggery.Loader;
 
 namespace WarriorsSnuggery.Objects.Weapons.Warheads
 {
@@ -14,9 +15,9 @@ namespace WarriorsSnuggery.Objects.Weapons.Warheads
 		[Desc("Start dissolving the smudge immediately.")]
 		public readonly bool StartDissolve = false;
 
-		public SmudgeWarhead(List<MiniTextNode> nodes)
+		public SmudgeWarhead(List<TextNode> nodes)
 		{
-			Loader.PartLoader.SetValues(this, nodes);
+			TypeLoader.SetValues(this, nodes);
 
 			if (Texture != null)
 				SpriteManager.AddTexture(Texture);

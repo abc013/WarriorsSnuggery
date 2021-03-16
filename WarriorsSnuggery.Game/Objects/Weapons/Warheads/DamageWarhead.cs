@@ -26,9 +26,9 @@ namespace WarriorsSnuggery.Objects.Weapons.Warheads
 
 		readonly int maxRange;
 
-		public DamageWarhead(List<MiniTextNode> nodes)
+		public DamageWarhead(List<TextNode> nodes)
 		{
-			var fields = PartLoader.GetFields(this);
+			var fields = TypeLoader.GetFields(this);
 
 			foreach (var node in nodes)
 			{
@@ -40,7 +40,7 @@ namespace WarriorsSnuggery.Objects.Weapons.Warheads
 
 						break;
 					default:
-						PartLoader.SetValue(this, fields, node);
+						TypeLoader.SetValue(this, fields, node);
 						break;
 				}
 			}

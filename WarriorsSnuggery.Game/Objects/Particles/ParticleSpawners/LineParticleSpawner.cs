@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using WarriorsSnuggery.Loader;
 
 namespace WarriorsSnuggery.Objects.Particles
 {
@@ -18,10 +19,7 @@ namespace WarriorsSnuggery.Objects.Particles
 		[Desc("Angle of line in degrees.")]
 		public readonly int Angle = 0;
 
-		public LineParticleSpawner(List<MiniTextNode> nodes) : base(nodes)
-		{
-			
-		}
+		public LineParticleSpawner(List<TextNode> nodes) : base(nodes) { }
 
 		public override Particle[] Create(World world, CPos position, int height)
 		{

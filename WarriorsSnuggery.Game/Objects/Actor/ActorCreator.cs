@@ -11,7 +11,7 @@ namespace WarriorsSnuggery.Objects
 
 		public static void Load(string directory, string file)
 		{
-			var actors = RuleReader.FromFile(directory, file);
+			var actors = TextNodeLoader.FromFile(directory, file);
 
 			foreach (var actor in actors)
 			{
@@ -26,7 +26,7 @@ namespace WarriorsSnuggery.Objects
 					if (!currentPartCounts.ContainsKey(child.Key))
 						currentPartCounts[child.Key] = 0;
 
-					parts[i] = PartLoader.GetPart(currentPartCounts[child.Key]++, child.Key, child.Children);
+					parts[i] = TypeLoader.GetPart(currentPartCounts[child.Key]++, child.Key, child.Children);
 				}
 
 				Types.Add(name, new ActorType(parts));

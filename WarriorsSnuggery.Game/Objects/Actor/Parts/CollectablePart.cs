@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using WarriorsSnuggery.Loader;
 using WarriorsSnuggery.Objects.Actors;
 using WarriorsSnuggery.Objects.Conditions;
 using WarriorsSnuggery.Objects.Particles;
@@ -48,7 +49,7 @@ namespace WarriorsSnuggery.Objects.Parts
 		[Desc("Text lines for the effect.", "Commas are used to separate the lines.", "When using TROPHY, the name of the trophy must be given here.")]
 		public readonly string[] Text;
 
-		public CollectablePartInfo(string internalName, List<MiniTextNode> nodes) : base(internalName, nodes) { }
+		public CollectablePartInfo(PartInitSet set) : base(set) { }
 
 		public override ActorPart Create(Actor self)
 		{
@@ -70,7 +71,7 @@ namespace WarriorsSnuggery.Objects.Parts
 			this.info = info;
 		}
 
-		public override void OnLoad(List<MiniTextNode> nodes)
+		public override void OnLoad(List<TextNode> nodes)
 		{
 			var parent = nodes.FirstOrDefault(n => n.Key == "CollectablePart" && n.Value == info.InternalName);
 			if (parent == null)

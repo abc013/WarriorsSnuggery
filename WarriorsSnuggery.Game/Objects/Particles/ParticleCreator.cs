@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using WarriorsSnuggery.Loader;
 
 namespace WarriorsSnuggery.Objects.Particles
 {
@@ -9,7 +10,7 @@ namespace WarriorsSnuggery.Objects.Particles
 
 		public static void Load(string directory, string file)
 		{
-			var nodes = RuleReader.FromFile(directory, file);
+			var nodes = TextNodeLoader.FromFile(directory, file);
 
 			foreach (var node in nodes)
 				Types.Add(node.Key, new ParticleType(node.Children));

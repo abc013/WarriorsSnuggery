@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using WarriorsSnuggery.Loader;
 
 namespace WarriorsSnuggery.Maps
 {
@@ -27,7 +28,7 @@ namespace WarriorsSnuggery.Maps
 					var name = file.Remove(0, file.LastIndexOf('\\') + 1);
 					name = name.Remove(name.Length - 5);
 
-					var nodes = RuleReader.FromFile(path + @"\", name + ".yaml");
+					var nodes = TextNodeLoader.FromFile(path + @"\", name + ".yaml");
 
 					Pieces.Add(new Piece(name, path, nodes));
 				}
@@ -42,7 +43,7 @@ namespace WarriorsSnuggery.Maps
 				Pieces.Remove(existingPiece);
 
 			var path = FileExplorer.FindPath(FileExplorer.Maps, name, ".yaml");
-			var nodes = RuleReader.FromFile(path, name + ".yaml");
+			var nodes = TextNodeLoader.FromFile(path, name + ".yaml");
 
 			var piece = new Piece(name, path, nodes);
 			Pieces.Add(piece);

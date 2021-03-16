@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using WarriorsSnuggery.Loader;
 
 namespace WarriorsSnuggery.Objects.Weapons.Warheads
 {
@@ -12,9 +13,9 @@ namespace WarriorsSnuggery.Objects.Weapons.Warheads
 		[Desc("Actor uses the team of its origin.")]
 		public readonly bool UseTeam = true;
 
-		public ActorWarhead(List<MiniTextNode> nodes)
+		public ActorWarhead(List<TextNode> nodes)
 		{
-			Loader.PartLoader.SetValues(this, nodes);
+			TypeLoader.SetValues(this, nodes);
 		}
 
 		public void Impact(World world, Weapon weapon, Target target)

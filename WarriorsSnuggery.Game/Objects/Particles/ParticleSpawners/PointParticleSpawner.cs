@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using WarriorsSnuggery.Loader;
 
 namespace WarriorsSnuggery.Objects.Particles
 {
@@ -14,10 +15,7 @@ namespace WarriorsSnuggery.Objects.Particles
 		[Desc("Offset of the spawning point.")]
 		public readonly CPos Offset = CPos.Zero;
 
-		public PointParticleSpawner(List<MiniTextNode> nodes) : base(nodes)
-		{
-			
-		}
+		public PointParticleSpawner(List<TextNode> nodes) : base(nodes) { }
 
 		public override Particle[] Create(World world, CPos position, int height)
 		{

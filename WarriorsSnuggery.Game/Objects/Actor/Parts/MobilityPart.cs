@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using WarriorsSnuggery.Loader;
 using WarriorsSnuggery.Objects.Actors;
 
 namespace WarriorsSnuggery.Objects.Parts
@@ -23,17 +24,17 @@ namespace WarriorsSnuggery.Objects.Parts
 		[Desc("Sound to be played while moving.")]
 		public readonly SoundType Sound;
 
-		public override ActorPart Create(Actor self)
-		{
-			return new MobilityPart(self, this);
-		}
-
-		public MobilityPartInfo(string internalName, List<MiniTextNode> nodes) : base(internalName, nodes)
+		public MobilityPartInfo(PartInitSet set) : base(set)
 		{
 			if (Acceleration == 0)
 				Acceleration = Speed;
 			if (Deceleration == 0)
 				Deceleration = Speed;
+		}
+
+		public override ActorPart Create(Actor self)
+		{
+			return new MobilityPart(self, this);
 		}
 	}
 
@@ -55,7 +56,7 @@ namespace WarriorsSnuggery.Objects.Parts
 				sound = new Sound(info.Sound);
 		}
 
-		public override void OnLoad(List<MiniTextNode> nodes)
+		public override void OnLoad(List<TextNode> nodes)
 		{
 			var parent = nodes.FirstOrDefault(n => n.Key == "MobilityPart" && n.Value == info.InternalName);
 			if (parent == null)

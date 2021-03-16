@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Runtime.Serialization;
 
-namespace WarriorsSnuggery
+namespace WarriorsSnuggery.Loader
 {
 	[Serializable]
 	public class MissingInfoException : Exception

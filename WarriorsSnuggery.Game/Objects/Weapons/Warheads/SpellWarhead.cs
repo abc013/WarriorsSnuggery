@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using WarriorsSnuggery.Physics;
 using WarriorsSnuggery.Spells;
+using WarriorsSnuggery.Loader;
 
 namespace WarriorsSnuggery.Objects.Weapons.Warheads
 {
@@ -23,9 +24,9 @@ namespace WarriorsSnuggery.Objects.Weapons.Warheads
 
 		readonly int maxRange;
 
-		public SpellWarhead(List<MiniTextNode> nodes)
+		public SpellWarhead(List<TextNode> nodes)
 		{
-			Loader.PartLoader.SetValues(this, nodes);
+			TypeLoader.SetValues(this, nodes);
 
 			if (RangeSteps.Length != ProbabilityFalloff.Length)
 				throw new InvalidNodeException(string.Format("Range step length ({0}) does not match with given falloff values ({1}).", RangeSteps.Length, ProbabilityFalloff.Length));

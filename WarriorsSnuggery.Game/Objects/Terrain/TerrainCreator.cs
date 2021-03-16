@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using WarriorsSnuggery.Loader;
 
 namespace WarriorsSnuggery.Objects
 {
@@ -8,7 +9,7 @@ namespace WarriorsSnuggery.Objects
 
 		public static void LoadTypes(string directory, string file)
 		{
-			var terrains = RuleReader.FromFile(directory, file);
+			var terrains = TextNodeLoader.FromFile(directory, file);
 
 			foreach (var terrain in terrains)
 			{

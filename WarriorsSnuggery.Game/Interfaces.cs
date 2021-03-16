@@ -1,5 +1,3 @@
-using System;
-
 namespace WarriorsSnuggery
 {
 	public interface ITick

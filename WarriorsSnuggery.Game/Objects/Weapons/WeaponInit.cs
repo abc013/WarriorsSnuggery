@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using WarriorsSnuggery.Loader;
 
 namespace WarriorsSnuggery.Objects.Weapons
 {
@@ -7,13 +8,13 @@ namespace WarriorsSnuggery.Objects.Weapons
 	{
 		public readonly uint ID;
 
-		public readonly List<MiniTextNode> Nodes;
+		public readonly List<TextNode> Nodes;
 		public readonly WeaponType Type;
 
 		public readonly CPos Position;
 		public readonly int Height;
 
-		public WeaponInit(uint id, List<MiniTextNode> nodes)
+		public WeaponInit(uint id, List<TextNode> nodes)
 		{
 			ID = id;
 			Nodes = nodes;

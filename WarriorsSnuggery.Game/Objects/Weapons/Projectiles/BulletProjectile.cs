@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using WarriorsSnuggery.Graphics;
 using WarriorsSnuggery.Objects.Particles;
+using WarriorsSnuggery.Loader;
 
 namespace WarriorsSnuggery.Objects.Weapons.Projectiles
 {
@@ -30,9 +31,9 @@ namespace WarriorsSnuggery.Objects.Weapons.Projectiles
 		[Desc("Decides whether the projectile flies till the end of maximum range or only till the target position.")]
 		public readonly bool FlyToTarget;
 
-		public BulletProjectile(List<MiniTextNode> nodes)
+		public BulletProjectile(List<TextNode> nodes)
 		{
-			Loader.PartLoader.SetValues(this, nodes);
+			TypeLoader.SetValues(this, nodes);
 
 			if (Texture != null)
 				SpriteManager.AddTexture(Texture);

@@ -14,9 +14,9 @@ namespace WarriorsSnuggery.Spells
 		[Desc("Play sound when the spell is casted.")]
 		public readonly SoundType Sound;
 
-		public Spell(List<MiniTextNode> nodes)
+		public Spell(List<TextNode> nodes)
 		{
-			var fields = PartLoader.GetFields(this);
+			var fields = TypeLoader.GetFields(this);
 
 			foreach (var node in nodes)
 			{
@@ -32,7 +32,7 @@ namespace WarriorsSnuggery.Spells
 
 						break;
 					default:
-						PartLoader.SetValue(this, fields, node);
+						TypeLoader.SetValue(this, fields, node);
 						break;
 				}
 			}

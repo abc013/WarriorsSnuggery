@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace WarriorsSnuggery.Objects.Parts
+﻿namespace WarriorsSnuggery.Objects.Parts
 {
 	[Desc("This part enables actors to have armor. .")]
 	public class ArmorPartInfo : PartInfo
@@ -13,7 +11,7 @@ namespace WarriorsSnuggery.Objects.Parts
 			return new ArmorPart(self, this);
 		}
 
-		public ArmorPartInfo(string internalName, List<MiniTextNode> nodes) : base(internalName, nodes) { }
+		public ArmorPartInfo(PartInitSet set) : base(set) { }
 	}
 
 	public class ArmorPart : ActorPart

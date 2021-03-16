@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using WarriorsSnuggery.Objects.Conditions;
+﻿using WarriorsSnuggery.Objects.Conditions;
 
 namespace WarriorsSnuggery.Objects.Parts
 {
@@ -27,7 +26,7 @@ namespace WarriorsSnuggery.Objects.Parts
 		[Desc("Activate only by the following Condition.")]
 		public readonly Condition Condition;
 
-		public PortalPartInfo(string internalName, List<MiniTextNode> nodes) : base(internalName, nodes) { }
+		public PortalPartInfo(PartInitSet set) : base(set) { }
 
 		public override ActorPart Create(Actor self)
 		{

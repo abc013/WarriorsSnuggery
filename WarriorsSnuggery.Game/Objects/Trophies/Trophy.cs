@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using WarriorsSnuggery.Graphics;
+using WarriorsSnuggery.Loader;
 
 namespace WarriorsSnuggery.Trophies
 {
@@ -18,9 +19,9 @@ namespace WarriorsSnuggery.Trophies
 		[Desc("Gives a condition with the following name when collected.")]
 		public readonly string ConditionName;
 
-		public Trophy(List<MiniTextNode> nodes)
+		public Trophy(List<TextNode> nodes)
 		{
-			Loader.PartLoader.SetValues(this, nodes);
+			TypeLoader.SetValues(this, nodes);
 
 			if (Image != null)
 				SpriteManager.AddTexture(Image);

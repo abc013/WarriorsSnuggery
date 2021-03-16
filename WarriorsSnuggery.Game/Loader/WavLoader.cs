@@ -8,11 +8,9 @@ namespace WarriorsSnuggery.Loader
 	{
 		public static unsafe void LoadWavFile(string path, out byte[] data, out int channels, out int sampleRate, out int bitDepth, out ALFormat format)
 		{
-			var reader = open(path, out channels, out sampleRate, out bitDepth, out var dataSize, out format);
+			using var reader = open(path, out channels, out sampleRate, out bitDepth, out var dataSize, out format);
 
 			data = reader.ReadBytes(dataSize);
-
-			reader.Dispose();
 		}
 
 		public static unsafe BinaryReader OpenWavFile(string path, out int channels, out int sampleRate, out int bitDepth, out int dataSize, out ALFormat format)
@@ -71,13 +69,5 @@ namespace WarriorsSnuggery.Loader
 
 			return reader;
 		}
-
-		/*static double bytesToDouble(byte firstByte, byte secondByte)
-		{
-			// convert two bytes to one short (little endian)
-			int s = (secondByte << 8) | firstByte;
-			// convert to range from -1 to (just below) 1
-			return s / 32768.0;
-		}*/
 	}
 }

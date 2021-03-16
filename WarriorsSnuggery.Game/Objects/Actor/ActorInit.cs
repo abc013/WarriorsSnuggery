@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using WarriorsSnuggery.Loader;
 
 namespace WarriorsSnuggery.Objects
 {
@@ -7,7 +8,7 @@ namespace WarriorsSnuggery.Objects
 	{
 		public readonly uint ID;
 
-		public readonly List<MiniTextNode> Nodes;
+		public readonly List<TextNode> Nodes;
 		public readonly ActorType Type;
 
 		public readonly CPos Position;
@@ -35,10 +36,10 @@ namespace WarriorsSnuggery.Objects
 			Health = health;
 
 			// Empty list
-			Nodes = new List<MiniTextNode>();
+			Nodes = new List<TextNode>();
 		}
 
-		public ActorInit(uint id, List<MiniTextNode> nodes)
+		public ActorInit(uint id, List<TextNode> nodes)
 		{
 			ID = id;
 			Nodes = nodes;
@@ -52,7 +53,7 @@ namespace WarriorsSnuggery.Objects
 			IsBot = Nodes.Any(n => n.Key == "BotPart");
 		}
 
-		public ActorInit(uint id, MiniTextNode textNode)
+		public ActorInit(uint id, TextNode textNode)
 		{
 			ID = id;
 
@@ -66,34 +67,34 @@ namespace WarriorsSnuggery.Objects
 			IsPlayer = node.IsPlayer;
 			IsBot = node.IsBot;
 
-			var list = new List<MiniTextNode>();
+			var list = new List<TextNode>();
 			var order = (short)(textNode.Order + 1);
-			list.Add(new MiniTextNode("ActorInit", order, "Team", node.Team));
-			list.Add(new MiniTextNode("ActorInit", order, "Type", ActorCreator.GetName(node.Type)));
+			list.Add(new TextNode("ActorInit", order, "Team", node.Team));
+			list.Add(new TextNode("ActorInit", order, "Type", ActorCreator.GetName(node.Type)));
 			if (node.IsBot)
 			{
-				var parent = new MiniTextNode("ActorInit", order, "BotPart", string.Empty);
+				var parent = new TextNode("ActorInit", order, "BotPart", string.Empty);
 				list.Add(parent);
-				parent.Children.Add(new MiniTextNode("ActorInit", (short)(order + 1), "TargetPosition", node.BotTarget));
+				parent.Children.Add(new TextNode("ActorInit", (short)(order + 1), "TargetPosition", node.BotTarget));
 			}
 			if (node.IsPlayer)
-				list.Add(new MiniTextNode("ActorInit", order, "PlayerPart", string.Empty));
+				list.Add(new TextNode("ActorInit", order, "PlayerPart", string.Empty));
 			if (node.Health != 1f)
 			{
 				if (Type.PartInfos.FirstOrDefault(p => p is Parts.HealthPartInfo) is Parts.HealthPartInfo health)
 				{
-					var parent = new MiniTextNode("ActorInit", order, "HealthPart", string.Empty);
+					var parent = new TextNode("ActorInit", order, "HealthPart", string.Empty);
 					list.Add(parent);
-					parent.Children.Add(new MiniTextNode("ActorInit", (short)(order + 1), "Health", node.Health * health.MaxHealth));
+					parent.Children.Add(new TextNode("ActorInit", (short)(order + 1), "Health", node.Health * health.MaxHealth));
 				}
 			}
 			if (node.IsPlayerSwitch)
 			{
-				var parent = new MiniTextNode("ActorInit", order, "PlayerSwitchPart", string.Empty);
+				var parent = new TextNode("ActorInit", order, "PlayerSwitchPart", string.Empty);
 				list.Add(parent);
-				parent.Children.Add(new MiniTextNode("ActorInit", (short)(order + 1), "RelativeHP", node.RelativeHP));
-				parent.Children.Add(new MiniTextNode("ActorInit", (short)(order + 1), "ActorType", ActorCreator.GetName(node.ToActor)));
-				parent.Children.Add(new MiniTextNode("ActorInit", (short)(order + 1), "CurrentTick", node.Duration));
+				parent.Children.Add(new TextNode("ActorInit", (short)(order + 1), "RelativeHP", node.RelativeHP));
+				parent.Children.Add(new TextNode("ActorInit", (short)(order + 1), "ActorType", ActorCreator.GetName(node.ToActor)));
+				parent.Children.Add(new TextNode("ActorInit", (short)(order + 1), "CurrentTick", node.Duration));
 			}
 
 			Nodes = list;
@@ -127,12 +128,12 @@ namespace WarriorsSnuggery.Objects
 			public readonly float RelativeHP = 1f;
 #pragma warning restore CS0649
 
-			public ActorNode(uint id, CPos position, List<MiniTextNode> nodes)
+			public ActorNode(uint id, CPos position, List<TextNode> nodes)
 			{
 				ID = id;
 				Position = position;
 
-				Loader.PartLoader.SetValues(this, nodes);
+				Loader.TypeLoader.SetValues(this, nodes);
 			}
 		}
 	}

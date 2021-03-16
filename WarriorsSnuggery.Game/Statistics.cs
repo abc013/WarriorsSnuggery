@@ -43,7 +43,7 @@ namespace WarriorsSnuggery
 
 		// Script Values
 		public string Script;
-		public MiniTextNode[] ScriptValues;
+		public TextNode[] ScriptValues;
 
 		public GameStatistics(GameStatistics save)
 		{
@@ -85,9 +85,9 @@ namespace WarriorsSnuggery
 		{
 			SaveName = file;
 
-			var fields = PartLoader.GetFields(this, false);
+			var fields = TypeLoader.GetFields(this, false);
 
-			foreach (var node in RuleReader.FromFile(FileExplorer.FindPath(FileExplorer.Saves, file, ".yaml"), file + ".yaml"))
+			foreach (var node in TextNodeLoader.FromFile(FileExplorer.FindPath(FileExplorer.Saves, file, ".yaml"), file + ".yaml"))
 			{
 				switch (node.Key)
 				{
@@ -146,7 +146,7 @@ namespace WarriorsSnuggery
 
 						break;
 					default:
-						PartLoader.SetValue(this, fields, node);
+						TypeLoader.SetValue(this, fields, node);
 
 						break;
 				}

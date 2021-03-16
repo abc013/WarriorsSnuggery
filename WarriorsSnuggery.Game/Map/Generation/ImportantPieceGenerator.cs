@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using WarriorsSnuggery.Loader;
 
 namespace WarriorsSnuggery.Maps.Generators
 {
@@ -35,10 +36,10 @@ namespace WarriorsSnuggery.Maps.Generators
 		[Desc("Allows this piece to be a waypoint as well. This means that any PathGenerator will take the piece under consideration for pathing.")]
 		public readonly bool IsWaypoint = false;
 
-		public ImportantPieceGeneratorInfo(int id, List<MiniTextNode> nodes)
+		public ImportantPieceGeneratorInfo(int id, List<TextNode> nodes)
 		{
 			this.id = id;
-			Loader.PartLoader.SetValues(this, nodes);
+			TypeLoader.SetValues(this, nodes);
 		}
 
 		public MapGenerator GetGenerator(Random random, MapLoader loader)

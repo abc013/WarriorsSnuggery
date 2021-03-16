@@ -21,9 +21,9 @@ namespace WarriorsSnuggery.Physics
 		[Desc("Height offset base of the height of the object the physics are attached to.")]
 		public readonly int HeightOffset;
 
-		public SimplePhysicsType(List<MiniTextNode> nodes)
+		public SimplePhysicsType(List<TextNode> nodes)
 		{
-			PartLoader.SetValues(this, nodes);
+			TypeLoader.SetValues(this, nodes);
 		}
 
 		public SimplePhysicsType(Shape shape, int radiusX, int radiusY, int heightRadius, CPos offset, int heightOffset)

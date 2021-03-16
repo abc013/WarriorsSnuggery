@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using WarriorsSnuggery.Loader;
 using WarriorsSnuggery.Objects;
 
 namespace WarriorsSnuggery.Maps.Generators
@@ -29,10 +30,10 @@ namespace WarriorsSnuggery.Maps.Generators
 		[Desc("Terrain to use for borders.")]
 		public readonly ushort[] BorderTerrain = new ushort[0];
 
-		public TerrainGeneratorInfo(int id, List<MiniTextNode> nodes)
+		public TerrainGeneratorInfo(int id, List<TextNode> nodes)
 		{
 			ID = id;
-			Loader.PartLoader.SetValues(this, nodes);
+			Loader.TypeLoader.SetValues(this, nodes);
 
 			if (RangeSteps.Length != ProbabilitySteps.Length)
 				throw new InvalidNodeException($"Range step length ({RangeSteps.Length}) does not match with given provabability values ({ProbabilitySteps.Length}).");
@@ -60,9 +61,9 @@ namespace WarriorsSnuggery.Maps.Generators
 		[Desc("Determines whether the actor spawned is a bot.")]
 		public readonly bool IsBot = false;
 
-		public ActorProbabilityInfo(List<MiniTextNode> nodes)
+		public ActorProbabilityInfo(List<TextNode> nodes)
 		{
-			Loader.PartLoader.SetValues(this, nodes);
+			Loader.TypeLoader.SetValues(this, nodes);
 
 			if (Type == null)
 				throw new MissingNodeException("SpawnActors", "Type");

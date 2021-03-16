@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using WarriorsSnuggery.Loader;
 using WarriorsSnuggery.Objects.Particles;
 
 namespace WarriorsSnuggery.Spells
@@ -20,9 +21,9 @@ namespace WarriorsSnuggery.Spells
 		[Desc("Sound while the effect is active.")]
 		public readonly SoundType Sound; //TODO
 
-		public Effect(List<MiniTextNode> nodes)
+		public Effect(List<TextNode> nodes)
 		{
-			Loader.PartLoader.SetValues(this, nodes);
+			TypeLoader.SetValues(this, nodes);
 		}
 	}
 }

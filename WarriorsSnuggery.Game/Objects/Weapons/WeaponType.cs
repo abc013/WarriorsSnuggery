@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using WarriorsSnuggery.Loader;
 using WarriorsSnuggery.Objects.Weapons.Projectiles;
 using WarriorsSnuggery.Objects.Weapons.Warheads;
 
@@ -30,9 +31,9 @@ namespace WarriorsSnuggery.Objects.Weapons
 		[Desc("Contains all different kinds of warheads that will impact when the weapon hits the target.")]
 		public readonly IWarhead[] Warheads;
 
-		public WeaponType(List<MiniTextNode> nodes)
+		public WeaponType(List<TextNode> nodes)
 		{
-			Loader.PartLoader.SetValues(this, nodes);
+			TypeLoader.SetValues(this, nodes);
 		}
 
 		public override string ToString()

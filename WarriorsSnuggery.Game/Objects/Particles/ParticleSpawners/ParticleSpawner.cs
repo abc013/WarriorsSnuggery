@@ -5,9 +5,9 @@ namespace WarriorsSnuggery.Objects.Particles
 {
 	public abstract class ParticleSpawner
 	{
-		public ParticleSpawner(List<MiniTextNode> nodes)
+		public ParticleSpawner(List<TextNode> nodes)
 		{
-			PartLoader.SetValues(this, nodes);
+			TypeLoader.SetValues(this, nodes);
 		}
 
 		public abstract Particle[] Create(World world, CPos position, int height);

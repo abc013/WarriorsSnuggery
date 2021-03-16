@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using WarriorsSnuggery.Loader;
 using WarriorsSnuggery.Objects.Actors;
 using WarriorsSnuggery.Objects.Weapons;
 
@@ -15,14 +16,11 @@ namespace WarriorsSnuggery.Objects.Parts
 		[Desc("Height of the shoot point.")]
 		public readonly int Height;
 
+		public WeaponPartInfo(PartInitSet set) : base(set) { }
+
 		public override ActorPart Create(Actor self)
 		{
 			return new WeaponPart(self, this);
-		}
-
-		public WeaponPartInfo(string internalName, List<MiniTextNode> nodes) : base(internalName, nodes)
-		{
-
 		}
 	}
 
@@ -52,7 +50,7 @@ namespace WarriorsSnuggery.Objects.Parts
 			Type = info.Type;
 		}
 
-		public override void OnLoad(List<MiniTextNode> nodes)
+		public override void OnLoad(List<TextNode> nodes)
 		{
 			foreach (var node in nodes.Where(n => n.Key == "WeaponPart" && n.Value == info.InternalName))
 			{

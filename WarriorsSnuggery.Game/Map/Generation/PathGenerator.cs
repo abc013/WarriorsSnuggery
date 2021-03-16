@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using WarriorsSnuggery.Loader;
 
 namespace WarriorsSnuggery.Maps.Generators
 {
@@ -33,10 +34,10 @@ namespace WarriorsSnuggery.Maps.Generators
 		[Desc("If true, the road will not go as straight line but a curvy one.")]
 		public readonly bool Curvy = true;
 
-		public PathGeneratorInfo(int id, List<MiniTextNode> nodes)
+		public PathGeneratorInfo(int id, List<TextNode> nodes)
 		{
 			this.id = id;
-			Loader.PartLoader.SetValues(this, nodes);
+			TypeLoader.SetValues(this, nodes);
 		}
 
 		public MapGenerator GetGenerator(Random random, MapLoader loader)

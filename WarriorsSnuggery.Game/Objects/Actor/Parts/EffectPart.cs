@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using WarriorsSnuggery.Loader;
 using WarriorsSnuggery.Spells;
 
 namespace WarriorsSnuggery.Objects.Parts
@@ -26,7 +27,7 @@ namespace WarriorsSnuggery.Objects.Parts
 			tick = effect.Duration;
 		}
 
-		public EffectPart(Actor self, List<MiniTextNode> nodes)
+		public EffectPart(Actor self, List<TextNode> nodes)
 		{
 			this.self = self;
 

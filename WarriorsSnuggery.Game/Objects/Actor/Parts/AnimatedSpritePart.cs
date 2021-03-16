@@ -1,6 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using WarriorsSnuggery.Graphics;
+using WarriorsSnuggery.Loader;
 using WarriorsSnuggery.Objects.Conditions;
 using WarriorsSnuggery.Objects.Weapons;
 
@@ -41,15 +41,15 @@ namespace WarriorsSnuggery.Objects.Parts
 		[Desc("Random Color to add to the sprite.", "Alpha will not be applied.")]
 		public readonly Color ColorVariation = Color.Black;
 
-		public override ActorPart Create(Actor self)
-		{
-			return new AnimatedSpritePart(self, this);
-		}
-
-		public AnimatedSpritePartInfo(string internalName, List<MiniTextNode> nodes) : base(internalName, nodes)
+		public AnimatedSpritePartInfo(PartInitSet set) : base(set)
 		{
 			if (Name != null)
 				Textures = SpriteManager.AddTexture(new TextureInfo(Name, TextureType.ANIMATION, Tick, Dimensions.X, Dimensions.Y));
+		}
+
+		public override ActorPart Create(Actor self)
+		{
+			return new AnimatedSpritePart(self, this);
 		}
 	}
 

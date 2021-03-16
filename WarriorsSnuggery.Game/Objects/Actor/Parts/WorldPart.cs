@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using WarriorsSnuggery.Objects.Bot;
 
 namespace WarriorsSnuggery.Objects.Parts
@@ -52,14 +51,11 @@ namespace WarriorsSnuggery.Objects.Parts
 		[Desc("Adds this actor the the selection list in the editor.")]
 		public readonly bool ShowInEditor = true;
 
+		public WorldPartInfo(PartInitSet set) : base(set) { }
+
 		public override ActorPart Create(Actor self)
 		{
 			return new WorldPart(self, this);
-		}
-
-		public WorldPartInfo(string internalName, List<MiniTextNode> nodes) : base(internalName, nodes)
-		{
-
 		}
 	}
 

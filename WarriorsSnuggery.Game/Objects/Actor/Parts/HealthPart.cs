@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using WarriorsSnuggery.Loader;
 using WarriorsSnuggery.Objects.Actors;
 
 namespace WarriorsSnuggery.Objects.Parts
@@ -12,15 +13,15 @@ namespace WarriorsSnuggery.Objects.Parts
 		[Desc("Health when the actor is spawned.")]
 		public readonly int StartHealth;
 
-		public override ActorPart Create(Actor self)
-		{
-			return new HealthPart(self, this);
-		}
-
-		public HealthPartInfo(string internalName, List<MiniTextNode> nodes) : base(internalName, nodes)
+		public HealthPartInfo(PartInitSet set) : base(set)
 		{
 			if (StartHealth <= 0 || StartHealth > MaxHealth)
 				StartHealth = MaxHealth;
+		}
+
+		public override ActorPart Create(Actor self)
+		{
+			return new HealthPart(self, this);
 		}
 	}
 
@@ -58,7 +59,7 @@ namespace WarriorsSnuggery.Objects.Parts
 			HP = StartHealth;
 		}
 
-		public override void OnLoad(List<MiniTextNode> nodes)
+		public override void OnLoad(List<TextNode> nodes)
 		{
 			var parent = nodes.FirstOrDefault(n => n.Key == "HealthPart" && n.Value == info.InternalName);
 			if (parent == null)

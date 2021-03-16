@@ -17,12 +17,7 @@ namespace WarriorsSnuggery.Loader
 				data2[i * 4 + 3] = (byte)(data[i * 4 + 3] * 255);
 			}
 
-			using var img = new Bitmap(size.X, size.Y, size.X * 4, System.Drawing.Imaging.PixelFormat.Format32bppArgb, Marshal.UnsafeAddrOfPinnedArrayElement(data2, 0));
-
-			if (invertY)
-				img.RotateFlip(RotateFlipType.RotateNoneFlipY);
-
-			img.Save(filename);
+			Save(filename, data2, size, invertY);
 		}
 
 		public static void Save(string filename, byte[] data, MPos size, bool invertY = false)

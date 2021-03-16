@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using WarriorsSnuggery.Graphics;
+using WarriorsSnuggery.Loader;
 
 namespace WarriorsSnuggery.Objects.Weapons.Projectiles
 {
@@ -10,9 +11,9 @@ namespace WarriorsSnuggery.Objects.Weapons.Projectiles
 		[Desc("Determines whether only the target should be damaged when hit.")]
 		public readonly bool Splash = true;
 
-		public InstantHitProjectile(List<MiniTextNode> nodes)
+		public InstantHitProjectile(List<TextNode> nodes)
 		{
-			Loader.PartLoader.SetValues(this, nodes);
+			TypeLoader.SetValues(this, nodes);
 		}
 
 		public BatchSequence GetTexture()

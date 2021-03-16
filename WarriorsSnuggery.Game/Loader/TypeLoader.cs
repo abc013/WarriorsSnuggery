@@ -6,9 +6,9 @@ using WarriorsSnuggery.Objects.Parts;
 
 namespace WarriorsSnuggery.Loader
 {
-	public static class PartLoader
+	public static class TypeLoader
 	{
-		public static void SetValues(object obj, List<MiniTextNode> nodes)
+		public static void SetValues(object obj, List<TextNode> nodes)
 		{
 			var fields = GetFields(obj);
 
@@ -21,7 +21,7 @@ namespace WarriorsSnuggery.Loader
 			return obj.GetType().GetFields().Where(f => !onlyReadonly || f.IsInitOnly);
 		}
 
-		public static void SetValue(object obj, IEnumerable<FieldInfo> fields, MiniTextNode node)
+		public static void SetValue(object obj, IEnumerable<FieldInfo> fields, TextNode node)
 		{
 			var field = fields.FirstOrDefault(f => f.Name == node.Key);
 
@@ -31,7 +31,7 @@ namespace WarriorsSnuggery.Loader
 			field.SetValue(obj, node.Convert(field.FieldType));
 		}
 
-		public static PartInfo GetPart(int currentPart, string name, List<MiniTextNode> nodes)
+		public static PartInfo GetPart(int currentPart, string name, List<TextNode> nodes)
 		{
 			var split = name.Split('@');
 			var internalName = currentPart.ToString();
@@ -44,7 +44,9 @@ namespace WarriorsSnuggery.Loader
 			{
 				var type = Type.GetType("WarriorsSnuggery.Objects.Parts." + name + "PartInfo", true, true);
 
-				return (PartInfo)Activator.CreateInstance(type, new object[] { internalName, nodes });
+				var set = new PartInitSet(internalName, nodes);
+
+				return (PartInfo)Activator.CreateInstance(type, new [] { set });
 			}
 			catch (Exception e)
 			{
