@@ -2,7 +2,7 @@
 
 namespace WarriorsSnuggery
 {
-	public struct CPos
+	public readonly struct CPos
 	{
 		public static readonly CPos Zero = new CPos();
 

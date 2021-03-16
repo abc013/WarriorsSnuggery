@@ -3,7 +3,7 @@ using System;
 
 namespace WarriorsSnuggery
 {
-	public struct VAngle
+	public readonly struct VAngle
 	{
 		public const float MaxRange = (float)(2 * Math.PI);
 		public static readonly VAngle Zero = new VAngle();

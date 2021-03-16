@@ -2,7 +2,7 @@ using System;
 
 namespace WarriorsSnuggery
 {
-	public struct MPos
+	public readonly struct MPos
 	{
 		public static readonly MPos Zero = new MPos();
 

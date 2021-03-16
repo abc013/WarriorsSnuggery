@@ -3,7 +3,7 @@ using OpenTK.Mathematics;
 
 namespace WarriorsSnuggery
 {
-	public struct Color
+	public readonly struct Color
 	{
 		public static readonly Color White = new Color(1f, 1f, 1f);
 		public static readonly Color Grey = new Color(0.75f, 0.75f, 0.75f);

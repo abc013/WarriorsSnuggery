@@ -3,7 +3,7 @@ using System;
 
 namespace WarriorsSnuggery
 {
-	public struct Vector
+	public readonly struct Vector
 	{
 		public static readonly Vector Zero = new Vector();
 
