@@ -17,17 +17,15 @@ namespace WarriorsSnuggery.Objects.Bot
 		{
 			get
 			{
-				int x = World.Map.BottomRightCorner.X;
-				if (Self.Position.X > World.Map.Bounds.X * 512 - 256)
-					x -= Self.Position.X;
-				else
-					x += Self.Position.X;
+				var bottomRightCorner = World.Map.BottomRightCorner;
 
-				int y = World.Map.BottomLeftCorner.Y;
-				if (Self.Position.Y > World.Map.Bounds.Y * 512 - 256)
-					y -= Self.Position.Y;
-				else
-					y += Self.Position.Y;
+				var x = Self.Position.X;
+				if (x > bottomRightCorner.X / 2)
+					x = bottomRightCorner.X - x;
+
+				var y = Self.Position.Y;
+				if (y > bottomRightCorner.Y / 2)
+					y -= bottomRightCorner.Y - y;
 
 				return Math.Min(x, y);
 			}
@@ -119,22 +117,24 @@ namespace WarriorsSnuggery.Objects.Bot
 					if (!World.IsVisibleTo(Self, actor))
 						continue;
 
-					var dist = (actor.Position - Self.Position).SquaredFlatDist;
-					if (dist <= range * range)
-						CheckTarget(actor);
+					if ((actor.Position - Self.Position).SquaredFlatDist > range * range)
+						continue;
+
+					if (CheckTarget(actor))
+						return;
 				}
 			}
 		}
 
-		protected virtual void CheckTarget(Actor actor)
+		protected virtual bool CheckTarget(Actor actor)
 		{
 			if (actor.Team == Self.Team)
-				return;
+				return false;
 
 			if (!PerfectTarget())
 			{
 				Target = new Target(actor);
-				return;
+				return false;
 			}
 
 			var newFavor = 0f;
@@ -155,7 +155,10 @@ namespace WarriorsSnuggery.Objects.Bot
 			{
 				Target = new Target(actor);
 				TargetFavor = newFavor;
+				return true;
 			}
+
+			return false;
 		}
 	}
 }

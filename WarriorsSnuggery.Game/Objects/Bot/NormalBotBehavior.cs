@@ -1,4 +1,5 @@
-﻿using WarriorsSnuggery.Objects.Weapons;
+﻿using System;
+using WarriorsSnuggery.Objects.Weapons;
 
 namespace WarriorsSnuggery.Objects.Bot
 {
@@ -6,18 +7,8 @@ namespace WarriorsSnuggery.Objects.Bot
 	{
 		int moral
 		{
-			get
-			{
-				return moralVal;
-			}
-			set
-			{
-				moralVal += value;
-				if (moralVal < -50)
-					moralVal = -50;
-				if (moralVal > 50)
-					moralVal = 50;
-			}
+			get => moralVal;
+			set => moralVal = Math.Clamp(value, -50, 50);
 		}
 		int moralVal;
 
@@ -48,7 +39,7 @@ namespace WarriorsSnuggery.Objects.Bot
 				if (DistToTarget < range * 1.1f)
 					Self.PrepareAttack(Target);
 				else if (!CanMove)
-					SearchTarget();
+					Target = null; // Discard target if out of range
 			}
 
 			if (CanMove)
@@ -96,7 +87,7 @@ namespace WarriorsSnuggery.Objects.Bot
 			if (damager == null || damager.Health == null)
 				return;
 
-			if (Target == null || Target.Actor == null)
+			if (!PerfectTarget())
 				Target = new Target(damager.Position, damager.Height);
 		}
 

@@ -18,7 +18,7 @@ namespace WarriorsSnuggery.Objects.Bot
 
 			if (!PerfectTarget())
 			{
-				if (tick++ % 20 == 0 && (Target == null || Target.Actor == null))
+				if (tick++ % 20 == 0)
 					Target = new Target(randomPosition(), 0);
 
 				SearchTarget();
@@ -36,7 +36,7 @@ namespace WarriorsSnuggery.Objects.Bot
 				if (DistToTarget < range * 1.1f)
 					Self.PrepareAttack(Target);
 				else if (!CanMove)
-					SearchTarget();
+					Target = null; // Discard target if out of range
 			}
 
 			if (CanMove)

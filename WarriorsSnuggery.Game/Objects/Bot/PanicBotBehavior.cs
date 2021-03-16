@@ -59,7 +59,7 @@ namespace WarriorsSnuggery.Objects.Bot
 					if (DistToTarget < range * 1.1f)
 						Self.PrepareAttack(Target);
 					else if (!CanMove)
-						SearchTarget();
+						Target = null; // Discard target if out of range
 				}
 
 				if (CanMove)

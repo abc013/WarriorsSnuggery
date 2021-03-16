@@ -45,7 +45,7 @@ namespace WarriorsSnuggery.Objects.Bot
 						hide = true;
 					}
 					else if (!CanMove)
-						SearchTarget();
+						Target = null; // Discard target if out of range
 				}
 			}
 
