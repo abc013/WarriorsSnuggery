@@ -99,9 +99,6 @@ namespace WarriorsSnuggery.Objects.Parts
 
 		public void Tick()
 		{
-			if (self.World.Game.Editor)
-				return;
-
 			if (attackOrdered && prep-- <= 0)
 				attack();
 

@@ -59,9 +59,6 @@ namespace WarriorsSnuggery.Objects.Parts
 
 		public void Tick()
 		{
-			if (self.World.Game.Editor)
-				return;
-
 			if (CurrentTick-- == 0 && !self.Disposed)
 				switchPlayer();
 		}

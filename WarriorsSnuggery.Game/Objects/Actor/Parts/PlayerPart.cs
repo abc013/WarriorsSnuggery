@@ -20,9 +20,6 @@ namespace WarriorsSnuggery.Objects.Parts
 
 		public void Tick()
 		{
-			if (self.World.Game.Editor)
-				return;
-
 			if (self.World.Game.ScreenControl.ChatOpen && self.World.Game.ScreenControl.CursorOnUI())
 				return;
 

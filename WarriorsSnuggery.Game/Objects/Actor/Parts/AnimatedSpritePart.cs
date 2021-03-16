@@ -53,7 +53,7 @@ namespace WarriorsSnuggery.Objects.Parts
 		}
 	}
 
-	public class AnimatedSpritePart : RenderablePart, ITick, INoticeMove, INoticeAttack
+	public class AnimatedSpritePart : RenderablePart, ITick, ITickInEditor, INoticeMove, INoticeAttack
 	{
 		readonly AnimatedSpritePartInfo info;
 

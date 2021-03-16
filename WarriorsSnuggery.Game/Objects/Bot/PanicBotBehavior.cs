@@ -12,9 +12,6 @@ namespace WarriorsSnuggery.Objects.Bot
 
 		public override void Tick()
 		{
-			if (Self.World.Game.Editor)
-				return;
-
 			if (!CanMove && !CanAttack)
 				return;
 

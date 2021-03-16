@@ -82,9 +82,6 @@ namespace WarriorsSnuggery.Objects.Parts
 
 		public void Tick()
 		{
-			if (self.World.Game.Editor)
-				return;
-
 			if (self.World.Game.LocalTick % 2 == 0 && self.CurrentTerrain != null && self.CurrentTerrain.Type.Damage != 0)
 				HP -= self.CurrentTerrain.Type.Damage;
 		}

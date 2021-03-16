@@ -2,6 +2,8 @@
 
 namespace WarriorsSnuggery.Objects
 {
+	public interface ITickInEditor : ITick { }
+
 	public interface INoticeAttack
 	{
 		void OnAttack(CPos target, Weapon weapon);

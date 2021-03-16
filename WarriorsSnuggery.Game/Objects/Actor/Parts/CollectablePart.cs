@@ -97,9 +97,6 @@ namespace WarriorsSnuggery.Objects.Parts
 
 		public void Tick()
 		{
-			if (self.World.Game.Editor)
-				return;
-
 			if (activated && !info.MultipleActivations)
 				return;
 

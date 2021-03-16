@@ -82,9 +82,6 @@ namespace WarriorsSnuggery.Objects.Parts
 
 		public void Tick()
 		{
-			if (self.World.Game.Editor)
-				return;
-
 			if (Velocity != CPos.Zero)
 			{
 				if (self.World.Game.InteractionMode == InteractionMode.EDITOR)

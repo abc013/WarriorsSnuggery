@@ -116,7 +116,7 @@ namespace WarriorsSnuggery.Objects.Parts
 
 		public void Tick()
 		{
-			if (self.World.Game.Editor && info.Type != SpawnPartTypes.PARTICLE)
+			if (info.Type != SpawnPartTypes.PARTICLE)
 				return;
 
 			if (info.Occasion == Occasion.TICK && curTick-- < 0)

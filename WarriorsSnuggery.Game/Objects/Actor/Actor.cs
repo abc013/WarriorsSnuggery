@@ -36,6 +36,7 @@ namespace WarriorsSnuggery.Objects
 		public readonly PartManager PartManager;
 
 		readonly List<ITick> tickParts;
+		readonly List<ITickInEditor> editorTickParts;
 		readonly List<IRenderable> renderParts;
 		readonly List<INoticeAcceleration> accelerationParts;
 		readonly List<INoticeMove> moveParts;
@@ -136,6 +137,7 @@ namespace WarriorsSnuggery.Objects
 				PartManager.Add(part);
 
 			tickParts = PartManager.GetOrDefault<ITick>();
+			editorTickParts = PartManager.GetOrDefault<ITickInEditor>();
 			renderParts = PartManager.GetOrDefault<IRenderable>();
 			accelerationParts = PartManager.GetOrDefault<INoticeAcceleration>();
 			moveParts = PartManager.GetOrDefault<INoticeMove>();
@@ -447,8 +449,16 @@ namespace WarriorsSnuggery.Objects
 					Health.HP += (int)effect.Effect.Value;
 			}
 
-			foreach (var part in tickParts)
-				part.Tick();
+			if (World.Game.Editor)
+			{
+				foreach (var part in editorTickParts)
+					part.Tick();
+			}
+			else
+			{
+				foreach (var part in tickParts)
+					part.Tick();
+			}
 
 			var effectsToRemove = new List<EffectPart>();
 			foreach (var effect in Effects)
