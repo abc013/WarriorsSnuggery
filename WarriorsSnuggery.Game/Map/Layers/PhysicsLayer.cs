@@ -134,8 +134,9 @@ namespace WarriorsSnuggery
 
 		public void RenderDebug()
 		{
-			var pos = (Position * new MPos(2, 2)).ToCPos() + new CPos(512, 512, 0);
-			ColorManager.DrawLineRect(pos, new CPos(1000, 1000, 0), new Color(0, 0, 1f, 0.2f));
+			var pos = (Position * new MPos(2, 2)).ToCPos() - new CPos(512, 512, 0);
+			ColorManager.DrawLine(pos, pos + new CPos(0, 512, 0), new Color(1f, 1f, 1f, 0.3f));
+			ColorManager.DrawLine(pos, pos + new CPos(512, 0, 0), new Color(1f, 1f, 1f, 0.3f));
 		}
 	}
 }

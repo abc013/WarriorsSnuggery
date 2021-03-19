@@ -116,8 +116,16 @@ namespace WarriorsSnuggery
 
 				DebugRenderer.Render();
 				MasterRenderer.PrimitiveType = PrimitiveType.Lines;
-				foreach (var sector in world.PhysicsLayer.Sectors)
-					sector.RenderDebug();
+				var bounds = VisibilitySolver.GetBounds(out var position);
+				var sectorPos = new MPos(position.X / PhysicsLayer.SectorSize, position.Y / PhysicsLayer.SectorSize);
+				sectorPos = new MPos(Math.Max(0, Math.Min(sectorPos.X, world.PhysicsLayer.Bounds.X)), Math.Max(0, Math.Min(sectorPos.Y, world.PhysicsLayer.Bounds.Y)));
+				var sectorBounds = new MPos((int)Math.Ceiling(bounds.X / (float)PhysicsLayer.SectorSize), (int)Math.Ceiling(bounds.Y / (float)PhysicsLayer.SectorSize));
+				var sectorPos2 = new MPos(Math.Max(0, Math.Min(sectorPos.X + sectorBounds.X, world.PhysicsLayer.Bounds.X)), Math.Max(0, Math.Min(sectorPos.Y + sectorBounds.Y, world.PhysicsLayer.Bounds.Y)));
+				for (int x = sectorPos.X; x < sectorPos2.X; x++)
+				{
+					for (int y = sectorPos.Y; y < sectorPos2.Y; y++)
+						world.PhysicsLayer.Sectors[x, y].RenderDebug();
+				}
 
 				foreach (var actor in world.ActorLayer.VisibleActors)
 					actor.Physics.RenderDebug();
