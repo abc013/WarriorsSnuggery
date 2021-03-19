@@ -7,7 +7,7 @@ using WarriorsSnuggery.Objects.Weapons;
 
 namespace WarriorsSnuggery.Objects.Parts
 {
-	public class BotPart : ActorPart, ITick, INoticeDamage, INoticeKill
+	public class BotPart : ActorPart, ITick, INoticeDamage, INoticeKill, INoticeKilled
 	{
 		readonly BotBehavior bot;
 
@@ -15,6 +15,12 @@ namespace WarriorsSnuggery.Objects.Parts
 		{
 			get => bot.Target;
 			set => bot.Target = value;
+		}
+
+		public Patrol Patrol
+		{
+			get => bot.Patrol;
+			set => bot.Patrol = value;
 		}
 
 		public BotPart(Actor self, BotBehaviorType type) : base(self)
@@ -74,14 +80,24 @@ namespace WarriorsSnuggery.Objects.Parts
 			bot.Tick();
 		}
 
+		public void CheckTarget(Target target)
+		{
+			bot.CheckTarget(target);
+		}
+
 		public void OnDamage(Actor damager, int damage)
 		{
 			bot.OnDamage(damager, damage);
 		}
 
-		public void OnKill(Actor killer)
+		public void OnKill(Actor killed)
 		{
-			bot.OnKill(killer);
+			bot.OnKill(killed);
+		}
+
+		public void OnKilled(Actor killer)
+		{
+			Patrol?.ActorDied(self);
 		}
 	}
 }

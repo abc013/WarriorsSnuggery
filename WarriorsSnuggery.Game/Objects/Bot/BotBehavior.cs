@@ -7,8 +7,22 @@ namespace WarriorsSnuggery.Objects.Bot
 	{
 		protected const int SearchIntervall = 20;
 
-		public Target Target;
+		public Target Target
+		{
+			get => target;
+			set
+			{
+				target = value;
+				if (IsLeader)
+					Patrol?.SetNewTarget(value);
+			}
+		}
+		Target target;
+
 		protected float TargetFavor;
+
+		public Patrol Patrol;
+		protected bool IsLeader => Patrol == null || Patrol.Leader == Self;
 
 		protected readonly World World;
 		protected readonly Actor Self;
@@ -69,7 +83,20 @@ namespace WarriorsSnuggery.Objects.Bot
 
 		public abstract void Tick();
 
-		public abstract void OnDamage(Actor damager, int damage);
+		public virtual void OnDamage(Actor damager, int damage)
+		{
+			if (damager == null || damager.Health == null)
+				return;
+
+			if (!PerfectTarget())
+			{
+				var target = new Target(damager.Position, damager.Height);
+				if (IsLeader)
+					Target = target;
+				else
+					Patrol.NotifyNewTarget(target);
+			}
+		}
 
 		public virtual void OnKill(Actor killed)
 		{
@@ -120,10 +147,32 @@ namespace WarriorsSnuggery.Objects.Bot
 					if ((actor.Position - Self.Position).SquaredFlatDist > range * range)
 						continue;
 
-					if (CheckTarget(actor))
-						return;
+					if (IsLeader)
+					{
+						if (CheckTarget(actor))
+							return;
+					}
+					else
+					{
+						Patrol.NotifyNewTarget(new Target(actor));
+					}
 				}
 			}
+		}
+
+		public virtual void CheckTarget(Target target)
+		{
+			if (!IsLeader)
+				return;
+
+			if (target.Actor != null)
+			{
+				CheckTarget(target.Actor);
+				return;
+			}
+
+			if (Target == null)
+				Target = target;
 		}
 
 		protected virtual bool CheckTarget(Actor actor)
@@ -134,7 +183,8 @@ namespace WarriorsSnuggery.Objects.Bot
 			if (!PerfectTarget())
 			{
 				Target = new Target(actor);
-				return false;
+
+				return true;
 			}
 
 			var newFavor = 0f;
@@ -155,6 +205,7 @@ namespace WarriorsSnuggery.Objects.Bot
 			{
 				Target = new Target(actor);
 				TargetFavor = newFavor;
+
 				return true;
 			}
 

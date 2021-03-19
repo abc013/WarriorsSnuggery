@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using WarriorsSnuggery.Loader;
 using WarriorsSnuggery.Objects;
+using WarriorsSnuggery.Objects.Bot;
 
 namespace WarriorsSnuggery.Maps
 {
@@ -113,6 +114,8 @@ namespace WarriorsSnuggery.Maps
 				var patrol = getPatrol();
 				var unitCount = patrol.ActorTypes.Length;
 
+				var group = new List<Actor>();
+
 				for (int j = 0; j < unitCount; j++)
 				{
 					var spawnPosition = CPos.Zero;
@@ -147,8 +150,17 @@ namespace WarriorsSnuggery.Maps
 
 					var actor = ActorCreator.Create(world, patrol.ActorTypes[j], spawnPosition, patrol.Team, true);
 
+					group.Add(actor);
+
 					world.Add(actor);
 					actors.Add(actor);
+				}
+
+				var groupPatrol = new Patrol(group);
+				foreach (var actor in group)
+				{
+					if (actor.BotPart != null)
+						actor.BotPart.Patrol = groupPatrol;
 				}
 			}
 
@@ -157,6 +169,9 @@ namespace WarriorsSnuggery.Maps
 
 		bool areaBlocked(int a, int b)
 		{
+			if (invalidTerrain == null)
+				return false;
+
 			var map = world.Map;
 			for (int x = a * info.SpawnBounds; x < a * info.SpawnBounds + info.SpawnBounds; x++)
 			{

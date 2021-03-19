@@ -1,38 +1,50 @@
 using System.Collections.Generic;
 using System.Linq;
+using WarriorsSnuggery.Objects.Weapons;
 
 namespace WarriorsSnuggery.Objects.Bot
 {
 	public class Patrol
 	{
-		public bool IsEmpty => livingActors.Any();
-		readonly List<Actor> livingActors = new List<Actor>();
+		readonly List<Actor> group = new List<Actor>();
 		public Actor Leader;
 
 		public Patrol(List<Actor> actors, Actor leader = null)
 		{
-			livingActors.AddRange(actors.Where(a => a.IsAlive));
+			group = actors.ToList();
+			group.RemoveAll(a => a.BotPart == null);
 
-			if (leader != null)
-				Leader = leader;
-			else
+			Leader = leader;
+			if (Leader == null)
 				newLeader();
 		}
 
 		public void ActorDied(Actor actor)
 		{
-			livingActors.Remove(actor);
+			group.Remove(actor);
 
 			if (Leader == actor)
 				newLeader();
 		}
 
+		public void NotifyNewTarget(Target target)
+		{
+			Leader.BotPart.CheckTarget(target);
+		}
+
+		public void SetNewTarget(Target target)
+		{
+			foreach (var member in group)
+				member.BotPart.Target = target;
+		}
+
 		void newLeader()
 		{
-			if (IsEmpty)
+			if (group.Count == 0)
 				return;
-			
-			Leader = livingActors[0];
+
+			Leader = group[0];
+			group.Remove(Leader);
 		}
 	}
 }

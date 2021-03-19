@@ -79,13 +79,9 @@ namespace WarriorsSnuggery.Objects.Bot
 
 		public override void OnDamage(Actor damager, int damage)
 		{
+			base.OnDamage(damager, damage);
+
 			moral -= damage;
-
-			if (damager == null || damager.Health == null)
-				return;
-
-			if (!PerfectTarget())
-				Target = new Target(damager.Position, damager.Height);
 		}
 
 		public override void OnKill(Actor killed)

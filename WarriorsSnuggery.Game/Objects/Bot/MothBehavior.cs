@@ -70,15 +70,6 @@ namespace WarriorsSnuggery.Objects.Bot
 			return Self.Position + new CPos(x, y, 0);
 		}
 
-		public override void OnDamage(Actor damager, int damage)
-		{
-			if (damager == null)
-				return;
-
-			if (Target == null || Target.Actor == null)
-				Target = new Target(damager.Position, damager.Height);
-		}
-
 		public override void OnKill(Actor killer) { }
 	}
 }
