@@ -81,7 +81,7 @@ namespace WarriorsSnuggery.Objects.Parts
 					var ratio = (float)(1 - dist / (double)info.MaxRangeSquared);
 
 					// rather cache affections (as own class) in particle and then apply all at once, saving performance
-					particle.AffectVelocity(force, ratio, self.GraphicPosition);
+					particle.AffectVelocity(force, ratio, self.GraphicPosition, self.Height);
 					if (info.AffectRotation)
 						particle.AffectRotation(force, ratio, self.GraphicPosition);
 				}

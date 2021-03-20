@@ -41,11 +41,12 @@ namespace WarriorsSnuggery.Objects.Particles
 			Visible = false;
 		}
 
-		public void AffectVelocity(ParticleForce force, float ratio, CPos origin)
+		public void AffectVelocity(ParticleForce force, float ratio, CPos origin, int originHeight)
 		{
 			var random = ParticleUtils.Random;
 
-			var useZ = force.UseHeight;
+			var useZ = force.UseHeight && Height != originHeight;
+			var zinvert = Height > originHeight;
 
 			var angle = (Position - origin).FlatAngle;
 			var xFloat = 0f;
@@ -58,14 +59,14 @@ namespace WarriorsSnuggery.Objects.Particles
 					xFloat = (float)(force.Strength * Math.Cos(angle)) * ratio;
 					yFloat = (float)(force.Strength * Math.Sin(angle)) * ratio;
 					if (useZ)
-						zFloat = force.Strength * ratio;
+						zFloat = (zinvert ? -1 : 1) * force.Strength * ratio;
 					break;
 				case ParticleForceType.TURBULENCE:
 					angle = (float)(random.NextDouble() * 2 * Math.PI);
 					xFloat = (float)(force.Strength * Math.Cos(angle)) * ratio;
 					yFloat = (float)(force.Strength * Math.Sin(angle)) * ratio;
 					if (useZ)
-						zFloat = ((float)random.NextDouble() - 0.5f) * force.Strength * ratio;
+						zFloat = (zinvert ? -1 : 1) * ((float)random.NextDouble() - 0.5f) * force.Strength * ratio;
 					break;
 				case ParticleForceType.DRAG:
 					xFloat = -force.Strength * ratio * velocity.X / 256;
