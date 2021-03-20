@@ -44,7 +44,7 @@ namespace WarriorsSnuggery.UI
 
 		public override void DebugRender()
 		{
-
+			// TODO
 		}
 	}
 }

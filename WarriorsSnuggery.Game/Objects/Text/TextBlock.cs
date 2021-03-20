@@ -45,7 +45,7 @@ namespace WarriorsSnuggery.Objects
 		float scale = 1f;
 
 		readonly Font font;
-		public readonly TextLine[] Lines = new TextLine[0];
+		public readonly TextLine[] Lines;
 
 		public MPos Bounds { get; private set; }
 

@@ -144,8 +144,9 @@ namespace WarriorsSnuggery.Objects
 					else
 					{
 						var localchar = chars[i];
-						localchar.SetColor(Color);
+						localchar.SetPosition(Position, width);
 						localchar.SetCharacter(text[i]);
+						localchar.SetColor(color);
 					}
 					width += font.GetWidth(text[i]);
 				}
