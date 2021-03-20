@@ -330,7 +330,7 @@ namespace WarriorsSnuggery
 
 			ScreenControl.KeyDown(key, isControl, isShift, isAlt);
 
-			if (Paused || Finished)
+			if (Paused || Finished || ScreenControl.ChatOpen)
 				return;
 
 			// screen control
@@ -339,6 +339,10 @@ namespace WarriorsSnuggery
 				if (key == Keys.Escape)
 					ShowScreen(ScreenType.MENU, true);
 			}
+
+			// Player lock
+			if (key == Settings.GetKey("CameraLock"))
+				Camera.LockedToPlayer = !Camera.LockedToPlayer;
 
 			// Key input
 			if (key == Keys.KeyPadAdd || key == Keys.PageUp)

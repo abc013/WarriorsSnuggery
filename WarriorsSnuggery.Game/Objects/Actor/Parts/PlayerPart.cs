@@ -29,12 +29,6 @@ namespace WarriorsSnuggery.Objects.Parts
 				positionCamera(false);
 			}
 
-			if (KeyInput.IsKeyDown(Settings.GetKey("CameraLock"), 5))
-			{
-				Camera.LockedToPlayer = !Camera.LockedToPlayer;
-				positionCamera(false);
-			}
-
 			var vertical = 0;
 			if (KeyInput.IsKeyDown(Settings.GetKey("MoveUp")))
 				vertical += 1;
