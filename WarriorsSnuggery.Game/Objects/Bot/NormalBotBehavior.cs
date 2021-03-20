@@ -34,7 +34,7 @@ namespace WarriorsSnuggery.Objects.Bot
 				Self.ActiveWeapon.Target = Target.Position;
 				int range = Self.ActiveWeapon.Type.MaxRange;
 				if (DistToTarget < range * 1.1f)
-					Self.PrepareAttack(Target);
+					PredictiveAttack(Target);
 				else if (!CanMove)
 					Target = null; // Discard target if out of range
 			}
@@ -47,9 +47,8 @@ namespace WarriorsSnuggery.Objects.Bot
 				else if (Self.RevealsShroudPart != null)
 					range = Self.RevealsShroudPart.Range * 512;
 
-				var angle = -AngleToNearActor;
-				if (float.IsInfinity(angle))
-					angle = AngleToTarget;
+				var actor = GetNeighborActor();
+				float angle = actor != null ? (Self.Position - actor.Position).FlatAngle : AngleToTarget;
 
 				if (DistToMapEdge > 1536)
 				{

@@ -1,5 +1,6 @@
 ﻿using System;
 using WarriorsSnuggery.Objects.Weapons;
+using WarriorsSnuggery.Objects.Weapons.Projectiles;
 
 namespace WarriorsSnuggery.Objects.Bot
 {
@@ -52,28 +53,6 @@ namespace WarriorsSnuggery.Objects.Bot
 
 		protected bool CanMove => Self.Mobility != null;
 		protected bool CanAttack => Self.ActiveWeapon != null;
-
-		protected float AngleToNearActor
-		{
-			get
-			{
-				var sectors = World.ActorLayer.GetSectors(Self.Position, 2560);
-				foreach (var sector in sectors)
-				{
-					foreach (var actor in sector.Actors)
-					{
-						if (actor == Self || actor.Team != Self.Team)
-							continue;
-
-						var dist = Self.Position - actor.Position;
-						if (dist.SquaredFlatDist < 1024 * 1024)
-							return dist.FlatAngle;
-					}
-				}
-
-				return float.NegativeInfinity;
-			}
-		}
 
 		protected BotBehavior(World world, Actor self)
 		{
@@ -210,6 +189,87 @@ namespace WarriorsSnuggery.Objects.Bot
 			}
 
 			return false;
+		}
+
+		protected Actor GetNeighborActor(bool sameTeam = true, int range = 1536)
+		{
+			var sectors = World.ActorLayer.GetSectors(Self.Position, range);
+			foreach (var sector in sectors)
+			{
+				foreach (var actor in sector.Actors)
+				{
+					if (actor == Self || (sameTeam && actor.Team != Self.Team))
+						continue;
+
+					var dist = Self.Position - actor.Position;
+					if (dist.SquaredFlatDist < range * range)
+						return actor;
+				}
+			}
+
+			return null;
+		}
+
+		protected void PredictiveAttack(Target target)
+		{
+			if (target.Actor == null || target.Actor.Mobility == null || target.Actor.Mobility.Velocity == CPos.Zero)
+			{
+				Self.PrepareAttack(target);
+				return;
+			}
+
+			var projectileType = Self.ActiveWeapon.Type.Projectile;
+			if (projectileType is BeamProjectile || projectileType is InstantHitProjectile)
+			{
+				Self.PrepareAttack(target);
+				return;
+			}
+
+			var delta = target.Position - Self.Position;
+			var deltaMagnitude = delta.FlatDist;
+			var velTarget = target.Actor.Mobility.Velocity;
+			var velBullet = projectileType is BulletProjectile projectile ? projectile.MaxSpeed : ((MagicProjectile)projectileType).Speed;
+
+			// See http://danikgames.com/blog/how-to-intersect-a-moving-target-in-2d/ for more information
+			// uj, ui: vectors for target velocity in projected space
+			// vj, vi: vectors for bullet direction in projected space
+
+			// Find the vector AB, normalize
+			var ABx = delta.X / deltaMagnitude;
+			var ABy = delta.Y / deltaMagnitude;
+
+			// Project velTarget onto AB
+			var uDotAB = ABx * velTarget.X + ABy * velTarget.Y;
+			var ujx = uDotAB * ABx;
+			var ujy = uDotAB * ABy;
+
+			// Subtract uj from velTarget to get ui
+			var uix = velTarget.X - ujx;
+			var uiy = velTarget.Y - ujy;
+
+			// Set vi to ui (for clarity)
+			var vix = uix;
+			var viy = uiy;
+
+			if (velTarget.X < vix && velTarget.Y < viy)
+				return;
+
+			// Calculate the magnitude of vj
+			var viMag = (float)Math.Sqrt(vix * vix + viy * viy);
+			var vjMag = (float)Math.Sqrt(velBullet * velBullet - viMag * viMag);
+
+			// Get vj by multiplying it's magnitude with the unit vector AB
+			var vjx = ABx * vjMag;
+			var vjy = ABy * vjMag;
+
+			// Add vj and vi to get direction
+			var direction = new CPos((int)(vjx + vix), (int)(vjy + viy), 0);
+
+			var t = Math.Abs(delta.X / (float)(velTarget.X - direction.X));
+
+			var newTarget = new Target(new CPos(Self.Position.X + (int)(direction.X * t), Self.Position.Y + (int)(direction.Y * t), 0), target.Height);
+
+			Self.PrepareAttack(newTarget);
 		}
 	}
 }

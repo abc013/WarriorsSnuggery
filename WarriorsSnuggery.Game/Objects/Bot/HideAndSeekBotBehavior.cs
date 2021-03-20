@@ -38,7 +38,7 @@ namespace WarriorsSnuggery.Objects.Bot
 
 					if (DistToTarget < range * 1.1f)
 					{
-						Self.PrepareAttack(Target);
+						PredictiveAttack(Target);
 						hide = true;
 					}
 					else if (!CanMove)
@@ -56,9 +56,8 @@ namespace WarriorsSnuggery.Objects.Bot
 				if (hide)
 					range *= 10;
 
-				var angle = -AngleToNearActor;
-				if (float.IsInfinity(angle))
-					angle = AngleToTarget;
+				var actor = GetNeighborActor();
+				float angle = actor != null ? (Self.Position - actor.Position).FlatAngle : AngleToTarget;
 
 				if (DistToTarget > range * 0.9f)
 					Self.Accelerate(angle);
