@@ -105,7 +105,7 @@ namespace WarriorsSnuggery.UI.Screens
 
 			back = new Button(new CPos(4096, 6144, 0), "Back", "wooden", () => ActiveScreen = false);
 			create = new Button(new CPos(0, 6144, 0), "Save", "wooden", save);
-			@new = new TextBox(CPos.Zero, "Name", "wooden", 20, isPath: true)
+			@new = new TextBox(CPos.Zero, game.Statistics.Name, "wooden", 20, isPath: true)
 			{
 				OnEnter = save
 			};
