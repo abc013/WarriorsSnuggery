@@ -105,20 +105,21 @@ namespace WarriorsSnuggery.Objects.Weapons
 
 		public override void Render()
 		{
-			var distance = (originPos - GraphicPosition - new CPos(0, originHeight, -originHeight)).FlatDist;
-			var angle = (originPos - GraphicPosition - new CPos(0, originHeight, -originHeight)).FlatAngle;
-			var fit = distance / renderabledistance;
+			var distance = originPos - GraphicPositionWithoutHeight;
+			var angle = distance.FlatAngle;
+			var fit = distance.FlatDist / renderabledistance;
+
+			var offset = new CPos((int)(Math.Cos(angle) * renderabledistance), (int)(Math.Sin(angle) * renderabledistance), 0);
 
 			var curFrame = frame;
 			for (int i = 0; i < fit; i++)
 			{
 				var renderable = renderables[curFrame];
 
-				var posX = (int)(Math.Cos(angle) * i * renderabledistance);
-				var posY = (int)(Math.Sin(angle) * i * renderabledistance);
+				var pos = new CPos(offset.X * i, offset.Y * i, 0);
 
 				renderable.SetRotation(new VAngle(0, 0, -angle) + new VAngle(0, 0, 270));
-				renderable.SetPosition(originPos + new CPos(posX, posY, 0) - new CPos(0, originHeight, -originHeight));
+				renderable.SetPosition(originPos + pos - new CPos(0, originHeight, -originHeight));
 				renderable.PushToBatchRenderer();
 
 				curFrame--;
@@ -160,8 +161,6 @@ namespace WarriorsSnuggery.Objects.Weapons
 
 			var dist = (originPos - Position).SquaredFlatDist;
 
-			sound?.SetPosition(originPos + (Position - originPos) / new CPos(2, 2, 1));
-
 			if (dist > (Type.MaxRange * RangeModifier) * (Type.MaxRange * RangeModifier))
 			{
 				Position = clampToMaxRange(originPos, (originPos - TargetPosition).FlatAngle);
@@ -174,10 +173,29 @@ namespace WarriorsSnuggery.Objects.Weapons
 				Height = 0;
 			}
 
-			if (duration > 0 && buildupduration <= 0 && impactInterval-- <= 0)
+			var distance = originPos - Position;
+
+			sound?.SetPosition(Position + distance / new CPos(2, 2, 1));
+
+			if (duration > 0 && buildupduration <= 0)
 			{
-				Detonate(new Target(Position, Height), false);
-				impactInterval = projectile.ImpactInterval;
+				if (projectile.BeamParticles != null && duration % projectile.BeamParticleTick == 0)
+				{
+					var angle = distance.FlatAngle;
+					var fit = distance.FlatDist / projectile.BeamParticleDistance;
+					var heightdiff = (originHeight - Height) / projectile.BeamParticleDistance;
+
+					var offset = new CPos((int)(Math.Cos(angle) * projectile.BeamParticleDistance), (int)(Math.Sin(angle) * projectile.BeamParticleDistance), 0);
+
+					for (int i = 0; i < fit; i++)
+						World.Add(projectile.BeamParticles.Create(World, originPos + new CPos(offset.X * i, offset.Y * i, 0), originHeight + heightdiff * i));
+				}
+
+				if (impactInterval-- <= 0)
+				{
+					Detonate(new Target(Position, Height), false);
+					impactInterval = projectile.ImpactInterval;
+				}
 			}
 
 			if (buildupduration < 0 && duration-- < 0 && endduration-- < 0)

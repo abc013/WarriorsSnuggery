@@ -16,6 +16,10 @@ namespace WarriorsSnuggery.Objects.Weapons.Projectiles
 
 		[Desc("Particles that are emitted along the path of the beamweapon.")]
 		public readonly ParticleSpawner BeamParticles;
+		[Desc("Distance between the spawners along the path of the beamweapon.")]
+		public readonly int BeamParticleDistance = 128;
+		[Desc("Time between particle spawns along the path of the beamweapon.")]
+		public readonly int BeamParticleTick = 2;
 
 		[Desc("Sound to play while the beam is running. This sound is looping.")]
 		public readonly SoundType BeamSound;
