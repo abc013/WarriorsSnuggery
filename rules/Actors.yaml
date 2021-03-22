@@ -1,4 +1,5 @@
 @INCLUDE Actors-collectables.yaml
+@INCLUDE Actors-portals.yaml
 @INCLUDE Actors-tutorial.yaml
 @INCLUDE Actors-goods.yaml
 @INCLUDE Actors-decorations.yaml
@@ -348,7 +349,7 @@ poisonegg=
 	Health=
 		MaxHealth=30
 	Collectable=
-		Radius=1024
+		Radius=2048
 		KillsSelf=true
 	Spawn=
 		Occasion=Death
@@ -594,7 +595,7 @@ slime_small=
 	Health=
 		MaxHealth=30
 	Regeneration=
-		Amount=1
+		Amount=-1
 		Time=10
 	RevealsShroud=
 		Range=3
@@ -664,7 +665,7 @@ slime_medium=
 		Type=PARTICLE
 		Tick=4
 	RevealsShroud=
-		Range=3
+		Range=6
 		Interval=0
 	Armor=
 		Name=slime
@@ -696,7 +697,7 @@ slime_big=
 			RadiusY=256
 			HeightRadius=256
 	Health=
-		MaxHealth=200
+		MaxHealth=160
 	Regeneration=
 		Amount=2
 		Time=10
@@ -732,7 +733,7 @@ slime_big=
 		Type=PARTICLE
 		Tick=4
 	RevealsShroud=
-		Range=6
+		Range=8
 		Interval=0
 	Armor=
 		Name=slime
