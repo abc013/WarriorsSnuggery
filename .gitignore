@@ -50,6 +50,10 @@ logs/
 *.pdb
 launchSettings.json
 
+# All saves except the default one
+saves/*
+!saves/DEFAULT.yaml
+
 # Compiled DLLs
 /OpenTK.Windowing.GraphicsLibraryFramework.dll
 /OpenTK.Windowing.Desktop.dll
