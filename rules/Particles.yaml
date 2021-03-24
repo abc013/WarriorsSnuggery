@@ -140,6 +140,7 @@ leaf=
 	DissolveDuration=30
 	Gravity=1
 	RandomVelocity=4,4,0
+	ShowShadow=true
 	AffectedByObjects=true
 
 fire=
