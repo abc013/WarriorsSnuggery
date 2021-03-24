@@ -78,7 +78,7 @@ namespace WarriorsSnuggery.UI.Screens
 				return false;
 
 			var mouse = MouseInput.WindowPosition;
-			return mouse.X > WindowInfo.UnitWidth * 512 - 4096 - 128 && mouse.X < WindowInfo.UnitWidth * 512 - 64 && mouse.Y < -2048 + 4096 + 512 && mouse.Y > -6120 - 4096 + 512;
+			return mouse.X > WindowInfo.UnitWidth * 512 - 4096 - 128 && mouse.X < WindowInfo.UnitWidth * 512 - 64 * Settings.EdgeScrolling;
 		}
 
 		public override void Hide()
@@ -92,9 +92,6 @@ namespace WarriorsSnuggery.UI.Screens
 		{
 			base.Render();
 
-			if (game.InteractionMode == InteractionMode.EDITOR)
-				save.Render();
-
 			switch (currentSelected)
 			{
 				case Selected.TILE:
@@ -105,6 +102,11 @@ namespace WarriorsSnuggery.UI.Screens
 					break;
 				case Selected.WALL:
 					wallWidget.Render();
+					break;
+				default:
+					if (game.InteractionMode == InteractionMode.EDITOR)
+						save.Render();
+
 					break;
 			}
 		}
@@ -123,6 +125,11 @@ namespace WarriorsSnuggery.UI.Screens
 					break;
 				case Selected.WALL:
 					wallWidget.DebugRender();
+					break;
+				default:
+					if (game.InteractionMode == InteractionMode.EDITOR)
+						save.DebugRender();
+
 					break;
 			}
 		}
@@ -148,9 +155,6 @@ namespace WarriorsSnuggery.UI.Screens
 					remove();
 			}
 
-			if (game.InteractionMode == InteractionMode.EDITOR)
-				save.Tick();
-
 			mousePosition.WriteText(Color.White + "" + MouseInput.GamePosition.ToMPos() + Color.Grey + " | " + MouseInput.GamePosition);
 
 			switch (currentSelected)
@@ -163,6 +167,11 @@ namespace WarriorsSnuggery.UI.Screens
 					break;
 				case Selected.WALL:
 					wallWidget.Tick();
+					break;
+				default:
+					if (game.InteractionMode == InteractionMode.EDITOR)
+						save.Tick();
+
 					break;
 			}
 		}
@@ -197,7 +206,7 @@ namespace WarriorsSnuggery.UI.Screens
 
 		void place()
 		{
-			if (!game.World.IsInWorld(MouseInput.GamePosition))
+			if (currentSelected != Selected.WALL && !game.World.IsInWorld(MouseInput.GamePosition))
 				return;
 
 			var pos = MouseInput.GamePosition;
