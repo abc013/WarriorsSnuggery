@@ -17,7 +17,7 @@ namespace WarriorsSnuggery.Spells
 		[Desc("Spawns particles while the effect is active.")]
 		public readonly ParticleSpawner Particles;
 		[Desc("Frequency of spawning Particles.")]
-		public readonly int ParticleTick;
+		public readonly int ParticleTick = 1;
 		[Desc("Sound while the effect is active.")]
 		public readonly SoundType Sound; //TODO
 

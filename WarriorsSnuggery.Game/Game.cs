@@ -12,15 +12,6 @@ using WarriorsSnuggery.UI.Screens;
 
 namespace WarriorsSnuggery
 {
-	public enum GameMode
-	{
-		WAVES,
-		KILL_ENEMIES,
-		FIND_EXIT,
-		TUTORIAL,
-		NONE
-	}
-
 	public sealed class Game : ITick, IDisposable
 	{
 		public Random SharedRandom;
