@@ -181,7 +181,7 @@ namespace WarriorsSnuggery
 
 		List<Triangle> getTriangles(World world, CPos position, int height, MPos shroudPos, int radius)
 		{
-			var outerRadius = (float)Math.Sqrt(2) * radius * 1024;
+			var outerRadius = MathF.Sqrt(2) * radius * 1024;
 
 			var pos1 = (shroudPos - new MPos(radius, radius)) / new MPos(2, 2);
 			// Why MPos(1, 1) here? -> when 7/2=3, but we want 4. Thus (7+1)/2=4. (8+1)/2=4 so works for this case as well.
@@ -201,8 +201,8 @@ namespace WarriorsSnuggery
 				var angleA = (position - wall.EndPointA).FlatAngle;
 				var angleB = (position - wall.EndPointB).FlatAngle;
 
-				var pointC = new CPos(position.X + (int)(MathF.Cos(angleA) * outerRadius), position.Y + (int)(MathF.Sin(angleA) * outerRadius), 0);
-				var pointD = new CPos(position.X + (int)(MathF.Cos(angleB) * outerRadius), position.Y + (int)(MathF.Sin(angleB) * outerRadius), 0);
+				var pointC = position + CPos.FromFlatAngle(angleA, outerRadius);
+				var pointD = position + CPos.FromFlatAngle(angleB, outerRadius);
 
 				triangles.Add(new Triangle(wall.EndPointA, wall.EndPointB, pointC));
 				triangles.Add(new Triangle(wall.EndPointB, pointC, pointD));

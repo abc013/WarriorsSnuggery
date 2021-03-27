@@ -26,7 +26,7 @@ namespace WarriorsSnuggery
 		{
 			this.game = game;
 
-			waves = Math.Min((int)Math.Ceiling(Math.Sqrt((game.Statistics.Difficulty / 2 + 1) * game.Statistics.Level)), 10) + 1;
+			waves = Math.Min((int)Math.Ceiling(MathF.Sqrt((game.Statistics.Difficulty / 2 + 1) * game.Statistics.Level)), 10) + 1;
 			placers = game.MapType.PatrolPlacers.Where(p => p.UseForWaves).ToArray();
 
 			if (game.MapType.IsSave && game.Statistics.Waves > 0)

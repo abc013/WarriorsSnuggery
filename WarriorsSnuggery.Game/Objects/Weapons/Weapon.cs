@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 
 namespace WarriorsSnuggery.Objects.Weapons
@@ -132,10 +131,7 @@ namespace WarriorsSnuggery.Objects.Weapons
 		{
 			var maxRadius = Type.MaxRange * RangeModifier;
 
-			var x = (int)(MathF.Cos(angle) * maxRadius);
-			var y = (int)(MathF.Sin(angle) * maxRadius);
-
-			return origin + new CPos(x, y, 0);
+			return origin + CPos.FromFlatAngle(angle, maxRadius);
 		}
 
 		protected CPos getInaccuracy(int inaccuracy)

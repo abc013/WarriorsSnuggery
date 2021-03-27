@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using WarriorsSnuggery.Loader;
 
 namespace WarriorsSnuggery.Objects.Particles
@@ -47,9 +46,7 @@ namespace WarriorsSnuggery.Objects.Particles
 			{
 				var ran = random.Next(-Radius, Radius);
 				var angle = Angle.RandomAngle(random);
-				var x = MathF.Sin(angle) * ran;
-				var y = MathF.Cos(angle) * ran;
-				var pos = new CPos((int)x, (int)y, 0);
+				var pos = CPos.FromFlatAngle(angle, ran);
 
 				particles[i] = ParticleCreator.Create(world, Type, position + pos, height);
 			}
@@ -62,9 +59,7 @@ namespace WarriorsSnuggery.Objects.Particles
 			var step = Angle.MaxRange / Count;
 			for (int i = 0; i < Count; i++)
 			{
-				var x = MathF.Sin(step * i) * Radius;
-				var y = MathF.Cos(step * i) * Radius;
-				var pos = new CPos((int)x, (int)y, 0);
+				var pos = CPos.FromFlatAngle(step * i, Radius);
 
 				particles[i] = ParticleCreator.Create(world, Type, position + pos, height);
 			}

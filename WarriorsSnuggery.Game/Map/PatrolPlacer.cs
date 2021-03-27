@@ -124,18 +124,12 @@ namespace WarriorsSnuggery.Maps
 					else if (j < 7)
 					{
 						var angle = Angle.ToArc(60 * j);
-						var deltaX = (int)(patrol.DistanceBetweenObjects * MathF.Cos(angle));
-						var deltaY = (int)(patrol.DistanceBetweenObjects * MathF.Sin(angle));
-
-						spawnPosition = mid + new CPos(deltaX, deltaY, 0);
+						spawnPosition = mid + CPos.FromFlatAngle(angle, patrol.DistanceBetweenObjects);
 					}
 					else if (j < 19)
 					{
 						var angle = Angle.ToArc(30 * (j - 6));
-						var deltaX = (int)(patrol.DistanceBetweenObjects * 2 * MathF.Cos(angle));
-						var deltaY = (int)(patrol.DistanceBetweenObjects * 2 * MathF.Sin(angle));
-
-						spawnPosition = mid + new CPos(deltaX, deltaY, 0);
+						spawnPosition = mid + CPos.FromFlatAngle(angle, 2 * patrol.DistanceBetweenObjects);
 					}
 
 					if (spawnPosition.X < map.TopLeftCorner.X + patrol.DistanceBetweenObjects / 2)

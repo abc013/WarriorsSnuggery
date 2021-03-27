@@ -81,7 +81,7 @@ namespace WarriorsSnuggery.Maps
 			var maximum = MaximumMapBounds;
 
 			// Multiplier, in about a range from 1 to 10
-			var multipier = Math.Sqrt((difficulty + 1) * (level + 1));
+			var multipier = MathF.Sqrt((difficulty + 1) * (level + 1));
 
 			// Multiplier, in a range from 5 to 10
 			var sizeMultiplier = 10;

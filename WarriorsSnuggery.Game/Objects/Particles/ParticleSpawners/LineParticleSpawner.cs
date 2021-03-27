@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using WarriorsSnuggery.Loader;
 
 namespace WarriorsSnuggery.Objects.Particles
@@ -28,9 +27,7 @@ namespace WarriorsSnuggery.Objects.Particles
 			for (int i = 0; i < Count; i++)
 			{
 				var angle = WarriorsSnuggery.Angle.ToArc(Angle);
-				var x = MathF.Sin(angle) * length * i;
-				var y = MathF.Cos(angle) * length * i;
-				var pos = new CPos((int)x, (int)y, 0);
+				var pos = CPos.FromFlatAngle(angle, length * i);
 
 				particles[i] = ParticleCreator.Create(world, Type, position + pos, height);
 			}

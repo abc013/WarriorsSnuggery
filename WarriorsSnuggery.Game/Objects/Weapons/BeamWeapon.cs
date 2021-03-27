@@ -109,7 +109,7 @@ namespace WarriorsSnuggery.Objects.Weapons
 			var angle = distance.FlatAngle;
 			var fit = distance.FlatDist / renderabledistance;
 
-			var offset = new CPos((int)(MathF.Cos(angle) * renderabledistance), (int)(MathF.Sin(angle) * renderabledistance), 0);
+			var offset = CPos.FromFlatAngle(angle, renderabledistance);
 
 			var curFrame = frame;
 			for (int i = 0; i < fit; i++)
@@ -185,7 +185,7 @@ namespace WarriorsSnuggery.Objects.Weapons
 					var fit = distance.FlatDist / projectile.BeamParticleDistance;
 					var heightdiff = (originHeight - Height) / projectile.BeamParticleDistance;
 
-					var offset = new CPos((int)(MathF.Cos(angle) * projectile.BeamParticleDistance), (int)(MathF.Sin(angle) * projectile.BeamParticleDistance), 0);
+					var offset = CPos.FromFlatAngle(angle, projectile.BeamParticleDistance);
 
 					for (int i = 0; i < fit; i++)
 						World.Add(projectile.BeamParticles.Create(World, originPos + new CPos(offset.X * i, offset.Y * i, 0), originHeight + heightdiff * i));
@@ -234,9 +234,7 @@ namespace WarriorsSnuggery.Objects.Weapons
 
 			diff = Math.Clamp(-diff, -projectile.ArcTurnSpeed, projectile.ArcTurnSpeed);
 
-			var dx = (int)(length * MathF.Cos(oldangle + diff));
-			var dy = (int)(length * MathF.Sin(oldangle + diff));
-			TargetPosition = originPos + new CPos(dx, dy, 0);
+			TargetPosition = originPos + CPos.FromFlatAngle(oldangle + diff, length);
 		}
 
 		public override List<string> Save()

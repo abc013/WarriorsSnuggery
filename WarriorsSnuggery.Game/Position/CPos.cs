@@ -64,5 +64,13 @@ namespace WarriorsSnuggery
 
 			return ans;
 		}
+
+		public static CPos FromFlatAngle(float angle, float magnitude)
+		{
+			var x = (int)(MathF.Cos(angle) * magnitude);
+			var y = (int)(MathF.Sin(angle) * magnitude);
+
+			return new CPos(x, y, 0);
+		}
 	}
 }

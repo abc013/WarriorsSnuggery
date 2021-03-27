@@ -85,8 +85,7 @@ namespace WarriorsSnuggery.Objects.Weapons
 
 		void calculateSpeed()
 		{
-			var x = MathF.Cos(Angle) * projectile.Speed;
-			var y = MathF.Sin(Angle) * projectile.Speed;
+			var flatSpeed = Vector.FromFlatAngle(Angle, projectile.Speed);
 
 			var zDiff = TargetHeight - Height;
 			var dDiff = (int)(Position - TargetPosition).FlatDist;
@@ -96,7 +95,7 @@ namespace WarriorsSnuggery.Objects.Weapons
 			var angle2 = new CPos(-dDiff, -zDiff, 0).FlatAngle;
 			var z = MathF.Sin(angle2) * projectile.Speed;
 
-			speed = new Vector(x, y, z);
+			speed = new Vector(flatSpeed.X, flatSpeed.Y, z);
 		}
 
 		public void Move()

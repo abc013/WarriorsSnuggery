@@ -1,5 +1,4 @@
 using OpenTK.Windowing.GraphicsLibraryFramework;
-using System;
 using System.Collections.Generic;
 using WarriorsSnuggery.Graphics;
 using WarriorsSnuggery.Spells;
@@ -259,11 +258,10 @@ namespace WarriorsSnuggery.UI.Screens
 			{
 				var renderable = renderables[curFrame];
 
-				var posX = (int)(MathF.Cos(angle) * i * renderabledistance);
-				var posY = (int)(MathF.Sin(angle) * i * renderabledistance);
+				var pos = CPos.FromFlatAngle(angle, i * renderabledistance);
 
 				renderable.SetRotation(new VAngle(0, 0, -angle) + new VAngle(0, 0, 270));
-				renderable.SetPosition(originPos + new CPos(posX, posY, 0));
+				renderable.SetPosition(originPos + pos);
 				renderable.PushToBatchRenderer();
 
 				curFrame--;
