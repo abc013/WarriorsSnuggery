@@ -37,8 +37,8 @@ namespace WarriorsSnuggery.Objects.Weapons.Projectiles
 
 		[Desc("Determines whether the beam target can be moved.")]
 		public readonly bool Directed;
-		[Desc("Determines the speed of the beam target when being moved.")]
-		public readonly int MovementSpeed = 5;
+		[Desc("Determines the turn speed of the beam in degrees.")]
+		public readonly int TurnSpeed = 5;
 
 		public BeamProjectile(List<TextNode> nodes)
 		{

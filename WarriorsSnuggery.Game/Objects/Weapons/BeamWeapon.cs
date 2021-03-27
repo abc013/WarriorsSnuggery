@@ -220,26 +220,29 @@ namespace WarriorsSnuggery.Objects.Weapons
 
 		public void Move(CPos target, int height)
 		{
-			var dHeight = height - TargetHeight;
-			if (dHeight > projectile.MovementSpeed)
-				TargetHeight += projectile.MovementSpeed;
-			else if (dHeight < -projectile.MovementSpeed)
-				TargetHeight -= projectile.MovementSpeed;
-			else
-				TargetHeight += dHeight;
+			TargetHeight = height;
 
-			var dTarget = target - TargetPosition;
-			if (dTarget.SquaredFlatDist <= projectile.MovementSpeed * projectile.MovementSpeed)
-			{
-				TargetPosition = target;
+			if (Position == target)
 				return;
-			}
 
-			var angle = dTarget.FlatAngle;
-			var dx = (int)-(Math.Cos(angle) * projectile.MovementSpeed);
-			var dy = (int)-(Math.Sin(angle) * projectile.MovementSpeed);
-			TargetPosition += new CPos(dx, dy, 0);
+			var move = projectile.TurnSpeed / 1800f * MathF.PI;
 
+			var length = (originPos - target).FlatDist;
+
+			var oldangle = (originPos - TargetPosition).FlatAngle;
+			var newangle = (originPos - target).FlatAngle;
+			var diff = oldangle - newangle;
+
+			if (diff < -MathF.PI)
+				diff += 2 * MathF.PI;
+			else if (diff > MathF.PI)
+				diff -= 2 * MathF.PI;
+
+			diff = Math.Clamp(-diff, -move, move);
+
+			var dx = (int)(length * MathF.Cos(oldangle + diff));
+			var dy = (int)(length * MathF.Sin(oldangle + diff));
+			TargetPosition = originPos + new CPos(dx, dy, 0);
 		}
 
 		public override List<string> Save()
