@@ -46,9 +46,9 @@ namespace WarriorsSnuggery.Objects.Particles
 			for (int i = 0; i < Count; i++)
 			{
 				var ran = random.Next(-Radius, Radius);
-				var angle = random.NextDouble() * Math.PI * 2;
-				var x = Math.Sin(angle) * ran;
-				var y = Math.Cos(angle) * ran;
+				var angle = Angle.RandomAngle(random);
+				var x = MathF.Sin(angle) * ran;
+				var y = MathF.Cos(angle) * ran;
 				var pos = new CPos((int)x, (int)y, 0);
 
 				particles[i] = ParticleCreator.Create(world, Type, position + pos, height);
@@ -59,11 +59,11 @@ namespace WarriorsSnuggery.Objects.Particles
 		Particle[] createCircle(World world, CPos position, int height)
 		{
 			var particles = new Particle[Count];
-			var step = (float)(Math.PI * 2) / Count;
+			var step = Angle.MaxRange / Count;
 			for (int i = 0; i < Count; i++)
 			{
-				var x = Math.Sin(step * i) * Radius;
-				var y = Math.Cos(step * i) * Radius;
+				var x = MathF.Sin(step * i) * Radius;
+				var y = MathF.Cos(step * i) * Radius;
 				var pos = new CPos((int)x, (int)y, 0);
 
 				particles[i] = ParticleCreator.Create(world, Type, position + pos, height);

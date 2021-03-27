@@ -94,7 +94,7 @@ namespace WarriorsSnuggery.Maps.Generators
 
 				var otherLocations = waypointEnds.Where(w => w.Location != previousLocation).ToList();
 				var nextIndex = Random.Next(otherLocations.Count);
-				var next = otherLocations[nextIndex];
+				var next = otherLocations[nextIndex]; // TODO: can somehow be 0?
 				waypointEnds.Remove(next);
 				Console.WriteLine(next.Position);
 
@@ -121,10 +121,10 @@ namespace WarriorsSnuggery.Maps.Generators
 			while (currentPosition != end)
 			{
 				var angle = end.AngleTo(currentPosition);
-				var optX = Math.Cos(angle);
+				var optX = MathF.Cos(angle);
 				var x = (Math.Abs(optX) > 0.25f ? 1 : 0) * Math.Sign(optX);
 
-				var optY = Math.Sin(angle);
+				var optY = MathF.Sin(angle);
 				var y = (Math.Abs(optY) > 0.25f ? 1 : 0) * Math.Sign(optY);
 
 				// Maximal abeviation of +-45°

@@ -1,5 +1,4 @@
 using OpenTK.Windowing.GraphicsLibraryFramework;
-using System;
 using WarriorsSnuggery.Graphics;
 
 namespace WarriorsSnuggery
@@ -61,10 +60,7 @@ namespace WarriorsSnuggery
 		{
 			var diff = WindowPosition - pos;
 
-			float angle = (float)-Math.Atan2(diff.Y, diff.X);
-			float degrees = (180 / (float)Math.PI) * angle;
-			degrees = degrees > 0 ? degrees : degrees + 360f;
-			return degrees;
+			return Angle.FromVector(diff.X, diff.Y);
 		}
 
 		public static CPos DistToCursor(CPos pos)

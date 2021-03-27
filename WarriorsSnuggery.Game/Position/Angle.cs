@@ -1,88 +1,70 @@
-﻿using OpenTK.Mathematics;
-using System;
+﻿using System;
 
 namespace WarriorsSnuggery
 {
-	public readonly struct VAngle
+	public static class Angle
 	{
-		public const float MaxRange = (float)(2 * Math.PI);
-		public static readonly VAngle Zero = new VAngle();
+		public const float MaxRange = 2 * MathF.PI;
 
-		public readonly float X;
-		public readonly float Y;
-		public readonly float Z;
-
-		public VAngle(float x, float y, float z)
+		public static float RandomAngle(Random random)
 		{
-			X = x;
-			Y = y;
-			Z = z;
+			return (float)random.NextDouble() * MaxRange;
 		}
 
-		public VAngle(int xDeg, int yDeg, int zDeg)
+		public static int ToDegree(float arc)
 		{
-			const float u = (float)(Math.PI / 180);
-			X = u * xDeg;
-			Y = u * yDeg;
-			Z = u * zDeg;
+			return Cast((int)(arc / MathF.PI * 180));
 		}
 
-		public static VAngle operator +(VAngle lhs, VAngle rhs) { return new VAngle(lhs.X + rhs.X, lhs.Y + rhs.Y, lhs.Z + rhs.Z); }
-
-		public static VAngle operator -(VAngle lhs, VAngle rhs) { return new VAngle(lhs.X - rhs.X, lhs.Y - rhs.Y, lhs.Z - rhs.Z); }
-
-		public static VAngle operator *(VAngle lhs, VAngle rhs) { return new VAngle(lhs.X * rhs.X, lhs.Y * rhs.Y, lhs.Z * rhs.Z); }
-
-		public static VAngle operator /(VAngle lhs, VAngle rhs) { return new VAngle(lhs.X / rhs.X, lhs.Y / rhs.Y, lhs.Z / rhs.Z); }
-
-		public static VAngle operator -(VAngle pos) { return new VAngle(-pos.X, -pos.Y, -pos.Z); }
-
-		public static bool operator ==(VAngle lhs, VAngle rhs) { return lhs.X == rhs.X && lhs.Y == rhs.Y && lhs.Z == rhs.Z; }
-
-		public static bool operator !=(VAngle lhs, VAngle rhs) { return !(lhs == rhs); }
-
-		public bool Equals(VAngle pos) { return pos == this; }
-		public override bool Equals(object obj) { return obj is VAngle angle && Equals(angle); }
-
-		public override int GetHashCode() { return X.GetHashCode() ^ Y.GetHashCode() ^ Z.GetHashCode(); }
-
-		public override string ToString() { return X + "," + Y + "," + Z; }
-
-		public VAngle CastToAngleRange()
+		public static float ToArc(int degree)
 		{
-			//0 to 2 PI;
-			var xDeg = cast(X);
-			var yDeg = cast(Y);
-			var zDeg = cast(Z);
-
-			return new VAngle(xDeg, yDeg, zDeg);
+			return Cast(degree / 180f * MathF.PI);
 		}
 
-		float cast(float deg)
+		public static float Cast(float arc)
 		{
-			if (deg < 0 || deg > MaxRange)
+			if (arc < 0 || arc > MaxRange)
 			{
-				deg %= MaxRange;
+				arc %= MaxRange;
 
-				if (deg < 0)
-					deg += MaxRange;
+				if (arc < 0)
+					arc += MaxRange;
 			}
-			return deg;
+
+			return arc;
 		}
 
-		public CPos ToDegree()
+		public static int Cast(int degree)
 		{
-			const float u = (float)(180 / Math.PI);
-			var x = (int)(u * X);
-			var y = (int)(u * Y);
-			var z = (int)(u * Z);
+			degree %= 360;
 
-			return new CPos(x, y, z);
+			if (degree < 0)
+				degree += 360;
+
+			return degree;
 		}
 
-		public static implicit operator Vector3(VAngle angle)
+		public static float Diff(float angle1, float angle2)
 		{
-			return new Vector3(angle.X, angle.Y, angle.Z);
+			var angle = angle1 - angle2;
+
+			if (angle < -MathF.PI)
+				angle += 2 * MathF.PI;
+
+			if (angle > MathF.PI)
+				angle -= 2 * MathF.PI;
+
+			return angle;
+		}
+
+		public static float FromVector(int x, int y)
+		{
+			var angle = -MathF.Atan2(y, -x);
+
+			if (angle < 0f)
+				angle += MaxRange;
+
+			return angle;
 		}
 	}
 }

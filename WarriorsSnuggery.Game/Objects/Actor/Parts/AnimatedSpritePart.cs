@@ -92,9 +92,9 @@ namespace WarriorsSnuggery.Objects.Parts
 
 		public override int FacingFromAngle(float angle)
 		{
-			float part = (float)(2f * Math.PI) / info.Facings;
+			var part = Angle.MaxRange / info.Facings;
 
-			int facing = (int)Math.Round(angle / part);
+			var facing = (int)Math.Round(angle / part);
 			if (facing >= info.Facings)
 				facing = 0;
 

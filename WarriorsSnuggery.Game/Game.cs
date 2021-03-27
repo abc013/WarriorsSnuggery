@@ -253,9 +253,9 @@ namespace WarriorsSnuggery
 				// party mode
 				if (Settings.PartyMode)
 				{
-					var sin1 = (float)Math.Sin(LocalTick / 8f) / 2 + 0.8f;
-					var sin2 = (float)Math.Sin(LocalTick / 8f + 2 * Math.PI / 3) / 2 + 0.8f;
-					var sin3 = (float)Math.Sin(LocalTick / 8f + 4 * Math.PI / 3) / 2 + 0.8f;
+					var sin1 = MathF.Sin(LocalTick / 8f) / 2 + 0.8f;
+					var sin2 = MathF.Sin(LocalTick / 8f + Angle.MaxRange / 3) / 2 + 0.8f;
+					var sin3 = MathF.Sin(LocalTick / 8f + 2 * Angle.MaxRange / 3) / 2 + 0.8f;
 
 					WorldRenderer.Ambient = new Color(sin1, sin2, sin3);
 				}

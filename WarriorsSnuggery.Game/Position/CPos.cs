@@ -13,20 +13,9 @@ namespace WarriorsSnuggery
 		public float Dist => (float)Math.Sqrt(X * (double)X + Y * (double)Y + Z * (double)Z);
 
 		public long SquaredFlatDist => X * (long)X + Y * (long)Y;
-		public float FlatDist => (float)Math.Sqrt(SquaredFlatDist);
+		public float FlatDist => MathF.Sqrt(SquaredFlatDist);
 
-		public float FlatAngle
-		{
-			get
-			{
-				float angle = (float)-Math.Atan2(Y, -X);
-
-				if (angle < 0f)
-					angle += (float)(2 * Math.PI);
-
-				return angle;
-			}
-		}
+		public float FlatAngle => Angle.FromVector(X, Y);
 
 		public CPos(int x, int y, int z)
 		{

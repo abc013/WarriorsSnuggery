@@ -70,8 +70,8 @@ namespace WarriorsSnuggery.Objects.Weapons
 
 			var diff = (Position - TargetPosition).FlatAngle - Angle;
 
-			if (Math.Abs(diff) > projectile.FloatTurnSpeed)
-				diff = Math.Sign(diff) * projectile.FloatTurnSpeed;
+			if (Math.Abs(diff) > projectile.ArcTurnSpeed)
+				diff = Math.Sign(diff) * projectile.ArcTurnSpeed;
 
 			Angle += diff;
 		}
@@ -85,8 +85,8 @@ namespace WarriorsSnuggery.Objects.Weapons
 
 		void calculateSpeed()
 		{
-			var x = (float)Math.Cos(Angle) * projectile.Speed;
-			var y = (float)Math.Sin(Angle) * projectile.Speed;
+			var x = MathF.Cos(Angle) * projectile.Speed;
+			var y = MathF.Sin(Angle) * projectile.Speed;
 
 			var zDiff = TargetHeight - Height;
 			var dDiff = (int)(Position - TargetPosition).FlatDist;
@@ -94,7 +94,7 @@ namespace WarriorsSnuggery.Objects.Weapons
 				dDiff = Type.MaxRange;
 
 			var angle2 = new CPos(-dDiff, -zDiff, 0).FlatAngle;
-			var z = (float)Math.Sin(angle2) * projectile.Speed;
+			var z = MathF.Sin(angle2) * projectile.Speed;
 
 			speed = new Vector(x, y, z);
 		}

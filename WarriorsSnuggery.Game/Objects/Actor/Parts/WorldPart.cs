@@ -105,7 +105,7 @@ namespace WarriorsSnuggery.Objects.Parts
 		public void Tick()
 		{
 			if (Hover > 0)
-				self.Height += (int)(Math.Sin(hoverTick++ / (float)info.HoverSpeed) * Hover);
+				self.Height += (int)(MathF.Sin(hoverTick++ / (float)info.HoverSpeed) * Hover);
 
 			if (self.Mobility != null && self.Mobility.CanFly)
 			{

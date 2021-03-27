@@ -28,7 +28,7 @@ namespace WarriorsSnuggery.UI
 			{
 				progress = (int)(caster.RemainingDuration * -1024) + 512;
 				tick++;
-				var sin = (float)Math.Sin(tick / 8f) * 0.2f + 0.2f;
+				var sin = MathF.Sin(tick / 8f) * 0.2f + 0.2f;
 				SetColor(Color.White + new Color(sin, sin, sin));
 			}
 			else if (caster.Recharging)

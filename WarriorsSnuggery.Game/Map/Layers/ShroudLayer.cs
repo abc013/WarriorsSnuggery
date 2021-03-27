@@ -201,8 +201,8 @@ namespace WarriorsSnuggery
 				var angleA = (position - wall.EndPointA).FlatAngle;
 				var angleB = (position - wall.EndPointB).FlatAngle;
 
-				var pointC = new CPos(position.X + (int)(Math.Cos(angleA) * outerRadius), position.Y + (int)(Math.Sin(angleA) * outerRadius), 0);
-				var pointD = new CPos(position.X + (int)(Math.Cos(angleB) * outerRadius), position.Y + (int)(Math.Sin(angleB) * outerRadius), 0);
+				var pointC = new CPos(position.X + (int)(MathF.Cos(angleA) * outerRadius), position.Y + (int)(MathF.Sin(angleA) * outerRadius), 0);
+				var pointD = new CPos(position.X + (int)(MathF.Cos(angleB) * outerRadius), position.Y + (int)(MathF.Sin(angleB) * outerRadius), 0);
 
 				triangles.Add(new Triangle(wall.EndPointA, wall.EndPointB, pointC));
 				triangles.Add(new Triangle(wall.EndPointB, pointC, pointD));

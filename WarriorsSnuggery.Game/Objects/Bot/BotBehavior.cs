@@ -255,8 +255,8 @@ namespace WarriorsSnuggery.Objects.Bot
 				return;
 
 			// Calculate the magnitude of vj
-			var viMag = (float)Math.Sqrt(vix * vix + viy * viy);
-			var vjMag = (float)Math.Sqrt(velBullet * velBullet - viMag * viMag);
+			var viMag = MathF.Sqrt(vix * vix + viy * viy);
+			var vjMag = MathF.Sqrt(velBullet * velBullet - viMag * viMag);
 
 			// Get vj by multiplying it's magnitude with the unit vector AB
 			var vjx = ABx * vjMag;

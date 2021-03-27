@@ -133,8 +133,8 @@ namespace WarriorsSnuggery.Objects.Parts
 		public int OnAccelerate(float angle, int customAcceleration)
 		{
 			var acceleration = customAcceleration == 0 ? info.Acceleration : customAcceleration;
-			var x = (int)Math.Round(Math.Cos(angle) * acceleration);
-			var y = (int)Math.Round(Math.Sin(angle) * acceleration);
+			var x = (int)Math.Round(MathF.Cos(angle) * acceleration);
+			var y = (int)Math.Round(MathF.Sin(angle) * acceleration);
 
 			Force += new CPos(x * 2, y * 2, 0);
 

@@ -42,9 +42,9 @@ namespace WarriorsSnuggery.Objects.Parts
 				horizontal -= 1;
 
 			if (vertical != 0)
-				self.Accelerate((2 + vertical) * 0.5f * (float)Math.PI);
+				self.Accelerate((2 + vertical) * 0.5f * MathF.PI);
 			if (horizontal != 0)
-				self.Accelerate((3 + horizontal) * 0.5f * (float)Math.PI);
+				self.Accelerate((3 + horizontal) * 0.5f * MathF.PI);
 
 			if (KeyInput.IsKeyDown(Keys.LeftAlt))
 			{

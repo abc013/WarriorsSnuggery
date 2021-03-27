@@ -56,15 +56,15 @@ namespace WarriorsSnuggery.Objects.Particles
 			switch (force.Type)
 			{
 				case ParticleForceType.FORCE:
-					xFloat = (float)(force.Strength * Math.Cos(angle)) * ratio;
-					yFloat = (float)(force.Strength * Math.Sin(angle)) * ratio;
+					xFloat = (force.Strength * MathF.Cos(angle)) * ratio;
+					yFloat = (force.Strength * MathF.Sin(angle)) * ratio;
 					if (useZ)
 						zFloat = (zinvert ? -1 : 1) * force.Strength * ratio;
 					break;
 				case ParticleForceType.TURBULENCE:
-					angle = (float)(random.NextDouble() * 2 * Math.PI);
-					xFloat = (float)(force.Strength * Math.Cos(angle)) * ratio;
-					yFloat = (float)(force.Strength * Math.Sin(angle)) * ratio;
+					angle = Angle.RandomAngle(random);
+					xFloat = (force.Strength * MathF.Cos(angle)) * ratio;
+					yFloat = (force.Strength * MathF.Sin(angle)) * ratio;
 					if (useZ)
 						zFloat = (zinvert ? -1 : 1) * ((float)random.NextDouble() - 0.5f) * force.Strength * ratio;
 					break;
@@ -85,9 +85,9 @@ namespace WarriorsSnuggery.Objects.Particles
 					}
 					break;
 				case ParticleForceType.VORTEX:
-					angle -= (float)Math.PI / 2;
-					xFloat = (float)(force.Strength * Math.Cos(angle)) * ratio;
-					yFloat = (float)(force.Strength * Math.Sin(angle)) * ratio;
+					angle -= MathF.PI / 2; // Rotate 90°
+					xFloat = (force.Strength * MathF.Cos(angle)) * ratio;
+					yFloat = (force.Strength * MathF.Sin(angle)) * ratio;
 					zFloat = 0; // Vortex is only 2D
 					break;
 			}
@@ -108,13 +108,7 @@ namespace WarriorsSnuggery.Objects.Particles
 		{
 			var random = ParticleUtils.Random;
 
-			var angle = (origin - Position).FlatAngle - 2 * (float)Math.PI + Rotation.CastToAngleRange().Z;
-
-			if (angle < -Math.PI)
-				angle += 2 * (float)Math.PI;
-
-			if (angle > Math.PI)
-				angle -= 2 * (float)Math.PI;
+			var angle = Angle.Cast((origin - Position).FlatAngle - Rotation.CastToAngleRange().Z);
 
 			var zFloat = 0f;
 
@@ -125,7 +119,7 @@ namespace WarriorsSnuggery.Objects.Particles
 					zFloat = Math.Min(0.628f, zFloat);
 					break;
 				case ParticleForceType.TURBULENCE:
-					angle = (float)(random.NextDouble() * 2 * Math.PI);
+					angle = Angle.RandomAngle(random);
 					zFloat = Math.Sign(-angle) * force.Strength * ratio * 0.1f;
 					zFloat = Math.Min(0.628f, zFloat);
 					break;
@@ -135,7 +129,7 @@ namespace WarriorsSnuggery.Objects.Particles
 						zFloat = -rotate_velocity.Z * ratio;
 					break;
 				case ParticleForceType.VORTEX:
-					zFloat = Math.Sign(-angle - (float)Math.PI / 2) * force.Strength * 0.1f;
+					zFloat = Math.Sign(-angle - MathF.PI / 2) * force.Strength * 0.1f;
 					zFloat = Math.Min(0.628f, zFloat);
 					break;
 			}

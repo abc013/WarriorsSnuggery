@@ -132,8 +132,8 @@ namespace WarriorsSnuggery.Objects.Weapons
 		{
 			var maxRadius = Type.MaxRange * RangeModifier;
 
-			var x = (int)(Math.Cos(angle) * maxRadius);
-			var y = (int)(Math.Sin(angle) * maxRadius);
+			var x = (int)(MathF.Cos(angle) * maxRadius);
+			var y = (int)(MathF.Sin(angle) * maxRadius);
 
 			return origin + new CPos(x, y, 0);
 		}

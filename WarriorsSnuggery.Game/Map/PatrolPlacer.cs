@@ -123,17 +123,17 @@ namespace WarriorsSnuggery.Maps
 						spawnPosition = mid;
 					else if (j < 7)
 					{
-						var angle = 60 * j / 180f * Math.PI;
-						var deltaX = (int)(patrol.DistanceBetweenObjects * Math.Sin(angle));
-						var deltaY = (int)(patrol.DistanceBetweenObjects * Math.Cos(angle));
+						var angle = Angle.ToArc(60 * j);
+						var deltaX = (int)(patrol.DistanceBetweenObjects * MathF.Cos(angle));
+						var deltaY = (int)(patrol.DistanceBetweenObjects * MathF.Sin(angle));
 
 						spawnPosition = mid + new CPos(deltaX, deltaY, 0);
 					}
 					else if (j < 19)
 					{
-						var angle = 30 * (j - 6) / 180f * Math.PI;
-						var deltaX = (int)(patrol.DistanceBetweenObjects * 2 * Math.Sin(angle));
-						var deltaY = (int)(patrol.DistanceBetweenObjects * 2 * Math.Cos(angle));
+						var angle = Angle.ToArc(30 * (j - 6));
+						var deltaX = (int)(patrol.DistanceBetweenObjects * 2 * MathF.Cos(angle));
+						var deltaY = (int)(patrol.DistanceBetweenObjects * 2 * MathF.Sin(angle));
 
 						spawnPosition = mid + new CPos(deltaX, deltaY, 0);
 					}

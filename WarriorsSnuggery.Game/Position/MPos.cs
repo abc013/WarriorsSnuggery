@@ -40,14 +40,7 @@ namespace WarriorsSnuggery
 		public float AngleTo(MPos pos)
 		{
 			var diff = pos - this;
-			var diffX = -diff.X;
-			var diffY = diff.Y;
-			float angle = (float)-Math.Atan2(diffY, diffX);
-
-			if (angle < 0f)
-				angle += (float)(2 * Math.PI);
-
-			return angle;
+			return Angle.FromVector(diff.X, diff.Y);
 		}
 
 		public bool IsInRange(MPos minimum, MPos maximum)

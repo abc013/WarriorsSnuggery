@@ -222,7 +222,7 @@ namespace WarriorsSnuggery.UI.Screens
 
 					var team = Math.Clamp(actorWidget.Team, (byte)0, Settings.MaxTeams);
 					var actor = ActorCreator.Create(game.World, actorWidget.CurrentType, pos, team, actorWidget.Bot, false, actorWidget.RelativeHP);
-					actor.Angle = actorWidget.RelativeFacing * 2 * (float)Math.PI;
+					actor.Angle = actorWidget.RelativeFacing * Angle.MaxRange;
 
 					game.World.Add(actor);
 					break;

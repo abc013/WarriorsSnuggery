@@ -142,8 +142,8 @@ namespace WarriorsSnuggery.Graphics
 			var vertices = new Vertex[resolution * 2];
 			for (int i = 0; i < resolution * 2; i++)
 			{
-				var x = ((float)Math.Cos(i * Math.PI / resolution * 2)) * size;
-				var y = ((float)Math.Sin(i * Math.PI / resolution * 2)) * size;
+				var x = (MathF.Cos(i * MathF.PI / resolution * 2)) * size;
+				var y = (MathF.Sin(i * MathF.PI / resolution * 2)) * size;
 				vertices[i] = new Vertex(new Vector(x, y, 0), new Vector4(-1), color);
 				if (i != 0 && i != resolution * 2 - 1)
 					vertices[++i] = new Vertex(new Vector(x, y, 0), new Vector4(-1), color);

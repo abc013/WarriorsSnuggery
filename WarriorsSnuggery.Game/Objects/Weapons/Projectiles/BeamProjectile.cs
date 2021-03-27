@@ -40,9 +40,13 @@ namespace WarriorsSnuggery.Objects.Weapons.Projectiles
 		[Desc("Determines the turn speed of the beam in degrees.")]
 		public readonly int TurnSpeed = 5;
 
+		public readonly float ArcTurnSpeed;
+
 		public BeamProjectile(List<TextNode> nodes)
 		{
 			TypeLoader.SetValues(this, nodes);
+
+			ArcTurnSpeed = Angle.ToArc(TurnSpeed) / 10f;
 
 			if (Beam != null)
 				SpriteManager.AddTexture(Beam);

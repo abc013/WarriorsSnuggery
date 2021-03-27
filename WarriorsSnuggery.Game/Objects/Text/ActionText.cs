@@ -48,7 +48,7 @@ namespace WarriorsSnuggery.Objects
 			{
 				var time = current / (float)length - 0.75f;
 				var linear = Math.Sign(time) * time;
-				text.Scale = (float)Math.Pow(1 - linear, 2);
+				text.Scale = MathF.Pow(1 - linear, 2);
 			}
 		}
 	}

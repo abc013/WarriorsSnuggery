@@ -27,9 +27,9 @@ namespace WarriorsSnuggery.Objects.Particles
 			var length = Radius / (float)Count;
 			for (int i = 0; i < Count; i++)
 			{
-				var angle = Angle / 180f * Math.PI;
-				var x = Math.Sin(angle) * length * i;
-				var y = Math.Cos(angle) * length * i;
+				var angle = WarriorsSnuggery.Angle.ToArc(Angle);
+				var x = MathF.Sin(angle) * length * i;
+				var y = MathF.Cos(angle) * length * i;
 				var pos = new CPos((int)x, (int)y, 0);
 
 				particles[i] = ParticleCreator.Create(world, Type, position + pos, height);

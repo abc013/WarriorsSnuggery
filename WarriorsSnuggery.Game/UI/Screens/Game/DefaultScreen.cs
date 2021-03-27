@@ -285,7 +285,7 @@ namespace WarriorsSnuggery.UI.Screens
 
 			var angle = pos.FlatAngle;
 			enemyArrow.SetRotation(new VAngle(0, 0, -angle) + new VAngle(0, 0, 270));
-			enemyArrow.SetPosition(new CPos((int)(Math.Cos(angle) * 2048), (int)(Math.Sin(angle) * 2048) - 2048, 0));
+			enemyArrow.SetPosition(new CPos((int)(MathF.Cos(angle) * 2048), (int)(MathF.Sin(angle) * 2048) - 2048, 0));
 		}
 
 		void changePlayer(ActorType type)

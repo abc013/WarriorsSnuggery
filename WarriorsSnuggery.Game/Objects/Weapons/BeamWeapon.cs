@@ -109,7 +109,7 @@ namespace WarriorsSnuggery.Objects.Weapons
 			var angle = distance.FlatAngle;
 			var fit = distance.FlatDist / renderabledistance;
 
-			var offset = new CPos((int)(Math.Cos(angle) * renderabledistance), (int)(Math.Sin(angle) * renderabledistance), 0);
+			var offset = new CPos((int)(MathF.Cos(angle) * renderabledistance), (int)(MathF.Sin(angle) * renderabledistance), 0);
 
 			var curFrame = frame;
 			for (int i = 0; i < fit; i++)
@@ -185,7 +185,7 @@ namespace WarriorsSnuggery.Objects.Weapons
 					var fit = distance.FlatDist / projectile.BeamParticleDistance;
 					var heightdiff = (originHeight - Height) / projectile.BeamParticleDistance;
 
-					var offset = new CPos((int)(Math.Cos(angle) * projectile.BeamParticleDistance), (int)(Math.Sin(angle) * projectile.BeamParticleDistance), 0);
+					var offset = new CPos((int)(MathF.Cos(angle) * projectile.BeamParticleDistance), (int)(MathF.Sin(angle) * projectile.BeamParticleDistance), 0);
 
 					for (int i = 0; i < fit; i++)
 						World.Add(projectile.BeamParticles.Create(World, originPos + new CPos(offset.X * i, offset.Y * i, 0), originHeight + heightdiff * i));
@@ -225,20 +225,14 @@ namespace WarriorsSnuggery.Objects.Weapons
 			if (Position == target)
 				return;
 
-			var move = projectile.TurnSpeed / 1800f * MathF.PI;
-
 			var length = (originPos - target).FlatDist;
 
 			var oldangle = (originPos - TargetPosition).FlatAngle;
 			var newangle = (originPos - target).FlatAngle;
-			var diff = oldangle - newangle;
 
-			if (diff < -MathF.PI)
-				diff += 2 * MathF.PI;
-			else if (diff > MathF.PI)
-				diff -= 2 * MathF.PI;
+			var diff = WarriorsSnuggery.Angle.Diff(oldangle, newangle);
 
-			diff = Math.Clamp(-diff, -move, move);
+			diff = Math.Clamp(-diff, -projectile.ArcTurnSpeed, projectile.ArcTurnSpeed);
 
 			var dx = (int)(length * MathF.Cos(oldangle + diff));
 			var dy = (int)(length * MathF.Sin(oldangle + diff));

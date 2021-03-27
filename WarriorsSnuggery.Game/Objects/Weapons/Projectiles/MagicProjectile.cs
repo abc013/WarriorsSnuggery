@@ -28,15 +28,16 @@ namespace WarriorsSnuggery.Objects.Weapons.Projectiles
 		[Desc("Turnspeed of the warhead.")]
 		public readonly int TurnSpeed = 32;
 
-		public readonly float FloatTurnSpeed;
+		public readonly float ArcTurnSpeed;
 
 		[Desc("Turbulence to build in.")]
 		public readonly int Turbulence = 0;
 
 		public MagicProjectile(List<TextNode> nodes)
 		{
-			Loader.TypeLoader.SetValues(this, nodes);
-			FloatTurnSpeed = TurnSpeed / (float)(180 * System.Math.PI);
+			TypeLoader.SetValues(this, nodes);
+
+			ArcTurnSpeed = Angle.ToArc(TurnSpeed);
 
 			if (Texture != null)
 				SpriteManager.AddTexture(Texture);

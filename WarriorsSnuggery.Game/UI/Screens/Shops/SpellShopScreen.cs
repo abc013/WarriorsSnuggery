@@ -259,8 +259,8 @@ namespace WarriorsSnuggery.UI.Screens
 			{
 				var renderable = renderables[curFrame];
 
-				var posX = (int)(Math.Cos(angle) * i * renderabledistance);
-				var posY = (int)(Math.Sin(angle) * i * renderabledistance);
+				var posX = (int)(MathF.Cos(angle) * i * renderabledistance);
+				var posY = (int)(MathF.Sin(angle) * i * renderabledistance);
 
 				renderable.SetRotation(new VAngle(0, 0, -angle) + new VAngle(0, 0, 270));
 				renderable.SetPosition(originPos + new CPos(posX, posY, 0));

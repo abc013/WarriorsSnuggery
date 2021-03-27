@@ -50,8 +50,8 @@ namespace WarriorsSnuggery.Objects.Weapons
 
 		void calculateStartSpeed()
 		{
-			var x = (float)Math.Cos(Angle) * projectile.Speed;
-			var y = (float)Math.Sin(Angle) * projectile.Speed;
+			var x = MathF.Cos(Angle) * projectile.Speed;
+			var y = MathF.Sin(Angle) * projectile.Speed;
 
 			var zDiff = TargetHeight - Height;
 			var dDiff = (int)(Position - TargetPosition).FlatDist;
@@ -59,7 +59,7 @@ namespace WarriorsSnuggery.Objects.Weapons
 				dDiff = Type.MaxRange;
 
 			var angle2 = new CPos(-dDiff, -zDiff, 0).FlatAngle;
-			var z = (float)Math.Sin(angle2) * projectile.Speed;
+			var z = MathF.Sin(angle2) * projectile.Speed;
 			var plusZ = (int)((dDiff / (float)projectile.Speed) * -projectile.Force.Z / 2f);
 
 			speed = new Vector(x, y, z + plusZ);
