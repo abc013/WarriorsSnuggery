@@ -226,7 +226,7 @@ namespace WarriorsSnuggery.Objects
 			if (!IsAlive || Height > 0 && !Mobility.CanFly)
 				return false;
 
-			if (CurrentAction.Type == ActionType.END_ATTACK || CurrentAction.Type == ActionType.ATTACK)
+			if ((ActiveWeapon == null || !ActiveWeapon.AllowMoving) && (CurrentAction.Type == ActionType.END_ATTACK || CurrentAction.Type == ActionType.ATTACK))
 				return false;
 
 			if (Effects.Any(e => e.Active && e.Effect.Type == Spells.EffectType.STUN))
@@ -248,6 +248,7 @@ namespace WarriorsSnuggery.Objects
 			if (movement == CPos.Zero)
 				return;
 
+			// TODO: take height also as movement and don't "deny" it in the end.
 			var height = Height + movement.Z;
 
 			// Move in both x and y direction
@@ -322,14 +323,9 @@ namespace WarriorsSnuggery.Objects
 				part.OnMove(old, Velocity);
 
 			if (CurrentAction.Type == ActionType.MOVE)
-			{
 				CurrentAction.ExtendAction(1);
-				return;
-			}
-
-			var action = new ActorAction(ActionType.MOVE, true);
-			action.ExtendAction(1);
-			QueueAction(action);
+			else
+				SetAction(new ActorAction(ActionType.MOVE, true, 1));
 		}
 
 		void denyMove()
@@ -437,7 +433,29 @@ namespace WarriorsSnuggery.Objects
 				Effects.Remove(effect);
 		}
 
-		public bool QueueAction(ActorAction action, bool setUpcoming = false)
+		public bool QueueAction(ActorAction action)
+		{
+			if (action.ActionOver)
+				return true;
+
+			if (CurrentAction.ActionOver)
+			{
+				CurrentAction = upcoming ?? action;
+
+				if (upcoming == null)
+					return true;
+
+				upcoming = null;
+			}
+
+			if (upcoming != null)
+				return false;
+
+			upcoming = action;
+			return true;
+		}
+
+		public bool SetAction(ActorAction action)
 		{
 			if (action.ActionOver)
 				return true;
@@ -448,12 +466,7 @@ namespace WarriorsSnuggery.Objects
 				return true;
 			}
 
-			if (!setUpcoming || upcoming != null)
-				return false;
-
-			upcoming = action;
-
-			return true;
+			return false;
 		}
 
 		public override void SetColor(Color color)
@@ -486,9 +499,7 @@ namespace WarriorsSnuggery.Objects
 			if (Effects.Any(e => e.Active && e.Effect.Type == Spells.EffectType.STUN))
 				return;
 
-			var action = new ActorAction(ActionType.PREPARE_ATTACK, true);
-			action.ExtendAction(ActiveWeapon.Type.PreparationDelay);
-			if (!QueueAction(action))
+			if (!SetAction(new ActorAction(ActionType.PREPARE_ATTACK, true, ActiveWeapon.Type.PreparationDelay)))
 				return;
 
 			Angle = (Position - target.Position).FlatAngle;
@@ -503,13 +514,8 @@ namespace WarriorsSnuggery.Objects
 
 			World.Add(weapon);
 
-			var action = new ActorAction(ActionType.ATTACK, false);
-			action.ExtendAction(ActiveWeapon.Type.ShootDuration);
-			QueueAction(action);
-			
-			var cooldownAction = new ActorAction(ActionType.END_ATTACK, false);
-			cooldownAction.ExtendAction(ActiveWeapon.Type.CooldownDelay);
-			QueueAction(cooldownAction, ActiveWeapon.Type.ShootDuration != 0); // Directly use when shootDuration is 0
+			SetAction(new ActorAction(ActionType.ATTACK, false, ActiveWeapon.Type.ShootDuration));
+			QueueAction(new ActorAction(ActionType.END_ATTACK, false, ActiveWeapon.Type.CooldownDelay));
 
 			foreach (var part in PartManager.GetOrDefault<INoticeAttack>())
 				part.OnAttack(target.Position, weapon);

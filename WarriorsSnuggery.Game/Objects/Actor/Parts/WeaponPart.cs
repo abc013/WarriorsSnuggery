@@ -15,6 +15,8 @@ namespace WarriorsSnuggery.Objects.Parts
 		public readonly CPos Offset;
 		[Desc("Height of the shoot point.")]
 		public readonly int Height;
+		[Desc("Determines whether to allow moving while firing.")]
+		public readonly bool AllowMoving;
 
 		public WeaponPartInfo(PartInitSet set) : base(set) { }
 
@@ -28,6 +30,8 @@ namespace WarriorsSnuggery.Objects.Parts
 	{
 		readonly WeaponPartInfo info;
 		public readonly WeaponType Type;
+
+		public bool AllowMoving => info.AllowMoving;
 
 		public CPos WeaponOffsetPosition => self.GraphicPositionWithoutHeight + info.Offset;
 		public int WeaponHeightPosition => self.Height + info.Height;

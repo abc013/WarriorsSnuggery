@@ -28,6 +28,11 @@
 			Infinite = infinite;
 		}
 
+		public ActorAction(ActionType type, bool skippable, int duration) : this(type, skippable)
+		{
+			CurrentTick = duration;
+		}
+
 		public void ExtendAction(int ticks)
 		{
 			CurrentTick += ticks;
