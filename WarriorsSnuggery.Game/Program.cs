@@ -115,15 +115,9 @@ namespace WarriorsSnuggery
 			Console.ForegroundColor = ConsoleColor.Red;
 			Console.WriteLine("Ouch! An error occurred.");
 			Console.ResetColor();
-			Console.WriteLine("For more details, check out the logs (press 'o' or open the 'logs' directory).");
+			Console.WriteLine("For more details, please check out the logs (located in 'WarriorsSnuggery/logs/').");
 			Console.WriteLine("Please report the issue to https://github.com/abc013/WarriorsSnuggery or contact abc013.");
 			Console.WriteLine("Thank you!");
-			if (!IsDebug)
-			{
-				var key = Console.ReadKey(true).KeyChar;
-				if (key == 'o')
-					Process.Start("explorer.exe", "/select, \"" + FileExplorer.Logs + "exception.log\"");
-			}
 		}
 
 		public static void Exit()
