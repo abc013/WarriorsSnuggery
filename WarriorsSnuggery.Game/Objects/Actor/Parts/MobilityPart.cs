@@ -85,7 +85,7 @@ namespace WarriorsSnuggery.Objects.Parts
 		{
 			if (Velocity != CPos.Zero)
 			{
-				self.MoveTick();
+				moveTick();
 
 				if (self.Height == 0 || CanFly)
 				{
@@ -128,6 +128,110 @@ namespace WarriorsSnuggery.Objects.Parts
 				Velocity = new CPos(Velocity.X, Velocity.Y, (int)maxSpeed * Math.Sign(Velocity.Z));
 
 			sound?.SetPosition(self.Position);
+		}
+
+		void moveTick()
+		{
+			var speedModifier = 1f;
+			if (self.Height == 0 && self.World.TerrainAt(self.Position) != null)
+				speedModifier = self.World.TerrainAt(self.Position).Type.Speed;
+
+			if (speedModifier <= 0.01f)
+				return;
+
+			var movement = new CPos((int)Math.Round(Velocity.X * speedModifier), (int)Math.Round(Velocity.Y * speedModifier), (int)Math.Round(Velocity.Z * speedModifier));
+			if (movement == CPos.Zero)
+				return;
+
+			var height = self.Height + movement.Z;
+
+			// Move only in z direction
+			if (movement.X == 0 && movement.Y == 0 && checkMove(self.Position, height, Velocity))
+				return;
+
+			// Move in both x and y direction
+			if (movement.X != 0 && movement.Y != 0)
+			{
+				var pos = self.Position + new CPos(movement.X, movement.Y, 0);
+				if (checkMove(pos, height, Velocity))
+					return;
+			}
+
+			// Move only in x direction
+			if (movement.X != 0)
+			{
+				var posX = self.Position + new CPos(movement.X, 0, 0);
+				if (checkMove(posX, height, new CPos(Velocity.X, 0, Velocity.Z)))
+					return;
+			}
+
+			// Move only in y direction
+			if (movement.Y != 0)
+			{
+				var posY = self.Position + new CPos(0, movement.Y, 0);
+				if (checkMove(posY, height, new CPos(0, Velocity.Y, Velocity.Z)))
+					return;
+			}
+
+			denyMove();
+		}
+
+		bool checkMove(CPos pos, int height, CPos velocity)
+		{
+			if (!self.World.IsInWorld(pos))
+				return false;
+
+			var oldPos = self.Position;
+			var oldHeight = self.Height;
+
+			self.Height = height;
+			self.Position = pos;
+
+			var intersects = self.World.CheckCollision(self.Physics);
+
+			self.Position = oldPos;
+			self.Height = oldHeight;
+
+			if (intersects)
+				return false;
+
+			var terrain = self.World.TerrainAt(pos);
+			if (terrain != null && height == 0 && terrain.Type.Speed == 0)
+				return false;
+
+			acceptMove(pos, height, terrain);
+			Velocity = velocity;
+
+			return true;
+		}
+
+		void acceptMove(CPos position, int height, Terrain terrain)
+		{
+			var old = self.Position;
+			self.Height = height;
+			self.Position = position;
+			self.TerrainPosition = self.Position.ToMPos();
+			self.CurrentTerrain = terrain;
+
+			self.Angle = (old - position).FlatAngle;
+			self.World.PhysicsLayer.UpdateSectors(self.Physics);
+			self.World.ActorLayer.Update(self);
+
+			self.Move(old);
+
+			if (self.CurrentAction.Type == ActionType.MOVE)
+				self.CurrentAction.ExtendAction(1);
+			else
+				self.SetAction(new ActorAction(ActionType.MOVE, true, 1));
+		}
+
+		void denyMove()
+		{
+			Velocity = CPos.Zero;
+
+			self.CurrentAction = ActorAction.Default;
+
+			self.StopMove();
 		}
 
 		public int OnAccelerate(float angle, int customAcceleration)

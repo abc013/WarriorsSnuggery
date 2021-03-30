@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using WarriorsSnuggery.Objects.Parts;
@@ -235,105 +234,14 @@ namespace WarriorsSnuggery.Objects
 			return true;
 		}
 
-		public void MoveTick()
+		public void Move(CPos old)
 		{
-			var speedModifier = 1f;
-			if (Height == 0 && World.TerrainAt(Position) != null)
-				speedModifier = World.TerrainAt(Position).Type.Speed;
-
-			if (speedModifier <= 0.01f)
-				return;
-
-			var movement = new CPos((int)Math.Round(Velocity.X * speedModifier), (int)Math.Round(Velocity.Y * speedModifier), (int)Math.Round(Velocity.Z * speedModifier));
-			if (movement == CPos.Zero)
-				return;
-
-			// TODO: take height also as movement and don't "deny" it in the end.
-			var height = Height + movement.Z;
-
-			// Move in both x and y direction
-			if (movement.X != 0 && movement.Y != 0)
-			{
-				var pos = new CPos(Position.X + movement.X, Position.Y + movement.Y, Position.Z);
-				if (checkMove(pos, height, Velocity))
-					return;
-			}
-
-			// Move only in x direction
-			if (movement.X != 0)
-			{
-				var posX = new CPos(Position.X + movement.X, Position.Y, Position.Z);
-				if (checkMove(posX, height, new CPos(Velocity.X, 0, Velocity.Z)))
-					return;
-			}
-
-			// Move only in y direction
-			if (movement.Y != 0)
-			{
-				var posY = new CPos(Position.X, Position.Y + movement.Y, Position.Z);
-				if (checkMove(posY, height, new CPos(0, Velocity.Y, Velocity.Z)))
-					return;
-			}
-
-			denyMove();
-		}
-
-		bool checkMove(CPos pos, int height, CPos velocity)
-		{
-			if (!World.IsInWorld(pos))
-				return false;
-
-			var oldPos = Position;
-			var oldHeight = Height;
-
-			Height = height;
-			Position = pos;
-
-			var intersects = World.CheckCollision(Physics);
-
-			Position = oldPos;
-			Height = oldHeight;
-
-			if (intersects)
-				return false;
-
-			var terrain = World.TerrainAt(pos);
-			if (terrain != null && height == 0 && terrain.Type.Speed == 0)
-				return false;
-
-			acceptMove(pos, height, terrain);
-			Velocity = velocity;
-
-			return true;
-		}
-
-		void acceptMove(CPos position, int height, Terrain terrain)
-		{
-			var old = Position;
-			Height = height;
-			Position = position;
-			TerrainPosition = Position.ToMPos();
-			CurrentTerrain = terrain;
-
-			Angle = (old - position).FlatAngle;
-			World.PhysicsLayer.UpdateSectors(Physics);
-			World.ActorLayer.Update(this);
-
 			foreach (var part in moveParts)
 				part.OnMove(old, Velocity);
-
-			if (CurrentAction.Type == ActionType.MOVE)
-				CurrentAction.ExtendAction(1);
-			else
-				SetAction(new ActorAction(ActionType.MOVE, true, 1));
 		}
 
-		void denyMove()
+		public void StopMove()
 		{
-			Velocity = CPos.Zero;
-
-			CurrentAction = ActorAction.Default;
-
 			foreach (var part in stopParts)
 				part.OnStop();
 		}
