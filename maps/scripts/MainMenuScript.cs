@@ -83,12 +83,12 @@ namespace WarriorsSnuggeryScripts
 				world.Add(new Particle(world, init));
 
 				radius += (negate ? -1 : 1) * (random.Next(radiusVelocity) - radiusVelocity / 2);
-				position += withAngle((position - world.LocalPlayer.Position).FlatAngle + (float)Math.PI / 2, (negate ? -1 : 1) * radiusVelocity);
+				position += withAngle((position - world.LocalPlayer.Position).FlatAngle + MathF.PI / 2, (negate ? -1 : 1) * radiusVelocity);
 			}
 
 			static CPos withAngle(float angle, int number)
 			{
-				return new CPos((int)(Math.Cos(angle) * number), (int)(Math.Sin(angle) * number), 0);
+				return new CPos((int)(MathF.Cos(angle) * number), (int)(MathF.Sin(angle) * number), 0);
 			}
 		}
 	}
