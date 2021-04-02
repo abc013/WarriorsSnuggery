@@ -6,9 +6,9 @@ Boost=
 			Duration=300
 			ParticleTick=2
 			Particles=Area
-				Type=glitter
-				Count=2
-				Radius=512
+				Type=fire
+				Count=1
+				Radius=256
 
 First_hit=
 	Effects=
@@ -72,6 +72,10 @@ Blood_pact=
 			Type=DAMAGE
 			Value=251
 			Duration=300
+			Particles=Area
+				Type=blood
+				Count=3
+				Radius=256
 
 Blood_armor=
 	Effects=
