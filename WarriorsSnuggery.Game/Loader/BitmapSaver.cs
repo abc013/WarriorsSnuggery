@@ -22,7 +22,7 @@ namespace WarriorsSnuggery.Loader
 
 		public static void Save(string filename, byte[] data, MPos size, bool invertY = false)
 		{
-			using var img = new Bitmap(size.X, size.Y, size.X * 3, System.Drawing.Imaging.PixelFormat.Format24bppRgb, Marshal.UnsafeAddrOfPinnedArrayElement(data, 0));
+			using var img = new Bitmap(size.X, size.Y, size.X * 4, System.Drawing.Imaging.PixelFormat.Format32bppArgb, Marshal.UnsafeAddrOfPinnedArrayElement(data, 0));
 
 			if (invertY)
 				img.RotateFlip(RotateFlipType.RotateNoneFlipY);
