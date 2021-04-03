@@ -97,6 +97,13 @@ namespace WarriorsSnuggery.Objects
 					continue;
 				}
 
+				// If nothing comes after this color, then just discard it and stop
+				if (endindex + 1 >= text.Length - index)
+				{
+					text = text.Remove(index, endindex + 1);
+					break;
+				}
+
 				var color = recognizeColor(text.Remove(0, index).Remove(endindex + 1), out var success);
 
 				if (!success)
