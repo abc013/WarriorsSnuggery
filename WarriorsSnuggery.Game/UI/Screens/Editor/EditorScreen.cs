@@ -178,30 +178,32 @@ namespace WarriorsSnuggery.UI.Screens
 
 		void remove()
 		{
-			var removeSectors = game.World.ActorLayer.GetSectors(MouseInput.GamePosition, 512);
-			foreach (var sector in removeSectors)
+			switch (currentSelected)
 			{
-				var remove = sector.Actors.Find(a => !a.IsPlayer && (a.Position - MouseInput.GamePosition).SquaredFlatDist < 512 * 512);
-				if (remove != null)
-				{
-					remove.Dispose();
-					return;
-				}
+				case Selected.ACTOR:
+					var removeSectors = game.World.ActorLayer.GetSectors(MouseInput.GamePosition, 512);
+					foreach (var sector in removeSectors)
+					{
+						var remove = sector.Actors.Find(a => !a.IsPlayer && (a.Position - MouseInput.GamePosition).SquaredFlatDist < 512 * 512);
+						if (remove != null)
+						{
+							remove.Dispose();
+							return;
+						}
+					}
+					break;
+				case Selected.WALL:
+					var bounds = game.World.Map.Bounds;
+					var pos = MouseInput.GamePosition.ToMPos();
+
+					if (pos.X < 0 || pos.Y < 0 || pos.X > bounds.X || pos.Y > bounds.Y)
+						return;
+
+					pos = new MPos(pos.X * 2 + (wallWidget.Horizontal ? 0 : 1), pos.Y);
+
+					game.World.WallLayer.Remove(pos);
+					break;
 			}
-
-			var bounds = game.World.Map.Bounds;
-			var pos4 = MouseInput.GamePosition.ToMPos();
-			pos4 = new MPos(pos4.X < 0 ? 0 : pos4.X, pos4.Y < 0 ? 0 : pos4.Y);
-			pos4 = new MPos(pos4.X > bounds.X ? bounds.X : pos4.X, pos4.Y > bounds.Y ? bounds.Y : pos4.Y);
-			pos4 = new MPos(pos4.X * 2 + (wallWidget.Horizontal ? 0 : 1), pos4.Y);
-
-			var wallLayer = game.World.WallLayer;
-			if (pos4.X >= wallLayer.Bounds.X)
-				pos4 = new MPos(wallLayer.Bounds.X - 1, pos4.Y);
-			if (pos4.Y >= wallLayer.Bounds.Y)
-				pos4 = new MPos(pos4.X, wallLayer.Bounds.Y - 1);
-
-			wallLayer.Remove(pos4);
 		}
 
 		void place()
@@ -210,15 +212,19 @@ namespace WarriorsSnuggery.UI.Screens
 				return;
 
 			var pos = MouseInput.GamePosition;
-			pos = actorWidget.Rasterization ? new CPos(pos.X - pos.X % 512, pos.Y - pos.Y % 512, 0) : pos;
-			var mpos = MouseInput.GamePosition.ToMPos();
-			mpos = new MPos(mpos.X < 0 ? 0 : mpos.X, mpos.Y < 0 ? 0 : mpos.Y);
+			var mpos = (MouseInput.GamePosition + game.World.Map.TopLeftCorner).ToMPos();
+			var bounds = game.World.Map.Bounds;
 
 			switch (currentSelected)
 			{
 				case Selected.ACTOR:
 					if (actorWidget.CurrentType == null)
 						return;
+
+					if (actorWidget.RelativeHP == 0)
+						return;
+
+					pos = actorWidget.Rasterization ? new CPos(pos.X - pos.X % 512, pos.Y - pos.Y % 512, 0) : pos;
 
 					var team = Math.Clamp(actorWidget.Team, (byte)0, Settings.MaxTeams);
 					var actor = ActorCreator.Create(game.World, actorWidget.CurrentType, pos, team, actorWidget.Bot, false, actorWidget.RelativeHP);
@@ -228,6 +234,9 @@ namespace WarriorsSnuggery.UI.Screens
 					break;
 				case Selected.TILE:
 					if (terrainWidget.CurrentType == null)
+						return;
+
+					if (mpos.X < 0 || mpos.Y < 0 || mpos.X >= bounds.X || mpos.Y >= bounds.Y)
 						return;
 
 					if (game.World.TerrainLayer.Terrain[mpos.X, mpos.Y].Type == terrainWidget.CurrentType)
@@ -243,17 +252,24 @@ namespace WarriorsSnuggery.UI.Screens
 					if (wallWidget.CurrentType == null)
 						return;
 
-					var bounds = game.World.Map.Bounds;
-					if (mpos.X > bounds.X || mpos.Y > bounds.Y)
+					if (mpos.X < 0 || mpos.Y < 0 || mpos.X > bounds.X || mpos.Y > bounds.Y)
 						return;
 
 					mpos = new MPos(mpos.X * 2 + (wallWidget.Horizontal ? 0 : 1), mpos.Y);
 
-					var type = wallWidget.CurrentType;
-
 					var wallLayer = game.World.WallLayer;
 
+					if (mpos.X >= wallLayer.Bounds.X - 2)
+						return;
+
+					if (mpos.Y >= wallLayer.Bounds.Y - 2 && wallWidget.Horizontal)
+						return;
+
+					var type = wallWidget.CurrentType;
+
 					var plannedHealth = (int)(type.Health * wallWidget.RelativeHP);
+					if (plannedHealth == 0)
+						return;
 
 					var currentWall = wallLayer.Walls[mpos.X, mpos.Y];
 					if (currentWall != null && currentWall.Type.ID == type.ID && currentWall.Health == plannedHealth)
