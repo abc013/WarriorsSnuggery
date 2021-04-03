@@ -39,6 +39,13 @@ namespace WarriorsSnuggery.UI.Screens
 			mousePosition = new UITextLine(new CPos((int)(WindowInfo.UnitWidth * 512 - 1024), -7172, 0), FontManager.Pixel16, TextOffset.RIGHT);
 			Content.Add(mousePosition);
 
+			if (!string.IsNullOrEmpty(game.MapType.OverridePiece))
+			{
+				var pieceName = new UITextLine(new CPos((int)(WindowInfo.UnitWidth * 512 - 1024), -7684, 0), FontManager.Pixel16, TextOffset.RIGHT);
+				pieceName.WriteText("Piece name: " + Color.Green + game.MapType.OverridePiece);
+				Content.Add(pieceName);
+			}
+
 			save = new Button(new CPos((int)(WindowInfo.UnitWidth * 512 - 2048), -5120, 0), "Save", "wooden", savePiece);
 
 			var checkBoxPosition = new CPos((int)(WindowInfo.UnitWidth * 512) - 1024, -6144, 0);
@@ -155,7 +162,8 @@ namespace WarriorsSnuggery.UI.Screens
 					remove();
 			}
 
-			mousePosition.WriteText(Color.White + "" + MouseInput.GamePosition.ToMPos() + Color.Grey + " | " + MouseInput.GamePosition);
+			var mouseInWorld = game.World.IsInWorld(MouseInput.GamePosition);
+			mousePosition.WriteText((mouseInWorld ? Color.White : Color.Red) + "" + (MouseInput.GamePosition + game.World.Map.TopLeftCorner).ToMPos() + (mouseInWorld ? Color.Grey : new Color(1f, 0.75f, 0.75f)) + " | " + MouseInput.GamePosition);
 
 			switch (currentSelected)
 			{
