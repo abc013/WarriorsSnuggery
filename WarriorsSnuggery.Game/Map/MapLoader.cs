@@ -25,6 +25,7 @@ namespace WarriorsSnuggery.Maps
 
 		public IMapGeneratorInfo[] Infos => map.Type.Generators;
 		public bool FromSave => map.Type.IsSave;
+		public string MapTypeName => map.Type.Name;
 
 		public ObjectiveType ObjectiveType => world.Game.ObjectiveType;
 		public GameStatistics Statistics => world.Game.Statistics;

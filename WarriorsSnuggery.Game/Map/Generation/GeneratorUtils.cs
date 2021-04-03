@@ -7,6 +7,9 @@
 			if (id < 0)
 				return loader.EmptyNoiseMap;
 
+			if (!loader.NoiseMaps.ContainsKey(id))
+				throw new Loader.InvalidNodeException($"Map type {loader.MapTypeName} is missing a NoiseMap with ID {id}.");
+
 			return loader.NoiseMaps[id];
 		}
 
