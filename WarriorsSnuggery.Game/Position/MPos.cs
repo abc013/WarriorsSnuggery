@@ -35,7 +35,7 @@ namespace WarriorsSnuggery
 
 		public override int GetHashCode() { return X ^ Y; }
 
-		public override string ToString() { return X + "," + Y; }
+		public override string ToString() { return X + ", " + Y; }
 
 		public float AngleTo(MPos pos)
 		{

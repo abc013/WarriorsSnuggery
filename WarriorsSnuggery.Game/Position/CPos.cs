@@ -43,7 +43,7 @@ namespace WarriorsSnuggery
 
 		public override int GetHashCode() { return X ^ Y ^ Z; }
 
-		public override string ToString() { return X + "," + Y + "," + Z; }
+		public override string ToString() { return X + ", " + Y + ", " + Z; }
 
 		public Vector ToVector()
 		{
