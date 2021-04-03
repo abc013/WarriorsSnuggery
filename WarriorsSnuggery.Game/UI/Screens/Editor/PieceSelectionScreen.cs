@@ -95,9 +95,9 @@ namespace WarriorsSnuggery.UI.Screens
 			size.SetText("Size of Piece");
 			Content.Add(size);
 
-			sizeX = new TextBox(new CPos(1024, 0, 0), "16", "wooden", 2, true);
+			sizeX = new TextBox(new CPos(-1024, 0, 0), "16", "wooden", 2, true);
 			Content.Add(sizeX);
-			sizeY = new TextBox(new CPos(-1024, 0, 0), "16", "wooden", 2, true);
+			sizeY = new TextBox(new CPos(1024, 0, 0), "16", "wooden", 2, true);
 			Content.Add(sizeY);
 			name = new TextBox(new CPos(0, 1536, 0), "unnamed piece", "wooden", 20, isPath: true);
 			Content.Add(name);
