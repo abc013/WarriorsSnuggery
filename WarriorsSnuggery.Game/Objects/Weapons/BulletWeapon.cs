@@ -104,7 +104,7 @@ namespace WarriorsSnuggery.Objects.Weapons
 			if (Math.Abs(speed.Z) > projectile.MaxSpeed)
 				speed = new Vector(speed.X, speed.Y, Math.Sign(speed.Z) * projectile.MaxSpeed);
 
-			if (Height < 0 || !World.IsInWorld(Position))
+			if (Height == 0 && z < 0 || !World.IsInWorld(Position))
 				Detonate(new Target(Position, 0));
 
 			rayPhysics.Start = beforePos;

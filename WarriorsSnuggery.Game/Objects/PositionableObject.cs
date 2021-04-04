@@ -28,6 +28,10 @@ namespace WarriorsSnuggery.Objects
 			{
 				height = value;
 
+				// make it impossible to be underground.
+				if (height < 0)
+					height = 0;
+
 				Renderable?.SetPosition(GraphicPosition);
 			}
 		}

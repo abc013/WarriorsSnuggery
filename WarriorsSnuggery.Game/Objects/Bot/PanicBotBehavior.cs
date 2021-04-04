@@ -27,7 +27,7 @@ namespace WarriorsSnuggery.Objects.Bot
 					angle = (float)Program.SharedRandom.NextDouble();
 
 				if (CanMove && DistToTarget > 512)
-					Self.Accelerate(angle);
+					Self.AccelerateSelf(angle);
 
 				if (!PerfectTarget() && Program.SharedRandom.Next(100) == 0)
 					PredictiveAttack(new Target(randomPosition(), 0));
@@ -43,7 +43,7 @@ namespace WarriorsSnuggery.Objects.Bot
 						panic++;
 
 					if (CanMove && Target != null && DistToTarget > 712)
-						Self.Accelerate(AngleToTarget);
+						Self.AccelerateSelf(AngleToTarget);
 
 					return;
 				}
@@ -73,13 +73,13 @@ namespace WarriorsSnuggery.Objects.Bot
 						float angle = actor != null ? (Self.Position - actor.Position).FlatAngle : AngleToTarget;
 
 						if (DistToTarget > range * 0.9f)
-							Self.Accelerate(angle);
+							Self.AccelerateSelf(angle);
 						else if (DistToTarget < range * 0.8f)
-							Self.Accelerate(-angle);
+							Self.AccelerateSelf(-angle);
 					}
 					else
 					{
-						Self.Accelerate(AngleToMapMid);
+						Self.AccelerateSelf(AngleToMapMid);
 					}
 				}
 			}

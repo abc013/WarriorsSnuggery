@@ -176,46 +176,46 @@ namespace WarriorsSnuggery.Objects
 
 		public void Push(float angle, int power)
 		{
-			accelerate(angle, power);
-		}
-
-		public void Accelerate(float angle)
-		{
-			if (!canMove())
-				return;
-
-			accelerate(angle);
-		}
-
-		void accelerate(float angle, int customAcceleration = 0)
-		{
 			if (Mobility == null || World.Game.Editor)
 				return;
 
-			var acceleration = Mobility.OnAccelerate(angle, customAcceleration);
+			var acceleration = Mobility.Accelerate(angle, power);
 			foreach (var part in accelerationParts)
 				part.OnAccelerate(angle, acceleration);
 		}
 
-		public void Push(int power)
-		{
-			accelerate(true, power);
-		}
-
-		public void AccelerateHeight(bool up)
-		{
-			if (!Mobility.CanFly || !canMove())
-				return;
-
-			accelerate(up);
-		}
-
-		void accelerate(bool up, int customAcceleration = 0)
+		public void AccelerateSelf(float angle)
 		{
 			if (Mobility == null || World.Game.Editor)
 				return;
 
-			var acceleration = Mobility.OnAccelerateHeight(up, customAcceleration);
+			if (!canMove())
+				return;
+
+			var acceleration = Mobility.AccelerateSelf(angle);
+			foreach (var part in accelerationParts)
+				part.OnAccelerate(angle, acceleration);
+		}
+
+		public void Lift(int power)
+		{
+			if (Mobility == null || World.Game.Editor)
+				return;
+
+			var acceleration = Mobility.AccelerateHeight(power);
+			foreach (var part in accelerationParts)
+				part.OnAccelerate(new CPos(0, 0, acceleration));
+		}
+
+		public void AccelerateHeightSelf(bool up)
+		{
+			if (Mobility == null || World.Game.Editor)
+				return;
+
+			if (!Mobility.CanFly || !canMove())
+				return;
+
+			var acceleration = Mobility.AccelerateHeightSelf(up);
 			foreach (var part in accelerationParts)
 				part.OnAccelerate(new CPos(0, 0, acceleration));
 		}
@@ -314,10 +314,6 @@ namespace WarriorsSnuggery.Objects
 					CurrentAction = ActorAction.Default;
 				}
 			}
-
-			// Make it impossible to be in the ground.
-			if (Height < 0)
-				Height = 0;
 
 			if (World.Game.Editor)
 			{

@@ -150,8 +150,6 @@ namespace WarriorsSnuggery.Objects.Particles
 				world.ParticleLayer.Update(this);
 
 			Height += velocity.Z;
-			if (Height < 0)
-				Height = 0;
 
 			if (current-- <= 0)
 			{

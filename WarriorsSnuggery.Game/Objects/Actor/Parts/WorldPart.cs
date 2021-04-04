@@ -110,9 +110,9 @@ namespace WarriorsSnuggery.Objects.Parts
 			if (self.Mobility != null && self.Mobility.CanFly)
 			{
 				if (Height > Height + Hover * 64)
-					self.AccelerateHeight(false);
+					self.AccelerateHeightSelf(false);
 				else if (Height < Height - Hover * 64)
-					self.AccelerateHeight(true);
+					self.AccelerateHeightSelf(true);
 			}
 		}
 

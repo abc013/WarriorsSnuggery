@@ -70,7 +70,7 @@ namespace WarriorsSnuggery.Objects.Weapons.Warheads
 						actor.Push(angle, acceleration);
 
 						if (UseHeight)
-							actor.Push(acceleration);
+							actor.Lift(acceleration);
 					}
 				}
 			}

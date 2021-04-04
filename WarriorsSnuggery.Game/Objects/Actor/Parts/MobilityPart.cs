@@ -41,11 +41,11 @@ namespace WarriorsSnuggery.Objects.Parts
 	public class MobilityPart : ActorPart, ITick
 	{
 		readonly MobilityPartInfo info;
+		readonly Sound sound;
 
 		public CPos Force;
 		public CPos Velocity;
-		public CPos oldVelocity;
-		public Sound sound;
+		CPos oldVelocity;
 
 		public bool CanFly => info.CanFly;
 
@@ -64,10 +64,12 @@ namespace WarriorsSnuggery.Objects.Parts
 
 			foreach (var node in parent.Children)
 			{
-				if (node.Key == "Force")
+				if (node.Key == nameof(Force))
 					Force = node.Convert<CPos>();
-				if (node.Key == "Velocity")
+				if (node.Key == nameof(Velocity))
 					Velocity = node.Convert<CPos>();
+				if (node.Key == nameof(oldVelocity))
+					oldVelocity = node.Convert<CPos>();
 			}
 		}
 
@@ -75,8 +77,9 @@ namespace WarriorsSnuggery.Objects.Parts
 		{
 			var saver = new PartSaver(this, info.InternalName);
 
-			saver.Add("Force", Force, CPos.Zero);
-			saver.Add("Velocity", Velocity, CPos.Zero);
+			saver.Add(nameof(Force), Force, CPos.Zero);
+			saver.Add(nameof(Velocity), Velocity, CPos.Zero);
+			saver.Add(nameof(oldVelocity), oldVelocity, CPos.Zero);
 
 			return saver;
 		}
@@ -87,19 +90,32 @@ namespace WarriorsSnuggery.Objects.Parts
 			{
 				moveTick();
 
+				// Deceleration
 				if (self.Height == 0 || CanFly)
 				{
-					var signX = Math.Sign(Velocity.X);
-					var signY = Math.Sign(Velocity.Y);
-					var signZ = Math.Sign(Velocity.Z);
-					Velocity -= new CPos(info.Deceleration * signX, info.Deceleration * signY, info.Deceleration * signZ);
+					var signX = info.Deceleration * Math.Sign(Velocity.X);
+					var signY = info.Deceleration * Math.Sign(Velocity.Y);
+					var signZ = info.Deceleration * Math.Sign(Velocity.Z);
+					Velocity -= new CPos(signX, signY, signZ);
 
 					if (Math.Sign(Velocity.X) != signX)
 						Velocity = new CPos(0, Velocity.Y, Velocity.Z);
-					if (Math.Sign(Velocity.Y) != signY)
+					if (Math.Sign(Velocity.Y) != signX)
 						Velocity = new CPos(Velocity.X, 0, Velocity.Z);
-					if (Math.Sign(Velocity.Z) != signZ)
+					if (Math.Sign(Velocity.Z) != signX)
 						Velocity = new CPos(Velocity.X, Velocity.Y, 0);
+
+					var speedFactor = 1f;
+					foreach (var effect in self.Effects.Where(e => e.Active && e.Effect.Type == Spells.EffectType.SPEED))
+						speedFactor *= effect.Effect.Value;
+
+					var maxSpeed = speedFactor * info.Speed;
+					var currentSpeed = Velocity.Dist;
+					if (currentSpeed > maxSpeed)
+					{
+						var factor = maxSpeed / currentSpeed;
+						Velocity = new CPos((int)(Velocity.X * factor), (int)(Velocity.Y * factor), (int)(Velocity.Z * factor));
+					}
 				}
 
 				if (oldVelocity == CPos.Zero)
@@ -107,6 +123,7 @@ namespace WarriorsSnuggery.Objects.Parts
 			}
 			else if (oldVelocity == CPos.Zero)
 				sound?.Stop();
+
 			oldVelocity = Velocity;
 
 			if (self.Height > 0 && !CanFly)
@@ -114,18 +131,6 @@ namespace WarriorsSnuggery.Objects.Parts
 
 			Velocity += Force;
 			Force = CPos.Zero;
-
-			var speedFactor = 1f;
-			foreach (var effect in self.Effects.Where(e => e.Active && e.Effect.Type == Spells.EffectType.SPEED))
-				speedFactor *= effect.Effect.Value;
-
-			var maxSpeed = speedFactor * info.Speed;
-			if (Math.Abs(Velocity.X) > maxSpeed)
-				Velocity = new CPos((int)maxSpeed * Math.Sign(Velocity.X), Velocity.Y, Velocity.Z);
-			if (Math.Abs(Velocity.Y) > maxSpeed)
-				Velocity = new CPos(Velocity.X, (int)maxSpeed * Math.Sign(Velocity.Y), Velocity.Z);
-			if (Math.Abs(Velocity.Z) > maxSpeed)
-				Velocity = new CPos(Velocity.X, Velocity.Y, (int)maxSpeed * Math.Sign(Velocity.Z));
 
 			sound?.SetPosition(self.Position);
 		}
@@ -234,25 +239,37 @@ namespace WarriorsSnuggery.Objects.Parts
 			self.StopMove();
 		}
 
-		public int OnAccelerate(float angle, int customAcceleration)
+		public int AccelerateSelf(float angle)
 		{
-			var acceleration = customAcceleration == 0 ? info.Acceleration : customAcceleration;
+			var speedFactor = 1f;
+			foreach (var effect in self.Effects.Where(e => e.Active && e.Effect.Type == Spells.EffectType.SPEED))
+				speedFactor *= effect.Effect.Value;
+
+			return Accelerate(angle, (int)(speedFactor * info.Acceleration));
+		}
+
+		public int Accelerate(float angle, int acceleration)
+		{
 			var x = (int)Math.Round(MathF.Cos(angle) * acceleration);
 			var y = (int)Math.Round(MathF.Sin(angle) * acceleration);
 
-			Force += new CPos(x * 2, y * 2, 0);
+			Force += new CPos(x, y, 0);
 
 			return acceleration;
 		}
 
-		public int OnAccelerateHeight(bool up, int customAcceleration)
+		public int AccelerateHeightSelf(bool up)
 		{
-			var acceleration = customAcceleration == 0 ? info.Acceleration : customAcceleration;
+			var speedFactor = 1f;
+			foreach (var effect in self.Effects.Where(e => e.Active && e.Effect.Type == Spells.EffectType.SPEED))
+				speedFactor *= effect.Effect.Value;
 
-			if (!up)
-				acceleration *= -1;
+			return AccelerateHeight((int)(speedFactor * (up ? info.HeightAcceleration : -info.HeightAcceleration)));
+		}
 
-			Force += new CPos(0, 0, acceleration * 2);
+		public int AccelerateHeight(int acceleration)
+		{
+			Force += new CPos(0, 0, acceleration);
 
 			return acceleration;
 		}

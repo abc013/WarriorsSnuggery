@@ -42,16 +42,16 @@ namespace WarriorsSnuggery.Objects.Parts
 				horizontal -= 1;
 
 			if (vertical != 0)
-				self.Accelerate((2 + vertical) * 0.5f * MathF.PI);
+				self.AccelerateSelf((2 + vertical) * 0.5f * MathF.PI);
 			if (horizontal != 0)
-				self.Accelerate((3 + horizontal) * 0.5f * MathF.PI);
+				self.AccelerateSelf((3 + horizontal) * 0.5f * MathF.PI);
 
 			if (KeyInput.IsKeyDown(Keys.LeftAlt))
 			{
 				if (KeyInput.IsKeyDown(Settings.GetKey("MoveAbove")))
-					self.AccelerateHeight(true);
+					self.AccelerateHeightSelf(true);
 				if (KeyInput.IsKeyDown(Settings.GetKey("MoveBelow")))
-					self.AccelerateHeight(false);
+					self.AccelerateHeightSelf(false);
 			}
 
 			if (self.ActiveWeapon != null)

@@ -181,10 +181,6 @@ voidweapon=
 			Damage=13
 			Falloff=1.0, 0.8, 0.7, 0.0
 			RangeSteps=0, 128, 256, 512
-		Force=
-			Acceleration=2
-			Falloff=1.0, 0.0
-			RangeSteps=0, 256
 
 voidbullet=
 	Reload=60
@@ -220,10 +216,6 @@ voidbullet=
 			Damage=20
 			Falloff=1.0, 0.8, 0.7, 0.0
 			RangeSteps=0, 256, 512, 768
-		Force=
-			Acceleration=2
-			Falloff=1.0, 0.0
-			RangeSteps=0, 256
 
 web=
 	Reload=100
