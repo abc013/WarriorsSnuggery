@@ -5,6 +5,9 @@ using OpenTK.Windowing.Desktop;
 using System;
 using WarriorsSnuggery.Audio;
 using WarriorsSnuggery.Graphics;
+using OpenTK.Windowing.Common.Input;
+using Image = OpenTK.Windowing.Common.Input.Image;
+using WarriorsSnuggery.Loader;
 
 namespace WarriorsSnuggery
 {
@@ -121,6 +124,10 @@ namespace WarriorsSnuggery
 			Console.Write("Loading...");
 
 			base.OnLoad();
+
+			// Load icon
+			var iconData = BitmapLoader.LoadBytes(FileExplorer.FindIn(FileExplorer.Misc, "warsnu"), out var iconWidth, out var iconHeight);
+			Icon = new WindowIcon(new Image(iconWidth, iconHeight, iconData));
 
 			MasterRenderer.Initialize();
 			SpriteManager.InitSheets();

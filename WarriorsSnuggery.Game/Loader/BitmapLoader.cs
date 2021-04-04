@@ -65,5 +65,44 @@ namespace WarriorsSnuggery.Loader
 
 			return r;
 		}
+
+		public static byte[] LoadBytes(string filename, out int width, out int height)
+		{
+			if (!File.Exists(filename))
+				throw new FileNotFoundException("The file `" + filename + "` has not been found.");
+
+			byte[] r;
+
+			using (var bitmap = new Bitmap(filename))
+			{
+				width = bitmap.Width;
+				height = bitmap.Height;
+				r = LoadBytes(bitmap, new Rectangle(Point.Empty, bitmap.Size));
+			}
+
+			return r;
+		}
+
+		public static byte[] LoadBytes(Bitmap bmp, Rectangle size)
+		{
+			const int pixelWidth = 4;
+
+			var data = bmp.LockBits(size, ImageLockMode.ReadOnly, PixelFormat.Format32bppArgb);
+			var byteSize = data.Height * data.Stride;
+			System.GC.AddMemoryPressure(byteSize);
+
+			var r = new byte[data.Height * data.Width * pixelWidth];
+			try
+			{
+				Marshal.Copy(data.Scan0, r, 0, data.Height * data.Width * pixelWidth);
+			}
+			finally
+			{
+				bmp.UnlockBits(data);
+				System.GC.RemoveMemoryPressure(byteSize);
+			}
+
+			return r;
+		}
 	}
 }
