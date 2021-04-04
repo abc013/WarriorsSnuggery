@@ -1,27 +1,34 @@
 mainmenu2=
-	Name=A wild trophy appeared.
+	Name=A Wild Trophy Appeared.
 	Description=Find this hidden trophy in the main menu.
 	Image=trophy_mainmenu2
 		Size=12,24
-	MaxManaIncrease=20
+	MaxManaIncrease=15
 
 mainmenu=
-	Name=Is it a bird? Is it a plane? No, it's shadow runner!
-	Description=Get into the main menu with the shadow runner.
+	Name=Is It A Bird? Is It A Plane? No, It's Shadow Runner!
+	Description=Find this hidden trophy in the main menu.
 	Image=trophy_mainmenu
+		Size=12,24
+	MaxManaIncrease=25
+
+beamboss=
+	Name=Enough Of These Lazers!
+	Description=Defeat the lazer tower.
+	Image=trophy_beam
 		Size=12,24
 	MaxManaIncrease=50
 
 slimeboss=
-	Name=Slimy business
+	Name=Slimy Business
 	Description=Clear out the slime castle and collect this trophy.
 	Image=trophy_slime
 		Size=12,24
-	MaxManaIncrease=100
-
-beamboss=
-	Name=Enough of these lazers!
-	Description=Defeat the lazer machine.
-	Image=trophy_beam
+	MaxManaIncrease=75
+	
+cannonboss=
+	Name=Not Today, Thank You
+	Description=Kill the cannon tower and prevent being cannon fodder.
+	Image=trophy_cannon
 		Size=12,24
 	MaxManaIncrease=100
