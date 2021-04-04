@@ -105,7 +105,8 @@ namespace WarriorsSnuggery.Objects.Weapons
 
 		public override void Render()
 		{
-			var distance = originPos - GraphicPositionWithoutHeight;
+			var originGraphicPosition = originPos - new CPos(0, originHeight, -originHeight);
+			var distance = originGraphicPosition - GraphicPosition;
 			var angle = distance.FlatAngle;
 			var fit = distance.FlatDist / renderabledistance;
 
@@ -118,12 +119,11 @@ namespace WarriorsSnuggery.Objects.Weapons
 
 				var pos = new CPos(offset.X * i, offset.Y * i, 0);
 
-				renderable.SetRotation(new VAngle(0, 0, -angle) + new VAngle(0, 0, 270));
-				renderable.SetPosition(originPos + pos - new CPos(0, originHeight, -originHeight));
+				renderable.SetRotation(new VAngle(0, 0, 270 - angle));
+				renderable.SetPosition(originGraphicPosition + pos);
 				renderable.PushToBatchRenderer();
 
-				curFrame--;
-				if (curFrame < 0)
+				if (curFrame-- <= 0)
 					curFrame = renderables.Length - 1;
 			}
 
@@ -144,8 +144,7 @@ namespace WarriorsSnuggery.Objects.Weapons
 
 			if (curTick-- < 0)
 			{
-				frame++;
-				if (frame >= renderables.Length)
+				if (frame++ >= renderables.Length - 1)
 					frame = 0;
 
 				curTick = tick;
