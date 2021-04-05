@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 using System.Linq;
+using WarriorsSnuggery.Loader;
 
 namespace WarriorsSnuggery.Graphics
 {
@@ -107,7 +108,7 @@ namespace WarriorsSnuggery.Graphics
 
 		static float[] loadTexture(Bitmap bmp)
 		{
-			return Loader.BitmapLoader.LoadTexture(bmp, new Rectangle(Point.Empty, bmp.Size));
+			return BitmapLoader.LoadTexture(bmp, new Rectangle(Point.Empty, bmp.Size));
 		}
 
 		public static float[] LoadTexture(string filename, out int width, out int height)
@@ -115,20 +116,20 @@ namespace WarriorsSnuggery.Graphics
 			if (!File.Exists(filename))
 				throw new FileNotFoundException("The file `" + filename + "` has not been found.");
 
-			return Loader.BitmapLoader.LoadTexture(filename, out width, out height);
+			return BitmapLoader.LoadTexture(filename, out width, out height);
 		}
 
 		public static float[][] LoadSprite(string filename, int width, int height)
 		{
 			if (!File.Exists(filename))
-				throw new FileNotFoundException("The file `" + filename + "` has not been found.", filename);
+				throw new FileNotFoundException($"The file `{filename}` has not been found.");
 
 			var result = new List<float[]>();
 
 			using (var bmp = (Bitmap)System.Drawing.Image.FromFile(filename))
 			{
 				if (bmp.Width < width || bmp.Height < height)
-					throw new Exception(string.Format("Given image bounds {0},{1} are bigger than the actual bounds {2},{3}.", width, height, bmp.Width, bmp.Height));
+					throw new Exception($"Given image bounds ({width}, {height}) are bigger than the actual bounds ({bmp.Width}, {bmp.Height}).");
 
 				var cWidth = (int)Math.Floor(bmp.Width / (float)width);
 				var cHeight = (int)Math.Floor(bmp.Height / (float)height);
@@ -139,7 +140,7 @@ namespace WarriorsSnuggery.Graphics
 					var ch = c / cWidth;
 					var cw = c % cWidth;
 
-					result.Add(Loader.BitmapLoader.LoadTexture(bmp, new Rectangle(cw * width, ch * height, width, height)));
+					result.Add(BitmapLoader.LoadTexture(bmp, new Rectangle(cw * width, ch * height, width, height)));
 				}
 			}
 			return result.ToArray();

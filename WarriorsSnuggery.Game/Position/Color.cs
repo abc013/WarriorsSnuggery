@@ -80,7 +80,7 @@ namespace WarriorsSnuggery
 
 		public override string ToString()
 		{
-			return string.Format("COLOR({0} | {1} | {2} | {3})", R, G, B, A);
+			return $"COLOR({R} | {B} | {G} | {A})";
 		}
 
 		public override bool Equals(object obj)

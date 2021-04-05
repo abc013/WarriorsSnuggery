@@ -9,13 +9,13 @@ namespace WarriorsSnuggery.Loader
 		public InvalidConversionException() { }
 
 		public InvalidConversionException(string file, TextNode node, Type t)
-		  : base(string.Format(@"[File: {0}] Unable to convert '{1}' (Key: '{2}') into a value of the type '{3}'.", file, node.Value, node.Key, t.Name))
+		  : base($"[File: {file}] Unable to convert '{node.Value}' (Key: '{node.Key}') into a value of the type '{t.Name}'.")
 		{
 
 		}
 
 		public InvalidConversionException(string file, TextNode node, Type t, Exception innerException)
-		  : base(string.Format(@"[File: {0}] Unable to convert '{1}' (Key: '{2}') into a value of the type '{3}'.", file, node.Value, node.Key, t.Name), innerException)
+		  : base($"[File: {file}] Unable to convert '{node.Value}' (Key: '{node.Key}') into a value of the type '{t.Name}'.")
 		{
 
 		}
@@ -33,13 +33,13 @@ namespace WarriorsSnuggery.Loader
 		public InvalidEnumConversionException() { }
 
 		public InvalidEnumConversionException(string file, TextNode node, Type t)
-		  : base(string.Format(@"[File: {0}] Unable to convert '{1}' (Key: '{2}') into a value of the enum '{3}' (available fields are: {4}).", file, node.Value, node.Key, t.Name, t.GetEnumNames()))
+		  : base($"[File: {file}] Unable to convert '{node.Value}' (Key: '{node.Key}') into a value of the enum '{t.Name}' (available fields are: {t.GetEnumNames()}).")
 		{
 
 		}
 
 		public InvalidEnumConversionException(string file, TextNode node, Type t, Exception innerException)
-		  : base(string.Format(@"[File: {0}] Unable to convert '{1}' (Key: '{2}') into a value of the enum '{3}' (available fields are: {4}).", file, node.Value, node.Key, t.Name, t.GetEnumNames()), innerException)
+		  : base($"[File: {file}] Unable to convert '{node.Value}' (Key: '{node.Key}') into a value of the enum '{t.Name}' (available fields are: {t.GetEnumNames()}).", innerException)
 		{
 
 		}
@@ -58,13 +58,13 @@ namespace WarriorsSnuggery.Loader
 		public UnexpectedConversionChild() { }
 
 		public UnexpectedConversionChild(string file, TextNode node, Type t, string child)
-		  : base(string.Format(@"[File: {0}] Unable to convert '{1}' (Key: '{2}') into a value of the type '{3}' because of the unknown child '{4}'.", file, node.Value, node.Key, t, child))
+		  : base($"[File: {file}] Unable to convert '{node.Value}' (Key: '{node.Key}') into a value of the type '{t.Name}' because of the unknown child '{child}'.")
 		{
 
 		}
 
 		public UnexpectedConversionChild(string file, TextNode node, Type t, string child, Exception innerException)
-		  : base(string.Format(@"[File: {0}] Unable to convert '{1}' (Key: '{2}') into a value of the type '{3}' because of the unknown child '{4}'.", file, node.Value, node.Key, t, child), innerException)
+		  : base($"[File: {file}] Unable to convert '{node.Value}' (Key: '{node.Key}') into a value of the type '{t.Name}' because of the unknown child '{child}'.", innerException)
 		{
 
 		}

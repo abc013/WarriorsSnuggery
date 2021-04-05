@@ -9,15 +9,14 @@ namespace WarriorsSnuggery.Objects
 		static readonly Func<Type, IPartList> createPartList = t =>
 			(IPartList)typeof(PartList<>).MakeGenericType(t).GetConstructor(Type.EmptyTypes).Invoke(null);
 
-		public readonly List<ActorPart> Parts = new List<ActorPart>();
-
+		readonly List<ActorPart> parts = new List<ActorPart>();
 		readonly Dictionary<Type, IPartList> partCache = new Dictionary<Type, IPartList>();
 
 		public PartManager() { }
 
 		public void Add(ActorPart part)
 		{
-			Parts.Add(part);
+			parts.Add(part);
 
 			foreach (var type in part.GetType().GetInterfaces())
 				innerAdd(type, part);
@@ -36,7 +35,7 @@ namespace WarriorsSnuggery.Objects
 			var type = typeof(T);
 
 			if (!partCache.ContainsKey(type))
-				throw new Exception("Tried to get invalid type '{type}' from a PartManager.");
+				throw new Exception($"Tried to get invalid type '{type}' from a PartManager.");
 
 			return ((PartList<T>)partCache[type]).Get();
 		}
