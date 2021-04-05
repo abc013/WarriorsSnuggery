@@ -302,6 +302,17 @@ namespace WarriorsSnuggery.Objects
 			if (!IsAlive)
 				return;
 
+			if (World.Game.Editor)
+			{
+				foreach (var part in editorTickParts)
+					part.Tick();
+
+				return;
+			}
+
+			foreach (var part in tickParts)
+				part.Tick();
+
 			if (CurrentAction.Tick())
 			{
 				if (upcoming != null)
@@ -313,17 +324,6 @@ namespace WarriorsSnuggery.Objects
 				{
 					CurrentAction = ActorAction.Default;
 				}
-			}
-
-			if (World.Game.Editor)
-			{
-				foreach (var part in editorTickParts)
-					part.Tick();
-			}
-			else
-			{
-				foreach (var part in tickParts)
-					part.Tick();
 			}
 
 			var effectsToRemove = new List<EffectPart>();
