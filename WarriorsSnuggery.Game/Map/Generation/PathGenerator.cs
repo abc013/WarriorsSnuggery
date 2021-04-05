@@ -73,12 +73,9 @@ namespace WarriorsSnuggery.Maps.Generators
 			var waypointPassages = Loader.Waypoints.Where(w => w.Type == WaypointType.PASSAGE).ToList();
 			for (int i = 0; i < count; i++)
 			{
-				Console.WriteLine($"count {count}");
 				var previousIndex = Random.Next(waypointEnds.Count);
 				var previous = waypointEnds[previousIndex];
-				var previousLocation = previous.Location;
 				waypointEnds.RemoveAt(previousIndex);
-				Console.WriteLine(previous.Position);
 
 				var passageCount = Math.Clamp(Random.Next(3), 0, waypointPassages.Count);
 
@@ -89,14 +86,11 @@ namespace WarriorsSnuggery.Maps.Generators
 					generateSingle(previous.Position, current.Position);
 
 					previous = current;
-					Console.WriteLine(previous.Position);
 				}
 
-				var otherLocations = waypointEnds.Where(w => w.Location != previousLocation).ToList();
-				var nextIndex = Random.Next(otherLocations.Count);
-				var next = otherLocations[nextIndex]; // TODO: can somehow be 0?
-				waypointEnds.Remove(next);
-				Console.WriteLine(next.Position);
+				var nextIndex = Random.Next(waypointEnds.Count);
+				var next = waypointEnds[nextIndex];
+				waypointEnds.RemoveAt(nextIndex);
 
 				generateSingle(previous.Position, next.Position);
 			}

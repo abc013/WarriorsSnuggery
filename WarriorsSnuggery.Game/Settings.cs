@@ -8,7 +8,7 @@ namespace WarriorsSnuggery
 	{
 		public const byte MaxTeams = 8;
 
-		public const string Version = "(Release) 2.4";
+		public const string Version = "(Release) 2.5";
 
 		public const int UpdatesPerSecond = 60;
 
@@ -17,7 +17,9 @@ namespace WarriorsSnuggery
 		public static int MaxSheets = 4;
 
 		public static int SheetSize = 1024;
-		public static float SheetHalfPixel = 0.1f / SheetSize;
+		public static float SheetHalfPixel => 0.1f / SheetSize;
+
+		public static int VisbilityMargin = 3072;
 
 		public static int FrameLimiter = 0;
 
@@ -81,72 +83,21 @@ namespace WarriorsSnuggery
 
 		static void load()
 		{
-			foreach (var node in TextNodeLoader.FromFile(FileExplorer.MainDirectory, "Settings.yaml"))
+			var fields = TypeLoader.GetFields(typeof(Settings), false);
+
+			var nodes = TextNodeLoader.FromFile(FileExplorer.MainDirectory, "Settings.yaml");
+			foreach (var node in nodes)
 			{
 				switch (node.Key)
 				{
-					case "BatchSize":
-						BatchSize = node.Convert<int>();
-
-						break;
-					case "MaxSheets":
-						MaxSheets = node.Convert<int>();
-
-						break;
-					case "SheetSize":
-						SheetSize = node.Convert<int>();
-						SheetHalfPixel = 0.1f / SheetSize;
-
-						break;
-					case "FrameLimiter":
-						FrameLimiter = node.Convert<int>();
-
-						break;
-					case "ScrollSpeed":
-						ScrollSpeed = node.Convert<float>();
-						break;
-					case "EdgeScrolling":
-						EdgeScrolling = node.Convert<int>();
-						break;
-					case "EnableCheats":
-						EnableCheats = node.Convert<bool>();
-						break;
-					case "DeveloperMode":
-						DeveloperMode = node.Convert<bool>();
-						break;
-					case "Fullscreen":
-						Fullscreen = node.Convert<bool>();
-						break;
-					case "Width":
-						Width = node.Convert<int>();
-						break;
-					case "Height":
-						Height = node.Convert<int>();
-						break;
-					case "VSync":
-						VSync = node.Convert<bool>();
-						break;
-					case "EnablePixeling":
-						EnablePixeling = node.Convert<bool>();
-						break;
-					case "EnableTextShadowing":
-						EnableTextShadowing = node.Convert<bool>();
-						break;
-					case "FirstStarted":
-						FirstStarted = node.Convert<bool>();
-						break;
-					case "MasterVolume":
-						MasterVolume = node.Convert<float>();
-						break;
-					case "EffectsVolume":
-						EffectsVolume = node.Convert<float>();
-						break;
-					case "MusicVolume":
-						MusicVolume = node.Convert<float>();
-						break;
 					case "Keys":
 						foreach (var key in node.Children)
 							KeyDictionary.Add(key.Key, KeyInput.ToKey(key.Value));
+						break;
+					default:
+						// null is used for static classes.
+						TypeLoader.SetValue(null, fields, node);
+
 						break;
 				}
 			}
@@ -179,15 +130,15 @@ namespace WarriorsSnuggery
 			writer.WriteLine("FrameLimiter=" + FrameLimiter);
 			writer.WriteLine("ScrollSpeed=" + ScrollSpeed);
 			writer.WriteLine("EdgeScrolling=" + EdgeScrolling);
-			writer.WriteLine("EnableCheats=" + EnableCheats.GetHashCode());
-			writer.WriteLine("DeveloperMode=" + DeveloperMode.GetHashCode());
-			writer.WriteLine("Fullscreen=" + Fullscreen.GetHashCode());
+			writer.WriteLine("EnableCheats=" + EnableCheats);
+			writer.WriteLine("DeveloperMode=" + DeveloperMode);
+			writer.WriteLine("Fullscreen=" + Fullscreen);
 			writer.WriteLine("Width=" + Width);
 			writer.WriteLine("Height=" + Height);
-			writer.WriteLine("VSync=" + VSync.GetHashCode());
-			writer.WriteLine("EnablePixeling=" + EnablePixeling.GetHashCode());
-			writer.WriteLine("EnableTextShadowing=" + EnableTextShadowing.GetHashCode());
-			writer.WriteLine("FirstStarted=" + 0);
+			writer.WriteLine("VSync=" + VSync);
+			writer.WriteLine("EnablePixeling=" + EnablePixeling);
+			writer.WriteLine("EnableTextShadowing=" + EnableTextShadowing);
+			writer.WriteLine("FirstStarted=" + false);
 			writer.WriteLine("MasterVolume=" + MasterVolume);
 			writer.WriteLine("EffectsVolume=" + EffectsVolume);
 			writer.WriteLine("MusicVolume=" + MusicVolume);

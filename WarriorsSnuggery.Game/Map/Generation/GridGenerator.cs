@@ -16,7 +16,7 @@ namespace WarriorsSnuggery.Maps.Generators
 
 		public GridPiece(List<TextNode> nodes)
 		{
-			Loader.TypeLoader.SetValues(this, nodes);
+			TypeLoader.SetValues(this, nodes);
 		}
 	}
 

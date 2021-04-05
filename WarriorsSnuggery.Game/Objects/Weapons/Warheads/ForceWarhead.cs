@@ -23,7 +23,7 @@ namespace WarriorsSnuggery.Objects.Weapons.Warheads
 
 		public ForceWarhead(List<TextNode> nodes)
 		{
-			Loader.TypeLoader.SetValues(this, nodes);
+			TypeLoader.SetValues(this, nodes);
 
 			if (RangeSteps.Length != Falloff.Length)
 				throw new InvalidNodeException(string.Format("Range step length ({0}) does not match with given falloff values ({1}).", RangeSteps.Length, Falloff.Length));

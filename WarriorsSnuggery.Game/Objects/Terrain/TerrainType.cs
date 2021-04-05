@@ -65,7 +65,7 @@ namespace WarriorsSnuggery.Objects
 		{
 			ID = id;
 
-			Loader.TypeLoader.SetValues(this, nodes);
+			TypeLoader.SetValues(this, nodes);
 
 			Overlaps = EdgeSprite != null;
 
@@ -94,7 +94,7 @@ namespace WarriorsSnuggery.Objects
 
 		CPos textureOffset(MPos bounds)
 		{
-			return new CPos(512, 512, 0) - new CPos((int)((bounds.X % 24) * MasterRenderer.PixelMultiplier * 512), (int)((bounds.Y % 24) * MasterRenderer.PixelMultiplier * 512), 0);
+			return new CPos(512, 512, 0) - new CPos((int)((bounds.X % MasterRenderer.PixelSize) * MasterRenderer.PixelMultiplier * 512), (int)((bounds.Y % MasterRenderer.PixelSize) * MasterRenderer.PixelMultiplier * 512), 0);
 		}
 	}
 }

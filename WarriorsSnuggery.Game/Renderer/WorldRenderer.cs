@@ -215,9 +215,10 @@ namespace WarriorsSnuggery
 		public static void CheckVisibility(CPos pos, float zoom)
 		{
 			var zoomPos = new CPos((int)(zoom * WindowInfo.Ratio * 512), (int)(zoom * 512), 0);
-			// TODO determine margins in some way
-			var topLeft = pos - zoomPos - new CPos(3072, 3072, 0);
-			var bottomRight = pos + zoomPos + new CPos(3072, 3072, 0);
+
+			var margin = new CPos(Settings.VisbilityMargin, Settings.VisbilityMargin, 0);
+			var topLeft = pos - zoomPos - margin;
+			var bottomRight = pos + zoomPos + margin;
 			check(topLeft, bottomRight);
 
 			var botLeft = VisibilitySolver.LookAt(pos, zoom);

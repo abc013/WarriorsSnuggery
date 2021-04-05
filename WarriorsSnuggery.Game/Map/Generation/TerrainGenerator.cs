@@ -33,7 +33,7 @@ namespace WarriorsSnuggery.Maps.Generators
 		public TerrainGeneratorInfo(int id, List<TextNode> nodes)
 		{
 			ID = id;
-			Loader.TypeLoader.SetValues(this, nodes);
+			TypeLoader.SetValues(this, nodes);
 
 			if (RangeSteps.Length != ProbabilitySteps.Length)
 				throw new InvalidNodeException($"Range step length ({RangeSteps.Length}) does not match with given provabability values ({ProbabilitySteps.Length}).");
@@ -63,7 +63,7 @@ namespace WarriorsSnuggery.Maps.Generators
 
 		public ActorProbabilityInfo(List<TextNode> nodes)
 		{
-			Loader.TypeLoader.SetValues(this, nodes);
+			TypeLoader.SetValues(this, nodes);
 
 			if (Type == null)
 				throw new MissingNodeException("SpawnActors", "Type");

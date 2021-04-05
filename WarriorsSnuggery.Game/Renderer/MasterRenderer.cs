@@ -137,8 +137,8 @@ namespace WarriorsSnuggery
 				GL.BlendFunc(BlendingFactor.SrcAlpha, BlendingFactor.OneMinusSrcAlpha);
 				Program.CheckGraphicsError("GLEquations");
 
-				var width = (int)(WindowInfo.UnitWidth * 24);
-				var height = (int)(WindowInfo.UnitHeight * 24);
+				var width = (int)(WindowInfo.UnitWidth * PixelSize);
+				var height = (int)(WindowInfo.UnitHeight * PixelSize);
 
 				var frameTextureID = GL.GenTexture();
 
@@ -173,8 +173,8 @@ namespace WarriorsSnuggery
 					GL.BindFramebuffer(FramebufferTarget.Framebuffer, frameBuffer);
 					GL.Clear(ClearBufferMask.ColorBufferBit);
 
-					var width = (int)(WindowInfo.UnitWidth * 24);
-					var height = (int)(WindowInfo.UnitHeight * 24);
+					var width = (int)(WindowInfo.UnitWidth * PixelSize);
+					var height = (int)(WindowInfo.UnitHeight * PixelSize);
 					GL.Viewport(0, 0, width, height);
 					GL.Scissor(0, 0, width, height);
 

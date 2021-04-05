@@ -133,7 +133,7 @@ namespace WarriorsSnuggery.Objects
 				ID = id;
 				Position = position;
 
-				Loader.TypeLoader.SetValues(this, nodes);
+				TypeLoader.SetValues(this, nodes);
 			}
 		}
 	}

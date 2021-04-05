@@ -56,7 +56,7 @@ namespace WarriorsSnuggery.Objects
 		public WallType(short id, List<TextNode> nodes, bool documentation = false)
 		{
 			ID = id;
-			Loader.TypeLoader.SetValues(this, nodes);
+			TypeLoader.SetValues(this, nodes);
 
 			if (!documentation)
 			{

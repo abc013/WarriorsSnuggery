@@ -18,7 +18,12 @@ namespace WarriorsSnuggery.Loader
 
 		public static IEnumerable<FieldInfo> GetFields(object obj, bool onlyReadonly = true)
 		{
-			return obj.GetType().GetFields().Where(f => !onlyReadonly || f.IsInitOnly);
+			return GetFields(obj.GetType(), onlyReadonly);
+		}
+
+		public static IEnumerable<FieldInfo> GetFields(Type type, bool onlyReadonly = true)
+		{
+			return type.GetFields().Where(f => !onlyReadonly || f.IsInitOnly);
 		}
 
 		public static void SetValue(object obj, IEnumerable<FieldInfo> fields, TextNode node)
