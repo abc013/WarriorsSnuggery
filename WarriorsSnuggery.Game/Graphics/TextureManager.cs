@@ -119,7 +119,7 @@ namespace WarriorsSnuggery.Graphics
 			return BitmapLoader.LoadTexture(filename, out width, out height);
 		}
 
-		public static float[][] LoadSprite(string filename, int width, int height)
+		public static List<float[]> LoadSprite(string filename, int width, int height)
 		{
 			if (!File.Exists(filename))
 				throw new FileNotFoundException($"The file `{filename}` has not been found.");
@@ -143,7 +143,7 @@ namespace WarriorsSnuggery.Graphics
 					result.Add(BitmapLoader.LoadTexture(bmp, new Rectangle(cw * width, ch * height, width, height)));
 				}
 			}
-			return result.ToArray();
+			return result;
 		}
 	}
 }

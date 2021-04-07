@@ -1,11 +1,13 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace WarriorsSnuggery.Graphics
 {
 	public static class SpriteManager
 	{
-		public static Sheet[] Sheets;
-		public static int CurrentSheet;
+		public static Sheet[] Sheets { get; private set; }
+		public static int CurrentSheet { get; private set; }
+		static bool sheetsLoaded;
 
 		static readonly Dictionary<int, Texture[]> hashedTextures = new Dictionary<int, Texture[]>();
 
@@ -23,7 +25,7 @@ namespace WarriorsSnuggery.Graphics
 			CurrentSheet++;
 
 			if (CurrentSheet >= Sheets.Length)
-				throw new System.Exception("Sheetoverflow.");
+				throw new OverflowException($"Tried to create new Sheet with index {CurrentSheet} (Max allowed: {Sheets.Length}). Try increasing the max sheet count.");
 
 			Sheets[CurrentSheet] = new Sheet(Settings.SheetSize);
 			SheetBuilder.UseSheet(Sheets[CurrentSheet]);
@@ -31,28 +33,29 @@ namespace WarriorsSnuggery.Graphics
 
 		public static Texture[] AddTexture(TextureInfo info)
 		{
+			if (sheetsLoaded)
+				throw new Exception($"Unable to add texture (file: {info.File}. Sheets are already loaded.");
+
 			var hash = info.GetHashCode();
 
 			if (hashedTextures.ContainsKey(hash))
 				return hashedTextures[hash];
 
-			float[][] data;
+			Texture[] textures;
 			if (info.Type == TextureType.IMAGE)
 			{
-				data = new[] { TextureManager.LoadTexture(info.File, out var w, out var h) };
+				var data = TextureManager.LoadTexture(info.File, out var w, out var h);
 				info = new TextureInfo(info.File, info.Type, 0, w, h, false);
+
+				textures = new[] { addTexture(data, info) };
 			}
 			else
-				data = TextureManager.LoadSprite(info.File, info.Width, info.Height);
-
-			var textures = new Texture[data.Length];
-
-			for (int i = 0; i < data.Length; i++)
 			{
-				if (!SheetBuilder.IsSpaceLeft(info.Width, info.Height))
-					nextSheet();
+				var dataList = TextureManager.LoadSprite(info.File, info.Width, info.Height);
 
-				textures[i] = SheetBuilder.WriteTexture(data[i], info);
+				textures = new Texture[dataList.Count];
+				for (int i = 0; i < dataList.Count; i++)
+					textures[i] = addTexture(dataList[i], info);
 			}
 
 			hashedTextures.Add(hash, textures);
@@ -62,18 +65,28 @@ namespace WarriorsSnuggery.Graphics
 
 		public static Texture[] AddFont(FontInfo font)
 		{
+			if (sheetsLoaded)
+				throw new Exception($"Unable to add font (name: {font.FontName}). Sheets are already loaded.");
+
 			var data = TextureManager.LoadCharacters(font);
 			var textures = new Texture[data.Length];
 
 			for (int i = 0; i < data.Length; i++)
 			{
-				if (!SheetBuilder.IsSpaceLeft(font.CharSizes[i].X, font.CharSizes[i].Y))
-					nextSheet();
+				var info = new TextureInfo(font.FontName, TextureType.IMAGE, 0, font.CharSizes[i].X, font.CharSizes[i].Y, false);
 
-				textures[i] = SheetBuilder.WriteTexture(data[i], new TextureInfo(font.FontName, TextureType.IMAGE, 0, font.CharSizes[i].X, font.CharSizes[i].Y, false));
+				textures[i] = addTexture(data[i], info);
 			}
 
 			return textures;
+		}
+
+		static Texture addTexture(float[] data, TextureInfo info)
+		{
+			if (!SheetBuilder.HasSpaceLeft(info.Width, info.Height))
+				nextSheet();
+
+			return SheetBuilder.WriteTexture(data, info);
 		}
 
 		public static Texture[] GetTexture(TextureInfo info)
@@ -103,6 +116,8 @@ namespace WarriorsSnuggery.Graphics
 				i++;
 			}
 			SheetBuilder.Clear();
+
+			sheetsLoaded = true;
 		}
 
 		public static void DeleteTextures()
