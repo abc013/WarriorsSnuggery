@@ -14,7 +14,6 @@ namespace WarriorsSnuggery.Objects.Parts
 		HEALTH,
 		MANA,
 		TEXT,
-		SPAWNOBJECT,
 		KEY,
 		TROPHY
 	}
@@ -44,9 +43,9 @@ namespace WarriorsSnuggery.Objects.Parts
 		[Desc("Play sound when triggered.")]
 		public readonly SoundType Sound;
 
-		[Desc("Value field for the effect.")]
+		[Desc("Value field for the effect.", "MONEY: amount of money.", "MANA: amount of mana.", "TEXT: display duration of the text.")]
 		public readonly int Value;
-		[Desc("Text lines for the effect.", "Commas are used to separate the lines.", "When using TROPHY, the name of the trophy must be given here.")]
+		[Desc("Text lines for the effect.", "Commas are used to separate the lines.", "TEXT: text that gets displayed.", "TROPHY: name of the trophy.")]
 		public readonly string[] Text;
 
 		public CollectablePartInfo(PartInitSet set) : base(set) { }
@@ -194,8 +193,7 @@ namespace WarriorsSnuggery.Objects.Parts
 
 						return true;
 					case CollectableType.TEXT:
-						// TODO: change 300 into info.Value
-						a.World.AddText(a.Position, 300, ActionText.ActionTextType.TRANSFORM, info.Text);
+						a.World.AddText(a.Position, info.Value, ActionText.ActionTextType.TRANSFORM, info.Text);
 
 						return true;
 					case CollectableType.KEY:
