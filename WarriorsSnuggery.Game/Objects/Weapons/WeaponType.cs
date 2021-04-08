@@ -31,6 +31,9 @@ namespace WarriorsSnuggery.Objects.Weapons
 		[Desc("Contains all different kinds of warheads that will impact when the weapon hits the target.")]
 		public readonly IWarhead[] Warheads;
 
+		[Desc("Show shadow of the weapon.")]
+		public readonly bool ShowShadow = true;
+
 		public WeaponType(List<TextNode> nodes)
 		{
 			TypeLoader.SetValues(this, nodes);

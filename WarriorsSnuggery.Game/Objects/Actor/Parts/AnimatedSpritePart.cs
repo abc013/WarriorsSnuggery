@@ -145,7 +145,7 @@ namespace WarriorsSnuggery.Objects.Parts
 			if (self.Height > 0)
 			{
 				renderable.SetPosition(self.GraphicPositionWithoutHeight + info.Offset);
-				renderable.SetColor(new Color(0, 0, 0, 64));
+				renderable.SetColor(Color.Shadow);
 				renderable.PushToBatchRenderer();
 			}
 

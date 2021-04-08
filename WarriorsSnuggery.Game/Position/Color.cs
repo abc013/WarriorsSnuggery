@@ -17,6 +17,8 @@ namespace WarriorsSnuggery
 		public static readonly Color Yellow = new Color(1f, 1f, 0f);
 		public static readonly Color Cyan = new Color(0f, 1f, 1f);
 
+		public static readonly Color Shadow = new Color(0, 0, 0, 64);
+
 		public readonly float R;
 
 		public readonly float G;

@@ -120,8 +120,9 @@ namespace WarriorsSnuggery.Objects
 				return;
 
 			Renderable.SetPosition(GraphicPositionWithoutHeight);
-			Renderable.SetColor(new Color(0, 0, 0, 64));
+			Renderable.SetColor(Color.Shadow);
 			Renderable.PushToBatchRenderer();
+
 			Renderable.SetColor(Color.White);
 			Renderable.SetPosition(GraphicPosition);
 		}

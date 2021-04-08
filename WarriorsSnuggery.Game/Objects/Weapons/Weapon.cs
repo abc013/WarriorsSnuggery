@@ -123,7 +123,9 @@ namespace WarriorsSnuggery.Objects.Weapons
 
 		public override void Render()
 		{
-			RenderShadow();
+			if (Type.ShowShadow)
+				RenderShadow();
+
 			base.Render();
 		}
 
