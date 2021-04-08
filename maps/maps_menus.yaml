@@ -1,7 +1,7 @@
 main1=
 	MissionTypes=STORY_MENU, NORMAL_MENU
 	CustomSize=50,50
-	SpawnPoint=25,20
+	SpawnPoint=25600, 20480, 0
 	TerrainGenerationBase=0
 		Terrain=0
 	Generators=
@@ -28,7 +28,7 @@ tutorial=
 	AvailableObjectives=FIND_EXIT
 	MissionScript=TutorialScript
 	CustomSize=48,16
-	SpawnPoint=3,9
+	SpawnPoint=3072, 9216, 0
 	TerrainGenerationBase=0
 		Terrain=0
 	Generators=

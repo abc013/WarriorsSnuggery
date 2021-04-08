@@ -34,7 +34,6 @@ namespace WarriorsSnuggery
 		{
 			this.world = world;
 
-			PlayerSpawn = type.SpawnPoint.ToCPos();
 			Type = type;
 			Seed = seed;
 			random = new Random(seed);
@@ -49,6 +48,10 @@ namespace WarriorsSnuggery
 			TopRightCorner = new CPos(Offset.X + (Bounds.X * 1024), Offset.Y, 0);
 			BottomLeftCorner = new CPos(Offset.X, Offset.Y + (Bounds.Y * 1024), 0);
 			BottomRightCorner = new CPos(Offset.X + (Bounds.X * 1024), Offset.Y + (Bounds.Y * 1024), 0);
+
+			PlayerSpawn = type.SpawnPoint;
+			if (PlayerSpawn == CPos.Zero)
+				PlayerSpawn = Center.ToCPos();
 		}
 
 		MPos determineBounds(int difficulty, int level)

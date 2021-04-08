@@ -50,7 +50,7 @@ boss1=
 	CustomSize=32, 32
 	Ambient=170,170,200
 	Ambient=120,120,100
-	SpawnPoint=5, 5
+	SpawnPoint=5120, 5120, 0
 
 boss2=
 	MissionTypes=STORY, NORMAL
@@ -122,4 +122,4 @@ boss3=
 					Probability=1
 	CustomSize=64,64
 	Ambient=120,120,100
-	SpawnPoint=5,5
+	SpawnPoint=5120, 5120, 0

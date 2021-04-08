@@ -67,9 +67,7 @@ namespace WarriorsSnuggery
 			{
 				if (!Map.Type.IsSave)
 				{
-					var start = Map.PlayerSpawn != new CPos(-1024, -1024, 0) ? Map.PlayerSpawn : new MPos(Map.Bounds.X / 2, Map.Bounds.Y / 2).ToCPos();
-
-					LocalPlayer = ActorCreator.Create(this, Game.Statistics.Actor, start, Actor.PlayerTeam, isPlayer: true);
+					LocalPlayer = ActorCreator.Create(this, Game.Statistics.Actor, Map.PlayerSpawn, Actor.PlayerTeam, isPlayer: true);
 					Add(LocalPlayer);
 				}
 				else
