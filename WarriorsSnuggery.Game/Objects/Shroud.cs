@@ -3,7 +3,7 @@ using WarriorsSnuggery.Loader;
 
 namespace WarriorsSnuggery.Objects
 {
-	public class Shroud : PositionableObject
+	public class Shroud : ITickRenderable
 	{
 		static BatchObject shroudRenderable;
 
@@ -13,7 +13,8 @@ namespace WarriorsSnuggery.Objects
 		}
 
 		public MPos Listener;
-		readonly MPos pos;
+
+		readonly CPos graphicPosition;
 
 		bool shroudRevealed;
 		public bool StateAchieved => shroudRevealed && Uncovered || !shroudRevealed && Covered;
@@ -22,10 +23,10 @@ namespace WarriorsSnuggery.Objects
 		public bool Covered => alpha == 1f;
 		float alpha = 1f;
 
-		public Shroud(MPos pos) : base(new CPos(pos.X * 512 - 256, pos.Y * 512 - 256, 0), null)
+		public Shroud(MPos pos)
 		{
-			this.pos = pos;
 			Listener = pos;
+			graphicPosition = new CPos(pos.X * 512 - 256, pos.Y * 512 - 256, 0);
 		}
 
 		public bool ChangeState(bool revealed)
@@ -37,7 +38,7 @@ namespace WarriorsSnuggery.Objects
 			return changed;
 		}
 
-		public override void Tick()
+		public void Tick()
 		{
 			if (shroudRevealed && !Uncovered)
 			{
@@ -55,13 +56,13 @@ namespace WarriorsSnuggery.Objects
 			}
 		}
 
-		public override void Render()
+		public void Render()
 		{
 			if (Uncovered)
 				return;
 
-			shroudRenderable.SetPosition(new CPos(pos.X * 512 - 256, pos.Y * 512 - 256, 0));
-			shroudRenderable.SetColor(new Color(1f, 1f, 1f, alpha));
+			shroudRenderable.SetPosition(graphicPosition);
+			shroudRenderable.SetColor(Covered ? Color.White : new Color(1f, 1f, 1f, alpha));
 
 			shroudRenderable.PushToBatchRenderer();
 		}
