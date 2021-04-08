@@ -276,7 +276,7 @@ namespace WarriorsSnuggery.UI.Screens
 					var type = wallWidget.CurrentType;
 
 					var plannedHealth = (int)(type.Health * wallWidget.RelativeHP);
-					if (plannedHealth == 0)
+					if (plannedHealth == 0 && type.Health != 0)
 						return;
 
 					var currentWall = wallLayer.Walls[mpos.X, mpos.Y];
