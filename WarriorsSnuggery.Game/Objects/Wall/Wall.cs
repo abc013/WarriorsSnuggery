@@ -81,11 +81,11 @@ namespace WarriorsSnuggery.Objects
 			}
 			else
 			{
-				Position += new CPos(0, 0, 2048);
+				ZOffset += 2048;
 				renderPos += new CPos(-83, -512, 0);
 			}
 			if (type.IsOnFloor)
-				Height -= 2048;
+				ZOffset -= 2048;
 
 			Physics = getPhysics(position, type);
 		}

@@ -60,6 +60,7 @@ namespace WarriorsSnuggery
 		{
 			Map.Load();
 
+			// TODO move into Map.Type.IsSave else clause
 			KeyFound = Game.Statistics.KeyFound;
 
 			if (Game.InteractionMode != InteractionMode.EDITOR)
@@ -80,7 +81,7 @@ namespace WarriorsSnuggery
 				}
 
 				if (Game.IsCampaign && !Game.IsMenu)
-					Add(new ActionText(LocalPlayer.Position + new CPos(0, 0, 1024), new CPos(0, -15, 30), 300, ActionText.ActionTextType.TRANSFORM, @"Level" + Game.Statistics.Level));
+					AddText(LocalPlayer.Position, 300, ActionText.ActionTextType.TRANSFORM, $"Level {Game.Statistics.Level}");
 
 				ShroudLayer.RevealAll = Program.DisableShroud;
 				ShroudLayer.RevealAll |= Game.IsMenu || Game.MissionType == MissionType.TUTORIAL;
@@ -90,10 +91,10 @@ namespace WarriorsSnuggery
 				ShroudLayer.RevealAll = true;
 
 				PlayerAlive = false;
-				Camera.Position(new MPos(Map.Bounds.X / 2, Map.Bounds.Y / 2).ToCPos(), true);
+				Camera.Position(Map.Center.ToCPos(), true);
 			}
 
-			// First tick, does only add objects
+			// First tick, does only add objects, TODO replace with direct call to Tick()
 			ActorLayer.Tick();
 			WeaponLayer.Tick();
 			ParticleLayer.Tick();
@@ -252,6 +253,14 @@ namespace WarriorsSnuggery
 		public void Add(PositionableObject @object)
 		{
 			objectsToAdd.Add(@object);
+		}
+
+		public void AddText(CPos position, int duration, ActionText.ActionTextType type, params string[] text)
+		{
+			var @object = new ActionText(position, new CPos(0, -15, 30), duration, type, text);
+			@object.ZOffset += 1024;
+
+			Add(@object);
 		}
 
 		public Terrain TerrainAt(CPos pos)

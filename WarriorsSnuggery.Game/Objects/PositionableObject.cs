@@ -1,4 +1,5 @@
-﻿using WarriorsSnuggery.Graphics;
+﻿using System;
+using WarriorsSnuggery.Graphics;
 
 namespace WarriorsSnuggery.Objects
 {
@@ -43,6 +44,9 @@ namespace WarriorsSnuggery.Objects
 			get => position;
 			set
 			{
+				if (value.Z != 0)
+					throw new InvalidOperationException($"PositionableObject: Position is not allowed to have any non-zero z values.");
+
 				position = value;
 
 				Renderable?.SetPosition(GraphicPosition);
@@ -50,21 +54,20 @@ namespace WarriorsSnuggery.Objects
 		}
 		CPos position;
 
-		public virtual CPos Offset
+		public virtual int ZOffset
 		{
-			get => offset;
+			get => zOffset;
 			set
 			{
-				offset = value;
+				zOffset = value;
 
 				Renderable?.SetPosition(GraphicPosition);
 			}
 		}
-		CPos offset;
+		int zOffset;
 
-		public virtual CPos GraphicPosition => new CPos(position.X + offset.X, position.Y + offset.Y - height, position.Z + offset.Z + height);
-
-		public virtual CPos GraphicPositionWithoutHeight => new CPos(position.X + offset.X, position.Y + offset.Y, position.Z + offset.Z);
+		public virtual CPos GraphicPositionWithoutHeight => position + new CPos(0, 0, zOffset);
+		public virtual CPos GraphicPosition => GraphicPositionWithoutHeight + new CPos(0, -height, height);
 
 		public virtual VAngle Rotation
 		{

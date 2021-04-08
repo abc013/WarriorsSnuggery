@@ -93,7 +93,7 @@ namespace WarriorsSnuggery.Objects.Weapons
 
 			speedLeft = new Vector(curSpeed.X - x, curSpeed.Y - y, curSpeed.Z - z);
 
-			Position = new CPos(Position.X + x, Position.Y + y, Position.Z);
+			Position += new CPos(x, y, 0);
 			Height += z;
 			speed += new Vector(projectile.Force.X, projectile.Force.Y, projectile.Force.Z);
 

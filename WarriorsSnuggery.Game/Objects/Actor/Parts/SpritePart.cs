@@ -91,6 +91,8 @@ namespace WarriorsSnuggery.Objects.Parts
 				variation = new Color((float)(random.NextDouble() - 0.5f) * info.ColorVariation.R, (float)(random.NextDouble() - 0.5f) * info.ColorVariation.G, (float)(random.NextDouble() - 0.5f) * info.ColorVariation.B, 0f);
 			}
 			cachedColor = info.Color + variation;
+
+			self.ZOffset = info.Offset.Z;
 		}
 
 		public override int FacingFromAngle(float angle)
@@ -119,13 +121,12 @@ namespace WarriorsSnuggery.Objects.Parts
 			{
 				if (self.Height > 0)
 				{
-					renderable.SetPosition(self.GraphicPositionWithoutHeight);
+					renderable.SetPosition(self.GraphicPositionWithoutHeight + info.Offset);
 					renderable.SetColor(new Color(0, 0, 0, 64));
 					renderable.PushToBatchRenderer();
 				}
 
-				self.Offset = info.Offset;
-				renderable.SetPosition(self.GraphicPosition);
+				renderable.SetPosition(self.GraphicPosition + info.Offset);
 				renderable.SetColor(cachedColor);
 				renderable.PushToBatchRenderer();
 			}

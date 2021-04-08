@@ -194,7 +194,8 @@ namespace WarriorsSnuggery.Objects.Parts
 
 						return true;
 					case CollectableType.TEXT:
-						a.World.Add(new ActionText(a.Position + new CPos(0, 0, 1024), new CPos(0, -15, 30), info.Value, ActionText.ActionTextType.TRANSFORM, info.Text));
+						// TODO: change 300 into info.Value
+						a.World.AddText(a.Position, 300, ActionText.ActionTextType.TRANSFORM, info.Text);
 
 						return true;
 					case CollectableType.KEY:

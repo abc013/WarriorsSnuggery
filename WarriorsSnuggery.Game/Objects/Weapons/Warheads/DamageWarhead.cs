@@ -142,7 +142,7 @@ namespace WarriorsSnuggery.Objects.Weapons.Warheads
 				actor.Damage(damage);
 
 			if (actor.WorldPart != null && actor.WorldPart.ShowDamage)
-				world.Add(new ActionText(actor.Position + new CPos(0, 0, 1024), new CPos(0, -15, 30), 50, ActionText.ActionTextType.SCALE, new Color(1f, 0.4f, 0).ToString() + damage));
+				world.AddText(actor.Position, 50, ActionText.ActionTextType.SCALE, new Color(1f, 0.4f, 0).ToString() + damage);
 		}
 	}
 }
