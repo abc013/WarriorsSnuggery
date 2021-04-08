@@ -2,37 +2,69 @@ using WarriorsSnuggery.Graphics;
 
 namespace WarriorsSnuggery.Objects.Weapons
 {
-	public class Smudge : PositionableObject
+	public class Smudge : ITickRenderable
 	{
-		public bool IsDissolving;
+		public readonly CPos Position;
+		readonly BatchRenderable renderable;
 
-		readonly int maxDissolve;
-		int dissolveTime;
+		public bool Visible;
 
-		public Smudge(CPos pos, BatchRenderable renderable, int dissolve, bool instantDissolve = false) : base(pos, renderable)
+		public bool IsDissolving { get; private set; }
+		public bool Dissolved;
+
+		readonly int dissolveDuration;
+		int currentDissolve;
+
+		public Smudge(CPos pos, BatchRenderable renderable, int dissolveDuration, bool instantDissolve = false)
 		{
-			maxDissolve = dissolve;
-			if (instantDissolve)
-				BeginDissolve();
+			this.renderable = renderable;
+			Position = pos;
+			renderable.SetPosition(Position);
+
+			this.dissolveDuration = dissolveDuration;
+			currentDissolve = dissolveDuration;
+
+			IsDissolving = instantDissolve;
 		}
 
-		public override void Tick()
+		public void Tick()
 		{
-			base.Tick();
+			if (Dissolved)
+				return;
 
+			renderable.Tick();
 			if (IsDissolving)
 			{
-				if (dissolveTime-- > 0)
-					Renderable.SetColor(new Color(1f, 1f, 1f, dissolveTime / (float)maxDissolve));
+				if (currentDissolve-- > 0)
+					renderable.SetColor(new Color(1f, 1f, 1f, currentDissolve / (float)dissolveDuration));
 				else
-					Disposed = true;
+					Dissolved = true;
 			}
+		}
+
+		public void Render()
+		{
+			if (Dissolved || !Visible)
+				return;
+
+			renderable.PushToBatchRenderer();
+		}
+
+		public bool CheckVisibility()
+		{
+			if (renderable == null || Dissolved)
+			{
+				Visible = false;
+				return Visible;
+			}
+
+			Visible = VisibilitySolver.IsVisible(Position);
+			return Visible;
 		}
 
 		public void BeginDissolve()
 		{
 			IsDissolving = true;
-			dissolveTime = maxDissolve;
 		}
 	}
 }

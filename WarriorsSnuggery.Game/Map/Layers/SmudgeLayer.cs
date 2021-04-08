@@ -42,7 +42,7 @@ namespace WarriorsSnuggery
 			foreach (var smudge in Smudge)
 			{
 				smudge.Tick();
-				if (smudge.Disposed)
+				if (smudge.Dissolved)
 					toRemove.Add(smudge);
 			}
 
@@ -69,7 +69,7 @@ namespace WarriorsSnuggery
 		{
 			visibleSmudge.Clear();
 
-			foreach (var w in Smudge.Where(a => a.GraphicPosition.X > topLeft.X && a.GraphicPosition.X < bottomRight.X && a.GraphicPosition.Y > topLeft.Y && a.GraphicPosition.Y < bottomRight.Y))
+			foreach (var w in Smudge.Where(a => a.Position.X > topLeft.X && a.Position.X < bottomRight.X && a.Position.Y > topLeft.Y && a.Position.Y < bottomRight.Y))
 			{
 				if (w.CheckVisibility())
 					visibleSmudge.Add(w);
@@ -79,7 +79,7 @@ namespace WarriorsSnuggery
 		public void Clear()
 		{
 			foreach (var smudge in Smudge)
-				smudge.Disposed = true;
+				smudge.Dissolved = true;
 			Smudge.Clear();
 			visibleSmudge.Clear();
 		}
