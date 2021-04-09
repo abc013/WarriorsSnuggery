@@ -13,9 +13,9 @@ namespace WarriorsSnuggery.Maps
 
 		[Desc("Type of noise to use.", "Available are: CLOUDS, MAZE, NOISE, NONE")]
 		public readonly NoiseType NoiseType = NoiseType.NONE;
-		[Desc("Strength of the noise [CLOUDS].", "count of additional pathways [MAZE].")]
+		[Desc("Strength of the noise [CLOUDS].", "Percentage of generating additional pathways from 0 to 100 [MAZE].")]
 		public readonly int Strength = 4;
-		[Desc("Scale of the noise [NOISE, CLOUDS].")]
+		[Desc("Scale of the noise [NOISE, CLOUDS].", "Scale of the maze pathways [MAZE].")]
 		public readonly float Scale = 1f;
 
 		[Desc("Intensity parameter.")]
@@ -52,7 +52,32 @@ namespace WarriorsSnuggery.Maps
 					values = Noise.GenerateNoise(bounds, random, info.Scale);
 					break;
 				case NoiseType.MAZE:
-					values = Maze.GenerateMaze(bounds * new MPos(2, 2) + new MPos(1, 1), random, new MPos(1, 1), info.Strength);
+					// For walls, multiply with the following value
+					/* * new MPos(2, 2) + new MPos(1, 1) */
+					var scale = 1 / info.Scale;
+
+					if (scale == 1f)
+					{
+						values = Maze.GenerateMaze(bounds, random, info.Strength);
+						break;
+					}
+
+					var scaledBounds = new MPos((int)Math.Ceiling(bounds.X * scale), (int)Math.Ceiling(bounds.Y * scale));
+
+					var rawValues = Maze.GenerateMaze(scaledBounds, random, info.Strength);
+
+					values = new float[bounds.X * bounds.Y];
+					for (var x = 0; x < bounds.X; x++)
+					{
+						for (var y = 0; y < bounds.Y; y++)
+						{
+							var scaledX = (int)((x / (float)bounds.X) * scaledBounds.X);
+							var scaledY = (int)((y / (float)bounds.Y) * scaledBounds.Y);
+
+							values[x * bounds.Y + y] = rawValues[scaledX * scaledBounds.Y + scaledY];
+						}
+					}
+
 					break;
 				case NoiseType.NONE:
 					values = new float[bounds.X * bounds.Y];

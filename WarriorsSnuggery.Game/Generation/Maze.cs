@@ -18,8 +18,10 @@ namespace WarriorsSnuggery
 
 	public static class Maze
 	{
-		public static float[] GenerateMaze(MPos size, Random random, MPos start, int multiplePossibilities = 0)
+		public static float[] GenerateMaze(MPos size, Random random, int additionalPathwayProbability = 0)
 		{
+			var start = new MPos(1, 1);
+
 			var fields = new MazeField[size.X, size.Y];
 
 			for (int x = 0; x < size.X; x++)
@@ -38,14 +40,23 @@ namespace WarriorsSnuggery
 			var startField = fields[start.X, start.Y];
 			startField.Parent = startField;
 
-			MazeField last = startField;
+			var last = startField;
 			while ((last = link(fields, random, last, size)) != startField) { }
 
 			var maze = new float[size.X * size.Y];
 
 			for (int x = 0; x < size.X; x++)
+			{
 				for (int y = 0; y < size.Y; y++)
-					maze[x * size.Y + y] = (fields[x, y].IsWall && (multiplePossibilities == 0 || random.Next(multiplePossibilities) != 0)) ? 1 : 0;
+				{
+					var isWall = fields[x, y].IsWall;
+
+					if (isWall && (x % 2 != 0 || y % 2 != 0))
+						isWall &= random.Next(100) >= additionalPathwayProbability;
+
+					maze[x * size.Y + y] = isWall.GetHashCode();
+				}
+			}
 
 			return maze;
 		}
@@ -55,7 +66,7 @@ namespace WarriorsSnuggery
 			var pos = MPos.Zero;
 			while (last.Directions != 0)
 			{
-				byte dir = (byte)(1 << random.Next(4));
+				var dir = (byte)(1 << random.Next(4));
 
 				if ((last.Directions & dir) == 0)
 					continue;
@@ -96,7 +107,8 @@ namespace WarriorsSnuggery
 						continue;
 
 					dest.Parent = last;
-					fields[last.Position.X + (dest.Position.X - last.Position.X) / 2, last.Position.Y + (dest.Position.Y - last.Position.Y) / 2].IsWall = false;
+					var diff = dest.Position - last.Position;
+					fields[last.Position.X + diff.X / 2, last.Position.Y + diff.Y / 2].IsWall = false;
 
 					return dest;
 				}
