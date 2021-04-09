@@ -116,19 +116,25 @@ namespace WarriorsSnuggery.Maps.Generators
 
 					if (info.Border > 0)
 					{
-						for (int by = 0; by < info.Border * 2 + 1; by++)
+						for (int bx = -info.Border; bx <= info.Border; bx++)
 						{
-							for (int bx = 0; bx < info.Border * 2 + 1; bx++)
+							for (int by = -info.Border; by <= info.Border; by++)
 							{
-								var p = new MPos(x + by - info.Border, y + bx - info.Border);
-
-								if (p.X < 0 || p.Y < 0)
-									continue;
-								if (p.X >= Bounds.X || p.Y >= Bounds.Y)
+								if (bx == 0 && by == 0)
 									continue;
 
-								if (!UsedCells[p.X, p.Y] && Loader.AcquireCell(p, info.ID, denyPatrols: false))
-									Loader.SetTerrain(x, y, info.BorderTerrain[Random.Next(info.BorderTerrain.Length)]);
+								var borderPos = new MPos(x + by, y + bx);
+
+								if (borderPos.X < 0 || borderPos.Y < 0)
+									continue;
+								if (borderPos.X >= Bounds.X || borderPos.Y >= Bounds.Y)
+									continue;
+
+								if (UsedCells[borderPos.X, borderPos.Y])
+									continue;
+
+								if (Loader.CanAcquireCell(borderPos, info.ID))
+									Loader.SetTerrain(borderPos.X, borderPos.Y, info.BorderTerrain[Random.Next(info.BorderTerrain.Length)]);
 							}
 						}
 					}
