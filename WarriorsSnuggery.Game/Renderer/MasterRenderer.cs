@@ -232,8 +232,8 @@ namespace WarriorsSnuggery
 		{
 			lock (GLLock)
 			{
-				var array = new byte[WindowInfo.Width * WindowInfo.Height * 3];
-				GL.ReadPixels(0, 0, WindowInfo.Width, WindowInfo.Height, PixelFormat.Bgr, PixelType.UnsignedByte, array);
+				var array = new byte[WindowInfo.Width * WindowInfo.Height * 4];
+				GL.ReadPixels(0, 0, WindowInfo.Width, WindowInfo.Height, PixelFormat.Bgra, PixelType.UnsignedByte, array);
 
 				FileExplorer.WriteScreenshot(array, WindowInfo.Width, WindowInfo.Height);
 			}
