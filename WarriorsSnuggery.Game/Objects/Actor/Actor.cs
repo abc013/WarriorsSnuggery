@@ -113,7 +113,7 @@ namespace WarriorsSnuggery.Objects
 
 			WorldPart = (WorldPart)Parts.Find(p => p is WorldPart);
 			if (WorldPart != null)
-				Height = WorldPart.Height;
+				Height = WorldPart.DefaultHeight;
 
 			IsPlayerSwitch = Parts.Any(p => p is PlayerSwitchPart);
 

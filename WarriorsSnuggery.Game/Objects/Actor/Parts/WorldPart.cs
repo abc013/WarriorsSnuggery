@@ -73,7 +73,7 @@ namespace WarriorsSnuggery.Objects.Parts
 		public bool CanTrigger => info.CanTrigger;
 		public bool KillForVictory => info.KillForVictory;
 
-		public int Height => info.Height;
+		public int DefaultHeight => info.Height;
 
 		public int Hover => info.Hover;
 
@@ -109,9 +109,9 @@ namespace WarriorsSnuggery.Objects.Parts
 
 			if (self.Mobility != null && self.Mobility.CanFly)
 			{
-				if (Height > Height + Hover * 64)
+				if (self.Height > DefaultHeight + Hover * 64)
 					self.AccelerateHeightSelf(false);
-				else if (Height < Height - Hover * 64)
+				else if (self.Height < DefaultHeight - Hover * 64)
 					self.AccelerateHeightSelf(true);
 			}
 		}
