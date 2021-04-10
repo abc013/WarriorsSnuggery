@@ -89,11 +89,15 @@ namespace WarriorsSnuggery
 		public bool Paused;
 		public bool Editor;
 
+		public bool WinConditionsMet;
 		public bool Finished;
 
 		MissionType nextLevelType;
 		InteractionMode nextInteractionMode;
 		bool nextLevel;
+
+		bool counterStarted;
+		int counterTick;
 
 		public uint NextActorID => CurrentActorID++;
 		public uint CurrentActorID;
@@ -214,9 +218,20 @@ namespace WarriorsSnuggery
 
 			if (!Paused && !Finished)
 			{
-				// screen control
-				if (ScreenControl.FocusedType != ScreenType.DEFEAT)
-					CheckVictory();
+				if (counterStarted)
+				{
+					if (counterTick <= 0)
+						finishCounter();
+					else if (counterTick % Settings.UpdatesPerSecond == 0)
+					{
+						var seconds = counterTick / Settings.UpdatesPerSecond;
+						AddInfoMessage(200, Color.Yellow + "Transfer in " + seconds + " second" + (seconds > 1 ? "s" : string.Empty));
+					}
+
+					counterTick--;
+				}
+
+				CheckVictory();
 
 				// camera input
 				if (!ScreenControl.CursorOnUI() && !(Camera.LockedToPlayer && World.PlayerAlive && !Editor))
@@ -398,14 +413,34 @@ namespace WarriorsSnuggery
 			}
 		}
 
-		public void VictoryConditionsMet()
+		public void VictoryConditionsMet(bool instantFinish = false)
 		{
-			script?.OnWin();
-			Finish();
+			if (WinConditionsMet)
+				return;
 
+			WinConditionsMet = true;
+
+			script?.OnWin();
 			Statistics.Level++;
 			if (World.PlayerAlive && World.LocalPlayer.Health != null)
 				Statistics.Health = World.LocalPlayer.Health.RelativeHP;
+
+			if (instantFinish)
+				finishCounter();
+			else
+				startTransferCounter();
+		}
+
+		void startTransferCounter()
+		{
+			counterStarted = true;
+			// Give 10 seconds
+			counterTick = Settings.UpdatesPerSecond * 10;
+		}
+
+		void finishCounter()
+		{
+			Finish();
 
 			ShowScreen(ScreenType.VICTORY);
 		}
@@ -443,6 +478,7 @@ namespace WarriorsSnuggery
 
 		public void Finish()
 		{
+			script?.OnFinish();
 			Finished = true;
 			Pause(true);
 		}

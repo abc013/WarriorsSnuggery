@@ -21,6 +21,11 @@ namespace WarriorsSnuggery.Scripting
 
 		}
 
+		public virtual void OnFinish()
+		{
+
+		}
+
 		public virtual void OnWin()
 		{
 

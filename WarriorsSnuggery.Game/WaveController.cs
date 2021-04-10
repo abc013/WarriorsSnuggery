@@ -26,7 +26,12 @@ namespace WarriorsSnuggery
 		{
 			this.game = game;
 
-			waves = Math.Min((int)Math.Ceiling(MathF.Sqrt((game.Statistics.Difficulty / 2 + 1) * game.Statistics.Level)), 10) + 1;
+			waves = (int)Math.Ceiling(MathF.Sqrt((game.Statistics.Difficulty / 2 + 1) * game.Statistics.Level));
+			if (waves <= 0)
+				waves = 1;
+			else if (waves > 4)
+				waves = 4;
+
 			placers = game.MapType.PatrolPlacers.Where(p => p.UseForWaves).ToArray();
 
 			if (game.MapType.IsSave && game.Statistics.Waves > 0)
@@ -55,22 +60,18 @@ namespace WarriorsSnuggery
 				AwaitNextWave();
 			}
 
-			if (awaitingNextWave && countdown-- < 0)
+			if (awaitingNextWave && countdown <= 0)
 			{
 				nextWave();
 				awaitingNextWave = false;
 			}
-			else
+			else if (countdown % Settings.UpdatesPerSecond == 0)
 			{
-				var seconds = countdown / Settings.UpdatesPerSecond + 1;
-				if ((countdown + 1) % Settings.UpdatesPerSecond == 0)
-				{
-					if (CurrentWave == waves)
-						game.AddInfoMessage(200, Color.Yellow + "Transfer in " + seconds + " second" + (seconds > 1 ? "s" : string.Empty));
-					else
-						game.AddInfoMessage(200, Color.White + "Wave " + (CurrentWave + 1) + " in " + (seconds % 2 == 0 ? Color.White : Color.Red) + seconds + " second" + (seconds > 1 ? "s" : string.Empty));
-				}
+				var seconds = countdown / Settings.UpdatesPerSecond;
+				game.AddInfoMessage(200, Color.White + "Wave " + (CurrentWave + 1) + " in " + (seconds % 2 == 0 ? Color.White : Color.Red) + seconds + " second" + (seconds > 1 ? "s" : string.Empty));
 			}
+
+			countdown--;
 		}
 
 		public void AwaitNextWave()
@@ -82,7 +83,7 @@ namespace WarriorsSnuggery
 
 		void nextWave()
 		{
-			if (++CurrentWave > waves)
+			if (++CurrentWave >= waves)
 				return;
 
 			game.AddInfoMessage(200, ((CurrentWave == waves) ? Color.Green : Color.White) + "Wave " + CurrentWave + "/" + waves);

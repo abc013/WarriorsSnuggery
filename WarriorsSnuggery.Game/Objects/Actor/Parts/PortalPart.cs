@@ -113,7 +113,7 @@ namespace WarriorsSnuggery.Objects.Parts
 							return true;
 						}
 
-						game.VictoryConditionsMet();
+						game.VictoryConditionsMet(true);
 						return true;
 					case PortalType.TUTORIAL_LEVEL:
 						game.ChangeLevelAfterTick(MissionType.TUTORIAL);
