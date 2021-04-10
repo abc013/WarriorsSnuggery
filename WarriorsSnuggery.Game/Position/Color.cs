@@ -82,7 +82,7 @@ namespace WarriorsSnuggery
 
 		public override string ToString()
 		{
-			return $"COLOR({R} | {B} | {G} | {A})";
+			return $"COLOR({R} | {G} | {B} | {A})";
 		}
 
 		public override bool Equals(object obj)
