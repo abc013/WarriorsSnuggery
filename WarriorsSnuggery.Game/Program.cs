@@ -69,6 +69,8 @@ namespace WarriorsSnuggery
 					MapType = args[++i];
 				else if (arg == "-enable-cheats")
 					Settings.EnableCheats = true;
+				else
+					throw new ArgumentException($"Unknown command line argument {arg}.");
 			}
 
 			Settings.Initialize(newSettings);
