@@ -149,7 +149,7 @@ namespace WarriorsSnuggery
 			if (ObjectiveType == ObjectiveType.SURVIVE_WAVES)
 				waveController = new WaveController(this);
 
-			var corner = (int)(WindowInfo.UnitWidth / 2 * 1024);
+			var corner = (int)(WindowInfo.UnitWidth * 512) - 128;
 			version = new UITextLine(new CPos(corner, 6192, 0), FontManager.Pixel16, TextOffset.RIGHT)
 			{
 				Color = Color.Yellow
@@ -524,6 +524,8 @@ namespace WarriorsSnuggery
 		{
 			if (Settings.EnableInfoScreen)
 			{
+				var right = (int)(WindowInfo.UnitWidth * 512);
+				ColorManager.DrawRect(new CPos(right, 8192, 0), new CPos(right - 6144, 8192 - 2560, 0), new Color(0, 0, 0, 128));
 				version.Render();
 				visibility.Render();
 				tick.Render();
