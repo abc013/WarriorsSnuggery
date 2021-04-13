@@ -43,7 +43,7 @@ namespace WarriorsSnuggery.UI
 			int index = 0;
 			foreach (var spell in SpellTreeLoader.SpellTree)
 			{
-				var item = new SpellListItem(new MPos(512, 512), spell, game.SpellManager.spellCasters[index++], game, true);
+				var item = new SpellListItem(game, ItemSize, spell, game.SpellManager.spellCasters[index++]);
 				Add(item);
 			}
 		}
