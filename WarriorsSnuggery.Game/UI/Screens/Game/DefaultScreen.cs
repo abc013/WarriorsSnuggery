@@ -12,20 +12,12 @@ namespace WarriorsSnuggery.UI.Screens
 
 		readonly SquareParticleManager particleManager;
 
-		readonly UITextLine health;
-		readonly UITextLine mana;
+		readonly DisplayBar healthBar;
+		readonly DisplayBar manaBar;
 
-		readonly MoneyDisplay money;
-		readonly UITextLine waveText;
-		readonly Panel background;
 		readonly ActorList actorList;
 		readonly List<ActorType> actorTypes = new List<ActorType>();
 		readonly SpellList spellList;
-
-		readonly BatchObject enemyArrow;
-		Actor targetedEnemy;
-		float healthPercentage;
-		float manaPercentage;
 
 		int particleCollector;
 
@@ -33,17 +25,15 @@ namespace WarriorsSnuggery.UI.Screens
 		{
 			this.game = game;
 
-			if (game.Statistics.Level == game.Statistics.FinalLevel)
-				Title.SetColor(Color.Blue);
-			else if (game.Statistics.Level > game.Statistics.FinalLevel)
-				Title.SetColor(Color.Green);
-
 			particleManager = new SquareParticleManager();
 			Content.Add(particleManager);
 
-			// SECTION ACTORS
-			actorList = new ActorList(new CPos((int)(WindowInfo.UnitWidth * 512) - 512, -1536, 0), new MPos(512, 5 * 1024), new MPos(512, 512), PanelManager.Get("wooden"));
+			const int shift = 256;
+			var right = (int)(WindowInfo.UnitWidth * 512);
+			var left = -(int)(WindowInfo.UnitWidth * 512);
 
+			// Actors
+			actorList = new ActorList(new CPos(left + 768, 768 + shift, 0), new MPos(512, 11 * 512), new MPos(512, 512), PanelManager.Get("wooden"));
 			foreach (var a in ActorCreator.Types.Values)
 			{
 				if (a.Playable == null)
@@ -51,7 +41,7 @@ namespace WarriorsSnuggery.UI.Screens
 
 				actorTypes.Add(a);
 				var sprite = a.GetPreviewSprite();
-				var scale = (sprite.Width > sprite.Height ? 24f / sprite.Width : 24f / sprite.Height) - 0.1f;
+				var scale = 24f / Math.Max(sprite.Width, sprite.Height) - 0.1f;
 				var item = new PanelItem(new BatchObject(sprite, Color.White), new MPos(512, 512), a.Playable.Name, new[] { Color.Grey + "Cost: " + Color.Yellow + a.Playable.Cost }, () => { changePlayer(a); })
 				{
 					Scale = scale
@@ -61,39 +51,42 @@ namespace WarriorsSnuggery.UI.Screens
 
 				actorList.Add(item);
 			}
+			actorList.CurrentActor = 0;
 
-			// SECTION EFFECTS
-			spellList = new SpellList(new CPos(0, (int)(WindowInfo.UnitHeight * 512) - 3072 - 128, 0), new MPos(8 * 1024, 512), new MPos(512, 512), PanelManager.Get("stone"));
+			Content.Add(actorList);
+
+			// Spells
+			spellList = new SpellList(new CPos(right - 768, 0, 0), new MPos(512, 13 * 512), new MPos(512, 512), PanelManager.Get("stone"));
 			int index = 0;
-			foreach (var effect in Spells.SpellTreeLoader.SpellTree)
+			foreach (var spell in Spells.SpellTreeLoader.SpellTree)
 			{
-				var item = new SpellListItem(new MPos(256, 256), effect, game.SpellManager.spellCasters[index], game, true);
-
+				var item = new SpellListItem(new MPos(512, 512), spell, game.SpellManager.spellCasters[index++], game, true);
 				spellList.Add(item);
-				index++;
 			}
+			spellList.CurrentSpell = 0;
 
-			background = new Panel(new CPos(0, (int)(WindowInfo.UnitHeight * 512) - 1024, 0), new MPos(16 * 1024, 2 * 1024), PanelManager.Get("wooden"));
+			Content.Add(spellList);
 
-			// SECTION MONEY
-			money = new MoneyDisplay(game, new CPos(6120 + 128 + 1536, 8192 - 1024, 0));
-			// SECTION MENUS
-			var pause = new UITextLine(new CPos(-2560, 8192 - 256, 0), FontManager.Pixel16, TextOffset.MIDDLE);
-			pause.WriteText("Pause: '" + new Color(0.5f, 0.5f, 1f) + "P" + Color.White + "'");
-			Content.Add(pause);
+			var width = (int)(WindowInfo.UnitWidth * 512);
 
-			var menu = new UITextLine(new CPos(2560, 8192 - 256, 0), FontManager.Pixel16, TextOffset.MIDDLE);
-			menu.WriteText("Menu: '" + new Color(0.5f, 0.5f, 1f) + "Escape" + Color.White + "'");
-			Content.Add(menu);
+			manaBar = new DisplayBar(new CPos(0, 8192 - 2048 + shift, 0), new MPos(width - 1536, 256), PanelManager.Get("stone"), new Color(0, 0, 255, 196));
+			Content.Add(manaBar);
+			healthBar = new DisplayBar(new CPos(0, 8192 - 1024 + shift, 0), new MPos(width - 256, 512), PanelManager.Get("wooden"), new Color(255, 0, 0, 196));
+			Content.Add(healthBar);
 
-			// SECTION HEALTH
-			health = new UITextLine(new CPos(0, 8192 - 2048, 0), FontManager.Papyrus24, TextOffset.MIDDLE);
+			var top = -8120 + 512 + shift;
 
-			// SECTION MANA
-			mana = new UITextLine(new CPos(0, 8192 - 1024, 0), FontManager.Papyrus24, TextOffset.MIDDLE);
+			Content.Add(new MoneyDisplay(game, new CPos(left + 1536 + shift, top, 0)));
 
-			// SECTION MISSION
-			var missionText = new UITextLine(new CPos(0, -8192 + 512, 0), FontManager.Pixel16, TextOffset.MIDDLE);
+			if (game.ObjectiveType == ObjectiveType.FIND_EXIT)
+				Content.Add(new KeyDisplay(game, new CPos(left + 712 + shift, top + 1536 + shift + 128, 0)));
+			else if (game.ObjectiveType == ObjectiveType.SURVIVE_WAVES)
+				Content.Add(new WaveDisplay(game, new CPos(left + 512 + shift, top + 1536 + shift + 128, 0)));
+
+			Content.Add(CheckBoxCreator.Create("menu", new CPos(right - 512, -8120 + 512, 0), onTicked: (t) => game.ScreenControl.ShowScreen(ScreenType.MENU)));
+
+			// mission text
+			var missionText = new UITextLine(new CPos(0, top, 0), FontManager.Pixel16, TextOffset.MIDDLE);
 			var missionContent = string.Empty;
 			switch (game.ObjectiveType)
 			{
@@ -108,21 +101,15 @@ namespace WarriorsSnuggery.UI.Screens
 					break;
 			}
 			missionText.SetText(missionContent);
+
+			if (game.Statistics.Level == game.Statistics.FinalLevel)
+				missionText.SetColor(Color.Blue);
+			else if (game.Statistics.Level > game.Statistics.FinalLevel)
+				missionText.SetColor(Color.Green);
+
 			Content.Add(missionText);
 
-			var levelText = new UITextLine(new CPos((int)-(WindowInfo.UnitWidth * 512) + 776, 8192 - 2048, 0), FontManager.Pixel16);
-			levelText.SetText("Level " + game.Statistics.Level + "/" + game.Statistics.FinalLevel);
-			Content.Add(levelText);
-			waveText = new UITextLine(new CPos((int)-(WindowInfo.UnitWidth * 512) + 776, 8192 - 1536, 0), FontManager.Pixel16);
-
-			enemyArrow = new BatchObject(UITextureManager.Get("UI_enemy_arrow")[0], Color.White);
-		}
-
-		public void SetWave(int wave, int final)
-		{
-			if (wave == final)
-				waveText.Color = Color.Green;
-			waveText.SetText("Wave " + wave + "/" + final);
+			Content.Add(new EnemyPointer(game));
 		}
 
 		public void UpdateSpells()
@@ -134,11 +121,6 @@ namespace WarriorsSnuggery.UI.Screens
 		{
 			for (int i = 0; i < actorTypes.Count; i++)
 				actorList.Container[i].SetColor(game.Statistics.ActorAvailable(actorTypes[i].Playable) ? Color.White : Color.Black);
-		}
-
-		void selectNewEnemy()
-		{
-			targetedEnemy = game.World.ActorLayer.NonNeutralActors.Find(a => a.Team != Actor.PlayerTeam && a.WorldPart != null && a.WorldPart.KillForVictory);
 		}
 
 		public override void Hide()
@@ -164,47 +146,6 @@ namespace WarriorsSnuggery.UI.Screens
 			return false;
 		}
 
-		public override void Render()
-		{
-			base.Render();
-
-			// SECTION BASE
-			background.Render();
-
-			// SECTION MONEY
-			if (!Settings.EnableInfoScreen)
-			{
-				ColorManager.DrawRect(new CPos(6120 + 128, 8192, 0), new CPos((int)(WindowInfo.UnitWidth * 512) - 2048, 8192 - 2560, 0), new Color(0, 0, 0, 128));
-				money.Render();
-			}
-
-			ColorManager.DrawRect(new CPos(-6120, 8192 - 2560, 0), new CPos(6120, 8192, 0), new Color(0, 0, 0, 128));
-
-			const int edge = 64;
-			// SECTION HEALTH
-			ColorManager.DrawRect(new CPos(-6120 + edge, 8192 - 1536 - edge, 0), new CPos(6120 - edge, 8192 - 2560 + edge, 0), new Color(255, 0, 0, 64));
-			ColorManager.DrawRect(new CPos(-6120 + edge, 8192 - 1536 - edge, 0), new CPos(-6120 + edge + (int)((12288 - 2 * edge) * healthPercentage), 8192 - 2560 + edge, 0), new Color(255, 0, 0, 196));
-			health.Render();
-
-			// SECTION MANA
-			ColorManager.DrawRect(new CPos(-6120 + edge, 8192 - 512 - edge, 0), new CPos(6120 - edge, 8192 - 1024 - 512 + edge, 0), new Color(0, 0, 255, 64));
-			ColorManager.DrawRect(new CPos(-6120 + edge, 8192 - 512 - edge, 0), new CPos(-6120 + edge + (int)((12288 - 2 * edge) * manaPercentage), 8192 - 1024 - 512 + edge, 0), new Color(0, 0, 255, 196));
-			mana.Render();
-
-			// SECTION ACTORS
-			actorList.Render();
-
-			// SECTION EFFECTS
-			spellList.Render();
-
-			// SECTION MISSION
-			ColorManager.DrawRect(new CPos((int)-(WindowInfo.UnitWidth * 512) + 256, 8192, 0), new CPos(-6120 - 128, 8192 - 2560, 0), new Color(0, 0, 0, 128));
-			waveText.Render();
-
-			if (targetedEnemy != null)
-				enemyArrow.PushToBatchRenderer();
-		}
-
 		public override void Tick()
 		{
 			base.Tick();
@@ -212,6 +153,7 @@ namespace WarriorsSnuggery.UI.Screens
 			var player = game.World.LocalPlayer;
 			if (player != null)
 			{
+				// TODO: Why arent the spellLists doing that?
 				if (KeyInput.IsKeyDown(Keys.LeftShift))
 				{
 					actorList.CurrentActor += MouseInput.WheelState;
@@ -229,15 +171,14 @@ namespace WarriorsSnuggery.UI.Screens
 
 				if (player.Health != null)
 				{
-					var max = player.Health.MaxHP;
-					var cur = player.Health.HP;
+					var percentage = player.Health.RelativeHP;
 
-					health.SetText(cur + "/" + max);
-					healthPercentage = player.Health.RelativeHP;
+					healthBar.WriteText($"{player.Health.HP}/{player.Health.MaxHP}");
+					healthBar.DisplayPercentage = percentage;
 
-					if (healthPercentage < 0.3f)
+					if (percentage < 0.3f)
 					{
-						var inverse = 0.3f - healthPercentage;
+						var inverse = 0.3f - percentage;
 						particleCollector += (int)(inverse * 50) + 1;
 
 						var count = particleCollector / 16;
@@ -246,7 +187,7 @@ namespace WarriorsSnuggery.UI.Screens
 						for (int i = 0; i < count * 2; i++)
 						{
 							var invert = i % 2 == 0;
-							var particle = particleManager.Add((int)(healthPercentage * 100) + 600);
+							var particle = particleManager.Add((int)(percentage * 200) + 300);
 							particle.Radius = Program.SharedRandom.Next(150) + (int)(inverse * inverse * 2000) + 10;
 							particle.Position = new CPos(Program.SharedRandom.Next((int)(WindowInfo.UnitWidth * 1024)) - (int)(WindowInfo.UnitWidth * 512), (invert ? 1 : -1) * (int)(WindowInfo.UnitHeight * 512), 0);
 							particle.Velocity = new CPos(Program.SharedRandom.Next(-2, 2), (invert ? -1 : 1) * (Program.SharedRandom.Next(10) + 10), 0);
@@ -255,39 +196,12 @@ namespace WarriorsSnuggery.UI.Screens
 					}
 				}
 
-				if (game.IsCampaign && !game.IsMenu)
-				{
-					if (game.World.PlayerDamagedTick < Settings.UpdatesPerSecond * 60)
-						targetedEnemy = null;
-					else if (targetedEnemy != null && targetedEnemy.IsAlive)
-						setEnemyArrow();
-					else
-						selectNewEnemy();
-				}
-
-				mana.SetText(game.Statistics.Mana + "/" + game.Statistics.MaxMana);
-				manaPercentage = game.Statistics.Mana / (float)game.Statistics.MaxMana;
+				manaBar.WriteText($"{game.Statistics.Mana}/{game.Statistics.MaxMana}");
+				manaBar.DisplayPercentage = game.Statistics.Mana / (float)game.Statistics.MaxMana;
 			}
-
-			money.Tick();
-
-			actorList.Tick();
-			spellList.Tick();
 		}
 
-		void setEnemyArrow()
-		{
-			var pos = Camera.LookAt + new CPos(0, -2048, 0) - targetedEnemy.GraphicPosition;
-
-			enemyArrow.Visible = pos.SquaredFlatDist > 8192 * 8192;
-			if (!enemyArrow.Visible)
-				return;
-
-			var angle = pos.FlatAngle;
-			enemyArrow.SetRotation(new VAngle(0, 0, -angle) + new VAngle(0, 0, 270));
-			enemyArrow.SetPosition(CPos.FromFlatAngle(angle, 2048) - new CPos(0, 2048, 0));
-		}
-
+		// TODO: this code has nothing to do here, it should be somewhere else
 		void changePlayer(ActorType type)
 		{
 			if (game.Statistics.Money < type.Playable.Cost)

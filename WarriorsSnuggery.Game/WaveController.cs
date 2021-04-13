@@ -9,13 +9,14 @@ namespace WarriorsSnuggery
 {
 	public class WaveController
 	{
-		readonly int waves;
+		public readonly int Waves;
 		public int CurrentWave { get; private set; }
-		public bool Done => CurrentWave > waves;
+		public bool Done { get; private set; }
 
 		List<Actor> waveActors;
 
 		readonly Game game;
+		readonly Random random;
 
 		readonly PatrolPlacerInfo[] placers;
 
@@ -25,12 +26,10 @@ namespace WarriorsSnuggery
 		public WaveController(Game game)
 		{
 			this.game = game;
+			random = new Random(game.Seed);
 
-			waves = (int)Math.Ceiling(MathF.Sqrt((game.Statistics.Difficulty / 2 + 1) * game.Statistics.Level));
-			if (waves <= 0)
-				waves = 1;
-			else if (waves > 4)
-				waves = 4;
+			Waves = (int)Math.Ceiling(MathF.Sqrt((game.Statistics.Difficulty / 2 + 1) * game.Statistics.Level));
+			Waves = Math.Clamp(Waves, 1, 4);
 
 			placers = game.MapType.PatrolPlacers.Where(p => p.UseForWaves).ToArray();
 
@@ -60,22 +59,31 @@ namespace WarriorsSnuggery
 				AwaitNextWave();
 			}
 
-			if (awaitingNextWave && countdown <= 0)
+			if (awaitingNextWave)
 			{
-				nextWave();
-				awaitingNextWave = false;
-			}
-			else if (countdown % Settings.UpdatesPerSecond == 0)
-			{
-				var seconds = countdown / Settings.UpdatesPerSecond;
-				game.AddInfoMessage(200, Color.White + "Wave " + (CurrentWave + 1) + " in " + (seconds % 2 == 0 ? Color.White : Color.Red) + seconds + " second" + (seconds > 1 ? "s" : string.Empty));
-			}
+				if (countdown <= 0)
+				{
+					nextWave();
+					awaitingNextWave = false;
+				}
+				else if (countdown % Settings.UpdatesPerSecond == 0)
+				{
+					var seconds = countdown / Settings.UpdatesPerSecond;
+					game.AddInfoMessage(200, Color.White + "Wave " + (CurrentWave + 1) + " in " + (seconds % 2 == 0 ? Color.White : Color.Red) + seconds + " second" + (seconds > 1 ? "s" : string.Empty));
+				}
 
-			countdown--;
+				countdown--;
+			}
 		}
 
 		public void AwaitNextWave()
 		{
+			if (CurrentWave >= Waves)
+			{
+				Done = true;
+				return;
+			}
+
 			awaitingNextWave = true;
 			// Give 10 seconds
 			countdown = Settings.UpdatesPerSecond * 10;
@@ -83,13 +91,12 @@ namespace WarriorsSnuggery
 
 		void nextWave()
 		{
-			if (++CurrentWave >= waves)
+			if (++CurrentWave > Waves)
 				return;
 
-			game.AddInfoMessage(200, ((CurrentWave == waves) ? Color.Green : Color.White) + "Wave " + CurrentWave + "/" + waves);
-			game.ScreenControl.UpdateWave(CurrentWave, waves);
+			game.AddInfoMessage(200, ((CurrentWave == Waves) ? Color.Green : Color.White) + "Wave " + CurrentWave + "/" + Waves);
 
-			var placerInfo = placers[game.SharedRandom.Next(placers.Length)];
+			var placerInfo = placers[random.Next(placers.Length)];
 			var placer = new PatrolPlacer(game.SharedRandom, game.World, placerInfo);
 
 			var actors = placer.PlacePatrols();

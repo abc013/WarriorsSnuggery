@@ -2,7 +2,7 @@
 
 namespace WarriorsSnuggery.UI
 {
-	public class MoneyDisplay : UIObject
+	public class MoneyDisplay : Panel
 	{
 		public override CPos Position
 		{
@@ -10,8 +10,12 @@ namespace WarriorsSnuggery.UI
 			set
 			{
 				base.Position = value;
-				money.SetPosition(value);
-				moneyText.Position = value;
+
+				if (money != null)
+				{
+					money.SetPosition(value);
+					moneyText.Position = value;
+				}
 			}
 		}
 
@@ -21,8 +25,12 @@ namespace WarriorsSnuggery.UI
 			set
 			{
 				base.Rotation = value;
-				money.SetRotation(value);
-				moneyText.Rotation = value;
+
+				if (money != null)
+				{
+					money.SetRotation(value);
+					moneyText.Rotation = value;
+				}
 			}
 		}
 
@@ -32,8 +40,12 @@ namespace WarriorsSnuggery.UI
 			set
 			{
 				base.Scale = value;
-				money.SetScale(value);
-				moneyText.Scale = value;
+
+				if (money != null)
+				{
+					money.SetScale(value);
+					moneyText.Scale = value;
+				}
 			}
 		}
 
@@ -43,18 +55,20 @@ namespace WarriorsSnuggery.UI
 		int cashCooldown;
 		int lastCash;
 
-		public MoneyDisplay(Game game, CPos position)
+		public MoneyDisplay(Game game, CPos position) : base(position, new MPos(1536, 512), PanelManager.Get("wooden"))
 		{
 			this.game = game;
 			money = new BatchObject(UITextureManager.Get("UI_money")[0], Color.White);
-			money.SetPosition(position);
+			money.SetPosition(position - new CPos(1024, 0, 0));
 
-			moneyText = new UITextLine(position + new CPos(1024, 0, 0), FontManager.Papyrus24);
+			moneyText = new UITextLine(position, FontManager.Pixel16);
 			moneyText.SetText(game.Statistics.Money);
 		}
 
 		public override void Tick()
 		{
+			base.Tick();
+
 			if (lastCash != game.Statistics.Money)
 			{
 				lastCash = game.Statistics.Money;
@@ -68,6 +82,8 @@ namespace WarriorsSnuggery.UI
 
 		public override void Render()
 		{
+			base.Render();
+
 			money.PushToBatchRenderer();
 			moneyText.Render();
 		}

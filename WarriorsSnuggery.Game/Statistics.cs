@@ -205,7 +205,7 @@ namespace WarriorsSnuggery
 			var mapType = world.Map.Type;
 			CurrentMapType = mapType.IsSave ? stats.CurrentMapType : MapCreator.GetName(mapType);
 
-			Waves = world.Game.CurrentWave();
+			Waves = world.Game.CurrentWave;
 			KeyFound = world.KeyFound;
 
 			using (var writer = new StreamWriter(FileExplorer.Saves + SaveName + ".yaml", false))

@@ -18,6 +18,8 @@ namespace WarriorsSnuggery.UI
 
 				if (currentSpell < 0)
 					currentSpell = SpellTreeLoader.SpellTree.Count - 1;
+
+				selector.SetPosition(Container[currentSpell].Position - new CPos(712, 0, 0));
 			}
 		}
 		int currentSpell;
@@ -36,7 +38,6 @@ namespace WarriorsSnuggery.UI
 		public override void Render()
 		{
 			base.Render();
-			selector.SetPosition(Container[currentSpell].Position + new CPos(0, -688, 0));
 			selector.PushToBatchRenderer();
 		}
 	}

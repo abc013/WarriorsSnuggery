@@ -17,6 +17,8 @@ namespace WarriorsSnuggery.UI
 
 				if (currentActor < 0)
 					currentActor = Container.Count - 1;
+
+				selector.SetPosition(Container[currentActor].Position + new CPos(712, 0, 0));
 			}
 		}
 		int currentActor;
@@ -29,7 +31,6 @@ namespace WarriorsSnuggery.UI
 		public override void Render()
 		{
 			base.Render();
-			selector.SetPosition(Container[currentActor].Position + new CPos(-712, 0, 0));
 			selector.PushToBatchRenderer();
 		}
 	}

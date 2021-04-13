@@ -101,12 +101,6 @@ namespace WarriorsSnuggery.UI.Screens
 				defaultScreen.UpdateActors();
 		}
 
-		public void UpdateWave(int wave, int final)
-		{
-			if (cachedScreens[ScreenType.DEFAULT] is DefaultScreen defaultScreen)
-				defaultScreen.SetWave(wave, final);
-		}
-
 		public void Tick()
 		{
 			if (ChatOpen)
