@@ -14,7 +14,7 @@ namespace WarriorsSnuggery.UI
 			{
 				base.Position = value;
 
-				UpdatePositions();
+				updatePositions();
 			}
 		}
 
@@ -38,17 +38,6 @@ namespace WarriorsSnuggery.UI
 			var pos = getPosition(Container.Count - 1);
 			o.Visible = pos.Y >= -SelectableBounds.Y && pos.Y <= SelectableBounds.Y;
 			o.Position = Position + pos;
-		}
-
-		public void UpdatePositions()
-		{
-			for (int i = 0; i < Container.Count; i++)
-			{
-				var pos = getPosition(i);
-				var o = Container[i];
-				o.Visible = pos.Y >= -SelectableBounds.Y && pos.Y <= SelectableBounds.Y;
-				o.Position = Position + pos;
-			}
 		}
 
 		CPos getPosition(int pos)
@@ -90,13 +79,24 @@ namespace WarriorsSnuggery.UI
 				if ((scrolled < Math.Floor(Container.Count / (float)Size.X - Size.Y) + 1) && (KeyInput.IsKeyDown(Keys.Down, 5) || MouseInput.WheelState > 0))
 				{
 					scrolled++;
-					UpdatePositions();
+					updatePositions();
 				}
 				if (scrolled != 0 && (KeyInput.IsKeyDown(Keys.Up, 5) || MouseInput.WheelState < 0))
 				{
 					scrolled--;
-					UpdatePositions();
+					updatePositions();
 				}
+			}
+		}
+
+		void updatePositions()
+		{
+			for (int i = 0; i < Container.Count; i++)
+			{
+				var pos = getPosition(i);
+				var o = Container[i];
+				o.Visible = pos.Y >= -SelectableBounds.Y && pos.Y <= SelectableBounds.Y;
+				o.Position = Position + pos;
 			}
 		}
 

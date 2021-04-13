@@ -1,10 +1,13 @@
-﻿using WarriorsSnuggery.Graphics;
+﻿using OpenTK.Windowing.GraphicsLibraryFramework;
+using WarriorsSnuggery.Graphics;
 using WarriorsSnuggery.Spells;
 
 namespace WarriorsSnuggery.UI
 {
 	public class SpellList : PanelList
 	{
+		readonly Game game;
+
 		readonly BatchObject selector;
 		public int CurrentSpell
 		{
@@ -24,9 +27,25 @@ namespace WarriorsSnuggery.UI
 		}
 		int currentSpell;
 
-		public SpellList(CPos pos, MPos bounds, MPos itemSize, PanelType type) : base(pos, bounds, itemSize, type)
+		public SpellList(Game game, CPos pos, MPos bounds, MPos itemSize, PanelType type) : base(pos, bounds, itemSize, type)
 		{
+			this.game = game;
+
 			selector = new BatchObject(UITextureManager.Get("UI_selector1")[0], Color.White);
+
+			addSpells();
+
+			CurrentSpell = 0;
+		}
+
+		void addSpells()
+		{
+			int index = 0;
+			foreach (var spell in SpellTreeLoader.SpellTree)
+			{
+				var item = new SpellListItem(new MPos(512, 512), spell, game.SpellManager.spellCasters[index++], game, true);
+				Add(item);
+			}
 		}
 
 		public void Update()
@@ -38,7 +57,21 @@ namespace WarriorsSnuggery.UI
 		public override void Render()
 		{
 			base.Render();
+
 			selector.PushToBatchRenderer();
+		}
+
+		public override void Tick()
+		{
+			base.Tick();
+
+			if (!KeyInput.IsKeyDown(Keys.LeftShift))
+			{
+				CurrentSpell += MouseInput.WheelState;
+
+				if (!KeyInput.IsKeyDown(Keys.LeftControl) && MouseInput.IsRightClicked)
+					game.SpellManager.Activate(CurrentSpell);
+			}
 		}
 	}
 }

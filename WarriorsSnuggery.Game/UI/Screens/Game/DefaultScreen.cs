@@ -1,6 +1,3 @@
-using OpenTK.Windowing.GraphicsLibraryFramework;
-using System;
-using System.Collections.Generic;
 using WarriorsSnuggery.Graphics;
 using WarriorsSnuggery.Objects;
 
@@ -8,6 +5,8 @@ namespace WarriorsSnuggery.UI.Screens
 {
 	public class DefaultScreen : Screen
 	{
+		const int margin = 256;
+
 		readonly Game game;
 
 		readonly SquareParticleManager particleManager;
@@ -16,7 +15,6 @@ namespace WarriorsSnuggery.UI.Screens
 		readonly DisplayBar manaBar;
 
 		readonly ActorList actorList;
-		readonly List<ActorType> actorTypes = new List<ActorType>();
 		readonly SpellList spellList;
 
 		int particleCollector;
@@ -28,53 +26,26 @@ namespace WarriorsSnuggery.UI.Screens
 			particleManager = new SquareParticleManager();
 			Content.Add(particleManager);
 
-			const int shift = 256;
+			const int shift = margin;
 			var right = (int)(WindowInfo.UnitWidth * 512);
-			var left = -(int)(WindowInfo.UnitWidth * 512);
+			var left = -right;
 
 			// Actors
-			actorList = new ActorList(new CPos(left + 768, 768 + shift, 0), new MPos(512, 11 * 512), new MPos(512, 512), PanelManager.Get("wooden"));
-			foreach (var a in ActorCreator.Types.Values)
-			{
-				if (a.Playable == null)
-					continue;
-
-				actorTypes.Add(a);
-				var sprite = a.GetPreviewSprite();
-				var scale = 24f / Math.Max(sprite.Width, sprite.Height) - 0.1f;
-				var item = new PanelItem(new BatchObject(sprite, Color.White), new MPos(512, 512), a.Playable.Name, new[] { Color.Grey + "Cost: " + Color.Yellow + a.Playable.Cost }, () => { changePlayer(a); })
-				{
-					Scale = scale
-				};
-				if (!game.Statistics.ActorAvailable(a.Playable))
-					item.SetColor(Color.Black);
-
-				actorList.Add(item);
-			}
-			actorList.CurrentActor = 0;
-
+			actorList = new ActorList(game, new CPos(left + 512 + margin, 768 + shift, 0), new MPos(512, 11 * 512), new MPos(512, 512), PanelManager.Get("wooden"));
 			Content.Add(actorList);
 
 			// Spells
-			spellList = new SpellList(new CPos(right - 768, 0, 0), new MPos(512, 13 * 512), new MPos(512, 512), PanelManager.Get("stone"));
-			int index = 0;
-			foreach (var spell in Spells.SpellTreeLoader.SpellTree)
-			{
-				var item = new SpellListItem(new MPos(512, 512), spell, game.SpellManager.spellCasters[index++], game, true);
-				spellList.Add(item);
-			}
-			spellList.CurrentSpell = 0;
-
+			spellList = new SpellList(game, new CPos(right - 512 - margin, 0, 0), new MPos(512, 13 * 512), new MPos(512, 512), PanelManager.Get("stone"));
 			Content.Add(spellList);
 
 			var width = (int)(WindowInfo.UnitWidth * 512);
 
-			manaBar = new DisplayBar(new CPos(0, 8192 - 2048 + shift, 0), new MPos(width - 1536, 256), PanelManager.Get("stone"), new Color(0, 0, 255, 196));
+			manaBar = new DisplayBar(new CPos(0, 8192 - 2048 + margin, 0), new MPos(width - 1536, 256), PanelManager.Get("stone"), new Color(0, 0, 255, 196));
 			Content.Add(manaBar);
-			healthBar = new DisplayBar(new CPos(0, 8192 - 1024 + shift, 0), new MPos(width - 256, 512), PanelManager.Get("wooden"), new Color(255, 0, 0, 196));
+			healthBar = new DisplayBar(new CPos(0, 8192 - 1024 + margin, 0), new MPos(width - 256, 512), PanelManager.Get("wooden"), new Color(255, 0, 0, 196));
 			Content.Add(healthBar);
 
-			var top = -8120 + 512 + shift;
+			var top = -8120 + 512 + margin;
 
 			Content.Add(new MoneyDisplay(game, new CPos(left + 1536 + shift, top, 0)));
 
@@ -119,8 +90,7 @@ namespace WarriorsSnuggery.UI.Screens
 
 		public void UpdateActors()
 		{
-			for (int i = 0; i < actorTypes.Count; i++)
-				actorList.Container[i].SetColor(game.Statistics.ActorAvailable(actorTypes[i].Playable) ? Color.White : Color.Black);
+			actorList.Update();
 		}
 
 		public override void Hide()
@@ -133,14 +103,19 @@ namespace WarriorsSnuggery.UI.Screens
 		{
 			var mouse = MouseInput.WindowPosition;
 
-			// Info Panel
-			if (mouse.Y > 4992)
+			var right = (int)(WindowInfo.UnitWidth * 512);
+			var left = -right;
+
+			// Actorlist area
+			if (mouse.X < left + 1024 + margin)
 				return true;
-			// Effects Panel
-			if (Math.Abs(mouse.X) < 8120 && mouse.Y > 4992 - 64 - 256)
+
+			// Spellist area
+			if (mouse.X > right - 1024 - margin)
 				return true;
-			// Actor Panel
-			if (mouse.X > WindowInfo.Ratio * 6.9f * 1024)
+
+			// Area around health & Mana bars
+			if (mouse.Y > 6144)
 				return true;
 
 			return false;
@@ -151,71 +126,35 @@ namespace WarriorsSnuggery.UI.Screens
 			base.Tick();
 
 			var player = game.World.LocalPlayer;
-			if (player != null)
+			if (player.Health != null)
 			{
-				// TODO: Why arent the spellLists doing that?
-				if (KeyInput.IsKeyDown(Keys.LeftShift))
+				var percentage = player.Health.RelativeHP;
+
+				healthBar.WriteText($"{player.Health.HP}/{player.Health.MaxHP}");
+				healthBar.DisplayPercentage = percentage;
+
+				if (percentage < 0.3f)
 				{
-					actorList.CurrentActor += MouseInput.WheelState;
+					var inverse = 0.3f - percentage;
+					particleCollector += (int)(inverse * 50) + 1;
 
-					if (!KeyInput.IsKeyDown(Keys.LeftControl) && MouseInput.IsRightClicked)
-						changePlayer(actorTypes[actorList.CurrentActor]);
-				}
-				else
-				{
-					spellList.CurrentSpell += MouseInput.WheelState;
+					var count = particleCollector / 16;
+					particleCollector -= count * 16;
 
-					if (!KeyInput.IsKeyDown(Keys.LeftControl) && MouseInput.IsRightClicked)
-						game.SpellManager.Activate(spellList.CurrentSpell);
-				}
-
-				if (player.Health != null)
-				{
-					var percentage = player.Health.RelativeHP;
-
-					healthBar.WriteText($"{player.Health.HP}/{player.Health.MaxHP}");
-					healthBar.DisplayPercentage = percentage;
-
-					if (percentage < 0.3f)
+					for (int i = 0; i < count * 2; i++)
 					{
-						var inverse = 0.3f - percentage;
-						particleCollector += (int)(inverse * 50) + 1;
-
-						var count = particleCollector / 16;
-						particleCollector -= count * 16;
-
-						for (int i = 0; i < count * 2; i++)
-						{
-							var invert = i % 2 == 0;
-							var particle = particleManager.Add((int)(percentage * 200) + 300);
-							particle.Radius = Program.SharedRandom.Next(150) + (int)(inverse * inverse * 2000) + 10;
-							particle.Position = new CPos(Program.SharedRandom.Next((int)(WindowInfo.UnitWidth * 1024)) - (int)(WindowInfo.UnitWidth * 512), (invert ? 1 : -1) * (int)(WindowInfo.UnitHeight * 512), 0);
-							particle.Velocity = new CPos(Program.SharedRandom.Next(-2, 2), (invert ? -1 : 1) * (Program.SharedRandom.Next(10) + 10), 0);
-							particle.Color = new Color(Program.SharedRandom.Next(96) + 127, 0, 0, 192);
-						}
+						var invert = i % 2 == 0;
+						var particle = particleManager.Add((int)(percentage * 200) + 300);
+						particle.Radius = Program.SharedRandom.Next(150) + (int)(inverse * inverse * 2000) + 10;
+						particle.Position = new CPos(Program.SharedRandom.Next((int)(WindowInfo.UnitWidth * 1024)) - (int)(WindowInfo.UnitWidth * 512), (invert ? 1 : -1) * (int)(WindowInfo.UnitHeight * 512), 0);
+						particle.Velocity = new CPos(Program.SharedRandom.Next(-2, 2), (invert ? -1 : 1) * (Program.SharedRandom.Next(10) + 10), 0);
+						particle.Color = new Color(Program.SharedRandom.Next(96) + 127, 0, 0, 192);
 					}
 				}
-
-				manaBar.WriteText($"{game.Statistics.Mana}/{game.Statistics.MaxMana}");
-				manaBar.DisplayPercentage = game.Statistics.Mana / (float)game.Statistics.MaxMana;
 			}
-		}
 
-		// TODO: this code has nothing to do here, it should be somewhere else
-		void changePlayer(ActorType type)
-		{
-			if (game.Statistics.Money < type.Playable.Cost)
-				return;
-
-			if (game.World.LocalPlayer.Type == type)
-				return;
-
-			if (!game.Statistics.ActorAvailable(type.Playable))
-				return;
-
-			game.Statistics.Money -= type.Playable.Cost;
-
-			game.World.BeginPlayerSwitch(type);
+			manaBar.WriteText($"{game.Statistics.Mana}/{game.Statistics.MaxMana}");
+			manaBar.DisplayPercentage = game.Statistics.Mana / (float)game.Statistics.MaxMana;
 		}
 	}
 }
