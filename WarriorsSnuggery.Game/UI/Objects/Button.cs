@@ -11,7 +11,9 @@ namespace WarriorsSnuggery.UI
 		readonly UITextLine text;
 		readonly Action action;
 
-		public Button(CPos pos, string text, string type, Action action) : base(pos, new MPos(margin + FontManager.Pixel16.GetWidth(text), margin + FontManager.Pixel16.Height / 2), PanelManager.Get(type))
+		public Button(CPos pos, string text, string typeName, Action action = null) : this(pos, text, PanelManager.Get(typeName), action) { }
+
+		public Button(CPos pos, string text, PanelType type, Action action = null) : base(pos, new MPos(margin + FontManager.Pixel16.GetWidth(text), margin + FontManager.Pixel16.Height / 2), type)
 		{
 			this.text = new UITextLine(pos + new CPos(margin, 0, 0), FontManager.Pixel16, TextOffset.MIDDLE);
 			this.text.WriteText(text);
@@ -47,7 +49,7 @@ namespace WarriorsSnuggery.UI
 			CheckMouse();
 
 			if (MouseInput.IsLeftClicked && ContainsMouse && action != null)
-				action();
+				action?.Invoke();
 		}
 	}
 }

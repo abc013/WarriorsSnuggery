@@ -12,7 +12,7 @@ namespace WarriorsSnuggery.UI
 
 		public ChatBox(CPos position)
 		{
-			panel = new TextPanel(position, new MPos(8120, 2048), FontManager.Pixel16, PanelManager.Get("stone"));
+			panel = new TextPanel(position, new MPos(8120, 2048), FontManager.Pixel16, "stone");
 
 			input = new TextBox(position + new CPos(-800, 2048 + 512, 0), "", "wooden", 45);
 			input.OnEnter = SendText;

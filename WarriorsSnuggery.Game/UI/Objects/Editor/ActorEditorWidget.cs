@@ -68,7 +68,7 @@ namespace WarriorsSnuggery.UI.Objects
 
 		public ActorEditorWidget(CPos position) : base()
 		{
-			list = new PanelList(CPos.Zero, new MPos(2048, 4096), new MPos(512, 512), PanelManager.Get("wooden"));
+			list = new PanelList(CPos.Zero, new MPos(2048, 4096), new MPos(512, 512), "wooden");
 			foreach (var pair in ActorCreator.Types)
 			{
 				var a = pair.Value;
@@ -84,7 +84,7 @@ namespace WarriorsSnuggery.UI.Objects
 					Scale = scale
 				});
 			}
-			rasterizationCheck = CheckBoxCreator.Create("wooden", CPos.Zero);
+			rasterizationCheck = new CheckBox(CPos.Zero, "wooden");
 			rasterizationText = new UITextLine(CPos.Zero, FontManager.Pixel16);
 			rasterizationText.SetText("align");
 
@@ -92,16 +92,16 @@ namespace WarriorsSnuggery.UI.Objects
 			teamTextText = new UITextLine(CPos.Zero, FontManager.Pixel16);
 			teamTextText.SetText("team");
 
-			botCheck = CheckBoxCreator.Create("wooden", CPos.Zero);
+			botCheck = new CheckBox(CPos.Zero, "wooden");
 			botText = new UITextLine(CPos.Zero, FontManager.Pixel16);
 			botText.SetText("bot");
 
-			healthSlider = new SliderBar(CPos.Zero, 3072, PanelManager.Get("wooden"), () => { });
+			healthSlider = new SliderBar(CPos.Zero, 3072, "wooden");
 			healthSlider.Value = 1f;
 			healthText = new UITextLine(CPos.Zero, FontManager.Pixel16, TextOffset.MIDDLE);
 			healthText.SetText("health");
 
-			facingSlider = new SliderBar(CPos.Zero, 3072, PanelManager.Get("wooden"), () => { });
+			facingSlider = new SliderBar(CPos.Zero, 3072, "wooden");
 			facingSlider.Value = 0f;
 			facingText = new UITextLine(CPos.Zero, FontManager.Pixel16, TextOffset.MIDDLE);
 			facingText.SetText("facing");

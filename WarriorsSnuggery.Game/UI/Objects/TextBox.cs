@@ -42,7 +42,9 @@ namespace WarriorsSnuggery.UI
 		public Action OnEnter;
 		public Action OnType;
 
-		public TextBox(CPos pos, string text, string type, int maximumLength = 10, bool onlyNumbers = false, bool isPath = false) : base(pos, new MPos(margin + FontManager.Pixel16.Width * maximumLength / 2, margin + FontManager.Pixel16.Height / 2), PanelManager.Get(type))
+		public TextBox(CPos pos, string text, string typeName, int maximumLength = 10, bool onlyNumbers = false, bool isPath = false) : this(pos, text, PanelManager.Get(typeName), maximumLength, onlyNumbers, isPath) { }
+
+		public TextBox(CPos pos, string text, PanelType type, int maximumLength = 10, bool onlyNumbers = false, bool isPath = false) : base(pos, new MPos(margin + FontManager.Pixel16.Width * maximumLength / 2, margin + FontManager.Pixel16.Height / 2), type)
 		{
 			realText = text;
 			MaximumLength = maximumLength;

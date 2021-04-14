@@ -26,6 +26,8 @@ namespace WarriorsSnuggery.UI
 		public MPos selected;
 		int scrolled;
 
+		public PanelList(CPos pos, MPos size, MPos itemSize, string type) : this(pos, size, itemSize, PanelManager.Get(type)) { }
+
 		public PanelList(CPos pos, MPos size, MPos itemSize, PanelType type) : base(pos, size, type, type.Background2 != null ? new BatchObject(Mesh.UIPanel(type.Background2, Color.White, itemSize), Color.White) : null)
 		{
 			ItemSize = itemSize;

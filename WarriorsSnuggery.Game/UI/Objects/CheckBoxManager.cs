@@ -1,10 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using WarriorsSnuggery.Loader;
 
 namespace WarriorsSnuggery.UI
 {
-	public static class CheckBoxCreator
+	public static class CheckBoxManager
 	{
 		static readonly Dictionary<string, CheckBoxType> types = new Dictionary<string, CheckBoxType>();
 
@@ -19,11 +18,6 @@ namespace WarriorsSnuggery.UI
 				throw new MissingInfoException(name);
 
 			return types[name];
-		}
-
-		public static CheckBox Create(string name, CPos position, bool ticked = false, Action<bool> onTicked = null)
-		{
-			return new CheckBox(position, GetType(name), ticked, onTicked);
 		}
 	}
 }

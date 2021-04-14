@@ -31,11 +31,11 @@ namespace WarriorsSnuggery.UI.Screens
 			var left = -right;
 
 			// Actors
-			actorList = new ActorList(game, new CPos(left + 512 + margin, 768 + shift, 0), new MPos(512, 11 * 512), new MPos(512, 512), PanelManager.Get("wooden"));
+			actorList = new ActorList(game, new CPos(left + 512 + margin, 768 + shift, 0), new MPos(512, 11 * 512), new MPos(512, 512), "wooden");
 			Content.Add(actorList);
 
 			// Spells
-			spellList = new SpellList(game, new CPos(right - 512 - margin, 0, 0), new MPos(512, 13 * 512), new MPos(512, 512), PanelManager.Get("stone"));
+			spellList = new SpellList(game, new CPos(right - 512 - margin, 0, 0), new MPos(512, 13 * 512), new MPos(512, 512), "stone");
 			Content.Add(spellList);
 
 			var width = (int)(WindowInfo.UnitWidth * 512);
@@ -54,7 +54,7 @@ namespace WarriorsSnuggery.UI.Screens
 			else if (game.ObjectiveType == ObjectiveType.SURVIVE_WAVES)
 				Content.Add(new WaveDisplay(game, new CPos(left + 512 + shift, top + 1536 + shift + 128, 0)));
 
-			Content.Add(CheckBoxCreator.Create("menu", new CPos(right - 512, -8120 + 512, 0), onTicked: (t) => game.ScreenControl.ShowScreen(ScreenType.MENU)));
+			Content.Add(new CheckBox(new CPos(right - 512, -8120 + 512, 0), "menu", onTicked: (t) => game.ScreenControl.ShowScreen(ScreenType.MENU)));
 
 			// mission text
 			var missionText = new UITextLine(new CPos(0, top, 0), FontManager.Pixel16, TextOffset.MIDDLE);

@@ -58,6 +58,8 @@ namespace WarriorsSnuggery.UI
 
 		public bool HighlightVisible;
 
+		public Panel(CPos position, MPos bounds, string typeName) : this(position, bounds, PanelManager.Get(typeName)) { }
+
 		public Panel(CPos position, MPos bounds, PanelType type) : this(position, bounds, type, null)
 		{
 			if (type.Background2 != null)

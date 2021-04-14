@@ -18,7 +18,7 @@ namespace WarriorsSnuggery.UI.Screens
 			this.game = game;
 			Title.Position = new CPos(0, -4096, 0);
 
-			mapSelection = new PanelList(new CPos(0, 1024, 0), new MPos(4096, 4096), new MPos(512, 512), PanelManager.Get("wooden"));
+			mapSelection = new PanelList(new CPos(0, 1024, 0), new MPos(4096, 4096), new MPos(512, 512), "wooden");
 			foreach (var piece in PieceManager.Pieces)
 			{
 				mapSelection.Add(new PanelItem(new BatchObject(UITextureManager.Get("UI_map")[0], Color.White), new MPos(512, 512), piece.Name, new[] { Color.Grey + "[" + piece.Size.X + "," + piece.Size.Y + "]" },
@@ -31,7 +31,7 @@ namespace WarriorsSnuggery.UI.Screens
 			Content.Add(mapSelection);
 			Content.Add(new Button(new CPos(4096, 6144, 0), "Back", "wooden", () => game.ShowScreen(ScreenType.MENU)));
 			Content.Add(new Button(new CPos(0, 6144, 0), "New Piece", "wooden", () => { createPieceScreen.ActiveScreen = true; }));
-			Content.Add(new Button(new CPos(-4096, 6144, 0), "Delete Piece", "wooden", () => { }));
+			Content.Add(new Button(new CPos(-4096, 6144, 0), "Delete Piece", "wooden"));
 
 			createPieceScreen = new CreatePieceScreen();
 		}
@@ -89,7 +89,7 @@ namespace WarriorsSnuggery.UI.Screens
 			Title.Position = new CPos(0, -4096, 0);
 
 			Content.Add(new Button(new CPos(4096, 6144, 0), "Cancel", "wooden", () => { ActiveScreen = false; }));
-			Content.Add(new Button(new CPos(-4096, 6144, 0), "Create", "wooden", () => { create(); }));
+			Content.Add(new Button(new CPos(-4096, 6144, 0), "Create", "wooden", create));
 
 			var size = new UITextLine(new CPos(0, -1024, 0), FontManager.Pixel16, TextOffset.MIDDLE);
 			size.SetText("Size of Piece");

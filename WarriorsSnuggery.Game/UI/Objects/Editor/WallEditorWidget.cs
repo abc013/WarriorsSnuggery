@@ -40,17 +40,17 @@ namespace WarriorsSnuggery.UI.Objects
 
 		public WallEditorWidget(CPos position) : base()
 		{
-			list = new PanelList(CPos.Zero, new MPos(2048, 4096), new MPos(512, 1024), PanelManager.Get("wooden"));
+			list = new PanelList(CPos.Zero, new MPos(2048, 4096), new MPos(512, 1024), "wooden");
 			foreach (var a in WallCreator.Types.Values)
 				list.Add(new PanelItem(new BatchObject(a.GetTexture(true, 0), Color.White), new MPos(512, 512), a.ID.ToString(), new string[0], () => CurrentType = a));
 
-			placementCheck = CheckBoxCreator.Create("wooden", CPos.Zero, false, (b) => { });
+			placementCheck = new CheckBox(CPos.Zero, "wooden");
 			placementText = new UITextLine(CPos.Zero, FontManager.Pixel16);
 			placementText.SetText("vertical");
 
 			healthText = new UITextLine(CPos.Zero, FontManager.Pixel16, TextOffset.MIDDLE);
 			healthText.SetText("health");
-			healthSlider = new SliderBar(CPos.Zero, 3072, PanelManager.Get("wooden"), () => { });
+			healthSlider = new SliderBar(CPos.Zero, 3072, "wooden");
 			healthSlider.Value = 1f;
 
 			Position = position;

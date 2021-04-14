@@ -17,7 +17,7 @@ namespace WarriorsSnuggery.UI.Screens
 			this.game = game;
 			Title.Position = new CPos(0, -4096, 0);
 
-			list = new GameSaveList(new CPos(0, 1024, 0), new MPos((int)(WindowInfo.UnitWidth * 128), 4096), PanelManager.Get("wooden"));
+			list = new GameSaveList(new CPos(0, 1024, 0), new MPos((int)(WindowInfo.UnitWidth * 128), 4096), "wooden");
 
 			Content.Add(new Button(new CPos(4096, 6144, 0), "Back", "wooden", () => game.ShowScreen(ScreenType.MENU)));
 			Content.Add(new Button(new CPos(0, 6144, 0), "Save", "wooden", () => { saveGame(); game.RefreshSaveGameScreens(); }));

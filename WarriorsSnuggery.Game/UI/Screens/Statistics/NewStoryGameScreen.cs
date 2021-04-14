@@ -34,14 +34,14 @@ namespace WarriorsSnuggery.UI.Screens
 			difficulty.SetText("Difficulty: ");
 			Content.Add(difficulty);
 
-			difficultyInput = new SliderBar(new CPos(1024, 1024, 0), 4096, PanelManager.Get("wooden"), () => { });
+			difficultyInput = new SliderBar(new CPos(1024, 1024, 0), 4096, "wooden");
 			Content.Add(difficultyInput);
 
 			var hardcore = new UITextLine(new CPos(-2048, 2048, 0), FontManager.Pixel16, TextOffset.RIGHT);
 			hardcore.SetText("Hardcore (one life): ");
 			Content.Add(hardcore);
 
-			hardcoreInput = CheckBoxCreator.Create("wooden", new CPos(1024, 2048, 0));
+			hardcoreInput = new CheckBox(new CPos(1024, 2048, 0), "wooden");
 			Content.Add(hardcoreInput);
 
 			var seed = new UITextLine(new CPos(-2048, 3072, 0), FontManager.Pixel16, TextOffset.RIGHT);

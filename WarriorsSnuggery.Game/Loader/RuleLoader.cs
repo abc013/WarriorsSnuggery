@@ -96,17 +96,22 @@ namespace WarriorsSnuggery.Loader
 			PanelManager.AddType(new PanelType(panelTex("UI_wood1"), panelTex("UI_wood2"), panelTex("UI_wood3"), 72), "wooden");
 			PanelManager.AddType(new PanelType(panelTex("UI_stone1"), panelTex("UI_wood3"), panelTex("UI_stone2"), 72), "stone");
 
-			CheckBoxCreator.AddType(new CheckBoxType(checkBox("check"), checkBox("check_hover"), checkBox("check_click"), 0.6f, 0.6f), "wooden");
+			CheckBoxManager.AddType(checkBox("check"), "wooden");
 
-			CheckBoxCreator.AddType(new CheckBoxType(checkBox("check_terrain"), checkBox("check_terrain_hover"), checkBox("check_terrain_click"), 0.5f, 0.5f), "terrain_editor");
-			CheckBoxCreator.AddType(new CheckBoxType(checkBox("check_actor"), checkBox("check_actor_hover"), checkBox("check_actor_click"), 0.5f, 0.5f), "actor_editor");
-			CheckBoxCreator.AddType(new CheckBoxType(checkBox("check_object"), checkBox("check_object_hover"), checkBox("check_object_click"), 0.5f, 0.5f), "object_editor");
-			CheckBoxCreator.AddType(new CheckBoxType(checkBox("check_wall"), checkBox("check_wall_hover"), checkBox("check_wall_click"), 0.5f, 0.5f), "wall_editor");
+			CheckBoxManager.AddType(checkBox("check_terrain"), "terrain_editor");
+			CheckBoxManager.AddType(checkBox("check_actor"), "actor_editor");
+			CheckBoxManager.AddType(checkBox("check_object"), "object_editor");
+			CheckBoxManager.AddType(checkBox("check_wall"), "wall_editor");
 
-			CheckBoxCreator.AddType(new CheckBoxType(checkBox("check_menu"), checkBox("check_menu_hover"), checkBox("check_menu_click"), 0.5f, 0.5f), "menu");
+			CheckBoxManager.AddType(checkBox("check_menu"), "menu");
 		}
 
-		static Texture checkBox(string file)
+		static CheckBoxType checkBox(string name)
+		{
+			return new CheckBoxType(checkBoxTex(name), checkBoxTex(name + "_hover"), checkBoxTex(name + "_click"));
+		}
+
+		static Texture checkBoxTex(string file)
 		{
 			return SpriteManager.AddTexture(new TextureInfo(file))[0];
 		}

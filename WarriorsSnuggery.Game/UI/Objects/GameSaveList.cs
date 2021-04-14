@@ -5,6 +5,9 @@ namespace WarriorsSnuggery.UI
 	class GameSaveList : PanelList
 	{
 		readonly MPos size;
+
+		public GameSaveList(CPos pos, MPos size, string typeName) : this(pos, size, PanelManager.Get(typeName)) { }
+
 		public GameSaveList(CPos pos, MPos size, PanelType type) : base(pos, size, new MPos(size.X, 1024), type)
 		{
 			this.size = size;

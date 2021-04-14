@@ -4,39 +4,15 @@ namespace WarriorsSnuggery.UI
 {
 	public class CheckBox : UIObject
 	{
-		public override CPos Position
-		{
-			get => base.Position;
-			set
-			{
-				base.Position = value;
-				type.Click.SetPosition(value);
-				type.Default.SetPosition(value);
-				type.Checked.SetPosition(value);
-			}
-		}
-
-		public override VAngle Rotation
-		{
-			get => base.Rotation;
-			set
-			{
-				base.Rotation = value;
-				type.Click.SetRotation(value);
-				type.Default.SetRotation(value);
-				type.Checked.SetRotation(value);
-			}
-		}
-
 		public override float Scale
 		{
 			get => base.Scale;
 			set
 			{
 				base.Scale = value;
-				type.Click.SetScale(value);
-				type.Default.SetScale(value);
-				type.Checked.SetScale(value);
+
+				SelectableBounds = new MPos((int)(value * 256), (int)(value * 256));
+				Bounds = SelectableBounds;
 			}
 		}
 
@@ -45,13 +21,15 @@ namespace WarriorsSnuggery.UI
 		readonly CheckBoxType type;
 		readonly Action<bool> action;
 
-		public CheckBox(CPos pos, CheckBoxType type, bool @checked, Action<bool> onTicked)
+		public CheckBox(CPos pos, string typeName, bool @checked = false, Action<bool> onTicked = null) : this(pos, CheckBoxManager.GetType(typeName), @checked, onTicked) { }
+
+		public CheckBox(CPos pos, CheckBoxType type, bool @checked = false, Action<bool> onTicked = null)
 		{
 			Checked = @checked;
 			this.type = type;
 
-			SelectableBounds = new MPos(type.Width, type.Height);
-			Bounds = SelectableBounds;
+			// Set bounds and default scale
+			Scale = 1.5f;
 
 			action = onTicked;
 			Position = pos;
@@ -73,6 +51,8 @@ namespace WarriorsSnuggery.UI
 			if (ContainsMouse && MouseInput.IsLeftDown)
 			{
 				type.Click.SetPosition(Position);
+				type.Click.SetScale(Scale);
+				type.Click.SetRotation(Rotation);
 				type.Click.PushToBatchRenderer();
 			}
 			else
@@ -80,11 +60,15 @@ namespace WarriorsSnuggery.UI
 				if (!Checked)
 				{
 					type.Default.SetPosition(Position);
+					type.Default.SetScale(Scale);
+					type.Default.SetRotation(Rotation);
 					type.Default.PushToBatchRenderer();
 				}
 				else
 				{
 					type.Checked.SetPosition(Position);
+					type.Checked.SetScale(Scale);
+					type.Checked.SetRotation(Rotation);
 					type.Checked.PushToBatchRenderer();
 				}
 			}

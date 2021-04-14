@@ -36,7 +36,7 @@ namespace WarriorsSnuggery.UI.Screens
 			height.SetText("Height:");
 			Content.Add(height);
 
-			fullscreenCheck = CheckBoxCreator.Create("wooden", new CPos(-1536, -3000, 0), Settings.Fullscreen, (ticked) =>
+			fullscreenCheck = new CheckBox(new CPos(-1536, -3000, 0), "wooden", Settings.Fullscreen, (ticked) =>
 			{
 				width.SetColor(ticked ? new Color(128, 128, 128) : Color.White);
 				height.SetColor(ticked ? new Color(128, 128, 128) : Color.White);
@@ -74,15 +74,15 @@ namespace WarriorsSnuggery.UI.Screens
 			textshadow.SetText("Enable text shadows:");
 			Content.Add(textshadow);
 
-			vSyncCheck = CheckBoxCreator.Create("wooden", new CPos(6656, -3000, 0), Settings.VSync, (b) =>
+			vSyncCheck = new CheckBox(new CPos(6656, -3000, 0), "wooden", Settings.VSync, (b) =>
 			{
 				Settings.VSync = b;
 				Window.SetVSync();
 			});
 			Content.Add(vSyncCheck);
-			pixelingCheck = CheckBoxCreator.Create("wooden", new CPos(6656, -2300, 0), Settings.EnablePixeling, (b) => Settings.EnablePixeling = b);
+			pixelingCheck = new CheckBox(new CPos(6656, -2300, 0), "wooden", Settings.EnablePixeling, (b) => Settings.EnablePixeling = b);
 			Content.Add(pixelingCheck);
-			textshadowCheck = CheckBoxCreator.Create("wooden", new CPos(6656, -1600, 0), Settings.EnableTextShadowing, (b) => Settings.EnableTextShadowing = b);
+			textshadowCheck = new CheckBox(new CPos(6656, -1600, 0), "wooden", Settings.EnableTextShadowing, (b) => Settings.EnableTextShadowing = b);
 			Content.Add(textshadowCheck);
 
 			// Scrolling
@@ -93,12 +93,12 @@ namespace WarriorsSnuggery.UI.Screens
 			edgeScrolling.SetText("Edge Panning (0 = disabled):");
 			Content.Add(edgeScrolling);
 
-			panningSlider = new SliderBar(new CPos(5120, -600, 0), 4096, PanelManager.Get("wooden"), () => Settings.ScrollSpeed = (int)(panningSlider.Value * 10))
+			panningSlider = new SliderBar(new CPos(5120, -600, 0), 4096, "wooden", () => Settings.ScrollSpeed = (int)(panningSlider.Value * 10))
 			{
 				Value = Settings.ScrollSpeed / 10f
 			};
 			Content.Add(panningSlider);
-			edgePanningSlider = new SliderBar(new CPos(5120, 100, 0), 4096, PanelManager.Get("wooden"), () => Settings.EdgeScrolling = (int)(edgePanningSlider.Value * 10))
+			edgePanningSlider = new SliderBar(new CPos(5120, 100, 0), 4096, "wooden", () => Settings.EdgeScrolling = (int)(edgePanningSlider.Value * 10))
 			{
 				Value = Settings.EdgeScrolling / 10f
 			};
@@ -121,7 +121,7 @@ namespace WarriorsSnuggery.UI.Screens
 			var developerMode = new UITextLine(new CPos(-6144, 1900, 0), FontManager.Pixel16);
 			developerMode.SetText("Enable Developermode:");
 			Content.Add(developerMode);
-			developerModeCheck = CheckBoxCreator.Create("wooden", new CPos(5120, 1900, 0), Settings.DeveloperMode, (b) =>
+			developerModeCheck = new CheckBox(new CPos(5120, 1900, 0), "wooden", Settings.DeveloperMode, (b) =>
 			{
 				Settings.DeveloperMode = b;
 			});
@@ -138,7 +138,7 @@ namespace WarriorsSnuggery.UI.Screens
 			musicVol.SetText("Music Volume:");
 			Content.Add(musicVol);
 
-			masterVolumeSlider = new SliderBar(new CPos(5120, 2800, 0), 4096, PanelManager.Get("wooden"), () =>
+			masterVolumeSlider = new SliderBar(new CPos(5120, 2800, 0), 4096, "wooden", () =>
 			{
 				Settings.MasterVolume = (float)Math.Round(masterVolumeSlider.Value, 2);
 				AudioController.Music.SetVolume();
@@ -147,7 +147,7 @@ namespace WarriorsSnuggery.UI.Screens
 				Value = Settings.MasterVolume
 			};
 			Content.Add(masterVolumeSlider);
-			effectVolumeSlider = new SliderBar(new CPos(5120, 3700, 0), 4096, PanelManager.Get("wooden"), () =>
+			effectVolumeSlider = new SliderBar(new CPos(5120, 3700, 0), 4096, "wooden", () =>
 			{
 				Settings.EffectsVolume = (float)Math.Round(effectVolumeSlider.Value, 2);
 			})
@@ -155,7 +155,7 @@ namespace WarriorsSnuggery.UI.Screens
 				Value = Settings.EffectsVolume
 			};
 			Content.Add(effectVolumeSlider);
-			musicVolumeSlider = new SliderBar(new CPos(5120, 4600, 0), 4096, PanelManager.Get("wooden"), () =>
+			musicVolumeSlider = new SliderBar(new CPos(5120, 4600, 0), 4096, "wooden", () =>
 			{
 				Settings.MusicVolume = (float)Math.Round(musicVolumeSlider.Value, 2);
 				AudioController.Music.SetVolume();
