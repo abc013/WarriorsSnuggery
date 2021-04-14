@@ -84,7 +84,7 @@ namespace WarriorsSnuggery.UI.Objects
 					Scale = scale
 				});
 			}
-			rasterizationCheck = new CheckBox(CPos.Zero, "wooden");
+			rasterizationCheck = new CheckBox("wooden");
 			rasterizationText = new UITextLine(CPos.Zero, FontManager.Pixel16);
 			rasterizationText.SetText("align");
 
@@ -92,7 +92,7 @@ namespace WarriorsSnuggery.UI.Objects
 			teamTextText = new UITextLine(CPos.Zero, FontManager.Pixel16);
 			teamTextText.SetText("team");
 
-			botCheck = new CheckBox(CPos.Zero, "wooden");
+			botCheck = new CheckBox("wooden");
 			botText = new UITextLine(CPos.Zero, FontManager.Pixel16);
 			botText.SetText("bot");
 

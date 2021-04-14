@@ -50,17 +50,28 @@ namespace WarriorsSnuggery.UI.Screens
 
 			var checkBoxPosition = new CPos((int)(WindowInfo.UnitWidth * 512) - 1024, -6144, 0);
 
-			showNone = new CheckBox(checkBoxPosition - new CPos(736 * 3, 0, 0), "wooden", onTicked: (b) => deselectBoxes(Selected.NONE));
-			showNone.Checked = true;
+			showNone = new CheckBox("wooden", true, (b) => deselectBoxes(Selected.NONE))
+			{
+				Position = checkBoxPosition - new CPos(736 * 3, 0, 0)
+			};
 			Content.Add(showNone);
 
-			showTiles = new CheckBox(checkBoxPosition - new CPos(736 * 2, 0, 0), "terrain_editor", onTicked: (b) => deselectBoxes(Selected.TILE));
+			showTiles = new CheckBox("terrain_editor", onTicked: (b) => deselectBoxes(Selected.TILE))
+			{
+				Position = checkBoxPosition - new CPos(736 * 2, 0, 0)
+			};
 			Content.Add(showTiles);
 
-			showActors = new CheckBox(checkBoxPosition - new CPos(736, 0, 0), "actor_editor", onTicked: (b) => deselectBoxes(Selected.ACTOR));
+			showActors = new CheckBox("actor_editor", onTicked: (b) => deselectBoxes(Selected.ACTOR))
+			{
+				Position = checkBoxPosition - new CPos(736 * 1, 0, 0)
+			};
 			Content.Add(showActors);
 
-			showWalls = new CheckBox(checkBoxPosition, "wall_editor", onTicked: (b) => deselectBoxes(Selected.WALL));
+			showWalls = new CheckBox("wall_editor", onTicked: (b) => deselectBoxes(Selected.WALL))
+			{
+				Position = checkBoxPosition
+			};
 			Content.Add(showWalls);
 
 			var widgetPosition = new CPos((int)(WindowInfo.UnitWidth * 512) - 2048, -3584, 0);

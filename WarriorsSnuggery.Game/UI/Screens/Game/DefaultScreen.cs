@@ -54,7 +54,11 @@ namespace WarriorsSnuggery.UI.Screens
 			else if (game.ObjectiveType == ObjectiveType.SURVIVE_WAVES)
 				Content.Add(new WaveDisplay(game, new CPos(left + 512 + shift, top + 1536 + shift + 128, 0)));
 
-			Content.Add(new CheckBox(new CPos(right - 512, -8120 + 512, 0), "menu", onTicked: (t) => game.ScreenControl.ShowScreen(ScreenType.MENU)));
+			var menu = new CheckBox("menu", onTicked: (t) => game.ScreenControl.ShowScreen(ScreenType.MENU))
+			{
+				Position = new CPos(right - 512, -8120 + 512, 0)
+			};
+			Content.Add(menu);
 
 			// mission text
 			var missionText = new UITextLine(new CPos(0, top, 0), FontManager.Pixel16, TextOffset.MIDDLE);

@@ -21,9 +21,9 @@ namespace WarriorsSnuggery.UI
 		readonly CheckBoxType type;
 		readonly Action<bool> action;
 
-		public CheckBox(CPos pos, string typeName, bool @checked = false, Action<bool> onTicked = null) : this(pos, CheckBoxManager.GetType(typeName), @checked, onTicked) { }
+		public CheckBox(string typeName, bool @checked = false, Action<bool> onTicked = null) : this(CheckBoxManager.GetType(typeName), @checked, onTicked) { }
 
-		public CheckBox(CPos pos, CheckBoxType type, bool @checked = false, Action<bool> onTicked = null)
+		public CheckBox(CheckBoxType type, bool @checked = false, Action<bool> onTicked = null)
 		{
 			Checked = @checked;
 			this.type = type;
@@ -32,7 +32,6 @@ namespace WarriorsSnuggery.UI
 			Scale = 1.5f;
 
 			action = onTicked;
-			Position = pos;
 		}
 
 		public override void Tick()

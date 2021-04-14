@@ -25,23 +25,29 @@ namespace WarriorsSnuggery.UI.Screens
 			var fullscreen = new UITextLine(new CPos(-6096, -3000, 0), FontManager.Pixel16);
 			fullscreen.SetText("Fullscreen:");
 			Content.Add(fullscreen);
+
 			var width = new UITextLine(new CPos(-6096, -2300, 0), FontManager.Pixel16);
 			if (Settings.Fullscreen)
 				width.SetColor(new Color(128, 128, 128));
 			width.SetText("Width:");
 			Content.Add(width);
+
 			var height = new UITextLine(new CPos(-6096, -1600, 0), FontManager.Pixel16);
 			if (Settings.Fullscreen)
 				height.SetColor(new Color(128, 128, 128));
 			height.SetText("Height:");
 			Content.Add(height);
 
-			fullscreenCheck = new CheckBox(new CPos(-1536, -3000, 0), "wooden", Settings.Fullscreen, (ticked) =>
+			fullscreenCheck = new CheckBox("wooden", Settings.Fullscreen, (ticked) =>
 			{
 				width.SetColor(ticked ? new Color(128, 128, 128) : Color.White);
 				height.SetColor(ticked ? new Color(128, 128, 128) : Color.White);
-			});
+			})
+			{
+				Position = new CPos(-1536, -3000, 0)
+			};
 			Content.Add(fullscreenCheck);
+
 			widthWrite = new TextBox(new CPos(-2048, -2300, 0), Settings.Width + "", "wooden", 5, true);
 			widthWrite.OnEnter = () =>
 			{
@@ -52,6 +58,7 @@ namespace WarriorsSnuggery.UI.Screens
 					widthWrite.Text = WindowInfo.ScreenWidth + "";
 			};
 			Content.Add(widthWrite);
+
 			heightWrite = new TextBox(new CPos(-2048, -1600, 0), Settings.Height + "", "wooden", 5, true);
 			heightWrite.OnEnter = () =>
 			{
@@ -67,22 +74,33 @@ namespace WarriorsSnuggery.UI.Screens
 			var vSync = new UITextLine(new CPos(-512, -3000, 0), FontManager.Pixel16);
 			vSync.SetText("Enable V-Sync:");
 			Content.Add(vSync);
+
 			var pixeling = new UITextLine(new CPos(-512, -2300, 0), FontManager.Pixel16);
 			pixeling.SetText("Enable Pixeling:");
 			Content.Add(pixeling);
+
 			var textshadow = new UITextLine(new CPos(-512, -1600, 0), FontManager.Pixel16);
 			textshadow.SetText("Enable text shadows:");
 			Content.Add(textshadow);
 
-			vSyncCheck = new CheckBox(new CPos(6656, -3000, 0), "wooden", Settings.VSync, (b) =>
+			vSyncCheck = new CheckBox("wooden", Settings.VSync, (b) =>
 			{
 				Settings.VSync = b;
 				Window.SetVSync();
-			});
+			})
+			{
+				Position = new CPos(6656, -3000, 0)
+			};
 			Content.Add(vSyncCheck);
-			pixelingCheck = new CheckBox(new CPos(6656, -2300, 0), "wooden", Settings.EnablePixeling, (b) => Settings.EnablePixeling = b);
+			pixelingCheck = new CheckBox("wooden", Settings.EnablePixeling, (b) => Settings.EnablePixeling = b)
+			{
+				Position = new CPos(6656, -2300, 0)
+			};
 			Content.Add(pixelingCheck);
-			textshadowCheck = new CheckBox(new CPos(6656, -1600, 0), "wooden", Settings.EnableTextShadowing, (b) => Settings.EnableTextShadowing = b);
+			textshadowCheck = new CheckBox("wooden", Settings.EnableTextShadowing, (b) => Settings.EnableTextShadowing = b)
+			{
+				Position = new CPos(6656, -1600, 0)
+			};
 			Content.Add(textshadowCheck);
 
 			// Scrolling
@@ -121,10 +139,13 @@ namespace WarriorsSnuggery.UI.Screens
 			var developerMode = new UITextLine(new CPos(-6144, 1900, 0), FontManager.Pixel16);
 			developerMode.SetText("Enable Developermode:");
 			Content.Add(developerMode);
-			developerModeCheck = new CheckBox(new CPos(5120, 1900, 0), "wooden", Settings.DeveloperMode, (b) =>
+			developerModeCheck = new CheckBox("wooden", Settings.DeveloperMode, (b) =>
 			{
 				Settings.DeveloperMode = b;
-			});
+			})
+			{
+				Position = new CPos(5120, 1900, 0)
+			};
 			Content.Add(developerModeCheck);
 
 			// Volume

@@ -41,7 +41,10 @@ namespace WarriorsSnuggery.UI.Screens
 			hardcore.SetText("Hardcore (one life): ");
 			Content.Add(hardcore);
 
-			hardcoreInput = new CheckBox(new CPos(1024, 2048, 0), "wooden");
+			hardcoreInput = new CheckBox("wooden")
+			{
+				Position = new CPos(1024, 2048, 0)
+			};
 			Content.Add(hardcoreInput);
 
 			var seed = new UITextLine(new CPos(-2048, 3072, 0), FontManager.Pixel16, TextOffset.RIGHT);
