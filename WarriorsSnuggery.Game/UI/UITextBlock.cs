@@ -27,9 +27,9 @@ namespace WarriorsSnuggery.UI
 			set => block.Rotation = value;
 		}
 
-		public UITextBlock(CPos pos, Font font, TextOffset offset, params string[] text)
+		public UITextBlock(Font font, TextOffset offset, params string[] text)
 		{
-			block = new TextBlock(pos, font, offset, text);
+			block = new TextBlock(CPos.Zero, font, offset, text);
 		}
 
 		public override void Tick()

@@ -30,7 +30,7 @@ namespace WarriorsSnuggery.UI
 			if (timeStamp)
 				message = DateTime.Now.ToString("[HH:mm] ") + message;
 
-			var line = new UITextLine(CPos.Zero, font);
+			var line = new UITextLine(font);
 			line.WriteText(message);
 			lines.Add(line);
 

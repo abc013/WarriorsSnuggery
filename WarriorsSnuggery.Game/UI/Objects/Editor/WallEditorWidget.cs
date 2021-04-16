@@ -45,10 +45,10 @@ namespace WarriorsSnuggery.UI.Objects
 				list.Add(new PanelItem(new BatchObject(a.GetTexture(true, 0), Color.White), new MPos(512, 512), a.ID.ToString(), new string[0], () => CurrentType = a));
 
 			placementCheck = new CheckBox("wooden");
-			placementText = new UITextLine(CPos.Zero, FontManager.Pixel16);
+			placementText = new UITextLine(FontManager.Pixel16);
 			placementText.SetText("vertical");
 
-			healthText = new UITextLine(CPos.Zero, FontManager.Pixel16, TextOffset.MIDDLE);
+			healthText = new UITextLine(FontManager.Pixel16, TextOffset.MIDDLE);
 			healthText.SetText("health");
 			healthSlider = new SliderBar(3072, "wooden")
 			{

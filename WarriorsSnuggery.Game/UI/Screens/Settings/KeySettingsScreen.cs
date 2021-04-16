@@ -20,12 +20,12 @@ namespace WarriorsSnuggery.UI.Screens
 
 			var type = PanelManager.Get("wooden");
 
-			var tPause = new UITextLine(new CPos(-1024, -3072, 0), FontManager.Pixel16, TextOffset.RIGHT);
+			var tPause = new UITextLine(FontManager.Pixel16, TextOffset.RIGHT) { Position = new CPos(-1024, -3072, 0) };
 			tPause.SetText("Pause/unpause");
 			Content.Add(tPause);
 			pause = new KeyboardButton(Settings.KeyDictionary["Pause"], Color.White, type) { Position = new CPos(1536, -3072, 0) };
 			Content.Add(pause);
-			var tLock = new UITextLine(new CPos(-1024, -2048, 0), FontManager.Pixel16, TextOffset.RIGHT);
+			var tLock = new UITextLine(FontManager.Pixel16, TextOffset.RIGHT) { Position = new CPos(-1024, -2048, 0) };
 			tLock.SetText("Toggle camera lock");
 			Content.Add(tLock);
 			@lock = new KeyboardButton(Settings.KeyDictionary["CameraLock"], Color.White, type) { Position = new CPos(1536, -2048, 0) };
@@ -33,13 +33,13 @@ namespace WarriorsSnuggery.UI.Screens
 
 			var font = FontManager.Pixel16;
 
-			var tMove = new UITextLine(new CPos(-3072, -1024, 0), FontManager.Pixel16, TextOffset.RIGHT);
+			var tMove = new UITextLine(FontManager.Pixel16, TextOffset.RIGHT) { Position = new CPos(-3072, -1024, 0) };
 			tMove.SetText("Movement");
 			Content.Add(tMove);
 			var line = 0;
 			foreach (var dir in new[] { "Up", "Down", "Left", "Right", "Above", "Below" })
 			{
-				var text = new UITextLine(new CPos(-1024, -1024 + line * 640, 0), font, TextOffset.RIGHT);
+				var text = new UITextLine(font, TextOffset.RIGHT) { Position = new CPos(-1024, -1024 + line * 640, 0) };
 				text.SetText(dir);
 				line++;
 				Content.Add(text);
@@ -57,13 +57,13 @@ namespace WarriorsSnuggery.UI.Screens
 			below = new KeyboardButton(Settings.KeyDictionary["MoveBelow"], Color.White, type) { Position = new CPos(1536, -1024 + 3200, 0) };
 			Content.Add(below);
 
-			var tCam = new UITextLine(new CPos(-3072, 3072, 0), FontManager.Pixel16, TextOffset.RIGHT);
+			var tCam = new UITextLine(FontManager.Pixel16, TextOffset.RIGHT) { Position = new CPos(-3072, 3072, 0) };
 			tCam.SetText("Camera");
 			Content.Add(tCam);
 			line = 0;
 			foreach (var dir in new[] { "Up", "Down", "Left", "Right" })
 			{
-				var text = new UITextLine(new CPos(-1024, 3072 + line * 640, 0), font, TextOffset.RIGHT);
+				var text = new UITextLine(font, TextOffset.RIGHT) { Position = new CPos(-1024, 3072 + line * 640, 0) };
 				text.SetText(dir);
 				line++;
 				Content.Add(text);

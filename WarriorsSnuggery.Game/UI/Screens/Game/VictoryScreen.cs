@@ -9,10 +9,10 @@ namespace WarriorsSnuggery.UI.Screens
 		{
 			Title.Position = new CPos(0, -2048, 0);
 
-			var won = new UITextLine(new CPos(0, 0, 0), FontManager.Pixel16, TextOffset.MIDDLE);
+			var won = new UITextLine(FontManager.Pixel16, TextOffset.MIDDLE);
 			won.WriteText("Level has been successfully completed. Congratulations!");
 			Content.Add(won);
-			var score = new UITextLine(new CPos(0, 1024, 0), FontManager.Pixel16, TextOffset.MIDDLE);
+			var score = new UITextLine(FontManager.Pixel16, TextOffset.MIDDLE) { Position = new CPos(0, 1024, 0) };
 			score.WriteText("Score: " + Color.Cyan + game.Statistics.CalculateScore());
 			Content.Add(score);
 

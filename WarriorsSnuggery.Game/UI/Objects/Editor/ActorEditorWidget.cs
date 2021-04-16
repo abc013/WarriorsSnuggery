@@ -85,29 +85,29 @@ namespace WarriorsSnuggery.UI.Objects
 				});
 			}
 			rasterizationCheck = new CheckBox("wooden");
-			rasterizationText = new UITextLine(CPos.Zero, FontManager.Pixel16);
+			rasterizationText = new UITextLine(FontManager.Pixel16);
 			rasterizationText.SetText("align");
 
 			teamTextBox = new TextBox("0", "wooden", 1, true);
-			teamTextText = new UITextLine(CPos.Zero, FontManager.Pixel16);
+			teamTextText = new UITextLine(FontManager.Pixel16);
 			teamTextText.SetText("team");
 
 			botCheck = new CheckBox("wooden");
-			botText = new UITextLine(CPos.Zero, FontManager.Pixel16);
+			botText = new UITextLine(FontManager.Pixel16);
 			botText.SetText("bot");
 
 			healthSlider = new SliderBar(3072, "wooden")
 			{
 				Value = 1f
 			};
-			healthText = new UITextLine(CPos.Zero, FontManager.Pixel16, TextOffset.MIDDLE);
+			healthText = new UITextLine(FontManager.Pixel16, TextOffset.MIDDLE);
 			healthText.SetText("health");
 
 			facingSlider = new SliderBar(3072, "wooden")
 			{
 				Value = 0f
 			};
-			facingText = new UITextLine(CPos.Zero, FontManager.Pixel16, TextOffset.MIDDLE);
+			facingText = new UITextLine(FontManager.Pixel16, TextOffset.MIDDLE);
 			facingText.SetText("facing");
 		}
 

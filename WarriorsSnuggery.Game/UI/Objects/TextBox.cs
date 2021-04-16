@@ -49,7 +49,7 @@ namespace WarriorsSnuggery.UI
 			MaximumLength = maximumLength;
 			OnlyNumbers = onlyNumbers;
 			IsPath = isPath;
-			this.text = new UITextLine(new CPos(128, 0, 0), FontManager.Pixel16, TextOffset.MIDDLE);
+			this.text = new UITextLine(FontManager.Pixel16, TextOffset.MIDDLE) { Position = new CPos(128, 0, 0) };
 			this.text.SetText(text);
 		}
 

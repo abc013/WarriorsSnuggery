@@ -9,7 +9,6 @@ namespace WarriorsSnuggery.UI.Screens
 		readonly Game game;
 
 		readonly GameSaveList list;
-
 		readonly NewSaveGameScreen createSaveScreen;
 
 		public SaveGameScreen(Game game) : base("Save Game")
@@ -63,21 +62,17 @@ namespace WarriorsSnuggery.UI.Screens
 		public override void Render()
 		{
 			if (createSaveScreen.ActiveScreen)
-			{
 				createSaveScreen.Render();
-				return;
-			}
-			base.Render();
+			else
+				base.Render();
 		}
 
 		public override void Tick()
 		{
 			if (createSaveScreen.ActiveScreen)
-			{
 				createSaveScreen.Tick();
-				return;
-			}
-			base.Tick();
+			else
+				base.Tick();
 		}
 
 		public override void KeyDown(Keys key, bool isControl, bool isShift, bool isAlt)
@@ -93,51 +88,30 @@ namespace WarriorsSnuggery.UI.Screens
 
 		readonly Game game;
 
-		readonly Button back;
-		readonly Button create;
 		readonly TextBox @new;
-		readonly UITextLine warning;
 
 		public NewSaveGameScreen(Game game) : base("New Save")
 		{
 			this.game = game;
 			Title.Position = new CPos(0, -4096, 0);
 
-			back = new Button("Back", "wooden", () => ActiveScreen = false) { Position = new CPos(4096, 6144, 0) };
-			create = new Button("Save", "wooden", save) { Position = new CPos(0, 6144, 0) };
-			@new = new TextBox(game.Statistics.Name, "wooden", 20, isPath: true)
-			{
-				OnEnter = save
-			};
+			var back = new Button("Back", "wooden", () => ActiveScreen = false) { Position = new CPos(4096, 6144, 0) };
+			Content.Add(back);
+			var create = new Button("Save", "wooden", save) { Position = new CPos(0, 6144, 0) };
+			Content.Add(create);
 
-			warning = new UITextLine(new CPos(0, 1024, 0), FontManager.Pixel16, TextOffset.MIDDLE);
+			@new = new TextBox(game.Statistics.Name, "wooden", 20, isPath: true) { OnEnter = save };
+			Content.Add(@new);
+
+			var warning = new UITextLine(FontManager.Pixel16, TextOffset.MIDDLE) { Position = new CPos(0, 1024, 0) };
 			warning.WriteText(Color.Red + "WARNING: " + Color.White + "You have to save over the just created save!");
-		}
-
-		public override void Tick()
-		{
-			base.Tick();
-
-			back.Tick();
-			create.Tick();
-			@new.Tick();
-			warning.Tick();
+			Content.Add(warning);
 		}
 
 		public override void KeyDown(Keys key, bool isControl, bool isShift, bool isAlt)
 		{
 			if (key == Keys.Escape)
 				game.ShowScreen(ScreenType.MENU);
-		}
-
-		public override void Render()
-		{
-			base.Render();
-
-			back.Render();
-			create.Render();
-			@new.Render();
-			warning.Render();
 		}
 
 		void save()

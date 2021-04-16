@@ -45,7 +45,7 @@ namespace WarriorsSnuggery.UI.Screens
 			Content.Add(new Button("Buy", "wooden", () => buyActor(selected)) { Position = new CPos(-6144, 3072, 0) });
 			Content.Add(new Button("Resume", "wooden", () => game.ShowScreen(ScreenType.DEFAULT, false)) { Position = new CPos(0, 6144, 0) });
 
-			information = new UITextBlock(new CPos(-7900, 0, 0), FontManager.Pixel16, TextOffset.LEFT, "Select an actor for further information.", "", "", "Cost: -");
+			information = new UITextBlock(FontManager.Pixel16, TextOffset.LEFT, "Select an actor for further information.", "", "", "Cost: -") { Position = new CPos(-7900, 0, 0) };
 			Content.Add(information);
 
 			var money = new MoneyDisplay(game) { Position = new CPos(-(int)(WindowInfo.UnitWidth / 2 * 1024) + 1024, 7192, 0) };

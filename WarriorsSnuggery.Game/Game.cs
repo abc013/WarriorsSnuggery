@@ -153,16 +153,17 @@ namespace WarriorsSnuggery
 				waveController = new WaveController(this);
 
 			var corner = (int)(WindowInfo.UnitWidth * 512) - 128;
-			version = new UITextLine(new CPos(corner, 6192, 0), FontManager.Pixel16, TextOffset.RIGHT)
+			version = new UITextLine(FontManager.Pixel16, TextOffset.RIGHT)
 			{
+				Position = new CPos(corner, 6192, 0),
 				Color = Color.Yellow
 			};
 			version.SetText(Settings.Version);
 
-			visibility = new UITextLine(new CPos(corner, 6692, 0), FontManager.Pixel16, TextOffset.RIGHT);
-			tick = new UITextLine(new CPos(corner, 7692, 0), FontManager.Pixel16, TextOffset.RIGHT);
-			render = new UITextLine(new CPos(corner, 7192, 0), FontManager.Pixel16, TextOffset.RIGHT);
-			infoText = new UITextLine(new CPos(-corner + 1024, 7192, 0), FontManager.Pixel16);
+			visibility = new UITextLine(FontManager.Pixel16, TextOffset.RIGHT) { Position = new CPos(corner, 6692, 0) };
+			tick = new UITextLine(FontManager.Pixel16, TextOffset.RIGHT) { Position = new CPos(corner, 7692, 0) };
+			render = new UITextLine(FontManager.Pixel16, TextOffset.RIGHT) { Position = new CPos(corner, 7192, 0) };
+			infoText = new UITextLine(FontManager.Pixel16) { Position = new CPos(-corner + 1024, 7192, 0) };
 		}
 
 		public void AddInfoMessage(int duration, string text)

@@ -19,25 +19,25 @@ namespace WarriorsSnuggery.UI.Screens
 			this.game = game;
 			Title.Position = new CPos(0, -4096, 0);
 
-			var create = new UITextLine(new CPos(0, -2048, 0), FontManager.Pixel16, TextOffset.MIDDLE);
+			var create = new UITextLine(FontManager.Pixel16, TextOffset.MIDDLE) { Position = new CPos(0, -2048, 0) };
 			create.SetText("Story line. Please adjust the parameters as you wish.");
 			Content.Add(create);
 
-			var name = new UITextLine(new CPos(-2048, 0, 0), FontManager.Pixel16, TextOffset.RIGHT);
+			var name = new UITextLine(FontManager.Pixel16, TextOffset.RIGHT) { Position = new CPos(-2048, 0, 0) };
 			name.SetText("Name: ");
 			Content.Add(name);
 
 			nameInput = new TextBox("Name", "wooden", 15, isPath: true) { Position = new CPos(1024, 0, 0) };
 			Content.Add(nameInput);
 
-			var difficulty = new UITextLine(new CPos(-2048, 1024, 0), FontManager.Pixel16, TextOffset.RIGHT);
+			var difficulty = new UITextLine(FontManager.Pixel16, TextOffset.RIGHT) { Position = new CPos(-2048, 1024, 0) };
 			difficulty.SetText("Difficulty: ");
 			Content.Add(difficulty);
 
 			difficultyInput = new SliderBar(4096, "wooden") { Position = new CPos(1024, 1024, 0) };
 			Content.Add(difficultyInput);
 
-			var hardcore = new UITextLine(new CPos(-2048, 2048, 0), FontManager.Pixel16, TextOffset.RIGHT);
+			var hardcore = new UITextLine(FontManager.Pixel16, TextOffset.RIGHT) { Position = new CPos(0, -1024, 0) };
 			hardcore.SetText("Hardcore (one life): ");
 			Content.Add(hardcore);
 
@@ -47,7 +47,7 @@ namespace WarriorsSnuggery.UI.Screens
 			};
 			Content.Add(hardcoreInput);
 
-			var seed = new UITextLine(new CPos(-2048, 3072, 0), FontManager.Pixel16, TextOffset.RIGHT);
+			var seed = new UITextLine(FontManager.Pixel16, TextOffset.RIGHT) { Position = new CPos(-2048, 3072, 0) };
 			seed.SetText("Seed: ");
 			Content.Add(seed);
 

@@ -51,7 +51,7 @@ namespace WarriorsSnuggery.UI
 			this.game = game;
 			money = new BatchObject(UITextureManager.Get("UI_money")[0], Color.White);
 
-			moneyText = new UITextLine(CPos.Zero, FontManager.Pixel16);
+			moneyText = new UITextLine(FontManager.Pixel16);
 			moneyText.SetText(game.Statistics.Money);
 		}
 

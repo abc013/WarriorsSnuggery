@@ -32,7 +32,7 @@ namespace WarriorsSnuggery.UI
 		{
 			Key = key;
 
-			keyDisplay = new UITextLine(CPos.Zero, FontManager.Pixel16, TextOffset.MIDDLE)
+			keyDisplay = new UITextLine(FontManager.Pixel16, TextOffset.MIDDLE)
 			{
 				Color = color
 			};

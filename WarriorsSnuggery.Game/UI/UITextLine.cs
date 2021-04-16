@@ -31,9 +31,9 @@ namespace WarriorsSnuggery.UI
 			set => line.Color = value;
 		}
 
-		public UITextLine(CPos pos, Font font, TextOffset offset = TextOffset.LEFT)
+		public UITextLine(Font font, TextOffset offset = TextOffset.LEFT)
 		{
-			line = new TextLine(pos, font, offset);
+			line = new TextLine(CPos.Zero, font, offset);
 		}
 
 		public void SetText(object text)

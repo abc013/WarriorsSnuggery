@@ -36,11 +36,9 @@ namespace WarriorsSnuggery.UI
 
 		readonly BatchObject @object;
 
-		public UIImage(CPos pos, BatchObject @object, float scale = 1f)
+		public UIImage(BatchObject @object)
 		{
 			this.@object = @object;
-			@object.SetPosition(pos);
-			@object.SetScale(scale);
 		}
 
 		public override void Render()

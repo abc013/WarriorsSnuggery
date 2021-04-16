@@ -15,9 +15,8 @@ namespace WarriorsSnuggery.UI.Screens
 
 		public Screen(string title, int darkness = 128)
 		{
-			Title = new UITextLine(CPos.Zero, FontManager.Papyrus24, TextOffset.MIDDLE);
+			Title = new UITextLine(FontManager.Papyrus24, TextOffset.MIDDLE) { Scale = 1.2f };
 			Title.SetText(title);
-			Title.Scale = 1.2f;
 
 			this.darkness = new Color(0, 0, 0, darkness);
 		}

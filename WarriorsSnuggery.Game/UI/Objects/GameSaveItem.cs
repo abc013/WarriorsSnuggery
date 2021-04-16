@@ -31,21 +31,28 @@ namespace WarriorsSnuggery.UI
 
 			Stats = stats;
 			Scale *= 2;
-			
-			name = new UITextLine(pos - new CPos(3072, 512, 0), FontManager.Pixel16);
+
+			name = new UITextLine(FontManager.Pixel16)
+			{
+				Position = pos - new CPos(3072, 512, 0)
+			};
 			name.SetText(stats.Name);
 
-			score = new UITextLine(pos - new CPos(3072, 0, 0), FontManager.Pixel16)
+			score = new UITextLine(FontManager.Pixel16)
 			{
+				Position = pos - new CPos(3072, 0, 0),
 				Color = Color.Yellow
 			};
 			score.SetText(stats.CalculateScore());
 
-			level = new UITextLine(pos - new CPos(-1152, 0, 0), FontManager.Papyrus24);
+			level = new UITextLine(FontManager.Papyrus24)
+			{
+				Position = pos - new CPos(-1152, 0, 0),
+				Scale = 1.4f
+			};
 			if (stats.Level >= stats.FinalLevel)
 				level.Color = new Color(0, 200, 0);
 			level.SetText(stats.Level + "/" + stats.FinalLevel);
-			level.Scale = 1.4f;
 		}
 
 		public override void Render()
