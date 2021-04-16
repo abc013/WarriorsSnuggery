@@ -8,6 +8,8 @@ namespace WarriorsSnuggery.UI.Objects
 {
 	public class ActorList : PanelList
 	{
+		static readonly Color disabled = new Color(0f, 0f, 0f, 0.3f);
+
 		readonly Game game;
 
 		readonly BatchObject selector;
@@ -67,7 +69,7 @@ namespace WarriorsSnuggery.UI.Objects
 					Scale = scale
 				};
 				if (!game.Statistics.ActorAvailable(actorType.Playable))
-					item.SetColor(Color.Black);
+					item.SetColor(disabled);
 
 				actorTypes.Add(actorType);
 				Add(item);
@@ -77,7 +79,7 @@ namespace WarriorsSnuggery.UI.Objects
 		public void Update()
 		{
 			for (int i = 0; i < actorTypes.Count; i++)
-				Container[i].SetColor(game.Statistics.ActorAvailable(actorTypes[i].Playable) ? Color.White : Color.Black);
+				Container[i].SetColor(game.Statistics.ActorAvailable(actorTypes[i].Playable) ? Color.White : disabled);
 		}
 
 		public override void Render()

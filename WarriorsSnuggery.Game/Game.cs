@@ -228,16 +228,16 @@ namespace WarriorsSnuggery
 
 					var add = CPos.Zero;
 
-					if (KeyInput.IsKeyDown(Settings.GetKey("CameraUp")) || (mouse.Y < 0 && mouse.Y < -Camera.DefaultZoom * 512 + 64 * Settings.EdgeScrolling))
+					if (KeyInput.IsKeyDown(Settings.GetKey("CameraUp")) || (mouse.Y < 0 && mouse.Y < -WindowInfo.Height * 512 + 64 * Settings.EdgeScrolling))
 						add = new CPos(add.X, add.Y - 1, 0);
 
-					if (KeyInput.IsKeyDown(Settings.GetKey("CameraDown")) || (mouse.Y > 0 && mouse.Y > Camera.DefaultZoom * 512 - 64 * Settings.EdgeScrolling))
+					if (KeyInput.IsKeyDown(Settings.GetKey("CameraDown")) || (mouse.Y > 0 && mouse.Y > WindowInfo.Height * 512 - 64 * Settings.EdgeScrolling))
 						add = new CPos(add.X, add.Y + 1, 0);
 
-					if (KeyInput.IsKeyDown(Settings.GetKey("CameraRight")) || (mouse.X > 0 && mouse.X > Camera.DefaultZoom * WindowInfo.Ratio * 512 - 64 * Settings.EdgeScrolling))
+					if (KeyInput.IsKeyDown(Settings.GetKey("CameraRight")) || (mouse.X > 0 && mouse.X > WindowInfo.Width * 512 - 64 * Settings.EdgeScrolling))
 						add = new CPos(add.X + 1, add.Y, 0);
 
-					if (KeyInput.IsKeyDown(Settings.GetKey("CameraLeft")) || (mouse.X < 0 && mouse.X < -Camera.DefaultZoom * WindowInfo.Ratio * 512 + 64 * Settings.EdgeScrolling))
+					if (KeyInput.IsKeyDown(Settings.GetKey("CameraLeft")) || (mouse.X < 0 && mouse.X < -WindowInfo.Width * 512 + 64 * Settings.EdgeScrolling))
 						add = new CPos(add.X - 1, add.Y, 0);
 
 					if (add != CPos.Zero)

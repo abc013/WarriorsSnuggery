@@ -6,8 +6,13 @@ namespace WarriorsSnuggery.UI.Objects
 {
 	public class SpellListItem : PanelItem
 	{
+		static readonly Color inactive = new Color(0.6f, 0.6f, 0.6f);
+		static readonly Color disabled = new Color(0f, 0f, 0f, 0.3f);
+
 		readonly SpellCaster caster;
 		readonly Game game;
+
+		readonly int manaCost;
 
 		int tick;
 		bool unlocked;
@@ -18,6 +23,8 @@ namespace WarriorsSnuggery.UI.Objects
 			this.caster = caster;
 			this.game = game;
 			unlocked = caster.Unlocked();
+
+			manaCost = node.ManaCost;
 		}
 
 		public override void Tick()
@@ -34,11 +41,18 @@ namespace WarriorsSnuggery.UI.Objects
 			else if (caster.Recharging)
 			{
 				progress = (int)(caster.RechargeProgress * -1024) + 512;
-				SetColor(Color.White);
+				SetColor(inactive);
 			}
 			else
 			{
-				SetColor(unlocked ? Color.White : Color.Black);
+				if (unlocked)
+				{
+					var enoughMana = game.Statistics.Mana - manaCost > 0;
+
+					SetColor(enoughMana ? Color.White : inactive);
+					return;
+				}
+				SetColor(disabled);
 			}
 		}
 
