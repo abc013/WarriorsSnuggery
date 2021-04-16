@@ -13,19 +13,18 @@ namespace WarriorsSnuggery
 {
 	public static class WindowInfo
 	{
-		public static int Height;
-		public static int Width;
-
 		public static int ScreenHeight;
 		public static int ScreenWidth;
 
 		public static int ScreenRefreshRate;
 
+		public static int Height;
+		public static int Width;
+
 		public static float Ratio => Width / (float)Height;
 
 		public const float UnitHeight = Camera.DefaultZoom;
-
-		public static float UnitWidth { get => Camera.DefaultZoom * Ratio; private set { } }
+		public static float UnitWidth => Camera.DefaultZoom * Ratio;
 
 		public static bool Focused = true;
 	}

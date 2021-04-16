@@ -7,6 +7,15 @@ namespace WarriorsSnuggery.UI.Screens
 {
 	public abstract class Screen : ITickRenderable
 	{
+		protected static int Width => (int)(WindowInfo.UnitWidth * 1024);
+		protected const int Height = (int)(WindowInfo.UnitHeight * 1024);
+
+		protected static int Right => (int)(WindowInfo.UnitWidth * 512);
+		protected static int Left => -Right;
+
+		protected const int Top = -(int)(WindowInfo.UnitHeight * 512);
+		protected const int Bottom = -Top;
+
 		protected readonly UITextLine Title;
 
 		readonly List<UIObject> content = new List<UIObject>();

@@ -28,36 +28,32 @@ namespace WarriorsSnuggery.UI.Screens
 			Add(particleManager);
 
 			const int shift = margin;
-			var right = (int)(WindowInfo.UnitWidth * 512);
-			var left = -right;
 
 			// Actors
-			actorList = new ActorList(game, new MPos(512, 11 * 512), new MPos(512, 512), "wooden") { Position = new CPos(left + 512 + margin, 768 + shift, 0) };
+			actorList = new ActorList(game, new MPos(512, 11 * 512), new MPos(512, 512), "wooden") { Position = new CPos(Left + 512 + margin, 768 + shift, 0) };
 			Add(actorList);
 
 			// Spells
-			spellList = new SpellList(game, new MPos(512, 13 * 512), new MPos(512, 512), "stone") { Position = new CPos(right - 512 - margin, 0, 0) };
+			spellList = new SpellList(game, new MPos(512, 13 * 512), new MPos(512, 512), "stone") { Position = new CPos(Right - 512 - margin, 0, 0) };
 			Add(spellList);
 
-			var width = (int)(WindowInfo.UnitWidth * 512);
-
-			manaBar = new DisplayBar(new MPos(width - 1536, 256), PanelManager.Get("stone"), new Color(0, 0, 255, 196)) { Position = new CPos(0, 8192 - 2048 + margin, 0) };
+			manaBar = new DisplayBar(new MPos(Width / 2 - 1536, 256), PanelManager.Get("stone"), new Color(0, 0, 255, 196)) { Position = new CPos(0, Bottom - 2048 + margin, 0) };
 			Add(manaBar);
-			healthBar = new DisplayBar(new MPos(width - 256, 512), PanelManager.Get("wooden"), new Color(255, 0, 0, 196)) { Position = new CPos(0, 8192 - 1024 + margin, 0) };
+			healthBar = new DisplayBar(new MPos(Width / 2 - 256, 512), PanelManager.Get("wooden"), new Color(255, 0, 0, 196)) { Position = new CPos(0, Bottom - 1024 + margin, 0) };
 			Add(healthBar);
 
-			var top = -8120 + 512 + margin;
+			var top = Top + 512 + margin;
 
-			Add(new MoneyDisplay(game) { Position = new CPos(left + 1536 + shift, top, 0) });
+			Add(new MoneyDisplay(game) { Position = new CPos(Left + 1536 + shift, top, 0) });
 
 			if (game.ObjectiveType == ObjectiveType.FIND_EXIT)
-				Add(new KeyDisplay(game) { Position = new CPos(left + 712 + shift, top + 1536 + shift + 128, 0) });
+				Add(new KeyDisplay(game) { Position = new CPos(Left + 712 + shift, top + 1536 + shift + 128, 0) });
 			else if (game.ObjectiveType == ObjectiveType.SURVIVE_WAVES)
-				Add(new WaveDisplay(game) { Position = new CPos(left + 512 + shift, top + 1536 + shift + 128, 0) });
+				Add(new WaveDisplay(game) { Position = new CPos(Left + 512 + shift, top + 1536 + shift + 128, 0) });
 
 			var menu = new CheckBox("menu", onTicked: (t) => game.ShowScreen(ScreenType.MENU, true))
 			{
-				Position = new CPos(right - 512 - margin, -8120 + 512 + margin, 0),
+				Position = new CPos(Right - 512 - margin, Top + 512 + margin, 0),
 				Scale = 2.5f
 			};
 			Add(menu);
@@ -109,15 +105,12 @@ namespace WarriorsSnuggery.UI.Screens
 		{
 			var mouse = MouseInput.WindowPosition;
 
-			var right = (int)(WindowInfo.UnitWidth * 512);
-			var left = -right;
-
 			// Actorlist area
-			if (mouse.X < left + 1024 + margin)
+			if (mouse.X < Left + 1024 + margin)
 				return true;
 
 			// Spellist area
-			if (mouse.X > right - 1024 - margin)
+			if (mouse.X > Right - 1024 - margin)
 				return true;
 
 			// Area around health & Mana bars
@@ -152,7 +145,7 @@ namespace WarriorsSnuggery.UI.Screens
 						var invert = i % 2 == 0;
 						var particle = particleManager.Add((int)(percentage * 200) + 300);
 						particle.Radius = Program.SharedRandom.Next(150) + (int)(inverse * inverse * 2000) + 10;
-						particle.Position = new CPos(Program.SharedRandom.Next((int)(WindowInfo.UnitWidth * 1024)) - (int)(WindowInfo.UnitWidth * 512), (invert ? 1 : -1) * (int)(WindowInfo.UnitHeight * 512), 0);
+						particle.Position = new CPos(Program.SharedRandom.Next(Width) - Width / 2, (invert ? 1 : -1) * Top, 0);
 						particle.Velocity = new CPos(Program.SharedRandom.Next(-2, 2), (invert ? -1 : 1) * (Program.SharedRandom.Next(10) + 10), 0);
 						particle.Color = new Color(Program.SharedRandom.Next(96) + 127, 0, 0, 192);
 					}

@@ -37,19 +37,19 @@ namespace WarriorsSnuggery.UI.Screens
 			this.game = game;
 			Title.Position += new CPos(0, -7120, 0);
 
-			mousePosition = new UITextLine(FontManager.Pixel16, TextOffset.RIGHT) { Position = new CPos((int)(WindowInfo.UnitWidth * 512 - 1024), -7172, 0) };
+			mousePosition = new UITextLine(FontManager.Pixel16, TextOffset.RIGHT) { Position = new CPos(Right - 1024, -7172, 0) };
 			Add(mousePosition);
 
 			if (!string.IsNullOrEmpty(game.MapType.OverridePiece))
 			{
-				var pieceName = new UITextLine(FontManager.Pixel16, TextOffset.RIGHT) { Position = new CPos((int)(WindowInfo.UnitWidth * 512 - 1024), -7684, 0) };
+				var pieceName = new UITextLine(FontManager.Pixel16, TextOffset.RIGHT) { Position = new CPos(Right - 1024, -7684, 0) };
 				pieceName.WriteText("Piece name: " + Color.Green + game.MapType.OverridePiece);
 				Add(pieceName);
 			}
 
-			save = new Button("Save", "wooden", savePiece) { Position = new CPos((int)(WindowInfo.UnitWidth * 512 - 2048), -5120, 0) };
+			save = new Button("Save", "wooden", savePiece) { Position = new CPos(Right - 2048, -5120, 0) };
 
-			var checkBoxPosition = new CPos((int)(WindowInfo.UnitWidth * 512) - 1024, -6144, 0);
+			var checkBoxPosition = new CPos(Right - 1024, -6144, 0);
 
 			showNone = new CheckBox("wooden", true, (b) => deselectBoxes(Selected.NONE)) { Position = checkBoxPosition - new CPos(736 * 3, 0, 0) };
 			Add(showNone);
@@ -63,7 +63,7 @@ namespace WarriorsSnuggery.UI.Screens
 			showWalls = new CheckBox("wall_editor", onTicked: (b) => deselectBoxes(Selected.WALL)) { Position = checkBoxPosition };
 			Add(showWalls);
 
-			var widgetPosition = new CPos((int)(WindowInfo.UnitWidth * 512) - 2048, -3584, 0);
+			var widgetPosition = new CPos(Right - 2048, -3584, 0);
 
 			terrainWidget = new TerrainEditorWidget() { Position = widgetPosition };
 			actorWidget = new ActorEditorWidget() { Position = widgetPosition };
@@ -85,7 +85,7 @@ namespace WarriorsSnuggery.UI.Screens
 				return false;
 
 			var mouse = MouseInput.WindowPosition;
-			return mouse.X > WindowInfo.UnitWidth * 512 - 4096 - 128 && mouse.X < WindowInfo.UnitWidth * 512 - 64 * Settings.EdgeScrolling;
+			return mouse.X > Left - 4096 - 128 && mouse.X < Left - 64 * Settings.EdgeScrolling;
 		}
 
 		public override void Hide()
