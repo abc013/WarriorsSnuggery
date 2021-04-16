@@ -19,11 +19,11 @@ namespace WarriorsSnuggery.UI.Screens
 			this.game = game;
 			Title.Position = new CPos(0, -4096, 0);
 
-			Content.Add(new Button(new CPos(0, 6144, 0), "Resume", "wooden", () => game.ShowScreen(ScreenType.DEFAULT, false)));
+			Content.Add(new Button("Resume", "wooden", () => game.ShowScreen(ScreenType.DEFAULT, false)) { Position = new CPos(0, 6144, 0) });
 
-			Content.Add(new Panel(new CPos(0, 256, 0), new MPos(8 * 1024, 3 * 1024), "wooden"));
+			Content.Add(new Panel(new MPos(8 * 1024, 3 * 1024), "wooden") { Position = new CPos(0, 256, 0) });
 
-			money = new MoneyDisplay(game, new CPos(-(int)(WindowInfo.UnitWidth / 2 * 1024) + 1024, 7192, 0));
+			money = new MoneyDisplay(game) { Position = new CPos(-(int)(WindowInfo.UnitWidth / 2 * 1024) + 1024, 7192, 0) };
 
 			var active = UITextureManager.Get("UI_activeConnection");
 			var inactive = UITextureManager.Get("UI_inactiveConnection");
@@ -31,7 +31,7 @@ namespace WarriorsSnuggery.UI.Screens
 			for (int i = 0; i < tree.Length; i++)
 			{
 				var origin = SpellTreeLoader.SpellTree[i];
-				SpellNode spell = new SpellNode(origin.VisualPosition, origin, game, this);
+				var spell = new SpellNode(origin, game, this) { Position = origin.VisualPosition };
 				spell.CheckAvailability();
 				tree[i] = spell;
 				foreach (var connection in origin.Before)
@@ -92,6 +92,18 @@ namespace WarriorsSnuggery.UI.Screens
 
 	class SpellNode : Panel
 	{
+		public override CPos Position
+		{
+			get => base.Position;
+			set
+			{
+				base.Position = value;
+
+				image.SetPosition(value);
+				tooltip.Position = value;
+			}
+		}
+
 		readonly SpellTreeNode node;
 		readonly Game game;
 		readonly SpellShopScreen screen;
@@ -101,15 +113,14 @@ namespace WarriorsSnuggery.UI.Screens
 		bool mouseOnItem;
 		bool available;
 
-		public SpellNode(CPos position, SpellTreeNode node, Game game, SpellShopScreen screen) : base(position, new MPos((int)(1024 * 8 * MasterRenderer.PixelMultiplier), (int)(1024 * 8 * MasterRenderer.PixelMultiplier)), "stone")
+		public SpellNode(SpellTreeNode node, Game game, SpellShopScreen screen) : base(new MPos((int)(1024 * 8 * MasterRenderer.PixelMultiplier), (int)(1024 * 8 * MasterRenderer.PixelMultiplier)), "stone")
 		{
 			this.node = node;
 			this.game = game;
 			this.screen = screen;
 			image = new BatchSequence(node.Textures, Color.White, node.Icon.Tick);
-			image.SetPosition(position);
 
-			tooltip = new Tooltip(position, node.Name + " : " + node.Cost, node.GetInformation(true));
+			tooltip = new Tooltip(CPos.Zero, node.Name + " : " + node.Cost, node.GetInformation(true));
 
 			if (node.Unlocked || Program.IgnoreTech || game.Statistics.UnlockedSpells.Contains(node.InnerName))
 				HighlightVisible = true;

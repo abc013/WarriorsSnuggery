@@ -18,7 +18,7 @@ namespace WarriorsSnuggery.UI.Screens
 			this.game = game;
 			Title.Position = new CPos(0, -4096, 0);
 
-			mapSelection = new PanelList(new CPos(0, 1024, 0), new MPos(4096, 4096), new MPos(512, 512), "wooden");
+			mapSelection = new PanelList(new MPos(4096, 4096), new MPos(512, 512), "wooden") { Position = new CPos(0, 1024, 0) };
 			foreach (var piece in PieceManager.Pieces)
 			{
 				mapSelection.Add(new PanelItem(new BatchObject(UITextureManager.Get("UI_map")[0], Color.White), new MPos(512, 512), piece.Name, new[] { Color.Grey + "[" + piece.Size.X + "," + piece.Size.Y + "]" },
@@ -29,9 +29,9 @@ namespace WarriorsSnuggery.UI.Screens
 				}));
 			}
 			Content.Add(mapSelection);
-			Content.Add(new Button(new CPos(4096, 6144, 0), "Back", "wooden", () => game.ShowScreen(ScreenType.MENU)));
-			Content.Add(new Button(new CPos(0, 6144, 0), "New Piece", "wooden", () => { createPieceScreen.ActiveScreen = true; }));
-			Content.Add(new Button(new CPos(-4096, 6144, 0), "Delete Piece", "wooden"));
+			Content.Add(new Button("Back", "wooden", () => game.ShowScreen(ScreenType.MENU)) { Position = new CPos(4096, 6144, 0) });
+			Content.Add(new Button("New Piece", "wooden", () => { createPieceScreen.ActiveScreen = true; }) { Position = new CPos(0, 6144, 0) } );
+			Content.Add(new Button("Delete Piece", "wooden") { Position = new CPos(-4096, 6144, 0) });
 
 			createPieceScreen = new CreatePieceScreen();
 		}
@@ -88,18 +88,18 @@ namespace WarriorsSnuggery.UI.Screens
 		{
 			Title.Position = new CPos(0, -4096, 0);
 
-			Content.Add(new Button(new CPos(4096, 6144, 0), "Cancel", "wooden", () => { ActiveScreen = false; }));
-			Content.Add(new Button(new CPos(-4096, 6144, 0), "Create", "wooden", create));
+			Content.Add(new Button("Cancel", "wooden", () => { ActiveScreen = false; }) { Position = new CPos(4096, 6144, 0) });
+			Content.Add(new Button("Create", "wooden", create) { Position = new CPos(-4096, 6144, 0) });
 
 			var size = new UITextLine(new CPos(0, -1024, 0), FontManager.Pixel16, TextOffset.MIDDLE);
 			size.SetText("Size of Piece");
 			Content.Add(size);
 
-			sizeX = new TextBox(new CPos(-1024, 0, 0), "16", "wooden", 2, true);
+			sizeX = new TextBox("16", "wooden", 2, true) { Position = new CPos(-1024, 0, 0) };
 			Content.Add(sizeX);
-			sizeY = new TextBox(new CPos(1024, 0, 0), "16", "wooden", 2, true);
+			sizeY = new TextBox("16", "wooden", 2, true) { Position = new CPos(1024, 0, 0) };
 			Content.Add(sizeY);
-			name = new TextBox(new CPos(0, 1536, 0), "unnamed piece", "wooden", 20, isPath: true);
+			name = new TextBox("unnamed piece", "wooden", 20, isPath: true) { Position = new CPos(0, 1536, 0) };
 			Content.Add(name);
 
 			var warning = new UITextLine(new CPos(0, 2548, 0), FontManager.Pixel16, TextOffset.MIDDLE)

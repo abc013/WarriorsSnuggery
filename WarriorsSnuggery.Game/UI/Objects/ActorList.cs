@@ -14,6 +14,17 @@ namespace WarriorsSnuggery.UI
 
 		readonly List<ActorType> actorTypes = new List<ActorType>();
 
+		public override CPos Position
+		{
+			get => base.Position;
+			set
+			{
+				base.Position = value;
+
+				selector.SetPosition(Container[currentActor].Position + new CPos(712, 0, 0));
+			}
+		}
+
 		public int CurrentActor
 		{
 			get => currentActor;
@@ -21,28 +32,25 @@ namespace WarriorsSnuggery.UI
 			{
 				currentActor = value;
 
-				if (currentActor >= Container.Count)
-					currentActor = 0;
+				currentActor %= actorTypes.Count;
 
 				if (currentActor < 0)
-					currentActor = Container.Count - 1;
+					currentActor = actorTypes.Count - 1;
 
 				selector.SetPosition(Container[currentActor].Position + new CPos(712, 0, 0));
 			}
 		}
 		int currentActor;
 
-		public ActorList(Game game, CPos pos, MPos bounds, MPos itemSize, string typeName) : this(game, pos, bounds, itemSize, PanelManager.Get(typeName)) { }
+		public ActorList(Game game, MPos bounds, MPos itemSize, string typeName) : this(game, bounds, itemSize, PanelManager.Get(typeName)) { }
 
-		public ActorList(Game game, CPos pos, MPos bounds, MPos itemSize, PanelType type) : base(pos, bounds, itemSize, type)
+		public ActorList(Game game, MPos bounds, MPos itemSize, PanelType type) : base(bounds, itemSize, type)
 		{
 			this.game = game;
 
 			selector = new BatchObject(UITextureManager.Get("UI_selector2")[0], Color.White);
 
 			addActors();
-
-			CurrentActor = 0;
 		}
 
 		void addActors()

@@ -17,8 +17,7 @@ namespace WarriorsSnuggery.UI
 			{
 				base.Position = value;
 
-				if (text != null)
-					text.Position = value + new CPos(128, 0, 0);
+				text.Position = value + new CPos(128, 0, 0);
 			}
 		}
 
@@ -42,15 +41,15 @@ namespace WarriorsSnuggery.UI
 		public Action OnEnter;
 		public Action OnType;
 
-		public TextBox(CPos pos, string text, string typeName, int maximumLength = 10, bool onlyNumbers = false, bool isPath = false) : this(pos, text, PanelManager.Get(typeName), maximumLength, onlyNumbers, isPath) { }
+		public TextBox(string text, string typeName, int maximumLength = 10, bool onlyNumbers = false, bool isPath = false) : this(text, PanelManager.Get(typeName), maximumLength, onlyNumbers, isPath) { }
 
-		public TextBox(CPos pos, string text, PanelType type, int maximumLength = 10, bool onlyNumbers = false, bool isPath = false) : base(pos, new MPos(margin + FontManager.Pixel16.Width * maximumLength / 2, margin + FontManager.Pixel16.Height / 2), type)
+		public TextBox(string text, PanelType type, int maximumLength = 10, bool onlyNumbers = false, bool isPath = false) : base(new MPos(margin + FontManager.Pixel16.Width * maximumLength / 2, margin + FontManager.Pixel16.Height / 2), type)
 		{
 			realText = text;
 			MaximumLength = maximumLength;
 			OnlyNumbers = onlyNumbers;
 			IsPath = isPath;
-			this.text = new UITextLine(pos + new CPos(128, 0, 0), FontManager.Pixel16, TextOffset.MIDDLE);
+			this.text = new UITextLine(new CPos(128, 0, 0), FontManager.Pixel16, TextOffset.MIDDLE);
 			this.text.SetText(text);
 		}
 

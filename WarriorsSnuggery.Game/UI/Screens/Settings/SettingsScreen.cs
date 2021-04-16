@@ -48,25 +48,31 @@ namespace WarriorsSnuggery.UI.Screens
 			};
 			Content.Add(fullscreenCheck);
 
-			widthWrite = new TextBox(new CPos(-2048, -2300, 0), Settings.Width + "", "wooden", 5, true);
-			widthWrite.OnEnter = () =>
+			widthWrite = new TextBox(Settings.Width + "", "wooden", 5, true)
 			{
-				var parse = int.Parse(widthWrite.Text);
-				if (parse < 640)
-					widthWrite.Text = 640 + "";
-				else if (parse > WindowInfo.ScreenWidth)
-					widthWrite.Text = WindowInfo.ScreenWidth + "";
+				Position = new CPos(-2048, -2300, 0),
+				OnEnter = () =>
+				{
+					var parse = int.Parse(widthWrite.Text);
+					if (parse < 640)
+						widthWrite.Text = 640 + "";
+					else if (parse > WindowInfo.ScreenWidth)
+						widthWrite.Text = WindowInfo.ScreenWidth + "";
+				}
 			};
 			Content.Add(widthWrite);
 
-			heightWrite = new TextBox(new CPos(-2048, -1600, 0), Settings.Height + "", "wooden", 5, true);
-			heightWrite.OnEnter = () =>
+			heightWrite = new TextBox(Settings.Height + "", "wooden", 5, true)
 			{
-				var parse = int.Parse(heightWrite.Text);
-				if (parse < 480)
-					heightWrite.Text = 480 + "";
-				else if (parse > WindowInfo.ScreenHeight)
-					heightWrite.Text = WindowInfo.ScreenHeight + "";
+				Position = new CPos(-2048, -1600, 0),
+				OnEnter = () =>
+				{
+					var parse = int.Parse(heightWrite.Text);
+					if (parse < 480)
+						heightWrite.Text = 480 + "";
+					else if (parse > WindowInfo.ScreenHeight)
+						heightWrite.Text = WindowInfo.ScreenHeight + "";
+				}
 			};
 			Content.Add(heightWrite);
 
@@ -111,13 +117,15 @@ namespace WarriorsSnuggery.UI.Screens
 			edgeScrolling.SetText("Edge Panning (0 = disabled):");
 			Content.Add(edgeScrolling);
 
-			panningSlider = new SliderBar(new CPos(5120, -600, 0), 4096, "wooden", () => Settings.ScrollSpeed = (int)(panningSlider.Value * 10))
+			panningSlider = new SliderBar(4096, "wooden", () => Settings.ScrollSpeed = (int)(panningSlider.Value * 10))
 			{
+				Position = new CPos(5120, -600, 0),
 				Value = Settings.ScrollSpeed / 10f
 			};
 			Content.Add(panningSlider);
-			edgePanningSlider = new SliderBar(new CPos(5120, 100, 0), 4096, "wooden", () => Settings.EdgeScrolling = (int)(edgePanningSlider.Value * 10))
+			edgePanningSlider = new SliderBar(4096, "wooden", () => Settings.EdgeScrolling = (int)(edgePanningSlider.Value * 10))
 			{
+				Position = new CPos(5120, 100, 0),
 				Value = Settings.EdgeScrolling / 10f
 			};
 			Content.Add(edgePanningSlider);
@@ -127,12 +135,15 @@ namespace WarriorsSnuggery.UI.Screens
 			frameLimiter.SetText("Framelimiter (0 = disabled):");
 			Content.Add(frameLimiter);
 
-			frameLimiterWrite = new TextBox(new CPos(5120, 1000, 0), Settings.FrameLimiter + "", "wooden", 2, true);
-			frameLimiterWrite.OnEnter = () =>
+			frameLimiterWrite = new TextBox(Settings.FrameLimiter + "", "wooden", 2, true)
 			{
-				var number = int.Parse(frameLimiterWrite.Text);
-				if (number > WindowInfo.ScreenRefreshRate)
-					frameLimiterWrite.Text = WindowInfo.ScreenRefreshRate.ToString();
+				Position = new CPos(5120, 1000, 0),
+				OnEnter = () =>
+				{
+					var number = int.Parse(frameLimiterWrite.Text);
+					if (number > WindowInfo.ScreenRefreshRate)
+						frameLimiterWrite.Text = WindowInfo.ScreenRefreshRate.ToString();
+				}
 			};
 			Content.Add(frameLimiterWrite);
 
@@ -159,29 +170,32 @@ namespace WarriorsSnuggery.UI.Screens
 			musicVol.SetText("Music Volume:");
 			Content.Add(musicVol);
 
-			masterVolumeSlider = new SliderBar(new CPos(5120, 2800, 0), 4096, "wooden", () =>
+			masterVolumeSlider = new SliderBar(4096, "wooden", () =>
 			{
 				Settings.MasterVolume = (float)Math.Round(masterVolumeSlider.Value, 2);
 				AudioController.Music.SetVolume();
 			})
 			{
+				Position = new CPos(5120, 2800, 0),
 				Value = Settings.MasterVolume
 			};
 			Content.Add(masterVolumeSlider);
-			effectVolumeSlider = new SliderBar(new CPos(5120, 3700, 0), 4096, "wooden", () =>
+			effectVolumeSlider = new SliderBar(4096, "wooden", () =>
 			{
 				Settings.EffectsVolume = (float)Math.Round(effectVolumeSlider.Value, 2);
 			})
 			{
+				Position = new CPos(5120, 3700, 0),
 				Value = Settings.EffectsVolume
 			};
 			Content.Add(effectVolumeSlider);
-			musicVolumeSlider = new SliderBar(new CPos(5120, 4600, 0), 4096, "wooden", () =>
+			musicVolumeSlider = new SliderBar(4096, "wooden", () =>
 			{
 				Settings.MusicVolume = (float)Math.Round(musicVolumeSlider.Value, 2);
 				AudioController.Music.SetVolume();
 			})
 			{
+				Position = new CPos(5120, 4600, 0),
 				Value = Settings.MusicVolume
 			};
 			Content.Add(musicVolumeSlider);
@@ -191,9 +205,9 @@ namespace WarriorsSnuggery.UI.Screens
 			warning.SetText("Some changes only take effect after restarting and can cause visual bugs.");
 			Content.Add(warning);
 
-			Content.Add(new Button(new CPos(-5120, 6144, 0), "Apply", "wooden", Save));
-			Content.Add(new Button(new CPos(5120, 6144, 0), "Save & Back", "wooden", () => game.ShowScreen(ScreenType.MENU)));
-			Content.Add(new Button(new CPos(0, 6144, 0), "Key Bindings", "wooden", () => game.ShowScreen(ScreenType.KEYSETTINGS)));
+			Content.Add(new Button("Apply", "wooden", Save) { Position = new CPos(-5120, 6144, 0) });
+			Content.Add(new Button("Save & Back", "wooden", () => game.ShowScreen(ScreenType.MENU)) { Position = new CPos(5120, 6144, 0) });
+			Content.Add(new Button("Key Bindings", "wooden", () => game.ShowScreen(ScreenType.KEYSETTINGS)) { Position = new CPos(0, 6144, 0) });
 		}
 
 		public override void Hide()

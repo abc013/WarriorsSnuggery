@@ -20,13 +20,11 @@ namespace WarriorsSnuggery.UI.Objects
 
 		public TerrainType CurrentType { get; private set; }
 
-		public TerrainEditorWidget(CPos position) : base()
+		public TerrainEditorWidget() : base()
 		{
-			list = new PanelList(CPos.Zero, new MPos(2048, 4096), new MPos(512, 512), "wooden");
+			list = new PanelList(new MPos(2048, 4096), new MPos(512, 512), "wooden");
 			foreach (var a in TerrainCreator.Types.Values)
 				list.Add(new PanelItem(new BatchObject(a.Texture, Color.White), new MPos(512, 512), a.ID.ToString(), new string[0], () => CurrentType = a));
-
-			Position = position;
 		}
 
 		public void DisableTooltip()

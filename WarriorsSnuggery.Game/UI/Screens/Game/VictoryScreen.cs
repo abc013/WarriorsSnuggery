@@ -16,8 +16,8 @@ namespace WarriorsSnuggery.UI.Screens
 			score.WriteText("Score: " + Color.Cyan + game.Statistics.CalculateScore());
 			Content.Add(score);
 
-			Content.Add(new Button(new CPos(-2048, 5120, 0), "Headquarters", "wooden", GameController.CreateNextMenu));
-			Content.Add(new Button(new CPos(2048, 5120, 0), "Next Level", "wooden", GameController.CreateNext));
+			Content.Add(new Button("Headquarters", "wooden", GameController.CreateNextMenu) { Position = new CPos(-2048, 5120, 0) });
+			Content.Add(new Button("Next Level", "wooden", GameController.CreateNext) { Position = new CPos(2048, 5120, 0) });
 		}
 	}
 }

@@ -16,19 +16,19 @@ namespace WarriorsSnuggery.UI.Screens
 
 			Title.Position = new CPos(0, -4096, 0);
 
-			Content.Add(new Button(new CPos(0, 6144, 0), "Save & Back", "wooden", () => game.ShowScreen(ScreenType.SETTINGS)));
+			Content.Add(new Button("Save & Back", "wooden", () => game.ShowScreen(ScreenType.SETTINGS)) { Position = new CPos(0, 6144, 0) });
 
 			var type = PanelManager.Get("wooden");
 
 			var tPause = new UITextLine(new CPos(-1024, -3072, 0), FontManager.Pixel16, TextOffset.RIGHT);
 			tPause.SetText("Pause/unpause");
 			Content.Add(tPause);
-			pause = new KeyboardButton(new CPos(1536, -3072, 0), Settings.KeyDictionary["Pause"], Color.White, type);
+			pause = new KeyboardButton(Settings.KeyDictionary["Pause"], Color.White, type) { Position = new CPos(1536, -3072, 0) };
 			Content.Add(pause);
 			var tLock = new UITextLine(new CPos(-1024, -2048, 0), FontManager.Pixel16, TextOffset.RIGHT);
 			tLock.SetText("Toggle camera lock");
 			Content.Add(tLock);
-			@lock = new KeyboardButton(new CPos(1536, -2048, 0), Settings.KeyDictionary["CameraLock"], Color.White, type);
+			@lock = new KeyboardButton(Settings.KeyDictionary["CameraLock"], Color.White, type) { Position = new CPos(1536, -2048, 0) };
 			Content.Add(@lock);
 
 			var font = FontManager.Pixel16;
@@ -44,17 +44,17 @@ namespace WarriorsSnuggery.UI.Screens
 				line++;
 				Content.Add(text);
 			}
-			up = new KeyboardButton(new CPos(1536, -1024, 0), Settings.KeyDictionary["MoveUp"], Color.White, type);
+			up = new KeyboardButton(Settings.KeyDictionary["MoveUp"], Color.White, type) { Position = new CPos(1536, -1024, 0) };
 			Content.Add(up);
-			down = new KeyboardButton(new CPos(1536, -1024 + 640, 1), Settings.KeyDictionary["MoveDown"], Color.White, type);
+			down = new KeyboardButton(Settings.KeyDictionary["MoveDown"], Color.White, type) { Position = new CPos(1536, -1024 + 640, 1) };
 			Content.Add(down);
-			left = new KeyboardButton(new CPos(1536, -1024 + 1280, 1), Settings.KeyDictionary["MoveLeft"], Color.White, type);
+			left = new KeyboardButton(Settings.KeyDictionary["MoveLeft"], Color.White, type) { Position = new CPos(1536, -1024 + 1280, 1) };
 			Content.Add(left);
-			right = new KeyboardButton(new CPos(1536, -1024 + 1920, 0), Settings.KeyDictionary["MoveRight"], Color.White, type);
+			right = new KeyboardButton(Settings.KeyDictionary["MoveRight"], Color.White, type) { Position = new CPos(1536, -1024 + 1920, 0) };
 			Content.Add(right);
-			above = new KeyboardButton(new CPos(1536, -1024 + 2560, 1), Settings.KeyDictionary["MoveAbove"], Color.White, type);
+			above = new KeyboardButton(Settings.KeyDictionary["MoveAbove"], Color.White, type) { Position = new CPos(1536, -1024 + 2560, 1) };
 			Content.Add(above);
-			below = new KeyboardButton(new CPos(1536, -1024 + 3200, 0), Settings.KeyDictionary["MoveBelow"], Color.White, type);
+			below = new KeyboardButton(Settings.KeyDictionary["MoveBelow"], Color.White, type) { Position = new CPos(1536, -1024 + 3200, 0) };
 			Content.Add(below);
 
 			var tCam = new UITextLine(new CPos(-3072, 3072, 0), FontManager.Pixel16, TextOffset.RIGHT);
@@ -68,13 +68,13 @@ namespace WarriorsSnuggery.UI.Screens
 				line++;
 				Content.Add(text);
 			}
-			camUp = new KeyboardButton(new CPos(1536, 3072, 0), Settings.KeyDictionary["CameraUp"], Color.White, type);
+			camUp = new KeyboardButton(Settings.KeyDictionary["CameraUp"], Color.White, type) { Position = new CPos(1536, 3072, 0) };
 			Content.Add(camUp);
-			camDown = new KeyboardButton(new CPos(1536, 3072 + 640, 1), Settings.KeyDictionary["CameraDown"], Color.White, type);
+			camDown = new KeyboardButton(Settings.KeyDictionary["CameraDown"], Color.White, type) { Position = new CPos(1536, 3072 + 640, 1) };
 			Content.Add(camDown);
-			camLeft = new KeyboardButton(new CPos(1536, 3072 + 1280, 1), Settings.KeyDictionary["CameraLeft"], Color.White, type);
+			camLeft = new KeyboardButton(Settings.KeyDictionary["CameraLeft"], Color.White, type) { Position = new CPos(1536, 3072 + 1280, 1) };
 			Content.Add(camLeft);
-			camRight = new KeyboardButton(new CPos(1536, 3072 + 1920, 1), Settings.KeyDictionary["CameraRight"], Color.White, type);
+			camRight = new KeyboardButton(Settings.KeyDictionary["CameraRight"], Color.White, type) { Position = new CPos(1536, 3072 + 1920, 1) };
 			Content.Add(camRight);
 		}
 

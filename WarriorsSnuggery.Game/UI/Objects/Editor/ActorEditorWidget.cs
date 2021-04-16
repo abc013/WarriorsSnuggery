@@ -66,9 +66,9 @@ namespace WarriorsSnuggery.UI.Objects
 		public float RelativeHP => healthSlider.Value;
 		public float RelativeFacing => facingSlider.Value;
 
-		public ActorEditorWidget(CPos position) : base()
+		public ActorEditorWidget() : base()
 		{
-			list = new PanelList(CPos.Zero, new MPos(2048, 4096), new MPos(512, 512), "wooden");
+			list = new PanelList(new MPos(2048, 4096), new MPos(512, 512), "wooden");
 			foreach (var pair in ActorCreator.Types)
 			{
 				var a = pair.Value;
@@ -88,7 +88,7 @@ namespace WarriorsSnuggery.UI.Objects
 			rasterizationText = new UITextLine(CPos.Zero, FontManager.Pixel16);
 			rasterizationText.SetText("align");
 
-			teamTextBox = new TextBox(CPos.Zero, "0", "wooden", 1, true);
+			teamTextBox = new TextBox("0", "wooden", 1, true);
 			teamTextText = new UITextLine(CPos.Zero, FontManager.Pixel16);
 			teamTextText.SetText("team");
 
@@ -96,17 +96,19 @@ namespace WarriorsSnuggery.UI.Objects
 			botText = new UITextLine(CPos.Zero, FontManager.Pixel16);
 			botText.SetText("bot");
 
-			healthSlider = new SliderBar(CPos.Zero, 3072, "wooden");
-			healthSlider.Value = 1f;
+			healthSlider = new SliderBar(3072, "wooden")
+			{
+				Value = 1f
+			};
 			healthText = new UITextLine(CPos.Zero, FontManager.Pixel16, TextOffset.MIDDLE);
 			healthText.SetText("health");
 
-			facingSlider = new SliderBar(CPos.Zero, 3072, "wooden");
-			facingSlider.Value = 0f;
+			facingSlider = new SliderBar(3072, "wooden")
+			{
+				Value = 0f
+			};
 			facingText = new UITextLine(CPos.Zero, FontManager.Pixel16, TextOffset.MIDDLE);
 			facingText.SetText("facing");
-
-			Position = position;
 		}
 
 		public void DisableTooltip()

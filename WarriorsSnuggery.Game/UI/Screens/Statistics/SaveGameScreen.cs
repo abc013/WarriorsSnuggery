@@ -17,11 +17,11 @@ namespace WarriorsSnuggery.UI.Screens
 			this.game = game;
 			Title.Position = new CPos(0, -4096, 0);
 
-			list = new GameSaveList(new CPos(0, 1024, 0), new MPos((int)(WindowInfo.UnitWidth * 128), 4096), "wooden");
+			list = new GameSaveList(new MPos((int)(WindowInfo.UnitWidth * 128), 4096), "wooden") { Position = new CPos(0, 1024, 0) };
 
-			Content.Add(new Button(new CPos(4096, 6144, 0), "Back", "wooden", () => game.ShowScreen(ScreenType.MENU)));
-			Content.Add(new Button(new CPos(0, 6144, 0), "Save", "wooden", () => { saveGame(); game.RefreshSaveGameScreens(); }));
-			Content.Add(new Button(new CPos(-4096, 6144, 0), "New Save", "wooden", () => createSaveScreen.ActiveScreen = true));
+			Content.Add(new Button("Back", "wooden", () => game.ShowScreen(ScreenType.MENU)) { Position = new CPos(4096, 6144, 0) });
+			Content.Add(new Button("Save", "wooden", () => { saveGame(); game.RefreshSaveGameScreens(); }) { Position = new CPos(0, 6144, 0) });
+			Content.Add(new Button("New Save", "wooden", () => createSaveScreen.ActiveScreen = true) { Position = new CPos(-4096, 6144, 0) });
 
 			Content.Add(list);
 
@@ -103,9 +103,9 @@ namespace WarriorsSnuggery.UI.Screens
 			this.game = game;
 			Title.Position = new CPos(0, -4096, 0);
 
-			back = new Button(new CPos(4096, 6144, 0), "Back", "wooden", () => ActiveScreen = false);
-			create = new Button(new CPos(0, 6144, 0), "Save", "wooden", save);
-			@new = new TextBox(CPos.Zero, game.Statistics.Name, "wooden", 20, isPath: true)
+			back = new Button("Back", "wooden", () => ActiveScreen = false) { Position = new CPos(4096, 6144, 0) };
+			create = new Button("Save", "wooden", save) { Position = new CPos(0, 6144, 0) };
+			@new = new TextBox(game.Statistics.Name, "wooden", 20, isPath: true)
 			{
 				OnEnter = save
 			};

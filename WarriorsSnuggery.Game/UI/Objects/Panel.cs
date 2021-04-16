@@ -58,18 +58,15 @@ namespace WarriorsSnuggery.UI
 
 		public bool HighlightVisible;
 
-		public Panel(CPos position, MPos bounds, string typeName) : this(position, bounds, PanelManager.Get(typeName)) { }
+		public Panel(MPos bounds, string typeName) : this(bounds, PanelManager.Get(typeName)) { }
 
-		public Panel(CPos position, MPos bounds, PanelType type) : this(position, bounds, type, null)
+		public Panel(MPos bounds, PanelType type) : this(bounds, type, null)
 		{
 			if (type.Background2 != null)
-			{
 				Highlight = new BatchObject(Mesh.UIPanel(type.Background2, Color.White, bounds), Color.White);
-				Highlight.SetPosition(Position);
-			}
 		}
 
-		public Panel(CPos position, MPos bounds, PanelType type, BatchObject background2)
+		public Panel(MPos bounds, PanelType type, BatchObject background2)
 		{
 			SelectableBounds = bounds;
 			background = new BatchObject(Mesh.UIPanel(type.Background, Color.White, bounds), Color.White);
@@ -78,9 +75,6 @@ namespace WarriorsSnuggery.UI
 			border = new BatchObject(Mesh.UIPanel(type.Border, Color.White, Bounds), Color.White);
 
 			Highlight = background2;
-
-
-			Position = position;
 		}
 
 		public override void Render()

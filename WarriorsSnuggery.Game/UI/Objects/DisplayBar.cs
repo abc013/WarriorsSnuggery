@@ -11,9 +11,7 @@ namespace WarriorsSnuggery.UI
 			set
 			{
 				base.Position = value;
-
-				if (text != null)
-					text.Position = value;
+				text.Position = value;
 			}
 		}
 
@@ -23,9 +21,7 @@ namespace WarriorsSnuggery.UI
 			set
 			{
 				base.Rotation = value;
-
-				if (text != null)
-					text.Rotation = value;
+				text.Rotation = value;
 			}
 		}
 
@@ -35,9 +31,7 @@ namespace WarriorsSnuggery.UI
 			set
 			{
 				base.Scale = value;
-
-				if (text != null)
-					text.Scale = value;
+				text.Scale = value;
 			}
 		}
 
@@ -46,13 +40,13 @@ namespace WarriorsSnuggery.UI
 
 		public float DisplayPercentage;
 
-		public DisplayBar(CPos pos, MPos bounds, string typeName, Color fillColor) : this(pos, bounds, PanelManager.Get(typeName), fillColor) { }
+		public DisplayBar(MPos bounds, string typeName, Color fillColor) : this(bounds, PanelManager.Get(typeName), fillColor) { }
 
-		public DisplayBar(CPos pos, MPos bounds, PanelType type, Color fillColor) : base(pos, bounds, type)
+		public DisplayBar(MPos bounds, PanelType type, Color fillColor) : base(bounds, type)
 		{
 			this.fillColor = fillColor;
 
-			text = new UITextLine(pos, FontManager.Pixel16, TextOffset.MIDDLE);
+			text = new UITextLine(CPos.Zero, FontManager.Pixel16, TextOffset.MIDDLE);
 		}
 
 		public void WriteText(string text)

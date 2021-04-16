@@ -9,6 +9,17 @@ namespace WarriorsSnuggery.UI
 		const int width = 1024;
 		const int height = 256;
 
+		public override CPos Position
+		{
+			get => base.Position;
+			set
+			{
+				base.Position = value;
+
+				keyDisplay.Position = value;
+			}
+		}
+
 		readonly UITextLine keyDisplay;
 
 		int blinkTick;
@@ -17,11 +28,11 @@ namespace WarriorsSnuggery.UI
 
 		public Keys Key;
 
-		public KeyboardButton(CPos position, Keys key, Color color, PanelType type) : base(position, new MPos(width + 512, height), type)
+		public KeyboardButton(Keys key, Color color, PanelType type) : base(new MPos(width + 512, height), type)
 		{
 			Key = key;
 
-			keyDisplay = new UITextLine(position, FontManager.Pixel16, TextOffset.MIDDLE)
+			keyDisplay = new UITextLine(CPos.Zero, FontManager.Pixel16, TextOffset.MIDDLE)
 			{
 				Color = color
 			};

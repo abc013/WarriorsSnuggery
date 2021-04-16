@@ -13,11 +13,8 @@ namespace WarriorsSnuggery.UI
 			{
 				base.Position = value;
 
-				if (slider != null)
-				{
-					slider.CenterPosition = value;
-					slider.Value = slider.Value;
-				}
+				slider.CenterPosition = value;
+				slider.Value = slider.Value;
 			}
 		}
 
@@ -27,11 +24,11 @@ namespace WarriorsSnuggery.UI
 			set => slider.Value = value;
 		}
 
-		public SliderBar(CPos position, int length, string typeName, Action onChanged = null) : this(position, length, PanelManager.Get(typeName), onChanged) { }
+		public SliderBar(int length, string typeName, Action onChanged = null) : this(length, PanelManager.Get(typeName), onChanged) { }
 
-		public SliderBar(CPos position, int length, PanelType type, Action onChanged = null) : base(position, new MPos(length / 2, (int)(1024 * MasterRenderer.PixelMultiplier)), type)
+		public SliderBar(int length, PanelType type, Action onChanged = null) : base(new MPos(length / 2, (int)(1024 * MasterRenderer.PixelMultiplier)), type)
 		{
-			slider = new Slider(position, length, type, onChanged);
+			slider = new Slider(length, type, onChanged);
 		}
 
 		public override void Render()
@@ -79,13 +76,11 @@ namespace WarriorsSnuggery.UI
 			}
 		}
 
-		public Slider(CPos position, int length, PanelType type, Action onChanged) : base(position, new MPos((int)(1024 * MasterRenderer.PixelMultiplier), (int)(1024 * 4 * MasterRenderer.PixelMultiplier)), type)
+		public Slider(int length, PanelType type, Action onChanged) : base(new MPos((int)(1024 * MasterRenderer.PixelMultiplier), (int)(1024 * 4 * MasterRenderer.PixelMultiplier)), type)
 		{
 			SelectableBounds = Bounds;
-			CenterPosition = position;
 			this.onChanged = onChanged;
 			this.length = length / 2;
-			tooltip = new Tooltip(position, Math.Round(Value, 1).ToString());
 		}
 
 		public override void Tick()

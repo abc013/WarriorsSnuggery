@@ -38,9 +38,9 @@ namespace WarriorsSnuggery.UI.Objects
 		public bool Horizontal => placementCheck.Checked;
 		public float RelativeHP => healthSlider.Value;
 
-		public WallEditorWidget(CPos position) : base()
+		public WallEditorWidget() : base()
 		{
-			list = new PanelList(CPos.Zero, new MPos(2048, 4096), new MPos(512, 1024), "wooden");
+			list = new PanelList(new MPos(2048, 4096), new MPos(512, 1024), "wooden");
 			foreach (var a in WallCreator.Types.Values)
 				list.Add(new PanelItem(new BatchObject(a.GetTexture(true, 0), Color.White), new MPos(512, 512), a.ID.ToString(), new string[0], () => CurrentType = a));
 
@@ -50,10 +50,10 @@ namespace WarriorsSnuggery.UI.Objects
 
 			healthText = new UITextLine(CPos.Zero, FontManager.Pixel16, TextOffset.MIDDLE);
 			healthText.SetText("health");
-			healthSlider = new SliderBar(CPos.Zero, 3072, "wooden");
-			healthSlider.Value = 1f;
-
-			Position = position;
+			healthSlider = new SliderBar(3072, "wooden")
+			{
+				Value = 1f
+			};
 		}
 
 		public void DisableTooltip()

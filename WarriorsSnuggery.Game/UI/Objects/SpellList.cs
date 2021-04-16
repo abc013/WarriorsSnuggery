@@ -9,6 +9,18 @@ namespace WarriorsSnuggery.UI
 		readonly Game game;
 
 		readonly BatchObject selector;
+
+		public override CPos Position
+		{
+			get => base.Position;
+			set
+			{
+				base.Position = value;
+
+				selector.SetPosition(Container[currentSpell].Position - new CPos(712, 0, 0));
+			}
+		}
+
 		public int CurrentSpell
 		{
 			get => currentSpell;
@@ -16,8 +28,7 @@ namespace WarriorsSnuggery.UI
 			{
 				currentSpell = value;
 
-				if (currentSpell >= SpellTreeLoader.SpellTree.Count)
-					currentSpell = 0;
+				currentSpell %= SpellTreeLoader.SpellTree.Count;
 
 				if (currentSpell < 0)
 					currentSpell = SpellTreeLoader.SpellTree.Count - 1;
@@ -27,17 +38,15 @@ namespace WarriorsSnuggery.UI
 		}
 		int currentSpell;
 
-		public SpellList(Game game, CPos pos, MPos bounds, MPos itemSize, string typeName) : this(game, pos, bounds, itemSize, PanelManager.Get(typeName)) { }
+		public SpellList(Game game, MPos bounds, MPos itemSize, string typeName) : this(game, bounds, itemSize, PanelManager.Get(typeName)) { }
 
-		public SpellList(Game game, CPos pos, MPos bounds, MPos itemSize, PanelType type) : base(pos, bounds, itemSize, type)
+		public SpellList(Game game, MPos bounds, MPos itemSize, PanelType type) : base(bounds, itemSize, type)
 		{
 			this.game = game;
 
 			selector = new BatchObject(UITextureManager.Get("UI_selector1")[0], Color.White);
 
 			addSpells();
-
-			CurrentSpell = 0;
 		}
 
 		void addSpells()

@@ -10,8 +10,8 @@ namespace WarriorsSnuggery.UI.Screens
 			var ws = new UIImage(new CPos(0, -3072, 0), new BatchObject(UITextureManager.Get("logo")[0], Color.White), 0.8f);
 			Content.Add(ws);
 
-			Content.Add(new Button(new CPos(4096, 6144, 0), "Okay", "wooden", () => game.ShowScreen(ScreenType.DEFAULT, false)));
-			Content.Add(new Button(new CPos(-4096, 6144, 0), "Exit", "wooden", Program.Exit));
+			Content.Add(new Button("Okay", "wooden", () => game.ShowScreen(ScreenType.DEFAULT, false)) { Position = new CPos(4096, 6144, 0) });
+			Content.Add(new Button("Exit", "wooden", Program.Exit) { Position = new CPos(-4096, 6144, 0) });
 
 			var warning = new UITextBlock(new CPos(0, 4096, 0), FontManager.Pixel16, TextOffset.MIDDLE, new Color(0.5f, 0.5f, 1f) + "WS is still under development. If you encounter any bugs, please report them.", new Color(0.5f, 0.5f, 1f) + "Thank you!");
 			Content.Add(warning);

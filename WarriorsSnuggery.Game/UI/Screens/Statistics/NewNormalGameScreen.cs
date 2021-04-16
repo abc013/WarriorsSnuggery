@@ -27,14 +27,14 @@ namespace WarriorsSnuggery.UI.Screens
 			name.SetText("Name: ");
 			Content.Add(name);
 
-			nameInput = new TextBox(new CPos(1024, 0, 0), "Name", "wooden", 15, isPath: true);
+			nameInput = new TextBox("Name", "wooden", 15, isPath: true) { Position = new CPos(1024, 0, 0) };
 			Content.Add(nameInput);
 
 			var difficulty = new UITextLine(new CPos(-2048, 1024, 0), FontManager.Pixel16, TextOffset.RIGHT);
 			difficulty.SetText("Difficulty: ");
 			Content.Add(difficulty);
 
-			difficultyInput = new SliderBar(new CPos(1024, 1024, 0), 4096, "wooden");
+			difficultyInput = new SliderBar(4096, "wooden") { Position = new CPos(1024, 1024, 0) };
 			Content.Add(difficultyInput);
 
 			var hardcore = new UITextLine(new CPos(-2048, 2048, 0), FontManager.Pixel16, TextOffset.RIGHT);
@@ -51,16 +51,17 @@ namespace WarriorsSnuggery.UI.Screens
 			seed.SetText("Seed: ");
 			Content.Add(seed);
 
-			seedInput = new TextBox(new CPos(1024, 3072, 0), getSeed(), "wooden", 7, true);
+			seedInput = new TextBox(getSeed(), "wooden", 7, true) { Position = new CPos(1024, 3072, 0) };
 			Content.Add(seedInput);
-			Content.Add(new Button(new CPos(6144, 3072, 0), "Generate", "wooden", () => { seedInput.Text = getSeed(); }));
+			Content.Add(new Button("Generate", "wooden", () => { seedInput.Text = getSeed(); }) { Position = new CPos(6144, 3072, 0) });
 
-			Content.Add(new Button(new CPos(-4096, 6144, 0), "Cancel", "wooden", () => game.ShowScreen(ScreenType.DEFAULT, false)));
-			Content.Add(new Button(new CPos(4096, 6144, 0), "Proceed", "wooden", () =>
+			Content.Add(new Button("Cancel", "wooden", () => game.ShowScreen(ScreenType.DEFAULT, false)) { Position = new CPos(-4096, 6144, 0) });
+			Content.Add(new Button("Proceed", "wooden", () =>
 			{
 				if (nameInput.Text != string.Empty)
 					GameController.CreateNew(new GameStatistics((int)Math.Round(difficultyInput.Value * 10), hardcoreInput.Checked, nameInput.Text, int.Parse(seedInput.Text)));
-			}));
+			})
+			{ Position = new CPos(4096, 6144, 0) });
 		}
 
 		string getSeed()

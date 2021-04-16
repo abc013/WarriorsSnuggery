@@ -32,8 +32,8 @@ namespace WarriorsSnuggery.UI.Screens
 			Content.Remove(decline);
 			Content.Remove(agree);
 
-			decline = new Button(new CPos(-2048, 1024, 0), "Nope", "wooden", onDecline);
-			agree = new Button(new CPos(2048, 1024, 0), "Yup", "wooden", onAgree);
+			decline = new Button("Nope", "wooden", onDecline) { Position = new CPos(-2048, 1024, 0) };
+			agree = new Button("Yup", "wooden", onAgree) { Position = new CPos(2048, 1024, 0) };
 
 			Content.Add(decline);
 			Content.Add(agree);

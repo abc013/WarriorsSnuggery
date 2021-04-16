@@ -11,11 +11,8 @@ namespace WarriorsSnuggery.UI
 			{
 				base.Position = value;
 
-				if (money != null)
-				{
-					money.SetPosition(value);
-					moneyText.Position = value;
-				}
+				money.SetPosition(value + new CPos(1024, 0, 0));
+				moneyText.Position = value;
 			}
 		}
 
@@ -26,11 +23,8 @@ namespace WarriorsSnuggery.UI
 			{
 				base.Rotation = value;
 
-				if (money != null)
-				{
-					money.SetRotation(value);
-					moneyText.Rotation = value;
-				}
+				money.SetRotation(value);
+				moneyText.Rotation = value;
 			}
 		}
 
@@ -41,11 +35,8 @@ namespace WarriorsSnuggery.UI
 			{
 				base.Scale = value;
 
-				if (money != null)
-				{
-					money.SetScale(value);
-					moneyText.Scale = value;
-				}
+				money.SetScale(value);
+				moneyText.Scale = value;
 			}
 		}
 
@@ -55,13 +46,12 @@ namespace WarriorsSnuggery.UI
 		int cashCooldown;
 		int lastCash;
 
-		public MoneyDisplay(Game game, CPos position) : base(position, new MPos(1536, 512), PanelManager.Get("wooden"))
+		public MoneyDisplay(Game game) : base(new MPos(1536, 512), PanelManager.Get("wooden"))
 		{
 			this.game = game;
 			money = new BatchObject(UITextureManager.Get("UI_money")[0], Color.White);
-			money.SetPosition(position - new CPos(1024, 0, 0));
 
-			moneyText = new UITextLine(position, FontManager.Pixel16);
+			moneyText = new UITextLine(CPos.Zero, FontManager.Pixel16);
 			moneyText.SetText(game.Statistics.Money);
 		}
 

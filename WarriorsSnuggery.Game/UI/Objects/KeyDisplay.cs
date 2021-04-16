@@ -11,8 +11,7 @@ namespace WarriorsSnuggery.UI
 			{
 				base.Position = value;
 
-				if (key != null)
-					key.SetPosition(value);
+				key.SetPosition(value);
 			}
 		}
 
@@ -23,8 +22,7 @@ namespace WarriorsSnuggery.UI
 			{
 				base.Rotation = value;
 
-				if (key != null)
-					key.SetRotation(value);
+				key.SetRotation(value);
 			}
 		}
 
@@ -35,8 +33,7 @@ namespace WarriorsSnuggery.UI
 			{
 				base.Scale = value;
 
-				if (key != null)
-					key.SetScale(value);
+				key.SetScale(value);
 			}
 		}
 
@@ -45,11 +42,10 @@ namespace WarriorsSnuggery.UI
 		bool keyFound;
 		int scaleCooldown;
 
-		public KeyDisplay(Game game, CPos position) : base(position, new MPos(712, 512), PanelManager.Get("wooden"))
+		public KeyDisplay(Game game) : base(new MPos(712, 512), PanelManager.Get("wooden"))
 		{
 			this.game = game;
 			key = new BatchObject(UITextureManager.Get("UI_key")[0], Color.Black);
-			key.SetPosition(position);
 		}
 
 		public override void Tick()

@@ -46,39 +46,27 @@ namespace WarriorsSnuggery.UI.Screens
 				Content.Add(pieceName);
 			}
 
-			save = new Button(new CPos((int)(WindowInfo.UnitWidth * 512 - 2048), -5120, 0), "Save", "wooden", savePiece);
+			save = new Button("Save", "wooden", savePiece) { Position = new CPos((int)(WindowInfo.UnitWidth * 512 - 2048), -5120, 0) };
 
 			var checkBoxPosition = new CPos((int)(WindowInfo.UnitWidth * 512) - 1024, -6144, 0);
 
-			showNone = new CheckBox("wooden", true, (b) => deselectBoxes(Selected.NONE))
-			{
-				Position = checkBoxPosition - new CPos(736 * 3, 0, 0)
-			};
+			showNone = new CheckBox("wooden", true, (b) => deselectBoxes(Selected.NONE)) { Position = checkBoxPosition - new CPos(736 * 3, 0, 0) };
 			Content.Add(showNone);
 
-			showTiles = new CheckBox("terrain_editor", onTicked: (b) => deselectBoxes(Selected.TILE))
-			{
-				Position = checkBoxPosition - new CPos(736 * 2, 0, 0)
-			};
+			showTiles = new CheckBox("terrain_editor", onTicked: (b) => deselectBoxes(Selected.TILE)) { Position = checkBoxPosition - new CPos(736 * 2, 0, 0) };
 			Content.Add(showTiles);
 
-			showActors = new CheckBox("actor_editor", onTicked: (b) => deselectBoxes(Selected.ACTOR))
-			{
-				Position = checkBoxPosition - new CPos(736 * 1, 0, 0)
-			};
+			showActors = new CheckBox("actor_editor", onTicked: (b) => deselectBoxes(Selected.ACTOR)) { Position = checkBoxPosition - new CPos(736 * 1, 0, 0) };
 			Content.Add(showActors);
 
-			showWalls = new CheckBox("wall_editor", onTicked: (b) => deselectBoxes(Selected.WALL))
-			{
-				Position = checkBoxPosition
-			};
+			showWalls = new CheckBox("wall_editor", onTicked: (b) => deselectBoxes(Selected.WALL)) { Position = checkBoxPosition };
 			Content.Add(showWalls);
 
 			var widgetPosition = new CPos((int)(WindowInfo.UnitWidth * 512) - 2048, -3584, 0);
 
-			terrainWidget = new TerrainEditorWidget(widgetPosition);
-			actorWidget = new ActorEditorWidget(widgetPosition);
-			wallWidget = new WallEditorWidget(widgetPosition);
+			terrainWidget = new TerrainEditorWidget() { Position = widgetPosition };
+			actorWidget = new ActorEditorWidget() { Position = widgetPosition };
+			wallWidget = new WallEditorWidget() { Position = widgetPosition };
 		}
 
 		void deselectBoxes(Selected selected)

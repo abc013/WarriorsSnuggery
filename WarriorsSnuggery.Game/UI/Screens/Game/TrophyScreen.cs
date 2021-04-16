@@ -18,7 +18,7 @@ namespace WarriorsSnuggery.UI.Screens
 			this.game = game;
 			Title.Position = new CPos(0, -4096, 0);
 
-			trophies = new PanelList(new CPos(0, -1024, 0), new MPos(8120, 1024), new MPos(512, 1024), "wooden");
+			trophies = new PanelList(new MPos(8120, 1024), new MPos(512, 1024), "wooden") { Position = new CPos(0, -1024, 0) };
 			foreach (var key in TrophyManager.Trophies.Keys)
 			{
 				var value = TrophyManager.Trophies[key];
@@ -36,12 +36,12 @@ namespace WarriorsSnuggery.UI.Screens
 			}
 			Content.Add(trophies);
 
-			Content.Add(new Panel(new CPos(0, 1024, 0), new MPos(8 * 1024, 1024), "stone"));
+			Content.Add(new Panel(new MPos(8 * 1024, 1024), "stone") { Position = new CPos(0, 1024, 0) });
 
 			information = new UITextBlock(new CPos(-7900, 512, 0), FontManager.Pixel16, TextOffset.LEFT, "Select a trophy for further information.", "", "");
 			Content.Add(information);
 
-			Content.Add(new Button(new CPos(0, 6144, 0), "Resume", "wooden", () => game.ShowScreen(ScreenType.DEFAULT, false)));
+			Content.Add(new Button("Resume", "wooden", () => game.ShowScreen(ScreenType.DEFAULT, false)) { Position = new CPos(0, 6144, 0) });
 		}
 
 		void selectTrophy(string name, Trophy trophy)
