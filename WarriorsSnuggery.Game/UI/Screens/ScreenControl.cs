@@ -15,12 +15,15 @@ namespace WarriorsSnuggery.UI.Screens
 
 		public readonly ChatBox Chat;
 		public bool ChatOpen { get; private set; }
+		public readonly InfoScreen Screen;
+		public static bool InfoScreenOpen => Settings.EnableInfoScreen;
 
 		public ScreenControl(Game game)
 		{
 			this.game = game;
 
 			Chat = new ChatBox(new CPos(0, 4096, 0));
+			Screen = new InfoScreen();
 		}
 
 		public void InitScreen()
@@ -108,6 +111,9 @@ namespace WarriorsSnuggery.UI.Screens
 				Chat.Tick();
 			else
 				Focused?.Tick();
+
+			if (InfoScreenOpen)
+				Screen.Tick();
 		}
 
 		public void Render()
@@ -116,6 +122,9 @@ namespace WarriorsSnuggery.UI.Screens
 
 			if (ChatOpen)
 				Chat.Render();
+
+			if (InfoScreenOpen)
+				Screen.Render();
 		}
 
 		public void DebugRender()

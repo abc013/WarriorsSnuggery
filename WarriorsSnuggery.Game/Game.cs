@@ -77,11 +77,6 @@ namespace WarriorsSnuggery
 
 		readonly MissionScriptBase script;
 
-		readonly UITextLine tick;
-		readonly UITextLine render;
-		readonly UITextLine visibility;
-		readonly UITextLine version;
-
 		readonly UITextLine infoText;
 
 		int infoTextDuration;
@@ -152,18 +147,7 @@ namespace WarriorsSnuggery
 			if (ObjectiveType == ObjectiveType.SURVIVE_WAVES)
 				waveController = new WaveController(this);
 
-			var corner = (int)(WindowInfo.UnitWidth * 512) - 128;
-			version = new UITextLine(FontManager.Pixel16, TextOffset.RIGHT)
-			{
-				Position = new CPos(corner, 6192, 0),
-				Color = Color.Yellow
-			};
-			version.SetText(Settings.Version);
-
-			visibility = new UITextLine(FontManager.Pixel16, TextOffset.RIGHT) { Position = new CPos(corner, 6692, 0) };
-			tick = new UITextLine(FontManager.Pixel16, TextOffset.RIGHT) { Position = new CPos(corner, 7692, 0) };
-			render = new UITextLine(FontManager.Pixel16, TextOffset.RIGHT) { Position = new CPos(corner, 7192, 0) };
-			infoText = new UITextLine(FontManager.Pixel16) { Position = new CPos(-corner + 1024, 7192, 0) };
+			infoText = new UITextLine(FontManager.Pixel16);
 		}
 
 		public void AddInfoMessage(int duration, string text)
@@ -287,33 +271,6 @@ namespace WarriorsSnuggery
 
 				if (ObjectiveType == ObjectiveType.SURVIVE_WAVES)
 					waveController.Tick();
-			}
-
-			if (Settings.EnableInfoScreen)
-			{
-				//memory.SetText("Memory " + (int) (System.Diagnostics.Process.GetCurrentProcess().PrivateMemorySize64 / 1024f) + " KB");
-				//memory.SetText("Public Memory " + (int)(GC.GetTotalMemory(false) / 1024f) + " KB");
-				visibility.SetText(VisibilitySolver.TilesVisible() + " Tiles visible");
-
-				var tickColor = Color.White;
-				if (Window.TPS < Settings.UpdatesPerSecond - 5)
-					tickColor = new Color(255, 192, 192);
-				else if (Window.TPS > Settings.UpdatesPerSecond + 5)
-					tickColor = new Color(192, 255, 192);
-
-				tick.SetColor(tickColor);
-				tick.SetText("Tick " + Window.TPS.ToString("F1") + " @ " + Window.TMS.ToString("00") + " ms");
-
-				var frameCount = Settings.FrameLimiter == 0 ? WindowInfo.ScreenRefreshRate : Settings.FrameLimiter;
-
-				var renderColor = Color.White;
-				if (Window.FPS < frameCount - 5)
-					renderColor = new Color(255, 192, 192);
-				else if (Window.FPS > frameCount + 5)
-					renderColor = new Color(192, 255, 192);
-
-				render.SetColor(renderColor);
-				render.SetText("Render " + Window.FPS.ToString("F1") + " @ " + Window.FMS.ToString("00") + " ms");
 			}
 
 			if (infoTextDuration-- < 100)
@@ -521,16 +478,6 @@ namespace WarriorsSnuggery
 
 		public void RenderDebug()
 		{
-			if (Settings.EnableInfoScreen)
-			{
-				var right = (int)(WindowInfo.UnitWidth * 512);
-				ColorManager.DrawRect(new CPos(right, 8192, 0), new CPos(right - 6144, 8192 - 2560, 0), new Color(0, 0, 0, 128));
-				version.Render();
-				visibility.Render();
-				tick.Render();
-				render.Render();
-			}
-
 			if (infoTextDuration > 0) infoText.Render();
 		}
 
