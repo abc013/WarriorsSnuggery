@@ -31,8 +31,6 @@ namespace WarriorsSnuggery
 
 		public static bool DeveloperMode = false;
 
-		public static bool EnableDebug { get { return DeveloperMode; } private set { } }
-
 		public static bool EnableInfoScreen;
 
 		public static bool Fullscreen = true;

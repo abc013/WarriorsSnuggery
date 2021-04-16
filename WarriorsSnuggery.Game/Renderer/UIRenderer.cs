@@ -101,7 +101,7 @@ namespace WarriorsSnuggery
 
 			var possibleTarget = game.World.LocalPlayer != null && ((PlayerPart)game.World.LocalPlayer.Parts.Find(p => p is PlayerPart)).FindValidTarget(MouseInput.GamePosition) != null;
 
-			if (Settings.EnableDebug)
+			if (Settings.DeveloperMode)
 			{
 				ColorManager.DrawRect(new CPos(-64, -64, 0), new CPos(64, 64, 0), Color.Cyan);
 				ColorManager.DrawRect(MouseInput.WindowPosition + new CPos(-64, -64, 0), MouseInput.WindowPosition + new CPos(64, 64, 0), possibleTarget ? Color.Red : Color.Blue);
@@ -117,7 +117,7 @@ namespace WarriorsSnuggery
 			BatchRenderer.Render();
 			MasterRenderer.BatchRenderer = null;
 
-			if (Settings.EnableDebug)
+			if (Settings.DeveloperMode)
 			{
 				DebugRenderer.SetCurrent();
 				MasterRenderer.PrimitiveType = PrimitiveType.Lines;
