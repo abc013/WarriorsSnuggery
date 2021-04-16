@@ -333,28 +333,28 @@ namespace WarriorsSnuggery
 
 					if (key == Keys.B)
 						World.LocalPlayer.Health.HP += 100;
-				}
 
-				if (key == Keys.N)
-				{
-					Statistics.Mana += 100;
-					Statistics.Mana = Math.Clamp(Statistics.Mana, 0, Statistics.MaxMana);
-				}
+					if (key == Keys.N)
+					{
+						Statistics.Mana += 100;
+						Statistics.Mana = Math.Clamp(Statistics.Mana, 0, Statistics.MaxMana);
+					}
 
-				if (key == Keys.M)
-					Statistics.Money += 100;
+					if (key == Keys.M)
+						Statistics.Money += 100;
+
+					if (key == Keys.Period)
+					{
+						World.ShroudLayer.RevealAll = !World.ShroudLayer.RevealAll;
+						WorldRenderer.CheckVisibility(Camera.LookAt, Camera.DefaultZoom);
+					}
+
+					if (key == Keys.X)
+						SwitchEditor();
+				}
 
 				if (key == Keys.Comma)
 					Settings.EnableInfoScreen = !Settings.EnableInfoScreen;
-
-				if (key == Keys.Period)
-				{
-					World.ShroudLayer.RevealAll = !World.ShroudLayer.RevealAll;
-					WorldRenderer.CheckVisibility(Camera.LookAt, Camera.DefaultZoom);
-				}
-
-				if (key == Keys.X)
-					SwitchEditor();
 			}
 		}
 
