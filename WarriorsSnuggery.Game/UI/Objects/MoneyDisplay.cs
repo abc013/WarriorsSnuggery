@@ -11,7 +11,7 @@ namespace WarriorsSnuggery.UI.Objects
 			{
 				base.Position = value;
 
-				money.SetPosition(value + new CPos(1024, 0, 0));
+				money.SetPosition(value - new CPos(1024, 0, 0));
 				moneyText.Position = value;
 			}
 		}

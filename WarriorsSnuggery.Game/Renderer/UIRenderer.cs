@@ -94,8 +94,6 @@ namespace WarriorsSnuggery
 
 			game.ScreenControl.Render();
 
-			game.RenderDebug();
-
 			foreach (var r in afterRender)
 				r.Render();
 

@@ -7,7 +7,6 @@ using WarriorsSnuggery.Objects;
 using WarriorsSnuggery.Objects.Conditions;
 using WarriorsSnuggery.Spells;
 using WarriorsSnuggery.Scripting;
-using WarriorsSnuggery.UI;
 using WarriorsSnuggery.UI.Screens;
 
 namespace WarriorsSnuggery
@@ -77,10 +76,6 @@ namespace WarriorsSnuggery
 
 		readonly MissionScriptBase script;
 
-		readonly UITextLine infoText;
-
-		int infoTextDuration;
-
 		public uint LocalTick;
 		public uint LocalRender;
 
@@ -146,16 +141,6 @@ namespace WarriorsSnuggery
 
 			if (ObjectiveType == ObjectiveType.SURVIVE_WAVES)
 				waveController = new WaveController(this);
-
-			infoText = new UITextLine(FontManager.Pixel16);
-		}
-
-		public void AddInfoMessage(int duration, string text)
-		{
-			var corner = (int)(WindowInfo.UnitWidth / 2 * 1024);
-			infoText.Position = new CPos(-corner + 512, -6144 - 256, 0);
-			infoText.WriteText(text);
-			infoTextDuration = duration;
 		}
 
 		public void Load()
@@ -276,9 +261,6 @@ namespace WarriorsSnuggery
 				if (ObjectiveType == ObjectiveType.SURVIVE_WAVES)
 					waveController.Tick();
 			}
-
-			if (infoTextDuration-- < 100)
-				infoText.Position -= new CPos(64, 0, 0);
 
 			if (Window.GlobalTick == 0 && Settings.FirstStarted)
 				ShowScreen(ScreenType.START, true);
@@ -483,9 +465,9 @@ namespace WarriorsSnuggery
 			ScreenControl.RefreshSaveGameScreens();
 		}
 
-		public void RenderDebug()
+		public void AddInfoMessage(int duration, string text)
 		{
-			if (infoTextDuration > 0) infoText.Render();
+			ScreenControl.AddInfoMessage(duration, text);
 		}
 
 		public void Dispose()

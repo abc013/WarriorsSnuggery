@@ -17,6 +17,7 @@ namespace WarriorsSnuggery.UI.Screens
 		public bool ChatOpen { get; private set; }
 		public readonly InfoScreen Screen;
 		public static bool InfoScreenOpen => Settings.EnableInfoScreen;
+		public readonly InfoText Text;
 
 		public ScreenControl(Game game)
 		{
@@ -24,6 +25,7 @@ namespace WarriorsSnuggery.UI.Screens
 
 			Chat = new ChatBox(new CPos(0, 4096, 0));
 			Screen = new InfoScreen();
+			Text = new InfoText();
 		}
 
 		public void InitScreen()
@@ -105,6 +107,11 @@ namespace WarriorsSnuggery.UI.Screens
 				defaultScreen.UpdateActors();
 		}
 
+		public void AddInfoMessage(int duration, string message)
+		{
+			Text.SetMessage(duration, message);
+		}
+
 		public void Tick()
 		{
 			if (ChatOpen)
@@ -114,6 +121,8 @@ namespace WarriorsSnuggery.UI.Screens
 
 			if (InfoScreenOpen)
 				Screen.Tick();
+
+			Text.Tick();
 		}
 
 		public void Render()
@@ -125,6 +134,8 @@ namespace WarriorsSnuggery.UI.Screens
 
 			if (InfoScreenOpen)
 				Screen.Render();
+
+			Text.Render();
 		}
 
 		public void DebugRender()
@@ -133,6 +144,8 @@ namespace WarriorsSnuggery.UI.Screens
 
 			if (ChatOpen)
 				Chat.DebugRender();
+
+			Text.DebugRender();
 		}
 
 		public void KeyDown(Keys key, bool isControl, bool isShift, bool isAlt)

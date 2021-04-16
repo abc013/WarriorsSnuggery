@@ -145,7 +145,7 @@ namespace WarriorsSnuggery.UI.Screens
 						var invert = i % 2 == 0;
 						var particle = particleManager.Add((int)(percentage * 200) + 300);
 						particle.Radius = Program.SharedRandom.Next(150) + (int)(inverse * inverse * 2000) + 10;
-						particle.Position = new CPos(Program.SharedRandom.Next(Width) - Width / 2, (invert ? 1 : -1) * Top, 0);
+						particle.Position = new CPos(Program.SharedRandom.Next(Width) - Width / 2, (invert ? 1 : -1) * Bottom, 0);
 						particle.Velocity = new CPos(Program.SharedRandom.Next(-2, 2), (invert ? -1 : 1) * (Program.SharedRandom.Next(10) + 10), 0);
 						particle.Color = new Color(Program.SharedRandom.Next(96) + 127, 0, 0, 192);
 					}
