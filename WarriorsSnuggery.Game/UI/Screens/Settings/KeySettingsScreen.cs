@@ -23,12 +23,12 @@ namespace WarriorsSnuggery.UI.Screens
 			var tPause = new UITextLine(FontManager.Pixel16, TextOffset.RIGHT) { Position = new CPos(-1024, -3072, 0) };
 			tPause.SetText("Pause/unpause");
 			Content.Add(tPause);
-			pause = new KeyboardButton(Settings.KeyDictionary["Pause"], Color.White, type) { Position = new CPos(1536, -3072, 0) };
+			pause = new KeyboardButton(Settings.KeyDictionary["Pause"], type) { Position = new CPos(1536, -3072, 0) };
 			Content.Add(pause);
 			var tLock = new UITextLine(FontManager.Pixel16, TextOffset.RIGHT) { Position = new CPos(-1024, -2048, 0) };
 			tLock.SetText("Toggle camera lock");
 			Content.Add(tLock);
-			@lock = new KeyboardButton(Settings.KeyDictionary["CameraLock"], Color.White, type) { Position = new CPos(1536, -2048, 0) };
+			@lock = new KeyboardButton(Settings.KeyDictionary["CameraLock"], type) { Position = new CPos(1536, -2048, 0) };
 			Content.Add(@lock);
 
 			var font = FontManager.Pixel16;
@@ -44,17 +44,17 @@ namespace WarriorsSnuggery.UI.Screens
 				line++;
 				Content.Add(text);
 			}
-			up = new KeyboardButton(Settings.KeyDictionary["MoveUp"], Color.White, type) { Position = new CPos(1536, -1024, 0) };
+			up = new KeyboardButton(Settings.KeyDictionary["MoveUp"], type) { Position = new CPos(1536, -1024, 0) };
 			Content.Add(up);
-			down = new KeyboardButton(Settings.KeyDictionary["MoveDown"], Color.White, type) { Position = new CPos(1536, -1024 + 640, 1) };
+			down = new KeyboardButton(Settings.KeyDictionary["MoveDown"], type) { Position = new CPos(1536, -1024 + 640, 1) };
 			Content.Add(down);
-			left = new KeyboardButton(Settings.KeyDictionary["MoveLeft"], Color.White, type) { Position = new CPos(1536, -1024 + 1280, 1) };
+			left = new KeyboardButton(Settings.KeyDictionary["MoveLeft"], type) { Position = new CPos(1536, -1024 + 1280, 1) };
 			Content.Add(left);
-			right = new KeyboardButton(Settings.KeyDictionary["MoveRight"], Color.White, type) { Position = new CPos(1536, -1024 + 1920, 0) };
+			right = new KeyboardButton(Settings.KeyDictionary["MoveRight"], type) { Position = new CPos(1536, -1024 + 1920, 0) };
 			Content.Add(right);
-			above = new KeyboardButton(Settings.KeyDictionary["MoveAbove"], Color.White, type) { Position = new CPos(1536, -1024 + 2560, 1) };
+			above = new KeyboardButton(Settings.KeyDictionary["MoveAbove"], type) { Position = new CPos(1536, -1024 + 2560, 1) };
 			Content.Add(above);
-			below = new KeyboardButton(Settings.KeyDictionary["MoveBelow"], Color.White, type) { Position = new CPos(1536, -1024 + 3200, 0) };
+			below = new KeyboardButton(Settings.KeyDictionary["MoveBelow"], type) { Position = new CPos(1536, -1024 + 3200, 0) };
 			Content.Add(below);
 
 			var tCam = new UITextLine(FontManager.Pixel16, TextOffset.RIGHT) { Position = new CPos(-3072, 3072, 0) };
@@ -68,13 +68,13 @@ namespace WarriorsSnuggery.UI.Screens
 				line++;
 				Content.Add(text);
 			}
-			camUp = new KeyboardButton(Settings.KeyDictionary["CameraUp"], Color.White, type) { Position = new CPos(1536, 3072, 0) };
+			camUp = new KeyboardButton(Settings.KeyDictionary["CameraUp"], type) { Position = new CPos(1536, 3072, 0) };
 			Content.Add(camUp);
-			camDown = new KeyboardButton(Settings.KeyDictionary["CameraDown"], Color.White, type) { Position = new CPos(1536, 3072 + 640, 1) };
+			camDown = new KeyboardButton(Settings.KeyDictionary["CameraDown"], type) { Position = new CPos(1536, 3072 + 640, 1) };
 			Content.Add(camDown);
-			camLeft = new KeyboardButton(Settings.KeyDictionary["CameraLeft"], Color.White, type) { Position = new CPos(1536, 3072 + 1280, 1) };
+			camLeft = new KeyboardButton(Settings.KeyDictionary["CameraLeft"], type) { Position = new CPos(1536, 3072 + 1280, 1) };
 			Content.Add(camLeft);
-			camRight = new KeyboardButton(Settings.KeyDictionary["CameraRight"], Color.White, type) { Position = new CPos(1536, 3072 + 1920, 1) };
+			camRight = new KeyboardButton(Settings.KeyDictionary["CameraRight"], type) { Position = new CPos(1536, 3072 + 1920, 1) };
 			Content.Add(camRight);
 		}
 

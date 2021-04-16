@@ -15,27 +15,32 @@ namespace WarriorsSnuggery.UI
 			set
 			{
 				base.Position = value;
-
 				keyDisplay.Position = value;
+			}
+		}
+
+		public override Color Color
+		{
+			get => base.Color;
+			set
+			{
+				base.Color = value;
+				keyDisplay.Color = value;
 			}
 		}
 
 		readonly UITextLine keyDisplay;
 
 		int blinkTick;
+		bool selected;
 
-		public bool Selected;
+		public Keys Key { get; private set; }
 
-		public Keys Key;
-
-		public KeyboardButton(Keys key, Color color, PanelType type) : base(new MPos(width + 512, height), type)
+		public KeyboardButton(Keys key, PanelType type) : base(new MPos(width + 512, height), type)
 		{
 			Key = key;
 
-			keyDisplay = new UITextLine(FontManager.Pixel16, TextOffset.MIDDLE)
-			{
-				Color = color
-			};
+			keyDisplay = new UITextLine(FontManager.Pixel16, TextOffset.MIDDLE);
 			keyDisplay.SetText(key);
 
 			Bounds = new MPos(width + 512, height);
@@ -56,14 +61,14 @@ namespace WarriorsSnuggery.UI
 			CheckMouse();
 
 			if (ContainsMouse && MouseInput.IsLeftClicked)
-				Selected = true;
+				selected = true;
 			else if (MouseInput.IsLeftClicked)
 			{
-				Selected = false;
+				selected = false;
 				blinkTick = 0;
 			}
 
-			if (Selected)
+			if (selected)
 			{
 				if (blinkTick-- < 0)
 					blinkTick = 20;
@@ -72,7 +77,7 @@ namespace WarriorsSnuggery.UI
 				{
 					Key = Window.KeyInput;
 					keyDisplay.SetText(Key);
-					Selected = false;
+					selected = false;
 					blinkTick = 0;
 				}
 			}
