@@ -25,26 +25,26 @@ namespace WarriorsSnuggery.UI.Screens
 			// Window
 			var fullscreen = new UITextLine(FontManager.Pixel16) { Position = new CPos(-6096, -3000, 0) };
 			fullscreen.SetText("Fullscreen:");
-			Content.Add(fullscreen);
+			Add(fullscreen);
 
 			var width = new UITextLine(FontManager.Pixel16) { Position = new CPos(-6096, -2300, 0) };
 			if (Settings.Fullscreen)
 				width.SetColor(new Color(128, 128, 128));
 			width.SetText("Width:");
-			Content.Add(width);
+			Add(width);
 
 			var height = new UITextLine(FontManager.Pixel16) { Position = new CPos(-6096, -1600, 0) };
 			if (Settings.Fullscreen)
 				height.SetColor(new Color(128, 128, 128));
 			height.SetText("Height:");
-			Content.Add(height);
+			Add(height);
 
 			fullscreenCheck = new CheckBox("wooden", Settings.Fullscreen, (ticked) =>
 			{
 				width.SetColor(ticked ? new Color(128, 128, 128) : Color.White);
 				height.SetColor(ticked ? new Color(128, 128, 128) : Color.White);
 			}) { Position = new CPos(-1536, -3000, 0) };
-			Content.Add(fullscreenCheck);
+			Add(fullscreenCheck);
 
 			widthWrite = new TextBox(Settings.Width + "", "wooden", 5, true)
 			{
@@ -58,7 +58,7 @@ namespace WarriorsSnuggery.UI.Screens
 						widthWrite.Text = WindowInfo.ScreenWidth + "";
 				}
 			};
-			Content.Add(widthWrite);
+			Add(widthWrite);
 
 			heightWrite = new TextBox(Settings.Height + "", "wooden", 5, true)
 			{
@@ -72,57 +72,57 @@ namespace WarriorsSnuggery.UI.Screens
 						heightWrite.Text = WindowInfo.ScreenHeight + "";
 				}
 			};
-			Content.Add(heightWrite);
+			Add(heightWrite);
 
 			// Graphics
 			var vSync = new UITextLine(FontManager.Pixel16) { Position = new CPos(-512, -3000, 0) };
 			vSync.SetText("Enable V-Sync:");
-			Content.Add(vSync);
+			Add(vSync);
 
 			var pixeling = new UITextLine(FontManager.Pixel16) { Position = new CPos(-512, -2300, 0) };
 			pixeling.SetText("Enable Pixeling:");
-			Content.Add(pixeling);
+			Add(pixeling);
 
 			var textshadow = new UITextLine(FontManager.Pixel16) { Position = new CPos(-512, -1600, 0) };
 			textshadow.SetText("Enable text shadows:");
-			Content.Add(textshadow);
+			Add(textshadow);
 
 			vSyncCheck = new CheckBox("wooden", Settings.VSync, (b) =>
 			{
 				Settings.VSync = b;
 				Window.SetVSync();
 			}) { Position = new CPos(6656, -3000, 0) };
-			Content.Add(vSyncCheck);
+			Add(vSyncCheck);
 			pixelingCheck = new CheckBox("wooden", Settings.EnablePixeling, (b) => Settings.EnablePixeling = b) { Position = new CPos(6656, -2300, 0) };
-			Content.Add(pixelingCheck);
+			Add(pixelingCheck);
 			textshadowCheck = new CheckBox("wooden", Settings.EnableTextShadowing, (b) => Settings.EnableTextShadowing = b) { Position = new CPos(6656, -1600, 0) };
-			Content.Add(textshadowCheck);
+			Add(textshadowCheck);
 
 			// Scrolling
 			var scrollSpeed = new UITextLine(FontManager.Pixel16) { Position = new CPos(-6144, -600, 0) };
 			scrollSpeed.SetText("Camera panning speed:");
-			Content.Add(scrollSpeed);
+			Add(scrollSpeed);
 			var edgeScrolling = new UITextLine(FontManager.Pixel16) { Position = new CPos(-6144, 100, 0) };
 			edgeScrolling.SetText("Edge Panning (0 = disabled):");
-			Content.Add(edgeScrolling);
+			Add(edgeScrolling);
 
 			panningSlider = new SliderBar(4096, "wooden", () => Settings.ScrollSpeed = (int)(panningSlider.Value * 10))
 			{
 				Position = new CPos(5120, -600, 0),
 				Value = Settings.ScrollSpeed / 10f
 			};
-			Content.Add(panningSlider);
+			Add(panningSlider);
 			edgePanningSlider = new SliderBar(4096, "wooden", () => Settings.EdgeScrolling = (int)(edgePanningSlider.Value * 10))
 			{
 				Position = new CPos(5120, 100, 0),
 				Value = Settings.EdgeScrolling / 10f
 			};
-			Content.Add(edgePanningSlider);
+			Add(edgePanningSlider);
 
 			// Additional features
 			var frameLimiter = new UITextLine(FontManager.Pixel16) { Position = new CPos(-6144, 1000, 0) };
 			frameLimiter.SetText("Framelimiter (0 = disabled):");
-			Content.Add(frameLimiter);
+			Add(frameLimiter);
 
 			frameLimiterWrite = new TextBox(Settings.FrameLimiter + "", "wooden", 2, true)
 			{
@@ -134,27 +134,27 @@ namespace WarriorsSnuggery.UI.Screens
 						frameLimiterWrite.Text = WindowInfo.ScreenRefreshRate.ToString();
 				}
 			};
-			Content.Add(frameLimiterWrite);
+			Add(frameLimiterWrite);
 
 			var developerMode = new UITextLine(FontManager.Pixel16) { Position = new CPos(-6144, 1900, 0) };
 			developerMode.SetText("Enable Developermode:");
-			Content.Add(developerMode);
+			Add(developerMode);
 			developerModeCheck = new CheckBox("wooden", Settings.DeveloperMode, (b) =>
 			{
 				Settings.DeveloperMode = b;
 			}) { Position = new CPos(5120, 1900, 0) };
-			Content.Add(developerModeCheck);
+			Add(developerModeCheck);
 
 			// Volume
 			var masterVol = new UITextLine(FontManager.Pixel16) { Position = new CPos(-6144, 2800, 0) };
 			masterVol.SetText("Master Volume:");
-			Content.Add(masterVol);
+			Add(masterVol);
 			var effectVol = new UITextLine(FontManager.Pixel16) { Position = new CPos(-6144, 3700, 0) };
 			effectVol.SetText("Effects Volume:");
-			Content.Add(effectVol);
+			Add(effectVol);
 			var musicVol = new UITextLine(FontManager.Pixel16) { Position = new CPos(-6144, 4600, 0) };
 			musicVol.SetText("Music Volume:");
-			Content.Add(musicVol);
+			Add(musicVol);
 
 			masterVolumeSlider = new SliderBar(4096, "wooden", () =>
 			{
@@ -165,7 +165,7 @@ namespace WarriorsSnuggery.UI.Screens
 				Position = new CPos(5120, 2800, 0),
 				Value = Settings.MasterVolume
 			};
-			Content.Add(masterVolumeSlider);
+			Add(masterVolumeSlider);
 			effectVolumeSlider = new SliderBar(4096, "wooden", () =>
 			{
 				Settings.EffectsVolume = (float)Math.Round(effectVolumeSlider.Value, 2);
@@ -174,7 +174,7 @@ namespace WarriorsSnuggery.UI.Screens
 				Position = new CPos(5120, 3700, 0),
 				Value = Settings.EffectsVolume
 			};
-			Content.Add(effectVolumeSlider);
+			Add(effectVolumeSlider);
 			musicVolumeSlider = new SliderBar(4096, "wooden", () =>
 			{
 				Settings.MusicVolume = (float)Math.Round(musicVolumeSlider.Value, 2);
@@ -184,7 +184,7 @@ namespace WarriorsSnuggery.UI.Screens
 				Position = new CPos(5120, 4600, 0),
 				Value = Settings.MusicVolume
 			};
-			Content.Add(musicVolumeSlider);
+			Add(musicVolumeSlider);
 
 			var warning = new UITextLine(FontManager.Pixel16, TextOffset.MIDDLE)
 			{
@@ -192,11 +192,11 @@ namespace WarriorsSnuggery.UI.Screens
 				Color = Color.Red
 			};
 			warning.SetText("Some changes only take effect after restarting and can cause visual bugs.");
-			Content.Add(warning);
+			Add(warning);
 
-			Content.Add(new Button("Apply", "wooden", Save) { Position = new CPos(-5120, 6144, 0) });
-			Content.Add(new Button("Save & Back", "wooden", () => game.ShowScreen(ScreenType.MENU)) { Position = new CPos(5120, 6144, 0) });
-			Content.Add(new Button("Key Bindings", "wooden", () => game.ShowScreen(ScreenType.KEYSETTINGS)) { Position = new CPos(0, 6144, 0) });
+			Add(new Button("Apply", "wooden", Save) { Position = new CPos(-5120, 6144, 0) });
+			Add(new Button("Save & Back", "wooden", () => game.ShowScreen(ScreenType.MENU)) { Position = new CPos(5120, 6144, 0) });
+			Add(new Button("Key Bindings", "wooden", () => game.ShowScreen(ScreenType.KEYSETTINGS)) { Position = new CPos(0, 6144, 0) });
 		}
 
 		public override void Hide()

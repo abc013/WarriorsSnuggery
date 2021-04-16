@@ -38,13 +38,13 @@ namespace WarriorsSnuggery.UI.Screens
 			Title.Position += new CPos(0, -7120, 0);
 
 			mousePosition = new UITextLine(FontManager.Pixel16, TextOffset.RIGHT) { Position = new CPos((int)(WindowInfo.UnitWidth * 512 - 1024), -7172, 0) };
-			Content.Add(mousePosition);
+			Add(mousePosition);
 
 			if (!string.IsNullOrEmpty(game.MapType.OverridePiece))
 			{
 				var pieceName = new UITextLine(FontManager.Pixel16, TextOffset.RIGHT) { Position = new CPos((int)(WindowInfo.UnitWidth * 512 - 1024), -7684, 0) };
 				pieceName.WriteText("Piece name: " + Color.Green + game.MapType.OverridePiece);
-				Content.Add(pieceName);
+				Add(pieceName);
 			}
 
 			save = new Button("Save", "wooden", savePiece) { Position = new CPos((int)(WindowInfo.UnitWidth * 512 - 2048), -5120, 0) };
@@ -52,16 +52,16 @@ namespace WarriorsSnuggery.UI.Screens
 			var checkBoxPosition = new CPos((int)(WindowInfo.UnitWidth * 512) - 1024, -6144, 0);
 
 			showNone = new CheckBox("wooden", true, (b) => deselectBoxes(Selected.NONE)) { Position = checkBoxPosition - new CPos(736 * 3, 0, 0) };
-			Content.Add(showNone);
+			Add(showNone);
 
 			showTiles = new CheckBox("terrain_editor", onTicked: (b) => deselectBoxes(Selected.TILE)) { Position = checkBoxPosition - new CPos(736 * 2, 0, 0) };
-			Content.Add(showTiles);
+			Add(showTiles);
 
 			showActors = new CheckBox("actor_editor", onTicked: (b) => deselectBoxes(Selected.ACTOR)) { Position = checkBoxPosition - new CPos(736 * 1, 0, 0) };
-			Content.Add(showActors);
+			Add(showActors);
 
 			showWalls = new CheckBox("wall_editor", onTicked: (b) => deselectBoxes(Selected.WALL)) { Position = checkBoxPosition };
-			Content.Add(showWalls);
+			Add(showWalls);
 
 			var widgetPosition = new CPos((int)(WindowInfo.UnitWidth * 512) - 2048, -3584, 0);
 

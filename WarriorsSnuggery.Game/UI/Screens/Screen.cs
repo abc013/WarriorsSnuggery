@@ -9,7 +9,9 @@ namespace WarriorsSnuggery.UI.Screens
 	{
 		protected readonly UITextLine Title;
 
-		protected readonly List<UIObject> Content = new List<UIObject>();
+		readonly List<UIObject> content = new List<UIObject>();
+		protected void Add(UIObject @object) => content.Add(@object);
+		protected void Remove(UIObject @object) => content.Remove(@object);
 
 		readonly Color darkness;
 
@@ -34,23 +36,24 @@ namespace WarriorsSnuggery.UI.Screens
 
 		public virtual void Tick()
 		{
-			foreach (var content in Content)
-				content.Tick();
+			foreach (var @object in content)
+				@object.Tick();
 		}
 
 		public virtual void Render()
 		{
-			ColorManager.DrawFullscreenRect(darkness);
+			if (darkness.A != 0)
+				ColorManager.DrawFullscreenRect(darkness);
 			Title.Render();
 
-			foreach (var content in Content)
-				content.Render();
+			foreach (var @object in content)
+				@object.Render();
 		}
 
 		public virtual void DebugRender()
 		{
-			foreach (var content in Content)
-				content.DebugRender();
+			foreach (var @object in content)
+				@object.DebugRender();
 		}
 	}
 }

@@ -20,7 +20,7 @@ namespace WarriorsSnuggery.UI.Screens
 			Title.Position = new CPos(0, -2048, 0);
 
 			text = new UITextLine(FontManager.Pixel16, TextOffset.MIDDLE);
-			Content.Add(text);
+			Add(text);
 		}
 
 		public void SetAction(Action onDecline, Action onAgree, string text)
@@ -30,14 +30,14 @@ namespace WarriorsSnuggery.UI.Screens
 			this.onDecline = onDecline;
 			this.onAgree = onAgree;
 
-			Content.Remove(decline);
-			Content.Remove(agree);
+			Remove(decline);
+			Remove(agree);
 
 			decline = new Button("Nope", "wooden", onDecline) { Position = new CPos(-2048, 1024, 0) };
 			agree = new Button("Yup", "wooden", onAgree) { Position = new CPos(2048, 1024, 0) };
 
-			Content.Add(decline);
-			Content.Add(agree);
+			Add(decline);
+			Add(agree);
 		}
 
 		public override void KeyDown(Keys key, bool isControl, bool isShift, bool isAlt)

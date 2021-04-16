@@ -19,11 +19,11 @@ namespace WarriorsSnuggery.UI.Screens
 
 			list = new GameSaveList(new MPos((int)(WindowInfo.UnitWidth * 128), 4096), "wooden") { Position = new CPos(0, 1024, 0) };
 
-			Content.Add(new Button("Back", "wooden", () => game.ShowScreen(ScreenType.MENU)) { Position = new CPos(4096, 6144, 0) });
-			Content.Add(new Button("Save", "wooden", () => { saveGame(); game.RefreshSaveGameScreens(); }) { Position = new CPos(0, 6144, 0) });
-			Content.Add(new Button("New Save", "wooden", () => createSaveScreen.ActiveScreen = true) { Position = new CPos(-4096, 6144, 0) });
+			Add(new Button("Back", "wooden", () => game.ShowScreen(ScreenType.MENU)) { Position = new CPos(4096, 6144, 0) });
+			Add(new Button("Save", "wooden", () => { saveGame(); game.RefreshSaveGameScreens(); }) { Position = new CPos(0, 6144, 0) });
+			Add(new Button("New Save", "wooden", () => createSaveScreen.ActiveScreen = true) { Position = new CPos(-4096, 6144, 0) });
 
-			Content.Add(list);
+			Add(list);
 
 			createSaveScreen = new NewSaveGameScreen(game);
 		}
@@ -97,16 +97,16 @@ namespace WarriorsSnuggery.UI.Screens
 			Title.Position = new CPos(0, -4096, 0);
 
 			var back = new Button("Back", "wooden", () => ActiveScreen = false) { Position = new CPos(4096, 6144, 0) };
-			Content.Add(back);
+			Add(back);
 			var create = new Button("Save", "wooden", save) { Position = new CPos(0, 6144, 0) };
-			Content.Add(create);
+			Add(create);
 
 			@new = new TextBox(game.Statistics.Name, "wooden", 20, isPath: true) { OnEnter = save };
-			Content.Add(@new);
+			Add(@new);
 
 			var warning = new UITextLine(FontManager.Pixel16, TextOffset.MIDDLE) { Position = new CPos(0, 1024, 0) };
 			warning.WriteText(Color.Red + "WARNING: " + Color.White + "You have to save over the just created save!");
-			Content.Add(warning);
+			Add(warning);
 		}
 
 		public override void KeyDown(Keys key, bool isControl, bool isShift, bool isAlt)

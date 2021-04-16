@@ -29,10 +29,10 @@ namespace WarriorsSnuggery.UI.Screens
 					Hide();
 				}));
 			}
-			Content.Add(mapSelection);
-			Content.Add(new Button("Back", "wooden", () => game.ShowScreen(ScreenType.MENU)) { Position = new CPos(4096, 6144, 0) });
-			Content.Add(new Button("New Piece", "wooden", () => { createPieceScreen.ActiveScreen = true; }) { Position = new CPos(0, 6144, 0) } );
-			Content.Add(new Button("Delete Piece", "wooden") { Position = new CPos(-4096, 6144, 0) });
+			Add(mapSelection);
+			Add(new Button("Back", "wooden", () => game.ShowScreen(ScreenType.MENU)) { Position = new CPos(4096, 6144, 0) });
+			Add(new Button("New Piece", "wooden", () => { createPieceScreen.ActiveScreen = true; }) { Position = new CPos(0, 6144, 0) } );
+			Add(new Button("Delete Piece", "wooden") { Position = new CPos(-4096, 6144, 0) });
 
 			createPieceScreen = new CreatePieceScreen();
 		}
@@ -89,19 +89,19 @@ namespace WarriorsSnuggery.UI.Screens
 		{
 			Title.Position = new CPos(0, -4096, 0);
 
-			Content.Add(new Button("Cancel", "wooden", () => { ActiveScreen = false; }) { Position = new CPos(4096, 6144, 0) });
-			Content.Add(new Button("Create", "wooden", create) { Position = new CPos(-4096, 6144, 0) });
+			Add(new Button("Cancel", "wooden", () => { ActiveScreen = false; }) { Position = new CPos(4096, 6144, 0) });
+			Add(new Button("Create", "wooden", create) { Position = new CPos(-4096, 6144, 0) });
 
 			var size = new UITextLine(FontManager.Pixel16, TextOffset.MIDDLE) { Position = new CPos(0, -1024, 0) };
 			size.SetText("Size of Piece");
-			Content.Add(size);
+			Add(size);
 
 			sizeX = new TextBox("16", "wooden", 2, true) { Position = new CPos(-1024, 0, 0) };
-			Content.Add(sizeX);
+			Add(sizeX);
 			sizeY = new TextBox("16", "wooden", 2, true) { Position = new CPos(1024, 0, 0) };
-			Content.Add(sizeY);
+			Add(sizeY);
 			name = new TextBox("unnamed piece", "wooden", 20, isPath: true) { Position = new CPos(0, 1536, 0) };
-			Content.Add(name);
+			Add(name);
 
 			var warning = new UITextLine(FontManager.Pixel16, TextOffset.MIDDLE)
 			{
@@ -109,7 +109,7 @@ namespace WarriorsSnuggery.UI.Screens
 				Color = Color.Red
 			};
 			warning.SetText("Warning: by using an name for an already existing map, you override it!");
-			Content.Add(warning);
+			Add(warning);
 		}
 
 		public override void KeyDown(Keys key, bool isControl, bool isShift, bool isAlt)

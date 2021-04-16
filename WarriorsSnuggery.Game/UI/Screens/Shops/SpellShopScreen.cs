@@ -20,9 +20,9 @@ namespace WarriorsSnuggery.UI.Screens
 			this.game = game;
 			Title.Position = new CPos(0, -4096, 0);
 
-			Content.Add(new Button("Resume", "wooden", () => game.ShowScreen(ScreenType.DEFAULT, false)) { Position = new CPos(0, 6144, 0) });
+			Add(new Button("Resume", "wooden", () => game.ShowScreen(ScreenType.DEFAULT, false)) { Position = new CPos(0, 6144, 0) });
 
-			Content.Add(new Panel(new MPos(8 * 1024, 3 * 1024), "wooden") { Position = new CPos(0, 256, 0) });
+			Add(new Panel(new MPos(8 * 1024, 3 * 1024), "wooden") { Position = new CPos(0, 256, 0) });
 
 			money = new MoneyDisplay(game) { Position = new CPos(-(int)(WindowInfo.UnitWidth / 2 * 1024) + 1024, 7192, 0) };
 

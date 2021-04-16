@@ -12,29 +12,29 @@ namespace WarriorsSnuggery.UI.Screens
 
 			var score = new UITextLine(FontManager.Pixel16, TextOffset.MIDDLE) { Position = new CPos(0, 1024, 0) };
 			score.WriteText("Achieved Score: " + Color.Blue + game.Statistics.CalculateScore());
-			Content.Add(score);
+			Add(score);
 			var deaths = new UITextLine(FontManager.Pixel16, TextOffset.MIDDLE) { Position = new CPos(0, 2048, 0) };
 			deaths.WriteText(Color.Red + "Deaths: " + game.OldStatistics.Deaths);
-			Content.Add(deaths);
+			Add(deaths);
 
 			if (game.Statistics.Hardcore)
 			{
 				game.Statistics.Delete();
-				Content.Add(new Button("Return to Main Menu", "wooden", GameController.CreateMainMenu) { Position = new CPos(0, 5120, 0) });
+				Add(new Button("Return to Main Menu", "wooden", GameController.CreateMainMenu) { Position = new CPos(0, 5120, 0) });
 			}
 			else
 			{
-				Content.Add(new Button("Restart Map", "wooden", GameController.CreateRestart) { Position = new CPos(-2048, 5120, 0) });
+				Add(new Button("Restart Map", "wooden", GameController.CreateRestart) { Position = new CPos(-2048, 5120, 0) });
 
 				switch (game.MissionType)
 				{
 					case MissionType.TEST:
-						Content.Add(new Button("Main Menu", "wooden", GameController.CreateMainMenu) { Position = new CPos(2048, 5120, 0) });
+						Add(new Button("Main Menu", "wooden", GameController.CreateMainMenu) { Position = new CPos(2048, 5120, 0) });
 						break;
 					case MissionType.STORY:
 					case MissionType.NORMAL:
 					case MissionType.TUTORIAL:
-						Content.Add(new Button("Menu", "wooden", GameController.CreateMenu) { Position = new CPos(2048, 5120, 0) });
+						Add(new Button("Menu", "wooden", GameController.CreateMenu) { Position = new CPos(2048, 5120, 0) });
 						break;
 				}
 			}

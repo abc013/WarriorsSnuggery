@@ -22,42 +22,42 @@ namespace WarriorsSnuggery.UI.Screens
 
 			var create = new UITextLine(FontManager.Pixel16, TextOffset.MIDDLE) { Position = new CPos(0, -2048, 0) };
 			create.SetText("Story line. Please adjust the parameters as you wish.");
-			Content.Add(create);
+			Add(create);
 
 			var name = new UITextLine(FontManager.Pixel16, TextOffset.RIGHT) { Position = new CPos(-2048, 0, 0) };
 			name.SetText("Name: ");
-			Content.Add(name);
+			Add(name);
 
 			nameInput = new TextBox("Name", "wooden", 15, isPath: true) { Position = new CPos(1024, 0, 0) };
-			Content.Add(nameInput);
+			Add(nameInput);
 
 			var difficulty = new UITextLine(FontManager.Pixel16, TextOffset.RIGHT) { Position = new CPos(-2048, 1024, 0) };
 			difficulty.SetText("Difficulty: ");
-			Content.Add(difficulty);
+			Add(difficulty);
 
 			difficultyInput = new SliderBar(4096, "wooden") { Position = new CPos(1024, 1024, 0) };
-			Content.Add(difficultyInput);
+			Add(difficultyInput);
 
 			var hardcore = new UITextLine(FontManager.Pixel16, TextOffset.RIGHT) { Position = new CPos(0, -1024, 0) };
 			hardcore.SetText("Hardcore (one life): ");
-			Content.Add(hardcore);
+			Add(hardcore);
 
 			hardcoreInput = new CheckBox("wooden")
 			{
 				Position = new CPos(1024, 2048, 0)
 			};
-			Content.Add(hardcoreInput);
+			Add(hardcoreInput);
 
 			var seed = new UITextLine(FontManager.Pixel16, TextOffset.RIGHT) { Position = new CPos(-2048, 3072, 0) };
 			seed.SetText("Seed: ");
-			Content.Add(seed);
+			Add(seed);
 
 			seedInput = new TextBox(getSeed(), "wooden", 7, true) { Position = new CPos(1024, 3072, 0) };
-			Content.Add(seedInput);
-			Content.Add(new Button("Generate", "wooden", () => { seedInput.Text = getSeed(); }) { Position = new CPos(6144, 3072, 0) });
+			Add(seedInput);
+			Add(new Button("Generate", "wooden", () => { seedInput.Text = getSeed(); }) { Position = new CPos(6144, 3072, 0) });
 
-			Content.Add(new Button("Cancel", "wooden", () => game.ShowScreen(ScreenType.DEFAULT, false)) { Position = new CPos(-4096, 6144, 0) });
-			Content.Add(new Button("Proceed", "wooden", () =>
+			Add(new Button("Cancel", "wooden", () => game.ShowScreen(ScreenType.DEFAULT, false)) { Position = new CPos(-4096, 6144, 0) });
+			Add(new Button("Proceed", "wooden", () =>
 			{
 				if (nameInput.Text != string.Empty)
 					GameController.CreateNew(new GameStatistics((int)Math.Round(difficultyInput.Value * 10), hardcoreInput.Checked, nameInput.Text, int.Parse(seedInput.Text)), MissionType.STORY);

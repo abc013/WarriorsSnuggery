@@ -21,7 +21,7 @@ namespace WarriorsSnuggery.UI.Screens
 			this.game = game;
 			Title.Position = new CPos(0, -4096, 0);
 
-			Content.Add(new Panel(new MPos(8 * 1024, 2 * 1024), "wooden") { Position = new CPos(0, 920, 0) });
+			Add(new Panel(new MPos(8 * 1024, 2 * 1024), "wooden") { Position = new CPos(0, 920, 0) });
 
 			actors = new PanelList(new MPos(8120, 1024), new MPos(1024, 1024), "stone") { Position = new CPos(0, -2048, 0) };
 			foreach (var a in ActorCreator.Types.Values)
@@ -41,16 +41,16 @@ namespace WarriorsSnuggery.UI.Screens
 				actors.Add(item);
 				actorTypes.Add(a.Playable.InternalName);
 			}
-			Content.Add(actors);
+			Add(actors);
 
-			Content.Add(new Button("Buy", "wooden", () => buyActor(selected)) { Position = new CPos(-6144, 3072, 0) });
-			Content.Add(new Button("Resume", "wooden", () => game.ShowScreen(ScreenType.DEFAULT, false)) { Position = new CPos(0, 6144, 0) });
+			Add(new Button("Buy", "wooden", () => buyActor(selected)) { Position = new CPos(-6144, 3072, 0) });
+			Add(new Button("Resume", "wooden", () => game.ShowScreen(ScreenType.DEFAULT, false)) { Position = new CPos(0, 6144, 0) });
 
 			information = new UITextBlock(FontManager.Pixel16, TextOffset.LEFT, "Select an actor for further information.", "", "", "Cost: -") { Position = new CPos(-7900, 0, 0) };
-			Content.Add(information);
+			Add(information);
 
 			var money = new MoneyDisplay(game) { Position = new CPos(-(int)(WindowInfo.UnitWidth / 2 * 1024) + 1024, 7192, 0) };
-			Content.Add(money);
+			Add(money);
 		}
 
 		void selectActor(ActorType actor)

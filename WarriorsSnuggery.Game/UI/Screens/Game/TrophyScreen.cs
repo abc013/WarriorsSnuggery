@@ -35,14 +35,14 @@ namespace WarriorsSnuggery.UI.Screens
 
 				trophies.Add(item);
 			}
-			Content.Add(trophies);
+			Add(trophies);
 
-			Content.Add(new Panel(new MPos(8 * 1024, 1024), "stone") { Position = new CPos(0, 1024, 0) });
+			Add(new Panel(new MPos(8 * 1024, 1024), "stone") { Position = new CPos(0, 1024, 0) });
 
 			information = new UITextBlock(FontManager.Pixel16, TextOffset.LEFT, "Select a trophy for further information.", "", "") { Position = new CPos(-7900, 512, 0) };
-			Content.Add(information);
+			Add(information);
 
-			Content.Add(new Button("Resume", "wooden", () => game.ShowScreen(ScreenType.DEFAULT, false)) { Position = new CPos(0, 6144, 0) });
+			Add(new Button("Resume", "wooden", () => game.ShowScreen(ScreenType.DEFAULT, false)) { Position = new CPos(0, 6144, 0) });
 		}
 
 		void selectTrophy(string name, Trophy trophy)
