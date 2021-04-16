@@ -3,7 +3,7 @@ using WarriorsSnuggery.Graphics;
 using WarriorsSnuggery.Objects;
 using WarriorsSnuggery.Objects.Parts;
 
-namespace WarriorsSnuggery.UI.Objects
+namespace WarriorsSnuggery.UI.Objects.Editor
 {
 	public class ActorEditorWidget : UIObject
 	{

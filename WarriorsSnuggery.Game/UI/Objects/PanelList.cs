@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using WarriorsSnuggery.Graphics;
 
-namespace WarriorsSnuggery.UI
+namespace WarriorsSnuggery.UI.Objects
 {
 	public class PanelList : Panel, IDisableTooltip
 	{

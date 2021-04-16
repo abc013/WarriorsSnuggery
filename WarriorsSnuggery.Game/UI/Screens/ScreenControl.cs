@@ -1,6 +1,7 @@
 ﻿using OpenTK.Windowing.GraphicsLibraryFramework;
 using System;
 using System.Collections.Generic;
+using WarriorsSnuggery.UI.Objects;
 
 namespace WarriorsSnuggery.UI.Screens
 {

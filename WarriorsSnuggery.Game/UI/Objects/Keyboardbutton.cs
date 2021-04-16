@@ -2,7 +2,7 @@ using OpenTK.Windowing.GraphicsLibraryFramework;
 using WarriorsSnuggery.Graphics;
 using WarriorsSnuggery.Objects;
 
-namespace WarriorsSnuggery.UI
+namespace WarriorsSnuggery.UI.Objects
 {
 	public class KeyboardButton : Panel
 	{

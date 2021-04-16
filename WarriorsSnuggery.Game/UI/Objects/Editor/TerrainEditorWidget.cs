@@ -1,7 +1,7 @@
 ﻿using WarriorsSnuggery.Graphics;
 using WarriorsSnuggery.Objects;
 
-namespace WarriorsSnuggery.UI.Objects
+namespace WarriorsSnuggery.UI.Objects.Editor
 {
 	public class TerrainEditorWidget : UIObject
 	{

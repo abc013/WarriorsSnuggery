@@ -1,6 +1,6 @@
 using WarriorsSnuggery.Graphics;
 
-namespace WarriorsSnuggery.UI
+namespace WarriorsSnuggery.UI.Objects
 {
 	public class CheckBoxType
 	{

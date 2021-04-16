@@ -1,7 +1,7 @@
 ﻿using WarriorsSnuggery.Graphics;
 using WarriorsSnuggery.Objects;
 
-namespace WarriorsSnuggery.UI
+namespace WarriorsSnuggery.UI.Objects
 {
 	class EnemyPointer : UIObject
 	{

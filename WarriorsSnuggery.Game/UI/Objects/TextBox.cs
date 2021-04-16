@@ -4,7 +4,7 @@ using System.Linq;
 using WarriorsSnuggery.Graphics;
 using WarriorsSnuggery.Objects;
 
-namespace WarriorsSnuggery.UI
+namespace WarriorsSnuggery.UI.Objects
 {
 	public class TextBox : Panel
 	{

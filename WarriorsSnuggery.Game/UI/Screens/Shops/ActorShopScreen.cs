@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using WarriorsSnuggery.Graphics;
 using WarriorsSnuggery.Objects;
+using WarriorsSnuggery.UI.Objects;
 
 namespace WarriorsSnuggery.UI.Screens
 {

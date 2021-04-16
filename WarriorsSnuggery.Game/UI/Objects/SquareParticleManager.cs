@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace WarriorsSnuggery.UI
+namespace WarriorsSnuggery.UI.Objects
 {
 	public class SquareParticleManager : UIObject
 	{

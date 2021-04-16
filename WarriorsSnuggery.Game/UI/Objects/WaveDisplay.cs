@@ -1,4 +1,4 @@
-﻿namespace WarriorsSnuggery.UI
+﻿namespace WarriorsSnuggery.UI.Objects
 {
 	class WaveDisplay : DisplayBar
 	{

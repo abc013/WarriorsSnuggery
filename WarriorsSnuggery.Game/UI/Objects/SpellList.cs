@@ -2,7 +2,7 @@
 using WarriorsSnuggery.Graphics;
 using WarriorsSnuggery.Spells;
 
-namespace WarriorsSnuggery.UI
+namespace WarriorsSnuggery.UI.Objects
 {
 	public class SpellList : PanelList
 	{

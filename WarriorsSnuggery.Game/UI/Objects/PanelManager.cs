@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using WarriorsSnuggery.Loader;
 
-namespace WarriorsSnuggery.UI
+namespace WarriorsSnuggery.UI.Objects
 {
 	public static class PanelManager
 	{

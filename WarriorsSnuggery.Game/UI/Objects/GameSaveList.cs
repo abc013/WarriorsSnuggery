@@ -1,6 +1,4 @@
-﻿
-
-namespace WarriorsSnuggery.UI
+﻿namespace WarriorsSnuggery.UI.Objects
 {
 	class GameSaveList : PanelList
 	{

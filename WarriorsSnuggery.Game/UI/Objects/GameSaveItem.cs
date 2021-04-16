@@ -1,7 +1,7 @@
 ﻿using System;
 using WarriorsSnuggery.Graphics;
 
-namespace WarriorsSnuggery.UI
+namespace WarriorsSnuggery.UI.Objects
 {
 	class GameSaveItem : PanelItem
 	{

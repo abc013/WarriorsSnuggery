@@ -3,6 +3,7 @@ using System;
 using WarriorsSnuggery.Audio;
 using WarriorsSnuggery.Graphics;
 using WarriorsSnuggery.Objects;
+using WarriorsSnuggery.UI.Objects;
 
 namespace WarriorsSnuggery.UI.Screens
 {

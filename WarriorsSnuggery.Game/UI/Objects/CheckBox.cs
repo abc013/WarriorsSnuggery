@@ -1,6 +1,6 @@
 using System;
 
-namespace WarriorsSnuggery.UI
+namespace WarriorsSnuggery.UI.Objects
 {
 	public class CheckBox : UIObject
 	{
