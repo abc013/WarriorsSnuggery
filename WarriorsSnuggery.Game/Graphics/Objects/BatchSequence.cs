@@ -42,7 +42,6 @@
 
 		public override void PushToBatchRenderer()
 		{
-
 			if (!Visible)
 				return;
 

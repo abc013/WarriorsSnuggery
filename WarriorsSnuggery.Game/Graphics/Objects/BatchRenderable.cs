@@ -43,9 +43,8 @@ namespace WarriorsSnuggery.Graphics
 			SetRotation((Vector3)rotation);
 		}
 
-		public virtual void SetRotation(Vector3 rotation)
+		public virtual void SetRotation(Vector3 rot3)
 		{
-			Vector3 rot3 = rotation;
 			if (Rotation == rot3)
 				return;
 
