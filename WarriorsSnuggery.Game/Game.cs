@@ -198,6 +198,10 @@ namespace WarriorsSnuggery
 			if (nextLevel)
 			{
 				Log.WriteDebug("Instant level change initiated.");
+
+				if (World.PlayerAlive && World.LocalPlayer.Health != null)
+					Statistics.Health = World.LocalPlayer.Health.RelativeHP;
+
 				GameController.CreateNext(nextLevelType, nextInteractionMode);
 				return;
 			}
