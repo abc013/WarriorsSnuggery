@@ -325,8 +325,11 @@ namespace WarriorsSnuggery
 			{
 				if (InteractionMode != InteractionMode.EDITOR)
 				{
+					if (key == Keys.C)
+						VictoryConditionsMet(true);
+
 					if (key == Keys.V)
-						World.LocalPlayer.Health.HP = 0;
+						DefeatConditionsMet();
 
 					if (key == Keys.B)
 						World.LocalPlayer.Health.HP += 100;
