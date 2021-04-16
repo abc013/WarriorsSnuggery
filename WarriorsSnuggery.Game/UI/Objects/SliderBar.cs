@@ -72,7 +72,7 @@ namespace WarriorsSnuggery.UI.Objects
 			{
 				currentPosition = (int)((value - 0.5f) * length) * 2;
 				Position = new CPos(CenterPosition.X + currentPosition, CenterPosition.Y, 0);
-				tooltip = new Tooltip(Position, Math.Round(Value, 1).ToString());
+				tooltip = new Tooltip(Math.Round(Value, 1).ToString());
 			}
 		}
 
@@ -113,7 +113,7 @@ namespace WarriorsSnuggery.UI.Objects
 
 				onChanged?.Invoke();
 				UIRenderer.DisableTooltip(tooltip);
-				tooltip = new Tooltip(Position, Math.Round(Value, 1).ToString());
+				tooltip = new Tooltip(Math.Round(Value, 1).ToString());
 				UIRenderer.SetTooltip(tooltip);
 			}
 		}

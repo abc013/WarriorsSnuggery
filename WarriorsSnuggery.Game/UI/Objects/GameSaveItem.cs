@@ -14,7 +14,6 @@ namespace WarriorsSnuggery.UI.Objects
 				name.Position = value - new CPos(3072, 512, 0);
 				score.Position = value - new CPos(3072, 0, 0);
 				level.Position = value - new CPos(-1152, 0, 0);
-				tooltip.Position = value;
 			}
 		}
 

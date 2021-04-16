@@ -2,22 +2,13 @@
 using WarriorsSnuggery.Graphics;
 using WarriorsSnuggery.Objects;
 
-namespace WarriorsSnuggery
+namespace WarriorsSnuggery.UI
 {
 	public class Tooltip : IRenderable
 	{
 		const int margin = 256;
 		const int lineWidth = 16;
 
-		public CPos Position
-		{
-			get => position;
-			set
-			{
-				position = value;
-				setPosition();
-			}
-		}
 		CPos position;
 
 		readonly Font font;
@@ -26,14 +17,13 @@ namespace WarriorsSnuggery
 
 		readonly MPos bounds;
 
-		public Tooltip(CPos pos, string title, params string[] text)
+		public Tooltip(string title, params string[] text)
 		{
 			font = FontManager.Pixel16;
 
 			this.title = new TextLine(CPos.Zero, font);
 			this.title.WriteText(title);
 			this.text = new TextBlock(CPos.Zero, font, TextOffset.LEFT, text);
-			Position = pos;
 
 			var width = font.GetWidth(this.title.Text);
 			if (text.Length != 0)
@@ -49,9 +39,7 @@ namespace WarriorsSnuggery
 
 		public void Render()
 		{
-			Position = MouseInput.WindowPosition + new CPos(256, 0, 0);
-			if (Position.X + bounds.X > WindowInfo.UnitWidth * 512)
-				Position -= new CPos(bounds.X, 0, 0);
+			setPosition(MouseInput.WindowPosition + new CPos(256, 0, 0));
 
 			ColorManager.DrawRect(position - new CPos(margin, margin, 0), position + new CPos(bounds.X + 2 * margin, bounds.Y + 2 * margin, 0), new Color(0, 0, 0, 0.8f));
 			ColorManager.LineWidth = 3f;
@@ -64,10 +52,16 @@ namespace WarriorsSnuggery
 			text.Render();
 		}
 
-		void setPosition()
+		void setPosition(CPos pos)
 		{
+			if (pos.X + bounds.X + margin > WindowInfo.UnitWidth * 512)
+				pos -= new CPos(bounds.X, 0, 0);
+			if (pos.Y + bounds.Y + margin > WindowInfo.UnitHeight * 512)
+				pos -= new CPos(0, bounds.Y, 0);
+
+			position = pos;
 			title.Position = position + new CPos(0, font.Height / 2, 0);
-			text.Position = position + new CPos(0, 3 * font.Height / 2 + font.Gap, 0); 
+			text.Position = position + new CPos(0, 3 * font.Height / 2 + font.Gap, 0);
 		}
 	}
 }

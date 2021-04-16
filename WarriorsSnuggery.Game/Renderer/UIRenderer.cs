@@ -3,6 +3,7 @@ using OpenTK.Mathematics;
 using System.Collections.Generic;
 using WarriorsSnuggery.Graphics;
 using WarriorsSnuggery.Objects.Parts;
+using WarriorsSnuggery.UI;
 
 namespace WarriorsSnuggery
 {

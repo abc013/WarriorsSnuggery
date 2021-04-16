@@ -101,7 +101,6 @@ namespace WarriorsSnuggery.UI.Screens
 				base.Position = value;
 
 				image.SetPosition(value);
-				tooltip.Position = value;
 			}
 		}
 
@@ -121,7 +120,7 @@ namespace WarriorsSnuggery.UI.Screens
 			this.screen = screen;
 			image = new BatchSequence(node.Textures, Color.White, node.Icon.Tick);
 
-			tooltip = new Tooltip(CPos.Zero, node.Name + " : " + node.Cost, node.GetInformation(true));
+			tooltip = new Tooltip(node.Name + " : " + node.Cost, node.GetInformation(true));
 
 			if (node.Unlocked || Program.IgnoreTech || game.Statistics.UnlockedSpells.Contains(node.InnerName))
 				HighlightVisible = true;

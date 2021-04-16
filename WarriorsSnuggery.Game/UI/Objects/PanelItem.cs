@@ -48,12 +48,9 @@ namespace WarriorsSnuggery.UI.Objects
 
 		public PanelItem(BatchRenderable renderable, MPos bounds, string title, string[] text, Action action)
 		{
-			var pos = CPos.Zero;
-
-			tooltip = new Tooltip(pos, title, text);
+			tooltip = new Tooltip(title, text);
 			this.renderable = renderable;
 			this.action = action;
-			base.Position = pos;
 
 			Bounds = bounds;
 			SelectableBounds = bounds;
