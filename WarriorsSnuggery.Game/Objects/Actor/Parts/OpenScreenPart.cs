@@ -8,7 +8,8 @@ namespace WarriorsSnuggery.Objects.Parts
 		NEW_NORMAL_GAME,
 		SPELL_SHOP,
 		ACTOR_SHOP,
-		TROPHY_COLLECTION
+		TROPHY_COLLECTION,
+		CREDITS
 	}
 
 	[Desc("Attach to an actor to open a screen when an actor gets near.")]
@@ -121,6 +122,10 @@ namespace WarriorsSnuggery.Objects.Parts
 						return true;
 					case ScreenType.TROPHY_COLLECTION:
 						game.ShowScreen(UI.Screens.ScreenType.TROPHY);
+
+						return true;
+					case ScreenType.CREDITS:
+						game.ShowScreen(UI.Screens.ScreenType.CREDITS);
 
 						return true;
 				}

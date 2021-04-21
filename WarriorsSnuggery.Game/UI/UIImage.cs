@@ -34,6 +34,16 @@ namespace WarriorsSnuggery.UI
 			}
 		}
 
+		public override Color Color
+		{
+			get => base.Color;
+			set
+			{
+				base.Color = value;
+				@object.SetColor(value);
+			}
+		}
+
 		readonly BatchObject @object;
 
 		public UIImage(BatchObject @object)

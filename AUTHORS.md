@@ -4,7 +4,7 @@
 ## Contributors
 - [abcdefg30](https://github.com/abcdefg30)
 ## Also thanks to
-- HerrPudding
+- Avrelia
 - Sharzad
 - Wolkenfarmer
 ## Inspiration

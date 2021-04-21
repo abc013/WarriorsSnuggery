@@ -53,6 +53,17 @@ trophies_pad=
 		Radius=512
 		OnlyByPlayer=yes
 
+credits_pad=
+	AnimatedSprite=
+		Name=exit
+		Dimensions=24,24
+		Offset=0,0,-2048
+		UseAsPreview=true
+	OpenScreen=
+		Type=CREDITS
+		Radius=512
+		OnlyByPlayer=yes
+
 exit_pad=
 	Sprite=
 		Name=exit
