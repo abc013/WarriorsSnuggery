@@ -85,7 +85,7 @@ namespace WarriorsSnuggery.UI.Screens
 				return false;
 
 			var mouse = MouseInput.WindowPosition;
-			return mouse.X > Left - 4096 - 128 && mouse.X < Left - 64 * Settings.EdgeScrolling;
+			return mouse.X > Right - 4096 - 128 && mouse.X < Right - 64 * Settings.EdgeScrolling;
 		}
 
 		public override void Hide()
@@ -105,6 +105,12 @@ namespace WarriorsSnuggery.UI.Screens
 					terrainWidget.Render();
 					break;
 				case Selected.ACTOR:
+					if (actorWidget.Rasterization && !CursorOnUI())
+					{
+						var pos = rasterizedPosition(MouseInput.GamePosition);
+						ColorManager.DrawQuad(Camera.GetWindowCoordinates(pos), 64, Color.Blue);
+					}
+
 					actorWidget.Render();
 					break;
 				case Selected.WALL:
@@ -220,7 +226,7 @@ namespace WarriorsSnuggery.UI.Screens
 				return;
 
 			var pos = MouseInput.GamePosition;
-			var mpos = (MouseInput.GamePosition + game.World.Map.TopLeftCorner).ToMPos();
+			var mpos = pos.ToMPos();
 			var bounds = game.World.Map.Bounds;
 
 			switch (currentSelected)
@@ -232,7 +238,7 @@ namespace WarriorsSnuggery.UI.Screens
 					if (actorWidget.RelativeHP == 0)
 						return;
 
-					pos = actorWidget.Rasterization ? new CPos(pos.X - pos.X % 512, pos.Y - pos.Y % 512, 0) : pos;
+					pos = actorWidget.Rasterization ? rasterizedPosition(pos) : pos;
 
 					var team = Math.Clamp(actorWidget.Team, (byte)0, Settings.MaxTeams);
 					var actor = ActorCreator.Create(game.World, actorWidget.CurrentType, pos, team, actorWidget.Bot, false, actorWidget.RelativeHP);
@@ -289,6 +295,12 @@ namespace WarriorsSnuggery.UI.Screens
 					wallLayer.Set(wall);
 					break;
 			}
+		}
+
+		CPos rasterizedPosition(CPos pos)
+		{
+			pos += new CPos(256, 256, 0);
+			return new CPos(pos.X - pos.X % 512, pos.Y - pos.Y % 512, 0);
 		}
 
 		void savePiece()

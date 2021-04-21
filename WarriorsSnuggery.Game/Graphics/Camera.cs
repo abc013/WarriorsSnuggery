@@ -136,5 +136,23 @@ namespace WarriorsSnuggery.Graphics
 
 			MouseInput.RecalculateMousePosition();
 		}
+
+		public static CPos GetWindowCoordinates(CPos gamePos)
+		{
+			var diff = gamePos - LookAt;
+
+			var x = diff.X / CurrentZoom * UIZoom;
+			var y = diff.Y / CurrentZoom * UIZoom;
+
+			return new CPos((int)x, (int)y, 0);
+		}
+
+		public static CPos GetGameCoordinates(CPos windowPos)
+		{
+			var x = windowPos.X / UIZoom * CurrentZoom;
+			var y = windowPos.Y / UIZoom * CurrentZoom;
+
+			return new CPos((int)x, (int)y, 0) + LookAt;
+		}
 	}
 }
