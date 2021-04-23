@@ -118,7 +118,7 @@ namespace WarriorsSnuggery.UI.Screens
 			this.node = node;
 			this.game = game;
 			this.screen = screen;
-			image = new BatchSequence(node.Textures, Color.White, node.Icon.Tick);
+			image = new BatchSequence(node.Textures, node.Icon.Tick);
 
 			tooltip = new Tooltip(node.Name + " : " + node.Cost, node.GetInformation(true));
 
@@ -237,10 +237,10 @@ namespace WarriorsSnuggery.UI.Screens
 			targetPos = target.VisualPosition;
 			this.active = new BatchRenderable[active.Length];
 			for (int i = 0; i < active.Length; i++)
-				this.active[i] = new BatchObject(active[i], Color.White);
+				this.active[i] = new BatchObject(active[i]);
 			this.inactive = new BatchRenderable[inactive.Length];
 			for (int i = 0; i < inactive.Length; i++)
-				this.inactive[i] = new BatchObject(inactive[i], Color.White);
+				this.inactive[i] = new BatchObject(inactive[i]);
 			this.tick = tick;
 
 			renderabledistance = 1024 * active[0].Height / MasterRenderer.PixelSize;

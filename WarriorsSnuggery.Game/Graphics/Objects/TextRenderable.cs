@@ -12,7 +12,7 @@ namespace WarriorsSnuggery.Graphics
 		public TextRenderable(CPos position, Font font, char c, Color color, int pxOffset = 0)
 		{
 			this.font = font;
-			charRenderable = new BatchObject(Mesh.Character(font, c), color);
+			charRenderable = new BatchObject(Mesh.Character(font, c));
 			SetPosition(position, pxOffset);
 			SetColor(color);
 		}
@@ -51,7 +51,8 @@ namespace WarriorsSnuggery.Graphics
 
 		public void SetCharacter(char c)
 		{
-			charRenderable = new BatchObject(Mesh.Character(font, c), color);
+			charRenderable = new BatchObject(Mesh.Character(font, c));
+			charRenderable.SetColor(color);
 		}
 
 		public void Render()

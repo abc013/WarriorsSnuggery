@@ -28,7 +28,7 @@ namespace WarriorsSnuggery.UI.Objects
 
 		public PanelList(MPos size, MPos itemSize, string type) : this(size, itemSize, PanelManager.Get(type)) { }
 
-		public PanelList(MPos size, MPos itemSize, PanelType type) : base(size, type, type.Background2 != null ? new BatchObject(Mesh.UIPanel(type.Background2, Color.White, itemSize), Color.White) : null)
+		public PanelList(MPos size, MPos itemSize, PanelType type) : base(size, type, type.Background2 != null ? new BatchObject(Mesh.UIPanel(type.Background2, itemSize)) : null)
 		{
 			ItemSize = itemSize;
 			Size = new MPos((int)Math.Floor(size.X / (float)itemSize.X), (int)Math.Floor(size.Y / (float)itemSize.Y));

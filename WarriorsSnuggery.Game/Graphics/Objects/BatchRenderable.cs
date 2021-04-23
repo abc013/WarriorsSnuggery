@@ -15,11 +15,10 @@ namespace WarriorsSnuggery.Graphics
 		protected Color Color = Color.White;
 		protected bool MatrixChanged;
 
-		public BatchRenderable(Vertex[] vertices, Color color)
+		public BatchRenderable(Vertex[] vertices)
 		{
 			this.vertices = vertices;
 			calculated = new Vertex[vertices.Length];
-			Color = color;
 			MatrixChanged = true;
 		}
 

@@ -63,16 +63,16 @@ namespace WarriorsSnuggery.UI.Objects
 		public Panel(MPos bounds, PanelType type) : this(bounds, type, null)
 		{
 			if (type.Background2 != null)
-				Highlight = new BatchObject(Mesh.UIPanel(type.Background2, Color.White, bounds), Color.White);
+				Highlight = new BatchObject(Mesh.UIPanel(type.Background2, bounds));
 		}
 
 		public Panel(MPos bounds, PanelType type, BatchObject background2)
 		{
 			SelectableBounds = bounds;
-			background = new BatchObject(Mesh.UIPanel(type.Background, Color.White, bounds), Color.White);
+			background = new BatchObject(Mesh.UIPanel(type.Background, bounds));
 
 			Bounds = new MPos(bounds.X + type.BorderWidth, bounds.Y + type.BorderWidth);
-			border = new BatchObject(Mesh.UIPanel(type.Border, Color.White, Bounds), Color.White);
+			border = new BatchObject(Mesh.UIPanel(type.Border, Bounds));
 
 			Highlight = background2;
 		}

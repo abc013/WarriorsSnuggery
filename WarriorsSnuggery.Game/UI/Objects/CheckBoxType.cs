@@ -10,9 +10,9 @@ namespace WarriorsSnuggery.UI.Objects
 
 		public CheckBoxType(Texture @default, Texture @checked, Texture click)
 		{
-			Default = new BatchObject(@default, Color.White);
-			Checked = new BatchObject(@checked, Color.White);
-			Click = new BatchObject(click, Color.White);
+			Default = new BatchObject(@default);
+			Checked = new BatchObject(@checked);
+			Click = new BatchObject(click);
 		}
 	}
 }

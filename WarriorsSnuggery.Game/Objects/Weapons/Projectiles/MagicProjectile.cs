@@ -45,7 +45,7 @@ namespace WarriorsSnuggery.Objects.Weapons.Projectiles
 
 		public BatchSequence GetTexture()
 		{
-			return new BatchSequence(Texture.GetTextures(), Color.White, Texture.Tick);
+			return new BatchSequence(Texture.GetTextures(), Texture.Tick);
 		}
 	}
 }

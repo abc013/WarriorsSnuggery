@@ -82,7 +82,7 @@ namespace WarriorsSnuggery.Objects.Parts
 				if (info.Random)
 					index = self.World.Game.SharedRandom.Next(anim.Length);
 
-				renderables[i] = new BatchObject(anim[index], Color.White);
+				renderables[i] = new BatchObject(anim[index]);
 			}
 
 			if (info.ColorVariation != Color.Black)

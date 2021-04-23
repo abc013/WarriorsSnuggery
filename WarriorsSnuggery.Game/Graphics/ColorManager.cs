@@ -4,12 +4,11 @@ namespace WarriorsSnuggery.Graphics
 {
 	public static class ColorManager
 	{
+		public const float DefaultLineWidth = 2.0f;
+
 		public static float LineWidth
 		{
-			get
-			{
-				return lineWidth;
-			}
+			get => lineWidth;
 			set
 			{
 				lineWidth = value;
@@ -17,7 +16,6 @@ namespace WarriorsSnuggery.Graphics
 			}
 		}
 		static float lineWidth;
-		public const float DefaultLineWidth = 2.0f;
 
 		static BatchObject line;
 		static BatchObject circle;
@@ -32,12 +30,12 @@ namespace WarriorsSnuggery.Graphics
 
 		public static void Initialize()
 		{
-			line = new BatchObject(Mesh.Line(1f, Color.White), Color.White);
-			circle = new BatchObject(Mesh.Circle(1f, Color.White, 32), Color.White);
-			fullscreen_rect = new BatchObject(Mesh.Plane(WindowInfo.UnitHeight, Color.White), Color.White);
+			line = new BatchObject(Mesh.Line(1f));
+			circle = new BatchObject(Mesh.Circle(1f, 32));
+			fullscreen_rect = new BatchObject(Mesh.Plane(WindowInfo.UnitHeight));
 			WindowRescaled();
 
-			filled_rect = new BatchObject(Mesh.Plane(1f, Color.White), Color.White);
+			filled_rect = new BatchObject(Mesh.Plane(1f));
 		}
 
 		public static void WindowRescaled()

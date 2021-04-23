@@ -30,7 +30,7 @@ namespace WarriorsSnuggery.UI.Screens
 
 			lineHeight = FontManager.Pixel16.Height * 2;
 
-			wsImage = new UIImage(new BatchObject(UITextureManager.Get("logo")[0], Color.White)) { Color = new Color(0, 0, 0, 0) };
+			wsImage = new UIImage(new BatchObject(UITextureManager.Get("logo")[0])) { Color = new Color(0, 0, 0, 0) };
 		}
 
 		public override void Tick()

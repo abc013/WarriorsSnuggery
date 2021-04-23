@@ -21,10 +21,10 @@ namespace WarriorsSnuggery
 
 		public Cursor()
 		{
-			@default = new BatchObject(UITextureManager.Get("cursor_default")[0], Color.White);
-			select = new BatchObject(UITextureManager.Get("cursor_select")[0], Color.White);
-			money = new BatchObject(UITextureManager.Get("cursor_money")[0], Color.White);
-			attack = new BatchObject(UITextureManager.Get("cursor_attack")[0], Color.White);
+			@default = new BatchObject(UITextureManager.Get("cursor_default")[0]);
+			select = new BatchObject(UITextureManager.Get("cursor_select")[0]);
+			money = new BatchObject(UITextureManager.Get("cursor_money")[0]);
+			attack = new BatchObject(UITextureManager.Get("cursor_attack")[0]);
 
 			Current = CursorType.NONE;
 		}

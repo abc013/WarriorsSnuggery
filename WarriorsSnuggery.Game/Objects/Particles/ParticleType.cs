@@ -47,10 +47,17 @@ namespace WarriorsSnuggery.Objects.Particles
 
 		public BatchRenderable GetRenderable()
 		{
+			var color = Color + ParticleUtils.Variety(ColorVariety);
 			if (Texture == null)
-				return new BatchObject(MeshSize * MasterRenderer.PixelMultiplier + ParticleUtils.Variety(MeshSizeVariety), Color + ParticleUtils.Variety(ColorVariety));
+			{
+				var renderable = new BatchObject(MeshSize * MasterRenderer.PixelMultiplier + ParticleUtils.Variety(MeshSizeVariety));
+				renderable.SetColor(color);
+				return renderable;
+			}
 
-			return new BatchSequence(Texture.GetTextures(), Color + ParticleUtils.Variety(ColorVariety), Texture.Tick);
+			var sequence = new BatchSequence(Texture.GetTextures(), Texture.Tick);
+			sequence.SetColor(color);
+			return sequence;
 		}
 
 		public override string ToString()

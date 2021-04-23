@@ -167,21 +167,21 @@ namespace WarriorsSnuggery.Objects
 			switch (damageState)
 			{
 				case DamageState.NONE:
-					renderable = new BatchObject(Type.GetTexture(IsHorizontal, neighborState), Color.White);
+					renderable = new BatchObject(Type.GetTexture(IsHorizontal, neighborState));
 					break;
 				case DamageState.HEAVY:
 					if (Type.DamagedImage2 != null)
-						renderable = new BatchObject(Type.GetDamagedTexture(IsHorizontal, true, neighborState), Color.White);
+						renderable = new BatchObject(Type.GetDamagedTexture(IsHorizontal, true, neighborState));
 					else if (Type.DamagedImage1 != null)
-						renderable = new BatchObject(Type.GetDamagedTexture(IsHorizontal, false, neighborState), Color.White);
+						renderable = new BatchObject(Type.GetDamagedTexture(IsHorizontal, false, neighborState));
 					else
-						renderable = new BatchObject(Type.GetTexture(IsHorizontal, neighborState), Color.White);
+						renderable = new BatchObject(Type.GetTexture(IsHorizontal, neighborState));
 					break;
 				case DamageState.LIGHT:
 					if (Type.DamagedImage1 != null)
-						renderable = new BatchObject(Type.GetDamagedTexture(IsHorizontal, false, neighborState), Color.White);
+						renderable = new BatchObject(Type.GetDamagedTexture(IsHorizontal, false, neighborState));
 					else
-						renderable = new BatchObject(Type.GetTexture(IsHorizontal, neighborState), Color.White);
+						renderable = new BatchObject(Type.GetTexture(IsHorizontal, neighborState));
 					break;
 			}
 			renderable.SetPosition(renderPos);

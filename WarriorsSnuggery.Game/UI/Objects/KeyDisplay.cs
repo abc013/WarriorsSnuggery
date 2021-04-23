@@ -45,7 +45,9 @@ namespace WarriorsSnuggery.UI.Objects
 		public KeyDisplay(Game game) : base(new MPos(712, 512), PanelManager.Get("wooden"))
 		{
 			this.game = game;
-			key = new BatchObject(UITextureManager.Get("UI_key")[0], Color.Black);
+
+			key = new BatchObject(UITextureManager.Get("UI_key")[0]);
+			key.SetColor(Color.Black);
 		}
 
 		public override void Tick()

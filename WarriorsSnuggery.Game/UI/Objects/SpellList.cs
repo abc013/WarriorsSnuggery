@@ -44,7 +44,7 @@ namespace WarriorsSnuggery.UI.Objects
 		{
 			this.game = game;
 
-			selector = new BatchObject(UITextureManager.Get("UI_selector1")[0], Color.White);
+			selector = new BatchObject(UITextureManager.Get("UI_selector1")[0]);
 
 			addSpells();
 		}

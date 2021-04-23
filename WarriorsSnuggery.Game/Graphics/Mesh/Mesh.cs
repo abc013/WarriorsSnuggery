@@ -55,9 +55,10 @@ namespace WarriorsSnuggery.Graphics
 			return vertices;
 		}
 
-		public static Vertex[] UIPanel(Texture texture, Color color, MPos bounds)
+		public static Vertex[] UIPanel(Texture texture, MPos bounds)
 		{
-			Vector size = new Vector(bounds.X / (1024f), bounds.Y / (1024f), 0);
+			var color = Color.White;
+			var size = new Vector(bounds.X / 1024f, bounds.Y / 1024f, 0);
 
 			return UIPanel(texture, color, size);
 		}
@@ -107,8 +108,10 @@ namespace WarriorsSnuggery.Graphics
 			return vertices;
 		}
 
-		public static Vertex[] Line(float size, Color color)
+		public static Vertex[] Line(float size)
 		{
+			var color = Color.White;
+
 			Vertex[] vertices =
 			{
 				new Vertex(new Vector(0, 0, 0), new Vector4(-1), color),
@@ -118,8 +121,9 @@ namespace WarriorsSnuggery.Graphics
 			return vertices;
 		}
 
-		public static Vertex[] Plane(float scale, Color color)
+		public static Vertex[] Plane(float scale)
 		{
+			var color = Color.White;
 			scale /= 2;
 
 			Vertex[] vertices =
@@ -135,8 +139,9 @@ namespace WarriorsSnuggery.Graphics
 			return vertices;
 		}
 
-		public static Vertex[] Circle(float size, Color color, int resolution = 360)
+		public static Vertex[] Circle(float size, int resolution = 360)
 		{
+			var color = Color.White;
 			size /= 2;
 
 			var vertices = new Vertex[resolution * 2];

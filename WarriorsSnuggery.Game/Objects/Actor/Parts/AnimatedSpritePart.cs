@@ -79,7 +79,7 @@ namespace WarriorsSnuggery.Objects.Parts
 				for (int x = 0; x < frameCountPerIdleAnim; x++)
 					anim[x] = info.Textures[i * frameCountPerIdleAnim + x];
 
-				renderables[i] = new BatchSequence(anim, Color.White, info.Tick, startRandom: info.StartRandom);
+				renderables[i] = new BatchSequence(anim, info.Tick, startRandom: info.StartRandom);
 			}
 
 			if (info.ColorVariation != Color.Black)

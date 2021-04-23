@@ -9,7 +9,7 @@ namespace WarriorsSnuggery.Objects
 
 		public static void Load()
 		{
-			shroudRenderable = new BatchObject(RuleLoader.ShroudTexture[0], Color.White);
+			shroudRenderable = new BatchObject(RuleLoader.ShroudTexture[0]);
 		}
 
 		public MPos Listener;
