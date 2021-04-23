@@ -38,9 +38,9 @@
 			if (load)
 			{
 				if (this.type == TextureType.IMAGE)
-					textures = SpriteManager.AddTexture(file, out Width, out Height);
+					textures = SheetManager.AddTexture(file, out Width, out Height);
 				else
-					textures = SpriteManager.AddSprite(file, width, height);
+					textures = SheetManager.AddSprite(file, width, height);
 			}
 		}
 

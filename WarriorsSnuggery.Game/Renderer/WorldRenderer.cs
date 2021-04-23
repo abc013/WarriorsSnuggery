@@ -28,7 +28,7 @@ namespace WarriorsSnuggery
 			{
 				Shroud.Load();
 
-				BatchRenderer.SetTextures(SpriteManager.Sheets, SpriteManager.SheetsUsed);
+				BatchRenderer.SetTextures(SheetManager.Sheets, SheetManager.SheetsUsed);
 				DebugRenderer.SetTextures(new[] { 0 });
 
 				first = false;

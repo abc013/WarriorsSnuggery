@@ -16,7 +16,7 @@
 		public Font(FontInfo info)
 		{
 			Info = info;
-			characters = SpriteManager.AddFont(info);
+			characters = SheetManager.AddFont(info);
 		}
 
 		public int GetWidth(char c)

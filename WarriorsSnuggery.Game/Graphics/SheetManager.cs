@@ -3,7 +3,7 @@ using WarriorsSnuggery.Loader;
 
 namespace WarriorsSnuggery.Graphics
 {
-	public static class SpriteManager
+	public static class SheetManager
 	{
 		public static Sheet[] Sheets { get; private set; }
 

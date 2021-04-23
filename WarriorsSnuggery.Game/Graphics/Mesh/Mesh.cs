@@ -20,7 +20,7 @@ namespace WarriorsSnuggery.Graphics
 			var scale = texture.Height * MasterRenderer.PixelMultiplier / 2;
 			var correction = texture.Width / (float)texture.Height;
 			var color = Color.White;
-			var id = SpriteManager.SheetIndex(texture.SheetID);
+			var id = SheetManager.SheetIndex(texture.SheetID);
 
 			Vertex[] vertices =
 			{
@@ -93,7 +93,7 @@ namespace WarriorsSnuggery.Graphics
 			var y = texture.Y / (float)Settings.SheetSize + Settings.SheetHalfPixel;
 			var w = (texture.X + size.X * texture.Width) / Settings.SheetSize - Settings.SheetHalfPixel;
 			var h = (texture.Y + size.Y * texture.Height) / Settings.SheetSize - Settings.SheetHalfPixel;
-			var id = SpriteManager.SheetIndex(texture.SheetID);
+			var id = SheetManager.SheetIndex(texture.SheetID);
 
 			Vertex[] vertices =
 			{
@@ -169,7 +169,7 @@ namespace WarriorsSnuggery.Graphics
 			var h = (texture.Y + texture.Height) / (float)Settings.SheetSize - Settings.SheetHalfPixel;
 			var correction = texture.Width / (float)texture.Height;
 			var color = Color.White;
-			var id = SpriteManager.SheetIndex(texture.SheetID);
+			var id = SheetManager.SheetIndex(texture.SheetID);
 			var scale = MasterRenderer.PixelMultiplier * font.Info.Size / 1.5f;
 
 			Vertex[] vertices =

@@ -129,7 +129,7 @@ namespace WarriorsSnuggery
 			Icon = new WindowIcon(new Image(iconWidth, iconHeight, iconData));
 
 			MasterRenderer.Initialize();
-			SpriteManager.InitSheets();
+			SheetManager.InitSheets();
 
 			timer.Restart();
 
@@ -147,7 +147,7 @@ namespace WarriorsSnuggery
 
 			timer.StopAndWrite("Loading Rules");
 
-			SpriteManager.FinishSheets();
+			SheetManager.FinishSheets();
 
 			Ready = true;
 			Console.WriteLine(" Done!");
@@ -226,7 +226,7 @@ namespace WarriorsSnuggery
 			UIRenderer.BatchRenderer.Dispose();
 			MasterRenderer.Dispose();
 
-			SpriteManager.DeleteSheets();
+			SheetManager.DeleteSheets();
 
 			FontManager.Dispose();
 
