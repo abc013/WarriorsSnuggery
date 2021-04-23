@@ -77,21 +77,21 @@ namespace WarriorsSnuggery.Loader
 
 		static void loadUIRules()
 		{
-			UITextureManager.Add("UI_inactiveConnection", new TextureInfo("UI_inactiveConnection", TextureType.ANIMATION, 10, 5, 3));
-			UITextureManager.Add("UI_activeConnection", new TextureInfo("UI_activeConnection", TextureType.ANIMATION, 10, 5, 3));
-			UITextureManager.Add("UI_save", "UI_save");
-			UITextureManager.Add("UI_map", "UI_map");
-			UITextureManager.Add("UI_money", "UI_money");
-			UITextureManager.Add("UI_key", "UI_key");
-			UITextureManager.Add("keyboard", new TextureInfo("keyboard", TextureType.ANIMATION, 10, 24, 24));
-			UITextureManager.Add("UI_selector1", "UI_selector1");
-			UITextureManager.Add("UI_selector2", "UI_selector2");
-			UITextureManager.Add("UI_enemy_arrow", "UI_enemy_arrow");
-			UITextureManager.Add("cursor_default", "cursor_default");
-			UITextureManager.Add("cursor_select", "cursor_select");
-			UITextureManager.Add("cursor_money", "cursor_money");
-			UITextureManager.Add("cursor_attack", "cursor_attack");
-			UITextureManager.Add("logo", "logo");
+			UISpriteManager.Add("UI_inactiveConnection", new TextureInfo("UI_inactiveConnection", TextureType.ANIMATION, 10, 5, 3));
+			UISpriteManager.Add("UI_activeConnection", new TextureInfo("UI_activeConnection", TextureType.ANIMATION, 10, 5, 3));
+			UISpriteManager.Add("UI_save", "UI_save");
+			UISpriteManager.Add("UI_map", "UI_map");
+			UISpriteManager.Add("UI_money", "UI_money");
+			UISpriteManager.Add("UI_key", "UI_key");
+			UISpriteManager.Add("keyboard", new TextureInfo("keyboard", TextureType.ANIMATION, 10, 24, 24));
+			UISpriteManager.Add("UI_selector1", "UI_selector1");
+			UISpriteManager.Add("UI_selector2", "UI_selector2");
+			UISpriteManager.Add("UI_enemy_arrow", "UI_enemy_arrow");
+			UISpriteManager.Add("cursor_default", "cursor_default");
+			UISpriteManager.Add("cursor_select", "cursor_select");
+			UISpriteManager.Add("cursor_money", "cursor_money");
+			UISpriteManager.Add("cursor_attack", "cursor_attack");
+			UISpriteManager.Add("logo", "logo");
 
 			PanelManager.AddType(new PanelType(getTexture("UI_wood1"), getTexture("UI_wood2"), getTexture("UI_wood3"), 72), "wooden");
 			PanelManager.AddType(new PanelType(getTexture("UI_stone1"), getTexture("UI_wood3"), getTexture("UI_stone2"), 72), "stone");

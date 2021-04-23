@@ -26,8 +26,8 @@ namespace WarriorsSnuggery.UI.Screens
 
 			money = new MoneyDisplay(game) { Position = new CPos(Left + 2048, Bottom - 1024, 0) };
 
-			var active = UITextureManager.Get("UI_activeConnection");
-			var inactive = UITextureManager.Get("UI_inactiveConnection");
+			var active = UISpriteManager.Get("UI_activeConnection");
+			var inactive = UISpriteManager.Get("UI_inactiveConnection");
 			tree = new SpellNode[SpellTreeLoader.SpellTree.Count];
 			for (int i = 0; i < tree.Length; i++)
 			{

@@ -50,7 +50,7 @@ namespace WarriorsSnuggery.UI.Objects
 		{
 			this.game = game;
 
-			selector = new BatchObject(UITextureManager.Get("UI_selector2")[0]);
+			selector = new BatchObject(UISpriteManager.Get("UI_selector2")[0]);
 
 			addActors();
 		}

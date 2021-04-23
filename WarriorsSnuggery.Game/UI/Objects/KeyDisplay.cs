@@ -46,7 +46,7 @@ namespace WarriorsSnuggery.UI.Objects
 		{
 			this.game = game;
 
-			key = new BatchObject(UITextureManager.Get("UI_key")[0]);
+			key = new BatchObject(UISpriteManager.Get("UI_key")[0]);
 			key.SetColor(Color.Black);
 		}
 

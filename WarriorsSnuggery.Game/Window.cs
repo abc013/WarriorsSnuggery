@@ -220,7 +220,7 @@ namespace WarriorsSnuggery
 		{
 			Stopped = true;
 
-			UITextureManager.Dispose();
+			UISpriteManager.Dispose();
 
 			WorldRenderer.BatchRenderer.Dispose();
 			UIRenderer.BatchRenderer.Dispose();

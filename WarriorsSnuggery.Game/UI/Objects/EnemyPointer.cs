@@ -12,7 +12,7 @@ namespace WarriorsSnuggery.UI.Objects
 		public EnemyPointer(Game game)
 		{
 			this.game = game;
-			pointer = new BatchObject(UITextureManager.Get("UI_enemy_arrow")[0]);
+			pointer = new BatchObject(UISpriteManager.Get("UI_enemy_arrow")[0]);
 		}
 
 		public override void Tick()

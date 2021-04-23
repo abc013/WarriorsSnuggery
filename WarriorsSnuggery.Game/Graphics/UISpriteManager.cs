@@ -2,7 +2,7 @@
 
 namespace WarriorsSnuggery.Graphics
 {
-	public static class UITextureManager
+	public static class UISpriteManager
 	{
 		static readonly Dictionary<string, TextureInfo> infos = new Dictionary<string, TextureInfo>();
 

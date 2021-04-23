@@ -8,7 +8,7 @@ namespace WarriorsSnuggery.UI.Screens
 	{
 		public StartScreen(Game game) : base("")
 		{
-			var ws = new UIImage(new BatchObject(UITextureManager.Get("logo")[0]))
+			var ws = new UIImage(new BatchObject(UISpriteManager.Get("logo")[0]))
 			{
 				Position = new CPos(0, -3072, 0),
 				Scale = 0.8f

@@ -49,7 +49,7 @@ namespace WarriorsSnuggery.UI.Objects
 		public MoneyDisplay(Game game) : base(new MPos(1536, 512), PanelManager.Get("wooden"))
 		{
 			this.game = game;
-			money = new BatchObject(UITextureManager.Get("UI_money")[0]);
+			money = new BatchObject(UISpriteManager.Get("UI_money")[0]);
 
 			moneyText = new UITextLine(FontManager.Pixel16);
 			moneyText.SetText(game.Statistics.Money);
