@@ -8,7 +8,7 @@ namespace WarriorsSnuggery.Objects.Conditions
 	public class ConditionManager
 	{
 		readonly Game game;
-		readonly Dictionary<string, bool> items; // TODO: use hashcode
+		readonly Dictionary<string, bool> items;
 
 		public ConditionManager(Game game)
 		{
@@ -20,7 +20,7 @@ namespace WarriorsSnuggery.Objects.Conditions
 				{ "MissionFindExit", game.ObjectiveType == ObjectiveType.FIND_EXIT },
 				{ "MissionWaves", game.ObjectiveType == ObjectiveType.SURVIVE_WAVES },
 				{ "IsMenu", game.IsMenu },
-				{ "KeyFound", false }
+				{ "KeyFound", game.Statistics.KeyFound }
 			};
 		}
 

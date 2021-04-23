@@ -75,7 +75,7 @@ namespace WarriorsSnuggery.UI
 			if (line.Offset == TextOffset.LEFT)
 				position += new CPos(Bounds.X, 0, 0);
 			else if (line.Offset == TextOffset.RIGHT)
-				position += new CPos(-Bounds.X, 0, 0);
+				position -= new CPos(Bounds.X, 0, 0);
 
 			if (Bounds != MPos.Zero)
 				ColorManager.DrawLineRect(position, new CPos(Bounds.X, Bounds.Y, 0), Color.Red);

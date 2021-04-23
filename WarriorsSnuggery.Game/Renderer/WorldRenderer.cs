@@ -61,7 +61,7 @@ namespace WarriorsSnuggery
 
 			foreach (var o in prepareRenderList())
 			{
-				CPos pos = world.Game.Editor ? MouseInput.GamePosition : world.LocalPlayer == null ? CPos.Zero : world.LocalPlayer.Position;
+				var pos = world.Game.Editor ? MouseInput.GamePosition : world.PlayerAlive ? CPos.Zero : world.LocalPlayer.Position;
 				if (((o is Actor actor && actor.WorldPart != null && actor.WorldPart.Hideable) || (o is Wall wall && wall.IsHorizontal && wall.Type.Height >= 512)) && o.Position.Y > pos.Y && Math.Abs(o.Position.X - pos.X) < 4096)
 				{
 					var alpha = o.Position.Y - pos.Y < 1024 ? 1 - (o.Position.Y - pos.Y) / 1024f : (o.Position.Y - pos.Y - 1024) / 1024f;

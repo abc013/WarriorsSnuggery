@@ -4,10 +4,12 @@ using WarriorsSnuggery.Spells;
 
 namespace WarriorsSnuggery.Objects.Parts
 {
-	public class EffectPart : ITick
+	public class EffectPart : ITick, INoticeMove
 	{
 		public readonly Effect Effect;
 		readonly Actor self;
+
+		readonly Sound sound;
 
 		// For saving
 		readonly Spell spell;
@@ -25,6 +27,8 @@ namespace WarriorsSnuggery.Objects.Parts
 			this.spellIndex = spellIndex;
 
 			tick = effect.Duration;
+
+			sound = new Sound(effect.Sound);
 		}
 
 		public EffectPart(Actor self, List<TextNode> nodes)
@@ -50,10 +54,9 @@ namespace WarriorsSnuggery.Objects.Parts
 				}
 			}
 
-			if (spellIndex >= spell.Effects.Length)
-				tick = 0;
-			else
-				Effect = spell.Effects[spellIndex];
+			Effect = spell.Effects[spellIndex];
+
+			sound = new Sound(Effect.Sound);
 		}
 
 		public List<string> Save()
@@ -72,8 +75,18 @@ namespace WarriorsSnuggery.Objects.Parts
 			if (tick-- <= 0)
 				return;
 
+			if (tick == Effect.Duration - 1)
+				sound.Play(self.Position, true);
+			else if (tick == 0)
+				sound.Stop();
+
 			if (Effect.Particles != null && tick % Effect.ParticleTick == 0)
 				self.World.Add(Effect.Particles.Create(self.World, self.Position, self.Height));
+		}
+
+		public void OnMove(CPos old, CPos velocity)
+		{
+			sound.SetPosition(self.Position);
 		}
 	}
 }

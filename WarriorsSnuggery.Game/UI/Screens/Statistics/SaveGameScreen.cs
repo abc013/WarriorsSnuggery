@@ -1,6 +1,4 @@
 ﻿using OpenTK.Windowing.GraphicsLibraryFramework;
-using WarriorsSnuggery.Graphics;
-using WarriorsSnuggery.Objects;
 using WarriorsSnuggery.UI.Objects;
 
 namespace WarriorsSnuggery.UI.Screens
@@ -103,10 +101,6 @@ namespace WarriorsSnuggery.UI.Screens
 
 			@new = new TextBox(game.Statistics.Name, "wooden", 20, isPath: true) { OnEnter = save };
 			Add(@new);
-
-			var warning = new UITextLine(FontManager.Pixel16, TextOffset.MIDDLE) { Position = new CPos(0, 1024, 0) };
-			warning.WriteText(Color.Red + "WARNING: " + Color.White + "You have to save over the just created save!");
-			Add(warning);
 		}
 
 		public override void KeyDown(Keys key, bool isControl, bool isShift, bool isAlt)

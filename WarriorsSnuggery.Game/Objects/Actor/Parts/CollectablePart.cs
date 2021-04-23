@@ -126,7 +126,7 @@ namespace WarriorsSnuggery.Objects.Parts
 			{
 				var localPlayer = self.World.LocalPlayer;
 
-				if (localPlayer != null && self.World.PlayerAlive && localPlayer.WorldPart != null && localPlayer.WorldPart.CanTrigger && (localPlayer.Position - self.Position).SquaredFlatDist < info.Radius * info.Radius)
+				if (localPlayer != null && localPlayer.IsAlive && localPlayer.WorldPart != null && localPlayer.WorldPart.CanTrigger && (localPlayer.Position - self.Position).SquaredFlatDist < info.Radius * info.Radius)
 					activate(localPlayer);
 			}
 			else

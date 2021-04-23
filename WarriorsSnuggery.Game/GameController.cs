@@ -54,7 +54,7 @@ namespace WarriorsSnuggery
 				mode = InteractionMode.EDITOR;
 
 
-			game = new Game(new GameStatistics(GameSaveManager.DefaultStatistic), map, mission, mode);
+			game = new Game(GameSaveManager.DefaultStatistic.Copy(), map, mission, mode);
 			game.Load();
 		}
 

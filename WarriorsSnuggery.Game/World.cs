@@ -31,9 +31,7 @@ namespace WarriorsSnuggery
 		readonly List<PositionableObject> objectsToAdd = new List<PositionableObject>();
 
 		public Actor LocalPlayer;
-
-		public bool PlayerSwitching => LocalPlayer.IsPlayerSwitch;
-		public bool PlayerAlive = true;
+		public bool PlayerAlive => LocalPlayer != null && LocalPlayer.IsAlive;
 
 		public int PlayerDamagedTick = 0;
 		public bool KeyFound;
@@ -60,9 +58,6 @@ namespace WarriorsSnuggery
 		{
 			Map.Load();
 
-			// TODO move into Map.Type.IsSave else clause
-			KeyFound = Game.Statistics.KeyFound;
-
 			if (Game.InteractionMode != InteractionMode.EDITOR)
 			{
 				if (!Map.Type.IsSave)
@@ -76,6 +71,7 @@ namespace WarriorsSnuggery
 						ShroudLayer.RevealShroudList(i, Game.Statistics.Shroud[i]);
 
 					LocalPlayer = ActorLayer.ToAdd().First(a => a.IsPlayer);
+					KeyFound = Game.Statistics.KeyFound;
 				}
 
 				if (Game.IsCampaign && !Game.IsMenu)
@@ -88,7 +84,6 @@ namespace WarriorsSnuggery
 			{
 				ShroudLayer.RevealAll = true;
 
-				PlayerAlive = false;
 				Camera.Position(Map.Center.ToCPos(), true);
 			}
 
@@ -178,13 +173,8 @@ namespace WarriorsSnuggery
 
 		public void PlayerKilled()
 		{
-			if (PlayerAlive)
-			{
-				PlayerAlive = false;
-				Game.OldStatistics.Deaths++;
-
-				Game.DefeatConditionsMet();
-			}
+			Game.OldStatistics.Deaths++;
+			Game.DefeatConditionsMet();
 		}
 
 		public bool CheckCollision(SimplePhysics physics)

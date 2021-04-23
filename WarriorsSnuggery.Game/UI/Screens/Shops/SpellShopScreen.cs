@@ -24,7 +24,7 @@ namespace WarriorsSnuggery.UI.Screens
 
 			Add(new Panel(new MPos(8 * 1024, 3 * 1024), "wooden") { Position = new CPos(0, 256, 0) });
 
-			money = new MoneyDisplay(game) { Position = new CPos(Left + 1024, 7192, 0) };
+			money = new MoneyDisplay(game) { Position = new CPos(Left + 2048, Bottom - 1024, 0) };
 
 			var active = UITextureManager.Get("UI_activeConnection");
 			var inactive = UITextureManager.Get("UI_inactiveConnection");

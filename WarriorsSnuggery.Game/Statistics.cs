@@ -45,7 +45,7 @@ namespace WarriorsSnuggery
 		public string Script;
 		public TextNode[] ScriptValues;
 
-		public GameStatistics(GameStatistics save)
+		GameStatistics(GameStatistics save)
 		{
 			Name = save.Name;
 			SaveName = save.SaveName;
@@ -81,13 +81,18 @@ namespace WarriorsSnuggery
 			ScriptValues = save.ScriptValues;
 		}
 
+		public GameStatistics Copy()
+		{
+			return new GameStatistics(this);
+		}
+
 		public GameStatistics(string file)
 		{
 			SaveName = file;
 
 			var fields = TypeLoader.GetFields(this, false);
 
-			foreach (var node in TextNodeLoader.FromFile(FileExplorer.FindPath(FileExplorer.Saves, file, ".yaml"), file + ".yaml"))
+			foreach (var node in TextNodeLoader.FromFile(FileExplorer.Saves, file + ".yaml"))
 			{
 				switch (node.Key)
 				{
@@ -168,11 +173,6 @@ namespace WarriorsSnuggery
 			Seed = seed;
 		}
 
-		public GameStatistics Copy()
-		{
-			return new GameStatistics(this);
-		}
-
 		public bool ActorAvailable(PlayablePartInfo playable)
 		{
 			return Program.IgnoreTech || playable.Unlocked || UnlockedActors.Contains(playable.InternalName);
@@ -193,7 +193,7 @@ namespace WarriorsSnuggery
 		{
 			var scriptState = world.Game.GetScriptState(out Script);
 
-			if (world.PlayerSwitching)
+			if (world.LocalPlayer.IsPlayerSwitch)
 				Health = ((PlayerSwitchPart)world.LocalPlayer.Parts.Find(p => p is PlayerSwitchPart)).RelativeHP;
 			else
 				Health = world.LocalPlayer.Health == null ? 1 : world.LocalPlayer.Health.RelativeHP;

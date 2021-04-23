@@ -44,7 +44,19 @@ namespace WarriorsSnuggery.UI
 
 		public override void DebugRender()
 		{
-			// TODO
+			foreach (var line in Lines)
+			{
+				var position = line.Position;
+				var bounds = line.Bounds;
+
+				if (line.Offset == TextOffset.LEFT)
+					position += new CPos(bounds.X, 0, 0);
+				else if (line.Offset == TextOffset.RIGHT)
+					position -= new CPos(bounds.X, 0, 0);
+
+				if (bounds != MPos.Zero)
+					ColorManager.DrawLineRect(position, new CPos(bounds.X, bounds.Y, 0), Color.Red);
+			}
 		}
 	}
 }

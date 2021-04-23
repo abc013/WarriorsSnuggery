@@ -101,12 +101,7 @@ namespace WarriorsSnuggery.UI.Objects
 
 			if (drag)
 			{
-				var xPos = MouseInput.WindowPosition.X;
-				if (xPos < CenterPosition.X - length)
-					xPos = CenterPosition.X - length;
-
-				if (xPos > CenterPosition.X + length)
-					xPos = CenterPosition.X + length;
+				var xPos = Math.Clamp(MouseInput.WindowPosition.X, CenterPosition.X - length, CenterPosition.X + length);
 
 				currentPosition = xPos - CenterPosition.X;
 				Position = new CPos(xPos, Position.Y, Position.Z);
