@@ -3,27 +3,17 @@
 	public class Sheet
 	{
 		public readonly MPos Size;
-
-		public int TextureID { get; private set; }
-
-		public float[] Data;
+		public readonly int TextureID;
 
 		public Sheet(int size)
 		{
 			Size = new MPos(size, size);
-			Data = new float[size * size * 4];
-			createTexture();
-		}
-
-		void createTexture()
-		{
 			TextureID = TextureManager.Create(Size);
 		}
 
-		public void CreateTexture()
+		public void WriteData(float[] data, int offsetx, int offsety, int width, int height)
 		{
-			TextureManager.Write(TextureID, Data, Size);
-			Data = null;
+			TextureManager.Write(TextureID, data, offsetx, offsety, width, height);
 		}
 
 		public void Dispose()

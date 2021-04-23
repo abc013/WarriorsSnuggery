@@ -58,10 +58,11 @@ namespace WarriorsSnuggery.Graphics
 			currentFragments.Remove(fragment);
 			currentFragments.AddRange(fragment.Split(bounds));
 
-			for (int y = 0; y < bounds.Y; y++)
-				Array.Copy(data, y * bounds.X * 4, currentSheet.Data, ((fragment.Position.Y + y) * currentSheet.Size.X + fragment.Position.X) * 4, bounds.X * 4);
+			var position = fragment.Position;
 
-			return fragment.Position;
+			currentSheet.WriteData(data, position.X, position.Y, bounds.X, bounds.Y);
+
+			return position;
 		}
 
 		public static void Clear()

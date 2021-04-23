@@ -106,16 +106,19 @@ namespace WarriorsSnuggery.Graphics
 
 		public static void CreateTextures()
 		{
-			int i = 0;
-			foreach (var sheet in Sheets)
+			if (Settings.DeveloperMode)
 			{
-				if (sheet == null)
-					continue;
+				int i = 0;
+				foreach (var sheet in Sheets)
+				{
+					if (sheet == null)
+						continue;
 
-				Loader.BitmapSaver.Save(FileExplorer.Logs + "spritesheet_" + i + ".png", sheet.Data, sheet.Size);
-				sheet.CreateTexture();
-				i++;
+					BitmapSaver.Save($"{FileExplorer.Logs}spritesheet_{i}.png", TextureManager.GetContent(sheet.TextureID, sheet.Size.X, sheet.Size.Y), sheet.Size);
+					i++;
+				}
 			}
+
 			SheetBuilder.Clear();
 
 			sheetsLoaded = true;
