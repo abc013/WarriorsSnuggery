@@ -30,24 +30,26 @@ namespace WarriorsSnuggery.Graphics
 			currentSheet++;
 		}
 
-		public static Texture[] AddTexture(TextureInfo info)
+		public static Texture[] AddTexture(string file, out int width, out int height)
 		{
 			if (sheetsLoaded)
-				throw new Exception($"Unable to add texture (file: {info.File}. Sheets are already loaded.");
+				throw new Exception($"Unable to add texture (file: {file}. Sheets are already loaded.");
 
-			if (info.Type == TextureType.IMAGE)
-			{
-				var data = BitmapLoader.LoadTexture(info.File, out var w, out var h);
-				info = new TextureInfo(info.File, info.Type, 0, w, h, false, false);
+			var data = BitmapLoader.LoadTexture(file, out width, out height);
 
-				return new[] { addTexture(data, info) };
-			}
+			return new[] { addTexture(data, file, width, height) };
+		}
 
-			var dataList = BitmapLoader.LoadSprite(info.File, info.Width, info.Height);
+		public static Texture[] AddSprite(string file, int width, int height)
+		{
+			if (sheetsLoaded)
+				throw new Exception($"Unable to add texture (file: {file}. Sheets are already loaded.");
+
+			var dataList = BitmapLoader.LoadSprite(file, width, height);
 
 			var textures = new Texture[dataList.Count];
 			for (int i = 0; i < dataList.Count; i++)
-				textures[i] = addTexture(dataList[i], info);
+				textures[i] = addTexture(dataList[i], file, width, height);
 
 			return textures;
 		}
@@ -61,21 +63,17 @@ namespace WarriorsSnuggery.Graphics
 			var textures = new Texture[data.Length];
 
 			for (int i = 0; i < data.Length; i++)
-			{
-				var info = new TextureInfo(font.FontName, TextureType.IMAGE, 0, font.CharSizes[i], false, false);
-
-				textures[i] = addTexture(data[i], info);
-			}
+				textures[i] = addTexture(data[i], font.FontName, font.CharSizes[i].X, font.CharSizes[i].Y);
 
 			return textures;
 		}
 
-		static Texture addTexture(float[] data, TextureInfo info)
+		static Texture addTexture(float[] data, string file, int width, int height)
 		{
-			if (!SheetBuilder.HasSpaceLeft(info.Width, info.Height))
+			if (!SheetBuilder.HasSpaceLeft(width, height))
 				nextSheet();
 
-			return SheetBuilder.WriteTexture(data, info);
+			return SheetBuilder.WriteTexture(data, file, width, height);
 		}
 
 		public static int SheetIndex(int SheetID)
