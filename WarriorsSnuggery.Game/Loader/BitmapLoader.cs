@@ -1,4 +1,6 @@
-﻿using System.Drawing;
+﻿using System;
+using System.Collections.Generic;
+using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
 using System.Runtime.InteropServices;
@@ -7,6 +9,33 @@ namespace WarriorsSnuggery.Loader
 {
 	public static class BitmapLoader
 	{
+		public static List<float[]> LoadSprite(string filename, int width, int height)
+		{
+			if (!File.Exists(filename))
+				throw new FileNotFoundException($"The file `{filename}` has not been found.");
+
+			var result = new List<float[]>();
+
+			using (var bmp = (Bitmap)Image.FromFile(filename))
+			{
+				if (bmp.Width < width || bmp.Height < height)
+					throw new IndexOutOfRangeException($"Given image bounds ({width}, {height}) are bigger than the actual bounds ({bmp.Width}, {bmp.Height}).");
+
+				var cWidth = (int)Math.Floor(bmp.Width / (float)width);
+				var cHeight = (int)Math.Floor(bmp.Height / (float)height);
+
+				var count = cWidth * cHeight;
+				for (int c = 0; c < count; c++)
+				{
+					var ch = c / cWidth;
+					var cw = c % cWidth;
+
+					result.Add(LoadTexture(bmp, new Rectangle(cw * width, ch * height, width, height)));
+				}
+			}
+			return result;
+		}
+
 		public static float[] LoadTexture(string filename, out int width, out int height)
 		{
 			if (!File.Exists(filename))
@@ -31,7 +60,7 @@ namespace WarriorsSnuggery.Loader
 
 			var data = bmp.LockBits(size, ImageLockMode.ReadOnly, PixelFormat.Format32bppArgb);
 			var byteSize = data.Height * data.Stride;
-			System.GC.AddMemoryPressure(byteSize);
+			GC.AddMemoryPressure(byteSize);
 
 			var scansize = data.Width * 4;
 			var stride = data.Stride;
@@ -60,7 +89,7 @@ namespace WarriorsSnuggery.Loader
 			finally
 			{
 				bmp.UnlockBits(data);
-				System.GC.RemoveMemoryPressure(byteSize);
+				GC.RemoveMemoryPressure(byteSize);
 			}
 
 			return r;
@@ -89,7 +118,7 @@ namespace WarriorsSnuggery.Loader
 
 			var data = bmp.LockBits(size, ImageLockMode.ReadOnly, PixelFormat.Format32bppArgb);
 			var byteSize = data.Height * data.Stride;
-			System.GC.AddMemoryPressure(byteSize);
+			GC.AddMemoryPressure(byteSize);
 
 			var r = new byte[data.Height * data.Width * pixelWidth];
 			try
@@ -99,7 +128,7 @@ namespace WarriorsSnuggery.Loader
 			finally
 			{
 				bmp.UnlockBits(data);
-				System.GC.RemoveMemoryPressure(byteSize);
+				GC.RemoveMemoryPressure(byteSize);
 			}
 
 			return r;

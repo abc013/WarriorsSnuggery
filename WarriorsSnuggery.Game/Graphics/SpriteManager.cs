@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using WarriorsSnuggery.Loader;
 
 namespace WarriorsSnuggery.Graphics
 {
@@ -44,14 +45,14 @@ namespace WarriorsSnuggery.Graphics
 			Texture[] textures;
 			if (info.Type == TextureType.IMAGE)
 			{
-				var data = TextureManager.LoadTexture(info.File, out var w, out var h);
+				var data = BitmapLoader.LoadTexture(info.File, out var w, out var h);
 				info = new TextureInfo(info.File, info.Type, 0, w, h, false);
 
 				textures = new[] { addTexture(data, info) };
 			}
 			else
 			{
-				var dataList = TextureManager.LoadSprite(info.File, info.Width, info.Height);
+				var dataList = BitmapLoader.LoadSprite(info.File, info.Width, info.Height);
 
 				textures = new Texture[dataList.Count];
 				for (int i = 0; i < dataList.Count; i++)
@@ -68,7 +69,7 @@ namespace WarriorsSnuggery.Graphics
 			if (sheetsLoaded)
 				throw new Exception($"Unable to add font (name: {font.FontName}). Sheets are already loaded.");
 
-			var data = TextureManager.LoadCharacters(font);
+			var data = FontLoader.LoadCharacters(font);
 			var textures = new Texture[data.Length];
 
 			for (int i = 0; i < data.Length; i++)
