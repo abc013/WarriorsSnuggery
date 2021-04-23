@@ -35,16 +35,13 @@ namespace WarriorsSnuggery.Objects.Weapons.Projectiles
 		{
 			TypeLoader.SetValues(this, nodes);
 
-			if (Texture != null)
-				SpriteManager.AddTexture(Texture);
-
 			if (MaxSpeed < Speed)
 				MaxSpeed = Speed;
 		}
 
 		public BatchSequence GetTexture()
 		{
-			return new BatchSequence(Texture.GetTextures(), Texture.Tick);
+			return new BatchSequence(Texture);
 		}
 	}
 }

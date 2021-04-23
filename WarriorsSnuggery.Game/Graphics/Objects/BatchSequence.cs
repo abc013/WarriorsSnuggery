@@ -8,7 +8,8 @@
 		int curTick;
 		int curObj;
 
-		// Create empty GraphicsObject
+		public BatchSequence(TextureInfo info, bool pauseable = false, bool startRandom = false) : this(info.GetTextures(), info.Tick, pauseable, startRandom) { }
+
 		public BatchSequence(Texture[] textures, int tick, bool pauseable = false, bool startRandom = false) : base(new Vertex[0])
 		{
 			this.tick = tick;

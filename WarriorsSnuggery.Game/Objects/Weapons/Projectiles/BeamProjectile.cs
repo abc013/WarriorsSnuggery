@@ -47,13 +47,6 @@ namespace WarriorsSnuggery.Objects.Weapons.Projectiles
 			TypeLoader.SetValues(this, nodes);
 
 			ArcTurnSpeed = Angle.ToArc(TurnSpeed) / 10f;
-
-			if (Beam != null)
-				SpriteManager.AddTexture(Beam);
-			if (BeamStartUp != null)
-				SpriteManager.AddTexture(BeamStartUp);
-			if (BeamCooldown != null)
-				SpriteManager.AddTexture(BeamCooldown);
 		}
 
 		public BatchSequence GetTexture()

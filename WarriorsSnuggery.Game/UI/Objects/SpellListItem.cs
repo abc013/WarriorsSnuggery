@@ -18,7 +18,7 @@ namespace WarriorsSnuggery.UI.Objects
 		bool unlocked;
 		int progress;
 
-		public SpellListItem(Game game, MPos size, SpellTreeNode node, SpellCaster caster) : base(new BatchSequence(node.Textures, node.Icon.Tick), size, node.Name, node.GetInformation(true), null)
+		public SpellListItem(Game game, MPos size, SpellTreeNode node, SpellCaster caster) : base(new BatchSequence(node.Icon), size, node.Name, node.GetInformation(true), null)
 		{
 			this.caster = caster;
 			this.game = game;

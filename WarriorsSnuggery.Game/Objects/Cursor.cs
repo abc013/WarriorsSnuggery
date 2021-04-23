@@ -10,6 +10,7 @@ namespace WarriorsSnuggery
 		ATTACK,
 		NONE
 	}
+
 	public class Cursor : IRenderable
 	{
 		readonly BatchObject @default;

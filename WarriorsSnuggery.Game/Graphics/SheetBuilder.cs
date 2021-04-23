@@ -13,7 +13,7 @@ namespace WarriorsSnuggery.Graphics
 		{
 			Clear();
 			currentSheet = sheet;
-			currentFragments.Add(new SheetFragment(MPos.Zero, sheet.Size));
+			currentFragments.Add(new SheetFragment(MPos.Zero, sheet.Bounds));
 		}
 
 		public static Texture WriteTexture(float[] data, TextureInfo info)

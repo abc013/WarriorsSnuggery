@@ -35,23 +35,14 @@ namespace WarriorsSnuggery.Spells
 		[Desc("Icon of the spell.")]
 		public readonly TextureInfo Icon;
 
-		public readonly Texture[] Textures;
+		public CPos VisualPosition => new CPos(-6584, -2048, 0) + new CPos(Position.X * 1024, Position.Y * 1024, 0);
 
-		public CPos VisualPosition
-		{
-			get { return new CPos(-6584, -2048, 0) + new CPos(Position.X * 1024, Position.Y * 1024, 0); }
-		}
-
-		public SpellTreeNode(List<TextNode> nodes, string name, bool documentation = false)
+		public SpellTreeNode(List<TextNode> nodes, string name)
 		{
 			TypeLoader.SetValues(this, nodes);
 
-			if (!documentation)
-			{
-				InnerName = name;
-				Name = name.Replace('_', ' ');
-				Textures = SpriteManager.AddTexture(Icon);
-			}
+			InnerName = name;
+			Name = name.Replace('_', ' ');
 		}
 
 		public string[] GetInformation(bool showDesc)

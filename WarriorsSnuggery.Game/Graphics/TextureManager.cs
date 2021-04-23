@@ -5,7 +5,7 @@ namespace WarriorsSnuggery.Graphics
 {
 	public static class TextureManager
 	{
-		public static int Create(MPos size)
+		public static int Create(int width, int height)
 		{
 			lock (MasterRenderer.GLLock)
 			{
@@ -14,7 +14,7 @@ namespace WarriorsSnuggery.Graphics
 				GL.ActiveTexture(TextureUnit.Texture0);
 				GL.BindTexture(TextureTarget.Texture2D, id);
 
-				GL.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.Rgba32f, size.X, size.Y, 0, PixelFormat.Rgba, PixelType.Float, IntPtr.Zero);
+				GL.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.Rgba32f, width, height, 0, PixelFormat.Rgba, PixelType.Float, IntPtr.Zero);
 
 				GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMinFilter, (int)All.Nearest);
 				GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMagFilter, (int)All.Nearest);

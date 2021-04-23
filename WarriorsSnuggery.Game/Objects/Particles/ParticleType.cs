@@ -40,9 +40,6 @@ namespace WarriorsSnuggery.Objects.Particles
 		public ParticleType(List<TextNode> nodes)
 		{
 			TypeLoader.SetValues(this, nodes);
-
-			if (Texture != null)
-				SpriteManager.AddTexture(Texture);
 		}
 
 		public BatchRenderable GetRenderable()
@@ -55,7 +52,7 @@ namespace WarriorsSnuggery.Objects.Particles
 				return renderable;
 			}
 
-			var sequence = new BatchSequence(Texture.GetTextures(), Texture.Tick);
+			var sequence = new BatchSequence(Texture);
 			sequence.SetColor(color);
 			return sequence;
 		}

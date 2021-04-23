@@ -22,12 +22,11 @@ namespace WarriorsSnuggery.Graphics
 
 		public void SetTextures(Sheet[] sheets, int used)
 		{
-			textureIDs = new int[used + 1];
-			for (int i = 0; i < used + 1; i++)
-				textureIDs[i] = sheets[i].TextureID;
+			var ids = new int[used];
+			for (int i = 0; i < used; i++)
+				ids[i] = sheets[i].TextureID;
 
-			if (textureIDs.Length > 4)
-				Log.WriteDebug(string.Format("Warning: BatchRenderer got {0} sheets, maximum is {1}", sheets.Length, 4));
+			SetTextures(ids);
 		}
 
 		public void SetTextures(int[] IDs)

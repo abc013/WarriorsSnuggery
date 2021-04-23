@@ -22,9 +22,6 @@ namespace WarriorsSnuggery.Trophies
 		public Trophy(List<TextNode> nodes)
 		{
 			TypeLoader.SetValues(this, nodes);
-
-			if (Image != null)
-				SpriteManager.AddTexture(Image);
 		}
 	}
 }

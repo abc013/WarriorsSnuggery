@@ -38,14 +38,11 @@ namespace WarriorsSnuggery.Objects.Weapons.Projectiles
 			TypeLoader.SetValues(this, nodes);
 
 			ArcTurnSpeed = Angle.ToArc(TurnSpeed);
-
-			if (Texture != null)
-				SpriteManager.AddTexture(Texture);
 		}
 
 		public BatchSequence GetTexture()
 		{
-			return new BatchSequence(Texture.GetTextures(), Texture.Tick);
+			return new BatchSequence(Texture);
 		}
 	}
 }

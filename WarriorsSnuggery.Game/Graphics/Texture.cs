@@ -17,11 +17,13 @@ namespace WarriorsSnuggery.Graphics
 		public readonly int Width;
 		public readonly int Height;
 
+		readonly Texture[] textures;
+
 		public TextureInfo(string file) : this(file, TextureType.IMAGE, 0, 0, 0, true) { }
 
-		public TextureInfo(string file, TextureType type, int tick, MPos bounds, bool searchFile = true) : this(file, type, tick, bounds.X, bounds.Y, searchFile) { }
+		public TextureInfo(string file, TextureType type, int tick, MPos bounds, bool searchFile = true, bool load = true) : this(file, type, tick, bounds.X, bounds.Y, searchFile, load) { }
 
-		public TextureInfo(string file, TextureType type, int tick, int width, int height, bool searchFile = true)
+		public TextureInfo(string file, TextureType type, int tick, int width, int height, bool searchFile = true, bool load = true)
 		{
 			if (searchFile)
 				File = FileExplorer.FindIn(FileExplorer.Misc, file);
@@ -33,21 +35,20 @@ namespace WarriorsSnuggery.Graphics
 
 			Width = width;
 			Height = height;
+
+			if (load)
+				textures = SpriteManager.AddTexture(this);
 		}
 
-		//if the type is random or image, it is certain that in this array there's only one texture.
 		public Texture[] GetTextures()
 		{
-			switch (Type)
-			{
-				case TextureType.RANDOM:
-					var random = Program.SharedRandom;
-					var images = SpriteManager.GetTexture(this);
+			if (textures == null)
+				throw new System.Exception($"Tried to fetch textures from unloaded TextureInfo ({File})");
 
-					return new[] { images[random.Next(images.Length)] };
-				default:
-					return SpriteManager.GetTexture(this);
-			}
+			if (Type == TextureType.RANDOM)
+				return new[] { textures[Program.SharedRandom.Next(textures.Length)] };
+
+			return textures;
 		}
 
 		public override int GetHashCode()

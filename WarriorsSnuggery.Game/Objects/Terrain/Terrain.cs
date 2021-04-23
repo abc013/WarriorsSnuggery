@@ -37,9 +37,9 @@ namespace WarriorsSnuggery.Objects
 			Type = type;
 
 			renderable = new StaticBatchRenderable(Position.ToCPos(), VAngle.Zero, type.Texture, Color.White);
-			if (type.Texture_Overlay != null)
+			if (type.Overlay != null)
 			{
-				overlay = new BatchSequence(type.Texture_Overlay, type.Overlay.Tick, startRandom: true);
+				overlay = new BatchSequence(type.Overlay, startRandom: true);
 				overlay.SetPosition(Position.ToCPos());
 			}
 			edges = new StaticBatchRenderable[4];

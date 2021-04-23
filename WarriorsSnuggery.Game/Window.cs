@@ -146,11 +146,8 @@ namespace WarriorsSnuggery
 			GameController.Load();
 
 			timer.StopAndWrite("Loading Rules");
-			timer.Restart();
 
-			SpriteManager.CreateTextures();
-
-			timer.StopAndWrite("Loading Textures");
+			SpriteManager.FinishSheets();
 
 			Ready = true;
 			Console.WriteLine(" Done!");
@@ -229,7 +226,7 @@ namespace WarriorsSnuggery
 			UIRenderer.BatchRenderer.Dispose();
 			MasterRenderer.Dispose();
 
-			SpriteManager.DeleteTextures();
+			SpriteManager.DeleteSheets();
 
 			FontManager.Dispose();
 

@@ -29,7 +29,7 @@ namespace WarriorsSnuggery
 			{
 				Cursor = new Cursor();
 
-				BatchRenderer.SetTextures(SpriteManager.Sheets, SpriteManager.CurrentSheet);
+				BatchRenderer.SetTextures(SpriteManager.Sheets, SpriteManager.SheetsUsed);
 				DebugRenderer.SetTextures(new[] { 0 });
 			}
 

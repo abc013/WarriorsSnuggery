@@ -68,9 +68,9 @@ namespace WarriorsSnuggery.Loader
 				}
 			}
 
-			ShroudTexture = SpriteManager.AddTexture(new TextureInfo("shroud"));
+			ShroudTexture = new TextureInfo("shroud").GetTextures();
 
-			Questionmark = SpriteManager.AddTexture(new TextureInfo("questionmark"));
+			Questionmark = new TextureInfo("questionmark").GetTextures();
 
 			loadUIRules();
 		}
@@ -79,22 +79,22 @@ namespace WarriorsSnuggery.Loader
 		{
 			UITextureManager.Add("UI_inactiveConnection", new TextureInfo("UI_inactiveConnection", TextureType.ANIMATION, 10, 5, 3));
 			UITextureManager.Add("UI_activeConnection", new TextureInfo("UI_activeConnection", TextureType.ANIMATION, 10, 5, 3));
-			UITextureManager.Add("UI_save", new TextureInfo("UI_save"));
-			UITextureManager.Add("UI_map", new TextureInfo("UI_map"));
-			UITextureManager.Add("UI_money", new TextureInfo("UI_money"));
-			UITextureManager.Add("UI_key", new TextureInfo("UI_key"));
+			UITextureManager.Add("UI_save", "UI_save");
+			UITextureManager.Add("UI_map", "UI_map");
+			UITextureManager.Add("UI_money", "UI_money");
+			UITextureManager.Add("UI_key", "UI_key");
 			UITextureManager.Add("keyboard", new TextureInfo("keyboard", TextureType.ANIMATION, 10, 24, 24));
-			UITextureManager.Add("UI_selector1", new TextureInfo("UI_selector1"));
-			UITextureManager.Add("UI_selector2", new TextureInfo("UI_selector2"));
-			UITextureManager.Add("UI_enemy_arrow", new TextureInfo("UI_enemy_arrow"));
-			UITextureManager.Add("cursor_default", new TextureInfo("cursor_default"));
-			UITextureManager.Add("cursor_select", new TextureInfo("cursor_select"));
-			UITextureManager.Add("cursor_money", new TextureInfo("cursor_money"));
-			UITextureManager.Add("cursor_attack", new TextureInfo("cursor_attack"));
-			UITextureManager.Add("logo", new TextureInfo("logo"));
+			UITextureManager.Add("UI_selector1", "UI_selector1");
+			UITextureManager.Add("UI_selector2", "UI_selector2");
+			UITextureManager.Add("UI_enemy_arrow", "UI_enemy_arrow");
+			UITextureManager.Add("cursor_default", "cursor_default");
+			UITextureManager.Add("cursor_select", "cursor_select");
+			UITextureManager.Add("cursor_money", "cursor_money");
+			UITextureManager.Add("cursor_attack", "cursor_attack");
+			UITextureManager.Add("logo", "logo");
 
-			PanelManager.AddType(new PanelType(panelTex("UI_wood1"), panelTex("UI_wood2"), panelTex("UI_wood3"), 72), "wooden");
-			PanelManager.AddType(new PanelType(panelTex("UI_stone1"), panelTex("UI_wood3"), panelTex("UI_stone2"), 72), "stone");
+			PanelManager.AddType(new PanelType(getTexture("UI_wood1"), getTexture("UI_wood2"), getTexture("UI_wood3"), 72), "wooden");
+			PanelManager.AddType(new PanelType(getTexture("UI_stone1"), getTexture("UI_wood3"), getTexture("UI_stone2"), 72), "stone");
 
 			CheckBoxManager.AddType(checkBox("check"), "wooden");
 
@@ -108,17 +108,12 @@ namespace WarriorsSnuggery.Loader
 
 		static CheckBoxType checkBox(string name)
 		{
-			return new CheckBoxType(checkBoxTex(name), checkBoxTex(name + "_hover"), checkBoxTex(name + "_click"));
+			return new CheckBoxType(getTexture(name), getTexture(name + "_hover"), getTexture(name + "_click"));
 		}
 
-		static Texture checkBoxTex(string file)
+		static Texture getTexture(string file)
 		{
-			return SpriteManager.AddTexture(new TextureInfo(file))[0];
-		}
-
-		static Texture panelTex(string file)
-		{
-			return SpriteManager.AddTexture(new TextureInfo(file))[0];
+			return new TextureInfo(file).GetTextures()[0];
 		}
 	}
 }

@@ -2,13 +2,15 @@
 {
 	public class Sheet
 	{
-		public readonly MPos Size;
+		public readonly int Size;
+		public MPos Bounds => new MPos(Size, Size);
+
 		public readonly int TextureID;
 
 		public Sheet(int size)
 		{
-			Size = new MPos(size, size);
-			TextureID = TextureManager.Create(Size);
+			Size = size;
+			TextureID = TextureManager.Create(size, size);
 		}
 
 		public void WriteData(float[] data, int offsetx, int offsety, int width, int height)

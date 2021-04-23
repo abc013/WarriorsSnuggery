@@ -45,8 +45,6 @@ namespace WarriorsSnuggery.Objects
 		[Desc("Bounds of the corner texture.")]
 		public readonly MPos CornerSpriteBounds;
 
-		public Texture[] Texture_Overlay { get; }
-
 		[Desc("Overlay to render over the terrain.")]
 		public readonly TextureInfo Overlay;
 
@@ -75,21 +73,18 @@ namespace WarriorsSnuggery.Objects
 			if (Sprite == null || Sprite == string.Empty)
 				throw new MissingNodeException(ID.ToString(), "Image");
 
-			sprite = SpriteManager.AddTexture(new TextureInfo(Sprite, TextureType.ANIMATION, 10, 24, 24));
+			sprite = new TextureInfo(Sprite, TextureType.ANIMATION, 0, 24, 24).GetTextures();
 			if (Overlaps)
 			{
 				if (EdgeSprite != null)
-					edgeSprite = SpriteManager.AddTexture(new TextureInfo(EdgeSprite, TextureType.ANIMATION, 10, EdgeSpriteBounds));
+					edgeSprite = new TextureInfo(EdgeSprite, TextureType.ANIMATION, 10, EdgeSpriteBounds).GetTextures();
 
 				if (CornerSprite != null)
-					cornerSprite = SpriteManager.AddTexture(new TextureInfo(CornerSprite, TextureType.ANIMATION, 10, CornerSpriteBounds));
+					cornerSprite = new TextureInfo(CornerSprite, TextureType.ANIMATION, 10, CornerSpriteBounds).GetTextures();
 
 				if (VerticalEdgeSprite != null)
-					verticalEdgeSprite = SpriteManager.AddTexture(new TextureInfo(VerticalEdgeSprite, TextureType.ANIMATION, 10, VerticalEdgeSpriteBounds));
+					verticalEdgeSprite = new TextureInfo(VerticalEdgeSprite, TextureType.ANIMATION, 10, VerticalEdgeSpriteBounds).GetTextures();
 			}
-
-			if (Overlay != null)
-				Texture_Overlay = SpriteManager.AddTexture(Overlay);
 		}
 
 		CPos textureOffset(MPos bounds)
