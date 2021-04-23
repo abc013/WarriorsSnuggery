@@ -73,7 +73,7 @@ namespace WarriorsSnuggery.Graphics
 
 			for (int i = 0; i < data.Length; i++)
 			{
-				var info = new TextureInfo(font.FontName, TextureType.IMAGE, 0, font.CharSizes[i].X, font.CharSizes[i].Y, false);
+				var info = new TextureInfo(font.FontName, TextureType.IMAGE, 0, font.CharSizes[i], false);
 
 				textures[i] = addTexture(data[i], info);
 			}

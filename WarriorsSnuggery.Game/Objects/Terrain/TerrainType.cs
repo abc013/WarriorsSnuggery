@@ -79,13 +79,13 @@ namespace WarriorsSnuggery.Objects
 			if (Overlaps)
 			{
 				if (EdgeSprite != null)
-					edgeSprite = SpriteManager.AddTexture(new TextureInfo(EdgeSprite, TextureType.ANIMATION, 10, EdgeSpriteBounds.X, EdgeSpriteBounds.Y));
+					edgeSprite = SpriteManager.AddTexture(new TextureInfo(EdgeSprite, TextureType.ANIMATION, 10, EdgeSpriteBounds));
 
 				if (CornerSprite != null)
-					cornerSprite = SpriteManager.AddTexture(new TextureInfo(CornerSprite, TextureType.ANIMATION, 10, CornerSpriteBounds.X, CornerSpriteBounds.Y));
+					cornerSprite = SpriteManager.AddTexture(new TextureInfo(CornerSprite, TextureType.ANIMATION, 10, CornerSpriteBounds));
 
 				if (VerticalEdgeSprite != null)
-					verticalEdgeSprite = SpriteManager.AddTexture(new TextureInfo(VerticalEdgeSprite, TextureType.ANIMATION, 10, VerticalEdgeSpriteBounds.X, VerticalEdgeSpriteBounds.Y));
+					verticalEdgeSprite = SpriteManager.AddTexture(new TextureInfo(VerticalEdgeSprite, TextureType.ANIMATION, 10, VerticalEdgeSpriteBounds));
 			}
 
 			if (Overlay != null)

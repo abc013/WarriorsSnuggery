@@ -19,6 +19,8 @@ namespace WarriorsSnuggery.Graphics
 
 		public TextureInfo(string file) : this(file, TextureType.IMAGE, 0, 0, 0, true) { }
 
+		public TextureInfo(string file, TextureType type, int tick, MPos bounds, bool searchFile = true) : this(file, type, tick, bounds.X, bounds.Y, searchFile) { }
+
 		public TextureInfo(string file, TextureType type, int tick, int width, int height, bool searchFile = true)
 		{
 			if (searchFile)
