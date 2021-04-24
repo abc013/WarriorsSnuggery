@@ -7,6 +7,7 @@ using WarriorsSnuggery.Objects;
 using WarriorsSnuggery.Objects.Particles;
 using WarriorsSnuggery.Objects.Parts;
 using WarriorsSnuggery.Objects.Weapons;
+using WarriorsSnuggery.Objects.Weather;
 using WarriorsSnuggery.Physics;
 using WarriorsSnuggery.Trophies;
 
@@ -26,6 +27,8 @@ namespace WarriorsSnuggery
 		public readonly ActorLayer ActorLayer;
 		public readonly WeaponLayer WeaponLayer;
 		public readonly ParticleLayer ParticleLayer;
+
+		public readonly WeatherManager WeatherManager;
 
 		public readonly List<PositionableObject> Objects = new List<PositionableObject>();
 		readonly List<PositionableObject> objectsToAdd = new List<PositionableObject>();
@@ -52,6 +55,8 @@ namespace WarriorsSnuggery
 			ActorLayer = new ActorLayer(bounds);
 			WeaponLayer = new WeaponLayer();
 			ParticleLayer = new ParticleLayer(bounds);
+
+			WeatherManager = new WeatherManager(this, game.MapType);
 		}
 
 		public void Load()
@@ -106,6 +111,8 @@ namespace WarriorsSnuggery
 			TerrainLayer.Tick();
 			SmudgeLayer.Tick();
 			ShroudLayer.Tick();
+
+			WeatherManager.Tick();
 
 			addObjects();
 		}

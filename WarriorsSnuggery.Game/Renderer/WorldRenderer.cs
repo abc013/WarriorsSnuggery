@@ -79,6 +79,23 @@ namespace WarriorsSnuggery
 			}
 			BatchRenderer.Render();
 
+
+			if (Settings.EnableWeatherEffects)
+			{
+				foreach(var controller in world.WeatherManager.Controllers)
+				{
+					controller.Render();
+
+					if (controller.UsesLines)
+						MasterRenderer.PrimitiveType = PrimitiveType.Lines;
+
+					BatchRenderer.Render();
+
+					if (controller.UsesLines)
+						MasterRenderer.PrimitiveType = PrimitiveType.Triangles;
+				}
+			}
+
 			foreach (var o in afterRender)
 				o.Render();
 			BatchRenderer.Render();

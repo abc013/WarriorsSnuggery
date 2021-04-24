@@ -58,6 +58,9 @@ namespace WarriorsSnuggery.Docs
 
 			HTMLWriter.WriteHeader("Generators");
 			TypeWriter.WriteAll("WarriorsSnuggery.Maps.Generators", "GeneratorInfo", new object[] { -1, emptyTextNodes });
+
+			HTMLWriter.WriteHeader("WeatherEffect");
+			TypeWriter.Write(typeof(WarriorsSnuggery.Objects.Weather.WeatherEffect), new object[] { emptyTextNodes });
 		}
 
 		public static void WriteSpells()

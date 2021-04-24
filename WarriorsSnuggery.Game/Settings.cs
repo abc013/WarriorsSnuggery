@@ -47,6 +47,8 @@ namespace WarriorsSnuggery
 
 		public static bool EnableTextShadowing = true;
 
+		public static bool EnableWeatherEffects = true;
+
 		public static bool FirstStarted = true;
 
 		public static float MasterVolume = 1f;
@@ -136,6 +138,7 @@ namespace WarriorsSnuggery
 			writer.WriteLine("VSync=" + VSync);
 			writer.WriteLine("EnablePixeling=" + EnablePixeling);
 			writer.WriteLine("EnableTextShadowing=" + EnableTextShadowing);
+			writer.WriteLine("EnableWeatherEffects=" + EnableWeatherEffects);
 			writer.WriteLine("FirstStarted=" + false);
 			writer.WriteLine("MasterVolume=" + MasterVolume);
 			writer.WriteLine("EffectsVolume=" + EffectsVolume);

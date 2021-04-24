@@ -2,6 +2,7 @@
 using System.Linq;
 using WarriorsSnuggery.Loader;
 using WarriorsSnuggery.Maps.Generators;
+using WarriorsSnuggery.Objects.Weather;
 
 namespace WarriorsSnuggery.Maps
 {
@@ -47,6 +48,9 @@ namespace WarriorsSnuggery.Maps
 		[Desc("Patrol generators used for generating enemies and waves.")]
 		public readonly PatrolPlacerInfo[] PatrolPlacers = new PatrolPlacerInfo[0];
 
+		[Desc("Weather effects to use on this map.")]
+		public readonly WeatherEffect[] WeatherEffects = new WeatherEffect[0];
+
 		[Desc("Determines the file of a script that will be executed during the game.", "Ending of the filename must be '.cs'.")]
 		public readonly string MissionScript;
 
@@ -85,6 +89,13 @@ namespace WarriorsSnuggery.Maps
 
 						for (int i = 0; i < PatrolPlacers.Length; i++)
 							PatrolPlacers[i] = new PatrolPlacerInfo(node.Children[i].Children);
+
+						break;
+					case nameof(WeatherEffects):
+						WeatherEffects = new WeatherEffect[node.Children.Count];
+
+						for (int i = 0; i < WeatherEffects.Length; i++)
+							WeatherEffects[i] = new WeatherEffect(node.Children[i].Children);
 
 						break;
 					default:

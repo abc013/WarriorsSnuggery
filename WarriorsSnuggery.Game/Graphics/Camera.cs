@@ -8,11 +8,14 @@ namespace WarriorsSnuggery.Graphics
 
 		public static CPos LookAt = CPos.Zero;
 
+		public static MPos LookBounds = MPos.Zero;
+
 		public static bool Locked;
 		public static bool LockedToPlayer = true;
 
 		public const float UIZoom = 16f;
 		public const float DefaultZoom = 16f;
+		public const float MaxZoom = 24f;
 		public static float CurrentZoom = DefaultZoom;
 
 		public static Matrix4 Matrix = Matrix4.Zero;
@@ -29,12 +32,22 @@ namespace WarriorsSnuggery.Graphics
 
 		public static bool IsVisible(CPos pos, float scaleX, float scaleY)
 		{
-			var diff = pos - LookAt;
-			var halfzoomY = (int)(CurrentZoom * 512);
-			var halfzoomX = halfzoomY * WindowInfo.Ratio + 1024;
-			halfzoomY += 1024;
+			var halfzoomX = LookBounds.X / 2 + 512;
+			var halfzoomY = LookBounds.Y / 2 + 512;
 
-			return diff.X - scaleX < halfzoomX && diff.X + scaleX > -halfzoomX && diff.Y - scaleY < halfzoomY && diff.Y + scaleY > -halfzoomY;
+			if (pos.X + scaleX < LookAt.X - halfzoomX)
+				return false;
+
+			if (pos.X - scaleX > LookAt.X + halfzoomX)
+				return false;
+
+			if (pos.Y + scaleY < LookAt.Y - halfzoomY)
+				return false;
+
+			if (pos.Y - scaleY > LookAt.Y + halfzoomY)
+				return false;
+
+			return true;
 		}
 
 		public static void Reset(bool values = true)
@@ -61,8 +74,8 @@ namespace WarriorsSnuggery.Graphics
 			CurrentZoom += add;
 			if (CurrentZoom < DefaultZoom)
 				CurrentZoom = DefaultZoom;
-			else if (CurrentZoom > DefaultZoom * 1.5f)
-				CurrentZoom = DefaultZoom * 1.5f;
+			else if (CurrentZoom > MaxZoom)
+				CurrentZoom = MaxZoom;
 
 			calculateScale();
 			updateView();
@@ -124,6 +137,7 @@ namespace WarriorsSnuggery.Graphics
 
 		static void calculateScale()
 		{
+			LookBounds = new MPos((int)(CurrentZoom * WindowInfo.Ratio * 1024), (int)(CurrentZoom * 1024));
 			// cast to [-1;1] | we use 0f to stop things glitching out of sight
 			projection = Matrix4.CreateScale(2 / CurrentZoom / WindowInfo.Ratio, 2 / CurrentZoom, 0f);
 
