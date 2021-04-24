@@ -4,37 +4,37 @@ namespace WarriorsSnuggery
 {
 	public static class GameSaveManager
 	{
-		public static GameStatistics DefaultStatistic;
+		public static GameSave DefaultStatistic;
 
-		public static readonly List<GameStatistics> Statistics = new List<GameStatistics>();
+		public static readonly List<GameSave> Saves = new List<GameSave>();
 
 		public static void Load()
 		{
 			foreach (var file in FileExplorer.FilesIn(FileExplorer.Saves))
 			{
 				if (!file.EndsWith("_map")) //make sure that we don't add any maps
-					Statistics.Add(new GameStatistics(file));
+					Saves.Add(new GameSave(file));
 			}
 		}
 
 		public static void Reload()
 		{
-			Statistics.Clear();
+			Saves.Clear();
 
 			Load();
 		}
 
-		public static void Delete(GameStatistics save)
+		public static void Delete(GameSave save)
 		{
 			save.Delete();
 
 			Reload();
 		}
 
-		public static void SaveOnNewName(GameStatistics statistic, string name, Game game)
+		public static void SaveOnNewName(GameSave save, string name, Game game)
 		{
-			statistic.SetName(name);
-			statistic.Save(game.World);
+			save.SetName(name);
+			save.Save(game.World);
 
 			Reload();
 		}

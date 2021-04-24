@@ -11,15 +11,15 @@ namespace WarriorsSnuggery.UI.Screens
 			Title.SetColor(Color.Red);
 
 			var score = new UITextLine(FontManager.Pixel16, TextOffset.MIDDLE) { Position = new CPos(0, 1024, 0) };
-			score.WriteText("Achieved Score: " + Color.Blue + game.Statistics.CalculateScore());
+			score.WriteText("Achieved Score: " + Color.Blue + game.Save.CalculateScore());
 			Add(score);
 			var deaths = new UITextLine(FontManager.Pixel16, TextOffset.MIDDLE) { Position = new CPos(0, 2048, 0) };
-			deaths.WriteText(Color.Red + "Deaths: " + game.OldStatistics.Deaths);
+			deaths.WriteText(Color.Red + "Deaths: " + game.OldSave.Deaths);
 			Add(deaths);
 
-			if (game.Statistics.Hardcore)
+			if (game.Save.Hardcore)
 			{
-				game.Statistics.Delete();
+				game.Save.Delete();
 				Add(new Button("Return to Main Menu", "wooden", GameController.CreateMainMenu) { Position = new CPos(0, 5120, 0) });
 			}
 			else

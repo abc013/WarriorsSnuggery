@@ -18,8 +18,8 @@ namespace WarriorsSnuggery
 		public readonly ScreenControl ScreenControl;
 		public readonly World World;
 
-		public readonly GameStatistics OldStatistics;
-		public readonly GameStatistics Statistics;
+		public readonly GameSave OldSave;
+		public readonly GameSave Save;
 		public readonly MapType MapType;
 		public readonly int Seed;
 
@@ -98,7 +98,7 @@ namespace WarriorsSnuggery
 		public uint NextWeaponID => CurrentWeaponID++;
 		public uint CurrentWeaponID;
 
-		public Game(GameStatistics statistics, MapType map, MissionType missionType, InteractionMode interactionMode, int seed = -1)
+		public Game(GameSave save, MapType map, MissionType missionType, InteractionMode interactionMode, int seed = -1)
 		{
 			Log.WriteDebug("Loading new game...");
 			Log.DebugIndentation++;
@@ -112,24 +112,24 @@ namespace WarriorsSnuggery
 			MapType = map;
 
 			// If seed negative, calculate it.
-			Seed = seed < 0 ? statistics.Seed + statistics.Level : seed;
+			Seed = seed < 0 ? save.Seed + save.Level : seed;
 			SharedRandom = new Random(Seed);
 
 			ObjectiveType = MapType.AvailableObjectives[SharedRandom.Next(map.AvailableObjectives.Length)];
 
-			// In case of death, use this statistic.
-			OldStatistics = statistics.Copy();
-			// In case of success, use this statistic.
-			Statistics = statistics;
+			// In case of death, use this save.
+			OldSave = save.Copy();
+			// In case of success, use this save.
+			Save = save;
 
 			Editor = InteractionMode == InteractionMode.EDITOR;
 
-			SpellManager = new SpellManager(this, statistics);
+			SpellManager = new SpellManager(this, save);
 			ConditionManager = new ConditionManager(this);
 
 			ScreenControl = new ScreenControl(this);
 
-			World = new World(this, Seed, Statistics);
+			World = new World(this, Seed, Save);
 
 			if (!string.IsNullOrEmpty(map.MissionScript))
 			{
@@ -155,14 +155,14 @@ namespace WarriorsSnuggery
 
 			timer.StopAndWrite("Loading Game");
 
-			if (World.LocalPlayer != null && World.LocalPlayer.Health != null && Statistics.Health > 0)
-				World.LocalPlayer.Health.RelativeHP = Statistics.Health;
+			if (World.LocalPlayer != null && World.LocalPlayer.Health != null && Save.Health > 0)
+				World.LocalPlayer.Health.RelativeHP = Save.Health;
 
 			WorldRenderer.CheckVisibilityAll();
 			MasterRenderer.UpdateView();
 
 			if (World.Map.Type.IsSave)
-				script?.LoadState(Statistics.ScriptValues);
+				script?.LoadState(Save.ScriptValues);
 			else
 				script?.OnStart();
 
@@ -185,7 +185,7 @@ namespace WarriorsSnuggery
 				Log.WriteDebug("Instant level change initiated.");
 
 				if (World.PlayerAlive && World.LocalPlayer.Health != null)
-					Statistics.Health = World.LocalPlayer.Health.RelativeHP;
+					Save.Health = World.LocalPlayer.Health.RelativeHP;
 
 				GameController.CreateNext(nextLevelType, nextInteractionMode);
 				return;
@@ -322,12 +322,12 @@ namespace WarriorsSnuggery
 
 					if (key == Keys.N)
 					{
-						Statistics.Mana += 100;
-						Statistics.Mana = Math.Clamp(Statistics.Mana, 0, Statistics.MaxMana);
+						Save.Mana += 100;
+						Save.Mana = Math.Clamp(Save.Mana, 0, Save.MaxMana);
 					}
 
 					if (key == Keys.M)
-						Statistics.Money += 100;
+						Save.Money += 100;
 
 					if (key == Keys.Period)
 					{
@@ -371,9 +371,9 @@ namespace WarriorsSnuggery
 			WinConditionsMet = true;
 
 			script?.OnWin();
-			Statistics.Level++;
+			Save.Level++;
 			if (World.PlayerAlive && World.LocalPlayer.Health != null)
-				Statistics.Health = World.LocalPlayer.Health.RelativeHP;
+				Save.Health = World.LocalPlayer.Health.RelativeHP;
 
 			if (instantFinish)
 				finishCounter();

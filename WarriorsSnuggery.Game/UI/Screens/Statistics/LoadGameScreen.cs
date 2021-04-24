@@ -20,13 +20,13 @@ namespace WarriorsSnuggery.UI.Screens
 			Add(new Button("Back", "wooden", () => game.ShowScreen(ScreenType.MENU)) { Position = new CPos(4096, 6144, 0) });
 			void loadAction()
 			{
-				var stats = list.GetStatistic();
-				if (stats != null)
+				var save = list.GetSave();
+				if (save != null)
 				{
 					humanAgreeOnLoad(() =>
 					{
-						Log.WriteDebug("Loading a game save: " + stats.SaveName);
-						GameController.CreateNew(stats.Copy(), loadStatsMap: true);
+						Log.WriteDebug("Loading a game save: " + save.SaveName);
+						GameController.CreateNew(save.Copy(), loadStatsMap: true);
 					}, "Are you sure you want to load this save? Unsaved progress will be lost!");
 				}
 			}
@@ -34,15 +34,15 @@ namespace WarriorsSnuggery.UI.Screens
 
 			void deleteAction()
 			{
-				var stats = list.GetStatistic();
-				if (stats != null)
+				var save = list.GetSave();
+				if (save != null)
 				{
 					humanAgreeOnDelete(() =>
 					{
-						GameSaveManager.Delete(stats);
+						GameSaveManager.Delete(save);
 						game.RefreshSaveGameScreens();
 						game.ShowScreen(ScreenType.LOADGAME);
-						Log.WriteDebug("Deleting a game save: " + stats.SaveName);
+						Log.WriteDebug("Deleting a game save: " + save.SaveName);
 					}, "Are you sure you want to delete this save?");
 				}
 			}

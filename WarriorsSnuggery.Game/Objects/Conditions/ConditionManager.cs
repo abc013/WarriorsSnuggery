@@ -20,7 +20,7 @@ namespace WarriorsSnuggery.Objects.Conditions
 				{ "MissionFindExit", game.ObjectiveType == ObjectiveType.FIND_EXIT },
 				{ "MissionWaves", game.ObjectiveType == ObjectiveType.SURVIVE_WAVES },
 				{ "IsMenu", game.IsMenu },
-				{ "KeyFound", game.Statistics.KeyFound }
+				{ "KeyFound", game.Save.KeyFound }
 			};
 		}
 
@@ -84,7 +84,7 @@ namespace WarriorsSnuggery.Objects.Conditions
 			{
 				var trophy = pair.Value;
 				if (trophy.ConditionName != string.Empty && condition.Type == trophy.ConditionName)
-					return condition.Negate != game.Statistics.UnlockedTrophies.Contains(pair.Key);
+					return condition.Negate != game.Save.UnlockedTrophies.Contains(pair.Key);
 			}
 
 			throw new Exception(string.Format("Invalid condition: {0}", condition.Type));

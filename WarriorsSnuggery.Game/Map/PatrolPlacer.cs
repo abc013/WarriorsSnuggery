@@ -90,7 +90,7 @@ namespace WarriorsSnuggery.Maps
 				}
 			}
 
-			var multiplier = bounds.X * bounds.Y / (float)(32 * 32) + (world.Game.Statistics.Difficulty - 5) / 10f;
+			var multiplier = bounds.X * bounds.Y / (float)(32 * 32) + (world.Game.Save.Difficulty - 5) / 10f;
 			var count = random.Next((int)(info.MinimumPatrols * multiplier), (int)(info.MaximumPatrols * multiplier));
 			if (positions.Count < count)
 			{

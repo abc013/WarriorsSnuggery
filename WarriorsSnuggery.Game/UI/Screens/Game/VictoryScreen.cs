@@ -14,7 +14,7 @@ namespace WarriorsSnuggery.UI.Screens
 			won.WriteText("Level has been successfully completed. Congratulations!");
 			Add(won);
 			var score = new UITextLine(FontManager.Pixel16, TextOffset.MIDDLE) { Position = new CPos(0, 1024, 0) };
-			score.WriteText("Score: " + Color.Cyan + game.Statistics.CalculateScore());
+			score.WriteText("Score: " + Color.Cyan + game.Save.CalculateScore());
 			Add(score);
 
 			Add(new Button("Headquarters", "wooden", GameController.CreateNextMenu) { Position = new CPos(-2048, 5120, 0) });

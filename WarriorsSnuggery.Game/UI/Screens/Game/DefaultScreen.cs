@@ -75,9 +75,9 @@ namespace WarriorsSnuggery.UI.Screens
 			}
 			missionText.SetText(missionContent);
 
-			if (game.Statistics.Level == game.Statistics.FinalLevel)
+			if (game.Save.Level == game.Save.FinalLevel)
 				missionText.SetColor(Color.Blue);
-			else if (game.Statistics.Level > game.Statistics.FinalLevel)
+			else if (game.Save.Level > game.Save.FinalLevel)
 				missionText.SetColor(Color.Green);
 
 			Add(missionText);
@@ -152,8 +152,8 @@ namespace WarriorsSnuggery.UI.Screens
 				}
 			}
 
-			manaBar.WriteText($"{game.Statistics.Mana}/{game.Statistics.MaxMana}");
-			manaBar.DisplayPercentage = game.Statistics.Mana / (float)game.Statistics.MaxMana;
+			manaBar.WriteText($"{game.Save.Mana}/{game.Save.MaxMana}");
+			manaBar.DisplayPercentage = game.Save.Mana / (float)game.Save.MaxMana;
 		}
 	}
 }

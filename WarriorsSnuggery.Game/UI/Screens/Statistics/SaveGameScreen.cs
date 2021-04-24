@@ -33,11 +33,11 @@ namespace WarriorsSnuggery.UI.Screens
 
 		void saveGame()
 		{
-			var stats = list.GetStatistic();
-			if (stats == null)
+			var save = list.GetSave();
+			if (save == null)
 				return;
 
-			var @new = game.Statistics.Copy();
+			var @new = game.Save.Copy();
 
 			void action1()
 			{
@@ -46,9 +46,9 @@ namespace WarriorsSnuggery.UI.Screens
 			void action2()
 			{
 				game.ShowScreen(ScreenType.MENU);
-				GameSaveManager.SaveOnNewName(@new, stats.Name, game);
+				GameSaveManager.SaveOnNewName(@new, save.Name, game);
 				game.AddInfoMessage(150, "Game Saved!");
-				Log.WriteDebug("Overrided a game: " + stats.SaveName);
+				Log.WriteDebug("Overrided a game: " + save.SaveName);
 			}
 			game.ShowDecisionScreen(action1, action2, "Are you sure you want to override?");
 		}
@@ -99,7 +99,7 @@ namespace WarriorsSnuggery.UI.Screens
 			var create = new Button("Save", "wooden", save) { Position = new CPos(0, 6144, 0) };
 			Add(create);
 
-			@new = new TextBox(game.Statistics.Name, "wooden", 20, isPath: true) { OnEnter = save };
+			@new = new TextBox(game.Save.Name, "wooden", 20, isPath: true) { OnEnter = save };
 			Add(@new);
 		}
 
@@ -112,10 +112,10 @@ namespace WarriorsSnuggery.UI.Screens
 		void save()
 		{
 			ActiveScreen = false;
-			GameSaveManager.SaveOnNewName(game.Statistics, @new.Text, game);
+			GameSaveManager.SaveOnNewName(game.Save, @new.Text, game);
 
 			game.RefreshSaveGameScreens();
-			Log.WriteDebug("Saved a game: " + game.Statistics.SaveName);
+			Log.WriteDebug("Saved a game: " + game.Save.SaveName);
 		}
 	}
 }

@@ -39,11 +39,11 @@ namespace WarriorsSnuggery
 		public int PlayerDamagedTick = 0;
 		public bool KeyFound;
 
-		public World(Game game, int seed, GameStatistics stats)
+		public World(Game game, int seed, GameSave save)
 		{
 			Game = game;
 
-			Map = new Map(this, game.MapType, seed, stats.Level, stats.Difficulty);
+			Map = new Map(this, game.MapType, seed, save.Level, save.Difficulty);
 
 			var bounds = Map.Bounds;
 			TerrainLayer = new TerrainLayer(bounds);
@@ -67,20 +67,20 @@ namespace WarriorsSnuggery
 			{
 				if (!Map.Type.IsSave)
 				{
-					LocalPlayer = ActorCreator.Create(this, Game.Statistics.Actor, Map.PlayerSpawn, Actor.PlayerTeam, isPlayer: true);
+					LocalPlayer = ActorCreator.Create(this, Game.Save.Actor, Map.PlayerSpawn, Actor.PlayerTeam, isPlayer: true);
 					Add(LocalPlayer);
 				}
 				else
 				{
-					for(int i = 0; i < Game.Statistics.Shroud.Count; i++)
-						ShroudLayer.RevealShroudList(i, Game.Statistics.Shroud[i]);
+					for(int i = 0; i < Game.Save.Shroud.Count; i++)
+						ShroudLayer.RevealShroudList(i, Game.Save.Shroud[i]);
 
 					LocalPlayer = ActorLayer.ToAdd().First(a => a.IsPlayer);
-					KeyFound = Game.Statistics.KeyFound;
+					KeyFound = Game.Save.KeyFound;
 				}
 
 				if (Game.IsCampaign && !Game.IsMenu)
-					AddText(LocalPlayer.Position, 300, ActionText.ActionTextType.TRANSFORM, $"Level {Game.Statistics.Level}");
+					AddText(LocalPlayer.Position, 300, ActionText.ActionTextType.TRANSFORM, $"Level {Game.Save.Level}");
 
 				ShroudLayer.RevealAll = Program.DisableShroud;
 				ShroudLayer.RevealAll |= Game.IsMenu || Game.MissionType == MissionType.TUTORIAL;
@@ -135,15 +135,15 @@ namespace WarriorsSnuggery
 
 		public void TrophyCollected(string collected)
 		{
-			if (Game.Statistics.UnlockedTrophies.Contains(collected))
+			if (Game.Save.UnlockedTrophies.Contains(collected))
 				return;
 
 			if (!TrophyManager.Trophies.ContainsKey(collected))
 				throw new InvalidNodeException("Unable to get Trophy with internal name " + collected);
 
 			Game.AddInfoMessage(250, "Trophy collected!");
-			Game.Statistics.UnlockedTrophies.Add(collected);
-			Game.Statistics.MaxMana += TrophyManager.Trophies[collected].MaxManaIncrease;
+			Game.Save.UnlockedTrophies.Add(collected);
+			Game.Save.MaxMana += TrophyManager.Trophies[collected].MaxManaIncrease;
 		}
 
 		public void FinishPlayerSwitch(Actor @new, ActorType type)
@@ -152,7 +152,7 @@ namespace WarriorsSnuggery
 			LocalPlayer = @new;
 			Add(@new);
 
-			Game.Statistics.Actor = ActorCreator.GetName(type);
+			Game.Save.Actor = ActorCreator.GetName(type);
 
 			VisibilitySolver.ShroudUpdated();
 		}
@@ -180,7 +180,7 @@ namespace WarriorsSnuggery
 
 		public void PlayerKilled()
 		{
-			Game.OldStatistics.Deaths++;
+			Game.OldSave.Deaths++;
 			Game.DefeatConditionsMet();
 		}
 

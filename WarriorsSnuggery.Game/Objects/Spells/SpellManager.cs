@@ -7,7 +7,7 @@ namespace WarriorsSnuggery.Spells
 		readonly Game game;
 		public readonly SpellCaster[] spellCasters;
 
-		public SpellManager(Game game, GameStatistics stats)
+		public SpellManager(Game game, GameSave save)
 		{
 			this.game = game;
 
@@ -16,8 +16,8 @@ namespace WarriorsSnuggery.Spells
 			{
 				var values = (0f, 0f);
 
-				if (stats.SpellCasters.ContainsKey(i))
-					values = stats.SpellCasters[i];
+				if (save.SpellCasters.ContainsKey(i))
+					values = save.SpellCasters[i];
 
 				spellCasters[i] = new SpellCaster(game, SpellTreeLoader.SpellTree[i], values);
 
@@ -90,10 +90,10 @@ namespace WarriorsSnuggery.Spells
 			if (!Ready || !Unlocked())
 				return false;
 
-			if (game.Statistics.Mana < node.ManaCost)
+			if (game.Save.Mana < node.ManaCost)
 				return false;
 
-			game.Statistics.Mana -= node.ManaCost;
+			game.Save.Mana -= node.ManaCost;
 
 			Activated = true;
 			recharge = node.Cooldown;
@@ -109,7 +109,7 @@ namespace WarriorsSnuggery.Spells
 			if (node.Unlocked || Program.IgnoreTech)
 				return true;
 
-			return game.Statistics.UnlockedSpells.Contains(node.InnerName);
+			return game.Save.UnlockedSpells.Contains(node.InnerName);
 		}
 	}
 }

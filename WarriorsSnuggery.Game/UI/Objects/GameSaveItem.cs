@@ -17,41 +17,41 @@ namespace WarriorsSnuggery.UI.Objects
 			}
 		}
 
-		public readonly GameStatistics Stats;
+		public readonly GameSave Save;
 		public bool Selected;
 
 		readonly UITextLine name;
 		readonly UITextLine score;
 		readonly UITextLine level;
 
-		public GameSaveItem(GameStatistics stats, int width, Action action) : base(new BatchObject(UISpriteManager.Get("UI_save")[0]), new MPos(width, 1024), stats.Name, new[] { Color.Grey + "Difficulty: " + stats.Difficulty, Color.Grey + "Money: " + stats.Money }, action)
+		public GameSaveItem(GameSave save, int width, Action action) : base(new BatchObject(UISpriteManager.Get("UI_save")[0]), new MPos(width, 1024), save.Name, new[] { Color.Grey + "Difficulty: " + save.Difficulty, Color.Grey + "Money: " + save.Money }, action)
 		{
 			var pos = CPos.Zero;
 
-			Stats = stats;
+			Save = save;
 			Scale *= 2;
 
 			name = new UITextLine(FontManager.Pixel16)
 			{
 				Position = pos - new CPos(3072, 512, 0)
 			};
-			name.SetText(stats.Name);
+			name.SetText(save.Name);
 
 			score = new UITextLine(FontManager.Pixel16)
 			{
 				Position = pos - new CPos(3072, 0, 0),
 				Color = Color.Yellow
 			};
-			score.SetText(stats.CalculateScore());
+			score.SetText(save.CalculateScore());
 
 			level = new UITextLine(FontManager.Papyrus24)
 			{
 				Position = pos - new CPos(-1152, 0, 0),
 				Scale = 1.4f
 			};
-			if (stats.Level >= stats.FinalLevel)
+			if (save.Level >= save.FinalLevel)
 				level.Color = new Color(0, 200, 0);
-			level.SetText(stats.Level + "/" + stats.FinalLevel);
+			level.SetText(save.Level + "/" + save.FinalLevel);
 		}
 
 		public override void Render()

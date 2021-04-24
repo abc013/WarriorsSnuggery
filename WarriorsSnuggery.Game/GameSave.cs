@@ -6,7 +6,7 @@ using WarriorsSnuggery.Objects.Parts;
 
 namespace WarriorsSnuggery
 {
-	public sealed class GameStatistics
+	public sealed class GameSave
 	{
 		// Paths
 		public string Name;
@@ -45,7 +45,7 @@ namespace WarriorsSnuggery
 		public string Script;
 		public TextNode[] ScriptValues;
 
-		GameStatistics(GameStatistics save)
+		GameSave(GameSave save)
 		{
 			Name = save.Name;
 			SaveName = save.SaveName;
@@ -81,12 +81,12 @@ namespace WarriorsSnuggery
 			ScriptValues = save.ScriptValues;
 		}
 
-		public GameStatistics Copy()
+		public GameSave Copy()
 		{
-			return new GameStatistics(this);
+			return new GameSave(this);
 		}
 
-		public GameStatistics(string file)
+		public GameSave(string file)
 		{
 			SaveName = file;
 
@@ -158,7 +158,7 @@ namespace WarriorsSnuggery
 			}
 		}
 
-		public GameStatistics(int difficulty, bool hardcore, string name, int seed)
+		public GameSave(int difficulty, bool hardcore, string name, int seed)
 		{
 			SetName(name);
 
@@ -201,9 +201,9 @@ namespace WarriorsSnuggery
 			CurrentObjective = world.Game.ObjectiveType;
 			CurrentMission = world.Game.MissionType;
 
-			var stats = world.Game.Statistics;
+			var save = world.Game.Save;
 			var mapType = world.Map.Type;
-			CurrentMapType = mapType.IsSave ? stats.CurrentMapType : MapCreator.GetName(mapType);
+			CurrentMapType = mapType.IsSave ? save.CurrentMapType : MapCreator.GetName(mapType);
 
 			Waves = world.Game.CurrentWave;
 			KeyFound = world.KeyFound;

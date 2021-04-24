@@ -36,12 +36,12 @@ namespace WarriorsSnuggery.UI.Screens
 				case MissionType.TEST:
 					if (game.InteractionMode == InteractionMode.EDITOR)
 					{
-						Add(new Button("Play", "wooden", () => humanAgree(() => { GameController.CreateNew(game.Statistics, MissionType.TEST, custom: game.MapType); }, "Make sure you have saved the map!")) { Position = new CPos(2048, height, 0) });
+						Add(new Button("Play", "wooden", () => humanAgree(() => { GameController.CreateNew(game.Save, MissionType.TEST, custom: game.MapType); }, "Make sure you have saved the map!")) { Position = new CPos(2048, height, 0) });
 						Add(new Button("Main Menu", "wooden", () => humanAgree(GameController.CreateMainMenu, "Are you sure to return? Unsaved progress will be lost!")) { Position = new CPos(-2048, height, 0) });
 					}
 					else
 					{
-						Add(new Button("Editor", "wooden", () => GameController.CreateNew(game.Statistics, MissionType.TEST, InteractionMode.EDITOR, game.MapType)) { Position = new CPos(2048, height, 0) });
+						Add(new Button("Editor", "wooden", () => GameController.CreateNew(game.Save, MissionType.TEST, InteractionMode.EDITOR, game.MapType)) { Position = new CPos(2048, height, 0) });
 						Add(new Button("Main Menu", "wooden", GameController.CreateMainMenu) { Position = new CPos(-2048, height, 0) });
 					}
 					break;

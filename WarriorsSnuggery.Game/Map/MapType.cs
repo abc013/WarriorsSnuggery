@@ -133,14 +133,14 @@ namespace WarriorsSnuggery.Maps
 			return new MapType(parent.Key, parent.Children);
 		}
 
-		public static MapType FromSave(GameStatistics stats)
+		public static MapType FromSave(GameSave save)
 		{
-			var size = TextNodeLoader.FromFile(FileExplorer.Saves, stats.MapSaveName + ".yaml").First(n => n.Key == "Size").Convert<MPos>();
+			var size = TextNodeLoader.FromFile(FileExplorer.Saves, save.MapSaveName + ".yaml").First(n => n.Key == "Size").Convert<MPos>();
 
-			var type = MapCreator.GetType(stats.CurrentMapType);
+			var type = MapCreator.GetType(save.CurrentMapType);
 			var mapGeneratorInfos = type == null ? new IMapGeneratorInfo[0] : type.Generators;
 
-			return new MapType(stats.MapSaveName, 0, size, Color.White, new[] { stats.CurrentMission }, new[] { stats.CurrentObjective }, -1, 0, int.MaxValue, new TerrainGeneratorInfo(0, new List<TextNode>()), mapGeneratorInfos, CPos.Zero, true, true, stats.Script);
+			return new MapType(save.MapSaveName, 0, size, Color.White, new[] { save.CurrentMission }, new[] { save.CurrentObjective }, -1, 0, int.MaxValue, new TerrainGeneratorInfo(0, new List<TextNode>()), mapGeneratorInfos, CPos.Zero, true, true, save.Script);
 		}
 
 		public static MapType FromPiece(Piece piece, MissionType type = MissionType.TEST, ObjectiveType objective = ObjectiveType.NONE)

@@ -179,17 +179,17 @@ namespace WarriorsSnuggery.Objects.Parts
 
 						return true;
 					case CollectableType.MANA:
-						var stats = a.World.Game.Statistics;
-						if (stats.Mana == stats.MaxMana)
+						var save = a.World.Game.Save;
+						if (save.Mana == save.MaxMana)
 							return false;
 
-						stats.Mana += info.Value;
-						if (stats.Mana > stats.MaxMana)
-							stats.Mana = stats.MaxMana;
+						save.Mana += info.Value;
+						if (save.Mana > save.MaxMana)
+							save.Mana = save.MaxMana;
 
 						return true;
 					case CollectableType.MONEY:
-						a.World.Game.Statistics.Money += info.Value;
+						a.World.Game.Save.Money += info.Value;
 
 						return true;
 					case CollectableType.TEXT:

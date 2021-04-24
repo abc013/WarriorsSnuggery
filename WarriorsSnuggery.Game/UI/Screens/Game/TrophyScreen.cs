@@ -30,7 +30,7 @@ namespace WarriorsSnuggery.UI.Screens
 				{
 					Scale = scale * 2f
 				};
-				if (!game.Statistics.UnlockedTrophies.Contains(key))
+				if (!game.Save.UnlockedTrophies.Contains(key))
 					item.SetColor(Color.Black);
 
 				trophies.Add(item);
@@ -47,7 +47,7 @@ namespace WarriorsSnuggery.UI.Screens
 
 		void selectTrophy(string name, Trophy trophy)
 		{
-			if (!game.Statistics.UnlockedTrophies.Contains(name))
+			if (!game.Save.UnlockedTrophies.Contains(name))
 			{
 				information.Lines[0].WriteText(Color.Red + "Locked Trophy");
 				information.Lines[1].WriteText(Color.Grey + " ");
@@ -71,7 +71,7 @@ namespace WarriorsSnuggery.UI.Screens
 			var i = 0;
 			foreach (var key in TrophyManager.Trophies.Keys)
 			{
-				if (!game.Statistics.UnlockedTrophies.Contains(key))
+				if (!game.Save.UnlockedTrophies.Contains(key))
 					trophies.Container[i].SetColor(Color.Black);
 				else
 					trophies.Container[i].SetColor(Color.White);

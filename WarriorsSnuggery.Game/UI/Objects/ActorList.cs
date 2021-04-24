@@ -68,7 +68,7 @@ namespace WarriorsSnuggery.UI.Objects
 				{
 					Scale = scale
 				};
-				if (!game.Statistics.ActorAvailable(actorType.Playable))
+				if (!game.Save.ActorAvailable(actorType.Playable))
 					item.SetColor(disabled);
 
 				actorTypes.Add(actorType);
@@ -79,7 +79,7 @@ namespace WarriorsSnuggery.UI.Objects
 		public void Update()
 		{
 			for (int i = 0; i < actorTypes.Count; i++)
-				Container[i].SetColor(game.Statistics.ActorAvailable(actorTypes[i].Playable) ? Color.White : disabled);
+				Container[i].SetColor(game.Save.ActorAvailable(actorTypes[i].Playable) ? Color.White : disabled);
 		}
 
 		public override void Render()
@@ -104,16 +104,16 @@ namespace WarriorsSnuggery.UI.Objects
 
 		void changePlayer(ActorType type)
 		{
-			if (game.Statistics.Money < type.Playable.Cost)
+			if (game.Save.Money < type.Playable.Cost)
 				return;
 
 			if (game.World.LocalPlayer.Type == type)
 				return;
 
-			if (!game.Statistics.ActorAvailable(type.Playable))
+			if (!game.Save.ActorAvailable(type.Playable))
 				return;
 
-			game.Statistics.Money -= type.Playable.Cost;
+			game.Save.Money -= type.Playable.Cost;
 
 			game.World.BeginPlayerSwitch(type);
 		}

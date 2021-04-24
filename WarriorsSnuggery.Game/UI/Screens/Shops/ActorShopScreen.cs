@@ -35,7 +35,7 @@ namespace WarriorsSnuggery.UI.Screens
 				{
 					Scale = scale * 2f
 				};
-				if (!game.Statistics.ActorAvailable(a.Playable))
+				if (!game.Save.ActorAvailable(a.Playable))
 					item.SetColor(Color.Black);
 
 				actors.Add(item);
@@ -58,7 +58,7 @@ namespace WarriorsSnuggery.UI.Screens
 			selected = actor;
 			information.Lines[0].WriteText(actor.Playable.Name);
 			information.Lines[1].WriteText(Color.Grey + actor.Playable.Description);
-			if (game.Statistics.ActorAvailable(actor.Playable))
+			if (game.Save.ActorAvailable(actor.Playable))
 				information.Lines[3].WriteText(Color.White + "Cost: " + Color.Green + "Bought");
 			else
 				information.Lines[3].WriteText(Color.White + "Cost: " + Color.Yellow + actor.Playable.UnlockCost);
@@ -69,15 +69,15 @@ namespace WarriorsSnuggery.UI.Screens
 			if (actor == null)
 				return;
 
-			if (game.Statistics.ActorAvailable(actor.Playable))
+			if (game.Save.ActorAvailable(actor.Playable))
 				return;
 
-			if (game.Statistics.Money < actor.Playable.UnlockCost)
+			if (game.Save.Money < actor.Playable.UnlockCost)
 				return;
 
-			game.Statistics.Money -= actor.Playable.UnlockCost;
+			game.Save.Money -= actor.Playable.UnlockCost;
 
-			game.Statistics.UnlockedActors.Add(actor.Playable.InternalName);
+			game.Save.UnlockedActors.Add(actor.Playable.InternalName);
 
 			actors.Container[actorTypes.IndexOf(actor.Playable.InternalName)].SetColor(Color.White);
 			information.Lines[3].WriteText(Color.White + "Cost: " + Color.Green + "Bought");

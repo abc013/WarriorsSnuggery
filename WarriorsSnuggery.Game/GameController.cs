@@ -26,7 +26,7 @@ namespace WarriorsSnuggery
 			MapCreator.LoadMaps(FileExplorer.Maps, "maps.yaml");
 
 			GameSaveManager.Load();
-			GameSaveManager.DefaultStatistic = new GameStatistics("DEFAULT");
+			GameSaveManager.DefaultStatistic = new GameSave("DEFAULT");
 
 			createFirst();
 		}
@@ -68,62 +68,62 @@ namespace WarriorsSnuggery
 		public static void CreateMenu()
 		{
 			var mission = game.MenuType;
-			var stats = game.OldStatistics;
+			var save = game.OldSave;
 
-			finishAndLoad(new Game(stats, MapCreator.FindMap(mission, stats.Level, new Random(stats.Seed + stats.Level)), mission, InteractionMode.INGAME));
+			finishAndLoad(new Game(save, MapCreator.FindMap(mission, save.Level, new Random(save.Seed + save.Level)), mission, InteractionMode.INGAME));
 		}
 
 		public static void CreateRestart()
 		{
-			var stats = game.OldStatistics;
+			var save = game.OldSave;
 			var mapType = game.MapType;
 
 			// Don't start at last saved position, start right from the beginning
 			if (mapType.IsSave)
-				mapType = MapCreator.GetType(stats.CurrentMapType);
+				mapType = MapCreator.GetType(save.CurrentMapType);
 
-			finishAndLoad(new Game(stats, mapType, game.MissionType, game.InteractionMode, game.Seed));
+			finishAndLoad(new Game(save, mapType, game.MissionType, game.InteractionMode, game.Seed));
 		}
 
 		public static void CreateNext()
 		{
 			var mission = game.CampaignType;
-			var stats = game.Statistics;
+			var save = game.Save;
 
-			finishAndLoad(new Game(stats, MapCreator.FindMap(mission, stats.Level, new Random(stats.Seed + stats.Level)), mission, InteractionMode.INGAME));
+			finishAndLoad(new Game(save, MapCreator.FindMap(mission, save.Level, new Random(save.Seed + save.Level)), mission, InteractionMode.INGAME));
 		}
 
 		public static void CreateNextMenu()
 		{
 			var mission = game.MenuType;
-			var stats = game.Statistics;
+			var save = game.Save;
 
-			finishAndLoad(new Game(stats, MapCreator.FindMap(mission, stats.Level, new Random(stats.Seed + stats.Level)), mission, InteractionMode.INGAME));
+			finishAndLoad(new Game(save, MapCreator.FindMap(mission, save.Level, new Random(save.Seed + save.Level)), mission, InteractionMode.INGAME));
 		}
 
 		public static void CreateNext(MissionType type, InteractionMode mode = InteractionMode.INGAME)
 		{
-			var stats = game.Statistics;
+			var save = game.Save;
 
-			finishAndLoad(new Game(stats, MapCreator.FindMap(type, stats.Level, new Random(stats.Seed + stats.Level)), type, mode));
+			finishAndLoad(new Game(save, MapCreator.FindMap(type, save.Level, new Random(save.Seed + save.Level)), type, mode));
 		}
 
-		public static void CreateNew(GameStatistics stats, MissionType type = MissionType.NORMAL, InteractionMode mode = InteractionMode.INGAME, MapType custom = null, bool loadStatsMap = false)
+		public static void CreateNew(GameSave save, MissionType type = MissionType.NORMAL, InteractionMode mode = InteractionMode.INGAME, MapType custom = null, bool loadStatsMap = false)
 		{
 			if (loadStatsMap)
 			{
-				type = stats.CurrentMission;
+				type = save.CurrentMission;
 				try
 				{
-					custom = MapType.FromSave(stats);
+					custom = MapType.FromSave(save);
 				}
 				catch (System.IO.FileNotFoundException)
 				{
-					Log.WriteDebug(string.Format("Unable to load saved map of save '{0}'. Using a random map.", stats.SaveName));
+					Log.WriteDebug(string.Format("Unable to load saved map of save '{0}'. Using a random map.", save.SaveName));
 				}
 			}
 
-			finishAndLoad(new Game(stats, custom ?? MapCreator.FindMap(type, stats.Level, new Random(stats.Seed + stats.Level)), type, mode));
+			finishAndLoad(new Game(save, custom ?? MapCreator.FindMap(type, save.Level, new Random(save.Seed + save.Level)), type, mode));
 		}
 
 		static void finishAndLoad(Game @new)

@@ -42,10 +42,7 @@ namespace WarriorsSnuggery.UI.Screens
 			hardcore.SetText("Hardcore (one life): ");
 			Add(hardcore);
 
-			hardcoreInput = new CheckBox("wooden")
-			{
-				Position = new CPos(1024, 2048, 0)
-			};
+			hardcoreInput = new CheckBox("wooden") { Position = new CPos(1024, 2048, 0) };
 			Add(hardcoreInput);
 
 			var seed = new UITextLine(FontManager.Pixel16, TextOffset.RIGHT) { Position = new CPos(-2048, 3072, 0) };
@@ -59,8 +56,8 @@ namespace WarriorsSnuggery.UI.Screens
 			Add(new Button("Cancel", "wooden", () => game.ShowScreen(ScreenType.DEFAULT, false)) { Position = new CPos(-4096, 6144, 0) });
 			Add(new Button("Proceed", "wooden", () =>
 			{
-				if (nameInput.Text != string.Empty)
-					GameController.CreateNew(new GameStatistics((int)Math.Round(difficultyInput.Value * 10), hardcoreInput.Checked, nameInput.Text, int.Parse(seedInput.Text)));
+				if (!string.IsNullOrWhiteSpace(nameInput.Text))
+					GameController.CreateNew(new GameSave((int)Math.Round(difficultyInput.Value * 10), hardcoreInput.Checked, nameInput.Text, int.Parse(seedInput.Text)));
 			})
 			{ Position = new CPos(4096, 6144, 0) });
 		}

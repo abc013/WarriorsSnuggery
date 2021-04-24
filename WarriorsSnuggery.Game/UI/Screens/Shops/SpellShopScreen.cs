@@ -122,7 +122,7 @@ namespace WarriorsSnuggery.UI.Screens
 
 			tooltip = new Tooltip(node.Name + " : " + node.Cost, node.GetInformation(true));
 
-			if (node.Unlocked || Program.IgnoreTech || game.Statistics.UnlockedSpells.Contains(node.InnerName))
+			if (node.Unlocked || Program.IgnoreTech || game.Save.UnlockedSpells.Contains(node.InnerName))
 				HighlightVisible = true;
 		}
 
@@ -165,7 +165,7 @@ namespace WarriorsSnuggery.UI.Screens
 				if (string.IsNullOrWhiteSpace(before))
 					continue;
 
-				if (game.Statistics.UnlockedSpells.Contains(before))
+				if (game.Save.UnlockedSpells.Contains(before))
 					continue;
 
 				foreach (var node in SpellTreeLoader.SpellTree)
@@ -192,11 +192,11 @@ namespace WarriorsSnuggery.UI.Screens
 				if (!available)
 					return;
 
-				if (game.Statistics.Money < node.Cost)
+				if (game.Save.Money < node.Cost)
 					return;
 
-				game.Statistics.Money -= node.Cost;
-				game.Statistics.UnlockedSpells.Add(node.InnerName);
+				game.Save.Money -= node.Cost;
+				game.Save.UnlockedSpells.Add(node.InnerName);
 
 				HighlightVisible = true;
 
@@ -249,7 +249,7 @@ namespace WarriorsSnuggery.UI.Screens
 
 		public void Render()
 		{
-			if (target.Unlocked || game.Statistics.UnlockedSpells.Contains(target.InnerName))
+			if (target.Unlocked || game.Save.UnlockedSpells.Contains(target.InnerName))
 				Active = true;
 
 			if (--curTick < 0)
