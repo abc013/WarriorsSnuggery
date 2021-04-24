@@ -168,8 +168,8 @@ namespace WarriorsSnuggery
 			Level = 1;
 			FinalLevel = (difficulty + 1) * 5;
 			Money = 100 - difficulty * 10;
-			MaxMana = GameSaveManager.DefaultStatistic.MaxMana;
-			Actor = GameSaveManager.DefaultStatistic.Actor;
+			MaxMana = GameSaveManager.DefaultSave.MaxMana;
+			Actor = GameSaveManager.DefaultSave.Actor;
 			Seed = seed;
 		}
 

@@ -4,7 +4,8 @@ namespace WarriorsSnuggery
 {
 	public static class GameSaveManager
 	{
-		public static GameSave DefaultStatistic;
+		public const string DefaultSaveName = "DEFAULT";
+		public static GameSave DefaultSave;
 
 		public static readonly List<GameSave> Saves = new List<GameSave>();
 
@@ -12,9 +13,11 @@ namespace WarriorsSnuggery
 		{
 			foreach (var file in FileExplorer.FilesIn(FileExplorer.Saves))
 			{
-				if (!file.EndsWith("_map")) //make sure that we don't add any maps
+				if (file != DefaultSaveName && !file.EndsWith("_map")) //make sure that we don't add any maps
 					Saves.Add(new GameSave(file));
 			}
+
+			DefaultSave = new GameSave(DefaultSaveName);
 		}
 
 		public static void Reload()

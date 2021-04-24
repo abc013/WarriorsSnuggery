@@ -26,7 +26,6 @@ namespace WarriorsSnuggery
 			MapCreator.LoadMaps(FileExplorer.Maps, "maps.yaml");
 
 			GameSaveManager.Load();
-			GameSaveManager.DefaultStatistic = new GameSave("DEFAULT");
 
 			createFirst();
 		}
@@ -54,7 +53,7 @@ namespace WarriorsSnuggery
 				mode = InteractionMode.EDITOR;
 
 
-			game = new Game(GameSaveManager.DefaultStatistic.Copy(), map, mission, mode);
+			game = new Game(GameSaveManager.DefaultSave.Copy(), map, mission, mode);
 			game.Load();
 		}
 
@@ -62,7 +61,7 @@ namespace WarriorsSnuggery
 		{
 			const MissionType mission = MissionType.MAIN_MENU;
 
-			finishAndLoad(new Game(GameSaveManager.DefaultStatistic, MapCreator.FindMap(mission, 0, Program.SharedRandom), mission, InteractionMode.NONE));
+			finishAndLoad(new Game(GameSaveManager.DefaultSave, MapCreator.FindMap(mission, 0, Program.SharedRandom), mission, InteractionMode.NONE));
 		}
 
 		public static void CreateMenu()

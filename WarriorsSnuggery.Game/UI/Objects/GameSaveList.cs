@@ -10,7 +10,7 @@
 		{
 			this.size = size;
 			foreach (var save in GameSaveManager.Saves)
-				if (save.Name != "DEFAULT")
+				if (save.Name != GameSaveManager.DefaultSaveName)
 					Add(new GameSaveItem(save, size.X, () => { }));
 		}
 
@@ -20,7 +20,7 @@
 
 			foreach (var save in GameSaveManager.Saves)
 			{
-				if (save.Name != "DEFAULT")
+				if (save.Name != GameSaveManager.DefaultSaveName)
 					Add(new GameSaveItem(save, size.X, () => { }));
 			}
 		}
