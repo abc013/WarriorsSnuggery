@@ -28,7 +28,8 @@ namespace WarriorsSnuggery.Objects.Parts
 
 			tick = effect.Duration;
 
-			sound = new Sound(effect.Sound);
+			if (effect.Sound != null)
+				sound = new Sound(effect.Sound);
 		}
 
 		public EffectPart(Actor self, List<TextNode> nodes)
@@ -56,7 +57,8 @@ namespace WarriorsSnuggery.Objects.Parts
 
 			Effect = spell.Effects[spellIndex];
 
-			sound = new Sound(Effect.Sound);
+			if (Effect.Sound != null)
+				sound = new Sound(Effect.Sound);
 		}
 
 		public List<string> Save()
@@ -76,9 +78,9 @@ namespace WarriorsSnuggery.Objects.Parts
 				return;
 
 			if (tick == Effect.Duration - 1)
-				sound.Play(self.Position, true);
+				sound?.Play(self.Position, true);
 			else if (tick == 0)
-				sound.Stop();
+				sound?.Stop();
 
 			if (Effect.Particles != null && tick % Effect.ParticleTick == 0)
 				self.World.Add(Effect.Particles.Create(self.World, self.Position, self.Height));
@@ -86,7 +88,7 @@ namespace WarriorsSnuggery.Objects.Parts
 
 		public void OnMove(CPos old, CPos velocity)
 		{
-			sound.SetPosition(self.Position);
+			sound?.SetPosition(self.Position);
 		}
 	}
 }
