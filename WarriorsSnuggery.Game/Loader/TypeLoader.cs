@@ -26,6 +26,16 @@ namespace WarriorsSnuggery.Loader
 			return type.GetFields().Where(f => !onlyReadonly || f.IsInitOnly);
 		}
 
+		public static void SetValue(object obj, IEnumerable<PropertyInfo> fields, TextNode node)
+		{
+			var field = fields.FirstOrDefault(f => f.Name == node.Key);
+
+			if (field == null)
+				throw new UnknownNodeException(node.Key, obj.GetType().Name);
+
+			field.SetValue(obj, node.Convert(field.PropertyType));
+		}
+
 		public static void SetValue(object obj, IEnumerable<FieldInfo> fields, TextNode node)
 		{
 			var field = fields.FirstOrDefault(f => f.Name == node.Key);

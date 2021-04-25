@@ -179,17 +179,11 @@ namespace WarriorsSnuggery.Objects.Parts
 
 						return true;
 					case CollectableType.MANA:
-						var save = a.World.Game.Save;
-						if (save.Mana == save.MaxMana)
-							return false;
-
-						save.Mana += info.Value;
-						if (save.Mana > save.MaxMana)
-							save.Mana = save.MaxMana;
+						a.World.Game.Stats.Mana += info.Value;
 
 						return true;
 					case CollectableType.MONEY:
-						a.World.Game.Save.Money += info.Value;
+						a.World.Game.Stats.Money += info.Value;
 
 						return true;
 					case CollectableType.TEXT:
@@ -197,7 +191,7 @@ namespace WarriorsSnuggery.Objects.Parts
 
 						return true;
 					case CollectableType.KEY:
-						a.World.KeyFound = true;
+						a.World.Game.Stats.KeyFound = true;
 
 						return true;
 					case CollectableType.TROPHY:

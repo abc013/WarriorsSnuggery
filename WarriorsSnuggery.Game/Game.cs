@@ -18,8 +18,8 @@ namespace WarriorsSnuggery
 		public readonly ScreenControl ScreenControl;
 		public readonly World World;
 
-		public readonly GameSave OldSave;
 		public readonly GameSave Save;
+		public readonly GameStats Stats;
 		public readonly MapType MapType;
 		public readonly int Seed;
 
@@ -117,14 +117,12 @@ namespace WarriorsSnuggery
 
 			ObjectiveType = MapType.AvailableObjectives[SharedRandom.Next(map.AvailableObjectives.Length)];
 
-			// In case of death, use this save.
-			OldSave = save.Copy();
-			// In case of success, use this save.
 			Save = save;
+			Stats = new GameStats(save);
 
 			Editor = InteractionMode == InteractionMode.EDITOR;
 
-			SpellManager = new SpellManager(this, save);
+			SpellManager = new SpellManager(this);
 			ConditionManager = new ConditionManager(this);
 
 			ScreenControl = new ScreenControl(this);
@@ -162,7 +160,7 @@ namespace WarriorsSnuggery
 			MasterRenderer.UpdateView();
 
 			if (World.Map.Type.IsSave)
-				script?.LoadState(Save.ScriptValues);
+				script?.LoadState(Save.ScriptState);
 			else
 				script?.OnStart();
 
@@ -184,9 +182,7 @@ namespace WarriorsSnuggery
 			{
 				Log.WriteDebug("Instant level change initiated.");
 
-				if (World.PlayerAlive && World.LocalPlayer.Health != null)
-					Save.Health = World.LocalPlayer.Health.RelativeHP;
-
+				Save.Update(this);
 				GameController.CreateNext(nextLevelType, nextInteractionMode);
 				return;
 			}
@@ -321,13 +317,10 @@ namespace WarriorsSnuggery
 						World.LocalPlayer.Health.HP += 100;
 
 					if (key == Keys.N)
-					{
-						Save.Mana += 100;
-						Save.Mana = Math.Clamp(Save.Mana, 0, Save.MaxMana);
-					}
+						Stats.Mana += 100;
 
 					if (key == Keys.M)
-						Save.Money += 100;
+						Stats.Money += 100;
 
 					if (key == Keys.Period)
 					{
@@ -371,9 +364,7 @@ namespace WarriorsSnuggery
 			WinConditionsMet = true;
 
 			script?.OnWin();
-			Save.Level++;
-			if (World.PlayerAlive && World.LocalPlayer.Health != null)
-				Save.Health = World.LocalPlayer.Health.RelativeHP;
+			Save.Update(this, true);
 
 			if (instantFinish)
 				finishCounter();

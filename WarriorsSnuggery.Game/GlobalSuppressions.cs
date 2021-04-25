@@ -4,4 +4,7 @@
 // Project-level suppressions either have no target or are given 
 // a specific target and scoped to a namespace, type, member, etc.
 
-[assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE0018:Inline variable declaration", Justification = "<Pending>", Scope = "member", Target = "~M:WarriorsSnuggery.Loader.TextNodeConverter.Convert(System.String,WarriorsSnuggery.MiniTextNode,System.Type)~System.Object")]
+using System.Diagnostics.CodeAnalysis;
+
+[assembly: SuppressMessage("Style", "IDE0090:Use \"new(...)\"")]
+[assembly: SuppressMessage("Performance", "CA1825:Avoid zero-length array allocations")]

@@ -74,7 +74,7 @@ namespace WarriorsSnuggery.Objects.Parts
 				attackTarget(MouseInput.GamePosition);
 
 			foreach (var effect in self.Effects.Where(e => e.Active && e.Effect.Type == Spells.EffectType.MANA))
-				self.World.Game.Save.Mana += (int)effect.Effect.Value;
+				self.World.Game.Stats.Mana += (int)effect.Effect.Value;
 
 			self.World.PlayerDamagedTick++;
 		}
@@ -141,7 +141,7 @@ namespace WarriorsSnuggery.Objects.Parts
 
 		public void OnKill(Actor killed)
 		{
-			self.World.Game.Save.Kills++;
+			self.World.Game.Stats.Kills++;
 		}
 
 		public void OnMove(CPos old, CPos speed)

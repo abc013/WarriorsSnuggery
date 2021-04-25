@@ -67,19 +67,19 @@ namespace WarriorsSnuggery
 		public static void CreateMenu()
 		{
 			var mission = game.MenuType;
-			var save = game.OldSave;
+			var save = game.Save;
 
-			finishAndLoad(new Game(save, MapCreator.FindMap(mission, save.Level, new Random(save.Seed + save.Level)), mission, InteractionMode.INGAME));
+			finishAndLoad(new Game(save, MapCreator.FindMap(mission, save), mission, InteractionMode.INGAME));
 		}
 
 		public static void CreateRestart()
 		{
-			var save = game.OldSave;
+			var save = game.Save;
 			var mapType = game.MapType;
 
 			// Don't start at last saved position, start right from the beginning
 			if (mapType.IsSave)
-				mapType = MapCreator.GetType(save.CurrentMapType);
+				mapType = save.CurrentMapType;
 
 			finishAndLoad(new Game(save, mapType, game.MissionType, game.InteractionMode, game.Seed));
 		}
@@ -89,7 +89,7 @@ namespace WarriorsSnuggery
 			var mission = game.CampaignType;
 			var save = game.Save;
 
-			finishAndLoad(new Game(save, MapCreator.FindMap(mission, save.Level, new Random(save.Seed + save.Level)), mission, InteractionMode.INGAME));
+			finishAndLoad(new Game(save, MapCreator.FindMap(mission, save), mission, InteractionMode.INGAME));
 		}
 
 		public static void CreateNextMenu()
@@ -97,14 +97,14 @@ namespace WarriorsSnuggery
 			var mission = game.MenuType;
 			var save = game.Save;
 
-			finishAndLoad(new Game(save, MapCreator.FindMap(mission, save.Level, new Random(save.Seed + save.Level)), mission, InteractionMode.INGAME));
+			finishAndLoad(new Game(save, MapCreator.FindMap(mission, save), mission, InteractionMode.INGAME));
 		}
 
-		public static void CreateNext(MissionType type, InteractionMode mode = InteractionMode.INGAME)
+		public static void CreateNext(MissionType mission, InteractionMode mode = InteractionMode.INGAME)
 		{
 			var save = game.Save;
 
-			finishAndLoad(new Game(save, MapCreator.FindMap(type, save.Level, new Random(save.Seed + save.Level)), type, mode));
+			finishAndLoad(new Game(save, MapCreator.FindMap(mission, save), mission, mode));
 		}
 
 		public static void CreateNew(GameSave save, MissionType type = MissionType.NORMAL, InteractionMode mode = InteractionMode.INGAME, MapType custom = null, bool loadStatsMap = false)

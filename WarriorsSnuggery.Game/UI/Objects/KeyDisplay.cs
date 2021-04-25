@@ -54,7 +54,7 @@ namespace WarriorsSnuggery.UI.Objects
 		{
 			base.Tick();
 
-			if (!keyFound && game.World.KeyFound)
+			if (!keyFound && game.Stats.KeyFound)
 			{
 				keyFound = true;
 

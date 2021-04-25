@@ -8,6 +8,7 @@ namespace WarriorsSnuggery
 	{
 		public static readonly string Path = Directory.GetCurrentDirectory();
 		public static readonly char Separator = System.IO.Path.DirectorySeparatorChar;
+		public static readonly char[] InvalidFileChars = System.IO.Path.GetInvalidFileNameChars();
 
 		public static string Misc;
 		public static string Rules;

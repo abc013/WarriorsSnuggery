@@ -38,6 +38,11 @@ namespace WarriorsSnuggery.Maps
 			return mapNames.FirstOrDefault(t => t.Value == type).Key;
 		}
 
+		public static MapType FindMap(MissionType type, GameSave save)
+		{
+			return FindMap(type, save.Level, new Random(save.Seed + save.Level));
+		}
+
 		public static MapType FindMap(MissionType type, int level, Random random)
 		{
 			var levels = mapTypes[type];

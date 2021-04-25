@@ -137,7 +137,7 @@ namespace WarriorsSnuggery.Maps
 		{
 			var size = TextNodeLoader.FromFile(FileExplorer.Saves, save.MapSaveName + ".yaml").First(n => n.Key == "Size").Convert<MPos>();
 
-			var type = MapCreator.GetType(save.CurrentMapType);
+			var type = save.CurrentMapType;
 			var mapGeneratorInfos = type == null ? new IMapGeneratorInfo[0] : type.Generators;
 
 			return new MapType(save.MapSaveName, 0, size, Color.White, new[] { save.CurrentMission }, new[] { save.CurrentObjective }, -1, 0, int.MaxValue, new TerrainGeneratorInfo(0, new List<TextNode>()), mapGeneratorInfos, CPos.Zero, true, true, save.Script);

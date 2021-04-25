@@ -1,84 +1,167 @@
+using System;
 using System.Collections.Generic;
 using System.IO;
 using WarriorsSnuggery.Loader;
 using WarriorsSnuggery.Maps;
+using WarriorsSnuggery.Objects;
 using WarriorsSnuggery.Objects.Parts;
+using WarriorsSnuggery.Spells;
 
 namespace WarriorsSnuggery
 {
-	public sealed class GameSave
+	public sealed class GameStats
 	{
-		// Paths
-		public string Name;
-		public string SaveName;
-		public string MapSaveName => SaveName + "_map";
-		// Changing Values
-		public int Level;
 		public int Money;
-		public string Actor;
-		public float Health;
-		public int Mana;
-		public int Kills;
-		public int Deaths;
+
+		public int Mana
+		{
+			get => mana;
+			set => mana = Math.Clamp(value, 0, MaxMana);
+		}
+		int mana;
 		public int MaxMana;
 
-		public ObjectiveType CurrentObjective;
-		public MissionType CurrentMission;
-		public string CurrentMapType;
-		public int Waves;
+		public int Kills;
+		public int Deaths;
+
 		public bool KeyFound;
-		public List<bool[]> Shroud;
 
-		public readonly Dictionary<int, (float, float)> SpellCasters = new Dictionary<int, (float, float)>();
+		internal readonly Dictionary<int, (float, float)> spellCasters;
 
-		public readonly List<string> UnlockedSpells = new List<string>();
-		public readonly List<string> UnlockedActors = new List<string>();
-		public readonly List<string> UnlockedTrophies = new List<string>();
+		internal readonly List<string> unlockedSpells;
+		internal readonly List<string> unlockedActors;
+		internal readonly List<string> unlockedTrophies;
 
-		// Static Values
-		public int FinalLevel;
-		public int Difficulty;
-		public int Seed;
-		public bool Hardcore;
-
-		// Script Values
-		public string Script;
-		public TextNode[] ScriptValues;
-
-		GameSave(GameSave save)
+		public GameStats(GameSave save)
 		{
-			Name = save.Name;
-			SaveName = save.SaveName;
-
-			Level = save.Level;
 			Money = save.Money;
-			Actor = save.Actor;
-			Health = save.Health;
-			Mana = save.Mana;
+			mana = save.Mana;
+			MaxMana = save.MaxMana;
 			Kills = save.Kills;
 			Deaths = save.Deaths;
 
-			CurrentObjective = save.CurrentObjective;
-			CurrentMission = save.CurrentMission;
-			CurrentMapType = save.CurrentMapType;
-			Waves = save.Waves;
 			KeyFound = save.KeyFound;
-			Shroud = save.Shroud;
 
+			spellCasters = new Dictionary<int, (float, float)>(save.SpellCasters);
+
+			unlockedSpells = new List<string>();
+			if (save.UnlockedSpells != null)
+				unlockedSpells.AddRange(save.UnlockedSpells);
+
+			unlockedActors = new List<string>();
+			if (save.UnlockedActors != null)
+				unlockedActors.AddRange(save.UnlockedActors);
+
+			unlockedTrophies = new List<string>();
+			if (save.UnlockedTrophies != null)
+				unlockedTrophies.AddRange(save.UnlockedTrophies);
+		}
+
+		public (float, float) GetSpellCaster(int i)
+		{
+			if (!spellCasters.ContainsKey(i))
+				return (0f, 0f);
+
+			return spellCasters[i];
+		}
+
+		public void AddSpell(SpellTreeNode node)
+		{
+			if (SpellUnlocked(node))
+				return;
+
+			unlockedSpells.Add(node.InnerName);
+		}
+
+		public bool SpellUnlocked(SpellTreeNode node)
+		{
+			return SpellUnlocked(node.InnerName);
+		}
+
+		public bool SpellUnlocked(string innerName)
+		{
+			return unlockedSpells.Contains(innerName);
+		}
+
+		public void AddActor(PlayablePartInfo playable)
+		{
+			if (unlockedActors.Contains(playable.InternalName))
+				return;
+
+			unlockedActors.Add(playable.InternalName);
+		}
+
+		public bool ActorAvailable(PlayablePartInfo playable)
+		{
+			return Program.IgnoreTech || playable.Unlocked || unlockedActors.Contains(playable.InternalName);
+		}
+
+		public void AddTrophy(string name)
+		{
+			if (TrophyUnlocked(name))
+				return;
+
+			unlockedTrophies.Add(name);
+		}
+
+		public bool TrophyUnlocked(string name)
+		{
+			return unlockedTrophies.Contains(name);
+		}
+	}
+
+	public sealed class GameSave
+	{
+		public string Name { get; private set; }
+		public string SaveName { get; private set; }
+		public string MapSaveName => SaveName + "_map";
+
+		// Changing Values
+		public int Level { get; private set; }
+		public int Money { get; private set; }
+		public string Actor { get; private set; }
+		public float Health { get; private set; }
+		public int Mana { get; private set; }
+		public int Kills { get; private set; }
+		public int Deaths { get; private set; }
+		public int MaxMana { get; private set; }
+
+		public Dictionary<int, (float, float)> SpellCasters { get; private set; }
+
+		public string[] UnlockedSpells { get; private set; }
+		public string[] UnlockedActors { get; private set; }
+		public string[] UnlockedTrophies { get; private set; }
+
+		// Level Values
+		public ObjectiveType CurrentObjective { get; private set; }
+		public MissionType CurrentMission { get; private set; }
+		public MapType CurrentMapType { get; private set; }
+		public int Waves { get; private set; }
+		public bool KeyFound { get; private set; }
+		public List<bool[]> Shroud { get; private set; }
+
+		// Static Values
+		public int FinalLevel { get; private set; }
+		public int Difficulty { get; private set; }
+		public int Seed { get; private set; }
+		public bool Hardcore { get; private set; }
+
+		// Script Values
+		public string Script { get; private set; }
+		public TextNode[] ScriptState { get; private set; }
+
+		GameSave(GameSave save)
+		{
+			// Copy all fields
+			var fields = typeof(GameSave).GetProperties();
+			foreach (var properties in fields)
+			{
+				if (properties.SetMethod != null)
+					properties.SetValue(this, properties.GetValue(save));
+			}
+
+			// Create new dictionary and lists
 			SpellCasters = new Dictionary<int, (float, float)>(save.SpellCasters);
-
-			UnlockedSpells = new List<string>(save.UnlockedSpells);
-			UnlockedActors = new List<string>(save.UnlockedActors);
-			UnlockedTrophies = new List<string>(save.UnlockedTrophies);
-
-			FinalLevel = save.FinalLevel;
-			Difficulty = save.Difficulty;
-			MaxMana = save.MaxMana;
-			Seed = save.Seed;
-			Hardcore = save.Hardcore;
-
-			Script = save.Script;
-			ScriptValues = save.ScriptValues;
 		}
 
 		public GameSave Copy()
@@ -86,11 +169,11 @@ namespace WarriorsSnuggery
 			return new GameSave(this);
 		}
 
-		public GameSave(string file)
+		public GameSave(string file) : this()
 		{
 			SaveName = file;
 
-			var fields = TypeLoader.GetFields(this, false);
+			var properties = typeof(GameSave).GetProperties();
 
 			foreach (var node in TextNodeLoader.FromFile(FileExplorer.Saves, file + ".yaml"))
 			{
@@ -101,6 +184,10 @@ namespace WarriorsSnuggery
 
 						foreach (var node2 in node.Children)
 							Shroud.Add(node2.Convert<bool[]>());
+
+						break;
+					case nameof(CurrentMapType):
+						CurrentMapType = MapCreator.GetType(node.Value);
 
 						break;
 					case nameof(SpellCasters):
@@ -130,35 +217,20 @@ namespace WarriorsSnuggery
 						}
 
 						break;
-					case nameof(UnlockedSpells):
-						foreach (var node2 in node.Children)
-							UnlockedSpells.Add(node2.Key);
-
-						break;
-					case nameof(UnlockedActors):
-						foreach (var node2 in node.Children)
-							UnlockedActors.Add(node2.Key);
-
-						break;
-					case nameof(UnlockedTrophies):
-						foreach (var node2 in node.Children)
-							UnlockedTrophies.Add(node2.Key);
-
-						break;
 					case nameof(Script):
 						Script = node.Convert<string>();
-						ScriptValues = node.Children.ToArray();
+						ScriptState = node.Children.ToArray();
 
 						break;
 					default:
-						TypeLoader.SetValue(this, fields, node);
+						TypeLoader.SetValue(this, properties, node);
 
 						break;
 				}
 			}
 		}
 
-		public GameSave(int difficulty, bool hardcore, string name, int seed)
+		public GameSave(int difficulty, bool hardcore, string name, int seed) : this()
 		{
 			SetName(name);
 
@@ -173,9 +245,9 @@ namespace WarriorsSnuggery
 			Seed = seed;
 		}
 
-		public bool ActorAvailable(PlayablePartInfo playable)
+		GameSave()
 		{
-			return Program.IgnoreTech || playable.Unlocked || UnlockedActors.Contains(playable.InternalName);
+			SpellCasters = new Dictionary<int, (float, float)>();
 		}
 
 		public int CalculateScore()
@@ -189,24 +261,17 @@ namespace WarriorsSnuggery
 			return score;
 		}
 
-		public void Save(World world)
+		public void IncreaseDeathCount()
 		{
-			var scriptState = world.Game.GetScriptState(out Script);
+			Deaths++;
+		}
 
-			if (world.LocalPlayer.IsPlayerSwitch)
-				Health = ((PlayerSwitchPart)world.LocalPlayer.Parts.Find(p => p is PlayerSwitchPart)).RelativeHP;
-			else
-				Health = world.LocalPlayer.Health == null ? 1 : world.LocalPlayer.Health.RelativeHP;
+		public void Save(Game game)
+		{
+			Update(game);
 
-			CurrentObjective = world.Game.ObjectiveType;
-			CurrentMission = world.Game.MissionType;
-
-			var save = world.Game.Save;
-			var mapType = world.Map.Type;
-			CurrentMapType = mapType.IsSave ? save.CurrentMapType : MapCreator.GetName(mapType);
-
-			Waves = world.Game.CurrentWave;
-			KeyFound = world.KeyFound;
+			var scriptState = game.GetScriptState(out var scriptName);
+			Script = scriptName;
 
 			using (var writer = new StreamWriter(FileExplorer.Saves + SaveName + ".yaml", false))
 			{
@@ -221,7 +286,7 @@ namespace WarriorsSnuggery
 				writer.WriteLine($"{nameof(Deaths)}= {Deaths}");
 				writer.WriteLine($"{nameof(CurrentObjective)}= {CurrentObjective}");
 				writer.WriteLine($"{nameof(CurrentMission)}= {CurrentMission}");
-				writer.WriteLine($"{nameof(CurrentMapType)}= {CurrentMapType}");
+				writer.WriteLine($"{nameof(CurrentMapType)}= {MapCreator.GetName(CurrentMapType)}");
 				if (Waves != 0)
 					writer.WriteLine($"{nameof(Waves)}= {Waves}");
 				if (KeyFound)
@@ -229,12 +294,12 @@ namespace WarriorsSnuggery
 
 				writer.WriteLine($"{nameof(Shroud)}=");
 				for (int i = 0; i < Settings.MaxTeams; i++)
-					writer.WriteLine("\t" + world.ShroudLayer.ToString(i));
+					writer.WriteLine("\t" + game.World.ShroudLayer.ToString(i));
 
 				writer.WriteLine($"{nameof(SpellCasters)}=");
-				for (int i = 0; i < world.Game.SpellManager.spellCasters.Length; i++)
+				for (int i = 0; i < game.SpellManager.spellCasters.Length; i++)
 				{
-					var caster = world.Game.SpellManager.spellCasters[i];
+					var caster = game.SpellManager.spellCasters[i];
 					if (caster.Ready)
 						continue;
 
@@ -250,31 +315,61 @@ namespace WarriorsSnuggery
 				writer.WriteLine($"{nameof(Actor)}= {Actor}");
 				writer.WriteLine($"{nameof(Health)}= {Health}");
 
-				writer.WriteLine($"{nameof(UnlockedSpells)}=");
-				foreach (var unlock in UnlockedSpells)
-					writer.WriteLine("\t" + unlock + "=");
+				writer.Write($"{nameof(UnlockedSpells)}={string.Join(',', UnlockedSpells)}");
+				writer.Write($"{nameof(UnlockedActors)}={string.Join(',', UnlockedActors)}");
+				writer.Write($"{nameof(UnlockedTrophies)}={string.Join(',', UnlockedTrophies)}");
 
-				writer.WriteLine($"{nameof(UnlockedActors)}=");
-				foreach (var unlock in UnlockedActors)
-					writer.WriteLine("\t" + unlock + "=");
-
-				writer.WriteLine($"{nameof(UnlockedTrophies)}=");
-				foreach (var unlock in UnlockedTrophies)
-					writer.WriteLine("\t" + unlock + "=");
-
-				if (scriptState != null)
+				if (!string.IsNullOrEmpty(Script))
 				{
 					writer.WriteLine($"{nameof(Script)}= {Script}");
-					int i = 0;
-					foreach(var obj in scriptState)
-						writer.WriteLine("\t" + i++ + "= " + obj.ToString());
+					for (var i = 0; i < scriptState.Length; i++)
+						writer.WriteLine("\t" + i + "= " + scriptState[i].ToString());
 				}
 
 				writer.Flush();
 				writer.Close();
 			}
 
-			world.Save(FileExplorer.Saves, MapSaveName, true);
+			game.World.SaveMap(FileExplorer.Saves, MapSaveName, true);
+		}
+
+		public void Update(Game game, bool levelIncrease = false)
+		{
+			if (levelIncrease)
+				Level++;
+
+			var player = game.World.LocalPlayer;
+
+			Actor = ActorCreator.GetName(player.Type);
+
+			if (player.IsPlayerSwitch)
+				Health = ((PlayerSwitchPart)player.Parts.Find(p => p is PlayerSwitchPart)).RelativeHP;
+			else
+				Health = player.Health == null ? 1 : player.Health.RelativeHP;
+
+			CurrentObjective = game.ObjectiveType;
+			CurrentMission = game.MissionType;
+
+			var save = game.Save;
+			var mapType = game.MapType;
+			CurrentMapType = mapType.IsSave ? save.CurrentMapType : mapType;
+
+			Waves = game.CurrentWave;
+
+			var stats = game.Stats;
+
+			KeyFound = stats.KeyFound;
+			Money = stats.Money;
+			Mana = stats.Mana;
+			MaxMana = stats.MaxMana;
+			Deaths = stats.Deaths;
+			Kills = stats.Kills;
+
+			SpellCasters = new Dictionary<int, (float, float)>(stats.spellCasters);
+
+			UnlockedSpells = stats.unlockedSpells.ToArray();
+			UnlockedActors = stats.unlockedActors.ToArray();
+			UnlockedTrophies = stats.unlockedTrophies.ToArray();
 		}
 
 		public void Delete()
@@ -289,9 +384,8 @@ namespace WarriorsSnuggery
 		public void SetName(string name)
 		{
 			Name = name;
-			const string invalidChars = "#*+'?=!.:;,";
-			foreach (var c in invalidChars)
-				name = name.Replace(c, '-');
+			foreach (var c in FileExplorer.InvalidFileChars)
+				name = name.Replace(c, '_');
 
 			SaveName = name;
 		}

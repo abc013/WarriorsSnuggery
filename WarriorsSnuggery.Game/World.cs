@@ -37,7 +37,6 @@ namespace WarriorsSnuggery
 		public bool PlayerAlive => LocalPlayer != null && LocalPlayer.IsAlive;
 
 		public int PlayerDamagedTick = 0;
-		public bool KeyFound;
 
 		public World(Game game, int seed, GameSave save)
 		{
@@ -76,7 +75,6 @@ namespace WarriorsSnuggery
 						ShroudLayer.RevealShroudList(i, Game.Save.Shroud[i]);
 
 					LocalPlayer = ActorLayer.ToAdd().First(a => a.IsPlayer);
-					KeyFound = Game.Save.KeyFound;
 				}
 
 				if (Game.IsCampaign && !Game.IsMenu)
@@ -135,24 +133,22 @@ namespace WarriorsSnuggery
 
 		public void TrophyCollected(string collected)
 		{
-			if (Game.Save.UnlockedTrophies.Contains(collected))
+			if (Game.Stats.TrophyUnlocked(collected))
 				return;
 
 			if (!TrophyManager.Trophies.ContainsKey(collected))
 				throw new InvalidNodeException("Unable to get Trophy with internal name " + collected);
 
 			Game.AddInfoMessage(250, "Trophy collected!");
-			Game.Save.UnlockedTrophies.Add(collected);
-			Game.Save.MaxMana += TrophyManager.Trophies[collected].MaxManaIncrease;
+			Game.Stats.AddTrophy(collected);
+			Game.Stats.MaxMana += TrophyManager.Trophies[collected].MaxManaIncrease;
 		}
 
-		public void FinishPlayerSwitch(Actor @new, ActorType type)
+		public void FinishPlayerSwitch(Actor @new)
 		{
 			LocalPlayer.FollowupActor = @new;
 			LocalPlayer = @new;
 			Add(@new);
-
-			Game.Save.Actor = ActorCreator.GetName(type);
 
 			VisibilitySolver.ShroudUpdated();
 		}
@@ -162,7 +158,7 @@ namespace WarriorsSnuggery
 			var health = LocalPlayer.Health != null ? LocalPlayer.Health.RelativeHP : 1;
 			if (LocalPlayer.WorldPart == null || string.IsNullOrWhiteSpace(LocalPlayer.WorldPart.PlayerSwitchActor))
 			{
-				FinishPlayerSwitch(ActorCreator.Create(this, to, LocalPlayer.Position, LocalPlayer.Team, isPlayer: true, health: health), to);
+				FinishPlayerSwitch(ActorCreator.Create(this, to, LocalPlayer.Position, LocalPlayer.Team, isPlayer: true, health: health));
 				LocalPlayer.Dispose();
 				return;
 			}
@@ -180,7 +176,8 @@ namespace WarriorsSnuggery
 
 		public void PlayerKilled()
 		{
-			Game.OldSave.Deaths++;
+			Game.Stats.Deaths++;
+			Game.Save.IncreaseDeathCount();
 			Game.DefeatConditionsMet();
 		}
 
@@ -304,9 +301,9 @@ namespace WarriorsSnuggery
 			return ShroudLayer.ShroudRevealed(eye.Team, (int)(target.Position.X / 512f), (int)(target.Position.Y / 512f));
 		}
 
-		public void Save(string directory, string name, bool isSavegame)
+		public void SaveMap(string directory, string file, bool forSave)
 		{
-			new WorldSaver(this, isSavegame).Save(directory, name);
+			new WorldSaver(this, forSave).Save(directory, file);
 		}
 
 		public void Dispose()

@@ -152,8 +152,8 @@ namespace WarriorsSnuggery.UI.Screens
 				}
 			}
 
-			manaBar.WriteText($"{game.Save.Mana}/{game.Save.MaxMana}");
-			manaBar.DisplayPercentage = game.Save.Mana / (float)game.Save.MaxMana;
+			manaBar.WriteText($"{game.Stats.Mana}/{game.Stats.MaxMana}");
+			manaBar.DisplayPercentage = game.Stats.Mana / (float)game.Stats.MaxMana;
 		}
 	}
 }

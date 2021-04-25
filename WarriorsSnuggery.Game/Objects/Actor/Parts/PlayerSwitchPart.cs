@@ -72,7 +72,7 @@ namespace WarriorsSnuggery.Objects.Parts
 		void switchPlayer()
 		{
 			var actor = ActorCreator.Create(self.World, ActorType, self.Position, self.Team, isPlayer: true, health: RelativeHP);
-			self.World.FinishPlayerSwitch(actor, ActorType);
+			self.World.FinishPlayerSwitch(actor);
 			self.Dispose();
 		}
 	}

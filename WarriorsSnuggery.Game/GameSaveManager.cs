@@ -37,7 +37,7 @@ namespace WarriorsSnuggery
 		public static void SaveOnNewName(GameSave save, string name, Game game)
 		{
 			save.SetName(name);
-			save.Save(game.World);
+			save.Save(game);
 
 			Reload();
 		}

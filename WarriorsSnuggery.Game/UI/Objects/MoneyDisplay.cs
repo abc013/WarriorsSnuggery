@@ -52,17 +52,17 @@ namespace WarriorsSnuggery.UI.Objects
 			money = new BatchObject(UISpriteManager.Get("UI_money")[0]);
 
 			moneyText = new UITextLine(FontManager.Pixel16);
-			moneyText.SetText(game.Save.Money);
+			moneyText.SetText(game.Stats.Money);
 		}
 
 		public override void Tick()
 		{
 			base.Tick();
 
-			if (lastCash != game.Save.Money)
+			if (lastCash != game.Stats.Money)
 			{
-				lastCash = game.Save.Money;
-				moneyText.SetText(game.Save.Money);
+				lastCash = game.Stats.Money;
+				moneyText.SetText(game.Stats.Money);
 				cashCooldown = 10;
 			}
 
