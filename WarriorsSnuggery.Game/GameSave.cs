@@ -26,11 +26,11 @@ namespace WarriorsSnuggery
 
 		public bool KeyFound;
 
-		internal readonly Dictionary<int, (float, float)> spellCasters;
+		public readonly Dictionary<int, (float, float)> SpellCasters;
 
-		internal readonly List<string> unlockedSpells;
-		internal readonly List<string> unlockedActors;
-		internal readonly List<string> unlockedTrophies;
+		public readonly List<string> UnlockedSpells;
+		public readonly List<string> UnlockedActors;
+		public readonly List<string> UnlockedTrophies;
 
 		public GameStats(GameSave save)
 		{
@@ -42,27 +42,27 @@ namespace WarriorsSnuggery
 
 			KeyFound = save.KeyFound;
 
-			spellCasters = new Dictionary<int, (float, float)>(save.SpellCasters);
+			SpellCasters = new Dictionary<int, (float, float)>(save.SpellCasters);
 
-			unlockedSpells = new List<string>();
+			UnlockedSpells = new List<string>();
 			if (save.UnlockedSpells != null)
-				unlockedSpells.AddRange(save.UnlockedSpells);
+				UnlockedSpells.AddRange(save.UnlockedSpells);
 
-			unlockedActors = new List<string>();
+			UnlockedActors = new List<string>();
 			if (save.UnlockedActors != null)
-				unlockedActors.AddRange(save.UnlockedActors);
+				UnlockedActors.AddRange(save.UnlockedActors);
 
-			unlockedTrophies = new List<string>();
+			UnlockedTrophies = new List<string>();
 			if (save.UnlockedTrophies != null)
-				unlockedTrophies.AddRange(save.UnlockedTrophies);
+				UnlockedTrophies.AddRange(save.UnlockedTrophies);
 		}
 
 		public (float, float) GetSpellCaster(int i)
 		{
-			if (!spellCasters.ContainsKey(i))
+			if (!SpellCasters.ContainsKey(i))
 				return (0f, 0f);
 
-			return spellCasters[i];
+			return SpellCasters[i];
 		}
 
 		public void AddSpell(SpellTreeNode node)
@@ -70,7 +70,7 @@ namespace WarriorsSnuggery
 			if (SpellUnlocked(node))
 				return;
 
-			unlockedSpells.Add(node.InnerName);
+			UnlockedSpells.Add(node.InnerName);
 		}
 
 		public bool SpellUnlocked(SpellTreeNode node)
@@ -80,20 +80,20 @@ namespace WarriorsSnuggery
 
 		public bool SpellUnlocked(string innerName)
 		{
-			return unlockedSpells.Contains(innerName);
+			return UnlockedSpells.Contains(innerName);
 		}
 
 		public void AddActor(PlayablePartInfo playable)
 		{
-			if (unlockedActors.Contains(playable.InternalName))
+			if (UnlockedActors.Contains(playable.InternalName))
 				return;
 
-			unlockedActors.Add(playable.InternalName);
+			UnlockedActors.Add(playable.InternalName);
 		}
 
 		public bool ActorAvailable(PlayablePartInfo playable)
 		{
-			return Program.IgnoreTech || playable.Unlocked || unlockedActors.Contains(playable.InternalName);
+			return Program.IgnoreTech || playable.Unlocked || UnlockedActors.Contains(playable.InternalName);
 		}
 
 		public void AddTrophy(string name)
@@ -101,12 +101,12 @@ namespace WarriorsSnuggery
 			if (TrophyUnlocked(name))
 				return;
 
-			unlockedTrophies.Add(name);
+			UnlockedTrophies.Add(name);
 		}
 
 		public bool TrophyUnlocked(string name)
 		{
-			return unlockedTrophies.Contains(name);
+			return UnlockedTrophies.Contains(name);
 		}
 	}
 
@@ -365,11 +365,11 @@ namespace WarriorsSnuggery
 			Deaths = stats.Deaths;
 			Kills = stats.Kills;
 
-			SpellCasters = new Dictionary<int, (float, float)>(stats.spellCasters);
+			SpellCasters = new Dictionary<int, (float, float)>(stats.SpellCasters);
 
-			UnlockedSpells = stats.unlockedSpells.ToArray();
-			UnlockedActors = stats.unlockedActors.ToArray();
-			UnlockedTrophies = stats.unlockedTrophies.ToArray();
+			UnlockedSpells = stats.UnlockedSpells.ToArray();
+			UnlockedActors = stats.UnlockedActors.ToArray();
+			UnlockedTrophies = stats.UnlockedTrophies.ToArray();
 		}
 
 		public void Delete()

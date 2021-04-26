@@ -77,7 +77,7 @@ namespace WarriorsSnuggery.UI.Screens
 
 			game.Stats.Money -= actor.Playable.UnlockCost;
 
-			game.Stats.unlockedActors.Add(actor.Playable.InternalName);
+			game.Stats.AddActor(actor.Playable);
 
 			actors.Container[actorTypes.IndexOf(actor.Playable.InternalName)].SetColor(Color.White);
 			information.Lines[3].WriteText(Color.White + "Cost: " + Color.Green + "Bought");

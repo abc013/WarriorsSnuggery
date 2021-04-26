@@ -122,7 +122,7 @@ namespace WarriorsSnuggery.UI.Screens
 
 			tooltip = new Tooltip(node.Name + " : " + node.Cost, node.GetInformation(true));
 
-			if (node.Unlocked || Program.IgnoreTech || game.Stats.unlockedSpells.Contains(node.InnerName))
+			if (node.Unlocked || Program.IgnoreTech || game.Stats.SpellUnlocked(node))
 				HighlightVisible = true;
 		}
 
