@@ -97,8 +97,14 @@ namespace WarriorsSnuggery.UI.Objects
 			{
 				CurrentActor += MouseInput.WheelState;
 
-				if (!KeyInput.IsKeyDown(Keys.LeftControl) && MouseInput.IsRightClicked)
+				if (KeyInput.IsKeyDown(Settings.KeyDictionary["Activate"]) || !KeyInput.IsKeyDown(Keys.LeftControl) && MouseInput.IsRightClicked)
 					changePlayer(actorTypes[CurrentActor]);
+
+				for (int i = 0; i < Math.Max(actorTypes.Count, 10); i++)
+				{
+					if (KeyInput.IsKeyDown(Keys.D0 + i))
+						game.SpellManager.Activate((i + 9) % 10);
+				}
 			}
 		}
 

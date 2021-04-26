@@ -108,6 +108,7 @@ namespace WarriorsSnuggery
 			KeyDictionary.Clear();
 			KeyDictionary.Add("Pause", Keys.P);
 			KeyDictionary.Add("CameraLock", Keys.L);
+			KeyDictionary.Add("Activate", Keys.Space);
 			KeyDictionary.Add("MoveUp", Keys.W);
 			KeyDictionary.Add("MoveDown", Keys.S);
 			KeyDictionary.Add("MoveLeft", Keys.A);

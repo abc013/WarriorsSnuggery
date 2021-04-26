@@ -1,4 +1,5 @@
 ﻿using OpenTK.Windowing.GraphicsLibraryFramework;
+using System;
 using WarriorsSnuggery.Graphics;
 using WarriorsSnuggery.Spells;
 
@@ -9,6 +10,7 @@ namespace WarriorsSnuggery.UI.Objects
 		readonly Game game;
 
 		readonly BatchObject selector;
+		readonly int spellCount;
 
 		public override CPos Position
 		{
@@ -28,10 +30,10 @@ namespace WarriorsSnuggery.UI.Objects
 			{
 				currentSpell = value;
 
-				currentSpell %= SpellTreeLoader.SpellTree.Count;
+				currentSpell %= spellCount;
 
 				if (currentSpell < 0)
-					currentSpell = SpellTreeLoader.SpellTree.Count - 1;
+					currentSpell = spellCount - 1;
 
 				selector.SetPosition(Container[currentSpell].Position - new CPos(712, 0, 0));
 			}
@@ -45,6 +47,7 @@ namespace WarriorsSnuggery.UI.Objects
 			this.game = game;
 
 			selector = new BatchObject(UISpriteManager.Get("UI_selector1")[0]);
+			spellCount = SpellTreeLoader.SpellTree.Count;
 
 			addSpells();
 		}
@@ -79,9 +82,14 @@ namespace WarriorsSnuggery.UI.Objects
 			if (!KeyInput.IsKeyDown(Keys.LeftShift))
 			{
 				CurrentSpell += MouseInput.WheelState;
-
-				if (!KeyInput.IsKeyDown(Keys.LeftControl) && MouseInput.IsRightClicked)
+				if (KeyInput.IsKeyDown(Settings.KeyDictionary["Activate"]) || !KeyInput.IsKeyDown(Keys.LeftControl) && MouseInput.IsRightClicked)
 					game.SpellManager.Activate(CurrentSpell);
+
+				for (int i = 0; i < Math.Max(spellCount, 10); i++)
+				{
+					if (KeyInput.IsKeyDown(Keys.D0 + i))
+						game.SpellManager.Activate((i + 9) % 10);
+				}
 			}
 		}
 	}
