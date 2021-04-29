@@ -320,7 +320,7 @@ namespace WarriorsSnuggery.Loader
 				}
 
 				if (size != MPos.Zero)
-					return new TextureInfo(name, randomTexture ? TextureType.RANDOM : TextureType.ANIMATION, tick, size, searchFile);
+					return new TextureInfo(name, randomTexture ? TextureType.RANDOM : TextureType.ANIMATION, size, tick, searchFile);
 			}
 			else if (t == typeof(WeaponType))
 			{

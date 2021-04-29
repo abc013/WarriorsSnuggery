@@ -8,42 +8,38 @@ namespace WarriorsSnuggery.Objects
 	{
 		public readonly ushort ID;
 
-		public Texture Texture => sprite[Program.SharedRandom.Next(sprite.Length)];
-		readonly Texture[] sprite;
-
 		[Desc("Random base texture.")]
 		public readonly string Sprite;
 
-		public Texture Texture_Edge => edgeSprite[Program.SharedRandom.Next(edgeSprite.Length)];
-		readonly Texture[] edgeSprite;
+		readonly TextureInfo baseTextureInfo;
+		public Texture Texture => baseTextureInfo.GetTextures()[0];
 
-		public CPos EdgeOffset => textureOffset(EdgeSpriteBounds);
-
-		[Desc("Edge of the tile.")]
+		[Desc("Edge of the tile.", "Vertical Edges are overwritten by VerticalEdgeSprite if given.")]
 		public readonly string EdgeSprite;
 		[Desc("Bounds of the edge texture.")]
 		public readonly MPos EdgeSpriteBounds;
 
-		// For vertical edges
-		public Texture Texture_Edge2 => verticalEdgeSprite?[Program.SharedRandom.Next(verticalEdgeSprite.Length)];
-		readonly Texture[] verticalEdgeSprite;
+		readonly TextureInfo edgeTextureInfo;
+		public Texture EdgeTexture => edgeTextureInfo.GetTextures()[0];
+		public CPos EdgeOffset => textureOffset(EdgeSpriteBounds);
 
-		public CPos VerticalEdgeOffset => textureOffset(VerticalEdgeSpriteBounds);
-
-		[Desc("(possible) Vertical Edge of the tile.")]
+		[Desc("Vertical Edge of the tile.")]
 		public readonly string VerticalEdgeSprite;
 		[Desc("Bounds of the vertical edge texture.")]
 		public readonly MPos VerticalEdgeSpriteBounds;
 
-		public Texture Texture_Corner => cornerSprite[Program.SharedRandom.Next(cornerSprite.Length)];
-		readonly Texture[] cornerSprite;
-
-		public CPos CornerOffset => textureOffset(CornerSpriteBounds);
+		readonly TextureInfo verticalTextureInfo;
+		public Texture VerticalEdgeTexture => verticalTextureInfo?.GetTextures()[0];
+		public CPos VerticalEdgeOffset => textureOffset(VerticalEdgeSpriteBounds);
 
 		[Desc("Corner of the tile.")]
 		public readonly string CornerSprite;
 		[Desc("Bounds of the corner texture.")]
 		public readonly MPos CornerSpriteBounds;
+
+		readonly TextureInfo cornerTextureInfo;
+		public Texture CornerTexture => cornerTextureInfo.GetTextures()[0];
+		public CPos CornerOffset => textureOffset(CornerSpriteBounds);
 
 		[Desc("Overlay to render over the terrain.")]
 		public readonly TextureInfo Overlay;
@@ -73,17 +69,17 @@ namespace WarriorsSnuggery.Objects
 			if (Sprite == null || Sprite == string.Empty)
 				throw new MissingNodeException(ID.ToString(), "Image");
 
-			sprite = new TextureInfo(Sprite, TextureType.ANIMATION, 0, 24, 24).GetTextures();
+			baseTextureInfo = new TextureInfo(Sprite, TextureType.RANDOM, 24, 24);
 			if (Overlaps)
 			{
 				if (EdgeSprite != null)
-					edgeSprite = new TextureInfo(EdgeSprite, TextureType.ANIMATION, 10, EdgeSpriteBounds).GetTextures();
+					edgeTextureInfo = new TextureInfo(EdgeSprite, TextureType.RANDOM, EdgeSpriteBounds);
 
 				if (CornerSprite != null)
-					cornerSprite = new TextureInfo(CornerSprite, TextureType.ANIMATION, 10, CornerSpriteBounds).GetTextures();
+					cornerTextureInfo = new TextureInfo(CornerSprite, TextureType.RANDOM, CornerSpriteBounds);
 
 				if (VerticalEdgeSprite != null)
-					verticalEdgeSprite = new TextureInfo(VerticalEdgeSprite, TextureType.ANIMATION, 10, VerticalEdgeSpriteBounds).GetTextures();
+					verticalTextureInfo = new TextureInfo(VerticalEdgeSprite, TextureType.RANDOM, VerticalEdgeSpriteBounds);
 			}
 		}
 

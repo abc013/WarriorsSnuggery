@@ -20,9 +20,9 @@
 
 		public TextureInfo(string file) : this(file, TextureType.IMAGE, 0, 0, 0, true) { }
 
-		public TextureInfo(string file, TextureType type, int tick, MPos bounds, bool searchFile = true, bool load = true) : this(file, type, tick, bounds.X, bounds.Y, searchFile, load) { }
+		public TextureInfo(string file, TextureType type, MPos bounds, int tick = 0, bool searchFile = true, bool load = true) : this(file, type, bounds.X, bounds.Y, tick, searchFile, load) { }
 
-		public TextureInfo(string file, TextureType type, int tick, int width, int height, bool searchFile = true, bool load = true)
+		public TextureInfo(string file, TextureType type, int width, int height, int tick = 0, bool searchFile = true, bool load = true)
 		{
 			if (searchFile)
 				file = FileExplorer.FindIn(FileExplorer.Misc, file);

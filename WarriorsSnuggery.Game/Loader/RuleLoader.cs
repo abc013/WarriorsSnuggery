@@ -77,14 +77,14 @@ namespace WarriorsSnuggery.Loader
 
 		static void loadUIRules()
 		{
-			UISpriteManager.Add("UI_inactiveConnection", new TextureInfo("UI_inactiveConnection", TextureType.ANIMATION, 10, 5, 3));
-			UISpriteManager.Add("UI_activeConnection", new TextureInfo("UI_activeConnection", TextureType.ANIMATION, 10, 5, 3));
+			UISpriteManager.Add("UI_inactiveConnection", new TextureInfo("UI_inactiveConnection", TextureType.ANIMATION, 5, 3, 10));
+			UISpriteManager.Add("UI_activeConnection", new TextureInfo("UI_activeConnection", TextureType.ANIMATION, 5, 3, 10));
 			UISpriteManager.Add("UI_save", "UI_save");
 			UISpriteManager.Add("UI_map", "UI_map");
 			UISpriteManager.Add("UI_money", "UI_money");
 			UISpriteManager.Add("UI_key", "UI_key");
 			UISpriteManager.Add("UI_heart", "UI_heart");
-			UISpriteManager.Add("keyboard", new TextureInfo("keyboard", TextureType.ANIMATION, 10, 24, 24));
+			UISpriteManager.Add("keyboard", new TextureInfo("keyboard", TextureType.ANIMATION, 24, 24));
 			UISpriteManager.Add("UI_selector1", "UI_selector1");
 			UISpriteManager.Add("UI_selector2", "UI_selector2");
 			UISpriteManager.Add("UI_enemy_arrow", "UI_enemy_arrow");

@@ -36,7 +36,7 @@ namespace WarriorsSnuggery.Objects
 			Position = position;
 			Type = type;
 
-			renderable = new StaticBatchRenderable(Position.ToCPos(), VAngle.Zero, type.Texture, Color.White);
+			renderable = new StaticBatchRenderable(Position.ToCPos(), VAngle.Zero, type.Texture);
 			if (type.Overlay != null)
 			{
 				overlay = new BatchSequence(type.Overlay, startRandom: true);
@@ -137,10 +137,10 @@ namespace WarriorsSnuggery.Objects
 				if (edges[i] != null)
 					continue;
 
-				if (i % 2 != 0 && Type.Texture_Edge2 != null)
-					edges[i] = new StaticBatchRenderable(calculateEdgeOffset(i, false), new VAngle(0, 0, i * -90), Type.Texture_Edge2, Color.White);
+				if (i % 2 != 0 && Type.VerticalEdgeTexture != null)
+					edges[i] = new StaticBatchRenderable(calculateEdgeOffset(i, false), new VAngle(0, 0, i * -90), Type.VerticalEdgeTexture);
 				else
-					edges[i] = new StaticBatchRenderable(calculateEdgeOffset(i, true), new VAngle(0, 0, i * -90), Type.Texture_Edge, Color.White);
+					edges[i] = new StaticBatchRenderable(calculateEdgeOffset(i, true), new VAngle(0, 0, i * -90), Type.EdgeTexture);
 			}
 
 			for (int i = 0; i < 4; i++)
@@ -154,7 +154,7 @@ namespace WarriorsSnuggery.Objects
 				if (corners[i] != null)
 					continue;
 
-				corners[i] = new StaticBatchRenderable(calculateCornerOffset(i), new VAngle(0, 0, i * -90), Type.Texture_Corner, Color.White);
+				corners[i] = new StaticBatchRenderable(calculateCornerOffset(i), new VAngle(0, 0, i * -90), Type.CornerTexture);
 			}
 		}
 
