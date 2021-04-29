@@ -111,6 +111,9 @@ namespace WarriorsSnuggery.UI.Screens
 
 		void save()
 		{
+			if (@new.Text == GameSaveManager.DefaultSaveName)
+				return;
+
 			ActiveScreen = false;
 			GameSaveManager.SaveOnNewName(game.Save, @new.Text, game);
 
