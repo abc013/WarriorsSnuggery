@@ -8,3 +8,4 @@ using System.Diagnostics.CodeAnalysis;
 
 [assembly: SuppressMessage("Style", "IDE0090:Use \"new(...)\"")]
 [assembly: SuppressMessage("Performance", "CA1825:Avoid zero-length array allocations")]
+[assembly: SuppressMessage("Style", "IDE0016:Use throw-expression")]

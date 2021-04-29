@@ -113,7 +113,7 @@ namespace WarriorsSnuggery
 			{
 				var list = weapon.Save();
 
-				writer.WriteLine("\t" + i + "=");
+				writer.WriteLine("\t" + i++ + "=");
 
 				foreach(var rule in list)
 					writer.WriteLine("\t\t" + rule);
@@ -129,7 +129,7 @@ namespace WarriorsSnuggery
 			{
 				var list = particle.Save();
 
-				writer.WriteLine("\t" + i + "=");
+				writer.WriteLine("\t" + i++ + "=");
 
 				foreach (var rule in list)
 					writer.WriteLine("\t\t" + rule);

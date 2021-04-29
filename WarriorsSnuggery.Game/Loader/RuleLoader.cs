@@ -83,6 +83,7 @@ namespace WarriorsSnuggery.Loader
 			UISpriteManager.Add("UI_map", "UI_map");
 			UISpriteManager.Add("UI_money", "UI_money");
 			UISpriteManager.Add("UI_key", "UI_key");
+			UISpriteManager.Add("UI_heart", "UI_heart");
 			UISpriteManager.Add("keyboard", new TextureInfo("keyboard", TextureType.ANIMATION, 10, 24, 24));
 			UISpriteManager.Add("UI_selector1", "UI_selector1");
 			UISpriteManager.Add("UI_selector2", "UI_selector2");

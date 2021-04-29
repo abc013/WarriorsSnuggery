@@ -1,4 +1,6 @@
-﻿namespace WarriorsSnuggery.Objects.Weapons
+﻿using System;
+
+namespace WarriorsSnuggery.Objects.Weapons
 {
 	public enum TargetType : byte
 	{
@@ -21,6 +23,7 @@
 			}
 		}
 		readonly CPos position;
+
 		public int Height
 		{
 			get
@@ -44,6 +47,9 @@
 
 		public Target(Actor target)
 		{
+			if (target == null)
+				throw new NullReferenceException($"Tried to create actor target, but targeted actor is null.");
+
 			Actor = target;
 			Type = TargetType.ACTOR;
 		}

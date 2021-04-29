@@ -21,6 +21,14 @@ namespace WarriorsSnuggery
 		int mana;
 		public int MaxMana;
 
+		public int Lifes
+		{
+			get => lives;
+			set => lives = Math.Clamp(value, 0, MaxLifes);
+		}
+		int lives;
+		public int MaxLifes;
+
 		public int Kills;
 		public int Deaths;
 
@@ -39,6 +47,8 @@ namespace WarriorsSnuggery
 			MaxMana = save.MaxMana;
 			Kills = save.Kills;
 			Deaths = save.Deaths;
+			lives = save.Lives;
+			MaxLifes = save.MaxLives;
 
 			KeyFound = save.KeyFound;
 
@@ -119,12 +129,17 @@ namespace WarriorsSnuggery
 		// Changing Values
 		public int Level { get; private set; }
 		public int Money { get; private set; }
-		public string Actor { get; private set; }
-		public float Health { get; private set; }
-		public int Mana { get; private set; }
 		public int Kills { get; private set; }
 		public int Deaths { get; private set; }
+
+		public string Actor { get; private set; }
+		public float Health { get; private set; }
+
+		public int Mana { get; private set; }
 		public int MaxMana { get; private set; }
+
+		public int Lives { get; private set; }
+		public int MaxLives { get; private set; }
 
 		public Dictionary<int, (float, float)> SpellCasters { get; private set; }
 
@@ -243,6 +258,9 @@ namespace WarriorsSnuggery
 			MaxMana = GameSaveManager.DefaultSave.MaxMana;
 			Actor = GameSaveManager.DefaultSave.Actor;
 			Seed = seed;
+
+			Lives = hardcore ? 1 : 3;
+			MaxLives = Lives;
 		}
 
 		GameSave()
@@ -256,6 +274,7 @@ namespace WarriorsSnuggery
 			var score = Level * 100 / FinalLevel;
 			score += Kills * 5;
 			score += Money * 2;
+			score += Lives * 25;
 			// Negative Points
 			score -= Deaths * 25;
 			return score;
@@ -263,6 +282,9 @@ namespace WarriorsSnuggery
 
 		public void IncreaseDeathCount()
 		{
+			if (Lives > 0)
+				Lives--;
+
 			Deaths++;
 		}
 
@@ -284,6 +306,8 @@ namespace WarriorsSnuggery
 				writer.WriteLine($"{nameof(MaxMana)}= {MaxMana}");
 				writer.WriteLine($"{nameof(Kills)}= {Kills}");
 				writer.WriteLine($"{nameof(Deaths)}= {Deaths}");
+				writer.WriteLine($"{nameof(Lives)}= {Lives}");
+				writer.WriteLine($"{nameof(MaxLives)}= {MaxLives}");
 				writer.WriteLine($"{nameof(CurrentObjective)}= {CurrentObjective}");
 				writer.WriteLine($"{nameof(CurrentMission)}= {CurrentMission}");
 				writer.WriteLine($"{nameof(CurrentMapType)}= {MapCreator.GetName(CurrentMapType)}");
@@ -315,9 +339,9 @@ namespace WarriorsSnuggery
 				writer.WriteLine($"{nameof(Actor)}= {Actor}");
 				writer.WriteLine($"{nameof(Health)}= {Health}");
 
-				writer.Write($"{nameof(UnlockedSpells)}={string.Join(',', UnlockedSpells)}");
-				writer.Write($"{nameof(UnlockedActors)}={string.Join(',', UnlockedActors)}");
-				writer.Write($"{nameof(UnlockedTrophies)}={string.Join(',', UnlockedTrophies)}");
+				writer.WriteLine($"{nameof(UnlockedSpells)}={string.Join(',', UnlockedSpells)}");
+				writer.WriteLine($"{nameof(UnlockedActors)}={string.Join(',', UnlockedActors)}");
+				writer.WriteLine($"{nameof(UnlockedTrophies)}={string.Join(',', UnlockedTrophies)}");
 
 				if (!string.IsNullOrEmpty(Script))
 				{
@@ -364,6 +388,8 @@ namespace WarriorsSnuggery
 			MaxMana = stats.MaxMana;
 			Deaths = stats.Deaths;
 			Kills = stats.Kills;
+			Lives = stats.Lifes;
+			MaxLives = stats.MaxLifes;
 
 			SpellCasters = new Dictionary<int, (float, float)>(stats.SpellCasters);
 

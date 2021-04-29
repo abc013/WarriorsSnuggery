@@ -15,7 +15,8 @@ namespace WarriorsSnuggery.Objects.Parts
 		MANA,
 		TEXT,
 		KEY,
-		TROPHY
+		TROPHY,
+		LIFE
 	}
 
 	[Desc("Attach to an actor to make it trigger an effect when an actor gets near.")]
@@ -196,6 +197,10 @@ namespace WarriorsSnuggery.Objects.Parts
 						return true;
 					case CollectableType.TROPHY:
 						a.World.TrophyCollected(info.Text[0]);
+
+						return true;
+					case CollectableType.LIFE:
+						a.World.Game.Stats.Lifes += info.Value;
 
 						return true;
 					default:

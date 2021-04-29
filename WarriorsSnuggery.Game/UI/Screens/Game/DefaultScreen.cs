@@ -45,6 +45,7 @@ namespace WarriorsSnuggery.UI.Screens
 			var top = Top + 512 + margin;
 
 			Add(new MoneyDisplay(game) { Position = new CPos(Left + 1536 + shift, top, 0) });
+			Add(new HealthDisplay(game) { Position = new CPos(Left + 4096 + shift + margin, top, 0) });
 
 			if (game.ObjectiveType == ObjectiveType.FIND_EXIT)
 				Add(new KeyDisplay(game) { Position = new CPos(Left + 712 + shift, top + 1536 + shift + 128, 0) });

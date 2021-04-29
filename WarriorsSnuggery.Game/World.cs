@@ -178,7 +178,16 @@ namespace WarriorsSnuggery
 		{
 			Game.Stats.Deaths++;
 			Game.Save.IncreaseDeathCount();
-			Game.DefeatConditionsMet();
+
+			if (Game.Stats.Lifes == 0)
+			{
+				Game.DefeatConditionsMet();
+				return;
+			}
+
+			Game.Stats.Lifes--;
+			LocalPlayer = ActorCreator.Create(this, Game.Save.Actor, Map.PlayerSpawn, Actor.PlayerTeam, isPlayer: true);
+			Add(LocalPlayer);
 		}
 
 		public bool CheckCollision(SimplePhysics physics)
