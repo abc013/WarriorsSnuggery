@@ -6,6 +6,13 @@ using WarriorsSnuggery.Objects;
 
 namespace WarriorsSnuggery.UI.Objects
 {
+	public enum InputType
+	{
+		NORMAL,
+		NUMBERS,
+		PATH
+	}
+
 	public class TextBox : Panel
 	{
 		const int margin = UIUtils.TextMargin;
@@ -17,47 +24,49 @@ namespace WarriorsSnuggery.UI.Objects
 			{
 				base.Position = value;
 
-				text.Position = value + new CPos(128, 0, 0);
+				textline.Position = value + new CPos(128, 0, 0);
 			}
 		}
 
 		public bool Selected;
 		public string Text
 		{
-			get => realText;
+			get => text;
 			set
 			{
-				realText = value;
-				text.SetText(realText);
+				text = value;
+				textline.SetText(text);
 			}
 		}
-		string realText;
+		string text;
 		public readonly int MaximumLength;
-		public readonly bool OnlyNumbers;
-		public readonly bool IsPath;
+		public readonly InputType Type;
 
-		readonly UITextLine text;
+		readonly UITextLine textline;
 
 		public Action OnEnter;
 		public Action OnType;
 
-		public TextBox(string text, string typeName, int maximumLength = 10, bool onlyNumbers = false, bool isPath = false) : this(text, PanelManager.Get(typeName), maximumLength, onlyNumbers, isPath) { }
+		public TextBox(string typeName, int maximumLength = 10, InputType type = InputType.NORMAL) : this(PanelManager.Get(typeName), maximumLength, type) { }
 
-		public TextBox(string text, PanelType type, int maximumLength = 10, bool onlyNumbers = false, bool isPath = false) : base(new MPos(margin + FontManager.Pixel16.Width * maximumLength / 2, margin + FontManager.Pixel16.Height / 2), type)
+		public TextBox(PanelType panelType, int maximumLength = 10, InputType type = InputType.NORMAL) : base(calculateBounds(maximumLength), panelType)
 		{
-			realText = text;
 			MaximumLength = maximumLength;
-			OnlyNumbers = onlyNumbers;
-			IsPath = isPath;
-			this.text = new UITextLine(FontManager.Pixel16, TextOffset.MIDDLE) { Position = new CPos(128, 0, 0) };
-			this.text.SetText(text);
+			Type = type;
+
+			textline = new UITextLine(FontManager.Pixel16, TextOffset.MIDDLE) { Position = new CPos(128, 0, 0) };
+		}
+
+		static MPos calculateBounds(int maximumLength)
+		{
+			return new MPos(margin + FontManager.Pixel16.Width * maximumLength / 2, margin + FontManager.Pixel16.Height / 2);
 		}
 
 		public override void Render()
 		{
 			HighlightVisible = Selected;
 			base.Render();
-			text.Render();
+			textline.Render();
 		}
 
 		public override void Tick()
@@ -70,14 +79,17 @@ namespace WarriorsSnuggery.UI.Objects
 
 			if (Selected)
 			{
+				if (text.Length >= MaximumLength)
+					return;
+
 				var input = KeyInput.Text;
-				if (realText.Length < MaximumLength && !string.IsNullOrEmpty(input))
+				if (!string.IsNullOrEmpty(input))
 				{
-					if (OnlyNumbers && !int.TryParse(input, out _))
+					var toAdd = input;
+					if (Type == InputType.NUMBERS && !int.TryParse(input, out _))
 						return;
 
-					var toAdd = input;
-					if (IsPath)
+					if (Type == InputType.PATH)
 					{
 						toAdd = string.Empty;
 
@@ -91,8 +103,8 @@ namespace WarriorsSnuggery.UI.Objects
 							return;
 					}
 
-					text.AddText(toAdd);
-					realText += toAdd;
+					textline.AddText(toAdd);
+					text += toAdd;
 					OnType?.Invoke();
 				}
 			}
@@ -112,8 +124,8 @@ namespace WarriorsSnuggery.UI.Objects
 
 			if (Text.Length > 0 && (key == Keys.Backspace || key == Keys.Delete))
 			{
-				realText = Text[0..^1];
-				text.SetText(Text);
+				text = Text[0..^1];
+				textline.SetText(Text);
 				OnType?.Invoke();
 			}
 		}

@@ -28,7 +28,11 @@ namespace WarriorsSnuggery.UI.Screens
 			name.SetText("Name: ");
 			Add(name);
 
-			nameInput = new TextBox("Name", "wooden", 15, isPath: true) { Position = new CPos(1024, 0, 0) };
+			nameInput = new TextBox("wooden", 15, InputType.PATH)
+			{
+				Position = new CPos(1024, 0, 0),
+				Text = "Name"
+			};
 			Add(nameInput);
 
 			var difficulty = new UITextLine(FontManager.Pixel16, TextOffset.RIGHT) { Position = new CPos(-2048, 1024, 0) };
@@ -49,7 +53,11 @@ namespace WarriorsSnuggery.UI.Screens
 			seed.SetText("Seed: ");
 			Add(seed);
 
-			seedInput = new TextBox(getSeed(), "wooden", 7, true) { Position = new CPos(1024, 3072, 0) };
+			seedInput = new TextBox("wooden", 7, InputType.NUMBERS)
+			{
+				Position = new CPos(1024, 3072, 0),
+				Text = getSeed()
+			};
 			Add(seedInput);
 			Add(new Button("Generate", "wooden", () => { seedInput.Text = getSeed(); }) { Position = new CPos(6144, 3072, 0) });
 

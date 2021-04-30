@@ -99,11 +99,24 @@ namespace WarriorsSnuggery.UI.Screens
 			size.SetText("Size of Piece");
 			Add(size);
 
-			sizeX = new TextBox("16", "wooden", 2, true) { Position = new CPos(-1024, 0, 0) };
+			sizeX = new TextBox("wooden", 2, InputType.NUMBERS)
+			{
+				Position = new CPos(-1024, 0, 0),
+				Text = "16"
+			};
 			Add(sizeX);
-			sizeY = new TextBox("16", "wooden", 2, true) { Position = new CPos(1024, 0, 0) };
+
+			sizeY = new TextBox("wooden", 2, InputType.NUMBERS)
+			{
+				Position = new CPos(1024, 0, 0),
+				Text = "16"
+			};
 			Add(sizeY);
-			name = new TextBox("unnamed piece", "wooden", 20, isPath: true) { Position = new CPos(0, 1536, 0) };
+			name = new TextBox("wooden", 20, InputType.PATH)
+			{
+				Position = new CPos(0, 1536, 0),
+				Text = "unnamed piece"
+			};
 			Add(name);
 
 			var warning = new UITextLine(FontManager.Pixel16, TextOffset.MIDDLE)

@@ -107,7 +107,11 @@ namespace WarriorsSnuggery.UI.Screens
 			var create = new Button("Save", "wooden", save) { Position = new CPos(0, 6144, 0) };
 			Add(create);
 
-			@new = new TextBox(game.Save.Name, "wooden", 20, isPath: true) { OnEnter = save };
+			@new = new TextBox("wooden", 20, InputType.PATH)
+			{
+				Text = game.Save.Name,
+				OnEnter = save
+			};
 			Add(@new);
 		}
 

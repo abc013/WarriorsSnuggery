@@ -46,9 +46,10 @@ namespace WarriorsSnuggery.UI.Screens
 			}) { Position = new CPos(-1536, -3000, 0) };
 			Add(fullscreenCheck);
 
-			widthWrite = new TextBox(Settings.Width + "", "wooden", 5, true)
+			widthWrite = new TextBox("wooden", 5, InputType.NUMBERS)
 			{
 				Position = new CPos(-2048, -2300, 0),
+				Text = Settings.Width.ToString(),
 				OnEnter = () =>
 				{
 					var parse = int.Parse(widthWrite.Text);
@@ -60,9 +61,10 @@ namespace WarriorsSnuggery.UI.Screens
 			};
 			Add(widthWrite);
 
-			heightWrite = new TextBox(Settings.Height + "", "wooden", 5, true)
+			heightWrite = new TextBox("wooden", 5, InputType.NUMBERS)
 			{
 				Position = new CPos(-2048, -1600, 0),
+				Text = Settings.Height.ToString(),
 				OnEnter = () =>
 				{
 					var parse = int.Parse(heightWrite.Text);
@@ -124,9 +126,10 @@ namespace WarriorsSnuggery.UI.Screens
 			frameLimiter.SetText("Framelimiter (0 = disabled):");
 			Add(frameLimiter);
 
-			frameLimiterWrite = new TextBox(Settings.FrameLimiter + "", "wooden", 2, true)
+			frameLimiterWrite = new TextBox("wooden", 2, InputType.NUMBERS)
 			{
 				Position = new CPos(5120, 1000, 0),
+				Text = Settings.FrameLimiter.ToString(),
 				OnEnter = () =>
 				{
 					var number = int.Parse(frameLimiterWrite.Text);

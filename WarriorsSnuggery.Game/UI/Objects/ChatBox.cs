@@ -14,7 +14,7 @@ namespace WarriorsSnuggery.UI.Objects
 		{
 			panel = new TextPanel(new MPos(8120, 2048), FontManager.Pixel16, "stone") { Position = position };
 
-			input = new TextBox(string.Empty, "wooden", 45)
+			input = new TextBox("wooden", 45)
 			{
 				Position = position + new CPos(-800, 2048 + 512, 0),
 				OnEnter = SendText

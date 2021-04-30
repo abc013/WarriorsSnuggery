@@ -88,7 +88,7 @@ namespace WarriorsSnuggery.UI.Objects.Editor
 			rasterizationText = new UITextLine(FontManager.Pixel16);
 			rasterizationText.SetText("align");
 
-			teamTextBox = new TextBox("0", "wooden", 1, true);
+			teamTextBox = new TextBox("wooden", 1, InputType.NUMBERS) { Text = "0" };
 			teamTextText = new UITextLine(FontManager.Pixel16);
 			teamTextText.SetText("team");
 
