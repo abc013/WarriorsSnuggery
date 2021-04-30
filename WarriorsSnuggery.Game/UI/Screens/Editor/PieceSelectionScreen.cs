@@ -71,6 +71,9 @@ namespace WarriorsSnuggery.UI.Screens
 				createPieceScreen.KeyDown(key, isControl, isShift, isAlt);
 				return;
 			}
+
+			base.KeyDown(key, isControl, isShift, isAlt);
+
 			if (key == Keys.Escape)
 				game.ShowScreen(ScreenType.MENU);
 		}
@@ -114,6 +117,8 @@ namespace WarriorsSnuggery.UI.Screens
 
 		public override void KeyDown(Keys key, bool isControl, bool isShift, bool isAlt)
 		{
+			base.KeyDown(key, isControl, isShift, isAlt);
+
 			if (key == Keys.Escape)
 				ActiveScreen = false;
 		}

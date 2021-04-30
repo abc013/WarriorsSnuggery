@@ -17,6 +17,8 @@ namespace WarriorsSnuggery.UI.Screens
 
 		public override void KeyDown(Keys key, bool isControl, bool isShift, bool isAlt)
 		{
+			base.KeyDown(key, isControl, isShift, isAlt);
+
 			if (key == Settings.GetKey("Pause"))
 				game.ShowScreen(ScreenType.DEFAULT, false);
 		}

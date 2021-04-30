@@ -6,14 +6,26 @@ namespace WarriorsSnuggery
 {
 	public static class KeyInput
 	{
+		static KeyboardState state => window.KeyboardState;
+		static Window window;
+
 		public readonly static char[] InvalidFileNameChars;
 
-		public static KeyboardState State;
-		public static int HitCooldown;
+		public static string Text;
 
 		static KeyInput()
 		{
 			InvalidFileNameChars = Path.GetInvalidFileNameChars();
+		}
+
+		public static void SetWindow(Window window)
+		{
+			KeyInput.window = window;
+		}
+
+		public static void Tick()
+		{
+			Text = string.Empty;
 		}
 
 		public static Keys ToKey(string key)
@@ -21,25 +33,17 @@ namespace WarriorsSnuggery
 			return (Keys)Enum.Parse(typeof(Keys), key, true);
 		}
 
-		public static bool IsKeyDown(Keys key, int coolDownWhenHit = 0)
+		public static bool IsKeyDown(Keys key)
 		{
-			if (State == null)
+			if (state == null)
 				return false;
 
-			if (HitCooldown > 0 || !State.IsAnyKeyDown || !WindowInfo.Focused)
+			if (!state.IsAnyKeyDown || !WindowInfo.Focused)
 				return false;
 
-			bool hit = State.IsKeyDown(key);
-
-			if (hit)
-				HitCooldown = coolDownWhenHit;
+			bool hit = state.IsKeyDown(key);
 
 			return hit;
-		}
-
-		public static void Tick()
-		{
-			HitCooldown--;
 		}
 	}
 }

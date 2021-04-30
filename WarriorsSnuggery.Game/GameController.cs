@@ -11,9 +11,6 @@ namespace WarriorsSnuggery
 
 		public static void Tick()
 		{
-			KeyInput.Tick();
-			MouseInput.Tick();
-
 			game.Tick();
 		}
 

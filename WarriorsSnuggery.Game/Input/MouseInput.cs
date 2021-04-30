@@ -5,10 +5,12 @@ namespace WarriorsSnuggery
 {
 	public static class MouseInput
 	{
-		public static MouseState State;
-		public static int WheelState;
-		public static CPos WindowPosition;
-		public static CPos GamePosition;
+		static MouseState state => window.MouseState;
+		static Window window;
+
+		public static int WheelState { get; private set; }
+		public static CPos WindowPosition { get; private set; }
+		public static CPos GamePosition { get; private set; }
 		static Vector vPos;
 
 		public static bool IsLeftDown { get; private set; }
@@ -20,20 +22,26 @@ namespace WarriorsSnuggery
 		public static bool IsMiddleClicked { get; private set; }
 		public static bool IsRightClicked { get; private set; }
 
+		public static void SetWindow(Window window)
+		{
+			MouseInput.window = window;
+		}
+
 		public static void Tick()
 		{
+			WheelState = 0;
+
 			if (!WindowInfo.Focused)
 			{
-				WheelState = 0;
 				IsLeftClicked = IsLeftDown = false;
 				IsMiddleClicked = IsMiddleDown = false;
 				IsRightClicked = IsRightDown = false;
 				return;
 			}
 
-			IsLeftDown = State.IsButtonDown(MouseButton.Left);
-			IsMiddleDown = State.IsButtonDown(MouseButton.Middle);
-			IsRightDown = State.IsButtonDown(MouseButton.Right);
+			IsLeftDown = state.IsButtonDown(MouseButton.Left);
+			IsMiddleDown = state.IsButtonDown(MouseButton.Middle);
+			IsRightDown = state.IsButtonDown(MouseButton.Right);
 			IsLeftClicked = !IsLeftDown && leftPressed;
 			IsMiddleClicked = !IsMiddleDown && middlePressed;
 			IsRightClicked = !IsRightDown && rightPressed;
@@ -49,6 +57,11 @@ namespace WarriorsSnuggery
 
 			WindowPosition = (vPos * new Vector(Camera.DefaultZoom, Camera.DefaultZoom, 1)).ToCPos();
 			GamePosition = (vPos * new Vector(Camera.CurrentZoom, Camera.CurrentZoom, 1)).ToCPos() + Camera.LookAt;
+		}
+
+		public static void UpdateWheelState(int state)
+		{
+			WheelState = state;
 		}
 
 		public static void RecalculateMousePosition()

@@ -70,24 +70,10 @@ namespace WarriorsSnuggery.UI.Objects
 
 			if (Selected)
 			{
-				if (KeyInput.IsKeyDown(Keys.Enter, 7))
-				{
-					Selected = false;
-					OnEnter?.Invoke();
-					return;
-				}
-				if (Text.Length > 0 && (KeyInput.IsKeyDown(Keys.Backspace, 5) || KeyInput.IsKeyDown(Keys.Delete, 5)))
-				{
-					realText = Text[0..^1];
-					text.SetText(Text);
-					OnType?.Invoke();
-					return;
-				}
-
-				var input = Window.StringInput;
+				var input = KeyInput.Text;
 				if (realText.Length < MaximumLength && !string.IsNullOrEmpty(input))
 				{
-					if (OnlyNumbers && !int.TryParse(input + "", out _))
+					if (OnlyNumbers && !int.TryParse(input, out _))
 						return;
 
 					var toAdd = input;
@@ -109,6 +95,26 @@ namespace WarriorsSnuggery.UI.Objects
 					realText += toAdd;
 					OnType?.Invoke();
 				}
+			}
+		}
+
+		public override void KeyDown(Keys key, bool isControl, bool isShift, bool isAlt)
+		{
+			if (!Selected)
+				return;
+
+			if (key == Keys.Enter)
+			{
+				Selected = false;
+				OnEnter?.Invoke();
+				return;
+			}
+
+			if (Text.Length > 0 && (key == Keys.Backspace || key == Keys.Delete))
+			{
+				realText = Text[0..^1];
+				text.SetText(Text);
+				OnType?.Invoke();
 			}
 		}
 	}

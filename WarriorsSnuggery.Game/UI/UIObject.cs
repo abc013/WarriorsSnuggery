@@ -1,4 +1,5 @@
-﻿using WarriorsSnuggery.Graphics;
+﻿using OpenTK.Windowing.GraphicsLibraryFramework;
+using WarriorsSnuggery.Graphics;
 
 namespace WarriorsSnuggery.UI
 {
@@ -60,5 +61,7 @@ namespace WarriorsSnuggery.UI
 
 			ContainsMouse = mouse.X > Position.X - w && mouse.X < Position.X + w && mouse.Y > Position.Y - h && mouse.Y < Position.Y + h;
 		}
+
+		public virtual void KeyDown(Keys key, bool isControl, bool isShift, bool isAlt) { }
 	}
 }

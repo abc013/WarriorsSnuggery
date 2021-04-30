@@ -33,9 +33,6 @@ namespace WarriorsSnuggery
 	{
 		static Window current;
 
-		public static string StringInput;
-		public static Keys KeyInput;
-
 		public static uint GlobalTick;
 		public static uint GlobalRender;
 
@@ -124,6 +121,9 @@ namespace WarriorsSnuggery
 
 			base.OnLoad();
 
+			KeyInput.SetWindow(this);
+			MouseInput.SetWindow(this);
+
 			// Load icon
 			var iconData = BitmapLoader.LoadBytes(FileExplorer.FindIn(FileExplorer.Misc, "warsnu"), out var iconWidth, out var iconHeight);
 			Icon = new WindowIcon(new Image(iconWidth, iconHeight, iconData));
@@ -161,15 +161,11 @@ namespace WarriorsSnuggery
 			if (GlobalTick % 20 == 0)
 				timer.Restart();
 
-			MouseInput.State = MouseState;
-			WarriorsSnuggery.KeyInput.State = KeyboardState;
-
 			GameController.Tick();
 			AudioController.Tick();
 
-			MouseInput.WheelState = 0;
-			StringInput = string.Empty;
-			KeyInput = Keys.End;
+			MouseInput.Tick();
+			KeyInput.Tick();
 
 			if (GlobalTick % 20 == 0)
 			{
@@ -203,7 +199,9 @@ namespace WarriorsSnuggery
 				FPS = 1 / e.Time;
 
 				Log.WritePerformance(FMS, " render " + GlobalRender);
-				Title = Program.Title + " | " + MasterRenderer.RenderCalls + " Calls | " + MasterRenderer.Batches + " Batches | " + MasterRenderer.BatchCalls + " BatchCalls";
+
+				if (Settings.DeveloperMode || Program.IsDebug)
+					Title = Program.Title + " | " + MasterRenderer.RenderCalls + " Calls | " + MasterRenderer.Batches + " Batches";
 			}
 
 			GlobalRender++;
@@ -240,18 +238,16 @@ namespace WarriorsSnuggery
 
 		protected override void OnMouseWheel(MouseWheelEventArgs e)
 		{
-			MouseInput.WheelState = (int)e.OffsetY;
+			MouseInput.UpdateWheelState((int)e.OffsetY);
 		}
 
 		protected override void OnTextInput(TextInputEventArgs e)
 		{
-			StringInput = e.AsString;
+			KeyInput.Text = e.AsString;
 		}
 
 		protected override void OnKeyDown(KeyboardKeyEventArgs e)
 		{
-			KeyInput = e.Key;
-
 			if (e.Key == Keys.N)
 				AudioController.Music.Next();
 

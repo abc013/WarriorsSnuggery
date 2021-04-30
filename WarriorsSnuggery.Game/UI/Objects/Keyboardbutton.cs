@@ -68,19 +68,19 @@ namespace WarriorsSnuggery.UI.Objects
 				blinkTick = 0;
 			}
 
-			if (selected)
-			{
-				if (blinkTick-- < 0)
-					blinkTick = 20;
+			if (selected && blinkTick-- < 0)
+				blinkTick = 20;
+		}
 
-				if (Window.KeyInput != Keys.End)
-				{
-					Key = Window.KeyInput;
-					keyDisplay.SetText(Key);
-					selected = false;
-					blinkTick = 0;
-				}
-			}
+		public override void KeyDown(Keys key, bool isControl, bool isShift, bool isAlt)
+		{
+			if (!selected)
+				return;
+
+			Key = key;
+			keyDisplay.SetText(Key);
+			selected = false;
+			blinkTick = 0;
 		}
 	}
 }

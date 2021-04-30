@@ -78,12 +78,12 @@ namespace WarriorsSnuggery.UI.Objects
 					Highlight.SetPosition(Position + new CPos(-SelectableBounds.X + x * 2 * ItemSize.X + ItemSize.X, -SelectableBounds.Y + y * 2 * ItemSize.Y + ItemSize.Y, 0));
 				}
 
-				if ((scrolled < Math.Floor(Container.Count / (float)Size.X - Size.Y) + 1) && (KeyInput.IsKeyDown(Keys.Down, 5) || MouseInput.WheelState > 0))
+				if ((scrolled < Math.Floor(Container.Count / (float)Size.X - Size.Y) + 1) && (KeyInput.IsKeyDown(Keys.Down) || MouseInput.WheelState > 0))
 				{
 					scrolled++;
 					updatePositions();
 				}
-				if (scrolled != 0 && (KeyInput.IsKeyDown(Keys.Up, 5) || MouseInput.WheelState < 0))
+				if (scrolled != 0 && (KeyInput.IsKeyDown(Keys.Up) || MouseInput.WheelState < 0))
 				{
 					scrolled--;
 					updatePositions();

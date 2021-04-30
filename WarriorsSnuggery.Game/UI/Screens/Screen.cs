@@ -41,7 +41,11 @@ namespace WarriorsSnuggery.UI.Screens
 
 		public virtual void Hide() { }
 
-		public virtual void KeyDown(Keys key, bool isControl, bool isShift, bool isAlt) { }
+		public virtual void KeyDown(Keys key, bool isControl, bool isShift, bool isAlt)
+		{
+			foreach (var @object in content)
+				@object.KeyDown(key, isControl, isShift, isAlt);
+		}
 
 		public virtual void Tick()
 		{
