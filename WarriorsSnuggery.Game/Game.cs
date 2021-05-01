@@ -129,13 +129,13 @@ namespace WarriorsSnuggery
 
 			World = new World(this, Seed, Save);
 
-			if (!string.IsNullOrEmpty(map.MissionScript))
+			if (!string.IsNullOrEmpty(map.MissionScript) && !Program.DisableScripts)
 			{
 				var scriptLoader = new MissionScriptLoader(FileExplorer.FindIn(FileExplorer.Maps, map.MissionScript, ".cs"), map.MissionScript);
 				script = scriptLoader.Start(this);
 			}
 			else
-				Log.WriteDebug("No mission script existing.");
+				Log.WriteDebug(Program.DisableScripts ? "mission scripts are disabled." : "No mission script existing.");
 
 			if (ObjectiveType == ObjectiveType.SURVIVE_WAVES)
 				waveController = new WaveController(this);

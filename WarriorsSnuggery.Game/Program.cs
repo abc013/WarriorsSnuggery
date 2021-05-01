@@ -20,6 +20,7 @@ namespace WarriorsSnuggery
 		public static bool StartEditor;
 		public static bool DisableShroud;
 		public static bool IgnoreTech;
+		public static bool DisableScripts;
 		public static string Piece;
 		public static string MapType;
 
@@ -63,6 +64,8 @@ namespace WarriorsSnuggery
 					DisableShroud = true;
 				else if (arg == "-ignore-tech")
 					IgnoreTech = true;
+				else if (arg == "-disable-scripts")
+					DisableScripts = true;
 				else if (arg == "-use-piece")
 					Piece = args[++i];
 				else if (arg == "-map-type")
