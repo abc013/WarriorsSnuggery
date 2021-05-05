@@ -49,8 +49,7 @@ namespace WarriorsSnuggery.UI.Screens
 			information = new UITextBlock(FontManager.Pixel16, TextOffset.LEFT, "Select an actor for further information.", "", "", "Cost: -") { Position = new CPos(-7900, 0, 0) };
 			Add(information);
 
-			var money = new MoneyDisplay(game) { Position = new CPos(Left + 2048, Bottom - 1024, 0) };
-			Add(money);
+			Add(new MoneyDisplay(game) { Position = new CPos(Left + 2048, Bottom - 1024, 0) });
 		}
 
 		void selectActor(ActorType actor)

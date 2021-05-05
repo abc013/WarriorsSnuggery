@@ -8,6 +8,7 @@ namespace WarriorsSnuggery.Objects.Parts
 		NEW_NORMAL_GAME,
 		SPELL_SHOP,
 		ACTOR_SHOP,
+		LIFE_SHOP,
 		TROPHY_COLLECTION,
 		CREDITS
 	}
@@ -118,6 +119,10 @@ namespace WarriorsSnuggery.Objects.Parts
 						return true;
 					case ScreenType.ACTOR_SHOP:
 						game.ShowScreen(UI.Screens.ScreenType.ACTORSHOP);
+
+						return true;
+					case ScreenType.LIFE_SHOP:
+						game.ShowScreen(UI.Screens.ScreenType.LIFESHOP);
 
 						return true;
 					case ScreenType.TROPHY_COLLECTION:

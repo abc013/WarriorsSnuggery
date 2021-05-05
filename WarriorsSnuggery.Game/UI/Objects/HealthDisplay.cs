@@ -13,7 +13,7 @@ namespace WarriorsSnuggery.UI.Objects
 				base.Position = value;
 
 				for (var i = 0; i < hearts.Count; i++)
-					hearts[i].SetPosition(value + new CPos(-712 + 512 * hearts.Count, 0, 0));
+					setPosition(i);
 			}
 		}
 
@@ -60,8 +60,8 @@ namespace WarriorsSnuggery.UI.Objects
 			while (hearts.Count < game.Stats.MaxLifes)
 			{
 				var heart = new BatchObject(UISpriteManager.Get("UI_heart")[0]);
-				heart.SetPosition(Position + new CPos(-512 + 512 * hearts.Count, 0, 0));
 				hearts.Add(heart);
+				setPosition(hearts.Count - 1);
 			}
 
 			var currentLifes = game.Stats.Lifes;
@@ -69,6 +69,15 @@ namespace WarriorsSnuggery.UI.Objects
 				tick = 120;
 
 			lifes = currentLifes;
+		}
+
+		void setPosition(int i)
+		{
+			// 3 per row
+			var x = -512 + 512 * (i % 3);
+			var y = -256 + 512 * (i / 3);
+
+			hearts[i].SetPosition(Position + new CPos(x, y, 0));
 		}
 
 		public override void Render()

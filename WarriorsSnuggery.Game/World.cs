@@ -141,7 +141,10 @@ namespace WarriorsSnuggery
 
 			Game.AddInfoMessage(250, "Trophy collected!");
 			Game.Stats.AddTrophy(collected);
-			Game.Stats.MaxMana += TrophyManager.Trophies[collected].MaxManaIncrease;
+
+			var trophy = TrophyManager.Trophies[collected];
+			Game.Stats.MaxMana += trophy.MaxManaIncrease;
+			Game.Stats.MaxLifes += trophy.MaxLifesIncrease;
 		}
 
 		public void FinishPlayerSwitch(Actor @new)

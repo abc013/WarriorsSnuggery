@@ -23,10 +23,10 @@ namespace WarriorsSnuggery
 
 		public int Lifes
 		{
-			get => lives;
-			set => lives = Math.Clamp(value, 0, MaxLifes);
+			get => lifes;
+			set => lifes = Math.Clamp(value, 0, MaxLifes);
 		}
-		int lives;
+		int lifes;
 		public int MaxLifes;
 
 		public int Kills;
@@ -47,7 +47,7 @@ namespace WarriorsSnuggery
 			MaxMana = save.MaxMana;
 			Kills = save.Kills;
 			Deaths = save.Deaths;
-			lives = save.Lives;
+			lifes = save.Lives;
 			MaxLifes = save.MaxLives;
 
 			KeyFound = save.KeyFound;
@@ -117,6 +117,11 @@ namespace WarriorsSnuggery
 		public bool TrophyUnlocked(string name)
 		{
 			return UnlockedTrophies.Contains(name);
+		}
+
+		public int NextLifePrice()
+		{
+			return 100 * lifes * lifes + 50;
 		}
 	}
 

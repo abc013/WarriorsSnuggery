@@ -42,6 +42,17 @@ actors_pad=
 		Radius=512
 		OnlyByPlayer=yes
 
+lifes_pad=
+	AnimatedSprite=
+		Name=lifes_pad
+		Dimensions=24,16
+		Offset=0,0,-2048
+		UseAsPreview=true
+	OpenScreen=
+		Type=LIFE_SHOP
+		Radius=512
+		OnlyByPlayer=yes
+
 trophies_pad=
 	AnimatedSprite=
 		Name=trophy_pad

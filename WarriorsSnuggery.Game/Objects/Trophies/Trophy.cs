@@ -16,6 +16,8 @@ namespace WarriorsSnuggery.Trophies
 
 		[Desc("Increases maximal mana value for the player.")]
 		public readonly int MaxManaIncrease;
+		[Desc("Increases the max lifes for the player.")]
+		public readonly int MaxLifesIncrease;
 		[Desc("Gives a condition with the following name when collected.")]
 		public readonly string ConditionName;
 

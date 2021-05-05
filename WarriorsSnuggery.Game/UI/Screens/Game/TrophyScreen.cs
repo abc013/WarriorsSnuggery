@@ -39,7 +39,7 @@ namespace WarriorsSnuggery.UI.Screens
 
 			Add(new Panel(new MPos(8 * 1024, 1024), "stone") { Position = new CPos(0, 1024, 0) });
 
-			information = new UITextBlock(FontManager.Pixel16, TextOffset.LEFT, "Select a trophy for further information.", "", "") { Position = new CPos(-7900, 512, 0) };
+			information = new UITextBlock(FontManager.Pixel16, TextOffset.LEFT, "Select a trophy for further information.", "", "", "") { Position = new CPos(-7900, 512 - 128, 0) };
 			Add(information);
 
 			Add(new Button("Resume", "wooden", () => game.ShowScreen(ScreenType.DEFAULT, false)) { Position = new CPos(0, 6144, 0) });
@@ -49,15 +49,17 @@ namespace WarriorsSnuggery.UI.Screens
 		{
 			if (!game.Stats.TrophyUnlocked(name))
 			{
-				information.Lines[0].WriteText(Color.Red + "Locked Trophy");
+				information.Lines[0].WriteText(Color.Red + "Trophy Locked.");
 				information.Lines[1].WriteText(Color.Grey + " ");
 				information.Lines[2].WriteText(Color.Grey + " ");
+				information.Lines[3].WriteText(Color.Grey + " ");
 				return;
 			}
 
 			information.Lines[0].WriteText(Color.White + trophy.Name);
 			information.Lines[1].WriteText(Color.Grey + trophy.Description);
 			information.Lines[2].WriteText(Color.Grey + (trophy.MaxManaIncrease != 0 ? "Gives " + Color.Blue + trophy.MaxManaIncrease + Color.Grey + " additional mana storage!" : " "));
+			information.Lines[3].WriteText(Color.Grey + (trophy.MaxLifesIncrease != 0 ? "Gives " + Color.Red + trophy.MaxLifesIncrease + Color.Grey + $" additional life{(trophy.MaxLifesIncrease > 1 ? "s" : "")}!" : " "));
 		}
 
 		public override void KeyDown(Keys key, bool isControl, bool isShift, bool isAlt)

@@ -18,6 +18,7 @@ beamboss=
 	Image=trophy_beam
 		Size=12,24
 	MaxManaIncrease=50
+	MaxLifesIncrease=1
 
 slimeboss=
 	Name=Slimy Business
@@ -25,6 +26,7 @@ slimeboss=
 	Image=trophy_slime
 		Size=12,24
 	MaxManaIncrease=75
+	MaxLifesIncrease=1
 	
 cannonboss=
 	Name=Not Today, Thank You
@@ -32,3 +34,4 @@ cannonboss=
 	Image=trophy_cannon
 		Size=12,24
 	MaxManaIncrease=100
+	MaxLifesIncrease=1
