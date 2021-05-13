@@ -43,6 +43,8 @@ namespace WarriorsSnuggery.Objects
 
 		[Desc("Overlay to render over the terrain.")]
 		public readonly TextureInfo Overlay;
+		[Desc("Overlay to render over the terrain.")]
+		public readonly bool UnifyOverlayTick = true;
 
 		[Desc("Speed modifier for actors.")]
 		public readonly float Speed;

@@ -35,6 +35,12 @@
 			}
 		}
 
+		public void SetTick(int current)
+		{
+			curTick = current % tick;
+			curObj = (current / tick) % objects.Length;
+		}
+
 		public void Reset()
 		{
 			curTick = tick;

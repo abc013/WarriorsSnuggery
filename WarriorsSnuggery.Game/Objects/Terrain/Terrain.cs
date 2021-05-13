@@ -48,7 +48,12 @@ namespace WarriorsSnuggery.Objects
 
 		public void Tick()
 		{
-			overlay?.Tick();
+			if (overlay == null)
+				return;
+
+			if (Type.UnifyOverlayTick)
+				overlay.SetTick((int)Window.GlobalTick);
+			overlay.Tick();
 		}
 
 		public void Render()
