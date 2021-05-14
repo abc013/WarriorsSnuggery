@@ -6,8 +6,6 @@ namespace WarriorsSnuggery
 {
 	public static class Settings
 	{
-		public const byte MaxTeams = 8;
-
 		public const string Version = "(Release) 2.5";
 
 		public const int UpdatesPerSecond = 60;

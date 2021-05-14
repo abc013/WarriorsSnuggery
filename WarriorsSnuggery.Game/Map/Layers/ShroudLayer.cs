@@ -10,7 +10,9 @@ namespace WarriorsSnuggery
 		public bool RevealAll;
 		public MPos Bounds { get; private set; }
 
-		readonly bool[,,] shroudRevealed; // First: Team Second: X Third: Y
+		public readonly List<byte> UsedTeams = new List<byte>();
+		readonly Dictionary<byte, bool[,]> shroudRevealed = new Dictionary<byte, bool[,]>();
+
 		public readonly Shroud[,] Shroud;
 		readonly Dictionary<MPos, List<Shroud>> listenerPositions = new Dictionary<MPos, List<Shroud>>();
 		readonly List<Shroud> changingShroud = new List<Shroud>();
@@ -19,8 +21,6 @@ namespace WarriorsSnuggery
 		{
 			Bounds = bounds * new MPos(2, 2);
 
-			shroudRevealed = new bool[Settings.MaxTeams, Bounds.X, Bounds.Y];
-
 			Shroud = new Shroud[Bounds.X, Bounds.Y];
 			for (int x = 0; x < Bounds.X; x++)
 			{
@@ -28,16 +28,20 @@ namespace WarriorsSnuggery
 				{
 					var shroud = new Shroud(new MPos(x, y));
 
-					var list = new List<Shroud>()
-					{
-						shroud
-					};
+					var list = new List<Shroud>() { shroud };
 
 					Shroud[x, y] = shroud;
 
 					listenerPositions.Add(new MPos(x, y), list);
 				}
 			}
+		}
+
+		void initShroudLayer(byte team)
+		{
+			UsedTeams.Add(team);
+
+			shroudRevealed.Add(team, new bool[Bounds.X, Bounds.Y]);
 		}
 
 		public void SetWall(MPos pos, int height, bool exists)
@@ -72,26 +76,32 @@ namespace WarriorsSnuggery
 					var listener = shroud.Listener;
 					listenerPositions[listener].Add(shroud);
 
-					if (shroud.ChangeState(shroudRevealed[Actor.PlayerTeam, listener.X, listener.Y]))
+					if (shroud.ChangeState(ShroudRevealed(Actor.PlayerTeam, listener)))
 						changingShroud.Add(shroud);
 				}
 			}
 		}
 
-		public bool ShroudRevealed(int team, int x, int y)
+		public bool ShroudRevealed(byte team, int x, int y)
 		{
-			return RevealAll || shroudRevealed[team, x, y];
+			if (!UsedTeams.Contains(team))
+				return false;
+
+			return RevealAll || shroudRevealed[team][x, y];
 		}
 
-		public bool ShroudRevealed(int team, MPos position)
+		public bool ShroudRevealed(byte team, MPos position)
 		{
 			return ShroudRevealed(team, position.X, position.Y);
 		}
 
-		public void RevealShroudList(int team, bool[] values)
+		public void RevealShroudList(byte team, bool[] values)
 		{
 			if (values == null)
 				return;
+
+			if (!UsedTeams.Contains(team))
+				initShroudLayer(team);
 
 			var isPlayerTeam = team == Actor.PlayerTeam;
 
@@ -103,14 +113,17 @@ namespace WarriorsSnuggery
 				if (isPlayerTeam)
 					changeState(x, y, values[i]);
 
-				shroudRevealed[team, x, y] = values[i];
+				shroudRevealed[team][x, y] = values[i];
 			}
 		}
 
-		public void RevealShroudCircular(World world, int team, CPos position, int height, int radius, bool ignoreLock = false)
+		public void RevealShroudCircular(World world, byte team, CPos position, int height, int radius, bool ignoreLock = false)
 		{
 			if (RevealAll)
 				return;
+
+			if (!UsedTeams.Contains(team))
+				initShroudLayer(team);
 
 			var isPlayerTeam = team == Actor.PlayerTeam;
 
@@ -134,7 +147,7 @@ namespace WarriorsSnuggery
 							var dy = y - shroudPos.Y;
 							dy *= dy;
 
-							if (shroudRevealed[team, x, y])
+							if (shroudRevealed[team][x, y])
 								continue;
 
 							if (dx + dy > radiusSquared)
@@ -153,7 +166,7 @@ namespace WarriorsSnuggery
 
 							var result = !isInTriangle;
 
-							shroudRevealed[team, x, y] = result;
+							shroudRevealed[team][x, y] = result;
 
 							if (isPlayerTeam)
 								changeState(x, y, result);
@@ -224,7 +237,7 @@ namespace WarriorsSnuggery
 			Bounds = MPos.Zero;
 		}
 
-		public string ToString(int team)
+		public string ToString(byte team)
 		{
 			var shroud = team + "=";
 
@@ -232,9 +245,7 @@ namespace WarriorsSnuggery
 				for (int y = 0; y < Bounds.Y; y++)
 					shroud += ShroudRevealed(team, x, y).GetHashCode() + ",";
 
-			shroud = shroud.TrimEnd(',');
-
-			return shroud;
+			return shroud.TrimEnd(',');
 		}
 
 		class Triangle

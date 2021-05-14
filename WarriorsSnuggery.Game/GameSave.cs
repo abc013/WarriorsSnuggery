@@ -158,7 +158,7 @@ namespace WarriorsSnuggery
 		public MapType CurrentMapType { get; private set; }
 		public int Waves { get; private set; }
 		public bool KeyFound { get; private set; }
-		public List<bool[]> Shroud { get; private set; }
+		public Dictionary<byte, bool[]> Shroud { get; private set; }
 
 		// Static Values
 		public int FinalLevel { get; private set; }
@@ -200,10 +200,10 @@ namespace WarriorsSnuggery
 				switch (node.Key)
 				{
 					case nameof(Shroud):
-						Shroud = new List<bool[]>();
+						Shroud = new Dictionary<byte, bool[]>();
 
 						foreach (var node2 in node.Children)
-							Shroud.Add(node2.Convert<bool[]>());
+							Shroud.Add(byte.Parse(node2.Key), node2.Convert<bool[]>());
 
 						break;
 					case nameof(CurrentMapType):
@@ -302,28 +302,28 @@ namespace WarriorsSnuggery
 
 			using (var writer = new StreamWriter(FileExplorer.Saves + SaveName + ".yaml", false))
 			{
-				writer.WriteLine($"{nameof(Name)}= {Name}");
-				writer.WriteLine($"{nameof(Level)}= {Level}");
-				writer.WriteLine($"{nameof(Difficulty)}= {Difficulty}");
-				writer.WriteLine($"{nameof(Hardcore)}= {Hardcore}");
-				writer.WriteLine($"{nameof(Money)}= {Money}");
-				writer.WriteLine($"{nameof(FinalLevel)}= {FinalLevel}");
-				writer.WriteLine($"{nameof(MaxMana)}= {MaxMana}");
-				writer.WriteLine($"{nameof(Kills)}= {Kills}");
-				writer.WriteLine($"{nameof(Deaths)}= {Deaths}");
-				writer.WriteLine($"{nameof(Lives)}= {Lives}");
-				writer.WriteLine($"{nameof(MaxLives)}= {MaxLives}");
-				writer.WriteLine($"{nameof(CurrentObjective)}= {CurrentObjective}");
-				writer.WriteLine($"{nameof(CurrentMission)}= {CurrentMission}");
-				writer.WriteLine($"{nameof(CurrentMapType)}= {MapCreator.GetName(CurrentMapType)}");
+				writer.WriteLine($"{nameof(Name)}={Name}");
+				writer.WriteLine($"{nameof(Level)}={Level}");
+				writer.WriteLine($"{nameof(Difficulty)}={Difficulty}");
+				writer.WriteLine($"{nameof(Hardcore)}={Hardcore}");
+				writer.WriteLine($"{nameof(Money)}={Money}");
+				writer.WriteLine($"{nameof(FinalLevel)}={FinalLevel}");
+				writer.WriteLine($"{nameof(MaxMana)}={MaxMana}");
+				writer.WriteLine($"{nameof(Kills)}={Kills}");
+				writer.WriteLine($"{nameof(Deaths)}={Deaths}");
+				writer.WriteLine($"{nameof(Lives)}={Lives}");
+				writer.WriteLine($"{nameof(MaxLives)}={MaxLives}");
+				writer.WriteLine($"{nameof(CurrentObjective)}={CurrentObjective}");
+				writer.WriteLine($"{nameof(CurrentMission)}={CurrentMission}");
+				writer.WriteLine($"{nameof(CurrentMapType)}={MapCreator.GetName(CurrentMapType)}");
 				if (Waves != 0)
-					writer.WriteLine($"{nameof(Waves)}= {Waves}");
+					writer.WriteLine($"{nameof(Waves)}={Waves}");
 				if (KeyFound)
-					writer.WriteLine($"{nameof(KeyFound)}= {KeyFound}");
+					writer.WriteLine($"{nameof(KeyFound)}={KeyFound}");
 
 				writer.WriteLine($"{nameof(Shroud)}=");
-				for (int i = 0; i < Settings.MaxTeams; i++)
-					writer.WriteLine("\t" + game.World.ShroudLayer.ToString(i));
+				foreach (var team in game.World.ShroudLayer.UsedTeams)
+					writer.WriteLine("\t" + game.World.ShroudLayer.ToString(team));
 
 				writer.WriteLine($"{nameof(SpellCasters)}=");
 				for (int i = 0; i < game.SpellManager.spellCasters.Length; i++)
@@ -332,17 +332,17 @@ namespace WarriorsSnuggery
 					if (caster.Ready)
 						continue;
 
-					writer.WriteLine("\t" + "Caster= " + i);
+					writer.WriteLine("\tCaster=" + i);
 					if (caster.RechargeProgress != 0f)
-						writer.WriteLine("\t\tRecharge= " + caster.RechargeProgress);
+						writer.WriteLine("\t\tRecharge=" + caster.RechargeProgress);
 					else
-						writer.WriteLine("\t\tRemaining= " + caster.RemainingDuration);
+						writer.WriteLine("\t\tRemaining=" + caster.RemainingDuration);
 				}
 
-				writer.WriteLine($"{nameof(Seed)}= {Seed}");
-				writer.WriteLine($"{nameof(Mana)}= {Mana}");
-				writer.WriteLine($"{nameof(Actor)}= {Actor}");
-				writer.WriteLine($"{nameof(Health)}= {Health}");
+				writer.WriteLine($"{nameof(Seed)}={Seed}");
+				writer.WriteLine($"{nameof(Mana)}={Mana}");
+				writer.WriteLine($"{nameof(Actor)}={Actor}");
+				writer.WriteLine($"{nameof(Health)}={Health}");
 
 				writer.WriteLine($"{nameof(UnlockedSpells)}={string.Join(',', UnlockedSpells)}");
 				writer.WriteLine($"{nameof(UnlockedActors)}={string.Join(',', UnlockedActors)}");
@@ -350,9 +350,9 @@ namespace WarriorsSnuggery
 
 				if (!string.IsNullOrEmpty(Script))
 				{
-					writer.WriteLine($"{nameof(Script)}= {Script}");
+					writer.WriteLine($"{nameof(Script)}={Script}");
 					for (var i = 0; i < scriptState.Length; i++)
-						writer.WriteLine("\t" + i + "= " + scriptState[i].ToString());
+						writer.WriteLine($"\t{i}={scriptState[i]}");
 				}
 
 				writer.Flush();

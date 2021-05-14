@@ -71,8 +71,8 @@ namespace WarriorsSnuggery
 				}
 				else
 				{
-					for(int i = 0; i < Game.Save.Shroud.Count; i++)
-						ShroudLayer.RevealShroudList(i, Game.Save.Shroud[i]);
+					foreach (var team in Game.Save.Shroud.Keys)
+						ShroudLayer.RevealShroudList(team, Game.Save.Shroud[team]);
 
 					LocalPlayer = ActorLayer.ToAdd().First(a => a.IsPlayer);
 				}
