@@ -13,61 +13,87 @@ namespace WarriorsSnuggery
 		public const int UpdatesPerSecond = 60;
 
 		// TODO: Experimental. Crashes because of access while modifying lists etc., as expected. But for future.
-		public static bool EnableMultiThreading = false;
+		[DefaultValue(false)]
+		public static bool EnableMultiThreading;
 
 		// Modifier to adjust down if lagging occurs. Zero disables thread sleeping.
-		public static float ThreadSleepFactor = 0f;
+		[DefaultValue(0f)]
+		public static float ThreadSleepFactor;
 
-		public static bool LogTimeMeasuring = false;
+		[DefaultValue(false)]
+		public static bool LogTimeMeasuring;
 
-		public static int BatchSize = 4096;
+		[DefaultValue(4096)]
+		public static int BatchSize;
 
-		public static int MaxSheets = 4;
+		[DefaultValue(4)]
+		public static int MaxSheets;
 
-		public static int SheetSize = 1024;
+		[DefaultValue(1024)]
+		public static int SheetSize;
 		public static float SheetHalfPixel => 0.1f / SheetSize;
 
-		public static int VisbilityMargin = 3072;
+		[DefaultValue(3072)]
+		public static int VisbilityMargin;
 
-		public static int FrameLimiter = 0;
+		[DefaultValue(0)]
+		public static int FrameLimiter;
 
-		public static float ScrollSpeed = 6;
+		[DefaultValue(6)]
+		public static float ScrollSpeed;
 
-		public static int EdgeScrolling = 4;
+		[DefaultValue(4)]
+		public static int EdgeScrolling;
 
-		public static bool EnableCheats = false;
+		[DefaultValue(false)]
+		public static bool EnableCheats;
 
-		public static bool DeveloperMode = false;
+		[DefaultValue(false)]
+		public static bool DeveloperMode;
 
+		[DefaultValue(false)]
 		public static bool EnableInfoScreen;
 
-		public static bool Fullscreen = true;
+		[DefaultValue(true)]
+		public static bool Fullscreen;
 
-		public static int Width = 1920;
+		[DefaultValue(1920)]
+		public static int Width;
 
-		public static int Height = 1080;
+		[DefaultValue(1080)]
+		public static int Height;
 
-		public static bool PartyMode = false;
+		[DefaultValue(false)]
+		public static bool PartyMode;
 
-		public static bool VSync = true;
+		[DefaultValue(true)]
+		public static bool VSync;
 
-		public static bool EnablePixeling = false;
+		[DefaultValue(false)]
+		public static bool EnablePixeling;
 
-		public static bool EnableTextShadowing = true;
+		[DefaultValue(true)]
+		public static bool EnableTextShadowing;
 
-		public static bool EnableWeatherEffects = true;
+		[DefaultValue(true)]
+		public static bool EnableWeatherEffects;
 
-		public static bool FirstStarted = true;
+		[DefaultValue(true)]
+		public static bool FirstStarted;
 
-		public static float MasterVolume = 1f;
+		[DefaultValue(1f)]
+		public static float MasterVolume;
 
-		public static float EffectsVolume = 1f;
+		[DefaultValue(1f)]
+		public static float EffectsVolume;
 
-		public static float MusicVolume = 0.5f;
+		[DefaultValue(0.5f)]
+		public static float MusicVolume;
+
+		[DefaultValue(-1)]
+		public static int CurrentMap;
 
 		public static readonly Dictionary<string, Keys> KeyDictionary = new Dictionary<string, Keys>();
-
-		public static int CurrentMap = -1;
 
 		public static Keys GetKey(string value)
 		{
@@ -79,12 +105,26 @@ namespace WarriorsSnuggery
 
 		public static void Initialize(bool newSettings)
 		{
+			var fields = TypeLoader.GetFields(typeof(Settings), false);
+			foreach (var field in fields)
+			{
+				if (field.IsLiteral || field.IsInitOnly)
+					continue;
+
+				var attributes = field.GetCustomAttributes(typeof(DefaultValueAttribute), false);
+				if (attributes.Length != 0)
+				{
+					var attribute = (DefaultValueAttribute)attributes[0];
+					field.SetValue(null, attribute.Default);
+				}
+			}
+
 			if (!newSettings && FileExplorer.Exists(FileExplorer.MainDirectory, "Settings.yaml"))
 				load();
-			else
+
+			if (KeyDictionary.Count == 0)
 				defaultKeys();
 
-			// Set FirstStarted to 0.
 			if (FirstStarted)
 				Save();
 		}
@@ -131,23 +171,39 @@ namespace WarriorsSnuggery
 
 		public static void Save()
 		{
+			// HACK: while saving, set FirstStarted to false.
+			var firstStarted = FirstStarted;
+			FirstStarted = false;
+
 			using var writer = new System.IO.StreamWriter(FileExplorer.MainDirectory + "Settings.yaml");
 
-			var fields = typeof(Settings).GetFields();
+			var fields = TypeLoader.GetFields(typeof(Settings), false);
 			foreach(var field in fields)
 			{
 				if (field.IsLiteral || field.IsInitOnly)
 					continue;
 
-				writer.WriteLine($"{field.Name}={field.GetValue(null)}");
+				var fieldValue = field.GetValue(null);
+
+				var attributes = field.GetCustomAttributes(typeof(DefaultValueAttribute), false);
+				if (attributes.Length != 0)
+				{
+					var attribute = (DefaultValueAttribute)attributes[0];
+					if (fieldValue.Equals(attribute.Default))
+						continue;
+				}
+
+				writer.WriteLine($"{field.Name}={fieldValue}");
 			}
 
 			writer.WriteLine("Keys=");
 			foreach (var key in KeyDictionary)
-				writer.WriteLine("\t" + key.Key + "=" + key.Value);
+				writer.WriteLine($"\t{key.Key}={key.Value}");
 
 			writer.Flush();
 			writer.Close();
+
+			FirstStarted = firstStarted;
 		}
 	}
 }
