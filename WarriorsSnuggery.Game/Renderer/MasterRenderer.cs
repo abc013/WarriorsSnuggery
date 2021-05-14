@@ -79,7 +79,7 @@ namespace WarriorsSnuggery
 
 					GL.BindAttribLocation(shader, 0, "position");
 
-					Log.WriteDebug("SHADER " + shader + " locations: " + locations[num] + ", " + locations[num + 1] + ", " + locations[num + 2] + ", " + locations[num + 3] + ";");
+					Log.Debug($"SHADER{shader} locations: {string.Join(',', locations)}");
 				}
 
 				GL.BindAttribLocation(TextureShader, 1, "textureCoordinate");

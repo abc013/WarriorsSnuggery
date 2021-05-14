@@ -111,7 +111,7 @@ namespace WarriorsSnuggery.UI.Screens
 			Settings.Save();
 
 			game.AddInfoMessage(150, "Controls Saved!");
-			Log.WriteDebug("Saved key bindings.");
+			Log.Debug("Saved key bindings.");
 		}
 
 		public override void KeyDown(Keys key, bool isControl, bool isShift, bool isAlt)

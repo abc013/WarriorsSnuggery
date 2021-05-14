@@ -28,7 +28,7 @@ namespace WarriorsSnuggery.Graphics
 
 				var info = GL.GetShaderInfoLog(shader);
 				if (!string.IsNullOrWhiteSpace(info))
-					Log.WriteDebug("shader" + shader + " information: " + info);
+					Log.Debug($"SHADER{shader} information: {info}");
 
 				shaders.Add(shader);
 			}
@@ -45,7 +45,7 @@ namespace WarriorsSnuggery.Graphics
 
 				var info = GL.GetProgramInfoLog(ID);
 				if (!string.IsNullOrWhiteSpace(info))
-					Log.WriteDebug("shader" + ID + " information: " + info);
+					Log.Debug($"SHADER{ID} information: {info}");
 
 				foreach (var shader in shaders)
 				{

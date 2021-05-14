@@ -114,11 +114,6 @@ namespace WarriorsSnuggery
 			return list.ToArray();
 		}
 
-		public static FileStream CreateFile(string path, string name, string suffix = ".txt")
-		{
-			return File.Create(path + name + suffix);
-		}
-
 		public static void WriteScreenshot(byte[] array, int width, int height)
 		{
 			var file = Logs + "screenshot_" + DateTime.Now.ToString("HHmmss_ddMMyyyy") + ".png";

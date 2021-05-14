@@ -37,15 +37,13 @@ namespace WarriorsSnuggery
 			CultureInfo.CurrentCulture = CultureInfo.InvariantCulture;
 
 			run(args);
-
-			Log.WriteDebug("Exiting program.");
-			Log.Close();
 		}
 
 		static void run(string[] args)
 		{
 			FileExplorer.InitPaths();
 			Log.InitLogs();
+			Log.Debug("Starting program.");
 
 			var newSettings = false;
 			for (int i = 0; i < args.Length; i++)
@@ -104,6 +102,9 @@ namespace WarriorsSnuggery
 					return;
 			}
 			window.Run();
+
+			Log.Debug("Exiting program.");
+			Log.Close();
 		}
 
 		static void handleError(object sender, UnhandledExceptionEventArgs args)
@@ -113,7 +114,7 @@ namespace WarriorsSnuggery
 				window.IsVisible = false;
 
 			if (Log.Initialized)
-				Log.WriteExeption(e);
+				Log.Exeption(e);
 			else
 				Console.WriteLine(e);
 
@@ -133,7 +134,7 @@ namespace WarriorsSnuggery
 			AudioController.Exit();
 			Window.CloseWindow();
 
-			Log.WriteDebug("Game closing.");
+			Log.Debug("Game closing.");
 			watch.StopAndWrite("Disposing");
 		}
 

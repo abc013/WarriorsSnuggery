@@ -33,8 +33,8 @@ namespace WarriorsSnuggery.Graphics
 		{
 			textureIDs = IDs;
 
-			if (textureIDs.Length > 4)
-				Log.WriteDebug(string.Format("Warning: BatchRenderer got {0} sheets, maximum is {1}", IDs.Length, 4));
+			if (textureIDs.Length > Settings.MaxSheets)
+				Log.Warning($"BatchRenderer has {IDs.Length} sheets, maximum is {Settings.MaxSheets}.");
 		}
 
 		public void Add(Vertex[] data)

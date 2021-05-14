@@ -115,7 +115,7 @@ namespace WarriorsSnuggery
 				}
 				catch (System.IO.FileNotFoundException)
 				{
-					Log.WriteDebug(string.Format("Unable to load saved map of save '{0}'. Using a random map.", save.SaveName));
+					Log.Warning($"Unable to load saved map of save '{save.SaveName}'. Using a random map.");
 				}
 			}
 

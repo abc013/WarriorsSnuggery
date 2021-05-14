@@ -25,7 +25,7 @@ namespace WarriorsSnuggery.UI.Screens
 				{
 					humanAgreeOnLoad(() =>
 					{
-						Log.WriteDebug("Loading a game save: " + save.SaveName);
+						Log.Debug($"Loading game save '{save.SaveName}'.");
 						GameController.CreateNew(save.Copy(), loadStatsMap: true);
 					}, "Are you sure you want to load this save? Unsaved progress will be lost!");
 				}
@@ -42,7 +42,7 @@ namespace WarriorsSnuggery.UI.Screens
 						GameSaveManager.Delete(save);
 						game.RefreshSaveGameScreens();
 						game.ShowScreen(ScreenType.LOADGAME);
-						Log.WriteDebug("Deleting a game save: " + save.SaveName);
+						Log.Debug($"Deleted game save '{save.SaveName}'.");
 					}, "Are you sure you want to delete this save?");
 				}
 			}

@@ -288,7 +288,7 @@ namespace WarriorsSnuggery.Maps
 		{
 			if (!piece.IsInMap(position, Bounds))
 			{
-				Log.WriteDebug(string.Format("Piece '{0}' at Position '{1}' could not be created because it overlaps to the world's edge.", piece.Name, position));
+				Log.Warning($"Piece '{piece.Name}' at Position '{position}' could not be created because it overlaps to the world's edge.");
 				return false;
 			}
 

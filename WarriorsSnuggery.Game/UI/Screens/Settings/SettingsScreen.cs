@@ -231,7 +231,7 @@ namespace WarriorsSnuggery.UI.Screens
 			Window.UpdateScreen();
 
 			game.AddInfoMessage(150, "Settings saved!");
-			Log.WriteDebug("Saved settings.");
+			Log.Debug("Saved settings.");
 		}
 
 		public override void KeyDown(Keys key, bool isControl, bool isShift, bool isAlt)

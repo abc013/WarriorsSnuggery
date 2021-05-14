@@ -60,6 +60,7 @@ namespace WarriorsSnuggery
 				WindowInfo.ScreenHeight = mode->Height;
 				WindowInfo.ScreenRefreshRate = mode->RefreshRate;
 			}
+
 			setScreen();
 			setVSync();
 
@@ -132,19 +133,15 @@ namespace WarriorsSnuggery
 			SheetManager.InitSheets();
 
 			timer.Restart();
-
 			FontManager.Load();
-
 			timer.StopAndWrite("Loading Fonts");
-			timer.Restart();
 
+			timer.Restart();
 			AudioController.Load();
-
 			timer.StopAndWrite("Loading Sound");
+
 			timer.Restart();
-
 			GameController.Load();
-
 			timer.StopAndWrite("Loading Rules");
 
 			SheetManager.FinishSheets();
@@ -172,7 +169,8 @@ namespace WarriorsSnuggery
 				TMS = timer.Stop();
 				TPS = 1 / e.Time;
 
-				Log.WritePerformance(TMS, " tick " + GlobalTick);
+				if (Settings.LogTimeMeasuring)
+					Log.Performance(TMS, " tick " + GlobalTick);
 			}
 
 			GlobalTick++;
@@ -198,7 +196,8 @@ namespace WarriorsSnuggery
 				FMS = timer.Stop();
 				FPS = 1 / e.Time;
 
-				Log.WritePerformance(FMS, " render " + GlobalRender);
+				if (Settings.LogTimeMeasuring)
+					Log.Performance(FMS, " render " + GlobalRender);
 
 				if (Settings.DeveloperMode || Program.IsDebug)
 					Title = Program.Title + " | " + MasterRenderer.RenderCalls + " Calls | " + MasterRenderer.Batches + " Batches";

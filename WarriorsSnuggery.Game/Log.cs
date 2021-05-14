@@ -6,7 +6,6 @@ namespace WarriorsSnuggery
 	public static class Log
 	{
 		static TextWriter exceptionWriter;
-		static TextWriter performanceWriter;
 		static TextWriter debugWriter;
 
 		public static bool Initialized;
@@ -15,38 +14,46 @@ namespace WarriorsSnuggery
 		{
 			Directory.CreateDirectory(FileExplorer.Logs);
 
-			exceptionWriter = new StreamWriter(FileExplorer.CreateFile(FileExplorer.Logs, "exception", ".log"));
+			exceptionWriter = new StreamWriter(File.Create(FileExplorer.Logs + "exception.log"));
 			Console.SetError(exceptionWriter);
 
-			performanceWriter = new StreamWriter(FileExplorer.CreateFile(FileExplorer.Logs, "performance", ".log"));
-			debugWriter = new StreamWriter(FileExplorer.CreateFile(FileExplorer.Logs, "debug", ".log"));
+			debugWriter = new StreamWriter(File.Create(FileExplorer.Logs + "debug.log"));
 
 			Initialized = true;
 		}
 
-		public static void WriteExeption(object exception)
+		public static void Exeption(object exception)
 		{
 			exceptionWriter.WriteLine(exception);
 			exceptionWriter.Flush();
+
+			writeDebug("ERRO", "An error occurred. Check 'exception.log' for details.");
 		}
 
-		public static void WritePerformance(long ms, string text)
+		public static void Performance(long ms, string text)
 		{
-			performanceWriter.WriteLine(ms + "ms\t\t " + text);
-			performanceWriter.Flush();
+			writeDebug("PERF", $"({ms.ToString().PadLeft(4, '0')}ms)->" + text);
 		}
 
-		public static int DebugIndentation;
-		public static void WriteDebug(string text)
+		public static void Debug(string text)
 		{
-			debugWriter.WriteLine(new string('\t', DebugIndentation) + text);
+			writeDebug("INFO", text);
+		}
+
+		public static void Warning(string text)
+		{
+			writeDebug("WARN", text);
+		}
+
+		static void writeDebug(string prefix, string text)
+		{
+			debugWriter.WriteLine($"[{DateTime.Now:T}] {prefix}:\t{text}");
 			debugWriter.Flush();
 		}
 
 		public static void Close()
 		{
 			exceptionWriter.Dispose();
-			performanceWriter.Dispose();
 			debugWriter.Dispose();
 		}
 	}

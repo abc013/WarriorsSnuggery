@@ -20,15 +20,14 @@ namespace WarriorsSnuggery.Scripting
 		public MissionScriptLoader(string path, string file)
 		{
 			this.file = file;
-			Log.WriteDebug("Loading new mission script: " + path);
-			Log.DebugIndentation++;
+			Log.Debug("Loading new mission script: " + path);
 
 			if (loadedAssemblies.ContainsKey(file))
 			{
 				type = loadedAssemblies[file];
 				assembly = Assembly.GetAssembly(type);
 
-				Log.WriteDebug("Mission script already in memory. Loaded.");
+				Log.Debug("Mission script already in memory. Loaded.");
 				return;
 			}
 
@@ -57,7 +56,7 @@ namespace WarriorsSnuggery.Scripting
 			if (!result.Success)
 			{
 				foreach (var compilerMessage in compilation.GetDiagnostics())
-					Log.WriteExeption(compilerMessage);
+					Log.Exeption(compilerMessage);
 
 				throw new Exception(string.Format("The script '{0}' could not be loaded. See console or error.log for more details.", file + ".cs"));
 			}
@@ -73,8 +72,7 @@ namespace WarriorsSnuggery.Scripting
 
 			loadedAssemblies.Add(file, type);
 
-			Log.WriteDebug("Successfully Loaded.");
-			Log.DebugIndentation--;
+			Log.Debug("Mission script successfully loaded.");
 		}
 
 		public MissionScriptBase Start(Game game)

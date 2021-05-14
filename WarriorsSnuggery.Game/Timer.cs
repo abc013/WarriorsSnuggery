@@ -19,7 +19,7 @@ namespace WarriorsSnuggery
 		public void StopAndWrite(string text)
 		{
 			watch.Stop();
-			Log.WritePerformance(watch.ElapsedMilliseconds, text);
+			Log.Performance(watch.ElapsedMilliseconds, text);
 		}
 
 		public long Stop()

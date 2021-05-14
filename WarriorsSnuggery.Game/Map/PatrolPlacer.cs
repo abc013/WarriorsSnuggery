@@ -94,7 +94,7 @@ namespace WarriorsSnuggery.Maps
 			var count = random.Next((int)(info.MinimumPatrols * multiplier), (int)(info.MaximumPatrols * multiplier));
 			if (positions.Count < count)
 			{
-				Log.WriteDebug(string.Format("Unable to spawn Patrol count ({0}) because there are not enough available spawn points ({1}).", count, positions.Count));
+				Log.Warning($"Unable to spawn Patrol count ({count}) because there are not enough available spawn points ({positions.Count}).");
 				count = positions.Count;
 			}
 

@@ -100,11 +100,7 @@ namespace WarriorsSnuggery
 
 		public Game(GameSave save, MapType map, MissionType missionType, InteractionMode interactionMode, int seed = -1)
 		{
-			Log.WriteDebug("Loading new game...");
-			Log.DebugIndentation++;
-
-			Log.WriteDebug("MissionType: " + missionType);
-			Log.WriteDebug("InteractionMode: " + interactionMode);
+			Log.Debug($"Loading new game (MissionType: '{missionType}', InteractionMode: '{interactionMode}').");
 
 			MissionType = missionType;
 			InteractionMode = interactionMode;
@@ -135,7 +131,7 @@ namespace WarriorsSnuggery
 				script = scriptLoader.Start(this);
 			}
 			else
-				Log.WriteDebug(Program.DisableScripts ? "mission scripts are disabled." : "No mission script existing.");
+				Log.Debug(Program.DisableScripts ? "Mission scripts are disabled." : "No mission script existing.");
 
 			if (ObjectiveType == ObjectiveType.SURVIVE_WAVES)
 				waveController = new WaveController(this);
@@ -151,8 +147,6 @@ namespace WarriorsSnuggery
 
 			ScreenControl.InitScreen();
 
-			timer.StopAndWrite("Loading Game");
-
 			if (World.LocalPlayer != null && World.LocalPlayer.Health != null && Save.Health > 0)
 				World.LocalPlayer.Health.RelativeHP = Save.Health;
 
@@ -164,7 +158,8 @@ namespace WarriorsSnuggery
 			else
 				script?.OnStart();
 
-			Log.WriteDebug("Loading successful!");
+			timer.StopAndWrite("Loading Game");
+			Log.Debug("Loading successful!");
 		}
 
 		public void Pause(bool paused)
@@ -173,14 +168,14 @@ namespace WarriorsSnuggery
 			AudioController.PauseAll(paused, true);
 			MasterRenderer.PauseSequences = Paused;
 			Camera.Locked = Paused;
-			Log.WriteDebug((paused ? "P" : "Unp") + "aused game.");
+			Log.Debug((paused ? "P" : "Unp") + "aused game.");
 		}
 
 		public void Tick()
 		{
 			if (nextLevel)
 			{
-				Log.WriteDebug("Instant level change initiated.");
+				Log.Debug("Instant game change requested. Executing now.");
 
 				Save.Update(this);
 				GameController.CreateNext(nextLevelType, nextInteractionMode);
@@ -396,9 +391,8 @@ namespace WarriorsSnuggery
 
 		public void SwitchEditor()
 		{
-			Log.WriteDebug("Editor Switched: " + Editor);
-
 			Editor = !Editor;
+			Log.Debug($"Editor {(Editor ? "En" : "Dis")}abled.");
 
 			// Automatically switches to the correct one
 			ShowScreen(ScreenType.DEFAULT);
@@ -472,8 +466,7 @@ namespace WarriorsSnuggery
 
 			AudioController.StopAll(true);
 
-			Log.WriteDebug("Current game disposed!");
-			Log.DebugIndentation--;
+			Log.Debug("Current game disposed!");
 		}
 	}
 }

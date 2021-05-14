@@ -48,7 +48,7 @@ namespace WarriorsSnuggery.UI.Screens
 				game.ShowScreen(ScreenType.MENU);
 				GameSaveManager.SaveOnNewName(@new, save.Name, game);
 				game.AddInfoMessage(150, "Game Saved!");
-				Log.WriteDebug("Overrided a game: " + save.SaveName);
+				Log.Debug($"Overrided game save ({@new.Name}->{save.SaveName}).");
 			}
 			game.ShowDecisionScreen(action1, action2, "Are you sure you want to override?");
 		}
@@ -132,7 +132,7 @@ namespace WarriorsSnuggery.UI.Screens
 			GameSaveManager.SaveOnNewName(game.Save, @new.Text, game);
 
 			game.RefreshSaveGameScreens();
-			Log.WriteDebug("Saved a game: " + game.Save.SaveName);
+			Log.Debug($"Saved new game save '{game.Save.SaveName}'.");
 		}
 	}
 }

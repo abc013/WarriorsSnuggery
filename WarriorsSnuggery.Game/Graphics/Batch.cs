@@ -48,7 +48,7 @@ namespace WarriorsSnuggery.Graphics
 		{
 			if (length > Settings.BatchSize)
 			{
-				Log.WriteDebug(string.Format("Unable to push vertices to batch: target ({0}) exceeds size of buffer ({1}).", length * Vertex.Size, Size));
+				Log.Warning($"Unable to push vertices to batch: target ({length * Vertex.Size}) exceeds size of buffer ({Size}).");
 				return;
 			}
 
@@ -68,7 +68,7 @@ namespace WarriorsSnuggery.Graphics
 		{
 			if (start + length > Settings.BatchSize)
 			{
-				Log.WriteDebug(string.Format("Unable to push vertices to batch: target ({0}, {1}) exceeds size of buffer ({2}).", start * Vertex.Size, length * Vertex.Size, Size));
+				Log.Warning($"Unable to push vertices to batch: target ({start * Vertex.Size}, {length * Vertex.Size}) exceeds size of buffer ({Size}).");
 				return;
 			}
 

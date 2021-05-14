@@ -12,6 +12,8 @@ namespace WarriorsSnuggery
 
 		public const int UpdatesPerSecond = 60;
 
+		public static bool LogTimeMeasuring = false;
+
 		public static int BatchSize = 4096;
 
 		public static int MaxSheets = 4;
@@ -57,7 +59,7 @@ namespace WarriorsSnuggery
 
 		public static float MusicVolume = 0.5f;
 
-		public static Dictionary<string, Keys> KeyDictionary = new Dictionary<string, Keys>();
+		public static readonly Dictionary<string, Keys> KeyDictionary = new Dictionary<string, Keys>();
 
 		public static int CurrentMap = -1;
 
@@ -125,25 +127,14 @@ namespace WarriorsSnuggery
 		{
 			using var writer = new System.IO.StreamWriter(FileExplorer.MainDirectory + "Settings.yaml");
 
-			writer.WriteLine("BatchSize=" + BatchSize);
-			writer.WriteLine("MaxSheets=" + MaxSheets);
-			writer.WriteLine("SheetSize=" + SheetSize);
-			writer.WriteLine("FrameLimiter=" + FrameLimiter);
-			writer.WriteLine("ScrollSpeed=" + ScrollSpeed);
-			writer.WriteLine("EdgeScrolling=" + EdgeScrolling);
-			writer.WriteLine("EnableCheats=" + EnableCheats);
-			writer.WriteLine("DeveloperMode=" + DeveloperMode);
-			writer.WriteLine("Fullscreen=" + Fullscreen);
-			writer.WriteLine("Width=" + Width);
-			writer.WriteLine("Height=" + Height);
-			writer.WriteLine("VSync=" + VSync);
-			writer.WriteLine("EnablePixeling=" + EnablePixeling);
-			writer.WriteLine("EnableTextShadowing=" + EnableTextShadowing);
-			writer.WriteLine("EnableWeatherEffects=" + EnableWeatherEffects);
-			writer.WriteLine("FirstStarted=" + false);
-			writer.WriteLine("MasterVolume=" + MasterVolume);
-			writer.WriteLine("EffectsVolume=" + EffectsVolume);
-			writer.WriteLine("MusicVolume=" + MusicVolume);
+			var fields = typeof(Settings).GetFields();
+			foreach(var field in fields)
+			{
+				if (field.IsLiteral || field.IsInitOnly)
+					continue;
+
+				writer.WriteLine($"{field.Name}={field.GetValue(null)}");
+			}
 
 			writer.WriteLine("Keys=");
 			foreach (var key in KeyDictionary)
