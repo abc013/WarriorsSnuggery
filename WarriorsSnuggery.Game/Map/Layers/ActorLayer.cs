@@ -130,10 +130,8 @@ namespace WarriorsSnuggery
 
 		public void CheckVisibility()
 		{
-			foreach (var a in Actors)
-				a.CheckVisibility();
 			VisibleActors.Clear();
-			VisibleActors.AddRange(Actors);
+			VisibleActors.AddRange(Actors.Where(a => a.CheckVisibility()));
 		}
 
 		public void CheckVisibility(CPos topleft, CPos bottomright)

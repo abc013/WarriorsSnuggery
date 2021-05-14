@@ -243,10 +243,8 @@ namespace WarriorsSnuggery
 
 		public void CheckVisibility()
 		{
-			foreach (var w in WallList)
-				w.CheckVisibility();
 			VisibleWalls.Clear();
-			VisibleWalls.AddRange(WallList);
+			VisibleWalls.AddRange(WallList.Where(w => w.CheckVisibility()));
 		}
 
 		public void CheckVisibility(MPos bottomleft, MPos topright)

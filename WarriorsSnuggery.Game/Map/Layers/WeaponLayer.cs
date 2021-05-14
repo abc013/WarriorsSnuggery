@@ -59,10 +59,8 @@ namespace WarriorsSnuggery
 
 		public void CheckVisibility()
 		{
-			foreach (var w in Weapons)
-				w.CheckVisibility();
 			VisibleWeapons.Clear();
-			VisibleWeapons.AddRange(Weapons);
+			VisibleWeapons.AddRange(Weapons.Where(w => w.CheckVisibility()));
 		}
 
 		public void CheckVisibility(CPos topLeft, CPos bottomRight)

@@ -130,14 +130,8 @@ namespace WarriorsSnuggery
 
 		public void CheckVisibility()
 		{
-			foreach (var p in Particles)
-			{
-				var wasVisible = p.Visible;
-				if (p.CheckVisibility() && !wasVisible)
-					VisibleParticles.Add(p);
-			}
-
-			VisibleParticles.RemoveAll(p => !p.Visible);
+			VisibleParticles.Clear();
+			VisibleParticles.AddRange(Particles.Where(p => p.CheckVisibility()));
 		}
 
 		public void CheckVisibility(CPos topleft, CPos bottomright)

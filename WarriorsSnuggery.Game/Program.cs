@@ -78,7 +78,8 @@ namespace WarriorsSnuggery
 
 			var settings1 = new GameWindowSettings
 			{
-				UpdateFrequency = Settings.UpdatesPerSecond
+				UpdateFrequency = Settings.UpdatesPerSecond,
+				IsMultiThreaded = Settings.EnableMultiThreading
 			};
 			if (Settings.FrameLimiter != 0)
 				settings1.RenderFrequency = Settings.FrameLimiter;

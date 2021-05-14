@@ -12,6 +12,9 @@ namespace WarriorsSnuggery
 
 		public const int UpdatesPerSecond = 60;
 
+		// TODO: Experimental. Crashes because of access while modifying lists etc., as expected. But for future.
+		public const bool EnableMultiThreading = false;
+
 		public static bool LogTimeMeasuring = false;
 
 		public static int BatchSize = 4096;
