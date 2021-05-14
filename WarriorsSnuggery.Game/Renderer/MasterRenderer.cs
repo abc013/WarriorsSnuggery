@@ -255,8 +255,10 @@ namespace WarriorsSnuggery
 			{
 				foreach (var shader in shaders)
 					shader.Dispose();
+
+				GL.DeleteFramebuffer(frameBuffer);
 			}
-			GL.DeleteFramebuffer(frameBuffer);
+
 			TextureManager.Dispose(frameTexture.SheetID);
 			renderable.Dispose();
 		}

@@ -216,7 +216,7 @@ namespace WarriorsSnuggery
 				GameController.Pause();
 		}
 
-		public override void Close()
+		protected override void Dispose(bool disposing)
 		{
 			Stopped = true;
 
@@ -230,7 +230,7 @@ namespace WarriorsSnuggery
 
 			FontManager.Dispose();
 
-			base.Close();
+			base.Dispose(disposing);
 		}
 
 		protected override void OnMouseMove(MouseMoveEventArgs e)
