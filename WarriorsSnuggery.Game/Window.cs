@@ -11,13 +11,16 @@ using WarriorsSnuggery.Loader;
 
 namespace WarriorsSnuggery
 {
-	public static class WindowInfo
+	public static class ScreenInfo
 	{
 		public static int ScreenHeight;
 		public static int ScreenWidth;
 
 		public static int ScreenRefreshRate;
+	}
 
+	public static class WindowInfo
+	{
 		public static int Height;
 		public static int Width;
 
@@ -56,9 +59,9 @@ namespace WarriorsSnuggery
 			unsafe
 			{
 				var mode = GLFW.GetVideoMode(CurrentMonitor.ToUnsafePtr<Monitor>());
-				WindowInfo.ScreenWidth = mode->Width;
-				WindowInfo.ScreenHeight = mode->Height;
-				WindowInfo.ScreenRefreshRate = mode->RefreshRate;
+				ScreenInfo.ScreenWidth = mode->Width;
+				ScreenInfo.ScreenHeight = mode->Height;
+				ScreenInfo.ScreenRefreshRate = mode->RefreshRate;
 			}
 
 			setScreen();
@@ -86,18 +89,18 @@ namespace WarriorsSnuggery
 				WindowBorder = WindowBorder.Hidden;
 				WindowState = WindowState.Fullscreen;
 
-				ClientRectangle = new Box2i(0, 0, WindowInfo.ScreenWidth, WindowInfo.ScreenHeight);
+				ClientRectangle = new Box2i(0, 0, ScreenInfo.ScreenWidth, ScreenInfo.ScreenHeight);
 			}
 			else
 			{
 				WindowBorder = WindowBorder.Fixed;
 				WindowState = WindowState.Normal;
-				var offsetX = (WindowInfo.ScreenWidth - Settings.Width) / 2;
-				var offsetY = (WindowInfo.ScreenHeight - Settings.Height) / 2;
+				var offsetX = (ScreenInfo.ScreenWidth - Settings.Width) / 2;
+				var offsetY = (ScreenInfo.ScreenHeight - Settings.Height) / 2;
 				ClientRectangle = new Box2i(offsetX, offsetY + 1, Settings.Width + offsetX, Settings.Height + offsetY);
 			}
 
-			RenderFrequency = Settings.FrameLimiter == 0 ? WindowInfo.ScreenRefreshRate : Settings.FrameLimiter;
+			RenderFrequency = Settings.FrameLimiter == 0 ? ScreenInfo.ScreenRefreshRate : Settings.FrameLimiter;
 			WindowInfo.Width = ClientRectangle.Size.X;
 			WindowInfo.Height = ClientRectangle.Size.Y;
 

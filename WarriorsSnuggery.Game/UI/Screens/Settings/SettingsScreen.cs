@@ -55,8 +55,8 @@ namespace WarriorsSnuggery.UI.Screens
 					var parse = int.Parse(widthWrite.Text);
 					if (parse < 640)
 						widthWrite.Text = 640 + "";
-					else if (parse > WindowInfo.ScreenWidth)
-						widthWrite.Text = WindowInfo.ScreenWidth + "";
+					else if (parse > ScreenInfo.ScreenWidth)
+						widthWrite.Text = ScreenInfo.ScreenWidth + "";
 				}
 			};
 			Add(widthWrite);
@@ -70,8 +70,8 @@ namespace WarriorsSnuggery.UI.Screens
 					var parse = int.Parse(heightWrite.Text);
 					if (parse < 480)
 						heightWrite.Text = 480 + "";
-					else if (parse > WindowInfo.ScreenHeight)
-						heightWrite.Text = WindowInfo.ScreenHeight + "";
+					else if (parse > ScreenInfo.ScreenHeight)
+						heightWrite.Text = ScreenInfo.ScreenHeight + "";
 				}
 			};
 			Add(heightWrite);
@@ -133,8 +133,8 @@ namespace WarriorsSnuggery.UI.Screens
 				OnEnter = () =>
 				{
 					var number = int.Parse(frameLimiterWrite.Text);
-					if (number > WindowInfo.ScreenRefreshRate)
-						frameLimiterWrite.Text = WindowInfo.ScreenRefreshRate.ToString();
+					if (number > ScreenInfo.ScreenRefreshRate)
+						frameLimiterWrite.Text = ScreenInfo.ScreenRefreshRate.ToString();
 				}
 			};
 			Add(frameLimiterWrite);

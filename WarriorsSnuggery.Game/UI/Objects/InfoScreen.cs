@@ -33,7 +33,7 @@ namespace WarriorsSnuggery.UI.Objects
 			tick.SetColor(getColor(Window.TPS, Settings.UpdatesPerSecond));
 			tick.SetText("Tick " + Window.TPS.ToString("F1") + " @ " + Window.TMS.ToString("00") + " ms");
 
-			var frameCount = Settings.FrameLimiter == 0 ? WindowInfo.ScreenRefreshRate : Settings.FrameLimiter;
+			var frameCount = Settings.FrameLimiter == 0 ? ScreenInfo.ScreenRefreshRate : Settings.FrameLimiter;
 
 			render.SetColor(getColor(Window.FPS, frameCount));
 			render.SetText("Render " + Window.FPS.ToString("F1") + " @ " + Window.FMS.ToString("00") + " ms");
