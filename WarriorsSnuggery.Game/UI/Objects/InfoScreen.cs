@@ -30,13 +30,18 @@ namespace WarriorsSnuggery.UI.Objects
 			//memory.SetText("Public Memory " + (int)(GC.GetTotalMemory(false) / 1024f) + " KB");
 			visibility.SetText(VisibilitySolver.TilesVisible() + " Tiles visible");
 
-			tick.SetColor(getColor(Window.TPS, Settings.UpdatesPerSecond));
-			tick.SetText("Tick " + Window.TPS.ToString("F1") + " @ " + Window.TMS.ToString("00") + " ms");
+			if (Window.GlobalTick % 10 != 0)
+				return;
+
+			var tps = PerfInfo.AverageTPS();
+			tick.SetColor(getColor(tps, Settings.UpdatesPerSecond));
+			tick.SetText("Tick " + tps.ToString("F1") + " @ " + PerfInfo.TMS.ToString("00") + " ms");
 
 			var frameCount = Settings.FrameLimiter == 0 ? ScreenInfo.ScreenRefreshRate : Settings.FrameLimiter;
 
-			render.SetColor(getColor(Window.FPS, frameCount));
-			render.SetText("Render " + Window.FPS.ToString("F1") + " @ " + Window.FMS.ToString("00") + " ms");
+			var fps = PerfInfo.AverageFPS();
+			render.SetColor(getColor(fps, frameCount));
+			render.SetText("Render " + fps.ToString("F1") + " @ " + PerfInfo.FMS.ToString("00") + " ms");
 		}
 
 		public void Render()

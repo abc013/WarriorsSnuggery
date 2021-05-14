@@ -32,6 +32,55 @@ namespace WarriorsSnuggery
 		public static bool Focused = true;
 	}
 
+	public static class PerfInfo
+	{
+		public static long TMS { get; private set; }
+		public static double TPS { get; private set; }
+
+		static readonly double[] lastTPS = new double[9];
+		static int tIndex;
+
+		public static void UpdateLoop(long ms, double tps)
+		{
+			TMS = ms;
+
+			lastTPS[tIndex++ % 9] = TPS;
+			TPS = tps;
+		}
+
+		public static double AverageTPS()
+		{
+			var total = TPS;
+			foreach (var tps in lastTPS)
+				total += tps;
+
+			return total / 10;
+		}
+
+		public static long FMS { get; private set; }
+		public static double FPS { get; private set; }
+
+		static readonly double[] lastFPS = new double[9];
+		static int fIndex;
+
+		public static void RenderLoop(long ms, double fps)
+		{
+			FMS = ms;
+
+			lastFPS[fIndex++ % 9] = FPS;
+			FPS = fps;
+		}
+
+		public static double AverageFPS()
+		{
+			var total = FPS;
+			foreach (var fps in lastFPS)
+				total += fps;
+
+			return total / 10;
+		}
+	}
+
 	public class Window : GameWindow
 	{
 		static Window current;
@@ -41,12 +90,6 @@ namespace WarriorsSnuggery
 
 		public static bool Ready;
 		public static bool Stopped;
-
-		public static long TMS;
-		public static double TPS;
-
-		public static long FMS;
-		public static double FPS;
 
 		readonly Timer timer;
 
@@ -158,8 +201,7 @@ namespace WarriorsSnuggery
 			if (!Ready)
 				return;
 
-			if (GlobalTick % 20 == 0)
-				timer.Restart();
+			timer.Restart();
 
 			GameController.Tick();
 			AudioController.Tick();
@@ -167,14 +209,9 @@ namespace WarriorsSnuggery
 			MouseInput.Tick();
 			KeyInput.Tick();
 
-			if (GlobalTick % 20 == 0)
-			{
-				TMS = timer.Stop();
-				TPS = 1 / e.Time;
-
-				if (Settings.LogTimeMeasuring)
-					Log.Performance(TMS, " tick " + GlobalTick);
-			}
+			PerfInfo.UpdateLoop(timer.Stop(), 1 / e.Time);
+			if (Settings.LogTimeMeasuring && GlobalTick % 20 == 0)
+				Log.Performance(PerfInfo.TMS, " tick " + GlobalTick);
 
 			GlobalTick++;
 		}
@@ -184,8 +221,7 @@ namespace WarriorsSnuggery
 			if (!Ready || Stopped)
 				return;
 
-			if (GlobalRender % 20 == 0)
-				timer.Restart();
+			timer.Restart();
 
 			MasterRenderer.Render();
 
@@ -194,19 +230,37 @@ namespace WarriorsSnuggery
 				SwapBuffers();
 			}
 
+			PerfInfo.RenderLoop(timer.Stop(), 1 / e.Time);
 			if (GlobalRender % 20 == 0)
 			{
-				FMS = timer.Stop();
-				FPS = 1 / e.Time;
-
 				if (Settings.LogTimeMeasuring)
-					Log.Performance(FMS, " render " + GlobalRender);
+					Log.Performance(PerfInfo.FMS, " render " + GlobalRender);
 
 				if (Settings.DeveloperMode || Program.IsDebug)
-					Title = Program.Title + " | " + MasterRenderer.RenderCalls + " Calls | " + MasterRenderer.Batches + " Batches";
+					Title = $"{Program.Title} [{MasterRenderer.RenderCalls} Calls, {MasterRenderer.Batches} Batches]";
 			}
 
 			GlobalRender++;
+
+			sleep();
+		}
+
+		uint lastTick;
+		uint lastRender;
+		void sleep()
+		{
+			// Don't use this for multithreading since this method calculates for one thread only.
+			if (Settings.EnableMultiThreading || Settings.ThreadSleepFactor == 0f)
+				return;
+
+			var tickDiff = GlobalTick - lastTick;
+			lastTick = GlobalTick;
+			var renderDiff = GlobalRender - lastRender;
+			lastRender = GlobalRender;
+
+			var sleepTime = ((int)(1000 * Settings.ThreadSleepFactor) / Math.Max(Settings.UpdatesPerSecond, Settings.FrameLimiter == 0 ? ScreenInfo.ScreenRefreshRate : Settings.FrameLimiter)) - (int)(PerfInfo.TMS * tickDiff + PerfInfo.FMS * renderDiff);
+			if (sleepTime > 0)
+				System.Threading.Thread.Sleep(sleepTime);
 		}
 
 		protected override void OnFocusedChanged(FocusedChangedEventArgs e)
