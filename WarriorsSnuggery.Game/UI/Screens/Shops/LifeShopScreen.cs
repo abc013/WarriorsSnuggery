@@ -18,10 +18,10 @@ namespace WarriorsSnuggery.UI.Screens
 			Add(new MoneyDisplay(game) { Position = new CPos(Left + 2048, Bottom - 1024, 0) });
 			Add(new HealthDisplay(game) { Position = new CPos(0, -2048, 0) });
 
-			information = new UITextLine(FontManager.Pixel16, TextOffset.MIDDLE) { Position = new CPos(0, -2048 - 712, 0) };
+			information = new UITextLine(FontManager.Default, TextOffset.MIDDLE) { Position = new CPos(0, -2048 - 712, 0) };
 			Add(information);
 
-			price = new UITextLine(FontManager.Pixel16, TextOffset.MIDDLE) { Position = new CPos(0, 0, 0) };
+			price = new UITextLine(FontManager.Default, TextOffset.MIDDLE) { Position = new CPos(0, 0, 0) };
 			Add(price);
 
 			Add(new Button("Buy life", "wooden", buyLife) { Position = new CPos(0, 1024, 0) });

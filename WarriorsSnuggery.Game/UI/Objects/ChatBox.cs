@@ -12,7 +12,7 @@ namespace WarriorsSnuggery.UI.Objects
 
 		public ChatBox(CPos position)
 		{
-			panel = new TextPanel(new MPos(8120, 2048), FontManager.Pixel16, "stone") { Position = position };
+			panel = new TextPanel(new MPos(8120, 2048), FontManager.Default, "stone") { Position = position };
 
 			input = new TextBox("wooden", 45)
 			{

@@ -17,7 +17,7 @@ namespace WarriorsSnuggery.UI.Screens
 
 			Title.Position = new CPos(0, -4096, 0);
 
-			var font = FontManager.Pixel16;
+			var font = FontManager.Default;
 
 			Add(new Button("Save & Back", "wooden", () => game.ShowScreen(ScreenType.SETTINGS)) { Position = new CPos(0, 6144, 0) });
 

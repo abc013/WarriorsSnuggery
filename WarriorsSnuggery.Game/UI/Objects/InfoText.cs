@@ -10,7 +10,7 @@ namespace WarriorsSnuggery.UI.Objects
 
 		public InfoText()
 		{
-			infoText = new UITextLine(FontManager.Pixel16);
+			infoText = new UITextLine(FontManager.Default);
 		}
 
 		public void Tick()

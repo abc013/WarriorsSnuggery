@@ -19,7 +19,7 @@ namespace WarriorsSnuggery.UI
 
 		public Tooltip(string title, params string[] text)
 		{
-			font = FontManager.Pixel16;
+			font = FontManager.Default;
 
 			this.title = new TextLine(CPos.Zero, font);
 			this.title.WriteText(title);

@@ -37,12 +37,12 @@ namespace WarriorsSnuggery.UI.Screens
 			this.game = game;
 			Title.Position += new CPos(0, -7120, 0);
 
-			mousePosition = new UITextLine(FontManager.Pixel16, TextOffset.RIGHT) { Position = new CPos(Right - 1024, -7172, 0) };
+			mousePosition = new UITextLine(FontManager.Default, TextOffset.RIGHT) { Position = new CPos(Right - 1024, -7172, 0) };
 			Add(mousePosition);
 
 			if (!string.IsNullOrEmpty(game.MapType.OverridePiece))
 			{
-				var pieceName = new UITextLine(FontManager.Pixel16, TextOffset.RIGHT) { Position = new CPos(Right - 1024, -7684, 0) };
+				var pieceName = new UITextLine(FontManager.Default, TextOffset.RIGHT) { Position = new CPos(Right - 1024, -7684, 0) };
 				pieceName.WriteText("Piece name: " + Color.Green + game.MapType.OverridePiece);
 				Add(pieceName);
 			}

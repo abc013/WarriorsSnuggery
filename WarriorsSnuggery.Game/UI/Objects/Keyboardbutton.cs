@@ -40,7 +40,7 @@ namespace WarriorsSnuggery.UI.Objects
 		{
 			Key = key;
 
-			keyDisplay = new UITextLine(FontManager.Pixel16, TextOffset.MIDDLE);
+			keyDisplay = new UITextLine(FontManager.Default, TextOffset.MIDDLE);
 			keyDisplay.SetText(key);
 
 			Bounds = new MPos(width + 512, height);

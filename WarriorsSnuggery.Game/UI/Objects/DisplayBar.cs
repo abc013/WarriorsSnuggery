@@ -46,7 +46,7 @@ namespace WarriorsSnuggery.UI.Objects
 		{
 			this.fillColor = fillColor;
 
-			text = new UITextLine(FontManager.Pixel16, TextOffset.MIDDLE);
+			text = new UITextLine(FontManager.Default, TextOffset.MIDDLE);
 		}
 
 		public void WriteText(string text)

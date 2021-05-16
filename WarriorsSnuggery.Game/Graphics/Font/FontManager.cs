@@ -4,8 +4,8 @@ namespace WarriorsSnuggery.Graphics
 {
 	public static class FontManager
 	{
-		public static Font Papyrus24 { get; private set; }
-		public static Font Pixel16 { get; private set; }
+		public static Font Header { get; private set; }
+		public static Font Default { get; private set; }
 
 		public static PrivateFontCollection Collection { get; private set; }
 
@@ -19,10 +19,10 @@ namespace WarriorsSnuggery.Graphics
 			Collection = new PrivateFontCollection();
 
 			Collection.AddFontFile(path + "Adventurer.ttf");
-			Papyrus24 = new Font(new FontInfo(24, "Adventurer"));
+			Header = new Font(new FontInfo(24, "Adventurer"));
 
 			Collection.AddFontFile(path + "Pixel.ttf");
-			Pixel16 = new Font(new FontInfo(16, "Pixel"));
+			Default = new Font(new FontInfo(16, "Pixel"));
 		}
 
 		public static void Dispose()

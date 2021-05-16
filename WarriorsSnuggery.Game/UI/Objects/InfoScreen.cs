@@ -13,15 +13,15 @@ namespace WarriorsSnuggery.UI.Objects
 		public InfoScreen()
 		{
 			var corner = (int)(WindowInfo.UnitWidth * 512) - 128;
-			version = new UITextLine(FontManager.Pixel16, TextOffset.RIGHT)
+			version = new UITextLine(FontManager.Default, TextOffset.RIGHT)
 			{
 				Position = new CPos(corner, 6192, 0),
 				Color = Color.Yellow
 			};
 			version.SetText(Settings.Version);
-			visibility = new UITextLine(FontManager.Pixel16, TextOffset.RIGHT) { Position = new CPos(corner, 6692, 0) };
-			tick = new UITextLine(FontManager.Pixel16, TextOffset.RIGHT) { Position = new CPos(corner, 7692, 0) };
-			render = new UITextLine(FontManager.Pixel16, TextOffset.RIGHT) { Position = new CPos(corner, 7192, 0) };
+			visibility = new UITextLine(FontManager.Default, TextOffset.RIGHT) { Position = new CPos(corner, 6692, 0) };
+			tick = new UITextLine(FontManager.Default, TextOffset.RIGHT) { Position = new CPos(corner, 7692, 0) };
+			render = new UITextLine(FontManager.Default, TextOffset.RIGHT) { Position = new CPos(corner, 7192, 0) };
 		}
 
 		public void Tick()

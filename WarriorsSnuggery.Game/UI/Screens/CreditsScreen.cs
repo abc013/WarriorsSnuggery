@@ -28,7 +28,7 @@ namespace WarriorsSnuggery.UI.Screens
 
 			lineData = File.ReadAllLines(FileExplorer.FindIn(FileExplorer.Rules, "Credits", ".yaml"));
 
-			lineHeight = FontManager.Pixel16.Height * 2;
+			lineHeight = FontManager.Default.Height * 2;
 
 			wsImage = new UIImage(new BatchObject(UISpriteManager.Get("logo")[0])) { Color = new Color(0, 0, 0, 0) };
 		}
@@ -54,7 +54,7 @@ namespace WarriorsSnuggery.UI.Screens
 			currentHeight += movement;
 			if (currentHeight >= 0 && currentLine < lineData.Length)
 			{
-				var newLine = new UITextLine(FontManager.Pixel16, TextOffset.MIDDLE)
+				var newLine = new UITextLine(FontManager.Default, TextOffset.MIDDLE)
 				{
 					Position = new CPos(0, Bottom + lineHeight / 2, 0)
 				};
@@ -77,7 +77,7 @@ namespace WarriorsSnuggery.UI.Screens
 
 				if (wsImageTick == 900)
 				{
-					var text = new UITextLine(FontManager.Pixel16, TextOffset.MIDDLE)
+					var text = new UITextLine(FontManager.Default, TextOffset.MIDDLE)
 					{
 						Color = Color.Green,
 						Position = new CPos(0, 2048, 0)

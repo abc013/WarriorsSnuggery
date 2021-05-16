@@ -54,12 +54,12 @@ namespace WarriorsSnuggery.UI.Objects
 			MaximumLength = maximumLength;
 			Type = type;
 
-			textline = new UITextLine(FontManager.Pixel16, TextOffset.MIDDLE) { Position = new CPos(128, 0, 0) };
+			textline = new UITextLine(FontManager.Default, TextOffset.MIDDLE) { Position = new CPos(128, 0, 0) };
 		}
 
 		static MPos calculateBounds(int maximumLength)
 		{
-			return new MPos(margin + FontManager.Pixel16.Width * maximumLength / 2, margin + FontManager.Pixel16.Height / 2);
+			return new MPos(margin + FontManager.Default.Width * maximumLength / 2, margin + FontManager.Default.Height / 2);
 		}
 
 		public override void Render()

@@ -60,7 +60,7 @@ namespace WarriorsSnuggery.UI.Screens
 			Add(menu);
 
 			// mission text
-			var missionText = new UITextLine(FontManager.Pixel16, TextOffset.MIDDLE) { Position = new CPos(0, top, 0) };
+			var missionText = new UITextLine(FontManager.Default, TextOffset.MIDDLE) { Position = new CPos(0, top, 0) };
 			var missionContent = string.Empty;
 			switch (game.ObjectiveType)
 			{

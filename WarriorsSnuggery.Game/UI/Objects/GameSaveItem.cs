@@ -31,20 +31,20 @@ namespace WarriorsSnuggery.UI.Objects
 			Save = save;
 			Scale *= 2;
 
-			name = new UITextLine(FontManager.Pixel16)
+			name = new UITextLine(FontManager.Default)
 			{
 				Position = pos - new CPos(3072, 512, 0)
 			};
 			name.SetText(save.Name);
 
-			score = new UITextLine(FontManager.Pixel16)
+			score = new UITextLine(FontManager.Default)
 			{
 				Position = pos - new CPos(3072, 0, 0),
 				Color = Color.Yellow
 			};
 			score.SetText(save.CalculateScore());
 
-			level = new UITextLine(FontManager.Papyrus24)
+			level = new UITextLine(FontManager.Header)
 			{
 				Position = pos - new CPos(-1152, 0, 0),
 				Scale = 1.4f

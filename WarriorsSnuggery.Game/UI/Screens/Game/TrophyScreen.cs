@@ -39,7 +39,7 @@ namespace WarriorsSnuggery.UI.Screens
 
 			Add(new Panel(new MPos(8 * 1024, 1024), "stone") { Position = new CPos(0, 1024, 0) });
 
-			information = new UITextBlock(FontManager.Pixel16, TextOffset.LEFT, "Select a trophy for further information.", "", "", "") { Position = new CPos(-7900, 512 - 128, 0) };
+			information = new UITextBlock(FontManager.Default, TextOffset.LEFT, "Select a trophy for further information.", "", "", "") { Position = new CPos(-7900, 512 - 128, 0) };
 			Add(information);
 
 			Add(new Button("Resume", "wooden", () => game.ShowScreen(ScreenType.DEFAULT, false)) { Position = new CPos(0, 6144, 0) });
