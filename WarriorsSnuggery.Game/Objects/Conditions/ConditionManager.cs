@@ -87,7 +87,7 @@ namespace WarriorsSnuggery.Objects.Conditions
 					return condition.Negate != game.Stats.TrophyUnlocked(pair.Key);
 			}
 
-			throw new Exception(string.Format("Invalid condition: {0}", condition.Type));
+			throw new Exception($"Invalid condition: {condition.Type}");
 		}
 	}
 }

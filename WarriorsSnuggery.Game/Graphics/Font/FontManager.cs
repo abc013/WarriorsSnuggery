@@ -14,12 +14,14 @@ namespace WarriorsSnuggery.Graphics
 
 		public static void Load()
 		{
+			var path = FileExplorer.Misc + "Fonts" + FileExplorer.Separator;
+
 			Collection = new PrivateFontCollection();
 
-			Collection.AddFontFile(FileExplorer.Misc + @"Fonts\Papyrus.ttf");
+			Collection.AddFontFile(path + "Papyrus.ttf");
 			Papyrus24 = new Font(new FontInfo(24, "Papyrus"));
 
-			Collection.AddFontFile(FileExplorer.Misc + @"Fonts\Pixel.ttf");
+			Collection.AddFontFile(path + "Pixel.ttf");
 			Pixel16 = new Font(new FontInfo(16, "Pixel"));
 		}
 

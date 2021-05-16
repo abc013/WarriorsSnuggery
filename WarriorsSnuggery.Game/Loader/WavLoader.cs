@@ -53,7 +53,7 @@ namespace WarriorsSnuggery.Loader
 				else if (bitDepth == 16)
 					format = ALFormat.Mono16;
 				else
-					throw new InvalidSoundFileException(string.Format("Invalid .WAV file: Bitdepth is {0}, supported are 8 and 16.", bitDepth));
+					throw new InvalidSoundFileException($"Invalid .WAV file: Bitdepth is {bitDepth}, supported are 8 and 16.");
 			}
 			else if (channels == 2)
 			{
@@ -62,11 +62,11 @@ namespace WarriorsSnuggery.Loader
 				else if (bitDepth == 16)
 					format = ALFormat.Stereo16;
 				else
-					throw new InvalidSoundFileException(string.Format("Invalid .WAV file: Bitdepth is {0}, supported are 8 and 16.", bitDepth));
+					throw new InvalidSoundFileException($"Invalid .WAV file: Bitdepth is {bitDepth}, supported are 8 and 16.");
 			}
 			else
 			{
-				throw new InvalidSoundFileException(string.Format("Invalid .WAV file: Number of channels is {0}, supported are mono and stereo.", channels));
+				throw new InvalidSoundFileException($"Invalid .WAV file: Number of channels is {channels}, supported are mono and stereo.");
 			}
 
 			return reader;

@@ -12,7 +12,7 @@
 		{
 			files = new string[names.Length];
 			for (int i = 0; i < names.Length; i++)
-				files[i] = FileExplorer.Misc + @"music\" + names[i] + ".wav";
+				files[i] = FileExplorer.Misc + "music" + FileExplorer.Separator + names[i] + ".wav";
 
 			hasMusic = files.Length != 0;
 

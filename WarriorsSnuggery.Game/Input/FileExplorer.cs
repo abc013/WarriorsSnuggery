@@ -23,12 +23,12 @@ namespace WarriorsSnuggery
 			string path = Directory.GetCurrentDirectory();
 
 			MainDirectory = path + Separator;
-			Misc = path + Separator + @"misc" + Separator;
-			Rules = path + Separator + @"rules" + Separator;
-			Maps = path + Separator + @"maps" + Separator;
-			Shaders = path + Separator + @"shaders" + Separator;
-			Logs = path + Separator + @"logs" + Separator;
-			Saves = path + Separator + @"saves" + Separator;
+			Misc = path + Separator + "misc" + Separator;
+			Rules = path + Separator + "rules" + Separator;
+			Maps = path + Separator + "maps" + Separator;
+			Shaders = path + Separator + "shaders" + Separator;
+			Logs = path + Separator + "logs" + Separator;
+			Saves = path + Separator + "saves" + Separator;
 		}
 
 		public static bool Exists(string path, string name)

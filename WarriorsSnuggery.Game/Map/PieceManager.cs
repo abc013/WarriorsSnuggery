@@ -25,10 +25,10 @@ namespace WarriorsSnuggery.Maps
 				var files = Directory.GetFiles(path).Where(s => s.EndsWith(".yaml", StringComparison.CurrentCulture));
 				foreach (var file in files)
 				{
-					var name = file.Remove(0, file.LastIndexOf('\\') + 1);
+					var name = file.Remove(0, file.LastIndexOf(FileExplorer.Separator) + 1);
 					name = name.Remove(name.Length - 5);
 
-					var nodes = TextNodeLoader.FromFile(path + @"\", name + ".yaml");
+					var nodes = TextNodeLoader.FromFile(path + FileExplorer.Separator, name + ".yaml");
 
 					Pieces.Add(new Piece(name, path, nodes));
 				}

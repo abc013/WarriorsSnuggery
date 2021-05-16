@@ -26,7 +26,7 @@ namespace WarriorsSnuggery.Audio
 
 			var error = AL.GetError();
 			if (error != ALError.NoError)
-				throw new FailingSoundDeviceException(string.Format("Failed to open audio device. Error code: {0}.", error));
+				throw new FailingSoundDeviceException($"Failed to open audio device. Error code: {error}.");
 
 			MusicSource = new MusicAudioSource();
 

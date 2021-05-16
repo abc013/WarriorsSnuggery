@@ -60,7 +60,7 @@ namespace WarriorsSnuggery.Maps
 							}
 							catch (Exception e)
 							{
-								throw new InvalidPieceException(string.Format(@"unable to load actor '{0}' in piece '{1}'.", actor.Key, Name), e);
+								throw new InvalidPieceException($"unable to load actor '{actor.Key}' in piece '{Name}'.", e);
 							}
 						}
 						break;
@@ -74,7 +74,7 @@ namespace WarriorsSnuggery.Maps
 							}
 							catch (Exception e)
 							{
-								throw new InvalidPieceException(string.Format(@"unable to load weapon '{0}' in piece '{1}'.", weapon.Key, Name), e);
+								throw new InvalidPieceException($"unable to load weapon '{weapon.Key}' in piece '{Name}'.", e);
 							}
 						}
 						break;
@@ -87,7 +87,7 @@ namespace WarriorsSnuggery.Maps
 							}
 							catch (Exception e)
 							{
-								throw new InvalidPieceException(string.Format(@"unable to load particle '{0}' in piece '{1}'.", particle.Key, Name), e);
+								throw new InvalidPieceException($"unable to load particle '{particle.Key}' in piece '{Name}'.", e);
 							}
 						}
 						break;
@@ -99,10 +99,10 @@ namespace WarriorsSnuggery.Maps
 			}
 
 			if (groundData.Length != Size.X * Size.Y)
-				throw new InvalidPieceException(string.Format(@"The count of given terrains ({0}) is not the size ({1}) of the piece '{2}'", groundData.Length, Size.X * Size.Y, Name));
+				throw new InvalidPieceException($"The count of given terrains ({groundData.Length}) is not the size ({Size.X * Size.Y}) of the piece '{Name}'");
 
 			if (wallData.Length != (Size.X + 1) * (Size.Y + 1) * 2 * 2)
-				throw new InvalidPieceException(string.Format(@"The count of given walls ({0}) is smaller as the size ({1}) on the piece '{2}'", groundData.Length, Size.X * Size.Y, Name));
+				throw new InvalidPieceException($"The count of given walls ({groundData.Length}) is smaller as the size ({Size.X * Size.Y}) on the piece '{Name}'");
 		}
 
 		public void PlacePiece(MPos position, MapLoader loader)

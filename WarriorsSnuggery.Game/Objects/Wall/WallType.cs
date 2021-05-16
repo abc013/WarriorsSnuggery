@@ -66,14 +66,14 @@ namespace WarriorsSnuggery.Objects
 				textures = new TextureInfo(Image, TextureType.ANIMATION, 24, 48).GetTextures();
 
 				if (textures.Length < (ConsiderWallsNearby ? 6 : 2))
-					throw new InvalidNodeException(string.Format("Texture '{0}' of Wall '{1}' has not enough textures!", Image, id));
+					throw new InvalidNodeException($"Texture '{Image}' of Wall '{id}' has not enough textures!");
 
 				if (DamagedImage1 != null)
 				{
 					damagedTextures1 = new TextureInfo(DamagedImage1, TextureType.ANIMATION, 24, 48).GetTextures();
 
 					if (textures.Length < (ConsiderWallsNearby ? 6 : 2))
-						throw new InvalidNodeException(string.Format("DamageTexture '{0}' of Wall '{1}' has not enough textures!", Image, id));
+						throw new InvalidNodeException($"DamageTexture '{DamagedImage1}' of Wall '{id}' has not enough textures!");
 				}
 
 				if (DamagedImage2 != null)
@@ -81,7 +81,7 @@ namespace WarriorsSnuggery.Objects
 					damagedTextures2 = new TextureInfo(DamagedImage2, TextureType.ANIMATION, 24, 48).GetTextures();
 
 					if (textures.Length < (ConsiderWallsNearby ? 6 : 2))
-						throw new InvalidNodeException(string.Format("DamageTexture '{0}' of Wall '{1}' has not enough textures!", Image, id));
+						throw new InvalidNodeException($"DamageTexture '{DamagedImage2}' of Wall '{id}' has not enough textures!");
 				}
 
 				HorizontalPhysicsType = new SimplePhysicsType(Shape.LINE_HORIZONTAL, 512, 512, Height, new CPos(0, 512, 0), 0);

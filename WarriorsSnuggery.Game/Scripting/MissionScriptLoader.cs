@@ -58,7 +58,7 @@ namespace WarriorsSnuggery.Scripting
 				foreach (var compilerMessage in compilation.GetDiagnostics())
 					Log.Exeption(compilerMessage);
 
-				throw new Exception(string.Format("The script '{0}' could not be loaded. See console or error.log for more details.", file + ".cs"));
+				throw new Exception($"The script '{file + ".cs"}' could not be loaded. See console or error.log for more details.");
 			}
 			ms.Seek(0, SeekOrigin.Begin);
 

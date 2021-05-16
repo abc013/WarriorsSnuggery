@@ -36,7 +36,7 @@ namespace WarriorsSnuggery.Loader
 
 		public override string ToString()
 		{
-			return string.Format("Key '{0}' | Value '{1}'", Key, Value);
+			return $"Key '{Key}' | Value '{Value}'";
 		}
 	}
 }

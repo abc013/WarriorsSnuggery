@@ -7,7 +7,7 @@ namespace WarriorsSnuggery.Maps
 	{
 		public static Piece CreateEmpty(string name, MPos size)
 		{
-			var path = FileExplorer.Maps + @"\maps";
+			var path = FileExplorer.Maps + FileExplorer.Separator + "maps";
 
 			if (!Directory.Exists(path))
 				Directory.CreateDirectory(path);

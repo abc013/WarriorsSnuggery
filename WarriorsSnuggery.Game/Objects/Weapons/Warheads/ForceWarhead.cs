@@ -26,7 +26,7 @@ namespace WarriorsSnuggery.Objects.Weapons.Warheads
 			TypeLoader.SetValues(this, nodes);
 
 			if (RangeSteps.Length != Falloff.Length)
-				throw new InvalidNodeException(string.Format("Range step length ({0}) does not match with given falloff values ({1}).", RangeSteps.Length, Falloff.Length));
+				throw new InvalidNodeException($"Range step length ({RangeSteps.Length}) does not match with given falloff values ({Falloff.Length}).");
 
 			maxRange = FalloffHelper.GetMax(Falloff, RangeSteps);
 		}
