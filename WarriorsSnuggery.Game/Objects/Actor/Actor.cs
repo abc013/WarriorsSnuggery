@@ -31,7 +31,7 @@ namespace WarriorsSnuggery.Objects
 		public float Angle;
 
 		public readonly List<ActorPart> Parts = new List<ActorPart>();
-		public readonly List<EffectPart> Effects = new List<EffectPart>();
+		public readonly List<ActorEffect> Effects = new List<ActorEffect>();
 		public readonly PartManager PartManager;
 
 		readonly List<ITick> tickParts;
@@ -154,9 +154,9 @@ namespace WarriorsSnuggery.Objects
 			foreach (var part in Parts)
 				part.OnLoad(init.Nodes);
 
-			var effects = init.Nodes.Where(n => n.Key == nameof(EffectPart));
+			var effects = init.Nodes.Where(n => n.Key == nameof(ActorEffect));
 			foreach (var effect in effects)
-				Effects.Add(new EffectPart(this, effect.Children));
+				Effects.Add(new ActorEffect(this, effect.Children));
 
 			init = null;
 		}
@@ -238,6 +238,9 @@ namespace WarriorsSnuggery.Objects
 		{
 			foreach (var part in moveParts)
 				part.OnMove(old, Velocity);
+
+			foreach (var effect in Effects)
+				effect.OnMove(old, Velocity);
 		}
 
 		public void StopMove()
@@ -258,7 +261,7 @@ namespace WarriorsSnuggery.Objects
 			}
 
 			for (int i = 0; i < spell.Effects.Length; i++)
-				Effects.Add(new EffectPart(this, spell.Effects[i], spell, i));
+				Effects.Add(new ActorEffect(this, spell, i));
 		}
 
 		public override bool CheckVisibility()
@@ -326,7 +329,7 @@ namespace WarriorsSnuggery.Objects
 				}
 			}
 
-			var effectsToRemove = new List<EffectPart>();
+			var effectsToRemove = new List<ActorEffect>();
 			foreach (var effect in Effects)
 			{
 				effect.Tick();

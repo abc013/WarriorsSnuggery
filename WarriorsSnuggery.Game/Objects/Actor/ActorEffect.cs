@@ -2,9 +2,9 @@
 using WarriorsSnuggery.Loader;
 using WarriorsSnuggery.Spells;
 
-namespace WarriorsSnuggery.Objects.Parts
+namespace WarriorsSnuggery.Objects
 {
-	public class EffectPart : ITick, INoticeMove
+	public class ActorEffect : ITick, INoticeMove
 	{
 		public readonly Effect Effect;
 		readonly Actor self;
@@ -18,21 +18,22 @@ namespace WarriorsSnuggery.Objects.Parts
 		public bool Active => tick > 0;
 		int tick;
 
-		public EffectPart(Actor self, Effect effect, Spell spell, int spellIndex)
+		public ActorEffect(Actor self, Spell spell, int spellIndex)
 		{
-			Effect = effect;
 			this.self = self;
 
 			this.spell = spell;
 			this.spellIndex = spellIndex;
 
-			tick = effect.Duration;
+			Effect = spell.Effects[spellIndex];
 
-			if (effect.Sound != null)
-				sound = new Sound(effect.Sound);
+			tick = Effect.Duration;
+
+			if (Effect.Sound != null)
+				sound = new Sound(Effect.Sound);
 		}
 
-		public EffectPart(Actor self, List<TextNode> nodes)
+		public ActorEffect(Actor self, List<TextNode> nodes)
 		{
 			this.self = self;
 
@@ -65,7 +66,7 @@ namespace WarriorsSnuggery.Objects.Parts
 		{
 			return new List<string>
 			{
-				nameof(EffectPart) + "=",
+				nameof(ActorEffect) + "=",
 				"\tSpell=" + SpellCreator.GetName(spell),
 				"\tSpellIndex=" + spellIndex,
 				"\tTick=" + tick
