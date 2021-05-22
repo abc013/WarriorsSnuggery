@@ -19,21 +19,21 @@ namespace WarriorsSnuggery.Objects.Conditions
 		public Condition(string input)
 		{
 			input = input.Trim();
-			if (input.Contains("||"))
-			{
-				operation = Operation.OR;
-				var split = input.LastIndexOf("||");
-				children = new Condition[2];
-				children[0] = new Condition(input.Substring(0, split));
-				children[1] = new Condition(input.Substring(split + 2));
-			}
-			else if (input.Contains("&&"))
+			if (input.Contains("&&"))
 			{
 				operation = Operation.AND;
 				var split = input.LastIndexOf("&&");
 				children = new Condition[2];
-				children[0] = new Condition(input.Substring(0, split));
-				children[1] = new Condition(input.Substring(split + 2));
+				children[0] = new Condition(input[..split]);
+				children[1] = new Condition(input[(split + 2)..]);
+			}
+			else if (input.Contains("||"))
+			{
+				operation = Operation.OR;
+				var split = input.LastIndexOf("||");
+				children = new Condition[2];
+				children[0] = new Condition(input[..split]);
+				children[1] = new Condition(input[(split + 2)..]);
 			}
 			else
 			{
@@ -62,7 +62,7 @@ namespace WarriorsSnuggery.Objects.Conditions
 			if (children == null)
 				return (Negate ? "!" : "") + Type;
 
-			return children[0].ToString() + (operation == Operation.AND ? "&&" : "||") + children[1].ToString();
+			return $"({children[0]} {(operation == Operation.AND ? "&&" : "||")} {children[1]})";
 		}
 	}
 }
