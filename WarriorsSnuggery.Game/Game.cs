@@ -3,11 +3,11 @@ using System;
 using WarriorsSnuggery.Audio;
 using WarriorsSnuggery.Graphics;
 using WarriorsSnuggery.Maps;
-using WarriorsSnuggery.Objects;
 using WarriorsSnuggery.Objects.Conditions;
 using WarriorsSnuggery.Spells;
 using WarriorsSnuggery.Scripting;
 using WarriorsSnuggery.UI.Screens;
+using WarriorsSnuggery.Objects.Actors;
 
 namespace WarriorsSnuggery
 {

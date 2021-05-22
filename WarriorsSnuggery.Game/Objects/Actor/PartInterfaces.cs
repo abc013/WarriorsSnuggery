@@ -1,9 +1,8 @@
 ﻿using System.Collections.Generic;
 using WarriorsSnuggery.Loader;
-using WarriorsSnuggery.Objects.Actors;
 using WarriorsSnuggery.Objects.Weapons;
 
-namespace WarriorsSnuggery.Objects
+namespace WarriorsSnuggery.Objects.Actors
 {
 	public interface ITickInEditor : ITick { }
 

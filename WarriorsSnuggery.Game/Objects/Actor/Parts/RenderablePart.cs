@@ -1,5 +1,5 @@
 ﻿
-namespace WarriorsSnuggery.Objects.Parts
+namespace WarriorsSnuggery.Objects.Actors.Parts
 {
 	public abstract class RenderablePart : ActorPart, IRenderable
 	{

@@ -2,7 +2,7 @@ using OpenTK.Graphics.OpenGL;
 using OpenTK.Mathematics;
 using System.Collections.Generic;
 using WarriorsSnuggery.Graphics;
-using WarriorsSnuggery.Objects.Parts;
+using WarriorsSnuggery.Objects.Actors.Parts;
 using WarriorsSnuggery.UI;
 
 namespace WarriorsSnuggery

@@ -2,7 +2,7 @@
 using System;
 using System.Collections.Generic;
 using WarriorsSnuggery.Graphics;
-using WarriorsSnuggery.Objects;
+using WarriorsSnuggery.Objects.Actors;
 
 namespace WarriorsSnuggery.UI.Objects
 {

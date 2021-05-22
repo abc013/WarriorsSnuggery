@@ -5,11 +5,12 @@ using WarriorsSnuggery.Graphics;
 using WarriorsSnuggery.Loader;
 using WarriorsSnuggery.Objects;
 using WarriorsSnuggery.Objects.Particles;
-using WarriorsSnuggery.Objects.Parts;
+using WarriorsSnuggery.Objects.Actors.Parts;
 using WarriorsSnuggery.Objects.Weapons;
 using WarriorsSnuggery.Objects.Weather;
 using WarriorsSnuggery.Physics;
 using WarriorsSnuggery.Trophies;
+using WarriorsSnuggery.Objects.Actors;
 
 namespace WarriorsSnuggery
 {

@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.IO;
 using WarriorsSnuggery.Loader;
 using WarriorsSnuggery.Maps;
-using WarriorsSnuggery.Objects;
-using WarriorsSnuggery.Objects.Parts;
+using WarriorsSnuggery.Objects.Actors;
+using WarriorsSnuggery.Objects.Actors.Parts;
 using WarriorsSnuggery.Spells;
 
 namespace WarriorsSnuggery

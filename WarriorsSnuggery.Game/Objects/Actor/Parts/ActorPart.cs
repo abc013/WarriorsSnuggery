@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using WarriorsSnuggery.Loader;
 
-namespace WarriorsSnuggery.Objects.Parts
+namespace WarriorsSnuggery.Objects.Actors.Parts
 {
 	public sealed class PartInitSet
 	{

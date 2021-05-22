@@ -1,10 +1,10 @@
 using System.Collections.Generic;
 using System.Linq;
-using WarriorsSnuggery.Objects.Parts;
+using WarriorsSnuggery.Objects.Actors.Parts;
 using WarriorsSnuggery.Objects.Weapons;
 using WarriorsSnuggery.Physics;
 
-namespace WarriorsSnuggery.Objects
+namespace WarriorsSnuggery.Objects.Actors
 {
 	public sealed class Actor : PhysicsObject
 	{

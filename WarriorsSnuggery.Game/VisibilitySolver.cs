@@ -1,5 +1,6 @@
 ﻿using System;
 using WarriorsSnuggery.Graphics;
+using WarriorsSnuggery.Objects.Actors;
 
 namespace WarriorsSnuggery
 {
@@ -98,10 +99,10 @@ namespace WarriorsSnuggery
 				return true;
 
 			// As shroud has a doubled tilesize, we have to check 4 tiles.
-			return shroud.ShroudRevealed(Objects.Actor.PlayerTeam, x * 2, y * 2)
-				|| shroud.ShroudRevealed(Objects.Actor.PlayerTeam, x * 2 + 1, y * 2)
-				|| shroud.ShroudRevealed(Objects.Actor.PlayerTeam, x * 2 + 1, y * 2 + 1)
-				|| shroud.ShroudRevealed(Objects.Actor.PlayerTeam, x * 2, y * 2 + 1);
+			return shroud.ShroudRevealed(Actor.PlayerTeam, x * 2, y * 2)
+				|| shroud.ShroudRevealed(Actor.PlayerTeam, x * 2 + 1, y * 2)
+				|| shroud.ShroudRevealed(Actor.PlayerTeam, x * 2 + 1, y * 2 + 1)
+				|| shroud.ShroudRevealed(Actor.PlayerTeam, x * 2, y * 2 + 1);
 		}
 
 		public static bool IsVisible(MPos position)

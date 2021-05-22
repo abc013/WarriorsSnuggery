@@ -1,4 +1,5 @@
 ﻿using System;
+using WarriorsSnuggery.Objects.Actors;
 
 namespace WarriorsSnuggery.Objects.Weapons
 {

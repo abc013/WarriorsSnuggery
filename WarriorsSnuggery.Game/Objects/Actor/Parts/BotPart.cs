@@ -1,11 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using WarriorsSnuggery.Loader;
-using WarriorsSnuggery.Objects.Actors;
 using WarriorsSnuggery.Objects.Bot;
 using WarriorsSnuggery.Objects.Weapons;
 
-namespace WarriorsSnuggery.Objects.Parts
+namespace WarriorsSnuggery.Objects.Actors.Parts
 {
 	public class BotPart : ActorPart, ITick, INoticeDamage, INoticeKill, INoticeKilled, ISaveLoadable
 	{

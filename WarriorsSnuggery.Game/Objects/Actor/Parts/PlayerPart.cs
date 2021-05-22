@@ -4,10 +4,9 @@ using System.Collections.Generic;
 using System.Linq;
 using WarriorsSnuggery.Graphics;
 using WarriorsSnuggery.Loader;
-using WarriorsSnuggery.Objects.Actors;
 using WarriorsSnuggery.UI.Screens;
 
-namespace WarriorsSnuggery.Objects.Parts
+namespace WarriorsSnuggery.Objects.Actors.Parts
 {
 	class PlayerPart : ActorPart, ITick, INoticeDamage, INoticeKilled, INoticeKill, INoticeMove, ISaveLoadable
 	{

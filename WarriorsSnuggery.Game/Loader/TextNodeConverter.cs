@@ -4,7 +4,7 @@ using System.Linq;
 using WarriorsSnuggery.Graphics;
 using WarriorsSnuggery.Maps;
 using WarriorsSnuggery.Maps.Generators;
-using WarriorsSnuggery.Objects;
+using WarriorsSnuggery.Objects.Actors;
 using WarriorsSnuggery.Objects.Conditions;
 using WarriorsSnuggery.Objects.Particles;
 using WarriorsSnuggery.Objects.Weapons;

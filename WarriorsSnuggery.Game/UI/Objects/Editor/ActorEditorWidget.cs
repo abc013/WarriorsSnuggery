@@ -1,7 +1,8 @@
 ﻿using System.Linq;
 using WarriorsSnuggery.Graphics;
 using WarriorsSnuggery.Objects;
-using WarriorsSnuggery.Objects.Parts;
+using WarriorsSnuggery.Objects.Actors;
+using WarriorsSnuggery.Objects.Actors.Parts;
 
 namespace WarriorsSnuggery.UI.Objects.Editor
 {

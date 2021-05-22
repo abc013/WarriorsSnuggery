@@ -1,6 +1,6 @@
 ﻿using WarriorsSnuggery.Objects.Conditions;
 
-namespace WarriorsSnuggery.Objects.Parts
+namespace WarriorsSnuggery.Objects.Actors.Parts
 {
 	public enum PortalType
 	{

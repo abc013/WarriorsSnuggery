@@ -2,9 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using WarriorsSnuggery.Loader;
-using WarriorsSnuggery.Objects.Actors;
 
-namespace WarriorsSnuggery.Objects.Parts
+namespace WarriorsSnuggery.Objects.Actors.Parts
 {
 	[Desc("Attach this to an actor to activate mobility features.")]
 	public class MobilityPartInfo : PartInfo

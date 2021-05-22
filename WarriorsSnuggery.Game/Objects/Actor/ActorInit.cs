@@ -2,7 +2,7 @@
 using System.Linq;
 using WarriorsSnuggery.Loader;
 
-namespace WarriorsSnuggery.Objects
+namespace WarriorsSnuggery.Objects.Actors
 {
 	public class ActorInit
 	{

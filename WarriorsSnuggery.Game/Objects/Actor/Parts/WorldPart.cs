@@ -1,7 +1,7 @@
 ﻿using System;
 using WarriorsSnuggery.Objects.Bot;
 
-namespace WarriorsSnuggery.Objects.Parts
+namespace WarriorsSnuggery.Objects.Actors.Parts
 {
 	[Desc("Basic information about the object.")]
 	public class WorldPartInfo : PartInfo

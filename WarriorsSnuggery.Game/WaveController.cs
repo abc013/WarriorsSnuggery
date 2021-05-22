@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using WarriorsSnuggery.Loader;
 using WarriorsSnuggery.Maps;
-using WarriorsSnuggery.Objects;
+using WarriorsSnuggery.Objects.Actors;
 
 namespace WarriorsSnuggery
 {

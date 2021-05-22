@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using WarriorsSnuggery.Loader;
+using WarriorsSnuggery.Objects.Actors;
 
 namespace WarriorsSnuggery.Objects.Weapons.Warheads
 {

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using WarriorsSnuggery.Objects.Parts;
+using WarriorsSnuggery.Objects.Actors.Parts;
 
 namespace WarriorsSnuggery.Loader
 {
@@ -57,7 +57,7 @@ namespace WarriorsSnuggery.Loader
 
 			try
 			{
-				var type = Type.GetType("WarriorsSnuggery.Objects.Parts." + name + "PartInfo", true, true);
+				var type = Type.GetType("WarriorsSnuggery.Objects.Actors.Parts." + name + "PartInfo", true, true);
 
 				var set = new PartInitSet(internalName, nodes);
 

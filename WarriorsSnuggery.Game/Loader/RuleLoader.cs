@@ -1,5 +1,6 @@
 ﻿using WarriorsSnuggery.Graphics;
 using WarriorsSnuggery.Objects;
+using WarriorsSnuggery.Objects.Actors;
 using WarriorsSnuggery.Objects.Particles;
 using WarriorsSnuggery.Objects.Weapons;
 using WarriorsSnuggery.Trophies;

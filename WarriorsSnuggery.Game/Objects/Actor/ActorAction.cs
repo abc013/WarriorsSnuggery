@@ -1,4 +1,4 @@
-﻿namespace WarriorsSnuggery.Objects
+﻿namespace WarriorsSnuggery.Objects.Actors
 {
 	// TODO: Add PREPARE_MOVE and END_MOVE
 	public enum ActionType

@@ -1,4 +1,4 @@
-﻿namespace WarriorsSnuggery.Objects.Parts
+﻿namespace WarriorsSnuggery.Objects.Actors.Parts
 {
 	[Desc("Attach this to an actor to make it playable by the player.")]
 	public class PlayablePartInfo : PartInfo

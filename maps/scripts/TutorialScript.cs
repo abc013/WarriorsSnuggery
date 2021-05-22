@@ -1,9 +1,9 @@
 using WarriorsSnuggery;
 using WarriorsSnuggery.Scripting;
-using WarriorsSnuggery.Objects;
 using WarriorsSnuggery.Objects.Particles;
 using System.Linq;
 using System;
+using WarriorsSnuggery.Objects.Actors;
 
 namespace Mission
 {

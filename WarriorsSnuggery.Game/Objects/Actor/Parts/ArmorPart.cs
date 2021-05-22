@@ -1,4 +1,4 @@
-﻿namespace WarriorsSnuggery.Objects.Parts
+﻿namespace WarriorsSnuggery.Objects.Actors.Parts
 {
 	[Desc("This part enables actors to have armor. .")]
 	public class ArmorPartInfo : PartInfo

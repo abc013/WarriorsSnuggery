@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using WarriorsSnuggery.Loader;
-using WarriorsSnuggery.Objects.Parts;
+using WarriorsSnuggery.Objects.Actors.Parts;
 
-namespace WarriorsSnuggery.Objects
+namespace WarriorsSnuggery.Objects.Actors
 {
 	public static class ActorCreator
 	{

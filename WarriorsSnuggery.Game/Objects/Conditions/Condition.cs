@@ -1,4 +1,6 @@
-﻿namespace WarriorsSnuggery.Objects.Conditions
+﻿using WarriorsSnuggery.Objects.Actors;
+
+namespace WarriorsSnuggery.Objects.Conditions
 {
 	public class Condition
 	{

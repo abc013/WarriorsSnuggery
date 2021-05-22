@@ -1,4 +1,5 @@
-﻿using WarriorsSnuggery.Objects.Weapons.Projectiles;
+﻿using WarriorsSnuggery.Objects.Actors;
+using WarriorsSnuggery.Objects.Weapons.Projectiles;
 using WarriorsSnuggery.Physics;
 
 namespace WarriorsSnuggery.Objects.Weapons

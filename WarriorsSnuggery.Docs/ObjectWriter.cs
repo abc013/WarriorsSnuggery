@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using WarriorsSnuggery.Loader;
-using WarriorsSnuggery.Objects.Parts;
+using WarriorsSnuggery.Objects.Actors.Parts;
 
 namespace WarriorsSnuggery.Docs
 {
@@ -11,7 +11,7 @@ namespace WarriorsSnuggery.Docs
 
 		public static void WriteActors()
 		{
-			TypeWriter.WriteAll("WarriorsSnuggery.Objects.Parts", "PartInfo", new object[] { new PartInitSet(string.Empty, emptyTextNodes) });
+			TypeWriter.WriteAll("WarriorsSnuggery.Objects.Actors.Parts", "PartInfo", new object[] { new PartInitSet(string.Empty, emptyTextNodes) });
 
 			HTMLWriter.WriteHeader("SimplePhysics");
 			TypeWriter.Write(typeof(WarriorsSnuggery.Physics.SimplePhysicsType), new[] { emptyTextNodes });

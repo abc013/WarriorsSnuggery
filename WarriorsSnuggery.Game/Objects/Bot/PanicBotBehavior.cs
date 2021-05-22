@@ -1,4 +1,5 @@
-﻿using WarriorsSnuggery.Objects.Weapons;
+﻿using WarriorsSnuggery.Objects.Actors;
+using WarriorsSnuggery.Objects.Weapons;
 
 namespace WarriorsSnuggery.Objects.Bot
 {

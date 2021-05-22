@@ -4,7 +4,7 @@ using WarriorsSnuggery.Loader;
 using WarriorsSnuggery.Objects.Conditions;
 using WarriorsSnuggery.Objects.Weapons;
 
-namespace WarriorsSnuggery.Objects.Parts
+namespace WarriorsSnuggery.Objects.Actors.Parts
 {
 	[Desc("This will add a sprite to an actor which will be rendered upon call.")]
 	public class AnimatedSpritePartInfo : PartInfo

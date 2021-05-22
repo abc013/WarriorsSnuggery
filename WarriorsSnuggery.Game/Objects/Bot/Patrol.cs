@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using WarriorsSnuggery.Objects.Actors;
 using WarriorsSnuggery.Objects.Weapons;
 
 namespace WarriorsSnuggery.Objects.Bot

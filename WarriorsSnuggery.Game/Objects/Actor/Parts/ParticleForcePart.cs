@@ -1,7 +1,7 @@
 ﻿using System.Linq;
 using WarriorsSnuggery.Objects.Particles;
 
-namespace WarriorsSnuggery.Objects.Parts
+namespace WarriorsSnuggery.Objects.Actors.Parts
 {
 	public class ParticleForcePartInfo : PartInfo
 	{

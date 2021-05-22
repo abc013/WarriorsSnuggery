@@ -1,6 +1,6 @@
 ﻿using WarriorsSnuggery.Physics;
 
-namespace WarriorsSnuggery.Objects.Parts
+namespace WarriorsSnuggery.Objects.Actors.Parts
 {
 	[Desc("Attach this to an actor so it can collide with other actors. For further information, please look for SimplePhysics.")]
 	public class PhysicsPartInfo : PartInfo

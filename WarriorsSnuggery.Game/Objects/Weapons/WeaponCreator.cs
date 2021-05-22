@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using WarriorsSnuggery.Loader;
+using WarriorsSnuggery.Objects.Actors;
 
 namespace WarriorsSnuggery.Objects.Weapons
 {

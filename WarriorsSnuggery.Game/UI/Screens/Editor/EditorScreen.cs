@@ -1,6 +1,7 @@
 using System;
 using WarriorsSnuggery.Graphics;
 using WarriorsSnuggery.Objects;
+using WarriorsSnuggery.Objects.Actors;
 using WarriorsSnuggery.UI.Objects;
 using WarriorsSnuggery.UI.Objects.Editor;
 

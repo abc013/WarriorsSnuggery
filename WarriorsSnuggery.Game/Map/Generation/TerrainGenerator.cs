@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using WarriorsSnuggery.Loader;
-using WarriorsSnuggery.Objects;
+using WarriorsSnuggery.Objects.Actors;
 
 namespace WarriorsSnuggery.Maps.Generators
 {

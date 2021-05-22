@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using WarriorsSnuggery.Loader;
-using WarriorsSnuggery.Objects;
+using WarriorsSnuggery.Objects.Actors;
 using WarriorsSnuggery.Objects.Bot;
 
 namespace WarriorsSnuggery.Maps

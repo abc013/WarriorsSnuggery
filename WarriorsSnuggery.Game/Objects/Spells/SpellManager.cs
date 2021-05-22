@@ -1,4 +1,4 @@
-﻿using WarriorsSnuggery.Objects;
+﻿using WarriorsSnuggery.Objects.Actors;
 
 namespace WarriorsSnuggery.Spells
 {

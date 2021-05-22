@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using WarriorsSnuggery.Objects.Actors;
 using WarriorsSnuggery.Objects.Weapons.Projectiles;
 using WarriorsSnuggery.Physics;
 
@@ -19,9 +20,7 @@ namespace WarriorsSnuggery.Objects.Weapons
 		{
 			projectile = (BulletProjectile)type.Projectile;
 
-			var angle = (Position - TargetPosition).FlatAngle;
-
-			Angle = angle;
+			Angle = (Position - TargetPosition).FlatAngle;
 
 			TargetPosition += getInaccuracy(projectile.Inaccuracy);
 

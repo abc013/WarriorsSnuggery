@@ -4,6 +4,7 @@ using System.Linq;
 using WarriorsSnuggery.Loader;
 using WarriorsSnuggery.Maps.Generators;
 using WarriorsSnuggery.Objects;
+using WarriorsSnuggery.Objects.Actors;
 using WarriorsSnuggery.Objects.Particles;
 using WarriorsSnuggery.Objects.Weapons;
 

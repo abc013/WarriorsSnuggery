@@ -2,7 +2,7 @@
 using WarriorsSnuggery.Loader;
 using WarriorsSnuggery.Spells;
 
-namespace WarriorsSnuggery.Objects
+namespace WarriorsSnuggery.Objects.Actors
 {
 	public class ActorEffect : ITick, INoticeMove
 	{
