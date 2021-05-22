@@ -1,21 +1,25 @@
 ﻿using OpenTK.Windowing.GraphicsLibraryFramework;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using WarriorsSnuggery.Graphics;
+using WarriorsSnuggery.Loader;
 using WarriorsSnuggery.Objects.Actors;
 using WarriorsSnuggery.UI.Screens;
 
 namespace WarriorsSnuggery.Objects.Parts
 {
-	class PlayerPart : ActorPart, ITick, INoticeDamage, INoticeKilled, INoticeKill, INoticeMove
+	class PlayerPart : ActorPart, ITick, INoticeDamage, INoticeKilled, INoticeKill, INoticeMove, ISaveLoadable
 	{
 		bool firstTick = true;
 
 		public PlayerPart(Actor self) : base(self) { }
 
-		public override PartSaver OnSave()
+		public void OnLoad(List<TextNode> node) { }
+
+		public PartSaver OnSave()
 		{
-			return new PartSaver(this, string.Empty, true);
+			return new PartSaver(this, string.Empty);
 		}
 
 		public void Tick()
@@ -54,19 +58,19 @@ namespace WarriorsSnuggery.Objects.Parts
 					self.AccelerateHeightSelf(false);
 			}
 
-			if (self.ActiveWeapon != null)
+			if (self.Weapon != null)
 			{
 				var actor = FindValidTarget(MouseInput.GamePosition);
 
 				if (actor == null)
 				{
-					self.ActiveWeapon.Target = MouseInput.GamePosition;
-					self.ActiveWeapon.TargetHeight = 0;
+					self.Weapon.Target = MouseInput.GamePosition;
+					self.Weapon.TargetHeight = 0;
 				}
 				else
 				{
-					self.ActiveWeapon.Target = actor.Position;
-					self.ActiveWeapon.TargetHeight = actor.Height;
+					self.Weapon.Target = actor.Position;
+					self.Weapon.TargetHeight = actor.Height;
 				}
 			}
 

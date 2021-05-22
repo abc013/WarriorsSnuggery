@@ -101,7 +101,7 @@ namespace WarriorsSnuggery
 
 			var actors = placer.PlacePatrols();
 			foreach (var actor in actors)
-				actor.BotPart.Target = new Objects.Weapons.Target(game.World.LocalPlayer);
+				actor.Bot.Target = new Objects.Weapons.Target(game.World.LocalPlayer);
 
 			waveActors = actors.Where(a => a.WorldPart != null && a.WorldPart.KillForVictory).ToList();
 		}

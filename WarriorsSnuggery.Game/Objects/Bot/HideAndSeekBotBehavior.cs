@@ -25,7 +25,7 @@ namespace WarriorsSnuggery.Objects.Bot
 
 			if (hide)
 			{
-				if (hideDuration-- <= 0 && (Self.ActiveWeapon == null || Self.ActiveWeapon.ReloadDone))
+				if (hideDuration-- <= 0 && (Self.Weapon == null || Self.Weapon.ReloadDone))
 					hide = false;
 			}
 			else
@@ -33,8 +33,8 @@ namespace WarriorsSnuggery.Objects.Bot
 				// Look if we have a weapon and are in weapon range
 				if (CanAttack && Target.Actor != null)
 				{
-					Self.ActiveWeapon.Target = Target.Position;
-					int range = Self.ActiveWeapon.Type.MaxRange;
+					Self.Weapon.Target = Target.Position;
+					int range = Self.Weapon.Type.MaxRange;
 
 					if (DistToTarget < range * 1.1f)
 					{
@@ -50,9 +50,9 @@ namespace WarriorsSnuggery.Objects.Bot
 			{
 				var range = 5120;
 				if (CanAttack)
-					range = Self.ActiveWeapon.Type.MaxRange;
-				else if (Self.RevealsShroudPart != null)
-					range = Self.RevealsShroudPart.Range * 512;
+					range = Self.Weapon.Type.MaxRange;
+				else if (Self.RevealsShroud != null)
+					range = Self.RevealsShroud.Range * 512;
 				if (hide)
 					range *= 10;
 

@@ -43,14 +43,10 @@ namespace WarriorsSnuggery.Objects
 
 		public readonly MobilityPart Mobility;
 		public readonly HealthPart Health;
-
-		public readonly RevealsShroudPart RevealsShroudPart;
-
-		public WeaponPart ActiveWeapon;
-
+		public readonly RevealsShroudPart RevealsShroud;
+		public readonly WeaponPart Weapon;
 		public readonly WorldPart WorldPart;
-
-		public readonly BotPart BotPart;
+		public readonly BotPart Bot;
 
 		[Save]
 		public readonly ActorType Type;
@@ -99,32 +95,33 @@ namespace WarriorsSnuggery.Objects
 
 			// Parts
 			foreach (var partinfo in init.Type.PartInfos)
-				Parts.Add(partinfo.Create(this));
+			{
+				var part = partinfo.Create(this);
+				Parts.Add(part);
 
-			Mobility = (MobilityPart)Parts.Find(p => p is MobilityPart);
-
-			Health = (HealthPart)Parts.Find(p => p is HealthPart);
-			if (Health != null && init.Health >= 0f)
-				Health.RelativeHP = init.Health;
-
-			RevealsShroudPart = (RevealsShroudPart)Parts.Find(p => p is RevealsShroudPart);
-
-			ActiveWeapon = (WeaponPart)Parts.Find(p => p is WeaponPart);
-
-			WorldPart = (WorldPart)Parts.Find(p => p is WorldPart);
-			if (WorldPart != null)
-				Height = WorldPart.DefaultHeight;
-
-			IsPlayerSwitch = Parts.Any(p => p is PlayerSwitchPart);
+				// Cache some important parts
+				if (part is MobilityPart mobility)
+					Mobility = mobility;
+				else if (part is HealthPart health)
+					Health = health;
+				else if (part is RevealsShroudPart revealsShroud)
+					RevealsShroud = revealsShroud;
+				else if (part is WeaponPart weapon)
+					Weapon = weapon;
+				else if (part is WorldPart worldPart)
+					WorldPart = worldPart;
+				else if (part is PlayerSwitchPart)
+					IsPlayerSwitch = true;
+			}
 
 			if (IsPlayer)
 				Parts.Add(new PlayerPart(this));
 
 			if (IsBot)
 			{
-				var behavior = WorldPart == null ? Bot.BotBehaviorType.TYPICAL : WorldPart.BotBehavior;
-				BotPart = new BotPart(this, behavior);
-				Parts.Add(BotPart);
+				var behavior = WorldPart == null ? Objects.Bot.BotBehaviorType.TYPICAL : WorldPart.BotBehavior;
+				Bot = new BotPart(this, behavior);
+				Parts.Add(Bot);
 			}
 
 			PartManager = new PartManager();
@@ -139,6 +136,12 @@ namespace WarriorsSnuggery.Objects
 			stopParts = PartManager.GetOrDefault<INoticeStop>();
 
 			Physics = getPhysics(init.Type);
+
+			if (Health != null && init.Health >= 0f)
+				Health.RelativeHP = init.Health;
+
+			if (WorldPart != null)
+				Height = WorldPart.DefaultHeight;
 		}
 
 		SimplePhysics getPhysics(ActorType type)
@@ -151,7 +154,7 @@ namespace WarriorsSnuggery.Objects
 
 		public void OnLoad()
 		{
-			foreach (var part in Parts)
+			foreach (var part in PartManager.GetOrDefault<ISaveLoadable>())
 				part.OnLoad(init.Nodes);
 
 			var effects = init.Nodes.Where(n => n.Key == nameof(ActorEffect));
@@ -165,11 +168,11 @@ namespace WarriorsSnuggery.Objects
 		{
 			var list = WorldSaver.GetSaveFields(this);
 
-			foreach (var part in Parts)
+			foreach (var part in PartManager.GetOrDefault<ISaveLoadable>())
 				list.AddRange(part.OnSave().GetSave());
 
-			foreach (var part in Effects)
-				list.AddRange(part.Save());
+			foreach (var effect in Effects)
+				list.AddRange(effect.Save());
 
 			return list;
 		}
@@ -225,7 +228,7 @@ namespace WarriorsSnuggery.Objects
 			if (!IsAlive || Height > 0 && !Mobility.CanFly)
 				return false;
 
-			if ((ActiveWeapon == null || !ActiveWeapon.AllowMoving) && (CurrentAction.Type == ActionType.END_ATTACK || CurrentAction.Type == ActionType.ATTACK))
+			if ((Weapon == null || !Weapon.AllowMoving) && (CurrentAction.Type == ActionType.END_ATTACK || CurrentAction.Type == ActionType.ATTACK))
 				return false;
 
 			if (Effects.Any(e => e.Active && e.Effect.Type == Spells.EffectType.STUN))
@@ -294,8 +297,8 @@ namespace WarriorsSnuggery.Objects
 		public void RenderDebug()
 		{
 			Graphics.ColorManager.DrawDot(Position, Color.Blue);
-			if (ActiveWeapon != null)
-				Graphics.ColorManager.DrawCircle(Position, ActiveWeapon.Type.MaxRange / 1024f * 2, Color.Red);
+			if (Weapon != null)
+				Graphics.ColorManager.DrawCircle(Position, Weapon.Type.MaxRange / 1024f * 2, Color.Red);
 		}
 
 		public override void Tick()
@@ -394,7 +397,7 @@ namespace WarriorsSnuggery.Objects
 
 		public void PrepareAttack(Target target)
 		{
-			if (ActiveWeapon == null || !ActiveWeapon.ReloadDone || !IsAlive)
+			if (Weapon == null || !Weapon.ReloadDone || !IsAlive)
 				return;
 
 			if (World.Game.Editor && IsPlayer || !World.Map.Type.AllowWeapons)
@@ -406,12 +409,12 @@ namespace WarriorsSnuggery.Objects
 			if (Effects.Any(e => e.Active && e.Effect.Type == Spells.EffectType.STUN))
 				return;
 
-			if (!SetAction(new ActorAction(ActionType.PREPARE_ATTACK, true, ActiveWeapon.Type.PreparationDelay)))
+			if (!SetAction(new ActorAction(ActionType.PREPARE_ATTACK, true, Weapon.Type.PreparationDelay)))
 				return;
 
 			Angle = (Position - target.Position).FlatAngle;
 
-			ActiveWeapon.OnAttack(target);
+			Weapon.OnAttack(target);
 		}
 
 		public bool AttackWith(Target target, Weapon weapon)
@@ -421,8 +424,8 @@ namespace WarriorsSnuggery.Objects
 
 			World.Add(weapon);
 
-			SetAction(new ActorAction(ActionType.ATTACK, false, ActiveWeapon.Type.ShootDuration));
-			QueueAction(new ActorAction(ActionType.END_ATTACK, false, ActiveWeapon.Type.CooldownDelay));
+			SetAction(new ActorAction(ActionType.ATTACK, false, Weapon.Type.ShootDuration));
+			QueueAction(new ActorAction(ActionType.END_ATTACK, false, Weapon.Type.CooldownDelay));
 
 			foreach (var part in PartManager.GetOrDefault<INoticeAttack>())
 				part.OnAttack(target.Position, weapon);

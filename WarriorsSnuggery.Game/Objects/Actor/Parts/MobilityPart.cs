@@ -34,7 +34,7 @@ namespace WarriorsSnuggery.Objects.Parts
 		}
 	}
 
-	public class MobilityPart : ActorPart, ITick, INoticeDispose
+	public class MobilityPart : ActorPart, ITick, INoticeDispose, ISaveLoadable
 	{
 		readonly MobilityPartInfo info;
 		readonly Sound sound;
@@ -52,7 +52,7 @@ namespace WarriorsSnuggery.Objects.Parts
 				sound = new Sound(info.Sound);
 		}
 
-		public override void OnLoad(List<TextNode> nodes)
+		public void OnLoad(List<TextNode> nodes)
 		{
 			var parent = nodes.FirstOrDefault(n => n.Key == "MobilityPart" && n.Value == info.InternalName);
 			if (parent == null)
@@ -67,7 +67,7 @@ namespace WarriorsSnuggery.Objects.Parts
 			}
 		}
 
-		public override PartSaver OnSave()
+		public PartSaver OnSave()
 		{
 			var saver = new PartSaver(this, info.InternalName);
 

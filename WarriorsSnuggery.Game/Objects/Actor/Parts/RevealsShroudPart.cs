@@ -22,7 +22,7 @@ namespace WarriorsSnuggery.Objects.Parts
 		}
 	}
 
-	public class RevealsShroudPart : ActorPart, ITick, INoticeMove
+	public class RevealsShroudPart : ActorPart, ITick, INoticeMove, ISaveLoadable
 	{
 		readonly RevealsShroudPartInfo info;
 		int tick;
@@ -36,7 +36,7 @@ namespace WarriorsSnuggery.Objects.Parts
 			firstActive = true;
 		}
 
-		public override void OnLoad(List<TextNode> nodes)
+		public void OnLoad(List<TextNode> nodes)
 		{
 			var parent = nodes.FirstOrDefault(n => n.Key == "RevealsShroudPart" && n.Value == info.InternalName);
 			if (parent == null)
@@ -49,7 +49,7 @@ namespace WarriorsSnuggery.Objects.Parts
 			}
 		}
 
-		public override PartSaver OnSave()
+		public PartSaver OnSave()
 		{
 			var saver = new PartSaver(this, info.InternalName);
 

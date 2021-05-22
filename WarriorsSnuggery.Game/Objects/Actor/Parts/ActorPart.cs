@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using WarriorsSnuggery.Loader;
-using WarriorsSnuggery.Objects.Actors;
 
 namespace WarriorsSnuggery.Objects.Parts
 {
@@ -36,16 +35,6 @@ namespace WarriorsSnuggery.Objects.Parts
 		protected ActorPart(Actor self)
 		{
 			this.self = self;
-		}
-
-		public virtual void OnLoad(List<TextNode> nodes)
-		{
-
-		}
-
-		public virtual PartSaver OnSave()
-		{
-			return new PartSaver(this, string.Empty);
 		}
 	}
 }

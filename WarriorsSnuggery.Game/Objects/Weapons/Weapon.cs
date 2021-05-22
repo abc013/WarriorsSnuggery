@@ -36,7 +36,7 @@ namespace WarriorsSnuggery.Objects.Weapons
 		[Save]
 		public readonly float RangeModifier = 1f;
 
-		protected Weapon(World world, WeaponType type, Target target, Actor origin, uint id) : base(origin.ActiveWeapon != null ? origin.ActiveWeapon.WeaponOffsetPosition : origin.GraphicPosition, type.Projectile.GetTexture())
+		protected Weapon(World world, WeaponType type, Target target, Actor origin, uint id) : base(origin.Weapon != null ? origin.Weapon.WeaponOffsetPosition : origin.GraphicPosition, type.Projectile.GetTexture())
 		{
 			World = world;
 			Type = type;
@@ -50,7 +50,7 @@ namespace WarriorsSnuggery.Objects.Weapons
 
 			ID = id;
 
-			Height = origin.ActiveWeapon != null ? origin.ActiveWeapon.WeaponHeightPosition : origin.Height;
+			Height = origin.Weapon != null ? origin.Weapon.WeaponHeightPosition : origin.Height;
 
 			var effects = origin.Effects.Where(e => e.Active);
 

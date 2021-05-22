@@ -52,7 +52,7 @@ namespace WarriorsSnuggery.Objects.Bot
 		protected float AngleToTarget => (Self.Position - Target.Position).FlatAngle;
 
 		protected bool CanMove => Self.Mobility != null;
-		protected bool CanAttack => Self.ActiveWeapon != null;
+		protected bool CanAttack => Self.Weapon != null;
 
 		protected BotBehavior(World world, Actor self)
 		{
@@ -107,7 +107,7 @@ namespace WarriorsSnuggery.Objects.Bot
 			if (World.Game.LocalTick % SearchIntervall != 0)
 				return;
 
-			var range = Self.RevealsShroudPart == null ? 5120 : Self.RevealsShroudPart.Range * 512;
+			var range = Self.RevealsShroud == null ? 5120 : Self.RevealsShroud.Range * 512;
 
 			// Find all possible targets in range
 			var sectors = World.ActorLayer.GetSectors(Self.Position, range);
@@ -218,7 +218,7 @@ namespace WarriorsSnuggery.Objects.Bot
 				return;
 			}
 
-			var projectileType = Self.ActiveWeapon.Type.Projectile;
+			var projectileType = Self.Weapon.Type.Projectile;
 			if (projectileType is BeamProjectile || projectileType is InstantHitProjectile)
 			{
 				Self.PrepareAttack(target);

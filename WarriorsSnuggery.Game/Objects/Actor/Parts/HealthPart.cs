@@ -25,7 +25,7 @@ namespace WarriorsSnuggery.Objects.Parts
 		}
 	}
 
-	public class HealthPart : ActorPart, ITick
+	public class HealthPart : ActorPart, ITick, ISaveLoadable
 	{
 		readonly HealthPartInfo info;
 
@@ -59,7 +59,7 @@ namespace WarriorsSnuggery.Objects.Parts
 			HP = StartHealth;
 		}
 
-		public override void OnLoad(List<TextNode> nodes)
+		public void OnLoad(List<TextNode> nodes)
 		{
 			var parent = nodes.FirstOrDefault(n => n.Key == "HealthPart" && n.Value == info.InternalName);
 			if (parent == null)
@@ -72,7 +72,7 @@ namespace WarriorsSnuggery.Objects.Parts
 			}
 		}
 
-		public override PartSaver OnSave()
+		public PartSaver OnSave()
 		{
 			var saver = new PartSaver(this, info.InternalName);
 

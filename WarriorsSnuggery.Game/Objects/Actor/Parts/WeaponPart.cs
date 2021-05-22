@@ -26,7 +26,7 @@ namespace WarriorsSnuggery.Objects.Parts
 		}
 	}
 
-	public class WeaponPart : ActorPart, ITick, INoticeDispose
+	public class WeaponPart : ActorPart, ITick, INoticeDispose, ISaveLoadable
 	{
 		readonly WeaponPartInfo info;
 		public readonly WeaponType Type;
@@ -54,7 +54,7 @@ namespace WarriorsSnuggery.Objects.Parts
 			Type = info.Type;
 		}
 
-		public override void OnLoad(List<TextNode> nodes)
+		public void OnLoad(List<TextNode> nodes)
 		{
 			foreach (var node in nodes.Where(n => n.Key == "WeaponPart" && n.Value == info.InternalName))
 			{
@@ -75,7 +75,7 @@ namespace WarriorsSnuggery.Objects.Parts
 			}
 		}
 
-		public override PartSaver OnSave()
+		public PartSaver OnSave()
 		{
 			var saver = new PartSaver(this, info.InternalName);
 

@@ -19,7 +19,7 @@ namespace WarriorsSnuggery.Objects.Parts
 		}
 	}
 
-	public class PlayerSwitchPart : ActorPart, ITick, INoticeKilled
+	public class PlayerSwitchPart : ActorPart, ITick, INoticeKilled, ISaveLoadable
 	{
 		public float RelativeHP = 1f;
 		public ActorType ActorType;
@@ -30,7 +30,7 @@ namespace WarriorsSnuggery.Objects.Parts
 			CurrentTick = info.SwitchDuration;
 		}
 
-		public override void OnLoad(List<TextNode> nodes)
+		public void OnLoad(List<TextNode> nodes)
 		{
 			var parent = nodes.FirstOrDefault(n => n.Key == "PlayerSwitchPart");
 			if (parent == null)
@@ -47,7 +47,7 @@ namespace WarriorsSnuggery.Objects.Parts
 			}
 		}
 
-		public override PartSaver OnSave()
+		public PartSaver OnSave()
 		{
 			var saver = new PartSaver(this, string.Empty);
 

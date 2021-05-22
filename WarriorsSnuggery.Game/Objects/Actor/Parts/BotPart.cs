@@ -7,7 +7,7 @@ using WarriorsSnuggery.Objects.Weapons;
 
 namespace WarriorsSnuggery.Objects.Parts
 {
-	public class BotPart : ActorPart, ITick, INoticeDamage, INoticeKill, INoticeKilled
+	public class BotPart : ActorPart, ITick, INoticeDamage, INoticeKill, INoticeKilled, ISaveLoadable
 	{
 		readonly BotBehavior bot;
 
@@ -34,7 +34,7 @@ namespace WarriorsSnuggery.Objects.Parts
 			};
 		}
 
-		public override void OnLoad(List<TextNode> nodes)
+		public void OnLoad(List<TextNode> nodes)
 		{
 			var position = self.Position;
 			var height = self.Height;
@@ -60,9 +60,9 @@ namespace WarriorsSnuggery.Objects.Parts
 				Target = new Target(self.World.ActorLayer.ToAdd().Find(a => a.ID == targetID));
 		}
 
-		public override PartSaver OnSave()
+		public PartSaver OnSave()
 		{
-			var saver = new PartSaver(this, string.Empty, true);
+			var saver = new PartSaver(this, string.Empty);
 
 			if (Target == null)
 				return saver;

@@ -12,7 +12,7 @@ namespace WarriorsSnuggery.Objects.Bot
 		public Patrol(List<Actor> actors, Actor leader = null)
 		{
 			group = actors.ToList();
-			group.RemoveAll(a => a.BotPart == null);
+			group.RemoveAll(a => a.Bot == null);
 
 			Leader = leader;
 			if (Leader == null)
@@ -29,13 +29,13 @@ namespace WarriorsSnuggery.Objects.Bot
 
 		public void NotifyNewTarget(Target target)
 		{
-			Leader.BotPart.CheckTarget(target);
+			Leader.Bot.CheckTarget(target);
 		}
 
 		public void SetNewTarget(Target target)
 		{
 			foreach (var member in group)
-				member.BotPart.Target = target;
+				member.Bot.Target = target;
 		}
 
 		void newLeader()

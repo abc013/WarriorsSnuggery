@@ -153,8 +153,8 @@ namespace WarriorsSnuggery.Maps
 				var groupPatrol = new Patrol(group);
 				foreach (var actor in group)
 				{
-					if (actor.BotPart != null)
-						actor.BotPart.Patrol = groupPatrol;
+					if (actor.Bot != null)
+						actor.Bot.Patrol = groupPatrol;
 				}
 			}
 
