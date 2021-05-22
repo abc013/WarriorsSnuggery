@@ -46,6 +46,7 @@ namespace WarriorsSnuggery
 			Log.Debug("Starting program.");
 
 			var newSettings = false;
+			var enableCheats = false;
 			for (int i = 0; i < args.Length; i++)
 			{
 				var arg = args[i];
@@ -69,12 +70,13 @@ namespace WarriorsSnuggery
 				else if (arg == "-map-type")
 					MapType = args[++i];
 				else if (arg == "-enable-cheats")
-					Settings.EnableCheats = true;
+					enableCheats = true;
 				else
 					throw new ArgumentException($"Unknown command line argument {arg}.");
 			}
 
 			Settings.Initialize(newSettings);
+			Settings.EnableCheats |= enableCheats;
 
 			var settings1 = new GameWindowSettings
 			{
