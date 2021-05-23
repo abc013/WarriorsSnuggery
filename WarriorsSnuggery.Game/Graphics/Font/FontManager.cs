@@ -19,7 +19,7 @@ namespace WarriorsSnuggery.Graphics
 			Collection = new PrivateFontCollection();
 
 			Collection.AddFontFile(path + "Adventurer.ttf");
-			Header = new Font(new FontInfo(24, "Adventurer"));
+			Header = new Font(new FontInfo(16, "Adventurer"));
 
 			Collection.AddFontFile(path + "Pixel.ttf");
 			Default = new Font(new FontInfo(16, "Pixel"));

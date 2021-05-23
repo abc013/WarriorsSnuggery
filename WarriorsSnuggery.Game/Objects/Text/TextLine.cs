@@ -22,9 +22,7 @@ namespace WarriorsSnuggery.Objects
 			set
 			{
 				position = value;
-
-				if (!string.IsNullOrWhiteSpace(Text))
-					setCharPositions(font.GetWidth(Text));
+				setCharPositions();
 			}
 		}
 		CPos position;
@@ -117,52 +115,10 @@ namespace WarriorsSnuggery.Objects
 				text = text.Remove(index, endindex + 1);
 			}
 
-			var width = 0;
 			if (add)
-			{
-				width += font.GetWidth(Text);
-
-				Text += text.ToString();
-
-				var color = Color.White;
-				int charlength = chars.Count;
-				for (int i = chars.Count; i < Text.Length; i++)
-				{
-					if (colorPairs.ContainsKey(i - charlength))
-						color = colorPairs[i - charlength];
-
-					chars.Add(new TextRenderable(Position, font, Text[i], color, width));
-					width += font.GetWidth(Text[i]);
-				}
-			}
+				addText(text, colorPairs);
 			else
-			{
-				Text = text;
-
-				var color = Color.White;
-				for (int i = 0; i < text.Length; i++)
-				{
-					if (colorPairs.ContainsKey(i))
-						color = colorPairs[i];
-
-					var @char = text[i];
-					if (chars.Count <= i)
-						chars.Add(new TextRenderable(Position, font, @char, color, width));
-					else
-					{
-						var localchar = chars[i];
-						localchar.SetPosition(Position, width);
-						localchar.SetCharacter(text[i]);
-						localchar.SetColor(color);
-					}
-					width += font.GetWidth(text[i]);
-				}
-
-				while (text.Length < chars.Count)
-					chars.Remove(chars[^1]);
-			}
-
-			setCharPositions(width);
+				setText(text, colorPairs);
 		}
 
 		Color recognizeColor(string text, out bool success)
@@ -196,65 +152,75 @@ namespace WarriorsSnuggery.Objects
 			}
 		}
 
-		public void SetText(object @new)
-		{
-			Text = @new.ToString();
+		public void SetText(object text) => setText(text.ToString());
 
-			var width = 0;
-			for (int i = 0; i < Text.Length; i++)
+		void setText(string text, Dictionary<int, Color> colorPairs = null)
+		{
+			Text = text;
+
+			var color = Color;
+			for (int i = 0; i < text.Length; i++)
 			{
-				var @char = Text[i];
+				if (colorPairs != null && colorPairs.ContainsKey(i))
+					color = colorPairs[i];
+
+				var @char = text[i];
 				if (chars.Count <= i)
-					chars.Add(new TextRenderable(Position, font, @char, Color, width));
+					chars.Add(new TextRenderable(font, @char, color));
 				else
 				{
 					var localchar = chars[i];
-					localchar.SetColor(Color);
-					localchar.SetCharacter(Text[i]);
+					localchar.SetCharacter(text[i]);
+					localchar.SetColor(color);
 				}
-				width += font.GetWidth(Text[i]);
 			}
 
-			while (Text.Length < chars.Count)
+			while (text.Length < chars.Count)
 				chars.Remove(chars[^1]);
 
-			setCharPositions(width);
+			setCharPositions();
 		}
 
-		public void AddText(object text)
-		{
-			var width = font.GetWidth(Text);
+		public void AddText(object text) => addText(text.ToString());
 
+		void addText(string text, Dictionary<int, Color> colorPairs = null)
+		{
 			Text += text.ToString();
 
+			var color = Color;
+			int charlength = chars.Count;
 			for (int i = chars.Count; i < Text.Length; i++)
 			{
-				chars.Add(new TextRenderable(Position, font, Text[i], Color, width));
-				width += font.GetWidth(Text[i]);
+				if (colorPairs != null && colorPairs.ContainsKey(i - charlength))
+					color = colorPairs[i - charlength];
+
+				chars.Add(new TextRenderable(font, Text[i], color));
 			}
 
-			setCharPositions(width);
+			setCharPositions();
 		}
 
-		void setCharPositions(int maxWidth)
+		void setCharPositions()
 		{
-			Bounds = new MPos(maxWidth, font.Height);
+			if (string.IsNullOrWhiteSpace(Text))
+			{
+				Bounds = MPos.Zero;
+				return;
+			}
 
-			var width = 0;
+			var maxWidth = font.GetWidth(Text);
+			Bounds = new MPos(maxWidth / 2, font.MaxHeight / 2);
+
+			var width = font.GetWidth(Text[0]) / 2;
 			switch (Offset)
 			{
-				case TextOffset.LEFT:
-					width += font.Width / 4;
+				case TextOffset.MIDDLE:
+					width -= maxWidth / 2;
 
 					break;
-				case TextOffset.MIDDLE:
-					for (int i = 0; i < (chars.Count - 1); i++)
-						width -= font.GetWidth(Text[i]);
-					width /= 2;
-					break;
 				case TextOffset.RIGHT:
-					for (int i = 0; i < chars.Count - 1; i++)
-						width -= font.GetWidth(Text[i]);
+					width -= maxWidth;
+
 					break;
 			}
 

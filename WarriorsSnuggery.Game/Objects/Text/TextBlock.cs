@@ -13,7 +13,7 @@ namespace WarriorsSnuggery.Objects
 				position = value;
 
 				for (int i = 0; i < Lines.Length; i++)
-					Lines[i].Position = position + new CPos(0, (font.Gap + font.Height) * i, 0);
+					Lines[i].Position = position + new CPos(0, (font.HeightGap + font.MaxHeight / 2) * i, 0);
 			}
 		}
 		CPos position;
@@ -63,7 +63,7 @@ namespace WarriorsSnuggery.Objects
 
 			var width = Lines.Length == 0 ? 0 : Lines.Max(s => font.GetWidth(s.Text));
 
-			Bounds = new MPos(width * 2, text.Length * (font.Height + font.Gap));
+			Bounds = new MPos(width, text.Length * (font.MaxHeight + font.HeightGap) / 2);
 		}
 
 		public void Render()

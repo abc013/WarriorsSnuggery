@@ -28,7 +28,7 @@ namespace WarriorsSnuggery.UI.Screens
 
 			lineData = File.ReadAllLines(FileExplorer.FindIn(FileExplorer.Rules, "Credits", ".yaml"));
 
-			lineHeight = FontManager.Default.Height * 2;
+			lineHeight = FontManager.Default.MaxHeight * 2;
 
 			wsImage = new UIImage(new BatchObject(UISpriteManager.Get("logo")[0])) { Color = new Color(0, 0, 0, 0) };
 		}

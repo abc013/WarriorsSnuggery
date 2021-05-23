@@ -9,23 +9,18 @@ namespace WarriorsSnuggery.Graphics
 		readonly Font font;
 		Color color;
 
-		public TextRenderable(CPos position, Font font, char c, Color color, int pxOffset = 0)
+		public TextRenderable(Font font, char c, Color color)
 		{
 			this.font = font;
-			charRenderable = new BatchObject(Mesh.Character(font, c));
-			SetPosition(position, pxOffset);
+
+			SetCharacter(c);
 			SetColor(color);
 		}
 
-		public void SetPosition(CPos position, int pxOffset = 0)
+		public void SetPosition(CPos pos, int offset = 0)
 		{
-			SetPosition(position.ToVector(), pxOffset);
-		}
-
-		public void SetPosition(Vector position, int pxOffset = 0)
-		{
-			this.position = position + new Vector(pxOffset / 512f, 2 * font.PixelMultiplier, 0);
-			charRenderable.SetPosition(this.position);
+			position = pos.ToVector() + new Vector(offset / 1024f, 0, 0);
+			charRenderable.SetPosition(position);
 		}
 
 		public void SetScale(float scale)

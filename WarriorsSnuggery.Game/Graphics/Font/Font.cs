@@ -2,21 +2,26 @@
 {
 	public class Font
 	{
-		public float PixelMultiplier => MasterRenderer.PixelMultiplier / 1.5f;
+		const float multiplier = 512 * MasterRenderer.PixelMultiplier;
 
-		public int Gap => (int)(512 * Info.SpaceSize.Y * PixelMultiplier);
-
-		public int Width => (int)(512 * Info.MaxSize.X * PixelMultiplier);
-
-		public int Height => (int)(512 * Info.MaxSize.Y * PixelMultiplier);
-
-		readonly Texture[] characters;
 		public readonly FontInfo Info;
+		readonly Texture[] characters;
+
+		public readonly int WidthGap;
+		public readonly int HeightGap;
+
+		public readonly int MaxWidth;
+		public readonly int MaxHeight;
 
 		public Font(FontInfo info)
 		{
 			Info = info;
 			characters = SheetManager.AddFont(info);
+
+			WidthGap = (int)(Info.SpaceSize.X * multiplier);
+			HeightGap = (int)(Info.SpaceSize.Y * multiplier);
+			MaxWidth = (int)(Info.MaxSize.X * multiplier);
+			MaxHeight = (int)(Info.MaxSize.Y * multiplier);
 		}
 
 		public int GetWidth(char c)
@@ -24,9 +29,12 @@
 			if (!FontManager.Characters.Contains(c))
 				c = FontManager.UnknownCharacter;
 
-			var pixelSize = char.IsWhiteSpace(c) ? Info.SpaceSize.X / 2 + 1 : Info.CharSizes[FontManager.Characters.IndexOf(c)].X;
+			if (char.IsWhiteSpace(c))
+				return WidthGap;
 
-			return (int)(512 * pixelSize * PixelMultiplier);
+			var pixelSize = Info.CharSizes[FontManager.Characters.IndexOf(c)].X;
+
+			return (int)(pixelSize * multiplier);
 		}
 
 		public int GetWidth(string s)

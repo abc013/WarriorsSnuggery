@@ -14,14 +14,14 @@ namespace WarriorsSnuggery.UI.Objects
 		readonly int lineCount;
 		int lineScroll;
 
-		CPos textPosition => Position - new CPos(SelectableBounds.X - font.Width, -SelectableBounds.Y + lineHeight, 0);
+		CPos textPosition => Position - new CPos(SelectableBounds.X - font.MaxWidth, -SelectableBounds.Y + lineHeight, 0);
 
 		public TextPanel(MPos bounds, Font font, string typeName) : this(bounds, font, PanelManager.Get(typeName)) { }
 
 		public TextPanel(MPos bounds, Font font, PanelType type) : base(bounds, type)
 		{
 			this.font = font;
-			lineHeight = font.Height;
+			lineHeight = font.MaxHeight / 2;
 			lineCount = bounds.Y / lineHeight;
 		}
 

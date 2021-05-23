@@ -67,6 +67,8 @@ namespace WarriorsSnuggery.UI.Screens
 		{
 			foreach (var @object in content)
 				@object.DebugRender();
+
+			Title.DebugRender();
 		}
 	}
 }

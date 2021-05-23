@@ -8,6 +8,11 @@ namespace WarriorsSnuggery.Graphics
 	{
 		static readonly Dictionary<Texture, Vertex[]> meshCache = new Dictionary<Texture, Vertex[]>();
 
+		public static Vertex[] Character(Font font, char c)
+		{
+			return Image(font.GetTexture(c));
+		}
+
 		public static Vertex[] Image(Texture texture)
 		{
 			if (meshCache.ContainsKey(texture))
@@ -153,37 +158,6 @@ namespace WarriorsSnuggery.Graphics
 				if (i != 0 && i != resolution * 2 - 1)
 					vertices[++i] = new Vertex(vector, new Vector4(-1), color);
 			}
-			return vertices;
-		}
-
-		public static Vertex[] Character(Font font, char c)
-		{
-			var texture = font.GetTexture(c);
-
-			if (meshCache.ContainsKey(texture))
-				return meshCache[texture];
-
-			var x = texture.X / (float)Settings.SheetSize + Settings.SheetHalfPixel;
-			var y = texture.Y / (float)Settings.SheetSize + Settings.SheetHalfPixel;
-			var w = (texture.X + texture.Width) / (float)Settings.SheetSize - Settings.SheetHalfPixel;
-			var h = (texture.Y + texture.Height) / (float)Settings.SheetSize - Settings.SheetHalfPixel;
-			var correction = texture.Width / (float)texture.Height;
-			var color = Color.White;
-			var id = SheetManager.SheetIndex(texture.SheetID);
-			var scale = MasterRenderer.PixelMultiplier * font.Info.Size / 1.5f;
-
-			Vertex[] vertices =
-			{
-				new Vertex(new Vector(scale * correction,  scale,  0), new Vector4(w, y, id, 0), color),
-				new Vertex(new Vector(-scale * correction, -scale, 0), new Vector4(x, h, id, 0), color),
-				new Vertex(new Vector(scale * correction,  -scale, 0), new Vector4(w, h, id, 0), color),
-				new Vertex(new Vector(-scale * correction, scale,  0), new Vector4(x, y, id, 0), color),
-				new Vertex(new Vector(-scale * correction, -scale, 0), new Vector4(x, h, id, 0), color),
-				new Vertex(new Vector(scale * correction,  scale,  0), new Vector4(w, y, id, 0), color),
-			};
-
-			meshCache[texture] = vertices;
-
 			return vertices;
 		}
 	}

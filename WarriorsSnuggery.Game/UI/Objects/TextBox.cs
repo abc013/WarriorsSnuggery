@@ -23,8 +23,7 @@ namespace WarriorsSnuggery.UI.Objects
 			set
 			{
 				base.Position = value;
-
-				textline.Position = value + new CPos(128, 0, 0);
+				textline.Position = value + new CPos(margin / 2, 0, 0);
 			}
 		}
 
@@ -38,7 +37,7 @@ namespace WarriorsSnuggery.UI.Objects
 				textline.SetText(text);
 			}
 		}
-		string text;
+		string text = string.Empty;
 		public readonly int MaximumLength;
 		public readonly InputType Type;
 
@@ -54,12 +53,13 @@ namespace WarriorsSnuggery.UI.Objects
 			MaximumLength = maximumLength;
 			Type = type;
 
-			textline = new UITextLine(FontManager.Default, TextOffset.MIDDLE) { Position = new CPos(128, 0, 0) };
+			textline = new UITextLine(FontManager.Default, TextOffset.MIDDLE) { Position = new CPos(margin / 2, 0, 0) };
 		}
 
 		static MPos calculateBounds(int maximumLength)
 		{
-			return new MPos(margin + FontManager.Default.Width * maximumLength / 2, margin + FontManager.Default.Height / 2);
+			// 3 is an approximation that looks pretty good
+			return new MPos(margin + FontManager.Default.MaxWidth * maximumLength / 3, margin / 2 + FontManager.Default.MaxHeight / 2);
 		}
 
 		public override void Render()

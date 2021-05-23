@@ -19,7 +19,7 @@
 		{
 			MaxSize = maxSize;
 			CharSizes = charSizes;
-			SpaceSize = new MPos(MaxSize.X * 4 / 5, MaxSize.Y);
+			SpaceSize = new MPos(MaxSize.X / 2, MaxSize.Y);
 		}
 	}
 }
