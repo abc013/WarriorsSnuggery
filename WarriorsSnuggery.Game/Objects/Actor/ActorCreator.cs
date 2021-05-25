@@ -26,7 +26,7 @@ namespace WarriorsSnuggery.Objects.Actors
 					if (!currentPartCounts.ContainsKey(child.Key))
 						currentPartCounts[child.Key] = 0;
 
-					parts[i] = TypeLoader.GetPart(currentPartCounts[child.Key]++, child.Key, child.Children);
+					parts[i] = TypeLoader.GetPart(currentPartCounts[child.Key]++, child);
 				}
 
 				Types.Add(name, new ActorType(parts));

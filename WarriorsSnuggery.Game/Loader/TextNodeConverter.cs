@@ -373,7 +373,7 @@ namespace WarriorsSnuggery.Loader
 				var i = 0;
 				foreach (var child in node.Children)
 				{
-					var type = Type.GetType("WarriorsSnuggery.Objects.Weapons.Warheads." + child.Key.Trim() + "Warhead", false, true);
+					var type = Type.GetType("WarriorsSnuggery.Objects.Weapons.Warheads." + child.Key + "Warhead", false, true);
 
 					if (type == null || type.IsInterface)
 						throw new InvalidConversionException(file, child, t);

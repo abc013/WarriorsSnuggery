@@ -80,7 +80,9 @@ namespace WarriorsSnuggery.Loader
 			if (strings.Length < 2)
 				throw new InvalidNodeException($"Missing '=' in '{line}'. ['{file}', line {lineNumber}]");
 
-			var yamlnode = new TextNode(file, @order, strings[0].Trim(), strings[1].Trim());
+			var keyParts = strings[0].Split('@', 2);
+
+			var yamlnode = new TextNode(file, @order, keyParts[0].Trim(), keyParts.Length > 1 ? keyParts[1].Trim() : null, strings[1].Trim());
 
 			if (before == null)
 			{

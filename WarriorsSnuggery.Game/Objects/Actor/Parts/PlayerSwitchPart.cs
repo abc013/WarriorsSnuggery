@@ -31,7 +31,7 @@ namespace WarriorsSnuggery.Objects.Actors.Parts
 
 		public void OnLoad(List<TextNode> nodes)
 		{
-			var parent = nodes.FirstOrDefault(n => n.Key == "PlayerSwitchPart");
+			var parent = nodes.FirstOrDefault(n => n.Key == nameof(PlayerSwitchPart));
 			if (parent == null)
 				return;
 

@@ -5,23 +5,27 @@ namespace WarriorsSnuggery.Loader
 {
 	public class TextNode
 	{
-		readonly string file;
-		public readonly short Order;
-
 		public TextNode Parent;
 		public List<TextNode> Children = new List<TextNode>();
 
+		public readonly short Order;
+
 		public readonly string Key;
+		public readonly string Specification;
 		public readonly string Value;
 
-		public TextNode(string file, short order, string key, object value) : this(file, order, key, value.ToString()) { }
+		readonly string file;
 
-		public TextNode(string file, short order, string key, string value)
+		public TextNode(string file, short order, string key, object value) : this(file, order, key, null, value) { }
+
+		public TextNode(string file, short order, string key, string specification, object value)
 		{
-			this.file = file;
 			Order = order;
 			Key = key;
-			Value = value;
+			Specification = specification;
+			Value = value.ToString();
+
+			this.file = file;
 		}
 
 		public T Convert<T>()
@@ -36,6 +40,9 @@ namespace WarriorsSnuggery.Loader
 
 		public override string ToString()
 		{
+			if (Specification != null)
+				return $"Key '{Key}', Spec '{Specification}' | Value '{Value}'";
+
 			return $"Key '{Key}' | Value '{Value}'";
 		}
 	}

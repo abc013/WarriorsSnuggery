@@ -55,7 +55,7 @@ namespace WarriorsSnuggery.Objects.Actors.Parts
 
 		public void OnLoad(List<TextNode> nodes)
 		{
-			foreach (var node in nodes.Where(n => n.Key == "WeaponPart" && n.Value == info.InternalName))
+			foreach (var node in nodes.Where(n => n.Key == nameof(WeaponPart) && n.Value == info.InternalName))
 			{
 				if (node.Key == "BeamWeapon")
 				{

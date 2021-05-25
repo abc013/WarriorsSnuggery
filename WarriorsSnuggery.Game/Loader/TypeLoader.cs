@@ -46,26 +46,24 @@ namespace WarriorsSnuggery.Loader
 			field.SetValue(obj, node.Convert(field.FieldType));
 		}
 
-		public static PartInfo GetPart(int currentPart, string name, List<TextNode> nodes)
+		public static PartInfo GetPart(int currentPart, TextNode parent)
 		{
-			var split = name.Split('@');
 			var internalName = currentPart.ToString();
 
-			name = split[0];
-			if (split.Length > 1 && !string.IsNullOrWhiteSpace(split[1]))
-				internalName = split[1];
+			if (!string.IsNullOrWhiteSpace(parent.Specification))
+				internalName = parent.Specification;
 
 			try
 			{
-				var type = Type.GetType("WarriorsSnuggery.Objects.Actors.Parts." + name + "PartInfo", true, true);
+				var type = Type.GetType("WarriorsSnuggery.Objects.Actors.Parts." + parent.Key + "PartInfo", true, true);
 
-				var set = new PartInitSet(internalName, nodes);
+				var set = new PartInitSet(internalName, parent.Children);
 
 				return (PartInfo)Activator.CreateInstance(type, new [] { set });
 			}
 			catch (Exception e)
 			{
-				throw new UnknownPartException(name, e);
+				throw new UnknownPartException(parent.Key, e);
 			}
 		}
 	}

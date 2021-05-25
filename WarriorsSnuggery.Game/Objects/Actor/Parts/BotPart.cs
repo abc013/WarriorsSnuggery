@@ -39,7 +39,7 @@ namespace WarriorsSnuggery.Objects.Actors.Parts
 			var height = self.Height;
 			var targetID = uint.MaxValue;
 
-			var parent = nodes.FirstOrDefault(n => n.Key == "BotPart");
+			var parent = nodes.FirstOrDefault(n => n.Key == nameof(BotPart));
 			if (parent == null)
 				return;
 

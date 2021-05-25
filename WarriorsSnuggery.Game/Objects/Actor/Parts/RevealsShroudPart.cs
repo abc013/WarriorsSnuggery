@@ -37,7 +37,7 @@ namespace WarriorsSnuggery.Objects.Actors.Parts
 
 		public void OnLoad(List<TextNode> nodes)
 		{
-			var parent = nodes.FirstOrDefault(n => n.Key == "RevealsShroudPart" && n.Value == info.InternalName);
+			var parent = nodes.FirstOrDefault(n => n.Key == nameof(RevealsShroudPart) && n.Value == info.InternalName);
 			if (parent == null)
 				return;
 
