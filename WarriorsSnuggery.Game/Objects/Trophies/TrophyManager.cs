@@ -7,12 +7,10 @@ namespace WarriorsSnuggery.Trophies
 	{
 		public static readonly Dictionary<string, Trophy> Trophies = new Dictionary<string, Trophy>();
 
-		public static void Load(string directory, string file)
+		public static void Load(List<TextNode> nodes)
 		{
-			var trophies = TextNodeLoader.FromFile(directory, file);
-
-			foreach (var trophy in trophies)
-				Trophies.Add(trophy.Key, new Trophy(trophy.Children));
+			foreach (var node in nodes)
+				Trophies.Add(node.Key, new Trophy(node.Children));
 		}
 	}
 }

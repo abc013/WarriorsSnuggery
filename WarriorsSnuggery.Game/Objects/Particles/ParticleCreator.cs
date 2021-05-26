@@ -8,10 +8,8 @@ namespace WarriorsSnuggery.Objects.Particles
 	{
 		public static readonly Dictionary<string, ParticleType> Types = new Dictionary<string, ParticleType>();
 
-		public static void Load(string directory, string file)
+		public static void Load(List<TextNode> nodes)
 		{
-			var nodes = TextNodeLoader.FromFile(directory, file);
-
 			foreach (var node in nodes)
 				Types.Add(node.Key, new ParticleType(node.Children));
 		}

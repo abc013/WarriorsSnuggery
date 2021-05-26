@@ -6,7 +6,7 @@ namespace WarriorsSnuggery.Loader
 {
 	public static class TextNodeLoader
 	{
-		public static List<TextNode> FromFile(string directory, string file, bool useIncludes = true)
+		public static List<TextNode> FromFile(string directory, string file, bool useIncludes = true) // TODO rework Includes
 		{
 			var lines = File.ReadAllLines(directory + file);
 

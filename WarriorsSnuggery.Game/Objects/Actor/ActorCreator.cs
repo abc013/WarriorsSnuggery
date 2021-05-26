@@ -9,19 +9,17 @@ namespace WarriorsSnuggery.Objects.Actors
 	{
 		public static readonly Dictionary<string, ActorType> Types = new Dictionary<string, ActorType>();
 
-		public static void Load(string directory, string file)
+		public static void Load(List<TextNode> nodes)
 		{
-			var actors = TextNodeLoader.FromFile(directory, file);
-
-			foreach (var actor in actors)
+			foreach (var node in nodes)
 			{
-				var name = actor.Key;
-				var parts = new PartInfo[actor.Children.Count];
+				var name = node.Key;
+				var parts = new PartInfo[node.Children.Count];
 
 				var currentPartCounts = new Dictionary<string, int>();
 				for (int i = 0; i < parts.Length; i++)
 				{
-					var child = actor.Children[i];
+					var child = node.Children[i];
 
 					if (!currentPartCounts.ContainsKey(child.Key))
 						currentPartCounts[child.Key] = 0;

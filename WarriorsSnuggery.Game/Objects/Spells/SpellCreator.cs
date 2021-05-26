@@ -8,12 +8,10 @@ namespace WarriorsSnuggery.Spells
 	{
 		public static readonly Dictionary<string, Spell> Types = new Dictionary<string, Spell>();
 
-		public static void Load(string directory, string file)
+		public static void Load(List<TextNode> nodes)
 		{
-			var spells = TextNodeLoader.FromFile(directory, file);
-
-			foreach (var spell in spells)
-				Types.Add(spell.Key, new Spell(spell.Children));
+			foreach (var node in nodes)
+				Types.Add(node.Key, new Spell(node.Children));
 		}
 
 		public static string GetName(Spell type)

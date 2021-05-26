@@ -7,15 +7,10 @@ namespace WarriorsSnuggery.Spells
 	{
 		public static readonly List<SpellTreeNode> SpellTree = new List<SpellTreeNode>();
 
-		public static void Load(string path, string file)
+		public static void Load(List<TextNode> nodes)
 		{
-			var nodes = TextNodeLoader.FromFile(path, file);
-
-			var spelltree = new List<SpellTreeNode>();
 			foreach (var node in nodes)
-				spelltree.Add(new SpellTreeNode(node.Children, node.Key));
-
-			SpellTree.AddRange(spelltree);
+				SpellTree.Add(new SpellTreeNode(node.Children, node.Key));
 		}
 	}
 }

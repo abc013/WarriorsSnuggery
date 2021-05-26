@@ -7,14 +7,12 @@ namespace WarriorsSnuggery.Objects
 	{
 		public static readonly Dictionary<ushort, TerrainType> Types = new Dictionary<ushort, TerrainType>();
 
-		public static void LoadTypes(string directory, string file)
+		public static void Load(List<TextNode> nodes)
 		{
-			var terrains = TextNodeLoader.FromFile(directory, file);
-
-			foreach (var terrain in terrains)
+			foreach (var node in nodes)
 			{
-				var id = ushort.Parse(terrain.Key);
-				Types.Add(id, new TerrainType(id, terrain.Children));
+				var id = ushort.Parse(node.Key);
+				Types.Add(id, new TerrainType(id, node.Children));
 			}
 		}
 

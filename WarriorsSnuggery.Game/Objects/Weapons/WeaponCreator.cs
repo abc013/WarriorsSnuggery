@@ -10,12 +10,10 @@ namespace WarriorsSnuggery.Objects.Weapons
 	{
 		public static readonly Dictionary<string, WeaponType> Types = new Dictionary<string, WeaponType>();
 
-		public static void Load(string directory, string file)
+		public static void Load(List<TextNode> nodes)
 		{
-			var weapons = TextNodeLoader.FromFile(directory, file);
-
-			foreach (var weapon in weapons)
-				Types.Add(weapon.Key, new WeaponType(weapon.Children));
+			foreach (var node in nodes)
+				Types.Add(node.Key, new WeaponType(node.Children));
 		}
 
 		public static string GetName(WeaponType type)

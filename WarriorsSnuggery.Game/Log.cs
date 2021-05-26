@@ -32,7 +32,17 @@ namespace WarriorsSnuggery
 
 		public static void Performance(long ms, string text)
 		{
-			writeDebug("PERF", $"({ms.ToString().PadLeft(4, '0')}ms)->" + text);
+			writeDebug("PERF", $"({ms.ToString().PadLeft(4, '0')}ms)->{text}");
+		}
+
+		public static void LoaderDebug(string loader, string text)
+		{
+			writeDebug("LOAD", $"({loader}) {text}");
+		}
+
+		public static void LoaderWarning(string loader, string text)
+		{
+			writeDebug("WARN", $"({loader}) {text}");
 		}
 
 		public static void Debug(string text)

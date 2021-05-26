@@ -40,10 +40,15 @@ namespace WarriorsSnuggery.Loader
 
 		public override string ToString()
 		{
-			if (Specification != null)
-				return $"Key '{Key}', Spec '{Specification}' | Value '{Value}'";
+			var @string = $"Key '{Key}'";
 
-			return $"Key '{Key}' | Value '{Value}'";
+			if (!string.IsNullOrEmpty(Specification))
+				@string += $", Spec '{Specification}'";
+
+			if (!string.IsNullOrEmpty(Value))
+				@string += $"| Value '{Value}'";
+
+			return @string;
 		}
 	}
 }

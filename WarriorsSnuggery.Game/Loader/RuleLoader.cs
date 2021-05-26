@@ -3,6 +3,7 @@ using WarriorsSnuggery.Objects;
 using WarriorsSnuggery.Objects.Actors;
 using WarriorsSnuggery.Objects.Particles;
 using WarriorsSnuggery.Objects.Weapons;
+using WarriorsSnuggery.Spells;
 using WarriorsSnuggery.Trophies;
 using WarriorsSnuggery.UI.Objects;
 
@@ -17,56 +18,56 @@ namespace WarriorsSnuggery.Loader
 		{
 			var rules = TextNodeLoader.FromFile(FileExplorer.Rules, "Rules.yaml");
 
+			var timer = Timer.Start();
+
 			foreach (var rule in rules)
 			{
 				var files = rule.Convert<string[]>();
-				var paths = new string[files.Length];
-				for (int i = 0; i < paths.Length; i++)
-					paths[i] = FileExplorer.FindPath(FileExplorer.Rules, files[i], string.Empty);
+				var data = new (string directory, string file)[files.Length];
+				for (int i = 0; i < data.Length; i++)
+					data[i] = (FileExplorer.FindPath(FileExplorer.Rules, files[i], string.Empty), files[i]);
 
+				var loader = new ComplexTextNodeLoader(rule.Key);
+				loader.Load(data);
+
+				var nodes = loader.Finish();
 				switch (rule.Key)
 				{
 					case "Particles":
-						for (int j = 0; j < files.Length; j++)
-							ParticleCreator.Load(paths[j], files[j]);
+						ParticleCreator.Load(nodes);
 
 						break;
 					case "Weapons":
-						for (int j = 0; j < files.Length; j++)
-							WeaponCreator.Load(paths[j], files[j]);
+						WeaponCreator.Load(nodes);
 
 						break;
 					case "Actors":
-						for (int j = 0; j < files.Length; j++)
-							ActorCreator.Load(paths[j], files[j]);
-
+						ActorCreator.Load(nodes);
 						break;
 					case "Terrain":
-						for (int j = 0; j < files.Length; j++)
-							TerrainCreator.LoadTypes(paths[j], files[j]);
+						TerrainCreator.Load(nodes);
 
 						break;
 					case "Walls":
-						for (int j = 0; j < files.Length; j++)
-							WallCreator.Load(paths[j], files[j]);
+						WallCreator.Load(nodes);
 
 						break;
 					case "Spells":
-						for (int j = 0; j < files.Length; j++)
-							Spells.SpellCreator.Load(paths[j], files[j]);
+						SpellCreator.Load(nodes);
 
 						break;
 					case "SpellTree":
-						for (int j = 0; j < files.Length; j++)
-							Spells.SpellTreeLoader.Load(paths[j], files[j]);
+						SpellTreeLoader.Load(nodes);
 
 						break;
 					case "Trophies":
-						for (int j = 0; j < files.Length; j++)
-							TrophyManager.Load(paths[j], files[j]);
+						TrophyManager.Load(nodes);
 
 						break;
 				}
+
+				timer.StopAndWrite($"Loading Rules: {rule.Key}");
+				timer.Restart();
 			}
 
 			ShroudTexture = new TextureInfo("shroud").GetTextures();
@@ -74,6 +75,8 @@ namespace WarriorsSnuggery.Loader
 			Questionmark = new TextureInfo("questionmark").GetTextures();
 
 			loadUIRules();
+
+			timer.StopAndWrite("Loading UI Rules");
 		}
 
 		static void loadUIRules()
