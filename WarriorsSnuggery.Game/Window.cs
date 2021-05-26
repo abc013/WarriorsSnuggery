@@ -192,6 +192,8 @@ namespace WarriorsSnuggery
 
 			SheetManager.FinishSheets();
 
+			GameController.CreateFirst();
+
 			Ready = true;
 			Console.WriteLine(" Done!");
 		}

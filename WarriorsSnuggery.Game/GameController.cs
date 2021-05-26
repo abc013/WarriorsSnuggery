@@ -23,11 +23,9 @@ namespace WarriorsSnuggery
 			MapCreator.LoadMaps(FileExplorer.Maps, "maps.yaml");
 
 			GameSaveManager.Load();
-
-			createFirst();
 		}
 
-		static void createFirst()
+		public static void CreateFirst()
 		{
 			var mission = MissionType.MAIN_MENU;
 			var mode = InteractionMode.NONE;
