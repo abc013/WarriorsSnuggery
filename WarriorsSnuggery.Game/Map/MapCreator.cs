@@ -10,16 +10,33 @@ namespace WarriorsSnuggery.Maps
 		static readonly Dictionary<string, MapType> mapNames = new Dictionary<string, MapType>();
 		static readonly Dictionary<MissionType, List<MapType>> mapTypes = new Dictionary<MissionType, List<MapType>>();
 
-		public static void LoadMaps(string directory, string file)
+		public static void LoadMaps()
+		{
+			var rules = TextNodeLoader.FromFile(FileExplorer.Maps, "maps.yaml");
+			foreach (var rule in rules)
+			{
+				var data = new (string directory, string file)[rule.Children.Count];
+				for (int i = 0; i < data.Length; i++)
+				{
+					var file = rule.Children[i].Key;
+					data[i] = (FileExplorer.FindPath(FileExplorer.Maps, file, string.Empty), file);
+				}
+
+				var loader = new ComplexTextNodeLoader(rule.Key);
+				loader.Load(data);
+
+				LoadMaps(loader.Finish());
+			}
+		}
+
+		public static void LoadMaps(List<TextNode> nodes)
 		{
 			foreach (MissionType type in Enum.GetValues(typeof(MissionType)))
 				mapTypes.Add(type, new List<MapType>());
 
-			var mapNodes = TextNodeLoader.FromFile(directory, file);
-
-			foreach (var mapNode in mapNodes)
+			foreach (var node in nodes)
 			{
-				var type = MapType.FromRules(mapNode);
+				var type = MapType.FromRules(node);
 
 				mapNames.Add(type.Name, type);
 

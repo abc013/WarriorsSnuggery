@@ -1,12 +1,3 @@
-@INCLUDE Actors-collectables.yaml
-@INCLUDE Actors-portals.yaml
-@INCLUDE Actors-tutorial.yaml
-@INCLUDE Actors-goods.yaml
-@INCLUDE Actors-decorations.yaml
-@INCLUDE Actors-nature.yaml
-@INCLUDE Actors-playable.yaml
-@INCLUDE Actors-trophies.yaml
-
 fly=
 	AnimatedSprite=
 		Name=fly

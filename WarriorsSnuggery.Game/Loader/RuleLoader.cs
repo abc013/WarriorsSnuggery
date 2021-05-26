@@ -22,10 +22,12 @@ namespace WarriorsSnuggery.Loader
 
 			foreach (var rule in rules)
 			{
-				var files = rule.Convert<string[]>();
-				var data = new (string directory, string file)[files.Length];
+				var data = new (string directory, string file)[rule.Children.Count];
 				for (int i = 0; i < data.Length; i++)
-					data[i] = (FileExplorer.FindPath(FileExplorer.Rules, files[i], string.Empty), files[i]);
+				{
+					var file = rule.Children[i].Key;
+					data[i] = (FileExplorer.FindPath(FileExplorer.Rules, file, string.Empty), file);
+				}
 
 				var loader = new ComplexTextNodeLoader(rule.Key);
 				loader.Load(data);
@@ -43,6 +45,7 @@ namespace WarriorsSnuggery.Loader
 						break;
 					case "Actors":
 						ActorCreator.Load(nodes);
+
 						break;
 					case "Terrain":
 						TerrainCreator.Load(nodes);

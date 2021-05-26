@@ -20,7 +20,7 @@ namespace WarriorsSnuggery
 
 			PieceManager.RefreshPieces();
 
-			MapCreator.LoadMaps(FileExplorer.Maps, "maps.yaml");
+			MapCreator.LoadMaps();
 
 			GameSaveManager.Load();
 		}

@@ -1,4 +1,6 @@
-@INCLUDE maps_menus.yaml
-
-@INCLUDE maps_random.yaml
-@INCLUDE maps_boss.yaml
+Maps=
+	maps_menus.yaml=
+	maps_random.yaml=
+	maps_random_early.yaml=
+	maps_random_mid.yaml=
+	maps_boss.yaml=

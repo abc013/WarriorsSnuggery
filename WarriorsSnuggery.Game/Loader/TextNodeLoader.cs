@@ -6,70 +6,28 @@ namespace WarriorsSnuggery.Loader
 {
 	public static class TextNodeLoader
 	{
-		public static List<TextNode> FromFile(string directory, string file, bool useIncludes = true) // TODO rework Includes
+		public static List<TextNode> FromFile(string directory, string file)
 		{
 			var lines = File.ReadAllLines(directory + file);
 
-			startLoop(file, lines, out var list, out var filesToInclude);
+			var list = new List<TextNode>();
 
-			if (!useIncludes)
-				return list;
-
-			// Read included files as well and add them to the list
-			foreach (var fileToInclude in filesToInclude)
-				list.AddRange(FromFile(directory, fileToInclude));
-
-			return list;
-		}
-
-		static void startLoop(string file, string[] lines, out List<TextNode> nodes, out List<string> toInclude)
-		{
-			toInclude = new List<string>();
-
-			int offset;
-
-			for (offset = 0; offset < lines.Length; offset++)
-			{
-				var line = lines[offset];
-
-				if (isEmptyOrComment(line))
-					continue;
-
-				if (line.StartsWith("@INCLUDE "))
-					toInclude.Add(line.Remove(0, 9).Trim());
-				else
-					break;
-			}
-
-			loop(file, lines, offset, out nodes);
-		}
-
-		static void loop(string file, string[] lines, int offset, out List<TextNode> list)
-		{
 			TextNode before = null;
-
-			list = new List<TextNode>();
-			for (int i = offset; i < lines.Length; i++)
+			for (int i = 0; i < lines.Length; i++)
 			{
 				var line = lines[i];
 
-				if (isEmptyOrComment(line))
+				if (string.IsNullOrWhiteSpace(line) || line.StartsWith('#'))
 					continue;
 
-				var now = nodeFromLine(file, line, offset, before);
+				var now = nodeFromLine(file, line, i, before);
 				if (now.Parent == null)
 					list.Add(now);
 
 				before = now;
 			}
-		}
-		
-		static bool isEmptyOrComment(string input)
-		{
-			if (string.IsNullOrWhiteSpace(input) || input.StartsWith('#'))
-				return true;
 
-			return false;
+			return list;
 		}
 
 		static TextNode nodeFromLine(string file, string line, int lineNumber, TextNode before)

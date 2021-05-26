@@ -1,6 +1,3 @@
-@INCLUDE maps_random_early.yaml
-@INCLUDE maps_random_mid.yaml
-
 stones=
 	MissionTypes=STORY, NORMAL
 	AvailableObjectives=FIND_EXIT, KILL_ENEMIES, SURVIVE_WAVES

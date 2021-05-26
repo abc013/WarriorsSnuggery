@@ -28,7 +28,7 @@ namespace WarriorsSnuggery.Loader
 
 			foreach (var (directory, file) in data)
 			{
-				Log.LoaderDebug(loaderName, $"Directly loading file '{file}'.");
+				Log.LoaderDebug(loaderName, $"Loading '{file}'.");
 				rawNodes.AddRange(TextNodeLoader.FromFile(directory, file));
 			}
 
