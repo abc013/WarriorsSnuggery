@@ -15,7 +15,7 @@ namespace WarriorsSnuggery.Loader
 		public static Texture[] ShroudTexture;
 		public static Texture[] Questionmark;
 
-		public static void LoadRules()
+		public static void Load()
 		{
 			var rules = TextNodeLoader.FromFile(FileExplorer.Rules, "Rules.yaml");
 

@@ -12,7 +12,8 @@ namespace WarriorsSnuggery
 
 		public static string Misc;
 		public static string Rules;
-		public static string Maps;
+		public static string Pieces;
+		public static string Scripts;
 		public static string Shaders;
 		public static string Logs;
 		public static string Saves;
@@ -20,15 +21,15 @@ namespace WarriorsSnuggery
 
 		public static void InitPaths()
 		{
-			string path = Directory.GetCurrentDirectory();
+			MainDirectory = Directory.GetCurrentDirectory() + Separator;
 
-			MainDirectory = path + Separator;
-			Misc = path + Separator + "misc" + Separator;
-			Rules = path + Separator + "rules" + Separator;
-			Maps = path + Separator + "maps" + Separator;
-			Shaders = path + Separator + "shaders" + Separator;
-			Logs = path + Separator + "logs" + Separator;
-			Saves = path + Separator + "saves" + Separator;
+			Misc = MainDirectory + "misc" + Separator;
+			Rules = MainDirectory + "rules" + Separator;
+			Pieces = MainDirectory + "pieces" + Separator;
+			Scripts = MainDirectory + "scripts" + Separator;
+			Shaders = MainDirectory + "shaders" + Separator;
+			Logs = MainDirectory + "logs" + Separator;
+			Saves = MainDirectory + "saves" + Separator;
 		}
 
 		public static bool Exists(string path, string name)

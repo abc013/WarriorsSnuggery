@@ -144,7 +144,7 @@ namespace WarriorsSnuggery.UI.Screens
 			var size = new MPos(int.Parse(sizeX.Text), int.Parse(sizeY.Text));
 			var name2 = name.Text;
 
-			var piece = WorldCreator.CreateEmpty(name2, size);
+			var piece = PieceCreator.CreateEmpty(name2, size);
 			GameController.CreateNew(GameSaveManager.DefaultSave.Copy(), MissionType.TEST, InteractionMode.EDITOR, custom: MapType.FromPiece(piece));
 		}
 	}

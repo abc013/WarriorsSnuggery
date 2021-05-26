@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using WarriorsSnuggery.Loader;
@@ -10,29 +9,26 @@ namespace WarriorsSnuggery.Maps
 	{
 		public static readonly List<Piece> Pieces = new List<Piece>();
 
-		public static void RefreshPieces()
+		public static void Load()
 		{
-			searchFiles(FileExplorer.Maps, false);
+			searchFiles(FileExplorer.Pieces);
 		}
 
-		static void searchFiles(string path, bool catchFilesInDirectory = true)
+		static void searchFiles(string path)
 		{
+			var files = Directory.GetFiles(path).Where(s => s.EndsWith(".yaml"));
+			foreach (var file in files)
+			{
+				var name = file.Remove(0, file.LastIndexOf(FileExplorer.Separator) + 1);
+				name = name.Remove(name.Length - 5);
+
+				var nodes = TextNodeLoader.FromFile(path + FileExplorer.Separator, name + ".yaml");
+
+				Pieces.Add(new Piece(name, path, nodes));
+			}
+
 			foreach (var dir in Directory.GetDirectories(path))
 				searchFiles(dir);
-
-			if (catchFilesInDirectory)
-			{
-				var files = Directory.GetFiles(path).Where(s => s.EndsWith(".yaml", StringComparison.CurrentCulture));
-				foreach (var file in files)
-				{
-					var name = file.Remove(0, file.LastIndexOf(FileExplorer.Separator) + 1);
-					name = name.Remove(name.Length - 5);
-
-					var nodes = TextNodeLoader.FromFile(path + FileExplorer.Separator, name + ".yaml");
-
-					Pieces.Add(new Piece(name, path, nodes));
-				}
-			}
 		}
 
 		public static Piece ReloadPiece(string name)
@@ -42,7 +38,7 @@ namespace WarriorsSnuggery.Maps
 			if (existingPiece != null)
 				Pieces.Remove(existingPiece);
 
-			var path = FileExplorer.FindPath(FileExplorer.Maps, name, ".yaml");
+			var path = FileExplorer.FindPath(FileExplorer.Pieces, name, ".yaml");
 			var nodes = TextNodeLoader.FromFile(path, name + ".yaml");
 
 			var piece = new Piece(name, path, nodes);

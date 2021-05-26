@@ -3,16 +3,11 @@ using System.Linq;
 
 namespace WarriorsSnuggery.Maps
 {
-	public static class WorldCreator
+	public static class PieceCreator
 	{
 		public static Piece CreateEmpty(string name, MPos size)
 		{
-			var path = FileExplorer.Maps + FileExplorer.Separator + "maps";
-
-			if (!Directory.Exists(path))
-				Directory.CreateDirectory(path);
-
-			using (var stream = new StreamWriter(File.Create(path + FileExplorer.Separator + name + ".yaml")))
+			using (var stream = new StreamWriter(File.Create(FileExplorer.Pieces + name + ".yaml")))
 			{
 				stream.WriteLine("Name=" + name);
 				stream.WriteLine("Size=" + size);
