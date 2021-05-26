@@ -1,4 +1,5 @@
 ﻿using WarriorsSnuggery.Graphics;
+using WarriorsSnuggery.Maps;
 using WarriorsSnuggery.Objects;
 using WarriorsSnuggery.Objects.Actors;
 using WarriorsSnuggery.Objects.Particles;
@@ -65,6 +66,10 @@ namespace WarriorsSnuggery.Loader
 						break;
 					case "Trophies":
 						TrophyManager.Load(nodes);
+
+						break;
+					case "Maps":
+						MapCreator.Load(nodes);
 
 						break;
 				}

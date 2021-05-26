@@ -1,5 +1,6 @@
 ﻿using OpenTK.Windowing.GraphicsLibraryFramework;
 using System;
+using WarriorsSnuggery.Loader;
 using WarriorsSnuggery.Maps;
 using WarriorsSnuggery.UI.Screens;
 
@@ -9,20 +10,16 @@ namespace WarriorsSnuggery
 	{
 		static Game game;
 
+		public static void Load()
+		{
+			RuleLoader.LoadRules();
+			PieceManager.RefreshPieces();
+			GameSaveManager.Load();
+		}
+
 		public static void Tick()
 		{
 			game.Tick();
-		}
-
-		public static void Load()
-		{
-			Loader.RuleLoader.LoadRules();
-
-			PieceManager.RefreshPieces();
-
-			MapCreator.LoadMaps();
-
-			GameSaveManager.Load();
 		}
 
 		public static void CreateFirst()
