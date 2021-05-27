@@ -1,0 +1,59 @@
+name: Publish
+
+on: workflow_dispatch
+
+jobs:
+  publish_win_x64:
+	name: Publish (windows_x64)
+    runs-on: windows-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: 5.0.x
+    - name: Publish
+      run: dotnet publish /p:PublishProfile=windows_x64 --nologo
+    - name: Archive published binaries
+      uses: actions/upload-artifact@v2
+      with:
+        name: publish_win_x64
+        path: publish_win_x64
+		retention-days: 30
+
+  publish_linux_x64:
+	name: Publish (linux_x64)
+    runs-on: windows-latest
+
+    - uses: actions/checkout@v2
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: 5.0.x
+    - name: Publish
+      run: dotnet publish /p:PublishProfile=linux_x64 --nologo
+    - name: Archive published binaries
+      uses: actions/upload-artifact@v2
+      with:
+        name: publish_linux_x64
+        path: publish_linux_x64
+		retention-days: 30
+
+  publish_osx_x64:
+	name: Publish (osx_x64)
+    runs-on: windows-latest
+
+    - uses: actions/checkout@v2
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: 5.0.x
+    - name: Publish
+      run: dotnet publish /p:PublishProfile=osx_x64 --nologo
+    - name: Archive published binaries
+      uses: actions/upload-artifact@v2
+      with:
+        name: publish_osx_x64
+        path: publish_osx_x64
+		retention-days: 30
