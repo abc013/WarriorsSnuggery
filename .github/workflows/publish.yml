@@ -20,7 +20,7 @@ jobs:
       with:
         name: publish_win_x64
         path: publish_win_x64
-		retention-days: 30
+        retention-days: 30
 
   publish_linux_x64:
     name: Publish (linux_x64)
@@ -38,7 +38,7 @@ jobs:
       with:
         name: publish_linux_x64
         path: publish_linux_x64
-		retention-days: 30
+        retention-days: 30
 
   publish_osx_x64:
     name: Publish (osx_x64)
@@ -56,4 +56,4 @@ jobs:
       with:
         name: publish_osx_x64
         path: publish_osx_x64
-		retention-days: 30
+        retention-days: 30
