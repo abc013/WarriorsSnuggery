@@ -33,20 +33,23 @@
     <ResolvedFileToPublish Include="..\AUTHORS.md">
       <RelativePath>AUTHORS.md</RelativePath>
     </ResolvedFileToPublish>
-    <ResolvedFileToPublish Include="..\maps\**\*">
-      <RelativePath>maps/%(RecursiveDir)%(Filename)%(Extension)</RelativePath>
+    <ResolvedFileToPublish Include="..\pieces\**\*">
+      <RelativePath>pieces\%(RecursiveDir)%(Filename)%(Extension)</RelativePath>
+    </ResolvedFileToPublish>
+    <ResolvedFileToPublish Include="..\scripts\**\*">
+      <RelativePath>scripts\%(RecursiveDir)%(Filename)%(Extension)</RelativePath>
     </ResolvedFileToPublish>
     <ResolvedFileToPublish Include="..\misc\**\*">
-      <RelativePath>misc/%(RecursiveDir)%(Filename)%(Extension)</RelativePath>
+      <RelativePath>misc\%(RecursiveDir)%(Filename)%(Extension)</RelativePath>
     </ResolvedFileToPublish>
     <ResolvedFileToPublish Include="..\rules\**\*">
-      <RelativePath>rules/%(RecursiveDir)%(Filename)%(Extension)</RelativePath>
+      <RelativePath>rules\%(RecursiveDir)%(Filename)%(Extension)</RelativePath>
     </ResolvedFileToPublish>
     <ResolvedFileToPublish Include="..\saves\**\*">
-      <RelativePath>saves/%(RecursiveDir)%(Filename)%(Extension)</RelativePath>
+      <RelativePath>saves\%(RecursiveDir)%(Filename)%(Extension)</RelativePath>
     </ResolvedFileToPublish>
     <ResolvedFileToPublish Include="..\shaders\**\*">
-      <RelativePath>shaders/%(RecursiveDir)%(Filename)%(Extension)</RelativePath>
+      <RelativePath>shaders\%(RecursiveDir)%(Filename)%(Extension)</RelativePath>
     </ResolvedFileToPublish>
   </ItemGroup>
   <ItemGroup>

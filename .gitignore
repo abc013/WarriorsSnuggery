@@ -46,6 +46,7 @@ bld/
 /DocWriter
 /Documentation.html
 /Settings.yaml
+/createdump.exe
 logs/
 *.pdb
 launchSettings.json
