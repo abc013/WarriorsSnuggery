@@ -4,7 +4,7 @@ on: workflow_dispatch
 
 jobs:
   publish_win_x64:
-	name: Publish (windows_x64)
+    name: Publish (windows_x64)
     runs-on: windows-latest
 
     steps:
@@ -23,7 +23,7 @@ jobs:
 		retention-days: 30
 
   publish_linux_x64:
-	name: Publish (linux_x64)
+    name: Publish (linux_x64)
     runs-on: windows-latest
 
     - uses: actions/checkout@v2
@@ -41,7 +41,7 @@ jobs:
 		retention-days: 30
 
   publish_osx_x64:
-	name: Publish (osx_x64)
+    name: Publish (osx_x64)
     runs-on: windows-latest
 
     - uses: actions/checkout@v2
