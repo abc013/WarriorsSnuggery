@@ -16,6 +16,7 @@ namespace WarriorsSnuggery
 
 		public static bool IsDebug;
 		public static bool NoFullscreen;
+		public static bool OnlyLoad;
 
 		public static bool StartEditor;
 		public static bool DisableShroud;
@@ -71,6 +72,8 @@ namespace WarriorsSnuggery
 					MapType = args[++i];
 				else if (arg == "-enable-cheats")
 					enableCheats = true;
+				else if (arg == "-only-load")
+					OnlyLoad = true;
 				else
 					throw new ArgumentException($"Unknown command line argument {arg}.");
 			}

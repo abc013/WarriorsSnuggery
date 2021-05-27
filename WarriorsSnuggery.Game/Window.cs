@@ -196,6 +196,9 @@ namespace WarriorsSnuggery
 
 			Ready = true;
 			Console.WriteLine(" Done!");
+
+			if (Program.OnlyLoad)
+				Program.Exit();
 		}
 
 		protected override void OnUpdateFrame(FrameEventArgs e)
