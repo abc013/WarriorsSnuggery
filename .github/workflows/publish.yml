@@ -26,6 +26,7 @@ jobs:
     name: Publish (linux_x64)
     runs-on: windows-latest
 
+    steps:
     - uses: actions/checkout@v2
     - name: Setup .NET
       uses: actions/setup-dotnet@v1
@@ -44,6 +45,7 @@ jobs:
     name: Publish (osx_x64)
     runs-on: windows-latest
 
+    steps:
     - uses: actions/checkout@v2
     - name: Setup .NET
       uses: actions/setup-dotnet@v1
