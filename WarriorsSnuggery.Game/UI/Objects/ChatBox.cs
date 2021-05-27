@@ -1,4 +1,5 @@
-﻿using WarriorsSnuggery.Graphics;
+﻿using OpenTK.Windowing.GraphicsLibraryFramework;
+using WarriorsSnuggery.Graphics;
 
 namespace WarriorsSnuggery.UI.Objects
 {
@@ -65,6 +66,11 @@ namespace WarriorsSnuggery.UI.Objects
 			panel.Render();
 			input.Render();
 			send.Render();
+		}
+
+		public override void KeyDown(Keys key, bool isControl, bool isShift, bool isAlt)
+		{
+			input.KeyDown(key, isControl, isShift, isAlt);
 		}
 	}
 }

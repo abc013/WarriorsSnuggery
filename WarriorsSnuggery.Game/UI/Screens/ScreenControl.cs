@@ -160,10 +160,15 @@ namespace WarriorsSnuggery.UI.Screens
 					Chat.OpenChat();
 				}
 			}
-			else if (key == Keys.Escape || key == Keys.Enter && isShift)
+			else
 			{
-				ChatOpen = false;
-				Chat.CloseChat();
+				Chat.KeyDown(key, isControl, isShift, isAlt);
+
+				if (key == Keys.Escape || key == Keys.Enter && isShift)
+				{
+					ChatOpen = false;
+					Chat.CloseChat();
+				}
 			}
 		}
 

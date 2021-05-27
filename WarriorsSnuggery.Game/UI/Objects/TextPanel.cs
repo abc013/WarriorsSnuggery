@@ -14,7 +14,7 @@ namespace WarriorsSnuggery.UI.Objects
 		readonly int lineCount;
 		int lineScroll;
 
-		CPos textPosition => Position - new CPos(SelectableBounds.X - font.MaxWidth, -SelectableBounds.Y + lineHeight, 0);
+		CPos textPosition => Position - new CPos(SelectableBounds.X - font.WidthGap, -SelectableBounds.Y + font.HeightGap, 0);
 
 		public TextPanel(MPos bounds, Font font, string typeName) : this(bounds, font, PanelManager.Get(typeName)) { }
 

@@ -23,7 +23,7 @@ namespace WarriorsSnuggery.UI.Objects
 			set
 			{
 				base.Position = value;
-				textline.Position = value + new CPos(margin / 2, 0, 0);
+				textline.Position = value + new CPos(margin - SelectableBounds.X, 0, 0);
 			}
 		}
 
@@ -53,7 +53,7 @@ namespace WarriorsSnuggery.UI.Objects
 			MaximumLength = maximumLength;
 			Type = type;
 
-			textline = new UITextLine(FontManager.Default, TextOffset.MIDDLE) { Position = new CPos(margin / 2, 0, 0) };
+			textline = new UITextLine(FontManager.Default, TextOffset.LEFT) { Position = new CPos(margin - SelectableBounds.X, 0, 0) };
 		}
 
 		static MPos calculateBounds(int maximumLength)
