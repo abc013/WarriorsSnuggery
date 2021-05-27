@@ -22,7 +22,7 @@ jobs:
 
   Publish:
   
-    runs-on: ubuntu-latest
+    runs-on: windows-latest
     
     steps:
     - uses: actions/checkout@v2
@@ -31,21 +31,21 @@ jobs:
       with:
         dotnet-version: 5.0.x
     - name: Publish (windows_x64)
-      run: dotnet publish /p:PublishProfile=windows_x64
+      run: dotnet publish /p:PublishProfile=windows_x64 --nologo
     - name: Archive published binaries (windows_x64)
       uses: actions/upload-artifact@v2
       with:
         name: publish_win_x64
         path: publish_win_x64
     - name: Publish (linux_x64)
-      run: dotnet publish /p:PublishProfile=linux_x64
+      run: dotnet publish /p:PublishProfile=linux_x64 --nologo
     - name: Archive published binaries (linux_x64)
       uses: actions/upload-artifact@v2
       with:
         name: publish_linux_x64
         path: publish_linux_x64
     - name: Publish (osx_x64)
-      run: dotnet publish /p:PublishProfile=osx_x64
+      run: dotnet publish /p:PublishProfile=osx_x64 --nologo
     - name: Archive published binaries (osx_x64)
       uses: actions/upload-artifact@v2
       with:
