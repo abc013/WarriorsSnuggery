@@ -68,7 +68,31 @@ namespace WarriorsSnuggery.Loader
 				var scan = new byte[stride];
 				for (int scanline = 0; scanline < data.Height; scanline++)
 				{
-					Marshal.Copy(IntPtr.Add(data.Scan0, scanline * stride), scan, 0, stride);
+					try
+					{
+						Marshal.Copy(IntPtr.Add(data.Scan0, scanline * stride), scan, 0, stride);
+					}
+					catch (Exception e)
+					{
+						// HACK: this is not what we should do instead.
+						Log.Warning($"Error while fast-loading bitmap. Fallback to slower method. Error: {e.Message}");
+
+						bmp.UnlockBits(data);
+
+						var y = scanline;
+						var x = 0;
+						for (var i = 0; i < scansize;)
+						{
+							var pixel = bmp.GetPixel(size.X + x++, size.Y + y);
+
+							scan[i++] = pixel.B;
+							scan[i++] = pixel.G;
+							scan[i++] = pixel.R;
+							scan[i++] = pixel.A;
+						}
+
+						data = bmp.LockBits(size, ImageLockMode.ReadOnly, PixelFormat.Format32bppArgb);
+					}
 
 					for (int px = 0; px < data.Width; px++)
 					{
