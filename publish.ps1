@@ -1,4 +1,4 @@
-$configs = @("linux_x64", "osx_x64", "windows_x64", "windows_x86")
+$configs = @("linux_x64", "osx_x64", "windows_x64")
 
 $host.ui.RawUI.WindowTitle = "Warrior's Snuggery publishing"
 
