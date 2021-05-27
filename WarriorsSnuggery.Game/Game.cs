@@ -261,41 +261,41 @@ namespace WarriorsSnuggery
 
 		public void KeyDown(Keys key, bool isControl, bool isShift, bool isAlt)
 		{
+			// Info screen
+			if (key == Keys.Comma)
+				Settings.EnableInfoScreen = !Settings.EnableInfoScreen;
+
+			// Debug map cycling
+			if (key == Keys.KeyPadAdd || key == Keys.PageUp)
+				Settings.CurrentMap++;
+			if ((key == Keys.KeyPadSubtract || key == Keys.PageDown) && Settings.CurrentMap >= -1)
+				Settings.CurrentMap--;
+
+			// Party mode
+			if (key == Keys.RightAlt)
+				Settings.PartyMode = !Settings.PartyMode;
+
 			var screenTypeBefore = ScreenControl.FocusedType;
-
-			if (key == Settings.GetKey("Pause") && !isControl && ScreenControl.FocusedType != ScreenType.PAUSED && ScreenControl.FocusedType != ScreenType.DEFEAT)
-			{
-				if (!(ScreenControl.ChatOpen && ScreenControl.CursorOnUI()))
-				{
-					ShowScreen(ScreenType.PAUSED, true);
-					return;
-				}
-			}
-
 			ScreenControl.KeyDown(key, isControl, isShift, isAlt);
 
-			if (Paused || Finished || ScreenControl.ChatOpen)
+			if (Paused || Finished)
 				return;
 
-			// screen control
-			if (ScreenControl.FocusedType != ScreenType.DEFEAT && screenTypeBefore != ScreenType.MENU)
+			if (ScreenControl.CursorOnUI() || ScreenControl.ChatOpen)
+				return;
+
+			if (ScreenControl.FocusedType != ScreenType.DEFEAT)
 			{
-				if (key == Keys.Escape)
+				if (screenTypeBefore != ScreenType.PAUSED && key == Settings.GetKey("Pause") && !isControl)
+					ShowScreen(ScreenType.PAUSED, true);
+
+				if (screenTypeBefore != ScreenType.MENU && key == Keys.Escape)
 					ShowScreen(ScreenType.MENU, true);
 			}
 
 			// Player lock
 			if (key == Settings.GetKey("CameraLock"))
 				Camera.LockedToPlayer = !Camera.LockedToPlayer;
-
-			// Key input
-			if (key == Keys.KeyPadAdd || key == Keys.PageUp)
-				Settings.CurrentMap++;
-			if ((key == Keys.KeyPadSubtract || key == Keys.PageDown) && Settings.CurrentMap >= -1)
-				Settings.CurrentMap--;
-
-			if (key == Keys.RightAlt)
-				Settings.PartyMode = !Settings.PartyMode;
 
 			// Cheats
 			if (Settings.EnableCheats && isAlt)
@@ -326,9 +326,6 @@ namespace WarriorsSnuggery
 					if (key == Keys.X)
 						SwitchEditor();
 				}
-
-				if (key == Keys.Comma)
-					Settings.EnableInfoScreen = !Settings.EnableInfoScreen;
 			}
 		}
 
