@@ -14,9 +14,14 @@ namespace WarriorsSnuggery.UI.Screens
 		public ScreenType FocusedType { get; private set; } = ScreenType.EMPTY;
 
 		public readonly ChatBox Chat;
-		public bool ChatOpen { get; private set; }
+		public bool ChatOpen => Chat.Visible;
+
+		public readonly MessageBox Message;
+		public bool MessageDisplayed => Message.Visible;
+
 		public readonly InfoScreen Screen;
 		public static bool InfoScreenOpen => Settings.EnableInfoScreen;
+
 		public readonly InfoText Text;
 
 		public ScreenControl(Game game)
@@ -24,6 +29,7 @@ namespace WarriorsSnuggery.UI.Screens
 			this.game = game;
 
 			Chat = new ChatBox(new CPos(0, 4096, 0));
+			Message = new MessageBox(new CPos(0, 4096, 0));
 			Screen = new InfoScreen();
 			Text = new InfoText();
 		}
@@ -107,6 +113,11 @@ namespace WarriorsSnuggery.UI.Screens
 				defaultScreen.UpdateActors();
 		}
 
+		public void OpenMessage(Message message)
+		{
+			Message.OpenMessage(message);
+		}
+
 		public void AddInfoMessage(int duration, string message)
 		{
 			Text.SetMessage(duration, message);
@@ -114,13 +125,12 @@ namespace WarriorsSnuggery.UI.Screens
 
 		public void Tick()
 		{
-			if (ChatOpen)
-				Chat.Tick();
-			else
+			if (!ChatOpen)
 				Focused?.Tick();
 
-			if (InfoScreenOpen)
-				Screen.Tick();
+			Chat.Tick();
+			Message.Tick();
+			Screen.Tick();
 
 			Text.Tick();
 		}
@@ -129,11 +139,9 @@ namespace WarriorsSnuggery.UI.Screens
 		{
 			Focused?.Render();
 
-			if (ChatOpen)
-				Chat.Render();
-
-			if (InfoScreenOpen)
-				Screen.Render();
+			Chat.Render();
+			Message.Render();
+			Screen.Render();
 
 			Text.Render();
 		}
@@ -145,6 +153,9 @@ namespace WarriorsSnuggery.UI.Screens
 			if (ChatOpen)
 				Chat.DebugRender();
 
+			if (MessageDisplayed)
+				Message.DebugRender();
+
 			Text.DebugRender();
 		}
 
@@ -155,20 +166,14 @@ namespace WarriorsSnuggery.UI.Screens
 				Focused?.KeyDown(key, isControl, isShift, isAlt);
 
 				if (key == Keys.Enter && isShift)
-				{
-					ChatOpen = true;
 					Chat.OpenChat();
-				}
 			}
 			else
 			{
 				Chat.KeyDown(key, isControl, isShift, isAlt);
 
 				if (key == Keys.Escape || key == Keys.Enter && isShift)
-				{
-					ChatOpen = false;
 					Chat.CloseChat();
-				}
 			}
 		}
 

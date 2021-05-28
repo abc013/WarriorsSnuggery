@@ -5,6 +5,8 @@ namespace WarriorsSnuggery.UI.Objects
 {
 	public class InfoScreen : ITickRenderable
 	{
+		public bool Visible => Settings.EnableInfoScreen;
+
 		readonly UITextLine version;
 		readonly UITextLine visibility;
 		readonly UITextLine tick;
@@ -26,6 +28,9 @@ namespace WarriorsSnuggery.UI.Objects
 
 		public void Tick()
 		{
+			if (Visible)
+				return;
+
 			//memory.SetText("Memory " + (int) (System.Diagnostics.Process.GetCurrentProcess().PrivateMemorySize64 / 1024f) + " KB");
 			//memory.SetText("Public Memory " + (int)(GC.GetTotalMemory(false) / 1024f) + " KB");
 			visibility.SetText(VisibilitySolver.TilesVisible() + " Tiles visible");
@@ -46,6 +51,9 @@ namespace WarriorsSnuggery.UI.Objects
 
 		public void Render()
 		{
+			if (Visible)
+				return;
+
 			var right = (int)(WindowInfo.UnitWidth * 512);
 			ColorManager.DrawRect(new CPos(right, 8192, 0), new CPos(right - 6144, 8192 - 2560, 0), new Color(0, 0, 0, 128));
 			

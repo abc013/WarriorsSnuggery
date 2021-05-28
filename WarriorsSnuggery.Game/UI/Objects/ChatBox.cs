@@ -10,6 +10,7 @@ namespace WarriorsSnuggery.UI.Objects
 		readonly Button send;
 
 		public bool MouseOnChat => ContainsMouse;
+		public bool Visible;
 
 		public ChatBox(CPos position)
 		{
@@ -30,11 +31,13 @@ namespace WarriorsSnuggery.UI.Objects
 		public void OpenChat()
 		{
 			input.Selected = true;
+			Visible = true;
 		}
 
 		public void CloseChat()
 		{
 			input.Text = string.Empty;
+			Visible = false;
 		}
 
 		public void SendText()
@@ -54,6 +57,9 @@ namespace WarriorsSnuggery.UI.Objects
 
 		public override void Tick()
 		{
+			if (!Visible)
+				return;
+
 			CheckMouse();
 			panel.Tick();
 			input.Tick();
@@ -62,6 +68,9 @@ namespace WarriorsSnuggery.UI.Objects
 
 		public override void Render()
 		{
+			if (!Visible)
+				return;
+
 			ColorManager.DrawRect(new CPos(Position.X - 8120 - 512, Position.Y + 2560 - 512, 0), new CPos(Position.X + 8120 + 512, Position.Y - 4606 + 512, 0), new Color(0, 0, 0, 0.25f));
 			panel.Render();
 			input.Render();
@@ -70,6 +79,9 @@ namespace WarriorsSnuggery.UI.Objects
 
 		public override void KeyDown(Keys key, bool isControl, bool isShift, bool isAlt)
 		{
+			if (!Visible)
+				return;
+
 			input.KeyDown(key, isControl, isShift, isAlt);
 		}
 	}
