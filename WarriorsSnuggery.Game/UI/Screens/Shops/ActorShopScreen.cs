@@ -56,12 +56,12 @@ namespace WarriorsSnuggery.UI.Screens
 		void selectActor(ActorType actor)
 		{
 			selected = actor;
-			information.Lines[0].WriteText(actor.Playable.Name);
-			information.Lines[1].WriteText(Color.Grey + actor.Playable.Description);
+			information[0].WriteText(actor.Playable.Name);
+			information[1].WriteText(Color.Grey + actor.Playable.Description);
 			if (game.Stats.ActorAvailable(actor.Playable))
-				information.Lines[3].WriteText(Color.White + "Cost: " + Color.Green + "Bought");
+				information[3].WriteText(Color.White + "Cost: " + Color.Green + "Bought");
 			else
-				information.Lines[3].WriteText(Color.White + "Cost: " + Color.Yellow + actor.Playable.UnlockCost);
+				information[3].WriteText(Color.White + "Cost: " + Color.Yellow + actor.Playable.UnlockCost);
 		}
 
 		void buyActor(ActorType actor)
@@ -80,7 +80,7 @@ namespace WarriorsSnuggery.UI.Screens
 			game.Stats.AddActor(actor.Playable);
 
 			actors.Container[actorTypes.IndexOf(actor.Playable.InternalName)].SetColor(Color.White);
-			information.Lines[3].WriteText(Color.White + "Cost: " + Color.Green + "Bought");
+			information[3].WriteText(Color.White + "Cost: " + Color.Green + "Bought");
 
 			game.ScreenControl.UpdateActors();
 		}

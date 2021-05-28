@@ -49,17 +49,17 @@ namespace WarriorsSnuggery.UI.Screens
 		{
 			if (!game.Stats.TrophyUnlocked(name))
 			{
-				information.Lines[0].WriteText(Color.Red + "Trophy Locked.");
-				information.Lines[1].WriteText(Color.Grey + " ");
-				information.Lines[2].WriteText(Color.Grey + " ");
-				information.Lines[3].WriteText(Color.Grey + " ");
+				information[0].WriteText(Color.Red + "Trophy Locked.");
+				information[1].WriteText(string.Empty);
+				information[2].WriteText(string.Empty);
+				information[3].WriteText(string.Empty);
 				return;
 			}
 
-			information.Lines[0].WriteText(Color.White + trophy.Name);
-			information.Lines[1].WriteText(Color.Grey + trophy.Description);
-			information.Lines[2].WriteText(Color.Grey + (trophy.MaxManaIncrease != 0 ? "Gives " + Color.Blue + trophy.MaxManaIncrease + Color.Grey + " additional mana storage!" : " "));
-			information.Lines[3].WriteText(Color.Grey + (trophy.MaxLifesIncrease != 0 ? "Gives " + Color.Red + trophy.MaxLifesIncrease + Color.Grey + $" additional life{(trophy.MaxLifesIncrease > 1 ? "s" : "")}!" : " "));
+			information[0].WriteText(Color.White + trophy.Name);
+			information[1].WriteText(Color.Grey + trophy.Description);
+			information[2].WriteText(Color.Grey + (trophy.MaxManaIncrease != 0 ? "Gives " + Color.Blue + trophy.MaxManaIncrease + Color.Grey + " additional mana storage!" : " "));
+			information[3].WriteText(Color.Grey + (trophy.MaxLifesIncrease != 0 ? "Gives " + Color.Red + trophy.MaxLifesIncrease + Color.Grey + $" additional life{(trophy.MaxLifesIncrease > 1 ? "s" : "")}!" : " "));
 		}
 
 		public override void KeyDown(Keys key, bool isControl, bool isShift, bool isAlt)

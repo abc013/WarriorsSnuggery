@@ -1,5 +1,4 @@
-﻿using System.Linq;
-using WarriorsSnuggery.Graphics;
+﻿using WarriorsSnuggery.Graphics;
 using WarriorsSnuggery.Objects;
 
 namespace WarriorsSnuggery.UI
@@ -23,12 +22,13 @@ namespace WarriorsSnuggery.UI
 
 			this.title = new TextLine(CPos.Zero, font);
 			this.title.WriteText(title);
-			this.text = new TextBlock(CPos.Zero, font, TextOffset.LEFT, text);
+			this.text = new TextBlock(CPos.Zero, font, TextOffset.LEFT);
+			this.text.Add(text);
 
 			var width = font.GetWidth(this.title.Text);
 			if (text.Length != 0)
 			{
-				var textWidth = this.text.Lines.Max(s => font.GetWidth(s.Text));
+				var textWidth = this.text.Bounds.X;
 
 				if (textWidth > width)
 					width = textWidth;

@@ -7,8 +7,6 @@ namespace WarriorsSnuggery.UI
 	{
 		readonly TextBlock block;
 
-		public TextLine[] Lines => block.Lines;
-
 		public override CPos Position
 		{
 			get => block.Position;
@@ -27,9 +25,13 @@ namespace WarriorsSnuggery.UI
 			set => block.Rotation = value;
 		}
 
+		public TextLine this[int index] => block[index];
+
 		public UITextBlock(Font font, TextOffset offset, params string[] text)
 		{
-			block = new TextBlock(CPos.Zero, font, offset, text);
+			block = new TextBlock(CPos.Zero, font, offset);
+
+			block.Add(text);
 		}
 
 		public override void Tick()
@@ -44,8 +46,10 @@ namespace WarriorsSnuggery.UI
 
 		public override void DebugRender()
 		{
-			foreach (var line in Lines)
+			for (int i = 0; i < block.LineCount; i++)
 			{
+				var line = block[i];
+
 				var position = line.Position;
 				var bounds = line.Bounds;
 

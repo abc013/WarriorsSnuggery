@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using WarriorsSnuggery.Graphics;
 
 namespace WarriorsSnuggery.Objects
@@ -12,8 +13,8 @@ namespace WarriorsSnuggery.Objects
 			{
 				position = value;
 
-				for (int i = 0; i < Lines.Length; i++)
-					Lines[i].Position = position + new CPos(0, (font.HeightGap + font.MaxHeight / 2) * i, 0);
+				for (int i = 0; i < lines.Count; i++)
+					lines[i].Position = position + new CPos(0, (font.HeightGap / 2 + font.MaxHeight / 2) * i, 0);
 			}
 		}
 		CPos position;
@@ -25,8 +26,8 @@ namespace WarriorsSnuggery.Objects
 			{
 				rotation = value;
 
-				for (int i = 0; i < Lines.Length; i++)
-					Lines[i].Rotation = rotation;
+				for (int i = 0; i < lines.Count; i++)
+					lines[i].Rotation = rotation;
 			}
 		}
 		VAngle rotation;
@@ -38,43 +39,75 @@ namespace WarriorsSnuggery.Objects
 			{
 				scale = value;
 
-				for (int i = 0; i < Lines.Length; i++)
-					Lines[i].Scale = scale;
+				for (int i = 0; i < lines.Count; i++)
+					lines[i].Scale = scale;
 			}
 		}
 		float scale = 1f;
 
-		readonly Font font;
-		public readonly TextLine[] Lines;
-
 		public MPos Bounds { get; private set; }
 
-		public TextBlock(CPos position, Font font, TextOffset offset, params string[] text)
-		{
-			this.font = font;
-			Lines = new TextLine[text.Length];
+		readonly Font font;
+		readonly TextOffset offset;
 
-			for (int i = 0; i < text.Length; i++)
-			{
-				Lines[i] = new TextLine(position, font, offset);
-				Lines[i].WriteText(text[i]);
-			}
+		readonly List<TextLine> lines = new List<TextLine>();
+		public TextLine this[int index] => lines[index];
+		public int LineCount => lines.Count;
+
+		public TextBlock(CPos position, Font font, TextOffset offset = TextOffset.LEFT)
+		{
 			Position = position;
 
-			var width = Lines.Length == 0 ? 0 : Lines.Max(s => font.GetWidth(s.Text));
+			this.font = font;
+			this.offset = offset;
+		}
 
-			Bounds = new MPos(width, text.Length * (font.MaxHeight + font.HeightGap) / 2);
+		public void Clear()
+		{
+			lines.Clear();
+
+			calculateBounds();
+		}
+
+		public void Add(params string[] text)
+		{
+			foreach (var line in text)
+				add(line);
+
+			calculateBounds();
+		}
+
+		void add(string text)
+		{
+			var line = new TextLine(position, font, offset);
+			line.WriteText(text);
+
+			lines.Add(line);
+		}
+
+		public void RemoveLast()
+		{
+			lines.Remove(lines[^1]);
+
+			calculateBounds();
+		}
+
+		void calculateBounds()
+		{
+			var width = lines.Count == 0 ? 0 : lines.Max(s => font.GetWidth(s.Text));
+
+			Bounds = new MPos(width, lines.Count * (font.MaxHeight + font.HeightGap) / 2);
 		}
 
 		public void Render()
 		{
-			foreach (var line in Lines)
+			foreach (var line in lines)
 				line.Render();
 		}
 
 		public void Tick()
 		{
-			foreach (var line in Lines)
+			foreach (var line in lines)
 				line.Tick();
 		}
 	}

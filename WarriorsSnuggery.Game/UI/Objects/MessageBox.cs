@@ -68,7 +68,7 @@ namespace WarriorsSnuggery.UI.Objects
 			Visible = true;
 
 			for (int i = 0; i < 4; i++)
-				text.Lines[i].WriteText(i >= message.Text.Length ? string.Empty : message.Text[i]);
+				text[i].WriteText(i >= message.Text.Length ? string.Empty : message.Text[i]);
 
 			void closeAfterAction(Action action = null)
 			{
