@@ -5,7 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Include="..\maps\scripts\*.cs" Link="%(Filename).cs" />
+    <Compile Include="..\scripts\*.cs" Link="%(Filename).cs" />
     <ProjectReference Include="..\WarriorsSnuggery.Game\WarriorsSnuggery.Game.csproj" />
   </ItemGroup>
 
