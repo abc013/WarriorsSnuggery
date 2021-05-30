@@ -103,7 +103,7 @@ namespace WarriorsSnuggery.Objects.Actors.Parts
 			return facing;
 		}
 
-		public override BatchSequence GetRenderable(ActorAction action, int facing)
+		public override BatchSequence GetRenderable(ActionType actions, int facing)
 		{
 			if (info.Condition != null && !info.Condition.True(self))
 				return null;
@@ -129,7 +129,7 @@ namespace WarriorsSnuggery.Objects.Actors.Parts
 				currentFacing = FacingFromAngle(angle);
 			}
 			var last = renderable;
-			renderable = GetRenderable(self.CurrentAction, currentFacing);
+			renderable = GetRenderable(self.Actions, currentFacing);
 
 			if (last == null)
 				renderable?.Reset();

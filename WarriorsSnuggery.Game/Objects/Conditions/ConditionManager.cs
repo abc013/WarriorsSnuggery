@@ -54,15 +54,19 @@ namespace WarriorsSnuggery.Objects.Conditions
 				case "IsBot":
 					return condition.Negate != actor.IsBot;
 				case "IsIdling":
-					return condition.Negate != (actor.CurrentAction.Type == ActionType.IDLE);
+					return condition.Negate != actor.DoesAction(ActionType.IDLE);
+				case "StartsMoving":
+					return condition.Negate != actor.DoesAction(ActionType.PREPARE_MOVE);
 				case "IsMoving":
-					return condition.Negate != (actor.CurrentAction.Type == ActionType.MOVE);
+					return condition.Negate != actor.DoesAction(ActionType.MOVE);
+				case "EndsMoving":
+					return condition.Negate != actor.DoesAction(ActionType.END_MOVE);
 				case "StartsAttacking":
-					return condition.Negate != (actor.CurrentAction.Type == ActionType.PREPARE_ATTACK);
+					return condition.Negate != actor.DoesAction(ActionType.PREPARE_ATTACK);
 				case "IsAttacking":
-					return condition.Negate != (actor.CurrentAction.Type == ActionType.ATTACK);
+					return condition.Negate != actor.DoesAction(ActionType.ATTACK);
 				case "EndsAttacking":
-					return condition.Negate != (actor.CurrentAction.Type == ActionType.END_ATTACK);
+					return condition.Negate != actor.DoesAction(ActionType.END_ATTACK);
 				case "IsAlive":
 					if (actor.Health == null)
 						return !condition.Negate;

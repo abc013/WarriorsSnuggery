@@ -52,6 +52,13 @@ namespace WarriorsSnuggery.Objects.Actors
 		public readonly ActorType Type;
 		ActorInit init;
 
+		[Save]
+		public ActionType Actions { get; private set; } = ActionType.IDLE;
+		// TODO: save
+		readonly List<ActorAction> actions = new List<ActorAction>();
+
+		bool allowAttackMove => Weapon == null || Weapon.AllowMoving;
+
 		public MPos TerrainPosition;
 		public Terrain CurrentTerrain;
 
@@ -66,10 +73,6 @@ namespace WarriorsSnuggery.Objects.Actors
 					Mobility.Velocity = value;
 			}
 		}
-
-		// TODO: needs to be saved
-		ActorAction upcoming;
-		public ActorAction CurrentAction = ActorAction.Default;
 
 		public Actor(World world, ActorInit init, uint overrideID) : this(world, init)
 		{
@@ -189,7 +192,7 @@ namespace WarriorsSnuggery.Objects.Actors
 
 		public void AccelerateSelf(float angle)
 		{
-			if (Mobility == null || World.Game.Editor)
+			if (World.Game.Editor)
 				return;
 
 			if (!canMove())
@@ -212,7 +215,7 @@ namespace WarriorsSnuggery.Objects.Actors
 
 		public void AccelerateHeightSelf(bool up)
 		{
-			if (Mobility == null || World.Game.Editor)
+			if (World.Game.Editor)
 				return;
 
 			if (!Mobility.CanFly || !canMove())
@@ -225,10 +228,10 @@ namespace WarriorsSnuggery.Objects.Actors
 
 		bool canMove()
 		{
-			if (!IsAlive || Height > 0 && !Mobility.CanFly)
+			if (Mobility == null || !IsAlive || Height > 0 && !Mobility.CanFly)
 				return false;
 
-			if ((Weapon == null || !Weapon.AllowMoving) && (CurrentAction.Type == ActionType.END_ATTACK || CurrentAction.Type == ActionType.ATTACK))
+			if (!ActionPossible(ActionType.PREPARE_MOVE) && !ActionPossible(ActionType.MOVE))
 				return false;
 
 			if (Effects.Any(e => e.Active && e.Effect.Type == Spells.EffectType.STUN))
@@ -319,19 +322,13 @@ namespace WarriorsSnuggery.Objects.Actors
 			foreach (var part in tickParts)
 				part.Tick();
 
-			if (CurrentAction.Tick())
-			{
-				if (upcoming != null)
-				{
-					CurrentAction = upcoming;
-					upcoming = null;
-				}
-				else
-				{
-					CurrentAction = ActorAction.Default;
-				}
-			}
+			processEffects();
 
+			processActions();
+		}
+
+		void processEffects()
+		{
 			var effectsToRemove = new List<ActorEffect>();
 			foreach (var effect in Effects)
 			{
@@ -339,44 +336,101 @@ namespace WarriorsSnuggery.Objects.Actors
 				if (!effect.Active)
 					effectsToRemove.Add(effect);
 			}
-			foreach(var effect in effectsToRemove)
+
+			foreach (var effect in effectsToRemove)
 				Effects.Remove(effect);
 		}
 
-		public bool QueueAction(ActorAction action)
+		void processActions()
 		{
-			if (action.ActionOver)
-				return true;
+			var newActions = ActionType.IDLE;
 
-			if (CurrentAction.ActionOver)
+			if (actions.Count != 0)
 			{
-				CurrentAction = upcoming ?? action;
+				var toAdd = new List<ActorAction>();
+				var toRemove = new List<ActorAction>();
 
-				if (upcoming == null)
-					return true;
+				foreach (var action in actions)
+				{
+					if (action.IsOverOrCanceled(Actions, allowAttackMove))
+					{
+						toRemove.Add(action);
 
-				upcoming = null;
+						if (action.ActionOver && action.Following != null)
+						{
+							toAdd.Add(action.Following);
+
+							newActions |= action.Following.Type;
+						}
+					}
+					else
+					{
+						newActions |= action.Type;
+					}
+				}
+
+				actions.RemoveAll(a => toRemove.Contains(a));
+				actions.AddRange(toAdd);
 			}
 
-			if (upcoming != null)
-				return false;
-
-			upcoming = action;
-			return true;
+			Actions = newActions;
 		}
 
-		public bool SetAction(ActorAction action)
+		public bool ActionPossible(ActionType type)
 		{
-			if (action.ActionOver)
+			if (Actions == ActionType.IDLE || allowAttackMove)
 				return true;
 
-			if (CurrentAction.Skippable || CurrentAction.ActionOver)
-			{
-				CurrentAction = action;
+			if (Actions == type)
 				return true;
-			}
+
+			if (DoesAction(ActionType.END_ATTACK | ActionType.END_MOVE))
+				return false;
+
+			if (type == ActionType.END_ATTACK && DoesAction(ActionType.ATTACK))
+				return true;
+
+			if (type == ActionType.END_MOVE && DoesAction(ActionType.MOVE))
+				return true;
+
+			if ((type == ActionType.ATTACK || type == ActionType.PREPARE_MOVE || type == ActionType.MOVE) && DoesAction(ActionType.PREPARE_ATTACK))
+				return true;
+
+			if ((type == ActionType.MOVE || type == ActionType.PREPARE_ATTACK || type == ActionType.ATTACK) && DoesAction(ActionType.PREPARE_MOVE))
+				return true;
+
+			//c ATTACK: ENDATTACK
+			//c ENDATTACK: -
+			//c STARTATTACK: STARTMOVE, MOVE
+			//c MOVE: ENDMOVE
+			//c ENDMOVE: -
+			//c STARTMOVE: STARTATTACK, ATTACK
+			//c IDLE: ALL
 
 			return false;
+		}
+
+		public bool DoesAction(ActionType type)
+		{
+			if (type == ActionType.IDLE && Actions == ActionType.IDLE)
+				return true;
+
+			return (Actions & type) != 0;
+		}
+
+		public bool AddAction(ActionType type, int duration, ActorAction following = null, bool interruptsOthers = false)
+		{
+			if (!ActionPossible(type))
+				return false;
+
+			var action = new ActorAction(type, duration, following);
+
+			if (interruptsOthers)
+				actions.Clear();
+
+			actions.Add(action);
+
+			return true;
 		}
 
 		public override void SetColor(Color color)
@@ -397,24 +451,29 @@ namespace WarriorsSnuggery.Objects.Actors
 
 		public void PrepareAttack(Target target)
 		{
-			if (Weapon == null || !Weapon.ReloadDone || !IsAlive)
+			if (World.Game.Editor || !World.Map.Type.AllowWeapons)
 				return;
 
-			if (World.Game.Editor && IsPlayer || !World.Map.Type.AllowWeapons)
-				return;
-
-			if (CurrentAction.Type == ActionType.PREPARE_ATTACK)
-				return;
-
-			if (Effects.Any(e => e.Active && e.Effect.Type == Spells.EffectType.STUN))
-				return;
-
-			if (!SetAction(new ActorAction(ActionType.PREPARE_ATTACK, true, Weapon.Type.PreparationDelay)))
+			if (!canAttack())
 				return;
 
 			Angle = (Position - target.Position).FlatAngle;
 
 			Weapon.OnAttack(target);
+		}
+
+		bool canAttack()
+		{
+			if (Weapon == null || !Weapon.ReloadDone || !IsAlive)
+				return false;
+
+			if (!ActionPossible(ActionType.PREPARE_ATTACK) && !ActionPossible(ActionType.ATTACK))
+				return false;
+
+			if (Effects.Any(e => e.Active && e.Effect.Type == Spells.EffectType.STUN))
+				return false;
+
+			return true;
 		}
 
 		public bool AttackWith(Target target, Weapon weapon)
@@ -423,9 +482,6 @@ namespace WarriorsSnuggery.Objects.Actors
 				return false;
 
 			World.Add(weapon);
-
-			SetAction(new ActorAction(ActionType.ATTACK, false, Weapon.Type.ShootDuration));
-			QueueAction(new ActorAction(ActionType.END_ATTACK, false, Weapon.Type.CooldownDelay));
 
 			foreach (var part in PartManager.GetOrDefault<INoticeAttack>())
 				part.OnAttack(target.Position, weapon);

@@ -10,6 +10,10 @@ namespace WarriorsSnuggery.Objects.Actors.Parts
 	{
 		[Desc("Speed of the Actor.")]
 		public readonly int Speed;
+		[Desc("Time it takes to prepare for moving.")]
+		public readonly int PreparationDelay;
+		[Desc("Time it takes to cool down before being able to do something else.")]
+		public readonly int CooldownDelay;
 		[Desc("Acceleration of the Actor. If 0, Speed is used.")]
 		public readonly int Acceleration;
 		[Desc("Acceleration to use for the vertical axis.")]
@@ -215,17 +219,13 @@ namespace WarriorsSnuggery.Objects.Actors.Parts
 
 			sound?.SetPosition(self.Position);
 
-			if (self.CurrentAction.Type == ActionType.MOVE)
-				self.CurrentAction.ExtendAction(1);
-			else
-				self.SetAction(new ActorAction(ActionType.MOVE, true, 1));
+			// Sustain movement for at least one tick
+			self.AddAction(ActionType.MOVE, 1);
 		}
 
 		void denyMove()
 		{
 			Velocity = CPos.Zero;
-
-			self.CurrentAction = ActorAction.Default;
 
 			self.StopMove();
 		}

@@ -99,16 +99,20 @@ namespace WarriorsSnuggery.Objects.Actors.Parts
 			this.target = target;
 
 			if (Type.PreparationDelay != 0)
+			{
+				self.AddAction(ActionType.PREPARE_ATTACK, Type.PreparationDelay);
 				prep = Type.PreparationDelay;
-			else
-				attack();
+				return;
+			}
+			
+			attack();
 		}
 
 		public void Tick()
 		{
 			Reload--;
 
-			if (attackOrdered && prep-- <= 0)
+			if (attackOrdered && --prep <= 0)
 				attack();
 
 			if (beam != null)
@@ -124,8 +128,8 @@ namespace WarriorsSnuggery.Objects.Actors.Parts
 		{
 			attackOrdered = false;
 
-			if (Type.PreparationDelay != 0 && self.CurrentAction.Type != ActionType.PREPARE_ATTACK)
-				return;
+			if (Type.PreparationDelay != 0 && !self.DoesAction(ActionType.PREPARE_ATTACK))
+				return; // Preparation has been canceled
 
 			var weapon = WeaponCreator.Create(self.World, info.Type, target, self);
 			Target = weapon.TargetPosition;
@@ -138,6 +142,9 @@ namespace WarriorsSnuggery.Objects.Actors.Parts
 					reloadModifier *= effect.Effect.Value;
 
 				Reload = (int)(Type.Reload * reloadModifier);
+
+				var cooldownAction = new ActorAction(ActionType.END_ATTACK, Type.CooldownDelay);
+				self.AddAction(ActionType.ATTACK, Type.ShootDuration, cooldownAction);
 			}
 		}
 

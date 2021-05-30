@@ -7,7 +7,7 @@ namespace WarriorsSnuggery.Objects.Actors.Parts
 
 		public abstract int FacingFromAngle(float angle);
 
-		public abstract Graphics.BatchRenderable GetRenderable(ActorAction action, int facing);
+		public abstract Graphics.BatchRenderable GetRenderable(ActionType actions, int facing);
 
 		public abstract void Render();
 

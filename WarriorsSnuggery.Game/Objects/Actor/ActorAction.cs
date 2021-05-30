@@ -1,36 +1,32 @@
 ﻿namespace WarriorsSnuggery.Objects.Actors
 {
-	// TODO: Add PREPARE_MOVE and END_MOVE
 	public enum ActionType
 	{
-		IDLE,
-		MOVE,
-		PREPARE_ATTACK,
-		ATTACK,
-		END_ATTACK
+		IDLE = 0,
+		PREPARE_MOVE = 1,
+		MOVE = 2,
+		END_MOVE = 4,
+		PREPARE_ATTACK = 8,
+		ATTACK = 16,
+		END_ATTACK = 32
 	}
 
 	public class ActorAction
 	{
-		public static readonly ActorAction Default = new ActorAction(ActionType.IDLE, true, true);
+		public readonly ActorAction Following;
 
 		public readonly ActionType Type;
-		public readonly bool Skippable;
-		public readonly bool Infinite;
+
 		public int CurrentTick { get; private set; }
 
-		public bool ActionOver => CurrentTick <= 0;
+		public bool ActionOver => CurrentTick < 0;
 
-		public ActorAction(ActionType type, bool skippable, bool infinite = false)
+		public ActorAction(ActionType type, int duration, ActorAction following = null)
 		{
 			Type = type;
-			Skippable = skippable;
-			Infinite = infinite;
-		}
-
-		public ActorAction(ActionType type, bool skippable, int duration) : this(type, skippable)
-		{
 			CurrentTick = duration;
+
+			Following = following;
 		}
 
 		public void ExtendAction(int ticks)
@@ -38,9 +34,28 @@
 			CurrentTick += ticks;
 		}
 
-		public bool Tick()
+		public bool IsOverOrCanceled(ActionType actions, bool attackWhileMove)
 		{
-			return !Infinite && CurrentTick-- < 0;
+			CurrentTick--;
+
+			if (actions == ActionType.IDLE || actions == Type)
+				return ActionOver;
+
+			if (Type == ActionType.ATTACK || Type == ActionType.END_ATTACK)
+				return ActionOver;
+
+			if (!attackWhileMove && doesAction(actions, ActionType.ATTACK | ActionType.END_ATTACK))
+				return true;
+
+			if (doesAction(actions, ActionType.MOVE | ActionType.PREPARE_MOVE) && Type == ActionType.PREPARE_ATTACK)
+				return true;
+
+			return ActionOver;
+		}
+
+		bool doesAction(ActionType actions, ActionType type)
+		{
+			return (actions & type) != 0;
 		}
 	}
 }

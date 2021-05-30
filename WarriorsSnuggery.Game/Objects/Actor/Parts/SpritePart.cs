@@ -106,7 +106,7 @@ namespace WarriorsSnuggery.Objects.Actors.Parts
 			return facing;
 		}
 
-		public override BatchObject GetRenderable(ActorAction action, int facing)
+		public override BatchObject GetRenderable(ActionType actions, int facing)
 		{
 			if (info.Condition != null && !info.Condition.True(self))
 				return null;
@@ -116,7 +116,7 @@ namespace WarriorsSnuggery.Objects.Actors.Parts
 
 		public override void Render()
 		{
-			var renderable = GetRenderable(self.CurrentAction, FacingFromAngle(self.Angle));
+			var renderable = GetRenderable(self.Actions, FacingFromAngle(self.Angle));
 			if (renderable != null)
 			{
 				if (self.Height > 0)
