@@ -198,9 +198,7 @@ namespace WarriorsSnuggery.Objects.Actors
 			if (!canMove())
 				return;
 
-			var acceleration = Mobility.AccelerateSelf(angle);
-			foreach (var part in accelerationParts)
-				part.OnAccelerate(angle, acceleration);
+			Mobility.AccelerateSelf(angle);
 		}
 
 		public void Lift(int power)

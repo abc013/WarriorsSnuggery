@@ -46,6 +46,10 @@ namespace WarriorsSnuggery.Objects.Actors.Parts
 		public CPos Velocity;
 		bool wasMoving;
 
+		bool accelerationOrdered;
+		float angle;
+		int prep;
+
 		public bool CanFly => info.CanFly;
 
 		public MobilityPart(Actor self, MobilityPartInfo info) : base(self)
@@ -82,6 +86,9 @@ namespace WarriorsSnuggery.Objects.Actors.Parts
 
 		public void Tick()
 		{
+			if (accelerationOrdered && --prep <= 0)
+				accelerateSelf();
+
 			if (self.Height > 0 && !CanFly)
 				Force += info.Gravity;
 
@@ -230,12 +237,35 @@ namespace WarriorsSnuggery.Objects.Actors.Parts
 			self.StopMove();
 		}
 
-		public int AccelerateSelf(float angle)
+		public void AccelerateSelf(float angle)
 		{
 			if (!CanFly && self.Height != 0)
-				return 0;
+				return;
 
-			return Accelerate(angle, info.Acceleration);
+			accelerationOrdered = true;
+			this.angle = angle;
+
+			if (prep >= 0)
+				return;
+
+			if (!self.DoesAction(ActionType.MOVE) && info.PreparationDelay != 0)
+			{
+				prep = info.PreparationDelay;
+				self.AddAction(ActionType.PREPARE_MOVE, info.PreparationDelay);
+				return;
+			}
+
+			accelerateSelf();
+		}
+
+		void accelerateSelf()
+		{
+			accelerationOrdered = false;
+
+			if (!self.DoesAction(ActionType.MOVE) && info.PreparationDelay != 0 && !self.DoesAction(ActionType.PREPARE_MOVE))
+				return; // Preparation has been canceled
+
+			self.Push(angle, info.Acceleration);
 		}
 
 		public int Accelerate(float angle, int acceleration)
