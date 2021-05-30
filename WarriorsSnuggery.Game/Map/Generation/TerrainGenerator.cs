@@ -25,6 +25,9 @@ namespace WarriorsSnuggery.Maps.Generators
 		[Desc("Information about the actors to be spawned on that terrain.")]
 		public readonly ActorProbabilityInfo[] SpawnActors;
 
+		[Desc("Denies spawning of patrols on the specified terrain.")]
+		public readonly bool DenyPatrols = false;
+
 		[Desc("Border thickness.")]
 		public readonly int Border = 0;
 		[Desc("Terrain to use for borders.")]
@@ -74,15 +77,25 @@ namespace WarriorsSnuggery.Maps.Generators
 	{
 		readonly TerrainGeneratorInfo info;
 
+		readonly NoiseMap noise;
+
 		public TerrainGenerator(Random random, MapLoader loader, TerrainGeneratorInfo info) : base(random, loader)
 		{
 			this.info = info;
+
+			noise = GeneratorUtils.GetNoise(Loader, info.NoiseMapID);
 		}
 
 		public override void Generate()
 		{
-			var noise = GeneratorUtils.GetNoise(Loader, info.NoiseMapID);
+			markDirty();
+			drawDirty();
 
+			MapPrinter.PrintGeneratorMap(Bounds, noise, UsedCells, info.ID);
+		}
+
+		void markDirty()
+		{
 			for (int x = 0; x < Bounds.X; x++)
 			{
 				for (int y = 0; y < Bounds.Y; y++)
@@ -94,11 +107,80 @@ namespace WarriorsSnuggery.Maps.Generators
 					if (randomValue > limit)
 						continue;
 
-					if (!Loader.AcquireCell(new MPos(x, y), info.ID, denyPatrols: false))
+					if (Loader.AcquireCell(new MPos(x, y), info.ID, denyPatrols: info.DenyPatrols))
+						UsedCells[x, y] = true;
+				}
+			}
+		}
+
+		void drawDirty()
+		{
+			for (int x = 0; x < Bounds.X; x++)
+			{
+				for (int y = 0; y < Bounds.Y; y++)
+				{
+					if (!UsedCells[x, y])
 						continue;
 
-					UsedCells[x, y] = true;
+					var isBorder = false;
+					if (info.Border > 0)
+					{
+						for (int bx = x - info.Border; bx <= x + info.Border; bx++)
+						{
+							if (bx < 0 || bx >= Bounds.X)
+								continue;
 
+							for (int by = y - info.Border; by <= y + info.Border; by++)
+							{
+								if (bx == x && by == y)
+									continue;
+
+								if (by < 0 || by >= Bounds.Y)
+									continue;
+
+								if (UsedCells[bx, by])
+									continue;
+
+								if (Loader.CanAcquireCell(new MPos(bx, by), info.ID))
+									Loader.SetTerrain(bx, by, info.BorderTerrain[Random.Next(info.BorderTerrain.Length)]);
+							}
+						}
+					}
+					else if (info.Border < 0)
+					{
+						for (int bx = info.Border; bx <= -info.Border; bx++)
+						{
+							if (isBorder)
+								break;
+
+							for (int by = info.Border; by <= -info.Border; by++)
+							{
+								if (bx == 0 && by == 0)
+									continue;
+
+								var borderPos = new MPos(x + by, y + bx);
+
+								if (borderPos.X < 0 || borderPos.Y < 0)
+									continue;
+								if (borderPos.X >= Bounds.X || borderPos.Y >= Bounds.Y)
+									continue;
+
+								// Replace if there are not used cells nearby, thus inset the border.
+								if (!UsedCells[borderPos.X, borderPos.Y])
+								{
+									Loader.SetTerrain(x, y, info.BorderTerrain[Random.Next(info.BorderTerrain.Length)]);
+									isBorder = true;
+
+									break;
+								}
+							}
+						}
+					}
+
+					if (isBorder)
+						continue;
+
+					var value = noise[x, y];
 					var number = (int)Math.Floor(value * (info.Terrain.Length - 1));
 					Loader.SetTerrain(x, y, info.Terrain[number]);
 
@@ -113,35 +195,8 @@ namespace WarriorsSnuggery.Maps.Generators
 							}
 						}
 					}
-
-					if (info.Border > 0)
-					{
-						for (int bx = -info.Border; bx <= info.Border; bx++)
-						{
-							for (int by = -info.Border; by <= info.Border; by++)
-							{
-								if (bx == 0 && by == 0)
-									continue;
-
-								var borderPos = new MPos(x + by, y + bx);
-
-								if (borderPos.X < 0 || borderPos.Y < 0)
-									continue;
-								if (borderPos.X >= Bounds.X || borderPos.Y >= Bounds.Y)
-									continue;
-
-								if (UsedCells[borderPos.X, borderPos.Y])
-									continue;
-
-								if (Loader.CanAcquireCell(borderPos, info.ID))
-									Loader.SetTerrain(borderPos.X, borderPos.Y, info.BorderTerrain[Random.Next(info.BorderTerrain.Length)]);
-							}
-						}
-					}
 				}
 			}
-
-			MapPrinter.PrintGeneratorMap(Bounds, noise, UsedCells, info.ID);
 		}
 	}
 }
