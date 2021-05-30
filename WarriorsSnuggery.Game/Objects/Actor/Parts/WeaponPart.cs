@@ -98,6 +98,9 @@ namespace WarriorsSnuggery.Objects.Actors.Parts
 			attackOrdered = true;
 			this.target = target;
 
+			if (prep > 0)
+				return;
+
 			if (Type.PreparationDelay != 0)
 			{
 				self.AddAction(ActionType.PREPARE_ATTACK, Type.PreparationDelay);
