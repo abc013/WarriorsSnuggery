@@ -7,42 +7,34 @@ namespace WarriorsSnuggery
 {
 	public static class MasterRenderer
 	{
+		public const int PixelSize = 24;
+		public const float PixelMultiplier = 1f / PixelSize;
+
 		public static int RenderCalls;
 		public static int BatchCalls;
 		public static int Batches;
 
-		public static BatchRenderer BatchRenderer;
-
-		public const int PixelSize = 24;
-		public const float PixelMultiplier = 1f / PixelSize;
-
 		public static bool PauseSequences;
 		public static object GLLock = new object();
 
-		public static int TextureShader;
-		static readonly int[] locations = new int[4];
-
-		static readonly ShaderProgram[] shaders = new ShaderProgram[1];
-
 		public static PrimitiveType PrimitiveType = PrimitiveType.Triangles;
 
-		public static int GetLocation(int shader, string name)
+		public static bool UseDebugRenderer;
+
+		static readonly BatchRenderer renderer = new BatchRenderer();
+		static readonly BatchRenderer debugRenderer = new BatchRenderer();
+
+		static int frameBuffer;
+		static Image renderable;
+		static Texture frameTexture;
+
+		public static void InitRenderer()
 		{
-			var shadernum = 4 * (shader - 1);
-			int num = 0;
-			switch (name)
-			{
-				case "modelView":
-					num = 1;
-					break;
-				case "proximityColor":
-					num = 2;
-					break;
-				case "objectColor":
-					num = 3;
-					break;
-			}
-			return locations[num + shadernum];
+			renderer.SetTextures(SheetManager.Sheets, SheetManager.SheetsUsed);
+			debugRenderer.SetTextures(new[] { 0 });
+
+			WorldRenderer.Initialize();
+			UIRenderer.Initialize();
 		}
 
 		public static void ResetRenderer(Game game)
@@ -52,72 +44,33 @@ namespace WarriorsSnuggery
 			UIRenderer.Reset(game);
 		}
 
+		public static void AddToBatch(Vertex[] vertices)
+		{
+			if (UseDebugRenderer)
+				debugRenderer.Add(vertices);
+			else
+				renderer.Add(vertices);
+		}
+
+		public static void RenderBatch()
+		{
+			if (UseDebugRenderer)
+				debugRenderer.Render();
+			else
+				renderer.Render();
+		}
+
 		public static void Initialize()
 		{
 			var watch = Timer.Start();
 
-			initializeShaders();
 			initializeGL();
+
+			Shaders.Initialize();
 			ColorManager.Initialize();
 
 			watch.StopAndWrite("Configuring GL");
 		}
-
-		static void initializeShaders()
-		{
-			lock (GLLock)
-			{
-				TextureShader = createShader("Tex");
-
-				foreach (int shader in new[] { TextureShader })
-				{
-					var num = 4 * (shader - 1);
-					locations[num] = GL.GetUniformLocation(shader, "projection");
-					locations[num + 1] = GL.GetUniformLocation(shader, "modelView");
-					locations[num + 2] = GL.GetUniformLocation(shader, "proximityColor");
-					locations[num + 3] = GL.GetUniformLocation(shader, "objectColor");
-
-					GL.BindAttribLocation(shader, 0, "position");
-
-					Log.Debug($"SHADER{shader} locations: {string.Join(',', locations)}");
-				}
-
-				GL.BindAttribLocation(TextureShader, 1, "textureCoordinate");
-				GL.BindAttribLocation(TextureShader, 2, "color");
-
-				foreach (int shader in new[] { TextureShader })
-				{
-					GL.UseProgram(shader);
-					var tex1 = GL.GetUniformLocation(shader, "texture0");
-					GL.Uniform1(tex1, 0);
-					var tex2 = GL.GetUniformLocation(shader, "texture1");
-					GL.Uniform1(tex2, 1);
-					var tex3 = GL.GetUniformLocation(shader, "texture2");
-					GL.Uniform1(tex3, 2);
-					var tex4 = GL.GetUniformLocation(shader, "texture3");
-					GL.Uniform1(tex4, 3);
-				}
-
-				Program.CheckGraphicsError("InitShaders");
-			}
-		}
-
-		static int programCount;
-		static int createShader(string name)
-		{
-			var program = new ShaderProgram();
-			program.AddShader(ShaderType.VertexShader, FileExplorer.Shaders + name + ".vert");
-			program.AddShader(ShaderType.FragmentShader, FileExplorer.Shaders + name + ".frag");
-			program.Link();
-
-			shaders[programCount] = program;
-			programCount++;
-			return program.ID;
-		}
-
-		static int frameBuffer;
-		static Image renderable;
-		static Texture frameTexture;
 
 		static void initializeGL()
 		{
@@ -182,10 +135,10 @@ namespace WarriorsSnuggery
 
 					GL.BindFramebuffer(FramebufferTarget.Framebuffer, 0);
 
-					UpdateView();
+					UpdateViewport();
 
-					Matrix4 iden = Matrix4.CreateScale(1f, 1f, 1f);
-					Uniform(TextureShader, ref iden, Color.White);
+					var iden = Matrix4.CreateScale(1f);
+					Shaders.Uniform(Shaders.TextureShader, ref iden, Color.White);
 
 					renderable.Bind();
 					renderable.Render();
@@ -214,7 +167,7 @@ namespace WarriorsSnuggery
 			}
 		}
 
-		public static void UpdateView()
+		public static void UpdateViewport()
 		{
 			lock (GLLock)
 			{
@@ -239,25 +192,17 @@ namespace WarriorsSnuggery
 			}
 		}
 
-		public static void Uniform(int shader, ref Matrix4 projection, Color ambient)
-		{
-			lock (GLLock)
-			{
-				GL.UseProgram(shader);
-				GL.UniformMatrix4(GetLocation(shader, "projection"), false, ref projection);
-				GL.Uniform4(GetLocation(shader, "proximityColor"), ambient.ToColor4());
-			}
-		}
-
 		public static void Dispose()
 		{
 			lock (GLLock)
 			{
-				foreach (var shader in shaders)
-					shader.Dispose();
-
 				GL.DeleteFramebuffer(frameBuffer);
 			}
+
+			renderer.Dispose();
+			debugRenderer.Dispose();
+
+			Shaders.Dispose();
 
 			TextureManager.Dispose(frameTexture.SheetID);
 			renderable.Dispose();

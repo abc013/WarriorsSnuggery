@@ -149,7 +149,7 @@ namespace WarriorsSnuggery
 
 			ColorManager.WindowRescaled();
 
-			MasterRenderer.UpdateView();
+			MasterRenderer.UpdateViewport();
 		}
 
 		public static void SetVSync()
@@ -191,6 +191,7 @@ namespace WarriorsSnuggery
 			timer.StopAndWrite("Loading Rules");
 
 			SheetManager.FinishSheets();
+			MasterRenderer.InitRenderer();
 
 			GameController.CreateFirst();
 
@@ -281,8 +282,6 @@ namespace WarriorsSnuggery
 
 			UISpriteManager.Dispose();
 
-			WorldRenderer.BatchRenderer.Dispose();
-			UIRenderer.BatchRenderer.Dispose();
 			MasterRenderer.Dispose();
 
 			SheetManager.DeleteSheets();

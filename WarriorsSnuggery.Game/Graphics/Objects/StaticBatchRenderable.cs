@@ -33,7 +33,7 @@ namespace WarriorsSnuggery.Graphics
 			if (!Visible)
 				return;
 
-			MasterRenderer.BatchRenderer.Add(vertices);
+			MasterRenderer.AddToBatch(vertices);
 		}
 	}
 }

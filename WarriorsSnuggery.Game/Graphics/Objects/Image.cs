@@ -6,7 +6,7 @@ namespace WarriorsSnuggery.Graphics
 	{
 		readonly Texture texture;
 
-		public Image(Vertex[] vertices, Texture texture) : base(MasterRenderer.TextureShader, vertices.Length)
+		public Image(Vertex[] vertices, Texture texture) : base(Shaders.TextureShader, vertices.Length)
 		{
 			createBuffer(vertices);
 			this.texture = texture;

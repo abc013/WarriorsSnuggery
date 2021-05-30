@@ -13,26 +13,20 @@ namespace WarriorsSnuggery
 
 		static Matrix4 matrix;
 
-		public static readonly BatchRenderer BatchRenderer = new BatchRenderer();
-		public static readonly BatchRenderer DebugRenderer = new BatchRenderer();
-
 		static readonly List<IRenderable> beforeRender = new List<IRenderable>();
 		static readonly List<IRenderable> afterRender = new List<IRenderable>();
 
 		static Tooltip tooltip;
 
 		public static Cursor Cursor;
+
+		public static void Initialize()
+		{
+			Cursor = new Cursor();
+		}
+
 		public static void Reset(Game game)
 		{
-			// This means first reset
-			if (Cursor == null)
-			{
-				Cursor = new Cursor();
-
-				BatchRenderer.SetTextures(SheetManager.Sheets, SheetManager.SheetsUsed);
-				DebugRenderer.SetTextures(new[] { 0 });
-			}
-
 			Cursor.Current = CursorType.DEFAULT;
 			UIRenderer.game = game;
 
@@ -86,9 +80,8 @@ namespace WarriorsSnuggery
 
 		public static void Render()
 		{
-			MasterRenderer.Uniform(MasterRenderer.TextureShader, ref matrix, Color.White);
+			Shaders.Uniform(Shaders.TextureShader, ref matrix, Color.White);
 
-			BatchRenderer.SetCurrent();
 			foreach (var r in beforeRender)
 				r.Render();
 
@@ -112,19 +105,18 @@ namespace WarriorsSnuggery
 
 			tooltip?.Render();
 
-			BatchRenderer.Render();
-			MasterRenderer.BatchRenderer = null;
+			MasterRenderer.RenderBatch();
 
 			if (Settings.DeveloperMode)
 			{
-				DebugRenderer.SetCurrent();
+				MasterRenderer.UseDebugRenderer = true;
 				MasterRenderer.PrimitiveType = PrimitiveType.Lines;
 
 				game.ScreenControl.DebugRender();
 
-				DebugRenderer.Render();
+				MasterRenderer.RenderBatch();
 				MasterRenderer.PrimitiveType = PrimitiveType.Triangles;
-				MasterRenderer.BatchRenderer = null;
+				MasterRenderer.UseDebugRenderer = false;
 			}
 		}
 	}

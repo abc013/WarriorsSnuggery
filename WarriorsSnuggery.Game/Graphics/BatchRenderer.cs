@@ -68,11 +68,6 @@ namespace WarriorsSnuggery.Graphics
 			offset = 0;
 		}
 
-		public void SetCurrent()
-		{
-			MasterRenderer.BatchRenderer = this;
-		}
-
 		public void Render()
 		{
 			if (!added)
@@ -82,11 +77,11 @@ namespace WarriorsSnuggery.Graphics
 
 			lock (MasterRenderer.GLLock)
 			{
-				GL.UseProgram(MasterRenderer.TextureShader);
+				GL.UseProgram(Shaders.TextureShader);
 
 				var mat = Matrix4.Identity;
-				GL.UniformMatrix4(MasterRenderer.GetLocation(MasterRenderer.TextureShader, "modelView"), false, ref mat);
-				GL.Uniform4(MasterRenderer.GetLocation(MasterRenderer.TextureShader, "objectColor"), Color.White);
+				GL.UniformMatrix4(Shaders.GetLocation(Shaders.TextureShader, "modelView"), false, ref mat);
+				GL.Uniform4(Shaders.GetLocation(Shaders.TextureShader, "objectColor"), Color.White);
 				Program.CheckGraphicsError("BatchRenderer_Uniform");
 				for (int i = 0; i < textureIDs.Length; i++)
 				{
@@ -96,6 +91,7 @@ namespace WarriorsSnuggery.Graphics
 				}
 				GL.ActiveTexture(TextureUnit.Texture0);
 			}
+
 			foreach (var batch in batches)
 			{
 				batch.Bind();

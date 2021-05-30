@@ -151,7 +151,7 @@ namespace WarriorsSnuggery
 				World.LocalPlayer.Health.RelativeHP = Save.Health;
 
 			WorldRenderer.CheckVisibilityAll();
-			MasterRenderer.UpdateView();
+			MasterRenderer.UpdateViewport();
 
 			if (World.Map.Type.IsSave)
 				script?.LoadState(Save.ScriptState);

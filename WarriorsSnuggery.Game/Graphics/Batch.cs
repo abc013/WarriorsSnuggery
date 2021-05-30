@@ -104,6 +104,7 @@ namespace WarriorsSnuggery.Graphics
 			{
 				GL.DrawArrays(MasterRenderer.PrimitiveType, 0, CurrentSize);
 			}
+
 			MasterRenderer.Batches++;
 		}
 
@@ -119,6 +120,7 @@ namespace WarriorsSnuggery.Graphics
 				GL.DeleteVertexArray(vertexarrayID);
 				GL.DeleteBuffer(bufferID);
 			}
+
 			GC.SuppressFinalize(this);
 		}
 	}

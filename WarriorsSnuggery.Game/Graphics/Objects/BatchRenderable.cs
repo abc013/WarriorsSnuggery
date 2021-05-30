@@ -110,7 +110,7 @@ namespace WarriorsSnuggery.Graphics
 				MatrixChanged = false;
 			}
 
-			MasterRenderer.BatchRenderer.Add(calculated);
+			MasterRenderer.AddToBatch(calculated);
 		}
 	}
 }

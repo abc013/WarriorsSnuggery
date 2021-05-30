@@ -13,27 +13,18 @@ namespace WarriorsSnuggery
 		static Game game;
 		static World world;
 
-		static bool first = true;
-
-		public static readonly BatchRenderer BatchRenderer = new BatchRenderer();
-		public static readonly BatchRenderer DebugRenderer = new BatchRenderer();
-
 		public static Color Ambient = Color.White;
 
 		static readonly List<IRenderable> beforeRender = new List<IRenderable>();
 		static readonly List<IRenderable> afterRender = new List<IRenderable>();
 
+		public static void Initialize()
+		{
+			Shroud.Load();
+		}
+
 		public static void Reset(Game @new)
 		{
-			if (first)
-			{
-				Shroud.Load();
-
-				BatchRenderer.SetTextures(SheetManager.Sheets, SheetManager.SheetsUsed);
-				DebugRenderer.SetTextures(new[] { 0 });
-
-				first = false;
-			}
 			game = @new;
 			world = game.World;
 
@@ -47,18 +38,18 @@ namespace WarriorsSnuggery
 		{
 			game.LocalRender++;
 
-			BatchRenderer.SetCurrent();
-			foreach (var o in beforeRender)
-				o.Render();
-			BatchRenderer.Render();
+			if (beforeRender.Count != 0)
+			{
+				foreach (var o in beforeRender)
+					o.Render();
 
-			MasterRenderer.Uniform(MasterRenderer.TextureShader, ref Camera.Matrix, Ambient);
+				MasterRenderer.RenderBatch();
+			}
+
+			Shaders.Uniform(Shaders.TextureShader, ref Camera.Matrix, Ambient);
 
 			world.TerrainLayer.Render();
-			BatchRenderer.Render();
-
 			world.SmudgeLayer.Render();
-			BatchRenderer.Render();
 
 			var pos = world.Game.Editor ? MouseInput.GamePosition : world.PlayerAlive ? world.LocalPlayer.Position : CPos.Zero;
 			foreach (var o in prepareRenderList())
@@ -78,8 +69,8 @@ namespace WarriorsSnuggery
 				else
 					o.Render();
 			}
-			BatchRenderer.Render();
 
+			MasterRenderer.RenderBatch();
 
 			if (Settings.EnableWeatherEffects)
 			{
@@ -90,16 +81,20 @@ namespace WarriorsSnuggery
 					if (controller.UsesLines)
 						MasterRenderer.PrimitiveType = PrimitiveType.Lines;
 
-					BatchRenderer.Render();
+					MasterRenderer.RenderBatch();
 
 					if (controller.UsesLines)
 						MasterRenderer.PrimitiveType = PrimitiveType.Triangles;
 				}
 			}
 
-			foreach (var o in afterRender)
-				o.Render();
-			BatchRenderer.Render();
+			if (afterRender.Count != 0)
+			{
+				foreach (var o in afterRender)
+					o.Render();
+
+				MasterRenderer.RenderBatch();
+			}
 
 			if (!world.ShroudLayer.RevealAll)
 			{
@@ -118,21 +113,21 @@ namespace WarriorsSnuggery
 						}
 					}
 				}
-			}
-			BatchRenderer.Render();
 
-			MasterRenderer.BatchRenderer = null;
+				MasterRenderer.RenderBatch();
+			}
 
 			if (Settings.DeveloperMode)
 			{
-				DebugRenderer.SetCurrent();
+				MasterRenderer.UseDebugRenderer = true;
+
 				if (Settings.CurrentMap >= 0 && world.Map.NoiseMaps.ContainsKey(Settings.CurrentMap))
 					world.Map.NoiseMaps[Settings.CurrentMap].Render();
 
 				foreach (var point in world.Map.Waypoints)
 					ColorManager.DrawDot(point.Position.ToCPos(), Color.Red);
 
-				DebugRenderer.Render();
+				MasterRenderer.RenderBatch();
 				MasterRenderer.PrimitiveType = PrimitiveType.Lines;
 				var bounds = VisibilitySolver.GetBounds(out var position);
 				var sectorPos = new MPos(position.X / PhysicsLayer.SectorSize, position.Y / PhysicsLayer.SectorSize);
@@ -154,9 +149,9 @@ namespace WarriorsSnuggery
 				foreach (var wall in world.WallLayer.VisibleWalls)
 					wall.Physics.RenderDebug();
 
-				DebugRenderer.Render();
-				MasterRenderer.BatchRenderer = null;
+				MasterRenderer.RenderBatch();
 				MasterRenderer.PrimitiveType = PrimitiveType.Triangles;
+				MasterRenderer.UseDebugRenderer = false;
 			}
 
 			Ambient = world.Map.Type.Ambient;
