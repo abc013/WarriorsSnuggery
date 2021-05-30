@@ -52,4 +52,13 @@ namespace WarriorsSnuggery.Objects.Actors
 		void OnLoad(List<TextNode> nodes);
 		PartSaver OnSave();
 	}
+
+	public interface IPartRenderable : IRenderable
+	{
+		int FacingFromAngle(float angle);
+
+		Graphics.BatchRenderable GetRenderable(ActionType actions, int facing);
+
+		void SetColor(Color color);
+	}
 }

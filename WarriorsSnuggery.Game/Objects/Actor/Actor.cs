@@ -433,8 +433,8 @@ namespace WarriorsSnuggery.Objects.Actors
 
 		public override void SetColor(Color color)
 		{
-			foreach (var part in Parts.Where(p => p is RenderablePart))
-				((RenderablePart)part).SetColor(color);
+			foreach (var part in PartManager.GetOrDefault<IPartRenderable>())
+				part.SetColor(color);
 		}
 
 		public void PrepareAttack(Actor target)

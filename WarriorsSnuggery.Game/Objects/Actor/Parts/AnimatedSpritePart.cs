@@ -53,7 +53,7 @@ namespace WarriorsSnuggery.Objects.Actors.Parts
 		}
 	}
 
-	public class AnimatedSpritePart : RenderablePart, ITick, ITickInEditor, INoticeMove, INoticeAttack
+	public class AnimatedSpritePart : ActorPart, IPartRenderable, ITick, ITickInEditor, INoticeMove, INoticeAttack
 	{
 		readonly AnimatedSpritePartInfo info;
 
@@ -92,7 +92,7 @@ namespace WarriorsSnuggery.Objects.Actors.Parts
 			self.ZOffset = info.Offset.Z;
 		}
 
-		public override int FacingFromAngle(float angle)
+		public int FacingFromAngle(float angle)
 		{
 			var part = Angle.MaxRange / info.Facings;
 
@@ -103,7 +103,7 @@ namespace WarriorsSnuggery.Objects.Actors.Parts
 			return facing;
 		}
 
-		public override BatchSequence GetRenderable(ActionType actions, int facing)
+		public BatchRenderable GetRenderable(ActionType actions, int facing)
 		{
 			if (info.Condition != null && !info.Condition.True(self))
 				return null;
@@ -129,7 +129,7 @@ namespace WarriorsSnuggery.Objects.Actors.Parts
 				currentFacing = FacingFromAngle(angle);
 			}
 			var last = renderable;
-			renderable = GetRenderable(self.Actions, currentFacing);
+			renderable = (BatchSequence)GetRenderable(self.Actions, currentFacing);
 
 			if (last == null)
 				renderable?.Reset();
@@ -137,7 +137,7 @@ namespace WarriorsSnuggery.Objects.Actors.Parts
 			renderable?.Tick();
 		}
 
-		public override void Render()
+		public void Render()
 		{
 			if (renderable == null)
 				return;
@@ -154,7 +154,7 @@ namespace WarriorsSnuggery.Objects.Actors.Parts
 			renderable.PushToBatchRenderer();
 		}
 
-		public override void SetColor(Color color)
+		public void SetColor(Color color)
 		{
 			cachedColor = color * (info.Color + variation);
 		}
