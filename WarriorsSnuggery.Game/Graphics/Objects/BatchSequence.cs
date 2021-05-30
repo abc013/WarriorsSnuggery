@@ -47,7 +47,7 @@
 			curObj = 0;
 		}
 
-		public override void PushToBatchRenderer()
+		public override void Render()
 		{
 			if (!Visible)
 				return;
@@ -58,7 +58,7 @@
 			renderable.SetScale(Scale);
 			renderable.SetRotation(Rotation);
 			renderable.SetColor(Color);
-			renderable.PushToBatchRenderer();
+			renderable.Render();
 		}
 	}
 }

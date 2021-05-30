@@ -59,7 +59,7 @@ namespace WarriorsSnuggery.Graphics
 			line.SetPosition(start);
 			line.SetColor(color);
 
-			line.PushToBatchRenderer();
+			line.Render();
 		}
 
 		public static void DrawCircle(CPos center, float radius, Color color)
@@ -68,13 +68,13 @@ namespace WarriorsSnuggery.Graphics
 			circle.SetPosition(center);
 			circle.SetColor(color);
 
-			circle.PushToBatchRenderer();
+			circle.Render();
 		}
 
 		public static void DrawFullscreenRect(Color color)
 		{
 			fullscreen_rect.SetColor(color);
-			fullscreen_rect.PushToBatchRenderer();
+			fullscreen_rect.Render();
 		}
 
 		public static void DrawRect(CPos bottomleft, CPos topright, Color color)
@@ -82,7 +82,7 @@ namespace WarriorsSnuggery.Graphics
 			filled_rect.SetScale(new CPos(Math.Abs(bottomleft.X - topright.X), Math.Abs(bottomleft.Y - topright.Y), 0).ToVector());
 			filled_rect.SetPosition(new CPos((bottomleft.X + topright.X) / 2, (bottomleft.Y + topright.Y) / 2, 0));
 			filled_rect.SetColor(color);
-			filled_rect.PushToBatchRenderer();
+			filled_rect.Render();
 		}
 
 		public static void DrawQuad(CPos position, int radius, Color color)
@@ -90,7 +90,7 @@ namespace WarriorsSnuggery.Graphics
 			filled_rect.SetScale(radius / 1024f);
 			filled_rect.SetPosition(position);
 			filled_rect.SetColor(color);
-			filled_rect.PushToBatchRenderer();
+			filled_rect.Render();
 		}
 
 		public static void DrawDot(CPos position, Color color)

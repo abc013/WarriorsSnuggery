@@ -62,7 +62,7 @@ namespace WarriorsSnuggery.UI.Objects
 
 		public override void Render()
 		{
-			Renderable.PushToBatchRenderer();
+			Renderable.Render();
 		}
 
 		public override void Tick()

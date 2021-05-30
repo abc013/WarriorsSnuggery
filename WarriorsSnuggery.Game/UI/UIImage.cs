@@ -53,7 +53,7 @@ namespace WarriorsSnuggery.UI
 
 		public override void Render()
 		{
-			@object.PushToBatchRenderer();
+			@object.Render();
 		}
 	}
 }

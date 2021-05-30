@@ -76,7 +76,7 @@ namespace WarriorsSnuggery.Objects
 				}
 			}
 			renderable.PushToBatchRenderer();
-			overlay?.PushToBatchRenderer();
+			overlay?.Render();
 		}
 
 		public bool CheckVisibility()

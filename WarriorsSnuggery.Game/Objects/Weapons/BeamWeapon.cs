@@ -122,7 +122,7 @@ namespace WarriorsSnuggery.Objects.Weapons
 
 				renderable.SetRotation(new VAngle(0, 0, 270 - angle));
 				renderable.SetPosition(originGraphicPosition + pos);
-				renderable.PushToBatchRenderer();
+				renderable.Render();
 
 				if (curFrame-- <= 0)
 					curFrame = renderables.Length - 1;

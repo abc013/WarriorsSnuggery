@@ -89,13 +89,13 @@ namespace WarriorsSnuggery.UI.Objects
 				var heart = hearts[i];
 
 				heart.SetColor(i < game.Stats.Lifes ? Color.White : Color.Black);
-				heart.PushToBatchRenderer();
+				heart.Render();
 
 				if (i == lifes && tick-- > 0)
 				{
 					heart.SetColor(new Color(1f, 1f, 1f, tick / 140f));
 					heart.SetScale((140 - tick)/14f);
-					heart.PushToBatchRenderer();
+					heart.Render();
 					heart.SetScale(1f);
 				}
 			}

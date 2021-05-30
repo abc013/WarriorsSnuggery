@@ -57,7 +57,7 @@ namespace WarriorsSnuggery.UI.Objects
 			base.Render();
 
 			if (targetedEnemy != null)
-				pointer.PushToBatchRenderer();
+				pointer.Render();
 		}
 	}
 }

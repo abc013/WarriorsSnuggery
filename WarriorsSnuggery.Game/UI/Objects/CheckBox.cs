@@ -52,7 +52,7 @@ namespace WarriorsSnuggery.UI.Objects
 				type.Click.SetPosition(Position);
 				type.Click.SetScale(Scale);
 				type.Click.SetRotation(Rotation);
-				type.Click.PushToBatchRenderer();
+				type.Click.Render();
 			}
 			else
 			{
@@ -61,14 +61,14 @@ namespace WarriorsSnuggery.UI.Objects
 					type.Default.SetPosition(Position);
 					type.Default.SetScale(Scale);
 					type.Default.SetRotation(Rotation);
-					type.Default.PushToBatchRenderer();
+					type.Default.Render();
 				}
 				else
 				{
 					type.Checked.SetPosition(Position);
 					type.Checked.SetScale(Scale);
 					type.Checked.SetRotation(Rotation);
-					type.Checked.PushToBatchRenderer();
+					type.Checked.Render();
 				}
 			}
 		}

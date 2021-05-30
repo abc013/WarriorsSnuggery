@@ -56,11 +56,11 @@ namespace WarriorsSnuggery.Graphics
 			{
 				charRenderable.SetColor(Color.Black);
 				charRenderable.SetPosition(position + shadowOffset);
-				charRenderable.PushToBatchRenderer();
+				charRenderable.Render();
 				charRenderable.SetPosition(position - shadowOffset);
 				charRenderable.SetColor(color);
 			}
-			charRenderable.PushToBatchRenderer();
+			charRenderable.Render();
 		}
 	}
 }

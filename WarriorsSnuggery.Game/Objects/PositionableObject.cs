@@ -106,7 +106,7 @@ namespace WarriorsSnuggery.Objects
 
 		public virtual void Render()
 		{
-			Renderable?.PushToBatchRenderer();
+			Renderable?.Render();
 		}
 
 		public virtual void SetColor(Color color)
@@ -121,7 +121,7 @@ namespace WarriorsSnuggery.Objects
 
 			Renderable.SetPosition(GraphicPositionWithoutHeight);
 			Renderable.SetColor(Color.Shadow);
-			Renderable.PushToBatchRenderer();
+			Renderable.Render();
 
 			Renderable.SetColor(Color.White);
 			Renderable.SetPosition(GraphicPosition);

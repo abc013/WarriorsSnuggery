@@ -79,11 +79,11 @@ namespace WarriorsSnuggery.UI.Objects
 
 		public override void Render()
 		{
-			border.PushToBatchRenderer();
-			background.PushToBatchRenderer();
+			border.Render();
+			background.Render();
 
 			if (HighlightVisible && Highlight != null)
-				Highlight.PushToBatchRenderer();
+				Highlight.Render();
 		}
 	}
 }

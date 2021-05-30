@@ -123,12 +123,12 @@ namespace WarriorsSnuggery.Objects.Actors.Parts
 				{
 					renderable.SetPosition(self.GraphicPositionWithoutHeight + info.Offset);
 					renderable.SetColor(Color.Shadow);
-					renderable.PushToBatchRenderer();
+					renderable.Render();
 				}
 
 				renderable.SetPosition(self.GraphicPosition + info.Offset);
 				renderable.SetColor(cachedColor);
-				renderable.PushToBatchRenderer();
+				renderable.Render();
 			}
 		}
 

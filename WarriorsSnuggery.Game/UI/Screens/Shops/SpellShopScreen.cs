@@ -152,7 +152,7 @@ namespace WarriorsSnuggery.UI.Screens
 			base.Render();
 
 			image.SetColor(available ? Color.White : Color.Black);
-			image.PushToBatchRenderer();
+			image.Render();
 		}
 
 		public void CheckAvailability()
@@ -275,7 +275,7 @@ namespace WarriorsSnuggery.UI.Screens
 
 				renderable.SetRotation(new VAngle(0, 0, -angle) + new VAngle(0, 0, 270));
 				renderable.SetPosition(originPos + pos);
-				renderable.PushToBatchRenderer();
+				renderable.Render();
 
 				curFrame--;
 				if (curFrame < 0)

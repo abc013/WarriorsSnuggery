@@ -102,7 +102,7 @@ namespace WarriorsSnuggery.Objects
 
 		public override void Render()
 		{
-			renderable.PushToBatchRenderer();
+			renderable.Render();
 		}
 
 		public override void SetColor(Color color)

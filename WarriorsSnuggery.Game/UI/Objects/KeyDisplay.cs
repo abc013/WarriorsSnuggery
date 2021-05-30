@@ -70,7 +70,7 @@ namespace WarriorsSnuggery.UI.Objects
 		{
 			base.Render();
 
-			key.PushToBatchRenderer();
+			key.Render();
 		}
 	}
 }

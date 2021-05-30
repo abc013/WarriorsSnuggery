@@ -74,7 +74,7 @@ namespace WarriorsSnuggery.UI.Objects
 		{
 			base.Render();
 
-			money.PushToBatchRenderer();
+			money.Render();
 			moneyText.Render();
 		}
 	}

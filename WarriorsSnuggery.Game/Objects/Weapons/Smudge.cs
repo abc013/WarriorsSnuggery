@@ -47,7 +47,7 @@ namespace WarriorsSnuggery.Objects.Weapons
 			if (Dissolved || !Visible)
 				return;
 
-			renderable.PushToBatchRenderer();
+			renderable.Render();
 		}
 
 		public bool CheckVisibility()

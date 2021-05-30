@@ -36,19 +36,19 @@ namespace WarriorsSnuggery
 			{
 				case CursorType.DEFAULT:
 					@default.SetPosition(MouseInput.WindowPosition + new CPos(240, 240, 0));
-					@default.PushToBatchRenderer();
+					@default.Render();
 					break;
 				case CursorType.SELECT:
 					select.SetPosition(MouseInput.WindowPosition);
-					select.PushToBatchRenderer();
+					select.Render();
 					break;
 				case CursorType.MONEY:
 					money.SetPosition(MouseInput.WindowPosition + new CPos(240, 240, 0));
-					money.PushToBatchRenderer();
+					money.Render();
 					break;
 				case CursorType.ATTACK:
 					attack.SetPosition(MouseInput.WindowPosition);
-					attack.PushToBatchRenderer();
+					attack.Render();
 					break;
 				default:
 					break;

@@ -81,7 +81,7 @@ namespace WarriorsSnuggery.Graphics
 
 		public virtual void Tick() { }
 
-		public virtual void PushToBatchRenderer()
+		public virtual void Render()
 		{
 			if (!Visible)
 				return;

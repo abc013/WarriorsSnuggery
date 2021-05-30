@@ -64,7 +64,7 @@ namespace WarriorsSnuggery.Objects
 			shroudRenderable.SetPosition(graphicPosition);
 			shroudRenderable.SetColor(Covered ? Color.White : new Color(1f, 1f, 1f, alpha));
 
-			shroudRenderable.PushToBatchRenderer();
+			shroudRenderable.Render();
 		}
 	}
 }
