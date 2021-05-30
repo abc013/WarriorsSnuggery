@@ -131,7 +131,11 @@ namespace WarriorsSnuggery.Objects.Actors.Parts
 					sound?.Play(self.Position, true, false);
 			}
 			else if (wasMoving)
+			{
 				sound?.Stop();
+
+				self.AddAction(ActionType.END_MOVE, info.CooldownDelay);
+			}
 		}
 
 		void moveTick()

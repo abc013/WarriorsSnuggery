@@ -354,7 +354,7 @@ namespace WarriorsSnuggery.Objects.Actors
 					{
 						toRemove.Add(action);
 
-						if (action.ActionOver && action.Following != null)
+						if (action.ActionOver && action.Following != null && action.Following.CurrentTick != 0)
 						{
 							toAdd.Add(action.Following);
 
