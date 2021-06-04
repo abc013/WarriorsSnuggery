@@ -9,19 +9,7 @@ namespace WarriorsSnuggery.UI.Objects
 	{
 		readonly Game game;
 
-		readonly BatchObject selector;
 		readonly int spellCount;
-
-		public override CPos Position
-		{
-			get => base.Position;
-			set
-			{
-				base.Position = value;
-
-				selector.SetPosition(Container[currentSpell].Position - new CPos(712, 0, 0));
-			}
-		}
 
 		public int CurrentSpell
 		{
@@ -35,18 +23,17 @@ namespace WarriorsSnuggery.UI.Objects
 				if (currentSpell < 0)
 					currentSpell = spellCount - 1;
 
-				selector.SetPosition(Container[currentSpell].Position - new CPos(712, 0, 0));
+				SelectedPos = (currentSpell % Size.X, currentSpell / Size.X);
 			}
 		}
 		int currentSpell;
 
 		public SpellList(Game game, MPos bounds, MPos itemSize, string typeName) : this(game, bounds, itemSize, PanelManager.Get(typeName)) { }
 
-		public SpellList(Game game, MPos bounds, MPos itemSize, PanelType type) : base(bounds, itemSize, type)
+		public SpellList(Game game, MPos bounds, MPos itemSize, PanelType type) : base(bounds, itemSize, type, false)
 		{
 			this.game = game;
 
-			selector = new BatchObject(UISpriteManager.Get("UI_selector1")[0]);
 			spellCount = SpellTreeLoader.SpellTree.Count;
 
 			addSpells();
@@ -56,23 +43,13 @@ namespace WarriorsSnuggery.UI.Objects
 		{
 			int index = 0;
 			foreach (var spell in SpellTreeLoader.SpellTree)
-			{
-				var item = new SpellListItem(game, ItemSize, spell, game.SpellManager.spellCasters[index++]);
-				Add(item);
-			}
+				Add(new SpellListItem(game, ItemSize, spell, game.SpellManager.spellCasters[index++]));
 		}
 
 		public void Update()
 		{
 			foreach (var content in Container)
 				((SpellListItem)content).Update();
-		}
-
-		public override void Render()
-		{
-			base.Render();
-
-			selector.Render();
 		}
 
 		public override void Tick()

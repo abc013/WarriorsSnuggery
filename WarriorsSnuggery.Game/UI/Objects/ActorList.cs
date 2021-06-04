@@ -12,20 +12,7 @@ namespace WarriorsSnuggery.UI.Objects
 
 		readonly Game game;
 
-		readonly BatchObject selector;
-
 		readonly List<ActorType> actorTypes = new List<ActorType>();
-
-		public override CPos Position
-		{
-			get => base.Position;
-			set
-			{
-				base.Position = value;
-
-				selector.SetPosition(Container[currentActor].Position + new CPos(712, 0, 0));
-			}
-		}
 
 		public int CurrentActor
 		{
@@ -39,18 +26,16 @@ namespace WarriorsSnuggery.UI.Objects
 				if (currentActor < 0)
 					currentActor = actorTypes.Count - 1;
 
-				selector.SetPosition(Container[currentActor].Position + new CPos(712, 0, 0));
+				SelectedPos = (currentActor % Size.X, currentActor / Size.X);
 			}
 		}
 		int currentActor;
 
 		public ActorList(Game game, MPos bounds, MPos itemSize, string typeName) : this(game, bounds, itemSize, PanelManager.Get(typeName)) { }
 
-		public ActorList(Game game, MPos bounds, MPos itemSize, PanelType type) : base(bounds, itemSize, type)
+		public ActorList(Game game, MPos bounds, MPos itemSize, PanelType type) : base(bounds, itemSize, type, false)
 		{
 			this.game = game;
-
-			selector = new BatchObject(UISpriteManager.Get("UI_selector2")[0]);
 
 			addActors();
 		}
@@ -80,13 +65,6 @@ namespace WarriorsSnuggery.UI.Objects
 		{
 			for (int i = 0; i < actorTypes.Count; i++)
 				Container[i].SetColor(game.Stats.ActorAvailable(actorTypes[i].Playable) ? Color.White : disabled);
-		}
-
-		public override void Render()
-		{
-			base.Render();
-
-			selector.Render();
 		}
 
 		public override void Tick()

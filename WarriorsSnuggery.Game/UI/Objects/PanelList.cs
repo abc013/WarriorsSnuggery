@@ -19,24 +19,28 @@ namespace WarriorsSnuggery.UI.Objects
 		}
 
 		public readonly List<PanelListItem> Container = new List<PanelListItem>();
-		public readonly MPos Size;
 
+		public readonly MPos Size;
 		protected readonly MPos ItemSize;
 
-		(int x, int y) highlighted = (-1, -1);
-		public PanelListItem Highlighted => getItem(highlighted.x, highlighted.y);
+		protected (int x, int y) HighlightedPos = (-1, -1);
+		public PanelListItem Highlighted => getItem(HighlightedPos.x, HighlightedPos.y);
 
-		(int x, int y) selected = (-1, -1);
-		public PanelListItem Selected => getItem(selected.x, selected.y);
+		protected (int x, int y) SelectedPos = (-1, -1);
+		public PanelListItem Selected => getItem(SelectedPos.x, SelectedPos.y);
 
-		int scrolled;
+		readonly bool autoHighlight;
 
-		public PanelList(MPos size, MPos itemSize, string type) : this(size, itemSize, PanelManager.Get(type)) { }
+		int currentScroll;
 
-		public PanelList(MPos size, MPos itemSize, PanelType type) : base(size, type, type.Background2 != null ? new BatchObject(Mesh.UIPanel(type.Background2, itemSize)) : null)
+		public PanelList(MPos size, MPos itemSize, string type, bool autoHighlight = true) : this(size, itemSize, PanelManager.Get(type), autoHighlight) { }
+
+		public PanelList(MPos size, MPos itemSize, PanelType type, bool autoHighlight = true) : base(size, type, type.Background2 != null ? new BatchObject(Mesh.UIPanel(type.Background2, itemSize)) : null)
 		{
-			ItemSize = itemSize;
 			Size = new MPos((int)Math.Floor(size.X / (float)itemSize.X), (int)Math.Floor(size.Y / (float)itemSize.Y));
+			ItemSize = itemSize;
+
+			this.autoHighlight = autoHighlight;
 		}
 
 		public void Add(PanelListItem o)
@@ -58,7 +62,7 @@ namespace WarriorsSnuggery.UI.Objects
 		CPos getOffset(int x, int y)
 		{
 			var posX = (x * 2 + 1) * ItemSize.X - SelectableBounds.X;
-			var posY = ((y - scrolled) * 2 + 1) * ItemSize.Y - SelectableBounds.Y;
+			var posY = ((y - currentScroll) * 2 + 1) * ItemSize.Y - SelectableBounds.Y;
 
 			return new CPos(posX, posY, 0);
 		}
@@ -91,36 +95,35 @@ namespace WarriorsSnuggery.UI.Objects
 			CheckMouse();
 			if (ContainsMouse)
 			{
-				var offset = MouseInput.WindowPosition - Position;
-
-				var itemOffsetX = (int)Math.Floor((offset.X + SelectableBounds.X) / (float)(ItemSize.X * 2));
-				var itemOffsetY = (int)Math.Floor((offset.Y + SelectableBounds.Y) / (float)(ItemSize.Y * 2)) + scrolled;
-
-				highlighted = (itemOffsetX, itemOffsetY);
-
-				if (Highlighted == null)
-					highlighted = (-1, -1);
-
-				if (MouseInput.IsLeftClicked)
-					selected = highlighted;
-
-				if ((scrolled < Math.Floor(Container.Count / (float)Size.X - Size.Y) + 1) && (KeyInput.IsKeyDown(Keys.Down) || MouseInput.WheelState > 0))
+				if (autoHighlight)
 				{
-					scrolled++;
+					var offset = MouseInput.WindowPosition - Position;
+
+					var itemOffsetX = (int)Math.Floor((offset.X + SelectableBounds.X) / (float)(ItemSize.X * 2));
+					var itemOffsetY = (int)Math.Floor((offset.Y + SelectableBounds.Y) / (float)(ItemSize.Y * 2)) + currentScroll;
+
+					HighlightedPos = (itemOffsetX, itemOffsetY);
+
+					if (Highlighted == null)
+						HighlightedPos = (-1, -1);
+
+					if (MouseInput.IsLeftClicked)
+						SelectedPos = HighlightedPos;
+				}
+
+				if ((currentScroll < Math.Floor(Container.Count / (float)Size.X - Size.Y) + 1) && (KeyInput.IsKeyDown(Keys.Down) || MouseInput.WheelState > 0))
+				{
+					currentScroll++;
 					updatePositions();
 				}
-				if (scrolled != 0 && (KeyInput.IsKeyDown(Keys.Up) || MouseInput.WheelState < 0))
+				if (currentScroll != 0 && (KeyInput.IsKeyDown(Keys.Up) || MouseInput.WheelState < 0))
 				{
-					scrolled--;
+					currentScroll--;
 					updatePositions();
 				}
 			}
-			else
-			{
-				highlighted = (-1, -1);
-				//if (MouseInput.IsLeftClicked)
-				//	selected = (-1, -1);
-			}
+			else if (autoHighlight)
+				HighlightedPos = (-1, -1);
 		}
 
 		void updatePositions()
@@ -136,18 +139,18 @@ namespace WarriorsSnuggery.UI.Objects
 
 		public override void Render()
 		{
-			HighlightVisible = highlighted.x >= 0 && highlighted.y >= 0;
+			HighlightVisible = HighlightedPos.x >= 0 && HighlightedPos.y >= 0;
 			if (HighlightVisible)
-				Highlight.SetPosition(Position + getOffset(highlighted.x, highlighted.y));
+				Highlight.SetPosition(Position + getOffset(HighlightedPos.x, HighlightedPos.y));
 
 			base.Render();
 
 			foreach (var o in Container)
 				o.Render();
 
-			if (selected.x >= 0 && selected.y >= 0)
+			if (SelectedPos.x >= 0 && SelectedPos.y >= 0)
 			{
-				var pos = getOffset(selected.x, selected.y);
+				var pos = getOffset(SelectedPos.x, SelectedPos.y);
 
 				if (pos.Y >= -SelectableBounds.Y && pos.Y <= SelectableBounds.Y)
 				{
