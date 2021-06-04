@@ -58,7 +58,7 @@ namespace WarriorsSnuggery.UI.Objects
 		CPos getOffset(int x, int y)
 		{
 			var posX = (x * 2 + 1) * ItemSize.X - SelectableBounds.X;
-			var posY = (y * 2 + 1) * ItemSize.Y - SelectableBounds.Y - scrolled * 2 * ItemSize.Y;
+			var posY = ((y - scrolled) * 2 + 1) * ItemSize.Y - SelectableBounds.Y;
 
 			return new CPos(posX, posY, 0);
 		}
@@ -68,7 +68,7 @@ namespace WarriorsSnuggery.UI.Objects
 			if (x < 0 || y < 0)
 				return null;
 
-			var offset = x * Size.Y + y;
+			var offset = x + y * Size.X;
 
 			if (offset >= Container.Count)
 				return null;
@@ -93,14 +93,16 @@ namespace WarriorsSnuggery.UI.Objects
 			{
 				var offset = MouseInput.WindowPosition - Position;
 
-				var itemOffsetX = (int)Math.Floor((offset.X + SelectableBounds.X) / (float)ItemSize.X / 2);
-				var itemOffsetY = (int)Math.Floor((offset.Y + SelectableBounds.Y) / (float)ItemSize.Y / 2);
+				var itemOffsetX = (int)Math.Floor((offset.X + SelectableBounds.X) / (float)(ItemSize.X * 2));
+				var itemOffsetY = (int)Math.Floor((offset.Y + SelectableBounds.Y) / (float)(ItemSize.Y * 2)) + scrolled;
 
 				highlighted = (itemOffsetX, itemOffsetY);
+
+				if (Highlighted == null)
+					highlighted = (-1, -1);
+
 				if (MouseInput.IsLeftClicked)
 					selected = highlighted;
-
-				Highlight?.SetPosition(Position + getOffset(highlighted.x, highlighted.y));
 
 				if ((scrolled < Math.Floor(Container.Count / (float)Size.X - Size.Y) + 1) && (KeyInput.IsKeyDown(Keys.Down) || MouseInput.WheelState > 0))
 				{
@@ -134,7 +136,10 @@ namespace WarriorsSnuggery.UI.Objects
 
 		public override void Render()
 		{
-			HighlightVisible = ContainsMouse;
+			HighlightVisible = highlighted.x >= 0 && highlighted.y >= 0;
+			if (HighlightVisible)
+				Highlight.SetPosition(Position + getOffset(highlighted.x, highlighted.y));
+
 			base.Render();
 
 			foreach (var o in Container)
@@ -142,8 +147,13 @@ namespace WarriorsSnuggery.UI.Objects
 
 			if (selected.x >= 0 && selected.y >= 0)
 			{
-				var pos = Position + getOffset(selected.x, selected.y);
-				ColorManager.DrawFilledLineRect(pos - new CPos(ItemSize.X, ItemSize.Y, 0), pos + new CPos(ItemSize.X, ItemSize.Y, 0), 32, Color.White);
+				var pos = getOffset(selected.x, selected.y);
+
+				if (pos.Y >= -SelectableBounds.Y && pos.Y <= SelectableBounds.Y)
+				{
+					pos += Position;
+					ColorManager.DrawFilledLineRect(pos - new CPos(ItemSize.X, ItemSize.Y, 0), pos + new CPos(ItemSize.X, ItemSize.Y, 0), 32, Color.White);
+				}
 			}
 		}
 	}
