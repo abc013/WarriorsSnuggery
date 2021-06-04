@@ -90,18 +90,18 @@ namespace WarriorsSnuggery.Graphics
 			{
 				var matrix = Matrix4.CreateTranslation(Position.X, Position.Y, Position.Z);
 
-				if (Scale != Vector3.Zero)
-				{
-					var s1 = Matrix4.CreateScale(Scale);
-					matrix = s1 * matrix;
-				}
-
 				if (Rotation != Vector3.Zero)
 				{
 					var r1 = Matrix4.CreateRotationX(Rotation.X);
 					var r2 = Matrix4.CreateRotationY(Rotation.Y);
 					var r3 = Matrix4.CreateRotationZ(Rotation.Z);
 					matrix = r1 * r2 * r3 * matrix;
+				}
+
+				if (Scale != Vector3.Zero)
+				{
+					var s1 = Matrix4.CreateScale(Scale);
+					matrix = s1 * matrix;
 				}
 
 				for (int i = 0; i < vertices.Length; i++)
