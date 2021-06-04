@@ -78,6 +78,9 @@ namespace WarriorsSnuggery
 					LocalPlayer = ActorLayer.ToAdd().First(a => a.IsPlayer);
 				}
 
+				if (LocalPlayer.Health != null && Game.Save.Health > 0)
+					LocalPlayer.Health.RelativeHP = Game.Save.Health;
+
 				if (Game.IsCampaign && !Game.IsMenu)
 					AddText(LocalPlayer.Position, 300, ActionText.ActionTextType.TRANSFORM, $"Level {Game.Save.Level}");
 
@@ -96,6 +99,8 @@ namespace WarriorsSnuggery
 			WeaponLayer.Tick();
 			ParticleLayer.Tick();
 			addObjects();
+
+			WorldRenderer.CheckVisibilityAll();
 		}
 
 		public void Tick()

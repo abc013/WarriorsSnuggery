@@ -34,7 +34,7 @@ namespace WarriorsSnuggery.UI.Screens
 			Text = new InfoText();
 		}
 
-		public void InitScreen()
+		public void Load()
 		{
 			if (game.InteractionMode == InteractionMode.NONE)
 			{

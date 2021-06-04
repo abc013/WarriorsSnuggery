@@ -93,7 +93,7 @@ namespace WarriorsSnuggery.UI.Objects
 			}
 		}
 
-		class SpellListItem : PanelItem
+		class SpellListItem : PanelListItem
 		{
 			static readonly Color inactive = new Color(0.6f, 0.6f, 0.6f);
 			static readonly Color disabled = new Color(0f, 0f, 0f, 0.3f);

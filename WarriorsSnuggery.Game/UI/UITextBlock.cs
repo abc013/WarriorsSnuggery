@@ -59,7 +59,7 @@ namespace WarriorsSnuggery.UI
 					position -= new CPos(bounds.X, 0, 0);
 
 				if (bounds != MPos.Zero)
-					ColorManager.DrawLineRect(position, new CPos(bounds.X, bounds.Y, 0), Color.Red);
+					ColorManager.DrawLineQuad(position, new CPos(bounds.X, bounds.Y, 0), Color.Red);
 			}
 		}
 	}

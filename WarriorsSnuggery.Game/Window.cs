@@ -147,8 +147,6 @@ namespace WarriorsSnuggery
 			WindowInfo.Width = ClientRectangle.Size.X;
 			WindowInfo.Height = ClientRectangle.Size.Y;
 
-			ColorManager.WindowRescaled();
-
 			MasterRenderer.UpdateViewport();
 		}
 

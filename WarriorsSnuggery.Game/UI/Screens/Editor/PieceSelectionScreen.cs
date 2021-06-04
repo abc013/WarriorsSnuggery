@@ -22,7 +22,7 @@ namespace WarriorsSnuggery.UI.Screens
 			mapSelection = new PanelList(new MPos(4096, 4096), new MPos(512, 512), "wooden") { Position = new CPos(0, 1024, 0) };
 			foreach (var piece in PieceManager.Pieces)
 			{
-				mapSelection.Add(new PanelItem(new BatchObject(UISpriteManager.Get("UI_map")[0]), new MPos(512, 512), piece.Name, new[] { Color.Grey + "[" + piece.Size.X + "," + piece.Size.Y + "]" },
+				mapSelection.Add(new PanelListItem(new BatchObject(UISpriteManager.Get("UI_map")[0]), new MPos(512, 512), piece.Name, new[] { Color.Grey + "[" + piece.Size.X + "," + piece.Size.Y + "]" },
 				() =>
 				{
 					GameController.CreateNew(GameSaveManager.DefaultSave.Copy(), MissionType.TEST, InteractionMode.EDITOR, custom: MapType.FromPiece(piece));

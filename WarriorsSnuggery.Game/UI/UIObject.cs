@@ -46,10 +46,10 @@ namespace WarriorsSnuggery.UI
 		public virtual void DebugRender()
 		{
 			if (Bounds != MPos.Zero)
-				ColorManager.DrawLineRect(Position, new CPos(Bounds.X, Bounds.Y, 0), Color.Red);
+				ColorManager.DrawLineQuad(Position, new CPos(Bounds.X, Bounds.Y, 0), Color.Red);
 
 			if (SelectableBounds != MPos.Zero)
-				ColorManager.DrawLineRect(Position, new CPos(SelectableBounds.X, SelectableBounds.Y, 0), Color.Blue);
+				ColorManager.DrawLineQuad(Position, new CPos(SelectableBounds.X, SelectableBounds.Y, 0), Color.Blue);
 		}
 
 		protected void CheckMouse()

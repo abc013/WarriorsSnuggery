@@ -15,12 +15,12 @@ namespace WarriorsSnuggery.UI.Screens
 			this.game = game;
 			Title.Position = new CPos(0, -4096, 0);
 
-			list = new GameSaveList(new MPos(Right / 4, 4096), "wooden") { Position = new CPos(0, 1024, 0) };
+			list = new GameSaveList(4096, "wooden") { Position = new CPos(0, 1024, 0) };
 
 			Add(new Button("Back", "wooden", () => game.ShowScreen(ScreenType.MENU)) { Position = new CPos(4096, 6144, 0) });
 			void loadAction()
 			{
-				var save = list.GetSave();
+				var save = list.SelectedSave;
 				if (save != null)
 				{
 					humanAgreeOnLoad(() =>
@@ -34,7 +34,7 @@ namespace WarriorsSnuggery.UI.Screens
 
 			void deleteAction()
 			{
-				var save = list.GetSave();
+				var save = list.SelectedSave;
 				if (save != null)
 				{
 					humanAgreeOnDelete(() =>

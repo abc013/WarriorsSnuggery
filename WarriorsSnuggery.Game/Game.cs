@@ -142,16 +142,11 @@ namespace WarriorsSnuggery
 			var timer = Timer.Start();
 
 			MasterRenderer.ResetRenderer(this);
+			Camera.Reset();
 
 			World.Load();
 
-			ScreenControl.InitScreen();
-
-			if (World.LocalPlayer != null && World.LocalPlayer.Health != null && Save.Health > 0)
-				World.LocalPlayer.Health.RelativeHP = Save.Health;
-
-			WorldRenderer.CheckVisibilityAll();
-			MasterRenderer.UpdateViewport();
+			ScreenControl.Load();
 
 			if (World.Map.Type.IsSave)
 				script?.LoadState(Save.ScriptState);

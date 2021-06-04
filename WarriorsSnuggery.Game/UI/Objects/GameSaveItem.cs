@@ -3,7 +3,7 @@ using WarriorsSnuggery.Graphics;
 
 namespace WarriorsSnuggery.UI.Objects
 {
-	class GameSaveItem : PanelItem
+	class GameSaveItem : PanelListItem
 	{
 		public override CPos Position
 		{
@@ -18,7 +18,6 @@ namespace WarriorsSnuggery.UI.Objects
 		}
 
 		public readonly GameSave Save;
-		public bool Selected;
 
 		readonly UITextLine name;
 		readonly UITextLine score;
@@ -71,18 +70,6 @@ namespace WarriorsSnuggery.UI.Objects
 				score.Render();
 				level.Render();
 			}
-
-			SetColor(Selected ? new Color(1.5f, 1.5f, 1.5f) : Color.White);
-		}
-
-		public override void Tick()
-		{
-			base.Tick();
-
-			if (ContainsMouse && MouseInput.IsLeftClicked)
-				Selected = true;
-			else if (MouseInput.IsLeftClicked)
-				Selected = false;
 		}
 	}
 }

@@ -3,12 +3,12 @@ using WarriorsSnuggery.Graphics;
 
 namespace WarriorsSnuggery.UI.Objects
 {
-	public class PanelItem : UIObject, IDisableTooltip
+	public class PanelListItem : UIObject, IDisableTooltip
 	{
 		public virtual bool Visible
 		{
-			get => Renderable.Visible;
-			set => Renderable.Visible = value;
+			get => renderable.Visible;
+			set => renderable.Visible = value;
 		}
 
 		public override CPos Position
@@ -17,7 +17,7 @@ namespace WarriorsSnuggery.UI.Objects
 			set
 			{
 				base.Position = value;
-				Renderable.SetPosition(value);
+				renderable.SetPosition(value);
 			}
 		}
 
@@ -27,7 +27,7 @@ namespace WarriorsSnuggery.UI.Objects
 			set
 			{
 				base.Rotation = value;
-				Renderable.SetRotation(value);
+				renderable.SetRotation(value);
 			}
 		}
 
@@ -37,18 +37,18 @@ namespace WarriorsSnuggery.UI.Objects
 			set
 			{
 				base.Scale = value;
-				Renderable.SetScale(value);
+				renderable.SetScale(value);
 			}
 		}
 
-		protected readonly BatchRenderable Renderable;
+		readonly BatchRenderable renderable;
 		readonly Action action;
 		readonly Tooltip tooltip;
 
-		public PanelItem(BatchRenderable renderable, MPos bounds, string title, string[] text, Action action)
+		public PanelListItem(BatchRenderable renderable, MPos bounds, string title, string[] text, Action action)
 		{
 			tooltip = new Tooltip(title, text);
-			this.Renderable = renderable;
+			this.renderable = renderable;
 			this.action = action;
 
 			Bounds = bounds;
@@ -57,12 +57,12 @@ namespace WarriorsSnuggery.UI.Objects
 
 		public virtual void SetColor(Color color)
 		{
-			Renderable.SetColor(color);
+			renderable.SetColor(color);
 		}
 
 		public override void Render()
 		{
-			Renderable.Render();
+			renderable.Render();
 		}
 
 		public override void Tick()

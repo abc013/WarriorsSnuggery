@@ -24,7 +24,7 @@ namespace WarriorsSnuggery.UI.Objects.Editor
 		{
 			list = new PanelList(new MPos(2048, 4096), new MPos(512, 512), "wooden");
 			foreach (var a in TerrainCreator.Types.Values)
-				list.Add(new PanelItem(new BatchObject(a.Texture), new MPos(512, 512), a.ID.ToString(), new string[0], () => CurrentType = a));
+				list.Add(new PanelListItem(new BatchObject(a.Texture), new MPos(512, 512), a.ID.ToString(), new string[0], () => CurrentType = a));
 		}
 
 		public void DisableTooltip()

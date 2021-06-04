@@ -2,16 +2,15 @@
 {
 	class GameSaveList : PanelList
 	{
-		readonly MPos size;
+		public const int SaveWidth = 4096;
 
-		public GameSaveList(MPos size, string typeName) : this(size, PanelManager.Get(typeName)) { }
+		public GameSave SelectedSave => Selected == null ? null : ((GameSaveItem)Selected).Save;
 
-		public GameSaveList(MPos size, PanelType type) : base(size, new MPos(size.X, 1024), type)
+		public GameSaveList(int height, string typeName) : this(height, PanelManager.Get(typeName)) { }
+
+		public GameSaveList(int height, PanelType type) : base(new MPos(SaveWidth, height), new MPos(SaveWidth, 1024), type)
 		{
-			this.size = size;
-			foreach (var save in GameSaveManager.Saves)
-				if (save.Name != GameSaveManager.DefaultSaveName)
-					Add(new GameSaveItem(save, size.X, () => { }));
+			Refresh();
 		}
 
 		public void Refresh()
@@ -21,20 +20,8 @@
 			foreach (var save in GameSaveManager.Saves)
 			{
 				if (save.Name != GameSaveManager.DefaultSaveName)
-					Add(new GameSaveItem(save, size.X, () => { }));
+					Add(new GameSaveItem(save, SaveWidth, () => { }));
 			}
-		}
-
-		public GameSave GetSave()
-		{
-			for (int i = 0; i < Container.Count; i++)
-			{
-				var saveItem = (GameSaveItem)Container[i];
-				if (saveItem != null && saveItem.Selected)
-					return saveItem.Save;
-			}
-
-			return null;
 		}
 	}
 }

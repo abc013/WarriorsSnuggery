@@ -80,7 +80,7 @@ namespace WarriorsSnuggery.UI.Objects.Editor
 
 				var sprite = a.GetPreviewSprite();
 				var scale = (sprite.Width > sprite.Height ? 24f / sprite.Width : 24f / sprite.Height) - 0.1f;
-				list.Add(new PanelItem(new BatchObject(sprite), new MPos(512, 512), a.Playable == null ? pair.Key : a.Playable.Name, new string[0], () => CurrentType = a)
+				list.Add(new PanelListItem(new BatchObject(sprite), new MPos(512, 512), a.Playable == null ? pair.Key : a.Playable.Name, new string[0], () => CurrentType = a)
 				{
 					Scale = scale
 				});

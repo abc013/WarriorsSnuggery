@@ -41,12 +41,10 @@ namespace WarriorsSnuggery.UI
 		{
 			setPosition(MouseInput.WindowPosition + new CPos(256, 0, 0));
 
-			ColorManager.DrawRect(position - new CPos(margin, margin, 0), position + new CPos(bounds.X + 2 * margin, bounds.Y + 2 * margin, 0), new Color(0, 0, 0, 0.8f));
-
-			ColorManager.DrawRect(position - new CPos(margin + lineWidth, margin + lineWidth, 0), position - new CPos(margin - lineWidth, -(bounds.Y + 2 * margin + lineWidth), 0), Color.White);
-			ColorManager.DrawRect(position - new CPos(margin + lineWidth, margin + lineWidth, 0), position - new CPos(-(bounds.X + 2 * margin + lineWidth), margin - lineWidth, 0), Color.White);
-			ColorManager.DrawRect(position - new CPos(margin + lineWidth, -(bounds.Y + 2 * margin + lineWidth), 0), position - new CPos(-(bounds.X + 2 * margin + lineWidth), -(bounds.Y + 2 * margin - lineWidth), 0), Color.White);
-			ColorManager.DrawRect(position - new CPos(-(bounds.X + 2 * margin + lineWidth), margin + lineWidth, 0), position - new CPos(-(bounds.X + 2 * margin - lineWidth), -(bounds.Y + 2 * margin + lineWidth), 0), Color.White);
+			var bottomLeft = position - new CPos(margin, margin, 0);
+			var topRight = position + new CPos(bounds.X + 2 * margin, bounds.Y + 2 * margin, 0);
+			ColorManager.DrawRect(bottomLeft, topRight, new Color(0, 0, 0, 0.8f));
+			ColorManager.DrawFilledLineRect(bottomLeft, topRight, lineWidth, Color.White);
 
 			title.Render();
 			text.Render();

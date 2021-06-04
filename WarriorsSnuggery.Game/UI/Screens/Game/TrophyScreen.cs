@@ -26,7 +26,7 @@ namespace WarriorsSnuggery.UI.Screens
 
 				var sprite = value.Image.GetTextures()[0];
 				var scale = 24f / Math.Max(sprite.Width, sprite.Height) - 0.1f;
-				var item = new PanelItem(new BatchObject(sprite), new MPos(512, 512), value.Name, new string[0], () => selectTrophy(key, value))
+				var item = new PanelListItem(new BatchObject(sprite), new MPos(512, 512), value.Name, new string[0], () => selectTrophy(key, value))
 				{
 					Scale = scale * 2f
 				};

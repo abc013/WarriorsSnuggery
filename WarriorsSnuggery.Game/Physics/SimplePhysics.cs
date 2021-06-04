@@ -158,7 +158,7 @@ namespace WarriorsSnuggery.Physics
 					ColorManager.DrawCircle(Position, Type.RadiusX / 1024f, Color.Magenta);
 					break;
 				case Shape.RECTANGLE:
-					ColorManager.DrawLineRect(Position, new CPos(Type.RadiusX, Type.RadiusY, 0), Color.Magenta);
+					ColorManager.DrawLineQuad(Position, new CPos(Type.RadiusX, Type.RadiusY, 0), Color.Magenta);
 					break;
 				case Shape.LINE_HORIZONTAL:
 					ColorManager.DrawLine(Position - new CPos(2 * Type.RadiusX, Type.RadiusY, 0), Position + new CPos(0, -Type.RadiusY, 0), Color.Magenta);

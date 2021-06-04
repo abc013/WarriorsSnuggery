@@ -18,12 +18,17 @@ namespace WarriorsSnuggery.UI.Objects
 			}
 		}
 
-		public readonly List<PanelItem> Container = new List<PanelItem>();
+		public readonly List<PanelListItem> Container = new List<PanelListItem>();
 		public readonly MPos Size;
 
 		protected readonly MPos ItemSize;
 
-		public MPos selected;
+		(int x, int y) highlighted = (-1, -1);
+		public PanelListItem Highlighted => getItem(highlighted.x, highlighted.y);
+
+		(int x, int y) selected = (-1, -1);
+		public PanelListItem Selected => getItem(selected.x, selected.y);
+
 		int scrolled;
 
 		public PanelList(MPos size, MPos itemSize, string type) : this(size, itemSize, PanelManager.Get(type)) { }
@@ -34,23 +39,41 @@ namespace WarriorsSnuggery.UI.Objects
 			Size = new MPos((int)Math.Floor(size.X / (float)itemSize.X), (int)Math.Floor(size.Y / (float)itemSize.Y));
 		}
 
-		public void Add(PanelItem o)
+		public void Add(PanelListItem o)
 		{
 			Container.Add(o);
-			var pos = getPosition(Container.Count - 1);
+			var pos = getOffset(Container.Count - 1);
 			o.Visible = pos.Y >= -SelectableBounds.Y && pos.Y <= SelectableBounds.Y;
 			o.Position = Position + pos;
 		}
 
-		CPos getPosition(int pos)
+		CPos getOffset(int pos)
 		{
 			var x = pos % Size.X;
 			var y = pos / Size.X;
 
-			var posX = -SelectableBounds.X + (x * 2 + 1) * ItemSize.X;
-			var posY = -SelectableBounds.Y + (y * 2 + 1) * ItemSize.Y - scrolled * 2 * ItemSize.Y;
+			return getOffset(x, y);
+		}
+
+		CPos getOffset(int x, int y)
+		{
+			var posX = (x * 2 + 1) * ItemSize.X - SelectableBounds.X;
+			var posY = (y * 2 + 1) * ItemSize.Y - SelectableBounds.Y - scrolled * 2 * ItemSize.Y;
 
 			return new CPos(posX, posY, 0);
+		}
+
+		PanelListItem getItem(int x, int y)
+		{
+			if (x < 0 || y < 0)
+				return null;
+
+			var offset = x * Size.Y + y;
+
+			if (offset >= Container.Count)
+				return null;
+
+			return Container[offset];
 		}
 
 		public virtual void DisableTooltip()
@@ -68,15 +91,16 @@ namespace WarriorsSnuggery.UI.Objects
 			CheckMouse();
 			if (ContainsMouse)
 			{
-				if (Highlight != null)
-				{
-					var position = MouseInput.WindowPosition - Position + new CPos(SelectableBounds.X, SelectableBounds.Y, 0);
+				var offset = MouseInput.WindowPosition - Position;
 
-					var x = (int)Math.Floor(position.X / (float)ItemSize.X / 2);
-					var y = (int)Math.Floor(position.Y / (float)ItemSize.Y / 2);
+				var itemOffsetX = (int)Math.Floor((offset.X + SelectableBounds.X) / (float)ItemSize.X / 2);
+				var itemOffsetY = (int)Math.Floor((offset.Y + SelectableBounds.Y) / (float)ItemSize.Y / 2);
 
-					Highlight.SetPosition(Position + new CPos(-SelectableBounds.X + x * 2 * ItemSize.X + ItemSize.X, -SelectableBounds.Y + y * 2 * ItemSize.Y + ItemSize.Y, 0));
-				}
+				highlighted = (itemOffsetX, itemOffsetY);
+				if (MouseInput.IsLeftClicked)
+					selected = highlighted;
+
+				Highlight?.SetPosition(Position + getOffset(highlighted.x, highlighted.y));
 
 				if ((scrolled < Math.Floor(Container.Count / (float)Size.X - Size.Y) + 1) && (KeyInput.IsKeyDown(Keys.Down) || MouseInput.WheelState > 0))
 				{
@@ -89,13 +113,19 @@ namespace WarriorsSnuggery.UI.Objects
 					updatePositions();
 				}
 			}
+			else
+			{
+				highlighted = (-1, -1);
+				//if (MouseInput.IsLeftClicked)
+				//	selected = (-1, -1);
+			}
 		}
 
 		void updatePositions()
 		{
 			for (int i = 0; i < Container.Count; i++)
 			{
-				var pos = getPosition(i);
+				var pos = getOffset(i);
 				var o = Container[i];
 				o.Visible = pos.Y >= -SelectableBounds.Y && pos.Y <= SelectableBounds.Y;
 				o.Position = Position + pos;
@@ -109,6 +139,12 @@ namespace WarriorsSnuggery.UI.Objects
 
 			foreach (var o in Container)
 				o.Render();
+
+			if (selected.x >= 0 && selected.y >= 0)
+			{
+				var pos = Position + getOffset(selected.x, selected.y);
+				ColorManager.DrawFilledLineRect(pos - new CPos(ItemSize.X, ItemSize.Y, 0), pos + new CPos(ItemSize.X, ItemSize.Y, 0), 32, Color.White);
+			}
 		}
 	}
 }
