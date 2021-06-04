@@ -37,6 +37,8 @@ namespace WarriorsSnuggery.UI.Objects
 			spellCount = SpellTreeLoader.SpellTree.Count;
 
 			addSpells();
+
+			CurrentSpell = 0;
 		}
 
 		void addSpells()

@@ -12,7 +12,7 @@ namespace WarriorsSnuggery.UI.Objects
 				base.Position = value;
 				background.SetPosition(value);
 				border.SetPosition(value);
-				Highlight?.SetPosition(value);
+				highlight?.SetPosition(value);
 			}
 		}
 
@@ -24,7 +24,7 @@ namespace WarriorsSnuggery.UI.Objects
 				base.Rotation = value;
 				background.SetRotation(value);
 				border.SetRotation(value);
-				Highlight?.SetRotation(value);
+				highlight?.SetRotation(value);
 			}
 		}
 
@@ -36,7 +36,7 @@ namespace WarriorsSnuggery.UI.Objects
 				base.Scale = value;
 				background.SetScale(value);
 				border.SetScale(value);
-				Highlight?.SetScale(value);
+				highlight?.SetScale(value);
 			}
 		}
 
@@ -48,25 +48,19 @@ namespace WarriorsSnuggery.UI.Objects
 				base.Color = value;
 				background.SetColor(value);
 				border.SetColor(value);
-				Highlight?.SetColor(value);
+				highlight?.SetColor(value);
 			}
 		}
 
 		readonly BatchObject background;
 		readonly BatchObject border;
-		public readonly BatchObject Highlight;
+		readonly BatchObject highlight;
 
 		public bool HighlightVisible;
 
-		public Panel(MPos bounds, string typeName) : this(bounds, PanelManager.Get(typeName)) { }
+		public Panel(MPos bounds, string typeName, bool useHighlight = false) : this(bounds, PanelManager.Get(typeName), useHighlight) { }
 
-		public Panel(MPos bounds, PanelType type) : this(bounds, type, null)
-		{
-			if (type.Background2 != null)
-				Highlight = new BatchObject(Mesh.UIPanel(type.Background2, bounds));
-		}
-
-		public Panel(MPos bounds, PanelType type, BatchObject background2)
+		public Panel(MPos bounds, PanelType type, bool useHighlight = false)
 		{
 			SelectableBounds = bounds;
 			background = new BatchObject(Mesh.UIPanel(type.Background, bounds));
@@ -74,7 +68,8 @@ namespace WarriorsSnuggery.UI.Objects
 			Bounds = new MPos(bounds.X + type.BorderWidth, bounds.Y + type.BorderWidth);
 			border = new BatchObject(Mesh.UIPanel(type.Border, Bounds));
 
-			Highlight = background2;
+			if (useHighlight && type.Background2 != null)
+				highlight = new BatchObject(Mesh.UIPanel(type.Background2, bounds));
 		}
 
 		public override void Render()
@@ -82,8 +77,8 @@ namespace WarriorsSnuggery.UI.Objects
 			border.Render();
 			background.Render();
 
-			if (HighlightVisible && Highlight != null)
-				Highlight.Render();
+			if (HighlightVisible && highlight != null)
+				highlight.Render();
 		}
 	}
 }

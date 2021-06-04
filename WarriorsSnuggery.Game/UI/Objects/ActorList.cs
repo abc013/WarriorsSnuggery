@@ -38,6 +38,8 @@ namespace WarriorsSnuggery.UI.Objects
 			this.game = game;
 
 			addActors();
+
+			CurrentActor = 0;
 		}
 
 		void addActors()

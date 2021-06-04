@@ -48,7 +48,7 @@ namespace WarriorsSnuggery.UI.Objects
 
 		public TextBox(string typeName, int maximumLength = 10, InputType type = InputType.NORMAL) : this(PanelManager.Get(typeName), maximumLength, type) { }
 
-		public TextBox(PanelType panelType, int maximumLength = 10, InputType type = InputType.NORMAL) : base(calculateBounds(maximumLength), panelType)
+		public TextBox(PanelType panelType, int maximumLength = 10, InputType type = InputType.NORMAL) : base(calculateBounds(maximumLength), panelType, true)
 		{
 			MaximumLength = maximumLength;
 			Type = type;
@@ -64,7 +64,6 @@ namespace WarriorsSnuggery.UI.Objects
 
 		public override void Render()
 		{
-			HighlightVisible = Selected;
 			base.Render();
 			textline.Render();
 		}
@@ -108,6 +107,8 @@ namespace WarriorsSnuggery.UI.Objects
 					OnType?.Invoke();
 				}
 			}
+
+			HighlightVisible = Selected;
 		}
 
 		public override void KeyDown(Keys key, bool isControl, bool isShift, bool isAlt)

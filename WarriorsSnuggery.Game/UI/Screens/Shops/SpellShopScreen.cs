@@ -114,8 +114,9 @@ namespace WarriorsSnuggery.UI.Screens
 		readonly Tooltip tooltip;
 		bool mouseOnItem;
 		bool available;
+		bool unlocked;
 
-		public SpellNode(SpellTreeNode node, Game game, SpellShopScreen screen) : base(new MPos((int)(1024 * 8 * MasterRenderer.PixelMultiplier), (int)(1024 * 8 * MasterRenderer.PixelMultiplier)), "stone")
+		public SpellNode(SpellTreeNode node, Game game, SpellShopScreen screen) : base(new MPos((int)(1024 * 8 * MasterRenderer.PixelMultiplier), (int)(1024 * 8 * MasterRenderer.PixelMultiplier)), "stone", true)
 		{
 			this.node = node;
 			this.game = game;
@@ -124,8 +125,8 @@ namespace WarriorsSnuggery.UI.Screens
 
 			tooltip = new Tooltip(node.Name + " : " + node.Cost, node.GetInformation(true));
 
-			if (node.Unlocked || Program.IgnoreTech || game.Stats.SpellUnlocked(node))
-				HighlightVisible = true;
+			unlocked = node.Unlocked || Program.IgnoreTech || game.Stats.SpellUnlocked(node);
+			HighlightVisible = unlocked;
 		}
 
 		public virtual void DisableTooltip()
@@ -157,7 +158,7 @@ namespace WarriorsSnuggery.UI.Screens
 
 		public void CheckAvailability()
 		{
-			available |= HighlightVisible;
+			available |= unlocked;
 
 			if (available)
 				return;
@@ -188,10 +189,7 @@ namespace WarriorsSnuggery.UI.Screens
 
 			if (mouseOnItem && !node.Unlocked && MouseInput.IsLeftClicked)
 			{
-				if (HighlightVisible)
-					return;
-
-				if (!available)
+				if (unlocked || !available)
 					return;
 
 				if (game.Stats.Money < node.Cost)
@@ -200,6 +198,7 @@ namespace WarriorsSnuggery.UI.Screens
 				game.Stats.Money -= node.Cost;
 				game.Stats.AddSpell(node);
 
+				unlocked = true;
 				HighlightVisible = true;
 
 				screen.UpdateAvailability();
@@ -211,10 +210,7 @@ namespace WarriorsSnuggery.UI.Screens
 	{
 		public bool Active
 		{
-			set
-			{
-				renderables = value ? active : inactive;
-			}
+			set => renderables = value ? active : inactive;
 		}
 
 		readonly Game game;

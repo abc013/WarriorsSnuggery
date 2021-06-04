@@ -23,6 +23,7 @@ namespace WarriorsSnuggery.UI.Objects
 		public readonly MPos Size;
 		protected readonly MPos ItemSize;
 
+		readonly BatchObject highlightRenderable;
 		protected (int x, int y) HighlightedPos = (-1, -1);
 		public PanelListItem Highlighted => getItem(HighlightedPos.x, HighlightedPos.y);
 
@@ -35,12 +36,13 @@ namespace WarriorsSnuggery.UI.Objects
 
 		public PanelList(MPos size, MPos itemSize, string type, bool autoHighlight = true) : this(size, itemSize, PanelManager.Get(type), autoHighlight) { }
 
-		public PanelList(MPos size, MPos itemSize, PanelType type, bool autoHighlight = true) : base(size, type, type.Background2 != null ? new BatchObject(Mesh.UIPanel(type.Background2, itemSize)) : null)
+		public PanelList(MPos size, MPos itemSize, PanelType type, bool autoHighlight = true) : base(size, type)
 		{
 			Size = new MPos((int)Math.Floor(size.X / (float)itemSize.X), (int)Math.Floor(size.Y / (float)itemSize.Y));
 			ItemSize = itemSize;
 
 			this.autoHighlight = autoHighlight;
+			highlightRenderable = type.Background2 == null ? null : new BatchObject(Mesh.UIPanel(type.Background2, itemSize));
 		}
 
 		public void Add(PanelListItem o)
@@ -139,11 +141,13 @@ namespace WarriorsSnuggery.UI.Objects
 
 		public override void Render()
 		{
-			HighlightVisible = HighlightedPos.x >= 0 && HighlightedPos.y >= 0;
-			if (HighlightVisible)
-				Highlight.SetPosition(Position + getOffset(HighlightedPos.x, HighlightedPos.y));
-
 			base.Render();
+
+			if (HighlightedPos.x >= 0 && HighlightedPos.y >= 0)
+			{
+				highlightRenderable.SetPosition(Position + getOffset(HighlightedPos.x, HighlightedPos.y));
+				highlightRenderable.Render();
+			}
 
 			foreach (var o in Container)
 				o.Render();

@@ -23,7 +23,7 @@ namespace WarriorsSnuggery.UI.Objects
 
 		public Button(string text, string typeName, Action action = null) : this(text, PanelManager.Get(typeName), action) { }
 
-		public Button(string text, PanelType type, Action action = null) : base(new MPos(margin + FontManager.Default.GetWidth(text) / 2, margin / 2 + FontManager.Default.MaxHeight / 2), type)
+		public Button(string text, PanelType type, Action action = null) : base(new MPos(margin + FontManager.Default.GetWidth(text) / 2, margin / 2 + FontManager.Default.MaxHeight / 2), type, true)
 		{
 			this.text = new UITextLine(FontManager.Default, TextOffset.MIDDLE) { Position = new CPos(margin / 2, 0, 0) };
 			this.text.WriteText(text);
