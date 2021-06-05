@@ -140,6 +140,8 @@ namespace WarriorsSnuggery
 						world.PhysicsLayer.Sectors[x, y].RenderDebug();
 				}
 
+				world.PathfinderLayer.RenderDebug();
+
 				foreach (var actor in world.ActorLayer.VisibleActors)
 					actor.Physics.RenderDebug();
 

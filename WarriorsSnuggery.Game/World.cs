@@ -29,6 +29,8 @@ namespace WarriorsSnuggery
 		public readonly WeaponLayer WeaponLayer;
 		public readonly ParticleLayer ParticleLayer;
 
+		public readonly PathfinderLayer PathfinderLayer;
+
 		public readonly WeatherManager WeatherManager;
 
 		public readonly List<PositionableObject> Objects = new List<PositionableObject>();
@@ -56,12 +58,15 @@ namespace WarriorsSnuggery
 			WeaponLayer = new WeaponLayer();
 			ParticleLayer = new ParticleLayer(bounds);
 
+			PathfinderLayer = new PathfinderLayer(bounds);
+
 			WeatherManager = new WeatherManager(this, game.MapType);
 		}
 
 		public void Load()
 		{
 			Map.Load();
+			PathfinderLayer.Update(WallLayer, TerrainLayer);
 
 			if (Game.InteractionMode != InteractionMode.EDITOR)
 			{
