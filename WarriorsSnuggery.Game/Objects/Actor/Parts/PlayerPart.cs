@@ -50,7 +50,7 @@ namespace WarriorsSnuggery.Objects.Actors.Parts
 			if (horizontal != 0)
 				self.AccelerateSelf((3 + horizontal) * 0.5f * MathF.PI);
 
-			if (KeyInput.IsKeyDown(Keys.LeftAlt))
+			if (Settings.DeveloperMode)
 			{
 				if (KeyInput.IsKeyDown(Settings.GetKey("MoveAbove")))
 					self.AccelerateHeightSelf(true);
