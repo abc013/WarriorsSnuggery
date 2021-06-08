@@ -4,11 +4,9 @@ namespace WarriorsSnuggery.Graphics
 {
 	public static class Camera
 	{
-		public static readonly CPos CamPlayerOffset = new CPos(0, 2048, 0);
+		public static CPos LookAt { get; private set; }
 
-		public static CPos LookAt = CPos.Zero;
-
-		public static MPos LookBounds = MPos.Zero;
+		public static MPos LookBounds { get; private set; }
 
 		public static bool Locked;
 		public static bool LockedToPlayer = true;
@@ -27,7 +25,7 @@ namespace WarriorsSnuggery.Graphics
 
 		public static void SetBounds(MPos bounds)
 		{
-			Camera.bounds = bounds.ToCPos() + new CPos(-1024, -1024, 0);
+			Camera.bounds = (bounds - new MPos(1, 1)).ToCPos();
 		}
 
 		public static bool IsVisible(CPos pos, float scaleX, float scaleY)

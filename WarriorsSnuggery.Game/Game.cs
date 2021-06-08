@@ -290,7 +290,12 @@ namespace WarriorsSnuggery
 
 			// Player lock
 			if (key == Settings.GetKey("CameraLock"))
+			{
+				if (!Camera.LockedToPlayer && World.LocalPlayer != null)
+					Camera.Position(World.LocalPlayer.Position + new CPos(0, 512, 0));
+
 				Camera.LockedToPlayer = !Camera.LockedToPlayer;
+			}
 
 			// Cheats
 			if (Settings.EnableCheats && isAlt)
