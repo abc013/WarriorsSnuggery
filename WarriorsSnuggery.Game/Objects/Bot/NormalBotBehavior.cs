@@ -1,6 +1,5 @@
 ﻿using System;
 using WarriorsSnuggery.Objects.Actors;
-using WarriorsSnuggery.Objects.Weapons;
 
 namespace WarriorsSnuggery.Objects.Bot
 {
@@ -20,56 +19,17 @@ namespace WarriorsSnuggery.Objects.Bot
 			if (!CanMove && !CanAttack)
 				return;
 
-			if (!PerfectTarget)
+			if (!HasGoodTarget)
 			{
 				DefaultTickBehavior();
 				return;
 			}
 
-			// Look if we have a weapon and are in weapon range
-			if (CanAttack && Target.Actor != null)
-			{
-				Self.Weapon.Target = Target.Position;
-				int range = Self.Weapon.Type.MaxRange;
-				if (DistToTarget < range * 1.1f)
-					PredictiveAttack(Target);
-				else if (!CanMove)
-					Target = null; // Discard target if out of range
-			}
+			if (CanAttack)
+				DefaultAttackBehavior();
 
 			if (CanMove)
-			{
-				var range = 5120;
-				if (CanAttack)
-					range = Self.Weapon.Type.MaxRange;
-				else if (Self.RevealsShroud != null)
-					range = Self.RevealsShroud.Range * 512;
-
-				var actor = GetNeighborActor();
-				float angle = actor != null ? (Self.Position - actor.Position).FlatAngle : AngleToTarget;
-
-				if (DistToMapEdge > 1536)
-				{
-					if (moral >= 0)
-					{
-						if (DistToTarget > range * 0.8f)
-							Self.AccelerateSelf(angle);
-						else if (DistToTarget < range * 0.7f)
-							Self.AccelerateSelf(-angle);
-					}
-					else
-					{
-						if (DistToTarget > range)
-							Self.AccelerateSelf(angle);
-						else if (DistToTarget < range * 0.9f)
-							Self.AccelerateSelf(-angle);
-					}
-				}
-				else
-				{
-					Self.AccelerateSelf(AngleToMapMid);
-				}
-			}
+				DefaultMoveBehavior(moral < 0 ? 0.9f : 0.7f, moral < 0 ? 1.0f : 0.8f);
 
 			moral++;
 		}

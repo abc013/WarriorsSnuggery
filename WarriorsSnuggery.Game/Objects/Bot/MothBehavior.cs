@@ -14,7 +14,7 @@ namespace WarriorsSnuggery.Objects.Bot
 			if (!CanMove && !CanAttack)
 				return;
 
-			if (!PerfectTarget)
+			if (!HasGoodTarget)
 			{
 				if (tick++ % 20 == 0)
 					Target = new Target(randomPosition(), 0);
@@ -24,38 +24,10 @@ namespace WarriorsSnuggery.Objects.Bot
 			}
 
 			if (CanAttack)
-			{
-				Self.Weapon.Target = Target.Position;
-				int range = Self.Weapon.Type.MaxRange;
-				if (DistToTarget < range * 1.1f)
-					PredictiveAttack(Target);
-				else if (!CanMove)
-					Target = null; // Discard target if out of range
-			}
+				DefaultAttackBehavior();
 
 			if (CanMove)
-			{
-				if (DistToMapEdge > 1536)
-				{
-					var range = 5120;
-					if (CanAttack)
-						range = Self.Weapon.Type.MaxRange;
-					else if (Self.RevealsShroud != null)
-						range = Self.RevealsShroud.Range * 512;
-
-					var actor = GetNeighborActor();
-					float angle = actor != null ? (Self.Position - actor.Position).FlatAngle : AngleToTarget;
-
-					if (DistToTarget > range * 0.9f)
-						Self.AccelerateSelf(angle);
-					else if (DistToTarget < range * 0.8f)
-						Self.AccelerateSelf(-angle);
-				}
-				else
-				{
-					Self.AccelerateSelf(AngleToMapMid);
-				}
-			}
+				DefaultMoveBehavior();
 		}
 
 		CPos randomPosition()

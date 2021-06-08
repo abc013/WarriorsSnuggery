@@ -1,5 +1,4 @@
 ﻿using WarriorsSnuggery.Objects.Actors;
-using WarriorsSnuggery.Objects.Weapons;
 
 namespace WarriorsSnuggery.Objects.Bot
 {
@@ -15,52 +14,23 @@ namespace WarriorsSnuggery.Objects.Bot
 			if (!CanMove && !CanAttack)
 				return;
 
-			if (!PerfectTarget)
+			if (!HasGoodTarget)
 			{
 				DefaultTickBehavior();
 				return;
 			}
 
-			if (hide)
-			{
-				if (hideDuration-- <= 0 && (Self.Weapon == null || Self.Weapon.ReloadDone))
-					hide = false;
-			}
-			else
-			{
-				// Look if we have a weapon and are in weapon range
-				if (CanAttack && Target.Actor != null)
-				{
-					Self.Weapon.Target = Target.Position;
-					int range = Self.Weapon.Type.MaxRange;
-
-					if (DistToTarget < range * 1.1f)
-					{
-						PredictiveAttack(Target);
-						hide = true;
-					}
-					else if (!CanMove)
-						Target = null; // Discard target if out of range
-				}
-			}
+			if (hide && hideDuration-- <= 0 && (Self.Weapon == null || Self.Weapon.ReloadDone))
+				hide = false;
+			else if (CanAttack)
+				DefaultAttackBehavior();
 
 			if (CanMove)
 			{
-				var range = 5120;
-				if (CanAttack)
-					range = Self.Weapon.Type.MaxRange;
-				else if (Self.RevealsShroud != null)
-					range = Self.RevealsShroud.Range * 512;
 				if (hide)
-					range *= 10;
-
-				var actor = GetNeighborActor();
-				float angle = actor != null ? (Self.Position - actor.Position).FlatAngle : AngleToTarget;
-
-				if (DistToTarget > range * 0.9f)
-					Self.AccelerateSelf(angle);
-				else if (DistToTarget < range * 0.8f)
-					Self.AccelerateSelf(-angle);
+					DefaultMoveBehavior(8f, 9f);
+				else
+					DefaultMoveBehavior();
 			}
 		}
 

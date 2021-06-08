@@ -10,6 +10,9 @@ namespace WarriorsSnuggery.Objects.Bot
 	{
 		protected const int SearchIntervall = 20;
 
+		protected readonly World World;
+		protected readonly Actor Self;
+
 		public Target Target
 		{
 			get => target;
@@ -37,50 +40,15 @@ namespace WarriorsSnuggery.Objects.Bot
 		Target target;
 		protected float TargetFavor;
 
-		protected virtual bool PerfectTarget
-		{
-			get
-			{
-				if (Target == null || Target.Actor == null)
-					return false;
+		protected float DistToTarget => (Target.Position - Self.Position).FlatDist;
+		protected float AngleToTarget => (Self.Position - Target.Position).FlatAngle;
 
-				if (!Target.Actor.IsAlive || Target.Actor.Disposed)
-					return false;
-
-				return true;
-			}
-		}
+		protected virtual bool HasGoodTarget => !(Target == null || Target.Actor == null || !Target.Actor.IsAlive || Target.Actor.Disposed);
 
 		protected readonly Queue<CPos> Waypoints = new Queue<CPos>();
 
 		public Patrol Patrol;
 		protected bool IsLeader => Patrol == null || Patrol.Leader == Self;
-
-		protected readonly World World;
-		protected readonly Actor Self;
-
-		protected float DistToMapEdge
-		{
-			get
-			{
-				var bottomRightCorner = World.Map.BottomRightCorner;
-
-				var x = Self.Position.X;
-				if (x > bottomRightCorner.X / 2)
-					x = bottomRightCorner.X - x;
-
-				var y = Self.Position.Y;
-				if (y > bottomRightCorner.Y / 2)
-					y -= bottomRightCorner.Y - y;
-
-				return Math.Min(x, y);
-			}
-		}
-
-		protected float AngleToMapMid => (Self.Position - World.Map.Center.ToCPos()).FlatAngle;
-
-		protected float DistToTarget => (Target.Position - Self.Position).FlatDist;
-		protected float AngleToTarget => (Self.Position - Target.Position).FlatAngle;
 
 		protected bool CanMove => Self.Mobility != null;
 		protected bool CanAttack => Self.Weapon != null;
@@ -93,7 +61,7 @@ namespace WarriorsSnuggery.Objects.Bot
 
 		public abstract void Tick();
 
-		public virtual void DefaultTickBehavior()
+		public void DefaultTickBehavior()
 		{
 			const int maxDistToTarget = 256;
 
@@ -116,12 +84,39 @@ namespace WarriorsSnuggery.Objects.Bot
 			}
 		}
 
+		public void DefaultAttackBehavior()
+		{
+			Self.Weapon.Target = Target.Position;
+			int range = Self.Weapon.Type.MaxRange;
+			if (DistToTarget < range * 1.1f)
+				PredictiveAttack(Target);
+			else if (!CanMove)
+				Target = null; // Discard target if out of range
+		}
+
+		public void DefaultMoveBehavior(float rangeA = 0.8f, float rangeB = 0.9f)
+		{
+			var range = 5120;
+			if (CanAttack)
+				range = Self.Weapon.Type.MaxRange;
+			else if (Self.RevealsShroud != null)
+				range = Self.RevealsShroud.Range * 512;
+
+			var actor = GetNeighborActor();
+			float angle = actor != null ? (Self.Position - actor.Position).FlatAngle : AngleToTarget;
+
+			if (DistToTarget < range * rangeA)
+				Self.AccelerateSelf(-angle);
+			else if (DistToTarget > range * rangeB)
+				Self.AccelerateSelf(angle);
+		}
+
 		public virtual void OnDamage(Actor damager, int damage)
 		{
 			if (damager == null || damager.Health == null)
 				return;
 
-			if (!PerfectTarget)
+			if (!HasGoodTarget)
 			{
 				var target = new Target(damager.Position, damager.Height);
 				if (IsLeader)
@@ -202,7 +197,7 @@ namespace WarriorsSnuggery.Objects.Bot
 			if (actor.Team == Self.Team)
 				return false;
 
-			if (!PerfectTarget)
+			if (!HasGoodTarget)
 			{
 				Target = new Target(actor);
 

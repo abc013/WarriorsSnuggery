@@ -30,14 +30,14 @@ namespace WarriorsSnuggery.Objects.Bot
 				if (CanMove && DistToTarget > 512)
 					Self.AccelerateSelf(angle);
 
-				if (!PerfectTarget && Self.World.Game.SharedRandom.Next(100) == 0)
+				if (!HasGoodTarget && Self.World.Game.SharedRandom.Next(100) == 0)
 					PredictiveAttack(new Target(randomPosition(), 0));
 				else
 					PredictiveAttack(new Target((Target.Position + randomPosition()) / new CPos(2, 2, 2), Target.Height));
 			}
 			else
 			{
-				if (!PerfectTarget)
+				if (!HasGoodTarget)
 				{
 					if (Self.IsAlive && panic <= Self.Health.HP * 1.8f)
 						panic++;
@@ -48,38 +48,10 @@ namespace WarriorsSnuggery.Objects.Bot
 				panic--;
 
 				if (CanAttack)
-				{
-					Self.Weapon.Target = Target.Position;
-					int range = Self.Weapon.Type.MaxRange;
-					if (DistToTarget < range * 1.1f)
-						PredictiveAttack(Target);
-					else if (!CanMove)
-						Target = null; // Discard target if out of range
-				}
+					DefaultAttackBehavior();
 
 				if (CanMove)
-				{
-					if (DistToMapEdge > 1536)
-					{
-						var range = 5120;
-						if (CanAttack)
-							range = Self.Weapon.Type.MaxRange;
-						else if (Self.RevealsShroud != null)
-							range = Self.RevealsShroud.Range * 512;
-
-						var actor = GetNeighborActor();
-						float angle = actor != null ? (Self.Position - actor.Position).FlatAngle : AngleToTarget;
-
-						if (DistToTarget > range * 0.9f)
-							Self.AccelerateSelf(angle);
-						else if (DistToTarget < range * 0.8f)
-							Self.AccelerateSelf(-angle);
-					}
-					else
-					{
-						Self.AccelerateSelf(AngleToMapMid);
-					}
-				}
+					DefaultMoveBehavior();
 			}
 		}
 
