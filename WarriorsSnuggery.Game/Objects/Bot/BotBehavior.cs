@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using WarriorsSnuggery.Objects.Actors;
 using WarriorsSnuggery.Objects.Weapons;
 using WarriorsSnuggery.Objects.Weapons.Projectiles;
@@ -17,11 +18,40 @@ namespace WarriorsSnuggery.Objects.Bot
 				target = value;
 				if (IsLeader)
 					Patrol?.SetNewTarget(value);
+
+				if (target.Type == TargetType.POSITION)
+					TargetFavor = 0;
+
+				// Calculate path
+				if (CanMove)
+				{
+					Waypoints.Clear();
+
+					var path = Self.World.PathfinderLayer.CalculatePath(Self.TerrainPosition, target.Position.ToMPos(), Self.Mobility.CanFly);
+
+					foreach (var waypoint in path)
+						Waypoints.Enqueue(waypoint.ToCPos());
+				}
 			}
 		}
 		Target target;
-
 		protected float TargetFavor;
+
+		protected virtual bool PerfectTarget
+		{
+			get
+			{
+				if (Target == null || Target.Actor == null)
+					return false;
+
+				if (!Target.Actor.IsAlive || Target.Actor.Disposed)
+					return false;
+
+				return true;
+			}
+		}
+
+		protected readonly Queue<CPos> Waypoints = new Queue<CPos>();
 
 		public Patrol Patrol;
 		protected bool IsLeader => Patrol == null || Patrol.Leader == Self;
@@ -63,12 +93,35 @@ namespace WarriorsSnuggery.Objects.Bot
 
 		public abstract void Tick();
 
+		public virtual void DefaultTickBehavior()
+		{
+			const int maxDistToTarget = 256;
+
+			SearchTarget();
+			if (CanMove && Target != null && DistToTarget > maxDistToTarget)
+			{
+				if (Waypoints != null && Waypoints.Count > 0)
+				{
+					var nearest = Waypoints.Peek();
+
+					var diff = Self.Position - nearest;
+
+					Self.AccelerateSelf(diff.FlatAngle);
+
+					if (diff.SquaredFlatDist <= maxDistToTarget * maxDistToTarget)
+						Waypoints.Dequeue();
+				}
+				else
+					Self.AccelerateSelf(AngleToTarget);
+			}
+		}
+
 		public virtual void OnDamage(Actor damager, int damage)
 		{
 			if (damager == null || damager.Health == null)
 				return;
 
-			if (!PerfectTarget())
+			if (!PerfectTarget)
 			{
 				var target = new Target(damager.Position, damager.Height);
 				if (IsLeader)
@@ -80,7 +133,7 @@ namespace WarriorsSnuggery.Objects.Bot
 
 		public virtual void OnKill(Actor killed)
 		{
-			if (Target == null)
+			if (Target.Type == TargetType.POSITION)
 				return;
 
 			if (killed == Target.Actor)
@@ -90,17 +143,6 @@ namespace WarriorsSnuggery.Objects.Bot
 				else
 					Target = new Target(Target.Actor.FollowupActor);
 			}
-		}
-
-		protected virtual bool PerfectTarget()
-		{
-			if (Target == null || Target.Actor == null)
-				return false;
-
-			if (!Target.Actor.IsAlive || Target.Actor.Disposed)
-				return false;
-
-			return true;
 		}
 
 		protected virtual void SearchTarget()
@@ -160,7 +202,7 @@ namespace WarriorsSnuggery.Objects.Bot
 			if (actor.Team == Self.Team)
 				return false;
 
-			if (!PerfectTarget())
+			if (!PerfectTarget)
 			{
 				Target = new Target(actor);
 

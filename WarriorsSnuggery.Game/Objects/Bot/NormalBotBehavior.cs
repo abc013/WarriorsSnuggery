@@ -20,12 +20,9 @@ namespace WarriorsSnuggery.Objects.Bot
 			if (!CanMove && !CanAttack)
 				return;
 
-			if (!PerfectTarget())
+			if (!PerfectTarget)
 			{
-				SearchTarget();
-				if (CanMove && Target != null && DistToTarget > 712)
-					Self.AccelerateSelf(AngleToTarget);
-
+				DefaultTickBehavior();
 				return;
 			}
 

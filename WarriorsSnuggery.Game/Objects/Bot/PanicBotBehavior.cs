@@ -25,27 +25,24 @@ namespace WarriorsSnuggery.Objects.Bot
 					inPanic = false;
 
 				if (panic % 20 == 0)
-					angle = (float)Program.SharedRandom.NextDouble();
+					angle = (float)Self.World.Game.SharedRandom.NextDouble();
 
 				if (CanMove && DistToTarget > 512)
 					Self.AccelerateSelf(angle);
 
-				if (!PerfectTarget() && Program.SharedRandom.Next(100) == 0)
+				if (!PerfectTarget && Self.World.Game.SharedRandom.Next(100) == 0)
 					PredictiveAttack(new Target(randomPosition(), 0));
 				else
 					PredictiveAttack(new Target((Target.Position + randomPosition()) / new CPos(2, 2, 2), Target.Height));
 			}
 			else
 			{
-				if (!PerfectTarget())
+				if (!PerfectTarget)
 				{
-					SearchTarget();
 					if (Self.IsAlive && panic <= Self.Health.HP * 1.8f)
 						panic++;
 
-					if (CanMove && Target != null && DistToTarget > 712)
-						Self.AccelerateSelf(AngleToTarget);
-
+					DefaultTickBehavior();
 					return;
 				}
 				panic--;
@@ -86,10 +83,10 @@ namespace WarriorsSnuggery.Objects.Bot
 			}
 		}
 
-		CPos randomPosition()
+		CPos randomPosition(int range = 5120)
 		{
-			var x = Program.SharedRandom.Next(5120);
-			var y = Program.SharedRandom.Next(5120);
+			var x = Self.World.Game.SharedRandom.Next(range);
+			var y = Self.World.Game.SharedRandom.Next(range);
 
 			return Self.Position + new CPos(x, y, 0);
 		}
