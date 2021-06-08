@@ -55,7 +55,7 @@ namespace WarriorsSnuggery
 		{
 			vPos = new Vector((x / WindowInfo.Width - 0.5f) * WindowInfo.Ratio, y / WindowInfo.Height - 0.5f, 0);
 
-			WindowPosition = (vPos * new Vector(Camera.DefaultZoom, Camera.DefaultZoom, 1)).ToCPos();
+			WindowPosition = (vPos * new Vector(Camera.UIZoom, Camera.UIZoom, 1)).ToCPos();
 			GamePosition = (vPos * new Vector(Camera.CurrentZoom, Camera.CurrentZoom, 1)).ToCPos() + Camera.LookAt;
 		}
 

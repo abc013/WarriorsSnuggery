@@ -26,8 +26,8 @@ namespace WarriorsSnuggery
 
 		public static float Ratio => Width / (float)Height;
 
-		public const float UnitHeight = Camera.DefaultZoom;
-		public static float UnitWidth => Camera.DefaultZoom * Ratio;
+		public const float UnitHeight = Camera.UIZoom;
+		public static float UnitWidth => Camera.UIZoom * Ratio;
 
 		public static bool Focused = true;
 	}

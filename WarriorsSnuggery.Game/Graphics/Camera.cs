@@ -12,7 +12,7 @@ namespace WarriorsSnuggery.Graphics
 		public static bool LockedToPlayer = true;
 
 		public const float UIZoom = 16f;
-		public const float DefaultZoom = 16f;
+		public const float DefaultZoom = 12f;
 		public const float MaxZoom = 24f;
 		public static float CurrentZoom = DefaultZoom;
 

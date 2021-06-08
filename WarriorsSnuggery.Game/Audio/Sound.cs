@@ -109,7 +109,7 @@ namespace WarriorsSnuggery
 				return position.ToVector() / new Vector(Camera.CurrentZoom, Camera.CurrentZoom, 1);
 			}
 
-			return position.ToVector() / new Vector(Camera.DefaultZoom, Camera.DefaultZoom, 1);
+			return position.ToVector() / new Vector(Camera.UIZoom, Camera.UIZoom, 1);
 		}
 
 		public void Pause(bool pause)

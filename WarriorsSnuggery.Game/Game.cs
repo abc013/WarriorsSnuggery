@@ -223,9 +223,9 @@ namespace WarriorsSnuggery
 				if (!ScreenControl.CursorOnUI() && !Editor && InteractionMode != InteractionMode.EDITOR)
 				{
 					if (KeyInput.IsKeyDown(Keys.Tab))
-						Camera.Zoom(Settings.ScrollSpeed / 20 * (4 - (Camera.CurrentZoom - Camera.DefaultZoom) / 2));
+						Camera.Zoom(Settings.ScrollSpeed * ((Camera.MaxZoom - Camera.CurrentZoom) / 40));
 					else
-						Camera.Zoom(Settings.ScrollSpeed / 20 * (-(Camera.CurrentZoom - Camera.DefaultZoom) / 2));
+						Camera.Zoom(Settings.ScrollSpeed * ((Camera.DefaultZoom - Camera.CurrentZoom) / 40));
 				}
 
 				// party mode
