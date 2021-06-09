@@ -170,14 +170,16 @@ namespace WarriorsSnuggery
 		public void BeginPlayerSwitch(ActorType to)
 		{
 			var health = LocalPlayer.Health != null ? LocalPlayer.Health.RelativeHP : 1;
-			if (LocalPlayer.WorldPart == null || string.IsNullOrWhiteSpace(LocalPlayer.WorldPart.PlayerSwitchActor))
+			var playablePart = LocalPlayer.GetPartOrDefault<PlayablePart>();
+
+			if (playablePart != null && playablePart.PlayerSwitchActor == null)
 			{
 				FinishPlayerSwitch(ActorCreator.Create(this, to, LocalPlayer.Position, LocalPlayer.Team, isPlayer: true, health: health));
 				LocalPlayer.Dispose();
 				return;
 			}
 
-			var switchActor = ActorCreator.Create(this, LocalPlayer.WorldPart.PlayerSwitchActor, LocalPlayer.Position, LocalPlayer.Team, isPlayer: true);
+			var switchActor = ActorCreator.Create(this, playablePart.PlayerSwitchActor, LocalPlayer.Position, LocalPlayer.Team, isPlayer: true);
 			var switchPart = switchActor.GetPart<PlayerSwitchPart>();
 			switchPart.RelativeHP = health;
 			switchPart.ActorType = to;

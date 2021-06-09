@@ -33,9 +33,6 @@ namespace WarriorsSnuggery.Objects.Actors.Parts
 		[Desc("Selects a sound that will always be played while the actor is alive.")]
 		public readonly SoundType IdleSound;
 
-		[Desc("Determines an actor that is used when switching to another actor.", "When left empty, the switch to the next actor will be instant.")]
-		public readonly string PlayerSwitchActor = string.Empty;
-
 		[Desc("Adds this actor the the selection list in the editor.")]
 		public readonly bool ShowInEditor = true;
 
@@ -64,8 +61,6 @@ namespace WarriorsSnuggery.Objects.Actors.Parts
 		public int Hover => info.Hover;
 
 		public bool Hideable => info.Hideable;
-
-		public string PlayerSwitchActor => info.PlayerSwitchActor;
 
 		readonly Sound sound;
 
