@@ -127,8 +127,8 @@ namespace WarriorsSnuggery.Graphics
 
 		static void calculatePosition()
 		{
-			var look = -LookAt.ToVector();
-			Matrix4.CreateTranslation(look.X, look.Y, float.MaxValue, out view);
+			var look = LookAt.ToVector();
+			view = Matrix4.CreateTranslation(-look.X, -look.Y, 0);
 
 			VisibilitySolver.LookAtUpdated();
 		}
