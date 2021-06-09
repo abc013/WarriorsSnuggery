@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace WarriorsSnuggery.Objects.Actors.Parts
+﻿namespace WarriorsSnuggery.Objects.Actors.Parts
 {
 	[Desc("Basic information about the object.")]
 	public class WorldPartInfo : PartInfo
@@ -13,14 +11,6 @@ namespace WarriorsSnuggery.Objects.Actors.Parts
 
 		[Desc("Determines whether this actor needs to be killed in order to win a match.")]
 		public readonly bool KillForVictory = false;
-
-		[Desc("Height of the actor.")]
-		public readonly int Height;
-
-		[Desc("Hovering strength.", "This will create a hover-effect for flying actors.")]
-		public readonly int Hover;
-		[Desc("Hovering speed.", "If set lower, the hover frequency decreases.")]
-		public readonly int HoverSpeed = 32;
 
 		[Desc("Hides the actor when the cursor/player is behind it so the player can see more.")]
 		public readonly bool Hideable;
@@ -44,7 +34,7 @@ namespace WarriorsSnuggery.Objects.Actors.Parts
 		}
 	}
 
-	public class WorldPart : ActorPart, ITick, INoticeMove, INoticeDispose
+	public class WorldPart : ActorPart, INoticeMove, INoticeDispose
 	{
 		readonly WorldPartInfo info;
 
@@ -56,15 +46,9 @@ namespace WarriorsSnuggery.Objects.Actors.Parts
 		public bool CanTrigger => info.CanTrigger;
 		public bool KillForVictory => info.KillForVictory;
 
-		public int DefaultHeight => info.Height;
-
-		public int Hover => info.Hover;
-
 		public bool Hideable => info.Hideable;
 
 		readonly Sound sound;
-
-		int hoverTick;
 
 		public WorldPart(Actor self, WorldPartInfo info) : base(self)
 		{
@@ -73,20 +57,6 @@ namespace WarriorsSnuggery.Objects.Actors.Parts
 			{
 				sound = new Sound(info.IdleSound);
 				sound.Play(self.Position, true);
-			}
-		}
-
-		public void Tick()
-		{
-			if (Hover > 0)
-				self.Height += (int)(MathF.Sin(hoverTick++ / (float)info.HoverSpeed) * Hover);
-
-			if (self.Mobility != null && self.Mobility.CanFly)
-			{
-				if (self.Height > DefaultHeight + Hover * 64)
-					self.AccelerateHeightSelf(false);
-				else if (self.Height < DefaultHeight - Hover * 64)
-					self.AccelerateHeightSelf(true);
 			}
 		}
 

@@ -17,7 +17,7 @@ fireflyspawner=
 		Strength=1.2
 		MaxRange=5120
 		MinRange=0
-	World=
+	Hover=
 		Height=512
 
 s_tree1=

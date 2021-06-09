@@ -132,8 +132,9 @@ namespace WarriorsSnuggery.Objects.Actors
 			if (Health != null && init.Health >= 0f)
 				Health.RelativeHP = init.Health;
 
-			if (WorldPart != null)
-				Height = WorldPart.DefaultHeight;
+			var hoverPart = GetPartOrDefault<HoverPart>();
+			if (hoverPart != null)
+				Height = hoverPart.DefaultHeight;
 		}
 
 		public void OnLoad()
