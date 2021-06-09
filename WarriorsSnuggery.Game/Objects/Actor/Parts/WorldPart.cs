@@ -20,9 +20,6 @@
 		[Desc("offset of the visibility box.", "This is used to determine when to hide the actor after it is out of sight.")]
 		public readonly CPos VisibilityBoxOffset = CPos.Zero;
 
-		[Desc("Selects a sound that will always be played while the actor is alive.")]
-		public readonly SoundType IdleSound;
-
 		[Desc("Adds this actor the the selection list in the editor.")]
 		public readonly bool ShowInEditor = true;
 
@@ -34,7 +31,7 @@
 		}
 	}
 
-	public class WorldPart : ActorPart, INoticeMove, INoticeDispose
+	public class WorldPart : ActorPart
 	{
 		readonly WorldPartInfo info;
 
@@ -48,26 +45,9 @@
 
 		public bool Hideable => info.Hideable;
 
-		readonly Sound sound;
-
 		public WorldPart(Actor self, WorldPartInfo info) : base(self)
 		{
 			this.info = info;
-			if (info.IdleSound != null)
-			{
-				sound = new Sound(info.IdleSound);
-				sound.Play(self.Position, true);
-			}
-		}
-
-		public void OnMove(CPos old, CPos speed)
-		{
-			sound?.SetPosition(self.Position);
-		}
-
-		public void OnDispose()
-		{
-			sound?.Stop();
 		}
 	}
 }
