@@ -1,10 +1,9 @@
 ﻿using OpenTK.Windowing.GraphicsLibraryFramework;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using WarriorsSnuggery.Graphics;
 using WarriorsSnuggery.Loader;
-using WarriorsSnuggery.UI.Screens;
+using WarriorsSnuggery.Spells;
 
 namespace WarriorsSnuggery.Objects.Actors.Parts
 {
@@ -77,7 +76,7 @@ namespace WarriorsSnuggery.Objects.Actors.Parts
 			if (MouseInput.IsLeftDown && !self.World.Game.ScreenControl.CursorOnUI())
 				attackTarget(MouseInput.GamePosition);
 
-			foreach (var effect in self.Effects.Where(e => e.Active && e.Effect.Type == Spells.EffectType.MANA))
+			foreach (var effect in self.GetEffects(EffectType.MANA))
 				self.World.Game.Stats.Mana += (int)effect.Effect.Value;
 
 			self.World.PlayerDamagedTick++;

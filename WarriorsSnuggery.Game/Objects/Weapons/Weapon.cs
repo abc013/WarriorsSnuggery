@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using WarriorsSnuggery.Objects.Actors;
+using WarriorsSnuggery.Spells;
 
 namespace WarriorsSnuggery.Objects.Weapons
 {
@@ -53,18 +54,16 @@ namespace WarriorsSnuggery.Objects.Weapons
 
 			Height = origin.Weapon != null ? origin.Weapon.WeaponHeightPosition : origin.Height;
 
-			var effects = origin.Effects.Where(e => e.Active);
-
-			foreach (var effect in effects.Where(e => e.Effect.Type == Spells.EffectType.INACCURACY))
+			foreach (var effect in origin.GetEffects(EffectType.INACCURACY))
 				InaccuracyModifier *= effect.Effect.Value;
 
-			foreach (var effect in effects.Where(e => e.Effect.Type == Spells.EffectType.DAMAGE))
+			foreach (var effect in origin.GetEffects(EffectType.DAMAGE))
 				DamageModifier *= effect.Effect.Value;
 
-			foreach (var effect in effects.Where(e => e.Effect.Type == Spells.EffectType.DAMAGERANGE))
+			foreach (var effect in origin.GetEffects(EffectType.DAMAGERANGE))
 				DamageRangeModifier *= effect.Effect.Value;
 
-			foreach (var effect in effects.Where(e => e.Effect.Type == Spells.EffectType.RANGE))
+			foreach (var effect in origin.GetEffects(EffectType.RANGE))
 				RangeModifier *= effect.Effect.Value;
 
 			if (Type.FireSound != null)

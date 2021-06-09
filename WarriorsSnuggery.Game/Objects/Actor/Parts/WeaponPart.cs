@@ -2,6 +2,7 @@
 using System.Linq;
 using WarriorsSnuggery.Loader;
 using WarriorsSnuggery.Objects.Weapons;
+using WarriorsSnuggery.Spells;
 
 namespace WarriorsSnuggery.Objects.Actors.Parts
 {
@@ -141,7 +142,7 @@ namespace WarriorsSnuggery.Objects.Actors.Parts
 			if (self.AttackWith(target, weapon))
 			{
 				var reloadModifier = 1f;
-				foreach (var effect in self.Effects.Where(e => e.Active && e.Effect.Type == Spells.EffectType.COOLDOWN))
+				foreach (var effect in self.GetEffects(EffectType.COOLDOWN))
 					reloadModifier *= effect.Effect.Value;
 
 				Reload = (int)(Type.Reload * reloadModifier);

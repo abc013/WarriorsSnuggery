@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using WarriorsSnuggery.Objects.Actors.Parts;
 
 namespace WarriorsSnuggery.Objects.Actors
@@ -28,6 +29,31 @@ namespace WarriorsSnuggery.Objects.Actors
 				partCache.Add(type, createPartList(type));
 
 			partCache[type].Add(part);
+		}
+
+		public T GetPartOrDefault<T>()
+		{
+			object firstOrDefault<P>()
+			{
+				var type = typeof(P);
+
+				return parts.FirstOrDefault(p => p.GetType() == type);
+			}
+
+			return (T)firstOrDefault<T>();
+		}
+
+		public T GetPart<T>()
+		{
+			object first<P>()
+			{
+				var type = typeof(P);
+
+				return parts.First(p => p.GetType() == type);
+			}
+
+			var obj = first<T>();
+			return obj == null ? default : (T)obj;
 		}
 
 		public List<T> Get<T>()

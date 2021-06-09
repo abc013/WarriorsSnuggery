@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using WarriorsSnuggery.Loader;
+using WarriorsSnuggery.Spells;
 
 namespace WarriorsSnuggery.Objects.Actors.Parts
 {
@@ -82,7 +83,7 @@ namespace WarriorsSnuggery.Objects.Actors.Parts
 
 		public void Tick()
 		{
-			foreach (var effect in self.Effects.Where(e => e.Active && e.Effect.Type == Spells.EffectType.HEALTH))
+			foreach (var effect in self.GetEffects(EffectType.HEALTH))
 				HP += (int)effect.Effect.Value;
 
 			if (self.World.Game.LocalTick % 2 == 0 && self.CurrentTerrain != null && self.CurrentTerrain.Type.Damage != 0)

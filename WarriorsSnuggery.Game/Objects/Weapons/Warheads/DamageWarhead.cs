@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using WarriorsSnuggery.Loader;
 using WarriorsSnuggery.Objects.Actors;
 using WarriorsSnuggery.Objects.Actors.Parts;
@@ -124,15 +123,10 @@ namespace WarriorsSnuggery.Objects.Weapons.Warheads
 
 		void damageActor(World world, Weapon weapon, Actor actor, int damage)
 		{
-			var armor = actor.Parts.FirstOrDefault(p => p is ArmorPart);
+			var armor = actor.GetPartOrDefault<ArmorPart>();
 
-			if (armor != null)
-			{
-				var armorPart = armor as ArmorPart;
-
-				if (ArmorModifiers.ContainsKey(armorPart.Name))
-					damage = (int)(damage * ArmorModifiers[armorPart.Name]);
-			}
+			if (armor != null && ArmorModifiers.ContainsKey(armor.Name))
+				damage = (int)(damage * ArmorModifiers[armor.Name]);
 
 			if (damage == 0)
 				return;

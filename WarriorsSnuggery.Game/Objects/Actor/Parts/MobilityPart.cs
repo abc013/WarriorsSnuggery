@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using WarriorsSnuggery.Loader;
+using WarriorsSnuggery.Spells;
 
 namespace WarriorsSnuggery.Objects.Actors.Parts
 {
@@ -144,7 +145,7 @@ namespace WarriorsSnuggery.Objects.Actors.Parts
 			if (self.Height == 0 && self.World.TerrainAt(self.Position) != null)
 				speedModifier = self.World.TerrainAt(self.Position).Type.Speed;
 
-			foreach (var effect in self.Effects.Where(e => e.Active && e.Effect.Type == Spells.EffectType.SPEED))
+			foreach (var effect in self.GetEffects(EffectType.SPEED))
 				speedModifier *= effect.Effect.Value;
 
 			var currentVelocity = new CPos((int)Math.Round(Velocity.X * speedModifier), (int)Math.Round(Velocity.Y * speedModifier), (int)Math.Round(Velocity.Z * speedModifier));

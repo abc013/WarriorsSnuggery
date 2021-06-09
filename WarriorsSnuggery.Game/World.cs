@@ -178,7 +178,7 @@ namespace WarriorsSnuggery
 			}
 
 			var switchActor = ActorCreator.Create(this, LocalPlayer.WorldPart.PlayerSwitchActor, LocalPlayer.Position, LocalPlayer.Team, isPlayer: true);
-			var switchPart = (PlayerSwitchPart)switchActor.Parts.Find(p => p is PlayerSwitchPart);
+			var switchPart = switchActor.GetPart<PlayerSwitchPart>();
 			switchPart.RelativeHP = health;
 			switchPart.ActorType = to;
 			LocalPlayer.Dispose();

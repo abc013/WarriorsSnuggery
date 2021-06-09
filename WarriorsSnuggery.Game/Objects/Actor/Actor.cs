@@ -3,6 +3,7 @@ using System.Linq;
 using WarriorsSnuggery.Objects.Actors.Parts;
 using WarriorsSnuggery.Objects.Weapons;
 using WarriorsSnuggery.Physics;
+using WarriorsSnuggery.Spells;
 
 namespace WarriorsSnuggery.Objects.Actors
 {
@@ -13,12 +14,14 @@ namespace WarriorsSnuggery.Objects.Actors
 
 		public readonly World World;
 
+		public readonly uint ID;
+
 		public readonly bool IsPlayer;
 		public readonly bool IsBot;
 		public readonly bool IsPlayerSwitch;
-		public readonly uint ID;
 
-		public bool IsAlive = true;
+		public bool IsAlive { get; private set; } = true;
+		public bool IsDisposed => Disposed;
 
 		public ActorSector Sector;
 
@@ -30,9 +33,9 @@ namespace WarriorsSnuggery.Objects.Actors
 		[Save]
 		public float Angle;
 
-		public readonly List<ActorPart> Parts = new List<ActorPart>();
-		public readonly List<ActorEffect> Effects = new List<ActorEffect>();
-		public readonly PartManager PartManager;
+		readonly List<ActorEffect> effects = new List<ActorEffect>();
+
+		readonly PartManager partManager;
 
 		readonly List<ITick> tickParts;
 		readonly List<ITickInEditor> editorTickParts;
@@ -97,10 +100,12 @@ namespace WarriorsSnuggery.Objects.Actors
 			CurrentTerrain = world.TerrainAt(TerrainPosition);
 
 			// Parts
+			partManager = new PartManager();
+
 			foreach (var partinfo in init.Type.PartInfos)
 			{
 				var part = partinfo.Create(this);
-				Parts.Add(part);
+				partManager.Add(part);
 
 				// Cache some important parts
 				if (part is MobilityPart mobility)
@@ -118,27 +123,23 @@ namespace WarriorsSnuggery.Objects.Actors
 			}
 
 			if (IsPlayer)
-				Parts.Add(new PlayerPart(this));
+				partManager.Add(new PlayerPart(this));
 
 			if (IsBot)
 			{
 				var behavior = WorldPart == null ? Objects.Bot.BotBehaviorType.TYPICAL : WorldPart.BotBehavior;
 				Bot = new BotPart(this, behavior);
-				Parts.Add(Bot);
+				partManager.Add(Bot);
 			}
 
-			PartManager = new PartManager();
-			foreach (var part in Parts)
-				PartManager.Add(part);
+			tickParts = partManager.GetOrDefault<ITick>();
+			editorTickParts = partManager.GetOrDefault<ITickInEditor>();
+			renderParts = partManager.GetOrDefault<IRenderable>();
+			accelerationParts = partManager.GetOrDefault<INoticeAcceleration>();
+			moveParts = partManager.GetOrDefault<INoticeMove>();
+			stopParts = partManager.GetOrDefault<INoticeStop>();
 
-			tickParts = PartManager.GetOrDefault<ITick>();
-			editorTickParts = PartManager.GetOrDefault<ITickInEditor>();
-			renderParts = PartManager.GetOrDefault<IRenderable>();
-			accelerationParts = PartManager.GetOrDefault<INoticeAcceleration>();
-			moveParts = PartManager.GetOrDefault<INoticeMove>();
-			stopParts = PartManager.GetOrDefault<INoticeStop>();
-
-			Physics = getPhysics(init.Type);
+			Physics = Type.Physics == null ? SimplePhysics.Empty : new SimplePhysics(this, Type.Physics.Type);
 
 			if (Health != null && init.Health >= 0f)
 				Health.RelativeHP = init.Health;
@@ -147,22 +148,14 @@ namespace WarriorsSnuggery.Objects.Actors
 				Height = WorldPart.DefaultHeight;
 		}
 
-		SimplePhysics getPhysics(ActorType type)
-		{
-			if (type.Physics == null)
-				return SimplePhysics.Empty;
-
-			return new SimplePhysics(this, type.Physics.Type);
-		}
-
 		public void OnLoad()
 		{
-			foreach (var part in PartManager.GetOrDefault<ISaveLoadable>())
+			foreach (var part in partManager.GetOrDefault<ISaveLoadable>())
 				part.OnLoad(init.Nodes);
 
-			var effects = init.Nodes.Where(n => n.Key == nameof(ActorEffect));
-			foreach (var effect in effects)
-				Effects.Add(new ActorEffect(this, effect.Children));
+			var effectData = init.Nodes.Where(n => n.Key == nameof(ActorEffect));
+			foreach (var effect in effectData)
+				effects.Add(new ActorEffect(this, effect.Children));
 
 			init = null;
 		}
@@ -171,10 +164,10 @@ namespace WarriorsSnuggery.Objects.Actors
 		{
 			var list = WorldSaver.GetSaveFields(this);
 
-			foreach (var part in PartManager.GetOrDefault<ISaveLoadable>())
+			foreach (var part in partManager.GetOrDefault<ISaveLoadable>())
 				list.AddRange(part.OnSave().GetSave());
 
-			foreach (var effect in Effects)
+			foreach (var effect in effects)
 				list.AddRange(effect.Save());
 
 			return list;
@@ -232,7 +225,7 @@ namespace WarriorsSnuggery.Objects.Actors
 			if (!ActionPossible(ActionType.PREPARE_MOVE) && !ActionPossible(ActionType.MOVE))
 				return false;
 
-			if (Effects.Any(e => e.Active && e.Effect.Type == Spells.EffectType.STUN))
+			if (EffectActive(EffectType.STUN))
 				return false;
 
 			return true;
@@ -243,7 +236,7 @@ namespace WarriorsSnuggery.Objects.Actors
 			foreach (var part in moveParts)
 				part.OnMove(old, Velocity);
 
-			foreach (var effect in Effects)
+			foreach (var effect in effects)
 				effect.OnMove(old, Velocity);
 		}
 
@@ -253,7 +246,7 @@ namespace WarriorsSnuggery.Objects.Actors
 				part.OnStop();
 		}
 
-		public void CastSpell(Spells.Spell spell)
+		public void CastSpell(Spell spell)
 		{
 			if (World.Game.Editor)
 				return;
@@ -265,8 +258,11 @@ namespace WarriorsSnuggery.Objects.Actors
 			}
 
 			for (int i = 0; i < spell.Effects.Length; i++)
-				Effects.Add(new ActorEffect(this, spell, i));
+				effects.Add(new ActorEffect(this, spell, i));
 		}
+
+		public IEnumerable<ActorEffect> GetEffects(EffectType type) => effects.Where(e => e.Effect.Type == type);
+		public bool EffectActive(EffectType type) => effects.Any(e => e.Effect.Type == type);
 
 		public override bool CheckVisibility()
 		{
@@ -286,7 +282,7 @@ namespace WarriorsSnuggery.Objects.Actors
 			if (!visible)
 				return;
 
-			if (Effects.Any(e => e.Active && e.Effect.Type == Spells.EffectType.INVISIBILITY))
+			if (EffectActive(EffectType.INVISIBILITY))
 				return;
 
 			base.Render();
@@ -304,10 +300,10 @@ namespace WarriorsSnuggery.Objects.Actors
 
 		public override void Tick()
 		{
-			base.Tick();
-
 			if (!IsAlive)
 				return;
+
+			base.Tick();
 
 			if (World.Game.Editor)
 			{
@@ -327,16 +323,10 @@ namespace WarriorsSnuggery.Objects.Actors
 
 		void processEffects()
 		{
-			var effectsToRemove = new List<ActorEffect>();
-			foreach (var effect in Effects)
-			{
+			foreach (var effect in effects)
 				effect.Tick();
-				if (!effect.Active)
-					effectsToRemove.Add(effect);
-			}
 
-			foreach (var effect in effectsToRemove)
-				Effects.Remove(effect);
+			effects.RemoveAll(e => !e.Active);
 		}
 
 		void processActions()
@@ -433,7 +423,7 @@ namespace WarriorsSnuggery.Objects.Actors
 
 		public override void SetColor(Color color)
 		{
-			foreach (var part in PartManager.GetOrDefault<IPartRenderable>())
+			foreach (var part in partManager.GetOrDefault<IPartRenderable>())
 				part.SetColor(color);
 		}
 
@@ -468,7 +458,7 @@ namespace WarriorsSnuggery.Objects.Actors
 			if (!ActionPossible(ActionType.PREPARE_ATTACK) && !ActionPossible(ActionType.ATTACK))
 				return false;
 
-			if (Effects.Any(e => e.Active && e.Effect.Type == Spells.EffectType.STUN))
+			if (EffectActive(EffectType.STUN))
 				return false;
 
 			return true;
@@ -481,7 +471,7 @@ namespace WarriorsSnuggery.Objects.Actors
 
 			World.Add(weapon);
 
-			foreach (var part in PartManager.GetOrDefault<INoticeAttack>())
+			foreach (var part in partManager.GetOrDefault<INoticeAttack>())
 				part.OnAttack(target.Position, weapon);
 
 			return true;
@@ -489,7 +479,7 @@ namespace WarriorsSnuggery.Objects.Actors
 
 		public void Kill(Actor killed)
 		{
-			foreach (var part in PartManager.GetOrDefault<INoticeKill>())
+			foreach (var part in partManager.GetOrDefault<INoticeKill>())
 				part.OnKill(killed);
 		}
 
@@ -501,12 +491,12 @@ namespace WarriorsSnuggery.Objects.Actors
 			if (Health == null || Health.HP <= 0)
 				return;
 
-			if (Effects.Any(e => e.Active && e.Effect.Type == Spells.EffectType.SHIELD))
+			if (EffectActive(EffectType.SHIELD))
 				return;
 
 			Health.HP -= damage;
 
-			foreach (var part in PartManager.GetOrDefault<INoticeDamage>())
+			foreach (var part in partManager.GetOrDefault<INoticeDamage>())
 				part.OnDamage(attacker, damage);
 
 			if (Health.HP <= 0)
@@ -518,7 +508,7 @@ namespace WarriorsSnuggery.Objects.Actors
 			Damage(null, damage);
 		}
 
-		public void Killed(Actor killer)
+		public void Killed(Actor killer, bool dispose = true)
 		{
 			if (World.Game.Editor)
 				return;
@@ -528,17 +518,21 @@ namespace WarriorsSnuggery.Objects.Actors
 
 			IsAlive = false;
 
-			foreach (var part in PartManager.GetOrDefault<INoticeKilled>())
+			foreach (var part in partManager.GetOrDefault<INoticeKilled>())
 				part.OnKilled(killer);
 
-			Dispose();
+			if (dispose)
+				Dispose();
 		}
+
+		public T GetPart<T>() => partManager.GetPart<T>();
+		public T GetPartOrDefault<T>() => partManager.GetPartOrDefault<T>();
 
 		public override void Dispose()
 		{
 			base.Dispose();
 
-			foreach (var part in PartManager.GetOrDefault<INoticeDispose>())
+			foreach (var part in partManager.GetOrDefault<INoticeDispose>())
 				part.OnDispose();
 			World.ActorLayer.Remove(this);
 		}
