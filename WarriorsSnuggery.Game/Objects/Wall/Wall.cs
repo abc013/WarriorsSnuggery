@@ -128,13 +128,13 @@ namespace WarriorsSnuggery.Objects
 			bool newRenderable = false;
 			if (healthPercentage < 0.25f)
 			{
-				newRenderable = Type.DamagedImage1 != null && damageState != DamageState.HEAVY;
+				newRenderable = Type.SlightDamageTexture != null && damageState != DamageState.HEAVY;
 
 				damageState = DamageState.HEAVY;
 			}
 			else if (healthPercentage < 0.75f)
 			{
-				newRenderable = Type.DamagedImage2 != null && damageState != DamageState.LIGHT;
+				newRenderable = Type.HeavyDamageTexture != null && damageState != DamageState.LIGHT;
 
 				damageState = DamageState.LIGHT;
 			}
@@ -155,18 +155,18 @@ namespace WarriorsSnuggery.Objects
 
 		void setRenderable()
 		{
-			var info = Type.Image;
+			var info = Type.Texture;
 			if (damageState == DamageState.LIGHT)
 			{
-				if (Type.DamagedImage1 != null)
-					info = Type.DamagedImage1;
+				if (Type.SlightDamageTexture != null)
+					info = Type.SlightDamageTexture;
 			}
 			else if (damageState == DamageState.HEAVY)
 			{
-				if (Type.DamagedImage2 != null)
-					info = Type.DamagedImage2;
-				else if (Type.DamagedImage1 != null)
-					info = Type.DamagedImage1;
+				if (Type.HeavyDamageTexture != null)
+					info = Type.HeavyDamageTexture;
+				else if (Type.SlightDamageTexture != null)
+					info = Type.SlightDamageTexture;
 			}
 
 			renderable = new BatchObject(Type.GetTexture(IsHorizontal, neighborState, info));

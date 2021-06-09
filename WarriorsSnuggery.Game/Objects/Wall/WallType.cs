@@ -10,13 +10,13 @@ namespace WarriorsSnuggery.Objects
 		public readonly short ID;
 
 		[Desc("Texture of the wall.")]
-		public readonly TextureInfo Image;
+		public readonly TextureInfo Texture;
 
 		[Desc("Texture of the wall when slightly damaged.")]
-		public readonly TextureInfo DamagedImage1;
+		public readonly TextureInfo SlightDamageTexture;
 
 		[Desc("Texture of the wall when heavily damaged.")]
-		public readonly TextureInfo DamagedImage2;
+		public readonly TextureInfo HeavyDamageTexture;
 
 		[Desc("This settings determines the texture of the wall by walls that are placed nearby.", "For this setting, three textures are needed in total: One for nearby walls only at left/top side, one for right/bottom side and a default one.", "This applies to all damage levels.")]
 		public readonly bool ConsiderWallsNearby = false;
@@ -58,16 +58,16 @@ namespace WarriorsSnuggery.Objects
 			if (documentation)
 				return;
 
-			if (Image == null)
+			if (Texture == null)
 				throw new MissingNodeException("[Wall] " + id, "Image");
 
-			checkTextures(Image);
+			checkTextures(Texture);
 
-			if (DamagedImage1 != null)
-				checkTextures(DamagedImage1);
+			if (SlightDamageTexture != null)
+				checkTextures(SlightDamageTexture);
 
-			if (DamagedImage2 != null)
-				checkTextures(DamagedImage2);
+			if (HeavyDamageTexture != null)
+				checkTextures(HeavyDamageTexture);
 
 			HorizontalPhysicsType = new SimplePhysicsType(Shape.LINE_HORIZONTAL, 512, 512, Height, new CPos(0, 0, 0), 0);
 			VerticalPhysicsType = new SimplePhysicsType(Shape.LINE_VERTICAL, 512, 512, Height, new CPos(0, 512, 0), 0);

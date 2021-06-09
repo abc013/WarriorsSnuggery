@@ -1,9 +1,9 @@
 0=
-	Image=walls1
+	Texture=walls1
 		Size=24,48
-	DamagedImage1=walls1_dam1
+	SlightDamageTexture=walls1_dam1
 		Size=24,48
-	DamagedImage2=walls1_dam2
+	HeavyDamageTexture=walls1_dam2
 		Size=24,48
 	Health=400
 	ConsiderWallsNearby=true
@@ -11,11 +11,11 @@
 	Armor=wood
 
 1=
-	Image=walls0
+	Texture=walls0
 		Size=24,48
-	DamagedImage1=walls0_dam1
+	SlightDamageTexture=walls0_dam1
 		Size=24,48
-	DamagedImage2=walls0_dam2
+	HeavyDamageTexture=walls0_dam2
 		Size=24,48
 	Health=400
 	ConsiderWallsNearby=true
@@ -23,11 +23,11 @@
 	Armor=stone
 
 2=
-	Image=handrails
+	Texture=handrails
 		Size=24,32
-	DamagedImage1=handrails_dam1
+	SlightDamageTexture=handrails_dam1
 		Size=24,31
-	DamagedImage2=handrails_dam2
+	HeavyDamageTexture=handrails_dam2
 		Size=24,29
 	DamagePenetration=0.8
 	Height=256
@@ -37,11 +37,11 @@
 	Armor=stone
 
 3=
-	Image=fence0
+	Texture=fence0
 		Size=24,33
-	DamagedImage1=fence0_dam1
+	SlightDamageTexture=fence0_dam1
 		Size=24,33
-	DamagedImage2=fence0_dam2
+	HeavyDamageTexture=fence0_dam2
 		Size=24,30
 	DamagePenetration=0.8
 	Height=256
@@ -51,7 +51,7 @@
 	Armor=wood
 
 4=
-	Image=walls0_damaged0
+	Texture=walls0_damaged0
 		Size=24,48
 	DamagePenetration=0.3
 	Health=300
@@ -59,7 +59,7 @@
 	Armor=stone
 
 5=
-	Image=walls0_damaged1
+	Texture=walls0_damaged1
 		Size=24,48
 	DamagePenetration=0.3
 	Health=300
@@ -67,11 +67,11 @@
 	Armor=stone
 
 8=
-	Image=walls0_gate
+	Texture=walls0_gate
 		Size=24,48
-	DamagedImage1=walls0_gate_dam1
+	SlightDamageTexture=walls0_gate_dam1
 		Size=24,48
-	DamagedImage2=walls0_gate_dam2
+	HeavyDamageTexture=walls0_gate_dam2
 		Size=24,48
 	Blocks=false
 	DamagePenetration=1
@@ -80,7 +80,7 @@
 	Armor=stone
 
 9=
-	Image=walls_rubble0
+	Texture=walls_rubble0
 		Size=24,26
 	Blocks=false
 	DamagePenetration=0
@@ -88,7 +88,7 @@
 	IsOnFloor=true
 
 10=
-	Image=walls_rubble1
+	Texture=walls_rubble1
 		Size=24,24
 	Blocks=false
 	DamagePenetration=0
