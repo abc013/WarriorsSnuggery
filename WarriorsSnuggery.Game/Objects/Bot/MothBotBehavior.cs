@@ -1,13 +1,31 @@
-﻿using WarriorsSnuggery.Objects.Actors;
+﻿using System.Collections.Generic;
+using WarriorsSnuggery.Loader;
+using WarriorsSnuggery.Objects.Actors;
 using WarriorsSnuggery.Objects.Weapons;
 
 namespace WarriorsSnuggery.Objects.Bot
 {
+	[Desc("Type that aims to reproduce moth behavior.")]
+	public class MothBotBehaviorType : BotBehaviorType
+	{
+		public MothBotBehaviorType(List<TextNode> nodes) : base(nodes) { }
+
+		public override BotBehavior Create(Actor self)
+		{
+			return new MothBotBehavior(self, this);
+		}
+	}
+
 	public class MothBotBehavior : BotBehavior
 	{
+		readonly MothBotBehaviorType type;
+
 		int tick;
 
-		public MothBotBehavior(World world, Actor self) : base(world, self) { }
+		public MothBotBehavior(Actor self, MothBotBehaviorType type) : base(self)
+		{
+			this.type = type;
+		}
 
 		public override void Tick()
 		{

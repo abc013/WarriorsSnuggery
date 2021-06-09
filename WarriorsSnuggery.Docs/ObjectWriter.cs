@@ -15,6 +15,9 @@ namespace WarriorsSnuggery.Docs
 
 			HTMLWriter.WriteHeader("SimplePhysics");
 			TypeWriter.Write(typeof(WarriorsSnuggery.Physics.SimplePhysicsType), new[] { emptyTextNodes });
+
+			HTMLWriter.WriteHeader("BotBehaviors");
+			TypeWriter.WriteAll("WarriorsSnuggery.Objects.Bot", "BotBehaviorType", new[] { emptyTextNodes });
 		}
 
 		public static void WriteParticles()

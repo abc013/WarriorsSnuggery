@@ -65,18 +65,6 @@ namespace WarriorsSnuggery.Objects.Actors
 		public MPos TerrainPosition;
 		public Terrain CurrentTerrain;
 
-		bool visible;
-
-		CPos Velocity
-		{
-			get => Mobility == null ? CPos.Zero : Mobility.Velocity;
-			set
-			{
-				if (Mobility != null)
-					Mobility.Velocity = value;
-			}
-		}
-
 		public Actor(World world, ActorInit init, uint overrideID) : this(world, init)
 		{
 			ID = overrideID;
@@ -101,9 +89,11 @@ namespace WarriorsSnuggery.Objects.Actors
 
 			// Parts
 			partManager = new PartManager();
-
 			foreach (var partinfo in init.Type.PartInfos)
 			{
+				if (partinfo is BotPartInfo && !IsBot)
+					continue;
+
 				var part = partinfo.Create(this);
 				partManager.Add(part);
 
@@ -118,19 +108,17 @@ namespace WarriorsSnuggery.Objects.Actors
 					Weapon = weapon;
 				else if (part is WorldPart worldPart)
 					WorldPart = worldPart;
+				else if (part is BotPart botPart)
+					Bot = botPart;
 				else if (part is PlayerSwitchPart)
 					IsPlayerSwitch = true;
 			}
 
+			if (IsBot && Bot == null)
+				IsBot = false; // BotPart is not there, thus there's no bot
+
 			if (IsPlayer)
 				partManager.Add(new PlayerPart(this));
-
-			if (IsBot)
-			{
-				var behavior = WorldPart == null ? Objects.Bot.BotBehaviorType.TYPICAL : WorldPart.BotBehavior;
-				Bot = new BotPart(this, behavior);
-				partManager.Add(Bot);
-			}
 
 			tickParts = partManager.GetOrDefault<ITick>();
 			editorTickParts = partManager.GetOrDefault<ITickInEditor>();
@@ -234,10 +222,10 @@ namespace WarriorsSnuggery.Objects.Actors
 		public void Move(CPos old)
 		{
 			foreach (var part in moveParts)
-				part.OnMove(old, Velocity);
+				part.OnMove(old, Mobility.Velocity);
 
 			foreach (var effect in effects)
-				effect.OnMove(old, Velocity);
+				effect.OnMove(old, Mobility.Velocity);
 		}
 
 		public void StopMove()
@@ -270,16 +258,16 @@ namespace WarriorsSnuggery.Objects.Actors
 				return false;
 
 			if (WorldPart != null)
-				visible = VisibilitySolver.IsVisible(GraphicPosition + WorldPart.VisibilityBoxOffset, WorldPart.VisibilityBox);
+				Visible = VisibilitySolver.IsVisible(GraphicPosition + WorldPart.VisibilityBoxOffset, WorldPart.VisibilityBox);
 			else
-				visible = VisibilitySolver.IsVisible(GraphicPosition, new MPos(512, 512));
+				Visible = VisibilitySolver.IsVisible(GraphicPosition, new MPos(512, 512));
 
-			return visible;
+			return Visible;
 		}
 
 		public override void Render()
 		{
-			if (!visible)
+			if (!Visible)
 				return;
 
 			if (EffectActive(EffectType.INVISIBILITY))

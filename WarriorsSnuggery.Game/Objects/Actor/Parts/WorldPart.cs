@@ -1,5 +1,4 @@
 ﻿using System;
-using WarriorsSnuggery.Objects.Bot;
 
 namespace WarriorsSnuggery.Objects.Actors.Parts
 {
@@ -39,9 +38,6 @@ namespace WarriorsSnuggery.Objects.Actors.Parts
 		[Desc("offset of the visibility box.", "This is used to determine when to hide the actor after it is out of sight.")]
 		public readonly CPos VisibilityBoxOffset = CPos.Zero;
 
-		[Desc("Selects the bot behavior that will be used if the actor is controlled by a bot.")]
-		public readonly BotBehaviorType BotBehavior = BotBehaviorType.TYPICAL;
-
 		[Desc("Selects a sound that will always be played while the actor is alive.")]
 		public readonly SoundType IdleSound;
 
@@ -78,7 +74,6 @@ namespace WarriorsSnuggery.Objects.Actors.Parts
 		public int Hover => info.Hover;
 
 		public bool Hideable => info.Hideable;
-		public BotBehaviorType BotBehavior => info.BotBehavior;
 
 		public string PlayerSwitchActor => info.PlayerSwitchActor;
 

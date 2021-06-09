@@ -1,15 +1,33 @@
-﻿using WarriorsSnuggery.Objects.Actors;
+﻿using System.Collections.Generic;
+using WarriorsSnuggery.Loader;
+using WarriorsSnuggery.Objects.Actors;
 using WarriorsSnuggery.Objects.Weapons;
 
 namespace WarriorsSnuggery.Objects.Bot
 {
+	[Desc("Type that aims to reproduce moth behavior.")]
+	public class PanicBotBehaviorType : BotBehaviorType
+	{
+		public PanicBotBehaviorType(List<TextNode> nodes) : base(nodes) { }
+
+		public override BotBehavior Create(Actor self)
+		{
+			return new PanicBotBehavior(self, this);
+		}
+	}
+
 	public class PanicBotBehavior : BotBehavior
 	{
+		readonly PanicBotBehaviorType type;
+
 		int panic;
 		bool inPanic;
 		float angle;
 
-		public PanicBotBehavior(World world, Actor self) : base(world, self) { }
+		public PanicBotBehavior(Actor self, PanicBotBehaviorType type) : base(self)
+		{
+			this.type = type;
+		}
 
 		public override void Tick()
 		{

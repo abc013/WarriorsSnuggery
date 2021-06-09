@@ -6,6 +6,20 @@ using WarriorsSnuggery.Objects.Weapons;
 
 namespace WarriorsSnuggery.Objects.Actors.Parts
 {
+	[Desc("Attach this to the actor type to activate bot functions.")]
+	public class BotPartInfo : PartInfo
+	{
+		[Desc("Behavior of the bot. This is required, otherwise the game will crash!")]
+		public readonly BotBehaviorType Behavior;
+
+		public BotPartInfo(PartInitSet set) : base(set) { }
+
+		public override ActorPart Create(Actor self)
+		{
+			return new BotPart(self, this);
+		}
+	}
+
 	public class BotPart : ActorPart, ITick, INoticeDamage, INoticeKill, INoticeKilled, ISaveLoadable
 	{
 		readonly BotBehavior bot;
@@ -22,15 +36,9 @@ namespace WarriorsSnuggery.Objects.Actors.Parts
 			set => bot.Patrol = value;
 		}
 
-		public BotPart(Actor self, BotBehaviorType type) : base(self)
+		public BotPart(Actor self, BotPartInfo info) : base(self)
 		{
-			bot = type switch
-			{
-				BotBehaviorType.HIDE_AND_SEEK => new HideAndSeekBotBehavior(self.World, self),
-				BotBehaviorType.MOTH => new MothBotBehavior(self.World, self),
-				BotBehaviorType.PANIC => new PanicBotBehavior(self.World, self),
-				_ => new NormalBotBehavior(self.World, self),
-			};
+			bot = info.Behavior.Create(self);
 		}
 
 		public void OnLoad(List<TextNode> nodes)

@@ -5,6 +5,7 @@ using WarriorsSnuggery.Graphics;
 using WarriorsSnuggery.Maps;
 using WarriorsSnuggery.Maps.Generators;
 using WarriorsSnuggery.Objects.Actors;
+using WarriorsSnuggery.Objects.Bot;
 using WarriorsSnuggery.Objects.Conditions;
 using WarriorsSnuggery.Objects.Particles;
 using WarriorsSnuggery.Objects.Weapons;
@@ -357,6 +358,15 @@ namespace WarriorsSnuggery.Loader
 			else if (t == typeof(Effect))
 			{
 				return new Effect(node.Children);
+			}
+			else if (t == typeof(BotBehaviorType))
+			{
+				var type = Type.GetType("WarriorsSnuggery.Objects.Bot." + value.Trim() + "BotBehaviorType", false, true);
+
+				if (type == null || type.IsInterface)
+					throw new InvalidConversionException(file, node, t);
+
+				return Activator.CreateInstance(type, new[] { node.Children });
 			}
 			else if (t == typeof(IProjectile))
 			{

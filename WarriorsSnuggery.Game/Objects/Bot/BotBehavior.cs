@@ -1,11 +1,24 @@
 ﻿using System;
 using System.Collections.Generic;
+using WarriorsSnuggery.Loader;
 using WarriorsSnuggery.Objects.Actors;
 using WarriorsSnuggery.Objects.Weapons;
 using WarriorsSnuggery.Objects.Weapons.Projectiles;
 
 namespace WarriorsSnuggery.Objects.Bot
 {
+	public abstract class BotBehaviorType
+	{
+		public readonly string InternalName;
+
+		protected BotBehaviorType(List<TextNode> nodes)
+		{
+			TypeLoader.SetValues(this, nodes);
+		}
+
+		public abstract BotBehavior Create(Actor self);
+	}
+
 	public abstract class BotBehavior
 	{
 		protected const int SearchIntervall = 20;
@@ -53,10 +66,10 @@ namespace WarriorsSnuggery.Objects.Bot
 		protected bool CanMove => Self.Mobility != null;
 		protected bool CanAttack => Self.Weapon != null;
 
-		protected BotBehavior(World world, Actor self)
+		protected BotBehavior(Actor self)
 		{
-			World = world;
 			Self = self;
+			World = self.World;
 		}
 
 		public abstract void Tick();

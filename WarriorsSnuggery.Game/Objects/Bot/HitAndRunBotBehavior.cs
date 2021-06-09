@@ -1,13 +1,31 @@
-﻿using WarriorsSnuggery.Objects.Actors;
+﻿using System.Collections.Generic;
+using WarriorsSnuggery.Loader;
+using WarriorsSnuggery.Objects.Actors;
 
 namespace WarriorsSnuggery.Objects.Bot
 {
-	public class HideAndSeekBotBehavior : BotBehavior
+	[Desc("Type that aims to reproduce a \"hit and run\" technique.")]
+	public class HitAndRunBotBehaviorType : BotBehaviorType
 	{
+		public HitAndRunBotBehaviorType(List<TextNode> nodes) : base(nodes) { }
+
+		public override BotBehavior Create(Actor self)
+		{
+			return new HitAndRunBotBehavior(self, this);
+		}
+	}
+
+	public class HitAndRunBotBehavior : BotBehavior
+	{
+		readonly HitAndRunBotBehaviorType type;
+
 		bool hide;
 		int hideDuration;
 
-		public HideAndSeekBotBehavior(World world, Actor self) : base(world, self) { }
+		public HitAndRunBotBehavior(Actor self, HitAndRunBotBehaviorType type) : base(self)
+		{
+			this.type = type;
+		}
 
 		public override void Tick()
 		{

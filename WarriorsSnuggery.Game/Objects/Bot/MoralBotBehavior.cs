@@ -1,10 +1,25 @@
 ﻿using System;
+using System.Collections.Generic;
+using WarriorsSnuggery.Loader;
 using WarriorsSnuggery.Objects.Actors;
 
 namespace WarriorsSnuggery.Objects.Bot
 {
-	public class NormalBotBehavior : BotBehavior
+	[Desc("Type uses a moral system to determine its strategy.")]
+	public class MoralBotBehaviorType : BotBehaviorType
 	{
+		public MoralBotBehaviorType(List<TextNode> nodes) : base(nodes) { }
+
+		public override BotBehavior Create(Actor self)
+		{
+			return new MoralBotBehavior(self, this);
+		}
+	}
+
+	public class MoralBotBehavior : BotBehavior
+	{
+		readonly MoralBotBehaviorType type;
+
 		int moral
 		{
 			get => moralVal;
@@ -12,7 +27,10 @@ namespace WarriorsSnuggery.Objects.Bot
 		}
 		int moralVal;
 
-		public NormalBotBehavior(World world, Actor self) : base(world, self) { }
+		public MoralBotBehavior(Actor self, MoralBotBehaviorType type) : base(self)
+		{
+			this.type = type;
+		}
 
 		public override void Tick()
 		{
