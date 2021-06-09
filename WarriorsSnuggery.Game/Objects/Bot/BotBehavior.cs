@@ -68,7 +68,7 @@ namespace WarriorsSnuggery.Objects.Bot
 			SearchTarget();
 			if (CanMove && Target != null && DistToTarget > maxDistToTarget)
 			{
-				if (Waypoints != null && Waypoints.Count > 0)
+				if (Waypoints.Count > 0)
 				{
 					var nearest = Waypoints.Peek();
 

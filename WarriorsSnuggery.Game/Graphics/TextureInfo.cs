@@ -11,8 +11,8 @@
 	{
 		readonly string file;
 		readonly Texture[] textures;
-		readonly TextureType type;
 
+		public readonly TextureType Type;
 		public readonly int Tick;
 
 		public readonly int Width;
@@ -29,7 +29,7 @@
 
 			this.file = file;
 
-			this.type = type;
+			Type = type;
 			Tick = tick;
 
 			Width = width;
@@ -37,7 +37,7 @@
 
 			if (load)
 			{
-				if (this.type == TextureType.IMAGE)
+				if (Type == TextureType.IMAGE)
 					textures = SheetManager.AddTexture(file, out Width, out Height);
 				else
 					textures = SheetManager.AddSprite(file, width, height);
@@ -49,7 +49,7 @@
 			if (textures == null)
 				throw new System.Exception($"Tried to fetch textures from unloaded TextureInfo ({file})");
 
-			if (type == TextureType.RANDOM)
+			if (Type == TextureType.RANDOM)
 				return new[] { textures[Program.SharedRandom.Next(textures.Length)] };
 
 			return textures;

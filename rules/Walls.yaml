@@ -1,10 +1,10 @@
 0=
 	Image=walls1
-		Size=48,24
+		Size=24,48
 	DamagedImage1=walls1_dam1
-		Size=48,24
+		Size=24,48
 	DamagedImage2=walls1_dam2
-		Size=48,24
+		Size=24,48
 	Health=400
 	ConsiderWallsNearby=true
 	WallOnDeath=10
@@ -12,11 +12,11 @@
 
 1=
 	Image=walls0
-		Size=48,24
+		Size=24,48
 	DamagedImage1=walls0_dam1
-		Size=48,24
+		Size=24,48
 	DamagedImage2=walls0_dam2
-		Size=48,24
+		Size=24,48
 	Health=400
 	ConsiderWallsNearby=true
 	WallOnDeath=9
@@ -24,11 +24,11 @@
 
 2=
 	Image=handrails
-		Size=48,24
+		Size=24,32
 	DamagedImage1=handrails_dam1
-		Size=48,24
+		Size=24,31
 	DamagedImage2=handrails_dam2
-		Size=48,24
+		Size=24,29
 	DamagePenetration=0.8
 	Height=256
 	Health=200
@@ -38,11 +38,11 @@
 
 3=
 	Image=fence0
-		Size=48,24
+		Size=24,33
 	DamagedImage1=fence0_dam1
-		Size=48,24
+		Size=24,33
 	DamagedImage2=fence0_dam2
-		Size=48,24
+		Size=24,30
 	DamagePenetration=0.8
 	Height=256
 	Health=150
@@ -52,7 +52,7 @@
 
 4=
 	Image=walls0_damaged0
-		Size=48,24
+		Size=24,48
 	DamagePenetration=0.3
 	Health=300
 	WallOnDeath=9
@@ -60,7 +60,7 @@
 
 5=
 	Image=walls0_damaged1
-		Size=48,24
+		Size=24,48
 	DamagePenetration=0.3
 	Health=300
 	WallOnDeath=9
@@ -68,11 +68,11 @@
 
 8=
 	Image=walls0_gate
-		Size=48,24
+		Size=24,48
 	DamagedImage1=walls0_gate_dam1
-		Size=48,24
+		Size=24,48
 	DamagedImage2=walls0_gate_dam2
-		Size=48,24
+		Size=24,48
 	Blocks=false
 	DamagePenetration=1
 	Health=250
@@ -81,7 +81,7 @@
 
 9=
 	Image=walls_rubble0
-		Size=48,24
+		Size=24,26
 	Blocks=false
 	DamagePenetration=0
 	IgnoreForNearby=true
@@ -89,7 +89,7 @@
 
 10=
 	Image=walls_rubble1
-		Size=48,24
+		Size=24,24
 	Blocks=false
 	DamagePenetration=0
 	IgnoreForNearby=true

@@ -10,16 +10,13 @@ namespace WarriorsSnuggery.Objects
 		public readonly short ID;
 
 		[Desc("Texture of the wall.")]
-		public readonly string Image;
-		readonly Texture[] textures;
+		public readonly TextureInfo Image;
 
 		[Desc("Texture of the wall when slightly damaged.")]
-		public readonly string DamagedImage1;
-		readonly Texture[] damagedTextures1;
+		public readonly TextureInfo DamagedImage1;
 
 		[Desc("Texture of the wall when heavily damaged.")]
-		public readonly string DamagedImage2;
-		readonly Texture[] damagedTextures2;
+		public readonly TextureInfo DamagedImage2;
 
 		[Desc("This settings determines the texture of the wall by walls that are placed nearby.", "For this setting, three textures are needed in total: One for nearby walls only at left/top side, one for right/bottom side and a default one.", "This applies to all damage levels.")]
 		public readonly bool ConsiderWallsNearby = false;
@@ -58,66 +55,56 @@ namespace WarriorsSnuggery.Objects
 			ID = id;
 			TypeLoader.SetValues(this, nodes);
 
-			if (!documentation)
-			{
-				if (Image == null || string.IsNullOrEmpty(Image))
-					throw new MissingNodeException("[Wall] " + id, "Image");
+			if (documentation)
+				return;
 
-				textures = new TextureInfo(Image, TextureType.ANIMATION, 24, 48).GetTextures();
+			if (Image == null)
+				throw new MissingNodeException("[Wall] " + id, "Image");
 
-				if (textures.Length < (ConsiderWallsNearby ? 6 : 2))
-					throw new InvalidNodeException($"Texture '{Image}' of Wall '{id}' has not enough textures!");
+			checkTextures(Image);
 
-				if (DamagedImage1 != null)
-				{
-					damagedTextures1 = new TextureInfo(DamagedImage1, TextureType.ANIMATION, 24, 48).GetTextures();
+			if (DamagedImage1 != null)
+				checkTextures(DamagedImage1);
 
-					if (textures.Length < (ConsiderWallsNearby ? 6 : 2))
-						throw new InvalidNodeException($"DamageTexture '{DamagedImage1}' of Wall '{id}' has not enough textures!");
-				}
+			if (DamagedImage2 != null)
+				checkTextures(DamagedImage2);
 
-				if (DamagedImage2 != null)
-				{
-					damagedTextures2 = new TextureInfo(DamagedImage2, TextureType.ANIMATION, 24, 48).GetTextures();
-
-					if (textures.Length < (ConsiderWallsNearby ? 6 : 2))
-						throw new InvalidNodeException($"DamageTexture '{DamagedImage2}' of Wall '{id}' has not enough textures!");
-				}
-
-				HorizontalPhysicsType = new SimplePhysicsType(Shape.LINE_HORIZONTAL, 512, 512, Height, new CPos(0, 512, 0), 0);
-				VerticalPhysicsType = new SimplePhysicsType(Shape.LINE_VERTICAL, 512, 512, Height, new CPos(0, 1024, 0), 0);
-			}
+			HorizontalPhysicsType = new SimplePhysicsType(Shape.LINE_HORIZONTAL, 512, 512, Height, new CPos(0, 0, 0), 0);
+			VerticalPhysicsType = new SimplePhysicsType(Shape.LINE_VERTICAL, 512, 512, Height, new CPos(0, 512, 0), 0);
 		}
 
-		public Texture GetTexture(bool horizontal, byte neighborState)
+		void checkTextures(TextureInfo info)
 		{
-			return getTexture(horizontal, neighborState, textures);
+			if (info.Type != TextureType.ANIMATION)
+				throw new InvalidNodeException($"Texture '{info}' of Wall '{ID}' has to be defined as ANIMATION.");
+
+			var textureCount = info.GetTextures().Length;
+			var wallCount = ConsiderWallsNearby ? 6 : 2;
+			if (textureCount < wallCount)
+				throw new InvalidNodeException($"Texture '{info}' of Wall '{ID}' has not enough textures ({textureCount}/{wallCount})!");
 		}
 
-		public Texture GetDamagedTexture(bool horizontal, bool heavily, byte neighborState)
+		public Texture GetTexture(bool horizontal, byte neighborState, TextureInfo info)
 		{
-			return getTexture(horizontal, neighborState, heavily ? damagedTextures2 : damagedTextures1);
-		}
+			var usedTextures = info.GetTextures();
 
-		Texture getTexture(bool horizontal, byte neighborState, Texture[] usedTextures)
-		{
 			var half = usedTextures.Length / 2;
-			var offset = horizontal ? half : 0;
+			var start = horizontal ? half : 0;
 
 			if (ConsiderWallsNearby)
 			{
-				var add = getNeighborState(neighborState);
+				var offset = getOffset(neighborState);
 				var count = half / 3;
 
 				var ran = Program.SharedRandom.Next(count);
-				return usedTextures[offset + add * count + ran];
+				return usedTextures[start + offset * count + ran];
 			}
 
 			var halfRan = Program.SharedRandom.Next(half);
-			return usedTextures[offset + halfRan];
+			return usedTextures[start + halfRan];
 		}
 
-		int getNeighborState(byte neighborState)
+		static int getOffset(byte neighborState)
 		{
 			const byte checks1 = 0b11100000;
 			const byte checks2 = 0b00011100;

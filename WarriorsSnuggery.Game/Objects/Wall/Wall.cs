@@ -5,7 +5,6 @@ namespace WarriorsSnuggery.Objects
 {
 	public class Wall : PhysicsObject
 	{
-
 		enum NeighborState : byte
 		{
 			NONE = 0,
@@ -25,7 +24,6 @@ namespace WarriorsSnuggery.Objects
 
 		public readonly MPos LayerPosition;
 		public readonly MPos TerrainPosition;
-		readonly CPos renderPos;
 
 		public readonly bool IsHorizontal;
 
@@ -71,21 +69,14 @@ namespace WarriorsSnuggery.Objects
 
 			IsHorizontal = LayerPosition.X % 2 != 0;
 
-			var pos = LayerPosition.ToCPos() / new CPos(2, 1, 1);
-			renderPos = pos;
-			Position = pos + new CPos(0, -512, 0);
+			Position = LayerPosition.ToCPos() / new CPos(2, 1, 1);
 
-			if (IsHorizontal)
-			{
-				renderPos += new CPos(-512, -1536, 0);
-			}
-			else
-			{
-				ZOffset += 2048;
-				renderPos += new CPos(-83, -512, 0);
-			}
+			ZOffset -= 512;
+			if (!IsHorizontal)
+				ZOffset += Height;
+
 			if (type.IsOnFloor)
-				ZOffset -= 2048;
+				ZOffset = -2048;
 
 			Physics = getPhysics(position, type);
 		}
@@ -164,28 +155,35 @@ namespace WarriorsSnuggery.Objects
 
 		void setRenderable()
 		{
-			switch (damageState)
+			var info = Type.Image;
+			if (damageState == DamageState.LIGHT)
 			{
-				case DamageState.NONE:
-					renderable = new BatchObject(Type.GetTexture(IsHorizontal, neighborState));
-					break;
-				case DamageState.HEAVY:
-					if (Type.DamagedImage2 != null)
-						renderable = new BatchObject(Type.GetDamagedTexture(IsHorizontal, true, neighborState));
-					else if (Type.DamagedImage1 != null)
-						renderable = new BatchObject(Type.GetDamagedTexture(IsHorizontal, false, neighborState));
-					else
-						renderable = new BatchObject(Type.GetTexture(IsHorizontal, neighborState));
-					break;
-				case DamageState.LIGHT:
-					if (Type.DamagedImage1 != null)
-						renderable = new BatchObject(Type.GetDamagedTexture(IsHorizontal, false, neighborState));
-					else
-						renderable = new BatchObject(Type.GetTexture(IsHorizontal, neighborState));
-					break;
+				if (Type.DamagedImage1 != null)
+					info = Type.DamagedImage1;
 			}
-			renderable.SetPosition(renderPos);
+			else if (damageState == DamageState.HEAVY)
+			{
+				if (Type.DamagedImage2 != null)
+					info = Type.DamagedImage2;
+				else if (Type.DamagedImage1 != null)
+					info = Type.DamagedImage1;
+			}
+
+			renderable = new BatchObject(Type.GetTexture(IsHorizontal, neighborState, info));
+			renderable.SetPosition(Position + getTextureOffset(info, IsHorizontal));
 			renderable.SetColor(color);
+		}
+
+		static CPos getTextureOffset(TextureInfo info, bool horizontal)
+		{
+			// Assumed wall width: 4px
+			var width = horizontal ? info.Width : 4;
+			var x = (int)-(MasterRenderer.PixelMultiplier * 512 * width);
+
+			var height = info.Height;
+			var y = (int)-(MasterRenderer.PixelMultiplier * 512 * height) + 512 * (horizontal ? -1 : 1);
+
+			return new CPos(x, y, 0);
 		}
 
 		public override bool CheckVisibility()

@@ -42,7 +42,7 @@ namespace WarriorsSnuggery.UI.Objects.Editor
 		{
 			list = new PanelList(new MPos(2048, 4096), new MPos(512, 1024), "wooden");
 			foreach (var a in WallCreator.Types.Values)
-				list.Add(new PanelListItem(new BatchObject(a.GetTexture(true, 0)), new MPos(512, 512), a.ID.ToString(), new string[0], () => CurrentType = a));
+				list.Add(new PanelListItem(new BatchObject(a.GetTexture(true, 0, a.Image)), new MPos(512, 512), a.ID.ToString(), new string[0], () => CurrentType = a));
 
 			placementCheck = new CheckBox("wooden");
 			placementText = new UITextLine(FontManager.Default);
