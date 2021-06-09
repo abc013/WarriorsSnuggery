@@ -84,7 +84,7 @@ namespace WarriorsSnuggery.Objects.Actors.Parts
 
 		public Actor FindValidTarget(CPos pos, int team = Actor.PlayerTeam)
 		{
-			const int range = 5120;
+			const int range = 1024;
 
 			if (KeyInput.IsKeyDown(Keys.LeftShift))
 				return null;
@@ -97,7 +97,11 @@ namespace WarriorsSnuggery.Objects.Actors.Parts
 			{
 				foreach (var actor in sector.Actors)
 				{
-					if (actor.Team == team || actor.WorldPart == null || !actor.WorldPart.Targetable || !actor.WorldPart.InTargetBox(pos) || !VisibilitySolver.IsVisible(actor.Position))
+					if (actor.Team == team || actor.WorldPart == null || !VisibilitySolver.IsVisible(actor.Position))
+						continue;
+
+					var targetPart = actor.GetPartOrDefault<TargetablePart>();
+					if (targetPart == null || !targetPart.InTargetBox(pos))
 						continue;
 
 					var dist = (actor.Position - pos).SquaredFlatDist;

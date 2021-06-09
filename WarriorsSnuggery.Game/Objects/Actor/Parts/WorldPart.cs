@@ -8,9 +8,6 @@ namespace WarriorsSnuggery.Objects.Actors.Parts
 		[Desc("When true, the actor will show a damage text.")]
 		public readonly bool ShowDamage;
 
-		[Desc("When true, the actor can be targeted by the automatic target system.")]
-		public readonly bool Targetable;
-
 		[Desc("When true, the actor will be able to trigger other objects.")]
 		public readonly bool CanTrigger;
 
@@ -27,11 +24,6 @@ namespace WarriorsSnuggery.Objects.Actors.Parts
 
 		[Desc("Hides the actor when the cursor/player is behind it so the player can see more.")]
 		public readonly bool Hideable;
-
-		[Desc("Up-left-corner of the selection box for possible targets.")]
-		public readonly CPos TargetBoxCorner1 = new CPos(-256, 256, 0);
-		[Desc("Down-right-corner of the selection box for possible targets.")]
-		public readonly CPos TargetBoxCorner2 = new CPos(256, -256, 0);
 
 		[Desc("Size of the visbility box.", "This is used to determine when to hide the actor after it is out of sight.")]
 		public readonly MPos VisibilityBox = new MPos(512, 512);
@@ -64,8 +56,6 @@ namespace WarriorsSnuggery.Objects.Actors.Parts
 
 		public bool ShowDamage => info.ShowDamage;
 
-		public bool Targetable => info.Targetable;
-
 		public bool CanTrigger => info.CanTrigger;
 		public bool KillForVictory => info.KillForVictory;
 
@@ -89,12 +79,6 @@ namespace WarriorsSnuggery.Objects.Actors.Parts
 				sound = new Sound(info.IdleSound);
 				sound.Play(self.Position, true);
 			}
-		}
-
-		public bool InTargetBox(CPos pos)
-		{
-			var diff = pos - self.Position;
-			return diff.X > info.TargetBoxCorner1.X && diff.X < info.TargetBoxCorner2.X && diff.Y > -info.TargetBoxCorner1.Y && diff.Y < -info.TargetBoxCorner2.Y;
 		}
 
 		public void Tick()
