@@ -58,7 +58,7 @@ namespace WarriorsSnuggery.Maps.Generators
 
 		public override void Generate()
 		{
-			var noise = GeneratorUtils.GetNoise(Loader, info.NoiseMapID);
+			var noise = Loader.GetNoise(info.NoiseMapID);
 
 			searchBlocks = info.MaxBounds;
 			if (searchBlocks == MPos.Zero)

@@ -57,7 +57,7 @@ namespace WarriorsSnuggery.Docs
 			TypeWriter.Write(typeof(WarriorsSnuggery.Maps.MapType), Array.Empty<object>());
 
 			HTMLWriter.WriteHeader("NoiseMap");
-			TypeWriter.Write(typeof(WarriorsSnuggery.Maps.NoiseMapInfo), new object[] { -1, emptyTextNodes });
+			TypeWriter.Write(typeof(WarriorsSnuggery.Maps.Noises.NoiseMapInfo), new object[] { -1, emptyTextNodes });
 
 			HTMLWriter.WriteHeader("Generators");
 			TypeWriter.WriteAll("WarriorsSnuggery.Maps.Generators", "GeneratorInfo", new object[] { -1, emptyTextNodes });

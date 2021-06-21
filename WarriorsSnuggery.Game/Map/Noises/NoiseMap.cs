@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using WarriorsSnuggery.Graphics;
 using WarriorsSnuggery.Loader;
 
-namespace WarriorsSnuggery.Maps
+namespace WarriorsSnuggery.Maps.Noises
 {
 	[Desc("This object is designed to give information about noise that will be used by various generators.")]
 	public sealed class NoiseMapInfo
@@ -58,13 +58,13 @@ namespace WarriorsSnuggery.Maps
 
 					if (scale == 1f)
 					{
-						values = Maze.GenerateMaze(bounds, random, info.Strength);
+						values = MazeNoise.GenerateMaze(bounds, random, info.Strength);
 						break;
 					}
 
 					var scaledBounds = new MPos((int)Math.Ceiling(bounds.X * scale), (int)Math.Ceiling(bounds.Y * scale));
 
-					var rawValues = Maze.GenerateMaze(scaledBounds, random, info.Strength);
+					var rawValues = MazeNoise.GenerateMaze(scaledBounds, random, info.Strength);
 
 					values = new float[bounds.X * bounds.Y];
 					for (var x = 0; x < bounds.X; x++)

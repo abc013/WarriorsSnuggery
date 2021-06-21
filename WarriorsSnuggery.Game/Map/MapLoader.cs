@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using WarriorsSnuggery.Loader;
 using WarriorsSnuggery.Maps.Generators;
+using WarriorsSnuggery.Maps.Noises;
 using WarriorsSnuggery.Objects;
 using WarriorsSnuggery.Objects.Actors;
 using WarriorsSnuggery.Objects.Particles;
@@ -311,6 +312,17 @@ namespace WarriorsSnuggery.Maps
 			piece.PlacePiece(position, this);
 
 			return true;
+		}
+
+		public NoiseMap GetNoise(int id)
+		{
+			if (id < 0)
+				return EmptyNoiseMap;
+
+			if (!NoiseMaps.ContainsKey(id))
+				throw new Loader.InvalidNodeException($"Map type {MapTypeName} is missing a NoiseMap with ID {id}.");
+
+			return NoiseMaps[id];
 		}
 	}
 }

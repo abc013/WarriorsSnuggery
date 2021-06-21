@@ -2,17 +2,6 @@
 {
 	public static class GeneratorUtils
 	{
-		public static NoiseMap GetNoise(MapLoader loader, int id)
-		{
-			if (id < 0)
-				return loader.EmptyNoiseMap;
-
-			if (!loader.NoiseMaps.ContainsKey(id))
-				throw new Loader.InvalidNodeException($"Map type {loader.MapTypeName} is missing a NoiseMap with ID {id}.");
-
-			return loader.NoiseMaps[id];
-		}
-
 		public static float Multiplier(float[] probability, float[] steps, float value)
 		{
 			var start = steps[0];

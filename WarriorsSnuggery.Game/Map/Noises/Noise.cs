@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace WarriorsSnuggery
+namespace WarriorsSnuggery.Maps.Noises
 {
 	public static class Noise
 	{

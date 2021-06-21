@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace WarriorsSnuggery
+namespace WarriorsSnuggery.Maps.Noises
 {
 	class MazeField
 	{
@@ -16,7 +16,7 @@ namespace WarriorsSnuggery
 		}
 	}
 
-	public static class Maze
+	public static class MazeNoise
 	{
 		public static float[] GenerateMaze(MPos size, Random random, int additionalPathwayProbability = 0)
 		{

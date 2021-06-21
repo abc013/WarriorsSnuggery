@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using WarriorsSnuggery.Loader;
+using WarriorsSnuggery.Maps.Noises;
 
 namespace WarriorsSnuggery.Maps.Generators
 {
@@ -65,7 +66,7 @@ namespace WarriorsSnuggery.Maps.Generators
 			var pieceIndex = info.Pieces[Random.Next(info.Pieces.Length)];
 			var piece = PieceManager.GetPiece(pieceIndex);
 
-			var noise = GeneratorUtils.GetNoise(Loader, info.NoiseMapID);
+			var noise = Loader.GetNoise(info.NoiseMapID);
 
 			switch (info.PositionType)
 			{

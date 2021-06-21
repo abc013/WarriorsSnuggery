@@ -2,6 +2,7 @@
 using System.Linq;
 using WarriorsSnuggery.Loader;
 using WarriorsSnuggery.Maps.Generators;
+using WarriorsSnuggery.Maps.Noises;
 using WarriorsSnuggery.Objects.Weather;
 
 namespace WarriorsSnuggery.Maps

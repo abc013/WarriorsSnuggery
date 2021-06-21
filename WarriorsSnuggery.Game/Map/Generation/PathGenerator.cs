@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using WarriorsSnuggery.Loader;
+using WarriorsSnuggery.Maps.Noises;
 
 namespace WarriorsSnuggery.Maps.Generators
 {
@@ -57,7 +58,7 @@ namespace WarriorsSnuggery.Maps.Generators
 		{
 			this.info = info;
 
-			noise = GeneratorUtils.GetNoise(loader, info.NoiseMapID);
+			noise = Loader.GetNoise(info.NoiseMapID);
 		}
 
 		public override void Generate()

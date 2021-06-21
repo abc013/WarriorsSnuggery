@@ -1,4 +1,4 @@
-﻿namespace WarriorsSnuggery
+﻿namespace WarriorsSnuggery.Maps.Noises
 {
 	public enum NoiseType
 	{
