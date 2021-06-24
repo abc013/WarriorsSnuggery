@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using WarriorsSnuggery.Objects;
 
-namespace WarriorsSnuggery
+namespace WarriorsSnuggery.Maps.Layers
 {
 	public sealed class TerrainLayer : ITickRenderable
 	{

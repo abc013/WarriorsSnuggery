@@ -1,10 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using WarriorsSnuggery.Maps;
 using WarriorsSnuggery.Objects.Actors;
 
-namespace WarriorsSnuggery
+namespace WarriorsSnuggery.Maps.Layers
 {
 	public sealed class ActorLayer
 	{

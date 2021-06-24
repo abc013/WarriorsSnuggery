@@ -4,7 +4,7 @@ using WarriorsSnuggery.Graphics;
 using WarriorsSnuggery.Objects;
 using WarriorsSnuggery.Objects.Actors;
 
-namespace WarriorsSnuggery
+namespace WarriorsSnuggery.Maps.Layers
 {
 	public sealed class ShroudLayer
 	{

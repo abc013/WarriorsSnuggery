@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using WarriorsSnuggery.Maps.Layers;
 using WarriorsSnuggery.Objects.Particles;
 
 namespace WarriorsSnuggery.Objects.Actors.Parts

@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using WarriorsSnuggery.Maps;
+using WarriorsSnuggery.Maps.Layers;
 using WarriorsSnuggery.Objects.Actors.Parts;
 using WarriorsSnuggery.Objects.Weapons;
 using WarriorsSnuggery.Physics;

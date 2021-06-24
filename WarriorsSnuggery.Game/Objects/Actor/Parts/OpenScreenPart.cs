@@ -1,4 +1,5 @@
-﻿using WarriorsSnuggery.Objects.Conditions;
+﻿using WarriorsSnuggery.Maps.Layers;
+using WarriorsSnuggery.Objects.Conditions;
 
 namespace WarriorsSnuggery.Objects.Actors.Parts
 {

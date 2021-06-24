@@ -2,7 +2,7 @@
 using System.Linq;
 using WarriorsSnuggery.Objects.Weapons;
 
-namespace WarriorsSnuggery
+namespace WarriorsSnuggery.Maps.Layers
 {
 	public sealed class WeaponLayer
 	{

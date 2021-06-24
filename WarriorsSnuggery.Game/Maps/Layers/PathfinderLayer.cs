@@ -3,7 +3,7 @@ using System.Linq;
 using WarriorsSnuggery.Graphics;
 using WarriorsSnuggery.Objects;
 
-namespace WarriorsSnuggery
+namespace WarriorsSnuggery.Maps.Layers
 {
 	public sealed class PathfinderLayer
 	{

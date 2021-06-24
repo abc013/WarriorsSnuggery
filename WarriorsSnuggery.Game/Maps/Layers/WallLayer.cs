@@ -2,9 +2,8 @@
 using System.Linq;
 using System.Collections.Generic;
 using WarriorsSnuggery.Objects;
-using WarriorsSnuggery.Maps;
 
-namespace WarriorsSnuggery
+namespace WarriorsSnuggery.Maps.Layers
 {
 	public sealed class WallLayer : IRenderable
 	{
