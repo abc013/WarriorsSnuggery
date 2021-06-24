@@ -122,12 +122,12 @@ namespace WarriorsSnuggery.Objects.Actors
 			if (IsPlayer)
 				partManager.Add(new PlayerPart(this));
 
-			tickParts = partManager.GetOrDefault<ITick>();
-			editorTickParts = partManager.GetOrDefault<ITickInEditor>();
-			renderParts = partManager.GetOrDefault<IRenderable>();
-			accelerationParts = partManager.GetOrDefault<INoticeAcceleration>();
-			moveParts = partManager.GetOrDefault<INoticeMove>();
-			stopParts = partManager.GetOrDefault<INoticeStop>();
+			tickParts = partManager.GetPartsOrDefault<ITick>();
+			editorTickParts = partManager.GetPartsOrDefault<ITickInEditor>();
+			renderParts = partManager.GetPartsOrDefault<IRenderable>();
+			accelerationParts = partManager.GetPartsOrDefault<INoticeAcceleration>();
+			moveParts = partManager.GetPartsOrDefault<INoticeMove>();
+			stopParts = partManager.GetPartsOrDefault<INoticeStop>();
 
 			Physics = Type.Physics == null ? SimplePhysics.Empty : new SimplePhysics(this, Type.Physics.Type);
 
@@ -141,7 +141,7 @@ namespace WarriorsSnuggery.Objects.Actors
 
 		public void OnLoad()
 		{
-			foreach (var part in partManager.GetOrDefault<ISaveLoadable>())
+			foreach (var part in partManager.GetPartsOrDefault<ISaveLoadable>())
 				part.OnLoad(init.Nodes);
 
 			var effectData = init.Nodes.Where(n => n.Key == nameof(ActorEffect));
@@ -155,7 +155,7 @@ namespace WarriorsSnuggery.Objects.Actors
 		{
 			var list = MapSaver.GetSaveFields(this);
 
-			foreach (var part in partManager.GetOrDefault<ISaveLoadable>())
+			foreach (var part in partManager.GetPartsOrDefault<ISaveLoadable>())
 				list.AddRange(part.OnSave().GetSave());
 
 			foreach (var effect in effects)
@@ -414,7 +414,7 @@ namespace WarriorsSnuggery.Objects.Actors
 
 		public override void SetColor(Color color)
 		{
-			foreach (var part in partManager.GetOrDefault<IPartRenderable>())
+			foreach (var part in partManager.GetPartsOrDefault<IPartRenderable>())
 				part.SetColor(color);
 		}
 
@@ -462,7 +462,7 @@ namespace WarriorsSnuggery.Objects.Actors
 
 			World.Add(weapon);
 
-			foreach (var part in partManager.GetOrDefault<INoticeAttack>())
+			foreach (var part in partManager.GetPartsOrDefault<INoticeAttack>())
 				part.OnAttack(target.Position, weapon);
 
 			return true;
@@ -470,7 +470,7 @@ namespace WarriorsSnuggery.Objects.Actors
 
 		public void Kill(Actor killed)
 		{
-			foreach (var part in partManager.GetOrDefault<INoticeKill>())
+			foreach (var part in partManager.GetPartsOrDefault<INoticeKill>())
 				part.OnKill(killed);
 		}
 
@@ -487,7 +487,7 @@ namespace WarriorsSnuggery.Objects.Actors
 
 			Health.HP -= damage;
 
-			foreach (var part in partManager.GetOrDefault<INoticeDamage>())
+			foreach (var part in partManager.GetPartsOrDefault<INoticeDamage>())
 				part.OnDamage(attacker, damage);
 
 			if (Health.HP <= 0)
@@ -509,7 +509,7 @@ namespace WarriorsSnuggery.Objects.Actors
 
 			IsAlive = false;
 
-			foreach (var part in partManager.GetOrDefault<INoticeKilled>())
+			foreach (var part in partManager.GetPartsOrDefault<INoticeKilled>())
 				part.OnKilled(killer);
 
 			if (dispose)
@@ -518,12 +518,14 @@ namespace WarriorsSnuggery.Objects.Actors
 
 		public T GetPart<T>() => partManager.GetPart<T>();
 		public T GetPartOrDefault<T>() => partManager.GetPartOrDefault<T>();
+		public List<T> GetParts<T>() => partManager.GetParts<T>();
+		public List<T> GetPartsOrDefault<T>() => partManager.GetPartsOrDefault<T>();
 
 		public override void Dispose()
 		{
 			base.Dispose();
 
-			foreach (var part in partManager.GetOrDefault<INoticeDispose>())
+			foreach (var part in partManager.GetPartsOrDefault<INoticeDispose>())
 				part.OnDispose();
 			World.ActorLayer.Remove(this);
 		}

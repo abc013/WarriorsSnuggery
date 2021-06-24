@@ -56,7 +56,7 @@ namespace WarriorsSnuggery.Objects.Actors
 			return obj == null ? default : (T)obj;
 		}
 
-		public List<T> Get<T>()
+		public List<T> GetParts<T>()
 		{
 			var type = typeof(T);
 
@@ -66,7 +66,7 @@ namespace WarriorsSnuggery.Objects.Actors
 			return ((PartList<T>)partCache[type]).Get();
 		}
 
-		public List<T> GetOrDefault<T>()
+		public List<T> GetPartsOrDefault<T>()
 		{
 			var type = typeof(T);
 
