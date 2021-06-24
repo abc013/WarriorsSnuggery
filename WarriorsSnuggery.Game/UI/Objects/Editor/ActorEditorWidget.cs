@@ -70,17 +70,17 @@ namespace WarriorsSnuggery.UI.Objects.Editor
 		public ActorEditorWidget() : base()
 		{
 			list = new PanelList(new MPos(2048, 4096), new MPos(512, 512), "wooden");
-			foreach (var pair in ActorCreator.Types)
+			foreach (var key in ActorCreator.Types.Keys)
 			{
-				var a = pair.Value;
+				var actor = ActorCreator.Types[key];
 
-				var worldTrait = a.PartInfos.FirstOrDefault(p => p is WorldPartInfo);
+				var worldTrait = actor.PartInfos.FirstOrDefault(p => p is WorldPartInfo);
 				if (worldTrait != null && !(worldTrait as WorldPartInfo).ShowInEditor)
 					continue;
 
-				var sprite = a.GetPreviewSprite();
+				var sprite = actor.GetPreviewSprite();
 				var scale = (sprite.Width > sprite.Height ? 24f / sprite.Width : 24f / sprite.Height) - 0.1f;
-				list.Add(new PanelListItem(new BatchObject(sprite), new MPos(512, 512), a.Playable == null ? pair.Key : a.Playable.Name, new string[0], () => CurrentType = a)
+				list.Add(new PanelListItem(new BatchObject(sprite), new MPos(512, 512), actor.Playable == null ? key : actor.Playable.Name, new string[0], () => CurrentType = actor)
 				{
 					Scale = scale
 				});

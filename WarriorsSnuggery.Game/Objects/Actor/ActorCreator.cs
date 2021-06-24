@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
 using WarriorsSnuggery.Loader;
 using WarriorsSnuggery.Objects.Actors.Parts;
 
@@ -7,7 +6,7 @@ namespace WarriorsSnuggery.Objects.Actors
 {
 	public static class ActorCreator
 	{
-		public static readonly Dictionary<string, ActorType> Types = new Dictionary<string, ActorType>();
+		public static readonly TypeDictionary<ActorType> Types = new TypeDictionary<ActorType>();
 
 		public static void Load(List<TextNode> nodes)
 		{
@@ -31,16 +30,8 @@ namespace WarriorsSnuggery.Objects.Actors
 			}
 		}
 
-		public static string GetName(ActorType type)
-		{
-			return Types.First(t => t.Value == type).Key;
-		}
-
 		public static Actor Create(World world, string name, CPos position, byte team = 0, bool isBot = false, bool isPlayer = false, float health = -1f)
 		{
-			if (!Types.ContainsKey(name))
-				throw new MissingInfoException(name);
-
 			return Create(world, Types[name], position, team, isBot, isPlayer, health);
 		}
 
@@ -49,19 +40,13 @@ namespace WarriorsSnuggery.Objects.Actors
 			return new Actor(world, CreateInit(world, type, position, team, isBot, isPlayer, health));
 		}
 
-		public static Actor Create(World world, ActorInit init, bool overrideID, CPos offset)
+		public static Actor Create(World world, ActorInit init, bool overrideID)
 		{
-			var actor = overrideID ? new Actor(world, init, world.Game.NextActorID) : new Actor(world, init);
-
-			actor.Position += offset;
-			return actor;
+			return overrideID ? new Actor(world, init, world.Game.NextActorID) : new Actor(world, init);
 		}
 
 		public static ActorInit CreateInit(World world, string name, CPos position, byte team = 0, bool isBot = false, bool isPlayer = false, float health = -1f)
 		{
-			if (!Types.ContainsKey(name))
-				throw new MissingInfoException(name);
-
 			return CreateInit(world, Types[name], position, team, isBot, isPlayer, health);
 		}
 

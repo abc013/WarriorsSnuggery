@@ -41,7 +41,7 @@ namespace WarriorsSnuggery.Objects.Weapons
 
 		public override string ToString()
 		{
-			return WeaponCreator.GetName(this);
+			return WeaponCreator.Types[this];
 		}
 	}
 }

@@ -43,7 +43,7 @@
 			var saver = new PartSaver(this, string.Empty);
 
 			saver.Add("RelativeHP", RelativeHP, 1f);
-			saver.Add("ActorType", ActorCreator.GetName(ActorType), null);
+			saver.Add("ActorType", ActorCreator.Types[ActorType], null);
 			saver.Add("CurrentTick", CurrentTick, 0);
 
 			return saver;

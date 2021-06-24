@@ -144,7 +144,9 @@ namespace WarriorsSnuggery.Maps
 			{
 				foreach (var (init, offset) in list)
 				{
-					var actor = ActorCreator.Create(world, init, !FromSave, offset);
+					var actor = ActorCreator.Create(world, init, !FromSave);
+					actor.Position += offset;
+
 					actors.Add(actor);
 					world.Add(actor);
 				}

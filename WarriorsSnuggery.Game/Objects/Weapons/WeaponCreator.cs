@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using WarriorsSnuggery.Loader;
 using WarriorsSnuggery.Objects.Actors;
 
@@ -8,7 +7,7 @@ namespace WarriorsSnuggery.Objects.Weapons
 {
 	public static class WeaponCreator
 	{
-		public static readonly Dictionary<string, WeaponType> Types = new Dictionary<string, WeaponType>();
+		public static readonly TypeDictionary<WeaponType> Types = new TypeDictionary<WeaponType>();
 
 		public static void Load(List<TextNode> nodes)
 		{
@@ -16,16 +15,8 @@ namespace WarriorsSnuggery.Objects.Weapons
 				Types.Add(node.Key, new WeaponType(node.Children));
 		}
 
-		public static string GetName(WeaponType type)
-		{
-			return Types.First(t => t.Value == type).Key;
-		}
-
 		public static Weapon Create(World world, string name, CPos target, Actor origin, uint id = uint.MaxValue)
 		{
-			if (!Types.ContainsKey(name))
-				throw new MissingInfoException(name);
-
 			return Create(world, Types[name], new Target(target, 0), origin, id);
 		}
 

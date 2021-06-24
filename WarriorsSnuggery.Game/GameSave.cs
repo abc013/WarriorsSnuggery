@@ -369,7 +369,7 @@ namespace WarriorsSnuggery
 
 			var player = game.World.LocalPlayer;
 
-			Actor = ActorCreator.GetName(player.Type);
+			Actor = ActorCreator.Types[player.Type];
 
 			if (player.IsPlayerSwitch)
 				Health = player.GetPart<PlayerSwitchPart>().RelativeHP;

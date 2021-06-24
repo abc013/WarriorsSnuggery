@@ -325,23 +325,14 @@ namespace WarriorsSnuggery.Loader
 			}
 			else if (t == typeof(WeaponType))
 			{
-				if (!WeaponCreator.Types.ContainsKey(value))
-					throw new MissingInfoException(value);
-
 				return WeaponCreator.Types[value.Trim()];
 			}
 			else if (t == typeof(ParticleType))
 			{
-				if (!ParticleCreator.Types.ContainsKey(value))
-					throw new MissingInfoException(value);
-
 				return ParticleCreator.Types[value.Trim()];
 			}
 			else if (t == typeof(ActorType))
 			{
-				if (!ActorCreator.Types.ContainsKey(value))
-					throw new MissingInfoException(value);
-
 				return ActorCreator.Types[value.Trim()];
 			}
 			else if (t == typeof(SimplePhysicsType))
