@@ -27,26 +27,14 @@ namespace WarriorsSnuggery.Graphics
 			}
 		}
 
-		public void Dispose()
-		{
-			Dispose(true);
-			GC.SuppressFinalize(this);
-		}
-
 		public virtual void Bind()
 		{
 			lock (MasterRenderer.GLLock)
 			{
-				UseProgram();
+				GL.UseProgram(ProgramID);
 				GL.BindVertexArray(VertexArrayID);
 				Program.CheckGraphicsError("Renderable_Bind");
 			}
-		}
-
-		public void UseProgram()
-		{
-			GL.UseProgram(ProgramID);
-			Program.CheckGraphicsError("Renderable_Program");
 		}
 
 		public virtual void Render()
@@ -57,6 +45,12 @@ namespace WarriorsSnuggery.Graphics
 				Program.CheckGraphicsError("Renderable_Draw");
 			}
 			MasterRenderer.RenderCalls++;
+		}
+
+		public void Dispose()
+		{
+			Dispose(true);
+			GC.SuppressFinalize(this);
 		}
 
 		protected virtual void Dispose(bool disposing)

@@ -32,19 +32,14 @@ namespace WarriorsSnuggery
 
 			Update();
 
-			ClearRenderLists();
+			beforeRender.Clear();
+			afterRender.Clear();
+			tooltip = null;
 		}
 
 		public static void Update()
 		{
 			matrix = Matrix4.CreateScale(1 / Camera.UIZoom * 2 / WindowInfo.Ratio, 1 / Camera.UIZoom * 2, 1f);
-		}
-
-		public static void ClearRenderLists()
-		{
-			beforeRender.Clear();
-			afterRender.Clear();
-			tooltip = null;
 		}
 
 		public static void SetTooltip(Tooltip tooltip)

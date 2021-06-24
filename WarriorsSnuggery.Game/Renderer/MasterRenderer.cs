@@ -25,7 +25,7 @@ namespace WarriorsSnuggery
 		static readonly BatchRenderer debugRenderer = new BatchRenderer();
 
 		static int frameBuffer;
-		static Image renderable;
+		static TexturedRenderable renderable;
 		static Texture frameTexture;
 
 		public static void InitRenderer()
@@ -102,7 +102,7 @@ namespace WarriorsSnuggery
 				GL.BindFramebuffer(FramebufferTarget.Framebuffer, frameBuffer);
 				GL.FramebufferTexture2D(FramebufferTarget.Framebuffer, FramebufferAttachment.ColorAttachment0, TextureTarget.Texture2D, frameTextureID, 0);
 				frameTexture = new Texture(0, 0, width, height, frameTextureID);
-				renderable = new Image(Mesh.Frame(), frameTexture);
+				renderable = new TexturedRenderable(Mesh.Frame(), frameTexture);
 				Program.CheckGraphicsError("GLFrameBuffer");
 
 				GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMinFilter, (int)TextureMinFilter.Nearest);
@@ -179,7 +179,7 @@ namespace WarriorsSnuggery
 				Program.CheckGraphicsError("View_Scissor");
 			}
 
-			Camera.Reset(false);
+			Camera.Update();
 			UIRenderer.Update();
 		}
 

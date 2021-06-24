@@ -48,15 +48,17 @@ namespace WarriorsSnuggery.Graphics
 			return true;
 		}
 
-		public static void Reset(bool values = true)
+		public static void Reset()
 		{
-			if (values)
-			{
-				LookAt = CPos.Zero;
-				Locked = false;
-				CurrentZoom = DefaultZoom;
-			}
+			LookAt = CPos.Zero;
+			Locked = false;
+			CurrentZoom = DefaultZoom;
 
+			Update();
+		}
+
+		public static void Update()
+		{
 			calculatePosition();
 			calculateScale();
 			updateView();

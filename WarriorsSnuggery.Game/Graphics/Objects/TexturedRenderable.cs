@@ -2,18 +2,14 @@ using OpenTK.Graphics.OpenGL;
 
 namespace WarriorsSnuggery.Graphics
 {
-	public class Image : Renderable
+	public class TexturedRenderable : Renderable
 	{
 		readonly Texture texture;
 
-		public Image(Vertex[] vertices, Texture texture) : base(Shaders.TextureShader, vertices.Length)
+		public TexturedRenderable(Vertex[] vertices, Texture texture) : base(Shaders.TextureShader, vertices.Length)
 		{
-			createBuffer(vertices);
 			this.texture = texture;
-		}
 
-		public static void createBuffer(Vertex[] vertices)
-		{
 			lock (MasterRenderer.GLLock)
 			{
 				GL.BufferData(BufferTarget.ArrayBuffer, Vertex.Size * vertices.Length, vertices, BufferUsageHint.StaticDraw);
@@ -37,7 +33,7 @@ namespace WarriorsSnuggery.Graphics
 		{
 			lock (MasterRenderer.GLLock)
 			{
-				UseProgram();
+				GL.UseProgram(ProgramID);
 				GL.BindVertexArray(VertexArrayID);
 				GL.BindTexture(TextureTarget.Texture2D, texture.SheetID);
 				Program.CheckGraphicsError("Image_Bind");
