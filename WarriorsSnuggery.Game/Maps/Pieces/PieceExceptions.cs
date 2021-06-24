@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Runtime.Serialization;
 
-namespace WarriorsSnuggery.Maps
+namespace WarriorsSnuggery.Maps.Pieces
 {
 	[Serializable]
 	public class InvalidPieceException : Exception

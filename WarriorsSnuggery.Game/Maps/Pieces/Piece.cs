@@ -6,7 +6,7 @@ using WarriorsSnuggery.Objects.Actors;
 using WarriorsSnuggery.Objects.Particles;
 using WarriorsSnuggery.Objects.Weapons;
 
-namespace WarriorsSnuggery.Maps
+namespace WarriorsSnuggery.Maps.Pieces
 {
 	public class Piece
 	{

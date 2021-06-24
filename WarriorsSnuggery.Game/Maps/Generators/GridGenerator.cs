@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using WarriorsSnuggery.Loader;
+using WarriorsSnuggery.Maps.Pieces;
 
 namespace WarriorsSnuggery.Maps.Generators
 {

@@ -11,6 +11,7 @@ using WarriorsSnuggery.Objects.Weather;
 using WarriorsSnuggery.Physics;
 using WarriorsSnuggery.Trophies;
 using WarriorsSnuggery.Objects.Actors;
+using WarriorsSnuggery.Maps;
 
 namespace WarriorsSnuggery
 {

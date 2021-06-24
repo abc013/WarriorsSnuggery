@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using WarriorsSnuggery.Maps;
 
 namespace WarriorsSnuggery.Objects.Particles
 {

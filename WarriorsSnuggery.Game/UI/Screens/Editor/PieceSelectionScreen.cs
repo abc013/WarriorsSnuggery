@@ -1,6 +1,7 @@
 using OpenTK.Windowing.GraphicsLibraryFramework;
 using WarriorsSnuggery.Graphics;
 using WarriorsSnuggery.Maps;
+using WarriorsSnuggery.Maps.Pieces;
 using WarriorsSnuggery.Objects;
 using WarriorsSnuggery.UI.Objects;
 

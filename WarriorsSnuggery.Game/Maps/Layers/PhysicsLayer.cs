@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using WarriorsSnuggery.Graphics;
+using WarriorsSnuggery.Maps;
 using WarriorsSnuggery.Physics;
 
 namespace WarriorsSnuggery

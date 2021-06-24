@@ -3,7 +3,7 @@ using System.IO;
 using System.Reflection;
 using System.Text;
 
-namespace WarriorsSnuggery
+namespace WarriorsSnuggery.Maps
 {
 	public class MapSaver
 	{

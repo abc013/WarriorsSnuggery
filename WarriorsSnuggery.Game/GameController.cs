@@ -2,6 +2,7 @@
 using System;
 using WarriorsSnuggery.Loader;
 using WarriorsSnuggery.Maps;
+using WarriorsSnuggery.Maps.Pieces;
 using WarriorsSnuggery.UI.Screens;
 
 namespace WarriorsSnuggery

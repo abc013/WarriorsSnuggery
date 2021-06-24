@@ -1,7 +1,7 @@
 ﻿using System.IO;
 using System.Linq;
 
-namespace WarriorsSnuggery.Maps
+namespace WarriorsSnuggery.Maps.Pieces
 {
 	public static class PieceCreator
 	{

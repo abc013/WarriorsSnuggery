@@ -3,7 +3,7 @@ using System.IO;
 using System.Linq;
 using WarriorsSnuggery.Loader;
 
-namespace WarriorsSnuggery.Maps
+namespace WarriorsSnuggery.Maps.Pieces
 {
 	public static class PieceManager
 	{

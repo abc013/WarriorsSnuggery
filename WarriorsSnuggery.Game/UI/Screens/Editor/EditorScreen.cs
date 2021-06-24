@@ -1,5 +1,6 @@
 using System;
 using WarriorsSnuggery.Graphics;
+using WarriorsSnuggery.Maps.Pieces;
 using WarriorsSnuggery.Objects;
 using WarriorsSnuggery.Objects.Actors;
 using WarriorsSnuggery.UI.Objects;
@@ -307,7 +308,7 @@ namespace WarriorsSnuggery.UI.Screens
 		void savePiece()
 		{
 			game.World.SaveMap(FileExplorer.FindPath(FileExplorer.Pieces, game.MapType.OverridePiece, ".yaml"), game.MapType.OverridePiece, false);
-			Maps.PieceManager.ReloadPiece(game.MapType.OverridePiece);
+			PieceManager.ReloadPiece(game.MapType.OverridePiece);
 			game.AddInfoMessage(150, "Map saved!");
 		}
 	}
