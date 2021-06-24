@@ -1,7 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using WarriorsSnuggery.Loader;
-using WarriorsSnuggery.Objects.Weapons;
+﻿using WarriorsSnuggery.Objects.Weapons;
 using WarriorsSnuggery.Spells;
 
 namespace WarriorsSnuggery.Objects.Actors.Parts
@@ -54,14 +51,14 @@ namespace WarriorsSnuggery.Objects.Actors.Parts
 			Type = info.Type;
 		}
 
-		public void OnLoad(List<TextNode> nodes)
+		public void OnLoad(PartLoader loader)
 		{
-			foreach (var node in nodes.Where(n => n.Key == nameof(WeaponPart) && n.Value == info.InternalName))
+			foreach (var node in loader.GetNodes(typeof(WeaponPart), info.InternalName))
 			{
 				if (node.Key == "BeamWeapon")
 				{
 					var id = node.Convert<int>();
-					beam = (BeamWeapon)self.World.WeaponLayer.Weapons.FirstOrDefault(w => w.ID == id);
+					beam = (BeamWeapon)self.World.WeaponLayer.Weapons.Find(w => w.ID == id);
 				}
 				else if (node.Key == "PreparationTick")
 					prep = node.Convert<int>();

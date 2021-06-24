@@ -1,8 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using WarriorsSnuggery.Loader;
-
-namespace WarriorsSnuggery.Objects.Actors.Parts
+﻿namespace WarriorsSnuggery.Objects.Actors.Parts
 {
 	[Desc("Determines whether this is an actor used for switching to another actor.", "Please note that to change actor, the transition actor has to be dead or the switchDuration is completed.")]
 	public class PlayerSwitchPartInfo : PartInfo
@@ -29,13 +25,9 @@ namespace WarriorsSnuggery.Objects.Actors.Parts
 			CurrentTick = info.SwitchDuration;
 		}
 
-		public void OnLoad(List<TextNode> nodes)
+		public void OnLoad(PartLoader loader)
 		{
-			var parent = nodes.FirstOrDefault(n => n.Key == nameof(PlayerSwitchPart));
-			if (parent == null)
-				return;
-
-			foreach (var node in parent.Children)
+			foreach (var node in loader.GetNodes(typeof(PlayerSwitchPart)))
 			{
 				if (node.Key == "RelativeHP")
 					RelativeHP = node.Convert<float>();

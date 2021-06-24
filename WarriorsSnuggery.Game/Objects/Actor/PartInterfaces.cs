@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-using WarriorsSnuggery.Loader;
-using WarriorsSnuggery.Objects.Weapons;
+﻿using WarriorsSnuggery.Objects.Weapons;
 
 namespace WarriorsSnuggery.Objects.Actors
 {
@@ -49,7 +47,7 @@ namespace WarriorsSnuggery.Objects.Actors
 
 	public interface ISaveLoadable
 	{
-		void OnLoad(List<TextNode> nodes);
+		void OnLoad(PartLoader loader);
 		PartSaver OnSave();
 	}
 

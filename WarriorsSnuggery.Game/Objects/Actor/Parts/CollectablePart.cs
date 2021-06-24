@@ -1,7 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using WarriorsSnuggery.Loader;
-using WarriorsSnuggery.Maps.Layers;
+﻿using WarriorsSnuggery.Maps.Layers;
 using WarriorsSnuggery.Objects.Conditions;
 using WarriorsSnuggery.Objects.Particles;
 
@@ -71,13 +68,9 @@ namespace WarriorsSnuggery.Objects.Actors.Parts
 			this.info = info;
 		}
 
-		public void OnLoad(List<TextNode> nodes)
+		public void OnLoad(PartLoader loader)
 		{
-			var parent = nodes.FirstOrDefault(n => n.Key == nameof(CollectablePart) && n.Value == info.InternalName);
-			if (parent == null)
-				return;
-
-			foreach (var node in parent.Children)
+			foreach (var node in loader.GetNodes(typeof(CollectablePart), info.InternalName))
 			{
 				if (node.Key == "Activated")
 					activated = node.Convert<bool>();

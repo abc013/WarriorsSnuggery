@@ -141,8 +141,9 @@ namespace WarriorsSnuggery.Objects.Actors
 
 		public void OnLoad()
 		{
+			var partLoader = new PartLoader(init);
 			foreach (var part in partManager.GetPartsOrDefault<ISaveLoadable>())
-				part.OnLoad(init.Nodes);
+				part.OnLoad(partLoader);
 
 			var effectData = init.Nodes.Where(n => n.Key == nameof(ActorEffect));
 			foreach (var effect in effectData)

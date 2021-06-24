@@ -1,7 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using WarriorsSnuggery.Loader;
-using WarriorsSnuggery.Spells;
+﻿using WarriorsSnuggery.Spells;
 
 namespace WarriorsSnuggery.Objects.Actors.Parts
 {
@@ -59,13 +56,9 @@ namespace WarriorsSnuggery.Objects.Actors.Parts
 			HP = StartHealth;
 		}
 
-		public void OnLoad(List<TextNode> nodes)
+		public void OnLoad(PartLoader loader)
 		{
-			var parent = nodes.FirstOrDefault(n => n.Key == nameof(HealthPart) && n.Value == info.InternalName);
-			if (parent == null)
-				return;
-
-			foreach (var node in parent.Children)
+			foreach (var node in loader.GetNodes(typeof(HealthPart), info.InternalName))
 			{
 				if (node.Key == "Health")
 					HP = node.Convert<int>();

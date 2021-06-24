@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using WarriorsSnuggery.Loader;
+﻿using WarriorsSnuggery.Loader;
 
 namespace WarriorsSnuggery.Objects.Actors.Parts
 {
@@ -32,13 +30,9 @@ namespace WarriorsSnuggery.Objects.Actors.Parts
 			this.info = info;
 		}
 
-		public void OnLoad(List<TextNode> nodes)
+		public void OnLoad(PartLoader loader)
 		{
-			var parent = nodes.FirstOrDefault(n => n.Key == nameof(RegenerationPart) && n.Value == info.InternalName);
-			if (parent == null)
-				return;
-
-			foreach (var node in parent.Children)
+			foreach (var node in loader.GetNodes(typeof(RegenerationPart), info.InternalName))
 			{
 				if (node.Key == "Tick")
 					tick = node.Convert<int>();

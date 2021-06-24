@@ -1,7 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using WarriorsSnuggery.Loader;
-using WarriorsSnuggery.Objects.Bot;
+﻿using WarriorsSnuggery.Objects.Bot;
 using WarriorsSnuggery.Objects.Weapons;
 
 namespace WarriorsSnuggery.Objects.Actors.Parts
@@ -41,17 +38,13 @@ namespace WarriorsSnuggery.Objects.Actors.Parts
 			bot = info.Behavior.Create(self);
 		}
 
-		public void OnLoad(List<TextNode> nodes)
+		public void OnLoad(PartLoader loader)
 		{
 			var position = self.Position;
 			var height = self.Height;
 			var targetID = uint.MaxValue;
 
-			var parent = nodes.FirstOrDefault(n => n.Key == nameof(BotPart));
-			if (parent == null)
-				return;
-
-			foreach (var node in parent.Children)
+			foreach (var node in loader.GetNodes(typeof(BotPart)))
 			{
 				if (node.Key == "TargetPosition")
 					position = node.Convert<CPos>();

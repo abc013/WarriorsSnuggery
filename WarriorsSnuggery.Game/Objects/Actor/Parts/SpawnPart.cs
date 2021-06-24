@@ -1,7 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using WarriorsSnuggery.Loader;
-using WarriorsSnuggery.Objects.Conditions;
+﻿using WarriorsSnuggery.Objects.Conditions;
 using WarriorsSnuggery.Objects.Particles;
 using WarriorsSnuggery.Objects.Weapons;
 
@@ -77,13 +74,9 @@ namespace WarriorsSnuggery.Objects.Actors.Parts
 			this.info = info;
 		}
 
-		public void OnLoad(List<TextNode> nodes)
+		public void OnLoad(PartLoader loader)
 		{
-			var parent = nodes.FirstOrDefault(n => n.Key == nameof(SpawnPart) && n.Value == info.InternalName);
-			if (parent == null)
-				return;
-
-			foreach (var node in parent.Children)
+			foreach (var node in loader.GetNodes(typeof(SpawnPart), info.InternalName))
 			{
 				if (node.Key == "Tick")
 					curTick = node.Convert<int>();

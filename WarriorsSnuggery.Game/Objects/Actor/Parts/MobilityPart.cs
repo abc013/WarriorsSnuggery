@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using WarriorsSnuggery.Loader;
 using WarriorsSnuggery.Spells;
 
 namespace WarriorsSnuggery.Objects.Actors.Parts
@@ -60,13 +57,9 @@ namespace WarriorsSnuggery.Objects.Actors.Parts
 				sound = new Sound(info.Sound);
 		}
 
-		public void OnLoad(List<TextNode> nodes)
+		public void OnLoad(PartLoader loader)
 		{
-			var parent = nodes.FirstOrDefault(n => n.Key == nameof(MobilityPart) && n.Value == info.InternalName);
-			if (parent == null)
-				return;
-
-			foreach (var node in parent.Children)
+			foreach (var node in loader.GetNodes(typeof(MobilityPart), info.InternalName))
 			{
 				if (node.Key == nameof(Force))
 					Force = node.Convert<CPos>();

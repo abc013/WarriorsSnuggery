@@ -1,8 +1,6 @@
 ﻿using OpenTK.Windowing.GraphicsLibraryFramework;
 using System;
-using System.Collections.Generic;
 using WarriorsSnuggery.Graphics;
-using WarriorsSnuggery.Loader;
 using WarriorsSnuggery.Spells;
 
 namespace WarriorsSnuggery.Objects.Actors.Parts
@@ -13,7 +11,7 @@ namespace WarriorsSnuggery.Objects.Actors.Parts
 
 		public PlayerPart(Actor self) : base(self) { }
 
-		public void OnLoad(List<TextNode> node) { }
+		public void OnLoad(PartLoader loader) { }
 
 		public PartSaver OnSave()
 		{
