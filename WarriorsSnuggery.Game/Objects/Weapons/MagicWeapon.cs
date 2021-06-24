@@ -131,7 +131,7 @@ namespace WarriorsSnuggery.Objects.Weapons
 		public override List<string> Save()
 		{
 			var list = base.Save();
-			list.AddRange(WorldSaver.GetSaveFields(this, false));
+			list.AddRange(MapSaver.GetSaveFields(this, false));
 
 			return list;
 		}

@@ -5,7 +5,7 @@ using System.Text;
 
 namespace WarriorsSnuggery
 {
-	public class WorldSaver
+	public class MapSaver
 	{
 		public const int MapFormat = 1;
 
@@ -13,7 +13,7 @@ namespace WarriorsSnuggery
 		readonly MPos bounds;
 		readonly bool isSavegame;
 
-		public WorldSaver(World world, bool isSavegame)
+		public MapSaver(World world, bool isSavegame)
 		{
 			this.world = world;
 			bounds = world.Map.Bounds;

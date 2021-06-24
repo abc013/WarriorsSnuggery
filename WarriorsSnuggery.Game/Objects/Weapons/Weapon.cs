@@ -174,7 +174,7 @@ namespace WarriorsSnuggery.Objects.Weapons
 
 		public virtual List<string> Save()
 		{
-			var list = WorldSaver.GetSaveFields(this);
+			var list = MapSaver.GetSaveFields(this);
 
 			if (Origin != null)
 				list.Add("Origin=" + Origin.ID);

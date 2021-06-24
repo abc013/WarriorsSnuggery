@@ -151,7 +151,7 @@ namespace WarriorsSnuggery.Objects.Actors
 
 		public List<string> Save()
 		{
-			var list = WorldSaver.GetSaveFields(this);
+			var list = MapSaver.GetSaveFields(this);
 
 			foreach (var part in partManager.GetOrDefault<ISaveLoadable>())
 				list.AddRange(part.OnSave().GetSave());

@@ -177,7 +177,7 @@ namespace WarriorsSnuggery.Objects.Particles
 
 		public List<string> Save()
 		{
-			return WorldSaver.GetSaveFields(this);
+			return MapSaver.GetSaveFields(this);
 		}
 	}
 }

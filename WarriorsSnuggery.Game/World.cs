@@ -328,7 +328,7 @@ namespace WarriorsSnuggery
 
 		public void SaveMap(string directory, string file, bool forSave)
 		{
-			new WorldSaver(this, forSave).Save(directory, file);
+			new MapSaver(this, forSave).Save(directory, file);
 		}
 
 		public void Dispose()
