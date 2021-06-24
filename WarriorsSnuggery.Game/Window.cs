@@ -8,6 +8,7 @@ using WarriorsSnuggery.Graphics;
 using OpenTK.Windowing.Common.Input;
 using Image = OpenTK.Windowing.Common.Input.Image;
 using WarriorsSnuggery.Loader;
+using System.ComponentModel;
 
 namespace WarriorsSnuggery
 {
@@ -90,6 +91,7 @@ namespace WarriorsSnuggery
 
 		public static bool Ready;
 		public static bool Stopped;
+		static bool closeInitiated;
 
 		readonly Timer timer;
 
@@ -116,6 +118,7 @@ namespace WarriorsSnuggery
 
 		public static void CloseWindow()
 		{
+			closeInitiated = true;
 			current.Close();
 		}
 
@@ -272,6 +275,15 @@ namespace WarriorsSnuggery
 			WindowInfo.Focused = e.IsFocused;
 			if (!e.IsFocused && !Program.IsDebug && Ready)
 				GameController.Pause();
+		}
+
+		protected override void OnClosing(CancelEventArgs e)
+		{
+			// When using the close button in windowed mode, this will be false
+			if (!closeInitiated)
+				Program.Exit();
+
+			base.OnClosing(e);
 		}
 
 		protected override void Dispose(bool disposing)
