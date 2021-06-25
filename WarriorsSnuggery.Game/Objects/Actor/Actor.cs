@@ -67,6 +67,41 @@ namespace WarriorsSnuggery.Objects.Actors
 		public MPos TerrainPosition;
 		public Terrain CurrentTerrain;
 
+		public bool CanMove
+		{
+			get
+			{
+				if (Mobility == null || !IsAlive || Height > 0 && !Mobility.CanFly)
+					return false;
+
+				if (!ActionPossible(ActionType.PREPARE_MOVE) && !ActionPossible(ActionType.MOVE))
+					return false;
+
+				if (EffectActive(EffectType.STUN))
+					return false;
+
+				return true;
+			}
+		}
+		public bool Pushable => !(Mobility == null || !IsAlive);
+
+		public bool CanAttack
+		{
+			get
+			{
+				if (Weapon == null || !Weapon.ReloadDone || !IsAlive)
+					return false;
+
+				if (!ActionPossible(ActionType.PREPARE_ATTACK) && !ActionPossible(ActionType.ATTACK))
+					return false;
+
+				if (EffectActive(EffectType.STUN))
+					return false;
+
+				return true;
+			}
+		}
+
 		public Actor(World world, ActorInit init, uint overrideID) : this(world, init)
 		{
 			ID = overrideID;
@@ -167,7 +202,7 @@ namespace WarriorsSnuggery.Objects.Actors
 
 		public void Push(float angle, int power)
 		{
-			if (Mobility == null || World.Game.Editor)
+			if (World.Game.Editor || !Pushable)
 				return;
 
 			var acceleration = Mobility.Accelerate(angle, power);
@@ -177,10 +212,7 @@ namespace WarriorsSnuggery.Objects.Actors
 
 		public void AccelerateSelf(float angle)
 		{
-			if (World.Game.Editor)
-				return;
-
-			if (!canMove())
+			if (World.Game.Editor || !CanMove)
 				return;
 
 			Mobility.AccelerateSelf(angle);
@@ -188,7 +220,7 @@ namespace WarriorsSnuggery.Objects.Actors
 
 		public void Lift(int power)
 		{
-			if (Mobility == null || World.Game.Editor)
+			if (World.Game.Editor || !Pushable)
 				return;
 
 			var acceleration = Mobility.AccelerateHeight(power);
@@ -198,29 +230,12 @@ namespace WarriorsSnuggery.Objects.Actors
 
 		public void AccelerateHeightSelf(bool up)
 		{
-			if (World.Game.Editor)
-				return;
-
-			if (!Mobility.CanFly || !canMove())
+			if (World.Game.Editor || !Mobility.CanFly || !CanMove)
 				return;
 
 			var acceleration = Mobility.AccelerateHeightSelf(up);
 			foreach (var part in accelerationParts)
 				part.OnAccelerate(new CPos(0, 0, acceleration));
-		}
-
-		bool canMove()
-		{
-			if (Mobility == null || !IsAlive || Height > 0 && !Mobility.CanFly)
-				return false;
-
-			if (!ActionPossible(ActionType.PREPARE_MOVE) && !ActionPossible(ActionType.MOVE))
-				return false;
-
-			if (EffectActive(EffectType.STUN))
-				return false;
-
-			return true;
 		}
 
 		public void Move(CPos old)
@@ -434,26 +449,12 @@ namespace WarriorsSnuggery.Objects.Actors
 			if (World.Game.Editor || !World.Map.Type.AllowWeapons)
 				return;
 
-			if (!canAttack())
+			if (!CanAttack)
 				return;
 
 			Angle = (Position - target.Position).FlatAngle;
 
 			Weapon.OnAttack(target);
-		}
-
-		bool canAttack()
-		{
-			if (Weapon == null || !Weapon.ReloadDone || !IsAlive)
-				return false;
-
-			if (!ActionPossible(ActionType.PREPARE_ATTACK) && !ActionPossible(ActionType.ATTACK))
-				return false;
-
-			if (EffectActive(EffectType.STUN))
-				return false;
-
-			return true;
 		}
 
 		public bool AttackWith(Target target, Weapon weapon)
