@@ -76,6 +76,8 @@ namespace WarriorsSnuggery.UI.Objects
 			else if (MouseInput.IsLeftClicked)
 				Selected = false;
 
+			HighlightVisible = Selected;
+
 			if (Selected)
 			{
 				if (text.Length >= MaximumLength)
@@ -107,8 +109,6 @@ namespace WarriorsSnuggery.UI.Objects
 					OnType?.Invoke();
 				}
 			}
-
-			HighlightVisible = Selected;
 		}
 
 		public override void KeyDown(Keys key, bool isControl, bool isShift, bool isAlt)

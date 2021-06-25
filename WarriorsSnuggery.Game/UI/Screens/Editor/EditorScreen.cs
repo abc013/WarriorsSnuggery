@@ -1,3 +1,4 @@
+using OpenTK.Windowing.GraphicsLibraryFramework;
 using System;
 using WarriorsSnuggery.Graphics;
 using WarriorsSnuggery.Maps.Pieces;
@@ -187,6 +188,29 @@ namespace WarriorsSnuggery.UI.Screens
 				default:
 					if (game.InteractionMode == InteractionMode.EDITOR)
 						save.Tick();
+
+					break;
+			}
+		}
+
+		public override void KeyDown(Keys key, bool isControl, bool isShift, bool isAlt)
+		{
+			base.KeyDown(key, isControl, isShift, isAlt);
+
+			switch (currentSelected)
+			{
+				case Selected.TILE:
+					terrainWidget.KeyDown(key, isControl, isShift, isAlt);
+					break;
+				case Selected.ACTOR:
+					actorWidget.KeyDown(key, isControl, isShift, isAlt);
+					break;
+				case Selected.WALL:
+					wallWidget.KeyDown(key, isControl, isShift, isAlt);
+					break;
+				default:
+					if (game.InteractionMode == InteractionMode.EDITOR)
+						save.KeyDown(key, isControl, isShift, isAlt);
 
 					break;
 			}

@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using OpenTK.Windowing.GraphicsLibraryFramework;
+using System.Linq;
 using WarriorsSnuggery.Graphics;
 using WarriorsSnuggery.Objects;
 using WarriorsSnuggery.Objects.Actors;
@@ -172,6 +173,13 @@ namespace WarriorsSnuggery.UI.Objects.Editor
 
 			facingSlider.Tick();
 			facingText.Tick();
+		}
+
+		public override void KeyDown(Keys key, bool isControl, bool isShift, bool isAlt)
+		{
+			base.KeyDown(key, isControl, isShift, isAlt);
+
+			teamTextBox.KeyDown(key, isControl, isShift, isAlt);
 		}
 	}
 }
