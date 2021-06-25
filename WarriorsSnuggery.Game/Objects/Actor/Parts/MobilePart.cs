@@ -6,28 +6,18 @@ namespace WarriorsSnuggery.Objects.Actors.Parts
 	[Desc("Attach this to an actor to activate mobility features.")]
 	public class MobilePartInfo : PartInfo
 	{
-		[Desc("Speed of the Actor.")]
-		public readonly int Speed;
-		[Desc("Time it takes to prepare for moving.")]
-		public readonly int PreparationDelay;
-		[Desc("Time it takes to cool down before being able to do something else.")]
-		public readonly int CooldownDelay;
-		[Desc("Acceleration of the Actor. If 0, Speed is used.")]
-		public readonly int Acceleration;
-		[Desc("Acceleration to use for the vertical axis.")]
-		public readonly int HeightAcceleration;
-		[Desc("Actor may also control velocity while in air.")]
+		[Desc("Friction when being on ground.")]
+		public readonly float Friction = 0.5f;
+		[Desc("Friction when being in air.")]
+		public readonly float HeightFriction = 0.05f;
+		[Desc("Actor can stay in air.", "When setting this to true, Gravity will not be used.")]
 		public readonly bool CanFly;
-		[Desc("Gravity to apply while flying.", "Gravity will not be applied when the actor can fly.")]
+		[Desc("Gravity to apply while in air.", "Gravity will not be applied when CanFly is the to true.")]
 		public readonly CPos Gravity = new CPos(0, 0, -9);
 		[Desc("Sound to be played while moving.")]
 		public readonly SoundType Sound;
 
-		public MobilePartInfo(PartInitSet set) : base(set)
-		{
-			if (Acceleration == 0)
-				Acceleration = Speed;
-		}
+		public MobilePartInfo(PartInitSet set) : base(set) { }
 
 		public override ActorPart Create(Actor self)
 		{
@@ -40,13 +30,9 @@ namespace WarriorsSnuggery.Objects.Actors.Parts
 		readonly MobilePartInfo info;
 		readonly Sound sound;
 
-		public CPos Force;
-		public CPos Velocity;
+		public CPos Force { get; private set; }
+		public CPos Velocity { get; private set; }
 		bool wasMoving;
-
-		bool accelerationOrdered;
-		float angle;
-		int prep;
 
 		public bool CanFly => info.CanFly;
 
@@ -80,38 +66,18 @@ namespace WarriorsSnuggery.Objects.Actors.Parts
 
 		public void Tick()
 		{
-			if (accelerationOrdered && --prep <= 0)
-				accelerateSelf();
-
 			if (self.Height > 0 && !CanFly)
 				Force += info.Gravity;
 
 			wasMoving = Velocity != CPos.Zero;
-			if (wasMoving && (self.Height == 0 || CanFly))
+
+			if (wasMoving)
 			{
-				var decFactor = Velocity.FlatDist / info.Speed;
-				var deceleration = (int)-Math.Ceiling(decFactor * info.Acceleration);
-
-				var decX = deceleration * Math.Sign(Velocity.X);
-				var decY = deceleration * Math.Sign(Velocity.Y);
-				var decZ = 0;
-
-				if (Math.Sign(Velocity.X + decX) != Math.Sign(Velocity.X))
-					decX = -Velocity.X;
-				if (Math.Sign(Velocity.Y + decY) != Math.Sign(Velocity.Y))
-					decY = -Velocity.Y;
-
-				if (CanFly)
-				{
-					var heightDecFactor = Math.Abs(Velocity.Z) / 10f;
-					var heightDeceleration = (int)-Math.Ceiling(heightDecFactor * info.HeightAcceleration);
-					decZ = heightDeceleration * Math.Sign(Velocity.Z);
-
-					if (Math.Sign(Velocity.Z + decZ) != Math.Sign(Velocity.Z))
-						decZ = -Velocity.Z;
-				}
-
-				Force += new CPos(decX, decY, decZ);
+				var friction = self.Height == 0 ? info.Friction : info.HeightFriction;
+				var x = Velocity.X > 0 ? (int)Math.Ceiling(Velocity.X * friction) : (int)Math.Floor(Velocity.X * friction);
+				var y = Velocity.Y > 0 ? (int)Math.Ceiling(Velocity.Y * friction) : (int)Math.Floor(Velocity.Y * friction);
+				var z = Velocity.Z > 0 ? (int)Math.Ceiling(Velocity.Z * friction) : (int)Math.Floor(Velocity.Z * friction);
+				Force -= new CPos(x, y, z);
 			}
 
 			Velocity += Force;
@@ -128,7 +94,7 @@ namespace WarriorsSnuggery.Objects.Actors.Parts
 			{
 				sound?.Stop();
 
-				self.AddAction(ActionType.END_MOVE, info.CooldownDelay);
+				self.StopMove();
 			}
 		}
 
@@ -235,37 +201,6 @@ namespace WarriorsSnuggery.Objects.Actors.Parts
 			self.StopMove();
 		}
 
-		public void AccelerateSelf(float angle)
-		{
-			if (!CanFly && self.Height != 0)
-				return;
-
-			accelerationOrdered = true;
-			this.angle = angle;
-
-			if (prep >= 0)
-				return;
-
-			if (!self.DoesAction(ActionType.MOVE) && info.PreparationDelay != 0)
-			{
-				prep = info.PreparationDelay;
-				self.AddAction(ActionType.PREPARE_MOVE, info.PreparationDelay);
-				return;
-			}
-
-			accelerateSelf();
-		}
-
-		void accelerateSelf()
-		{
-			accelerationOrdered = false;
-
-			if (!self.DoesAction(ActionType.MOVE) && info.PreparationDelay != 0 && !self.DoesAction(ActionType.PREPARE_MOVE))
-				return; // Preparation has been canceled
-
-			self.Push(angle, info.Acceleration);
-		}
-
 		public int Accelerate(float angle, int acceleration)
 		{
 			var x = (int)Math.Round(MathF.Cos(angle) * acceleration);
@@ -274,14 +209,6 @@ namespace WarriorsSnuggery.Objects.Actors.Parts
 			Force += new CPos(x, y, 0);
 
 			return acceleration;
-		}
-
-		public int AccelerateHeightSelf(bool up)
-		{
-			if (!CanFly)
-				return 0;
-
-			return AccelerateHeight(up ? info.HeightAcceleration : -info.HeightAcceleration);
 		}
 
 		public int AccelerateHeight(int acceleration)

@@ -47,6 +47,7 @@ namespace WarriorsSnuggery.Objects.Actors
 		readonly List<INoticeStop> stopParts;
 
 		public readonly MobilePart Mobile;
+		public readonly MotorPart Motor;
 		public readonly HealthPart Health;
 		public readonly RevealsShroudPart RevealsShroud;
 		public readonly WeaponPart Weapon;
@@ -71,7 +72,10 @@ namespace WarriorsSnuggery.Objects.Actors
 		{
 			get
 			{
-				if (Mobile == null || !IsAlive || Height > 0 && !Mobile.CanFly)
+				if (!Pushable || Motor == null)
+					return false;
+
+				if (!Mobile.CanFly && Height > 0)
 					return false;
 
 				if (!ActionPossible(ActionType.PREPARE_MOVE) && !ActionPossible(ActionType.MOVE))
@@ -137,6 +141,8 @@ namespace WarriorsSnuggery.Objects.Actors
 				// Cache some important parts
 				if (part is MobilePart mobile)
 					Mobile = mobile;
+				if (part is MotorPart motor)
+					Motor = motor;
 				else if (part is HealthPart health)
 					Health = health;
 				else if (part is RevealsShroudPart revealsShroud)
@@ -215,7 +221,7 @@ namespace WarriorsSnuggery.Objects.Actors
 			if (World.Game.Editor || !CanMove)
 				return;
 
-			Mobile.AccelerateSelf(angle);
+			Motor.AccelerateSelf(angle);
 		}
 
 		public void Lift(int power)
@@ -233,9 +239,7 @@ namespace WarriorsSnuggery.Objects.Actors
 			if (World.Game.Editor || !Mobile.CanFly || !CanMove)
 				return;
 
-			var acceleration = Mobile.AccelerateHeightSelf(up);
-			foreach (var part in accelerationParts)
-				part.OnAccelerate(new CPos(0, 0, acceleration));
+			Motor.AccelerateHeightSelf(up);
 		}
 
 		public void Move(CPos old)
