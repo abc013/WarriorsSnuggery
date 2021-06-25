@@ -1,8 +1,7 @@
 ﻿using System.Collections.Generic;
 using WarriorsSnuggery.Loader;
-using WarriorsSnuggery.Objects.Actors;
 
-namespace WarriorsSnuggery.Objects.Bot
+namespace WarriorsSnuggery.Objects.Actors.Bot
 {
 	[Desc("Type that aims to reproduce a \"hit and run\" technique.")]
 	public class HitAndRunBotBehaviorType : BotBehaviorType

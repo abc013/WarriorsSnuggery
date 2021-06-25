@@ -1,11 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using WarriorsSnuggery.Loader;
-using WarriorsSnuggery.Objects.Actors;
 using WarriorsSnuggery.Objects.Weapons;
 using WarriorsSnuggery.Objects.Weapons.Projectiles;
 
-namespace WarriorsSnuggery.Objects.Bot
+namespace WarriorsSnuggery.Objects.Actors.Bot
 {
 	public abstract class BotBehaviorType
 	{

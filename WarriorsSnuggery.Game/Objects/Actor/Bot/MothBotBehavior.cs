@@ -1,9 +1,8 @@
 ﻿using System.Collections.Generic;
 using WarriorsSnuggery.Loader;
-using WarriorsSnuggery.Objects.Actors;
 using WarriorsSnuggery.Objects.Weapons;
 
-namespace WarriorsSnuggery.Objects.Bot
+namespace WarriorsSnuggery.Objects.Actors.Bot
 {
 	[Desc("Type that aims to reproduce moth behavior.")]
 	public class MothBotBehaviorType : BotBehaviorType

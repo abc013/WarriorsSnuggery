@@ -1,9 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using WarriorsSnuggery.Loader;
-using WarriorsSnuggery.Objects.Actors;
 
-namespace WarriorsSnuggery.Objects.Bot
+namespace WarriorsSnuggery.Objects.Actors.Bot
 {
 	[Desc("Type uses a moral system to determine its strategy.")]
 	public class MoralBotBehaviorType : BotBehaviorType
