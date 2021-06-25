@@ -42,7 +42,7 @@ namespace WarriorsSnuggery.Objects.Actors.Bot
 				{
 					Waypoints.Clear();
 
-					var path = Self.World.PathfinderLayer.CalculatePath(Self.TerrainPosition, target.Position.ToMPos(), Self.Mobility.CanFly);
+					var path = Self.World.PathfinderLayer.CalculatePath(Self.TerrainPosition, target.Position.ToMPos(), Self.Mobile.CanFly);
 
 					foreach (var waypoint in path)
 						Waypoints.Enqueue(waypoint.ToCPos());
@@ -62,7 +62,7 @@ namespace WarriorsSnuggery.Objects.Actors.Bot
 		public Patrol Patrol;
 		protected bool IsLeader => Patrol == null || Patrol.Leader == Self;
 
-		protected bool CanMove => Self.Mobility != null;
+		protected bool CanMove => Self.Mobile != null;
 		protected bool CanAttack => Self.Weapon != null;
 
 		protected BotBehavior(Actor self)
@@ -262,7 +262,7 @@ namespace WarriorsSnuggery.Objects.Actors.Bot
 
 		protected void PredictiveAttack(Target target)
 		{
-			if (target.Actor == null || target.Actor.Mobility == null || target.Actor.Mobility.Velocity == CPos.Zero)
+			if (target.Actor == null || target.Actor.Mobile == null || target.Actor.Mobile.Velocity == CPos.Zero)
 			{
 				Self.PrepareAttack(target);
 				return;
@@ -277,7 +277,7 @@ namespace WarriorsSnuggery.Objects.Actors.Bot
 
 			var delta = target.Position - Self.Position;
 			var deltaMagnitude = delta.FlatDist;
-			var velTarget = target.Actor.Mobility.Velocity;
+			var velTarget = target.Actor.Mobile.Velocity;
 			var velBullet = projectileType is BulletProjectile projectile ? projectile.MaxSpeed : ((MagicProjectile)projectileType).Speed;
 
 			// See http://danikgames.com/blog/how-to-intersect-a-moving-target-in-2d/ for more information

@@ -46,7 +46,7 @@ namespace WarriorsSnuggery.Objects.Actors
 		readonly List<INoticeMove> moveParts;
 		readonly List<INoticeStop> stopParts;
 
-		public readonly MobilityPart Mobility;
+		public readonly MobilePart Mobile;
 		public readonly HealthPart Health;
 		public readonly RevealsShroudPart RevealsShroud;
 		public readonly WeaponPart Weapon;
@@ -71,7 +71,7 @@ namespace WarriorsSnuggery.Objects.Actors
 		{
 			get
 			{
-				if (Mobility == null || !IsAlive || Height > 0 && !Mobility.CanFly)
+				if (Mobile == null || !IsAlive || Height > 0 && !Mobile.CanFly)
 					return false;
 
 				if (!ActionPossible(ActionType.PREPARE_MOVE) && !ActionPossible(ActionType.MOVE))
@@ -83,7 +83,7 @@ namespace WarriorsSnuggery.Objects.Actors
 				return true;
 			}
 		}
-		public bool Pushable => !(Mobility == null || !IsAlive);
+		public bool Pushable => !(Mobile == null || !IsAlive);
 
 		public bool CanAttack
 		{
@@ -135,8 +135,8 @@ namespace WarriorsSnuggery.Objects.Actors
 				partManager.Add(part);
 
 				// Cache some important parts
-				if (part is MobilityPart mobility)
-					Mobility = mobility;
+				if (part is MobilePart mobile)
+					Mobile = mobile;
 				else if (part is HealthPart health)
 					Health = health;
 				else if (part is RevealsShroudPart revealsShroud)
@@ -205,7 +205,7 @@ namespace WarriorsSnuggery.Objects.Actors
 			if (World.Game.Editor || !Pushable)
 				return;
 
-			var acceleration = Mobility.Accelerate(angle, power);
+			var acceleration = Mobile.Accelerate(angle, power);
 			foreach (var part in accelerationParts)
 				part.OnAccelerate(angle, acceleration);
 		}
@@ -215,7 +215,7 @@ namespace WarriorsSnuggery.Objects.Actors
 			if (World.Game.Editor || !CanMove)
 				return;
 
-			Mobility.AccelerateSelf(angle);
+			Mobile.AccelerateSelf(angle);
 		}
 
 		public void Lift(int power)
@@ -223,17 +223,17 @@ namespace WarriorsSnuggery.Objects.Actors
 			if (World.Game.Editor || !Pushable)
 				return;
 
-			var acceleration = Mobility.AccelerateHeight(power);
+			var acceleration = Mobile.AccelerateHeight(power);
 			foreach (var part in accelerationParts)
 				part.OnAccelerate(new CPos(0, 0, acceleration));
 		}
 
 		public void AccelerateHeightSelf(bool up)
 		{
-			if (World.Game.Editor || !Mobility.CanFly || !CanMove)
+			if (World.Game.Editor || !Mobile.CanFly || !CanMove)
 				return;
 
-			var acceleration = Mobility.AccelerateHeightSelf(up);
+			var acceleration = Mobile.AccelerateHeightSelf(up);
 			foreach (var part in accelerationParts)
 				part.OnAccelerate(new CPos(0, 0, acceleration));
 		}
@@ -241,10 +241,10 @@ namespace WarriorsSnuggery.Objects.Actors
 		public void Move(CPos old)
 		{
 			foreach (var part in moveParts)
-				part.OnMove(old, Mobility.Velocity);
+				part.OnMove(old, Mobile.Velocity);
 
 			foreach (var effect in effects)
-				effect.OnMove(old, Mobility.Velocity);
+				effect.OnMove(old, Mobile.Velocity);
 		}
 
 		public void StopMove()

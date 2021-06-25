@@ -39,7 +39,7 @@ namespace WarriorsSnuggery.Objects.Actors.Parts
 			if (info.Hover > 0)
 				self.Height += (int)(MathF.Sin(hoverTick++ / (float)info.HoverSpeed) * info.Hover);
 
-			if (self.Mobility != null && self.Mobility.CanFly)
+			if (self.Mobile != null && self.Mobile.CanFly)
 			{
 				if (self.Height > DefaultHeight + info.Hover * 64)
 					self.AccelerateHeightSelf(false);

@@ -4,7 +4,7 @@ using WarriorsSnuggery.Spells;
 namespace WarriorsSnuggery.Objects.Actors.Parts
 {
 	[Desc("Attach this to an actor to activate mobility features.")]
-	public class MobilityPartInfo : PartInfo
+	public class MobilePartInfo : PartInfo
 	{
 		[Desc("Speed of the Actor.")]
 		public readonly int Speed;
@@ -23,7 +23,7 @@ namespace WarriorsSnuggery.Objects.Actors.Parts
 		[Desc("Sound to be played while moving.")]
 		public readonly SoundType Sound;
 
-		public MobilityPartInfo(PartInitSet set) : base(set)
+		public MobilePartInfo(PartInitSet set) : base(set)
 		{
 			if (Acceleration == 0)
 				Acceleration = Speed;
@@ -31,13 +31,13 @@ namespace WarriorsSnuggery.Objects.Actors.Parts
 
 		public override ActorPart Create(Actor self)
 		{
-			return new MobilityPart(self, this);
+			return new MobilePart(self, this);
 		}
 	}
 
-	public class MobilityPart : ActorPart, ITick, INoticeDispose, ISaveLoadable
+	public class MobilePart : ActorPart, ITick, INoticeDispose, ISaveLoadable
 	{
-		readonly MobilityPartInfo info;
+		readonly MobilePartInfo info;
 		readonly Sound sound;
 
 		public CPos Force;
@@ -50,7 +50,7 @@ namespace WarriorsSnuggery.Objects.Actors.Parts
 
 		public bool CanFly => info.CanFly;
 
-		public MobilityPart(Actor self, MobilityPartInfo info) : base(self)
+		public MobilePart(Actor self, MobilePartInfo info) : base(self)
 		{
 			this.info = info;
 			if (info.Sound != null)
@@ -59,7 +59,7 @@ namespace WarriorsSnuggery.Objects.Actors.Parts
 
 		public void OnLoad(PartLoader loader)
 		{
-			foreach (var node in loader.GetNodes(typeof(MobilityPart), info.InternalName))
+			foreach (var node in loader.GetNodes(typeof(MobilePart), info.InternalName))
 			{
 				if (node.Key == nameof(Force))
 					Force = node.Convert<CPos>();
