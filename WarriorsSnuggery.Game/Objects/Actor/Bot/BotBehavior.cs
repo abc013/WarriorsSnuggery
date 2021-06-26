@@ -37,6 +37,12 @@ namespace WarriorsSnuggery.Objects.Actors.Bot
 				if (target.Type == TargetType.POSITION)
 					TargetFavor = 0;
 
+				if (target == null)
+				{
+					TargetFavor = 0;
+					return;
+				}
+
 				// Calculate path
 				if (CanMove)
 				{
