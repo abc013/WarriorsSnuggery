@@ -15,31 +15,19 @@ namespace WarriorsSnuggery.UI.Screens
 			};
 			Add(ws);
 
-			Add(new Button("Okay", "wooden", () => game.ShowScreen(ScreenType.DEFAULT, false)) { Position = new CPos(4096, 6144, 0) });
-			Add(new Button("Exit", "wooden", Program.Exit) { Position = new CPos(-4096, 6144, 0) });
+			var welcome = new UITextLine(FontManager.Header, TextOffset.MIDDLE) { Position = new CPos(0, -512, 0) };
+			welcome.SetText("Welcome to Warrior's Snuggery!");
+			Add(welcome);
 
-			var warning = new UITextBlock(FontManager.Default, TextOffset.MIDDLE, new Color(0.5f, 0.5f, 1f) + "WS is still under development. If you encounter any bugs, please report them.", new Color(0.5f, 0.5f, 1f) + "Thank you!") { Position = new CPos(0, 4096, 0) };
+			var tutorial = new UITextLine(FontManager.Header, TextOffset.MIDDLE) { Position = new CPos(0, 1536, 0) };
+			tutorial.SetText("If you don't know how to play yet, move down to the tutorial!");
+			Add(tutorial);
+
+			var warning = new UITextLine(FontManager.Header, TextOffset.MIDDLE) { Position = new CPos(0, 4096, 0), Color = new Color(0.5f, 0.5f, 1f) };
+			warning.SetText("WS is still under development. If you encounter any bugs, please report them.");
 			Add(warning);
 
-			var @switch = new UITextLine(FontManager.Default, TextOffset.MIDDLE) { Position = new CPos(0, 3072, 0) };
-			@switch.WriteText("Select spells: " + Color.Cyan + "Mouse scroll");
-			Add(@switch);
-
-			var move = new UITextLine(FontManager.Default, TextOffset.MIDDLE) { Position = new CPos(0, 2048, 0) };
-			move.WriteText("Move: " + Color.Yellow + "W, A, S, D");
-			Add(move);
-
-			var attack = new UITextLine(FontManager.Default, TextOffset.MIDDLE) { Position = new CPos(0, 1024, 0) };
-			attack.WriteText("Attack: " + Color.Yellow + "Left mouse button");
-			Add(attack);
-
-			var aim2 = new UITextLine(FontManager.Default, TextOffset.MIDDLE);
-			aim2.SetText("To start the real game, move up!");
-			Add(aim2);
-
-			var aim = new UITextLine(FontManager.Default, TextOffset.MIDDLE) { Position = new CPos(0, -1024, 0) };
-			aim.SetText("For the tutorial, please move down.");
-			Add(aim);
+			Add(new Button("Lets go!", "wooden", () => game.ShowScreen(ScreenType.DEFAULT, false)) { Position = new CPos(0, 6144, 0) });
 		}
 	}
 }
