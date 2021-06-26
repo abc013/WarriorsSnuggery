@@ -1,9 +1,9 @@
 ﻿namespace WarriorsSnuggery.Objects.Actors.Parts
 {
-	[Desc("Attach this to an actor to make it self-propelled.")]
+	[Desc("Attach this to an actor to allow self-propelled movement.", "This part requires the Mobile part to work.")]
 	public class MotorPartInfo : PartInfo
 	{
-		[Desc("Speed of the Actor.")]
+		[Desc("Speed of the Actor.", "This is unused currently. Modify Acceleration and Mobile's Friction values instead to regulate speed.")]
 		public readonly int Speed;
 		[Desc("Time it takes to prepare for moving.")]
 		public readonly int PreparationDelay;

@@ -9,7 +9,7 @@ namespace WarriorsSnuggery.Objects.Actors.Parts
 		[Desc("Friction when being on ground.")]
 		public readonly float Friction = 0.5f;
 		[Desc("Friction when being in air.")]
-		public readonly float HeightFriction = 0.05f;
+		public readonly float AirFriction = 0.05f;
 		[Desc("Actor can stay in air.", "When setting this to true, Gravity will not be used.")]
 		public readonly bool CanFly;
 		[Desc("Gravity to apply while in air.", "Gravity will not be applied when CanFly is the to true.")]
@@ -73,7 +73,7 @@ namespace WarriorsSnuggery.Objects.Actors.Parts
 
 			if (wasMoving)
 			{
-				var friction = self.Height == 0 ? info.Friction : info.HeightFriction;
+				var friction = self.Height == 0 ? info.Friction : info.AirFriction;
 				var x = Velocity.X > 0 ? (int)Math.Ceiling(Velocity.X * friction) : (int)Math.Floor(Velocity.X * friction);
 				var y = Velocity.Y > 0 ? (int)Math.Ceiling(Velocity.Y * friction) : (int)Math.Floor(Velocity.Y * friction);
 				var z = Velocity.Z > 0 ? (int)Math.Ceiling(Velocity.Z * friction) : (int)Math.Floor(Velocity.Z * friction);
