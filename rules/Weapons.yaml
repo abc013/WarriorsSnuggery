@@ -69,7 +69,8 @@ cannon=
 			Falloff=1.0, 0.5, 0.0
 			RangeSteps=0, 2048, 4096
 		Force=
-			Acceleration=2
+			Acceleration=7
+			HeightAcceleration=4
 			Falloff=1.0, 0.7, 0.0
 			RangeSteps=0, 7120, 10240
 

@@ -7,11 +7,11 @@ namespace WarriorsSnuggery.Objects.Weapons.Warheads
 {
 	public class ForceWarhead : IWarhead
 	{
-		[Desc("Maximum acceleration.")]
+		[Desc("Detonation will thrust actors away from its origin by the specified acceleration.")]
 		public readonly int Acceleration;
 
-		[Desc("Detonation will also cause actors to fly up into the sky.")]
-		public readonly bool UseHeight = true;
+		[Desc("Detonation will thrust actors into the sky by the specified acceleration.")]
+		public readonly int HeightAcceleration;
 
 		[Desc("Damage percentage at each range step.")]
 		public readonly float[] Falloff = new[] { 1f, 1f, 0.5f, 0.25f, 0.125f, 0.0f };
@@ -61,16 +61,19 @@ namespace WarriorsSnuggery.Objects.Weapons.Warheads
 						if (pen == 0f)
 							continue;
 
-						var acceleration = (int)Math.Floor(multiplier * Acceleration * weapon.DamageModifier * pen);
+						if (Acceleration != 0)
+						{
+							var acceleration = (int)Math.Floor(multiplier * Acceleration * weapon.DamageModifier * pen);
+							if (acceleration != 0)
+								actor.Push((target.Position - actor.Position).FlatAngle, acceleration);
+						}
 
-						if (acceleration == 0)
-							continue;
-
-						var angle = (target.Position - actor.Position).FlatAngle;
-						actor.Push(angle, acceleration);
-
-						if (UseHeight)
-							actor.Lift(acceleration);
+						if (HeightAcceleration != 0)
+						{
+							var heightAcceleration = (int)Math.Floor(multiplier * HeightAcceleration * weapon.DamageModifier * pen);
+							if (heightAcceleration != 0)
+								actor.Lift(heightAcceleration);
+						}
 					}
 				}
 			}
