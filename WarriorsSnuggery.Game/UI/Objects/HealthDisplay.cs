@@ -61,7 +61,9 @@ namespace WarriorsSnuggery.UI.Objects
 			{
 				var heart = new BatchObject(UISpriteManager.Get("UI_heart")[0]);
 				hearts.Add(heart);
-				setPosition(hearts.Count - 1);
+
+				for (var i = 0; i < hearts.Count; i++)
+					setPosition(i);
 			}
 
 			var currentLifes = game.Stats.Lifes;
@@ -75,7 +77,7 @@ namespace WarriorsSnuggery.UI.Objects
 		{
 			// 3 per row
 			var x = -512 + 512 * (i % 3);
-			var y = -256 + 512 * (i / 3);
+			var y = hearts.Count > 3 ? -256 + 512 * (i / 3) : 0;
 
 			hearts[i].SetPosition(Position + new CPos(x, y, 0));
 		}

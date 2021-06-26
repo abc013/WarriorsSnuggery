@@ -12,7 +12,7 @@ namespace WarriorsSnuggery.UI.Objects
 				base.Position = value;
 
 				money.SetPosition(value - new CPos(1024, 0, 0));
-				moneyText.Position = value;
+				moneyText.Position = value + new CPos(512, 64, 0);
 			}
 		}
 
@@ -51,7 +51,7 @@ namespace WarriorsSnuggery.UI.Objects
 			this.game = game;
 			money = new BatchObject(UISpriteManager.Get("UI_money")[0]);
 
-			moneyText = new UITextLine(FontManager.Default);
+			moneyText = new UITextLine(FontManager.Header, WarriorsSnuggery.Objects.TextOffset.MIDDLE);
 			moneyText.SetText(game.Stats.Money);
 		}
 
