@@ -30,6 +30,7 @@
 	{
 		readonly MotorPartInfo info;
 
+		bool movedThisTick;
 		bool accelerationOrdered;
 		float angle;
 		int prep;
@@ -43,6 +44,8 @@
 		{
 			if (accelerationOrdered && (--prep <= 0 || self.DoesAction(ActionType.MOVE)))
 				accelerateSelf();
+
+			movedThisTick = false;
 		}
 
 		public void AccelerateSelf(float angle)
@@ -68,10 +71,15 @@
 			prep = 0;
 			accelerationOrdered = false;
 
+			if (movedThisTick)
+				return;
+
 			if (!self.DoesAction(ActionType.MOVE) && info.PreparationDelay > 0 && !self.DoesAction(ActionType.PREPARE_MOVE))
 				return; // Preparation has been canceled
 
 			self.Push(angle, info.Acceleration);
+
+			movedThisTick = true;
 		}
 
 		public void AccelerateHeightSelf(bool up)
