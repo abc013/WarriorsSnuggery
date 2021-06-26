@@ -49,10 +49,10 @@ namespace WarriorsSnuggery
 			var angle = angle1 - angle2;
 
 			if (angle < -MathF.PI)
-				angle += 2 * MathF.PI;
+				angle += MaxRange;
 
 			if (angle > MathF.PI)
-				angle -= 2 * MathF.PI;
+				angle -= MaxRange;
 
 			return angle;
 		}

@@ -38,14 +38,20 @@ namespace WarriorsSnuggery.Objects.Actors.Parts
 
 			var horizontal = 0;
 			if (KeyInput.IsKeyDown(Settings.GetKey("MoveRight")))
-				horizontal += 1;
-			if (KeyInput.IsKeyDown(Settings.GetKey("MoveLeft")))
 				horizontal -= 1;
+			if (KeyInput.IsKeyDown(Settings.GetKey("MoveLeft")))
+				horizontal += 1;
 
-			if (vertical != 0)
+			if (vertical != 0 && horizontal != 0)
+			{
+				var verticalAngle = (2 + vertical) * 0.5f * MathF.PI;
+				var horizontalAngle = (1 + horizontal) * 0.5f * MathF.PI;
+				self.AccelerateSelf(Angle.Cast(horizontalAngle + Angle.Diff(verticalAngle, horizontalAngle) / 2));
+			}
+			else if (vertical != 0)
 				self.AccelerateSelf((2 + vertical) * 0.5f * MathF.PI);
-			if (horizontal != 0)
-				self.AccelerateSelf((3 + horizontal) * 0.5f * MathF.PI);
+			else if (horizontal != 0)
+				self.AccelerateSelf((1 + horizontal) * 0.5f * MathF.PI);
 
 			if (Settings.DeveloperMode)
 			{
