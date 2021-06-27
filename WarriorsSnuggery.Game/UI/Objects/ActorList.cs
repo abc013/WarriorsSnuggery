@@ -50,11 +50,8 @@ namespace WarriorsSnuggery.UI.Objects
 					continue;
 
 				var sprite = actorType.GetPreviewSprite();
-				var scale = 24f / Math.Max(sprite.Width, sprite.Height) - 0.1f;
-				var item = new PanelListItem(new BatchObject(sprite), ItemSize, actorType.Playable.Name, new[] { Color.Grey + "Cost: " + Color.Yellow + actorType.Playable.Cost }, () => { changePlayer(actorType); })
-				{
-					Scale = scale
-				};
+				var scale = MasterRenderer.PixelSize / (float)Math.Max(sprite.Width, sprite.Height) - 0.1f;
+				var item = new PanelListItem(new BatchObject(sprite), ItemSize, actorType.Playable.Name, new[] { Color.Grey + "Cost: " + Color.Yellow + actorType.Playable.Cost }, () => { changePlayer(actorType); }) { Scale = scale };
 				if (!game.Stats.ActorAvailable(actorType.Playable))
 					item.SetColor(disabled);
 

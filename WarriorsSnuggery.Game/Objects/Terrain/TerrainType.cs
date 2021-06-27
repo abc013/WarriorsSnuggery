@@ -71,7 +71,7 @@ namespace WarriorsSnuggery.Objects
 			if (Sprite == null || Sprite == string.Empty)
 				throw new MissingNodeException(ID.ToString(), "Image");
 
-			baseTextureInfo = new TextureInfo(Sprite, TextureType.RANDOM, 24, 24);
+			baseTextureInfo = new TextureInfo(Sprite, TextureType.RANDOM, MasterRenderer.PixelSize, MasterRenderer.PixelSize);
 			if (Overlaps)
 			{
 				if (EdgeSprite != null)

@@ -1,4 +1,5 @@
 ﻿using OpenTK.Windowing.GraphicsLibraryFramework;
+using System;
 using System.Linq;
 using WarriorsSnuggery.Graphics;
 using WarriorsSnuggery.Objects;
@@ -80,11 +81,8 @@ namespace WarriorsSnuggery.UI.Objects.Editor
 					continue;
 
 				var sprite = actor.GetPreviewSprite();
-				var scale = (sprite.Width > sprite.Height ? 24f / sprite.Width : 24f / sprite.Height) - 0.1f;
-				list.Add(new PanelListItem(new BatchObject(sprite), new MPos(512, 512), actor.Playable == null ? key : actor.Playable.Name, new string[0], () => CurrentType = actor)
-				{
-					Scale = scale
-				});
+				var scale = MasterRenderer.PixelSize / (float)Math.Max(sprite.Width, sprite.Height) - 0.1f;
+				list.Add(new PanelListItem(new BatchObject(sprite), new MPos(512, 512), actor.Playable == null ? key : actor.Playable.Name, new string[0], () => CurrentType = actor) { Scale = scale });
 			}
 			rasterizationCheck = new CheckBox("wooden");
 			rasterizationText = new UITextLine(FontManager.Default);

@@ -1,4 +1,5 @@
 ﻿using OpenTK.Windowing.GraphicsLibraryFramework;
+using System;
 using System.Collections.Generic;
 using WarriorsSnuggery.Graphics;
 using WarriorsSnuggery.Objects;
@@ -31,11 +32,9 @@ namespace WarriorsSnuggery.UI.Screens
 					continue;
 
 				var sprite = a.GetPreviewSprite();
-				var scale = (sprite.Width > sprite.Height ? 24f / sprite.Width : 24f / sprite.Height) - 0.1f;
-				var item = new PanelListItem(new BatchObject(sprite), new MPos(512, 512), a.Playable.Name, new string[0], () => selectActor(a))
-				{
-					Scale = scale * 2f
-				};
+				var scale = MasterRenderer.PixelSize / (float)Math.Max(sprite.Width, sprite.Height) - 0.1f;
+				var item = new PanelListItem(new BatchObject(sprite), new MPos(1024, 1024), a.Playable.Name, new string[0], () => selectActor(a)) { Scale = scale * 2 };
+
 				if (!game.Stats.ActorAvailable(a.Playable))
 					item.SetColor(Color.Black);
 
