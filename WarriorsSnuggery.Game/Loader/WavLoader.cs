@@ -23,10 +23,10 @@ namespace WarriorsSnuggery.Loader
 			var reader = new BinaryReader(new FileStream(path, FileMode.Open));
 
 #pragma warning disable IDE0059
-			int chunkID = reader.ReadInt32();
+			int chunkID = reader.ReadInt32(); // Should be 'RIFF'
 			int fileSize = reader.ReadInt32();
-			int riffType = reader.ReadInt32();
-			int fmtID = reader.ReadInt32();
+			int riffType = reader.ReadInt32(); // Should be 'WAVE'
+			int fmtID = reader.ReadInt32(); // Should be 'fmt '
 			int fmtSize = reader.ReadInt32();
 			int fmtCode = reader.ReadInt16();
 			channels = reader.ReadInt16();
@@ -42,7 +42,16 @@ namespace WarriorsSnuggery.Loader
 				reader.ReadBytes(fmtExtraSize);
 			}
 
-			int dataID = reader.ReadInt32();
+			//int dataID = reader.ReadInt32(); // Should be 'data'
+			// Workaround: Skip all data until the 'data' keyword is found
+			var wav = new byte[4];
+			while (!(wav[0] == 100 && wav[1] == 97 && wav[2] == 116 && wav[3] == 97))
+			{
+				for (int i = 1; i < 4; i++)
+					wav[i - 1] = wav[i];
+				wav[3] = reader.ReadByte();
+			}
+
 			dataSize = reader.ReadInt32();
 #pragma warning restore IDE0059
 
