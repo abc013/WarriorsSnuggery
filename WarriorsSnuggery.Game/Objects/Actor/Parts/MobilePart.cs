@@ -179,7 +179,6 @@ namespace WarriorsSnuggery.Objects.Actors.Parts
 			var old = self.Position;
 			self.Height = height;
 			self.Position = position;
-			self.TerrainPosition = self.Position.ToMPos();
 			self.CurrentTerrain = terrain;
 
 			self.Angle = (old - position).FlatAngle;

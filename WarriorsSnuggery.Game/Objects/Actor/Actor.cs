@@ -65,7 +65,7 @@ namespace WarriorsSnuggery.Objects.Actors
 
 		bool allowAttackMove => Weapon == null || Weapon.AllowMoving;
 
-		public MPos TerrainPosition;
+		public MPos TerrainPosition => (Position - Map.Offset).ToMPos();
 		public Terrain CurrentTerrain;
 
 		public bool CanMove
@@ -125,7 +125,6 @@ namespace WarriorsSnuggery.Objects.Actors
 			ID = init.ID;
 			this.init = init;
 
-			TerrainPosition = init.Position.ToMPos();
 			CurrentTerrain = world.TerrainAt(TerrainPosition);
 
 			// Parts
