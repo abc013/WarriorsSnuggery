@@ -59,6 +59,9 @@ namespace WarriorsSnuggery.Maps
 		[Desc("Variable used to determine wether this map comes from an save. DO NOT ALTER.")]
 		public readonly bool IsSave;
 
+		[Desc("Song looping while being in the level.", "If left empty, music will cycle.")]
+		public readonly string Music;
+
 		// For the DocWriter
 		public MapType() { }
 
