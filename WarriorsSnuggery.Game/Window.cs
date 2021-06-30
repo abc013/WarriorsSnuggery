@@ -185,6 +185,7 @@ namespace WarriorsSnuggery
 
 			timer.Restart();
 			AudioController.Load();
+			MusicController.Load();
 			timer.StopAndWrite("Loading Sound");
 
 			timer.Restart();
@@ -211,7 +212,7 @@ namespace WarriorsSnuggery
 			timer.Restart();
 
 			GameController.Tick();
-			AudioController.Tick();
+			MusicController.Tick();
 
 			MouseInput.Tick();
 			KeyInput.Tick();
@@ -319,7 +320,7 @@ namespace WarriorsSnuggery
 		protected override void OnKeyDown(KeyboardKeyEventArgs e)
 		{
 			if (e.Key == Keys.N)
-				AudioController.Music.Next();
+				MusicController.NextSong();
 
 			if (e.Alt && e.Key == Keys.F4)
 				Program.Exit();

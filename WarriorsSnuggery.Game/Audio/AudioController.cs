@@ -3,41 +3,30 @@
 	public static class AudioController
 	{
 		static AudioDevice device;
-		public static MusicController Music;
+
+		public static MusicAudioSource MusicSource => device.MusicSource;
 
 		public static void Load()
 		{
 			device = new AudioDevice();
-			AudioManager.LoadSound("test", FileExplorer.FindPath(FileExplorer.Misc, "test", ".wav"));
-			Music = new MusicController(FileExplorer.FilesIn(FileExplorer.Misc + "music" + FileExplorer.Separator, ".wav"));
 		}
 
-		public static void Tick()
-		{
-			Music.Tick();
-		}
-
-		public static GameAudioSource Play(GameAudioBuffer buffer, bool inGame, float volume, float pitch, Vector position, bool loops)
+		internal static GameAudioSource Play(GameAudioBuffer buffer, bool inGame, float volume, float pitch, Vector position, bool loops)
 		{
 			return device.Play(buffer, inGame, volume, pitch, position, loops);
 		}
 
-		public static MusicAudioSource MusicSource()
+		public static void StopAll(bool onlyInGame)
 		{
-			return device.MusicSource;
+			device.Stop(onlyInGame);
 		}
 
-		public static void StopAll(bool game)
+		public static void PauseAll(bool pause, bool onlyInGame)
 		{
-			device.Stop(game);
+			device.Pause(pause, onlyInGame);
 		}
 
-		public static void PauseAll(bool pause, bool game)
-		{
-			device.Pause(pause, game);
-		}
-
-		public static void Exit()
+		public static void Dispose()
 		{
 			device.Dispose();
 			AudioManager.Dispose();

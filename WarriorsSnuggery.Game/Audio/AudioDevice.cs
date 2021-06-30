@@ -71,12 +71,12 @@ namespace WarriorsSnuggery.Audio
 			return null;
 		}
 
-		public void Stop(bool game)
+		public void Stop(bool onlyInGame)
 		{
 			if (!initialized)
 				return;
 
-			if (!game)
+			if (!onlyInGame)
 			{
 				foreach (var source in MiscSources)
 					source.Stop();
@@ -86,12 +86,12 @@ namespace WarriorsSnuggery.Audio
 				source.Stop();
 		}
 
-		public void Pause(bool pause, bool game)
+		public void Pause(bool pause, bool onlyInGame)
 		{
 			if (!initialized)
 				return;
 
-			if (!game)
+			if (!onlyInGame)
 			{
 				foreach (var source in MiscSources)
 					source.Pause(pause);

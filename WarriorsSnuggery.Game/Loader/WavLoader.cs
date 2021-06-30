@@ -20,7 +20,7 @@ namespace WarriorsSnuggery.Loader
 
 		static unsafe BinaryReader open(string path, out int channels, out int sampleRate, out int bitDepth, out int dataSize, out ALFormat format)
 		{
-			var reader = new BinaryReader(new FileStream(path, FileMode.Open));
+			var reader = new BinaryReader(new FileStream(path, FileMode.Open, FileAccess.Read));
 
 #pragma warning disable IDE0059
 			int chunkID = reader.ReadInt32(); // Should be 'RIFF'

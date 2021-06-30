@@ -137,7 +137,7 @@ namespace WarriorsSnuggery
 			var watch = Timer.Start();
 
 			GameController.Exit();
-			AudioController.Exit();
+			AudioController.Dispose();
 			Window.CloseWindow();
 
 			Log.Debug("Game closing.");

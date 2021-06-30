@@ -1,31 +1,34 @@
 ﻿namespace WarriorsSnuggery.Audio
 {
-	public class MusicController
+	public static class MusicController
 	{
-		public readonly (string name, string file)[] data;
-		readonly bool hasMusic;
+		static  (string name, string file)[] data;
+		static bool hasMusic;
 
-		int current = 0;
-		Music currentMusic;
+		static int current = 0;
 
-		public bool LoopsSong { get; private set; }
+		static Music currentMusic;
 
-		public MusicController(string[] names)
+		public static bool LoopsSong { get; private set; }
+
+		public static void Load()
 		{
-			data = new (string, string)[names.Length];
-			for (int i = 0; i < names.Length; i++)
-				data[i] = (names[i], FileExplorer.Misc + "music" + FileExplorer.Separator + names[i] + ".wav");
+			var fileNames = FileExplorer.FilesIn(FileExplorer.Misc + "music" + FileExplorer.Separator, ".wav");
+
+			data = new (string, string)[fileNames.Length];
+			for (int i = 0; i < fileNames.Length; i++)
+				data[i] = (fileNames[i], FileExplorer.Misc + "music" + FileExplorer.Separator + fileNames[i] + ".wav");
 
 			hasMusic = data.Length != 0;
 		}
 
-		public void SetVolume()
+		public static void UpdateVolume()
 		{
 			if (hasMusic && currentMusic != null)
-				currentMusic.SetVolume();
+				currentMusic.UpdateVolume();
 		}
 
-		public void LoopSong(string music)
+		public static void LoopSong(string music)
 		{
 			LoopsSong = true;
 
@@ -35,7 +38,7 @@
 				{
 					current = i;
 
-					Next();
+					NextSong();
 
 					return;
 				}
@@ -44,27 +47,14 @@
 			throw new System.Exception($"Unable to find specified song named {music}.");
 		}
 
-		public void LoopAll()
+		public static void LoopAllSongs()
 		{
 			LoopsSong = false;
 
-			Next();
+			NextSong();
 		}
 
-		public void Tick()
-		{
-			if (!hasMusic)
-				return;
-
-			if (currentMusic != null)
-			{
-				currentMusic.Tick();
-				if (currentMusic.Done)
-					Next();
-			}
-		}
-
-		public void Next()
+		public static void NextSong()
 		{
 			if (!hasMusic)
 				return;
@@ -84,6 +74,20 @@
 
 				if (current == data.Length)
 					current = 0;
+			}
+		}
+
+		public static void Tick()
+		{
+			if (!hasMusic)
+				return;
+
+			if (currentMusic != null)
+			{
+				currentMusic.Tick();
+
+				if (currentMusic.Done)
+					NextSong();
 			}
 		}
 	}

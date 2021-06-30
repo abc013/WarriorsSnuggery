@@ -16,7 +16,7 @@ namespace WarriorsSnuggery.Audio
 			return AudioController.Play(buffers[name], inGame, volume, pitch, position, loops);
 		}
 
-		public static GameAudioBuffer GetBuffer(string name)
+		internal static GameAudioBuffer GetBuffer(string name)
 		{
 			return buffers[name];
 		}
@@ -29,7 +29,7 @@ namespace WarriorsSnuggery.Audio
 			buffers.Add(name, new GameAudioBuffer(path + name + ".wav"));
 		}
 
-		public static void Dispose()
+		internal static void Dispose()
 		{
 			foreach (var buffer in buffers.Values)
 				buffer.Dispose();

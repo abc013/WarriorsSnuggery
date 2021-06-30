@@ -162,7 +162,7 @@ namespace WarriorsSnuggery.UI.Screens
 			masterVolumeSlider = new SliderBar(4096, "wooden", () =>
 			{
 				Settings.MasterVolume = (float)Math.Round(masterVolumeSlider.Value, 2);
-				AudioController.Music.SetVolume();
+				MusicController.UpdateVolume();
 			})
 			{
 				Position = new CPos(5120, 2800, 0),
@@ -181,7 +181,7 @@ namespace WarriorsSnuggery.UI.Screens
 			musicVolumeSlider = new SliderBar(4096, "wooden", () =>
 			{
 				Settings.MusicVolume = (float)Math.Round(musicVolumeSlider.Value, 2);
-				AudioController.Music.SetVolume();
+				MusicController.UpdateVolume();
 			})
 			{
 				Position = new CPos(5120, 4600, 0),
@@ -224,7 +224,7 @@ namespace WarriorsSnuggery.UI.Screens
 			Settings.MasterVolume = (float)Math.Round(masterVolumeSlider.Value, 2);
 			Settings.EffectsVolume = (float)Math.Round(effectVolumeSlider.Value, 2);
 			Settings.MusicVolume = (float)Math.Round(musicVolumeSlider.Value, 2);
-			AudioController.Music.SetVolume();
+			MusicController.UpdateVolume();
 
 			Settings.Save();
 
