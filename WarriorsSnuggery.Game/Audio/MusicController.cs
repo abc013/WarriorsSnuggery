@@ -9,7 +9,7 @@
 
 		static Music currentMusic;
 
-		public static bool LoopsSong { get; private set; }
+		public static bool SongLooping { get; private set; }
 
 		public static void Load()
 		{
@@ -30,7 +30,7 @@
 
 		public static void LoopSong(string music)
 		{
-			LoopsSong = true;
+			SongLooping = true;
 
 			for (int i = 0; i < data.Length; i++)
 			{
@@ -49,7 +49,7 @@
 
 		public static void LoopAllSongs()
 		{
-			LoopsSong = false;
+			SongLooping = false;
 
 			NextSong();
 		}
@@ -65,10 +65,10 @@
 				currentMusic.Dispose();
 			}
 
-			currentMusic = new Music(data[current].file);
+			currentMusic = new Music(data[current].file, SongLooping);
 			currentMusic.Play();
 
-			if (!LoopsSong)
+			if (!SongLooping)
 			{
 				current++;
 

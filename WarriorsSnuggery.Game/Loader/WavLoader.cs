@@ -6,19 +6,19 @@ namespace WarriorsSnuggery.Loader
 {
 	public static class WavLoader
 	{
-		public static unsafe void LoadWavFile(string path, out byte[] data, out int channels, out int sampleRate, out int bitDepth, out ALFormat format)
+		public static unsafe void LoadWavFile(string path, out byte[] data, out int channels, out int sampleRate, out int bitDepth, out ALFormat format, out long musicSeekPosition)
 		{
-			using var reader = open(path, out channels, out sampleRate, out bitDepth, out var dataSize, out format);
+			using var reader = open(path, out channels, out sampleRate, out bitDepth, out var dataSize, out format, out musicSeekPosition);
 
 			data = reader.ReadBytes(dataSize);
 		}
 
-		public static unsafe BinaryReader OpenWavFile(string path, out int channels, out int sampleRate, out int bitDepth, out int dataSize, out ALFormat format)
+		public static unsafe BinaryReader OpenWavFile(string path, out int channels, out int sampleRate, out int bitDepth, out int dataSize, out ALFormat format, out long musicSeekPosition)
 		{
-			return open(path, out channels, out sampleRate, out bitDepth, out dataSize, out format);
+			return open(path, out channels, out sampleRate, out bitDepth, out dataSize, out format, out musicSeekPosition);
 		}
 
-		static unsafe BinaryReader open(string path, out int channels, out int sampleRate, out int bitDepth, out int dataSize, out ALFormat format)
+		static unsafe BinaryReader open(string path, out int channels, out int sampleRate, out int bitDepth, out int dataSize, out ALFormat format, out long musicSeekPosition)
 		{
 			var reader = new BinaryReader(new FileStream(path, FileMode.Open, FileAccess.Read));
 
@@ -77,6 +77,8 @@ namespace WarriorsSnuggery.Loader
 			{
 				throw new InvalidSoundFileException($"Invalid .WAV file: Number of channels is {channels}, supported are mono and stereo.");
 			}
+
+			musicSeekPosition = reader.BaseStream.Position;
 
 			return reader;
 		}

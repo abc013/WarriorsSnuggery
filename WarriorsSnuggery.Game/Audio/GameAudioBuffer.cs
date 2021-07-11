@@ -12,7 +12,7 @@ namespace WarriorsSnuggery.Audio
 		{
 			bufferID = AL.GenBuffer();
 
-			WavLoader.LoadWavFile(path, out byte[] data, out _, out int sampleRate, out _, out var format);
+			WavLoader.LoadWavFile(path, out byte[] data, out _, out int sampleRate, out _, out var format, out _);
 
 			LoadData(data, format, sampleRate);
 		}

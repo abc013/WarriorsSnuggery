@@ -20,9 +20,6 @@ namespace WarriorsSnuggery.Audio
 			buffers = new MusicAudioBuffer[BufferCount];
 			for (int i = 0; i < BufferCount; i++)
 				buffers[i] = new MusicAudioBuffer();
-
-			CurrentWriteRotation = 0;
-			CurrentReadRotation = 0;
 		}
 
 		public void WriteAndRotate(byte[] data, ALFormat format, int sampleRate)
@@ -39,6 +36,12 @@ namespace WarriorsSnuggery.Audio
 				throw new Exception($"Attempted to read on rotate buffer more than allowed ({MaxRotations})");
 
 			return buffers[CurrentReadRotation++ % BufferCount];
+		}
+
+		public void Reset()
+		{
+			CurrentReadRotation = 0;
+			CurrentWriteRotation = 0;
 		}
 
 		public void Dispose()

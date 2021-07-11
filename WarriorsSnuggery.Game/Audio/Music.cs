@@ -11,9 +11,12 @@ namespace WarriorsSnuggery.Audio
 
 		readonly BinaryReader reader;
 
+		readonly bool looping;
+		readonly long musicSeekPosition;
+
 		readonly int bufferSize;
 
-		public bool Done => currentLength <= 0;
+		public bool Done => !looping && currentLength <= 0;
 
 		readonly ALFormat format;
 		readonly int sampleRate;
@@ -23,9 +26,11 @@ namespace WarriorsSnuggery.Audio
 		MusicAudioSource source;
 		bool firstTick = true;
 
-		public Music(string path)
+		public Music(string path, bool looping)
 		{
-			reader = Loader.WavLoader.OpenWavFile(path, out int channels, out sampleRate, out int bitDepth, out int dataSize, out format);
+			this.looping = looping;
+
+			reader = Loader.WavLoader.OpenWavFile(path, out int channels, out sampleRate, out int bitDepth, out int dataSize, out format, out musicSeekPosition);
 
 			bufferSize = sampleRate * channels * bitDepth/8;
 
@@ -33,21 +38,20 @@ namespace WarriorsSnuggery.Audio
 
 			rotator = new MusicAudioBufferRotator(dataSize, bufferSize, channels, sampleRate, bitDepth);
 
-			// Fill first 3 buffers
-			fillBuffer();
-			fillBuffer();
-			fillBuffer();
+			// Fill first buffers
+			for (int i = 0; i < MusicAudioBufferRotator.BufferCount; i++)
+				fillBuffer();
 		}
 
 		public void Play()
 		{
 			currentLength = Length;
 			source = AudioController.MusicSource;
-			source.SetVolume(Settings.MusicVolume, Settings.MasterVolume);
+			source.SetVolume(1f, Settings.MusicVolume * Settings.MasterVolume);
 
-			// Queue first 2 buffers
-			source.QueueBuffer(nextBuffer());
-			source.QueueBuffer(nextBuffer());
+			// Queue first buffers
+			for (int i = 0; i < MusicAudioBufferRotator.BufferCount - 1; i++)
+				source.QueueBuffer(nextBuffer());
 		}
 
 		public void UpdateVolume()
@@ -75,10 +79,17 @@ namespace WarriorsSnuggery.Audio
 						if (rotator.CurrentWriteRotation < rotator.MaxRotations)
 							fillBuffer();
 
-						source.UnqueueBuffer();
 						// Unqueue last buffer and queue next one
+						source.UnqueueBuffer();
+
 						if (rotator.CurrentReadRotation < rotator.MaxRotations)
 							source.QueueBuffer(nextBuffer());
+					}
+
+					if (looping && rotator.CurrentWriteRotation == rotator.MaxRotations)
+					{
+						reader.BaseStream.Seek(musicSeekPosition, SeekOrigin.Begin);
+						rotator.Reset();
 					}
 
 					// If something in tick took too long, the source stops playing automatically. Recognize stop and restart playing.
@@ -91,6 +102,7 @@ namespace WarriorsSnuggery.Audio
 		void fillBuffer()
 		{
 			var dataArray = reader.ReadBytes(bufferSize);
+
 			rotator.WriteAndRotate(dataArray, format, sampleRate);
 		}
 

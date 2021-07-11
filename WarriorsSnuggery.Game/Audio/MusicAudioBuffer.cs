@@ -7,10 +7,7 @@ namespace WarriorsSnuggery.Audio
 		public override int BufferID => bufferID;
 		int bufferID;
 
-		public MusicAudioBuffer()
-		{
-
-		}
+		public MusicAudioBuffer() { }
 
 		public void LoadBuffer(byte[] data, ALFormat format, int sampleRate)
 		{
