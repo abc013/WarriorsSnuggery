@@ -43,15 +43,20 @@ namespace WarriorsSnuggery.Audio
 				fillBuffer();
 		}
 
-		public void Play()
+		public void Play(MusicAudioSource musicSource)
 		{
 			currentLength = Length;
-			source = AudioController.MusicSource;
+			source = musicSource;
 			source.SetVolume(1f, Settings.MusicVolume * Settings.MasterVolume);
 
 			// Queue first buffers
 			for (int i = 0; i < MusicAudioBufferRotator.BufferCount - 1; i++)
 				source.QueueBuffer(nextBuffer());
+		}
+
+		public void SetVolume(float volume)
+		{
+			source?.SetVolume(volume, Settings.MusicVolume * Settings.MasterVolume);
 		}
 
 		public void UpdateVolume()
@@ -125,6 +130,7 @@ namespace WarriorsSnuggery.Audio
 
 		public void Dispose()
 		{
+			Stop();
 			rotator.Dispose();
 			reader.Dispose();
 		}

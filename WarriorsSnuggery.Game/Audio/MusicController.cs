@@ -1,13 +1,19 @@
-﻿namespace WarriorsSnuggery.Audio
+﻿using System;
+
+namespace WarriorsSnuggery.Audio
 {
 	public static class MusicController
 	{
 		static  (string name, string file)[] data;
 		static bool hasMusic;
 
-		static int current = 0;
+		static bool intenseActive;
 
 		static Music currentMusic;
+		static int current = 0;
+
+		static Music currentIntenseMusic;
+		static int currentIntense = 0;
 
 		public static bool SongLooping { get; private set; }
 
@@ -24,27 +30,40 @@
 
 		public static void UpdateVolume()
 		{
-			if (hasMusic && currentMusic != null)
-				currentMusic.UpdateVolume();
+			if (hasMusic)
+			{
+				currentMusic?.UpdateVolume();
+				if (intenseActive)
+					currentIntenseMusic.UpdateVolume();
+			}
 		}
 
-		public static void LoopSong(string music)
+		public static void LoopSong(string music, string intenseMusic = null)
 		{
 			SongLooping = true;
+			intenseActive = !string.IsNullOrEmpty(intenseMusic);
 
+			current = findMusic(music);
+			if (intenseActive)
+				currentIntense = findMusic(intenseMusic);
+			else if (currentIntenseMusic != null)
+			{
+				currentIntenseMusic.Dispose();
+				currentIntenseMusic = null;
+			}
+
+			NextSong();
+		}
+
+		static int findMusic(string music)
+		{
 			for (int i = 0; i < data.Length; i++)
 			{
 				if (data[i].name == music)
-				{
-					current = i;
-
-					NextSong();
-
-					return;
-				}
+					return i;
 			}
 
-			throw new System.Exception($"Unable to find specified song named {music}.");
+			throw new Exception($"Unable to find specified song named {music}.");
 		}
 
 		public static void LoopAllSongs()
@@ -56,25 +75,32 @@
 
 		public static void NextSong()
 		{
+			currentMusic = nextSong(currentMusic, AudioController.MusicSource, ref current);
+
+			if (intenseActive)
+				currentIntenseMusic = nextSong(currentIntenseMusic, AudioController.IntenseMusicSource, ref currentIntense);
+		}
+
+		static Music nextSong(Music music, MusicAudioSource source, ref int index)
+		{
 			if (!hasMusic)
-				return;
+				return null;
 
-			if (currentMusic != null)
-			{
-				currentMusic.Stop();
-				currentMusic.Dispose();
-			}
+			if (music != null)
+				music.Dispose();
 
-			currentMusic = new Music(data[current].file, SongLooping);
-			currentMusic.Play();
+			music = new Music(data[index].file, SongLooping);
+			music.Play(source);
 
 			if (!SongLooping)
 			{
-				current++;
+				index++;
 
-				if (current == data.Length)
-					current = 0;
+				if (index == data.Length)
+					index = 0;
 			}
+
+			return music;
 		}
 
 		public static void Tick()
@@ -87,8 +113,28 @@
 				currentMusic.Tick();
 
 				if (currentMusic.Done)
-					NextSong();
+					currentMusic = nextSong(currentMusic, AudioController.MusicSource, ref current);
 			}
+
+			if (intenseActive)
+			{
+				currentIntenseMusic.Tick();
+
+				if (currentIntenseMusic.Done)
+					currentIntenseMusic = nextSong(currentIntenseMusic, AudioController.IntenseMusicSource, ref currentIntense);
+			}
+		}
+
+		public static void SetIntenseVolume(float normal)
+		{
+			if (!hasMusic || !intenseActive)
+				return;
+
+			if (normal < 0 || normal > 1)
+				throw new ArgumentOutOfRangeException($"Music volume mix can only be set in the range from 0 to 1 (attempt: {normal})");
+
+			currentMusic.SetVolume(normal);
+			currentIntenseMusic.SetVolume(1f - normal);
 		}
 	}
 }

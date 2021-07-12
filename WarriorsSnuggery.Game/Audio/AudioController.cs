@@ -5,6 +5,7 @@
 		static AudioDevice device;
 
 		public static MusicAudioSource MusicSource => device.MusicSource;
+		public static MusicAudioSource IntenseMusicSource => device.IntenseMusicSource;
 
 		public static void Load()
 		{

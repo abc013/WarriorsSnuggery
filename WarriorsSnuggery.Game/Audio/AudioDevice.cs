@@ -10,6 +10,7 @@ namespace WarriorsSnuggery.Audio
 		public readonly ALDevice device;
 		public readonly ALContext context;
 		public readonly MusicAudioSource MusicSource;
+		public readonly MusicAudioSource IntenseMusicSource;
 		public readonly GameAudioSource[] MiscSources;
 		public readonly GameAudioSource[] GameSources;
 		readonly bool initialized;
@@ -29,6 +30,7 @@ namespace WarriorsSnuggery.Audio
 				throw new FailingSoundDeviceException($"Failed to open audio device. Error code: {error}.");
 
 			MusicSource = new MusicAudioSource();
+			IntenseMusicSource = new MusicAudioSource();
 
 			MiscSources = new GameAudioSource[miscSourceCount];
 			for (int i = 0; i < miscSourceCount; i++)

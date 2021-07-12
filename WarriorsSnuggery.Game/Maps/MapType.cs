@@ -62,6 +62,9 @@ namespace WarriorsSnuggery.Maps
 		[Desc("Song looping while being in the level.", "If left empty, music will cycle.")]
 		public readonly string Music;
 
+		[Desc("Battle song looping while being low life or in combat.", "If left empty, there will be no battle music.", "Warning: do not choose the same song as battle song again. This will crash the game.")]
+		public readonly string IntenseMusic;
+
 		// For the DocWriter
 		public MapType() { }
 

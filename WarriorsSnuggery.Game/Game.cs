@@ -147,7 +147,7 @@ namespace WarriorsSnuggery
 			World.Load();
 
 			if (!string.IsNullOrEmpty(MapType.Music))
-				MusicController.LoopSong(MapType.Music);
+				MusicController.LoopSong(MapType.Music, MapType.IntenseMusic);
 			else if (MusicController.SongLooping)
 				MusicController.LoopAllSongs();
 
