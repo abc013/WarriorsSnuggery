@@ -4,14 +4,13 @@ namespace WarriorsSnuggery.Audio
 {
 	public static class MusicController
 	{
-		static  (string name, string file)[] data;
+		static (string name, string file)[] data;
 		static bool hasMusic;
-
-		static bool intenseActive;
 
 		static Music currentMusic;
 		static int current = 0;
 
+		static bool intenseActive;
 		static Music currentIntenseMusic;
 		static int currentIntense = 0;
 
@@ -30,12 +29,12 @@ namespace WarriorsSnuggery.Audio
 
 		public static void UpdateVolume()
 		{
-			if (hasMusic)
-			{
-				currentMusic?.UpdateVolume();
-				if (intenseActive)
-					currentIntenseMusic.UpdateVolume();
-			}
+			if (!hasMusic)
+				return;
+
+			currentMusic.UpdateVolume();
+			if (intenseActive)
+				currentIntenseMusic.UpdateVolume();
 		}
 
 		public static void LoopSong(string music, string intenseMusic = null)
@@ -46,11 +45,6 @@ namespace WarriorsSnuggery.Audio
 			current = findMusic(music);
 			if (intenseActive)
 				currentIntense = findMusic(intenseMusic);
-			else if (currentIntenseMusic != null)
-			{
-				currentIntenseMusic.Dispose();
-				currentIntenseMusic = null;
-			}
 
 			NextSong();
 		}
@@ -69,38 +63,36 @@ namespace WarriorsSnuggery.Audio
 		public static void LoopAllSongs()
 		{
 			SongLooping = false;
+			intenseActive = false;
 
 			NextSong();
 		}
 
 		public static void NextSong()
 		{
-			currentMusic = nextSong(currentMusic, AudioController.MusicSource, ref current);
+			if (!hasMusic)
+				return;
+
+			nextSong(AudioController.MusicSource, ref currentMusic, ref current);
 
 			if (intenseActive)
-				currentIntenseMusic = nextSong(currentIntenseMusic, AudioController.IntenseMusicSource, ref currentIntense);
+				nextSong(AudioController.IntenseMusicSource, ref currentIntenseMusic, ref currentIntense);
+			else if (currentIntenseMusic != null)
+			{
+				currentIntenseMusic.Dispose();
+				currentIntenseMusic = null;
+			}
 		}
 
-		static Music nextSong(Music music, MusicAudioSource source, ref int index)
+		static void nextSong(MusicAudioSource source, ref Music music, ref int index)
 		{
-			if (!hasMusic)
-				return null;
-
-			if (music != null)
-				music.Dispose();
+			music?.Dispose();
 
 			music = new Music(data[index].file, SongLooping);
 			music.Play(source);
 
-			if (!SongLooping)
-			{
-				index++;
-
-				if (index == data.Length)
-					index = 0;
-			}
-
-			return music;
+			if (!SongLooping && ++index == data.Length)
+				index = 0;
 		}
 
 		public static void Tick()
@@ -108,33 +100,28 @@ namespace WarriorsSnuggery.Audio
 			if (!hasMusic)
 				return;
 
-			if (currentMusic != null)
-			{
-				currentMusic.Tick();
-
-				if (currentMusic.Done)
-					currentMusic = nextSong(currentMusic, AudioController.MusicSource, ref current);
-			}
+			currentMusic.Tick();
+			if (currentMusic.Done)
+				nextSong(AudioController.MusicSource, ref currentMusic, ref current);
 
 			if (intenseActive)
 			{
 				currentIntenseMusic.Tick();
-
 				if (currentIntenseMusic.Done)
-					currentIntenseMusic = nextSong(currentIntenseMusic, AudioController.IntenseMusicSource, ref currentIntense);
+					nextSong(AudioController.IntenseMusicSource, ref currentIntenseMusic, ref currentIntense);
 			}
 		}
 
-		public static void SetIntenseVolume(float normal)
+		public static void SetIntenseVolume(float intense)
 		{
 			if (!hasMusic || !intenseActive)
 				return;
 
-			if (normal < 0 || normal > 1)
-				throw new ArgumentOutOfRangeException($"Music volume mix can only be set in the range from 0 to 1 (attempt: {normal})");
+			if (intense < 0 || intense > 1)
+				throw new ArgumentOutOfRangeException($"Music volume mix can only be set in the range from 0 to 1 (attempt: {intense})");
 
-			currentMusic.SetVolume(normal);
-			currentIntenseMusic.SetVolume(1f - normal);
+			currentMusic.SetVolume(1f - intense);
+			currentIntenseMusic.SetVolume(intense);
 		}
 	}
 }
