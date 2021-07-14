@@ -34,34 +34,29 @@ namespace WarriorsSnuggery.Objects.Actors.Bot
 				if (IsLeader)
 					Patrol?.SetNewTarget(value);
 
-				if (target.Type == TargetType.POSITION)
-					TargetFavor = 0;
-
 				if (target == null)
 				{
 					TargetFavor = 0;
+					Waypoints.Clear();
+
 					return;
 				}
 
-				// Calculate path
+				if (target.Type == TargetType.POSITION)
+					TargetFavor = 0;
+
 				if (CanMove)
-				{
-					Waypoints.Clear();
-
-					var path = Self.World.PathfinderLayer.CalculatePath(Self.TerrainPosition, target.Position.ToMPos(), Self.Mobile.CanFly);
-
-					foreach (var waypoint in path)
-						Waypoints.Enqueue(waypoint.ToCPos());
-				}
+					calculatePathToTarget();
 			}
 		}
 		Target target;
 		protected float TargetFavor;
+		CPos pathfindingTarget;
 
 		protected float DistToTarget => (Target.Position - Self.Position).FlatDist;
 		protected float AngleToTarget => (Self.Position - Target.Position).FlatAngle;
 
-		protected virtual bool HasGoodTarget => !(Target == null || Target.Actor == null || !Target.Actor.IsAlive || Target.Actor.Disposed);
+		protected virtual bool HasGoodTarget => !(Target == null || Target.Type != TargetType.ACTOR || !Target.Actor.IsAlive || Target.Actor.Disposed);
 
 		protected readonly Queue<CPos> Waypoints = new Queue<CPos>();
 
@@ -81,25 +76,7 @@ namespace WarriorsSnuggery.Objects.Actors.Bot
 
 		public void DefaultTickBehavior()
 		{
-			const int maxDistToTarget = 256;
-
 			SearchTarget();
-			if (CanMove && Target != null && DistToTarget > maxDistToTarget)
-			{
-				if (Waypoints.Count > 0)
-				{
-					var nearest = Waypoints.Peek();
-
-					var diff = Self.Position - nearest;
-
-					Self.AccelerateSelf(diff.FlatAngle);
-
-					if (diff.SquaredFlatDist <= maxDistToTarget * maxDistToTarget)
-						Waypoints.Dequeue();
-				}
-				else
-					Self.AccelerateSelf(AngleToTarget);
-			}
 		}
 
 		public void DefaultAttackBehavior()
@@ -120,6 +97,27 @@ namespace WarriorsSnuggery.Objects.Actors.Bot
 			else if (Self.RevealsShroud != null)
 				range = Self.RevealsShroud.Range * 512;
 
+			if (DistToTarget > range)
+			{
+				if (target.Type == TargetType.ACTOR && (target.Position - pathfindingTarget).SquaredFlatDist > range * range)
+					calculatePathToTarget(); // Target has moved
+
+				if (Waypoints.Count > 0)
+				{
+					var nearest = Waypoints.Peek();
+
+					var diff = Self.Position - nearest;
+
+					Self.AccelerateSelf(diff.FlatAngle);
+
+					const int maxDistToTarget = 256;
+					if (diff.SquaredFlatDist <= maxDistToTarget * maxDistToTarget)
+						Waypoints.Dequeue();
+
+					return;
+				}
+			}
+
 			var actor = GetNeighborActor();
 			float angle = actor != null ? (Self.Position - actor.Position).FlatAngle : AngleToTarget;
 
@@ -127,6 +125,18 @@ namespace WarriorsSnuggery.Objects.Actors.Bot
 				Self.AccelerateSelf(-angle);
 			else if (DistToTarget > range * rangeB)
 				Self.AccelerateSelf(angle);
+		}
+
+		void calculatePathToTarget()
+		{
+			pathfindingTarget = target.Position;
+
+			Waypoints.Clear();
+
+			var path = Self.World.PathfinderLayer.CalculatePath(Self.TerrainPosition, target.Position.ToMPos(), Self.Mobile.CanFly);
+
+			foreach (var waypoint in path)
+				Waypoints.Enqueue(waypoint.ToCPos());
 		}
 
 		public virtual void OnDamage(Actor damager, int damage)

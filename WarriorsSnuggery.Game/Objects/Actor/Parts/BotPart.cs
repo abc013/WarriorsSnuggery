@@ -54,9 +54,7 @@ namespace WarriorsSnuggery.Objects.Actors.Parts
 					targetID = node.Convert<uint>();
 			}
 
-			if (targetID == uint.MaxValue)
-				Target = new Target(position, height);
-			else
+			if (targetID != uint.MaxValue)
 				Target = new Target(self.World.ActorLayer.ToAdd().Find(a => a.ID == targetID));
 		}
 
