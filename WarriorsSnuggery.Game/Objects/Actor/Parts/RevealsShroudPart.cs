@@ -53,6 +53,9 @@
 		{
 			if (tick < 0)
 			{
+				if (old.X / 512 - self.Position.X / 512 == 0 && old.Y / 512 - self.Position.Y / 512 == 0)
+					return;
+
 				self.World.ShroudLayer.RevealShroudCircular(self.World, self.Team, self.Position, self.Height, info.Range);
 				tick = info.Interval;
 			}
