@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using WarriorsSnuggery.Loader;
+using WarriorsSnuggery.Maps.Noises;
 using WarriorsSnuggery.Maps.Pieces;
 
 namespace WarriorsSnuggery.Maps.Generators
@@ -176,7 +177,7 @@ namespace WarriorsSnuggery.Maps.Generators
 				Loader.GeneratePiece(getPiece(fitting.Pieces), piece.Position, info.ID, idInclusive: true);
 			}
 
-			MapPrinter.PrintGeneratorMap(Bounds, Loader.EmptyNoiseMap, UsedCells, info.ID);
+			MapPrinter.PrintGeneratorMap(Bounds, NoiseMap.Empty, UsedCells, info.ID);
 		}
 
 		List<Cell> cellLoop(Cell cell, int depth)
