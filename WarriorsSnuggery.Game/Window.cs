@@ -319,7 +319,7 @@ namespace WarriorsSnuggery
 
 		protected override void OnKeyDown(KeyboardKeyEventArgs e)
 		{
-			if (e.Key == Keys.N)
+			if (e.Key == Keys.N && !MusicController.SongLooping)
 				MusicController.NextSong();
 
 			if (e.Alt && e.Key == Keys.F4)

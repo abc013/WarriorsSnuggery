@@ -11,6 +11,8 @@ namespace WarriorsSnuggery.Audio
 		static int current = 0;
 
 		static bool intenseActive;
+		static int intenseDuration;
+		static float intenseVolume;
 		static Music currentIntenseMusic;
 		static int currentIntense = 0;
 
@@ -74,9 +76,13 @@ namespace WarriorsSnuggery.Audio
 				return;
 
 			nextSong(AudioController.MusicSource, ref currentMusic, ref current);
+			currentMusic.SetVolume(1f - intenseVolume);
 
 			if (intenseActive)
+			{
 				nextSong(AudioController.IntenseMusicSource, ref currentIntenseMusic, ref currentIntense);
+				currentIntenseMusic.SetVolume(intenseVolume);
+			}
 			else if (currentIntenseMusic != null)
 			{
 				currentIntenseMusic.Dispose();
@@ -106,13 +112,34 @@ namespace WarriorsSnuggery.Audio
 
 			if (intenseActive)
 			{
+				if (intenseDuration-- > 0)
+					setIntenseVolume(Math.Min(intenseVolume + 0.008f, 1f));
+				else
+					setIntenseVolume(Math.Max(intenseVolume - 0.002f, 0f));
+
 				currentIntenseMusic.Tick();
 				if (currentIntenseMusic.Done)
 					nextSong(AudioController.IntenseMusicSource, ref currentIntenseMusic, ref currentIntense);
 			}
 		}
 
-		public static void SetIntenseVolume(float intense)
+		public static void FadeIntenseIn(int duration)
+		{
+			intenseDuration = duration;
+		}
+
+		public static void FadeIntenseOut()
+		{
+			intenseDuration = 0;
+		}
+
+		public static void ResetIntense()
+		{
+			intenseDuration = 0;
+			intenseVolume = 0;
+		}
+
+		static void setIntenseVolume(float intense)
 		{
 			if (!hasMusic || !intenseActive)
 				return;
@@ -120,6 +147,7 @@ namespace WarriorsSnuggery.Audio
 			if (intense < 0 || intense > 1)
 				throw new ArgumentOutOfRangeException($"Music volume mix can only be set in the range from 0 to 1 (attempt: {intense})");
 
+			intenseVolume = intense;
 			currentMusic.SetVolume(1f - intense);
 			currentIntenseMusic.SetVolume(intense);
 		}

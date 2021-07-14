@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using WarriorsSnuggery.Audio;
 using WarriorsSnuggery.Loader;
 using WarriorsSnuggery.Maps;
 using WarriorsSnuggery.Objects.Actors;
@@ -104,6 +105,8 @@ namespace WarriorsSnuggery
 				actor.Bot.Target = new Objects.Weapons.Target(game.World.LocalPlayer);
 
 			waveActors = actors.Where(a => a.WorldPart != null && a.WorldPart.KillForVictory).ToList();
+
+			MusicController.FadeIntenseIn(Settings.UpdatesPerSecond * 20);
 		}
 	}
 }

@@ -143,6 +143,7 @@ namespace WarriorsSnuggery
 
 			MasterRenderer.ResetRenderer(this);
 			Camera.Reset();
+			MusicController.ResetIntense();
 
 			World.Load();
 
@@ -374,6 +375,8 @@ namespace WarriorsSnuggery
 			counterStarted = true;
 			// Give 10 seconds
 			counterTick = Settings.UpdatesPerSecond * 10;
+
+			MusicController.FadeIntenseOut();
 		}
 
 		void finishCounter()
@@ -413,6 +416,8 @@ namespace WarriorsSnuggery
 			script?.OnFinish();
 			Finished = true;
 			Pause(true);
+
+			MusicController.FadeIntenseOut();
 		}
 
 		public object[] GetScriptState(out string name)

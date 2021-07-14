@@ -1,5 +1,6 @@
 ﻿using OpenTK.Windowing.GraphicsLibraryFramework;
 using System;
+using WarriorsSnuggery.Audio;
 using WarriorsSnuggery.Graphics;
 using WarriorsSnuggery.Spells;
 
@@ -143,6 +144,7 @@ namespace WarriorsSnuggery.Objects.Actors.Parts
 		public void OnDamage(Actor damager, int damage)
 		{
 			self.World.PlayerDamagedTick = 0;
+			MusicController.FadeIntenseIn(Settings.UpdatesPerSecond * 20);
 		}
 
 		public void OnKilled(Actor killer)
