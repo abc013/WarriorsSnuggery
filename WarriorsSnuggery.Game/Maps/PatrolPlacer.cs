@@ -81,12 +81,16 @@ namespace WarriorsSnuggery.Maps
 		{
 			var actors = new List<Actor>();
 
+			// TODO: rework in spawnbound areas
+			positions.AddRange(world.Map.PatrolSpawnLocations);
+
 			for (int a = 0; a < Math.Floor(bounds.X / (float)info.SpawnBounds); a++)
 			{
 				for (int b = 0; b < Math.Floor(bounds.X / (float)info.SpawnBounds); b++)
 				{
-					if (!areaBlocked(a, b))
-						positions.Add(new MPos(a * info.SpawnBounds, b * info.SpawnBounds));
+					var pos = new MPos(a * info.SpawnBounds, b * info.SpawnBounds);
+					if (!areaBlocked(a, b) && !positions.Contains(pos))
+						positions.Add(pos);
 				}
 			}
 
@@ -94,7 +98,7 @@ namespace WarriorsSnuggery.Maps
 			var count = random.Next((int)(info.MinimumPatrols * multiplier), (int)(info.MaximumPatrols * multiplier));
 			if (positions.Count < count)
 			{
-				Log.Warning($"Unable to spawn Patrol count ({count}) because there are not enough available spawn points ({positions.Count}).");
+				Log.Warning($"Unable to spawn patrol count ({count}) because there are not enough available spawn points ({positions.Count}).");
 				count = positions.Count;
 			}
 
@@ -187,7 +191,7 @@ namespace WarriorsSnuggery.Maps
 
 		PatrolProbabilityInfo getPatrol()
 		{
-			var probability = random.NextDouble() * info.PatrolProbabilities;
+			var probability = (float)(random.NextDouble() * info.PatrolProbabilities);
 			for (int i = 0; i < info.Patrols.Length; i++)
 			{
 				probability -= info.Patrols[i].Probability;
