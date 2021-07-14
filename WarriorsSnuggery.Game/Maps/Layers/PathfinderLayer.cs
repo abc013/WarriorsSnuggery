@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using WarriorsSnuggery.Graphics;
 using WarriorsSnuggery.Objects;
@@ -64,7 +65,11 @@ namespace WarriorsSnuggery.Maps.Layers
 		public List<MPos> CalculatePath(MPos start, MPos end, bool flying = false)
 		{
 			var path = new List<MPos>();
-			
+
+			// HACK: Clamp to borders to prevent crash in some special cases when target is at map border
+			start = new MPos(Math.Clamp(start.X, 0, bounds.X - 1), Math.Clamp(start.Y, 0, bounds.Y - 1));
+			end = new MPos(Math.Clamp(end.X, 0, bounds.X - 1), Math.Clamp(end.Y, 0, bounds.Y - 1));
+
 			var startCell = cells[start.X, start.Y];
 			var endCell = cells[end.X, end.Y];
 
