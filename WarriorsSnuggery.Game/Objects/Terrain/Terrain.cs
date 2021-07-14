@@ -53,7 +53,8 @@ namespace WarriorsSnuggery.Objects
 
 			if (Type.UnifyOverlayTick)
 				overlay.SetTick((int)Window.GlobalTick);
-			overlay.Tick();
+			else
+				overlay.Tick();
 		}
 
 		public void Render()
@@ -107,12 +108,20 @@ namespace WarriorsSnuggery.Objects
 				return !(terrain.ID == Type.ID || terrain.OverlapHeight > Type.OverlapHeight);
 			};
 
-			var bounds = world.Map.Bounds;
+			bool overlapBlockingWall(MPos wallPos)
+			{
+				var wall = world.WallLayer.Walls[wallPos.X, wallPos.Y];
 
-			var isEdgeTop = Position.Y == 0;
-			var isEdgeRight = Position.X >= bounds.X - 1;
-			var isEdgeBottom = Position.Y >= bounds.Y - 1;
-			var isEdgeLeft = Position.X == 0;
+				return wall != null && wall.Type.BlocksTerrainOverlap;
+			};
+
+			var bounds = world.Map.Bounds;
+			var wallPosition = Position * new MPos(2, 1);
+
+			var isEdgeTop = Position.Y == 0 || overlapBlockingWall(wallPosition + new MPos(1, 0));
+			var isEdgeRight = Position.X >= bounds.X - 1 || overlapBlockingWall(wallPosition + new MPos(2, 0));
+			var isEdgeBottom = Position.Y >= bounds.Y - 1 || overlapBlockingWall(wallPosition + new MPos(1, 1));
+			var isEdgeLeft = Position.X == 0 || overlapBlockingWall(wallPosition);
 
 			// Edges
 			edgesVisible[0] = !isEdgeTop && overlapVisible(new MPos(Position.X, Position.Y - 1));

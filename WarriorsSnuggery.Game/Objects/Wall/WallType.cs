@@ -28,6 +28,9 @@ namespace WarriorsSnuggery.Objects
 		[Desc("Height of the wall.", "This will allow players flying above this height to pass the wall and also see behind it.")]
 		public readonly int Height = 1024;
 
+		[Desc("Determines whether this walls blocks the visual terrain overlaps.")]
+		public readonly bool BlocksTerrainOverlap = false;
+
 		[Desc("Health of the wall.", "If 0 or negative, the wall is invincible.")]
 		public readonly int Health = 0;
 		public bool Invincible => Health <= 0;

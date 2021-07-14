@@ -7,6 +7,7 @@
 		Size=24,48
 	Health=400
 	ConsiderWallsNearby=true
+	BlocksTerrainOverlap=true
 	WallOnDeath=10
 	Armor=wood
 
@@ -19,6 +20,7 @@
 		Size=24,48
 	Health=400
 	ConsiderWallsNearby=true
+	BlocksTerrainOverlap=true
 	WallOnDeath=9
 	Armor=stone
 
@@ -34,6 +36,7 @@
 	Health=200
 	WallOnDeath=9
 	IsTransparent=true
+	BlocksTerrainOverlap=true
 	Armor=stone
 
 3=
@@ -48,6 +51,7 @@
 	Health=150
 	WallOnDeath=10
 	IsTransparent=true
+	BlocksTerrainOverlap=true
 	Armor=wood
 
 4=
@@ -56,6 +60,7 @@
 	DamagePenetration=0.3
 	Health=300
 	WallOnDeath=9
+	BlocksTerrainOverlap=true
 	Armor=stone
 
 5=
@@ -64,6 +69,7 @@
 	DamagePenetration=0.3
 	Health=300
 	WallOnDeath=9
+	BlocksTerrainOverlap=true
 	Armor=stone
 
 8=
@@ -85,6 +91,7 @@
 	Blocks=false
 	DamagePenetration=0
 	IgnoreForNearby=true
+	BlocksTerrainOverlap=true
 	IsOnFloor=true
 
 10=
@@ -93,6 +100,7 @@
 	Blocks=false
 	DamagePenetration=0
 	IgnoreForNearby=true
+	BlocksTerrainOverlap=true
 	IsOnFloor=true
 
 
