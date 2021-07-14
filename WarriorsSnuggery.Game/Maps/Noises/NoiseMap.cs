@@ -32,9 +32,17 @@ namespace WarriorsSnuggery.Maps.Noises
 
 	public sealed class NoiseMap
 	{
+		public static NoiseMap Empty = new NoiseMap();
+
 		public readonly int ID;
 		readonly float[] values;
 		readonly MPos bounds;
+		bool empty;
+
+		NoiseMap()
+		{
+			empty = true;
+		}
 
 		public NoiseMap(MPos bounds, int seed, NoiseMapInfo info)
 		{
@@ -99,10 +107,13 @@ namespace WarriorsSnuggery.Maps.Noises
 			}
 		}
 
-		public float this[int x, int y] => values[y * bounds.X + x];
+		public float this[int x, int y] => empty ? 0f : values[y * bounds.X + x];
 
 		public void Render()
 		{
+			if (empty)
+				return;
+
 			var bounds = VisibilitySolver.GetBounds(out var position);
 
 			position = new MPos(Math.Clamp(position.X, 0, this.bounds.X), Math.Clamp(position.Y, 0, this.bounds.Y));

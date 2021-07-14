@@ -27,8 +27,9 @@ namespace WarriorsSnuggery.Maps
 		public readonly CPos BottomLeftCorner;
 		public readonly CPos BottomRightCorner;
 
-		public Dictionary<int, NoiseMap> NoiseMaps { get; private set; }
-		public List<Waypoint> Waypoints { get; private set; }
+		public readonly Dictionary<int, NoiseMap> NoiseMaps = new Dictionary<int, NoiseMap>();
+		public readonly List<Waypoint> Waypoints = new List<Waypoint>();
+		public readonly List<MPos> PatrolSpawnLocations = new List<MPos>();
 
 		public Map(World world, MapType type, int seed, int level, int difficulty)
 		{
@@ -68,11 +69,7 @@ namespace WarriorsSnuggery.Maps
 			VisibilitySolver.SetBounds(this, world.ShroudLayer);
 
 			var mapLoader = new MapLoader(world, this);
-			NoiseMaps = mapLoader.NoiseMaps;
-			Waypoints = mapLoader.Waypoints;
-
 			mapLoader.Generate();
-
 			mapLoader.Apply();
 		}
 	}

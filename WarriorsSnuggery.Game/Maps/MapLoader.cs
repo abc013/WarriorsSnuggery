@@ -34,10 +34,10 @@ namespace WarriorsSnuggery.Maps
 		public GameSave Save => world.Game.Save;
 
 		public readonly Random Random;
-		public readonly NoiseMap EmptyNoiseMap;
 
-		public readonly Dictionary<int, NoiseMap> NoiseMaps = new Dictionary<int, NoiseMap>();
-		public readonly List<Waypoint> Waypoints = new List<Waypoint>();
+		public Dictionary<int, NoiseMap> NoiseMaps => map.NoiseMaps;
+		public List<Waypoint> Waypoints => map.Waypoints;
+		public List<MPos> PatrolSpawnLocations => map.PatrolSpawnLocations;
 
 		readonly int[,] generatorReservations;
 		readonly bool[,] invalidForPatrols;
@@ -62,9 +62,6 @@ namespace WarriorsSnuggery.Maps
 				NoiseMaps.Add(info.ID, noiseMap);
 				MapPrinter.PrintNoiseMap(Bounds, noiseMap);
 			}
-
-			// Empty NoiseMap
-			EmptyNoiseMap = new NoiseMap(Bounds, 0, new NoiseMapInfo(0, new List<TextNode>()));
 
 			generatorReservations = new int[Bounds.X, Bounds.Y];
 			invalidForPatrols = new bool[Bounds.X, Bounds.Y];
@@ -320,7 +317,7 @@ namespace WarriorsSnuggery.Maps
 		public NoiseMap GetNoise(int id)
 		{
 			if (id < 0)
-				return EmptyNoiseMap;
+				return NoiseMap.Empty;
 
 			if (!NoiseMaps.ContainsKey(id))
 				throw new Loader.InvalidNodeException($"Map type {MapTypeName} is missing a NoiseMap with ID {id}.");
