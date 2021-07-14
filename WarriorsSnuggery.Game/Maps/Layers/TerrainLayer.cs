@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using WarriorsSnuggery.Graphics;
 using WarriorsSnuggery.Objects;
 
 namespace WarriorsSnuggery.Maps.Layers
@@ -24,36 +25,24 @@ namespace WarriorsSnuggery.Maps.Layers
 
 		public void Tick()
 		{
-			var visibilityBounds = VisibilitySolver.GetBounds(out var position);
+			CameraVisibility.GetClampedBounds(out var position, out var bounds);
 
-			for (int x = position.X; x < position.X + visibilityBounds.X; x++)
+			for (int x = position.X; x < position.X + bounds.X; x++)
 			{
-				if (x >= 0 && x < bounds.X)
-				{
-					for (int y = position.Y; y < position.Y + visibilityBounds.Y; y++)
-					{
-						if (y >= 0 && y < bounds.Y)
-							Terrain[x, y].Tick();
-					}
-				}
+				for (int y = position.Y; y < position.Y + bounds.Y; y++)
+					Terrain[x, y].Tick();
 			}
 		}
 
 		public void Render()
 		{
-			var visibilityBounds = VisibilitySolver.GetBounds(out var position);
+			CameraVisibility.GetClampedBounds(out var position, out var bounds);
 			var renderList = new List<Terrain>();
 
-			for (int x = position.X; x < position.X + visibilityBounds.X; x++)
+			for (int x = position.X; x < position.X + bounds.X; x++)
 			{
-				if (x >= 0 && x < bounds.X)
-				{
-					for (int y = position.Y; y < position.Y + visibilityBounds.Y; y++)
-					{
-						if (y >= 0 && y < bounds.Y)
-							renderList.Add(Terrain[x, y]);
-					}
-				}
+				for (int y = position.Y; y < position.Y + bounds.Y; y++)
+					renderList.Add(Terrain[x, y]);
 			}
 
 			foreach (var terrain in renderList.OrderBy(t => t.Type.OverlapHeight))

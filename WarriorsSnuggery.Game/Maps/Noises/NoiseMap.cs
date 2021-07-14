@@ -114,14 +114,11 @@ namespace WarriorsSnuggery.Maps.Noises
 			if (empty)
 				return;
 
-			var bounds = VisibilitySolver.GetBounds(out var position);
+			CameraVisibility.GetClampedBounds(out var position, out var bounds);
 
-			position = new MPos(Math.Clamp(position.X, 0, this.bounds.X), Math.Clamp(position.Y, 0, this.bounds.Y));
-			bounds = new MPos(Math.Clamp(position.X + bounds.X, 0, this.bounds.X), Math.Clamp(position.Y + bounds.Y, 0, this.bounds.Y));
-
-			for (var x = position.X; x < bounds.X; x++)
+			for (var x = position.X; x < position.X + bounds.X; x++)
 			{
-				for (var y = position.Y; y < bounds.Y; y++)
+				for (var y = position.Y; y < position.Y + bounds.Y; y++)
 				{
 					var value = values[y * this.bounds.X + x];
 					ColorManager.DrawQuad(new CPos(x * 1024, y * 1024, 0), 256, new Color(value, value, value, 0.8f));

@@ -205,7 +205,7 @@ namespace WarriorsSnuggery.Objects.Weapons
 
 		public override bool CheckVisibility()
 		{
-			return VisibilitySolver.IsVisible(GraphicPosition) || VisibilitySolver.IsVisible(originPos);
+			return CameraVisibility.IsVisible(GraphicPosition) || CameraVisibility.IsVisible(originPos);
 		}
 
 		void setPosition()

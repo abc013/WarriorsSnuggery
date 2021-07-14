@@ -102,7 +102,7 @@ namespace WarriorsSnuggery.Objects.Actors.Parts
 			{
 				foreach (var actor in sector.Actors)
 				{
-					if (actor.Team == team || actor.WorldPart == null || !VisibilitySolver.IsVisible(actor.Position))
+					if (actor.Team == team || actor.WorldPart == null || !CameraVisibility.IsVisible(actor.Position))
 						continue;
 
 					var targetPart = actor.GetPartOrDefault<TargetablePart>();

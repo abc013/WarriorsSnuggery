@@ -190,7 +190,7 @@ namespace WarriorsSnuggery.Maps.Layers
 			}
 
 			if (value)
-				VisibilitySolver.ShroudRevealed(x, y);
+				CameraVisibility.ShroudRevealed(x / 2, y / 2);
 		}
 
 		List<Triangle> getTriangles(World world, CPos position, int height, MPos shroudPos, int radius)

@@ -189,7 +189,7 @@ namespace WarriorsSnuggery.Objects
 
 		public override bool CheckVisibility()
 		{
-			renderable.Visible = VisibilitySolver.IsVisibleIgnoringBounds(TerrainPosition) || VisibilitySolver.IsVisibleIgnoringBounds(TerrainPosition - new MPos(0, 1));
+			renderable.Visible = CameraVisibility.IsVisibleIgnoringBounds(TerrainPosition) || CameraVisibility.IsVisibleIgnoringBounds(TerrainPosition - new MPos(0, 1));
 
 			return renderable.Visible;
 		}

@@ -127,17 +127,12 @@ namespace WarriorsSnuggery.Maps.Layers
 
 		public void RenderDebug()
 		{
-			var bounds = VisibilitySolver.GetBounds(out var position);
+			CameraVisibility.GetClampedBounds(out var position, out var bounds);
+
 			for (int x = position.X; x < position.X + bounds.X; x++)
 			{
-				if (x < 0 || x >= this.bounds.X)
-					continue;
-
 				for (int y = position.Y; y < position.Y + bounds.Y; y++)
 				{
-					if (y < 0 || y >= this.bounds.Y)
-						continue;
-
 					var cell = cells[x, y];
 					foreach (var (cost, target) in cell.Connections)
 						ColorManager.DrawLine(cell.Position.ToCPos(), target.Position.ToCPos(), new Color(1f, cost / 5f, 0f, 0.2f));

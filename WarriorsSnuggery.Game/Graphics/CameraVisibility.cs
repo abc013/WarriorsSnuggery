@@ -1,15 +1,14 @@
 ﻿using System;
-using WarriorsSnuggery.Graphics;
 using WarriorsSnuggery.Maps;
 using WarriorsSnuggery.Maps.Layers;
 using WarriorsSnuggery.Objects.Actors;
 
-namespace WarriorsSnuggery
+namespace WarriorsSnuggery.Graphics
 {
-	public sealed class VisibilitySolver
+	public sealed class CameraVisibility
 	{
 		static bool[,] visible = new bool[0, 0];
-		static MPos bounds => map.Bounds;
+		static MPos mapBounds => map.Bounds;
 
 		static MPos lastCameraPosition;
 		static MPos lastCameraZoom;
@@ -28,9 +27,9 @@ namespace WarriorsSnuggery
 
 		public static void SetBounds(Map map, ShroudLayer shroud)
 		{
-			VisibilitySolver.map = map;
-			VisibilitySolver.shroud = shroud;
-			visible = new bool[bounds.X, bounds.Y];
+			CameraVisibility.map = map;
+			CameraVisibility.shroud = shroud;
+			visible = new bool[mapBounds.X, mapBounds.Y];
 		}
 
 		public static void ZoomUpdated()
@@ -63,10 +62,10 @@ namespace WarriorsSnuggery
 			return new MPos(xPos, yPos);
 		}
 
-		public static MPos GetBounds(out MPos position)
+		public static void GetClampedBounds(out MPos position, out MPos bounds)
 		{
-			position = lastCameraPosition;
-			return lastCameraZoom;
+			position = new MPos(Math.Clamp(lastCameraPosition.X, 0, mapBounds.X), Math.Clamp(lastCameraPosition.Y, 0, mapBounds.Y));
+			bounds = new MPos(Math.Clamp(lastCameraZoom.X + lastCameraPosition.X, 0, mapBounds.X) - lastCameraPosition.X, Math.Clamp(lastCameraZoom.Y + lastCameraPosition.Y, 0, mapBounds.Y) - lastCameraPosition.Y);
 		}
 
 		public static void ShroudUpdated()
@@ -76,11 +75,11 @@ namespace WarriorsSnuggery
 
 			for (int x = lastCameraPosition.X; x < lastCameraPosition.X + lastCameraZoom.X; x++)
 			{
-				if (x >= 0 && x < bounds.X)
+				if (x >= 0 && x < mapBounds.X)
 				{
 					for (int y = lastCameraPosition.Y; y < lastCameraPosition.Y + lastCameraZoom.Y; y++)
 					{
-						if (y >= 0 && y < bounds.Y)
+						if (y >= 0 && y < mapBounds.Y)
 							visible[x, y] = checkShroud(x, y);
 					}
 				}
@@ -92,7 +91,7 @@ namespace WarriorsSnuggery
 			if (map == null)
 				return;
 
-			visible[x / 2, y / 2] = true;
+			visible[x, y] = true;
 		}
 
 		static bool checkShroud(int x, int y)
@@ -115,7 +114,7 @@ namespace WarriorsSnuggery
 			if (shroud.RevealAll)
 				return true;
 
-			if (position.X < 0 || position.Y < 0 || position.X >= bounds.X || position.Y >= bounds.Y)
+			if (position.X < 0 || position.Y < 0 || position.X >= mapBounds.X || position.Y >= mapBounds.Y)
 				return false;
 
 			if (position.X < lastCameraPosition.X || position.Y < lastCameraPosition.Y || position.X >= lastCameraPosition.X + lastCameraZoom.X || position.Y >= lastCameraPosition.Y + lastCameraZoom.Y)
@@ -137,13 +136,13 @@ namespace WarriorsSnuggery
 
 			if (position.X < 0)
 				position = new MPos(0, position.Y);
-			else if (position.X >= bounds.X)
-				position = new MPos(bounds.X - 1, position.Y);
+			else if (position.X >= mapBounds.X)
+				position = new MPos(mapBounds.X - 1, position.Y);
 
 			if (position.Y < 0)
 				position = new MPos(position.X, 0);
-			else if (position.Y >= bounds.Y)
-				position = new MPos(position.X, bounds.Y - 1);
+			else if (position.Y >= mapBounds.Y)
+				position = new MPos(position.X, mapBounds.Y - 1);
 
 			return visible[position.X, position.Y];
 		}

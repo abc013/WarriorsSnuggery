@@ -33,7 +33,7 @@ namespace WarriorsSnuggery.UI.Objects
 
 			//memory.SetText("Memory " + (int) (System.Diagnostics.Process.GetCurrentProcess().PrivateMemorySize64 / 1024f) + " KB");
 			//memory.SetText("Public Memory " + (int)(GC.GetTotalMemory(false) / 1024f) + " KB");
-			visibility.SetText(VisibilitySolver.TilesVisible() + " Tiles visible");
+			visibility.SetText(CameraVisibility.TilesVisible() + " Tiles visible");
 
 			if (Window.GlobalTick % 10 != 0)
 				return;

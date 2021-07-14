@@ -66,7 +66,7 @@ namespace WarriorsSnuggery.Maps
 		public void Load()
 		{
 			Camera.SetBounds(Bounds);
-			VisibilitySolver.SetBounds(this, world.ShroudLayer);
+			CameraVisibility.SetBounds(this, world.ShroudLayer);
 
 			var mapLoader = new MapLoader(world, this);
 			mapLoader.Generate();

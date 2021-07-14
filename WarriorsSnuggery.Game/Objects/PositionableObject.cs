@@ -135,7 +135,7 @@ namespace WarriorsSnuggery.Objects
 				return Visible;
 			}
 
-			Visible = VisibilitySolver.IsVisible(Position);
+			Visible = CameraVisibility.IsVisible(Position);
 			return Visible;
 		}
 

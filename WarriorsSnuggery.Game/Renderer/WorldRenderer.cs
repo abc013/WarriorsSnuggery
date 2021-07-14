@@ -29,7 +29,7 @@ namespace WarriorsSnuggery
 			game = @new;
 			world = game.World;
 
-			VisibilitySolver.Reset();
+			CameraVisibility.Reset();
 			Camera.Reset();
 
 			ClearRenderLists();
@@ -99,20 +99,12 @@ namespace WarriorsSnuggery
 
 			if (!world.ShroudLayer.RevealAll)
 			{
-				var bounds = VisibilitySolver.GetBounds(out var position);
+				CameraVisibility.GetClampedBounds(out var position, out var bounds);
 
-				for (int x = (position.X) * 2; x < (position.X + bounds.X) * 2; x++)
+				for (int x = position.X * 2; x < (position.X + bounds.X) * 2; x++)
 				{
-					if (x >= 0 && x < world.ShroudLayer.Bounds.X)
-					{
-						for (int y = (position.Y) * 2; y < (position.Y + bounds.Y) * 2; y++)
-						{
-							if (y >= 0 && y < world.ShroudLayer.Bounds.Y)
-							{
-								world.ShroudLayer.Shroud[x, y].Render();
-							}
-						}
-					}
+					for (int y = position.Y * 2; y < (position.Y + bounds.Y) * 2; y++)
+						world.ShroudLayer.Shroud[x, y].Render();
 				}
 
 				MasterRenderer.RenderBatch();
@@ -130,14 +122,13 @@ namespace WarriorsSnuggery
 
 				MasterRenderer.RenderBatch();
 				MasterRenderer.PrimitiveType = PrimitiveType.Lines;
-				var bounds = VisibilitySolver.GetBounds(out var position);
+				CameraVisibility.GetClampedBounds(out var position, out var bounds);
 				var sectorPos = new MPos(position.X / PhysicsLayer.SectorSize, position.Y / PhysicsLayer.SectorSize);
-				sectorPos = new MPos(Math.Max(0, Math.Min(sectorPos.X, world.PhysicsLayer.Bounds.X)), Math.Max(0, Math.Min(sectorPos.Y, world.PhysicsLayer.Bounds.Y)));
 				var sectorBounds = new MPos((int)Math.Ceiling(bounds.X / (float)PhysicsLayer.SectorSize), (int)Math.Ceiling(bounds.Y / (float)PhysicsLayer.SectorSize));
-				var sectorPos2 = new MPos(Math.Max(0, Math.Min(sectorPos.X + sectorBounds.X, world.PhysicsLayer.Bounds.X)), Math.Max(0, Math.Min(sectorPos.Y + sectorBounds.Y, world.PhysicsLayer.Bounds.Y)));
-				for (int x = sectorPos.X; x < sectorPos2.X; x++)
+
+				for (int x = sectorPos.X; x < sectorPos.X + sectorBounds.X; x++)
 				{
-					for (int y = sectorPos.Y; y < sectorPos2.Y; y++)
+					for (int y = sectorPos.Y; y < sectorPos.Y + sectorBounds.Y; y++)
 						world.PhysicsLayer.Sectors[x, y].RenderDebug();
 				}
 
@@ -237,8 +228,8 @@ namespace WarriorsSnuggery
 			var bottomRight = pos + zoomPos + margin;
 			check(topLeft, bottomRight);
 
-			var botLeft = VisibilitySolver.LookAt(pos, zoom);
-			var topRight = botLeft + VisibilitySolver.Zoom(zoom);
+			var botLeft = CameraVisibility.LookAt(pos, zoom);
+			var topRight = botLeft + CameraVisibility.Zoom(zoom);
 
 			if (botLeft.X < 0) botLeft = new MPos(0, botLeft.Y);
 			if (botLeft.X > world.Map.Bounds.X) botLeft = new MPos(world.Map.Bounds.X, botLeft.Y);

@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using WarriorsSnuggery.Graphics;
 using WarriorsSnuggery.Maps;
 using WarriorsSnuggery.Maps.Layers;
 using WarriorsSnuggery.Objects.Actors.Parts;
@@ -280,9 +281,9 @@ namespace WarriorsSnuggery.Objects.Actors
 				return false;
 
 			if (WorldPart != null)
-				Visible = VisibilitySolver.IsVisible(GraphicPosition + WorldPart.VisibilityBoxOffset, WorldPart.VisibilityBox);
+				Visible = CameraVisibility.IsVisible(GraphicPosition + WorldPart.VisibilityBoxOffset, WorldPart.VisibilityBox);
 			else
-				Visible = VisibilitySolver.IsVisible(GraphicPosition, new MPos(512, 512));
+				Visible = CameraVisibility.IsVisible(GraphicPosition, new MPos(512, 512));
 
 			return Visible;
 		}

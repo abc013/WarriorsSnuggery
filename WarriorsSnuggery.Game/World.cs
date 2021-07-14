@@ -165,7 +165,7 @@ namespace WarriorsSnuggery
 			LocalPlayer = @new;
 			Add(@new);
 
-			VisibilitySolver.ShroudUpdated();
+			CameraVisibility.ShroudUpdated();
 		}
 
 		public void BeginPlayerSwitch(ActorType to)

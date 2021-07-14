@@ -132,7 +132,7 @@ namespace WarriorsSnuggery.Graphics
 			var look = LookAt.ToVector();
 			view = Matrix4.CreateTranslation(-look.X, -look.Y, 0);
 
-			VisibilitySolver.LookAtUpdated();
+			CameraVisibility.LookAtUpdated();
 		}
 
 		static void calculateScale()
@@ -141,7 +141,7 @@ namespace WarriorsSnuggery.Graphics
 			// cast to [-1;1] | we use 0f to stop things glitching out of sight
 			projection = Matrix4.CreateScale(2 / CurrentZoom / WindowInfo.Ratio, 2 / CurrentZoom, 0f);
 
-			VisibilitySolver.ZoomUpdated();
+			CameraVisibility.ZoomUpdated();
 		}
 
 		static void updateView()
