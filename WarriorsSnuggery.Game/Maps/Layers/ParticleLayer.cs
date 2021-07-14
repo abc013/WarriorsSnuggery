@@ -98,7 +98,7 @@ namespace WarriorsSnuggery.Maps.Layers
 
 		public void Tick()
 		{
-			if (particlesToAdd.Any())
+			if (particlesToAdd.Count != 0)
 			{
 				foreach (var particle in particlesToAdd)
 				{
@@ -115,7 +115,7 @@ namespace WarriorsSnuggery.Maps.Layers
 			}
 			firstTick = false;
 
-			if (particlesToRemove.Any())
+			if (particlesToRemove.Count != 0)
 			{
 				foreach (var particle in particlesToRemove)
 				{

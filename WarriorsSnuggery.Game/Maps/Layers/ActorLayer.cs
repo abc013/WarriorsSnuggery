@@ -93,7 +93,7 @@ namespace WarriorsSnuggery.Maps.Layers
 
 		public void Tick()
 		{
-			if (actorsToAdd.Any())
+			if (actorsToAdd.Count != 0)
 			{
 				foreach (var actor in actorsToAdd)
 				{
@@ -112,7 +112,7 @@ namespace WarriorsSnuggery.Maps.Layers
 			}
 			firstTick = false;
 
-			if (actorsToRemove.Any())
+			if (actorsToRemove.Count != 0)
 			{
 				foreach (var actor in actorsToRemove)
 				{

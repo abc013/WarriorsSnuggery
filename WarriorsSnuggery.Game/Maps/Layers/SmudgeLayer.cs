@@ -46,7 +46,7 @@ namespace WarriorsSnuggery.Maps.Layers
 					toRemove.Add(smudge);
 			}
 
-			if (toRemove.Any())
+			if (toRemove.Count != 0)
 			{
 				foreach (var smudge in toRemove)
 				{

@@ -29,7 +29,7 @@ namespace WarriorsSnuggery.Maps.Layers
 
 		public void Tick()
 		{
-			if (weaponsToAdd.Any())
+			if (weaponsToAdd.Count != 0)
 			{
 				foreach (var weapon in weaponsToAdd)
 					if (weapon.CheckVisibility())
@@ -46,7 +46,7 @@ namespace WarriorsSnuggery.Maps.Layers
 			}
 			firstTick = false;
 
-			if (weaponsToRemove.Any())
+			if (weaponsToRemove.Count != 0)
 			{
 				foreach (var weapon in weaponsToRemove)
 				{

@@ -194,7 +194,7 @@ namespace WarriorsSnuggery.Maps.Generators
 			var count = Random.Next((int)(info.MinimumCount * multiplier), (int)(info.MaximumCount * multiplier));
 			for (int i = 0; i < count; i++)
 			{
-				if (!possiblePlaces.Any())
+				if (possiblePlaces.Count == 0)
 					break;
 
 				var piece = info.Pieces[Random.Next(info.Pieces.Length)];

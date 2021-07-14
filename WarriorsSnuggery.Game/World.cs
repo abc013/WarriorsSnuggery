@@ -132,12 +132,11 @@ namespace WarriorsSnuggery
 		{
 			Objects.RemoveAll(o => o.Disposed);
 
-			if (objectsToAdd.Any())
+			if (objectsToAdd.Count != 0)
 			{
 				foreach (var @object in objectsToAdd)
 				{
 					@object.CheckVisibility();
-
 					Objects.Add(@object);
 				}
 				objectsToAdd.Clear();
