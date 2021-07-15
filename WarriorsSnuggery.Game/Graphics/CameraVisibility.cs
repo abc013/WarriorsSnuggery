@@ -65,7 +65,7 @@ namespace WarriorsSnuggery.Graphics
 		public static void GetClampedBounds(out MPos position, out MPos bounds)
 		{
 			position = new MPos(Math.Clamp(lastCameraPosition.X, 0, mapBounds.X), Math.Clamp(lastCameraPosition.Y, 0, mapBounds.Y));
-			bounds = new MPos(Math.Clamp(lastCameraZoom.X + lastCameraPosition.X, 0, mapBounds.X) - lastCameraPosition.X, Math.Clamp(lastCameraZoom.Y + lastCameraPosition.Y, 0, mapBounds.Y) - lastCameraPosition.Y);
+			bounds = new MPos(Math.Clamp(lastCameraZoom.X + lastCameraPosition.X, 0, mapBounds.X) - position.X, Math.Clamp(lastCameraZoom.Y + lastCameraPosition.Y, 0, mapBounds.Y) - position.Y);
 		}
 
 		public static void ShroudUpdated()
@@ -73,16 +73,12 @@ namespace WarriorsSnuggery.Graphics
 			if (map == null)
 				return;
 
-			for (int x = lastCameraPosition.X; x < lastCameraPosition.X + lastCameraZoom.X; x++)
+			GetClampedBounds(out var position, out var bounds);
+
+			for (int x = position.X; x < position.X + bounds.X; x++)
 			{
-				if (x >= 0 && x < mapBounds.X)
-				{
-					for (int y = lastCameraPosition.Y; y < lastCameraPosition.Y + lastCameraZoom.Y; y++)
-					{
-						if (y >= 0 && y < mapBounds.Y)
-							visible[x, y] = checkShroud(x, y);
-					}
-				}
+				for (int y = position.Y; y < position.Y + bounds.Y; y++)
+					visible[x, y] = checkShroud(x, y);
 			}
 		}
 
