@@ -110,10 +110,7 @@ namespace WarriorsSnuggery.Graphics
 			if (shroud.RevealAll)
 				return true;
 
-			if (position.X < 0 || position.Y < 0 || position.X >= mapBounds.X || position.Y >= mapBounds.Y)
-				return false;
-
-			if (position.X < lastCameraPosition.X || position.Y < lastCameraPosition.Y || position.X >= lastCameraPosition.X + lastCameraZoom.X || position.Y >= lastCameraPosition.Y + lastCameraZoom.Y)
+			if (!position.InRange(lastCameraPosition, lastCameraPosition + lastCameraZoom))
 				return false;
 
 			return visible[position.X, position.Y];
@@ -127,7 +124,7 @@ namespace WarriorsSnuggery.Graphics
 			if (shroud.RevealAll)
 				return true;
 
-			if (position.X < lastCameraPosition.X || position.Y < lastCameraPosition.Y || position.X >= lastCameraPosition.X + lastCameraZoom.X || position.Y >= lastCameraPosition.Y + lastCameraZoom.Y)
+			if (!position.InRange(lastCameraPosition, lastCameraPosition + lastCameraZoom))
 				return false;
 
 			if (position.X < 0)

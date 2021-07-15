@@ -146,9 +146,9 @@ namespace WarriorsSnuggery.Maps.Generators
 					MPos preferred = new MPos(x, y) + currentPosition;
 
 					// If out of bounds, make the value high af so the field can't be taken
-					var val1 = preferred.IsInRange(MPos.Zero, Bounds - new MPos(1, 1)) ? noise[preferred.X, preferred.Y] : 10f;
-					var val2 = a1.IsInRange(MPos.Zero, Bounds - new MPos(1, 1)) ? noise[a1.X, a1.Y] : 10f;
-					var val3 = a2.IsInRange(MPos.Zero, Bounds - new MPos(1, 1)) ? noise[a2.X, a2.Y] : 10f;
+					var val1 = preferred.InRange(MPos.Zero, Bounds) ? noise[preferred.X, preferred.Y] : 10f;
+					var val2 = a1.InRange(MPos.Zero, Bounds) ? noise[a1.X, a1.Y] : 10f;
+					var val3 = a2.InRange(MPos.Zero, Bounds) ? noise[a2.X, a2.Y] : 10f;
 
 					if (preferred != end)
 					{

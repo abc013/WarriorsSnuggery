@@ -43,12 +43,12 @@ namespace WarriorsSnuggery
 			return Angle.FromVector(diff.X, diff.Y);
 		}
 
-		public bool IsInRange(MPos minimum, MPos maximum)
+		public bool InRange(MPos inclusiveMinimum, MPos exclusiveMaximum)
 		{
-			if (X < minimum.X) return false;
-			if (Y < minimum.Y) return false;
-			if (X > maximum.X) return false;
-			if (Y > maximum.Y) return false;
+			if (X < inclusiveMinimum.X) return false;
+			if (Y < inclusiveMinimum.Y) return false;
+			if (X >= exclusiveMaximum.X) return false;
+			if (Y >= exclusiveMaximum.Y) return false;
 
 			return true;
 		}
