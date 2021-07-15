@@ -82,6 +82,9 @@ namespace WarriorsSnuggery
 					foreach (var team in Game.Save.Shroud.Keys)
 						ShroudLayer.RevealShroudList(team, Game.Save.Shroud[team]);
 
+					foreach (var condition in Game.Save.CustomConditions)
+						Game.ConditionManager.SetCondition(condition.Key, condition.Value);
+
 					LocalPlayer = ActorLayer.ToAdd().First(a => a.IsPlayer);
 				}
 

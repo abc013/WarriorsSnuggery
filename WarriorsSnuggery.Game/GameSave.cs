@@ -159,6 +159,7 @@ namespace WarriorsSnuggery
 		public int Waves { get; private set; }
 		public bool KeyFound { get; private set; }
 		public Dictionary<byte, bool[]> Shroud { get; private set; }
+		public Dictionary<string, bool> CustomConditions { get; private set; }
 
 		// Static Values
 		public int FinalLevel { get; private set; }
@@ -204,6 +205,13 @@ namespace WarriorsSnuggery
 
 						foreach (var node2 in node.Children)
 							Shroud.Add(byte.Parse(node2.Key), node2.Convert<bool[]>());
+
+						break;
+					case nameof(CustomConditions):
+						CustomConditions = new Dictionary<string, bool>();
+
+						foreach (var node2 in node.Children)
+							CustomConditions.Add(node2.Key, node2.Convert<bool>());
 
 						break;
 					case nameof(CurrentMapType):
@@ -324,6 +332,10 @@ namespace WarriorsSnuggery
 				writer.WriteLine($"{nameof(Shroud)}=");
 				foreach (var team in game.World.ShroudLayer.UsedTeams)
 					writer.WriteLine("\t" + game.World.ShroudLayer.ToString(team));
+
+				writer.WriteLine($"{nameof(CustomConditions)}=");
+				foreach (var condition in game.ConditionManager.SaveConditions())
+					writer.WriteLine(condition);
 
 				writer.WriteLine($"{nameof(SpellCasters)}=");
 				for (int i = 0; i < game.SpellManager.spellCasters.Length; i++)

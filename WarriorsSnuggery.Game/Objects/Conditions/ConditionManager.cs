@@ -10,6 +10,7 @@ namespace WarriorsSnuggery.Objects.Conditions
 	{
 		readonly Game game;
 		readonly Dictionary<string, bool> items;
+		readonly Dictionary<string, bool> customItems = new Dictionary<string, bool>();
 
 		public ConditionManager(Game game)
 		{
@@ -35,6 +36,9 @@ namespace WarriorsSnuggery.Objects.Conditions
 		{
 			if (items.ContainsKey(condition.Type))
 				return condition.Negate != items[condition.Type];
+
+			if (customItems.ContainsKey(condition.Type))
+				return condition.Negate != customItems[condition.Type];
 
 			// Condition is a local type, which means it depends on the actor
 			switch (condition.Type)
@@ -93,6 +97,27 @@ namespace WarriorsSnuggery.Objects.Conditions
 			}
 
 			throw new Exception($"Invalid condition: {condition.Type}");
+		}
+
+		public void SetCondition(string name, bool value)
+		{
+			if (!customItems.ContainsKey(name))
+			{
+				customItems.Add(name, value);
+				return;
+			}
+
+			customItems[name] = value;
+		}
+
+		public List<string> SaveConditions()
+		{
+			var list = new List<string>();
+
+			foreach (var condition in customItems)
+				list.Add($"\t{condition.Key}={condition.Value}");
+
+			return list;
 		}
 	}
 }
