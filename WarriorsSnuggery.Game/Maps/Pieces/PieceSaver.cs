@@ -1,42 +1,64 @@
-﻿using System.Collections.Generic;
-using System.IO;
-using System.Reflection;
+﻿using System.IO;
+using System.Linq;
 using System.Text;
 
-namespace WarriorsSnuggery.Maps
+namespace WarriorsSnuggery.Maps.Pieces
 {
-	public class MapSaver
+	public class PieceSaver
 	{
-		public const int MapFormat = 1;
-
 		readonly World world;
-		readonly MPos bounds;
-		readonly bool isSavegame;
+		MPos bounds => world.Map.Bounds;
+		readonly bool gameSave;
 
-		public MapSaver(World world, bool isSavegame)
+		public static Piece SaveEmpty(MPos size, string directory, string name)
 		{
-			this.world = world;
-			bounds = world.Map.Bounds;
-			this.isSavegame = isSavegame;
+			using (var stream = new StreamWriter(File.Create(directory + name + ".yaml")))
+			{
+				stream.WriteLine("MapFormat=" + Piece.CurrentMapFormat);
+				stream.WriteLine("Name=" + name);
+				stream.WriteLine("Size=" + size);
+
+				var terrain = string.Join(",", Enumerable.Repeat("0", size.X * size.Y));
+				stream.WriteLine("Terrain=" + terrain);
+
+				var walls = string.Join(",", Enumerable.Repeat("-1", (size.X + 1) * (size.Y + 1) * 2 * 2));
+				stream.WriteLine("Walls=" + walls);
+			}
+
+			// Load piece into cache, overwrite the old if there is one.
+			return PieceManager.ReloadPiece(name);
 		}
 
-		public void Save(string directory, string name)
+		public static Piece SaveWorld(World world, string directory, string name, bool gameSave = false)
+		{
+			var saver = new PieceSaver(world, gameSave);
+
+			saver.save(directory, name);
+
+			// If no gameSave, load piece into cache, overwrite the old if there is one.
+			return gameSave ? null : PieceManager.ReloadPiece(name);
+		}
+
+		PieceSaver(World world, bool gameSave)
+		{
+			this.world = world;
+			this.gameSave = gameSave;
+		}
+
+		void save(string directory, string name)
 		{
 			using var writer = new StreamWriter(directory + name + ".yaml", false);
 
-			writer.WriteLine("MapFormat=" + MapFormat);
+			writer.WriteLine("MapFormat=" + Piece.CurrentMapFormat);
 			writer.WriteLine("Name=" + name);
 			writer.WriteLine("Size=" + bounds);
 
 			writeTerrainLayer(writer);
 			writeWallLayer(writer);
-			writeActorLayer(writer);
 
-			if (isSavegame)
-			{
-				writeWeaponLayer(writer);
-				writeParticleLayer(writer); 
-			}
+			writeActorLayer(writer);
+			writeWeaponLayer(writer);
+			writeParticleLayer(writer);
 
 			writer.Flush();
 			writer.Close();
@@ -84,20 +106,22 @@ namespace WarriorsSnuggery.Maps
 			}
 
 			builder.Remove(builder.Length - 1, 1);
+
 			writer.WriteLine(builder);
 			builder.Clear();
 		}
 
 		void writeActorLayer(StreamWriter writer)
 		{
+			if (world.ActorLayer.Actors.Count == 0)
+				return;
+
 			writer.WriteLine("Actors=");
 
 			var i = 0u;
 			foreach (var a in world.ActorLayer.Actors)
 			{
-				var id = isSavegame ? a.ID : i++;
-
-				writer.WriteLine("\t" + id + "=");
+				writer.WriteLine("\t" + (gameSave ? a.ID : i++) + "=");
 
 				foreach (var node in a.Save())
 					writer.WriteLine("\t\t" + node);
@@ -106,70 +130,36 @@ namespace WarriorsSnuggery.Maps
 
 		void writeWeaponLayer(StreamWriter writer)
 		{
+			if (!gameSave || world.WeaponLayer.Weapons.Count == 0)
+				return;
+
 			writer.WriteLine("Weapons=");
 
 			var i = 0;
 			foreach(var weapon in world.WeaponLayer.Weapons)
 			{
-				var list = weapon.Save();
-
 				writer.WriteLine("\t" + i++ + "=");
 
-				foreach(var rule in list)
-					writer.WriteLine("\t\t" + rule);
+				foreach(var node in weapon.Save())
+					writer.WriteLine("\t\t" + node);
 			}
 		}
 
 		void writeParticleLayer(StreamWriter writer)
 		{
+			if (!gameSave || world.ParticleLayer.Particles.Count == 0)
+				return;
+
 			writer.WriteLine("Particles=");
 
 			var i = 0;
 			foreach (var particle in world.ParticleLayer.Particles)
 			{
-				var list = particle.Save();
-
 				writer.WriteLine("\t" + i++ + "=");
 
-				foreach (var rule in list)
-					writer.WriteLine("\t\t" + rule);
+				foreach (var node in particle.Save())
+					writer.WriteLine("\t\t" + node);
 			}
-		}
-
-		public static List<string> GetSaveFields<T>(T @object, bool inherit = true)
-		{
-			var list = new List<string>();
-
-			var props = typeof(T).GetProperties(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
-			foreach (var prop in props)
-			{
-				var attributes = prop.GetCustomAttributes(inherit);
-				foreach (var attribute in attributes)
-				{
-					if (attribute is not SaveAttribute saveAttribute)
-						continue;
-
-					var key = string.IsNullOrEmpty(saveAttribute.Name) ? prop.Name : saveAttribute.Name;
-					var value = prop.GetValue(@object);
-					list.Add($"{key}={value}");
-				}
-			}
-			var varis = typeof(T).GetFields(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
-			foreach (var vari in varis)
-			{
-				var attributes = vari.GetCustomAttributes(inherit);
-				foreach (var attribute in attributes)
-				{
-					if (attribute is not SaveAttribute saveAttribute)
-						continue;
-
-					var key = string.IsNullOrEmpty(saveAttribute.Name) ? vari.Name : saveAttribute.Name;
-					var value = vari.GetValue(@object);
-					list.Add($"{key}={value}");
-				}
-			}
-
-			return list;
 		}
 	}
 }

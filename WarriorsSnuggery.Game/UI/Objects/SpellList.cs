@@ -28,7 +28,7 @@ namespace WarriorsSnuggery.UI.Objects
 		}
 		int currentSpell;
 
-		public SpellList(Game game, MPos bounds, MPos itemSize, string typeName) : this(game, bounds, itemSize, PanelManager.Get(typeName)) { }
+		public SpellList(Game game, MPos bounds, MPos itemSize, string typeName) : this(game, bounds, itemSize, PanelManager.Types[typeName]) { }
 
 		public SpellList(Game game, MPos bounds, MPos itemSize, PanelType type) : base(bounds, itemSize, type, false)
 		{

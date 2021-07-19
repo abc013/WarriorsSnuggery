@@ -21,7 +21,7 @@ namespace WarriorsSnuggery.UI.Objects
 		readonly CheckBoxType type;
 		readonly Action<bool> action;
 
-		public CheckBox(string typeName, bool @checked = false, Action<bool> onTicked = null) : this(CheckBoxManager.GetType(typeName), @checked, onTicked) { }
+		public CheckBox(string typeName, bool @checked = false, Action<bool> onTicked = null) : this(CheckBoxManager.Types[typeName], @checked, onTicked) { }
 
 		public CheckBox(CheckBoxType type, bool @checked = false, Action<bool> onTicked = null)
 		{

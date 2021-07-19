@@ -6,7 +6,7 @@
 
 		public GameSave SelectedSave => Selected == null ? null : ((GameSaveItem)Selected).Save;
 
-		public GameSaveList(int height, string typeName) : this(height, PanelManager.Get(typeName)) { }
+		public GameSaveList(int height, string typeName) : this(height, PanelManager.Types[typeName]) { }
 
 		public GameSaveList(int height, PanelType type) : base(new MPos(SaveWidth, height), new MPos(SaveWidth, 1024), type)
 		{

@@ -21,7 +21,7 @@ namespace WarriorsSnuggery.UI.Screens
 
 			Add(new Button("Save & Back", "wooden", () => game.ShowScreen(ScreenType.SETTINGS)) { Position = new CPos(0, 6144, 0) });
 
-			var type = PanelManager.Get("wooden");
+			var type = PanelManager.Types["wooden"];
 
 			var tPause = new UITextLine(font, TextOffset.RIGHT) { Position = new CPos(-1024, -4096, 0) };
 			tPause.SetText("Pause/unpause");

@@ -40,7 +40,7 @@ namespace WarriorsSnuggery.UI.Objects
 
 		public float DisplayPercentage;
 
-		public DisplayBar(MPos bounds, string typeName, Color fillColor) : this(bounds, PanelManager.Get(typeName), fillColor) { }
+		public DisplayBar(MPos bounds, string typeName, Color fillColor) : this(bounds, PanelManager.Types[typeName], fillColor) { }
 
 		public DisplayBar(MPos bounds, PanelType type, Color fillColor) : base(bounds, type)
 		{

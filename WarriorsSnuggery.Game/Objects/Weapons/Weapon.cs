@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using WarriorsSnuggery.Maps;
 using WarriorsSnuggery.Objects.Actors;
 using WarriorsSnuggery.Spells;
 
@@ -175,7 +174,7 @@ namespace WarriorsSnuggery.Objects.Weapons
 
 		public virtual List<string> Save()
 		{
-			var list = MapSaver.GetSaveFields(this);
+			var list = SaveAttribute.GetFields(this);
 
 			if (Origin != null)
 				list.Add("Origin=" + Origin.ID);

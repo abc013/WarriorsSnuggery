@@ -16,7 +16,7 @@ namespace WarriorsSnuggery.UI.Objects
 
 		CPos textPosition => Position - new CPos(SelectableBounds.X - font.WidthGap, -SelectableBounds.Y + font.HeightGap, 0);
 
-		public TextPanel(MPos bounds, Font font, string typeName) : this(bounds, font, PanelManager.Get(typeName)) { }
+		public TextPanel(MPos bounds, Font font, string typeName) : this(bounds, font, PanelManager.Types[typeName]) { }
 
 		public TextPanel(MPos bounds, Font font, PanelType type) : base(bounds, type)
 		{

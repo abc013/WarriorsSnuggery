@@ -89,11 +89,11 @@ namespace WarriorsSnuggery.Objects.Conditions
 					return condition.Negate != (actor.Health.HP <= actor.Health.MaxHP / 4f);
 			}
 
-			foreach (var pair in TrophyManager.Trophies)
+			foreach (var key in TrophyManager.Trophies.Keys)
 			{
-				var trophy = pair.Value;
-				if (trophy.ConditionName != string.Empty && condition.Type == trophy.ConditionName)
-					return condition.Negate != game.Stats.TrophyUnlocked(pair.Key);
+				var trophy = TrophyManager.Trophies[key];
+				if (!string.IsNullOrEmpty(trophy.ConditionName) && condition.Type == trophy.ConditionName)
+					return condition.Negate != game.Stats.TrophyUnlocked(key);
 			}
 
 			throw new Exception($"Invalid condition: {condition.Type}");

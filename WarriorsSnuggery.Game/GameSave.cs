@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using WarriorsSnuggery.Loader;
 using WarriorsSnuggery.Maps;
+using WarriorsSnuggery.Maps.Pieces;
 using WarriorsSnuggery.Objects.Actors;
 using WarriorsSnuggery.Objects.Actors.Parts;
 using WarriorsSnuggery.Spells;
@@ -215,7 +216,7 @@ namespace WarriorsSnuggery
 
 						break;
 					case nameof(CurrentMapType):
-						CurrentMapType = MapCreator.GetType(node.Value);
+						CurrentMapType = MapCreator.Types[node.Value];
 
 						break;
 					case nameof(SpellCasters):
@@ -323,7 +324,7 @@ namespace WarriorsSnuggery
 				writer.WriteLine($"{nameof(MaxLives)}={MaxLives}");
 				writer.WriteLine($"{nameof(CurrentObjective)}={CurrentObjective}");
 				writer.WriteLine($"{nameof(CurrentMission)}={CurrentMission}");
-				writer.WriteLine($"{nameof(CurrentMapType)}={MapCreator.GetName(CurrentMapType)}");
+				writer.WriteLine($"{nameof(CurrentMapType)}={MapCreator.Types[CurrentMapType]}");
 				if (Waves != 0)
 					writer.WriteLine($"{nameof(Waves)}={Waves}");
 				if (KeyFound)
@@ -371,7 +372,7 @@ namespace WarriorsSnuggery
 				writer.Close();
 			}
 
-			game.World.SaveMap(FileExplorer.Saves, MapSaveName, true);
+			PieceSaver.SaveWorld(game.World, FileExplorer.Saves, MapSaveName, true);
 		}
 
 		public void Update(Game game, bool levelIncrease = false)

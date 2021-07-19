@@ -5,7 +5,7 @@ namespace WarriorsSnuggery.Trophies
 {
 	public static class TrophyManager
 	{
-		public static readonly Dictionary<string, Trophy> Trophies = new Dictionary<string, Trophy>();
+		public static readonly TypeDictionary<Trophy> Trophies = new TypeDictionary<Trophy>();
 
 		public static void Load(List<TextNode> nodes)
 		{

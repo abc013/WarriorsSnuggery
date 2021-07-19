@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using WarriorsSnuggery.Maps;
 using WarriorsSnuggery.Maps.Layers;
 
 namespace WarriorsSnuggery.Objects.Particles
@@ -179,7 +178,7 @@ namespace WarriorsSnuggery.Objects.Particles
 
 		public List<string> Save()
 		{
-			return MapSaver.GetSaveFields(this);
+			return SaveAttribute.GetFields(this);
 		}
 	}
 }

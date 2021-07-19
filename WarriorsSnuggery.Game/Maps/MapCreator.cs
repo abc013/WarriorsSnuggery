@@ -7,33 +7,23 @@ namespace WarriorsSnuggery.Maps
 {
 	public static class MapCreator
 	{
-		static readonly Dictionary<string, MapType> mapNames = new Dictionary<string, MapType>();
-		static readonly Dictionary<MissionType, List<MapType>> mapTypes = new Dictionary<MissionType, List<MapType>>();
+		public static readonly TypeDictionary<MapType> Types = new TypeDictionary<MapType>();
+		static readonly Dictionary<MissionType, List<MapType>> missionMaps = new Dictionary<MissionType, List<MapType>>();
 
 		public static void Load(List<TextNode> nodes)
 		{
 			foreach (MissionType type in Enum.GetValues(typeof(MissionType)))
-				mapTypes.Add(type, new List<MapType>());
+				missionMaps.Add(type, new List<MapType>());
 
 			foreach (var node in nodes)
 			{
 				var type = MapType.FromRules(node);
 
-				mapNames.Add(type.Name, type);
+				Types.Add(type.Name, type);
 
 				foreach (var missionType in type.MissionTypes)
-					mapTypes[missionType].Add(type);
+					missionMaps[missionType].Add(type);
 			}
-		}
-
-		public static MapType GetType(string name)
-		{
-			return mapNames[name];
-		}
-
-		public static string GetName(MapType type)
-		{
-			return mapNames.FirstOrDefault(t => t.Value == type).Key;
 		}
 
 		public static MapType FindMap(MissionType type, GameSave save)
@@ -43,7 +33,7 @@ namespace WarriorsSnuggery.Maps
 
 		public static MapType FindMap(MissionType type, int level, Random random)
 		{
-			var levels = mapTypes[type];
+			var levels = missionMaps[type];
 
 			var explicitLevels = levels.Where(a => level == a.Level);
 			if (explicitLevels.Any())

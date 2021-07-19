@@ -46,7 +46,7 @@ namespace WarriorsSnuggery.UI.Objects
 		public Action OnEnter;
 		public Action OnType;
 
-		public TextBox(string typeName, int maximumLength = 10, InputType type = InputType.NORMAL) : this(PanelManager.Get(typeName), maximumLength, type) { }
+		public TextBox(string typeName, int maximumLength = 10, InputType type = InputType.NORMAL) : this(PanelManager.Types[typeName], maximumLength, type) { }
 
 		public TextBox(PanelType panelType, int maximumLength = 10, InputType type = InputType.NORMAL) : base(calculateBounds(maximumLength), panelType, true)
 		{

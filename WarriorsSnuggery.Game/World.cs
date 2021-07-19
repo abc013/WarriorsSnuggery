@@ -330,11 +330,6 @@ namespace WarriorsSnuggery
 			return ShroudLayer.ShroudRevealed(eye.Team, (int)(target.Position.X / 512f), (int)(target.Position.Y / 512f));
 		}
 
-		public void SaveMap(string directory, string file, bool forSave)
-		{
-			new MapSaver(this, forSave).Save(directory, file);
-		}
-
 		public void Dispose()
 		{
 			foreach (var o in Objects)

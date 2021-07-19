@@ -15,9 +15,6 @@ namespace WarriorsSnuggery.Objects.Particles
 
 		public static Particle Create(World world, string name, CPos position, int height)
 		{
-			if (!Types.ContainsKey(name))
-				throw new MissingInfoException(name);
-
 			return Create(world, Types[name], position, height);
 		}
 

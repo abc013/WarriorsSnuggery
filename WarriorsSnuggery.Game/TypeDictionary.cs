@@ -12,7 +12,7 @@ namespace WarriorsSnuggery
 		public void Add(string key, T value)
 		{
 			if (types.ContainsKey(key))
-				throw new ArgumentException($"The key '{key}' has already been added to the TypeDictonary (Type '{typeof(T).Name}').");
+				throw new ArgumentException($"The key '{key}' has already been added to the dictionary (Type '{typeof(T).Name}').");
 
 			types.Add(key, value);
 		}
@@ -33,7 +33,7 @@ namespace WarriorsSnuggery
 			get
 			{
 				if (!ContainsValue(value))
-					throw new Exception($"Unable to find value of type '{typeof(T).Name}' in TypeDictionary.");
+					throw new Exception($"Unable to find value of type '{typeof(T).Name}' in the dictionary.");
 
 				return types.First(t => t.Value.Equals(value)).Key;
 			}

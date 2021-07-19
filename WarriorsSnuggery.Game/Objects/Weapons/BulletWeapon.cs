@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using WarriorsSnuggery.Maps;
 using WarriorsSnuggery.Objects.Actors;
 using WarriorsSnuggery.Objects.Weapons.Projectiles;
 using WarriorsSnuggery.Physics;
@@ -120,7 +119,7 @@ namespace WarriorsSnuggery.Objects.Weapons
 		public override List<string> Save()
 		{
 			var list = base.Save();
-			list.AddRange(MapSaver.GetSaveFields(this, false));
+			list.AddRange(SaveAttribute.GetFields(this, false));
 
 			return list;
 		}

@@ -42,7 +42,7 @@ namespace WarriorsSnuggery.UI.Objects
 		bool keyFound;
 		int scaleCooldown;
 
-		public KeyDisplay(Game game) : base(new MPos(712, 512), PanelManager.Get("wooden"))
+		public KeyDisplay(Game game) : base(new MPos(712, 512), PanelManager.Types["wooden"])
 		{
 			this.game = game;
 

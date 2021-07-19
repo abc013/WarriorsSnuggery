@@ -195,7 +195,7 @@ namespace WarriorsSnuggery.Objects.Actors
 
 		public List<string> Save()
 		{
-			var list = MapSaver.GetSaveFields(this);
+			var list = SaveAttribute.GetFields(this);
 
 			foreach (var part in partManager.GetPartsOrDefault<ISaveLoadable>())
 				list.AddRange(part.OnSave().GetSave());

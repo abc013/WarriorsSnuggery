@@ -10,6 +10,7 @@ namespace WarriorsSnuggery.Maps.Pieces
 {
 	public class Piece
 	{
+		public const int CurrentMapFormat = 1;
 		public readonly int MapFormat;
 
 		public readonly MPos Size;
@@ -90,6 +91,13 @@ namespace WarriorsSnuggery.Maps.Pieces
 								throw new InvalidPieceException($"unable to load particle '{particle.Key}' in piece '{Name}'.", e);
 							}
 						}
+						break;
+					case "MapFormat":
+						TypeLoader.SetValue(this, fields, node);
+
+						if (MapFormat != CurrentMapFormat)
+							Log.LoaderWarning("Pieces", $"Attempting to load old map format {MapFormat} (current: {CurrentMapFormat})");
+
 						break;
 					default:
 						TypeLoader.SetValue(this, fields, node);
