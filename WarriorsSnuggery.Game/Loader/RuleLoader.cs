@@ -57,11 +57,11 @@ namespace WarriorsSnuggery.Loader
 
 						break;
 					case "Spells":
-						SpellCreator.Load(nodes);
+						SpellCache.Load(nodes);
 
 						break;
 					case "SpellTree":
-						SpellTreeCache.Load(nodes);
+						SpellCasterCache.Load(nodes);
 
 						break;
 					case "Trophies":

@@ -76,7 +76,7 @@ namespace WarriorsSnuggery
 			return SpellCasters[i];
 		}
 
-		public void AddSpell(SpellTreeNode node)
+		public void AddSpell(SpellCasterType node)
 		{
 			if (SpellUnlocked(node))
 				return;
@@ -84,7 +84,7 @@ namespace WarriorsSnuggery
 			UnlockedSpells.Add(node.InnerName);
 		}
 
-		public bool SpellUnlocked(SpellTreeNode node)
+		public bool SpellUnlocked(SpellCasterType node)
 		{
 			return SpellUnlocked(node.InnerName);
 		}
@@ -339,9 +339,9 @@ namespace WarriorsSnuggery
 					writer.WriteLine(condition);
 
 				writer.WriteLine($"{nameof(SpellCasters)}=");
-				for (int i = 0; i < game.SpellManager.spellCasters.Length; i++)
+				for (int i = 0; i < game.SpellManager.Casters.Length; i++)
 				{
-					var caster = game.SpellManager.spellCasters[i];
+					var caster = game.SpellManager.Casters[i];
 					if (caster.Ready)
 						continue;
 

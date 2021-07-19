@@ -3,7 +3,7 @@ using WarriorsSnuggery.Loader;
 
 namespace WarriorsSnuggery.Spells
 {
-	public static class SpellCreator
+	public static class SpellCache
 	{
 		public static readonly TypeDictionary<Spell> Types = new TypeDictionary<Spell>();
 

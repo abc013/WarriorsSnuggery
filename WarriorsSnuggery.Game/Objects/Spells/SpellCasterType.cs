@@ -5,7 +5,7 @@ using WarriorsSnuggery.Loader;
 
 namespace WarriorsSnuggery.Spells
 {
-	public class SpellTreeNode
+	public class SpellCasterType
 	{
 		[Desc("Spells that have to be unlocked before this one can be unlocked.")]
 		public readonly string[] Before;
@@ -37,7 +37,7 @@ namespace WarriorsSnuggery.Spells
 
 		public CPos VisualPosition => new CPos(-6584, -2048, 0) + new CPos(Position.X * 1024, Position.Y * 1024, 0);
 
-		public SpellTreeNode(List<TextNode> nodes, string name)
+		public SpellCasterType(List<TextNode> nodes, string name)
 		{
 			TypeLoader.SetValues(this, nodes);
 

@@ -66,7 +66,7 @@ namespace WarriorsSnuggery
 
 		public readonly ObjectiveType ObjectiveType;
 
-		public readonly SpellManager SpellManager;
+		public readonly SpellCasterManager SpellManager;
 		public readonly ConditionManager ConditionManager;
 
 		readonly WaveController waveController;
@@ -118,7 +118,7 @@ namespace WarriorsSnuggery
 
 			Editor = InteractionMode == InteractionMode.EDITOR;
 
-			SpellManager = new SpellManager(this);
+			SpellManager = new SpellCasterManager(this);
 			ConditionManager = new ConditionManager(this);
 
 			ScreenControl = new ScreenControl(this);

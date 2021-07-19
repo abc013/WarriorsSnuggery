@@ -341,10 +341,10 @@ namespace WarriorsSnuggery.Loader
 			}
 			else if (t == typeof(Spell))
 			{
-				if (!SpellCreator.Types.ContainsKey(value))
+				if (!SpellCache.Types.ContainsKey(value))
 					throw new MissingInfoException(value);
 
-				return SpellCreator.Types[value.Trim()];
+				return SpellCache.Types[value.Trim()];
 			}
 			else if (t == typeof(Effect))
 			{

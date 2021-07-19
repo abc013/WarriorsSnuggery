@@ -68,8 +68,8 @@ namespace WarriorsSnuggery.Docs
 
 		public static void WriteSpells()
 		{
-			HTMLWriter.WriteHeader("SpellNode");
-			TypeWriter.Write(typeof(WarriorsSnuggery.Spells.SpellTreeNode), new object[] { emptyTextNodes, "" });
+			HTMLWriter.WriteHeader("SpellCaster");
+			TypeWriter.Write(typeof(WarriorsSnuggery.Spells.SpellCasterType), new object[] { emptyTextNodes, "" });
 
 			HTMLWriter.WriteHeader("Spell");
 			TypeWriter.Write(typeof(WarriorsSnuggery.Spells.Spell), new[] { emptyTextNodes });

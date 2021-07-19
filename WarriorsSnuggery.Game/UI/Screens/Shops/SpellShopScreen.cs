@@ -28,10 +28,10 @@ namespace WarriorsSnuggery.UI.Screens
 
 			var active = UISpriteManager.Get("UI_activeConnection");
 			var inactive = UISpriteManager.Get("UI_inactiveConnection");
-			tree = new SpellNode[SpellTreeCache.SpellTree.Count];
+			tree = new SpellNode[SpellCasterCache.Types.Count];
 			for (int i = 0; i < tree.Length; i++)
 			{
-				var origin = SpellTreeCache.SpellTree[i];
+				var origin = SpellCasterCache.Types[i];
 				var spell = new SpellNode(origin, game, this) { Position = origin.VisualPosition };
 				spell.CheckAvailability();
 				tree[i] = spell;
@@ -40,7 +40,7 @@ namespace WarriorsSnuggery.UI.Screens
 					if (connection == "")
 						continue;
 
-					var target = SpellTreeCache.SpellTree.Find(s => s.InnerName == connection);
+					var target = SpellCasterCache.Types.Find(s => s.InnerName == connection);
 					var line = new SpellConnection(game, origin, target, active, inactive, 10);
 					lines.Add(line);
 				}
@@ -106,7 +106,7 @@ namespace WarriorsSnuggery.UI.Screens
 			}
 		}
 
-		readonly SpellTreeNode node;
+		readonly SpellCasterType node;
 		readonly Game game;
 		readonly SpellShopScreen screen;
 
@@ -116,7 +116,7 @@ namespace WarriorsSnuggery.UI.Screens
 		bool available;
 		bool unlocked;
 
-		public SpellNode(SpellTreeNode node, Game game, SpellShopScreen screen) : base(new MPos((int)(1024 * 8 * MasterRenderer.PixelMultiplier), (int)(1024 * 8 * MasterRenderer.PixelMultiplier)), "stone", true)
+		public SpellNode(SpellCasterType node, Game game, SpellShopScreen screen) : base(new MPos((int)(1024 * 8 * MasterRenderer.PixelMultiplier), (int)(1024 * 8 * MasterRenderer.PixelMultiplier)), "stone", true)
 		{
 			this.node = node;
 			this.game = game;
@@ -171,7 +171,7 @@ namespace WarriorsSnuggery.UI.Screens
 				if (game.Stats.SpellUnlocked(before))
 					continue;
 
-				foreach (var node in SpellTreeCache.SpellTree)
+				foreach (var node in SpellCasterCache.Types)
 				{
 					if (node.InnerName == before && !node.Unlocked)
 						return;
@@ -216,7 +216,7 @@ namespace WarriorsSnuggery.UI.Screens
 		readonly Game game;
 
 		readonly CPos originPos;
-		readonly SpellTreeNode target;
+		readonly SpellCasterType target;
 		readonly CPos targetPos;
 
 		readonly int renderabledistance;
@@ -227,7 +227,7 @@ namespace WarriorsSnuggery.UI.Screens
 		int curTick;
 		int frame;
 
-		public SpellConnection(Game game, SpellTreeNode origin, SpellTreeNode target, Texture[] active, Texture[] inactive, int tick)
+		public SpellConnection(Game game, SpellCasterType origin, SpellCasterType target, Texture[] active, Texture[] inactive, int tick)
 		{
 			this.game = game;
 			originPos = origin.VisualPosition;

@@ -3,14 +3,14 @@ using WarriorsSnuggery.Loader;
 
 namespace WarriorsSnuggery.Spells
 {
-	public static class SpellTreeCache
+	public static class SpellCasterCache
 	{
-		public static readonly List<SpellTreeNode> SpellTree = new List<SpellTreeNode>();
+		public static readonly List<SpellCasterType> Types = new List<SpellCasterType>();
 
 		public static void Load(List<TextNode> nodes)
 		{
 			foreach (var node in nodes)
-				SpellTree.Add(new SpellTreeNode(node.Children, node.Key));
+				Types.Add(new SpellCasterType(node.Children, node.Key));
 		}
 	}
 }

@@ -67,7 +67,7 @@ namespace WarriorsSnuggery.Objects.Actors
 			return new List<string>
 			{
 				nameof(ActorEffect) + "=",
-				"\tSpell=" + SpellCreator.Types[spell],
+				"\tSpell=" + SpellCache.Types[spell],
 				"\tSpellIndex=" + spellIndex,
 				"\tTick=" + tick
 			};

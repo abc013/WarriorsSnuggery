@@ -2,41 +2,41 @@
 
 namespace WarriorsSnuggery.Spells
 {
-	public class SpellManager : ITick
+	public class SpellCasterManager : ITick
 	{
 		readonly Game game;
-		public readonly SpellCaster[] spellCasters;
+		public readonly SpellCaster[] Casters;
 
-		public SpellManager(Game game)
+		public SpellCasterManager(Game game)
 		{
 			this.game = game;
 
-			spellCasters = new SpellCaster[SpellTreeCache.SpellTree.Count];
-			for (int i = 0; i < spellCasters.Length; i++)
-				spellCasters[i] = new SpellCaster(game, SpellTreeCache.SpellTree[i], game.Stats.GetSpellCaster(i));
+			Casters = new SpellCaster[SpellCasterCache.Types.Count];
+			for (int i = 0; i < Casters.Length; i++)
+				Casters[i] = new SpellCaster(game, SpellCasterCache.Types[i], game.Stats.GetSpellCaster(i));
 		}
 
 		public void Tick()
 		{
-			foreach (var caster in spellCasters)
+			foreach (var caster in Casters)
 				caster.Tick();
 		}
 
 		public bool Activate(int caster)
 		{
-			return spellCasters[caster].Activate(game.World.LocalPlayer);
+			return Casters[caster].Activate(game.World.LocalPlayer);
 		}
 
 		public bool Unlocked(int caster)
 		{
-			return spellCasters[caster].Unlocked();
+			return Casters[caster].Unlocked();
 		}
 	}
 
 	public class SpellCaster : ITick
 	{
 		readonly Game game;
-		readonly SpellTreeNode node;
+		readonly SpellCasterType node;
 
 		int duration;
 		int recharge;
@@ -48,7 +48,7 @@ namespace WarriorsSnuggery.Spells
 		public float RechargeProgress => 1 - recharge / (float)node.Cooldown;
 		public bool Ready => !(Activated || Recharging);
 
-		public SpellCaster(Game game, SpellTreeNode node, (float, float) values)
+		public SpellCaster(Game game, SpellCasterType node, (float, float) values)
 		{
 			this.game = game;
 			this.node = node;

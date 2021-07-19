@@ -34,7 +34,7 @@ namespace WarriorsSnuggery.UI.Objects
 		{
 			this.game = game;
 
-			spellCount = SpellTreeCache.SpellTree.Count;
+			spellCount = SpellCasterCache.Types.Count;
 
 			addSpells();
 
@@ -44,8 +44,8 @@ namespace WarriorsSnuggery.UI.Objects
 		void addSpells()
 		{
 			int index = 0;
-			foreach (var spell in SpellTreeCache.SpellTree)
-				Add(new SpellListItem(game, ItemSize, spell, game.SpellManager.spellCasters[index++]));
+			foreach (var spell in SpellCasterCache.Types)
+				Add(new SpellListItem(game, ItemSize, spell, game.SpellManager.Casters[index++]));
 		}
 
 		public void Update()
@@ -87,7 +87,7 @@ namespace WarriorsSnuggery.UI.Objects
 			float progress;
 			int graphicProgress;
 
-			public SpellListItem(Game game, MPos size, SpellTreeNode node, SpellCaster caster) : base(new BatchSequence(node.Icon), size, node.Name, node.GetInformation(true), null)
+			public SpellListItem(Game game, MPos size, SpellCasterType node, SpellCaster caster) : base(new BatchSequence(node.Icon), size, node.Name, node.GetInformation(true), null)
 			{
 				this.caster = caster;
 				this.game = game;
