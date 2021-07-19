@@ -15,7 +15,7 @@ namespace WarriorsSnuggeryScripts
 		public MainMenuScript(string file, Game game) : base(file, game)
 		{
 			const int count = 3;
-			static ParticleType particleType() => ParticleCreator.Types[particleTypes[Program.SharedRandom.Next(particleTypes.Length)]];
+			static ParticleType particleType() => ParticleCache.Types[particleTypes[Program.SharedRandom.Next(particleTypes.Length)]];
 
 			var random = Program.SharedRandom;
 			var bounds = world.Map.Bounds.ToCPos();

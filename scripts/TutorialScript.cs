@@ -26,8 +26,8 @@ namespace Mission
 		{
 			game.AddInfoMessage(200, "Tutorial script started");
 
-			targets = game.World.ActorLayer.Actors.Where(a => a.Type == ActorCreator.Types["dummy"]).ToArray();
-			keys = game.World.ActorLayer.Actors.Where(a => a.Type == ActorCreator.Types["key"]).ToArray();
+			targets = game.World.ActorLayer.Actors.Where(a => a.Type == ActorCache.Types["dummy"]).ToArray();
+			keys = game.World.ActorLayer.Actors.Where(a => a.Type == ActorCache.Types["key"]).ToArray();
 		}
 
 		public override void Tick()
@@ -59,7 +59,7 @@ namespace Mission
 						var x = 20 * 1024 - 512;
 						var y = 6 * 1024 - 512 + i * 128;
 
-						var init = new ParticleInit(ParticleCreator.Types["beam"], new CPos(x, y, 0), 0);
+						var init = new ParticleInit(ParticleCache.Types["beam"], new CPos(x, y, 0), 0);
 						game.World.Add(new Particle(world, init));
 					}
 				}
@@ -99,11 +99,11 @@ namespace Mission
 				var x = random.Next(1024) - 512 + position.X;
 				var y = random.Next(1024) - 512 + position.Y;
 
-				var init = new ParticleInit(ParticleCreator.Types["beam"], new CPos(x, y, 0), random.Next(1024));
+				var init = new ParticleInit(ParticleCache.Types["beam"], new CPos(x, y, 0), random.Next(1024));
 				game.World.Add(new Particle(world, init));
 			}
 
-			game.World.Add(ActorCreator.Create(game.World, type, position));
+			game.World.Add(ActorCache.Create(game.World, type, position));
 		}
 
 		void spawnMoney()
@@ -121,10 +121,10 @@ namespace Mission
 				var x1 = random.Next(4096 - 512) + 38 * 1024 - 256;
 				var y1 = random.Next(1024 * 6) + 256;
 
-				var init = new ParticleInit(ParticleCreator.Types["beam"], new CPos(x1, y1, 0), random.Next(1024));
+				var init = new ParticleInit(ParticleCache.Types["beam"], new CPos(x1, y1, 0), random.Next(1024));
 				game.World.Add(new Particle(world, init));
 
-				game.World.Add(ActorCreator.Create(game.World, types[random.Next(types.Length)], new CPos(x1, y1, 0)));
+				game.World.Add(ActorCache.Create(game.World, types[random.Next(types.Length)], new CPos(x1, y1, 0)));
 			}
 
 			for (int i = 0; i < 800; i++)
@@ -132,10 +132,10 @@ namespace Mission
 				var x2 = random.Next(4096 - 512) + 38 * 1024 - 256;
 				var y2 = random.Next(1024 * 6) + 1024 * 9 - 256;
 
-				var init = new ParticleInit(ParticleCreator.Types["beam"], new CPos(x2, y2, 0), random.Next(1024));
+				var init = new ParticleInit(ParticleCache.Types["beam"], new CPos(x2, y2, 0), random.Next(1024));
 				game.World.Add(new Particle(world, init));
 
-				game.World.Add(ActorCreator.Create(game.World, types[random.Next(types.Length)], new CPos(x2, y2, 0)));
+				game.World.Add(ActorCache.Create(game.World, types[random.Next(types.Length)], new CPos(x2, y2, 0)));
 			}
 		}
 	}
