@@ -141,7 +141,7 @@ namespace WarriorsSnuggery.Objects.Actors.Parts
 			switch (info.Type)
 			{
 				case SpawnPartTypes.ACTOR:
-					var actor = ActorCreator.Create(self.World, info.Name, randomPosition(), info.InheritsTeam ? self.Team : Actor.NeutralTeam, info.InheritsBot && self.IsBot);
+					var actor = ActorCache.Create(self.World, info.Name, randomPosition(), info.InheritsTeam ? self.Team : Actor.NeutralTeam, info.InheritsBot && self.IsBot);
 
 					if (info.InheritsBot && self.IsBot)
 						actor.Bot.Target = self.Bot.Target;
@@ -150,13 +150,13 @@ namespace WarriorsSnuggery.Objects.Actors.Parts
 					self.World.Add(actor);
 					break;
 				case SpawnPartTypes.PARTICLE:
-					var particle = ParticleCreator.Create(self.World, info.Name, randomPosition(), self.Height + info.Offset.Z);
+					var particle = ParticleCache.Create(self.World, info.Name, randomPosition(), self.Height + info.Offset.Z);
 					particle.Height = height;
 
 					self.World.Add(particle);
 					break;
 				case SpawnPartTypes.WEAPON:
-					var weapon = WeaponCreator.Create(self.World, info.Name, randomPosition(), self);
+					var weapon = WeaponCache.Create(self.World, info.Name, randomPosition(), self);
 					weapon.Height = height;
 
 					self.World.Add(weapon);

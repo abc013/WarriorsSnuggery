@@ -72,9 +72,9 @@ namespace WarriorsSnuggery.UI.Objects.Editor
 		public ActorEditorWidget() : base()
 		{
 			list = new PanelList(new MPos(2048, 4096), new MPos(512, 512), "wooden");
-			foreach (var key in ActorCreator.Types.Keys)
+			foreach (var key in ActorCache.Types.Keys)
 			{
-				var actor = ActorCreator.Types[key];
+				var actor = ActorCache.Types[key];
 
 				var worldTrait = actor.PartInfos.FirstOrDefault(p => p is WorldPartInfo);
 				if (worldTrait != null && !(worldTrait as WorldPartInfo).ShowInEditor)

@@ -5,7 +5,7 @@ using WarriorsSnuggery.Objects.Actors;
 
 namespace WarriorsSnuggery.Objects.Weapons
 {
-	public static class WeaponCreator
+	public static class WeaponCache
 	{
 		public static readonly TypeDictionary<WeaponType> Types = new TypeDictionary<WeaponType>();
 

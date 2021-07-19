@@ -3,7 +3,7 @@ using WarriorsSnuggery.Loader;
 
 namespace WarriorsSnuggery.Spells
 {
-	public static class SpellTreeLoader
+	public static class SpellTreeCache
 	{
 		public static readonly List<SpellTreeNode> SpellTree = new List<SpellTreeNode>();
 

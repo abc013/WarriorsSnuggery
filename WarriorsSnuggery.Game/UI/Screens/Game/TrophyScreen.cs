@@ -20,9 +20,9 @@ namespace WarriorsSnuggery.UI.Screens
 			Title.Position = new CPos(0, -4096, 0);
 
 			trophies = new PanelList(new MPos(8120, 1024), new MPos(512, 1024), "wooden") { Position = new CPos(0, -1024, 0) };
-			foreach (var key in TrophyManager.Trophies.Keys)
+			foreach (var key in TrophyCache.Trophies.Keys)
 			{
-				var value = TrophyManager.Trophies[key];
+				var value = TrophyCache.Trophies[key];
 
 				var sprite = value.Image.GetTextures()[0];
 				var scale = MasterRenderer.PixelSize / (float)Math.Max(sprite.Width, sprite.Height) - 0.1f;
@@ -70,7 +70,7 @@ namespace WarriorsSnuggery.UI.Screens
 		public override void Show()
 		{
 			var i = 0;
-			foreach (var key in TrophyManager.Trophies.Keys)
+			foreach (var key in TrophyCache.Trophies.Keys)
 			{
 				if (!game.Stats.TrophyUnlocked(key))
 					trophies.Container[i].SetColor(Color.Black);

@@ -43,7 +43,7 @@
 			var saver = new PartSaver(this, string.Empty);
 
 			saver.Add("RelativeHP", RelativeHP, 1f);
-			saver.Add("ActorType", ActorCreator.Types[ActorType], null);
+			saver.Add("ActorType", ActorCache.Types[ActorType], null);
 			saver.Add("CurrentTick", CurrentTick, 0);
 
 			return saver;
@@ -62,7 +62,7 @@
 
 		void switchPlayer()
 		{
-			var actor = ActorCreator.Create(self.World, ActorType, self.Position, self.Team, isPlayer: true, health: RelativeHP);
+			var actor = ActorCache.Create(self.World, ActorType, self.Position, self.Team, isPlayer: true, health: RelativeHP);
 			self.World.FinishPlayerSwitch(actor);
 			self.Dispose();
 		}

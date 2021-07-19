@@ -28,13 +28,13 @@ namespace WarriorsSnuggery.UI.Objects
 		}
 		int currentSpell;
 
-		public SpellList(Game game, MPos bounds, MPos itemSize, string typeName) : this(game, bounds, itemSize, PanelManager.Types[typeName]) { }
+		public SpellList(Game game, MPos bounds, MPos itemSize, string typeName) : this(game, bounds, itemSize, PanelCache.Types[typeName]) { }
 
 		public SpellList(Game game, MPos bounds, MPos itemSize, PanelType type) : base(bounds, itemSize, type, false)
 		{
 			this.game = game;
 
-			spellCount = SpellTreeLoader.SpellTree.Count;
+			spellCount = SpellTreeCache.SpellTree.Count;
 
 			addSpells();
 
@@ -44,7 +44,7 @@ namespace WarriorsSnuggery.UI.Objects
 		void addSpells()
 		{
 			int index = 0;
-			foreach (var spell in SpellTreeLoader.SpellTree)
+			foreach (var spell in SpellTreeCache.SpellTree)
 				Add(new SpellListItem(game, ItemSize, spell, game.SpellManager.spellCasters[index++]));
 		}
 

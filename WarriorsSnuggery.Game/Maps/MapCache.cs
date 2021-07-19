@@ -5,7 +5,7 @@ using WarriorsSnuggery.Loader;
 
 namespace WarriorsSnuggery.Maps
 {
-	public static class MapCreator
+	public static class MapCache
 	{
 		public static readonly TypeDictionary<MapType> Types = new TypeDictionary<MapType>();
 		static readonly Dictionary<MissionType, List<MapType>> missionMaps = new Dictionary<MissionType, List<MapType>>();

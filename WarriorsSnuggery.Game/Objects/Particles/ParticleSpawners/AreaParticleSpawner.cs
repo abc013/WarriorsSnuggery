@@ -48,7 +48,7 @@ namespace WarriorsSnuggery.Objects.Particles
 				var angle = Angle.RandomAngle(random);
 				var pos = CPos.FromFlatAngle(angle, ran);
 
-				particles[i] = ParticleCreator.Create(world, Type, position + pos, height);
+				particles[i] = ParticleCache.Create(world, Type, position + pos, height);
 			}
 			return particles;
 		}
@@ -61,7 +61,7 @@ namespace WarriorsSnuggery.Objects.Particles
 			{
 				var pos = CPos.FromFlatAngle(step * i, Radius);
 
-				particles[i] = ParticleCreator.Create(world, Type, position + pos, height);
+				particles[i] = ParticleCache.Create(world, Type, position + pos, height);
 			}
 			return particles;
 		}
@@ -99,7 +99,7 @@ namespace WarriorsSnuggery.Objects.Particles
 				}
 				var pos = new CPos(x, y, 0);
 
-				particles[i] = ParticleCreator.Create(world, Type, position + pos, height);
+				particles[i] = ParticleCache.Create(world, Type, position + pos, height);
 			}
 			return particles;
 		}

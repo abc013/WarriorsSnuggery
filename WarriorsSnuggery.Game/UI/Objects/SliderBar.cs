@@ -24,7 +24,7 @@ namespace WarriorsSnuggery.UI.Objects
 			set => slider.Value = value;
 		}
 
-		public SliderBar(int length, string typeName, Action onChanged = null) : this(length, PanelManager.Types[typeName], onChanged) { }
+		public SliderBar(int length, string typeName, Action onChanged = null) : this(length, PanelCache.Types[typeName], onChanged) { }
 
 		public SliderBar(int length, PanelType type, Action onChanged = null) : base(new MPos(length / 2, (int)(1024 * MasterRenderer.PixelMultiplier)), type)
 		{

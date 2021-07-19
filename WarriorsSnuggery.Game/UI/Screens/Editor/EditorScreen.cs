@@ -267,7 +267,7 @@ namespace WarriorsSnuggery.UI.Screens
 					pos = actorWidget.Rasterization ? rasterizedPosition(pos) : pos;
 
 					var team = Math.Max(actorWidget.Team, (byte)0);
-					var actor = ActorCreator.Create(game.World, actorWidget.CurrentType, pos, team, actorWidget.Bot, false, actorWidget.RelativeHP);
+					var actor = ActorCache.Create(game.World, actorWidget.CurrentType, pos, team, actorWidget.Bot, false, actorWidget.RelativeHP);
 					actor.Angle = actorWidget.RelativeFacing * Angle.MaxRange;
 
 					game.World.Add(actor);
@@ -282,7 +282,7 @@ namespace WarriorsSnuggery.UI.Screens
 					if (game.World.TerrainLayer.Terrain[mpos.X, mpos.Y].Type == terrainWidget.CurrentType)
 						return;
 
-					var terrain = TerrainCreator.Create(game.World, mpos, terrainWidget.CurrentType.ID);
+					var terrain = TerrainCache.Create(game.World, mpos, terrainWidget.CurrentType.ID);
 					game.World.TerrainLayer.Set(terrain);
 
 					WorldRenderer.CheckTerrainAround(mpos, true);
@@ -315,7 +315,7 @@ namespace WarriorsSnuggery.UI.Screens
 					if (currentWall != null && currentWall.Type.ID == type.ID && currentWall.Health == plannedHealth)
 						return;
 
-					var wall = WallCreator.Create(mpos, wallLayer, type.ID);
+					var wall = WallCache.Create(mpos, wallLayer, type.ID);
 					wall.Health = plannedHealth;
 
 					wallLayer.Set(wall);

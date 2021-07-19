@@ -114,7 +114,7 @@ namespace WarriorsSnuggery.Objects
 			{
 				Dispose();
 				if (Type.WallOnDeath >= 0)
-					layer.Set(WallCreator.Create(LayerPosition, layer, Type.WallOnDeath));
+					layer.Set(WallCache.Create(LayerPosition, layer, Type.WallOnDeath));
 				else
 					layer.Remove(LayerPosition);
 

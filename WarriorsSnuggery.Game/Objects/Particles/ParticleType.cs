@@ -59,7 +59,7 @@ namespace WarriorsSnuggery.Objects.Particles
 
 		public override string ToString()
 		{
-			return ParticleCreator.Types[this];
+			return ParticleCache.Types[this];
 		}
 	}
 }

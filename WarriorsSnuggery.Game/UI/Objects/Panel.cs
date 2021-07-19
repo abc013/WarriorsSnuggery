@@ -58,7 +58,7 @@ namespace WarriorsSnuggery.UI.Objects
 
 		public bool HighlightVisible;
 
-		public Panel(MPos bounds, string typeName, bool useHighlight = false) : this(bounds, PanelManager.Types[typeName], useHighlight) { }
+		public Panel(MPos bounds, string typeName, bool useHighlight = false) : this(bounds, PanelCache.Types[typeName], useHighlight) { }
 
 		public Panel(MPos bounds, PanelType type, bool useHighlight = false)
 		{

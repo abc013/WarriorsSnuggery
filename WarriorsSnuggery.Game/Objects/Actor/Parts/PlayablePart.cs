@@ -31,7 +31,7 @@
 	{
 		readonly PlayablePartInfo info;
 
-		public ActorType PlayerSwitchActor => string.IsNullOrEmpty(info.PlayerSwitchActor) ? null : ActorCreator.Types[info.PlayerSwitchActor];
+		public ActorType PlayerSwitchActor => string.IsNullOrEmpty(info.PlayerSwitchActor) ? null : ActorCache.Types[info.PlayerSwitchActor];
 
 		public PlayablePart(Actor self, PlayablePartInfo info) : base(self)
 		{

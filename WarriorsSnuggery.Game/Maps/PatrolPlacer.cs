@@ -146,7 +146,7 @@ namespace WarriorsSnuggery.Maps
 					else if (spawnPosition.Y >= map.BottomRightCorner.Y - patrol.DistanceBetweenObjects / 2)
 						spawnPosition = new CPos(spawnPosition.X, map.BottomRightCorner.Y - patrol.DistanceBetweenObjects / 2, 0);
 
-					var actor = ActorCreator.Create(world, patrol.ActorTypes[j], spawnPosition, patrol.Team, true);
+					var actor = ActorCache.Create(world, patrol.ActorTypes[j], spawnPosition, patrol.Team, true);
 
 					group.Add(actor);
 

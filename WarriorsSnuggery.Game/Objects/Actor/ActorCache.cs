@@ -4,7 +4,7 @@ using WarriorsSnuggery.Objects.Actors.Parts;
 
 namespace WarriorsSnuggery.Objects.Actors
 {
-	public static class ActorCreator
+	public static class ActorCache
 	{
 		public static readonly TypeDictionary<ActorType> Types = new TypeDictionary<ActorType>();
 

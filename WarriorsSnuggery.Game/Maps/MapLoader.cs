@@ -115,7 +115,7 @@ namespace WarriorsSnuggery.Maps
 			{
 				for (int y = 0; y < Bounds.Y; y++)
 				{
-					world.TerrainLayer.Set(TerrainCreator.Create(world, new MPos(x, y), terrainInformation[x, y]));
+					world.TerrainLayer.Set(TerrainCache.Create(world, new MPos(x, y), terrainInformation[x, y]));
 
 					for (int i = 0; i < 2; i++)
 						applyWall(new MPos(x * 2 + i, y));
@@ -141,7 +141,7 @@ namespace WarriorsSnuggery.Maps
 			{
 				foreach (var (init, offset) in list)
 				{
-					var actor = ActorCreator.Create(world, init, !FromSave);
+					var actor = ActorCache.Create(world, init, !FromSave);
 					actor.Position += offset;
 
 					actors.Add(actor);
@@ -153,10 +153,10 @@ namespace WarriorsSnuggery.Maps
 				actor.OnLoad();
 
 			foreach (var init in weaponInformation)
-				world.Add(WeaponCreator.Create(world, init));
+				world.Add(WeaponCache.Create(world, init));
 
 			foreach (var init in particleInformation)
-				world.Add(ParticleCreator.Create(world, init));
+				world.Add(ParticleCache.Create(world, init));
 		}
 
 		void applyWall(MPos pos)
@@ -166,7 +166,7 @@ namespace WarriorsSnuggery.Maps
 			if (id == 0 && health == 0)
 				return;
 
-			var wall = WallCreator.Create(pos, world.WallLayer, id);
+			var wall = WallCache.Create(pos, world.WallLayer, id);
 			wall.Health = health;
 
 			world.WallLayer.Set(wall);
@@ -221,14 +221,14 @@ namespace WarriorsSnuggery.Maps
 
 		public void AddActor(CPos pos, ActorProbabilityInfo info)
 		{
-			var init = ActorCreator.CreateInit(world, info.Type, pos, info.Team, info.IsBot, health: info.Health);
+			var init = ActorCache.CreateInit(world, info.Type, pos, info.Team, info.IsBot, health: info.Health);
 
 			AddActor(init, CPos.Zero);
 		}
 
 		public void AddActor(CPos position, string name, byte team = 0, bool isBot = false, float health = 1f)
 		{
-			var init = ActorCreator.CreateInit(world, name, position, team, isBot, false, health);
+			var init = ActorCache.CreateInit(world, name, position, team, isBot, false, health);
 
 			AddActor(init, CPos.Zero);
 		}

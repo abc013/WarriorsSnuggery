@@ -21,7 +21,7 @@ namespace WarriorsSnuggery.Objects.Particles
 		{
 			var particles = new Particle[Count];
 			for (int i = 0; i < Count; i++)
-				particles[i] = ParticleCreator.Create(world, Type, position + Offset, height);
+				particles[i] = ParticleCache.Create(world, Type, position + Offset, height);
 
 			return particles;
 		}

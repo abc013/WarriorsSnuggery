@@ -40,7 +40,7 @@ namespace WarriorsSnuggery.Objects.Actors
 
 		public override string ToString()
 		{
-			return ActorCreator.Types[this];
+			return ActorCache.Types[this];
 		}
 	}
 

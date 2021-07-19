@@ -34,7 +34,7 @@ namespace WarriorsSnuggery.UI.Objects
 
 		int currentScroll;
 
-		public PanelList(MPos size, MPos itemSize, string type, bool autoHighlight = true) : this(size, itemSize, PanelManager.Types[type], autoHighlight) { }
+		public PanelList(MPos size, MPos itemSize, string type, bool autoHighlight = true) : this(size, itemSize, PanelCache.Types[type], autoHighlight) { }
 
 		public PanelList(MPos size, MPos itemSize, PanelType type, bool autoHighlight = true) : base(size, type)
 		{

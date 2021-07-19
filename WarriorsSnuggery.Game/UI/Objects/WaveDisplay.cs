@@ -5,7 +5,7 @@
 		readonly Game game;
 		int currentWave = -1;
 
-		public WaveDisplay(Game game) : base(new MPos(1280, 512), PanelManager.Types["wooden"], new Color(0, 255, 0, 64))
+		public WaveDisplay(Game game) : base(new MPos(1280, 512), PanelCache.Types["wooden"], new Color(0, 255, 0, 64))
 		{
 			this.game = game;
 		}

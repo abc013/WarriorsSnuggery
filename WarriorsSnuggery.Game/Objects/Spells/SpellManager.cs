@@ -11,9 +11,9 @@ namespace WarriorsSnuggery.Spells
 		{
 			this.game = game;
 
-			spellCasters = new SpellCaster[SpellTreeLoader.SpellTree.Count];
+			spellCasters = new SpellCaster[SpellTreeCache.SpellTree.Count];
 			for (int i = 0; i < spellCasters.Length; i++)
-				spellCasters[i] = new SpellCaster(game, SpellTreeLoader.SpellTree[i], game.Stats.GetSpellCaster(i));
+				spellCasters[i] = new SpellCaster(game, SpellTreeCache.SpellTree[i], game.Stats.GetSpellCaster(i));
 		}
 
 		public void Tick()

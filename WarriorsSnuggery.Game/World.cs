@@ -74,7 +74,7 @@ namespace WarriorsSnuggery
 			{
 				if (!Map.Type.IsSave)
 				{
-					LocalPlayer = ActorCreator.Create(this, Game.Save.Actor, Map.PlayerSpawn, Actor.PlayerTeam, isPlayer: true);
+					LocalPlayer = ActorCache.Create(this, Game.Save.Actor, Map.PlayerSpawn, Actor.PlayerTeam, isPlayer: true);
 					Add(LocalPlayer);
 				}
 				else
@@ -151,13 +151,13 @@ namespace WarriorsSnuggery
 			if (Game.Stats.TrophyUnlocked(collected))
 				return;
 
-			if (!TrophyManager.Trophies.ContainsKey(collected))
+			if (!TrophyCache.Trophies.ContainsKey(collected))
 				throw new InvalidNodeException("Unable to get Trophy with internal name " + collected);
 
 			Game.AddInfoMessage(250, "Trophy collected!");
 			Game.Stats.AddTrophy(collected);
 
-			var trophy = TrophyManager.Trophies[collected];
+			var trophy = TrophyCache.Trophies[collected];
 			Game.Stats.MaxMana += trophy.MaxManaIncrease;
 			Game.Stats.MaxLifes += trophy.MaxLifesIncrease;
 		}
@@ -178,12 +178,12 @@ namespace WarriorsSnuggery
 
 			if (playablePart != null && playablePart.PlayerSwitchActor == null)
 			{
-				FinishPlayerSwitch(ActorCreator.Create(this, to, LocalPlayer.Position, LocalPlayer.Team, isPlayer: true, health: health));
+				FinishPlayerSwitch(ActorCache.Create(this, to, LocalPlayer.Position, LocalPlayer.Team, isPlayer: true, health: health));
 				LocalPlayer.Dispose();
 				return;
 			}
 
-			var switchActor = ActorCreator.Create(this, playablePart.PlayerSwitchActor, LocalPlayer.Position, LocalPlayer.Team, isPlayer: true);
+			var switchActor = ActorCache.Create(this, playablePart.PlayerSwitchActor, LocalPlayer.Position, LocalPlayer.Team, isPlayer: true);
 			var switchPart = switchActor.GetPart<PlayerSwitchPart>();
 			switchPart.RelativeHP = health;
 			switchPart.ActorType = to;
@@ -206,7 +206,7 @@ namespace WarriorsSnuggery
 			}
 
 			Game.Stats.Lifes--;
-			LocalPlayer = ActorCreator.Create(this, Game.Save.Actor, Map.PlayerSpawn, Actor.PlayerTeam, isPlayer: true);
+			LocalPlayer = ActorCache.Create(this, Game.Save.Actor, Map.PlayerSpawn, Actor.PlayerTeam, isPlayer: true);
 			Add(LocalPlayer);
 		}
 

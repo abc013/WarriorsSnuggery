@@ -29,7 +29,7 @@ namespace WarriorsSnuggery.Objects.Particles
 				var angle = WarriorsSnuggery.Angle.ToArc(Angle);
 				var pos = CPos.FromFlatAngle(angle, length * i);
 
-				particles[i] = ParticleCreator.Create(world, Type, position + pos, height);
+				particles[i] = ParticleCache.Create(world, Type, position + pos, height);
 			}
 			return particles;
 		}

@@ -46,7 +46,7 @@ namespace WarriorsSnuggery.UI.Objects
 		int cashCooldown;
 		int lastCash;
 
-		public MoneyDisplay(Game game) : base(new MPos(1536, 512), PanelManager.Types["wooden"])
+		public MoneyDisplay(Game game) : base(new MPos(1536, 512), PanelCache.Types["wooden"])
 		{
 			this.game = game;
 			money = new BatchObject(UISpriteManager.Get("UI_money")[0]);

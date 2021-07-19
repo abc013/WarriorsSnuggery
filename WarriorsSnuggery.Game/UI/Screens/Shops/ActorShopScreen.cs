@@ -26,7 +26,7 @@ namespace WarriorsSnuggery.UI.Screens
 			Add(new Panel(new MPos(8 * 1024, 2 * 1024), "wooden") { Position = new CPos(0, 920, 0) });
 
 			actors = new PanelList(new MPos(8120, 1024), new MPos(1024, 1024), "stone") { Position = new CPos(0, -2048, 0) };
-			foreach (var a in ActorCreator.Types.Values)
+			foreach (var a in ActorCache.Types.Values)
 			{
 				if (a.Playable == null)
 					continue;

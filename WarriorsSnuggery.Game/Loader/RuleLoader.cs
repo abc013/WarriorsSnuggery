@@ -37,23 +37,23 @@ namespace WarriorsSnuggery.Loader
 				switch (rule.Key)
 				{
 					case "Particles":
-						ParticleCreator.Load(nodes);
+						ParticleCache.Load(nodes);
 
 						break;
 					case "Weapons":
-						WeaponCreator.Load(nodes);
+						WeaponCache.Load(nodes);
 
 						break;
 					case "Actors":
-						ActorCreator.Load(nodes);
+						ActorCache.Load(nodes);
 
 						break;
 					case "Terrain":
-						TerrainCreator.Load(nodes);
+						TerrainCache.Load(nodes);
 
 						break;
 					case "Walls":
-						WallCreator.Load(nodes);
+						WallCache.Load(nodes);
 
 						break;
 					case "Spells":
@@ -61,15 +61,15 @@ namespace WarriorsSnuggery.Loader
 
 						break;
 					case "SpellTree":
-						SpellTreeLoader.Load(nodes);
+						SpellTreeCache.Load(nodes);
 
 						break;
 					case "Trophies":
-						TrophyManager.Load(nodes);
+						TrophyCache.Load(nodes);
 
 						break;
 					case "Maps":
-						MapCreator.Load(nodes);
+						MapCache.Load(nodes);
 
 						break;
 				}
@@ -106,17 +106,17 @@ namespace WarriorsSnuggery.Loader
 			UISpriteManager.Add("cursor_attack", "cursor_attack");
 			UISpriteManager.Add("logo", "logo");
 
-			PanelManager.AddType(new PanelType(getTexture("UI_wood1"), getTexture("UI_wood2"), getTexture("UI_wood3"), 72), "wooden");
-			PanelManager.AddType(new PanelType(getTexture("UI_stone1"), getTexture("UI_wood3"), getTexture("UI_stone2"), 72), "stone");
+			PanelCache.Add(new PanelType(getTexture("UI_wood1"), getTexture("UI_wood2"), getTexture("UI_wood3"), 72), "wooden");
+			PanelCache.Add(new PanelType(getTexture("UI_stone1"), getTexture("UI_wood3"), getTexture("UI_stone2"), 72), "stone");
 
-			CheckBoxManager.AddType(checkBox("check"), "wooden");
+			CheckBoxCache.Add(checkBox("check"), "wooden");
 
-			CheckBoxManager.AddType(checkBox("check_terrain"), "terrain_editor");
-			CheckBoxManager.AddType(checkBox("check_actor"), "actor_editor");
-			CheckBoxManager.AddType(checkBox("check_object"), "object_editor");
-			CheckBoxManager.AddType(checkBox("check_wall"), "wall_editor");
+			CheckBoxCache.Add(checkBox("check_terrain"), "terrain_editor");
+			CheckBoxCache.Add(checkBox("check_actor"), "actor_editor");
+			CheckBoxCache.Add(checkBox("check_object"), "object_editor");
+			CheckBoxCache.Add(checkBox("check_wall"), "wall_editor");
 
-			CheckBoxManager.AddType(checkBox("check_menu"), "menu");
+			CheckBoxCache.Add(checkBox("check_menu"), "menu");
 		}
 
 		static CheckBoxType checkBox(string name)

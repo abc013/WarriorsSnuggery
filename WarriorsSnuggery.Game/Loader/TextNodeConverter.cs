@@ -325,15 +325,15 @@ namespace WarriorsSnuggery.Loader
 			}
 			else if (t == typeof(WeaponType))
 			{
-				return WeaponCreator.Types[value.Trim()];
+				return WeaponCache.Types[value.Trim()];
 			}
 			else if (t == typeof(ParticleType))
 			{
-				return ParticleCreator.Types[value.Trim()];
+				return ParticleCache.Types[value.Trim()];
 			}
 			else if (t == typeof(ActorType))
 			{
-				return ActorCreator.Types[value.Trim()];
+				return ActorCache.Types[value.Trim()];
 			}
 			else if (t == typeof(SimplePhysicsType))
 			{
@@ -419,10 +419,10 @@ namespace WarriorsSnuggery.Loader
 
 				for (int i = 0; i < node.Children.Count; i++)
 				{
-					if (!ParticleCreator.Types.ContainsKey(value))
+					if (!ParticleCache.Types.ContainsKey(value))
 						throw new MissingInfoException(value);
 
-					convert[i] = ParticleCreator.Types[value.Trim()];
+					convert[i] = ParticleCache.Types[value.Trim()];
 				}
 
 				return convert;

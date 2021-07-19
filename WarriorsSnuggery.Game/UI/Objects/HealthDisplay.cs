@@ -46,7 +46,7 @@ namespace WarriorsSnuggery.UI.Objects
 		int lifes;
 		int tick;
 
-		public HealthDisplay(Game game) : base(new MPos(712 + 128, 512), PanelManager.Types["wooden"])
+		public HealthDisplay(Game game) : base(new MPos(712 + 128, 512), PanelCache.Types["wooden"])
 		{
 			this.game = game;
 

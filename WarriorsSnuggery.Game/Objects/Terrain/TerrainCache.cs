@@ -3,7 +3,7 @@ using WarriorsSnuggery.Loader;
 
 namespace WarriorsSnuggery.Objects
 {
-	public static class TerrainCreator
+	public static class TerrainCache
 	{
 		public static readonly Dictionary<ushort, TerrainType> Types = new Dictionary<ushort, TerrainType>();
 

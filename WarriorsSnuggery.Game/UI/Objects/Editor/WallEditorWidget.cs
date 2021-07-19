@@ -41,7 +41,7 @@ namespace WarriorsSnuggery.UI.Objects.Editor
 		public WallEditorWidget() : base()
 		{
 			list = new PanelList(new MPos(2048, 4096), new MPos(512, 1024), "wooden");
-			foreach (var a in WallCreator.Types.Values)
+			foreach (var a in WallCache.Types.Values)
 				list.Add(new PanelListItem(new BatchObject(a.GetTexture(true, 0, a.Texture)), new MPos(512, 512), a.ID.ToString(), new string[0], () => CurrentType = a));
 
 			placementCheck = new CheckBox("wooden");

@@ -37,9 +37,9 @@ namespace WarriorsSnuggery.UI.Screens
 			spellList = new SpellList(game, new MPos(512, 13 * 512), new MPos(512, 512), "stone") { Position = new CPos(Right - 512 - margin, 0, 0) };
 			Add(spellList);
 
-			manaBar = new DisplayBar(new MPos(Width / 2 - 1536, 256), PanelManager.Types["stone"], new Color(0, 0, 255, 196)) { Position = new CPos(0, Bottom - 2048 + margin, 0) };
+			manaBar = new DisplayBar(new MPos(Width / 2 - 1536, 256), PanelCache.Types["stone"], new Color(0, 0, 255, 196)) { Position = new CPos(0, Bottom - 2048 + margin, 0) };
 			Add(manaBar);
-			healthBar = new DisplayBar(new MPos(Width / 2 - 256, 512), PanelManager.Types["wooden"], new Color(255, 0, 0, 196)) { Position = new CPos(0, Bottom - 1024 + margin, 0) };
+			healthBar = new DisplayBar(new MPos(Width / 2 - 256, 512), PanelCache.Types["wooden"], new Color(255, 0, 0, 196)) { Position = new CPos(0, Bottom - 1024 + margin, 0) };
 			Add(healthBar);
 
 			var top = Top + 512 + margin;

@@ -216,7 +216,7 @@ namespace WarriorsSnuggery
 
 						break;
 					case nameof(CurrentMapType):
-						CurrentMapType = MapCreator.Types[node.Value];
+						CurrentMapType = MapCache.Types[node.Value];
 
 						break;
 					case nameof(SpellCasters):
@@ -324,7 +324,7 @@ namespace WarriorsSnuggery
 				writer.WriteLine($"{nameof(MaxLives)}={MaxLives}");
 				writer.WriteLine($"{nameof(CurrentObjective)}={CurrentObjective}");
 				writer.WriteLine($"{nameof(CurrentMission)}={CurrentMission}");
-				writer.WriteLine($"{nameof(CurrentMapType)}={MapCreator.Types[CurrentMapType]}");
+				writer.WriteLine($"{nameof(CurrentMapType)}={MapCache.Types[CurrentMapType]}");
 				if (Waves != 0)
 					writer.WriteLine($"{nameof(Waves)}={Waves}");
 				if (KeyFound)
@@ -382,7 +382,7 @@ namespace WarriorsSnuggery
 
 			var player = game.World.LocalPlayer;
 
-			Actor = ActorCreator.Types[player.Type];
+			Actor = ActorCache.Types[player.Type];
 
 			if (player.IsPlayerSwitch)
 				Health = player.GetPart<PlayerSwitchPart>().RelativeHP;

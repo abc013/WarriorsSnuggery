@@ -31,7 +31,7 @@ namespace WarriorsSnuggery.UI.Objects
 		}
 		int currentActor;
 
-		public ActorList(Game game, MPos bounds, MPos itemSize, string typeName) : this(game, bounds, itemSize, PanelManager.Types[typeName]) { }
+		public ActorList(Game game, MPos bounds, MPos itemSize, string typeName) : this(game, bounds, itemSize, PanelCache.Types[typeName]) { }
 
 		public ActorList(Game game, MPos bounds, MPos itemSize, PanelType type) : base(bounds, itemSize, type, false)
 		{
@@ -44,7 +44,7 @@ namespace WarriorsSnuggery.UI.Objects
 
 		void addActors()
 		{
-			foreach (var actorType in ActorCreator.Types.Values)
+			foreach (var actorType in ActorCache.Types.Values)
 			{
 				if (actorType.Playable == null)
 					continue;

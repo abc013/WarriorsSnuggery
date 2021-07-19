@@ -3,7 +3,7 @@ using WarriorsSnuggery.Loader;
 
 namespace WarriorsSnuggery.Trophies
 {
-	public static class TrophyManager
+	public static class TrophyCache
 	{
 		public static readonly TypeDictionary<Trophy> Trophies = new TypeDictionary<Trophy>();
 

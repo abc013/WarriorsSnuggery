@@ -28,10 +28,10 @@ namespace WarriorsSnuggery.UI.Screens
 
 			var active = UISpriteManager.Get("UI_activeConnection");
 			var inactive = UISpriteManager.Get("UI_inactiveConnection");
-			tree = new SpellNode[SpellTreeLoader.SpellTree.Count];
+			tree = new SpellNode[SpellTreeCache.SpellTree.Count];
 			for (int i = 0; i < tree.Length; i++)
 			{
-				var origin = SpellTreeLoader.SpellTree[i];
+				var origin = SpellTreeCache.SpellTree[i];
 				var spell = new SpellNode(origin, game, this) { Position = origin.VisualPosition };
 				spell.CheckAvailability();
 				tree[i] = spell;
@@ -40,7 +40,7 @@ namespace WarriorsSnuggery.UI.Screens
 					if (connection == "")
 						continue;
 
-					var target = SpellTreeLoader.SpellTree.Find(s => s.InnerName == connection);
+					var target = SpellTreeCache.SpellTree.Find(s => s.InnerName == connection);
 					var line = new SpellConnection(game, origin, target, active, inactive, 10);
 					lines.Add(line);
 				}
@@ -171,7 +171,7 @@ namespace WarriorsSnuggery.UI.Screens
 				if (game.Stats.SpellUnlocked(before))
 					continue;
 
-				foreach (var node in SpellTreeLoader.SpellTree)
+				foreach (var node in SpellTreeCache.SpellTree)
 				{
 					if (node.InnerName == before && !node.Unlocked)
 						return;

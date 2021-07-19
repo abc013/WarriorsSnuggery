@@ -3,7 +3,7 @@ using WarriorsSnuggery.Loader;
 
 namespace WarriorsSnuggery.Objects.Particles
 {
-	public static class ParticleCreator
+	public static class ParticleCache
 	{
 		public static readonly TypeDictionary<ParticleType> Types = new TypeDictionary<ParticleType>();
 

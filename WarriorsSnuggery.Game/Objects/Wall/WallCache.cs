@@ -4,7 +4,7 @@ using WarriorsSnuggery.Maps.Layers;
 
 namespace WarriorsSnuggery.Objects
 {
-	public static class WallCreator
+	public static class WallCache
 	{
 		public static readonly Dictionary<short, WallType> Types = new Dictionary<short, WallType>();
 

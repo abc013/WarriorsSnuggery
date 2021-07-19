@@ -70,7 +70,7 @@ namespace WarriorsSnuggery.Objects.Actors
 			var list = new List<TextNode>();
 			var order = (short)(textNode.Order + 1);
 			list.Add(new TextNode("ActorInit", order, "Team", node.Team));
-			list.Add(new TextNode("ActorInit", order, "Type", ActorCreator.Types[node.Type]));
+			list.Add(new TextNode("ActorInit", order, "Type", ActorCache.Types[node.Type]));
 			if (node.IsBot)
 			{
 				var parent = new TextNode("ActorInit", order, "BotPart", string.Empty);
@@ -93,7 +93,7 @@ namespace WarriorsSnuggery.Objects.Actors
 				var parent = new TextNode("ActorInit", order, "PlayerSwitchPart", string.Empty);
 				list.Add(parent);
 				parent.Children.Add(new TextNode("ActorInit", (short)(order + 1), "RelativeHP", node.RelativeHP));
-				parent.Children.Add(new TextNode("ActorInit", (short)(order + 1), "ActorType", ActorCreator.Types[node.ToActor]));
+				parent.Children.Add(new TextNode("ActorInit", (short)(order + 1), "ActorType", ActorCache.Types[node.ToActor]));
 				parent.Children.Add(new TextNode("ActorInit", (short)(order + 1), "CurrentTick", node.Duration));
 			}
 

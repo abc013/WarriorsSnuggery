@@ -89,9 +89,9 @@ namespace WarriorsSnuggery.Objects.Conditions
 					return condition.Negate != (actor.Health.HP <= actor.Health.MaxHP / 4f);
 			}
 
-			foreach (var key in TrophyManager.Trophies.Keys)
+			foreach (var key in TrophyCache.Trophies.Keys)
 			{
-				var trophy = TrophyManager.Trophies[key];
+				var trophy = TrophyCache.Trophies[key];
 				if (!string.IsNullOrEmpty(trophy.ConditionName) && condition.Type == trophy.ConditionName)
 					return condition.Negate != game.Stats.TrophyUnlocked(key);
 			}

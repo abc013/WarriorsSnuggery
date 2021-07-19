@@ -21,7 +21,7 @@ namespace WarriorsSnuggery.Objects.Weapons.Warheads
 
 		public void Impact(World world, Weapon weapon, Target target)
 		{
-			world.Add(ActorCreator.Create(world, Type, target.Position, weapon.Team, IsBot));
+			world.Add(ActorCache.Create(world, Type, target.Position, weapon.Team, IsBot));
 		}
 	}
 }

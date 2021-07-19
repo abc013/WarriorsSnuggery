@@ -21,7 +21,7 @@ namespace WarriorsSnuggery.UI.Objects
 		readonly UITextLine text;
 		readonly Action action;
 
-		public Button(string text, string typeName, Action action = null) : this(text, PanelManager.Types[typeName], action) { }
+		public Button(string text, string typeName, Action action = null) : this(text, PanelCache.Types[typeName], action) { }
 
 		public Button(string text, PanelType type, Action action = null) : base(new MPos(margin + FontManager.Default.GetWidth(text) / 2, margin / 2 + FontManager.Default.MaxHeight / 2), type, true)
 		{

@@ -132,7 +132,7 @@ namespace WarriorsSnuggery.Objects.Actors.Parts
 			if (Type.PreparationDelay != 0 && !self.DoesAction(ActionType.PREPARE_ATTACK))
 				return; // Preparation has been canceled
 
-			var weapon = WeaponCreator.Create(self.World, info.Type, target, self);
+			var weapon = WeaponCache.Create(self.World, info.Type, target, self);
 			Target = weapon.TargetPosition;
 			beam = weapon as BeamWeapon;
 
