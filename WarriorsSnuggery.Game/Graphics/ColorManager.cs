@@ -89,9 +89,9 @@ namespace WarriorsSnuggery.Graphics
 			var bottomRight = new CPos(topRight.X, bottomLeft.Y, 0);
 			var topLeft = new CPos(bottomLeft.X, topRight.Y, 0);
 
-			DrawRect(topLeft + new CPos(width, -width, 0), topRight + new CPos(width, width, 0), color);
+			DrawRect(topLeft + new CPos(width, -width, 0), topRight + new CPos(-width, width, 0), color);
 			DrawRect(topLeft + new CPos(-width, width, 0), bottomLeft + new CPos(width, -width, 0), color);
-			DrawRect(bottomLeft + new CPos(-width, -width, 0), bottomRight + new CPos(-width, width, 0), color);
+			DrawRect(bottomLeft + new CPos(width, -width, 0), bottomRight + new CPos(-width, width, 0), color);
 			DrawRect(bottomRight + new CPos(width, -width, 0), topRight + new CPos(-width, width, 0), color);
 		}
 
