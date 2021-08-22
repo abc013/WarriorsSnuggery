@@ -286,12 +286,7 @@ namespace WarriorsSnuggery
 
 		public Terrain TerrainAt(CPos pos)
 		{
-			if (pos.X < 0 && pos.X >= -512)
-				pos = new CPos(0, pos.Y, pos.Z);
-			if (pos.Y < 0 && pos.Y >= -512)
-				pos = new CPos(pos.X, 0, pos.Z);
-
-			return !IsInWorld(pos) ? null : TerrainAt(pos.ToMPos());
+			return !IsInWorld(pos) ? null : TerrainAt(pos.ToMPosConsideringTerrainOffset());
 		}
 
 		public Terrain TerrainAt(MPos pos)

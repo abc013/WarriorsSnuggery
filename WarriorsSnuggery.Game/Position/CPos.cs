@@ -55,6 +55,11 @@ namespace WarriorsSnuggery
 			return new MPos(round(X), round(Y));
 		}
 
+		public MPos ToMPosConsideringTerrainOffset()
+		{
+			return new MPos(round(X - Maps.Map.Offset.X), round(Y - Maps.Map.Offset.Y));
+		}
+
 		int round(int value)
 		{
 			var ans = value / 1024;
