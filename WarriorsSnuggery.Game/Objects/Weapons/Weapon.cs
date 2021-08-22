@@ -54,16 +54,16 @@ namespace WarriorsSnuggery.Objects.Weapons
 
 			Height = origin.Weapon != null ? origin.Weapon.WeaponHeightPosition : origin.Height;
 
-			foreach (var effect in origin.GetEffects(EffectType.INACCURACY))
+			foreach (var effect in origin.GetActiveEffects(EffectType.INACCURACY))
 				InaccuracyModifier *= effect.Effect.Value;
 
-			foreach (var effect in origin.GetEffects(EffectType.DAMAGE))
+			foreach (var effect in origin.GetActiveEffects(EffectType.DAMAGE))
 				DamageModifier *= effect.Effect.Value;
 
-			foreach (var effect in origin.GetEffects(EffectType.DAMAGERANGE))
+			foreach (var effect in origin.GetActiveEffects(EffectType.DAMAGERANGE))
 				DamageRangeModifier *= effect.Effect.Value;
 
-			foreach (var effect in origin.GetEffects(EffectType.RANGE))
+			foreach (var effect in origin.GetActiveEffects(EffectType.RANGE))
 				RangeModifier *= effect.Effect.Value;
 
 			if (Type.FireSound != null)

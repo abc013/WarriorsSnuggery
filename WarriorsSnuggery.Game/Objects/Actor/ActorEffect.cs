@@ -11,11 +11,13 @@ namespace WarriorsSnuggery.Objects.Actors
 
 		readonly Sound sound;
 
-		// For saving
+		// HACK For saving
 		readonly Spell spell;
 		readonly int spellIndex;
 
-		public bool Active => tick > 0;
+		public bool Sleeping;
+		public bool Active => !Sleeping && tick > 0;
+
 		int tick;
 
 		public ActorEffect(Actor self, Spell spell, int spellIndex)
@@ -31,6 +33,8 @@ namespace WarriorsSnuggery.Objects.Actors
 
 			if (Effect.Sound != null)
 				sound = new Sound(Effect.Sound);
+
+			Sleeping = Effect.Activation != EffectActivationType.INSTANT;
 		}
 
 		public ActorEffect(Actor self, List<TextNode> nodes)
@@ -53,6 +57,10 @@ namespace WarriorsSnuggery.Objects.Actors
 						tick = child.Convert<int>();
 
 						break;
+					case "Sleeping":
+						Sleeping = child.Convert<bool>();
+
+						break;
 				}
 			}
 
@@ -69,12 +77,16 @@ namespace WarriorsSnuggery.Objects.Actors
 				nameof(ActorEffect) + "=",
 				"\tSpell=" + SpellCache.Types[spell],
 				"\tSpellIndex=" + spellIndex,
-				"\tTick=" + tick
+				"\tTick=" + tick,
+				"\tSleeping=" + Sleeping
 			};
 		}
 
 		public void Tick()
 		{
+			if (Sleeping)
+				return;
+
 			if (tick-- <= 0)
 				return;
 

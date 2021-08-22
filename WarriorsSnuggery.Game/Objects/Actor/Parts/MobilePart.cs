@@ -104,7 +104,7 @@ namespace WarriorsSnuggery.Objects.Actors.Parts
 			if (self.Height == 0 && self.World.TerrainAt(self.Position) != null)
 				speedModifier = self.World.TerrainAt(self.Position).Type.Speed;
 
-			foreach (var effect in self.GetEffects(EffectType.SPEED))
+			foreach (var effect in self.GetActiveEffects(EffectType.SPEED))
 				speedModifier *= effect.Effect.Value;
 
 			var currentVelocity = new CPos((int)Math.Round(Velocity.X * speedModifier), (int)Math.Round(Velocity.Y * speedModifier), (int)Math.Round(Velocity.Z * speedModifier));

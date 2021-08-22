@@ -6,9 +6,12 @@ namespace WarriorsSnuggery.Spells
 {
 	public class Effect
 	{
-		[Desc("Type of the Spell.")]
+		[Desc("Decides when to activate the effect.")]
+		public readonly EffectActivationType Activation = EffectActivationType.INSTANT;
+
+		[Desc("Type of the Effect.")]
 		public readonly EffectType Type;
-		[Desc("Strength/Intensity of the spell.", "Value effect depends on the effect type.")]
+		[Desc("Strength/Intensity of the effect.", "Value effect depends on the effect type.")]
 		public readonly float Value = 1f;
 
 		[Desc("Duration of the effect.")]

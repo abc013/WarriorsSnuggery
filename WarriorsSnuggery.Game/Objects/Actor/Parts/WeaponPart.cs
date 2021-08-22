@@ -139,7 +139,7 @@ namespace WarriorsSnuggery.Objects.Actors.Parts
 			if (self.AttackWith(target, weapon))
 			{
 				var reloadModifier = 1f;
-				foreach (var effect in self.GetEffects(EffectType.COOLDOWN))
+				foreach (var effect in self.GetActiveEffects(EffectType.COOLDOWN))
 					reloadModifier *= effect.Effect.Value;
 
 				Reload = (int)(Type.Reload * reloadModifier);

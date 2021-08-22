@@ -36,6 +36,7 @@ namespace WarriorsSnuggery.Objects.Actors
 		[Save]
 		public float Angle;
 
+		readonly List<ActorEffect> sleepingEffects = new List<ActorEffect>();
 		readonly List<ActorEffect> effects = new List<ActorEffect>();
 
 		readonly PartManager partManager;
@@ -248,7 +249,12 @@ namespace WarriorsSnuggery.Objects.Actors
 				part.OnMove(old, Mobile.Velocity);
 
 			foreach (var effect in effects)
+			{
+				if (effect.Sleeping && effect.Effect.Activation == EffectActivationType.ON_MOVE)
+					effect.Sleeping = false;
+
 				effect.OnMove(old, Mobile.Velocity);
+			}
 		}
 
 		public void StopMove()
@@ -272,7 +278,7 @@ namespace WarriorsSnuggery.Objects.Actors
 				effects.Add(new ActorEffect(this, spell, i));
 		}
 
-		public IEnumerable<ActorEffect> GetEffects(EffectType type) => effects.Where(e => e.Effect.Type == type);
+		public IEnumerable<ActorEffect> GetActiveEffects(EffectType type) => effects.Where(e => e.Effect.Type == type && !e.Sleeping);
 		public bool EffectActive(EffectType type) => effects.Any(e => e.Effect.Type == type);
 
 		public override bool CheckVisibility()
@@ -337,7 +343,7 @@ namespace WarriorsSnuggery.Objects.Actors
 			foreach (var effect in effects)
 				effect.Tick();
 
-			effects.RemoveAll(e => !e.Active);
+			effects.RemoveAll(e => !e.Active && !e.Sleeping);
 		}
 
 		void processActions()
@@ -458,6 +464,12 @@ namespace WarriorsSnuggery.Objects.Actors
 
 			Angle = (Position - target.Position).FlatAngle;
 
+			foreach (var effect in effects)
+			{
+				if (effect.Sleeping && effect.Effect.Activation == EffectActivationType.ON_ATTACK)
+					effect.Sleeping = false;
+			}
+
 			Weapon.OnAttack(target);
 		}
 
@@ -487,6 +499,12 @@ namespace WarriorsSnuggery.Objects.Actors
 
 			if (Health == null || Health.HP <= 0)
 				return;
+
+			foreach (var effect in effects)
+			{
+				if (effect.Sleeping && effect.Effect.Activation == EffectActivationType.ON_DAMAGE)
+					effect.Sleeping = false;
+			}
 
 			if (EffectActive(EffectType.SHIELD))
 				return;
