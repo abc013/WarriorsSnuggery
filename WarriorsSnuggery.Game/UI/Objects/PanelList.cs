@@ -159,7 +159,9 @@ namespace WarriorsSnuggery.UI.Objects
 				if (pos.Y >= -SelectableBounds.Y && pos.Y <= SelectableBounds.Y)
 				{
 					pos += Position;
-					ColorManager.DrawFilledLineRect(pos - new CPos(ItemSize.X, ItemSize.Y, 0), pos + new CPos(ItemSize.X, ItemSize.Y, 0), 32, new Color(1f, 1f, 1f, 0.5f));
+
+					var radius = (int)(MathF.Sin(Window.GlobalTick / 32f) * 32) + 64;
+					ColorManager.DrawGlowingFilledLineRect(pos - new CPos(ItemSize.X, ItemSize.Y, 0), pos + new CPos(ItemSize.X, ItemSize.Y, 0), 32, Color.White, radius, 8);
 				}
 			}
 		}

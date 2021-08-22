@@ -82,6 +82,17 @@ namespace WarriorsSnuggery.Graphics
 			filled_rect.Render();
 		}
 
+		public static void DrawGlowingFilledLineRect(CPos pointA, CPos pointB, int width, Color color, int radius, int count)
+		{
+			var alpha = color.A / count;
+
+			for (int i = 0; i < count; i++)
+			{
+				var currentRadius = radius / (i * i + 1);
+				DrawFilledLineRect(pointA, pointB, width + currentRadius, new Color(color.R, color.G, color.B, alpha));
+			}
+		}
+
 		public static void DrawFilledLineRect(CPos pointA, CPos pointB, int width, Color color)
 		{
 			var bottomLeft = new CPos(Math.Min(pointA.X, pointB.X), Math.Min(pointA.Y, pointB.Y), 0);
