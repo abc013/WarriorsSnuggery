@@ -122,7 +122,38 @@ namespace WarriorsSnuggery.Maps.Layers
 
 			path.Reverse();
 
-			return path;
+			return Refine(path);
+		}
+
+		static List<MPos> Refine(List<MPos> path)
+		{
+			if (path.Count < 2)
+				return path;
+
+			var newPath = new List<MPos>
+			{
+				path[0]
+			};
+
+			var lastDirection = path[0] - path[1];
+			var lastPos = path[1];
+			for (int i = 2; i < path.Count; i++)
+			{
+				var pos = path[i];
+
+				var newDirection = pos - lastPos;
+				if (newDirection != lastDirection)
+				{
+					newPath.Add(lastPos);
+					lastDirection = newDirection;
+				}
+
+				lastPos = pos;
+			}
+
+			newPath.Add(lastPos);
+
+			return newPath;
 		}
 
 		public void RenderDebug()
