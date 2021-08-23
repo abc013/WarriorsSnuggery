@@ -100,7 +100,7 @@ namespace WarriorsSnuggery.UI.Objects
 			{
 				base.Tick();
 
-				if (caster.Activated)
+				if (caster.State == SpellCasterState.ACTIVE)
 				{
 					progress = caster.RemainingDuration;
 					graphicProgress = (int)(progress * -(Bounds.Y * 2)) + Bounds.Y;
@@ -108,7 +108,7 @@ namespace WarriorsSnuggery.UI.Objects
 					var sin = MathF.Sin(tick / 8f) * 0.2f + 0.2f;
 					SetColor(Color.White + new Color(sin, sin, sin));
 				}
-				else if (caster.Recharging)
+				else if (caster.State == SpellCasterState.RECHARGING)
 				{
 					progress = caster.RechargeProgress;
 					graphicProgress = (int)(progress * -(Bounds.Y * 2)) + Bounds.Y;
@@ -134,19 +134,27 @@ namespace WarriorsSnuggery.UI.Objects
 
 			public override void Render()
 			{
-				if (!caster.Ready)
+				if (caster.State == SpellCasterState.RECHARGING || caster.State == SpellCasterState.ACTIVE)
 				{
-					var color = caster.Recharging ? new Color(0, 0, 0, 127) : new Color(255, 255, 255, 63);
+					var recharging = caster.State == SpellCasterState.RECHARGING;
+
 					var pointA = Position - new CPos(Bounds.X, Bounds.Y, 0);
 					var pointB = Position + new CPos(Bounds.X, graphicProgress, 0);
-					ColorManager.DrawRect(pointA, pointB, color);
 
-					if (!caster.Recharging)
-					{
-						color = new Color(1f, 1f, 0, 1f - (progress * progress));
-						pointB = Position + new CPos(Bounds.X, Bounds.Y, 0);
-						ColorManager.DrawFilledLineRect(pointA, pointB, 32, color);
-					}
+					var color = recharging ? new Color(0, 0, 0, 127) : new Color(255, 255, 255, 63);
+					ColorManager.DrawRect(pointA, pointB, color);
+				}
+
+				if (caster.State == SpellCasterState.SLEEPING || caster.State == SpellCasterState.ACTIVE)
+				{
+					var sleeping = caster.State == SpellCasterState.SLEEPING;
+
+					var pointA = Position - new CPos(Bounds.X, Bounds.Y, 0);
+					var pointB = Position + new CPos(Bounds.X, Bounds.Y, 0);
+
+					var glowRadius = (int)(MathF.Sin(Window.GlobalTick / (sleeping ? 32f : 8f)) * 32) + 64;
+					ColorManager.DrawGlowingFilledLineRect(pointA, pointB, 32, (sleeping ? new Color(0.5f, 0.5f, 1f, 1f) : new Color(1f, 0.5f, 0.5f, 1f)), glowRadius, 4);
+					ColorManager.DrawFilledLineRect(pointA, pointB, 16, new Color(1f, 1f, 1f, 0.5f));
 				}
 
 				base.Render();

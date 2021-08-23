@@ -342,7 +342,7 @@ namespace WarriorsSnuggery
 				for (int i = 0; i < game.SpellManager.Casters.Length; i++)
 				{
 					var caster = game.SpellManager.Casters[i];
-					if (caster.Ready)
+					if (caster.State == SpellCasterState.READY)
 						continue;
 
 					writer.WriteLine("\tCaster=" + i);

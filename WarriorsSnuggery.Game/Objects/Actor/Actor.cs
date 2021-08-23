@@ -262,10 +262,12 @@ namespace WarriorsSnuggery.Objects.Actors
 				part.OnStop();
 		}
 
-		public void CastSpell(Spell spell)
+		public List<ActorEffect> CastSpell(Spell spell)
 		{
+			var list = new List<ActorEffect>();
+
 			if (World.Game.Editor)
-				return;
+				return list;
 
 			if (spell.Sound != null)
 			{
@@ -274,7 +276,13 @@ namespace WarriorsSnuggery.Objects.Actors
 			}
 
 			for (int i = 0; i < spell.Effects.Length; i++)
-				effects.Add(new ActorEffect(this, spell, i));
+			{
+				var effect = new ActorEffect(this, spell, i);
+				effects.Add(effect);
+				list.Add(effect);
+			}
+
+			return list;
 		}
 
 		public IEnumerable<ActorEffect> GetActiveEffects(EffectType type) => effects.Where(e => e.Effect.Type == type && !e.Sleeping);

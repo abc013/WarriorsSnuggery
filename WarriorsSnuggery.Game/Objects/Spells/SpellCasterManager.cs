@@ -1,4 +1,6 @@
-﻿using WarriorsSnuggery.Objects.Actors;
+﻿using System.Collections.Generic;
+using System.Linq;
+using WarriorsSnuggery.Objects.Actors;
 
 namespace WarriorsSnuggery.Spells
 {
@@ -41,12 +43,12 @@ namespace WarriorsSnuggery.Spells
 		int duration;
 		int recharge;
 
-		public bool Activated;
-		public bool Recharging;
+		public SpellCasterState State;
 
 		public float RemainingDuration => 1 - duration / (float)node.Duration;
 		public float RechargeProgress => 1 - recharge / (float)node.Cooldown;
-		public bool Ready => !(Activated || Recharging);
+
+		readonly List<ActorEffect> currentEffects = new List<ActorEffect>();
 
 		public SpellCaster(Game game, SpellCasterType node, (float, float) values)
 		{
@@ -56,30 +58,35 @@ namespace WarriorsSnuggery.Spells
 			if (values.Item1 != 0 || values.Item2 != 0)
 			{
 				duration = (int)((1 - values.Item1) * node.Duration);
-				recharge = (int)((1 - values.Item2) * node.Cooldown);
 				if (duration > 0)
-					Activated = true;
-				else if (recharge > 0)
-					Recharging = true;
+					State = SpellCasterState.ACTIVE;
+
+				recharge = (int)((1 - values.Item2) * node.Cooldown);
+				if (recharge > 0)
+					State = SpellCasterState.RECHARGING;
 			}
 		}
 
 		public void Tick()
 		{
-			if (Activated && duration-- <= 0)
+			if (State == SpellCasterState.SLEEPING)
 			{
-				Recharging = true;
-				Activated = false;
+				if (!currentEffects.Any(a => a.Sleeping || a.Active))
+					State = SpellCasterState.RECHARGING;
+				else if (!currentEffects.Any(a => a.Sleeping))
+					State = SpellCasterState.ACTIVE;
 			}
-			if (Recharging && recharge-- <= 0)
-			{
-				Recharging = false;
-			}
+
+			if (State == SpellCasterState.ACTIVE && duration-- <= 0)
+				State = SpellCasterState.RECHARGING;
+
+			if (State == SpellCasterState.RECHARGING && recharge-- <= 0)
+				State = SpellCasterState.READY;
 		}
 
 		public bool Activate(Actor actor)
 		{
-			if (!Ready || !Unlocked())
+			if (State != SpellCasterState.READY || !Unlocked())
 				return false;
 
 			if (game.Stats.Mana < node.ManaCost)
@@ -87,11 +94,12 @@ namespace WarriorsSnuggery.Spells
 
 			game.Stats.Mana -= node.ManaCost;
 
-			Activated = true;
+			State = SpellCasterState.SLEEPING;
 			recharge = node.Cooldown;
 			duration = node.Duration;
 
-			actor.CastSpell(node.Spell);
+			currentEffects.Clear();
+			currentEffects.AddRange(actor.CastSpell(node.Spell));
 
 			return true;
 		}
