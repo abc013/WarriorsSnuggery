@@ -242,7 +242,7 @@ namespace WarriorsSnuggery.Maps
 			if (pos.Y < 0 && pos.Y >= -512)
 				pos = new CPos(pos.X, 0, pos.Z);
 
-			var mpos = pos.ToMPosConsideringTerrainOffset();
+			var mpos = pos.ToMPos();
 			if (actorInformation.ContainsKey(mpos))
 			{
 				actorInformation[mpos].Add((init, offset));

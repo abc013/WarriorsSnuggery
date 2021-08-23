@@ -148,7 +148,7 @@ namespace WarriorsSnuggery.Graphics
 			if (position.X >= map.BottomRightCorner.X || position.Y >= map.BottomRightCorner.Y)
 				return false;
 
-			return IsVisibleIgnoringBounds(position.ToMPosConsideringTerrainOffset());
+			return IsVisibleIgnoringBounds(position.ToMPos());
 		}
 
 		public static bool IsVisible(CPos position, MPos scale)

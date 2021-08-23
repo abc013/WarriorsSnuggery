@@ -286,7 +286,7 @@ namespace WarriorsSnuggery
 
 		public Terrain TerrainAt(CPos pos)
 		{
-			return !IsInWorld(pos) ? null : TerrainAt(pos.ToMPosConsideringTerrainOffset());
+			return !IsInWorld(pos) ? null : TerrainAt(pos.ToMPos());
 		}
 
 		public Terrain TerrainAt(MPos pos)

@@ -66,7 +66,7 @@ namespace WarriorsSnuggery.Objects.Actors
 
 		bool allowAttackMove => Weapon == null || Weapon.AllowMoving;
 
-		public MPos TerrainPosition => Position.ToMPosConsideringTerrainOffset();
+		public MPos TerrainPosition => Position.ToMPos();
 		public Terrain CurrentTerrain;
 
 		public bool CanMove

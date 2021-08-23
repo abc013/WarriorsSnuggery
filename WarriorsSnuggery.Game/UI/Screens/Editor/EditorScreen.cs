@@ -172,7 +172,7 @@ namespace WarriorsSnuggery.UI.Screens
 			}
 
 			var mouseInWorld = game.World.IsInWorld(MouseInput.GamePosition);
-			mousePosition.WriteText((mouseInWorld ? Color.White : Color.Red) + "" + MouseInput.GamePosition.ToMPosConsideringTerrainOffset() + (mouseInWorld ? Color.Grey : new Color(1f, 0.75f, 0.75f)) + " | " + MouseInput.GamePosition);
+			mousePosition.WriteText((mouseInWorld ? Color.White : Color.Red) + "" + MouseInput.GamePosition.ToMPos() + (mouseInWorld ? Color.Grey : new Color(1f, 0.75f, 0.75f)) + " | " + MouseInput.GamePosition);
 
 			switch (currentSelected)
 			{
@@ -234,7 +234,7 @@ namespace WarriorsSnuggery.UI.Screens
 					break;
 				case Selected.WALL:
 					var bounds = game.World.Map.Bounds;
-					var pos = MouseInput.GamePosition.ToMPosConsideringTerrainOffset();
+					var pos = MouseInput.GamePosition.ToMPos();
 
 					if (pos.X < 0 || pos.Y < 0 || pos.X > bounds.X || pos.Y > bounds.Y)
 						return;
@@ -252,7 +252,7 @@ namespace WarriorsSnuggery.UI.Screens
 				return;
 
 			var pos = MouseInput.GamePosition;
-			var mpos = pos.ToMPosConsideringTerrainOffset();
+			var mpos = pos.ToMPos();
 			var bounds = game.World.Map.Bounds;
 
 			switch (currentSelected)
