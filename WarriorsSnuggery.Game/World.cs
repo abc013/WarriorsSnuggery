@@ -52,15 +52,16 @@ namespace WarriorsSnuggery
 			var bounds = Map.Bounds;
 			TerrainLayer = new TerrainLayer(bounds);
 			ShroudLayer = new ShroudLayer(bounds);
-			WallLayer = new WallLayer(bounds, ShroudLayer);
+
+			PathfinderLayer = new PathfinderLayer(bounds);
+
+			WallLayer = new WallLayer(bounds, ShroudLayer, PathfinderLayer);
 			PhysicsLayer = new PhysicsLayer(bounds);
 			SmudgeLayer = new SmudgeLayer();
 
 			ActorLayer = new ActorLayer(bounds);
 			WeaponLayer = new WeaponLayer();
 			ParticleLayer = new ParticleLayer(bounds);
-
-			PathfinderLayer = new PathfinderLayer(bounds);
 
 			WeatherManager = new WeatherManager(this, game.MapType);
 		}

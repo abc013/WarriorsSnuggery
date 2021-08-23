@@ -10,14 +10,17 @@ namespace WarriorsSnuggery.Maps.Layers
 		public readonly List<Wall> WallList = new List<Wall>();
 		public readonly List<Wall> VisibleWalls = new List<Wall>();
 		readonly ShroudLayer shroudLayer;
+		readonly PathfinderLayer pathfinderLayer;
 
 		public Wall[,] Walls { get; private set; }
 		public MPos Bounds { get; private set; }
 		MPos mapBounds;
 
-		public WallLayer(MPos bounds, ShroudLayer shroudLayer)
+		public WallLayer(MPos bounds, ShroudLayer shroudLayer, PathfinderLayer pathfinderLayer)
 		{
 			this.shroudLayer = shroudLayer;
+			this.pathfinderLayer = pathfinderLayer;
+
 			mapBounds = bounds;
 			Bounds = new MPos((bounds.X + 1) * 2 + 1, (bounds.Y + 1) + 1);
 			Walls = new Wall[Bounds.X, Bounds.Y];
@@ -51,6 +54,7 @@ namespace WarriorsSnuggery.Maps.Layers
 			if (wall.CheckVisibility())
 				VisibleWalls.Add(wall);
 
+			pathfinderLayer.SetWall(wall, wall.LayerPosition, wall.TerrainPosition);
 			if (wall.IsHorizontal)
 				shroudLayer.SetWall(wall.TerrainPosition, wall.Type.Height, true);
 		}
@@ -68,6 +72,7 @@ namespace WarriorsSnuggery.Maps.Layers
 			Walls[pos.X, pos.Y] = null;
 			notifyNeighbors(pos, false, false);
 
+			pathfinderLayer.SetWall(null, wall.LayerPosition, wall.TerrainPosition);
 			if (wall.IsHorizontal)
 				shroudLayer.SetWall(wall.TerrainPosition, wall.Type.Height, false);
 		}

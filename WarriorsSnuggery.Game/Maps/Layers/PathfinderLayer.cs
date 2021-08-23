@@ -13,6 +13,8 @@ namespace WarriorsSnuggery.Maps.Layers
 		readonly PathfinderCell[,] cells;
 		readonly MPos bounds;
 
+		bool initialized;
+
 		public PathfinderLayer(MPos bounds)
 		{
 			this.bounds = bounds;
@@ -22,6 +24,7 @@ namespace WarriorsSnuggery.Maps.Layers
 		public void Update(WallLayer wallLayer, TerrainLayer terrainLayer)
 		{
 			// Generate navigatable mesh
+			initialized = true;
 
 			for (int x = 0; x < bounds.X; x++)
 			{
@@ -36,29 +39,48 @@ namespace WarriorsSnuggery.Maps.Layers
 				}
 			}
 
-			static void connect(Wall between, PathfinderCell a, PathfinderCell b)
-			{
-				if (between != null && between.Type.Blocks)
-					return;
-
-				if (float.IsInfinity(a.TerrainCost) || float.IsInfinity(b.TerrainCost))
-					return;
-
-				var cost = (a.TerrainCost + b.TerrainCost) / 2;
-				a.Connections.Add((cost, b));
-				b.Connections.Add((cost, a));
-			};
-
 			for (int x = 0; x < bounds.X; x++)
 			{
 				for (int y = 0; y < bounds.Y; y++)
 				{
-					if (x < bounds.X - 1)
-						connect(wallLayer.Walls[(x + 1) * 2, y], cells[x, y], cells[x + 1, y]);
-
-					if (y < bounds.Y - 1)
-						connect(wallLayer.Walls[x * 2 + 1, y + 1], cells[x, y], cells[x, y + 1]);
+					SetWall(wallLayer.Walls[(x + 1) * 2, y], new MPos((x + 1) * 2, y), new MPos(x, y));
+					SetWall(wallLayer.Walls[x * 2 + 1, y], new MPos(x * 2 + 1, y), new MPos(x, y));
 				}
+			}
+		}
+
+		public void SetWall(Wall wall, MPos wallPosition, MPos position)
+		{
+			if (!initialized)
+				return;
+
+			static void connect(Wall between, PathfinderCell a, PathfinderCell b)
+			{
+				var cost = (a.TerrainCost + b.TerrainCost) / 2;
+
+				if (between != null && between.Type.Blocks || float.IsInfinity(a.TerrainCost) || float.IsInfinity(b.TerrainCost))
+				{
+					a.Connections.Remove((cost, b));
+					b.Connections.Remove((cost, a));
+					return;
+				}
+
+				a.Connections.Add((cost, b));
+				b.Connections.Add((cost, a));
+			};
+
+			var x = position.X;
+			var y = position.Y;
+
+			if (wallPosition.X % 2 == 0)
+			{
+				if (x > 0 && x < bounds.X - 1)
+					connect(wall, cells[x - 1, y], cells[x, y]);
+			}
+			else
+			{
+				if (y > 0 && y < bounds.Y - 1)
+					connect(wall, cells[x, y - 1], cells[x, y]);
 			}
 		}
 		
@@ -122,10 +144,10 @@ namespace WarriorsSnuggery.Maps.Layers
 
 			path.Reverse();
 
-			return Refine(path);
+			return refine(path);
 		}
 
-		static List<MPos> Refine(List<MPos> path)
+		static List<MPos> refine(List<MPos> path)
 		{
 			if (path.Count < 2)
 				return path;
