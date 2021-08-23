@@ -77,6 +77,9 @@ namespace WarriorsSnuggery.Objects.Actors.Bot
 		public void DefaultTickBehavior()
 		{
 			SearchTarget();
+
+			if (CanMove && Target != null)
+				DefaultMoveBehavior();
 		}
 
 		public void DefaultAttackBehavior()
@@ -97,7 +100,7 @@ namespace WarriorsSnuggery.Objects.Actors.Bot
 			else if (Self.RevealsShroud != null)
 				range = Self.RevealsShroud.Range * 512;
 
-			if (DistToTarget > range)
+			if (target.Type == TargetType.POSITION || DistToTarget > range)
 			{
 				if (target.Type == TargetType.ACTOR && (target.Position - pathfindingTarget).SquaredFlatDist > range * range)
 					calculatePathToTarget(); // Target has moved
