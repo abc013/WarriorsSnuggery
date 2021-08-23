@@ -18,6 +18,7 @@ namespace WarriorsSnuggery.Objects.Actors
 		public bool Sleeping;
 		public bool Active => !Sleeping && tick > 0;
 
+		int sleepTick;
 		int tick;
 
 		public ActorEffect(Actor self, Spell spell, int spellIndex)
@@ -30,6 +31,7 @@ namespace WarriorsSnuggery.Objects.Actors
 			Effect = spell.Effects[spellIndex];
 
 			tick = Effect.Duration;
+			sleepTick = Effect.MaxSleepDuration;
 
 			if (Effect.Sound != null)
 				sound = new Sound(Effect.Sound);
@@ -61,6 +63,10 @@ namespace WarriorsSnuggery.Objects.Actors
 						Sleeping = child.Convert<bool>();
 
 						break;
+					case "SleepTick":
+						sleepTick = child.Convert<int>();
+
+						break;
 				}
 			}
 
@@ -78,14 +84,24 @@ namespace WarriorsSnuggery.Objects.Actors
 				"\tSpell=" + SpellCache.Types[spell],
 				"\tSpellIndex=" + spellIndex,
 				"\tTick=" + tick,
-				"\tSleeping=" + Sleeping
+				"\tSleeping=" + Sleeping,
+				"\tSleepTick=" + sleepTick
 			};
 		}
 
 		public void Tick()
 		{
 			if (Sleeping)
+			{
+				if (Effect.MaxSleepDuration != 0 && sleepTick-- <= 0)
+				{
+					// Effect now is completely inactive
+					Sleeping = false;
+					tick = 0;
+				}
+
 				return;
+			}
 
 			if (tick-- <= 0)
 				return;

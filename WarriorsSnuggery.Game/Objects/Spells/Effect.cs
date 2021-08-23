@@ -8,6 +8,8 @@ namespace WarriorsSnuggery.Spells
 	{
 		[Desc("Decides when to activate the effect.")]
 		public readonly EffectActivationType Activation = EffectActivationType.INSTANT;
+		[Desc("Maximal time the effect can endure sleeping (in other words: is waiting for activation)", "0 means infinite sleeping time.")]
+		public readonly int MaxSleepDuration = 0;
 
 		[Desc("Type of the Effect.")]
 		public readonly EffectType Type;
