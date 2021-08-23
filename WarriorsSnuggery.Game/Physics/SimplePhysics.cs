@@ -34,10 +34,12 @@ namespace WarriorsSnuggery.Physics
 			if (Math.Abs(other.Height - Height) >= other.Type.HeightRadius + Type.HeightRadius)
 				return false;
 
-			var diff = other.Position - Position;
+			bool areShapes(Shape a, Shape b) => other.Type.Shape == a && Type.Shape == b || other.Type.Shape == b && Type.Shape == a;
 
 			if (other.Type.Shape != Shape.LINE_HORIZONTAL && Type.Shape != Shape.LINE_HORIZONTAL && other.Type.Shape != Shape.LINE_VERTICAL && Type.Shape != Shape.LINE_VERTICAL)
 			{
+				var diff = other.Position - Position;
+
 				if (Math.Abs(diff.X) >= other.Type.RadiusX + Type.RadiusX)
 					return false;
 
@@ -47,17 +49,19 @@ namespace WarriorsSnuggery.Physics
 
 			if (Type.Shape == Shape.CIRCLE && other.Type.Shape == Shape.CIRCLE)
 			{
-				return diff.FlatDist <= Type.RadiusX + other.Type.RadiusX;
+				return (other.Position - Position).FlatDist <= Type.RadiusX + other.Type.RadiusX;
 			}
+
 			if (Type.Shape == Shape.RECTANGLE && other.Type.Shape == Shape.RECTANGLE)
 			{
+				var diff = other.Position - Position;
+
 				var scaleX = Type.RadiusX + other.Type.RadiusX;
 				var scaleY = Type.RadiusY + other.Type.RadiusY;
 				return Math.Abs(diff.X) < scaleX && Math.Abs(diff.Y) < scaleY;
 			}
 
-			// CIRCLE <-> BOX
-			if (Type.Shape == Shape.CIRCLE && other.Type.Shape == Shape.RECTANGLE || Type.Shape == Shape.RECTANGLE && other.Type.Shape == Shape.CIRCLE)
+			if (areShapes(Shape.CIRCLE, Shape.RECTANGLE))
 			{
 				var circle = Type.Shape == Shape.CIRCLE ? this : other;
 				var box = circle == this ? other : this;
@@ -77,49 +81,56 @@ namespace WarriorsSnuggery.Physics
 			}
 
 			// CIRCLE <-> LINE
-			if (Type.Shape == Shape.CIRCLE && other.Type.Shape == Shape.LINE_VERTICAL || Type.Shape == Shape.LINE_VERTICAL && other.Type.Shape == Shape.CIRCLE)
+			if (areShapes(Shape.CIRCLE, Shape.LINE_HORIZONTAL) || areShapes(Shape.CIRCLE, Shape.LINE_VERTICAL))
 			{
 				var circle = Type.Shape == Shape.CIRCLE ? this : other;
 				var line = circle == this ? other : this;
 
-				if (Math.Abs(circle.Position.Y - line.Position.Y + 512) > circle.Type.RadiusX + line.Type.RadiusX) return false;
-
-				return Math.Abs(circle.Position.X - line.Position.X + 512) <= circle.Type.RadiusX;
-			}
-
-			if (Type.Shape == Shape.CIRCLE && other.Type.Shape == Shape.LINE_HORIZONTAL || Type.Shape == Shape.LINE_HORIZONTAL && other.Type.Shape == Shape.CIRCLE)
-			{
-				var circle = Type.Shape == Shape.CIRCLE ? this : other;
-				var line = circle == this ? other : this;
-
-				if (Math.Abs(circle.Position.X - line.Position.X + 512) > circle.Type.RadiusX + line.Type.RadiusX) return false;
-
-				return Math.Abs(circle.Position.Y - line.Position.Y + 512) <= circle.Type.RadiusX;
+				return checkLineCircleIntersection(line, circle);
 			}
 
 			// BOX <-> LINE
-			if (Type.Shape == Shape.RECTANGLE && other.Type.Shape == Shape.LINE_HORIZONTAL || Type.Shape == Shape.LINE_HORIZONTAL && other.Type.Shape == Shape.RECTANGLE)
+			if (areShapes(Shape.RECTANGLE, Shape.LINE_HORIZONTAL) || areShapes(Shape.RECTANGLE, Shape.LINE_VERTICAL))
 			{
 				var box = Type.Shape == Shape.RECTANGLE ? this : other;
 				var line = box == this ? other : this;
 
-				if (Math.Abs(box.Position.Y - line.Position.Y + 512) > line.Type.RadiusX) return false;
-				if (Math.Abs(box.Position.X - line.Position.X + 512) > (box.Type.RadiusY + line.Type.RadiusX)) return false;
-
-				return true;
-			}
-			if (Type.Shape == Shape.RECTANGLE && other.Type.Shape == Shape.LINE_VERTICAL || Type.Shape == Shape.LINE_VERTICAL && other.Type.Shape == Shape.RECTANGLE)
-			{
-				var box = Type.Shape == Shape.RECTANGLE ? this : other;
-				var line = box == this ? other : this;
-
-				if (Math.Abs(box.Position.X - line.Position.X + 512) > line.Type.RadiusX) return false;
-				if (Math.Abs(box.Position.Y - line.Position.Y + 512) > (box.Type.RadiusY + line.Type.RadiusX)) return false;
-
-				return true;
+				return checkLineBoxIntersection(line, box);
 			}
 
 			return false;
+		}
+
+		static bool checkLineCircleIntersection(SimplePhysics line, SimplePhysics circle)
+		{
+			if (line.Type.Shape == Shape.LINE_HORIZONTAL)
+			{
+				if (Math.Abs(circle.Position.X - line.Position.X + 512) > circle.Type.RadiusX + line.Type.RadiusX) return false;
+				if (Math.Abs(circle.Position.Y - line.Position.Y + 512) > circle.Type.RadiusY) return false;
+			}
+			else
+			{
+				if (Math.Abs(circle.Position.X - line.Position.X + 512) > circle.Type.RadiusX) return false;
+				if (Math.Abs(circle.Position.Y - line.Position.Y + 512) > circle.Type.RadiusY + line.Type.RadiusY) return false;
+			}
+
+			return true;
+		}
+
+		static bool checkLineBoxIntersection(SimplePhysics line, SimplePhysics box)
+		{
+			if (line.Type.Shape == Shape.LINE_HORIZONTAL)
+			{
+				if (Math.Abs(box.Position.X - line.Position.X + 512) > (box.Type.RadiusX + line.Type.RadiusX)) return false;
+				if (Math.Abs(box.Position.Y - line.Position.Y + 512) > box.Type.RadiusY) return false;
+			}
+			else
+			{
+				if (Math.Abs(box.Position.X - line.Position.X + 512) > box.Type.RadiusX) return false;
+				if (Math.Abs(box.Position.Y - line.Position.Y + 512) > (box.Type.RadiusY + line.Type.RadiusY)) return false;
+			}
+
+			return true;
 		}
 
 		public PhysicsLine[] GetLines()
