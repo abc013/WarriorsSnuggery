@@ -87,7 +87,7 @@ namespace WarriorsSnuggery.UI.Objects
 			float progress;
 			int graphicProgress;
 
-			public SpellListItem(Game game, MPos size, SpellCasterType node, SpellCaster caster) : base(new BatchSequence(node.Icon), size, node.Name, node.GetInformation(true), null)
+			public SpellListItem(Game game, MPos size, SpellCasterType node, SpellCaster caster) : base(new BatchSequence(node.Icon), size, node.Name, node.GetDescription(), null)
 			{
 				this.caster = caster;
 				this.game = game;

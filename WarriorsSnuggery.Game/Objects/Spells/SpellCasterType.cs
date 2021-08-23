@@ -45,15 +45,61 @@ namespace WarriorsSnuggery.Spells
 			Name = name.Replace('_', ' ');
 		}
 
-		public string[] GetInformation(bool showDesc)
+		public string[] GetDescription()
 		{
-			var res = new string[showDesc ? 3 : 2];
-			res[0] = Color.Grey + "Mana use: " + new Color(0.5f, 0.5f, 1f) + ManaCost;
-			res[1] = Color.Grey + "Reload: " + Color.Green + Math.Round(Cooldown / (float)Settings.UpdatesPerSecond, 2) + Color.Grey + " Seconds";
-			if (showDesc)
-				res[2] = Color.Grey + Description;
+			var effectCount = Spell.Effects.Length;
+			var descCount = string.IsNullOrWhiteSpace(Description) ? 0 : 2;
 
-			return res;
+			var array = new string[3 + effectCount + descCount];
+
+			array[0] = Color.Grey + "Mana use: " + new Color(0.5f, 0.5f, 1f) + ManaCost;
+			array[1] = Color.Grey + "Reload: " + Color.Green + Math.Round(Cooldown / (float)Settings.UpdatesPerSecond, 2) + Color.Grey + " seconds";
+			array[2] = Color.White + $"This spell has {effectCount} effect{(effectCount > 1 ? "s" : "")}: ";
+			for (int i = 0; i < effectCount; i++)
+			{
+				var effect = Spell.Effects[i];
+
+				var name = effect.Type.ToString().ToLower();
+
+				if (effect.Type == EffectType.DAMAGERANGE)
+					name = "splash radius";
+
+				var text = Color.Grey + "- ";
+				text += effect.Type != EffectType.NONE ? Color.Yellow + name + Color.Grey : Color.Grey + "Useless effect";
+
+				var direction = effect.Value > 1 ? "increased" : "decreased";
+				switch (effect.Type)
+				{
+					case EffectType.HEALTH:
+					case EffectType.MANA:
+						text += $" {direction} by " + Color.Magenta + (int)(effect.Value * Settings.UpdatesPerSecond) + Color.Grey + " during " + Color.Cyan + Math.Round(effect.Duration / (float)Settings.UpdatesPerSecond, 2) + Color.Grey + " seconds";
+						break;
+					case EffectType.SHIELD:
+						text += $" protecting from " + Color.Magenta + (int)effect.Value + Color.Grey + " damage for " + Color.Cyan + Math.Round(effect.Duration / (float)Settings.UpdatesPerSecond, 2) + Color.Grey + " seconds";
+						break;
+					case EffectType.STUN:
+					case EffectType.INVISIBILITY:
+						text += " for " + Color.Cyan + Math.Round(effect.Duration / (float)Settings.UpdatesPerSecond, 2) + Color.Grey + " seconds";
+						break;
+					case EffectType.NONE:
+						continue;
+					default:
+						text += $" {direction} by factor " + Color.Magenta + Math.Round(effect.Value, 2) + Color.Grey + " for " + Color.Cyan + Math.Round(effect.Duration / (float)Settings.UpdatesPerSecond, 2) + Color.Grey + " seconds";
+						break;
+				}
+
+				text += " | " + Color.Green + effect.Activation.ToString().Replace('_', ' ');
+
+				array[3 + i] = text;
+			}
+
+			if (descCount > 0)
+			{
+				array[3 + effectCount] = Color.White + "Description: ";
+				array[4 + effectCount] = Color.Grey + Description;
+			}
+
+			return array;
 		}
 	}
 }

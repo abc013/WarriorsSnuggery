@@ -7,7 +7,6 @@ Boost=
 	Cooldown=400 
 	Icon=boost
 		Size=12,12
-	Description=Increases speed (+50%) for 5 seconds.
 
 First_hit=
 	Before=
@@ -18,7 +17,6 @@ First_hit=
 	Cooldown=300
 	Icon=first_hit
 		Size=12,12
-	Description=Increases damage significantly (+500%) for 1 second.
 
 Warm_up=
 	Before=
@@ -30,7 +28,6 @@ Warm_up=
 	Cooldown=1800
 	Icon=warm_up
 		Size=12,12
-	Description=Increases damage (+37,7%) for 20 seconds.
 
 Anger=
 	Before=First_hit
@@ -42,7 +39,6 @@ Anger=
 	Cooldown=2400
 	Icon=anger
 		Size=12,12
-	Description=Decreases weapon reload (-60%) for 20 seconds.
 
 Strength=
 	Before=Warm_up,First_hit
@@ -54,7 +50,6 @@ Strength=
 	Cooldown=1000
 	Icon=strength
 		Size=12,12
-	Description=Increases damage (+100%) for 10 seconds.
 
 Bloodlust=
 	Before=Anger,Strength
@@ -66,7 +61,6 @@ Bloodlust=
 	Cooldown=540
 	Icon=bloodlust
 		Size=12,12
-	Description=Increases speed (+200%) for 4 seconds.
 
 Blood_thirstiness=
 	Before=Anger,Strength
@@ -78,7 +72,6 @@ Blood_thirstiness=
 	Cooldown=180
 	Icon=blood_thirstiness
 		Size=12,12
-	Description=Increases HP (+300 HP) over a second.
 
 Precision=
 	Before=Bloodlust
@@ -90,7 +83,6 @@ Precision=
 	Cooldown=3500
 	Icon=precision
 		Size=12,12
-	Description=Increases Precision (+50%) for 50 seconds.
 
 Range=
 	Before=Blood_thirstiness
@@ -102,7 +94,6 @@ Range=
 	Cooldown=2400
 	Icon=range
 		Size=12,12
-	Description=Increases Range (+1 cell) for 30 seconds.
 
 Blood_pact=
 	Before=Precision,Range
@@ -114,7 +105,6 @@ Blood_pact=
 	Cooldown=3000
 	Icon=blood_pact
 		Size=12,12
-	Description=Increases Damage unbelieveably (+25000%) for 5 seconds.
 
 Blood_armor=
 	Before=Precision,Range
@@ -126,5 +116,4 @@ Blood_armor=
 	Cooldown=960
 	Icon=blood_armor
 		Size=12,12
-	Description=Shields from damage (200HP) for 8 seconds.
 	

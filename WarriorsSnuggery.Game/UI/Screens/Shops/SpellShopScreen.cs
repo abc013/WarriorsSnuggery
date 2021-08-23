@@ -123,7 +123,7 @@ namespace WarriorsSnuggery.UI.Screens
 			this.screen = screen;
 			image = new BatchSequence(node.Icon);
 
-			tooltip = new Tooltip(node.Name + " : " + node.Cost, node.GetInformation(true));
+			tooltip = new Tooltip(node.Name + " : " + node.Cost, node.GetDescription());
 
 			unlocked = node.Unlocked || Program.IgnoreTech || game.Stats.SpellUnlocked(node);
 			HighlightVisible = unlocked;
