@@ -24,9 +24,12 @@ namespace WarriorsSnuggery.Physics
 		public SimplePhysicsType(List<TextNode> nodes)
 		{
 			TypeLoader.SetValues(this, nodes);
+
+			if (Shape == Shape.CIRCLE && RadiusX != RadiusY)
+				throw new InvalidNodeException($"Physics with shape CIRCLE must have the same values for {nameof(RadiusX)} and {nameof(RadiusY)} (current: {RadiusX}, {RadiusY})");
 		}
 
-		public SimplePhysicsType(Shape shape, int radiusX, int radiusY, int heightRadius, CPos offset, int heightOffset)
+		public SimplePhysicsType(Shape shape, int radiusX, int radiusY, int heightRadius, CPos offset, int heightOffset = 0)
 		{
 			Shape = shape;
 			RadiusX = radiusX;
