@@ -88,6 +88,9 @@ namespace WarriorsSnuggery
 		[DefaultValue(0.5f)]
 		public static float MusicVolume;
 
+		[DefaultValue(true)]
+		public static bool InvertMouseScroll;
+
 		[DefaultValue(-1)]
 		public static int CurrentMap;
 

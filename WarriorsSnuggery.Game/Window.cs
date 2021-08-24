@@ -309,7 +309,7 @@ namespace WarriorsSnuggery
 
 		protected override void OnMouseWheel(MouseWheelEventArgs e)
 		{
-			MouseInput.UpdateWheelState((int)e.OffsetY);
+			MouseInput.UpdateWheelState((Settings.InvertMouseScroll ? -1 : 1) * (int)Math.Round(e.OffsetY));
 		}
 
 		protected override void OnTextInput(TextInputEventArgs e)
