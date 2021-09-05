@@ -20,27 +20,7 @@ namespace WarriorsSnuggery.Graphics
 				bufferID = GL.GenBuffer();
 				Program.CheckGraphicsError("BatchInit_1");
 
-				GL.BindVertexArray(vertexarrayID);
-				GL.BindBuffer(BufferTarget.ArrayBuffer, bufferID);
-				Program.CheckGraphicsError("BatchInit_2");
-
-				GL.BufferData(BufferTarget.ArrayBuffer, Size, IntPtr.Zero, BufferUsageHint.DynamicDraw);
-				Program.CheckGraphicsError("BatchInit_3");
-
-				// position
-				GL.EnableVertexAttribArray(0);
-				GL.VertexAttribPointer(0, 4, VertexAttribPointerType.Float, true, Vertex.Size, 0);
-				Program.CheckGraphicsError("BatchInit_4");
-
-				// texture coordinates
-				GL.EnableVertexAttribArray(1);
-				GL.VertexAttribPointer(1, 4, VertexAttribPointerType.Float, true, Vertex.Size, 16);
-				Program.CheckGraphicsError("BatchInit_5");
-
-				// color
-				GL.EnableVertexAttribArray(2);
-				GL.VertexAttribPointer(2, 4, VertexAttribPointerType.Float, true, Vertex.Size, 32);
-				Program.CheckGraphicsError("BatchInit_6");
+				TextureBuffer.ConfigureBugger(vertexarrayID, bufferID, Size, IntPtr.Zero, BufferUsageHint.DynamicDraw);
 			}
 		}
 

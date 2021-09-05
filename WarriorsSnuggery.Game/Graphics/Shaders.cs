@@ -33,13 +33,14 @@ namespace WarriorsSnuggery.Graphics
 					locations[num + 2] = GL.GetUniformLocation(shader, "proximityColor");
 					locations[num + 3] = GL.GetUniformLocation(shader, "objectColor");
 
-					GL.BindAttribLocation(shader, 0, "position");
+					GL.BindAttribLocation(shader, Vertex.PositionAttributeLocation, "position");
 
 					Log.Debug($"SHADER{shader} locations: {string.Join(',', locations)}");
 				}
 
-				GL.BindAttribLocation(TextureShader, 1, "textureCoordinate");
-				GL.BindAttribLocation(TextureShader, 2, "color");
+				GL.BindAttribLocation(TextureShader, Vertex.TextureCoordinateAttributeLocation, "textureCoordinate");
+				GL.BindAttribLocation(TextureShader, Vertex.TextureAttributeLocation, "texture");
+				GL.BindAttribLocation(TextureShader, Vertex.ColorAttributeLocation, "color");
 
 				foreach (int shader in new[] { TextureShader })
 				{

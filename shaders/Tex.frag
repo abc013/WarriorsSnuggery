@@ -1,7 +1,8 @@
 #version 130
 precision mediump float;
 
-in vec4 vs_textureCoordinate;
+in vec2 vs_textureCoordinate;
+flat in int vs_texture;
 in vec4 vs_color;
 
 uniform sampler2D texture0;
@@ -15,22 +16,19 @@ out vec4 color;
 
 void main(void)
 {
-    color = vs_color;
-    // Check whether a texture should be used
-    if (vs_textureCoordinate.w >= 0)
-    {
-        if (vs_textureCoordinate.z < 0.5)
-            color = texture(texture0, vec2(vs_textureCoordinate.x, vs_textureCoordinate.y));
-        else if (vs_textureCoordinate.z < 1.5)
-            color = texture(texture1, vec2(vs_textureCoordinate.x, vs_textureCoordinate.y));
-        else if (vs_textureCoordinate.z < 2.5)
-            color = texture(texture2, vec2(vs_textureCoordinate.x, vs_textureCoordinate.y));
-        else if (vs_textureCoordinate.z < 3.5)
-            color = texture(texture3, vec2(vs_textureCoordinate.x, vs_textureCoordinate.y));
-        color *= vs_color;
-    }
+    if (vs_texture == 0)
+        color = texture(texture0, vs_textureCoordinate);
+    else if (vs_texture == 1)
+        color = texture(texture1, vs_textureCoordinate);
+    else if (vs_texture == 2)
+        color = texture(texture2, vs_textureCoordinate);
+    else if (vs_texture == 3)
+        color = texture(texture3, vs_textureCoordinate);
+    else
+        color = vec4(1);
 
-    color *= proximityColor * objectColor;
+    color *= vs_color * proximityColor * objectColor;
+
     if (color.a == 0.0)
         discard;
 }

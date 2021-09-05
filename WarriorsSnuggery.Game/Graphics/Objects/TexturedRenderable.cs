@@ -1,4 +1,6 @@
 using OpenTK.Graphics.OpenGL;
+using System;
+using System.Runtime.InteropServices;
 
 namespace WarriorsSnuggery.Graphics
 {
@@ -10,22 +12,15 @@ namespace WarriorsSnuggery.Graphics
 		{
 			this.texture = texture;
 
-			lock (MasterRenderer.GLLock)
+			var handle = GCHandle.Alloc(vertices, GCHandleType.Pinned);
+			try
 			{
-				GL.BufferData(BufferTarget.ArrayBuffer, Vertex.Size * vertices.Length, vertices, BufferUsageHint.StaticDraw);
-				Program.CheckGraphicsError("CreateTexture_Buffer");
-
-				GL.EnableVertexAttribArray(0);
-				GL.VertexAttribPointer(0, 4, VertexAttribPointerType.Float, true, Vertex.Size, 0);
-				Program.CheckGraphicsError("CreateTexture_VertexArray1");
-
-				GL.EnableVertexAttribArray(1);
-				GL.VertexAttribPointer(1, 4, VertexAttribPointerType.Float, true, Vertex.Size, 16);
-				Program.CheckGraphicsError("CreateTexture_VertexArray2");
-
-				GL.EnableVertexAttribArray(2);
-				GL.VertexAttribPointer(2, 4, VertexAttribPointerType.Float, true, Vertex.Size, 32);
-				Program.CheckGraphicsError("CreateTexture_VertexArray3");
+				TextureBuffer.ConfigureBugger(VertexArrayID, BufferID, Vertex.Size * vertices.Length, handle.AddrOfPinnedObject(), BufferUsageHint.StaticDraw);
+			}
+			finally
+			{
+				if (handle.IsAllocated)
+					handle.Free();
 			}
 		}
 
@@ -37,6 +32,38 @@ namespace WarriorsSnuggery.Graphics
 				GL.BindVertexArray(VertexArrayID);
 				GL.BindTexture(TextureTarget.Texture2D, texture.SheetID);
 				Program.CheckGraphicsError("Image_Bind");
+			}
+		}
+	}
+
+	internal static class TextureBuffer
+	{
+		public static void ConfigureBugger(int vertexarrayID, int bufferID, int size, IntPtr data, BufferUsageHint hint)
+		{
+			lock (MasterRenderer.GLLock)
+			{
+				GL.BindVertexArray(vertexarrayID);
+				GL.BindBuffer(BufferTarget.ArrayBuffer, bufferID);
+				Program.CheckGraphicsError("Buffer_Configuration_1");
+
+				GL.BufferData(BufferTarget.ArrayBuffer, size, data, hint);
+				Program.CheckGraphicsError("Buffer_Configuration_2");
+
+				GL.EnableVertexAttribArray(Vertex.PositionAttributeLocation);
+				GL.VertexAttribPointer(Vertex.PositionAttributeLocation, 4, VertexAttribPointerType.Float, true, Vertex.Size, 0);
+				Program.CheckGraphicsError("Buffer_Configuration_3");
+
+				GL.EnableVertexAttribArray(Vertex.TextureCoordinateAttributeLocation);
+				GL.VertexAttribPointer(Vertex.TextureCoordinateAttributeLocation, 4, VertexAttribPointerType.Float, true, Vertex.Size, 16);
+				Program.CheckGraphicsError("Buffer_Configuration_4");
+
+				GL.EnableVertexAttribArray(Vertex.TextureAttributeLocation);
+				GL.VertexAttribPointer(Vertex.TextureAttributeLocation, 1, VertexAttribPointerType.Float, true, Vertex.Size, 24);
+				Program.CheckGraphicsError("Buffer_Configuration_5");
+
+				GL.EnableVertexAttribArray(Vertex.ColorAttributeLocation);
+				GL.VertexAttribPointer(Vertex.ColorAttributeLocation, 4, VertexAttribPointerType.Float, true, Vertex.Size, 28);
+				Program.CheckGraphicsError("Buffer_Configuration_6");
 			}
 		}
 	}

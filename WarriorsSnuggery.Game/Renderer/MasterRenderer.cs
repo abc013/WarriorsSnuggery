@@ -83,10 +83,8 @@ namespace WarriorsSnuggery
 
 				GL.Enable(EnableCap.ScissorTest);
 				GL.Enable(EnableCap.Blend);
-				//GL.Enable(EnableCap.AlphaTest); WUT why does this work
 				Program.CheckGraphicsError("GLTests");
 
-				GL.BlendEquationSeparate(BlendEquationMode.FuncAdd, BlendEquationMode.FuncAdd);
 				GL.BlendFunc(BlendingFactor.SrcAlpha, BlendingFactor.OneMinusSrcAlpha);
 				Program.CheckGraphicsError("GLEquations");
 

@@ -29,12 +29,12 @@ namespace WarriorsSnuggery.Graphics
 
 			Vertex[] vertices =
 			{
-				new Vertex(new Vector(scale * correction,  scale,  0), new Vector4(w, y, id, 0), color),
-				new Vertex(new Vector(-scale * correction, -scale, 0), new Vector4(x, h, id, 0), color),
-				new Vertex(new Vector(scale * correction,  -scale, 0), new Vector4(w, h, id, 0), color),
-				new Vertex(new Vector(-scale * correction, scale,  0), new Vector4(x, y, id, 0), color),
-				new Vertex(new Vector(-scale * correction, -scale, 0), new Vector4(x, h, id, 0), color),
-				new Vertex(new Vector(scale * correction,  scale,  0), new Vector4(w, y, id, 0), color),
+				new Vertex(new Vector(scale * correction,  scale,  0), new Vector2(w, y), id, color),
+				new Vertex(new Vector(-scale * correction, -scale, 0), new Vector2(x, h), id, color),
+				new Vertex(new Vector(scale * correction,  -scale, 0), new Vector2(w, h), id, color),
+				new Vertex(new Vector(-scale * correction, scale,  0), new Vector2(x, y), id, color),
+				new Vertex(new Vector(-scale * correction, -scale, 0), new Vector2(x, h), id, color),
+				new Vertex(new Vector(scale * correction,  scale,  0), new Vector2(w, y), id, color),
 			};
 
 			meshCache[texture] = vertices;
@@ -49,12 +49,12 @@ namespace WarriorsSnuggery.Graphics
 
 			Vertex[] vertices =
 			{
-				new Vertex(new Vector(scale,  -scale,  0), new Vector4(1, 0, 0, 0), color),
-				new Vertex(new Vector(-scale, scale, 0), new Vector4(0, 1, 0, 0), color),
-				new Vertex(new Vector(scale,  scale, 0), new Vector4(1, 1, 0, 0), color),
-				new Vertex(new Vector(-scale, -scale,  0), new Vector4(0, 0, 0, 0), color),
-				new Vertex(new Vector(-scale, scale, 0), new Vector4(0, 1, 0, 0), color),
-				new Vertex(new Vector(scale,  -scale,  0), new Vector4(1, 0, 0, 0), color),
+				new Vertex(new Vector(scale,  -scale,  0), new Vector2(1, 0), 0, color),
+				new Vertex(new Vector(-scale, scale, 0), new Vector2(0, 1), 0, color),
+				new Vertex(new Vector(scale,  scale, 0), new Vector2(1, 1), 0, color),
+				new Vertex(new Vector(-scale, -scale,  0), new Vector2(0, 0), 0, color),
+				new Vertex(new Vector(-scale, scale, 0), new Vector2(0, 1), 0, color),
+				new Vertex(new Vector(scale,  -scale,  0), new Vector2(1, 0), 0, color),
 			};
 
 			return vertices;
@@ -102,12 +102,12 @@ namespace WarriorsSnuggery.Graphics
 
 			Vertex[] vertices =
 			{
-				new Vertex(new Vector(offset.X + size.X * 2, offset.Y + size.Y * 2,  0), new Vector4(w, y, id, 0), color),
-				new Vertex(new Vector(offset.X, offset.Y, 0), new Vector4(x, h, id, 0), color),
-				new Vertex(new Vector(offset.X + size.X * 2, offset.Y, 0), new Vector4(w, h, id, 0), color),
-				new Vertex(new Vector(offset.X, offset.Y + size.Y * 2,  0), new Vector4(x, y, id, 0), color),
-				new Vertex(new Vector(offset.X, offset.Y, 0), new Vector4(x, h, id, 0), color),
-				new Vertex(new Vector(offset.X + size.X * 2, offset.Y + size.Y * 2, 0), new Vector4(w, y, id, 0), color),
+				new Vertex(new Vector(offset.X + size.X * 2, offset.Y + size.Y * 2,  0), new Vector2(w, y), id, color),
+				new Vertex(new Vector(offset.X, offset.Y, 0), new Vector2(x, h), id, color),
+				new Vertex(new Vector(offset.X + size.X * 2, offset.Y, 0), new Vector2(w, h), id, color),
+				new Vertex(new Vector(offset.X, offset.Y + size.Y * 2,  0), new Vector2(x, y), id, color),
+				new Vertex(new Vector(offset.X, offset.Y, 0), new Vector2(x, h), id, color),
+				new Vertex(new Vector(offset.X + size.X * 2, offset.Y + size.Y * 2, 0), new Vector2(w, y), id, color),
 			};
 
 			return vertices;
@@ -119,8 +119,8 @@ namespace WarriorsSnuggery.Graphics
 
 			Vertex[] vertices =
 			{
-				new Vertex(new Vector(0, 0, 0), new Vector4(-1), color),
-				new Vertex(new Vector(0, size, 0), new Vector4(-1), color),
+				new Vertex(new Vector(0, 0, 0), Vector2.Zero, -1, color),
+				new Vertex(new Vector(0, size, 0), Vector2.Zero, -1, color),
 			};
 
 			return vertices;
@@ -133,12 +133,12 @@ namespace WarriorsSnuggery.Graphics
 
 			Vertex[] vertices =
 			{
-				new Vertex(new Vector(scale,  scale,  0), new Vector4(-1), color),
-				new Vertex(new Vector(-scale, -scale, 0), new Vector4(-1), color),
-				new Vertex(new Vector(scale,  -scale, 0), new Vector4(-1), color),
-				new Vertex(new Vector(-scale, scale,  0), new Vector4(-1), color),
-				new Vertex(new Vector(-scale, -scale, 0), new Vector4(-1), color),
-				new Vertex(new Vector(scale,  scale,  0), new Vector4(-1), color),
+				new Vertex(new Vector(scale,  scale,  0), Vector2.Zero, -1, color),
+				new Vertex(new Vector(-scale, -scale, 0), Vector2.Zero, -1, color),
+				new Vertex(new Vector(scale,  -scale, 0), Vector2.Zero, -1, color),
+				new Vertex(new Vector(-scale, scale,  0), Vector2.Zero, -1, color),
+				new Vertex(new Vector(-scale, -scale, 0), Vector2.Zero, -1, color),
+				new Vertex(new Vector(scale,  scale,  0), Vector2.Zero, -1, color),
 			};
 
 			return vertices;
@@ -154,9 +154,9 @@ namespace WarriorsSnuggery.Graphics
 			{
 				var vector = Vector.FromFlatAngle(i * MathF.PI / resolution * 2, size);
 
-				vertices[i] = new Vertex(vector, new Vector4(-1), color);
+				vertices[i] = new Vertex(vector, Vector2.Zero, -1, color);
 				if (i != 0 && i != resolution * 2 - 1)
-					vertices[++i] = new Vertex(vector, new Vector4(-1), color);
+					vertices[++i] = new Vertex(vector, Vector2.Zero, -1, color);
 			}
 			return vertices;
 		}
