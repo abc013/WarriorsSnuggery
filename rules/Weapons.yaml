@@ -126,6 +126,7 @@ slime_bullet=
 			Texture=slime_splash
 				Size=8,8
 				Random=true
+			SpawnInAir=false
 		Damage=
 			Damage=16
 			ArmorModifiers=
