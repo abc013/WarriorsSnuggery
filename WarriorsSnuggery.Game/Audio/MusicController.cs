@@ -72,7 +72,7 @@ namespace WarriorsSnuggery.Audio
 
 		public static void NextSong()
 		{
-			if (!hasMusic)
+			if (!hasMusic || AudioController.MusicSource == null)
 				return;
 
 			nextSong(AudioController.MusicSource, ref currentMusic, ref current);
@@ -103,7 +103,7 @@ namespace WarriorsSnuggery.Audio
 
 		public static void Tick()
 		{
-			if (!hasMusic)
+			if (!hasMusic || AudioController.MusicSource == null)
 				return;
 
 			currentMusic.Tick();
