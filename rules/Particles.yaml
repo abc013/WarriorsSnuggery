@@ -58,8 +58,8 @@ colored_star=
 	AffectedByObjects=true
 
 slime_splash=
-	Color=63,255,63,63
-	ColorVariety=0,127,0,16
+	Color=63,255,63,24
+	ColorVariety=0,63,0,8
 	MeshSize=4
 	MeshSizeVariety=0.1
 	Duration=300

@@ -610,6 +610,11 @@ slime_small=
 	RevealsShroud=
 		Range=3
 		Interval=0
+	Spawn=
+		Occasion=Death
+		Count=7
+		Name=slime_trail
+		Type=PARTICLE
 	Armor=
 		Name=slime
 
