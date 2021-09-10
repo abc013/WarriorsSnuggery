@@ -184,6 +184,9 @@ namespace WarriorsSnuggery
 				return;
 			}
 
+			if (playablePart == null)
+				return;
+
 			var switchActor = ActorCache.Create(this, playablePart.PlayerSwitchActor, LocalPlayer.Position, LocalPlayer.Team, isPlayer: true);
 			var switchPart = switchActor.GetPart<PlayerSwitchPart>();
 			switchPart.RelativeHP = health;
