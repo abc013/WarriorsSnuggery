@@ -85,7 +85,7 @@ namespace WarriorsSnuggery
 			foreach (var r in afterRender)
 				r.Render();
 
-			var possibleTarget = game.World.LocalPlayer != null && game.World.LocalPlayer.GetPart<PlayerPart>().FindValidTarget(MouseInput.GamePosition) != null;
+			var possibleTarget = game.MapType.AllowWeapons && game.World.LocalPlayer != null && game.World.LocalPlayer.GetPart<PlayerPart>().FindValidTarget(MouseInput.GamePosition) != null;
 
 			if (Settings.DeveloperMode)
 			{
