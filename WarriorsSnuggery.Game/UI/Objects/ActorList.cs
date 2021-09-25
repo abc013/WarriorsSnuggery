@@ -50,21 +50,33 @@ namespace WarriorsSnuggery.UI.Objects
 				if (actorType.Playable == null)
 					continue;
 
-				var sprite = actorType.GetPreviewSprite();
-				var scale = MasterRenderer.PixelSize / (float)Math.Max(sprite.Width, sprite.Height) - 0.1f;
-				var item = new PanelListItem(new BatchObject(sprite), ItemSize, actorType.Playable.Name, new[] { Color.Grey + "Cost: " + Color.Yellow + actorType.Playable.Cost }, () => { changePlayer(actorType); }) { Scale = scale };
-				if (!game.Stats.ActorAvailable(actorType.Playable))
-					item.SetColor(disabled);
-
 				actorTypes.Add(actorType);
-				Add(item);
+				Add(updateSingle(actorType));
 			}
 		}
 
 		public void Update()
 		{
-			for (int i = 0; i < actorTypes.Count; i++)
-				Container[i].SetColor(game.Stats.ActorAvailable(actorTypes[i].Playable) ? Color.White : disabled);
+			int index = 0;
+			foreach (var actorType in actorTypes)
+				Container[index++] = updateSingle(actorType);
+		}
+
+		PanelListItem updateSingle(ActorType actorType)
+		{
+			var available = game.Stats.ActorAvailable(actorType.Playable);
+			var sprite = actorType.GetPreviewSprite();
+			var scale = MasterRenderer.PixelSize / (float)Math.Max(sprite.Width, sprite.Height) - 0.1f;
+
+			var title = available ? actorType.Playable.Name : Color.Red + "Locked";
+			var description = available ? new[] { Color.Grey + "Changing cost: " + Color.Yellow + actorType.Playable.Cost } : new[] { new Color(128, 0, 0) + "Unlock cost: " + actorType.Playable.UnlockCost };
+
+			var item = new PanelListItem(new BatchObject(sprite), ItemSize, title, description, () => { changePlayer(actorType); }) { Scale = scale };
+
+			if (!available)
+				item.SetColor(disabled);
+
+			return item;
 		}
 
 		public override void Tick()
