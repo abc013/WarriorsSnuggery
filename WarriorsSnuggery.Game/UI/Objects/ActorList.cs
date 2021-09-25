@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using WarriorsSnuggery.Graphics;
 using WarriorsSnuggery.Objects.Actors;
+using WarriorsSnuggery.Objects.Actors.Parts;
 
 namespace WarriorsSnuggery.UI.Objects
 {
@@ -94,6 +95,9 @@ namespace WarriorsSnuggery.UI.Objects
 				return;
 
 			if (!game.Stats.ActorAvailable(type.Playable))
+				return;
+
+			if (game.World.LocalPlayer.GetPartOrDefault<PlayablePart>() == null)
 				return;
 
 			game.Stats.Money -= type.Playable.Cost;
