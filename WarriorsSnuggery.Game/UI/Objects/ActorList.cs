@@ -60,6 +60,8 @@ namespace WarriorsSnuggery.UI.Objects
 			int index = 0;
 			foreach (var actorType in actorTypes)
 				Container[index++] = updateSingle(actorType);
+
+			UpdatePositions();
 		}
 
 		PanelListItem updateSingle(ActorType actorType)

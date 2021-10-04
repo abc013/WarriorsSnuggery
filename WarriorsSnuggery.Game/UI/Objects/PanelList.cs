@@ -14,7 +14,7 @@ namespace WarriorsSnuggery.UI.Objects
 			{
 				base.Position = value;
 
-				updatePositions();
+				UpdatePositions();
 			}
 		}
 
@@ -116,19 +116,19 @@ namespace WarriorsSnuggery.UI.Objects
 				if ((currentScroll < Math.Floor(Container.Count / (float)Size.X - Size.Y) + 1) && (KeyInput.IsKeyDown(Keys.Down) || MouseInput.WheelState > 0))
 				{
 					currentScroll++;
-					updatePositions();
+					UpdatePositions();
 				}
 				if (currentScroll != 0 && (KeyInput.IsKeyDown(Keys.Up) || MouseInput.WheelState < 0))
 				{
 					currentScroll--;
-					updatePositions();
+					UpdatePositions();
 				}
 			}
 			else if (autoHighlight)
 				HighlightedPos = (-1, -1);
 		}
 
-		void updatePositions()
+		protected void UpdatePositions()
 		{
 			for (int i = 0; i < Container.Count; i++)
 			{
