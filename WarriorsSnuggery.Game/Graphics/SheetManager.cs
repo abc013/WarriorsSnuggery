@@ -1,10 +1,13 @@
 ﻿using System;
+using System.Collections.Generic;
 using WarriorsSnuggery.Loader;
 
 namespace WarriorsSnuggery.Graphics
 {
 	public static class SheetManager
 	{
+		static readonly Dictionary<int, Texture> hashedTextures = new Dictionary<int, Texture>();
+
 		public static Sheet[] Sheets { get; private set; }
 
 		public static int SheetsUsed => currentSheet;
@@ -49,7 +52,7 @@ namespace WarriorsSnuggery.Graphics
 
 			var textures = new Texture[dataList.Count];
 			for (int i = 0; i < dataList.Count; i++)
-				textures[i] = addTexture(dataList[i], file, width, height);
+				textures[i] = addTexture(dataList[i], file + i, width, height);
 
 			return textures;
 		}
@@ -63,17 +66,26 @@ namespace WarriorsSnuggery.Graphics
 			var textures = new Texture[data.Length];
 
 			for (int i = 0; i < data.Length; i++)
-				textures[i] = addTexture(data[i], font.FontName, font.CharSizes[i].X, font.CharSizes[i].Y);
+				textures[i] = addTexture(data[i], font.FontName + i, font.CharSizes[i].X, font.CharSizes[i].Y);
 
 			return textures;
 		}
 
 		static Texture addTexture(float[] data, string file, int width, int height)
 		{
+			var hash = file.GetHashCode() ^ width ^ height;
+
+			if (hashedTextures.ContainsKey(hash))
+				return hashedTextures[hash];
+
 			if (!SheetBuilder.HasSpaceLeft(width, height))
 				nextSheet();
 
-			return SheetBuilder.WriteTexture(data, file, width, height);
+			var texture = SheetBuilder.WriteTexture(data, file, width, height);
+
+			hashedTextures.Add(hash, texture);
+
+			return texture;
 		}
 
 		public static int SheetIndex(int SheetID)
@@ -100,6 +112,7 @@ namespace WarriorsSnuggery.Graphics
 			}
 
 			SheetBuilder.Clear();
+			hashedTextures.Clear();
 
 			sheetsLoaded = true;
 		}
