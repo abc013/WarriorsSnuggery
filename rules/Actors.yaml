@@ -150,6 +150,7 @@ shadowrunner=
 		AirFriction=0.03
 	Motor=
 		Speed=25
+		Acceleration=8
 		HeightAcceleration=3
 	Health=
 		MaxHealth=300
