@@ -48,6 +48,7 @@ bld/
 /Settings.yaml
 /createdump.exe
 logs/
+scripts/*.cache
 *.pdb
 launchSettings.json
 

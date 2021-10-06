@@ -49,10 +49,8 @@ namespace Mission
 				{
 					collectablesTriggered = true;
 
-					game.World.WallLayer.Remove(new MPos(20 * 2, 6));
-					game.World.WallLayer.Remove(new MPos(20 * 2, 7));
-					game.World.WallLayer.Remove(new MPos(20 * 2, 8));
-					game.World.WallLayer.Remove(new MPos(20 * 2, 9));
+					for (int i = 6; i < 10; i++)
+						game.World.WallLayer.Remove(new MPos(20 * 2,  i));
 
 					for (int i = 0; i < 40; i++)
 					{

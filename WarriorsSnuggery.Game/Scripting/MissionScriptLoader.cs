@@ -11,25 +11,63 @@ namespace WarriorsSnuggery.Scripting
 {
 	public class MissionScriptLoader
 	{
-		static readonly Dictionary<string, Type> loadedAssemblies = new Dictionary<string, Type>();
+		static readonly Dictionary<string, Assembly> loadedAssemblies = new Dictionary<string, Assembly>();
 
 		readonly string file;
+		readonly string path;
+		string cachePath => path + ".cache";
+
 		readonly Assembly assembly;
 		readonly Type type;
 
 		public MissionScriptLoader(string path, string file)
 		{
 			this.file = file;
+			this.path = path;
+
 			Log.Debug("Loading new mission script: " + path);
 
 			if (loadedAssemblies.ContainsKey(file))
 			{
-				type = loadedAssemblies[file];
-				assembly = Assembly.GetAssembly(type);
+				assembly = loadedAssemblies[file];
+				type = assembly.GetTypes().Where(t => t.BaseType == typeof(MissionScriptBase)).FirstOrDefault();
 
 				Log.Debug("Mission script already in memory. Loaded.");
 				return;
 			}
+
+			Stream stream;
+			if (File.Exists(cachePath) && File.GetLastWriteTimeUtc(cachePath) > File.GetLastWriteTimeUtc(path))
+			{
+				stream = File.OpenRead(cachePath);
+
+				Log.Debug("Script assembly compilation cached and not outdated. Loaded.");
+			}
+			else
+				stream = compile();
+
+			var timer = Timer.Start();
+
+			AssemblyLoadContext context = AssemblyLoadContext.Default;
+			assembly = context.LoadFromStream(stream);
+
+			stream.Dispose();
+
+			timer.StopAndWrite("Loading script assembly: " + file);
+
+			type = assembly.GetTypes().Where(t => t.BaseType == typeof(MissionScriptBase)).FirstOrDefault();
+
+			if (type == null)
+				throw new MissingScriptException(file + ".cs");
+
+			loadedAssemblies.Add(file, assembly);
+
+			Log.Debug("Mission script successfully loaded.");
+		}
+
+		Stream compile()
+		{
+			var timer = Timer.Start();
 
 			using var reader = new StreamReader(path);
 			var content = reader.ReadToEnd();
@@ -50,7 +88,7 @@ namespace WarriorsSnuggery.Scripting
 			)
 			.AddSyntaxTrees(CSharpSyntaxTree.ParseText(content));
 
-			using var ms = new MemoryStream();
+			var ms = new MemoryStream();
 			var result = compilation.Emit(ms);
 
 			if (!result.Success)
@@ -62,17 +100,16 @@ namespace WarriorsSnuggery.Scripting
 			}
 			ms.Seek(0, SeekOrigin.Begin);
 
-			AssemblyLoadContext context = AssemblyLoadContext.Default;
-			assembly = context.LoadFromStream(ms);
+			// Cache compilation
+			using var fileStream = File.Create(cachePath);
+			ms.WriteTo(fileStream);
 
-			type = assembly.GetTypes().Where(t => t.BaseType == typeof(MissionScriptBase)).FirstOrDefault();
+			ms.Seek(0, SeekOrigin.Begin);
 
-			if (type == null)
-				throw new MissingScriptException(file + ".cs");
+			timer.StopAndWrite("Compiling script assembly: " + file);
+			Log.Debug("Script assembly compilation not cached or cache outdated. (Re-)Compiled.");
 
-			loadedAssemblies.Add(file, type);
-
-			Log.Debug("Mission script successfully loaded.");
+			return ms;
 		}
 
 		public MissionScriptBase Start(Game game)
