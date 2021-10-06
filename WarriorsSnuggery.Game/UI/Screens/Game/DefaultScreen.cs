@@ -1,3 +1,4 @@
+using System;
 using WarriorsSnuggery.Graphics;
 using WarriorsSnuggery.Objects;
 using WarriorsSnuggery.UI.Objects;
@@ -19,6 +20,7 @@ namespace WarriorsSnuggery.UI.Screens
 		readonly SpellList spellList;
 
 		int particleCollector;
+		int winParticle = 5;
 
 		public DefaultScreen(Game game) : base(string.Empty, 0)
 		{
@@ -125,6 +127,15 @@ namespace WarriorsSnuggery.UI.Screens
 		{
 			base.Tick();
 
+			if (game.WinConditionsMet)
+			{
+				if (game.LocalTick % 30 == 0 && winParticle-- > 0)
+				{
+					for (int i = 0; i < 5; i++)
+						generateWinParticles();
+				}
+			}
+
 			var player = game.World.LocalPlayer;
 			if (player.Health != null)
 			{
@@ -134,27 +145,55 @@ namespace WarriorsSnuggery.UI.Screens
 				healthBar.DisplayPercentage = percentage;
 
 				if (percentage < 0.3f)
-				{
-					var inverse = 0.3f - percentage;
-					particleCollector += (int)(inverse * 50) + 1;
-
-					var count = particleCollector / 16;
-					particleCollector -= count * 16;
-
-					for (int i = 0; i < count * 2; i++)
-					{
-						var invert = i % 2 == 0;
-						var particle = particleManager.Add((int)(percentage * 200) + 300);
-						particle.Radius = Program.SharedRandom.Next(150) + (int)(inverse * inverse * 2000) + 10;
-						particle.Position = new CPos(Program.SharedRandom.Next(Width) - Width / 2, (invert ? 1 : -1) * Bottom, 0);
-						particle.Velocity = new CPos(Program.SharedRandom.Next(-2, 2), (invert ? -1 : 1) * (Program.SharedRandom.Next(10) + 10), 0);
-						particle.Color = new Color(Program.SharedRandom.Next(96) + 127, 0, 0, 192);
-					}
-				}
+					generateBloodParticles(percentage);
 			}
 
 			manaBar.WriteText($"{game.Stats.Mana}/{game.Stats.MaxMana}");
 			manaBar.DisplayPercentage = game.Stats.Mana / (float)game.Stats.MaxMana;
+		}
+
+		void generateWinParticles()
+		{
+			var random = Program.SharedRandom;
+
+			var count = 50;
+			var width = (Width / 2);
+			if (random.Next(2) > 0)
+				width *= -1;
+
+			var randomX = random.Next(200, 400) * Math.Sign(-width);
+
+			for (int i = 0; i < count; i++)
+			{
+				var particle = particleManager.Add(random.Next(200) + 200);
+				particle.Radius = random.Next(300) + 200;
+				particle.Position = new CPos(width, random.Next(-500, 500), 0);
+				particle.Velocity = new CPos(random.Next(-50, 50) + randomX, -random.Next(150) - 250, 0);
+				particle.Force = new CPos(0, random.Next(10) + 5, 0);
+
+				var color = random.Next(255);
+				var inverse = random.Next(2) > 0;
+				particle.Color = new Color(inverse ? 255 - color : color, !inverse ? 255 - color : color, random.Next(2) > 0 ? 255 - color : color, 255);
+			}
+		}
+
+		void generateBloodParticles(float percentage)
+		{
+			var inverse = 0.3f - percentage;
+			particleCollector += (int)(inverse * 50) + 1;
+
+			var count = particleCollector / 16;
+			particleCollector -= count * 16;
+
+			for (int i = 0; i < count * 2; i++)
+			{
+				var invert = i % 2 == 0;
+				var particle = particleManager.Add((int)(percentage * 200) + 300);
+				particle.Radius = Program.SharedRandom.Next(150) + (int)(inverse * inverse * 2000) + 10;
+				particle.Position = new CPos(Program.SharedRandom.Next(Width) - Width / 2, (invert ? 1 : -1) * Bottom, 0);
+				particle.Velocity = new CPos(Program.SharedRandom.Next(-2, 2), (invert ? -1 : 1) * (Program.SharedRandom.Next(10) + 10), 0);
+				particle.Color = new Color(Program.SharedRandom.Next(96) + 127, 0, 0, 192);
+			}
 		}
 	}
 }
