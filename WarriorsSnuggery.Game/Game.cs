@@ -85,6 +85,9 @@ namespace WarriorsSnuggery
 		public bool WinConditionsMet;
 		public bool Finished;
 
+		const byte maxFade = 15;
+		byte fade = maxFade;
+
 		MissionType nextLevelType;
 		InteractionMode nextInteractionMode;
 		bool nextLevel;
@@ -174,12 +177,27 @@ namespace WarriorsSnuggery
 
 		public void Tick()
 		{
+			if ((!Finished || GameController.NextGamePrepared) && fade > 0)
+			{
+				ScreenControl.Darkness = (byte)((256 / maxFade) * (Finished ? (maxFade - fade--) : fade--));
+
+				if (fade == 0)
+				{
+					if (Finished)
+						GameController.LoadNext();
+					else
+						ScreenControl.Darkness = 0;
+				}
+			}
+
 			if (nextLevel)
 			{
 				Log.Debug("Instant game change requested. Executing now.");
 
 				Save.Update(this);
 				GameController.CreateNext(nextLevelType, nextInteractionMode);
+
+				nextLevel = false;
 				return;
 			}
 
@@ -416,6 +434,7 @@ namespace WarriorsSnuggery
 			script?.OnFinish();
 			Finished = true;
 			Pause(true);
+			fade = maxFade;
 
 			MusicController.FadeIntenseOut();
 		}

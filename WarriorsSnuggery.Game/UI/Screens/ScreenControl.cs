@@ -1,6 +1,7 @@
 ﻿using OpenTK.Windowing.GraphicsLibraryFramework;
 using System;
 using System.Collections.Generic;
+using WarriorsSnuggery.Graphics;
 using WarriorsSnuggery.UI.Objects;
 
 namespace WarriorsSnuggery.UI.Screens
@@ -23,6 +24,8 @@ namespace WarriorsSnuggery.UI.Screens
 		public static bool InfoScreenOpen => Settings.EnableInfoScreen;
 
 		public readonly InfoText Text;
+
+		public byte Darkness = 255;
 
 		public ScreenControl(Game game)
 		{
@@ -141,6 +144,10 @@ namespace WarriorsSnuggery.UI.Screens
 
 			Chat.Render();
 			Message.Render();
+
+			if (Darkness > 0)
+				ColorManager.DrawFullscreenRect(new Color(0, 0, 0, Darkness));
+
 			Screen.Render();
 
 			Text.Render();

@@ -10,6 +10,9 @@ namespace WarriorsSnuggery
 	public static class GameController
 	{
 		static Game game;
+		static Game nextGame;
+
+		public static bool NextGamePrepared => nextGame != null;
 
 		public static void Load()
 		{
@@ -120,11 +123,18 @@ namespace WarriorsSnuggery
 
 		static void finishAndLoad(Game @new)
 		{
+			nextGame = @new;
 			game.Finish();
+		}
+
+		public static void LoadNext()
+		{
 			game.Dispose();
 
-			game = @new;
+			game = nextGame;
 			game.Load();
+
+			nextGame = null;
 		}
 
 		public static void AddInfoMessage(int duration, string text)
