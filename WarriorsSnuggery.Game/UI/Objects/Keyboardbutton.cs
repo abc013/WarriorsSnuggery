@@ -60,12 +60,13 @@ namespace WarriorsSnuggery.UI.Objects
 
 			CheckMouse();
 
-			if (ContainsMouse && MouseInput.IsLeftClicked)
-				selected = true;
-			else if (MouseInput.IsLeftClicked)
+			if (MouseInput.IsLeftClicked)
 			{
-				selected = false;
-				blinkTick = 0;
+				selected = ContainsMouse;
+				if (selected)
+					UIUtils.PlayClickSound();
+				else
+					blinkTick = 0;
 			}
 
 			if (selected && blinkTick-- < 0)
@@ -76,6 +77,8 @@ namespace WarriorsSnuggery.UI.Objects
 		{
 			if (!selected)
 				return;
+
+			UIUtils.PlayClickSound();
 
 			Key = key;
 			keyDisplay.SetText(Key);

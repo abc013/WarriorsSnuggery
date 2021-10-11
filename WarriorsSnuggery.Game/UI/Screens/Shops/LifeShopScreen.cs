@@ -44,6 +44,8 @@ namespace WarriorsSnuggery.UI.Screens
 			if (nextPrice > stats.Money)
 				return;
 
+			UIUtils.PlaySellSound();
+
 			stats.Money -= nextPrice;
 			stats.Lifes++;
 

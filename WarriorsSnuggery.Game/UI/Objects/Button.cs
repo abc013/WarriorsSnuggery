@@ -59,7 +59,10 @@ namespace WarriorsSnuggery.UI.Objects
 			CheckMouse();
 
 			if (MouseInput.IsLeftClicked && ContainsMouse && action != null)
+			{
+				UIUtils.PlayClickSound();
 				action?.Invoke();
+			}
 		}
 	}
 }

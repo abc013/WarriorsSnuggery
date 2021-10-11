@@ -110,7 +110,10 @@ namespace WarriorsSnuggery.UI.Objects
 						HighlightedPos = (-1, -1);
 
 					if (MouseInput.IsLeftClicked)
+					{
+						UIUtils.PlayClickSound();
 						SelectedPos = HighlightedPos;
+					}
 				}
 
 				if ((currentScroll < Math.Floor(Container.Count / (float)Size.X - Size.Y) + 1) && (KeyInput.IsKeyDown(Keys.Down) || MouseInput.WheelState > 0))

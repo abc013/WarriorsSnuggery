@@ -1,4 +1,5 @@
-﻿using WarriorsSnuggery.Graphics;
+﻿using WarriorsSnuggery.Audio;
+using WarriorsSnuggery.Graphics;
 using WarriorsSnuggery.Maps;
 using WarriorsSnuggery.Objects;
 using WarriorsSnuggery.Objects.Actors;
@@ -117,6 +118,11 @@ namespace WarriorsSnuggery.Loader
 			CheckBoxCache.Add(checkBox("check_wall"), "wall_editor");
 
 			CheckBoxCache.Add(checkBox("check_menu"), "menu");
+
+			foreach (var sound in new [] { "money_spent1", "money_spent2", "money_spent3" })
+				AudioManager.LoadSound(sound, FileExplorer.FindPath(FileExplorer.Misc, sound, ".wav"));
+
+			AudioManager.LoadSound("click", FileExplorer.FindPath(FileExplorer.Misc, "click", ".wav"));
 		}
 
 		static CheckBoxType checkBox(string name)

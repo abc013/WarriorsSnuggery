@@ -72,7 +72,10 @@ namespace WarriorsSnuggery.UI.Objects
 		{
 			CheckMouse();
 			if (ContainsMouse && MouseInput.IsLeftClicked)
+			{
+				UIUtils.PlayClickSound();
 				Selected = true;
+			}
 			else if (MouseInput.IsLeftClicked)
 				Selected = false;
 
@@ -104,6 +107,7 @@ namespace WarriorsSnuggery.UI.Objects
 							return;
 					}
 
+					UIUtils.PlayClickSound();
 					textline.AddText(toAdd);
 					text += toAdd;
 					OnType?.Invoke();
@@ -118,6 +122,7 @@ namespace WarriorsSnuggery.UI.Objects
 
 			if (key == Keys.Enter)
 			{
+				UIUtils.PlayClickSound();
 				Selected = false;
 				OnEnter?.Invoke();
 				return;
@@ -125,6 +130,7 @@ namespace WarriorsSnuggery.UI.Objects
 
 			if (Text.Length > 0 && (key == Keys.Backspace || key == Keys.Delete))
 			{
+				UIUtils.PlayClickSound();
 				text = Text[0..^1];
 				textline.SetText(Text);
 				OnType?.Invoke();

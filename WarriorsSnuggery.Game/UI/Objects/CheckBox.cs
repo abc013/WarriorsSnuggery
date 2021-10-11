@@ -40,6 +40,7 @@ namespace WarriorsSnuggery.UI.Objects
 
 			if (MouseInput.IsLeftClicked && ContainsMouse)
 			{
+				UIUtils.PlayClickSound();
 				Checked = !Checked;
 				action?.Invoke(Checked);
 			}
@@ -47,30 +48,15 @@ namespace WarriorsSnuggery.UI.Objects
 
 		public override void Render()
 		{
+			var renderable = Checked ? type.Checked : type.Default;
+
 			if (ContainsMouse && MouseInput.IsLeftDown)
-			{
-				type.Click.SetPosition(Position);
-				type.Click.SetScale(Scale);
-				type.Click.SetRotation(Rotation);
-				type.Click.Render();
-			}
-			else
-			{
-				if (!Checked)
-				{
-					type.Default.SetPosition(Position);
-					type.Default.SetScale(Scale);
-					type.Default.SetRotation(Rotation);
-					type.Default.Render();
-				}
-				else
-				{
-					type.Checked.SetPosition(Position);
-					type.Checked.SetScale(Scale);
-					type.Checked.SetRotation(Rotation);
-					type.Checked.Render();
-				}
-			}
+				renderable = type.Click;
+
+			renderable.SetPosition(Position);
+			renderable.SetScale(Scale);
+			renderable.SetRotation(Rotation);
+			renderable.Render();
 		}
 	}
 }

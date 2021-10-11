@@ -95,9 +95,17 @@ namespace WarriorsSnuggery.UI.Objects
 				UIRenderer.DisableTooltip(tooltip);
 
 			if (MouseInput.IsLeftDown && ContainsMouse)
+			{
+				if (!drag)
+					UIUtils.PlayClickSound();
 				drag = true;
+			}
 			else if (!MouseInput.IsLeftDown)
+			{
+				if (drag)
+					UIUtils.PlayClickSound();
 				drag = false;
+			}
 
 			if (drag)
 			{

@@ -74,6 +74,8 @@ namespace WarriorsSnuggery.UI.Screens
 			if (game.Stats.Money < actor.Playable.UnlockCost)
 				return;
 
+			UIUtils.PlaySellSound();
+
 			game.Stats.Money -= actor.Playable.UnlockCost;
 
 			game.Stats.AddActor(actor.Playable);

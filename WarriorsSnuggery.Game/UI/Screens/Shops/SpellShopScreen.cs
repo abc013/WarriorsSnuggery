@@ -195,6 +195,8 @@ namespace WarriorsSnuggery.UI.Screens
 				if (game.Stats.Money < node.Cost)
 					return;
 
+				UIUtils.PlaySellSound();
+
 				game.Stats.Money -= node.Cost;
 				game.Stats.AddSpell(node);
 
