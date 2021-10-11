@@ -19,5 +19,10 @@ namespace WarriorsSnuggery.UI
 		{
 			AudioManager.PlaySound("click");
 		}
+
+		public static void PlayPingSound()
+		{
+			AudioManager.PlaySound("ping");
+		}
 	}
 }

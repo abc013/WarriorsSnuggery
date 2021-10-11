@@ -123,6 +123,7 @@ namespace WarriorsSnuggery.Loader
 				AudioManager.LoadSound(sound, FileExplorer.FindPath(FileExplorer.Misc, sound, ".wav"));
 
 			AudioManager.LoadSound("click", FileExplorer.FindPath(FileExplorer.Misc, "click", ".wav"));
+			AudioManager.LoadSound("ping", FileExplorer.FindPath(FileExplorer.Misc, "ping", ".wav"));
 		}
 
 		static CheckBoxType checkBox(string name)

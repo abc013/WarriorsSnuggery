@@ -34,6 +34,9 @@ namespace WarriorsSnuggery.UI.Objects
 
 		public void SetMessage(int duration, string text)
 		{
+			if (infoTextDuration < 100)
+				UIUtils.PlayPingSound();
+
 			var corner = (int)(WindowInfo.UnitWidth * 512);
 			infoText.Position = new CPos(-corner + 512, -6144 - 256, 0);
 			infoText.WriteText(text);
