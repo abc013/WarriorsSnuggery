@@ -24,5 +24,10 @@ namespace WarriorsSnuggery.UI
 		{
 			AudioManager.PlaySound("ping");
 		}
+
+		public static void PlayLifeLostSound()
+		{
+			AudioManager.PlaySound("life_lost");
+		}
 	}
 }

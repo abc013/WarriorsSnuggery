@@ -42,8 +42,10 @@ namespace WarriorsSnuggery.UI.Objects
 		}
 
 		readonly Game game;
+		readonly BatchObject bigHeart;
 		readonly List<BatchObject> hearts = new List<BatchObject>();
 		int lifes;
+		const int maxTick = 120;
 		int tick;
 
 		public HealthDisplay(Game game) : base(new MPos(712 + 128, 512), PanelCache.Types["wooden"])
@@ -51,6 +53,8 @@ namespace WarriorsSnuggery.UI.Objects
 			this.game = game;
 
 			lifes = game.Stats.Lifes;
+
+			bigHeart = new BatchObject(UISpriteManager.Get("UI_heart")[0]);
 		}
 
 		public override void Tick()
@@ -68,7 +72,10 @@ namespace WarriorsSnuggery.UI.Objects
 
 			var currentLifes = game.Stats.Lifes;
 			if (lifes > currentLifes)
-				tick = 120;
+			{
+				UIUtils.PlayLifeLostSound();
+				tick = maxTick;
+			}
 
 			lifes = currentLifes;
 		}
@@ -95,11 +102,19 @@ namespace WarriorsSnuggery.UI.Objects
 
 				if (i == lifes && tick-- > 0)
 				{
-					heart.SetColor(new Color(1f, 1f, 1f, tick / 140f));
-					heart.SetScale((140 - tick)/14f);
+					heart.SetColor(new Color(1f, 1f, 1f, tick / (float)maxTick));
+					heart.SetScale((maxTick - tick)/(float)maxTick * 10);
 					heart.Render();
+
 					heart.SetScale(1f);
 				}
+			}
+
+			if (tick-- > 0)
+			{
+				bigHeart.SetColor(new Color(1f, 1f, 1f, tick / (float)maxTick));
+				bigHeart.SetScale((maxTick - tick)/(float)maxTick * 100);
+				bigHeart.Render();
 			}
 		}
 	}
