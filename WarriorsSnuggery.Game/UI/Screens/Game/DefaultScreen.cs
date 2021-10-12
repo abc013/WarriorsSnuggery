@@ -52,7 +52,7 @@ namespace WarriorsSnuggery.UI.Screens
 			if (game.ObjectiveType == ObjectiveType.FIND_EXIT)
 				Add(new KeyDisplay(game) { Position = new CPos(Left + 712 + shift, top + 1536 + shift + 128, 0) });
 			else if (game.ObjectiveType == ObjectiveType.SURVIVE_WAVES)
-				Add(new WaveDisplay(game) { Position = new CPos(Left + 512 + shift, top + 1536 + shift + 128, 0) });
+				Add(new WaveDisplay(game) { Position = new CPos(Left + 1280 + shift, top + 1536 + shift + 128, 0) });
 
 			var menu = new CheckBox("menu", onTicked: (t) => game.ShowScreen(ScreenType.MENU, true))
 			{
