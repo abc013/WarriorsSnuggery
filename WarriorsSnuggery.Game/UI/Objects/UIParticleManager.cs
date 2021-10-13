@@ -2,9 +2,9 @@
 
 namespace WarriorsSnuggery.UI.Objects
 {
-	public class SquareParticleManager : UIObject
+	public class UIParticleManager : UIObject
 	{
-		readonly List<SquareParticle> particles = new List<SquareParticle>();
+		readonly List<UIParticle> particles = new List<UIParticle>();
 
 		public override void Tick()
 		{
@@ -24,12 +24,9 @@ namespace WarriorsSnuggery.UI.Objects
 				particle.Render();
 		}
 
-		public SquareParticle Add(int duration)
+		public void Add(UIParticle particle)
 		{
-			var particle = new SquareParticle(duration);
 			particles.Add(particle);
-
-			return particle;
 		}
 	}
 }

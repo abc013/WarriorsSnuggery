@@ -11,7 +11,7 @@ namespace WarriorsSnuggery.UI.Screens
 
 		readonly Game game;
 
-		readonly SquareParticleManager particleManager;
+		readonly UIParticleManager particleManager;
 
 		readonly DisplayBar healthBar;
 		readonly DisplayBar manaBar;
@@ -28,7 +28,7 @@ namespace WarriorsSnuggery.UI.Screens
 		{
 			this.game = game;
 
-			particleManager = new SquareParticleManager();
+			particleManager = new UIParticleManager();
 			Add(particleManager);
 
 			const int shift = margin;
@@ -177,9 +177,10 @@ namespace WarriorsSnuggery.UI.Screens
 
 		void generateWinParticles()
 		{
+			const int count = 50;
+
 			var random = Program.SharedRandom;
 
-			var count = 50;
 			var width = (Width / 2);
 			if (random.Next(2) > 0)
 				width *= -1;
@@ -188,20 +189,26 @@ namespace WarriorsSnuggery.UI.Screens
 
 			for (int i = 0; i < count; i++)
 			{
-				var particle = particleManager.Add(random.Next(200) + 200);
-				particle.Radius = random.Next(300) + 200;
-				particle.Position = new CPos(width, random.Next(-500, 500), 0);
-				particle.Velocity = new CPos(random.Next(-50, 50) + randomX, -random.Next(150) - 250, 0);
-				particle.Force = new CPos(0, random.Next(10) + 5, 0);
+				var particle = new UIParticle(random.Next(200, 400))
+				{
+					Radius = random.Next(200, 500),
+					Position = new CPos(width, random.Next(-500, 500), 0),
+					Velocity = new CPos(random.Next(-50, 50) + randomX, -random.Next(150) - 250, 0),
+					Force = new CPos(0, random.Next(5, 15), 0)
+				};
+
+				static int invert(bool invert, int color) => invert ? 255 - color : color;
 
 				var color = random.Next(255);
 				var inverse = random.Next(2) > 0;
-				particle.Color = new Color(inverse ? 255 - color : color, !inverse ? 255 - color : color, random.Next(2) > 0 ? 255 - color : color, 255);
+				particle.Color = new Color(invert(inverse, color), invert(!inverse, color), invert(random.Next(2) > 0, color), 255);
 			}
 		}
 
 		void generateBloodParticles(float percentage)
 		{
+			var random = Program.SharedRandom;
+
 			var inverse = 0.3f - percentage;
 			particleCollector += (int)(inverse * 50) + 1;
 
@@ -210,12 +217,16 @@ namespace WarriorsSnuggery.UI.Screens
 
 			for (int i = 0; i < count * 2; i++)
 			{
-				var invert = i % 2 == 0;
-				var particle = particleManager.Add((int)(percentage * 200) + 300);
-				particle.Radius = Program.SharedRandom.Next(150) + (int)(inverse * inverse * 2000) + 10;
-				particle.Position = new CPos(Program.SharedRandom.Next(Width) - Width / 2, (invert ? 1 : -1) * Bottom, 0);
-				particle.Velocity = new CPos(Program.SharedRandom.Next(-2, 2), (invert ? -1 : 1) * (Program.SharedRandom.Next(10) + 10), 0);
-				particle.Color = new Color(Program.SharedRandom.Next(96) + 127, 0, 0, 192);
+				var invert = i % 2 == 0 ? -1 : 1;
+				var particle = new UIParticle((int)(percentage * 200) + 300)
+				{
+					Radius = random.Next(10, 160) + (int)(inverse * inverse * 2000),
+					Position = new CPos(random.Next(Width) - Width / 2, invert * Bottom, 0),
+					Velocity = new CPos(random.Next(-2, 2), invert * random.Next(10, 20), 0),
+					Color = new Color(random.Next(128, 192), 0, 0, 192)
+				};
+
+				particleManager.Add(particle);
 			}
 		}
 	}

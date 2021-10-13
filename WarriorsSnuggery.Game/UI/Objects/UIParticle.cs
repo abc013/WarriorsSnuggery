@@ -2,7 +2,7 @@
 
 namespace WarriorsSnuggery.UI.Objects
 {
-	public class SquareParticle : UIObject
+	public class UIParticle : UIObject
 	{
 		public bool IsDone => tick <= 0;
 		readonly int duration;
@@ -13,7 +13,7 @@ namespace WarriorsSnuggery.UI.Objects
 
 		public int Radius;
 
-		public SquareParticle(int duration)
+		public UIParticle(int duration)
 		{
 			this.duration = duration;
 			tick = duration;
