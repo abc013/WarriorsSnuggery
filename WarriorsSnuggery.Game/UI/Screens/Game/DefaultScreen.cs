@@ -19,6 +19,8 @@ namespace WarriorsSnuggery.UI.Screens
 		readonly ActorList actorList;
 		readonly SpellList spellList;
 
+		readonly UITextLine missionText;
+
 		int particleCollector;
 		int winParticle = 5;
 
@@ -62,7 +64,7 @@ namespace WarriorsSnuggery.UI.Screens
 			Add(menu);
 
 			// mission text
-			var missionText = new UITextLine(FontManager.Header, TextOffset.MIDDLE) { Position = new CPos(0, top, 0) };
+			missionText = new UITextLine(FontManager.Header, TextOffset.MIDDLE);
 			var missionContent = string.Empty;
 			switch (game.ObjectiveType)
 			{
@@ -150,6 +152,27 @@ namespace WarriorsSnuggery.UI.Screens
 
 			manaBar.WriteText($"{game.Stats.Mana}/{game.Stats.MaxMana}");
 			manaBar.DisplayPercentage = game.Stats.Mana / (float)game.Stats.MaxMana;
+		}
+
+		public override void Render()
+		{
+			const int start = 240;
+			const int duration = 120;
+
+			const int rectWidth = 640;
+
+			if (game.LocalTick < start)
+				ColorManager.DrawRect(new CPos(Right, rectWidth, 0), new CPos(Left, -rectWidth, 0), new Color(0, 0, 0, 128));
+			else if (game.LocalTick < start + duration)
+			{
+				var top = Top + 512 + margin;
+				var linearTime = (((game.LocalTick - start) / (float)duration) - 0.5f) * 2f;
+				var squaredTime = -0.25f * (linearTime * linearTime * linearTime) + 0.75f * linearTime + 0.5f;
+				missionText.Position = new CPos(0, (int)(top * squaredTime), 0);
+				ColorManager.DrawRect(new CPos(Right, rectWidth, 0) + missionText.Position, new CPos(Left, -rectWidth, 0) + missionText.Position, new Color(0, 0, 0, (int)(128 * (1f - (linearTime + 1f) / 2f))));
+			}
+
+			base.Render();
 		}
 
 		void generateWinParticles()
