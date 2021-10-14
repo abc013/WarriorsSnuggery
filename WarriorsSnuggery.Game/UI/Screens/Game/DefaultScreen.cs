@@ -161,9 +161,9 @@ namespace WarriorsSnuggery.UI.Screens
 
 			const int rectWidth = 640;
 
-			if (game.LocalTick < start)
+			if (game.LocalTick < start && game.ObjectiveType != ObjectiveType.NONE)
 				ColorManager.DrawRect(new CPos(Right, rectWidth, 0), new CPos(Left, -rectWidth, 0), new Color(0, 0, 0, 128));
-			else if (game.LocalTick < start + duration)
+			else if (game.LocalTick < start + duration && game.ObjectiveType != ObjectiveType.NONE)
 			{
 				var top = Top + 512 + margin;
 				var linearTime = (((game.LocalTick - start) / (float)duration) - 0.5f) * 2f;
