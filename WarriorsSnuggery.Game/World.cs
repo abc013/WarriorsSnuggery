@@ -95,8 +95,7 @@ namespace WarriorsSnuggery
 				if (Game.IsCampaign && !Game.IsMenu)
 					AddText(LocalPlayer.Position, 300, ActionText.ActionTextType.TRANSFORM, $"Level {Game.Save.Level}");
 
-				ShroudLayer.RevealAll = Program.DisableShroud;
-				ShroudLayer.RevealAll |= Game.IsMenu || Game.MissionType == MissionType.TUTORIAL;
+				ShroudLayer.RevealAll = Program.DisableShroud || Game.MapType.RevealMap;
 			}
 			else
 			{

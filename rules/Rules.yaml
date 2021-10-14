@@ -26,6 +26,7 @@ Trophies=
 	Trophies.yaml=
 Maps=
 	Maps_menus.yaml=
+	Maps_tutorials.yaml=
 	Maps_random.yaml=
 	Maps_random_early.yaml=
 	Maps_random_mid.yaml=

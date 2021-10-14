@@ -10,6 +10,7 @@ main1=
 			Pieces=mainmap2
 			Position=0,0
 	AllowWeapons=false
+	RevealMap=true
 
 main2=
 	MissionTypes=MAIN_MENU
@@ -24,18 +25,4 @@ main2=
 			Position=0,0
 	Ambient=200,200,180
 	AllowWeapons=false
-
-tutorial=
-	MissionTypes=TUTORIAL
-	AvailableObjectives=FIND_EXIT
-	MissionScript=TutorialScript
-	Music=in_town
-	CustomSize=48,16
-	SpawnPoint=3072, 9216, 0
-	TerrainGenerationBase=0
-		Terrain=0
-	Generators=
-		ImportantPieceGenerator=1
-			Pieces=tutorial
-			Position=0,0
-	Ambient=255,255,200
+	RevealMap=true

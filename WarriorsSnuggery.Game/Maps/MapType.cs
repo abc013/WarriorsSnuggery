@@ -33,6 +33,8 @@ namespace WarriorsSnuggery.Maps
 		public readonly CPos SpawnPoint = CPos.Zero;
 		[Desc("Allows the use of weapons on the map.")]
 		public readonly bool AllowWeapons = true;
+		[Desc("Reveals the whole map.")]
+		public readonly bool RevealMap = false;
 
 		[Desc("Ambient color of the map.")]
 		public readonly Color Ambient = Color.White;
