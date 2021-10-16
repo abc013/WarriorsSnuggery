@@ -19,10 +19,8 @@ namespace WarriorsSnuggery.UI.Screens
 		readonly ActorList actorList;
 		readonly SpellList spellList;
 
-		readonly UITextLine missionText;
-
 		int particleCollector;
-		int winParticle = 5;
+		int winParticleCount = 5;
 
 		public DefaultScreen(Game game) : base(string.Empty, 0)
 		{
@@ -63,29 +61,7 @@ namespace WarriorsSnuggery.UI.Screens
 			};
 			Add(menu);
 
-			// mission text
-			missionText = new UITextLine(FontManager.Header, TextOffset.MIDDLE);
-			var missionContent = string.Empty;
-			switch (game.ObjectiveType)
-			{
-				case ObjectiveType.FIND_EXIT:
-					missionContent = "Search for the exit and gain access to it!";
-					break;
-				case ObjectiveType.KILL_ENEMIES:
-					missionContent = "Wipe out all enemies on the map!";
-					break;
-				case ObjectiveType.SURVIVE_WAVES:
-					missionContent = "Defend your position from incoming waves!";
-					break;
-			}
-			missionText.SetText(missionContent);
-
-			if (game.Save.Level == game.Save.FinalLevel)
-				missionText.SetColor(Color.Blue);
-			else if (game.Save.Level > game.Save.FinalLevel)
-				missionText.SetColor(Color.Green);
-
-			Add(missionText);
+			Add(new MissionTextLine(game.ObjectiveType));
 
 			Add(new EnemyPointer(game));
 		}
@@ -131,7 +107,7 @@ namespace WarriorsSnuggery.UI.Screens
 
 			if (game.WinConditionsMet)
 			{
-				if (game.LocalTick % 30 == 0 && winParticle-- > 0)
+				if (game.LocalTick % 30 == 0 && winParticleCount-- > 0)
 				{
 					for (int i = 0; i < 5; i++)
 						generateWinParticles();
@@ -152,27 +128,6 @@ namespace WarriorsSnuggery.UI.Screens
 
 			manaBar.WriteText($"{game.Stats.Mana}/{game.Stats.MaxMana}");
 			manaBar.DisplayPercentage = game.Stats.Mana / (float)game.Stats.MaxMana;
-		}
-
-		public override void Render()
-		{
-			const int start = 240;
-			const int duration = 120;
-
-			const int rectWidth = 640;
-
-			if (game.LocalTick < start && game.ObjectiveType != ObjectiveType.NONE)
-				ColorManager.DrawRect(new CPos(Right, rectWidth, 0), new CPos(Left, -rectWidth, 0), new Color(0, 0, 0, 128));
-			else if (game.LocalTick < start + duration && game.ObjectiveType != ObjectiveType.NONE)
-			{
-				var top = Top + 512 + margin;
-				var linearTime = (((game.LocalTick - start) / (float)duration) - 0.5f) * 2f;
-				var squaredTime = -0.25f * (linearTime * linearTime * linearTime) + 0.75f * linearTime + 0.5f;
-				missionText.Position = new CPos(0, (int)(top * squaredTime), 0);
-				ColorManager.DrawRect(new CPos(Right, rectWidth, 0) + missionText.Position, new CPos(Left, -rectWidth, 0) + missionText.Position, new Color(0, 0, 0, (int)(128 * (1f - (linearTime + 1f) / 2f))));
-			}
-
-			base.Render();
 		}
 
 		void generateWinParticles()
@@ -227,6 +182,48 @@ namespace WarriorsSnuggery.UI.Screens
 				};
 
 				particleManager.Add(particle);
+			}
+		}
+
+		class MissionTextLine : UITextLine
+		{
+			const int start = 240;
+			const int duration = 120;
+			int tick;
+
+			public MissionTextLine(ObjectiveType type) : base(FontManager.Default, TextOffset.MIDDLE)
+			{
+				switch (type)
+				{
+					case ObjectiveType.FIND_EXIT:
+						SetText("Search for the exit and gain access to it!");
+						break;
+					case ObjectiveType.KILL_ENEMIES:
+						SetText("Wipe out all enemies on the map!");
+						break;
+					case ObjectiveType.SURVIVE_WAVES:
+						SetText("Defend your position from incoming waves!");
+						break;
+				}
+			}
+
+			public override void Render()
+			{
+				const int rectWidth = 640;
+
+				// TODO: move
+				if (tick++ < start)
+					ColorManager.DrawRect(new CPos(Right, rectWidth, 0), new CPos(Left, -rectWidth, 0), new Color(0, 0, 0, 128));
+				else if (tick < start + duration)
+				{
+					var top = Top + 512 + margin;
+					var linearTime = (((tick - start) / (float)duration) - 0.5f) * 2f;
+					var squaredTime = -0.25f * (linearTime * linearTime * linearTime) + 0.75f * linearTime + 0.5f;
+					Position = new CPos(0, (int)(top * squaredTime), 0);
+					ColorManager.DrawRect(new CPos(Right, rectWidth, 0) + Position, new CPos(Left, -rectWidth, 0) + Position, new Color(0, 0, 0, (int)(128 * (1f - (linearTime + 1f) / 2f))));
+				}
+
+				base.Render();
 			}
 		}
 	}
