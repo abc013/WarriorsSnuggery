@@ -190,6 +190,8 @@ namespace WarriorsSnuggery.UI.Screens
 			const int duration = 120;
 			int tick;
 
+			readonly bool empty;
+
 			public MissionTextLine(ObjectiveType type) : base(FontManager.Header, TextOffset.MIDDLE)
 			{
 				switch (type)
@@ -203,11 +205,17 @@ namespace WarriorsSnuggery.UI.Screens
 					case ObjectiveType.SURVIVE_WAVES:
 						SetText("Defend your position from incoming waves!");
 						break;
+					default:
+						empty = true;
+						break;
 				}
 			}
 
 			public override void Render()
 			{
+				if (empty)
+					return;
+
 				const int rectWidth = 640;
 
 				// TODO: move
