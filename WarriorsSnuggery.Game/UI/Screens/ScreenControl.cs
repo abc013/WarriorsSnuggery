@@ -116,6 +116,18 @@ namespace WarriorsSnuggery.UI.Screens
 				defaultScreen.UpdateActors();
 		}
 
+		public void ShowArrow()
+		{
+			if (cachedScreens[ScreenType.DEFAULT] is DefaultScreen defaultScreen)
+				defaultScreen.ShowArrow();
+		}
+
+		public void HideArrow()
+		{
+			if (cachedScreens[ScreenType.DEFAULT] is DefaultScreen defaultScreen)
+				defaultScreen.HideArrow();
+		}
+
 		public void OpenMessage(Message message)
 		{
 			Message.OpenMessage(message);

@@ -8,6 +8,8 @@ namespace WarriorsSnuggery.UI.Objects
 		readonly Game game;
 		readonly BatchObject pointer;
 		Actor targetedEnemy;
+		bool enabled;
+		int showTick;
 
 		public EnemyPointer(Game game)
 		{
@@ -19,19 +21,27 @@ namespace WarriorsSnuggery.UI.Objects
 		{
 			base.Tick();
 
-			if (game.IsCampaign && !game.IsMenu)
+			if (game.IsCampaign && !game.IsMenu && showTick++ == 60)
+				ShowArrow();
+
+			if (enabled)
 			{
-				if (game.World.PlayerDamagedTick < Settings.UpdatesPerSecond * 60)
-				{
-					targetedEnemy = null;
-					return;
-				}
-				
 				if (targetedEnemy != null && targetedEnemy.IsAlive)
 					reaimPointer();
 				else
 					newTarget();
 			}
+		}
+
+		public void ShowArrow()
+		{
+			enabled = true;
+		}
+
+		public void HideArrow()
+		{
+			enabled = false;
+			targetedEnemy = null;
 		}
 
 		void newTarget()

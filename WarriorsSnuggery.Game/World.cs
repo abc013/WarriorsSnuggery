@@ -41,8 +41,6 @@ namespace WarriorsSnuggery
 		public Actor LocalPlayer;
 		public bool PlayerAlive => LocalPlayer != null && LocalPlayer.IsAlive;
 
-		public int PlayerDamagedTick = 0;
-
 		public World(Game game, int seed, GameSave save)
 		{
 			Game = game;

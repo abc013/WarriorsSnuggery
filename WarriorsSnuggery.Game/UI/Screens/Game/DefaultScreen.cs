@@ -19,6 +19,8 @@ namespace WarriorsSnuggery.UI.Screens
 		readonly ActorList actorList;
 		readonly SpellList spellList;
 
+		readonly EnemyPointer pointer;
+
 		int particleCollector;
 		int winParticleCount = 5;
 
@@ -63,18 +65,15 @@ namespace WarriorsSnuggery.UI.Screens
 
 			Add(new MissionTextLine(game.ObjectiveType));
 
-			Add(new EnemyPointer(game));
+			pointer = new EnemyPointer(game);
+			Add(pointer);
 		}
 
-		public void UpdateSpells()
-		{
-			spellList.Update();
-		}
+		public void UpdateSpells() => spellList.Update();
+		public void UpdateActors() => actorList.Update();
 
-		public void UpdateActors()
-		{
-			actorList.Update();
-		}
+		public void HideArrow() => pointer.HideArrow();
+		public void ShowArrow() => pointer.ShowArrow();
 
 		public override void Hide()
 		{

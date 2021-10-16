@@ -83,8 +83,6 @@ namespace WarriorsSnuggery.Objects.Actors.Parts
 
 			foreach (var effect in self.GetActiveEffects(EffectType.MANA))
 				self.World.Game.Stats.Mana += (int)effect.Effect.Value;
-
-			self.World.PlayerDamagedTick++;
 		}
 
 		public Actor FindValidTarget(CPos pos, int team = Actor.PlayerTeam)
@@ -143,7 +141,7 @@ namespace WarriorsSnuggery.Objects.Actors.Parts
 
 		public void OnDamage(Actor damager, int damage)
 		{
-			self.World.PlayerDamagedTick = 0;
+			self.World.Game.ScreenControl.HideArrow();
 			MusicController.FadeIntenseIn(Settings.UpdatesPerSecond * 20);
 		}
 
