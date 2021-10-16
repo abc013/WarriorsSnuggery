@@ -25,7 +25,7 @@ namespace WarriorsSnuggery.UI.Screens
 
 		public readonly InfoText Text;
 
-		public byte Darkness = 255;
+		readonly GameTransitionFader fader = new GameTransitionFader();
 
 		public ScreenControl(Game game)
 		{
@@ -128,15 +128,12 @@ namespace WarriorsSnuggery.UI.Screens
 				defaultScreen.HideArrow();
 		}
 
-		public void OpenMessage(Message message)
-		{
-			Message.OpenMessage(message);
-		}
+		public void OpenMessage(Message message) => Message.OpenMessage(message);
+		public void AddInfoMessage(int duration, string message) => Text.SetMessage(duration, message);
 
-		public void AddInfoMessage(int duration, string message)
-		{
-			Text.SetMessage(duration, message);
-		}
+		public void FadeIn() => fader.FadeIn();
+		public void FadeOut() => fader.FadeOut();
+		public bool FadeDone => fader.FadeDone;
 
 		public void Tick()
 		{
@@ -145,6 +142,8 @@ namespace WarriorsSnuggery.UI.Screens
 
 			Chat.Tick();
 			Message.Tick();
+
+			fader.Tick();
 			Screen.Tick();
 
 			Text.Tick();
@@ -157,9 +156,7 @@ namespace WarriorsSnuggery.UI.Screens
 			Chat.Render();
 			Message.Render();
 
-			if (Darkness > 0)
-				ColorManager.DrawFullscreenRect(new Color(0, 0, 0, Darkness));
-
+			fader.Render();
 			Screen.Render();
 
 			Text.Render();
@@ -201,6 +198,36 @@ namespace WarriorsSnuggery.UI.Screens
 			cachedScreens.Clear();
 			Focused = null;
 			FocusedType = ScreenType.EMPTY;
+		}
+
+		class GameTransitionFader
+		{
+			public bool FadeDone => fadeOut ? maxFade == fade : 0 == fade;
+			bool fadeOut;
+
+			const byte maxFade = 15;
+			byte fade = maxFade;
+
+			public void Tick()
+			{
+				if (!FadeDone)
+				{
+					if (fadeOut)
+						fade++;
+					else
+						fade--;
+				}
+			}
+
+			public void Render()
+			{
+				var darkness = (byte)((256 / maxFade) * fade);
+				if (darkness > 0)
+					ColorManager.DrawFullscreenRect(new Color(0, 0, 0, darkness));
+			}
+
+			public void FadeIn() => fadeOut = false;
+			public void FadeOut() => fadeOut = true;
 		}
 	}
 }
