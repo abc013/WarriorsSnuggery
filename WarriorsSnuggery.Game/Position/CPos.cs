@@ -10,7 +10,7 @@ namespace WarriorsSnuggery
 		public readonly int Y;
 		public readonly int Z;
 
-		public float Dist => (float)Math.Sqrt(X * (double)X + Y * (double)Y + Z * (double)Z);
+		public float Dist => (float)Math.Sqrt(X * (long)X + Y * (long)Y + Z * (long)Z);
 
 		public long SquaredFlatDist => X * (long)X + Y * (long)Y;
 		public float FlatDist => MathF.Sqrt(SquaredFlatDist);
@@ -59,7 +59,7 @@ namespace WarriorsSnuggery
 		{
 			var ans = value / 1024;
 
-			if ((value & (1024 - 1)) > 512)
+			if ((Math.Abs(value) & (1024 - 1)) > 512)
 				return ans + Math.Sign(value);
 
 			return ans;
