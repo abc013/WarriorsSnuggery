@@ -191,7 +191,7 @@ namespace WarriorsSnuggery.UI.Screens
 			const int duration = 120;
 			int tick;
 
-			public MissionTextLine(ObjectiveType type) : base(FontManager.Default, TextOffset.MIDDLE)
+			public MissionTextLine(ObjectiveType type) : base(FontManager.Header, TextOffset.MIDDLE)
 			{
 				switch (type)
 				{
