@@ -1,4 +1,5 @@
 ![Warrior's Snuggery](https://i.imgur.com/Is8gUOz.png)
+![Continuous Integration](https://github.com/abc013/WarriorsSnuggery/actions/workflows/build.yml/badge.svg)
 # Please visit the [Warrior's Snuggery Wiki](https://github.com/abc013/WarriorsSnuggery/wiki)!
 
 ## Downloading
