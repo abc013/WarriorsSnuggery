@@ -469,7 +469,7 @@ namespace WarriorsSnuggery
 
 		public void AddInfoMessage(int duration, string text)
 		{
-			ScreenControl.AddInfoMessage(duration, text);
+			ScreenControl.ShowInformation(duration, text);
 		}
 
 		public void Dispose()

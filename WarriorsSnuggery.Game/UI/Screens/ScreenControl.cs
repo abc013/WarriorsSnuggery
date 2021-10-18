@@ -14,16 +14,14 @@ namespace WarriorsSnuggery.UI.Screens
 		public Screen Focused { get; private set; }
 		public ScreenType FocusedType { get; private set; } = ScreenType.EMPTY;
 
-		public readonly ChatBox Chat;
-		public bool ChatOpen => Chat.Visible;
+		readonly ChatBox chat;
+		public bool ChatOpen => chat.Visible;
 
-		public readonly MessageBox Message;
-		public bool MessageDisplayed => Message.Visible;
+		readonly MessageBox message;
 
-		public readonly InfoScreen Screen;
-		public static bool InfoScreenOpen => Settings.EnableInfoScreen;
+		readonly InfoScreen infoScreen = new InfoScreen();
 
-		public readonly InfoText Text;
+		readonly InfoText infoText = new InfoText();
 
 		readonly GameTransitionFader fader = new GameTransitionFader();
 
@@ -31,10 +29,8 @@ namespace WarriorsSnuggery.UI.Screens
 		{
 			this.game = game;
 
-			Chat = new ChatBox(new CPos(0, 4096, 0));
-			Message = new MessageBox(new CPos(0, 4096, 0));
-			Screen = new InfoScreen();
-			Text = new InfoText();
+			chat = new ChatBox(new CPos(0, 4096, 0));
+			message = new MessageBox(new CPos(0, 4096, 0));
 		}
 
 		public void Load()
@@ -93,7 +89,7 @@ namespace WarriorsSnuggery.UI.Screens
 
 		public bool CursorOnUI()
 		{
-			return ChatOpen && Chat.MouseOnChat || Focused != null && Focused.CursorOnUI();
+			return ChatOpen && chat.MouseOnChat || message.Visible && message.MouseOnBox || Focused != null && Focused.CursorOnUI();
 		}
 
 		public void RefreshSaveGameScreens()
@@ -128,8 +124,8 @@ namespace WarriorsSnuggery.UI.Screens
 				defaultScreen.HideArrow();
 		}
 
-		public void OpenMessage(Message message) => Message.OpenMessage(message);
-		public void AddInfoMessage(int duration, string message) => Text.SetMessage(duration, message);
+		public void ShowMessage(Message message) => this.message.OpenMessage(message);
+		public void ShowInformation(int duration, string message) => infoText.SetMessage(duration, message);
 
 		public void FadeIn() => fader.FadeIn();
 		public void FadeOut() => fader.FadeOut();
@@ -140,26 +136,26 @@ namespace WarriorsSnuggery.UI.Screens
 			if (!ChatOpen)
 				Focused?.Tick();
 
-			Chat.Tick();
-			Message.Tick();
+			chat.Tick();
+			message.Tick();
 
 			fader.Tick();
-			Screen.Tick();
+			infoScreen.Tick();
 
-			Text.Tick();
+			infoText.Tick();
 		}
 
 		public void Render()
 		{
 			Focused?.Render();
 
-			Chat.Render();
-			Message.Render();
+			chat.Render();
+			message.Render();
 
 			fader.Render();
-			Screen.Render();
+			infoScreen.Render();
 
-			Text.Render();
+			infoText.Render();
 		}
 
 		public void DebugRender()
@@ -167,12 +163,12 @@ namespace WarriorsSnuggery.UI.Screens
 			Focused?.DebugRender();
 
 			if (ChatOpen)
-				Chat.DebugRender();
+				chat.DebugRender();
 
-			if (MessageDisplayed)
-				Message.DebugRender();
+			if (message.Visible)
+				message.DebugRender();
 
-			Text.DebugRender();
+			infoText.DebugRender();
 		}
 
 		public void KeyDown(Keys key, bool isControl, bool isShift, bool isAlt)
@@ -182,14 +178,14 @@ namespace WarriorsSnuggery.UI.Screens
 				Focused?.KeyDown(key, isControl, isShift, isAlt);
 
 				if (key == Keys.Enter && isShift)
-					Chat.OpenChat();
+					chat.OpenChat();
 			}
 			else
 			{
-				Chat.KeyDown(key, isControl, isShift, isAlt);
+				chat.KeyDown(key, isControl, isShift, isAlt);
 
 				if (key == Keys.Escape || key == Keys.Enter && isShift)
-					Chat.CloseChat();
+					chat.CloseChat();
 			}
 		}
 
