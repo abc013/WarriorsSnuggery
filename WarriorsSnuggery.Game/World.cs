@@ -53,7 +53,7 @@ namespace WarriorsSnuggery
 
 			PathfinderLayer = new PathfinderLayer(bounds);
 
-			WallLayer = new WallLayer(bounds, ShroudLayer, PathfinderLayer);
+			WallLayer = new WallLayer(bounds, this);
 			PhysicsLayer = new PhysicsLayer(bounds);
 			SmudgeLayer = new SmudgeLayer();
 

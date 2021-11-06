@@ -9,6 +9,7 @@ namespace WarriorsSnuggery.Maps.Layers
 	{
 		public readonly List<Wall> WallList = new List<Wall>();
 		public readonly List<Wall> VisibleWalls = new List<Wall>();
+		readonly World world;
 		readonly ShroudLayer shroudLayer;
 		readonly PathfinderLayer pathfinderLayer;
 
@@ -16,10 +17,11 @@ namespace WarriorsSnuggery.Maps.Layers
 		public MPos Bounds { get; private set; }
 		MPos mapBounds;
 
-		public WallLayer(MPos bounds, ShroudLayer shroudLayer, PathfinderLayer pathfinderLayer)
+		public WallLayer(MPos bounds, World world)
 		{
-			this.shroudLayer = shroudLayer;
-			this.pathfinderLayer = pathfinderLayer;
+			this.world = world;
+			shroudLayer = world.ShroudLayer;
+			pathfinderLayer = world.PathfinderLayer;
 
 			mapBounds = bounds;
 			Bounds = new MPos((bounds.X + 1) * 2 + 1, (bounds.Y + 1) + 1);
@@ -57,6 +59,9 @@ namespace WarriorsSnuggery.Maps.Layers
 			pathfinderLayer.SetWall(wall, wall.LayerPosition, wall.TerrainPosition);
 			if (wall.IsHorizontal)
 				shroudLayer.SetWall(wall.TerrainPosition, wall.Type.Height, true);
+
+			if (world.Game.Editor)
+				WorldRenderer.CheckTerrainAround(wall.TerrainPosition, true);
 		}
 
 		public void Remove(MPos pos)
@@ -75,6 +80,9 @@ namespace WarriorsSnuggery.Maps.Layers
 			pathfinderLayer.SetWall(null, wall.LayerPosition, wall.TerrainPosition);
 			if (wall.IsHorizontal)
 				shroudLayer.SetWall(wall.TerrainPosition, wall.Type.Height, false);
+
+			if (world.Game.Editor)
+				WorldRenderer.CheckTerrainAround(wall.TerrainPosition, true);
 		}
 
 		void notifyNeighbors(MPos pos, bool added, bool ignoresNearby)

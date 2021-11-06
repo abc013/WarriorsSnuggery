@@ -114,9 +114,13 @@ namespace WarriorsSnuggery.Maps
 			for (int x = 0; x < Bounds.X; x++)
 			{
 				for (int y = 0; y < Bounds.Y; y++)
-				{
 					world.TerrainLayer.Set(TerrainCache.Create(world, new MPos(x, y), terrainInformation[x, y]));
+			}
 
+			for (int x = 0; x < Bounds.X; x++)
+			{
+				for (int y = 0; y < Bounds.Y; y++)
+				{
 					for (int i = 0; i < 2; i++)
 						applyWall(new MPos(x * 2 + i, y));
 				}
