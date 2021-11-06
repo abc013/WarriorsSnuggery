@@ -57,15 +57,10 @@ namespace WarriorsSnuggery
 
 		int round(int value)
 		{
-			if (value == 0)
-				return value;
-
 			var ans = value / 1024;
 
-			if (value > 0 && (value & (1024 - 1)) > 512)
-				return ans + 1;
-			else if ((-value & (1024 - 1)) > 512)
-				return ans - 1;
+			if ((Math.Abs(value) & (1024 - 1)) > 512)
+				return ans + Math.Sign(value);
 
 			return ans;
 		}
