@@ -390,7 +390,7 @@ namespace WarriorsSnuggery
 
 		void finishCounter()
 		{
-			Finish();
+			Finish(false);
 
 			ShowScreen(ScreenType.VICTORY);
 		}
@@ -398,7 +398,7 @@ namespace WarriorsSnuggery
 		public void DefeatConditionsMet()
 		{
 			script?.OnLose();
-			Finish();
+			Finish(false);
 
 			ShowScreen(ScreenType.DEFEAT);
 		}
@@ -420,14 +420,17 @@ namespace WarriorsSnuggery
 			nextLevel = true;
 		}
 
-		public void Finish()
+		public void Finish(bool fade = true)
 		{
 			script?.OnFinish();
 			Finished = true;
 			Pause(true);
 
-			ScreenControl.FadeOut();
-			MusicController.FadeIntenseOut();
+			if (fade)
+			{
+				ScreenControl.FadeOut();
+				MusicController.FadeIntenseOut();
+			}
 		}
 
 		public object[] GetScriptState(out string name)
