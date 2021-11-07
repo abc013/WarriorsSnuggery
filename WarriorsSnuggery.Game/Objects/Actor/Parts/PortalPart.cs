@@ -22,6 +22,9 @@ namespace WarriorsSnuggery.Objects.Actors.Parts
 		[Desc("Determines whether to skip the win screen and continue immediately.")]
 		public readonly bool Instant;
 
+		[Desc("Determines whether to increase the level number.")]
+		public readonly bool IncreaseLevel;
+
 		[Desc("Activate only by Player.")]
 		public readonly bool OnlyByPlayer;
 		[Desc("Activate only by the following Condition.")]
@@ -104,29 +107,29 @@ namespace WarriorsSnuggery.Objects.Actors.Parts
 					case PortalType.NEXT_LEVEL:
 						if (game.MissionType == MissionType.TEST)
 						{
-							game.ChangeLevelAfterTick(MissionType.MAIN_MENU, InteractionMode.NONE);
+							game.ChangeLevelAfterTick(MissionType.MAIN_MENU, InteractionMode.NONE, info.IncreaseLevel);
 							return true;
 						}
 
 						if (info.Instant)
 						{
-							game.ChangeLevelAfterTick(game.CampaignType);
+							game.ChangeLevelAfterTick(game.CampaignType, increaseLevel: info.IncreaseLevel);
 							return true;
 						}
 
 						game.VictoryConditionsMet(true);
 						return true;
 					case PortalType.TUTORIAL_LEVEL:
-						game.ChangeLevelAfterTick(MissionType.TUTORIAL);
+						game.ChangeLevelAfterTick(MissionType.TUTORIAL, increaseLevel: info.IncreaseLevel);
 
 						return true;
 					case PortalType.MAIN_LEVEL:
 
-						game.ChangeLevelAfterTick(game.MenuType);
+						game.ChangeLevelAfterTick(game.MenuType, increaseLevel: info.IncreaseLevel);
 
 						return true;
 					case PortalType.MAINMENU_LEVEL:
-						game.ChangeLevelAfterTick(MissionType.MAIN_MENU, InteractionMode.NONE);
+						game.ChangeLevelAfterTick(MissionType.MAIN_MENU, InteractionMode.NONE, info.IncreaseLevel);
 
 						return true;
 				}

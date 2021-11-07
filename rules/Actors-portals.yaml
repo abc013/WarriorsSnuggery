@@ -110,6 +110,7 @@ exit_pad=
 		Type=NEXT_LEVEL
 		Radius=512
 		OnlyByPlayer=yes
+		IncreaseLevel=yes
 		Condition=KeyFound
 
 instant_exit_pad=
@@ -123,6 +124,7 @@ instant_exit_pad=
 		Instant=true
 		Radius=512
 		OnlyByPlayer=yes
+		IncreaseLevel=yes
 
 mainmenu_pad=
 	Sprite=
@@ -135,7 +137,7 @@ mainmenu_pad=
 		Radius=512
 		OnlyByPlayer=yes
 
-tutorial_pad=
+instant_tutorial_pad=
 	Sprite=
 		Name=exit
 		Dimensions=24,24
@@ -145,6 +147,24 @@ tutorial_pad=
 		Type=TUTORIAL_LEVEL
 		Radius=512
 		OnlyByPlayer=yes
+
+tutorial_pad=
+	Sprite=
+		Name=exit
+		Dimensions=24,24
+		Offset=0,0,-2048
+		UseAsPreview=true
+	Sprite=
+		Name=blockedexit
+		Dimensions=24,24
+		Offset=0,0,-2048
+		Condition=!KeyFound
+	Portal=
+		Type=TUTORIAL_LEVEL
+		Radius=512
+		OnlyByPlayer=yes
+		IncreaseLevel=yes
+		Condition=KeyFound
 
 heal_pad=
 	Sprite=

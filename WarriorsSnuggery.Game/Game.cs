@@ -87,6 +87,7 @@ namespace WarriorsSnuggery
 
 		MissionType nextLevelType;
 		InteractionMode nextInteractionMode;
+		bool nextLevelIncrease;
 		bool nextLevel;
 
 		bool counterStarted;
@@ -185,7 +186,7 @@ namespace WarriorsSnuggery
 			{
 				Log.Debug("Instant game change requested. Executing now.");
 
-				Save.Update(this);
+				Save.Update(this, nextLevelIncrease);
 				GameController.CreateNext(nextLevelType, nextInteractionMode);
 
 				nextLevel = false;
@@ -413,10 +414,11 @@ namespace WarriorsSnuggery
 		}
 
 		// Instant travel to next level
-		public void ChangeLevelAfterTick(MissionType newType, InteractionMode newMode = InteractionMode.INGAME)
+		public void ChangeLevelAfterTick(MissionType newType, InteractionMode newMode = InteractionMode.INGAME, bool increaseLevel = false)
 		{
 			nextLevelType = newType;
 			nextInteractionMode = newMode;
+			nextLevelIncrease = increaseLevel;
 			nextLevel = true;
 		}
 
