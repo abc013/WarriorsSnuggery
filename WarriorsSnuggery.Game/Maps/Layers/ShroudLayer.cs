@@ -118,6 +118,39 @@ namespace WarriorsSnuggery.Maps.Layers
 			}
 		}
 
+		public void RevealShroudRectangular(byte team, CPos topleft, CPos bottomright, bool ignoreLock = false)
+		{
+			if (RevealAll)
+				return;
+
+			if (!UsedTeams.Contains(team))
+				initShroudLayer(team);
+
+			var isPlayerTeam = team == Actor.PlayerTeam;
+
+			var shroudTopLeft = (topleft * new CPos(2, 2, 0)).ToMPos();
+			var shroudBottomRight = (bottomright * new CPos(2, 2, 0)).ToMPos();
+
+			for (int x = shroudTopLeft.X ; x < shroudBottomRight.X; x++)
+			{
+				if (x >= 0 && x < Bounds.X)
+				{
+					for (int y = shroudTopLeft.Y; y < shroudBottomRight.Y; y++)
+					{
+						if (y >= 0 && y < Bounds.Y)
+							shroudRevealed[team][x, y] = true;
+
+						if (isPlayerTeam)
+							changeState(x, y, true);
+					}
+				}
+			}
+
+			// Camera automatically updates shroud, so we don't want to do that if we move anyways 
+			if (!Camera.LockedToPlayer || ignoreLock)
+				WorldRenderer.CheckVisibility(Camera.LookAt, Camera.DefaultZoom);
+		}
+
 		public void RevealShroudCircular(World world, byte team, CPos position, int height, int radius, bool ignoreLock = false)
 		{
 			if (RevealAll)
