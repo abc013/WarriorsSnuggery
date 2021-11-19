@@ -174,8 +174,8 @@ namespace WarriorsSnuggery.UI.Screens
 				var invert = i % 2 == 0 ? -1 : 1;
 				var particle = new UIParticle((int)(percentage * 200) + 300)
 				{
-					Radius = random.Next(10, 160) + (int)(inverse * inverse * 2000),
-					Position = new CPos(random.Next(Width) - Width / 2, invert * Bottom, 0),
+					Radius = random.Next(10, 160) + (int)(inverse * inverse * 3000),
+					Position = new CPos(random.Next(Width) - Width / 2, invert * Top, 0),
 					Velocity = new CPos(random.Next(-2, 2), invert * random.Next(10, 20), 0),
 					Color = new Color(random.Next(128, 192), 0, 0, 192)
 				};
