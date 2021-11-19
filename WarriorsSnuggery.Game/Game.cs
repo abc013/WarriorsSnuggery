@@ -27,6 +27,7 @@ namespace WarriorsSnuggery
 
 		public bool IsMenu => MissionType == MissionType.MAIN_MENU || MissionType == MissionType.STORY_MENU || MissionType == MissionType.NORMAL_MENU || MissionType == MissionType.TUTORIAL_MENU;
 		public bool IsCampaign => MissionType == MissionType.STORY || MissionType == MissionType.STORY_MENU || MissionType == MissionType.NORMAL || MissionType == MissionType.NORMAL_MENU;
+		public bool IsTutorial => MissionType == MissionType.TUTORIAL || MissionType == MissionType.TUTORIAL_MENU;
 
 		public MissionType MenuType
 		{
