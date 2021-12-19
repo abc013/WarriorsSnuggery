@@ -9,6 +9,8 @@ namespace WarriorsSnuggery.UI.Objects
 		readonly BatchObject pointer;
 		Actor targetedEnemy;
 		bool enabled;
+
+		const int enableTick = 60 * 60;
 		int showTick;
 
 		public EnemyPointer(Game game)
@@ -21,7 +23,7 @@ namespace WarriorsSnuggery.UI.Objects
 		{
 			base.Tick();
 
-			if (game.IsCampaign && !game.IsMenu && showTick++ == 60)
+			if (game.IsCampaign && !game.IsMenu && showTick++ == enableTick)
 				ShowArrow();
 
 			if (enabled)
