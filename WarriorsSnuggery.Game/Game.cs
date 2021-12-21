@@ -309,7 +309,7 @@ namespace WarriorsSnuggery
 			if (key == Settings.GetKey("CameraLock"))
 			{
 				if (!Camera.LockedToPlayer && World.LocalPlayer != null)
-					Camera.Position(World.LocalPlayer.Position + new CPos(0, 512, 0));
+					Camera.Position(World.LocalPlayer.Position + Camera.CameraPlayerOffset);
 
 				Camera.LockedToPlayer = !Camera.LockedToPlayer;
 			}

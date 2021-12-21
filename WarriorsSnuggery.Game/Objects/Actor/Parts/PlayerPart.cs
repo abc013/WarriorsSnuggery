@@ -136,7 +136,7 @@ namespace WarriorsSnuggery.Objects.Actors.Parts
 
 		void positionCamera(bool tinyMove)
 		{
-			Camera.Position(self.Position + new CPos(0, 512, 0), tinyMove: tinyMove);
+			Camera.Position(self.Position + Camera.CameraPlayerOffset, tinyMove: tinyMove);
 		}
 
 		public void OnDamage(Actor damager, int damage)

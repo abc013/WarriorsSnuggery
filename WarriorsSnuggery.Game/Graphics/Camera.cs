@@ -10,6 +10,7 @@ namespace WarriorsSnuggery.Graphics
 
 		public static bool Locked;
 		public static bool LockedToPlayer = true;
+		public static readonly CPos CameraPlayerOffset = new CPos(0, 512, 0);
 
 		public const float UIZoom = 16f;
 		public const float DefaultZoom = 12f;
