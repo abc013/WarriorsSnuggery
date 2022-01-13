@@ -37,7 +37,7 @@ namespace WarriorsSnuggery.Maps.Noises
 		public readonly int ID;
 		readonly float[] values;
 		readonly MPos bounds;
-		bool empty;
+		readonly bool empty;
 
 		NoiseMap()
 		{

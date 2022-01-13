@@ -96,8 +96,10 @@ namespace WarriorsSnuggery.Maps.Layers
 			var endCell = cells[end.X, end.Y];
 
 			// A* search
-			var queuedCells = new List<PathfinderCell>();
-			queuedCells.Add(startCell);
+			var queuedCells = new List<PathfinderCell>
+			{
+				startCell
+			};
 
 			var visitedCells = new List<PathfinderCell>();
 

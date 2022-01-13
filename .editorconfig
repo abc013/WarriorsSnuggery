@@ -4,4 +4,28 @@
 dotnet_diagnostic.IDE0005.severity = warning
 
 # CA2211: Not constant fields should not be public.
-dotnet_diagnostic.CA2211.severity = silent
+dotnet_diagnostic.CA2211.severity = none
+
+# IDE0055: Fix formatting
+dotnet_diagnostic.IDE0055.severity = none
+
+# IDE0040: Add accessibility modifiers
+dotnet_style_require_accessibility_modifiers = never
+
+# IDE0008: Use explicit type
+dotnet_diagnostic.IDE0008.severity = none
+
+# IDE1006: Naming Styles
+dotnet_diagnostic.IDE1006.severity = none
+
+# IDE0090: Use 'new(...)'
+csharp_style_implicit_object_creation_when_type_is_apparent = false
+
+# CA1822: Mark members as static
+dotnet_diagnostic.CA1822.severity = silent
+
+# IDE0016: Use 'throw' expression
+csharp_style_throw_expression = false
+
+# CA1304: Specify CultureInfo
+dotnet_diagnostic.CA1304.severity = none

@@ -19,7 +19,7 @@
 		public static string GetName(this DocumentationType type)
 		{
 			var name = type.ToString();
-			return name.Substring(0, 1) + name[1..].ToLower();
+			return name[..1] + name[1..].ToLower();
 		}
 	}
 }
