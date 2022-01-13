@@ -280,6 +280,8 @@ namespace WarriorsSnuggery
 
 		protected override void OnClosing(CancelEventArgs e)
 		{
+			Stopped = true;
+
 			// When using the close button in windowed mode, this will be false
 			if (!closeInitiated)
 				Program.Exit();
