@@ -514,7 +514,13 @@ namespace WarriorsSnuggery.Objects.Actors
 			}
 
 			if (EffectActive(EffectType.SHIELD))
+			{
+				World.AddText(Position, 50, ActionText.ActionTextType.SCALE, new Color(0.4f, 0.4f, 1f).ToString() + "shielded");
 				return;
+			}
+
+			if (WorldPart != null && WorldPart.ShowDamage)
+				World.AddText(Position, 50, ActionText.ActionTextType.SCALE, new Color(1f, 0.4f, 0).ToString() + damage);
 
 			Health.HP -= damage;
 

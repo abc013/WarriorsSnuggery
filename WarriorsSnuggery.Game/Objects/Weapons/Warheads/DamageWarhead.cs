@@ -135,9 +135,6 @@ namespace WarriorsSnuggery.Objects.Weapons.Warheads
 				actor.Damage(weapon.Origin, damage);
 			else
 				actor.Damage(damage);
-
-			if (actor.WorldPart != null && actor.WorldPart.ShowDamage)
-				world.AddText(actor.Position, 50, ActionText.ActionTextType.SCALE, new Color(1f, 0.4f, 0).ToString() + damage);
 		}
 	}
 }
