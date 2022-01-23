@@ -103,4 +103,18 @@
 	BlocksTerrainOverlap=true
 	IsOnFloor=true
 
+11=
+	Texture=ironfence
+		Size=24,48
+	SlightDamageTexture=ironfence_dam1
+		Size=24,48
+	HeavyDamageTexture=ironfence_dam2
+		Size=24,48
+	DamagePenetration=0.5
+	IsTransparent=true
+	ConsiderWallsNearby=true
+	Health=300
+	WallOnDeath=9
+	Armor=stone
+
 
