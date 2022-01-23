@@ -1,4 +1,5 @@
-﻿using WarriorsSnuggery.Loader;
+﻿using System;
+using WarriorsSnuggery.Loader;
 
 namespace WarriorsSnuggery.Scripting
 {
@@ -9,6 +10,12 @@ namespace WarriorsSnuggery.Scripting
 		protected readonly Game game;
 		protected readonly World world;
 
+		public Action Tick { get; protected set; } = () => { };
+		public Action OnStart { get; protected set; } = () => { };
+		public Action OnFinish { get; protected set; } = () => { };
+		public Action OnWin { get; protected set; } = () => { };
+		public Action OnLose { get; protected set; } = () => { };
+
 		public MissionScriptBase(string file, Game game)
 		{
 			File = file;
@@ -16,39 +23,8 @@ namespace WarriorsSnuggery.Scripting
 			world = game.World;
 		}
 
-		public virtual void OnStart()
-		{
+		public virtual object[] GetState() => null;
 
-		}
-
-		public virtual void OnFinish()
-		{
-
-		}
-
-		public virtual void OnWin()
-		{
-
-		}
-
-		public virtual void OnLose()
-		{
-
-		}
-
-		public virtual object[] GetState()
-		{
-			return null;
-		}
-
-		public virtual void LoadState(TextNode[] nodes)
-		{
-
-		}
-
-		public virtual void Tick()
-		{
-
-		}
+		public virtual void LoadState(TextNode[] nodes) { }
 	}
 }

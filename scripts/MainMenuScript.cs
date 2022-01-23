@@ -16,24 +16,20 @@ namespace WarriorsSnuggeryScripts
 		{
 			const int count = 3;
 			static ParticleType particleType() => ParticleCache.Types[particleTypes[Program.SharedRandom.Next(particleTypes.Length)]];
+			static CPos randomPosition(Random random, CPos bounds, int clamp) => new CPos(random.Next(clamp, bounds.X - clamp), random.Next(clamp, bounds.Y - clamp), 0);
 
 			var random = Program.SharedRandom;
 			var bounds = world.Map.Bounds.ToCPos();
 			var clamp = 3072;
 
 			for (int i = 0; i < count; i++)
-				entities.Add(new ParticleEntity(world, Program.SharedRandom, particleType(), randomPosition(random, bounds, clamp), (float)random.NextDouble(), 0.004f * random.Next(1, 20), random.Next(256, 512), random.Next(5, 20)));
+				entities.Add(new ParticleEntity(world, Program.SharedRandom, particleType(), randomPosition(random, bounds, clamp), (float)random.NextDouble(), 0.004f * random.Next(1, 20), random.Next(5, 20)));
+
+			Tick += tick;
 		}
 
-		static CPos randomPosition(Random random, CPos bounds, int clamp)
-		{
-			var x = random.Next(clamp, bounds.X - clamp);
-			var y = random.Next(clamp, bounds.Y - clamp);
 
-			return new CPos(x, y, 0);
-		}
-
-		public override void Tick()
+		void tick()
 		{
 			foreach (var entity in entities)
 				entity.Tick();
@@ -52,9 +48,8 @@ namespace WarriorsSnuggeryScripts
 			readonly float angleVelocity;
 			float angle;
 			readonly int radiusVelocity;
-			int radius;
 
-			public ParticleEntity(World world, Random random, ParticleType type, CPos position, float angle, float angleVelocity, int radius, int radiusVelocity)
+			public ParticleEntity(World world, Random random, ParticleType type, CPos position, float angle, float angleVelocity, int radiusVelocity)
 			{
 				this.world = world;
 				this.random = random;
@@ -67,7 +62,6 @@ namespace WarriorsSnuggeryScripts
 				this.angle = angle;
 				this.angleVelocity = angleVelocity;
 
-				this.radius = radius;
 				this.radiusVelocity = radiusVelocity;
 			}
 
@@ -82,7 +76,6 @@ namespace WarriorsSnuggeryScripts
 				var init = new ParticleInit(type, pos, 512);
 				world.Add(new Particle(world, init));
 
-				radius += (negate ? -1 : 1) * (random.Next(radiusVelocity) - radiusVelocity / 2);
 				position += withAngle((position - world.LocalPlayer.Position).FlatAngle + MathF.PI / 2, (negate ? -1 : 1) * radiusVelocity);
 			}
 
