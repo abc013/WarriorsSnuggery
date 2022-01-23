@@ -48,10 +48,5 @@ namespace WarriorsSnuggery.Maps.Layers
 			foreach (var terrain in renderList.OrderBy(t => t.Type.OverlapHeight))
 				terrain.Render();
 		}
-
-		public void Clear()
-		{
-			Terrain = new Terrain[0, 0];
-		}
 	}
 }

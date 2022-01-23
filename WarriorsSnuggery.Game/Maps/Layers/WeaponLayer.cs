@@ -74,7 +74,7 @@ namespace WarriorsSnuggery.Maps.Layers
 			}
 		}
 
-		public void Clear()
+		public void Dispose()
 		{
 			foreach (var weapon in Weapons)
 				weapon.Dispose();

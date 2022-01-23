@@ -151,7 +151,7 @@ namespace WarriorsSnuggery.Maps.Layers
 			VisibleParticles.RemoveAll(p => !p.Visible);
 		}
 
-		public void Clear()
+		public void Dispose()
 		{
 			foreach (var particle in Particles)
 				particle.Dispose();

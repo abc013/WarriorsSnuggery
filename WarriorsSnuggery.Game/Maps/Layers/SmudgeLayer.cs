@@ -76,7 +76,7 @@ namespace WarriorsSnuggery.Maps.Layers
 			}
 		}
 
-		public void Clear()
+		public void Dispose()
 		{
 			foreach (var smudge in Smudge)
 				smudge.Dissolved = true;

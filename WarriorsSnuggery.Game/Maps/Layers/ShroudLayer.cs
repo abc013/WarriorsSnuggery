@@ -266,11 +266,6 @@ namespace WarriorsSnuggery.Maps.Layers
 			changingShroud.RemoveAll(s => s.StateAchieved);
 		}
 
-		public void Clear()
-		{
-			Bounds = MPos.Zero;
-		}
-
 		public string ToString(byte team)
 		{
 			var shroud = team + "=";

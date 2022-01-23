@@ -329,14 +329,12 @@ namespace WarriorsSnuggery
 				o.Dispose();
 			Objects.Clear();
 
-			ActorLayer.Clear();
-			ParticleLayer.Clear();
-			WeaponLayer.Clear();
+			ActorLayer.Dispose();
+			ParticleLayer.Dispose();
+			WeaponLayer.Dispose();
 
-			TerrainLayer.Clear();
-			WallLayer.Clear();
-			ShroudLayer.Clear();
-			SmudgeLayer.Clear();
+			WallLayer.Dispose();
+			SmudgeLayer.Dispose();
 		}
 	}
 }

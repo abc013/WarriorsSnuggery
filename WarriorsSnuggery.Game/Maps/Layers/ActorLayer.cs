@@ -154,7 +154,7 @@ namespace WarriorsSnuggery.Maps.Layers
 			return actorsToAdd;
 		}
 
-		public void Clear()
+		public void Dispose()
 		{
 			foreach (var actor in Actors)
 				actor.Dispose();
