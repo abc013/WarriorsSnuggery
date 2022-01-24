@@ -10,7 +10,7 @@ You can download the source code either as zip and extract it or clone it via `g
 git clone https://github.com/abc013/WarriorsSnuggery.git
 ```
 ## Compiling
-For building Warrior's Snuggery, it is required to have [.NET 5.0](https://dotnet.microsoft.com/download/dotnet/5.0) installed (see dependencies).
+For building Warrior's Snuggery, it is required to have [.NET 6.0](https://dotnet.microsoft.com/download/dotnet/6.0) installed (see dependencies).
 Start the command line and head over to the main directory of Warrior's Snuggery. Then, execute
 ```
 dotnet build
@@ -27,7 +27,7 @@ If you want to edit and compile the code in an IDE, Visual Studio 2019 or Visual
 for any issues or build failures, feel free to [open an issue](https://github.com/abc013/WarriorsSnuggery/issues/new)!
 
 ## Dependencies
-### Framework: [.NET 5.0](https://dotnet.microsoft.com/download/dotnet/5.0)
+### Framework: [.NET 6.0](https://dotnet.microsoft.com/download/dotnet/6.0)
 - [Roslyn Compiler](https://github.com/dotnet/roslyn)
 - [OpenTK](https://github.com/opentk/opentk)
 - [OpenAL-Soft](https://openal-soft.org/)
