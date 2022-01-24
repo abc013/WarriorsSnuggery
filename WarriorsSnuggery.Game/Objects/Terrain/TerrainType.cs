@@ -8,7 +8,7 @@ namespace WarriorsSnuggery.Objects
 	{
 		public readonly ushort ID;
 
-		[Desc("Random base texture.")]
+		[Require, Desc("Random base texture.")]
 		public readonly string Sprite;
 
 		readonly TextureInfo baseTextureInfo;
@@ -67,9 +67,6 @@ namespace WarriorsSnuggery.Objects
 
 			if (documentation)
 				return;
-			
-			if (Sprite == null || Sprite == string.Empty)
-				throw new MissingNodeException(ID.ToString(), "Image");
 
 			baseTextureInfo = new TextureInfo(Sprite, TextureType.RANDOM, MasterRenderer.PixelSize, MasterRenderer.PixelSize);
 			if (Overlaps)

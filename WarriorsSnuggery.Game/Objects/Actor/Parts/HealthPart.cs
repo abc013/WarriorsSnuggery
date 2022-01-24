@@ -5,7 +5,7 @@ namespace WarriorsSnuggery.Objects.Actors.Parts
 	[Desc("Attach this to an actor to make it vulnerable and to have health.")]
 	public class HealthPartInfo : PartInfo
 	{
-		[Desc("Maximal Health to archive.")]
+		[Require, Desc("Maximal Health to archive.")]
 		public readonly int MaxHealth;
 		[Desc("Health when the actor is spawned.")]
 		public readonly int StartHealth;

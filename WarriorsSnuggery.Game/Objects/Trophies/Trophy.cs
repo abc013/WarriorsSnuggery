@@ -7,11 +7,11 @@ namespace WarriorsSnuggery.Trophies
 	[Desc("Trophies are little collectibles hidden in levels.")]
 	public class Trophy
 	{
-		[Desc("Name of the Trophy.")]
+		[Require, Desc("Name of the Trophy.")]
 		public readonly string Name;
-		[Desc("Description, e.g. what was achieved to get it.")]
+		[Require, Desc("Description, e.g. what was achieved to get it.")]
 		public readonly string Description;
-		[Desc("Image for display.")]
+		[Require, Desc("Image for display.")]
 		public readonly TextureInfo Image;
 
 		[Desc("Increases maximal mana value for the player.")]

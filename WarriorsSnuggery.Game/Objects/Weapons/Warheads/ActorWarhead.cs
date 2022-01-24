@@ -6,7 +6,7 @@ namespace WarriorsSnuggery.Objects.Weapons.Warheads
 {
 	public class ActorWarhead : IWarhead
 	{
-		[Desc("Actortype that will be spawned.")]
+		[Require, Desc("Actortype that will be spawned.")]
 		public readonly string Type;
 
 		[Desc("Actor is bot.")]

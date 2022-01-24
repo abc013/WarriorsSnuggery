@@ -8,12 +8,23 @@ namespace WarriorsSnuggery.Loader
 {
 	public static class TypeLoader
 	{
-		public static void SetValues(object obj, List<TextNode> nodes)
+		public static void SetValues(object obj, List<TextNode> nodes, bool checkRequired = true)
 		{
+			var changedFields = new List<FieldInfo>();
 			var fields = GetFields(obj);
 
 			foreach (var node in nodes)
-				SetValue(obj, fields, node);
+				changedFields.Add(SetValue(obj, fields, node));
+
+			if (!checkRequired || Settings.IgnoreRequiredAttribute)
+				return;
+
+			var requiredFields = fields.Where(f => f.GetCustomAttribute<RequireAttribute>() != null);
+			foreach (var required in requiredFields)
+            {
+				if (!changedFields.Contains(required))
+					throw new MissingFieldException($"The field '{required.Name}' in '{obj.GetType()}' is required and must be defined!");
+            }
 		}
 
 		public static IEnumerable<FieldInfo> GetFields(object obj, bool onlyReadonly = true)
@@ -26,7 +37,7 @@ namespace WarriorsSnuggery.Loader
 			return type.GetFields().Where(f => !onlyReadonly || f.IsInitOnly);
 		}
 
-		public static void SetValue(object obj, IEnumerable<PropertyInfo> fields, TextNode node)
+		public static PropertyInfo SetValue(object obj, IEnumerable<PropertyInfo> fields, TextNode node)
 		{
 			var field = fields.FirstOrDefault(f => f.Name == node.Key);
 
@@ -34,9 +45,11 @@ namespace WarriorsSnuggery.Loader
 				throw new UnknownNodeException(node.Key, obj.GetType().Name);
 
 			field.SetValue(obj, node.Convert(field.PropertyType));
+
+			return field;
 		}
 
-		public static void SetValue(object obj, IEnumerable<FieldInfo> fields, TextNode node)
+		public static FieldInfo SetValue(object obj, IEnumerable<FieldInfo> fields, TextNode node)
 		{
 			var field = fields.FirstOrDefault(f => f.Name == node.Key);
 
@@ -44,6 +57,8 @@ namespace WarriorsSnuggery.Loader
 				throw new UnknownNodeException(node.Key, obj.GetType().Name);
 
 			field.SetValue(obj, node.Convert(field.FieldType));
+
+			return field;
 		}
 
 		public static PartInfo GetPart(int currentPart, TextNode parent)

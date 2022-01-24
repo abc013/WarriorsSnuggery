@@ -1,9 +1,9 @@
 ﻿namespace WarriorsSnuggery.Objects.Actors.Parts
 {
-	[Desc("This part enables actors to have armor. .")]
+	[Desc("This part enables actors to have armor.")]
 	public class ArmorPartInfo : PartInfo
 	{
-		[Desc("Name of the armor.")]
+		[Require, Desc("Name of the armor.")]
 		public readonly string Name;
 
 		public override ActorPart Create(Actor self)

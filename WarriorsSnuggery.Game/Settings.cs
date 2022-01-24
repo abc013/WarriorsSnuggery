@@ -19,6 +19,9 @@ namespace WarriorsSnuggery
 		public static float ThreadSleepFactor;
 
 		[DefaultValue(false)]
+		public static bool IgnoreRequiredAttribute;
+
+		[DefaultValue(false)]
 		public static bool LogTimeMeasuring;
 
 		[DefaultValue(4096)]

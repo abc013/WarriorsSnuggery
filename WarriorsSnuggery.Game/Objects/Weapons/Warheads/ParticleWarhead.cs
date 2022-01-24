@@ -6,7 +6,7 @@ namespace WarriorsSnuggery.Objects.Weapons.Warheads
 {
 	public class ParticleWarhead : IWarhead
 	{
-		[Desc("Particlespawner that will be used to spawn the particles.")]
+		[Require, Desc("Particlespawner that will be used to spawn the particles.")]
 		public readonly ParticleSpawner Spawner;
 
 		public ParticleWarhead(List<TextNode> nodes)

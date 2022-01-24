@@ -6,7 +6,7 @@ namespace WarriorsSnuggery.Objects.Actors.Parts
 	[Desc("Attach this to the actor type to activate bot functions.")]
 	public class BotPartInfo : PartInfo
 	{
-		[Desc("Behavior of the bot. This is required, otherwise the game will crash!")]
+		[Require, Desc("Behavior of the bot.")]
 		public readonly BotBehaviorType Behavior;
 
 		public BotPartInfo(PartInitSet set) : base(set) { }

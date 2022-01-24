@@ -9,7 +9,7 @@ namespace WarriorsSnuggery.Objects
 	{
 		public readonly short ID;
 
-		[Desc("Texture of the wall.")]
+		[Require, Desc("Texture of the wall.")]
 		public readonly TextureInfo Texture;
 
 		[Desc("Texture of the wall when slightly damaged.")]
@@ -60,9 +60,6 @@ namespace WarriorsSnuggery.Objects
 
 			if (documentation)
 				return;
-
-			if (Texture == null)
-				throw new MissingNodeException("[Wall] " + id, "Image");
 
 			checkTextures(Texture);
 

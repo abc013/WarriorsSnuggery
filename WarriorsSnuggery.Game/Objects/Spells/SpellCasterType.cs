@@ -9,7 +9,7 @@ namespace WarriorsSnuggery.Spells
 	{
 		[Desc("Spells that have to be unlocked before this one can be unlocked.")]
 		public readonly string[] Before;
-		[Desc("Graphical position in the spelltree.")]
+		[Require, Desc("Graphical position in the spelltree.")]
 		public readonly MPos Position;
 
 		[Desc("Determines the amount of money which has to be spent in order to buy this spell.")]
@@ -29,10 +29,10 @@ namespace WarriorsSnuggery.Spells
 		public readonly string InnerName;
 		public readonly string Name;
 
-		[Desc("Spell effect.")]
+		[Require, Desc("Spell effect.")]
 		public readonly Spell Spell;
 
-		[Desc("Icon of the spell.")]
+		[Require, Desc("Icon of the spell.")]
 		public readonly TextureInfo Icon;
 
 		public CPos VisualPosition => new CPos(-6584, -2048, 0) + new CPos(Position.X * 1024, Position.Y * 1024, 0);

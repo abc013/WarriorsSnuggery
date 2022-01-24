@@ -11,10 +11,10 @@ namespace WarriorsSnuggery.Objects.Actors.Parts
 	{
 		public readonly Texture[] Textures;
 
-		[Desc("Name of the texture file.")]
+		[Require, Desc("Name of the texture file.")]
 		public readonly string Name;
 
-		[Desc("Size of a single frame.")]
+		[Require, Desc("Size of a single frame.")]
 		public readonly MPos Dimensions;
 
 		[Desc("Count of facings that the animation has.")]

@@ -6,7 +6,7 @@ namespace WarriorsSnuggery.Objects.Actors.Parts
 	[Desc("Adds a weapon to the object.")]
 	public class WeaponPartInfo : PartInfo
 	{
-		[Desc("Name of the weapon.")]
+		[Require, Desc("Name of the weapon.")]
 		public readonly WeaponType Type;
 		[Desc("Offset of the shoot point relative to the object's center.")]
 		public readonly CPos Offset;

@@ -7,7 +7,7 @@ namespace WarriorsSnuggery.Objects.Weapons.Projectiles
 {
 	public class BeamProjectile : IProjectile
 	{
-		[Desc("Texture of the Beam.")]
+		[Require, Desc("Texture of the Beam.")]
 		public readonly TextureInfo Beam;
 		[Desc("Texture of the Beam.", "This texture will show up when launching the weapon.")]
 		public readonly TextureInfo BeamStartUp;

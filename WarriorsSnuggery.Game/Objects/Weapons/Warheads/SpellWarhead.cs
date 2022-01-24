@@ -7,7 +7,7 @@ namespace WarriorsSnuggery.Objects.Weapons.Warheads
 {
 	public class SpellWarhead : IWarhead
 	{
-		[Desc("Spell to be casted on the actors.")]
+		[Require, Desc("Spell to be casted on the actors.")]
 		public readonly Spell Spell;
 
 		[Desc("Ignore walls that are inbetween detonation origin and actor.")]

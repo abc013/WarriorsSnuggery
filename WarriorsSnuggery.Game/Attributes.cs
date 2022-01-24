@@ -4,6 +4,9 @@ using System.Reflection;
 
 namespace WarriorsSnuggery
 {
+	[AttributeUsage(AttributeTargets.Field)]
+	public class RequireAttribute : Attribute { }
+
 	[AttributeUsage(AttributeTargets.Class | AttributeTargets.Field)]
 	public class DescAttribute : Attribute
 	{

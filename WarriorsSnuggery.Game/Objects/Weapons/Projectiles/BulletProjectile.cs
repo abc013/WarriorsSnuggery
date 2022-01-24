@@ -7,7 +7,7 @@ namespace WarriorsSnuggery.Objects.Weapons.Projectiles
 {
 	public class BulletProjectile : IProjectile
 	{
-		[Desc("Texture of the Weapon.")]
+		[Require, Desc("Texture of the Weapon.")]
 		public readonly TextureInfo Texture;
 
 		[Desc("Particles that are emitted at the weapons travel time.")]

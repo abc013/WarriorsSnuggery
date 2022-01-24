@@ -13,17 +13,18 @@ namespace WarriorsSnuggery.Docs
 		public static void Initialize()
 		{
 			assembly = Assembly.Load("WarriorsSnuggery");
+			Settings.IgnoreRequiredAttribute = true;
 		}
 
 		public static void Write(Type type, object[] args)
 		{
-			var attrib = type.GetCustomAttribute(typeof(DescAttribute));
-			var description = attrib == null ? null : ((DescAttribute)attrib).Desc;
+			var attrib = type.GetCustomAttribute<DescAttribute>();
+			var description = attrib?.Desc;
 			if (description != null)
 				HTMLWriter.WriteDescription(description);
 
 			var obj = Activator.CreateInstance(type, args);
-			var variables = type.GetFields().Where(f => f.IsInitOnly && f.GetCustomAttribute(typeof(DescAttribute)) != null);
+			var variables = type.GetFields().Where(f => f.IsInitOnly && (f.GetCustomAttribute<DescAttribute>() != null || f.GetCustomAttribute<RequireAttribute>() != null));
 			var cells = new List<TableCell>();
 
 			foreach (var variable in variables)
@@ -40,19 +41,31 @@ namespace WarriorsSnuggery.Docs
 
 		static string[] getDescription(FieldInfo variable)
 		{
-			var desc = ((DescAttribute)variable.GetCustomAttribute(typeof(DescAttribute))).Desc;
+			var desc = variable.GetCustomAttribute<DescAttribute>()?.Desc;
 
 			var type = variable.FieldType.IsArray ? variable.FieldType.GetElementType() : variable.FieldType;
-			if (!type.IsEnum)
-				return desc;
 
-			var enumNames = Enum.GetNames(type);
-			var newDesc = "Available options: " + string.Join(", ", enumNames);
+			string enumDesc = null;
+			if (type.IsEnum)
+				enumDesc = "Available options: " + string.Join(", ", Enum.GetNames(type));
 
-			var array = new string[desc.Length + 1];
-			for (int i = 0; i < desc.Length; i++)
-				array[i] = desc[i];
-			array[^1] = newDesc;
+			string requiredDesc = null;
+			if (variable.GetCustomAttribute<RequireAttribute>() != null)
+				requiredDesc = "<i style='color: #d22'>This field must be declared.</i>";
+
+			var array = new string[(desc != null ? desc.Length : 0) + (enumDesc != null ? 1 : 0) + (requiredDesc != null ? 1 : 0)];
+
+			if (desc != null)
+			{
+				for (int i = 0; i < desc.Length; i++)
+					array[i] = desc[i];
+			}
+
+			if (enumDesc != null)
+				array[^2] = enumDesc;
+
+			if (requiredDesc != null)
+				array[^1] = requiredDesc;
 
 			return array;
 		}

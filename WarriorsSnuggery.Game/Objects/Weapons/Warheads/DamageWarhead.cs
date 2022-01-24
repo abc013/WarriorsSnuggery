@@ -9,7 +9,7 @@ namespace WarriorsSnuggery.Objects.Weapons.Warheads
 {
 	public class DamageWarhead : IWarhead
 	{
-		[Desc("Damage to be dealt.")]
+		[Require, Desc("Damage to be dealt.")]
 		public readonly int Damage;
 
 		[Desc("Determines whether damage affects only walls.")]

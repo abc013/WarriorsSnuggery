@@ -6,7 +6,7 @@ namespace WarriorsSnuggery.Objects.Weapons.Warheads
 {
 	public class SmudgeWarhead : IWarhead
 	{
-		[Desc("Texture of the Smudge that will be left behind from impact.")]
+		[Require, Desc("Texture of the Smudge that will be left behind from impact.")]
 		public readonly TextureInfo Texture;
 
 		[Desc("How long it will need to dissolve the smudge.")]

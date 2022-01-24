@@ -3,7 +3,7 @@
 	[Desc("Plays a sound while the actor is alive.")]
 	public class IdleSoundPartInfo : PartInfo
 	{
-		[Desc("Sound to use. This is required.")]
+		[Require, Desc("Sound to use.")]
 		public readonly SoundType Sound;
 
 		public IdleSoundPartInfo(PartInitSet set) : base(set) { }

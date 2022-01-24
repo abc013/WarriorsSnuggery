@@ -5,7 +5,7 @@ namespace WarriorsSnuggery.Objects.Weapons.Warheads
 {
 	public class SoundWarhead : IWarhead
 	{
-		[Desc("Sound to play on impact.")]
+		[Require, Desc("Sound to play on impact.")]
 		public readonly SoundType Sound;
 
 		public SoundWarhead(List<TextNode> nodes)
