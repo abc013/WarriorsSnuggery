@@ -1,4 +1,4 @@
-﻿namespace WarriorsSnuggery.Objects
+﻿namespace WarriorsSnuggery.Graphics
 {
 	public enum TextOffset
 	{

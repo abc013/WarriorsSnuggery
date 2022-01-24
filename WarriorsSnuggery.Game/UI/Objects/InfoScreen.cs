@@ -1,5 +1,4 @@
 ﻿using WarriorsSnuggery.Graphics;
-using WarriorsSnuggery.Objects;
 
 namespace WarriorsSnuggery.UI.Objects
 {
@@ -7,23 +6,23 @@ namespace WarriorsSnuggery.UI.Objects
 	{
 		public bool Visible => Settings.EnableInfoScreen;
 
-		readonly UITextLine version;
-		readonly UITextLine visibility;
-		readonly UITextLine tick;
-		readonly UITextLine render;
+		readonly UIText version;
+		readonly UIText visibility;
+		readonly UIText tick;
+		readonly UIText render;
 
 		public InfoScreen()
 		{
 			var corner = (int)(WindowInfo.UnitWidth * 512) - 128;
-			version = new UITextLine(FontManager.Default, TextOffset.RIGHT)
+			version = new UIText(FontManager.Default, TextOffset.RIGHT)
 			{
 				Position = new CPos(corner, 6192, 0),
 				Color = Color.Yellow
 			};
 			version.SetText(Settings.Version);
-			visibility = new UITextLine(FontManager.Default, TextOffset.RIGHT) { Position = new CPos(corner, 6692, 0) };
-			tick = new UITextLine(FontManager.Default, TextOffset.RIGHT) { Position = new CPos(corner, 7692, 0) };
-			render = new UITextLine(FontManager.Default, TextOffset.RIGHT) { Position = new CPos(corner, 7192, 0) };
+			visibility = new UIText(FontManager.Default, TextOffset.RIGHT) { Position = new CPos(corner, 6692, 0) };
+			tick = new UIText(FontManager.Default, TextOffset.RIGHT) { Position = new CPos(corner, 7692, 0) };
+			render = new UIText(FontManager.Default, TextOffset.RIGHT) { Position = new CPos(corner, 7192, 0) };
 		}
 
 		public void Tick()
@@ -39,13 +38,13 @@ namespace WarriorsSnuggery.UI.Objects
 				return;
 
 			var tps = PerfInfo.AverageTPS();
-			tick.SetColor(getColor(tps, Settings.UpdatesPerSecond));
+			tick.Color = getColor(tps, Settings.UpdatesPerSecond);
 			tick.SetText("Tick " + tps.ToString("F1") + " @ " + PerfInfo.TMS.ToString("00") + " ms");
 
 			var frameCount = Settings.FrameLimiter == 0 ? ScreenInfo.ScreenRefreshRate : Settings.FrameLimiter;
 
 			var fps = PerfInfo.AverageFPS();
-			render.SetColor(getColor(fps, frameCount));
+			render.Color = getColor(fps, frameCount);
 			render.SetText("Render " + fps.ToString("F1") + " @ " + PerfInfo.FMS.ToString("00") + " ms");
 		}
 

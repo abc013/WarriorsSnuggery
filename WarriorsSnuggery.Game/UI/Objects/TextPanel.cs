@@ -6,7 +6,7 @@ namespace WarriorsSnuggery.UI.Objects
 {
 	public class TextPanel : Panel
 	{
-		readonly List<UITextLine> lines = new List<UITextLine>();
+		readonly List<UIText> lines = new List<UIText>();
 
 		readonly Font font;
 
@@ -30,8 +30,8 @@ namespace WarriorsSnuggery.UI.Objects
 			if (timeStamp)
 				message = DateTime.Now.ToString("[HH:mm] ") + message;
 
-			var line = new UITextLine(font);
-			line.WriteText(message);
+			var line = new UIText(font);
+			line.SetText(message);
 			lines.Add(line);
 
 			moveLines();

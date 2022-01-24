@@ -1,6 +1,5 @@
 ﻿using OpenTK.Windowing.GraphicsLibraryFramework;
 using WarriorsSnuggery.Graphics;
-using WarriorsSnuggery.Objects;
 using WarriorsSnuggery.UI.Objects;
 
 namespace WarriorsSnuggery.UI.Screens
@@ -8,7 +7,7 @@ namespace WarriorsSnuggery.UI.Screens
 	public class LifeShopScreen : Screen
 	{
 		readonly Game game;
-		readonly UITextLine information, price;
+		readonly UIText information, price;
 
 		public LifeShopScreen(Game game) : base("Lifes")
 		{
@@ -18,10 +17,10 @@ namespace WarriorsSnuggery.UI.Screens
 			Add(new MoneyDisplay(game) { Position = new CPos(Left + 2048, Bottom - 1024, 0) });
 			Add(new HealthDisplay(game) { Position = new CPos(0, -2048, 0) });
 
-			information = new UITextLine(FontManager.Default, TextOffset.MIDDLE) { Position = new CPos(0, -2048 - 712, 0) };
+			information = new UIText(FontManager.Default, TextOffset.MIDDLE) { Position = new CPos(0, -2048 - 712, 0) };
 			Add(information);
 
-			price = new UITextLine(FontManager.Default, TextOffset.MIDDLE) { Position = new CPos(0, 0, 0) };
+			price = new UIText(FontManager.Default, TextOffset.MIDDLE) { Position = new CPos(0, 0, 0) };
 			Add(price);
 
 			Add(new Button("Buy life", "wooden", buyLife) { Position = new CPos(0, 1024, 0) });
@@ -58,17 +57,17 @@ namespace WarriorsSnuggery.UI.Screens
 
 			if (stats.Lifes == stats.MaxLifes)
 			{
-				information.SetColor(Color.Green);
+				information.Color = Color.Green;
 				information.SetText("Max life limit reached!");
 			}
 			else
 			{
-				information.SetColor(Color.White);
+				information.Color = Color.White;
 				information.SetText($"Current: {stats.Lifes}/{stats.MaxLifes}");
 			}
 
 			var nextPrice = stats.NextLifePrice();
-			price.SetColor(nextPrice > stats.Money ? Color.Red : Color.Green);
+			price.Color = nextPrice > stats.Money ? Color.Red : Color.Green;
 			price.SetText($"Current Price: {nextPrice}");
 		}
 

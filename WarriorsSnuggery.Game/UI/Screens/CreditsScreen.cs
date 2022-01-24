@@ -3,7 +3,6 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using WarriorsSnuggery.Graphics;
-using WarriorsSnuggery.Objects;
 
 namespace WarriorsSnuggery.UI.Screens
 {
@@ -11,7 +10,7 @@ namespace WarriorsSnuggery.UI.Screens
 	{
 		readonly Game game;
 
-		readonly List<UITextLine> lines = new List<UITextLine>();
+		readonly List<UIText> lines = new List<UIText>();
 
 		readonly UIImage wsImage;
 		int wsImageTick;
@@ -39,7 +38,7 @@ namespace WarriorsSnuggery.UI.Screens
 
 			base.Tick();
 
-			var toRemove = new List<UITextLine>();
+			var toRemove = new List<UIText>();
 
 			foreach (var line in lines)
 			{
@@ -54,7 +53,7 @@ namespace WarriorsSnuggery.UI.Screens
 			currentHeight += movement;
 			if (currentHeight >= 0 && currentLine < lineData.Length)
 			{
-				var newLine = new UITextLine(FontManager.Default, TextOffset.MIDDLE)
+				var newLine = new UIText(FontManager.Default, TextOffset.MIDDLE)
 				{
 					Position = new CPos(0, Bottom + lineHeight / 2, 0)
 				};
@@ -77,7 +76,7 @@ namespace WarriorsSnuggery.UI.Screens
 
 				if (wsImageTick == 900)
 				{
-					var text = new UITextLine(FontManager.Default, TextOffset.MIDDLE)
+					var text = new UIText(FontManager.Default, TextOffset.MIDDLE)
 					{
 						Color = Color.Green,
 						Position = new CPos(0, 2048, 0)

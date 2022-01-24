@@ -2,7 +2,6 @@ using OpenTK.Windowing.GraphicsLibraryFramework;
 using WarriorsSnuggery.Graphics;
 using WarriorsSnuggery.Maps;
 using WarriorsSnuggery.Maps.Pieces;
-using WarriorsSnuggery.Objects;
 using WarriorsSnuggery.UI.Objects;
 
 namespace WarriorsSnuggery.UI.Screens
@@ -96,7 +95,7 @@ namespace WarriorsSnuggery.UI.Screens
 			Add(new Button("Cancel", "wooden", () => { ActiveScreen = false; }) { Position = new CPos(4096, 6144, 0) });
 			Add(new Button("Create", "wooden", create) { Position = new CPos(-4096, 6144, 0) });
 
-			var size = new UITextLine(FontManager.Default, TextOffset.MIDDLE) { Position = new CPos(0, -1024, 0) };
+			var size = new UIText(FontManager.Default, TextOffset.MIDDLE) { Position = new CPos(0, -1024, 0) };
 			size.SetText("Size of Piece");
 			Add(size);
 
@@ -120,7 +119,7 @@ namespace WarriorsSnuggery.UI.Screens
 			};
 			Add(name);
 
-			var warning = new UITextLine(FontManager.Default, TextOffset.MIDDLE)
+			var warning = new UIText(FontManager.Default, TextOffset.MIDDLE)
 			{
 				Position = new CPos(0, 2548, 0),
 				Color = Color.Red

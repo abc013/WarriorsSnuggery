@@ -1,6 +1,5 @@
 using System;
 using WarriorsSnuggery.Graphics;
-using WarriorsSnuggery.Objects;
 using WarriorsSnuggery.UI.Objects;
 
 namespace WarriorsSnuggery.UI.Screens
@@ -119,14 +118,14 @@ namespace WarriorsSnuggery.UI.Screens
 			{
 				var percentage = player.Health.RelativeHP;
 
-				healthBar.WriteText($"{player.Health.HP}/{player.Health.MaxHP}");
+				healthBar.SetText($"{player.Health.HP}/{player.Health.MaxHP}");
 				healthBar.DisplayPercentage = percentage;
 
 				if (percentage < 0.3f)
 					generateBloodParticles(percentage);
 			}
 
-			manaBar.WriteText($"{game.Stats.Mana}/{game.Stats.MaxMana}");
+			manaBar.SetText($"{game.Stats.Mana}/{game.Stats.MaxMana}");
 			manaBar.DisplayPercentage = game.Stats.Mana / (float)game.Stats.MaxMana;
 		}
 
@@ -185,7 +184,7 @@ namespace WarriorsSnuggery.UI.Screens
 			}
 		}
 
-		class MissionTextLine : UITextLine
+		class MissionTextLine : UIText
 		{
 			const int start = 240;
 			const int duration = 120;

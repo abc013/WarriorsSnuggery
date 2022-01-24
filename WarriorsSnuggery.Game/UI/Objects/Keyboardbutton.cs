@@ -1,6 +1,5 @@
 using OpenTK.Windowing.GraphicsLibraryFramework;
 using WarriorsSnuggery.Graphics;
-using WarriorsSnuggery.Objects;
 
 namespace WarriorsSnuggery.UI.Objects
 {
@@ -29,7 +28,7 @@ namespace WarriorsSnuggery.UI.Objects
 			}
 		}
 
-		readonly UITextLine keyDisplay;
+		readonly UIText keyDisplay;
 
 		int blinkTick;
 		bool selected;
@@ -40,7 +39,7 @@ namespace WarriorsSnuggery.UI.Objects
 		{
 			Key = key;
 
-			keyDisplay = new UITextLine(FontManager.Default, TextOffset.MIDDLE);
+			keyDisplay = new UIText(FontManager.Default, TextOffset.MIDDLE);
 			keyDisplay.SetText(key);
 
 			Bounds = new MPos(width + 512, height);

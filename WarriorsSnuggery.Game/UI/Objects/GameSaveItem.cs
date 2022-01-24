@@ -19,9 +19,9 @@ namespace WarriorsSnuggery.UI.Objects
 
 		public readonly GameSave Save;
 
-		readonly UITextLine name;
-		readonly UITextLine score;
-		readonly UITextLine level;
+		readonly UIText name;
+		readonly UIText score;
+		readonly UIText level;
 
 		public GameSaveItem(GameSave save, int width, Action action) : base(new BatchObject(UISpriteManager.Get("UI_save")[0]), new MPos(width, 1024), save.Name, new[] { Color.Grey + "Difficulty: " + save.Difficulty, Color.Grey + "Money: " + save.Money }, action)
 		{
@@ -30,20 +30,20 @@ namespace WarriorsSnuggery.UI.Objects
 			Save = save;
 			Scale *= 2;
 
-			name = new UITextLine(FontManager.Default)
+			name = new UIText(FontManager.Default)
 			{
 				Position = pos - new CPos(3072, 512, 0)
 			};
 			name.SetText(save.Name);
 
-			score = new UITextLine(FontManager.Default)
+			score = new UIText(FontManager.Default)
 			{
 				Position = pos - new CPos(3072, 0, 0),
 				Color = Color.Yellow
 			};
 			score.SetText(save.CalculateScore());
 
-			level = new UITextLine(FontManager.Header)
+			level = new UIText(FontManager.Header)
 			{
 				Position = pos - new CPos(-1152, 0, 0),
 				Scale = 1.4f

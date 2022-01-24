@@ -1,6 +1,5 @@
 ﻿using OpenTK.Windowing.GraphicsLibraryFramework;
 using WarriorsSnuggery.Graphics;
-using WarriorsSnuggery.Objects;
 using WarriorsSnuggery.UI.Objects;
 
 namespace WarriorsSnuggery.UI.Screens
@@ -23,31 +22,31 @@ namespace WarriorsSnuggery.UI.Screens
 
 			var type = PanelCache.Types["wooden"];
 
-			var tPause = new UITextLine(font, TextOffset.RIGHT) { Position = new CPos(-1024, -4096, 0) };
+			var tPause = new UIText(font, TextOffset.RIGHT) { Position = new CPos(-1024, -4096, 0) };
 			tPause.SetText("Pause/unpause");
 			Add(tPause);
 			pause = new KeyboardButton(Settings.KeyDictionary["Pause"], type) { Position = new CPos(1536, -4096, 0) };
 			Add(pause);
 
-			var tLock = new UITextLine(font, TextOffset.RIGHT) { Position = new CPos(-1024, -3072, 0) };
+			var tLock = new UIText(font, TextOffset.RIGHT) { Position = new CPos(-1024, -3072, 0) };
 			tLock.SetText("Toggle camera lock");
 			Add(tLock);
 			@lock = new KeyboardButton(Settings.KeyDictionary["CameraLock"], type) { Position = new CPos(1536, -3072, 0) };
 			Add(@lock);
 
-			var tactivate = new UITextLine(font, TextOffset.RIGHT) { Position = new CPos(-1024, -2048, 0) };
+			var tactivate = new UIText(font, TextOffset.RIGHT) { Position = new CPos(-1024, -2048, 0) };
 			tactivate.SetText("Activate spell/actor");
 			Add(tactivate);
 			activate = new KeyboardButton(Settings.KeyDictionary["Activate"], type) { Position = new CPos(1536, -2048, 0) };
 			Add(activate);
 
-			var tMove = new UITextLine(font, TextOffset.RIGHT) { Position = new CPos(-3072, -1024, 0) };
+			var tMove = new UIText(font, TextOffset.RIGHT) { Position = new CPos(-3072, -1024, 0) };
 			tMove.SetText("Movement");
 			Add(tMove);
 			var line = 0;
 			foreach (var dir in new[] { "Up", "Down", "Left", "Right", "Above", "Below" })
 			{
-				var text = new UITextLine(font, TextOffset.RIGHT) { Position = new CPos(-1024, -1024 + line * 640, 0) };
+				var text = new UIText(font, TextOffset.RIGHT) { Position = new CPos(-1024, -1024 + line * 640, 0) };
 				text.SetText(dir);
 				line++;
 				Add(text);
@@ -65,13 +64,13 @@ namespace WarriorsSnuggery.UI.Screens
 			below = new KeyboardButton(Settings.KeyDictionary["MoveBelow"], type) { Position = new CPos(1536, -1024 + 3200, 0) };
 			Add(below);
 
-			var tCam = new UITextLine(font, TextOffset.RIGHT) { Position = new CPos(-3072, 3072, 0) };
+			var tCam = new UIText(font, TextOffset.RIGHT) { Position = new CPos(-3072, 3072, 0) };
 			tCam.SetText("Camera");
 			Add(tCam);
 			line = 0;
 			foreach (var dir in new[] { "Up", "Down", "Left", "Right" })
 			{
-				var text = new UITextLine(font, TextOffset.RIGHT) { Position = new CPos(-1024, 3072 + line * 640, 0) };
+				var text = new UIText(font, TextOffset.RIGHT) { Position = new CPos(-1024, 3072 + line * 640, 0) };
 				text.SetText(dir);
 				line++;
 				Add(text);

@@ -1,5 +1,4 @@
 using WarriorsSnuggery.Graphics;
-using WarriorsSnuggery.Objects;
 using WarriorsSnuggery.UI.Objects;
 
 namespace WarriorsSnuggery.UI.Screens
@@ -8,13 +7,13 @@ namespace WarriorsSnuggery.UI.Screens
 	{
 		public DefeatScreen(Game game) : base("Defeat.")
 		{
-			Title.SetColor(Color.Red);
+			Title.Color = Color.Red;
 
-			var score = new UITextLine(FontManager.Default, TextOffset.MIDDLE) { Position = new CPos(0, 1024, 0) };
-			score.WriteText("Achieved Score: " + Color.Blue + game.Save.CalculateScore());
+			var score = new UIText(FontManager.Default, TextOffset.MIDDLE) { Position = new CPos(0, 1024, 0) };
+			score.SetText("Achieved Score: " + Color.Blue + game.Save.CalculateScore());
 			Add(score);
-			var deaths = new UITextLine(FontManager.Default, TextOffset.MIDDLE) { Position = new CPos(0, 2048, 0) };
-			deaths.WriteText(Color.Red + "Deaths: " + game.Save.Deaths);
+			var deaths = new UIText(FontManager.Default, TextOffset.MIDDLE) { Position = new CPos(0, 2048, 0) };
+			deaths.SetText(Color.Red + "Deaths: " + game.Save.Deaths);
 			Add(deaths);
 
 			if (game.Save.Hardcore)

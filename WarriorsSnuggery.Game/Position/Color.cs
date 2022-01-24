@@ -85,6 +85,36 @@ namespace WarriorsSnuggery
 			return $"COLOR({R} | {G} | {B} | {A})";
 		}
 
+		public static bool FromString(string text, out Color color)
+		{
+			color = Black;
+
+			text = text.Remove(0, 6);
+			text = text.Replace(')', ' ');
+
+			var values = text.Split('|');
+
+
+			if (values.Length != 3 && values.Length != 4)
+				return false;
+
+			if (!float.TryParse(values[0], out var r))
+				return false;
+
+			if (!float.TryParse(values[1], out var g))
+				return false;
+
+			if (!float.TryParse(values[2], out var b))
+				return false;
+
+			var a = 1.0f;
+			if (values.Length == 4 && !float.TryParse(values[3], out a))
+				return false;
+
+			color = new Color(r, g, b, a);
+			return true;
+		}
+
 		public override bool Equals(object obj)
 		{
 			return obj is Color color && color == this;

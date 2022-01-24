@@ -14,7 +14,7 @@ namespace WarriorsSnuggery.Objects
 		int current;
 		readonly int length;
 		readonly CPos velocity;
-		readonly TextBlock text;
+		readonly TextObject text;
 		readonly ActionTextType type;
 
 		public ActionText(CPos pos, CPos velocity, int tick, ActionTextType type, params string[] lines) : base(pos, null)
@@ -24,8 +24,8 @@ namespace WarriorsSnuggery.Objects
 			this.velocity = velocity;
 			this.type = type;
 
-			text = new TextBlock(pos, FontManager.Default, TextOffset.MIDDLE);
-			text.Add(lines);
+			text = new TextObject(pos, FontManager.Default, TextOffset.MIDDLE);
+			text.SetText(lines);
 			WorldRenderer.RenderAfter(text);
 		}
 

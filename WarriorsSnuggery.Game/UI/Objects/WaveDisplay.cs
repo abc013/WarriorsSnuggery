@@ -17,7 +17,7 @@
 			if (game.CurrentWave != currentWave)
 			{
 				currentWave = game.CurrentWave;
-				WriteText($"Wave {game.CurrentWave}/{game.Waves}");
+				SetText($"Wave {game.CurrentWave}/{game.Waves}");
 				DisplayPercentage = game.CurrentWave / (float)game.Waves;
 			}
 		}

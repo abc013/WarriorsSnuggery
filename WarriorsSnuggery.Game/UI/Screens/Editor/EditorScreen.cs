@@ -20,7 +20,7 @@ namespace WarriorsSnuggery.UI.Screens
 		readonly ActorEditorWidget actorWidget;
 		readonly WallEditorWidget wallWidget;
 
-		readonly UITextLine mousePosition;
+		readonly UIText mousePosition;
 		readonly Button save;
 
 		readonly Game game;
@@ -40,13 +40,13 @@ namespace WarriorsSnuggery.UI.Screens
 			this.game = game;
 			Title.Position += new CPos(0, -7120, 0);
 
-			mousePosition = new UITextLine(FontManager.Default, TextOffset.RIGHT) { Position = new CPos(Right - 1024, -7172, 0) };
+			mousePosition = new UIText(FontManager.Default, TextOffset.RIGHT) { Position = new CPos(Right - 1024, -7172, 0) };
 			Add(mousePosition);
 
 			if (!string.IsNullOrEmpty(game.MapType.OverridePiece))
 			{
-				var pieceName = new UITextLine(FontManager.Default, TextOffset.RIGHT) { Position = new CPos(Right - 1024, -7684, 0) };
-				pieceName.WriteText("Piece name: " + Color.Green + game.MapType.OverridePiece);
+				var pieceName = new UIText(FontManager.Default, TextOffset.RIGHT) { Position = new CPos(Right - 1024, -7684, 0) };
+				pieceName.SetText("Piece name: " + Color.Green + game.MapType.OverridePiece);
 				Add(pieceName);
 			}
 
@@ -172,7 +172,7 @@ namespace WarriorsSnuggery.UI.Screens
 			}
 
 			var mouseInWorld = game.World.IsInWorld(MouseInput.GamePosition);
-			mousePosition.WriteText((mouseInWorld ? Color.White : Color.Red) + "" + MouseInput.GamePosition.ToMPos() + (mouseInWorld ? Color.Grey : new Color(1f, 0.75f, 0.75f)) + " | " + MouseInput.GamePosition);
+			mousePosition.SetText((mouseInWorld ? Color.White : Color.Red) + "" + MouseInput.GamePosition.ToMPos() + (mouseInWorld ? Color.Grey : new Color(1f, 0.75f, 0.75f)) + " | " + MouseInput.GamePosition);
 
 			switch (currentSelected)
 			{

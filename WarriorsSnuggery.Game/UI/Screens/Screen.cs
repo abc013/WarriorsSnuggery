@@ -1,7 +1,6 @@
 ﻿using OpenTK.Windowing.GraphicsLibraryFramework;
 using System.Collections.Generic;
 using WarriorsSnuggery.Graphics;
-using WarriorsSnuggery.Objects;
 
 namespace WarriorsSnuggery.UI.Screens
 {
@@ -16,7 +15,7 @@ namespace WarriorsSnuggery.UI.Screens
 		protected const int Top = -(int)(WindowInfo.UnitHeight * 512);
 		protected const int Bottom = -Top;
 
-		protected readonly UITextLine Title;
+		protected readonly UIText Title;
 
 		readonly List<UIObject> content = new List<UIObject>();
 		protected void Add(UIObject @object) => content.Add(@object);
@@ -26,7 +25,7 @@ namespace WarriorsSnuggery.UI.Screens
 
 		public Screen(string title, int darkness = 128)
 		{
-			Title = new UITextLine(FontManager.Header, TextOffset.MIDDLE) { Scale = 1.2f };
+			Title = new UIText(FontManager.Header, TextOffset.MIDDLE) { Scale = 1.2f };
 			Title.SetText(title);
 
 			this.darkness = new Color(0, 0, 0, darkness);

@@ -1,5 +1,4 @@
 ﻿using WarriorsSnuggery.Graphics;
-using WarriorsSnuggery.Objects;
 
 namespace WarriorsSnuggery.UI
 {
@@ -11,8 +10,8 @@ namespace WarriorsSnuggery.UI
 		CPos position;
 
 		readonly Font font;
-		readonly TextLine title;
-		readonly TextBlock text;
+		readonly UIText title;
+		readonly UIText text;
 
 		readonly MPos bounds;
 
@@ -20,19 +19,16 @@ namespace WarriorsSnuggery.UI
 		{
 			font = FontManager.Default;
 
-			this.title = new TextLine(CPos.Zero, font);
-			this.title.WriteText(title);
-			this.text = new TextBlock(CPos.Zero, font, TextOffset.LEFT);
-			this.text.Add(text);
+			this.title = new UIText(font);
+			this.title.SetText(title);
+			this.text = new UIText(font, TextOffset.LEFT);
+			this.text.SetText(text);
 
-			var width = font.GetWidth(this.title.Text);
-			if (text.Length != 0)
-			{
-				var textWidth = this.text.Bounds.X;
+			var width = font.Measure(this.title.Text).width;
+			var textWidth = font.Measure(this.text.Text).width;
 
-				if (textWidth > width)
-					width = textWidth;
-			}
+			if (textWidth > width)
+				width = textWidth;
 
 			bounds = new MPos(2 * margin + width, 2 * margin + (text.Length + 1) * font.MaxHeight / 2 + text.Length * font.HeightGap / 2);
 		}

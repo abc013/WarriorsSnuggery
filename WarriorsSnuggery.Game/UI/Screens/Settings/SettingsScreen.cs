@@ -2,7 +2,6 @@ using OpenTK.Windowing.GraphicsLibraryFramework;
 using System;
 using WarriorsSnuggery.Audio;
 using WarriorsSnuggery.Graphics;
-using WarriorsSnuggery.Objects;
 using WarriorsSnuggery.UI.Objects;
 
 namespace WarriorsSnuggery.UI.Screens
@@ -23,26 +22,26 @@ namespace WarriorsSnuggery.UI.Screens
 			Title.Position = new CPos(0, -4096, 0);
 
 			// Window
-			var fullscreen = new UITextLine(FontManager.Default) { Position = new CPos(-6096, -3000, 0) };
+			var fullscreen = new UIText(FontManager.Default) { Position = new CPos(-6096, -3000, 0) };
 			fullscreen.SetText("Fullscreen:");
 			Add(fullscreen);
 
-			var width = new UITextLine(FontManager.Default) { Position = new CPos(-6096, -2300, 0) };
+			var width = new UIText(FontManager.Default) { Position = new CPos(-6096, -2300, 0) };
 			if (Settings.Fullscreen)
-				width.SetColor(new Color(128, 128, 128));
+				width.Color = new Color(128, 128, 128);
 			width.SetText("Width:");
 			Add(width);
 
-			var height = new UITextLine(FontManager.Default) { Position = new CPos(-6096, -1600, 0) };
+			var height = new UIText(FontManager.Default) { Position = new CPos(-6096, -1600, 0) };
 			if (Settings.Fullscreen)
-				height.SetColor(new Color(128, 128, 128));
+				height.Color = new Color(128, 128, 128);
 			height.SetText("Height:");
 			Add(height);
 
 			fullscreenCheck = new CheckBox("wooden", Settings.Fullscreen, (ticked) =>
 			{
-				width.SetColor(ticked ? new Color(128, 128, 128) : Color.White);
-				height.SetColor(ticked ? new Color(128, 128, 128) : Color.White);
+				width.Color = ticked ? new Color(128, 128, 128) : Color.White;
+				height.Color = ticked ? new Color(128, 128, 128) : Color.White;
 			}) { Position = new CPos(-1536, -3000, 0) };
 			Add(fullscreenCheck);
 
@@ -77,15 +76,15 @@ namespace WarriorsSnuggery.UI.Screens
 			Add(heightWrite);
 
 			// Graphics
-			var vSync = new UITextLine(FontManager.Default) { Position = new CPos(-512, -3000, 0) };
+			var vSync = new UIText(FontManager.Default) { Position = new CPos(-512, -3000, 0) };
 			vSync.SetText("Enable V-Sync:");
 			Add(vSync);
 
-			var pixeling = new UITextLine(FontManager.Default) { Position = new CPos(-512, -2300, 0) };
+			var pixeling = new UIText(FontManager.Default) { Position = new CPos(-512, -2300, 0) };
 			pixeling.SetText("Enable Pixeling:");
 			Add(pixeling);
 
-			var textshadow = new UITextLine(FontManager.Default) { Position = new CPos(-512, -1600, 0) };
+			var textshadow = new UIText(FontManager.Default) { Position = new CPos(-512, -1600, 0) };
 			textshadow.SetText("Enable text shadows:");
 			Add(textshadow);
 
@@ -101,10 +100,10 @@ namespace WarriorsSnuggery.UI.Screens
 			Add(textshadowCheck);
 
 			// Scrolling
-			var scrollSpeed = new UITextLine(FontManager.Default) { Position = new CPos(-6144, -600, 0) };
+			var scrollSpeed = new UIText(FontManager.Default) { Position = new CPos(-6144, -600, 0) };
 			scrollSpeed.SetText("Camera panning speed:");
 			Add(scrollSpeed);
-			var edgeScrolling = new UITextLine(FontManager.Default) { Position = new CPos(-6144, 100, 0) };
+			var edgeScrolling = new UIText(FontManager.Default) { Position = new CPos(-6144, 100, 0) };
 			edgeScrolling.SetText("Edge Panning (0 = disabled):");
 			Add(edgeScrolling);
 
@@ -122,7 +121,7 @@ namespace WarriorsSnuggery.UI.Screens
 			Add(edgePanningSlider);
 
 			// Additional features
-			var frameLimiter = new UITextLine(FontManager.Default) { Position = new CPos(-6144, 1000, 0) };
+			var frameLimiter = new UIText(FontManager.Default) { Position = new CPos(-6144, 1000, 0) };
 			frameLimiter.SetText("Framelimiter (0 = disabled):");
 			Add(frameLimiter);
 
@@ -139,7 +138,7 @@ namespace WarriorsSnuggery.UI.Screens
 			};
 			Add(frameLimiterWrite);
 
-			var developerMode = new UITextLine(FontManager.Default) { Position = new CPos(-6144, 1900, 0) };
+			var developerMode = new UIText(FontManager.Default) { Position = new CPos(-6144, 1900, 0) };
 			developerMode.SetText("Enable Developermode:");
 			Add(developerMode);
 			developerModeCheck = new CheckBox("wooden", Settings.DeveloperMode, (b) =>
@@ -149,13 +148,13 @@ namespace WarriorsSnuggery.UI.Screens
 			Add(developerModeCheck);
 
 			// Volume
-			var masterVol = new UITextLine(FontManager.Default) { Position = new CPos(-6144, 2800, 0) };
+			var masterVol = new UIText(FontManager.Default) { Position = new CPos(-6144, 2800, 0) };
 			masterVol.SetText("Master Volume:");
 			Add(masterVol);
-			var effectVol = new UITextLine(FontManager.Default) { Position = new CPos(-6144, 3700, 0) };
+			var effectVol = new UIText(FontManager.Default) { Position = new CPos(-6144, 3700, 0) };
 			effectVol.SetText("Effects Volume:");
 			Add(effectVol);
-			var musicVol = new UITextLine(FontManager.Default) { Position = new CPos(-6144, 4600, 0) };
+			var musicVol = new UIText(FontManager.Default) { Position = new CPos(-6144, 4600, 0) };
 			musicVol.SetText("Music Volume:");
 			Add(musicVol);
 
@@ -189,7 +188,7 @@ namespace WarriorsSnuggery.UI.Screens
 			};
 			Add(musicVolumeSlider);
 
-			var warning = new UITextLine(FontManager.Default, TextOffset.MIDDLE)
+			var warning = new UIText(FontManager.Default, TextOffset.MIDDLE)
 			{
 				Position = new CPos(0, 5450, 0),
 				Color = Color.Red

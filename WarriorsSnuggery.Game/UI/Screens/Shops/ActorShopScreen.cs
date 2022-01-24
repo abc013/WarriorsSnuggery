@@ -2,7 +2,6 @@
 using System;
 using System.Collections.Generic;
 using WarriorsSnuggery.Graphics;
-using WarriorsSnuggery.Objects;
 using WarriorsSnuggery.Objects.Actors;
 using WarriorsSnuggery.UI.Objects;
 
@@ -15,7 +14,7 @@ namespace WarriorsSnuggery.UI.Screens
 		readonly List<string> actorTypes = new List<string>();
 		readonly PanelList actors;
 
-		readonly UITextBlock information;
+		readonly UIText information;
 		ActorType selected;
 
 		public ActorShopScreen(Game game) : base("Actor Shop")
@@ -46,7 +45,7 @@ namespace WarriorsSnuggery.UI.Screens
 			Add(new Button("Buy", "wooden", () => buyActor(selected)) { Position = new CPos(-6144, 3072, 0) });
 			Add(new Button("Resume", "wooden", () => game.ShowScreen(ScreenType.DEFAULT, false)) { Position = new CPos(0, 6144, 0) });
 
-			information = new UITextBlock(FontManager.Default, TextOffset.LEFT, "Select an actor for further information.", "", "", "Cost: -") { Position = new CPos(-7900, 0, 0) };
+			information = new UIText(FontManager.Default, TextOffset.LEFT, "Select an actor for further information.", "", "", "Cost: -") { Position = new CPos(-7900, 0, 0) };
 			Add(information);
 
 			Add(new MoneyDisplay(game) { Position = new CPos(Left + 2048, Bottom - 1024, 0) });
@@ -55,12 +54,12 @@ namespace WarriorsSnuggery.UI.Screens
 		void selectActor(ActorType actor)
 		{
 			selected = actor;
-			information[0].WriteText(actor.Playable.Name);
-			information[1].WriteText(Color.Grey + actor.Playable.Description);
-			if (game.Stats.ActorAvailable(actor.Playable))
-				information[3].WriteText(Color.White + "Cost: " + Color.Green + "Bought");
-			else
-				information[3].WriteText(Color.White + "Cost: " + Color.Yellow + actor.Playable.UnlockCost);
+			information.SetText(
+				actor.Playable.Name,
+				Color.Grey + actor.Playable.Description,
+				string.Empty,
+				Color.White + "Cost: " + (game.Stats.ActorAvailable(actor.Playable) ? Color.Green + "Bought" : Color.Yellow.ToString() + actor.Playable.UnlockCost)
+			);
 		}
 
 		void buyActor(ActorType actor)
@@ -81,7 +80,7 @@ namespace WarriorsSnuggery.UI.Screens
 			game.Stats.AddActor(actor.Playable);
 
 			actors.Container[actorTypes.IndexOf(actor.Playable.InternalName)].SetColor(Color.White);
-			information[3].WriteText(Color.White + "Cost: " + Color.Green + "Bought");
+			selectActor(actor);
 
 			game.ScreenControl.UpdateActors();
 		}

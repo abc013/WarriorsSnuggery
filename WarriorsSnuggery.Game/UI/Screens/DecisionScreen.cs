@@ -1,14 +1,13 @@
 ﻿using OpenTK.Windowing.GraphicsLibraryFramework;
 using System;
 using WarriorsSnuggery.Graphics;
-using WarriorsSnuggery.Objects;
 using WarriorsSnuggery.UI.Objects;
 
 namespace WarriorsSnuggery.UI.Screens
 {
 	public class DecisionScreen : Screen
 	{
-		readonly UITextLine text;
+		readonly UIText text;
 
 		Action onDecline;
 		Action onAgree;
@@ -19,7 +18,7 @@ namespace WarriorsSnuggery.UI.Screens
 		{
 			Title.Position = new CPos(0, -2048, 0);
 
-			text = new UITextLine(FontManager.Default, TextOffset.MIDDLE);
+			text = new UIText(FontManager.Default, TextOffset.MIDDLE);
 			Add(text);
 		}
 

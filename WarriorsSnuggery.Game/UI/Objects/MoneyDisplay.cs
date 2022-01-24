@@ -42,7 +42,7 @@ namespace WarriorsSnuggery.UI.Objects
 
 		readonly Game game;
 		readonly BatchObject money;
-		readonly UITextLine moneyText;
+		readonly UIText moneyText;
 		int cashCooldown;
 		int lastCash;
 
@@ -51,7 +51,7 @@ namespace WarriorsSnuggery.UI.Objects
 			this.game = game;
 			money = new BatchObject(UISpriteManager.Get("UI_money")[0]);
 
-			moneyText = new UITextLine(FontManager.Header, WarriorsSnuggery.Objects.TextOffset.MIDDLE);
+			moneyText = new UIText(FontManager.Header, TextOffset.MIDDLE);
 			moneyText.SetText(game.Stats.Money);
 		}
 

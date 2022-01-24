@@ -1,5 +1,4 @@
 ﻿using WarriorsSnuggery.Graphics;
-using WarriorsSnuggery.Objects;
 
 namespace WarriorsSnuggery.UI.Objects
 {
@@ -36,7 +35,7 @@ namespace WarriorsSnuggery.UI.Objects
 		}
 
 		readonly Color fillColor;
-		readonly UITextLine text;
+		readonly UIText text;
 
 		public float DisplayPercentage;
 
@@ -46,12 +45,12 @@ namespace WarriorsSnuggery.UI.Objects
 		{
 			this.fillColor = fillColor;
 
-			text = new UITextLine(FontManager.Default, TextOffset.MIDDLE);
+			text = new UIText(FontManager.Default, TextOffset.MIDDLE);
 		}
 
-		public void WriteText(string text)
+		public void SetText(string text)
 		{
-			this.text.WriteText(text);
+			this.text.SetText(text);
 		}
 
 		public override void Render()

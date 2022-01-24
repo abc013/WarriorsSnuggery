@@ -2,7 +2,6 @@
 using System;
 using System.Linq;
 using WarriorsSnuggery.Graphics;
-using WarriorsSnuggery.Objects;
 using WarriorsSnuggery.Objects.Actors;
 using WarriorsSnuggery.Objects.Actors.Parts;
 
@@ -49,16 +48,16 @@ namespace WarriorsSnuggery.UI.Objects.Editor
 		readonly PanelList list;
 
 		readonly CheckBox rasterizationCheck;
-		readonly UITextLine rasterizationText;
+		readonly UIText rasterizationText;
 
 		readonly TextBox teamTextBox;
-		readonly UITextLine teamTextText;
+		readonly UIText teamTextText;
 		readonly CheckBox botCheck;
-		readonly UITextLine botText;
+		readonly UIText botText;
 
-		readonly UITextLine healthText;
+		readonly UIText healthText;
 		readonly SliderBar healthSlider;
-		readonly UITextLine facingText;
+		readonly UIText facingText;
 		readonly SliderBar facingSlider;
 
 		public ActorType CurrentType { get; private set; }
@@ -85,29 +84,29 @@ namespace WarriorsSnuggery.UI.Objects.Editor
 				list.Add(new PanelListItem(new BatchObject(sprite), new MPos(512, 512), actor.Playable == null ? key : actor.Playable.Name, new string[0], () => CurrentType = actor) { Scale = scale });
 			}
 			rasterizationCheck = new CheckBox("wooden");
-			rasterizationText = new UITextLine(FontManager.Default);
+			rasterizationText = new UIText(FontManager.Default);
 			rasterizationText.SetText("align");
 
 			teamTextBox = new TextBox("wooden", 1, InputType.NUMBERS) { Text = "0" };
-			teamTextText = new UITextLine(FontManager.Default);
+			teamTextText = new UIText(FontManager.Default);
 			teamTextText.SetText("team");
 
 			botCheck = new CheckBox("wooden");
-			botText = new UITextLine(FontManager.Default);
+			botText = new UIText(FontManager.Default);
 			botText.SetText("bot");
 
 			healthSlider = new SliderBar(3072, "wooden")
 			{
 				Value = 1f
 			};
-			healthText = new UITextLine(FontManager.Default, TextOffset.MIDDLE);
+			healthText = new UIText(FontManager.Default, TextOffset.MIDDLE);
 			healthText.SetText("health");
 
 			facingSlider = new SliderBar(3072, "wooden")
 			{
 				Value = 0f
 			};
-			facingText = new UITextLine(FontManager.Default, TextOffset.MIDDLE);
+			facingText = new UIText(FontManager.Default, TextOffset.MIDDLE);
 			facingText.SetText("facing");
 		}
 

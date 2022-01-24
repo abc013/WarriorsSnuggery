@@ -29,9 +29,9 @@ namespace WarriorsSnuggery.UI.Objects.Editor
 		readonly PanelList list;
 
 		readonly CheckBox placementCheck;
-		readonly UITextLine placementText;
+		readonly UIText placementText;
 
-		readonly UITextLine healthText;
+		readonly UIText healthText;
 		readonly SliderBar healthSlider;
 
 		public WallType CurrentType { get; private set; }
@@ -45,10 +45,10 @@ namespace WarriorsSnuggery.UI.Objects.Editor
 				list.Add(new PanelListItem(new BatchObject(a.GetTexture(true, 0, a.Texture)), new MPos(512, 512), a.ID.ToString(), new string[0], () => CurrentType = a));
 
 			placementCheck = new CheckBox("wooden");
-			placementText = new UITextLine(FontManager.Default);
+			placementText = new UIText(FontManager.Default);
 			placementText.SetText("vertical");
 
-			healthText = new UITextLine(FontManager.Default, TextOffset.MIDDLE);
+			healthText = new UIText(FontManager.Default, TextOffset.MIDDLE);
 			healthText.SetText("health");
 			healthSlider = new SliderBar(3072, "wooden")
 			{

@@ -1,6 +1,5 @@
 using System;
 using WarriorsSnuggery.Graphics;
-using WarriorsSnuggery.Objects;
 
 namespace WarriorsSnuggery.UI.Objects
 {
@@ -18,15 +17,15 @@ namespace WarriorsSnuggery.UI.Objects
 
 		const int margin = UIUtils.TextMargin;
 
-		readonly UITextLine text;
+		readonly UIText text;
 		readonly Action action;
 
 		public Button(string text, string typeName, Action action = null) : this(text, PanelCache.Types[typeName], action) { }
 
-		public Button(string text, PanelType type, Action action = null) : base(new MPos(margin + FontManager.Default.GetWidth(text) / 2, margin / 2 + FontManager.Default.MaxHeight / 2), type, true)
+		public Button(string text, PanelType type, Action action = null) : base(new MPos(margin + FontManager.Default.Measure(text).width / 2, margin + FontManager.Default.Measure(text).height / 2), type, true)
 		{
-			this.text = new UITextLine(FontManager.Default, TextOffset.MIDDLE) { Position = new CPos(margin / 2, 0, 0) };
-			this.text.WriteText(text);
+			this.text = new UIText(FontManager.Default, TextOffset.MIDDLE) { Position = new CPos(margin / 2, 0, 0) };
+			this.text.SetText(text);
 			this.action = action;
 		}
 

@@ -45,7 +45,7 @@ namespace WarriorsSnuggery.UI.Objects
 	public class MessageBox : UIObject
 	{
 		readonly Panel background;
-		readonly UITextBlock text;
+		readonly UIText text;
 
 		Button decline, agree;
 		Button @continue;
@@ -57,7 +57,7 @@ namespace WarriorsSnuggery.UI.Objects
 		{
 			Position = position;
 			background = new Panel(new MPos(6144, 1152), "wooden") { Position = position };
-			text = new UITextBlock(FontManager.Default, WarriorsSnuggery.Objects.TextOffset.LEFT, new[] { "", "", "", "" }) { Position = position - new CPos(6144 - FontManager.Default.WidthGap, FontManager.Default.HeightGap + FontManager.Default.MaxHeight, 0) };
+			text = new UIText(FontManager.Default, TextOffset.LEFT) { Position = position - new CPos(6144 - FontManager.Default.WidthGap, FontManager.Default.HeightGap + FontManager.Default.MaxHeight, 0) };
 
 			Bounds = background.Bounds;
 			SelectableBounds = Bounds;
@@ -67,8 +67,7 @@ namespace WarriorsSnuggery.UI.Objects
 		{
 			Visible = true;
 
-			for (int i = 0; i < 4; i++)
-				text[i].WriteText(i >= message.Text.Length ? string.Empty : message.Text[i]);
+			text.SetText(message.Text);
 
 			void closeAfterAction(Action action = null)
 			{

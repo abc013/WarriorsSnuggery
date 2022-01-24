@@ -4,13 +4,13 @@ namespace WarriorsSnuggery.UI.Objects
 {
 	public class InfoText : ITickRenderable
 	{
-		readonly UITextLine infoText;
+		readonly UIText infoText;
 
 		int infoTextDuration;
 
 		public InfoText()
 		{
-			infoText = new UITextLine(FontManager.Default);
+			infoText = new UIText(FontManager.Default);
 		}
 
 		public void Tick()
@@ -39,7 +39,7 @@ namespace WarriorsSnuggery.UI.Objects
 
 			var corner = (int)(WindowInfo.UnitWidth * 512);
 			infoText.Position = new CPos(-corner + 512, -6144 - 256, 0);
-			infoText.WriteText(text);
+			infoText.SetText(text);
 			infoTextDuration = duration;
 		}
 	}

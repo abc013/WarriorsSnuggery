@@ -24,27 +24,45 @@
 			MaxHeight = (int)(Info.MaxSize.Y * multiplier);
 		}
 
-		public int GetWidth(char c)
+		public (int width, int height) Measure(char c)
 		{
 			if (!FontManager.Characters.Contains(c))
 				c = FontManager.UnknownCharacter;
 
 			if (char.IsWhiteSpace(c))
-				return WidthGap;
+				return (WidthGap, MaxHeight / 2);
 
-			var pixelSize = Info.CharSizes[FontManager.Characters.IndexOf(c)].X;
+			var pixelSize = Info.CharSizes[FontManager.Characters.IndexOf(c)];
 
-			return (int)(pixelSize * multiplier);
+			return ((int)(pixelSize.X * multiplier), (int)(pixelSize.Y * multiplier));
 		}
 
-		public int GetWidth(string s)
+		public (int width, int height) Measure(string s)
 		{
+			var maxWidth = 0;
 			var width = 0;
 
-			foreach (var c in s)
-				width += GetWidth(c);
+			var height = MaxHeight / 2;
 
-			return width;
+			foreach (var c in s)
+			{
+				if (c == '\n')
+				{
+					if (width > maxWidth)
+						maxWidth = width;
+
+					width = 0;
+					height += MaxHeight / 2 + HeightGap / 2;
+					continue;
+				}
+
+				width += Measure(c).width;
+			}
+
+			if (width > maxWidth)
+				maxWidth = width;
+
+			return (maxWidth, height);
 		}
 
 		public Texture GetTexture(char c)

@@ -2,7 +2,6 @@
 using System;
 using System.Linq;
 using WarriorsSnuggery.Graphics;
-using WarriorsSnuggery.Objects;
 
 namespace WarriorsSnuggery.UI.Objects
 {
@@ -29,19 +28,15 @@ namespace WarriorsSnuggery.UI.Objects
 
 		public bool Selected;
 		public string Text
-		{
-			get => text;
-			set
-			{
-				text = value;
-				textline.SetText(text);
-			}
-		}
-		string text = string.Empty;
-		public readonly int MaximumLength;
+        {
+            get => textline.Text;
+            set => textline.SetText(value);
+        }
+
+        public readonly int MaximumLength;
 		public readonly InputType Type;
 
-		readonly UITextLine textline;
+		readonly UIText textline;
 
 		public Action OnEnter;
 		public Action OnType;
@@ -53,7 +48,7 @@ namespace WarriorsSnuggery.UI.Objects
 			MaximumLength = maximumLength;
 			Type = type;
 
-			textline = new UITextLine(FontManager.Default, TextOffset.LEFT) { Position = new CPos(margin - SelectableBounds.X, 0, 0) };
+			textline = new UIText(FontManager.Default, TextOffset.LEFT) { Position = new CPos(margin - SelectableBounds.X, 0, 0) };
 		}
 
 		static MPos calculateBounds(int maximumLength)
@@ -83,7 +78,7 @@ namespace WarriorsSnuggery.UI.Objects
 
 			if (Selected)
 			{
-				if (text.Length >= MaximumLength)
+				if (Text.Length >= MaximumLength)
 					return;
 
 				var input = KeyInput.Text;
@@ -109,7 +104,6 @@ namespace WarriorsSnuggery.UI.Objects
 
 					UIUtils.PlayClickSound();
 					textline.AddText(toAdd);
-					text += toAdd;
 					OnType?.Invoke();
 				}
 			}
@@ -131,8 +125,7 @@ namespace WarriorsSnuggery.UI.Objects
 			if (Text.Length > 0 && (key == Keys.Backspace || key == Keys.Delete))
 			{
 				UIUtils.PlayClickSound();
-				text = Text[0..^1];
-				textline.SetText(Text);
+				textline.SetText(Text[0..^1]);
 				OnType?.Invoke();
 			}
 		}

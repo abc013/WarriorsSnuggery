@@ -1,5 +1,4 @@
 using WarriorsSnuggery.Graphics;
-using WarriorsSnuggery.Objects;
 using WarriorsSnuggery.UI.Objects;
 
 namespace WarriorsSnuggery.UI.Screens
@@ -15,15 +14,15 @@ namespace WarriorsSnuggery.UI.Screens
 			};
 			Add(ws);
 
-			var welcome = new UITextLine(FontManager.Header, TextOffset.MIDDLE) { Position = new CPos(0, -512, 0) };
+			var welcome = new UIText(FontManager.Header, TextOffset.MIDDLE) { Position = new CPos(0, -512, 0) };
 			welcome.SetText("Welcome to Warrior's Snuggery!");
 			Add(welcome);
 
-			var tutorial = new UITextLine(FontManager.Header, TextOffset.MIDDLE) { Position = new CPos(0, 1536, 0) };
+			var tutorial = new UIText(FontManager.Header, TextOffset.MIDDLE) { Position = new CPos(0, 1536, 0) };
 			tutorial.SetText("If you don't know how to play yet, move down to the tutorial!");
 			Add(tutorial);
 
-			var warning = new UITextLine(FontManager.Header, TextOffset.MIDDLE) { Position = new CPos(0, 4096, 0), Color = new Color(0.5f, 0.5f, 1f) };
+			var warning = new UIText(FontManager.Header, TextOffset.MIDDLE) { Position = new CPos(0, 4096, 0), Color = new Color(0.5f, 0.5f, 1f) };
 			warning.SetText("WS is still under development. If you encounter any bugs, please report them.");
 			Add(warning);
 
