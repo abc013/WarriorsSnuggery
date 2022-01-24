@@ -10,16 +10,15 @@ namespace WarriorsSnuggery.Graphics
 		public bool Visible = true;
 
 		protected Vector3 Position = Vector3.Zero;
-		protected Vector3 Rotation = Vector3.Zero;
+		protected Quaternion Rotation = Quaternion.Identity;
 		protected Vector3 Scale = Vector3.One;
 		protected Color Color = Color.White;
-		protected bool MatrixChanged;
+		protected bool CacheOutdated;
 
 		public BatchRenderable(Vertex[] vertices)
 		{
 			this.vertices = vertices;
 			calculated = new Vertex[vertices.Length];
-			MatrixChanged = true;
 		}
 
 		public virtual void SetPosition(CPos position)
@@ -34,21 +33,21 @@ namespace WarriorsSnuggery.Graphics
 				return;
 
 			Position = vec3;
-			MatrixChanged = true;
+			CacheOutdated = true;
 		}
 
 		public virtual void SetRotation(VAngle rotation)
 		{
-			SetRotation((Vector3)rotation);
+			SetRotation((Quaternion)rotation);
 		}
 
-		public virtual void SetRotation(Vector3 rot3)
+		public virtual void SetRotation(Quaternion rot3)
 		{
 			if (Rotation == rot3)
 				return;
 
 			Rotation = rot3;
-			MatrixChanged = true;
+			CacheOutdated = true;
 		}
 
 		public virtual void SetScale(float scale)
@@ -67,7 +66,7 @@ namespace WarriorsSnuggery.Graphics
 				return;
 
 			Scale = scale;
-			MatrixChanged = true;
+			CacheOutdated = true;
 		}
 
 		public virtual void SetColor(Color color)
@@ -76,7 +75,7 @@ namespace WarriorsSnuggery.Graphics
 				return;
 
 			Color = color;
-			MatrixChanged = true;
+			CacheOutdated = true;
 		}
 
 		public virtual void Tick() { }
@@ -86,28 +85,12 @@ namespace WarriorsSnuggery.Graphics
 			if (!Visible)
 				return;
 
-			if (MatrixChanged)
+			if (CacheOutdated)
 			{
-				var matrix = Matrix4.CreateTranslation(Position.X, Position.Y, Position.Z);
-
-				if (Rotation != Vector3.Zero)
-				{
-					var r1 = Matrix4.CreateRotationX(Rotation.X);
-					var r2 = Matrix4.CreateRotationY(Rotation.Y);
-					var r3 = Matrix4.CreateRotationZ(Rotation.Z);
-					matrix = r1 * r2 * r3 * matrix;
-				}
-
-				if (Scale != Vector3.Zero)
-				{
-					var s1 = Matrix4.CreateScale(Scale);
-					matrix = s1 * matrix;
-				}
-
 				for (int i = 0; i < vertices.Length; i++)
-					calculated[i] = vertices[i].Apply(matrix, Color);
+					calculated[i] = vertices[i].Modify(Position, Scale, Rotation, Color);
 
-				MatrixChanged = false;
+				CacheOutdated = false;
 			}
 
 			MasterRenderer.AddToBatch(calculated);

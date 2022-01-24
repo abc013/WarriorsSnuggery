@@ -59,5 +59,10 @@ namespace WarriorsSnuggery
 		{
 			return new Vector3(angle.X, angle.Y, angle.Z);
 		}
+
+		public static implicit operator Quaternion(VAngle angle)
+		{
+			return Quaternion.FromEulerAngles(angle.X, angle.Y, angle.Z);
+		}
 	}
 }

@@ -17,17 +17,17 @@ namespace WarriorsSnuggery.Graphics
 		readonly int texture;
 		readonly Color color;
 
-		public Vertex(Vector4 position, Vector2 textureCoordinate, int texture, Color color)
+		public Vertex(Vector3 position, Vector2 textureCoordinate, int texture, Color color)
 		{
-			this.position = position;
+			this.position = new Vector4(position, 1.0f);
 			this.textureCoordinate = textureCoordinate;
 			this.texture = texture;
 			this.color = color;
 		}
 
-		public Vertex Apply(Matrix4 matrix, Color color)
+		public Vertex Modify(Vector3 offset, Vector3 scale, Quaternion rotation, Color color)
 		{
-			return new Vertex(position * matrix, textureCoordinate, texture, color);
+			return new Vertex((Vector3.Transform(position.Xyz, rotation) * scale) + offset, textureCoordinate, texture, color);
 		}
 
 		public override int GetHashCode()
