@@ -19,6 +19,8 @@ namespace WarriorsSnuggery.Graphics
 		{
 			this.vertices = vertices;
 			calculated = new Vertex[vertices.Length];
+
+			CacheOutdated = true;
 		}
 
 		public virtual void SetPosition(CPos position)
