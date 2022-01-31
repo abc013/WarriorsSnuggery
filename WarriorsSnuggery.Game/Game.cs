@@ -143,7 +143,9 @@ namespace WarriorsSnuggery
 		{
 			var timer = Timer.Start();
 
-			MasterRenderer.ResetRenderer(this);
+			MasterRenderer.PauseSequences = false;
+			WorldRenderer.Reset(this);
+			UIRenderer.Reset(this);
 			Camera.Reset();
 			MusicController.ResetIntense();
 

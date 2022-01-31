@@ -194,6 +194,8 @@ namespace WarriorsSnuggery
 
 			SheetManager.FinishSheets();
 			MasterRenderer.InitRenderer();
+			WorldRenderer.Initialize();
+			UIRenderer.Initialize();
 
 			GameController.CreateFirst();
 

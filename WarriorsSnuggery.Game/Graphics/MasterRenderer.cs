@@ -1,9 +1,8 @@
 using OpenTK.Graphics.OpenGL;
 using OpenTK.Mathematics;
 using System;
-using WarriorsSnuggery.Graphics;
 
-namespace WarriorsSnuggery
+namespace WarriorsSnuggery.Graphics
 {
 	public static class MasterRenderer
 	{
@@ -29,16 +28,6 @@ namespace WarriorsSnuggery
 		{
 			renderer.SetTextures(SheetManager.Sheets, SheetManager.SheetsUsed);
 			debugRenderer.SetTextures(new[] { 0 });
-
-			WorldRenderer.Initialize();
-			UIRenderer.Initialize();
-		}
-
-		public static void ResetRenderer(Game game)
-		{
-			PauseSequences = false;
-			WorldRenderer.Reset(game);
-			UIRenderer.Reset(game);
 		}
 
 		public static void AddToBatch(Vertex[] vertices)
