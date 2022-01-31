@@ -19,7 +19,8 @@ namespace WarriorsSnuggery.UI.Objects
 			input = new TextBox("wooden", 45)
 			{
 				Position = position + new CPos(-800, 2048 + 512, 0),
-				OnEnter = SendText
+				OnEnter = SendText,
+				EmptyText = "Type here..."
 			};
 			send = new Button("send", "wooden", SendText) { Position = position + new CPos(8120 - 800, 2048 + 512, 0) };
 

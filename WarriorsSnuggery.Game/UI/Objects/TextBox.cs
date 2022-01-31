@@ -28,12 +28,32 @@ namespace WarriorsSnuggery.UI.Objects
 
 		public bool Selected;
 		public string Text
-        {
-            get => textline.Text;
-            set => textline.SetText(value);
-        }
+		{
+			get => text;
+			set
+			{
+				text = value;
+				if (!string.IsNullOrEmpty(value))
+					textline.SetText(value);
+				else
+					textline.SetText(Color.Grey + emptyText);
+			}
+		}
+		string text = string.Empty;
 
-        public readonly int MaximumLength;
+		public string EmptyText
+		{
+			get => emptyText;
+			set
+			{
+				emptyText = value;
+				if (string.IsNullOrEmpty(Text))
+					textline.SetText(Color.Grey + value);
+			}
+		}
+		string emptyText = string.Empty;
+
+		public readonly int MaximumLength;
 		public readonly InputType Type;
 
 		readonly UIText textline;
@@ -103,7 +123,7 @@ namespace WarriorsSnuggery.UI.Objects
 					}
 
 					UIUtils.PlayClickSound();
-					textline.AddText(toAdd);
+					Text += toAdd;
 					OnType?.Invoke();
 				}
 			}
@@ -125,7 +145,7 @@ namespace WarriorsSnuggery.UI.Objects
 			if (Text.Length > 0 && (key == Keys.Backspace || key == Keys.Delete))
 			{
 				UIUtils.PlayClickSound();
-				textline.SetText(Text[0..^1]);
+				Text = Text[0..^1];
 				OnType?.Invoke();
 			}
 		}

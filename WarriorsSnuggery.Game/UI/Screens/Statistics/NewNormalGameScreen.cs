@@ -30,7 +30,7 @@ namespace WarriorsSnuggery.UI.Screens
 			nameInput = new TextBox("wooden", 15, InputType.PATH)
 			{
 				Position = new CPos(1024, 0, 0),
-				Text = "Name"
+				EmptyText = "Your Name Here"
 			};
 			Add(nameInput);
 

@@ -102,20 +102,20 @@ namespace WarriorsSnuggery.UI.Screens
 			sizeX = new TextBox("wooden", 2, InputType.NUMBERS)
 			{
 				Position = new CPos(-1024, 0, 0),
-				Text = "16"
+				EmptyText = "X"
 			};
 			Add(sizeX);
 
 			sizeY = new TextBox("wooden", 2, InputType.NUMBERS)
 			{
 				Position = new CPos(1024, 0, 0),
-				Text = "16"
+				EmptyText = "Y"
 			};
 			Add(sizeY);
 			name = new TextBox("wooden", 20, InputType.PATH)
 			{
 				Position = new CPos(0, 1536, 0),
-				Text = "unnamed piece"
+				EmptyText = "Piece Name"
 			};
 			Add(name);
 
