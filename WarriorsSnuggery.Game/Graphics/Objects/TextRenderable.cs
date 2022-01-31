@@ -151,22 +151,25 @@ namespace WarriorsSnuggery.Graphics
 
 		void updateCharRenderables()
 		{
-			var maxWidth = Font.Measure(Text).width;
-
 			var height = 0;
 
-			var width = Font.Measure(Text[0]).width / 2;
-			switch (Offset)
-			{
-				case TextOffset.MIDDLE:
-					width -= maxWidth / 2;
+			int getOffset(string line)
+            {
+				if (string.IsNullOrEmpty(line))
+					return 0;
 
-					break;
-				case TextOffset.RIGHT:
-					width -= maxWidth;
+				var width = Font.Measure(line).width;
+				var offset = Font.Measure(line[0]).width / 2;
+				if (Offset == TextOffset.MIDDLE)
+					offset = -width / 2;
+				else if (Offset == TextOffset.RIGHT)
+					offset = -width;
 
-					break;
+				return offset;
 			}
+
+			var nextLine = Text.IndexOf('\n');
+			var width = getOffset(nextLine < 0 ? Text : Text[..nextLine]);
 
 			int charIndex = 0;
 			for (int i = 0; i < Text.Length; i++)
@@ -175,7 +178,11 @@ namespace WarriorsSnuggery.Graphics
 				{
 					height += Font.MaxHeight / 2 + Font.HeightGap / 2;
 					if (i + 1 < Text.Length)
-						width = Font.Measure(Text[i + 1]).width / 2;
+					{
+						nextLine = Text.IndexOf('\n', i + 1);
+						var substirng = Text.Substring(i + 1);
+						width = getOffset(nextLine < 0 ? substirng : Text[(i + 1)..nextLine]);
+					}
 
 					continue;
 				}
