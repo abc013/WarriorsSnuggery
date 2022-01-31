@@ -52,30 +52,44 @@ namespace WarriorsSnuggery
 			{
 				var arg = args[i];
 
-				if (arg == "-no-fullscreen")
-					NoFullscreen = true;
-				else if (arg == "-new-settings")
-					newSettings = true;
-				else if (arg == "-no-GL-errors")
-					noGLErrors = true;
-				else if (arg == "-editor")
-					StartEditor = true;
-				else if (arg == "-no-shroud")
-					DisableShroud = true;
-				else if (arg == "-ignore-tech")
-					IgnoreTech = true;
-				else if (arg == "-disable-scripts")
-					DisableScripts = true;
-				else if (arg == "-use-piece")
-					Piece = args[++i];
-				else if (arg == "-map-type")
-					MapType = args[++i];
-				else if (arg == "-enable-cheats")
-					enableCheats = true;
-				else if (arg == "-only-load")
-					OnlyLoad = true;
-				else
-					throw new ArgumentException($"Unknown command line argument {arg}.");
+				switch (arg)
+				{
+					case "-no-fullscreen":
+						NoFullscreen = true;
+						break;
+					case "-new-settings":
+						newSettings = true;
+						break;
+					case "-no-GL-errors":
+						noGLErrors = true;
+						break;
+					case "-editor":
+						StartEditor = true;
+						break;
+					case "-no-shroud":
+						DisableShroud = true;
+						break;
+					case "-ignore-tech":
+						IgnoreTech = true;
+						break;
+					case "-disable-scripts":
+						DisableScripts = true;
+						break;
+					case "-use-piece":
+						Piece = args[++i];
+						break;
+					case "-map-type":
+						MapType = args[++i];
+						break;
+					case "-enable-cheats":
+						enableCheats = true;
+						break;
+					case "-only-load":
+						OnlyLoad = true;
+						break;
+					default:
+						throw new ArgumentException($"Unknown command line argument {arg}.");
+				}
 			}
 
 			Settings.Initialize(newSettings);
