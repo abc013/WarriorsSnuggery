@@ -55,7 +55,7 @@ namespace WarriorsSnuggery
 
 		public CPos ToCPos()
 		{
-			return new CPos(X * 1024, Y * 1024, 0);
+			return new CPos(X * Constants.TileSize, Y * Constants.TileSize, 0);
 		}
 	}
 }

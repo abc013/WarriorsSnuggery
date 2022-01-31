@@ -22,7 +22,7 @@ namespace WarriorsSnuggery.Graphics
 			var y = texture.Y / (float)Settings.SheetSize + Settings.SheetHalfPixel;
 			var w = (texture.X + texture.Width) / (float)Settings.SheetSize - Settings.SheetHalfPixel;
 			var h = (texture.Y + texture.Height) / (float)Settings.SheetSize - Settings.SheetHalfPixel;
-			var scale = texture.Height * MasterRenderer.PixelMultiplier / 2;
+			var scale = texture.Height * Constants.PixelMultiplier / 2;
 			var correction = texture.Width / (float)texture.Height;
 			var color = Color.White;
 			var id = SheetManager.SheetIndex(texture.SheetID);

@@ -2,7 +2,7 @@
 {
 	public class Font
 	{
-		const float multiplier = 512 * MasterRenderer.PixelMultiplier;
+		const float multiplier = 512 * Constants.PixelMultiplier;
 
 		public readonly FontInfo Info;
 		readonly Texture[] characters;

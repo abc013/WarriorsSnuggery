@@ -95,7 +95,7 @@ namespace WarriorsSnuggery.Objects.Weapons
 		{
 			frame = 0;
 			tick = texture.Tick;
-			renderabledistance = 1024 * texture.Height / MasterRenderer.PixelSize;
+			renderabledistance = 1024 * texture.Height / Constants.PixelSize;
 			curTick = 0;
 
 			var sprite = texture.GetTextures();

@@ -68,7 +68,7 @@ namespace WarriorsSnuggery.Objects
 			if (documentation)
 				return;
 
-			baseTextureInfo = new TextureInfo(Sprite, TextureType.RANDOM, MasterRenderer.PixelSize, MasterRenderer.PixelSize);
+			baseTextureInfo = new TextureInfo(Sprite, TextureType.RANDOM, Constants.PixelSize, Constants.PixelSize);
 			if (Overlaps)
 			{
 				if (EdgeSprite != null)
@@ -84,7 +84,7 @@ namespace WarriorsSnuggery.Objects
 
 		CPos textureOffset(MPos bounds)
 		{
-			return new CPos(512, 512, 0) - new CPos((int)((bounds.X % MasterRenderer.PixelSize) * MasterRenderer.PixelMultiplier * 512), (int)((bounds.Y % MasterRenderer.PixelSize) * MasterRenderer.PixelMultiplier * 512), 0);
+			return new CPos(512, 512, 0) - new CPos((int)((bounds.X % Constants.PixelSize) * Constants.PixelMultiplier * 512), (int)((bounds.Y % Constants.PixelSize) * Constants.PixelMultiplier * 512), 0);
 		}
 	}
 }

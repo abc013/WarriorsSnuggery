@@ -7,9 +7,6 @@ namespace WarriorsSnuggery
 {
 	public static class MasterRenderer
 	{
-		public const int PixelSize = 24;
-		public const float PixelMultiplier = 1f / PixelSize;
-
 		public static int RenderCalls;
 		public static int BatchCalls;
 		public static int Batches;
@@ -88,8 +85,8 @@ namespace WarriorsSnuggery
 				GL.BlendFunc(BlendingFactor.SrcAlpha, BlendingFactor.OneMinusSrcAlpha);
 				Program.CheckGraphicsError("GLEquations");
 
-				var width = (int)(Camera.DefaultZoom * WindowInfo.Ratio * PixelSize);
-				var height = (int)(Camera.DefaultZoom * PixelSize);
+				var width = (int)(Camera.DefaultZoom * WindowInfo.Ratio * Constants.PixelSize);
+				var height = (int)(Camera.DefaultZoom * Constants.PixelSize);
 
 				var frameTextureID = GL.GenTexture();
 
@@ -124,8 +121,8 @@ namespace WarriorsSnuggery
 					GL.BindFramebuffer(FramebufferTarget.Framebuffer, frameBuffer);
 					GL.Clear(ClearBufferMask.ColorBufferBit);
 
-					var width = (int)(Camera.DefaultZoom * WindowInfo.Ratio * PixelSize);
-					var height = (int)(Camera.DefaultZoom * PixelSize);
+					var width = (int)(Camera.DefaultZoom * WindowInfo.Ratio * Constants.PixelSize);
+					var height = (int)(Camera.DefaultZoom * Constants.PixelSize);
 					GL.Viewport(0, 0, width, height);
 					GL.Scissor(0, 0, width, height);
 

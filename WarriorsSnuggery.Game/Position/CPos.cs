@@ -47,7 +47,7 @@ namespace WarriorsSnuggery
 
 		public Vector ToVector()
 		{
-			return new Vector(X / 1024f, -Y / 1024f, Z / 1024f);
+			return new Vector(X / (float)Constants.TileSize, -Y / (float)Constants.TileSize, Z / (float)Constants.TileSize);
 		}
 
 		public MPos ToMPos()
@@ -57,9 +57,9 @@ namespace WarriorsSnuggery
 
 		int round(int value)
 		{
-			var ans = value / 1024;
+			var ans = value / Constants.TileSize;
 
-			if ((Math.Abs(value) & (1024 - 1)) > 512)
+			if ((Math.Abs(value) & (Constants.TileSize - 1)) > Constants.TileSize / 2)
 				return ans + Math.Sign(value);
 
 			return ans;

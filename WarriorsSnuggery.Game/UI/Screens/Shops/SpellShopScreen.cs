@@ -116,7 +116,7 @@ namespace WarriorsSnuggery.UI.Screens
 		bool available;
 		bool unlocked;
 
-		public SpellNode(SpellCasterType node, Game game, SpellShopScreen screen) : base(new MPos((int)(1024 * 8 * MasterRenderer.PixelMultiplier), (int)(1024 * 8 * MasterRenderer.PixelMultiplier)), "stone", true)
+		public SpellNode(SpellCasterType node, Game game, SpellShopScreen screen) : base(new MPos((int)(1024 * 8 * Constants.PixelMultiplier), (int)(1024 * 8 * Constants.PixelMultiplier)), "stone", true)
 		{
 			this.node = node;
 			this.game = game;
@@ -243,7 +243,7 @@ namespace WarriorsSnuggery.UI.Screens
 				this.inactive[i] = new BatchObject(inactive[i]);
 			this.tick = tick;
 
-			renderabledistance = 1024 * active[0].Height / MasterRenderer.PixelSize;
+			renderabledistance = 1024 * active[0].Height / Constants.PixelSize;
 			Active = false;
 		}
 

@@ -68,7 +68,7 @@ namespace WarriorsSnuggery.UI.Objects
 		{
 			var available = game.Stats.ActorAvailable(actorType.Playable);
 			var sprite = actorType.GetPreviewSprite();
-			var scale = MasterRenderer.PixelSize / (float)Math.Max(sprite.Width, sprite.Height) - 0.1f;
+			var scale = Constants.PixelSize / (float)Math.Max(sprite.Width, sprite.Height) - 0.1f;
 
 			var title = available ? actorType.Playable.Name : Color.Red + "Locked";
 			var description = available ? new[] { Color.Grey + "Changing cost: " + Color.Yellow + actorType.Playable.Cost } : new[] { new Color(128, 0, 0) + "Unlock cost: " + actorType.Playable.UnlockCost };

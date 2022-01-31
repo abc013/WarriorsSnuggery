@@ -26,7 +26,7 @@ namespace WarriorsSnuggery.UI.Objects
 
 		public SliderBar(int length, string typeName, Action onChanged = null) : this(length, PanelCache.Types[typeName], onChanged) { }
 
-		public SliderBar(int length, PanelType type, Action onChanged = null) : base(new MPos(length / 2, (int)(1024 * MasterRenderer.PixelMultiplier)), type)
+		public SliderBar(int length, PanelType type, Action onChanged = null) : base(new MPos(length / 2, (int)(1024 * Constants.PixelMultiplier)), type)
 		{
 			slider = new Slider(length, type, onChanged);
 		}
@@ -76,7 +76,7 @@ namespace WarriorsSnuggery.UI.Objects
 			}
 		}
 
-		public Slider(int length, PanelType type, Action onChanged) : base(new MPos((int)(1024 * MasterRenderer.PixelMultiplier), (int)(1024 * 4 * MasterRenderer.PixelMultiplier)), type)
+		public Slider(int length, PanelType type, Action onChanged) : base(new MPos((int)(1024 * Constants.PixelMultiplier), (int)(1024 * 4 * Constants.PixelMultiplier)), type)
 		{
 			SelectableBounds = Bounds;
 			this.onChanged = onChanged;

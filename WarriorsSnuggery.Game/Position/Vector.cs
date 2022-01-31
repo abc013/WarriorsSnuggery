@@ -63,7 +63,7 @@ namespace WarriorsSnuggery
 
 		public CPos ToCPos()
 		{
-			return new CPos((int)(X * 1024), (int)(Y * 1024), (int)(Z * 1024));
+			return new CPos((int)(X * Constants.TileSize), (int)(Y * Constants.TileSize), (int)(Z * Constants.TileSize));
 		}
 
 		public static Vector FromFlatAngle(float angle, float magnitude)

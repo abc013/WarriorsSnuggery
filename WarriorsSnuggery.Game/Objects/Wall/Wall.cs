@@ -179,10 +179,10 @@ namespace WarriorsSnuggery.Objects
 		{
 			// Assumed wall width: 4px
 			var width = horizontal ? info.Width : 4;
-			var x = (int)-(MasterRenderer.PixelMultiplier * 512 * width);
+			var x = (int)-(Constants.PixelMultiplier * 512 * width);
 
 			var height = info.Height;
-			var y = (int)-(MasterRenderer.PixelMultiplier * 512 * height) + 512 * (horizontal ? -1 : 1);
+			var y = (int)-(Constants.PixelMultiplier * 512 * height) + 512 * (horizontal ? -1 : 1);
 
 			return new CPos(x, y, 0);
 		}

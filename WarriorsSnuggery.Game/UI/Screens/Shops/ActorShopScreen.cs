@@ -31,7 +31,7 @@ namespace WarriorsSnuggery.UI.Screens
 					continue;
 
 				var sprite = a.GetPreviewSprite();
-				var scale = MasterRenderer.PixelSize / (float)Math.Max(sprite.Width, sprite.Height) - 0.1f;
+				var scale = Constants.PixelSize / (float)Math.Max(sprite.Width, sprite.Height) - 0.1f;
 				var item = new PanelListItem(new BatchObject(sprite), new MPos(1024, 1024), a.Playable.Name, new string[0], () => selectActor(a)) { Scale = scale * 2 };
 
 				if (!game.Stats.ActorAvailable(a.Playable))

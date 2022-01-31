@@ -47,7 +47,7 @@ namespace WarriorsSnuggery.Objects.Particles
 			var color = Color + ParticleUtils.Variety(ColorVariety);
 			if (Texture == null)
 			{
-				var renderable = new BatchObject(MeshSize * MasterRenderer.PixelMultiplier + ParticleUtils.Variety(MeshSizeVariety));
+				var renderable = new BatchObject(MeshSize * Constants.PixelMultiplier + ParticleUtils.Variety(MeshSizeVariety));
 				renderable.SetColor(color);
 				return renderable;
 			}
