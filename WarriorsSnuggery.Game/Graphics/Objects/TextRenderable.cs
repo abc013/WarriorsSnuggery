@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using OpenTK.Mathematics;
+using System.Collections.Generic;
 
 namespace WarriorsSnuggery.Graphics
 {
@@ -180,7 +181,7 @@ namespace WarriorsSnuggery.Graphics
 				}
 
 				chars[charIndex].SetScale(Scale);
-				chars[charIndex++].SetPosition(Position, (int)(width * Scale.X), (int)-(height * Scale.Y));
+				chars[charIndex++].SetPosition(Position + new Vector3(width * Scale.X / 1024f, -height * Scale.Y / 1024f, 0));
 				width += Font.Measure(Text[i]).width;
 			}
 		}

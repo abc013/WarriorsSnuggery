@@ -11,9 +11,8 @@ namespace WarriorsSnuggery.Graphics
 			SetColor(color);
 		}
 
-		public void SetPosition(Vector3 pos, int widthOffset = 0, int heightOffset = 0)
+		public void SetPosition(Vector3 position)
 		{
-			var position = pos + new Vector3(widthOffset / 1024f, heightOffset / 1024f, 0);
 			base.SetPosition(position);
 		}
 
@@ -24,8 +23,8 @@ namespace WarriorsSnuggery.Graphics
 				var color = Color;
 				var position = Position;
 
-				SetColor(Color.Black);
-				SetPosition(position + shadowOffset);
+				SetColor(new Color(0, 0, 0, color.A));
+				SetPosition(position + Vector3.ComponentMin(Scale, Vector3.One) * shadowOffset);
 				base.Render();
 				SetPosition(position);
 				SetColor(color);
