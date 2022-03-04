@@ -176,7 +176,7 @@ namespace WarriorsSnuggery.Graphics
 			{
 				if (Text[i] == '\n')
 				{
-					height += Font.MaxHeight / 2 + Font.HeightGap / 2;
+					height += Font.MaxHeight + Font.HeightGap;
 					if (i + 1 < Text.Length)
 					{
 						nextLine = Text.IndexOf('\n', i + 1);

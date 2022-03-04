@@ -11,7 +11,7 @@ namespace WarriorsSnuggery.UI.Objects
 			set
 			{
 				base.Position = value;
-				text.Position = value + new CPos(margin / 2, 0, 0);
+				text.Position = value + new CPos(margin, 0, 0);
 			}
 		}
 
@@ -24,7 +24,7 @@ namespace WarriorsSnuggery.UI.Objects
 
 		public Button(string text, PanelType type, Action action = null) : base(new MPos(margin + FontManager.Default.Measure(text).width / 2, margin + FontManager.Default.Measure(text).height / 2), type, true)
 		{
-			this.text = new UIText(FontManager.Default, TextOffset.MIDDLE) { Position = new CPos(margin / 2, 0, 0) };
+			this.text = new UIText(FontManager.Default, TextOffset.MIDDLE) { Position = new CPos(margin, 0, 0) };
 			this.text.SetText(text);
 			this.action = action;
 		}

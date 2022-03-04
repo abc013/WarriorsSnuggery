@@ -2,7 +2,7 @@
 {
 	public class Font
 	{
-		const float multiplier = 512 * Constants.PixelMultiplier;
+		const float multiplier = 1024 * Constants.PixelMultiplier;
 
 		public readonly FontInfo Info;
 		readonly Texture[] characters;
@@ -19,9 +19,9 @@
 			characters = SheetManager.AddFont(info);
 
 			WidthGap = (int)(Info.SpaceSize.X * multiplier);
-			HeightGap = (int)(Info.SpaceSize.Y * multiplier);
+			HeightGap = (int)(Info.SpaceSize.Y * multiplier) / 2;
 			MaxWidth = (int)(Info.MaxSize.X * multiplier);
-			MaxHeight = (int)(Info.MaxSize.Y * multiplier);
+			MaxHeight = (int)(Info.MaxSize.Y * multiplier) / 2;
 		}
 
 		public (int width, int height) Measure(char c)
@@ -30,7 +30,7 @@
 				c = FontManager.UnknownCharacter;
 
 			if (char.IsWhiteSpace(c))
-				return (WidthGap, MaxHeight / 2);
+				return (WidthGap, MaxHeight);
 
 			var pixelSize = Info.CharSizes[FontManager.Characters.IndexOf(c)];
 
@@ -42,7 +42,7 @@
 			var maxWidth = 0;
 			var width = 0;
 
-			var height = MaxHeight / 2;
+			var height = MaxHeight;
 
 			foreach (var c in s)
 			{
@@ -52,7 +52,7 @@
 						maxWidth = width;
 
 					width = 0;
-					height += MaxHeight / 2 + HeightGap / 2;
+					height += MaxHeight + HeightGap;
 					continue;
 				}
 

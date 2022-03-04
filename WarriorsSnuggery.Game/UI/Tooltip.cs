@@ -30,7 +30,7 @@ namespace WarriorsSnuggery.UI
 			if (textWidth > width)
 				width = textWidth;
 
-			bounds = new MPos(2 * margin + width, 2 * margin + (text.Length + 1) * font.MaxHeight / 2 + text.Length * font.HeightGap / 2);
+			bounds = new MPos(2 * margin + width, 2 * margin + (text.Length + 1) * font.MaxHeight + text.Length * font.HeightGap);
 		}
 
 		public void Render()
@@ -54,8 +54,8 @@ namespace WarriorsSnuggery.UI
 				pos -= new CPos(0, bounds.Y, 0);
 
 			position = pos;
-			title.Position = position + new CPos(0, font.MaxHeight / 2, 0);
-			text.Position = position + new CPos(0, font.MaxHeight + font.HeightGap, 0);
+			title.Position = position + new CPos(0, font.MaxHeight, 0);
+			text.Position = position + new CPos(0, 2 * (font.MaxHeight + font.HeightGap), 0);
 		}
 	}
 }

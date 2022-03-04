@@ -17,7 +17,7 @@ namespace WarriorsSnuggery.Loader
 
 			var font = new SixLabors.Fonts.Font(FontManager.Collection.Find(info.FontName), info.Size);
 			var renderOptions = new RendererOptions(font);
-			renderOptions.ApplyKerning = true;
+
 			var brush = Brushes.Solid(SixLabors.ImageSharp.Color.White);
 
 			var maxWidth = 0;
@@ -41,10 +41,17 @@ namespace WarriorsSnuggery.Loader
 
 		static Image<Rgba32> generateFontChar(SixLabors.Fonts.Font font, IBrush brush, RendererOptions renderOptions, char c)
 		{
-			var size = TextMeasurer.MeasureBounds(c.ToString(), renderOptions);
+			var size = TextMeasurer.Measure(c.ToString(), renderOptions);
 			var img = new Image<Rgba32>((int)Math.Ceiling(size.Width), (int)Math.Ceiling(size.Height));
+			var drawingOptions = new DrawingOptions()
+			{
+				GraphicsOptions = new GraphicsOptions()
+				{
+					Antialias = false
+				}
+			};
 
-			img.Mutate(x => x.DrawText(c.ToString(), font, brush, PointF.Empty));
+			img.Mutate(x => x.DrawText(drawingOptions, c.ToString(), font, brush, PointF.Empty));
 
 			return img;
 		}

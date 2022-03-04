@@ -21,7 +21,7 @@ namespace WarriorsSnuggery.UI.Objects
 		public TextPanel(MPos bounds, Font font, PanelType type) : base(bounds, type)
 		{
 			this.font = font;
-			lineHeight = font.MaxHeight / 2;
+			lineHeight = font.MaxHeight;
 			lineCount = bounds.Y / lineHeight;
 		}
 
