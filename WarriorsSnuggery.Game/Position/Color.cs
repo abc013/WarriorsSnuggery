@@ -142,5 +142,10 @@ namespace WarriorsSnuggery
 			B = b;
 			A = a;
 		}
+
+		public Color WithAlpha(float alpha)
+        {
+			return new Color(R, G, B, alpha);
+        }
 	}
 }

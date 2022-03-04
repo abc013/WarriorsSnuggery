@@ -23,7 +23,7 @@ namespace WarriorsSnuggery.Graphics
 				var color = Color;
 				var position = Position;
 
-				SetColor(new Color(0, 0, 0, color.A));
+				SetColor(Color.Black.WithAlpha(color.A));
 				SetPosition(position + Vector3.ComponentMin(Scale, Vector3.One) * shadowOffset);
 				base.Render();
 				SetPosition(position);

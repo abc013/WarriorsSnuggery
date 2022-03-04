@@ -162,7 +162,7 @@ namespace WarriorsSnuggery.Objects.Particles
 					if (Type.IsLight)
 						Renderable.SetColor((dissolve / (float)Type.DissolveDuration) * Type.Color);
 					else
-						Renderable.SetColor(new Color(Type.Color.R, Type.Color.G, Type.Color.B, Type.Color.A * dissolve / Type.DissolveDuration));
+						Renderable.SetColor(Type.Color.WithAlpha(Type.Color.A * dissolve / Type.DissolveDuration));
 				}
 			}
 		}

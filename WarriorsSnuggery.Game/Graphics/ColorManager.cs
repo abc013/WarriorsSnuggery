@@ -89,7 +89,7 @@ namespace WarriorsSnuggery.Graphics
 			for (int i = 0; i < count; i++)
 			{
 				var currentRadius = radius / (i * i + 1);
-				DrawFilledLineRect(pointA, pointB, width + currentRadius, new Color(color.R, color.G, color.B, alpha));
+				DrawFilledLineRect(pointA, pointB, width + currentRadius, color.WithAlpha(alpha));
 			}
 		}
 
