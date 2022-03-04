@@ -21,8 +21,8 @@ namespace WarriorsSnuggery.Graphics
 			Collection.Install(path + "Adventurer.ttf");
 			Header = new Font(new FontInfo(16, "Adventurer"));
 
-			Collection.Install(path + "Pixel.ttf");
-			Default = new Font(new FontInfo(16, "Pixel"));
+			Collection.Install(path + "QuinqueFive.ttf");
+			Default = new Font(new FontInfo(5, "QuinqueFive"));
 		}
 	}
 }
