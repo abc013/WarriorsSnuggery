@@ -1,7 +1,7 @@
-﻿using System;
+﻿using SixLabors.ImageSharp;
+using SixLabors.ImageSharp.PixelFormats;
+using System;
 using System.Collections.Generic;
-using System.Drawing;
-using System.Drawing.Imaging;
 using System.IO;
 using System.Runtime.InteropServices;
 
@@ -9,20 +9,20 @@ namespace WarriorsSnuggery.Loader
 {
 	public static class BitmapLoader
 	{
-		public static List<float[]> LoadSprite(string filename, int width, int height)
+		public static List<float[]> LoadSplit(string file, int width, int height)
 		{
-			if (!File.Exists(filename))
-				throw new FileNotFoundException($"The file '{filename}' has not been found.");
+			if (!File.Exists(file))
+				throw new FileNotFoundException($"The file '{file}' has not been found.");
 
 			var result = new List<float[]>();
 
-			using var bmp = (Bitmap)Image.FromFile(filename);
+			using var img = (Image<Rgba32>)Image<Rgba32>.Load(file);
 
-			if (bmp.Width < width || bmp.Height < height)
-				throw new IndexOutOfRangeException($"Given image bounds ({width}, {height}) are bigger than the actual bounds ({bmp.Width}, {bmp.Height}).");
+			if (img.Width < width || img.Height < height)
+				throw new IndexOutOfRangeException($"Given image bounds ({width}, {height}) are bigger than the actual bounds ({img.Width}, {img.Height}).");
 
-			var cWidth = (int)Math.Floor(bmp.Width / (float)width);
-			var cHeight = (int)Math.Floor(bmp.Height / (float)height);
+			var cWidth = (int)Math.Floor(img.Width / (float)width);
+			var cHeight = (int)Math.Floor(img.Height / (float)height);
 
 			var count = cWidth * cHeight;
 			for (int c = 0; c < count; c++)
@@ -30,99 +30,66 @@ namespace WarriorsSnuggery.Loader
 				var ch = c / cWidth;
 				var cw = c % cWidth;
 
-				result.Add(LoadTexture(bmp, new Rectangle(cw * width, ch * height, width, height)));
+				result.Add(LoadSelection(img, (cw * width, ch * height, width, height)));
 			}
 
 			return result;
 		}
 
-		public static float[] LoadTexture(string filename, out int width, out int height)
+		public static float[] LoadWhole(string file, out int width, out int height)
 		{
-			if (!File.Exists(filename))
-				throw new FileNotFoundException($"The file '{filename}' has not been found.");
+			if (!File.Exists(file))
+				throw new FileNotFoundException($"The file '{file}' has not been found.");
 
-			using var bitmap = new Bitmap(filename);
+			using var img = (Image<Rgba32>)Image<Rgba32>.Load(file);
 
-			width = bitmap.Width;
-			height = bitmap.Height;
+			width = img.Width;
+			height = img.Height;
 
-			return LoadTexture(bitmap, new Rectangle(Point.Empty, bitmap.Size));
+            return LoadSelection(img, (0, 0, width, height));
 		}
 
-		// https://stackoverflow.com/questions/4747428/getting-rgb-array-from-image-in-c-sharp original
-		public static float[] LoadTexture(Bitmap bmp, Rectangle size)
+		internal static float[] LoadSelection(Image<Rgba32> img, (int x, int y, int w, int h) selection)
 		{
-			const int pixelWidth = 4;
-
-			var data = bmp.LockBits(size, ImageLockMode.ReadOnly, PixelFormat.Format32bppArgb);
-
-			var scansize = data.Width * pixelWidth;
-			var stride = data.Stride;
-
-			var byteSize = data.Height * stride;
-			GC.AddMemoryPressure(byteSize);
-
-			var result = new float[byteSize];
-			try
+			var result = new float[img.Width * img.Height * 4];
+			for (int scanline = 0; scanline < img.Height; scanline++)
 			{
-				var scan = new byte[scansize];
-				for (int scanline = 0; scanline < data.Height; scanline++)
-				{
-					Marshal.Copy(IntPtr.Add(data.Scan0, scanline * stride), scan, 0, scansize);
+				var span = img.GetPixelRowSpan(scanline);
 
-					for (int px = 0; px < data.Width; px++)
-					{
-						// little endian
-						// B
-						result[scanline * scansize + px * pixelWidth + 2] = scan[px * pixelWidth] / 255f;
-						// G
-						result[scanline * scansize + px * pixelWidth + 1] = scan[px * pixelWidth + 1] / 255f;
-						// R
-						result[scanline * scansize + px * pixelWidth] = scan[px * pixelWidth + 2] / 255f;
-						// A
-						result[scanline * scansize + px * pixelWidth + 3] = scan[px * pixelWidth + 3] / 255f;
-					}
+				for (int pixel = 0; pixel < img.Width; pixel++)
+				{
+					var offset = (scanline * img.Width + pixel) * 4;
+					var color = span[pixel];
+
+					// little endian
+					result[offset + 2] = color.B / 255f; // B
+					result[offset + 1] = color.G / 255f; // G
+					result[offset]     = color.R / 255f; // R
+					result[offset + 3] = color.A / 255f; // A
 				}
 			}
-			finally
-			{
-				bmp.UnlockBits(data);
-				GC.RemoveMemoryPressure(byteSize);
-			}
 
 			return result;
 		}
 
-		public static byte[] LoadBytes(string filename, out int width, out int height)
+		public static byte[] LoadBytes(string file, out int width, out int height)
 		{
-			if (!File.Exists(filename))
-				throw new FileNotFoundException($"The file '{filename}' has not been found.");
+			if (!File.Exists(file))
+				throw new FileNotFoundException($"The file '{file}' has not been found.");
 
-			using var bitmap = new Bitmap(filename);
+			using var img = (Image<Rgba32>)Image.Load(file);
 
-			width = bitmap.Width;
-			height = bitmap.Height;
+			width = img.Width;
+			height = img.Height;
 
-			return LoadBytes(bitmap, new Rectangle(Point.Empty, bitmap.Size));
-		}
+			byte[] result;
 
-		public static byte[] LoadBytes(Bitmap bmp, Rectangle size)
-		{
-			const int pixelWidth = 4;
-
-			var data = bmp.LockBits(size, ImageLockMode.ReadOnly, PixelFormat.Format32bppArgb);
-			var byteSize = data.Height * data.Stride;
-			GC.AddMemoryPressure(byteSize);
-
-			var result = new byte[data.Height * data.Width * pixelWidth];
-			try
+			if (img.TryGetSinglePixelSpan(out var span))
+				result = MemoryMarshal.AsBytes(span).ToArray();
+			else
 			{
-				Marshal.Copy(data.Scan0, result, 0, data.Height * data.Width * pixelWidth);
-			}
-			finally
-			{
-				bmp.UnlockBits(data);
-				GC.RemoveMemoryPressure(byteSize);
+				result = new byte[img.Width * img.Height * 4];
+				Log.LoaderWarning("Image", "Failed to load bytes of image. Using black image instead.");
 			}
 
 			return result;

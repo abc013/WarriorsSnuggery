@@ -301,8 +301,6 @@ namespace WarriorsSnuggery
 
 			SheetManager.DeleteSheets();
 
-			FontManager.Dispose();
-
 			base.Dispose(disposing);
 		}
 

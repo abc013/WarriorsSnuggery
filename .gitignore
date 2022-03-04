@@ -71,6 +71,7 @@ saves/*
 /glfw3-x64.dll
 /System*.dll
 /Microsoft*.dll
+/SixLabors.*.dll
 /libglfw.so.3.3
 /System*.so
 /System*.a

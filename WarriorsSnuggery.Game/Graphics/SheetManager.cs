@@ -38,7 +38,7 @@ namespace WarriorsSnuggery.Graphics
 			if (sheetsLoaded)
 				throw new Exception($"Unable to add texture (file: {file}. Sheets are already loaded.");
 
-			var data = BitmapLoader.LoadTexture(file, out width, out height);
+			var data = BitmapLoader.LoadWhole(file, out width, out height);
 
 			return new[] { addTexture(data, file, width, height) };
 		}
@@ -48,7 +48,7 @@ namespace WarriorsSnuggery.Graphics
 			if (sheetsLoaded)
 				throw new Exception($"Unable to add texture (file: {file}. Sheets are already loaded.");
 
-			var dataList = BitmapLoader.LoadSprite(file, width, height);
+			var dataList = BitmapLoader.LoadSplit(file, width, height);
 
 			var textures = new Texture[dataList.Count];
 			for (int i = 0; i < dataList.Count; i++)

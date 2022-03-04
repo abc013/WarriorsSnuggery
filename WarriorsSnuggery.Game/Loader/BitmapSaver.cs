@@ -1,5 +1,6 @@
-﻿using System.Drawing;
-using System.Runtime.InteropServices;
+﻿using SixLabors.ImageSharp;
+using SixLabors.ImageSharp.Processing;
+using SixLabors.ImageSharp.PixelFormats;
 
 namespace WarriorsSnuggery.Loader
 {
@@ -22,10 +23,10 @@ namespace WarriorsSnuggery.Loader
 
 		public static void Save(string filename, byte[] data, MPos size, bool invertY = false)
 		{
-			using var img = new Bitmap(size.X, size.Y, size.X * 4, System.Drawing.Imaging.PixelFormat.Format32bppArgb, Marshal.UnsafeAddrOfPinnedArrayElement(data, 0));
+			using var img = Image.LoadPixelData<Bgra32>(data, size.X, size.Y);
 
 			if (invertY)
-				img.RotateFlip(RotateFlipType.RotateNoneFlipY);
+				img.Mutate(a => a.Flip(FlipMode.Horizontal));
 
 			img.Save(filename);
 		}
