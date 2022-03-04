@@ -16,7 +16,7 @@ namespace WarriorsSnuggery.Loader
 
 			var result = new List<float[]>();
 
-			using var img = (Image<Rgba32>)Image<Rgba32>.Load(file);
+			using var img = (Image<Rgba32>)Image.Load(file);
 
 			if (img.Width < width || img.Height < height)
 				throw new IndexOutOfRangeException($"Given image bounds ({width}, {height}) are bigger than the actual bounds ({img.Width}, {img.Height}).");
@@ -41,7 +41,7 @@ namespace WarriorsSnuggery.Loader
 			if (!File.Exists(file))
 				throw new FileNotFoundException($"The file '{file}' has not been found.");
 
-			using var img = (Image<Rgba32>)Image<Rgba32>.Load(file);
+			using var img = (Image<Rgba32>)Image.Load(file);
 
 			width = img.Width;
 			height = img.Height;
@@ -51,15 +51,15 @@ namespace WarriorsSnuggery.Loader
 
 		internal static float[] LoadSelection(Image<Rgba32> img, (int x, int y, int w, int h) selection)
 		{
-			var result = new float[img.Width * img.Height * 4];
-			for (int scanline = 0; scanline < img.Height; scanline++)
+			var result = new float[selection.w * selection.h * 4];
+			for (int scanline = 0; scanline < selection.h; scanline++)
 			{
-				var span = img.GetPixelRowSpan(scanline);
+				var span = img.GetPixelRowSpan(selection.y + scanline);
 
-				for (int pixel = 0; pixel < img.Width; pixel++)
+				for (int pixel = 0; pixel < selection.w; pixel++)
 				{
-					var offset = (scanline * img.Width + pixel) * 4;
-					var color = span[pixel];
+					var offset = (scanline * selection.w + pixel) * 4;
+					var color = span[selection.x + pixel];
 
 					// little endian
 					result[offset + 2] = color.B / 255f; // B
@@ -89,7 +89,7 @@ namespace WarriorsSnuggery.Loader
 			else
 			{
 				result = new byte[img.Width * img.Height * 4];
-				Log.LoaderWarning("Image", "Failed to load bytes of image. Using black image instead.");
+				Log.LoaderWarning("Image", $"Failed to load bytes of image (Source: '{file}'). Using black image instead.");
 			}
 
 			return result;
