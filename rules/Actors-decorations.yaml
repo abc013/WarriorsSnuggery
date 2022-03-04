@@ -61,6 +61,11 @@ lamp1=
 			RadiusX=128
 			RadiusY=128
 			HeightRadius=2048
+	Light=
+		Name=quadratic_light
+		Scale=1.5
+		Offset=0,-1736,0
+		Color=128,128,96
 
 statue1=
 	Sprite=
@@ -112,6 +117,14 @@ firepot=
 #		IdleSound=
 #			Name=fire
 #			Volume=0.5
+	Light=
+		Name=quadratic_light
+		Offset=0,-64,0
+		Color=196,128,64
+		FluctuationStrength=0.3
+		FluctuationStrengthRandomness=0.2
+		FluctuationSpeed=30
+		FluctuationSpeedRandomness=5
 
 furCarpet=
 	Sprite=

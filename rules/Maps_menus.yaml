@@ -23,6 +23,6 @@ main2=
 		ImportantPieceGenerator=1
 			Pieces=mainmap1
 			Position=0,0
-	Ambient=200,200,180
+	Ambient=192,160,160
 	AllowWeapons=false
 	RevealMap=true

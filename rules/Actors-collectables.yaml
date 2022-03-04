@@ -48,6 +48,11 @@ portion_red=
 			Volume=0.8
 			RandomVolume=0.2
 			RandomPitch=0.4
+	Light=
+		Name=linear_light
+		Color=196,64,64
+		Scale=0.3
+		ConsiderWorldAmbient=false
 
 portion_blue=
 	Sprite=
@@ -66,6 +71,11 @@ portion_blue=
 			Volume=0.8
 			RandomVolume=0.2
 			RandomPitch=0.4
+	Light=
+		Name=linear_light
+		Color=64,64,196
+		Scale=0.3
+		ConsiderWorldAmbient=false
 
 mana_splash=
 	Sprite=
@@ -79,6 +89,11 @@ mana_splash=
 		Value=4
 		MultipleActivations=no
 		KillsSelf=true
+	Light=
+		Name=linear_light
+		Color=0,0,64
+		Scale=0.2
+		ConsiderWorldAmbient=false
 
 portion_green=
 	Sprite=
@@ -97,6 +112,11 @@ portion_green=
 			Volume=0.8
 			RandomVolume=0.2
 			RandomPitch=0.4
+	Light=
+		Name=linear_light
+		Color=64,196,64
+		Scale=0.3
+		ConsiderWorldAmbient=false
 
 gold=
 	AnimatedSprite=
