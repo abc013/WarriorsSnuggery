@@ -16,6 +16,8 @@ namespace WarriorsSnuggery.Objects.Particles
 		public readonly int MeshSize;
 		[Desc("Random scale when using monocolored particles.")]
 		public readonly float MeshSizeVariety;
+		[Desc("Determines whether to render the particle as light.")]
+		public readonly bool IsLight;
 
 		[Desc("Gravitational force.")]
 		public readonly int Gravity = 2;

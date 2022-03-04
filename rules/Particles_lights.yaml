@@ -1,0 +1,30 @@
+light_lightning_flash=
+	Texture=lightning_light
+		Size=48,48
+	Duration=2
+	Color=512,512,512
+	ColorVariety=0,0,128
+	RandomRotation=3,3,7
+	Gravity=0
+	IsLight=true
+	RandomScale=1
+
+light_explosion_flash=
+	Texture=4star_light
+		Size=48,48
+	DissolveDuration=15
+	RandomRotation=30,30,70
+	Gravity=0
+	IsLight=true
+	RandomScale=0.3
+
+light_party_flash=
+	Texture=5star_light
+		Size=48,48
+	DissolveDuration=150
+	RandomRotation=0,0,10
+	Color=32,32,32
+	ColorVariety=255,255,255
+	Gravity=0
+	IsLight=true
+	RandomScale=5

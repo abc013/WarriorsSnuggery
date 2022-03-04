@@ -1,6 +1,7 @@
 # Important: do NOT change the queue of the following rules. If you do so, the game is going to crash.
 Particles=
 	Particles.yaml=
+	Particles_lights.yaml=
 Spells=
 	Spells-spelltree.yaml=
 	Spells-weapons.yaml=

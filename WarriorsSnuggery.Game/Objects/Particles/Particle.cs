@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using WarriorsSnuggery.Graphics;
 using WarriorsSnuggery.Maps.Layers;
 
 namespace WarriorsSnuggery.Objects.Particles
@@ -157,7 +158,12 @@ namespace WarriorsSnuggery.Objects.Particles
 				if (dissolve-- <= 0)
 					Dispose();
 				else
-					Renderable.SetColor(new Color(Type.Color.R, Type.Color.G, Type.Color.B, Type.Color.A * dissolve / Type.DissolveDuration));
+				{
+					if (Type.IsLight)
+						Renderable.SetColor((dissolve / (float)Type.DissolveDuration) * Type.Color);
+					else
+						Renderable.SetColor(new Color(Type.Color.R, Type.Color.G, Type.Color.B, Type.Color.A * dissolve / Type.DissolveDuration));
+				}
 			}
 		}
 
@@ -165,6 +171,14 @@ namespace WarriorsSnuggery.Objects.Particles
 		{
 			if (Type.ShowShadow)
 				RenderShadow();
+
+			if (Type.IsLight)
+			{
+				MasterRenderer.SetRenderer(Renderer.LIGHTS);
+				base.Render();
+				MasterRenderer.SetRenderer(Renderer.DEFAULT);
+				return;
+			}
 
 			base.Render();
 		}
