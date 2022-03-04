@@ -36,7 +36,7 @@ namespace WarriorsSnuggery.Maps
 		[Desc("Reveals the whole map.")]
 		public readonly bool RevealMap = false;
 
-		[Desc("Ambient color of the map.")]
+		[Desc("Ambient color of the map.", "Note: lowering this factor to below a quarter of strength will get weird results with lights.")]
 		public readonly Color Ambient = Color.White;
 		[Desc("Wall type to use when surrounding the map with walls.")]
 		public readonly int Wall = 0;

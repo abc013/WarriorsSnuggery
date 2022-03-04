@@ -28,6 +28,7 @@ namespace WarriorsSnuggery
 		{
 			game = @new;
 			world = game.World;
+			Ambient = world.Map.Type.Ambient;
 
 			CameraVisibility.Reset();
 			Camera.Reset();
@@ -73,6 +74,11 @@ namespace WarriorsSnuggery
 
 			MasterRenderer.RenderBatch();
 
+			Shaders.Uniform(Shaders.TextureShader, ref Camera.Matrix, Color.White);
+			MasterRenderer.SetRenderer(Renderer.LIGHTS);
+			MasterRenderer.RenderBatch();
+			MasterRenderer.SetRenderer(Renderer.DEFAULT);
+
 			if (Settings.EnableWeatherEffects)
 			{
 				foreach(var controller in world.WeatherManager.Controllers)
@@ -112,7 +118,7 @@ namespace WarriorsSnuggery
 
 			if (Settings.DeveloperMode)
 			{
-				MasterRenderer.UseDebugRenderer = true;
+				MasterRenderer.SetRenderer(Renderer.DEBUG);
 
 				if (Settings.CurrentMap >= 0 && world.Map.NoiseMaps.ContainsKey(Settings.CurrentMap))
 					world.Map.NoiseMaps[Settings.CurrentMap].Render();
@@ -145,10 +151,8 @@ namespace WarriorsSnuggery
 
 				MasterRenderer.RenderBatch();
 				MasterRenderer.PrimitiveType = PrimitiveType.Triangles;
-				MasterRenderer.UseDebugRenderer = false;
+				MasterRenderer.SetRenderer(Renderer.DEFAULT);
 			}
-
-			Ambient = world.Map.Type.Ambient;
 		}
 
 		static List<PositionableObject> prepareRenderList()

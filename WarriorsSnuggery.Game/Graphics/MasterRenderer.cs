@@ -4,6 +4,13 @@ using System;
 
 namespace WarriorsSnuggery.Graphics
 {
+	public enum Renderer
+	{
+		DEFAULT,
+		LIGHTS,
+		DEBUG
+	}
+
 	public static class MasterRenderer
 	{
 		public static int RenderCalls;
@@ -15,9 +22,10 @@ namespace WarriorsSnuggery.Graphics
 
 		public static PrimitiveType PrimitiveType = PrimitiveType.Triangles;
 
-		public static bool UseDebugRenderer;
+		static Renderer activeRenderer = Renderer.DEFAULT;
 
-		static readonly BatchRenderer renderer = new BatchRenderer();
+		static readonly BatchRenderer defaultRenderer = new BatchRenderer();
+		static readonly BatchRenderer lightRenderer = new BatchRenderer();
 		static readonly BatchRenderer debugRenderer = new BatchRenderer();
 
 		static int frameBuffer;
@@ -26,24 +34,48 @@ namespace WarriorsSnuggery.Graphics
 
 		public static void InitRenderer()
 		{
-			renderer.SetTextures(SheetManager.Sheets, SheetManager.SheetsUsed);
+			defaultRenderer.SetTextures(SheetManager.Sheets, SheetManager.SheetsUsed);
+			lightRenderer.SetTextures(SheetManager.Sheets, SheetManager.SheetsUsed);
 			debugRenderer.SetTextures(new[] { 0 });
+		}
+
+		public static void SetRenderer(Renderer renderer)
+		{
+			activeRenderer = renderer;
 		}
 
 		public static void AddToBatch(Vertex[] vertices)
 		{
-			if (UseDebugRenderer)
-				debugRenderer.Add(vertices);
-			else
-				renderer.Add(vertices);
+			switch (activeRenderer)
+			{
+				case Renderer.DEFAULT:
+					defaultRenderer.Add(vertices);
+					break;
+				case Renderer.LIGHTS:
+					lightRenderer.Add(vertices);
+					break;
+				case Renderer.DEBUG:
+					debugRenderer.Add(vertices);
+					break;
+			}
 		}
 
 		public static void RenderBatch()
 		{
-			if (UseDebugRenderer)
-				debugRenderer.Render();
-			else
-				renderer.Render();
+			switch (activeRenderer)
+			{
+				case Renderer.DEFAULT:
+					defaultRenderer.Render();
+					break;
+				case Renderer.LIGHTS:
+					EnableLightBlending();
+					lightRenderer.Render();
+					DisableLightBlending();
+					break;
+				case Renderer.DEBUG:
+					debugRenderer.Render();
+					break;
+			}
 		}
 
 		public static void Initialize()
@@ -149,7 +181,26 @@ namespace WarriorsSnuggery.Graphics
 			lock (GLLock)
 			{
 				GL.LineWidth(width);
-				Program.CheckGraphicsError("LineWidth");
+				Program.CheckGraphicsError("GLLineWidth");
+			}
+		}
+
+
+		public static void EnableLightBlending()
+		{
+			lock (GLLock)
+			{
+				GL.BlendFunc(BlendingFactor.DstColor, BlendingFactor.One);
+				Program.CheckGraphicsError("GLLightBlending");
+			}
+		}
+
+		public static void DisableLightBlending()
+		{
+			lock (GLLock)
+			{
+				GL.BlendFunc(BlendingFactor.SrcAlpha, BlendingFactor.OneMinusSrcAlpha);
+				Program.CheckGraphicsError("GLLightBlending");
 			}
 		}
 
@@ -185,7 +236,8 @@ namespace WarriorsSnuggery.Graphics
 				GL.DeleteFramebuffer(frameBuffer);
 			}
 
-			renderer.Dispose();
+			defaultRenderer.Dispose();
+			lightRenderer.Dispose();
 			debugRenderer.Dispose();
 
 			Shaders.Dispose();
