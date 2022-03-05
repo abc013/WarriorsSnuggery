@@ -14,7 +14,7 @@ namespace WarriorsSnuggery.Graphics
 				GL.ActiveTexture(TextureUnit.Texture0);
 				GL.BindTexture(TextureTarget.Texture2D, id);
 
-				GL.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.Rgba32f, width, height, 0, PixelFormat.Rgba, PixelType.Float, IntPtr.Zero);
+				GL.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.Rgba32f, width, height, 0, PixelFormat.Bgra, PixelType.Float, IntPtr.Zero);
 
 				GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMinFilter, (int)All.Nearest);
 				GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMagFilter, (int)All.Nearest);
@@ -32,7 +32,7 @@ namespace WarriorsSnuggery.Graphics
 				GL.ActiveTexture(TextureUnit.Texture0);
 				GL.BindTexture(TextureTarget.Texture2D, id);
 
-				GL.TexSubImage2D(TextureTarget.Texture2D, 0, offsetx, offsety, width, height, PixelFormat.Rgba, PixelType.Float, data);
+				GL.TexSubImage2D(TextureTarget.Texture2D, 0, offsetx, offsety, width, height, PixelFormat.Bgra, PixelType.Float, data);
 
 				Program.CheckGraphicsError("writeTexture");
 			}
@@ -46,7 +46,7 @@ namespace WarriorsSnuggery.Graphics
 				GL.ActiveTexture(TextureUnit.Texture0);
 				GL.BindTexture(TextureTarget.Texture2D, id);
 
-				GL.GetTexImage(TextureTarget.Texture2D, 0, PixelFormat.Rgba, PixelType.Float, data);
+				GL.GetTexImage(TextureTarget.Texture2D, 0, PixelFormat.Bgra, PixelType.Float, data);
 
 				Program.CheckGraphicsError("readTexture");
 			}

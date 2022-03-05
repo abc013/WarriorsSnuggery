@@ -16,7 +16,9 @@ namespace WarriorsSnuggery.Loader
 
 			var result = new List<float[]>();
 
-			using var img = (Image<Rgba32>)Image.Load(file);
+			using var img = Image.Load(file).CloneAs<RgbaVector>();
+			var span = new Span<RgbaVector>(new RgbaVector[img.Width * img.Height]);
+			img.CopyPixelDataTo(span);
 
 			if (img.Width < width || img.Height < height)
 				throw new IndexOutOfRangeException($"Given image bounds ({width}, {height}) are bigger than the actual bounds ({img.Width}, {img.Height}).");
@@ -30,7 +32,7 @@ namespace WarriorsSnuggery.Loader
 				var ch = c / cWidth;
 				var cw = c % cWidth;
 
-				result.Add(LoadSelection(img, (cw * width, ch * height, width, height)));
+				result.Add(LoadSelection(span, (img.Width, img.Height), (cw * width, ch * height, width, height)));
 			}
 
 			return result;
@@ -41,31 +43,31 @@ namespace WarriorsSnuggery.Loader
 			if (!File.Exists(file))
 				throw new FileNotFoundException($"The file '{file}' has not been found.");
 
-			using var img = (Image<Rgba32>)Image.Load(file);
+			using var img = Image.Load(file).CloneAs<RgbaVector>();
+			var span = new Span<RgbaVector>(new RgbaVector[img.Width * img.Height]);
+			img.CopyPixelDataTo(span);
 
 			width = img.Width;
 			height = img.Height;
 
-            return LoadSelection(img, (0, 0, width, height));
+            return LoadSelection(span, (width, height), (0, 0, width, height));
 		}
 
-		internal static float[] LoadSelection(Image<Rgba32> img, (int x, int y, int w, int h) selection)
+		internal static float[] LoadSelection(Span<RgbaVector> span, (int width, int height) bounds, (int x, int y, int w, int h) selection)
 		{
 			var result = new float[selection.w * selection.h * 4];
+
 			for (int scanline = 0; scanline < selection.h; scanline++)
 			{
-				var span = img.GetPixelRowSpan(selection.y + scanline);
-
 				for (int pixel = 0; pixel < selection.w; pixel++)
 				{
 					var offset = (scanline * selection.w + pixel) * 4;
-					var color = span[selection.x + pixel];
+					var color = span[(selection.y + scanline) * bounds.width + selection.x + pixel];
 
-					// little endian
-					result[offset + 2] = color.B / 255f; // B
-					result[offset + 1] = color.G / 255f; // G
-					result[offset]     = color.R / 255f; // R
-					result[offset + 3] = color.A / 255f; // A
+					result[offset++] = color.B;
+					result[offset++] = color.G;
+					result[offset++] = color.R;
+					result[offset++] = color.A;
 				}
 			}
 
@@ -77,22 +79,14 @@ namespace WarriorsSnuggery.Loader
 			if (!File.Exists(file))
 				throw new FileNotFoundException($"The file '{file}' has not been found.");
 
-			using var img = (Image<Rgba32>)Image.Load(file);
+			using var img = Image.Load(file).CloneAs<Rgba32>();
 
 			width = img.Width;
 			height = img.Height;
 
-			byte[] result;
-
-			if (img.TryGetSinglePixelSpan(out var span))
-				result = MemoryMarshal.AsBytes(span).ToArray();
-			else
-			{
-				result = new byte[img.Width * img.Height * 4];
-				Log.LoaderWarning("Image", $"Failed to load bytes of image (Source: '{file}'). Using black image instead.");
-			}
-
-			return result;
+			var span = new Span<byte>(new byte[width * height * 4]);
+			img.CopyPixelDataTo(span);
+			return MemoryMarshal.AsBytes(span).ToArray();
 		}
 	}
 }

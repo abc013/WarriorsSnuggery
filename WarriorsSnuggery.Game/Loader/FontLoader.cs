@@ -15,8 +15,8 @@ namespace WarriorsSnuggery.Loader
 			var characters = new float[FontManager.Characters.Length][];
 			var sizes = new MPos[characters.Length];
 
-			var font = new SixLabors.Fonts.Font(FontManager.Collection.Find(info.FontName), info.Size);
-			var renderOptions = new RendererOptions(font);
+			var font = new SixLabors.Fonts.Font(FontManager.Collection.Get(info.FontName), info.Size);
+			var renderOptions = new TextOptions(font);
 
 			var brush = Brushes.Solid(SixLabors.ImageSharp.Color.White);
 
@@ -24,14 +24,17 @@ namespace WarriorsSnuggery.Loader
 			var maxHeight = 0;
 			for (int i = 0; i < FontManager.Characters.Length; i++)
 			{
-				var charImg = generateFontChar(font, brush, renderOptions, FontManager.Characters[i]);
-				sizes[i] = new MPos(charImg.Width, charImg.Height);
-				if (charImg.Width > maxWidth)
-					maxWidth = charImg.Width;
-				if (charImg.Height > maxHeight)
-					maxHeight = charImg.Height;
+				var img = generateFontChar(font, brush, renderOptions, FontManager.Characters[i]);
+				var span = new Span<RgbaVector>(new RgbaVector[img.Width * img.Height]);
+				img.CopyPixelDataTo(span);
 
-				characters[i] = BitmapLoader.LoadSelection(charImg, (0, 0, charImg.Width, charImg.Height));
+				sizes[i] = new MPos(img.Width, img.Height);
+				if (img.Width > maxWidth)
+					maxWidth = img.Width;
+				if (img.Height > maxHeight)
+					maxHeight = img.Height;
+
+				characters[i] = BitmapLoader.LoadSelection(span, (img.Width, img.Height), (0, 0, img.Width, img.Height));
 			}
 
 			info.SetSizes(new MPos(maxWidth, maxHeight), sizes);
@@ -39,10 +42,13 @@ namespace WarriorsSnuggery.Loader
 			return characters;
 		}
 
-		static Image<Rgba32> generateFontChar(SixLabors.Fonts.Font font, IBrush brush, RendererOptions renderOptions, char c)
+		static Image<RgbaVector> generateFontChar(SixLabors.Fonts.Font font, IBrush brush, TextOptions textOptions, char c)
 		{
-			var size = TextMeasurer.Measure(c.ToString(), renderOptions);
-			var img = new Image<Rgba32>((int)Math.Ceiling(size.Width), (int)Math.Ceiling(size.Height));
+			if (c == '/') // TODO: wtf
+				c = '|';
+
+			var size = TextMeasurer.Measure(c.ToString(), textOptions);
+			var img = new Image<RgbaVector>((int)Math.Ceiling(size.Width), (int)Math.Ceiling(size.Height));
 			var drawingOptions = new DrawingOptions()
 			{
 				GraphicsOptions = new GraphicsOptions()
