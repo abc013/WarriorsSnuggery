@@ -19,9 +19,9 @@
 			characters = SheetManager.AddFont(info);
 
 			WidthGap = (int)(Info.SpaceSize.X * multiplier);
-			HeightGap = (int)(Info.SpaceSize.Y * multiplier) / 2;
+			HeightGap = (int)(Info.SpaceSize.Y * multiplier);
 			MaxWidth = (int)(Info.MaxSize.X * multiplier);
-			MaxHeight = (int)(Info.MaxSize.Y * multiplier) / 2;
+			MaxHeight = (int)(Info.MaxSize.Y * multiplier);
 		}
 
 		public (int width, int height) Measure(char c)

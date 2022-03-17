@@ -180,8 +180,7 @@ namespace WarriorsSnuggery.Graphics
 					if (i + 1 < Text.Length)
 					{
 						nextLine = Text.IndexOf('\n', i + 1);
-						var substirng = Text.Substring(i + 1);
-						width = getOffset(nextLine < 0 ? substirng : Text[(i + 1)..nextLine]);
+						width = getOffset(nextLine < 0 ? Text[(i + 1)..] : Text[(i + 1)..nextLine]);
 					}
 
 					continue;

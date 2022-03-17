@@ -56,8 +56,8 @@ namespace WarriorsSnuggery.UI.Objects
 		public MessageBox(CPos position)
 		{
 			Position = position;
-			background = new Panel(new MPos(6144, 1152), "wooden") { Position = position };
-			text = new UIText(FontManager.Default, TextOffset.LEFT) { Position = position - new CPos(6144 - FontManager.Default.WidthGap, FontManager.Default.HeightGap + FontManager.Default.MaxHeight, 0) };
+			background = new Panel(new MPos(8120, 1024), "wooden") { Position = position };
+			text = new UIText(FontManager.Default, TextOffset.LEFT) { Position = position - new CPos(8120 - FontManager.Default.WidthGap, 1024 - FontManager.Default.HeightGap, 0) };
 
 			Bounds = background.Bounds;
 			SelectableBounds = Bounds;
@@ -79,14 +79,14 @@ namespace WarriorsSnuggery.UI.Objects
 			if (message.Type == Message.MessageType.DECISION)
 			{
 				@continue = null;
-				agree = new Button("Agree", "wooden", () => closeAfterAction(message.OnAgree)) { Position = Position + new CPos(4096, 1152, 0) };
-				decline = new Button("Decline", "wooden", () => closeAfterAction(message.OnDecline)) { Position = Position + new CPos(1024, 1152, 0) };
+				agree = new Button("Agree", "wooden", () => closeAfterAction(message.OnAgree)) { Position = Position + new CPos(4096, 1024 + FontManager.Default.MaxHeight, 0) };
+				decline = new Button("Decline", "wooden", () => closeAfterAction(message.OnDecline)) { Position = Position + new CPos(1024, 1024 + FontManager.Default.MaxHeight, 0) };
 			}
 			else
 			{
 				agree = null;
 				decline = null;
-				@continue = new Button("Continue", "wooden", () => closeAfterAction()) { Position = Position + new CPos(3072, 1152, 0) };
+				@continue = new Button("Continue", "wooden", () => closeAfterAction()) { Position = Position + new CPos(3072, 1024 + FontManager.Default.MaxHeight, 0) };
 			}
 		}
 
