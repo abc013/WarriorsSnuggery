@@ -11,7 +11,7 @@ namespace WarriorsSnuggery.Objects.Weather
 
 	public class WeatherEffect
 	{
-		[Desc("Render type to use: SNOW renders squares, RAIN renders a line based on the velocity.")]
+		[Desc("Render type to use: SNOW renders squares, RAIN renders a line.")]
 		public readonly WeatherEffectType Type;
 
 		[Desc("Total particle count.")]
@@ -28,6 +28,12 @@ namespace WarriorsSnuggery.Objects.Weather
 
 		[Desc("Size variation of the particles.")]
 		public readonly int RandomSize;
+
+		[Desc("Length of the particles.", "Only applied when using RAIN.")]
+		public readonly int Length = 196;
+
+		[Desc("Length variation of the particles.", "Only applied when using RAIN.")]
+		public readonly int RandomLength;
 
 		[Desc("Velocity of the particles.")]
 		public readonly CPos Velocity;

@@ -20,7 +20,7 @@ namespace WarriorsSnuggery.Objects.Weather
 
 			particles = new WeatherParticle[particleCount];
 			for (int i = 0; i < particleCount; i++)
-				particles[i] = new WeatherParticle(world, randomPosition(), effect);
+				particles[i] = new WeatherParticle(this, randomPosition(), effect);
 		}
 
 		public void Tick()
@@ -53,23 +53,24 @@ namespace WarriorsSnuggery.Objects.Weather
 
 		class WeatherParticle
 		{
-			readonly World world;
-
 			public CPos Position;
 
+			readonly WeatherEffectController controller;
 			readonly bool isQuad;
 			readonly Color color;
 			readonly int size;
+			readonly int length;
 			readonly CPos velocity;
 
-			public WeatherParticle(World world, CPos position, WeatherEffect effect)
+			public WeatherParticle(WeatherEffectController controller, CPos position, WeatherEffect effect)
 			{
-				this.world = world;
+				this.controller = controller;
 				Position = position;
 				isQuad = effect.Type == WeatherEffectType.SNOW;
 
 				color = effect.Color + variety(effect.ColorVariety);
 				size = (int)Math.Max(0, effect.Size + variety(effect.RandomSize));
+				length = (int)Math.Max(0, effect.Length + variety(effect.RandomLength));
 				velocity = effect.Velocity + variety(effect.RandomVelocity);
 			}
 
@@ -93,13 +94,10 @@ namespace WarriorsSnuggery.Objects.Weather
 				if (!Camera.IsVisible(Position, 0, 0))
 					return;
 
-				if (!world.IsInWorld(Position))
-					return;
-
 				if (isQuad)
 					ColorManager.DrawQuad(Position, size, color);
 				else
-					ColorManager.DrawLine(Position, Position + new CPos(velocity.X * 10, velocity.Y * 10, 0), color);
+					ColorManager.DrawFilledLine(Position, Position + CPos.FromFlatAngle(velocity.FlatAngle + controller.windTick, length), size, color);
 			}
 
 			static readonly Random random = Program.SharedRandom;

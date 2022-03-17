@@ -9,14 +9,14 @@ namespace WarriorsSnuggery.Objects.Weather
 		internal static int cameraLeft, cameraRight;
 		internal static int cameraTop, cameraBottom;
 
-		public readonly WeatherEffectController[] Controllers;
+		readonly WeatherEffectController[] controllers;
 
 		public WeatherManager(World world, MapType type)
 		{
-			Controllers = new WeatherEffectController[type.WeatherEffects.Length];
+			controllers = new WeatherEffectController[type.WeatherEffects.Length];
 
-			for (int i = 0; i < Controllers.Length; i++)
-				Controllers[i] = new WeatherEffectController(world, type.WeatherEffects[i]);
+			for (int i = 0; i < controllers.Length; i++)
+				controllers[i] = new WeatherEffectController(world, type.WeatherEffects[i]);
 
 			cameraMaxBounds = new MPos((int)(1024 * Camera.MaxZoom * WindowInfo.Ratio), (int)(1024 * Camera.MaxZoom));
 		}
@@ -32,8 +32,14 @@ namespace WarriorsSnuggery.Objects.Weather
 			cameraTop = Camera.LookAt.Y - cameraMaxBounds.Y / 2;
 			cameraBottom = Camera.LookAt.Y + cameraMaxBounds.Y / 2;
 
-			for (int i = 0; i < Controllers.Length; i++)
-				Controllers[i].Tick();
+			foreach (var controller in controllers)
+				controller.Tick();
+		}
+
+		public void Render()
+        {
+			foreach (var controller in controllers)
+				controller.Render();
 		}
 	}
 }
