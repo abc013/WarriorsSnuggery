@@ -31,12 +31,12 @@ namespace WarriorsSnuggery.UI.Objects
 			debug.SetText(CameraVisibility.TilesVisible() + " Tiles visible");
 
 			var tps = PerfInfo.AverageTPS();
-			debug.AddText(getColor(tps, Settings.UpdatesPerSecond) + $"Tick {tps.ToString("F1")} @ {PerfInfo.TMS:00} ms");
+			debug.AddText(getColor(tps, Settings.UpdatesPerSecond) + $"Tick {tps:00.0} @ {PerfInfo.TMS:00.0} ms");
 
 			var frameCount = Settings.FrameLimiter == 0 ? ScreenInfo.ScreenRefreshRate : Settings.FrameLimiter;
 
 			var fps = PerfInfo.AverageFPS();
-			debug.AddText(getColor(fps, frameCount) + $"Render {fps.ToString("F1")} @ {PerfInfo.FMS:00} ms");
+			debug.AddText(getColor(fps, frameCount) + $"Render {fps:00.0} @ {PerfInfo.FMS:00.0} ms");
 		}
 
 		public void Render()

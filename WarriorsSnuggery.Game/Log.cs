@@ -30,9 +30,9 @@ namespace WarriorsSnuggery
 			writeDebug("ERRO", "An error occurred. Check 'exception.log' for details.");
 		}
 
-		public static void Performance(long ms, string text)
+		public static void Performance(double ms, string text)
 		{
-			writeDebug("PERF", $"({ms.ToString().PadLeft(4, '0')}ms)->{text}");
+			writeDebug("PERF", $"({ms:0000.0}ms)->{text}");
 		}
 
 		public static void LoaderDebug(string loader, string text)

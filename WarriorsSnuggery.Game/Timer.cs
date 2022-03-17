@@ -19,13 +19,13 @@ namespace WarriorsSnuggery
 		public void StopAndWrite(string text)
 		{
 			watch.Stop();
-			Log.Performance(watch.ElapsedMilliseconds, text);
+			Log.Performance(watch.Elapsed.TotalMilliseconds, text);
 		}
 
-		public long Stop()
+		public double Stop()
 		{
 			watch.Stop();
-			return watch.ElapsedMilliseconds;
+			return watch.Elapsed.TotalMilliseconds;
 		}
 
 		public void Restart()

@@ -35,17 +35,17 @@ namespace WarriorsSnuggery
 
 	public static class PerfInfo
 	{
-		public static long TMS { get; private set; }
+		public static double TMS { get; private set; }
 		public static double TPS { get; private set; }
 
-		static readonly double[] lastTPS = new double[9];
+		static readonly double[] lastTPS = new double[19];
 		static int tIndex;
 
-		public static void UpdateLoop(long ms, double tps)
+		public static void UpdateLoop(double ms, double tps)
 		{
 			TMS = ms;
 
-			lastTPS[tIndex++ % 9] = TPS;
+			lastTPS[tIndex++ % 19] = TPS;
 			TPS = tps;
 		}
 
@@ -55,20 +55,20 @@ namespace WarriorsSnuggery
 			foreach (var tps in lastTPS)
 				total += tps;
 
-			return total / 10;
+			return total / 20;
 		}
 
-		public static long FMS { get; private set; }
+		public static double FMS { get; private set; }
 		public static double FPS { get; private set; }
 
-		static readonly double[] lastFPS = new double[9];
+		static readonly double[] lastFPS = new double[19];
 		static int fIndex;
 
-		public static void RenderLoop(long ms, double fps)
+		public static void RenderLoop(double ms, double fps)
 		{
 			FMS = ms;
 
-			lastFPS[fIndex++ % 9] = FPS;
+			lastFPS[fIndex++ % 19] = FPS;
 			FPS = fps;
 		}
 
@@ -78,7 +78,7 @@ namespace WarriorsSnuggery
 			foreach (var fps in lastFPS)
 				total += fps;
 
-			return total / 10;
+			return total / 20;
 		}
 	}
 
