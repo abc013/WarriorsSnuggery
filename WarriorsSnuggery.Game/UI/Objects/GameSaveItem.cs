@@ -5,52 +5,52 @@ namespace WarriorsSnuggery.UI.Objects
 {
 	class GameSaveItem : PanelListItem
 	{
+		readonly int width;
+		readonly int imagePathWidth;
+		int currentImageDelta;
 		public override CPos Position
 		{
 			get => base.Position;
 			set
 			{
 				base.Position = value;
-				name.Position = value - new CPos(3072, 512, 0);
-				score.Position = value - new CPos(3072, 0, 0);
-				level.Position = value - new CPos(-1152, 0, 0);
+				content.Position = value - new CPos(width - 256, 1024 - FontManager.Default.MaxHeight, 0);
+				type.Position = value + new CPos(width - 256, 0, 0);
+				image.Position = value + new CPos(currentImageDelta, 0, 0);
 			}
 		}
 
 		public readonly GameSave Save;
 
-		readonly UIText name;
-		readonly UIText score;
-		readonly UIText level;
+		readonly UIText content;
+		readonly UIText type;
+		readonly UIImage image;
 
-		public GameSaveItem(GameSave save, int width, Action action) : base(new BatchObject(UISpriteManager.Get("UI_save")[0]), new MPos(width, 1024), save.Name, new[] { Color.Grey + "Difficulty: " + save.Difficulty, Color.Grey + "Money: " + save.Money }, action)
+		public GameSaveItem(GameSave save, int width, Action action) : base(new BatchObject(0f), new MPos(width, 1024), save.Name, new[] { Color.Grey + "Difficulty: " + save.Difficulty, Color.Grey + "Money: " + save.Money }, action)
 		{
-			var pos = CPos.Zero;
-
+			this.width = width;
+			imagePathWidth = width - 1024;
 			Save = save;
-			Scale *= 2;
 
-			name = new UIText(FontManager.Default)
-			{
-				Position = pos - new CPos(3072, 512, 0)
-			};
-			name.SetText(save.Name);
+			content = new UIText(FontManager.Default);
+			content.SetText(save.Name);
+			content.AddText($"{Color.Yellow}score: {save.CalculateScore()}");
+			var levelColor = save.Level >= save.FinalLevel ? new Color(0, 200, 0) : Color.Grey;
+			content.AddText($"{levelColor}level: {save.Level}/{save.FinalLevel}");
+			if (save.GameSaveFormat < Constants.CurrentGameSaveFormat)
+				content.AddText($"{Color.Red}Outdated! Game may crash.");
 
-			score = new UIText(FontManager.Default)
-			{
-				Position = pos - new CPos(3072, 0, 0),
-				Color = Color.Yellow
-			};
-			score.SetText(save.CalculateScore());
+			type = new UIText(FontManager.Header, TextOffset.RIGHT);
+			type.SetText(save.CurrentMission == MissionType.STORY || save.CurrentMission == MissionType.STORY_MENU ? Color.Cyan + "Story" : Color.Yellow + "Normal");
 
-			level = new UIText(FontManager.Header)
+			image = new UIImage(new BatchObject(UISpriteManager.Get("UI_save")[0]))
 			{
-				Position = pos - new CPos(-1152, 0, 0),
-				Scale = 1.4f
-			};
-			if (save.Level >= save.FinalLevel)
-				level.Color = new Color(0, 200, 0);
-			level.SetText(save.Level + "/" + save.FinalLevel);
+				Scale = 2f,
+				Color = save.CurrentMission == MissionType.STORY || save.CurrentMission == MissionType.STORY_MENU ? new Color(200, 200, 255, 128) : new Color(255, 255, 200, 128)
+            };
+			currentImageDelta = width - 1024;
+
+			Position = CPos.Zero;
 		}
 
 		public override void Render()
@@ -58,17 +58,12 @@ namespace WarriorsSnuggery.UI.Objects
 			base.Render();
 			if (Visible)
 			{
-				name.Scale += ContainsMouse ? 0.04f : -0.04f;
-
-				if (name.Scale > 1.28f)
-					name.Scale = 1.28f;
-
-				if (name.Scale < 1f)
-					name.Scale = 1f;
-
-				name.Render();
-				score.Render();
-				level.Render();
+				var delta = Math.Abs(image.Position.X / (float)imagePathWidth);
+				var speed = Math.Max(4, (int)((1f - delta * delta) * 256));
+				image.Position = new CPos(Math.Clamp(image.Position.X + (ContainsMouse ? -speed : speed), -imagePathWidth, imagePathWidth), image.Position.Y, image.Position.Z);
+				image.Render();
+				type.Render();
+				content.Render();
 			}
 		}
 	}

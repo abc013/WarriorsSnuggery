@@ -14,7 +14,7 @@ namespace WarriorsSnuggery.Maps.Pieces
 		{
 			using (var stream = new StreamWriter(File.Create(directory + name + ".yaml")))
 			{
-				stream.WriteLine("MapFormat=" + Piece.CurrentMapFormat);
+				stream.WriteLine("MapFormat=" + Constants.CurrentMapFormat);
 				stream.WriteLine("Name=" + name);
 				stream.WriteLine("Size=" + size);
 
@@ -49,7 +49,7 @@ namespace WarriorsSnuggery.Maps.Pieces
 		{
 			using var writer = new StreamWriter(directory + name + ".yaml", false);
 
-			writer.WriteLine("MapFormat=" + Piece.CurrentMapFormat);
+			writer.WriteLine("MapFormat=" + Constants.CurrentMapFormat);
 			writer.WriteLine("Name=" + name);
 			writer.WriteLine("Size=" + bounds);
 

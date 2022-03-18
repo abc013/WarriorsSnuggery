@@ -10,7 +10,6 @@ namespace WarriorsSnuggery.Maps.Pieces
 {
 	public class Piece
 	{
-		public const int CurrentMapFormat = 1;
 		public readonly int MapFormat;
 
 		public readonly MPos Size;
@@ -95,8 +94,8 @@ namespace WarriorsSnuggery.Maps.Pieces
 					case "MapFormat":
 						TypeLoader.SetValue(this, fields, node);
 
-						if (MapFormat != CurrentMapFormat)
-							Log.LoaderWarning("Pieces", $"Attempting to load old map format {MapFormat} (current: {CurrentMapFormat})");
+						if (MapFormat != Constants.CurrentMapFormat)
+							Log.LoaderWarning("Pieces", $"Attempting to load old map format {MapFormat} (current: {Constants.CurrentMapFormat})");
 
 						break;
 					default:

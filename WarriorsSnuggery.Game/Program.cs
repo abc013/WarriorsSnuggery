@@ -106,6 +106,8 @@ namespace WarriorsSnuggery
 			var settings2 = new NativeWindowSettings
 			{
 				Title = Title,
+				//Profile = ContextProfile.Core,
+				//Flags = ContextFlags.ForwardCompatible,
 				API = ContextAPI.OpenGL,
 				APIVersion = new Version(3, 2),
 				Size = new OpenTK.Mathematics.Vector2i(Settings.Width, Settings.Height),

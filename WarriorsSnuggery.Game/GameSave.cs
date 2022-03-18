@@ -128,6 +128,7 @@ namespace WarriorsSnuggery
 
 	public sealed class GameSave
 	{
+		public int GameSaveFormat { get; private set; }
 		public string Name { get; private set; }
 		public string SaveName { get; private set; }
 		public string MapSaveName => SaveName + "_map";
@@ -261,6 +262,7 @@ namespace WarriorsSnuggery
 
 		public GameSave(int difficulty, bool hardcore, string name, int seed) : this()
 		{
+			GameSaveFormat = Constants.CurrentGameSaveFormat;
 			SetName(name);
 
 			Hardcore = hardcore;
@@ -311,6 +313,7 @@ namespace WarriorsSnuggery
 
 			using (var writer = new StreamWriter(FileExplorer.Saves + SaveName + ".yaml", false))
 			{
+				writer.WriteLine($"{nameof(GameSaveFormat)}={Constants.CurrentGameSaveFormat}");
 				writer.WriteLine($"{nameof(Name)}={Name}");
 				writer.WriteLine($"{nameof(Level)}={Level}");
 				writer.WriteLine($"{nameof(Difficulty)}={Difficulty}");
