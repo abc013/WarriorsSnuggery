@@ -38,14 +38,14 @@ namespace WarriorsSnuggery
 		public static double TMS { get; private set; }
 		public static double TPS { get; private set; }
 
-		static readonly double[] lastTPS = new double[19];
+		static readonly double[] lastTPS = new double[59];
 		static int tIndex;
 
 		public static void UpdateLoop(double ms, double tps)
 		{
 			TMS = ms;
 
-			lastTPS[tIndex++ % 19] = TPS;
+			lastTPS[tIndex++ % 59] = TPS;
 			TPS = tps;
 		}
 
@@ -55,20 +55,20 @@ namespace WarriorsSnuggery
 			foreach (var tps in lastTPS)
 				total += tps;
 
-			return total / 20;
+			return total / 60;
 		}
 
 		public static double FMS { get; private set; }
 		public static double FPS { get; private set; }
 
-		static readonly double[] lastFPS = new double[19];
+		static readonly double[] lastFPS = new double[59];
 		static int fIndex;
 
 		public static void RenderLoop(double ms, double fps)
 		{
 			FMS = ms;
 
-			lastFPS[fIndex++ % 19] = FPS;
+			lastFPS[fIndex++ % 59] = FPS;
 			FPS = fps;
 		}
 
@@ -78,7 +78,7 @@ namespace WarriorsSnuggery
 			foreach (var fps in lastFPS)
 				total += fps;
 
-			return total / 20;
+			return total / 60;
 		}
 	}
 
