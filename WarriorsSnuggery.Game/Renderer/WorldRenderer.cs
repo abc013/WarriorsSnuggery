@@ -18,6 +18,7 @@ namespace WarriorsSnuggery
 
 		static readonly List<IRenderable> beforeRender = new List<IRenderable>();
 		static readonly List<IRenderable> afterRender = new List<IRenderable>();
+		static List<PositionableObject> renderables = new List<PositionableObject>();
 
 		public static void Initialize()
 		{
@@ -53,18 +54,19 @@ namespace WarriorsSnuggery
 			world.TerrainLayer.Render();
 			world.SmudgeLayer.Render();
 
-			var pos = world.Game.Editor ? MouseInput.GamePosition : world.PlayerAlive ? world.LocalPlayer.Position : CPos.Zero;
+			var useAlpha = !world.Game.Editor && !world.PlayerAlive;
+			var pos = useAlpha ? CPos.Zero : (world.Game.Editor ? MouseInput.GamePosition : world.LocalPlayer.GraphicPosition + (world.LocalPlayer.Physics.Type != null ? new CPos(0, world.LocalPlayer.Physics.Type.RadiusY, 0) : CPos.Zero));
 			foreach (var o in prepareRenderList())
 			{
-				if (((o is Actor actor && actor.WorldPart != null && actor.WorldPart.Hideable) || (o is Wall wall && wall.IsHorizontal && wall.Type.Height >= 512)) && o.Position.Y > pos.Y && Math.Abs(o.Position.X - pos.X) < 4096)
+				if (useAlpha && ((o is Actor actor && actor.WorldPart != null && actor.WorldPart.Hideable) || (o is Wall wall && wall.IsHorizontal && wall.Type.Height >= 512)) && o.Position.Y > pos.Y && Math.Abs(o.Position.X - pos.X) < 4096)
 				{
 					var alpha = o.Position.Y - pos.Y < 1024 ? 1 - (o.Position.Y - pos.Y) / 1024f : (o.Position.Y - pos.Y - 1024) / 1024f;
 					var sidealpha = Math.Abs(o.Position.X - pos.X) / 4096f;
 					if (sidealpha > alpha)
 						alpha = sidealpha;
-					alpha = Math.Clamp(alpha, 0.5f, 1f);
+					alpha = Math.Clamp(alpha, 0.3f, 1f);
 
-					o.SetColor(new Color(1f, 1f, 1f, alpha));
+					o.SetColor(Color.White.WithAlpha(alpha));
 					o.Render();
 					o.SetColor(Color.White);
 				}
@@ -145,15 +147,16 @@ namespace WarriorsSnuggery
 			}
 		}
 
-		static List<PositionableObject> prepareRenderList()
+		static IOrderedEnumerable<PositionableObject> prepareRenderList()
 		{
-			var render = world.Objects.ToList(); // Copy array
-			render.AddRange(world.ActorLayer.VisibleActors);
-			render.AddRange(world.WeaponLayer.VisibleWeapons);
-			render.AddRange(world.ParticleLayer.VisibleParticles);
-			render.AddRange(world.WallLayer.VisibleWalls);
+			renderables.Clear();
+			renderables.AddRange(world.Objects);
+			renderables.AddRange(world.ActorLayer.VisibleActors);
+			renderables.AddRange(world.WeaponLayer.VisibleWeapons);
+			renderables.AddRange(world.ParticleLayer.VisibleParticles);
+			renderables.AddRange(world.WallLayer.VisibleWalls);
 
-			return render.OrderBy(e => e.GraphicPosition.Z + (e.Position.Y - 512) * 2).ToList();
+			return renderables.OrderBy(e => e.GraphicPosition.Z + (e.Position.Y - 512) * 2);
 		}
 
 		public static void ClearRenderLists()
