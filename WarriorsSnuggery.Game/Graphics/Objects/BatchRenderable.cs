@@ -23,7 +23,7 @@ namespace WarriorsSnuggery.Graphics
 			CacheOutdated = true;
 		}
 
-		public virtual void SetPosition(CPos position)
+		public void SetPosition(CPos position)
 		{
 			SetPosition(position.ToVector());
 		}
@@ -38,7 +38,7 @@ namespace WarriorsSnuggery.Graphics
 			CacheOutdated = true;
 		}
 
-		public virtual void SetRotation(VAngle rotation)
+		public void SetRotation(VAngle rotation)
 		{
 			SetRotation((Quaternion)rotation);
 		}
@@ -52,12 +52,12 @@ namespace WarriorsSnuggery.Graphics
 			CacheOutdated = true;
 		}
 
-		public virtual void SetScale(float scale)
+		public void SetScale(float scale)
 		{
 			SetScale(new Vector3(scale));
 		}
 
-		public virtual void SetScale(Vector scale)
+		public void SetScale(Vector scale)
 		{
 			SetScale((Vector3)scale);
 		}

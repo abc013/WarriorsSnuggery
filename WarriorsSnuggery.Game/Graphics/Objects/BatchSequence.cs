@@ -1,4 +1,6 @@
-﻿namespace WarriorsSnuggery.Graphics
+﻿using OpenTK.Mathematics;
+
+namespace WarriorsSnuggery.Graphics
 {
 	public class BatchSequence : BatchRenderable
 	{
@@ -35,6 +37,50 @@
 			}
 		}
 
+		public override void SetPosition(Vector position)
+		{
+			base.SetPosition(position);
+
+			if (!CacheOutdated)
+				return;
+
+			foreach (var obj in objects)
+				obj.SetPosition(position);
+		}
+
+		public override void SetScale(Vector3 scale)
+		{
+			base.SetScale(scale);
+
+			if (!CacheOutdated)
+				return;
+
+			foreach (var obj in objects)
+				obj.SetScale(scale);
+		}
+
+		public override void SetRotation(Quaternion rot3)
+		{
+			base.SetRotation(rot3);
+
+			if (!CacheOutdated)
+				return;
+
+			foreach (var obj in objects)
+				obj.SetRotation(rot3);
+		}
+
+		public override void SetColor(Color color)
+		{
+			base.SetColor(color);
+
+			if (!CacheOutdated)
+				return;
+
+			foreach (var obj in objects)
+				obj.SetColor(color);
+		}
+
 		public void SetTick(int current)
 		{
 			curTick = current % tick;
@@ -52,13 +98,7 @@
 			if (!Visible)
 				return;
 
-			var renderable = objects[curObj];
-
-			renderable.SetPosition(Position);
-			renderable.SetScale(Scale);
-			renderable.SetRotation(Rotation);
-			renderable.SetColor(Color);
-			renderable.Render();
+			objects[curObj].Render();
 		}
 	}
 }
