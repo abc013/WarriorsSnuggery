@@ -33,6 +33,8 @@ namespace WarriorsSnuggery.Objects.Particles
 		public readonly int Duration;
 		[Desc("Time in which the particle is dissolving.", "This time will be added on the time given in Duration.")]
 		public readonly int DissolveDuration;
+		[Desc("Determines whether particles should also scale down during dissolve.")]
+		public readonly bool DissolveScaling = true;
 
 		[Desc("Show shadow of the particle.")]
 		public readonly bool ShowShadow = false;

@@ -16,6 +16,7 @@ glitter=
 	RandomVelocity=6,6,0
 	RandomScale=0.5
 	AffectedByObjects=true
+	DissolveScaling=false
 
 grey=
 	MeshSize=1
@@ -37,6 +38,7 @@ firefly=
 	Gravity=0
 	ShowShadow=true
 	AffectedByObjects=true
+	DissolveScaling=false
 
 wood_debris=
 	Texture=woodPiece
@@ -56,6 +58,7 @@ colored_star=
 	Gravity=0
 	ShowShadow=true
 	AffectedByObjects=true
+	DissolveScaling=false
 
 slime_splash=
 	Color=63,255,63,24
@@ -148,6 +151,6 @@ fire=
 		Size=4,4
 		Tick=10
 	Duration=25
-	DissolveDuration=5
+	DissolveDuration=10
 	Gravity=-1
 	RandomVelocity=1,1,0
