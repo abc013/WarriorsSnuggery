@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
 
 namespace WarriorsSnuggery
@@ -33,35 +34,39 @@ namespace WarriorsSnuggery
 			Name = name;
 		}
 
-		public static List<string> GetFields<T>(T @object, bool inherit = true)
+		public static List<string> GetFields<T>(T @object, bool inherit = true, bool omitDefaults = false)
 		{
+			const BindingFlags flags = BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance;
+
 			var list = new List<string>();
 
-			var props = typeof(T).GetProperties(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
+			var props = typeof(T).GetProperties(flags).Cast<MemberInfo>().Concat(typeof(T).GetFields(flags));
 			foreach (var prop in props)
 			{
 				var attributes = prop.GetCustomAttributes(inherit);
-				foreach (var attribute in attributes)
+				var saveAttribute = attributes.FirstOrDefault(a => a is SaveAttribute);
+				if (saveAttribute != null)
 				{
-					if (attribute is not SaveAttribute saveAttribute)
-						continue;
+					var key = ((SaveAttribute)saveAttribute).Name;
+					if (string.IsNullOrEmpty(key))
+						key = prop.Name;
 
-					var key = string.IsNullOrEmpty(saveAttribute.Name) ? prop.Name : saveAttribute.Name;
-					var value = prop.GetValue(@object);
-					list.Add($"{key}={value}");
-				}
-			}
-			var varis = typeof(T).GetFields(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
-			foreach (var vari in varis)
-			{
-				var attributes = vari.GetCustomAttributes(inherit);
-				foreach (var attribute in attributes)
-				{
-					if (attribute is not SaveAttribute saveAttribute)
-						continue;
+					var value = prop.MemberType == MemberTypes.Property ? typeof(T).GetProperty(prop.Name).GetValue(@object) : typeof(T).GetField(prop.Name).GetValue(@object);
 
-					var key = string.IsNullOrEmpty(saveAttribute.Name) ? vari.Name : saveAttribute.Name;
-					var value = vari.GetValue(@object);
+					if (!omitDefaults)
+					{
+						var defaultValue = attributes.FirstOrDefault(a => a is DefaultValueAttribute);
+
+						if (defaultValue != null)
+						{
+							if (value == null && ((DefaultValueAttribute)defaultValue).Default == null)
+								continue;
+
+							if (value != null && value.Equals(((DefaultValueAttribute)defaultValue).Default))
+								continue;
+						}
+					}
+
 					list.Add($"{key}={value}");
 				}
 			}
@@ -70,7 +75,7 @@ namespace WarriorsSnuggery
 		}
 	}
 
-	[AttributeUsage(AttributeTargets.Field)]
+	[AttributeUsage(AttributeTargets.Field | AttributeTargets.Property)]
 	public class DefaultValueAttribute : Attribute
 	{
 		public readonly object Default;

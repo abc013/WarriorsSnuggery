@@ -21,7 +21,7 @@ namespace WarriorsSnuggery.Objects
 		}
 		bool visible = true;
 
-		[Save]
+		[Save, DefaultValue(0)]
 		public virtual int Height
 		{
 			get => height;

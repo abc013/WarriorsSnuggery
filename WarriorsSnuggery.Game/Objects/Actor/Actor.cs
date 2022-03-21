@@ -30,9 +30,9 @@ namespace WarriorsSnuggery.Objects.Actors
 		// Used when changing player for bot targeting.
 		public Actor FollowupActor;
 
-		[Save]
+		[Save, DefaultValue((byte)0)]
 		public byte Team;
-		[Save]
+		[Save, DefaultValue(0.0f)]
 		public float Angle;
 
 		readonly List<ActorEffect> sleepingEffects = new List<ActorEffect>();
@@ -55,14 +55,14 @@ namespace WarriorsSnuggery.Objects.Actors
 		public readonly WorldPart WorldPart;
 		public readonly BotPart Bot;
 
-		[Save]
+		[Save, DefaultValue(null)]
 		public readonly string ScriptTag;
 
 		[Save]
 		public readonly ActorType Type;
 		ActorInit init;
 
-		[Save]
+		[Save, DefaultValue(ActionType.IDLE)]
 		public ActionType Actions { get; private set; } = ActionType.IDLE;
 		// TODO: save
 		readonly List<ActorAction> actions = new List<ActorAction>();
@@ -144,7 +144,7 @@ namespace WarriorsSnuggery.Objects.Actors
 				// Cache some important parts
 				if (part is MobilePart mobile)
 					Mobile = mobile;
-				if (part is MotorPart motor)
+				else if (part is MotorPart motor)
 					Motor = motor;
 				else if (part is HealthPart health)
 					Health = health;

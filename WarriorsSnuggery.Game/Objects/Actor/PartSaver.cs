@@ -25,6 +25,9 @@ namespace WarriorsSnuggery.Objects.Actors
 
 		public string[] GetSave()
 		{
+			if (values.Count == 0)
+				return new string[0];
+
 			var save = new string[values.Count + 1];
 
 			save[0] = $"{part.GetType().Name}={internalName}";
