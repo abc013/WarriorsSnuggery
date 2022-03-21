@@ -37,6 +37,9 @@ namespace WarriorsSnuggery
 		[DefaultValue(3072)]
 		public static int VisbilityMargin;
 
+		[DefaultValue(true)]
+		public static bool LoadSoft;
+
 		[DefaultValue(0)]
 		public static int FrameLimiter;
 

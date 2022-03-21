@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using WarriorsSnuggery.Loader;
+using WarriorsSnuggery.Objects;
 using WarriorsSnuggery.Objects.Actors;
 using WarriorsSnuggery.Objects.Particles;
 using WarriorsSnuggery.Objects.Weapons;
@@ -53,10 +54,14 @@ namespace WarriorsSnuggery.Maps.Pieces
 							{
 								var id = uint.Parse(actor.Key);
 
-								if (MapFormat == 0)
-									actors.Add(new ActorInit(id, actor));
+								var init = MapFormat == 0 ? new ActorInit(id, actor) : new ActorInit(id, actor.Children);
+
+								if (init.Type != null)
+									actors.Add(init);
+								else if (Settings.LoadSoft)
+									Log.LoaderWarning("Pieces", $"{InnerName}: Attempted to load actor {id} of nonexistent type. Skipping.");
 								else
-									actors.Add(new ActorInit(id, actor.Children));
+									throw new InvalidNodeException($"Piece {InnerName}: Attempted to load actor {id} of nonexistant type.");
 							}
 							catch (Exception e)
 							{
@@ -70,7 +75,15 @@ namespace WarriorsSnuggery.Maps.Pieces
 							try
 							{
 								var id = uint.Parse(weapon.Key);
-								weapons.Add(new WeaponInit(id, weapon.Children));
+								var init = new WeaponInit(id, weapon.Children);
+
+								if (init.Type != null)
+									weapons.Add(init);
+								else if (Settings.LoadSoft)
+									Log.LoaderWarning("Pieces", $"{InnerName}: Attempted to load weapon {id} of nonexistent type. Skipping.");
+								else
+									throw new InvalidNodeException($"Piece {InnerName}: Attempted to load weapon {id} of nonexistant type.");
+
 							}
 							catch (Exception e)
 							{
@@ -83,7 +96,14 @@ namespace WarriorsSnuggery.Maps.Pieces
 						{
 							try
 							{
-								particles.Add(new ParticleInit(particle.Children));
+								var init = new ParticleInit(particle.Children);
+
+								if (init.Type != null)
+									particles.Add(init);
+								else if (Settings.LoadSoft)
+									Log.LoaderWarning("Pieces", $"{InnerName}: Attempted to load particle of nonexistent type. Skipping.");
+								else
+									throw new InvalidNodeException($"Piece {InnerName}: Attempted to load particle of nonexistant type.");
 							}
 							catch (Exception e)
 							{
@@ -116,8 +136,19 @@ namespace WarriorsSnuggery.Maps.Pieces
 		{
 			// generate Terrain
 			for (int y = 0; y < Size.Y; y++)
+			{
 				for (int x = 0; x < Size.X; x++)
-					loader.SetTerrain(x + position.X, y + position.Y, groundData[y * Size.X + x]);
+				{
+					var id = groundData[y * Size.X + x];
+					if (Settings.LoadSoft && !TerrainCache.Types.ContainsKey(id))
+					{
+						Log.LoaderWarning("Pieces", $"{InnerName}: Attempted to load terrain of nonexistent type {id}. Skipping.");
+						continue;
+					}
+
+					loader.SetTerrain(x + position.X, y + position.Y, id);
+				}
+			}
 
 			// generate Walls
 			if (wallData.Length != 0)
@@ -131,8 +162,18 @@ namespace WarriorsSnuggery.Maps.Pieces
 						var dataPos = (y - position.Y) * (Size.X + 1) * 2 + (x - position.X * 2);
 						dataPos *= 2;
 
-						if (wallData[dataPos] >= 0)
-							loader.SetWall(x, y, wallData[dataPos], wallData[dataPos + 1]);
+						var id = wallData[dataPos];
+
+						if (id >= 0)
+						{
+							if (Settings.LoadSoft && !WallCache.Types.ContainsKey(id))
+							{
+								Log.LoaderWarning("Pieces", $"{InnerName}: Attempted to load wall of nonexistent type {id}. Skipping.");
+								continue;
+							}
+
+							loader.SetWall(x, y, id, wallData[dataPos + 1]);
+						}
 						else if (loader.WallExists(x, y) && x != position.X * 2 && y != position.Y && y != maxY - 1 && !(x >= maxX - 2))
 							loader.SetWall(x, y, 0, 0);
 					}
