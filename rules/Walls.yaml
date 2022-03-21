@@ -54,24 +54,6 @@
 	BlocksTerrainOverlap=true
 	Armor=wood
 
-4=
-	Texture=walls0_damaged0
-		Size=24,48
-	DamagePenetration=0.3
-	Health=300
-	WallOnDeath=9
-	BlocksTerrainOverlap=true
-	Armor=stone
-
-5=
-	Texture=walls0_damaged1
-		Size=24,48
-	DamagePenetration=0.3
-	Health=300
-	WallOnDeath=9
-	BlocksTerrainOverlap=true
-	Armor=stone
-
 8=
 	Texture=walls0_gate
 		Size=24,48
