@@ -30,14 +30,14 @@ namespace WarriorsSnuggery.Objects.Actors
 			}
 		}
 
-		public static Actor Create(World world, string name, CPos position, byte team = 0, bool isBot = false, bool isPlayer = false, float health = -1f)
+		public static Actor Create(World world, string name, CPos position, byte team = 0, bool isBot = false, bool isPlayer = false, string scriptTag = "", float health = -1f)
 		{
-			return Create(world, Types[name], position, team, isBot, isPlayer, health);
+			return Create(world, Types[name], position, team, isBot, isPlayer, scriptTag, health);
 		}
 
-		public static Actor Create(World world, ActorType type, CPos position, byte team = 0, bool isBot = false, bool isPlayer = false, float health = -1f)
+		public static Actor Create(World world, ActorType type, CPos position, byte team = 0, bool isBot = false, bool isPlayer = false, string scriptTag = "", float health = -1f)
 		{
-			return new Actor(world, CreateInit(world, type, position, team, isBot, isPlayer, health));
+			return new Actor(world, CreateInit(world, type, position, team, isBot, isPlayer, scriptTag, health));
 		}
 
 		public static Actor Create(World world, ActorInit init, bool overrideID)
@@ -45,14 +45,14 @@ namespace WarriorsSnuggery.Objects.Actors
 			return overrideID ? new Actor(world, init, world.Game.NextActorID) : new Actor(world, init);
 		}
 
-		public static ActorInit CreateInit(World world, string name, CPos position, byte team = 0, bool isBot = false, bool isPlayer = false, float health = -1f)
+		public static ActorInit CreateInit(World world, string name, CPos position, byte team = 0, bool isBot = false, bool isPlayer = false, string scriptTag = "", float health = -1f)
 		{
-			return CreateInit(world, Types[name], position, team, isBot, isPlayer, health);
+			return CreateInit(world, Types[name], position, team, isBot, isPlayer, scriptTag, health);
 		}
 
-		public static ActorInit CreateInit(World world, ActorType type, CPos position, byte team = 0, bool isBot = false, bool isPlayer = false, float health = -1f)
+		public static ActorInit CreateInit(World world, ActorType type, CPos position, byte team = 0, bool isBot = false, bool isPlayer = false, string scriptTag = "", float health = -1f)
 		{
-			return new ActorInit(world.Game.NextActorID, type, position, 0, team, isBot, isPlayer, health);
+			return new ActorInit(world.Game.NextActorID, type, position, 0, team, isBot, isPlayer, scriptTag, health);
 		}
 	}
 }

@@ -229,13 +229,6 @@ namespace WarriorsSnuggery.Maps
 
 			AddActor(init, CPos.Zero);
 		}
-
-		public void AddActor(CPos position, string name, byte team = 0, bool isBot = false, float health = 1f)
-		{
-			var init = ActorCache.CreateInit(world, name, position, team, isBot, false, health);
-
-			AddActor(init, CPos.Zero);
-		}
 		
 		public void AddActor(ActorInit init, CPos offset)
 		{

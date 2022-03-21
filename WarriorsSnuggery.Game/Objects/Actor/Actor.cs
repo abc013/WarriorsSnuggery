@@ -56,6 +56,9 @@ namespace WarriorsSnuggery.Objects.Actors
 		public readonly BotPart Bot;
 
 		[Save]
+		public readonly string ScriptTag;
+
+		[Save]
 		public readonly ActorType Type;
 		ActorInit init;
 

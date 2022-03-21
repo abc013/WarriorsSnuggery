@@ -9,6 +9,7 @@ namespace WarriorsSnuggery.Maps.Layers
 	{
 		public const int SectorSize = 4;
 		public readonly List<Actor> Actors = new List<Actor>();
+		public readonly List<Actor> TaggedActors = new List<Actor>();
 		public readonly List<Actor> NonNeutralActors = new List<Actor>();
 		public readonly List<Actor> VisibleActors = new List<Actor>();
 
@@ -98,8 +99,12 @@ namespace WarriorsSnuggery.Maps.Layers
 				foreach (var actor in actorsToAdd)
 				{
 					Actors.Add(actor);
+
+					if (actor.ScriptTag != string.Empty)
+						TaggedActors.Add(actor);
 					if (actor.Team != Actor.NeutralTeam)
 						NonNeutralActors.Add(actor);
+
 					Update(actor, true);
 				}
 				actorsToAdd.Clear();
@@ -119,6 +124,8 @@ namespace WarriorsSnuggery.Maps.Layers
 					Actors.Remove(actor);
 					VisibleActors.Remove(actor);
 
+					if (actor.ScriptTag != string.Empty)
+						TaggedActors.Remove(actor);
 					if (actor.Team != Actor.NeutralTeam)
 						NonNeutralActors.Remove(actor);
 

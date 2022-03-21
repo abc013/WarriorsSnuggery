@@ -267,7 +267,7 @@ namespace WarriorsSnuggery.UI.Screens
 					pos = actorWidget.Rasterization ? rasterizedPosition(pos) : pos;
 
 					var team = Math.Max(actorWidget.Team, (byte)0);
-					var actor = ActorCache.Create(game.World, actorWidget.CurrentType, pos, team, actorWidget.Bot, false, actorWidget.RelativeHP);
+					var actor = ActorCache.Create(game.World, actorWidget.CurrentType, pos, team, actorWidget.Bot, false, health: actorWidget.RelativeHP);
 					actor.Angle = actorWidget.RelativeFacing * Angle.MaxRange;
 
 					game.World.Add(actor);
