@@ -6,7 +6,7 @@ using WarriorsSnuggery.Objects;
 
 namespace WarriorsSnuggery.Physics
 {
-	public class RayPhysics
+	public class PhysicsRay
 	{
 		static readonly CPos invalid = new CPos(int.MaxValue, int.MaxValue, 0);
 
@@ -21,7 +21,7 @@ namespace WarriorsSnuggery.Physics
 		readonly List<MPos> positions = new List<MPos>();
 		readonly World world;
 
-		public RayPhysics(World world)
+		public PhysicsRay(World world)
 		{
 			this.world = world;
 

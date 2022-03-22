@@ -37,17 +37,17 @@ namespace WarriorsSnuggery.Objects.Weapons
 				return;
 			}
 
-			var physics = new RayPhysics(World)
+			var ray = new PhysicsRay(World)
 			{
 				Start = Position,
 				StartHeight = Height,
 				Target = Target.Position,
 				TargetHeight = Target.Height
 			};
-			physics.CalculateEnd(ignoreActors: true);
+			ray.CalculateEnd(ignoreActors: true);
 
-			if ((physics.End - Position).Dist < (Position - Target.Position).Dist)
-				Detonate(new Target(physics.End, physics.EndHeight));
+			if ((ray.End - Position).Dist < (Position - Target.Position).Dist)
+				Detonate(new Target(ray.End, ray.EndHeight));
 			else if (projectile.Splash)
 				Detonate(new Target(Target.Position, Target.Height));
 			else

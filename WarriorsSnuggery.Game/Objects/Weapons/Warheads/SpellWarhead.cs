@@ -44,7 +44,7 @@ namespace WarriorsSnuggery.Objects.Weapons.Warheads
 					return;
 				}
 
-				var physics = new RayPhysics(world);
+				var ray = new PhysicsRay(world);
 				var maxDist = maxRange * weapon.DamageRangeModifier;
 				var sectors = world.ActorLayer.GetSectors(target.Position, (int)maxDist);
 				foreach (var sector in sectors)
@@ -65,9 +65,9 @@ namespace WarriorsSnuggery.Objects.Weapons.Warheads
 
 						if (!IgnoreWalls)
 						{
-							physics.Start = actor.Position;
-							physics.Target = target.Position;
-							var pen = physics.GetWallPenetrationValue();
+							ray.Start = actor.Position;
+							ray.Target = target.Position;
+							var pen = ray.GetWallPenetrationValue();
 
 							if (pen == 0f)
 								continue;

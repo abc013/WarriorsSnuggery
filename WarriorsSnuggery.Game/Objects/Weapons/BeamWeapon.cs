@@ -10,7 +10,7 @@ namespace WarriorsSnuggery.Objects.Weapons
 	class BeamWeapon : Weapon
 	{
 		readonly BeamProjectile projectile;
-		readonly RayPhysics rayPhysics;
+		readonly PhysicsRay ray;
 
 		readonly Sound sound;
 		BatchRenderable[] renderables;
@@ -37,7 +37,7 @@ namespace WarriorsSnuggery.Objects.Weapons
 		{
 			projectile = (BeamProjectile)type.Projectile;
 			impactInterval = projectile.ImpactInterval;
-			rayPhysics = new RayPhysics(world)
+			ray = new PhysicsRay(world)
 			{
 				Target = TargetPosition,
 				TargetHeight = TargetHeight
@@ -64,7 +64,7 @@ namespace WarriorsSnuggery.Objects.Weapons
 		public BeamWeapon(World world, WeaponInit init) : base(world, init)
 		{
 			projectile = (BeamProjectile)Type.Projectile;
-			rayPhysics = new RayPhysics(world)
+			ray = new PhysicsRay(world)
 			{
 				Target = TargetPosition,
 				TargetHeight = TargetHeight
@@ -129,7 +129,7 @@ namespace WarriorsSnuggery.Objects.Weapons
 			}
 
 			if (Settings.DeveloperMode)
-				rayPhysics.RenderDebug();
+				ray.RenderDebug();
 		}
 
 		public override void Tick()
@@ -153,11 +153,11 @@ namespace WarriorsSnuggery.Objects.Weapons
 
 			setPosition();
 
-			rayPhysics.Target = TargetPosition;
-			rayPhysics.TargetHeight = TargetHeight;
-			rayPhysics.CalculateEnd(new[] { Origin.Physics });
-			Position = rayPhysics.End;
-			Height = rayPhysics.EndHeight;
+			ray.Target = TargetPosition;
+			ray.TargetHeight = TargetHeight;
+			ray.CalculateEnd(new[] { Origin.Physics });
+			Position = ray.End;
+			Height = ray.EndHeight;
 
 			var dist = (originPos - Position).SquaredFlatDist;
 
@@ -214,8 +214,8 @@ namespace WarriorsSnuggery.Objects.Weapons
 				originHeight = Origin.Weapon.WeaponHeightPosition;
 				originPos = Origin.Weapon.WeaponOffsetPosition;
 			}
-			rayPhysics.Start = originPos;
-			rayPhysics.StartHeight = originHeight;
+			ray.Start = originPos;
+			ray.StartHeight = originHeight;
 		}
 
 		public void Move(CPos target, int height)

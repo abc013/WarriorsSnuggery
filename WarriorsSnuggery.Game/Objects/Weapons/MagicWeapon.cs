@@ -9,7 +9,7 @@ namespace WarriorsSnuggery.Objects.Weapons
 	class MagicWeapon : Weapon
 	{
 		readonly MagicProjectile projectile;
-		readonly RayPhysics rayPhysics;
+		readonly PhysicsRay ray;
 
 		[Save("Speed")]
 		Vector speed;
@@ -25,7 +25,7 @@ namespace WarriorsSnuggery.Objects.Weapons
 
 			TargetPosition += getInaccuracy(projectile.Inaccuracy);
 
-			rayPhysics = new RayPhysics(world);
+			ray = new PhysicsRay(world);
 		}
 
 		public MagicWeapon(World world, WeaponInit init) : base(world, init)
@@ -37,7 +37,7 @@ namespace WarriorsSnuggery.Objects.Weapons
 			if (speed == Vector.Zero)
 				calculateSpeed();
 
-			rayPhysics = new RayPhysics(world);
+			ray = new PhysicsRay(world);
 		}
 
 		public override void Tick()
@@ -118,14 +118,14 @@ namespace WarriorsSnuggery.Objects.Weapons
 			if (Height < 0 || !World.IsInWorld(Position))
 				Detonate(new Target(Position, 0));
 
-			rayPhysics.Start = beforePos;
-			rayPhysics.StartHeight = beforeHeight;
-			rayPhysics.Target = Position;
-			rayPhysics.TargetHeight = Height;
-			rayPhysics.CalculateEnd(new[] { Origin.Physics });
+			ray.Start = beforePos;
+			ray.StartHeight = beforeHeight;
+			ray.Target = Position;
+			ray.TargetHeight = Height;
+			ray.CalculateEnd(new[] { Origin.Physics });
 
-			if ((beforePos - rayPhysics.End).Dist < (beforePos - Position).Dist)
-				Detonate(new Target(rayPhysics.End, rayPhysics.EndHeight));
+			if ((beforePos - ray.End).Dist < (beforePos - Position).Dist)
+				Detonate(new Target(ray.End, ray.EndHeight));
 		}
 
 		public override List<string> Save()
