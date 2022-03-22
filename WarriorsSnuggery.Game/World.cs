@@ -310,9 +310,9 @@ namespace WarriorsSnuggery
 				return IsInWorld(pos);
 
 			var bounds = Map.Bounds.ToCPos();
+			var (X, Y, _) = actor.Physics.Boundaries;
 
-			var type = actor.Physics.Type;
-			return pos.X >= -512 + type.RadiusX && pos.X < bounds.X - 512 - type.RadiusX && pos.Y >= -512 + type.RadiusY && pos.Y < bounds.Y - 512 - type.RadiusY;
+			return pos.X >= -512 + X && pos.X < bounds.X - 512 - X && pos.Y >= -512 + Y && pos.Y < bounds.Y - 512 - Y;
 		}
 
 		public bool IsVisibleTo(Actor eye, Actor target)
