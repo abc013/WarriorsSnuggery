@@ -241,7 +241,7 @@ namespace WarriorsSnuggery
 
 			foreach (var wall in walls)
 			{
-				if (physics.Intersects(wall.Physics))
+				if (Collision.CheckCollision(physics, wall.Physics))
 					return true;
 			}
 

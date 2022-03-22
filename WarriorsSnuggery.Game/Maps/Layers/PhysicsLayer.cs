@@ -124,7 +124,7 @@ namespace WarriorsSnuggery.Maps.Layers
 
 		public bool CheckIntersection(SimplePhysics physics)
 		{
-			return physicsList.Any((o) => o != physics && o.Intersects(physics));
+			return physicsList.Any((o) => Collision.CheckCollision(o, physics));
 		}
 
 		public IEnumerable<SimplePhysics> GetObjects(SimplePhysics[] ignore)
