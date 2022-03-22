@@ -133,29 +133,26 @@ namespace WarriorsSnuggery.Physics
 			return true;
 		}
 
-		public PhysicsLine[] GetLines()
+		public (CPos start, CPos end)[] GetLines()
 		{
-			if (IsEmpty)
-				return new PhysicsLine[0];
-
 			return Type.Shape switch
 			{
-				Shape.LINE_VERTICAL => new PhysicsLine[]
+				Shape.LINE_VERTICAL => new (CPos, CPos)[]
 				{
-					new PhysicsLine(Position - new CPos(Type.RadiusX, 2 * Type.RadiusY, 0), Position - new CPos(Type.RadiusX, 0, 0))
+					(Position - new CPos(Type.RadiusX, 2 * Type.RadiusY, 0), Position - new CPos(Type.RadiusX, 0, 0))
 				},
-				Shape.LINE_HORIZONTAL => new PhysicsLine[]
+				Shape.LINE_HORIZONTAL => new (CPos, CPos)[]
 				{
-					new PhysicsLine(Position - new CPos(2 * Type.RadiusX, Type.RadiusY, 0), Position - new CPos(0, Type.RadiusY, 0))
+					(Position - new CPos(2 * Type.RadiusX, Type.RadiusY, 0), Position - new CPos(0, Type.RadiusY, 0))
 				},
-				Shape.RECTANGLE => new PhysicsLine[]
+				Shape.RECTANGLE => new (CPos, CPos)[]
 				{
-					new PhysicsLine(Position - new CPos(Type.RadiusX,  Type.RadiusY, 0), Position + new CPos(-Type.RadiusX, Type.RadiusY, 0)),
-					new PhysicsLine(Position - new CPos(Type.RadiusX,  Type.RadiusY, 0), Position + new CPos(Type.RadiusX, -Type.RadiusY, 0)),
-					new PhysicsLine(Position + new CPos(-Type.RadiusX, Type.RadiusY, 0), Position + new CPos(Type.RadiusX,  Type.RadiusY, 0)),
-					new PhysicsLine(Position + new CPos(Type.RadiusX, -Type.RadiusY, 0), Position + new CPos(Type.RadiusX,  Type.RadiusY, 0))
+					(Position - new CPos(Type.RadiusX,  Type.RadiusY, 0), Position + new CPos(-Type.RadiusX, Type.RadiusY, 0)),
+					(Position - new CPos(Type.RadiusX,  Type.RadiusY, 0), Position + new CPos(Type.RadiusX, -Type.RadiusY, 0)),
+					(Position + new CPos(-Type.RadiusX, Type.RadiusY, 0), Position + new CPos(Type.RadiusX,  Type.RadiusY, 0)),
+					(Position + new CPos(Type.RadiusX, -Type.RadiusY, 0), Position + new CPos(Type.RadiusX,  Type.RadiusY, 0))
 				},
-				_ => new PhysicsLine[0],
+				_ => new (CPos, CPos)[0],
 			};
 		}
 

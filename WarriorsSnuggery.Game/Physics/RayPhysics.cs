@@ -80,10 +80,9 @@ namespace WarriorsSnuggery.Physics
 
 						var physics = wall.Physics;
 
-						var lines = physics.GetLines();
-						foreach (var line in lines)
+						foreach (var line in physics.GetLines())
 						{
-							var end = getIntersection(line.Start, line.End, out var t1);
+							var end = getIntersection(line.start, line.end, out var t1);
 							if (end != invalid && t1 < closestT1)
 							{
 								var height = calculateHeight(end);
@@ -194,7 +193,7 @@ namespace WarriorsSnuggery.Physics
 						{
 							foreach (var line in physics.GetLines())
 							{
-								var end = getIntersection(line.Start, line.End, out var t1);
+								var end = getIntersection(line.start, line.end, out var t1);
 								if (end != invalid && t1 < closestT1)
 								{
 									var height = calculateHeight(end);
@@ -272,10 +271,9 @@ namespace WarriorsSnuggery.Physics
 					if (wall == null)
 						continue;
 
-					var lines = wall.Physics.GetLines();
-					foreach (var line in lines)
+					foreach (var line in wall.Physics.GetLines())
 					{
-						var end = getIntersection(line.Start, line.End, out var _);
+						var end = getIntersection(line.start, line.end, out var _);
 						if (end != invalid && (Start - end).Dist <= (Start - Target).Dist)
 						{
 							walls.Add(wall);
