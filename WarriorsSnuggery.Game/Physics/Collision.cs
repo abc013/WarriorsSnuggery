@@ -15,18 +15,14 @@ namespace WarriorsSnuggery.Physics
 			if (Math.Abs(a.Height - b.Height) >= a.Boundaries.Z + b.Boundaries.Z)
 				return false;
 
-			bool areShapes(Shape sa, Shape sb) => a.Shape == sa && b.Shape == sb || a.Shape == sb && b.Shape == sa;
+			// Collision between lines are not considered
+			if (a.Shape == Shape.LINE && b.Shape == Shape.LINE)
+				return false;
 
-			if (a.Shape != Shape.LINE_HORIZONTAL && b.Shape != Shape.LINE_HORIZONTAL && a.Shape != Shape.LINE_VERTICAL && b.Shape != Shape.LINE_VERTICAL)
-			{
-				var diff = a.Position - b.Position;
+			var diff = a.Position - b.Position;
 
-				if (Math.Abs(diff.X) >= a.Boundaries.X + b.Boundaries.X)
-					return false;
-
-				if (Math.Abs(diff.Y) >= a.Boundaries.X + b.Boundaries.Y)
-					return false;
-			}
+			if (Math.Abs(diff.X) >= a.Boundaries.X + b.Boundaries.X) return false;
+			if (Math.Abs(diff.Y) >= a.Boundaries.X + b.Boundaries.Y) return false;
 
 			if (a.Shape == Shape.CIRCLE && b.Shape == Shape.CIRCLE)
 			{
@@ -38,6 +34,8 @@ namespace WarriorsSnuggery.Physics
 				return checkBoxCollision(a, b);
 			}
 
+			bool areShapes(Shape sa, Shape sb) => a.Shape == sa && b.Shape == sb || a.Shape == sb && b.Shape == sa;
+
 			if (areShapes(Shape.CIRCLE, Shape.RECTANGLE))
 			{
 				var circle = a.Shape == Shape.CIRCLE ? a : b;
@@ -46,7 +44,7 @@ namespace WarriorsSnuggery.Physics
 				return checkCircleBoxIntersection(circle, box);
 			}
 
-			if (areShapes(Shape.CIRCLE, Shape.LINE_HORIZONTAL) || areShapes(Shape.CIRCLE, Shape.LINE_VERTICAL))
+			if (areShapes(Shape.CIRCLE, Shape.LINE))
 			{
 				var circle = a.Shape == Shape.CIRCLE ? a : b;
 				var line = circle == a ? b : a;
@@ -54,7 +52,7 @@ namespace WarriorsSnuggery.Physics
 				return checkLineCircleIntersection(line, circle);
 			}
 
-			if (areShapes(Shape.RECTANGLE, Shape.LINE_HORIZONTAL) || areShapes(Shape.RECTANGLE, Shape.LINE_VERTICAL))
+			if (areShapes(Shape.RECTANGLE, Shape.LINE))
 			{
 				var box = a.Shape == Shape.RECTANGLE ? a : b;
 				var line = box == a ? b : a;
@@ -97,15 +95,15 @@ namespace WarriorsSnuggery.Physics
 
 		static bool checkLineCircleIntersection(SimplePhysics line, SimplePhysics circle)
 		{
-			if (line.Shape == Shape.LINE_HORIZONTAL)
+			if (line.Boundaries.Y == 0)
 			{
-				if (Math.Abs(circle.Position.X - line.Position.X + 512) > circle.Boundaries.X + line.Boundaries.X) return false;
-				if (Math.Abs(circle.Position.Y - line.Position.Y + 512) > circle.Boundaries.Y) return false;
+				if (Math.Abs(circle.Position.X - line.Position.X) > circle.Boundaries.X + line.Boundaries.X) return false;
+				if (Math.Abs(circle.Position.Y - line.Position.Y) > circle.Boundaries.Y) return false;
 			}
 			else
 			{
-				if (Math.Abs(circle.Position.X - line.Position.X + 512) > circle.Boundaries.X) return false;
-				if (Math.Abs(circle.Position.Y - line.Position.Y + 512) > circle.Boundaries.Y + line.Boundaries.Y) return false;
+				if (Math.Abs(circle.Position.X - line.Position.X) > circle.Boundaries.X) return false;
+				if (Math.Abs(circle.Position.Y - line.Position.Y) > circle.Boundaries.Y + line.Boundaries.Y) return false;
 			}
 
 			return true;
@@ -113,15 +111,15 @@ namespace WarriorsSnuggery.Physics
 
 		static bool checkLineBoxIntersection(SimplePhysics line, SimplePhysics box)
 		{
-			if (line.Shape == Shape.LINE_HORIZONTAL)
+			if (line.Boundaries.Y == 0)
 			{
-				if (Math.Abs(box.Position.X - line.Position.X + 512) > (box.Boundaries.X + line.Boundaries.X)) return false;
-				if (Math.Abs(box.Position.Y - line.Position.Y + 512) > box.Boundaries.Y) return false;
+				if (Math.Abs(box.Position.X - line.Position.X) > (box.Boundaries.X + line.Boundaries.X)) return false;
+				if (Math.Abs(box.Position.Y - line.Position.Y) > box.Boundaries.Y) return false;
 			}
 			else
 			{
-				if (Math.Abs(box.Position.X - line.Position.X + 512) > box.Boundaries.X) return false;
-				if (Math.Abs(box.Position.Y - line.Position.Y + 512) > (box.Boundaries.Y + line.Boundaries.Y)) return false;
+				if (Math.Abs(box.Position.X - line.Position.X) > box.Boundaries.X) return false;
+				if (Math.Abs(box.Position.Y - line.Position.Y) > (box.Boundaries.Y + line.Boundaries.Y)) return false;
 			}
 
 			return true;

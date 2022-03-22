@@ -4,8 +4,7 @@
 	{
 		CIRCLE,
 		RECTANGLE,
-		LINE_HORIZONTAL,
-		LINE_VERTICAL,
+		LINE,
 		NONE
 	}
 }

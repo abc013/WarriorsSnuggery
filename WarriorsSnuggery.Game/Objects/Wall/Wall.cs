@@ -30,8 +30,8 @@ namespace WarriorsSnuggery.Objects
 
 		readonly WallLayer layer;
 
-		public CPos EndPointA => Physics.Position - (IsHorizontal ? new CPos(2 * Physics.Boundaries.X, Physics.Boundaries.Y, 0) : new CPos(Physics.Boundaries.X, 2 * Physics.Boundaries.Y, 0));
-		public CPos EndPointB => Physics.Position - (IsHorizontal ? new CPos(0, Physics.Boundaries.Y, 0) : new CPos(Physics.Boundaries.X, 0, 0));
+		public CPos EndPointA => Physics.Position - new CPos(Physics.Boundaries.X, Physics.Boundaries.Y, 0);
+		public CPos EndPointB => Physics.Position + new CPos(Physics.Boundaries.X, Physics.Boundaries.Y, 0);
 
 		BatchObject renderable;
 		Color color = Color.White;

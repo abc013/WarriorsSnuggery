@@ -25,6 +25,9 @@ namespace WarriorsSnuggery.Physics
 		{
 			TypeLoader.SetValues(this, nodes);
 
+			if (Shape == Shape.LINE && (RadiusX != 0 || RadiusY != 0))
+				throw new InvalidNodeException($"Physics with shape LINE must have at least one dimension set to zero (current: {RadiusX}, {RadiusY})");
+
 			if (Shape == Shape.CIRCLE && RadiusX != RadiusY)
 				throw new InvalidNodeException($"Physics with shape CIRCLE must have the same values for {nameof(RadiusX)} and {nameof(RadiusY)} (current: {RadiusX}, {RadiusY})");
 		}

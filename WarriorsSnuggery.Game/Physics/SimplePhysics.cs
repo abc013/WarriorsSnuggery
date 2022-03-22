@@ -32,13 +32,9 @@ namespace WarriorsSnuggery.Physics
 		{
 			return Shape switch
 			{
-				Shape.LINE_VERTICAL => new (CPos, CPos)[]
+				Shape.LINE => new (CPos, CPos)[]
 				{
-					(Position - new CPos(Boundaries.X, 2 * Boundaries.Y, 0), Position - new CPos(Boundaries.X, 0, 0))
-				},
-				Shape.LINE_HORIZONTAL => new (CPos, CPos)[]
-				{
-					(Position - new CPos(2 * Boundaries.X, Boundaries.Y, 0), Position - new CPos(0, Boundaries.Y, 0))
+					(Position - new CPos(Boundaries.X, Boundaries.Y, 0), Position + new CPos(Boundaries.X, Boundaries.Y, 0))
 				},
 				Shape.RECTANGLE => new (CPos, CPos)[]
 				{
@@ -64,11 +60,8 @@ namespace WarriorsSnuggery.Physics
 				case Shape.RECTANGLE:
 					ColorManager.DrawLineQuad(Position, new CPos(Boundaries.X, Boundaries.Y, 0), Color.Magenta);
 					break;
-				case Shape.LINE_HORIZONTAL:
-					ColorManager.DrawLine(Position - new CPos(2 * Boundaries.X, Boundaries.Y, 0), Position + new CPos(0, -Boundaries.Y, 0), Color.Magenta);
-					break;
-				case Shape.LINE_VERTICAL:
-					ColorManager.DrawLine(Position - new CPos(Boundaries.X, 2 * Boundaries.Y, 0), Position + new CPos(-Boundaries.X, 0, 0), Color.Magenta);
+				case Shape.LINE:
+					ColorManager.DrawLine(Position - new CPos(Boundaries.X, Boundaries.Y, 0), Position + new CPos(Boundaries.X, Boundaries.Y, 0), Color.Magenta);
 					break;
 			}
 		}
