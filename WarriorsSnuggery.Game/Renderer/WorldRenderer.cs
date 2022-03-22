@@ -55,7 +55,21 @@ namespace WarriorsSnuggery
 			world.SmudgeLayer.Render();
 
 			var useAlpha = !world.Game.Editor && !world.PlayerAlive;
-			var pos = useAlpha ? CPos.Zero : (world.Game.Editor ? MouseInput.GamePosition : world.LocalPlayer.GraphicPosition + (world.LocalPlayer.Physics.IsEmpty ? new CPos(0, world.LocalPlayer.Physics.Boundaries.Y, 0) : CPos.Zero));
+
+			var pos = CPos.Zero;
+			if (useAlpha)
+			{
+				if (world.Game.Editor)
+					pos = MouseInput.GamePosition;
+				else
+				{
+					var localPlayer = world.LocalPlayer;
+					pos = localPlayer.GraphicPosition;
+					if (localPlayer.Physics != null && !localPlayer.Physics.IsEmpty)
+						pos += new CPos(0, world.LocalPlayer.Physics.Boundaries.Y, 0);
+				}
+			}
+
 			foreach (var o in prepareRenderList())
 			{
 				if (useAlpha && ((o is Actor actor && actor.WorldPart != null && actor.WorldPart.Hideable) || (o is Wall wall && wall.IsHorizontal && wall.Type.Height >= 512)) && o.Position.Y > pos.Y && Math.Abs(o.Position.X - pos.X) < 4096)
@@ -82,10 +96,10 @@ namespace WarriorsSnuggery
 			MasterRenderer.SetRenderer(Renderer.DEFAULT);
 
 			if (Settings.EnableWeatherEffects)
-            {
+			{
 				world.WeatherManager.Render();
 				MasterRenderer.RenderBatch();
-            }
+			}
 
 			if (afterRender.Count != 0)
 			{
