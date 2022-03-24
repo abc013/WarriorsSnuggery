@@ -8,13 +8,8 @@ namespace WarriorsSnuggery.Physics
 		[Desc("Shape of the physics.")]
 		public readonly Shape Shape;
 
-		[Desc("Physics radius width.")]
-		public readonly int RadiusX;
-		// only for box and drawing
-		[Desc("Physics radius length.", "This will only be used for the box shape.")]
-		public readonly int RadiusY;
-		[Desc("Radius height of the Physics.")]
-		public readonly int HeightRadius;
+		[Desc("Physics radius boundaries.", "For LINE shape: either X or Y has to be 0.", "For CIRCLE shape: X and Y must be equal.")]
+		public readonly CPos Boundaries;
 
 		[Desc("Offset based of the position of the object the physics are attached to.")]
 		public readonly CPos Offset;
@@ -25,19 +20,17 @@ namespace WarriorsSnuggery.Physics
 		{
 			TypeLoader.SetValues(this, nodes);
 
-			if (Shape == Shape.LINE && (RadiusX != 0 || RadiusY != 0))
-				throw new InvalidNodeException($"Physics with shape LINE must have at least one dimension set to zero (current: {RadiusX}, {RadiusY})");
+			if (Shape == Shape.LINE && (Boundaries.X != 0 || Boundaries.Y != 0))
+				throw new InvalidNodeException($"Physics with shape LINE must have at least one dimension set to zero (current: {Boundaries.X}, {Boundaries.Y})");
 
-			if (Shape == Shape.CIRCLE && RadiusX != RadiusY)
-				throw new InvalidNodeException($"Physics with shape CIRCLE must have the same values for {nameof(RadiusX)} and {nameof(RadiusY)} (current: {RadiusX}, {RadiusY})");
+			if (Shape == Shape.CIRCLE && Boundaries.X != Boundaries.Y)
+				throw new InvalidNodeException($"Physics with shape CIRCLE must have the same values for X and Y dimensions (current: {Boundaries.X}, {Boundaries.Y})");
 		}
 
-		public SimplePhysicsType(Shape shape, int radiusX, int radiusY, int heightRadius, CPos offset, int heightOffset = 0)
+		public SimplePhysicsType(Shape shape, CPos boundaries, CPos offset, int heightOffset = 0)
 		{
 			Shape = shape;
-			RadiusX = radiusX;
-			RadiusY = radiusY;
-			HeightRadius = heightRadius;
+			Boundaries = boundaries;
 			Offset = offset;
 			HeightOffset = heightOffset;
 		}

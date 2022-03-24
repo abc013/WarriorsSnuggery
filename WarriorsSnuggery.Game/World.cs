@@ -310,7 +310,8 @@ namespace WarriorsSnuggery
 				return IsInWorld(pos);
 
 			var bounds = Map.Bounds.ToCPos();
-			var (X, Y, _) = actor.Physics.Boundaries;
+			var X = actor.Physics.Boundaries.X;
+			var Y = actor.Physics.Boundaries.Y;
 
 			return pos.X >= -512 + X && pos.X < bounds.X - 512 - X && pos.Y >= -512 + Y && pos.Y < bounds.Y - 512 - Y;
 		}

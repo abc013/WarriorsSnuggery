@@ -19,7 +19,7 @@ namespace WarriorsSnuggery.Physics
 
 		public bool IsEmpty => positionable == null || type.Shape == Shape.NONE;
 
-		public (int X, int Y, int Z) Boundaries => (type.RadiusX, type.RadiusY, type.HeightRadius);
+		public CPos Boundaries => type.Boundaries;
 		public Shape Shape => type.Shape;
 
 		public SimplePhysics(PositionableObject positionable, SimplePhysicsType type)

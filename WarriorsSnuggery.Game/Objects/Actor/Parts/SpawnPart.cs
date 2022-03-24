@@ -175,7 +175,10 @@ namespace WarriorsSnuggery.Objects.Actors.Parts
 			var sizeY = info.Radius;
 
 			if (info.Radius == 0 && !self.Physics.IsEmpty)
-				(sizeX, sizeY, _) = self.Physics.Boundaries;
+			{
+				sizeX = self.Physics.Boundaries.X;
+				sizeY = self.Physics.Boundaries.Y;
+			}
 
 			var x = self.World.Game.SharedRandom.Next(-sizeX, sizeX);
 			var y = self.World.Game.SharedRandom.Next(-sizeY, sizeY);

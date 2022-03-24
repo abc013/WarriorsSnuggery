@@ -69,8 +69,8 @@ namespace WarriorsSnuggery.Objects
 			if (HeavyDamageTexture != null)
 				checkTextures(HeavyDamageTexture);
 
-			HorizontalPhysicsType = new SimplePhysicsType(Shape.LINE, 512, 0, Height, new CPos(-512, -512, 0));
-			VerticalPhysicsType = new SimplePhysicsType(Shape.LINE, 0, 512, Height, new CPos(-512, 0, 0));
+			HorizontalPhysicsType = new SimplePhysicsType(Shape.LINE, new CPos(512, 0, Height), new CPos(-512, -512, 0));
+			VerticalPhysicsType = new SimplePhysicsType(Shape.LINE, new CPos(0, 512, Height), new CPos(-512, 0, 0));
 		}
 
 		void checkTextures(TextureInfo info)
