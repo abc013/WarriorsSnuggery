@@ -3,6 +3,7 @@ precision mediump float;
 
 in vec2 vs_textureCoordinate;
 flat in int vs_texture;
+flat in int vs_textureFlags;
 in vec4 vs_color;
 
 uniform sampler2D texture0;
@@ -27,7 +28,11 @@ void main(void)
     else
         color = vec4(1);
 
-    color *= vs_color * proximityColor * objectColor;
+    color *= vs_color * objectColor;
+
+	// only consider ambience if enabled
+	if (vs_textureFlags == 0)
+		color *= proximityColor;
 
     if (color.a == 0.0)
         discard;

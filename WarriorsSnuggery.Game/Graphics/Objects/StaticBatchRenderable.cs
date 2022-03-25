@@ -11,12 +11,11 @@ namespace WarriorsSnuggery.Graphics
 
 		public StaticBatchRenderable(CPos position, VAngle rotation, Vertex[] vertices)
 		{
-			var color = Color.White;
 			var vec = position.ToVector();
 
 			this.vertices = new Vertex[vertices.Length];
 			for (int i = 0; i < vertices.Length; i++)
-				this.vertices[i] = vertices[i].Modify(vec, Vector3.One, rotation, color);
+				this.vertices[i] = vertices[i].Modify(vec, Vector3.One, rotation, Color.White, TextureFlags.None);
 		}
 
 		public virtual void PushToBatchRenderer()

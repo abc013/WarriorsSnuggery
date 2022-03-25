@@ -32,9 +32,9 @@ namespace WarriorsSnuggery.Graphics
 		{
 			line = new BatchObject(Mesh.Line(1f));
 			circle = new BatchObject(Mesh.Circle(1f, 32));
-			fullscreen_rect = new BatchObject(Mesh.Plane(WindowInfo.UnitHeight));
+			fullscreen_rect = new BatchObject(WindowInfo.UnitHeight);
 
-			filled_rect = new BatchObject(Mesh.Plane(1f));
+			filled_rect = new BatchObject(1f);
 		}
 
 		public static void DrawLineQuad(CPos pos, CPos radius, Color color)

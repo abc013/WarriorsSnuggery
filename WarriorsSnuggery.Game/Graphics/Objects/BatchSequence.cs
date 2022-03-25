@@ -70,6 +70,17 @@ namespace WarriorsSnuggery.Graphics
 				obj.SetRotation(rot3);
 		}
 
+		public override void SetTextureFlags(TextureFlags textureFlags)
+		{
+			base.SetTextureFlags(textureFlags);
+
+			if (!CacheOutdated)
+				return;
+
+			foreach (var obj in objects)
+				obj.SetTextureFlags(textureFlags);
+		}
+
 		public override void SetColor(Color color)
 		{
 			base.SetColor(color);

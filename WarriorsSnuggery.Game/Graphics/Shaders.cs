@@ -40,6 +40,7 @@ namespace WarriorsSnuggery.Graphics
 
 				GL.BindAttribLocation(TextureShader, Vertex.TextureCoordinateAttributeLocation, "textureCoordinate");
 				GL.BindAttribLocation(TextureShader, Vertex.TextureAttributeLocation, "texture");
+				GL.BindAttribLocation(TextureShader, Vertex.TextureFlagsAttributeLocation, "textureFlags");
 				GL.BindAttribLocation(TextureShader, Vertex.ColorAttributeLocation, "color");
 
 				foreach (int shader in new[] { TextureShader })

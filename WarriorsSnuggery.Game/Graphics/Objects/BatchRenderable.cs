@@ -13,6 +13,7 @@ namespace WarriorsSnuggery.Graphics
 		protected Quaternion Rotation = Quaternion.Identity;
 		protected Vector3 Scale = Vector3.One;
 		protected Color Color = Color.White;
+		protected TextureFlags TextureFlags = TextureFlags.None;
 		protected bool CacheOutdated;
 
 		public BatchRenderable(Vertex[] vertices)
@@ -80,6 +81,15 @@ namespace WarriorsSnuggery.Graphics
 			CacheOutdated = true;
 		}
 
+		public virtual void SetTextureFlags(TextureFlags textureFlags)
+		{
+			if (TextureFlags == textureFlags)
+				return;
+
+			TextureFlags = textureFlags;
+			CacheOutdated = true;
+		}
+
 		public virtual void Tick() { }
 
 		public virtual void Render()
@@ -90,7 +100,7 @@ namespace WarriorsSnuggery.Graphics
 			if (CacheOutdated)
 			{
 				for (int i = 0; i < vertices.Length; i++)
-					calculated[i] = vertices[i].Modify(Position, Scale, Rotation, Color);
+					calculated[i] = vertices[i].Modify(Position, Scale, Rotation, Color, TextureFlags);
 
 				CacheOutdated = false;
 			}
