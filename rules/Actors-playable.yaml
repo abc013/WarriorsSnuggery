@@ -9,6 +9,15 @@ playerswitch=
 	PlayerSwitch=
 	World=
 		ShowInEditor=false
+	Light=
+		Name=quadratic_light
+		Offset=0,-64,0
+		Scale=2
+		Color=128,128,128
+		FluctuationStrength=0.3
+		FluctuationStrengthRandomness=0.3
+		FluctuationSpeed=20
+		FluctuationSpeedRandomness=10
 
 ninja_playable=
 	Sprite=

@@ -18,6 +18,8 @@ namespace WarriorsSnuggery.Objects.Particles
 		public readonly float MeshSizeVariety;
 		[Desc("Determines whether to render the particle as light.")]
 		public readonly bool IsLight;
+		[Desc("Determines whether to render the particle without using ambience.", "This can be used to create 'glow in the dark' effects.")]
+		public readonly bool IgnoreAmbience;
 
 		[Desc("Gravitational force.")]
 		public readonly int Gravity = 2;
@@ -49,16 +51,16 @@ namespace WarriorsSnuggery.Objects.Particles
 		public BatchRenderable GetRenderable()
 		{
 			var color = Color + ParticleUtils.Variety(ColorVariety);
-			if (Texture == null)
-			{
-				var renderable = new BatchObject(MeshSize * Constants.PixelMultiplier + ParticleUtils.Variety(MeshSizeVariety));
-				renderable.SetColor(color);
-				return renderable;
-			}
 
-			var sequence = new BatchSequence(Texture);
-			sequence.SetColor(color);
-			return sequence;
+			BatchRenderable renderable;
+			if (Texture == null)
+				renderable = new BatchObject(MeshSize * Constants.PixelMultiplier + ParticleUtils.Variety(MeshSizeVariety));
+			else
+				renderable = new BatchSequence(Texture);
+
+			renderable.SetColor(color);
+			renderable.SetTextureFlags(IgnoreAmbience ? TextureFlags.IgnoreAmbience : TextureFlags.None);
+			return renderable;
 		}
 
 		public override string ToString()
