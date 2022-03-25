@@ -209,8 +209,9 @@ namespace WarriorsSnuggery
 			Add(LocalPlayer);
 		}
 
-		public bool CheckCollision(SimplePhysics physics)
+		public bool CheckCollision(SimplePhysics physics, out Collision collision)
 		{
+			collision = null;
 			if (physics.IsEmpty)
 				return false;
 
@@ -220,7 +221,7 @@ namespace WarriorsSnuggery
 			var right = 0;
 			foreach (var p in physics.Sectors)
 			{
-				if (p.CheckIntersection(physics))
+				if (p.CheckIntersection(physics, out collision))
 					return true;
 
 				if (p.Position.X < left)
@@ -242,7 +243,7 @@ namespace WarriorsSnuggery
 
 			foreach (var wall in walls)
 			{
-				if (Collision.CheckCollision(physics, wall.Physics))
+				if (Collision.CheckCollision(physics, wall.Physics, out collision))
 					return true;
 			}
 

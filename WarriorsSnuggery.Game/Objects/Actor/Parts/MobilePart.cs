@@ -145,7 +145,7 @@ namespace WarriorsSnuggery.Objects.Actors.Parts
 			denyMove();
 		}
 
-		bool checkMove(CPos pos, int height, CPos velocity)
+		bool checkMove(CPos pos, int height, CPos velocity, bool evading = false)
 		{
 			if (!self.World.IsInWorld(pos))
 				return false;
@@ -156,32 +156,40 @@ namespace WarriorsSnuggery.Objects.Actors.Parts
 			self.Height = height;
 			self.Position = pos;
 
-			var intersects = self.World.CheckCollision(self.Physics);
+			var intersects = self.World.CheckCollision(self.Physics, out var collision);
 
 			self.Position = oldPos;
 			self.Height = oldHeight;
 
 			if (intersects)
+			{
+				if (collision != null && !evading)
+				{
+					var newVelocity = CPos.FromFlatAngle(collision.Angle, velocity.FlatDist);
+					return checkMove(self.Position + newVelocity, self.Height, newVelocity, true);
+				}
 				return false;
+			}
 
 			var terrain = self.World.TerrainAt(pos);
 			if (terrain != null && height == 0 && terrain.Type.Speed == 0)
 				return false;
 
-			acceptMove(pos, height, terrain);
+			acceptMove(pos, height, terrain, evading);
 			Velocity = velocity;
 
 			return true;
 		}
 
-		void acceptMove(CPos position, int height, Terrain terrain)
+		void acceptMove(CPos position, int height, Terrain terrain, bool evading = false)
 		{
 			var old = self.Position;
 			self.Height = height;
 			self.Position = position;
 			self.CurrentTerrain = terrain;
 
-			self.Angle = (old - position).FlatAngle;
+			if (!evading)
+				self.Angle = (old - position).FlatAngle;
 			self.World.PhysicsLayer.UpdateSectors(self.Physics);
 			self.World.ActorLayer.Update(self);
 
