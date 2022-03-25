@@ -83,6 +83,7 @@ mana_splash=
 		Dimensions=3,3
 		Random=true
 		UseAsPreview=true
+		IgnoreAmbience=true
 	Collectable=
 		Radius=256
 		Type=MANA

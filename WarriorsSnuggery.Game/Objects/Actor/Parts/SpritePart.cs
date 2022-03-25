@@ -37,6 +37,9 @@ namespace WarriorsSnuggery.Objects.Actors.Parts
 		[Desc("Random Color to add to the sprite.", "Alpha will not be applied.")]
 		public readonly Color ColorVariation = Color.Black;
 
+		[Desc("Determines whether to ignore ambient light.", "This can be used for 'glow in the dark' effects.")]
+		public readonly bool IgnoreAmbience;
+
 		public SpritePartInfo(PartInitSet set) : base(set)
 		{
 			if (Name != null)
@@ -80,6 +83,7 @@ namespace WarriorsSnuggery.Objects.Actors.Parts
 					index = self.World.Game.SharedRandom.Next(anim.Length);
 
 				renderables[i] = new BatchObject(anim[index]);
+				renderables[i].SetTextureFlags(info.IgnoreAmbience ? TextureFlags.IgnoreAmbience : TextureFlags.None);
 			}
 
 			if (info.ColorVariation != Color.Black)
