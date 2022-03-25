@@ -6,7 +6,7 @@ namespace WarriorsSnuggery.Physics
 {
 	public sealed class SimplePhysics
 	{
-		public static readonly SimplePhysics Empty = new SimplePhysics(null, null);
+		public static readonly SimplePhysics Empty = new SimplePhysics(null, new SimplePhysicsType(Shape.NONE, CPos.Zero, CPos.Zero));
 
 		readonly SimplePhysicsType type;
 
@@ -17,7 +17,7 @@ namespace WarriorsSnuggery.Physics
 		public CPos Position => positionable.Position + type.Offset;
 		public int Height => positionable.Height + type.HeightOffset;
 
-		public bool IsEmpty => positionable == null || type.Shape == Shape.NONE;
+		public bool IsEmpty => type.Shape == Shape.NONE;
 
 		public CPos Boundaries => type.Boundaries;
 		public Shape Shape => type.Shape;
