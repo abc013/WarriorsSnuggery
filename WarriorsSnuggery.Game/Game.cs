@@ -215,6 +215,13 @@ namespace WarriorsSnuggery
 
 				CheckVictory();
 
+				// screenshaker
+				if (Screenshaker.ShakeStrength > 0)
+				{
+					Camera.Update();
+					Screenshaker.DecreaseShake();
+				}
+
 				// camera input
 				if (!ScreenControl.CursorOnUI() && !(Camera.LockedToPlayer && World.PlayerAlive && !Editor))
 				{

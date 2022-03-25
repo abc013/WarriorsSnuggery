@@ -130,7 +130,7 @@ namespace WarriorsSnuggery.Graphics
 
 		static void calculatePosition()
 		{
-			var look = LookAt.ToVector();
+			var look = (LookAt + Screenshaker.RandomShake).ToVector();
 			view = Matrix4.CreateTranslation(-look.X, -look.Y, 0);
 
 			CameraVisibility.LookAtUpdated();
