@@ -20,7 +20,7 @@ namespace WarriorsSnuggery.UI.Screens
 			Title.Position = new CPos(0, -4096, 0);
 
 			var create = new UIText(FontManager.Default, TextOffset.MIDDLE) { Position = new CPos(0, -2048, 0) };
-			create.SetText("Story line. Please adjust the parameters as you wish.");
+			create.SetText("Story line. Please adjust the parameters as you wish.", $"{Color.Cyan}Note: The Story line is not implemented yet.");
 			Add(create);
 
 			var name = new UIText(FontManager.Default, TextOffset.RIGHT) { Position = new CPos(-2048, 0, 0) };
@@ -41,7 +41,7 @@ namespace WarriorsSnuggery.UI.Screens
 			difficultyInput = new SliderBar(4096, "wooden") { Position = new CPos(1024, 1024, 0) };
 			Add(difficultyInput);
 
-			var hardcore = new UIText(FontManager.Default, TextOffset.RIGHT) { Position = new CPos(0, -1024, 0) };
+			var hardcore = new UIText(FontManager.Default, TextOffset.RIGHT) { Position = new CPos(0, 2048, 0) };
 			hardcore.SetText("Hardcore (one life): ");
 			Add(hardcore);
 

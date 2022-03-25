@@ -73,7 +73,7 @@ namespace WarriorsSnuggery.UI.Objects
 
 		static MPos calculateBounds(int maximumLength)
 		{
-			return new MPos((margin + FontManager.Default.MaxWidth * maximumLength) / 2, margin / 2 + FontManager.Default.MaxHeight);
+			return new MPos((2 * margin + (FontManager.Default.MaxWidth + FontManager.Default.WidthGap) * maximumLength) / 2, margin / 2 + FontManager.Default.MaxHeight);
 		}
 
 		public override void Render()
