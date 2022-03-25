@@ -9,6 +9,8 @@ namespace WarriorsSnuggery.Objects.Weapons.Projectiles
 	{
 		[Require, Desc("Texture of the Weapon.")]
 		public readonly TextureInfo Texture;
+		[Desc("Ignore ambient lighting for the texture.")]
+		public readonly bool IgnoreAmbience;
 
 		[Desc("Particles that are emitted at the weapons travel time.")]
 		public readonly ParticleSpawner TrailParticles;
@@ -41,7 +43,9 @@ namespace WarriorsSnuggery.Objects.Weapons.Projectiles
 
 		public BatchSequence GetTexture()
 		{
-			return new BatchSequence(Texture);
+			var sequence = new BatchSequence(Texture);
+			sequence.SetTextureFlags(IgnoreAmbience ? TextureFlags.IgnoreAmbience : TextureFlags.None);
+			return sequence;
 		}
 	}
 }

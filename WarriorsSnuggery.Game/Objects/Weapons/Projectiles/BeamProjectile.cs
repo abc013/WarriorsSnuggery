@@ -13,6 +13,8 @@ namespace WarriorsSnuggery.Objects.Weapons.Projectiles
 		public readonly TextureInfo BeamStartUp;
 		[Desc("Texture of the Beam.", "This texture will show up as cooldown animation.")]
 		public readonly TextureInfo BeamCooldown;
+		[Desc("Ignore ambient lighting for the beam.")]
+		public readonly bool IgnoreAmbience;
 
 		[Desc("Particles that are emitted along the path of the beamweapon.")]
 		public readonly ParticleSpawner BeamParticles;

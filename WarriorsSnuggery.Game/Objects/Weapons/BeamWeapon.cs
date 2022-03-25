@@ -101,7 +101,10 @@ namespace WarriorsSnuggery.Objects.Weapons
 			var sprite = texture.GetTextures();
 			renderables = new BatchRenderable[sprite.Length];
 			for (int i = 0; i < sprite.Length; i++)
+			{
 				renderables[i] = new BatchObject(sprite[i]);
+				renderables[i].SetTextureFlags(projectile.IgnoreAmbience ? TextureFlags.IgnoreAmbience : TextureFlags.None);
+			}
 		}
 
 		public override void Render()
