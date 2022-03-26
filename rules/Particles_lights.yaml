@@ -18,6 +18,16 @@ light_explosion_flash=
 	IsLight=true
 	RandomScale=0.3
 
+light_true_explosion_flash=
+	Texture=quadratic_light
+		Size=96,96
+	Duration=8
+	DissolveDuration=8
+	Color=128,128,256
+	Gravity=0
+	IsLight=true
+	RandomScale=0.3
+
 light_party_flash=
 	Texture=5star_light
 		Size=48,48
