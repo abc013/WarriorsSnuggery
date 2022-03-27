@@ -38,15 +38,15 @@ namespace WarriorsSnuggery.Graphics
 			}
 		}
 
-		public static float[] GetContent(int id, int width, int height)
+		public static byte[] GetContent(int id, int width, int height)
 		{
-			var data = new float[width * height * 4];
+			var data = new byte[width * height * 4];
 			lock (MasterRenderer.GLLock)
 			{
 				GL.ActiveTexture(TextureUnit.Texture0);
 				GL.BindTexture(TextureTarget.Texture2D, id);
 
-				GL.GetTexImage(TextureTarget.Texture2D, 0, PixelFormat.Bgra, PixelType.Float, data);
+				GL.GetTexImage(TextureTarget.Texture2D, 0, PixelFormat.Bgra, PixelType.UnsignedByte, data);
 
 				Program.CheckGraphicsError("readTexture");
 			}
