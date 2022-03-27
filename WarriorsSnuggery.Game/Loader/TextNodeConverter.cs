@@ -18,13 +18,13 @@ namespace WarriorsSnuggery.Loader
 {
 	public static class TextNodeConverter
 	{
-		public static readonly string[] trueBooleans = new[]
+		static readonly string[] trueBooleans = new[]
 		{
 			"1",
 			"true",
 			"yes"
 		};
-		public static readonly string[] falseBooleans =
+		static readonly string[] falseBooleans =
 		{
 			"0",
 			"false",
@@ -45,7 +45,7 @@ namespace WarriorsSnuggery.Loader
 				object @enum;
 				try
 				{
-					@enum = Enum.Parse(t, value.Trim(), true);
+					@enum = Enum.Parse(t, value, true);
 				}
 				catch (Exception e)
 				{
@@ -90,7 +90,7 @@ namespace WarriorsSnuggery.Loader
 			}
 			else if (t == typeof(bool))
 			{
-				var v = value.ToLower().Trim();
+				var v = value.ToLower();
 
 				if (trueBooleans.Contains(v))
 					return true;
@@ -101,14 +101,11 @@ namespace WarriorsSnuggery.Loader
 			}
 			else if (t == typeof(string))
 			{
-				return value.Trim();
+				return value;
 			}
 			else if (t.IsArray && t.GetElementType().IsEnum)
 			{
 				var parts = value.Split(',');
-
-				for (int i = 0; i < parts.Length; i++)
-					parts[i] = parts[i].Trim();
 
 				var elementType = t.GetElementType();
 				var enums = Array.CreateInstance(elementType, parts.Length);
@@ -130,9 +127,7 @@ namespace WarriorsSnuggery.Loader
 
 				for (int i = 0; i < parts.Length; i++)
 				{
-					var part = parts[i].Trim();
-
-					if (int.TryParse(part, out int convert))
+					if (int.TryParse(parts[i], out int convert))
 						res[i] = convert;
 					else
 						throw new InvalidConversionException(node, t);
@@ -147,9 +142,7 @@ namespace WarriorsSnuggery.Loader
 
 				for (int i = 0; i < parts.Length; i++)
 				{
-					var part = parts[i].Trim();
-
-					if (float.TryParse(part, NumberStyles.Float, CultureInfo.InvariantCulture, out float convert))
+					if (float.TryParse(parts[i], NumberStyles.Float, CultureInfo.InvariantCulture, out float convert))
 						res[i] = convert;
 					else
 						throw new InvalidConversionException(node, t);
@@ -192,9 +185,7 @@ namespace WarriorsSnuggery.Loader
 
 				for (int i = 0; i < parts.Length; i++)
 				{
-					var part = parts[i].Trim();
-
-					if (ushort.TryParse(part, out ushort convert))
+					if (ushort.TryParse(parts[i], out ushort convert))
 						res[i] = convert;
 					else
 						throw new InvalidConversionException(node, t);
@@ -209,9 +200,7 @@ namespace WarriorsSnuggery.Loader
 
 				for (int i = 0; i < parts.Length; i++)
 				{
-					var part = parts[i].Trim();
-
-					if (short.TryParse(part, out short convert))
+					if (short.TryParse(parts[i], out short convert))
 						res[i] = convert;
 					else
 						throw new InvalidConversionException(node, t);
@@ -283,7 +272,7 @@ namespace WarriorsSnuggery.Loader
 			}
 			else if (t == typeof(ParticleSpawner))
 			{
-				var type = Type.GetType("WarriorsSnuggery.Objects.Particles." + value.Trim() + "ParticleSpawner", false, true);
+				var type = Type.GetType($"WarriorsSnuggery.Objects.Particles.{value}ParticleSpawner", false, true);
 
 				if (type == null || type.IsInterface)
 					throw new InvalidConversionException(node, t);
@@ -293,7 +282,7 @@ namespace WarriorsSnuggery.Loader
 			else if (t == typeof(TextureInfo))
 			{
 				var size = MPos.Zero;
-				var name = value.Trim();
+				var name = value;
 				var randomTexture = false;
 				var tick = 20;
 				bool searchFile = true;
@@ -325,15 +314,15 @@ namespace WarriorsSnuggery.Loader
 			}
 			else if (t == typeof(WeaponType))
 			{
-				return WeaponCache.Types[value.Trim()];
+				return WeaponCache.Types[value];
 			}
 			else if (t == typeof(ParticleType))
 			{
-				return ParticleCache.Types[value.Trim()];
+				return ParticleCache.Types[value];
 			}
 			else if (t == typeof(ActorType))
 			{
-				return ActorCache.Types[value.Trim()];
+				return ActorCache.Types[value];
 			}
 			else if (t == typeof(SimplePhysicsType))
 			{
@@ -344,7 +333,7 @@ namespace WarriorsSnuggery.Loader
 				if (!SpellCache.Types.ContainsKey(value))
 					throw new MissingInfoException(value);
 
-				return SpellCache.Types[value.Trim()];
+				return SpellCache.Types[value];
 			}
 			else if (t == typeof(Effect))
 			{
@@ -352,7 +341,7 @@ namespace WarriorsSnuggery.Loader
 			}
 			else if (t == typeof(BotBehaviorType))
 			{
-				var type = Type.GetType("WarriorsSnuggery.Objects.Actors.Bot." + value.Trim() + "BotBehaviorType", false, true);
+				var type = Type.GetType($"WarriorsSnuggery.Objects.Actors.Bot.{value}BotBehaviorType", false, true);
 
 				if (type == null || type.IsInterface)
 					throw new InvalidConversionException(node, t);
@@ -361,7 +350,7 @@ namespace WarriorsSnuggery.Loader
 			}
 			else if (t == typeof(IProjectile))
 			{
-				var type = Type.GetType("WarriorsSnuggery.Objects.Weapons.Projectiles." + value.Trim() + "Projectile", false, true);
+				var type = Type.GetType($"WarriorsSnuggery.Objects.Weapons.Projectiles.{value}Projectile", false, true);
 
 				if (type == null || type.IsInterface)
 					throw new InvalidConversionException(node, t);
@@ -374,7 +363,7 @@ namespace WarriorsSnuggery.Loader
 				var i = 0;
 				foreach (var child in node.Children)
 				{
-					var type = Type.GetType("WarriorsSnuggery.Objects.Weapons.Warheads." + child.Key + "Warhead", false, true);
+					var type = Type.GetType($"WarriorsSnuggery.Objects.Weapons.Warheads.{child.Key}Warhead", false, true);
 
 					if (type == null || type.IsInterface)
 						throw new InvalidConversionException(child, t);
@@ -389,7 +378,7 @@ namespace WarriorsSnuggery.Loader
 				var i = 0;
 				foreach (var child in node.Children)
 				{
-					var type = Type.GetType("WarriorsSnuggery.Maps.Generators." + child.Key + "Info", true, true);
+					var type = Type.GetType($"WarriorsSnuggery.Maps.Generators.{child.Key}Info", true, true);
 
 					array[i++] = (IMapGeneratorInfo)Activator.CreateInstance(type, new object[] { child.Convert<int>(), child.Children });
 				}
@@ -422,7 +411,7 @@ namespace WarriorsSnuggery.Loader
 					if (!ParticleCache.Types.ContainsKey(value))
 						throw new MissingInfoException(value);
 
-					convert[i] = ParticleCache.Types[value.Trim()];
+					convert[i] = ParticleCache.Types[value];
 				}
 
 				return convert;
