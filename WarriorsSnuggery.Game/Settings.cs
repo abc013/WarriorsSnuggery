@@ -1,4 +1,5 @@
 using OpenTK.Windowing.GraphicsLibraryFramework;
+using System;
 using System.Collections.Generic;
 using WarriorsSnuggery.Loader;
 
@@ -101,7 +102,7 @@ namespace WarriorsSnuggery
 		public static Keys GetKey(string value)
 		{
 			if (!KeyDictionary.ContainsKey(value))
-				throw new InvalidNodeException($"Unable to find keyboard key with name {value}.");
+				throw new NullReferenceException($"Unable to find keyboard key with name {value}.");
 
 			return KeyDictionary[value];
 		}

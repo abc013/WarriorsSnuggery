@@ -150,7 +150,7 @@ namespace WarriorsSnuggery
 				return;
 
 			if (!TrophyCache.Trophies.ContainsKey(collected))
-				throw new InvalidNodeException("Unable to get Trophy with internal name " + collected);
+				throw new NullReferenceException($"Unable to get Trophy with internal name '{collected}'.");
 
 			Game.AddInfoMessage(250, "Trophy collected!");
 			Game.Stats.AddTrophy(collected);

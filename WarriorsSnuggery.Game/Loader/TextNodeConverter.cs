@@ -31,12 +31,12 @@ namespace WarriorsSnuggery.Loader
 			"no"
 		};
 
-		public static T Convert<T>(string file, TextNode node)
+		public static T Convert<T>(TextNode node)
 		{
-			return (T)Convert(file, node, typeof(T));
+			return (T)Convert(node, typeof(T));
 		}
 
-		public static object Convert(string file, TextNode node, Type t)
+		public static object Convert(TextNode node, Type t)
 		{
 			var value = node.Value;
 
@@ -49,7 +49,7 @@ namespace WarriorsSnuggery.Loader
 				}
 				catch (Exception e)
 				{
-					throw new InvalidEnumConversionException(file, node, t, e);
+					throw new InvalidEnumConversionException(node, t, e);
 				}
 				return @enum;
 			}
@@ -58,35 +58,35 @@ namespace WarriorsSnuggery.Loader
 				if (int.TryParse(value, out var i))
 					return i;
 				else
-					throw new InvalidConversionException(file, node, t);
+					throw new InvalidConversionException(node, t);
 			}
 			if (t == typeof(uint))
 			{
 				if (uint.TryParse(value, out var i))
 					return i;
 				else
-					throw new InvalidConversionException(file, node, t);
+					throw new InvalidConversionException(node, t);
 			}
 			else if (t == typeof(byte))
 			{
 				if (byte.TryParse(value, out var i))
 					return i;
 				else
-					throw new InvalidConversionException(file, node, t);
+					throw new InvalidConversionException(node, t);
 			}
 			else if (t == typeof(short))
 			{
 				if (short.TryParse(value, out var i))
 					return i;
 				else
-					throw new InvalidConversionException(file, node, t);
+					throw new InvalidConversionException(node, t);
 			}
 			else if (t == typeof(float))
 			{
 				if (float.TryParse(value, out var i))
 					return i;
 				else
-					throw new InvalidConversionException(file, node, t);
+					throw new InvalidConversionException(node, t);
 			}
 			else if (t == typeof(bool))
 			{
@@ -97,7 +97,7 @@ namespace WarriorsSnuggery.Loader
 				else if (falseBooleans.Contains(v))
 					return false;
 				else
-					throw new InvalidConversionException(file, node, t);
+					throw new InvalidConversionException(node, t);
 			}
 			else if (t == typeof(string))
 			{
@@ -119,7 +119,7 @@ namespace WarriorsSnuggery.Loader
 				}
 				catch (Exception e)
 				{
-					throw new InvalidEnumConversionException(file, node, t, e);
+					throw new InvalidEnumConversionException(node, t, e);
 				}
 				return enums;
 			}
@@ -135,7 +135,7 @@ namespace WarriorsSnuggery.Loader
 					if (int.TryParse(part, out int convert))
 						res[i] = convert;
 					else
-						throw new InvalidConversionException(file, node, t);
+						throw new InvalidConversionException(node, t);
 				}
 
 				return res;
@@ -152,7 +152,7 @@ namespace WarriorsSnuggery.Loader
 					if (float.TryParse(part, NumberStyles.Float, CultureInfo.InvariantCulture, out float convert))
 						res[i] = convert;
 					else
-						throw new InvalidConversionException(file, node, t);
+						throw new InvalidConversionException(node, t);
 				}
 
 				return res;
@@ -180,7 +180,7 @@ namespace WarriorsSnuggery.Loader
 					else if (falseBooleans.Contains(part))
 						res[i] = false;
 					else
-						throw new InvalidConversionException(file, node, t);
+						throw new InvalidConversionException(node, t);
 				}
 
 				return res;
@@ -197,7 +197,7 @@ namespace WarriorsSnuggery.Loader
 					if (ushort.TryParse(part, out ushort convert))
 						res[i] = convert;
 					else
-						throw new InvalidConversionException(file, node, t);
+						throw new InvalidConversionException(node, t);
 				}
 
 				return res;
@@ -214,7 +214,7 @@ namespace WarriorsSnuggery.Loader
 					if (short.TryParse(part, out short convert))
 						res[i] = convert;
 					else
-						throw new InvalidConversionException(file, node, t);
+						throw new InvalidConversionException(node, t);
 				}
 
 				return res;
@@ -286,7 +286,7 @@ namespace WarriorsSnuggery.Loader
 				var type = Type.GetType("WarriorsSnuggery.Objects.Particles." + value.Trim() + "ParticleSpawner", false, true);
 
 				if (type == null || type.IsInterface)
-					throw new InvalidConversionException(file, node, t);
+					throw new InvalidConversionException(node, t);
 
 				return Activator.CreateInstance(type, new[] { node.Children });
 			}
@@ -316,7 +316,7 @@ namespace WarriorsSnuggery.Loader
 							size = child.Convert<MPos>();
 							break;
 						default:
-							throw new UnexpectedConversionChild(file, node, t, child.Key);
+							throw new UnexpectedConversionChild(node, t, child.Key);
 					}
 				}
 
@@ -355,7 +355,7 @@ namespace WarriorsSnuggery.Loader
 				var type = Type.GetType("WarriorsSnuggery.Objects.Actors.Bot." + value.Trim() + "BotBehaviorType", false, true);
 
 				if (type == null || type.IsInterface)
-					throw new InvalidConversionException(file, node, t);
+					throw new InvalidConversionException(node, t);
 
 				return Activator.CreateInstance(type, new[] { node.Children });
 			}
@@ -364,7 +364,7 @@ namespace WarriorsSnuggery.Loader
 				var type = Type.GetType("WarriorsSnuggery.Objects.Weapons.Projectiles." + value.Trim() + "Projectile", false, true);
 
 				if (type == null || type.IsInterface)
-					throw new InvalidConversionException(file, node, t);
+					throw new InvalidConversionException(node, t);
 
 				return Activator.CreateInstance(type, new[] { node.Children });
 			}
@@ -377,7 +377,7 @@ namespace WarriorsSnuggery.Loader
 					var type = Type.GetType("WarriorsSnuggery.Objects.Weapons.Warheads." + child.Key + "Warhead", false, true);
 
 					if (type == null || type.IsInterface)
-						throw new InvalidConversionException(file, child, t);
+						throw new InvalidConversionException(child, t);
 
 					array[i++] = (IWarhead)Activator.CreateInstance(type, new[] { child.Children });
 				}
@@ -432,12 +432,12 @@ namespace WarriorsSnuggery.Loader
 				var convert = new ParticleSpawner[node.Children.Count];
 
 				for (int i = 0; i < node.Children.Count; i++)
-					convert[i] = Convert<ParticleSpawner>(file, node.Children[i]);
+					convert[i] = Convert<ParticleSpawner>(node.Children[i]);
 
 				return convert;
 			}
 
-			throw new InvalidConversionException(file, node, t);
+			throw new InvalidConversionException(node, t);
 		}
 	}
 }

@@ -14,39 +14,39 @@ namespace WarriorsSnuggery.Loader
 		public readonly string Specification;
 		public readonly string Value;
 
-		readonly string file;
+		public readonly string Origin;
 
-		public TextNode(string file, short order, string key, object value) : this(file, order, key, null, value) { }
+		public TextNode(string origin, short order, string key, object value) : this(origin, order, key, null, value) { }
 
-		public TextNode(string file, short order, string key, string specification, object value)
+		public TextNode(string origin, short order, string key, string specification, object value)
 		{
 			Order = order;
 			Key = key;
 			Specification = specification;
 			Value = value.ToString();
 
-			this.file = file;
+			Origin = origin;
 		}
 
 		public T Convert<T>()
 		{
-			return Loader.TextNodeConverter.Convert<T>(file, this);
+			return TextNodeConverter.Convert<T>(this);
 		}
 
 		public object Convert(Type type)
 		{
-			return Loader.TextNodeConverter.Convert(file, this, type);
+			return TextNodeConverter.Convert(this, type);
 		}
 
 		public override string ToString()
 		{
-			var @string = $"Key '{Key}'";
+			var @string = $"{Key}";
 
 			if (!string.IsNullOrEmpty(Specification))
-				@string += $", Spec '{Specification}'";
+				@string += $"@{Specification}";
 
 			if (!string.IsNullOrEmpty(Value))
-				@string += $"| Value '{Value}'";
+				@string += $"={Value}";
 
 			return @string;
 		}

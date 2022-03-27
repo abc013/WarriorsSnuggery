@@ -73,9 +73,9 @@ namespace WarriorsSnuggery.Loader
 					var count = parent.Children.RemoveAll(n => n.Key == key && n.Specification == specification);
 
 					if (count > 0)
-						Log.LoaderDebug(loaderName, $"Removed {count} node(s) of key '{key}' with spec '{specification}' in parent '{parent.Key}'.");
+						Log.LoaderDebug(loaderName, $"Removed {count} node(s) '{key}@{specification}' in parent '{parent.Key}'.");
 					else
-						Log.LoaderWarning(loaderName, $"No nodes of key '{key}' with spec '{specification}' to remove in parent '{parent.Key}'. Are you missing something?");
+						Log.LoaderWarning(loaderName, $"No nodes with '{key}@{specification}' to remove in parent '{parent.Key}'. Are you missing something?");
 				}
 			}
 

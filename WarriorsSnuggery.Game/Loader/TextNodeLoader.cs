@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 
@@ -13,14 +14,14 @@ namespace WarriorsSnuggery.Loader
 			var list = new List<TextNode>();
 
 			TextNode before = null;
-			for (int i = 0; i < lines.Length; i++)
+			for (int lineNumber = 0; lineNumber < lines.Length; lineNumber++)
 			{
-				var line = lines[i];
+				var line = lines[lineNumber];
 
 				if (string.IsNullOrWhiteSpace(line) || line.StartsWith('#'))
 					continue;
 
-				var now = nodeFromLine(file, line, i, before);
+				var now = nodeFromLine($"{file}:{lineNumber}", line, before);
 				if (now.Parent == null)
 					list.Add(now);
 
@@ -30,32 +31,32 @@ namespace WarriorsSnuggery.Loader
 			return list;
 		}
 
-		static TextNode nodeFromLine(string file, string line, int lineNumber, TextNode before)
+		static TextNode nodeFromLine(string origin, string line, TextNode before)
 		{
 			var @order = (short)line.Count(c => c == '\t');
-			var strings = line.Split('=', 2);
+			var strings = line.Split('=', 2, StringSplitOptions.TrimEntries);
 
 			if (strings.Length < 2)
-				throw new InvalidNodeException($"Missing '=' in '{line}'. ['{file}', line {lineNumber}]");
+				throw new InvalidNodeException($"[{origin}] Missing '=' in '{line}'.");
 
-			var keyParts = strings[0].Split('@', 2);
+			var keyParts = strings[0].Split('@', 2, StringSplitOptions.TrimEntries);
 
-			var yamlnode = new TextNode(file, @order, keyParts[0].Trim(), keyParts.Length > 1 ? keyParts[1].Trim() : null, strings[1].Trim());
+			var node = new TextNode(origin, @order, keyParts[0], keyParts.Length > 1 ? keyParts[1] : null, strings[1]);
 
 			if (before == null)
 			{
 				if (@order > 0)
-					throw new InvalidNodeException($"'{line}' has invalid intendation at beginning of file: {@order}. ['{file}', line {lineNumber}]");
+					throw new InvalidNodeException($"[{origin}] '{line}' has invalid intendation at beginning of file: {@order}.");
 
-				return yamlnode;
+				return node;
 			}
 
 			if (@order - before.Order == 1)
 			{
-				yamlnode.Parent = before;
-				before.Children.Add(yamlnode);
+				node.Parent = before;
+				before.Children.Add(node);
 
-				return yamlnode;
+				return node;
 			}
 
 			if (@order - before.Order <= 0)
@@ -65,15 +66,15 @@ namespace WarriorsSnuggery.Loader
 					parent = parent.Parent;
 
 				if (parent == null)
-					return yamlnode;
+					return node;
 
-				yamlnode.Parent = parent;
-				parent.Children.Add(yamlnode);
+				node.Parent = parent;
+				parent.Children.Add(node);
 
-				return yamlnode;
+				return node;
 			}
 
-			throw new InvalidNodeException($"'{line}' has invalid intendation (difference: {-@order + before.Order}). ['{file}', line {lineNumber}]");
+			throw new InvalidNodeException($"[{origin}] '{line}' has invalid intendation (difference: {before.Order - @order}).");
 		}
 	}
 }
