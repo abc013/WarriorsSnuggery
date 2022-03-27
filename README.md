@@ -17,14 +17,24 @@ dotnet build
 ```
 For more information about the `dotnet build` command, visit [this documentation](https://docs.microsoft.com/en-us/dotnet/core/tools/dotnet-build).
 
+You can then start the game either by starting the application (`WarriorsSnuggery.exe` on Windows, `WarriorsSnuggery` on MacOS and Linux) or by running
+```
+dotnet ./WarriorsSnuggery.dll
+```
+
 ## Publishing
-For publishing Warrior's Snuggery, `publish.ps1` is used. This is a powershell file, which means it can only be run on Windows for now. Execute it with PowerShell and select the desired runtime. The project is then published to a corresponding folder.
+For publishing Warrior's Snuggery, the dotnet-integrated publish process is used with the profiles `linux_x64`, `windows_x64` and `osx_x64`.
+```
+dotnet publish /p:PublishProfile=<PROFILE>
+```
 
 ## Recommended IDEs
-If you want to edit and compile the code in an IDE, Visual Studio 2019 or Visual Studio Code is highly recommended (the solution is prepared for the use of those).
+If you want to edit and compile the code using an IDE, Visual Studio 2022 or Visual Studio Code is highly recommended (the solution is prepared for the use of those).
+
+Otherwise, apart from `dotnet` and a text editor, no other programs are required.
 
 ## Issues and Errors
-for any issues or build failures, feel free to [open an issue](https://github.com/abc013/WarriorsSnuggery/issues/new)!
+for any issues, bugs and build errors, feel free to [open an issue](https://github.com/abc013/WarriorsSnuggery/issues/new)!
 
 ## Dependencies
 ### Framework: [.NET 6.0](https://dotnet.microsoft.com/download/dotnet/6.0)
@@ -32,6 +42,5 @@ for any issues or build failures, feel free to [open an issue](https://github.co
 - [OpenTK](https://github.com/opentk/opentk)
 - [OpenAL-Soft](https://openal-soft.org/)
 - [ImageSharp](https://sixlabors.com/products/imagesharp/)
-- System.Runtime.Loader
 
 The dependencies are available on NuGet.
