@@ -7,5 +7,6 @@
 - Avrelia
 - Sharzad
 - Wolkenfarmer
+- bronzeBuzzard
 ## Inspiration
 - [OpenRA](http://www.OpenRA.net/)
