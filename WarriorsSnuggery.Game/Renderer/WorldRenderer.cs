@@ -54,7 +54,7 @@ namespace WarriorsSnuggery
 			world.TerrainLayer.Render();
 			world.SmudgeLayer.Render();
 
-			var useAlpha = !world.Game.Editor && !world.PlayerAlive;
+			var useAlpha = world.Game.Editor || world.PlayerAlive;
 
 			var pos = CPos.Zero;
 			if (useAlpha)
@@ -76,9 +76,7 @@ namespace WarriorsSnuggery
 				{
 					var alpha = o.Position.Y - pos.Y < 1024 ? 1 - (o.Position.Y - pos.Y) / 1024f : (o.Position.Y - pos.Y - 1024) / 1024f;
 					var sidealpha = Math.Abs(o.Position.X - pos.X) / 4096f;
-					if (sidealpha > alpha)
-						alpha = sidealpha;
-					alpha = Math.Clamp(alpha, 0.3f, 1f);
+					alpha = Math.Clamp(Math.Max(sidealpha, alpha), 0.4f, 1f);
 
 					o.SetColor(Color.White.WithAlpha(alpha));
 					o.Render();
