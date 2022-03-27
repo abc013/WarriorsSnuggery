@@ -24,6 +24,12 @@ namespace WarriorsSnuggery.Spells
 				caster.Tick();
 		}
 
+		public void CancelActive()
+		{
+			foreach (var caster in Casters)
+				caster.CancelActive();
+		}
+
 		public bool Activate(int caster)
 		{
 			return Casters[caster].Activate(game.World.LocalPlayer);
@@ -43,7 +49,7 @@ namespace WarriorsSnuggery.Spells
 		int duration;
 		int recharge;
 
-		public SpellCasterState State;
+		public SpellCasterState State { get; private set; }
 
 		public float RemainingDuration => 1 - duration / (float)node.Duration;
 		public float RechargeProgress => 1 - recharge / (float)node.Cooldown;
@@ -83,6 +89,15 @@ namespace WarriorsSnuggery.Spells
 			if (State == SpellCasterState.RECHARGING && recharge-- <= 0)
 				State = SpellCasterState.READY;
 		}
+
+		public void CancelActive()
+        {
+			if (State == SpellCasterState.ACTIVE)
+            {
+				duration = 0;
+				State = SpellCasterState.RECHARGING;
+            }
+        }
 
 		public bool Activate(Actor actor)
 		{

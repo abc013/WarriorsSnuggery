@@ -171,6 +171,8 @@ namespace WarriorsSnuggery
 
 		public void BeginPlayerSwitch(ActorType to)
 		{
+			Game.SpellManager.CancelActive();
+
 			var health = LocalPlayer.Health != null ? LocalPlayer.Health.RelativeHP : 1;
 			var playablePart = LocalPlayer.GetPartOrDefault<PlayablePart>();
 
