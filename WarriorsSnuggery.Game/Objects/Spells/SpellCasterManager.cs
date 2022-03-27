@@ -89,6 +89,9 @@ namespace WarriorsSnuggery.Spells
 			if (State != SpellCasterState.READY || !Unlocked())
 				return false;
 
+			if (game.World.LocalPlayer.IsPlayerSwitch)
+				return false;
+
 			if (game.Stats.Mana < node.ManaCost)
 				return false;
 
