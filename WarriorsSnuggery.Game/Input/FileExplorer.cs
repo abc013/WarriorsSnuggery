@@ -21,7 +21,7 @@ namespace WarriorsSnuggery
 
 		public static void InitPaths()
 		{
-			MainDirectory = Directory.GetCurrentDirectory() + Separator;
+			MainDirectory = AppContext.BaseDirectory;
 
 			Misc = MainDirectory + "misc" + Separator;
 			Rules = MainDirectory + "rules" + Separator;
