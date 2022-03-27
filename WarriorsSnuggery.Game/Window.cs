@@ -259,8 +259,7 @@ namespace WarriorsSnuggery
 		uint lastRender;
 		void sleep()
 		{
-			// Don't use this for multithreading since this method calculates for one thread only.
-			if (Settings.EnableMultiThreading || Settings.ThreadSleepFactor == 0f)
+			if (Settings.ThreadSleepFactor == 0f)
 				return;
 
 			var tickDiff = GlobalTick - lastTick;

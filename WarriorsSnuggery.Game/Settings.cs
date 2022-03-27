@@ -10,10 +10,6 @@ namespace WarriorsSnuggery
 
 		public const int UpdatesPerSecond = 60;
 
-		// TODO: Experimental. Crashes because of access while modifying lists etc., as expected. But for future.
-		[DefaultValue(false)]
-		public static bool EnableMultiThreading;
-
 		// Modifier to adjust down if lagging occurs. Zero disables thread sleeping.
 		[DefaultValue(0f)]
 		public static float ThreadSleepFactor;
