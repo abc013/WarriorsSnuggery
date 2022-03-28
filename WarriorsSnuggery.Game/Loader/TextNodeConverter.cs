@@ -42,51 +42,33 @@ namespace WarriorsSnuggery.Loader
 
 			if (t.IsEnum)
 			{
-				object @enum;
-				try
-				{
-					@enum = Enum.Parse(t, value, true);
-				}
-				catch (Exception e)
-				{
-					throw new InvalidEnumConversionException(node, t, e);
-				}
-				return @enum;
+				if (Enum.TryParse(t, value, true, out var @enum))
+					return @enum;
 			}
 			else if (t == typeof(int))
 			{
 				if (int.TryParse(value, out var i))
 					return i;
-				else
-					throw new InvalidConversionException(node, t);
 			}
 			if (t == typeof(uint))
 			{
 				if (uint.TryParse(value, out var i))
 					return i;
-				else
-					throw new InvalidConversionException(node, t);
 			}
 			else if (t == typeof(byte))
 			{
 				if (byte.TryParse(value, out var i))
 					return i;
-				else
-					throw new InvalidConversionException(node, t);
 			}
 			else if (t == typeof(short))
 			{
 				if (short.TryParse(value, out var i))
 					return i;
-				else
-					throw new InvalidConversionException(node, t);
 			}
 			else if (t == typeof(float))
 			{
 				if (float.TryParse(value, out var i))
 					return i;
-				else
-					throw new InvalidConversionException(node, t);
 			}
 			else if (t == typeof(bool))
 			{
@@ -96,8 +78,6 @@ namespace WarriorsSnuggery.Loader
 					return true;
 				else if (falseBooleans.Contains(v))
 					return false;
-				else
-					throw new InvalidConversionException(node, t);
 			}
 			else if (t == typeof(string))
 			{
@@ -109,15 +89,15 @@ namespace WarriorsSnuggery.Loader
 
 				var elementType = t.GetElementType();
 				var enums = Array.CreateInstance(elementType, parts.Length);
-				try
+
+				for (int i = 0; i < parts.Length; i++)
 				{
-					for (int i = 0; i < parts.Length; i++)
-						enums.SetValue(Enum.Parse(elementType, parts[i], true), i);
+					if (Enum.TryParse(elementType, parts[i], true, out var @enum))
+						enums.SetValue(@enum, i);
+					else
+						throw new InvalidConversionException(node, t);
 				}
-				catch (Exception e)
-				{
-					throw new InvalidEnumConversionException(node, t, e);
-				}
+
 				return enums;
 			}
 			else if (t == typeof(int[]))
@@ -274,10 +254,8 @@ namespace WarriorsSnuggery.Loader
 			{
 				var type = Type.GetType($"WarriorsSnuggery.Objects.Particles.{value}ParticleSpawner", false, true);
 
-				if (type == null || type.IsInterface)
-					throw new InvalidConversionException(node, t);
-
-				return Activator.CreateInstance(type, new[] { node.Children });
+				if (type != null && !type.IsInterface)
+					return Activator.CreateInstance(type, new[] { node.Children });
 			}
 			else if (t == typeof(TextureInfo))
 			{
@@ -343,19 +321,15 @@ namespace WarriorsSnuggery.Loader
 			{
 				var type = Type.GetType($"WarriorsSnuggery.Objects.Actors.Bot.{value}BotBehaviorType", false, true);
 
-				if (type == null || type.IsInterface)
-					throw new InvalidConversionException(node, t);
-
-				return Activator.CreateInstance(type, new[] { node.Children });
+				if (type != null && !type.IsInterface)
+					return Activator.CreateInstance(type, new[] { node.Children });
 			}
 			else if (t == typeof(IProjectile))
 			{
 				var type = Type.GetType($"WarriorsSnuggery.Objects.Weapons.Projectiles.{value}Projectile", false, true);
 
-				if (type == null || type.IsInterface)
-					throw new InvalidConversionException(node, t);
-
-				return Activator.CreateInstance(type, new[] { node.Children });
+				if (type != null && !type.IsInterface)
+					return Activator.CreateInstance(type, new[] { node.Children });
 			}
 			else if (t == typeof(IWarhead[]))
 			{
@@ -379,6 +353,9 @@ namespace WarriorsSnuggery.Loader
 				foreach (var child in node.Children)
 				{
 					var type = Type.GetType($"WarriorsSnuggery.Maps.Generators.{child.Key}Info", true, true);
+
+					if (type == null || type.IsInterface)
+						throw new InvalidConversionException(child, t);
 
 					array[i++] = (IMapGeneratorInfo)Activator.CreateInstance(type, new object[] { child.Convert<int>(), child.Children });
 				}

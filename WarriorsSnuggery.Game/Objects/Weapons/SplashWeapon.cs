@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using WarriorsSnuggery.Objects.Actors;
 using WarriorsSnuggery.Objects.Weapons.Projectiles;
 using WarriorsSnuggery.Physics;
