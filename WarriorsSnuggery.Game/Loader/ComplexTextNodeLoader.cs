@@ -19,18 +19,13 @@ namespace WarriorsSnuggery.Loader
 			this.loaderName = loaderName;
 		}
 
-		public void Load((string directory, string file)[] data)
+		public void Load(string directory, string file)
 		{
 			if (finished)
 				throw new InvalidOperationException($"Unable to load file into {nameof(ComplexTextNodeLoader)} after finish procedure.");
 
-			var rawNodes = new List<TextNode>();
-
-			foreach (var (directory, file) in data)
-			{
-				Log.LoaderDebug(loaderName, $"Loading '{file}'.");
-				rawNodes.AddRange(TextNodeLoader.FromFile(directory, file));
-			}
+			Log.LoaderDebug(loaderName, $"Loading '{file}'.");
+			var rawNodes = TextNodeLoader.FromFile(directory, file);
 
 			foreach (var node in rawNodes)
 			{
