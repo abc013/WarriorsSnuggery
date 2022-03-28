@@ -11,13 +11,13 @@ namespace WarriorsSnuggery
 
 		public static void Load()
 		{
-			foreach (var file in FileExplorer.FilesIn(FileExplorer.Saves))
+			foreach (var file in FileExplorer.FilesIn(FileExplorer.Saves, ".yaml"))
 			{
-				if (file != DefaultSaveName && !file.EndsWith("_map")) //make sure that we don't add any maps
+				if (file != DefaultSaveName && !file.EndsWith("_map.yaml")) //make sure that we don't add any maps
 					Saves.Add(new GameSave(file));
 			}
 
-			DefaultSave = new GameSave(DefaultSaveName);
+			DefaultSave = new GameSave(FileExplorer.FindIn(FileExplorer.Saves, DefaultSaveName, ".yaml"));
 		}
 
 		public static void Reload()

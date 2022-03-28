@@ -1,6 +1,7 @@
 using OpenTK.Windowing.GraphicsLibraryFramework;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using WarriorsSnuggery.Loader;
 
 namespace WarriorsSnuggery
@@ -123,7 +124,7 @@ namespace WarriorsSnuggery
 				}
 			}
 
-			if (!newSettings && FileExplorer.Exists(FileExplorer.MainDirectory, "Settings.yaml"))
+			if (!newSettings && File.Exists(FileExplorer.MainDirectory + "Settings.yaml"))
 				load();
 
 			if (KeyDictionary.Count == 0)

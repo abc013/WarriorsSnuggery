@@ -173,7 +173,7 @@ namespace WarriorsSnuggery
 			MouseInput.SetWindow(this);
 
 			// Load icon
-			var iconData = BitmapLoader.LoadBytes(FileExplorer.FindIn(FileExplorer.Misc, "warsnu"), out var iconWidth, out var iconHeight);
+			var iconData = BitmapLoader.LoadBytes(FileExplorer.FindIn(FileExplorer.Misc, "warsnu", ".png"), out var iconWidth, out var iconHeight);
 			Icon = new WindowIcon(new Image(iconWidth, iconHeight, iconData));
 
 			MasterRenderer.Initialize();

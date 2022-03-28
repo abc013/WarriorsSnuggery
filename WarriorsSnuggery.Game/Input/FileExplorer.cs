@@ -1,12 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
 
 namespace WarriorsSnuggery
 {
 	public static class FileExplorer
 	{
-		public static readonly string Path = Directory.GetCurrentDirectory();
 		public static readonly char Separator = System.IO.Path.DirectorySeparatorChar;
 		public static readonly char[] InvalidFileChars = System.IO.Path.GetInvalidFileNameChars();
 
@@ -32,87 +30,55 @@ namespace WarriorsSnuggery
 			Saves = MainDirectory + "saves" + Separator;
 		}
 
-		public static bool Exists(string path, string name)
+		public static string FileName(string filepath)
 		{
-			return File.Exists(path + name);
+			return Path.GetFileNameWithoutExtension(filepath);
+		}
+
+		public static string FileExtension(string filepath)
+		{
+			return Path.GetExtension(filepath);
+		}
+
+		public static string FileDirectory(string filepath)
+		{
+			return Path.GetDirectoryName(filepath) + Separator;
 		}
 
 		/// <summary>
-		/// Finds the whole path of the given file.
+		/// Finds the the given file.
 		/// </summary>
-		/// <returns>Returns the filepath.</returns>
-		public static string FindIn(string path, string name, string suffix = ".png")
+		/// <returns>Returns the path to the file.</returns>
+		public static string FindIn(string path, string name, string extension)
 		{
-			if (name == string.Empty)
-				return string.Empty;
+			var file = name + extension;
 
-			name += suffix;
+			var files = Directory.GetFiles(path, file, SearchOption.AllDirectories);
 
-			var found = findUntil(path, name, suffix);
+			if (files.Length == 0)
+				throw new FileNotFoundException($"The file {file} has not been found.");
+			if (files.Length > 1)
+				throw new FileNotFoundException($"The file {file} is equivocal (Count: {files.Length}).");
 
-			if (found == string.Empty)
-				throw new FileNotFoundException("The file " + name + " has not been found");
-
-			return found + name;
+			return files[0];
 		}
 
 		/// <summary>
 		/// Finds the directory in which the given file is.
 		/// </summary>
 		/// <returns>Returns the directory.</returns>
-		public static string FindPath(string path, string name, string suffix = ".png")
+		public static string FindPath(string path, string name, string extension)
 		{
-			if (name == string.Empty)
-				return string.Empty;
-
-			name += suffix;
-
-			var found = findUntil(path, name, suffix);
-
-			if (found == string.Empty)
-				throw new FileNotFoundException("The file " + name + " has not been found");
-
-			return found;
+			return Path.GetDirectoryName(FindIn(path, name, extension)) + Separator;
 		}
 
-		static string findUntil(string path, string name, string suffix)
+		/// <summary>
+		/// Finds all files in a directory.
+		/// </summary>
+		/// <returns>Returns the path to the file.</returns>
+		public static string[] FilesIn(string path, string extension, bool recurse = false)
 		{
-			var pathName = path + name;
-
-			foreach (var file in Directory.EnumerateFiles(path))
-			{
-				if (!file.EndsWith(suffix, StringComparison.CurrentCulture))
-					continue;
-
-				if (file == pathName)
-					return path;
-			}
-
-			foreach (var directory in Directory.EnumerateDirectories(path))
-			{
-				var found = findUntil(directory + Separator, name, suffix);
-
-				if (found != string.Empty)
-					return found;
-			}
-
-			return string.Empty;
-		}
-
-		public static string[] FilesIn(string path, string suffix = ".yaml")
-		{
-			var list = new List<string>();
-			foreach (var file in Directory.EnumerateFiles(path))
-			{
-				if (!file.EndsWith(suffix, StringComparison.CurrentCulture))
-					continue;
-
-				var split = file.Split(Separator);
-				var name = split[^1];
-				list.Add(name.Remove(name.Length - suffix.Length));
-			}
-
-			return list.ToArray();
+			return Directory.GetFiles(path, $"*{extension}", recurse ? SearchOption.AllDirectories : SearchOption.TopDirectoryOnly);
 		}
 
 		public static void WriteScreenshot(byte[] array, int width, int height)

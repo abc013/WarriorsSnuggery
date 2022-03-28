@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using WarriorsSnuggery.Loader;
 
@@ -11,24 +10,14 @@ namespace WarriorsSnuggery.Maps.Pieces
 
 		public static void Load()
 		{
-			searchFiles(FileExplorer.Pieces);
-		}
+			foreach(var filepath in FileExplorer.FilesIn(FileExplorer.Pieces, ".yaml", true))
+            {
+				var name = FileExplorer.FileName(filepath);
+				var path = FileExplorer.FileDirectory(filepath);
 
-		static void searchFiles(string path)
-		{
-			var files = Directory.GetFiles(path).Where(s => s.EndsWith(".yaml"));
-			foreach (var file in files)
-			{
-				var name = file.Remove(0, file.LastIndexOf(FileExplorer.Separator) + 1);
-				name = name.Remove(name.Length - 5);
-
-				var nodes = TextNodeLoader.FromFile(path + FileExplorer.Separator, name + ".yaml");
-
+				var nodes = TextNodeLoader.FromFile(path, name + ".yaml");
 				Pieces.Add(new Piece(name, path, nodes));
 			}
-
-			foreach (var dir in Directory.GetDirectories(path))
-				searchFiles(dir);
 		}
 
 		public static Piece ReloadPiece(string name)

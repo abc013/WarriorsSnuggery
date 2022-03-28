@@ -192,13 +192,13 @@ namespace WarriorsSnuggery
 			return new GameSave(this);
 		}
 
-		public GameSave(string file) : this()
+		public GameSave(string filepath) : this()
 		{
-			SaveName = file;
+			SaveName = FileExplorer.FileName(filepath);
 
 			var properties = typeof(GameSave).GetProperties();
 
-			foreach (var node in TextNodeLoader.FromFile(FileExplorer.Saves, file + ".yaml"))
+			foreach (var node in TextNodeLoader.FromFile(FileExplorer.FileDirectory(filepath), SaveName + FileExplorer.FileExtension(filepath)))
 			{
 				switch (node.Key)
 				{

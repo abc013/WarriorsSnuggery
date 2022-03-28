@@ -29,7 +29,7 @@ namespace WarriorsSnuggery.Loader
 				for (int i = 0; i < rule.Children.Count; i++)
 				{
 					var file = rule.Children[i].Key;
-					loader.Load(FileExplorer.FindPath(FileExplorer.Rules, file, string.Empty), file);
+					loader.Load(FileExplorer.FindPath(FileExplorer.Rules, FileExplorer.FileName(file), FileExplorer.FileExtension(file)), file);
 				}
 
 				var nodes = loader.Finish();

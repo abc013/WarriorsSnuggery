@@ -9,7 +9,7 @@
 
 	public sealed class TextureInfo
 	{
-		readonly string file;
+		readonly string filepath;
 		readonly Texture[] textures;
 
 		public readonly TextureType Type;
@@ -18,16 +18,13 @@
 		public readonly int Width;
 		public readonly int Height;
 
-		public TextureInfo(string file) : this(file, TextureType.IMAGE, 0, 0, 0, true) { }
+		public TextureInfo(string fileName) : this(fileName, TextureType.IMAGE, 0, 0, 0) { }
 
-		public TextureInfo(string file, TextureType type, MPos bounds, int tick = 0, bool searchFile = true, bool load = true) : this(file, type, bounds.X, bounds.Y, tick, searchFile, load) { }
+		public TextureInfo(string fileName, TextureType type, MPos bounds, int tick = 0, bool load = true) : this(fileName, type, bounds.X, bounds.Y, tick, load) { }
 
-		public TextureInfo(string file, TextureType type, int width, int height, int tick = 0, bool searchFile = true, bool load = true)
+		public TextureInfo(string fileName, TextureType type, int width, int height, int tick = 0, bool load = true)
 		{
-			if (searchFile)
-				file = FileExplorer.FindIn(FileExplorer.Misc, file);
-
-			this.file = file;
+			filepath = FileExplorer.FindIn(FileExplorer.Misc, fileName, ".png");
 
 			Type = type;
 			Tick = tick;
@@ -38,16 +35,16 @@
 			if (load)
 			{
 				if (Type == TextureType.IMAGE)
-					textures = SheetManager.AddTexture(file, out Width, out Height);
+					textures = SheetManager.AddTexture(filepath, out Width, out Height);
 				else
-					textures = SheetManager.AddSprite(file, width, height);
+					textures = SheetManager.AddSprite(filepath, width, height);
 			}
 		}
 
 		public Texture[] GetTextures()
 		{
 			if (textures == null)
-				throw new System.Exception($"Tried to fetch textures from unloaded TextureInfo ({file})");
+				throw new System.Exception($"Tried to fetch textures from unloaded TextureInfo ({filepath}).");
 
 			if (Type == TextureType.RANDOM)
 				return new[] { textures[Program.SharedRandom.Next(textures.Length)] };

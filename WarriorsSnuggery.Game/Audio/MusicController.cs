@@ -20,11 +20,11 @@ namespace WarriorsSnuggery.Audio
 
 		public static void Load()
 		{
-			var fileNames = FileExplorer.FilesIn(FileExplorer.Misc + "music" + FileExplorer.Separator, ".wav");
+			var files = FileExplorer.FilesIn(FileExplorer.Misc + "music" + FileExplorer.Separator, ".wav");
 
-			data = new (string, string)[fileNames.Length];
-			for (int i = 0; i < fileNames.Length; i++)
-				data[i] = (fileNames[i], FileExplorer.Misc + "music" + FileExplorer.Separator + fileNames[i] + ".wav");
+			data = new (string, string)[files.Length];
+			for (int i = 0; i < files.Length; i++)
+				data[i] = (FileExplorer.FileName(files[i]), files[i]);
 
 			hasMusic = data.Length != 0;
 		}
