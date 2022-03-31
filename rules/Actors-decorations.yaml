@@ -34,7 +34,7 @@ b_stone1=
 
 
 b_stone1_debris=
-	Sprite@1=
+	Sprite=
 		Name=big_stone1_debris
 		Dimensions=24,24
 		Offset=192,-256,0
@@ -149,13 +149,13 @@ table1=
 		Type=
 			Shape=Circle
 			Boundaries=400,400,300
-	Spawn=
+	Spawn@debris=
 		Occasion=Death
 		Count=1
 		Name=table1_debris
 		Type=ACTOR
 		AtCenter=true
-	Spawn=
+	Spawn@particles=
 		Occasion=Death
 		Count=10
 		Name=wood_debris

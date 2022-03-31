@@ -3,6 +3,16 @@
 namespace WarriorsSnuggery.Loader
 {
 	[Serializable]
+	public class DuplicateNodeEntryException : Exception
+	{
+		public DuplicateNodeEntryException(TextNode node)
+		  : base($"[{node.Origin}] A node '{node.ToIdentifierString()}' was already added.")
+		{
+
+		}
+	}
+
+	[Serializable]
 	public class InvalidConversionException : Exception
 	{
 		public InvalidConversionException(TextNode node, Type t)

@@ -25,19 +25,48 @@ namespace WarriorsSnuggery.Loader
 				throw new InvalidOperationException($"Unable to load file into {nameof(ComplexTextNodeLoader)} after finish procedure.");
 
 			Log.LoaderDebug(loaderName, $"Loading '{file}'.");
-			var rawNodes = TextNodeLoader.FromFile(directory, file);
+			processNewNodes(TextNodeLoader.FromFile(directory, file));
+		}
 
-			foreach (var node in rawNodes)
+		void processNewNodes(List<TextNode> newNodes)
+		{
+			foreach (var node in newNodes)
 			{
-				var existing = nodes.FirstOrDefault(n => n.Key == node.Key);
-				if (existing != null)
+				if (node.Key.StartsWith('-'))
 				{
-					Log.LoaderDebug(loaderName, $"Merging duplicate key entry '{node.Key}'.");
+					var existing = nodes.FirstOrDefault(n => n.Key == node.Key[1..]);
 
-					existing.Children.AddRange(node.Children);
+					if (existing != null)
+					{
+						Log.LoaderDebug(loaderName, $"Removing key entry '{node.Key}'.");
+						nodes.Remove(existing);
+						continue;
+					}
+
+					Log.LoaderWarning(loaderName, $"[{node.Origin}] Unable to remove key entry '{node.Key}'. Are you missing something?");
 					continue;
 				}
 
+				if (node.Key.StartsWith('+'))
+				{
+					var existing = nodes.FirstOrDefault(n => n.Key == node.Key[1..]);
+
+					if (existing != null)
+					{
+						Log.LoaderDebug(loaderName, $"Merging duplicate key entry '{node.Key}'.");
+						combine(existing, node, false);
+						continue;
+					}
+
+					Log.LoaderWarning(loaderName, $"[{node.Origin}] Unable to merge new key entry '{node.Key}'. Are you missing something?");
+					continue;
+				}
+
+				// Check for duplicate keys
+				if (nodes.Exists(n => node.Key == n.Key))
+					throw new DuplicateNodeEntryException(node);
+
+				checkDuplicates(node);
 				nodes.Add(node);
 			}
 		}
@@ -46,78 +75,137 @@ namespace WarriorsSnuggery.Loader
 		{
 			finished = true;
 
-			// In this procedure, children of the first node order are processed for 
 			foreach (var parent in nodes)
 				loadInheritNodes(parent);
-
-			// In the following procedure, children of the first node order will be scanned for duplicate keys
-			// Every node key that was mentioned with a minus before will be removed
-			foreach (var parent in nodes)
-			{
-				var removeNodes = parent.Children.Where(n => n.Key.StartsWith('-')).ToList();
-
-				var keysToRemove = new List<(string key, string specification)>();
-				foreach (var node in removeNodes)
-				{
-					keysToRemove.Add((node.Key.Remove(0, 1), node.Specification));
-					parent.Children.Remove(node);
-				}
-
-				foreach (var (key, specification) in keysToRemove)
-				{
-					var count = parent.Children.RemoveAll(n => n.Key == key && n.Specification == specification);
-
-					if (count > 0)
-						Log.LoaderDebug(loaderName, $"Removed {count} node(s) '{key}@{specification}' in parent '{parent.Key}'.");
-					else
-						Log.LoaderWarning(loaderName, $"No nodes with '{key}@{specification}' to remove in parent '{parent.Key}'. Are you missing something?");
-				}
-			}
 
 			Log.LoaderDebug(loaderName, $"Finished loading.");
 
 			return nodes;
 		}
 
-		List<TextNode> loadInheritNodes(TextNode parent)
+		void checkDuplicates(TextNode parent)
 		{
+			foreach (var node in parent.Children)
+			{
+				// Check for duplicate nodes
+				var n = parent.Children.FirstOrDefault(n => n != node && node.Key == n.Key && node.Specification == n.Specification);
+				if (n != null)
+					throw new DuplicateNodeEntryException(n);
+
+				checkDuplicates(node);
+			}
+		}
+
+		void loadInheritNodes(TextNode parent)
+		{
+			// In this procedure, children of the first node order are processed for inheritance
 			if (inheritanceCleanNodes.Contains(parent))
-				return parent.Children;
+				return;
 
 			inheritanceStack.Push(parent);
 
 			var inheritNodes = parent.Children.Where(n => n.Key == "Inherits").ToList();
-
 			foreach (var node in inheritNodes)
 			{
 				var inheritParent = nodes.FirstOrDefault(n => n.Key == node.Value);
 
 				if (inheritParent == null)
 				{
-					Log.LoaderWarning(loaderName, $"Unable to inherit from unknown node '{node.Value}' in node '{parent.Key}'. Are you missing something?");
+					Log.LoaderWarning(loaderName, $"[{node.Origin}] Unable to inherit from unknown node '{node.Value}' in node '{parent.Key}'. Are you missing something?");
 					continue;
 				}
 
 				if (inheritParent == parent)
 				{
-					Log.LoaderWarning(loaderName, $"Attempted to inherit node '{parent.Key}' from itself, aborting.");
+					Log.LoaderWarning(loaderName, $"[{node.Origin}] Attempted to inherit node '{parent.Key}' from itself, aborting.");
 					continue;
 				}
 
 				if (inheritanceStack.Contains(inheritParent))
-					throw new InvalidNodeException($"Inheritance loop detected: Key '{inheritParent.Key}'. Loop: {string.Join(',', inheritanceStack)}");
+					throw new InvalidNodeException($"[{node.Origin}] Inheritance loop detected: Key '{inheritParent.Key}'. Loop: {string.Join(',', inheritanceStack)}");
 
-				Log.LoaderDebug(loaderName, $"Applying: Key '{parent.Key}' inherits from '{inheritParent.Key}'.");
+				Log.LoaderDebug(loaderName, $"Inheriting: '{inheritParent.Key}'->'{parent.Key}'.");
 
 				parent.Children.Remove(node);
-				parent.Children.AddRange(loadInheritNodes(inheritParent));
+
+				loadInheritNodes(inheritParent);
+				inheritAndCombine(parent, inheritParent, true);
 			}
 
 			inheritanceCleanNodes.Add(parent);
 
 			inheritanceStack.Pop();
+		}
 
-			return parent.Children;
+		void combine(TextNode existing, TextNode @new, bool final)
+		{
+			var existingList = existing.Children;
+			var newList = @new.Children;
+
+			combine(existingList, newList, final);
+		}
+
+		void inheritAndCombine(TextNode existing, TextNode inheritanceFrom, bool final)
+		{
+			var newList = existing.Children.ToList();
+
+			existing.Children.Clear();
+			existing.Children.AddRange(inheritanceFrom.Children);
+
+			combine(existing.Children, newList, final);
+		}
+
+		void combine(List<TextNode> existingList, List<TextNode> newList, bool final)
+		{
+			foreach (var node in newList)
+			{
+				if (node.Key.StartsWith('-'))
+				{
+					var key = node.Key[1..];
+					var specification = node.Specification;
+
+					var count = existingList.RemoveAll(n => n.Key == key && n.Specification == specification);
+
+					if (count > 0)
+						Log.LoaderDebug(loaderName, $"Removed '{node.ToIdentifierString()[1..]}' in parent '{node.Parent}'.");
+					else if (final)
+						Log.LoaderWarning(loaderName, $"[{node.Origin}] No nodes '{node.ToIdentifierString()[1..]}' to remove in parent '{node.Parent}'. Are you missing something?");
+
+					continue;
+				}
+
+				if (node.Key.StartsWith('+'))
+				{
+					var key = node.Key[1..];
+					var specification = node.Specification;
+
+					var existingNode = existingList.FirstOrDefault(n => n.Key == key && n.Specification == specification);
+
+					if (existingNode != null)
+					{
+						Log.LoaderDebug(loaderName, $"Merging entries '{node.ToIdentifierString()[1..]}'.");
+						existingList.Remove(existingNode);
+
+						// override the value
+						var overrideNode = new TextNode(node.Origin, node.Order, key, specification, node.Value);
+						overrideNode.Children.AddRange(existingNode.Children);
+						overrideNode.Parent = node.Parent;
+						existingList.Add(overrideNode);
+
+						combine(overrideNode, node, final);
+						continue;
+					}
+
+					Log.LoaderWarning(loaderName, $"[{node.Origin}] No nodes '{node.ToIdentifierString()[1..]}' to merge. Are you missing something?");
+					continue;
+				}
+
+				// Check for duplicate nodes
+				if (existingList.Exists(n => node.Key == n.Key && node.Specification == n.Specification))
+					throw new DuplicateNodeEntryException(node);
+
+				existingList.Add(node);
+			}
 		}
 	}
 }

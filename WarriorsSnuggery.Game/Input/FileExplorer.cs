@@ -5,8 +5,8 @@ namespace WarriorsSnuggery
 {
 	public static class FileExplorer
 	{
-		public static readonly char Separator = System.IO.Path.DirectorySeparatorChar;
-		public static readonly char[] InvalidFileChars = System.IO.Path.GetInvalidFileNameChars();
+		public static readonly char Separator = Path.DirectorySeparatorChar;
+		public static readonly char[] InvalidFileChars = Path.GetInvalidFileNameChars();
 
 		public static string Misc;
 		public static string Rules;

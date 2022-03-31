@@ -21,7 +21,7 @@ namespace WarriorsSnuggery.Loader
 				if (string.IsNullOrWhiteSpace(line) || line.StartsWith('#'))
 					continue;
 
-				var now = nodeFromLine($"{file}:{lineNumber}", line, before);
+				var now = nodeFromLine($"{file}:{lineNumber + 1}", line, before);
 				if (now.Parent == null)
 					list.Add(now);
 
