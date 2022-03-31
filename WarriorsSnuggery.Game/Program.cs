@@ -22,6 +22,7 @@ namespace WarriorsSnuggery
 		public static bool DisableShroud;
 		public static bool IgnoreTech;
 		public static bool DisableScripts;
+		public static bool ReloadScripts;
 		public static string Piece;
 		public static string MapType;
 
@@ -74,6 +75,9 @@ namespace WarriorsSnuggery
 						break;
 					case "-disable-scripts":
 						DisableScripts = true;
+						break;
+					case "-reload-scripts":
+						ReloadScripts = true;
 						break;
 					case "-use-piece":
 						Piece = args[++i];

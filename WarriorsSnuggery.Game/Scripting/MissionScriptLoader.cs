@@ -29,29 +29,30 @@ namespace WarriorsSnuggery.Scripting
 
 			if (loadedAssemblies.ContainsKey(file))
 			{
-				assembly = loadedAssemblies[file];
-				type = assembly.GetTypes().Where(t => t.BaseType == typeof(MissionScriptBase)).FirstOrDefault();
+				if (!Program.ReloadScripts)
+				{
+					assembly = loadedAssemblies[file];
+					type = assembly.GetTypes().Where(t => t.BaseType == typeof(MissionScriptBase)).FirstOrDefault();
 
-				Log.Debug("Mission script already in memory. Loaded.");
-				return;
+					Log.Debug("Mission script already in memory. Loaded.");
+					return;
+				}
+
+				loadedAssemblies.Remove(file);
+
+				Log.Debug("Mission script already in memory, but reload enabled. Reloading.");
 			}
 
-			Stream stream;
 			if (File.Exists(cachePath) && File.GetLastWriteTimeUtc(cachePath) > File.GetLastWriteTimeUtc(path))
-			{
-				stream = File.OpenRead(cachePath);
-
 				Log.Debug("Script assembly compilation cached and not outdated. Loaded.");
-			}
 			else
-				stream = compile();
+				compileAndCache();
+
+			var data = File.ReadAllBytes(cachePath);
 
 			var timer = Timer.Start();
 
-			AssemblyLoadContext context = AssemblyLoadContext.Default;
-			assembly = context.LoadFromStream(stream);
-
-			stream.Dispose();
+			assembly = Assembly.Load(data);
 
 			timer.StopAndWrite("Loading script assembly: " + file);
 
@@ -65,7 +66,7 @@ namespace WarriorsSnuggery.Scripting
 			Log.Debug("Mission script successfully loaded.");
 		}
 
-		Stream compile()
+		void compileAndCache()
 		{
 			var timer = Timer.Start();
 
@@ -73,19 +74,19 @@ namespace WarriorsSnuggery.Scripting
 			var content = reader.ReadToEnd();
 			reader.Close();
 
-			var assemblyLocation = System.Runtime.InteropServices.RuntimeEnvironment.GetRuntimeDirectory();
+			var assemblyLocation = System.Runtime.InteropServices.RuntimeEnvironment.GetRuntimeDirectory() + FileExplorer.Separator;
 
 			var compilation = CSharpCompilation.Create(file)
 			.WithOptions(new CSharpCompilationOptions(OutputKind.DynamicallyLinkedLibrary))
 			.AddReferences(
 				MetadataReference.CreateFromFile(typeof(object).GetTypeInfo().Assembly.Location),
-				MetadataReference.CreateFromFile(FileExplorer.MainDirectory + Path.DirectorySeparatorChar + "WarriorsSnuggery.dll"),
-				MetadataReference.CreateFromFile(FileExplorer.MainDirectory + Path.DirectorySeparatorChar + "OpenTK.Windowing.GraphicsLibraryFramework.dll"),
-				MetadataReference.CreateFromFile(assemblyLocation + Path.DirectorySeparatorChar + "System.Runtime.dll"),
-				MetadataReference.CreateFromFile(assemblyLocation + Path.DirectorySeparatorChar + "System.Runtime.Extensions.dll"),
-				MetadataReference.CreateFromFile(assemblyLocation + Path.DirectorySeparatorChar + "System.Collections.dll"),
-				MetadataReference.CreateFromFile(assemblyLocation + Path.DirectorySeparatorChar + "System.Linq.dll"),
-				MetadataReference.CreateFromFile(assemblyLocation + Path.DirectorySeparatorChar + "mscorlib.dll")
+				MetadataReference.CreateFromFile(FileExplorer.MainDirectory + "WarriorsSnuggery.dll"),
+				MetadataReference.CreateFromFile(FileExplorer.MainDirectory + "OpenTK.Windowing.GraphicsLibraryFramework.dll"),
+				MetadataReference.CreateFromFile(assemblyLocation + "System.Runtime.dll"),
+				MetadataReference.CreateFromFile(assemblyLocation + "System.Runtime.Extensions.dll"),
+				MetadataReference.CreateFromFile(assemblyLocation + "System.Collections.dll"),
+				MetadataReference.CreateFromFile(assemblyLocation + "System.Linq.dll"),
+				MetadataReference.CreateFromFile(assemblyLocation + "mscorlib.dll")
 			)
 			.AddSyntaxTrees(CSharpSyntaxTree.ParseText(content));
 
@@ -105,12 +106,8 @@ namespace WarriorsSnuggery.Scripting
 			using var fileStream = File.Create(cachePath);
 			ms.WriteTo(fileStream);
 
-			ms.Seek(0, SeekOrigin.Begin);
-
 			timer.StopAndWrite("Compiling script assembly: " + file);
 			Log.Debug("Script assembly compilation not cached or cache outdated. (Re-)Compiled.");
-
-			return ms;
 		}
 
 		public MissionScriptBase Start(Game game)
