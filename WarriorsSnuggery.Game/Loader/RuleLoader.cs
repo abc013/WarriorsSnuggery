@@ -1,4 +1,6 @@
-﻿using WarriorsSnuggery.Audio;
+﻿using System.Collections.Generic;
+using System.Linq;
+using WarriorsSnuggery.Audio;
 using WarriorsSnuggery.Graphics;
 using WarriorsSnuggery.Maps;
 using WarriorsSnuggery.Objects;
@@ -18,72 +20,54 @@ namespace WarriorsSnuggery.Loader
 
 		public static void Load()
 		{
-			var rules = TextNodeLoader.FromFile(FileExplorer.Rules, "Rules.yaml");
-
 			var timer = Timer.Start();
 
-			foreach (var rule in rules)
-			{
-				var loader = new ComplexTextNodeLoader(rule.Key);
+			ParticleCache.Load(loadNodes("Particles"));
+			SpellCache.Load(loadNodes("Spells"));
+			WeaponCache.Load(loadNodes("Weapons"));
+			ActorCache.Load(loadNodes("Actors"));
+			TerrainCache.Load(loadNodes("Terrain"));
+			WallCache.Load(loadNodes("Walls"));
+			SpellCasterCache.Load(loadNodes("SpellTree"));
+			TrophyCache.Load(loadNodes("Trophies"));
+			MapCache.Load(loadNodes("Maps"));
 
-				for (int i = 0; i < rule.Children.Count; i++)
-				{
-					var file = rule.Children[i].Key;
-					loader.Load(FileExplorer.FindPath(FileExplorer.Rules, FileExplorer.FileName(file), FileExplorer.FileExtension(file)), file);
-				}
-
-				var nodes = loader.Finish();
-				switch (rule.Key)
-				{
-					case "Particles":
-						ParticleCache.Load(nodes);
-
-						break;
-					case "Weapons":
-						WeaponCache.Load(nodes);
-
-						break;
-					case "Actors":
-						ActorCache.Load(nodes);
-
-						break;
-					case "Terrain":
-						TerrainCache.Load(nodes);
-
-						break;
-					case "Walls":
-						WallCache.Load(nodes);
-
-						break;
-					case "Spells":
-						SpellCache.Load(nodes);
-
-						break;
-					case "SpellTree":
-						SpellCasterCache.Load(nodes);
-
-						break;
-					case "Trophies":
-						TrophyCache.Load(nodes);
-
-						break;
-					case "Maps":
-						MapCache.Load(nodes);
-
-						break;
-				}
-
-				timer.StopAndWrite($"Loading Rules: {rule.Key}");
-				timer.Restart();
-			}
+			timer.StopAndWrite($"Loading Game Rules");
+			timer.Restart();
 
 			ShroudTexture = new TextureInfo("shroud").GetTextures();
-
 			Questionmark = new TextureInfo("questionmark").GetTextures();
 
 			loadUIRules();
 
 			timer.StopAndWrite("Loading UI Rules");
+		}
+
+		static List<TextNode> loadNodes(string rule)
+		{
+			var loader = new ComplexTextNodeLoader(rule);
+
+			foreach (var node in getFiles(rule))
+			{
+				var file = node.Key;
+				loader.Load(FileExplorer.FindPath(FileExplorer.Rules, FileExplorer.FileName(file), FileExplorer.FileExtension(file)), file);
+			}
+
+			return loader.Finish();
+		}
+
+		static List<TextNode> getFiles(string rule)
+		{
+			var list = new List<TextNode>();
+
+			foreach (var mod in ModManager.ActiveMods)
+			{
+				var textNode = mod.Rules.FirstOrDefault(n => n.Key == rule);
+				if (textNode != null)
+					list.AddRange(textNode.Children);
+			}
+
+			return list;
 		}
 
 		static void loadUIRules()

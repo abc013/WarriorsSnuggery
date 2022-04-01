@@ -22,7 +22,7 @@
 			Container.Clear();
 			SelectedPos = (-1, -1);
 
-			foreach (var mod in ModManager.Mods)
+			foreach (var mod in ModManager.AvailableMods)
 			{
 				var modActive = Settings.ModList.Contains(mod.InternalName);
 				if (!(useActive ^ modActive))

@@ -14,6 +14,7 @@ namespace WarriorsSnuggery
 		public readonly string Author = "Unknown author.";
 		public readonly string Version = "Dev";
 		public readonly string GameVersion = "Unknown";
+		public bool Outdated => GameVersion != Settings.Version;
 
 		public readonly string Directory;
 		public readonly List<TextNode> Rules;
@@ -22,9 +23,10 @@ namespace WarriorsSnuggery
 		{
 			Directory = FileExplorer.FileDirectory(filepath);
 
-			Rules = TextNodeLoader.FromFile(Directory, FileExplorer.FileName(filepath) + FileExplorer.FileExtension(filepath));
+			var rules = TextNodeLoader.FromFile(Directory, FileExplorer.FileName(filepath) + FileExplorer.FileExtension(filepath));
 
-			TypeLoader.SetValues(this, Rules.Find(n => n.Key == "Mod").Children);
+			TypeLoader.SetValues(this, rules.Find(n => n.Key == "Mod").Children);
+			Rules = rules.Find(n => n.Key == "Rules").Children;
 		}
 	}
 }

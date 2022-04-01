@@ -15,6 +15,7 @@ namespace WarriorsSnuggery
 		public static string Shaders;
 		public static string Logs;
 		public static string Saves;
+		public static string Core;
 		public static string Mods;
 		public static string MainDirectory;
 
@@ -22,10 +23,12 @@ namespace WarriorsSnuggery
 		{
 			MainDirectory = AppContext.BaseDirectory;
 
-			Misc = MainDirectory + "misc" + Separator;
-			Rules = MainDirectory + "rules" + Separator;
-			Pieces = MainDirectory + "pieces" + Separator;
-			Scripts = MainDirectory + "scripts" + Separator;
+			Core = MainDirectory + "core" + Separator;
+			Misc = Core + "contents" + Separator;
+			Rules = Core + "rules" + Separator;
+			Pieces = Core + "pieces" + Separator;
+			Scripts = Core + "scripts" + Separator;
+
 			Shaders = MainDirectory + "shaders" + Separator;
 			Logs = MainDirectory + "logs" + Separator;
 			Saves = MainDirectory + "saves" + Separator;

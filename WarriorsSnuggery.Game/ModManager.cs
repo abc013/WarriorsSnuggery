@@ -4,45 +4,45 @@ using System.Linq;
 
 namespace WarriorsSnuggery
 {
-	public class ModManager
+	public static class ModManager
 	{
 		public static Mod Core;
-
-		public static readonly List<Mod> Mods = new List<Mod>();
+		public static readonly List<Mod> AvailableMods = new List<Mod>();
+		public static readonly List<Mod> ActiveMods = new List<Mod>();
 
 		public static void Load()
 		{
-			// Core = new Mod(FileExplorer.MainDirectory);
+			Core = new Mod(FileExplorer.Core + "Rules.yaml");
 
 			foreach (var directory in FileExplorer.DirectoriesIn(FileExplorer.Mods))
 			{
 				var filepath = directory + FileExplorer.Separator + "Rules.yaml";
 
 				if (File.Exists(filepath))
-					Mods.Add(new Mod(filepath));
+					AvailableMods.Add(new Mod(filepath));
 			}
-		}
 
-		public List<Mod> GetActiveMods()
-		{
-			var mods = new List<Mod>();
-
+			ActiveMods.Add(Core);
 			foreach (var name in Settings.ModList)
 			{
-				var mod = Mods.FirstOrDefault(m => m.InternalName == name);
+				var mod = AvailableMods.FirstOrDefault(m => m.InternalName == name);
 
 				if (mod != null)
-					mods.Add(mod);
+				{
+					ActiveMods.Add(mod);
+					if (mod.Outdated)
+						Log.LoaderWarning("Mods", $"Enabling outdated mod '{mod.InternalName}' (Version '{mod.GameVersion}').");
+					else
+						Log.LoaderDebug("Mods", $"Enabling mod '{mod.InternalName}'.");
+				}
 				else
 					Log.Warning($"Unable to fetch unknown mod '{name}'. Skipping.");
 			}
-
-			return mods;
 		}
 
 		public static void Reload()
 		{
-			Mods.Clear();
+			AvailableMods.Clear();
 
 			Load();
 		}

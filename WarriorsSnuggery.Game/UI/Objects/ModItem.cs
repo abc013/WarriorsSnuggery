@@ -37,7 +37,7 @@ namespace WarriorsSnuggery.UI.Objects
 			content.AddText(Color.Grey + mod.Author);
 
 			outdated = new UIText(FontManager.Header, TextOffset.RIGHT);
-			if (mod.GameVersion != Settings.Version)
+			if (mod.Outdated)
 			{
 				outdated.Color = Color.Red.WithAlpha(0.5f);
 				outdated.SetText("Outdated!");

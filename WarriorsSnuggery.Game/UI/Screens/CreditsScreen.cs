@@ -25,7 +25,7 @@ namespace WarriorsSnuggery.UI.Screens
 		{
 			this.game = game;
 
-			lineData = File.ReadAllLines(FileExplorer.FindIn(FileExplorer.Rules, "Credits", ".yaml"));
+			lineData = File.ReadAllLines(FileExplorer.FindIn(FileExplorer.Core, "Credits", ".yaml"));
 
 			lineHeight = FontManager.Default.MaxHeight * 2;
 
