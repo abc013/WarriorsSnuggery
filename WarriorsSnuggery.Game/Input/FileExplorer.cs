@@ -15,6 +15,7 @@ namespace WarriorsSnuggery
 		public static string Shaders;
 		public static string Logs;
 		public static string Saves;
+		public static string Mods;
 		public static string MainDirectory;
 
 		public static void InitPaths()
@@ -28,6 +29,7 @@ namespace WarriorsSnuggery
 			Shaders = MainDirectory + "shaders" + Separator;
 			Logs = MainDirectory + "logs" + Separator;
 			Saves = MainDirectory + "saves" + Separator;
+			Mods = MainDirectory + "mods" + Separator;
 		}
 
 		public static string FileName(string filepath)
@@ -70,6 +72,15 @@ namespace WarriorsSnuggery
 		public static string FindPath(string path, string name, string extension)
 		{
 			return Path.GetDirectoryName(FindIn(path, name, extension)) + Separator;
+		}
+
+		/// <summary>
+		/// Finds all directories in a directory.
+		/// </summary>
+		/// <returns>Returns the directories.</returns>
+		public static string[] DirectoriesIn(string path, bool recurse = false)
+		{
+			return Directory.GetDirectories(path, "*", recurse ? SearchOption.AllDirectories : SearchOption.TopDirectoryOnly);
 		}
 
 		/// <summary>

@@ -16,6 +16,7 @@ namespace WarriorsSnuggery
 
 		public static void Load()
 		{
+			ModManager.Load();
 			RuleLoader.Load();
 			PieceManager.Load();
 			GameSaveManager.Load();

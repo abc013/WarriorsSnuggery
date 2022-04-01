@@ -91,6 +91,7 @@ namespace WarriorsSnuggery.Loader
 			UISpriteManager.Add("UI_inactiveConnection", new TextureInfo("UI_inactiveConnection", TextureType.ANIMATION, 5, 3, 10));
 			UISpriteManager.Add("UI_activeConnection", new TextureInfo("UI_activeConnection", TextureType.ANIMATION, 5, 3, 10));
 			UISpriteManager.Add("UI_save", "UI_save");
+			UISpriteManager.Add("UI_gear", "UI_gear");
 			UISpriteManager.Add("UI_map", "UI_map");
 			UISpriteManager.Add("UI_money", "UI_money");
 			UISpriteManager.Add("UI_key", "UI_key");

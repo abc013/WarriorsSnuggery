@@ -6,7 +6,7 @@ using WarriorsSnuggery.UI.Objects;
 
 namespace WarriorsSnuggery.UI.Screens
 {
-	public class SettingsScreen : Screen
+	public class BaseSettingsScreen : Screen
 	{
 		readonly Game game;
 
@@ -16,10 +16,11 @@ namespace WarriorsSnuggery.UI.Screens
 
 		public bool Visible { get; private set; }
 
-		public SettingsScreen(Game game) : base("Settings")
+		public BaseSettingsScreen(Game game) : base("")
 		{
 			this.game = game;
 			Title.Position = new CPos(0, -4096, 0);
+			Add(new SettingsChooser(game, new CPos(0, -5120, 0), ScreenType.BASESETTINGS, save));
 
 			// Window
 			var fullscreen = new UIText(FontManager.Default) { Position = new CPos(-6096, -3000, 0) };
@@ -195,19 +196,15 @@ namespace WarriorsSnuggery.UI.Screens
 			};
 			warning.SetText("Some changes only take effect after restarting and can cause visual bugs.");
 			Add(warning);
-
-			Add(new Button("Apply", "wooden", Save) { Position = new CPos(-5120, 6144, 0) });
-			Add(new Button("Save & Back", "wooden", () => game.ShowScreen(ScreenType.MENU)) { Position = new CPos(5120, 6144, 0) });
-			Add(new Button("Key Bindings", "wooden", () => game.ShowScreen(ScreenType.KEYSETTINGS)) { Position = new CPos(0, 6144, 0) });
 		}
 
 		public override void Hide()
 		{
 			base.Hide();
-			Save();
+			save();
 		}
 
-		public void Save()
+		void save()
 		{
 			Settings.FrameLimiter = int.Parse(frameLimiterWrite.Text);
 			Settings.ScrollSpeed = (int)(panningSlider.Value * 10);

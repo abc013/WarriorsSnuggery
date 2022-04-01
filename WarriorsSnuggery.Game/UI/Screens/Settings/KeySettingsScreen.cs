@@ -10,16 +10,13 @@ namespace WarriorsSnuggery.UI.Screens
 
 		readonly KeyboardButton up, down, right, left, above, below, pause, camUp, camDown, camRight, camLeft, @lock, activate;
 
-		public KeySettingsScreen(Game game) : base("Key Bindings")
+		public KeySettingsScreen(Game game) : base("")
 		{
 			this.game = game;
-
 			Title.Position = new CPos(0, -4096, 0);
+			Add(new SettingsChooser(game, new CPos(0, -5120, 0), ScreenType.KEYSETTINGS, save));
 
 			var font = FontManager.Default;
-
-			Add(new Button("Save & Back", "wooden", () => game.ShowScreen(ScreenType.SETTINGS)) { Position = new CPos(0, 6144, 0) });
-
 			var type = PanelCache.Types["wooden"];
 
 			var tPause = new UIText(font, TextOffset.RIGHT) { Position = new CPos(-1024, -4096, 0) };
@@ -118,7 +115,7 @@ namespace WarriorsSnuggery.UI.Screens
 			base.KeyDown(key, isControl, isShift, isAlt);
 
 			if (key == Keys.Escape)
-				game.ShowScreen(ScreenType.SETTINGS);
+				game.ShowScreen(ScreenType.MENU);
 		}
 	}
 }

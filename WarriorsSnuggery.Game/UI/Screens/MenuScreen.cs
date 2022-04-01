@@ -61,7 +61,7 @@ namespace WarriorsSnuggery.UI.Screens
 			}
 
 			height += 1024;
-			Add(new Button("Settings", "wooden", () => game.ShowScreen(ScreenType.SETTINGS)) { Position = new CPos(0, height, 0) });
+			Add(new Button("Settings", "wooden", () => game.ShowScreen(ScreenType.BASESETTINGS)) { Position = new CPos(0, height, 0) });
 
 			if (game.MissionType == MissionType.MAIN_MENU || game.MissionType == MissionType.TEST)
 			{
