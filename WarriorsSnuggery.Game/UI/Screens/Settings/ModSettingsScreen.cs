@@ -8,8 +8,8 @@ namespace WarriorsSnuggery.UI.Screens
 	{
 		readonly Game game;
 
-		readonly ModList inactive;
-		readonly ModList active;
+		readonly PackageList inactive;
+		readonly PackageList active;
 
 		public ModSettingsScreen(Game game) : base("")
 		{
@@ -20,37 +20,37 @@ namespace WarriorsSnuggery.UI.Screens
 			var inactiveText = new UIText(FontManager.Default, TextOffset.MIDDLE) { Position = new CPos(-4096, -4096, 0) };
 			inactiveText.SetText("Inactive Mods");
 			Add(inactiveText);
-			inactive = new ModList(4096, "wooden", false) { Position = new CPos(-4096, 512, 0) };
+			inactive = new PackageList(4096, "wooden", false) { Position = new CPos(-4096, 512, 0) };
 
 			var activeText = new UIText(FontManager.Default, TextOffset.MIDDLE) { Position = new CPos(4096, -4096, 0) };
 			activeText.SetText("Active Mods");
 			Add(activeText);
-			active = new ModList(4096, "wooden", true) { Position = new CPos(4096, 512, 0) };
+			active = new PackageList(4096, "wooden", true) { Position = new CPos(4096, 512, 0) };
 
 			Add(inactive);
 			Add(active);
 
-			Add(new Button("→", "wooden", () => switchMod(inactive)) { Position = new CPos(0, -1024, 0) });
-			Add(new Button("←", "wooden", () => switchMod(active)) { Position = new CPos(0, 1024, 0) });
+			Add(new Button("→", "wooden", () => switchPackage(inactive)) { Position = new CPos(0, -1024, 0) });
+			Add(new Button("←", "wooden", () => switchPackage(active)) { Position = new CPos(0, 1024, 0) });
 
 			var warning = new UIText(FontManager.Default, TextOffset.MIDDLE)
 			{
 				Position = new CPos(0, 5450, 0),
 				Color = Color.Red
 			};
-			warning.SetText("Mod changes take effect after restarting and may corrupt saved games.");
+			warning.SetText("Mods changes take effect after restarting and may corrupt saved games.");
 			Add(warning);
 		}
 
-		void switchMod(ModList from)
+		void switchPackage(PackageList from)
 		{
-			if (from.SelectedMod == null)
+			if (from.SelectedPackage == null)
 				return;
 
 			if (from == active)
-				Settings.ModList.Remove(from.SelectedMod.InternalName);
+				Settings.PackageList.Remove(from.SelectedPackage.InternalName);
 			else
-				Settings.ModList.Add(from.SelectedMod.InternalName);
+				Settings.PackageList.Add(from.SelectedPackage.InternalName);
 
 			active.Refresh();
 			inactive.Refresh();

@@ -184,8 +184,8 @@ namespace WarriorsSnuggery
 			timer.StopAndWrite("Loading Fonts");
 
 			timer.Restart();
-			ModManager.Load();
-			timer.StopAndWrite("Loading Mods");
+			PackageManager.Load();
+			timer.StopAndWrite("Loading Packages");
 
 			timer.Restart();
 			AudioController.Load();

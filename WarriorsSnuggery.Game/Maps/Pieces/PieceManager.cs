@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using WarriorsSnuggery.Loader;
 
 namespace WarriorsSnuggery.Maps.Pieces
 {
@@ -10,13 +9,13 @@ namespace WarriorsSnuggery.Maps.Pieces
 
 		public static void Load()
 		{
-			foreach (var mod in ModManager.ActiveMods)
-				loadFromMod(mod);
+			foreach (var package in PackageManager.ActivePackages)
+				loadPackage(package);
 		}
 
-		static void loadFromMod(Mod mod)
+		static void loadPackage(Package package)
 		{
-			foreach (var filepath in FileExplorer.FilesIn(mod.PiecesDirectory, ".yaml", true))
+			foreach (var filepath in FileExplorer.FilesIn(package.PiecesDirectory, ".yaml", true))
 			{
 				var name = FileExplorer.FileName(filepath);
 				var path = FileExplorer.FileDirectory(filepath);

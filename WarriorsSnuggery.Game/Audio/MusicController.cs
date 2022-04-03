@@ -21,7 +21,7 @@ namespace WarriorsSnuggery.Audio
 		public static void Load()
 		{
 			// TODO
-			var files = FileExplorer.FilesIn(ModManager.Core.ContentDirectory + "music" + FileExplorer.Separator, ".wav");
+			var files = FileExplorer.FilesIn(PackageManager.Core.ContentDirectory + "music" + FileExplorer.Separator, ".wav");
 
 			data = new (string, string)[files.Length];
 			for (int i = 0; i < files.Length; i++)

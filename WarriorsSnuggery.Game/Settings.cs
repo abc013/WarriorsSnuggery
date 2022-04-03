@@ -100,7 +100,7 @@ namespace WarriorsSnuggery
 
 		public static readonly Dictionary<string, Keys> KeyDictionary = new Dictionary<string, Keys>();
 
-		public static readonly List<string> ModList = new List<string>();
+		public static readonly List<string> PackageList = new List<string>();
 
 		public static Keys GetKey(string value)
 		{
@@ -149,9 +149,9 @@ namespace WarriorsSnuggery
 						foreach (var key in node.Children)
 							KeyDictionary.Add(key.Key, KeyInput.ToKey(key.Value));
 						break;
-					case "Mods":
+					case "Packages":
 						foreach (var key in node.Children)
-							ModList.Add(key.Key);
+							PackageList.Add(key.Key);
 						break;
 					default:
 						// null is used for static classes.
@@ -207,9 +207,9 @@ namespace WarriorsSnuggery
 				writer.WriteLine($"{field.Name}={fieldValue}");
 			}
 
-			writer.WriteLine("Mods=");
-			foreach (var mod in ModList)
-				writer.WriteLine($"\t{mod}=");
+			writer.WriteLine("Packages=");
+			foreach (var package in PackageList)
+				writer.WriteLine($"\t{package}=");
 
 			writer.WriteLine("Keys=");
 			foreach (var key in KeyDictionary)

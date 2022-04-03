@@ -24,7 +24,7 @@
 
 		public TextureInfo(string fileName, TextureType type, int width, int height, int tick = 0, bool load = true)
 		{
-			filepath = FileExplorer.FindIn(FileExplorer.ResolveMod(fileName).ContentDirectory, FileExplorer.ResolveFile(fileName), ".png");
+			filepath = FileExplorer.FindIn(FileExplorer.ResolvePackage(fileName).ContentDirectory, FileExplorer.ResolveFile(fileName), ".png");
 
 			Type = type;
 			Tick = tick;

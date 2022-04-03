@@ -30,22 +30,22 @@ namespace WarriorsSnuggery
 			Fonts = MainDirectory + "fonts" + Separator;
 		}
 
-		public static Mod ResolveMod(string modAndFile)
+		public static Package ResolvePackage(string packageFile)
 		{
-			var split = modAndFile.Split('|');
+			var split = packageFile.Split('|');
 
 			if (split.Length == 1)
-				return ModManager.Core;
+				return PackageManager.Core;
 
 			if (split.Length == 2)
-				return ModManager.ActiveMods.Find(mod => mod.InternalName == split[0]);
+				return PackageManager.ActivePackages.Find(package => package.InternalName == split[0]);
 
-			throw new InvalidDataException($"Filename contains multiple mod indicators '|'.");
+			throw new InvalidDataException($"Filename contains multiple package indicators '|'.");
 		}
 
-		public static string ResolveFile(string modAndFile)
+		public static string ResolveFile(string packageFile)
 		{
-			var split = modAndFile.Split('|');
+			var split = packageFile.Split('|');
 
 			if (split.Length == 1)
 				return split[0];
@@ -53,7 +53,7 @@ namespace WarriorsSnuggery
 			if (split.Length == 2)
 				return split[1];
 
-			throw new InvalidDataException($"Filename contains multiple mod indicators '|'.");
+			throw new InvalidDataException($"Filename contains multiple package indicators '|'.");
 		}
 
 		public static string FileName(string filepath)

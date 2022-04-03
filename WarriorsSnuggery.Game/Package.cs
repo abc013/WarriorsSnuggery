@@ -3,7 +3,7 @@ using WarriorsSnuggery.Loader;
 
 namespace WarriorsSnuggery
 {
-	public class Mod
+	public class Package
 	{
 		[Require]
 		public readonly string Name;
@@ -24,13 +24,13 @@ namespace WarriorsSnuggery
 
 		public readonly List<TextNode> Rules;
 
-		public Mod(string filepath)
+		public Package(string filepath)
 		{
 			Directory = FileExplorer.FileDirectory(filepath);
 
 			var rules = TextNodeLoader.FromFile(Directory, FileExplorer.FileName(filepath) + FileExplorer.FileExtension(filepath));
 
-			TypeLoader.SetValues(this, rules.Find(n => n.Key == "Mod").Children);
+			TypeLoader.SetValues(this, rules.Find(n => n.Key == "Package").Children);
 			Rules = rules.Find(n => n.Key == "Rules").Children;
 		}
 	}

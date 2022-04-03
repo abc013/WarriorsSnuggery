@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using WarriorsSnuggery.Loader;
 using WarriorsSnuggery.Maps.Generators;
 using WarriorsSnuggery.Maps.Noises;
 using WarriorsSnuggery.Maps.Pieces;

@@ -31,7 +31,7 @@ namespace WarriorsSnuggery
 
 			if (!isDocumentation)
 			{
-				AudioManager.LoadSound(Name, FileExplorer.FindPath(FileExplorer.ResolveMod(Name).ContentDirectory, FileExplorer.ResolveFile(Name), ".wav"));
+				AudioManager.LoadSound(Name, FileExplorer.FindPath(FileExplorer.ResolvePackage(Name).ContentDirectory, FileExplorer.ResolveFile(Name), ".wav"));
 				Buffer = AudioManager.GetBuffer(Name);
 			}
 		}

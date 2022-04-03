@@ -3,7 +3,7 @@ using WarriorsSnuggery.Graphics;
 
 namespace WarriorsSnuggery.UI.Objects
 {
-	class ModItem : PanelListItem
+	class PackageItem : PanelListItem
 	{
 		readonly int width;
 		readonly int imagePathWidth;
@@ -20,24 +20,24 @@ namespace WarriorsSnuggery.UI.Objects
 			}
 		}
 
-		public readonly Mod Mod;
+		public readonly Package Package;
 
 		readonly UIText content;
 		readonly UIText outdated;
 		readonly UIImage image;
 
-		public ModItem(Mod mod, int width, Action action) : base(new BatchObject(0f), new MPos(width, ModList.ModHeight), mod.Name + Color.Grey + " | " + mod.Version, new[] { Color.Grey + mod.Description }, action)
+		public PackageItem(Package package, int width, Action action) : base(new BatchObject(0f), new MPos(width, PackageList.ItemHeight), package.Name + Color.Grey + " | " + package.Version, new[] { Color.Grey + package.Description }, action)
 		{
 			this.width = width;
 			imagePathWidth = width - 1024;
-			Mod = mod;
+			Package = package;
 
 			content = new UIText(FontManager.Default);
-			content.SetText(mod.Name);
-			content.AddText(Color.Grey + mod.Author);
+			content.SetText(package.Name);
+			content.AddText(Color.Grey + package.Author);
 
 			outdated = new UIText(FontManager.Header, TextOffset.RIGHT);
-			if (mod.Outdated)
+			if (package.Outdated)
 			{
 				outdated.Color = Color.Red.WithAlpha(0.5f);
 				outdated.SetText("Outdated!");
