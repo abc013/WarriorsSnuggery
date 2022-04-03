@@ -28,11 +28,12 @@ namespace WarriorsSnuggery.Maps.Pieces
 		readonly List<WeaponInit> weapons = new List<WeaponInit>();
 		readonly List<ParticleInit> particles = new List<ParticleInit>();
 
-		public Piece(string innerName, string path, List<TextNode> nodes)
+		public Piece(string innerName, string path)
 		{
 			InnerName = innerName;
 			Path = path;
 
+			var nodes = TextNodeLoader.FromFile(FileExplorer.FileDirectory(path), InnerName + ".yaml");
 			var fields = TypeLoader.GetFields(this);
 
 			foreach (var node in nodes)

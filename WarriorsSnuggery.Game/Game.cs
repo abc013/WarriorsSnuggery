@@ -129,7 +129,7 @@ namespace WarriorsSnuggery
 
 			if (!string.IsNullOrEmpty(map.MissionScript) && !Program.DisableScripts)
 			{
-				var scriptLoader = new MissionScriptLoader(FileExplorer.FindIn(FileExplorer.Scripts, map.MissionScript, ".cs"), map.MissionScript);
+				var scriptLoader = new MissionScriptLoader(FileExplorer.FindIn(FileExplorer.ResolveMod(map.MissionScript).ScriptsDirectory, FileExplorer.ResolveFile(map.MissionScript), ".cs"), map.MissionScript);
 				script = scriptLoader.Start(this);
 			}
 			else

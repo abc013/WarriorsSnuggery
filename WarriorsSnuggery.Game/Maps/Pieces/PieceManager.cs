@@ -10,27 +10,28 @@ namespace WarriorsSnuggery.Maps.Pieces
 
 		public static void Load()
 		{
-			foreach(var filepath in FileExplorer.FilesIn(FileExplorer.Pieces, ".yaml", true))
-            {
+			foreach (var mod in ModManager.ActiveMods)
+				loadFromMod(mod);
+		}
+
+		static void loadFromMod(Mod mod)
+		{
+			foreach (var filepath in FileExplorer.FilesIn(mod.PiecesDirectory, ".yaml", true))
+			{
 				var name = FileExplorer.FileName(filepath);
 				var path = FileExplorer.FileDirectory(filepath);
 
-				var nodes = TextNodeLoader.FromFile(path, name + ".yaml");
-				Pieces.Add(new Piece(name, path, nodes));
+				Pieces.Add(new Piece(name, path));
 			}
 		}
 
-		public static Piece ReloadPiece(string name)
+		public static Piece ReloadPiece(string innerName)
 		{
-			var existingPiece = Pieces.FirstOrDefault(p => p.InnerName == name);
+			var existingPiece = Pieces.First(p => p.InnerName == innerName);
 
-			if (existingPiece != null)
-				Pieces.Remove(existingPiece);
+			Pieces.Remove(existingPiece);
 
-			var path = FileExplorer.FindPath(FileExplorer.Pieces, name, ".yaml");
-			var nodes = TextNodeLoader.FromFile(path, name + ".yaml");
-
-			var piece = new Piece(name, path, nodes);
+			var piece = new Piece(existingPiece.InnerName, existingPiece.Path);
 			Pieces.Add(piece);
 
 			return piece;

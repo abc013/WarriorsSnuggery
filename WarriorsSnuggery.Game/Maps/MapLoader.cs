@@ -77,7 +77,7 @@ namespace WarriorsSnuggery.Maps
 				var path = FileExplorer.Saves;
 				var file = map.Type.OverridePiece + ".yaml";
 
-				var input = new Piece(map.Type.OverridePiece, path + file, TextNodeLoader.FromFile(path, file));
+				var input = new Piece(map.Type.OverridePiece, path + file);
 				GenerateCrucialPiece(input, MPos.Zero);
 
 				// Local player should be somewhere within the piece

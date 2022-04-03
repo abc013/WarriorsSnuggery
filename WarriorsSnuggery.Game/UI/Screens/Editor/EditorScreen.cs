@@ -331,7 +331,8 @@ namespace WarriorsSnuggery.UI.Screens
 
 		void savePiece()
 		{
-			PieceSaver.SaveWorld(game.World, FileExplorer.FindPath(FileExplorer.Pieces, game.MapType.OverridePiece, ".yaml"), game.MapType.OverridePiece);
+			// TODO
+			PieceSaver.SaveWorld(game.World, FileExplorer.FindPath(ModManager.Core.PiecesDirectory, game.MapType.OverridePiece, ".yaml"), game.MapType.OverridePiece);
 			game.AddInfoMessage(150, "Map saved!");
 		}
 	}

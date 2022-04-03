@@ -16,6 +16,7 @@ namespace WarriorsSnuggery.Loader
 
 		public readonly string Origin;
 
+		// Deprecated
 		public TextNode(string origin, short order, string key, object value) : this(origin, order, key, null, value) { }
 
 		public TextNode(string origin, short order, string key, string specification, object value)

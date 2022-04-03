@@ -36,7 +36,7 @@ namespace WarriorsSnuggery
 						Log.LoaderDebug("Mods", $"Enabling mod '{mod.InternalName}'.");
 				}
 				else
-					Log.Warning($"Unable to fetch unknown mod '{name}'. Skipping.");
+					Log.LoaderWarning("Mods", $"Unable to fetch unknown mod '{name}'. Skipping.");
 			}
 		}
 

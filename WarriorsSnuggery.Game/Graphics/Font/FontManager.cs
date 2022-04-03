@@ -14,14 +14,12 @@ namespace WarriorsSnuggery.Graphics
 
 		public static void Load()
 		{
-			var path = FileExplorer.Misc + "fonts" + FileExplorer.Separator;
-
 			Collection = new FontCollection();
 
-			Collection.Add(path + "Adventurer.ttf");
+			Collection.Add(FileExplorer.Fonts + "Adventurer.ttf");
 			Header = new Font(new FontInfo(16, "Adventurer"));
 
-			Collection.Add(path + "QuinqueFive.ttf");
+			Collection.Add(FileExplorer.Fonts + "QuinqueFive.ttf");
 			Default = new Font(new FontInfo(5, "QuinqueFive"));
 		}
 	}

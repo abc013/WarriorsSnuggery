@@ -173,7 +173,7 @@ namespace WarriorsSnuggery
 			MouseInput.SetWindow(this);
 
 			// Load icon
-			var iconData = BitmapLoader.LoadBytes(FileExplorer.FindIn(FileExplorer.Misc, "warsnu", ".png"), out var iconWidth, out var iconHeight);
+			var iconData = BitmapLoader.LoadBytes(FileExplorer.FindIn(FileExplorer.MainDirectory, "warsnu", ".png"), out var iconWidth, out var iconHeight);
 			Icon = new WindowIcon(new Image(iconWidth, iconHeight, iconData));
 
 			MasterRenderer.Initialize();
@@ -182,6 +182,10 @@ namespace WarriorsSnuggery
 			timer.Restart();
 			FontManager.Load();
 			timer.StopAndWrite("Loading Fonts");
+
+			timer.Restart();
+			ModManager.Load();
+			timer.StopAndWrite("Loading Mods");
 
 			timer.Restart();
 			AudioController.Load();

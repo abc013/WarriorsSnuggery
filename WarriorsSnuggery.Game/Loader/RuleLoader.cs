@@ -50,7 +50,7 @@ namespace WarriorsSnuggery.Loader
 			foreach (var node in getFiles(rule))
 			{
 				var file = node.Key;
-				loader.Load(FileExplorer.FindPath(FileExplorer.Rules, FileExplorer.FileName(file), FileExplorer.FileExtension(file)), file);
+				loader.Load(FileExplorer.FindPath(FileExplorer.ResolveMod(file).RulesDirectory, FileExplorer.FileName(FileExplorer.ResolveFile(file)), FileExplorer.FileExtension(FileExplorer.ResolveFile(file))), FileExplorer.ResolveFile(file));
 			}
 
 			return loader.Finish();
@@ -103,12 +103,12 @@ namespace WarriorsSnuggery.Loader
 			CheckBoxCache.Add(checkBox("check_menu"), "menu");
 
 			foreach (var sound in new [] { "money_spent1", "money_spent2", "money_spent3" })
-				AudioManager.LoadSound(sound, FileExplorer.FindPath(FileExplorer.Misc, sound, ".wav"));
+				AudioManager.LoadSound(sound, FileExplorer.FindPath(FileExplorer.ResolveMod(sound).ContentDirectory, FileExplorer.ResolveFile(sound), ".wav"));
 
-			AudioManager.LoadSound("click", FileExplorer.FindPath(FileExplorer.Misc, "click", ".wav"));
-			AudioManager.LoadSound("ping", FileExplorer.FindPath(FileExplorer.Misc, "ping", ".wav"));
+			AudioManager.LoadSound("click", FileExplorer.FindPath(ModManager.Core.ContentDirectory, "click", ".wav"));
+			AudioManager.LoadSound("ping", FileExplorer.FindPath(ModManager.Core.ContentDirectory, "ping", ".wav"));
 
-			AudioManager.LoadSound("life_lost", FileExplorer.FindPath(FileExplorer.Misc, "life_lost", ".wav"));
+			AudioManager.LoadSound("life_lost", FileExplorer.FindPath(ModManager.Core.ContentDirectory, "life_lost", ".wav"));
 		}
 
 		static CheckBoxType checkBox(string name)

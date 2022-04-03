@@ -17,6 +17,11 @@ namespace WarriorsSnuggery
 		public bool Outdated => GameVersion != Settings.Version;
 
 		public readonly string Directory;
+		public string ContentDirectory => Directory + "contents" + FileExplorer.Separator;
+		public string RulesDirectory => Directory + "rules" + FileExplorer.Separator;
+		public string PiecesDirectory => Directory + "pieces" + FileExplorer.Separator;
+		public string ScriptsDirectory => Directory + "scripts" + FileExplorer.Separator;
+
 		public readonly List<TextNode> Rules;
 
 		public Mod(string filepath)

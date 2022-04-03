@@ -8,31 +8,52 @@ namespace WarriorsSnuggery
 		public static readonly char Separator = Path.DirectorySeparatorChar;
 		public static readonly char[] InvalidFileChars = Path.GetInvalidFileNameChars();
 
-		public static string Misc;
-		public static string Rules;
-		public static string Pieces;
-		public static string Scripts;
+		public static string MainDirectory;
+
 		public static string Shaders;
 		public static string Logs;
 		public static string Saves;
 		public static string Core;
 		public static string Mods;
-		public static string MainDirectory;
+		public static string Fonts;
 
 		public static void InitPaths()
 		{
 			MainDirectory = AppContext.BaseDirectory;
 
 			Core = MainDirectory + "core" + Separator;
-			Misc = Core + "contents" + Separator;
-			Rules = Core + "rules" + Separator;
-			Pieces = Core + "pieces" + Separator;
-			Scripts = Core + "scripts" + Separator;
 
 			Shaders = MainDirectory + "shaders" + Separator;
 			Logs = MainDirectory + "logs" + Separator;
 			Saves = MainDirectory + "saves" + Separator;
 			Mods = MainDirectory + "mods" + Separator;
+			Fonts = MainDirectory + "fonts" + Separator;
+		}
+
+		public static Mod ResolveMod(string modAndFile)
+		{
+			var split = modAndFile.Split('|');
+
+			if (split.Length == 1)
+				return ModManager.Core;
+
+			if (split.Length == 2)
+				return ModManager.ActiveMods.Find(mod => mod.InternalName == split[0]);
+
+			throw new InvalidDataException($"Filename contains multiple mod indicators '|'.");
+		}
+
+		public static string ResolveFile(string modAndFile)
+		{
+			var split = modAndFile.Split('|');
+
+			if (split.Length == 1)
+				return split[0];
+
+			if (split.Length == 2)
+				return split[1];
+
+			throw new InvalidDataException($"Filename contains multiple mod indicators '|'.");
 		}
 
 		public static string FileName(string filepath)
