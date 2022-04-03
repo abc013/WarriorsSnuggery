@@ -17,6 +17,7 @@ namespace WarriorsSnuggery.Maps.Pieces
 		public readonly string Name;
 		public readonly string InnerName;
 		public readonly string Path;
+		public readonly Package Package;
 
 		public uint MaxActorID => actors.Count > 0 ? actors.Max(n => n.ID) : 0;
 		public uint MaxWeaponID => weapons.Count > 0 ? weapons.Max(n => n.ID) : 0;
@@ -28,12 +29,13 @@ namespace WarriorsSnuggery.Maps.Pieces
 		readonly List<WeaponInit> weapons = new List<WeaponInit>();
 		readonly List<ParticleInit> particles = new List<ParticleInit>();
 
-		public Piece(string innerName, string path)
+		public Piece(string innerName, string path, Package package)
 		{
 			InnerName = innerName;
 			Path = path;
+			Package = package;
 
-			var nodes = TextNodeLoader.FromFile(FileExplorer.FileDirectory(path), InnerName + ".yaml");
+			var nodes = TextNodeLoader.FromFile(path, InnerName + ".yaml");
 			var fields = TypeLoader.GetFields(this);
 
 			foreach (var node in nodes)

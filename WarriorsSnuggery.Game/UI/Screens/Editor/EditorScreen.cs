@@ -46,7 +46,7 @@ namespace WarriorsSnuggery.UI.Screens
 			if (!string.IsNullOrEmpty(game.MapType.OverridePiece))
 			{
 				var pieceName = new UIText(FontManager.Default, TextOffset.RIGHT) { Position = new CPos(Right - 1024, -7684, 0) };
-				pieceName.SetText("Piece name: " + Color.Green + game.MapType.OverridePiece);
+				pieceName.SetText("Piece name: " + Color.Green + FileExplorer.ResolveFile(game.MapType.OverridePiece));
 				Add(pieceName);
 			}
 
@@ -331,8 +331,10 @@ namespace WarriorsSnuggery.UI.Screens
 
 		void savePiece()
 		{
-			// TODO
-			PieceSaver.SaveWorld(game.World, FileExplorer.FindPath(PackageManager.Core.PiecesDirectory, game.MapType.OverridePiece, ".yaml"), game.MapType.OverridePiece);
+			var package = FileExplorer.ResolvePackage(game.MapType.OverridePiece);
+			var file = FileExplorer.ResolveFile(game.MapType.OverridePiece);
+			PieceSaver.SaveWorld(game.World, FileExplorer.FindPath(package.PiecesDirectory, file, ".yaml"), file);
+			PieceManager.ReloadPiece(file, package);
 			game.AddInfoMessage(150, "Map saved!");
 		}
 	}

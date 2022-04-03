@@ -10,8 +10,10 @@ namespace WarriorsSnuggery.Maps.Pieces
 		MPos bounds => world.Map.Bounds;
 		readonly bool gameSave;
 
-		public static Piece SaveEmpty(MPos size, string directory, string name)
+		public static Piece SaveEmpty(MPos size, string name)
 		{
+			var directory = PackageManager.Core.PiecesDirectory;
+
 			using (var stream = new StreamWriter(File.Create(directory + name + ".yaml")))
 			{
 				stream.WriteLine("MapFormat=" + Constants.CurrentMapFormat);
@@ -26,17 +28,13 @@ namespace WarriorsSnuggery.Maps.Pieces
 			}
 
 			// Load piece into cache, overwrite the old if there is one.
-			return PieceManager.ReloadPiece(name);
+			return PieceManager.LoadPiece(name, directory, PackageManager.Core);
 		}
 
-		public static Piece SaveWorld(World world, string directory, string name, bool gameSave = false)
+		public static void SaveWorld(World world, string directory, string name, bool gameSave = false)
 		{
 			var saver = new PieceSaver(world, gameSave);
-
 			saver.save(directory, name);
-
-			// If no gameSave, load piece into cache, overwrite the old if there is one.
-			return gameSave ? null : PieceManager.ReloadPiece(name);
 		}
 
 		PieceSaver(World world, bool gameSave)

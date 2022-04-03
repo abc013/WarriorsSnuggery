@@ -20,30 +20,52 @@ namespace WarriorsSnuggery.Maps.Pieces
 				var name = FileExplorer.FileName(filepath);
 				var path = FileExplorer.FileDirectory(filepath);
 
-				Pieces.Add(new Piece(name, path));
+				LoadPiece(name, path, package);
 			}
 		}
 
-		public static Piece ReloadPiece(string innerName)
+		public static Piece LoadPiece(string innerName, string path, Package package)
 		{
-			var existingPiece = Pieces.First(p => p.InnerName == innerName);
+			// Remove piece if already loaded
+			var existingPiece = getPieceSoft(innerName, package);
 
-			Pieces.Remove(existingPiece);
+			if (existingPiece != null)
+				Pieces.Remove(existingPiece);
 
-			var piece = new Piece(existingPiece.InnerName, existingPiece.Path);
+			var piece = new Piece(innerName, path, package);
+
 			Pieces.Add(piece);
 
 			return piece;
 		}
 
-		public static Piece GetPiece(string piece)
+		public static Piece ReloadPiece(string innerName, Package package)
 		{
-			var existingPiece = Pieces.FirstOrDefault(p => p.InnerName == piece);
+			var existingPiece = getPieceSoft(innerName, package);
 
 			if (existingPiece == null)
-				throw new MissingPieceException(piece);
+				throw new MissingPieceException(innerName);
+
+			Pieces.Remove(existingPiece);
+
+			var piece = new Piece(existingPiece.InnerName, existingPiece.Path, existingPiece.Package);
+			Pieces.Add(piece);
+
+			return piece;
+		}
+
+		public static Piece GetPiece(string packageFile)
+		{
+			var existingPiece = getPieceSoft(FileExplorer.ResolveFile(packageFile), FileExplorer.ResolvePackage(packageFile));
+			if (existingPiece == null)
+				throw new MissingPieceException(packageFile);
 
 			return existingPiece;
+		}
+
+		static Piece getPieceSoft(string innerName, Package package)
+		{
+			return Pieces.FirstOrDefault(p => p.Package == package && p.InnerName == innerName);
 		}
 	}
 }
