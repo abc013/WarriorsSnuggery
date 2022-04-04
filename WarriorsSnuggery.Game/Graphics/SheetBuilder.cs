@@ -16,13 +16,13 @@ namespace WarriorsSnuggery.Graphics
 			currentFragments.Add(new SheetFragment(MPos.Zero, sheet.Bounds));
 		}
 
-		public static Texture WriteTexture(float[] data, string file, int width, int height)
+		public static Texture WriteTexture(float[] data, string filepath, int width, int height)
 		{
 			var bounds = new MPos(width, height);
 			var fragment = findLowest(bounds);
 
 			if (fragment == null)
-				throw new OverflowException($"Sheet (ID: {currentSheet.TextureID}) cannot contain texture (File: {file}, Size: {bounds}). Try increasing the sheet size.");
+				throw new OverflowException($"Sheet (ID: {currentSheet.TextureID}) cannot contain texture (File: {filepath}, Size: {bounds}). Try increasing the sheet size.");
 
 			var position = useFragment(fragment, data, bounds);
 

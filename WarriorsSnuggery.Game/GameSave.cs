@@ -198,7 +198,7 @@ namespace WarriorsSnuggery
 
 			var properties = typeof(GameSave).GetProperties();
 
-			foreach (var node in TextNodeLoader.FromFile(FileExplorer.FileDirectory(filepath), SaveName + FileExplorer.FileExtension(filepath)))
+			foreach (var node in TextNodeLoader.FromFilepath(filepath))
 			{
 				switch (node.Key)
 				{

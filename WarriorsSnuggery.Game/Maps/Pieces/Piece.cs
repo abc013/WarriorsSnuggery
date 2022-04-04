@@ -34,7 +34,7 @@ namespace WarriorsSnuggery.Maps.Pieces
 			PackageFile = packageFile;
 			Filepath = filepath;
 
-			var nodes = TextNodeLoader.FromFile(FileExplorer.FileDirectory(filepath), FileExplorer.FileName(filepath) + FileExplorer.FileExtension(filepath));
+			var nodes = TextNodeLoader.FromFilepath(filepath);
 			var fields = TypeLoader.GetFields(this);
 
 			foreach (var node in nodes)

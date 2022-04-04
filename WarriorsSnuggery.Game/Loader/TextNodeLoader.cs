@@ -7,6 +7,11 @@ namespace WarriorsSnuggery.Loader
 {
 	public static class TextNodeLoader
 	{
+		public static List<TextNode> FromFilepath(string filepath)
+		{
+			return FromFile(FileExplorer.FileDirectory(filepath), FileExplorer.FileName(filepath) + FileExplorer.FileExtension(filepath));
+		}
+
 		public static List<TextNode> FromFile(string directory, string file)
 		{
 			var lines = File.ReadAllLines(directory + file);

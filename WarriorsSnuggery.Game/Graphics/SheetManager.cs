@@ -33,26 +33,26 @@ namespace WarriorsSnuggery.Graphics
 			currentSheet++;
 		}
 
-		public static Texture[] AddTexture(string file, out int width, out int height)
+		public static Texture[] AddTexture(string filepath, out int width, out int height)
 		{
 			if (sheetsLoaded)
-				throw new Exception($"Unable to add texture (file: {file}. Sheets are already loaded.");
+				throw new Exception($"Unable to add texture (file: {filepath}. Sheets are already loaded.");
 
-			var data = BitmapLoader.LoadWhole(file, out width, out height);
+			var data = BitmapLoader.LoadWhole(filepath, out width, out height);
 
-			return new[] { addTexture(data, file, width, height) };
+			return new[] { addTexture(data, filepath, width, height) };
 		}
 
-		public static Texture[] AddSprite(string file, int width, int height)
+		public static Texture[] AddSprite(string filepath, int width, int height)
 		{
 			if (sheetsLoaded)
-				throw new Exception($"Unable to add texture (file: {file}. Sheets are already loaded.");
+				throw new Exception($"Unable to add texture (file: {filepath}. Sheets are already loaded.");
 
-			var dataList = BitmapLoader.LoadSplit(file, width, height);
+			var dataList = BitmapLoader.LoadSplit(filepath, width, height);
 
 			var textures = new Texture[dataList.Count];
 			for (int i = 0; i < dataList.Count; i++)
-				textures[i] = addTexture(dataList[i], file + i, width, height);
+				textures[i] = addTexture(dataList[i], filepath + i, width, height);
 
 			return textures;
 		}
@@ -71,9 +71,9 @@ namespace WarriorsSnuggery.Graphics
 			return textures;
 		}
 
-		static Texture addTexture(float[] data, string file, int width, int height)
+		static Texture addTexture(float[] data, string filepath, int width, int height)
 		{
-			var hash = file.GetHashCode() ^ width ^ height;
+			var hash = filepath.GetHashCode() ^ width ^ height;
 
 			if (hashedTextures.ContainsKey(hash))
 				return hashedTextures[hash];
@@ -81,7 +81,7 @@ namespace WarriorsSnuggery.Graphics
 			if (!SheetBuilder.HasSpaceLeft(width, height))
 				nextSheet();
 
-			var texture = SheetBuilder.WriteTexture(data, file, width, height);
+			var texture = SheetBuilder.WriteTexture(data, filepath, width, height);
 
 			hashedTextures.Add(hash, texture);
 

@@ -28,7 +28,7 @@ namespace WarriorsSnuggery
 		{
 			Directory = FileExplorer.FileDirectory(filepath);
 
-			var rules = TextNodeLoader.FromFile(Directory, FileExplorer.FileName(filepath) + FileExplorer.FileExtension(filepath));
+			var rules = TextNodeLoader.FromFilepath(filepath);
 
 			TypeLoader.SetValues(this, rules.Find(n => n.Key == "Package").Children);
 			Rules = rules.Find(n => n.Key == "Rules").Children;
