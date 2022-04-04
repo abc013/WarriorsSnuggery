@@ -73,7 +73,8 @@ namespace WarriorsSnuggery.Maps
 			// Check whether from save first. Saves must have a OverridePiece: the saved map.
 			if (map.Type.IsSave)
 			{
-				var input = new Piece(map.Type.OverridePiece.ToString(), FileExplorer.Saves, null);
+				var filepath = FileExplorer.Saves + map.Type.OverridePiece.ToString() + ".yaml";
+				var input = new Piece(map.Type.OverridePiece, filepath);
 				GenerateCrucialPiece(input, MPos.Zero);
 
 				// Local player should be somewhere within the piece

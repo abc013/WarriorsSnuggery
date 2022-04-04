@@ -155,7 +155,7 @@ namespace WarriorsSnuggery.Maps
 
 		public static MapType FromPiece(Piece piece, MissionType type = MissionType.TEST, ObjectiveType objective = ObjectiveType.NONE)
 		{
-			return new MapType(new PackageFile(piece.InnerName), 0, piece.Size, Color.White, new[] { type }, new[] { objective }, -1, 0, int.MaxValue, new TerrainGeneratorInfo(0, new List<TextNode>()), new IMapGeneratorInfo[0], CPos.Zero, false, true, null);
+			return new MapType(piece.PackageFile, 0, piece.Size, Color.White, new[] { type }, new[] { objective }, -1, 0, int.MaxValue, new TerrainGeneratorInfo(0, new List<TextNode>()), new IMapGeneratorInfo[0], CPos.Zero, false, true, null);
 		}
 	}
 }

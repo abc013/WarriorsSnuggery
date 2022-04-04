@@ -1,12 +1,11 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
 using WarriorsSnuggery.Loader;
 
 namespace WarriorsSnuggery.Maps.Pieces
 {
 	public static class PieceManager
 	{
-		public static readonly List<Piece> Pieces = new List<Piece>();
+		public static readonly Dictionary<string, Piece> Pieces = new Dictionary<string, Piece>();
 
 		public static void Load()
 		{
@@ -19,53 +18,57 @@ namespace WarriorsSnuggery.Maps.Pieces
 			foreach (var filepath in FileExplorer.FilesIn(package.PiecesDirectory, ".yaml", true))
 			{
 				var name = FileExplorer.FileName(filepath);
-				var path = FileExplorer.FileDirectory(filepath);
-
-				LoadPiece(name, path, package);
+				LoadPiece(new PackageFile(package, name), filepath);
 			}
 		}
 
-		public static Piece LoadPiece(string innerName, string path, Package package)
+		public static Piece LoadPiece(PackageFile packageFile, string filepath)
 		{
 			// Remove piece if already loaded
-			var existingPiece = getPieceSoft(innerName, package);
-
+			var existingPiece = getPieceSoft(filepath);
 			if (existingPiece != null)
-				Pieces.Remove(existingPiece);
+				Pieces.Remove(filepath);
 
-			var piece = new Piece(innerName, path, package);
+			var piece = new Piece(packageFile, filepath);
 
-			Pieces.Add(piece);
+			Pieces.Add(filepath, piece);
 
 			return piece;
 		}
 
 		public static Piece ReloadPiece(PackageFile packageFile)
 		{
-			var existingPiece = getPieceSoft(packageFile.File, packageFile.Package);
+			var filepath = FileExplorer.FindIn(packageFile.Package.PiecesDirectory, packageFile.File, ".yaml");
+
+			var existingPiece = getPieceSoft(filepath);
 			if (existingPiece == null)
 				throw new MissingPieceException(packageFile.ToString());
 
-			Pieces.Remove(existingPiece);
+			Pieces.Remove(filepath);
 
-			var piece = new Piece(existingPiece.InnerName, existingPiece.Path, existingPiece.Package);
-			Pieces.Add(piece);
+			var piece = new Piece(packageFile, existingPiece.Filepath);
+			Pieces.Add(piece.Filepath, piece);
 
 			return piece;
 		}
 
 		public static Piece GetPiece(PackageFile packageFile)
 		{
-			var existingPiece = getPieceSoft(packageFile.File, packageFile.Package);
+			var filepath = FileExplorer.FindIn(packageFile.Package.PiecesDirectory, packageFile.File, ".yaml");
+
+			var existingPiece = getPieceSoft(filepath);
 			if (existingPiece == null)
 				throw new MissingPieceException(packageFile.ToString());
 
 			return existingPiece;
 		}
 
-		static Piece getPieceSoft(string innerName, Package package)
+		static Piece getPieceSoft(string filepath)
 		{
-			return Pieces.FirstOrDefault(p => p.Package == package && p.InnerName == innerName);
+			if (Pieces.ContainsKey(filepath))
+				return Pieces[filepath];
+
+			return null;
 		}
 	}
 }

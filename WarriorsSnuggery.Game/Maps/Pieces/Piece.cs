@@ -13,11 +13,11 @@ namespace WarriorsSnuggery.Maps.Pieces
 	{
 		public readonly int MapFormat;
 
-		public readonly MPos Size;
+		public readonly string Filepath;
+		public readonly PackageFile PackageFile;
+
 		public readonly string Name;
-		public readonly string InnerName;
-		public readonly string Path;
-		public readonly Package Package;
+		public readonly MPos Size;
 
 		public uint MaxActorID => actors.Count > 0 ? actors.Max(n => n.ID) : 0;
 		public uint MaxWeaponID => weapons.Count > 0 ? weapons.Max(n => n.ID) : 0;
@@ -29,13 +29,12 @@ namespace WarriorsSnuggery.Maps.Pieces
 		readonly List<WeaponInit> weapons = new List<WeaponInit>();
 		readonly List<ParticleInit> particles = new List<ParticleInit>();
 
-		public Piece(string innerName, string path, Package package)
+		public Piece(PackageFile packageFile, string filepath)
 		{
-			InnerName = innerName;
-			Path = path;
-			Package = package;
+			PackageFile = packageFile;
+			Filepath = filepath;
 
-			var nodes = TextNodeLoader.FromFile(path, InnerName + ".yaml");
+			var nodes = TextNodeLoader.FromFile(FileExplorer.FileDirectory(filepath), FileExplorer.FileName(filepath) + FileExplorer.FileExtension(filepath));
 			var fields = TypeLoader.GetFields(this);
 
 			foreach (var node in nodes)
@@ -62,13 +61,13 @@ namespace WarriorsSnuggery.Maps.Pieces
 								if (init.Type != null)
 									actors.Add(init);
 								else if (Settings.LoadSoft)
-									Log.LoaderWarning("Pieces", $"{InnerName}: Attempted to load actor {id} of nonexistent type. Skipping.");
+									Log.LoaderWarning("Pieces", $"[{PackageFile}] Attempted to load actor {id} of nonexistent type. Skipping.");
 								else
-									throw new InvalidNodeException($"Piece {InnerName}: Attempted to load actor {id} of nonexistant type.");
+									throw new InvalidNodeException($"[{PackageFile}] Attempted to load actor {id} of nonexistant type.");
 							}
 							catch (Exception e)
 							{
-								throw new InvalidPieceException($"unable to load actor '{actor.Key}' in piece '{Name}'.", e);
+								throw new InvalidPieceException($"[{PackageFile}] Unable to load actor '{actor.Key}'.", e);
 							}
 						}
 						break;
@@ -83,14 +82,14 @@ namespace WarriorsSnuggery.Maps.Pieces
 								if (init.Type != null)
 									weapons.Add(init);
 								else if (Settings.LoadSoft)
-									Log.LoaderWarning("Pieces", $"{InnerName}: Attempted to load weapon {id} of nonexistent type. Skipping.");
+									Log.LoaderWarning("Pieces", $"[{PackageFile}] Attempted to load weapon {id} of nonexistent type. Skipping.");
 								else
-									throw new InvalidNodeException($"Piece {InnerName}: Attempted to load weapon {id} of nonexistant type.");
+									throw new InvalidNodeException($"[{PackageFile}] Attempted to load weapon {id} of nonexistant type.");
 
 							}
 							catch (Exception e)
 							{
-								throw new InvalidPieceException($"unable to load weapon '{weapon.Key}' in piece '{Name}'.", e);
+								throw new InvalidPieceException($"[{PackageFile}] Unable to load weapon '{weapon.Key}'.", e);
 							}
 						}
 						break;
@@ -104,13 +103,13 @@ namespace WarriorsSnuggery.Maps.Pieces
 								if (init.Type != null)
 									particles.Add(init);
 								else if (Settings.LoadSoft)
-									Log.LoaderWarning("Pieces", $"{InnerName}: Attempted to load particle of nonexistent type. Skipping.");
+									Log.LoaderWarning("Pieces", $"[{PackageFile}] Attempted to load particle of nonexistent type. Skipping.");
 								else
-									throw new InvalidNodeException($"Piece {InnerName}: Attempted to load particle of nonexistant type.");
+									throw new InvalidNodeException($"[{PackageFile}] Attempted to load particle of nonexistant type.");
 							}
 							catch (Exception e)
 							{
-								throw new InvalidPieceException($"unable to load particle '{particle.Key}' in piece '{Name}'.", e);
+								throw new InvalidPieceException($"[{PackageFile}] Unable to load particle '{particle.Key}'.", e);
 							}
 						}
 						break;
@@ -118,7 +117,7 @@ namespace WarriorsSnuggery.Maps.Pieces
 						TypeLoader.SetValue(this, fields, node);
 
 						if (MapFormat != Constants.CurrentMapFormat)
-							Log.LoaderWarning("Pieces", $"Attempting to load old map format {MapFormat} (current: {Constants.CurrentMapFormat})");
+							Log.LoaderWarning("Pieces", $"[{PackageFile}] Attempting to load old map format {MapFormat} (current: {Constants.CurrentMapFormat})");
 
 						break;
 					default:
@@ -145,7 +144,7 @@ namespace WarriorsSnuggery.Maps.Pieces
 					var id = groundData[y * Size.X + x];
 					if (Settings.LoadSoft && !TerrainCache.Types.ContainsKey(id))
 					{
-						Log.LoaderWarning("Pieces", $"{InnerName}: Attempted to load terrain of nonexistent type {id}. Skipping.");
+						Log.LoaderWarning("Pieces", $"[{PackageFile}] Attempted to load terrain of nonexistent type {id}. Skipping.");
 						continue;
 					}
 
@@ -171,7 +170,7 @@ namespace WarriorsSnuggery.Maps.Pieces
 						{
 							if (Settings.LoadSoft && !WallCache.Types.ContainsKey(id))
 							{
-								Log.LoaderWarning("Pieces", $"{InnerName}: Attempted to load wall of nonexistent type {id}. Skipping.");
+								Log.LoaderWarning("Pieces", $"[{PackageFile}] Attempted to load wall of nonexistent type {id}. Skipping.");
 								continue;
 							}
 

@@ -20,7 +20,7 @@ namespace WarriorsSnuggery.UI.Screens
 			Title.Position = new CPos(0, -4096, 0);
 
 			mapSelection = new PanelList(new MPos(4096, 4096), new MPos(512, 512), "wooden") { Position = new CPos(0, 1024, 0) };
-			foreach (var piece in PieceManager.Pieces)
+			foreach (var piece in PieceManager.Pieces.Values)
 			{
 				mapSelection.Add(new PanelListItem(new BatchObject(UISpriteManager.Get("UI_map")[0]), new MPos(512, 512), piece.Name, new[] { Color.Grey + "[" + piece.Size.X + "," + piece.Size.Y + "]" },
 				() =>

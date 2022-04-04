@@ -1,6 +1,7 @@
 ﻿using System.IO;
 using System.Linq;
 using System.Text;
+using WarriorsSnuggery.Loader;
 
 namespace WarriorsSnuggery.Maps.Pieces
 {
@@ -12,9 +13,9 @@ namespace WarriorsSnuggery.Maps.Pieces
 
 		public static Piece SaveEmpty(MPos size, string name)
 		{
-			var directory = PackageManager.Core.PiecesDirectory;
+			var filepath = PackageManager.Core.PiecesDirectory + name + ".yaml";
 
-			using (var stream = new StreamWriter(File.Create(directory + name + ".yaml")))
+			using (var stream = new StreamWriter(File.Create(filepath)))
 			{
 				stream.WriteLine("MapFormat=" + Constants.CurrentMapFormat);
 				stream.WriteLine("Name=" + name);
@@ -28,7 +29,7 @@ namespace WarriorsSnuggery.Maps.Pieces
 			}
 
 			// Load piece into cache, overwrite the old if there is one.
-			return PieceManager.LoadPiece(name, directory, PackageManager.Core);
+			return PieceManager.LoadPiece(new PackageFile(PackageManager.Core, name), filepath);
 		}
 
 		public static void SaveWorld(World world, string directory, string name, bool gameSave = false)
