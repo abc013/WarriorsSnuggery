@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.IO;
 using WarriorsSnuggery.Loader;
 
 namespace WarriorsSnuggery.Audio
@@ -21,12 +23,22 @@ namespace WarriorsSnuggery.Audio
 
 		public static void Load()
 		{
-			// TODO
-			var files = FileExplorer.FilesIn(PackageManager.Core.ContentDirectory + "music" + FileExplorer.Separator, ".wav");
+			var list = new List<(string name, string filepath)>();
 
-			data = new (string, string)[files.Length];
-			for (int i = 0; i < files.Length; i++)
-				data[i] = (FileExplorer.FileName(files[i]), files[i]);
+			foreach (var package in PackageManager.ActivePackages)
+			{
+				var musicDirectory = package.ContentDirectory + "music" + FileExplorer.Separator;
+				if (!Directory.Exists(musicDirectory))
+					continue;
+
+				foreach (var filepath in FileExplorer.FilesIn(musicDirectory, ".wav", true))
+				{
+					var name = FileExplorer.FileName(filepath);
+					list.Add((name, filepath));
+				}
+			}
+
+			data = list.ToArray();
 
 			hasMusic = data.Length != 0;
 		}

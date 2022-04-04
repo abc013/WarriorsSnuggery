@@ -10,15 +10,12 @@ namespace WarriorsSnuggery.Maps.Pieces
 		public static void Load()
 		{
 			foreach (var package in PackageManager.ActivePackages)
-				loadPackage(package);
-		}
-
-		static void loadPackage(Package package)
-		{
-			foreach (var filepath in FileExplorer.FilesIn(package.PiecesDirectory, ".yaml", true))
 			{
-				var name = FileExplorer.FileName(filepath);
-				LoadPiece(new PackageFile(package, name), filepath);
+				foreach (var filepath in FileExplorer.FilesIn(package.PiecesDirectory, ".yaml", true))
+				{
+					var name = FileExplorer.FileName(filepath);
+					LoadPiece(new PackageFile(package, name), filepath);
+				}
 			}
 		}
 
