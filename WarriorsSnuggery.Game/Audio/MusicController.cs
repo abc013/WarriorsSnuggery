@@ -1,4 +1,5 @@
 ﻿using System;
+using WarriorsSnuggery.Loader;
 
 namespace WarriorsSnuggery.Audio
 {
@@ -40,10 +41,10 @@ namespace WarriorsSnuggery.Audio
 				currentIntenseMusic.UpdateVolume();
 		}
 
-		public static void LoopSong(string music, string intenseMusic = null)
+		public static void LoopSong(PackageFile music, PackageFile intenseMusic = null)
 		{
 			SongLooping = true;
-			intenseActive = !string.IsNullOrEmpty(intenseMusic);
+			intenseActive = intenseMusic != null;
 
 			current = findMusic(music);
 			if (intenseActive)
@@ -52,15 +53,15 @@ namespace WarriorsSnuggery.Audio
 			NextSong();
 		}
 
-		static int findMusic(string music)
+		static int findMusic(PackageFile music)
 		{
 			for (int i = 0; i < data.Length; i++)
 			{
-				if (data[i].name == music)
+				if (data[i].name == music.ToString())
 					return i;
 			}
 
-			throw new Exception($"Unable to find specified song named {music}.");
+			throw new Exception($"Unable to find specified song named '{music.File}', package '{music.Package}'.");
 		}
 
 		public static void LoopAllSongs()

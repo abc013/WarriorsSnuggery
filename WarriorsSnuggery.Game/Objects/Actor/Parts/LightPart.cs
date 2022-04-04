@@ -1,5 +1,6 @@
 ﻿using System;
 using WarriorsSnuggery.Graphics;
+using WarriorsSnuggery.Loader;
 using WarriorsSnuggery.Objects.Conditions;
 
 namespace WarriorsSnuggery.Objects.Actors.Parts
@@ -10,7 +11,7 @@ namespace WarriorsSnuggery.Objects.Actors.Parts
 		public readonly Texture[] Textures;
 
 		[Require, Desc("Name of the texture file.")]
-		public readonly string Name;
+		public readonly PackageFile Name;
 
 		[Desc("Activate only by the following Condition.")]
 		public readonly Condition Condition;

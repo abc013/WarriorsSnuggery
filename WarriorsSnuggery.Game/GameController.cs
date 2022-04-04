@@ -35,7 +35,7 @@ namespace WarriorsSnuggery
 			if (!string.IsNullOrEmpty(Program.Piece))
 			{
 				mode = InteractionMode.INGAME;
-				map = MapType.FromPiece(PieceManager.GetPiece(Program.Piece));
+				map = MapType.FromPiece(PieceManager.GetPiece(new PackageFile(Program.Piece)));
 				mission = MissionType.TEST;
 			}
 			else if (!string.IsNullOrEmpty(Program.MapType))

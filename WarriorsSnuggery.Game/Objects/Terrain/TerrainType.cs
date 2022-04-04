@@ -9,13 +9,13 @@ namespace WarriorsSnuggery.Objects
 		public readonly ushort ID;
 
 		[Require, Desc("Random base texture.")]
-		public readonly string Sprite;
+		public readonly PackageFile Sprite;
 
 		readonly TextureInfo baseTextureInfo;
 		public Texture Texture => baseTextureInfo.GetTextures()[0];
 
 		[Desc("Edge of the tile.", "Vertical Edges are overwritten by VerticalEdgeSprite if given.")]
-		public readonly string EdgeSprite;
+		public readonly PackageFile EdgeSprite;
 		[Desc("Bounds of the edge texture.")]
 		public readonly MPos EdgeSpriteBounds;
 
@@ -24,7 +24,7 @@ namespace WarriorsSnuggery.Objects
 		public CPos EdgeOffset => textureOffset(EdgeSpriteBounds);
 
 		[Desc("Vertical Edge of the tile.")]
-		public readonly string VerticalEdgeSprite;
+		public readonly PackageFile VerticalEdgeSprite;
 		[Desc("Bounds of the vertical edge texture.")]
 		public readonly MPos VerticalEdgeSpriteBounds;
 
@@ -33,7 +33,7 @@ namespace WarriorsSnuggery.Objects
 		public CPos VerticalEdgeOffset => textureOffset(VerticalEdgeSpriteBounds);
 
 		[Desc("Corner of the tile.")]
-		public readonly string CornerSprite;
+		public readonly PackageFile CornerSprite;
 		[Desc("Bounds of the corner texture.")]
 		public readonly MPos CornerSpriteBounds;
 

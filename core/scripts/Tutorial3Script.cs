@@ -1,4 +1,5 @@
 using WarriorsSnuggery;
+using WarriorsSnuggery.Loader;
 using WarriorsSnuggery.Objects.Actors;
 using WarriorsSnuggery.Objects.Particles;
 using WarriorsSnuggery.Scripting;
@@ -10,7 +11,7 @@ namespace Mission
 	{
 		int moneyrows = 22;
 
-		public Tutorial3Script(string file, Game game) : base(file, game)
+		public Tutorial3Script(PackageFile packageFile, Game game) : base(packageFile, game)
 		{
 			OnStart = onStart;
 			Tick += tickHealth;

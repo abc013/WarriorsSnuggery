@@ -11,7 +11,7 @@ namespace WarriorsSnuggery.Objects.Actors.Parts
 		public readonly Texture[] Textures;
 
 		[Require, Desc("Name of the texture file.")]
-		public readonly string Name;
+		public readonly PackageFile Name;
 
 		[Require, Desc("Size of a single frame.")]
 		public readonly MPos Dimensions;

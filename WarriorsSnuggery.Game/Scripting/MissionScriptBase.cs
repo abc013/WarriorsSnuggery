@@ -5,7 +5,7 @@ namespace WarriorsSnuggery.Scripting
 {
 	public abstract class MissionScriptBase
 	{
-		public readonly string File;
+		public readonly PackageFile PackageFile;
 
 		protected readonly Game game;
 		protected readonly World world;
@@ -16,9 +16,9 @@ namespace WarriorsSnuggery.Scripting
 		public Action OnWin { get; protected set; } = () => { };
 		public Action OnLose { get; protected set; } = () => { };
 
-		public MissionScriptBase(string file, Game game)
+		public MissionScriptBase(PackageFile file, Game game)
 		{
-			File = file;
+			PackageFile = file;
 			this.game = game;
 			world = game.World;
 		}

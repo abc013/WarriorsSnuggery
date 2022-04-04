@@ -1,4 +1,5 @@
 using WarriorsSnuggery;
+using WarriorsSnuggery.Loader;
 using WarriorsSnuggery.Scripting;
 using WarriorsSnuggery.Objects.Actors;
 using WarriorsSnuggery.UI.Objects;
@@ -11,7 +12,7 @@ namespace Mission
 		bool speedSpellActivated, damageSpellActivated, playerswitched;
 		Actor target;
 
-		public Tutorial4Script(string file, Game game) : base(file, game)
+		public Tutorial4Script(PackageFile packageFile, Game game) : base(packageFile, game)
 		{
 			OnStart = onStart;
 			game.Stats.Lifes = 1;

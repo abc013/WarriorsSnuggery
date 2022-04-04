@@ -43,10 +43,10 @@ namespace WarriorsSnuggery.UI.Screens
 			mousePosition = new UIText(FontManager.Default, TextOffset.RIGHT) { Position = new CPos(Right - 1024, -7172, 0) };
 			Add(mousePosition);
 
-			if (!string.IsNullOrEmpty(game.MapType.OverridePiece))
+			if (game.MapType.OverridePiece != null)
 			{
 				var pieceName = new UIText(FontManager.Default, TextOffset.RIGHT) { Position = new CPos(Right - 1024, -7684, 0) };
-				pieceName.SetText("Piece name: " + Color.Green + FileExplorer.ResolveFile(game.MapType.OverridePiece));
+				pieceName.SetText("Piece name: " + Color.Green + game.MapType.OverridePiece.File);
 				Add(pieceName);
 			}
 
@@ -331,10 +331,9 @@ namespace WarriorsSnuggery.UI.Screens
 
 		void savePiece()
 		{
-			var package = FileExplorer.ResolvePackage(game.MapType.OverridePiece);
-			var file = FileExplorer.ResolveFile(game.MapType.OverridePiece);
-			PieceSaver.SaveWorld(game.World, FileExplorer.FindPath(package.PiecesDirectory, file, ".yaml"), file);
-			PieceManager.ReloadPiece(file, package);
+			var packageFile = game.MapType.OverridePiece;
+			PieceSaver.SaveWorld(game.World, FileExplorer.FindPath(packageFile.Package.PiecesDirectory, packageFile.File, ".yaml"), packageFile.File);
+			PieceManager.ReloadPiece(packageFile);
 			game.AddInfoMessage(150, "Map saved!");
 		}
 	}

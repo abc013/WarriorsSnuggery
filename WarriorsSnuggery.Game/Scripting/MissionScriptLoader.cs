@@ -5,6 +5,7 @@ using System.Linq;
 using System.Reflection;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
+using WarriorsSnuggery.Loader;
 
 namespace WarriorsSnuggery.Scripting
 {
@@ -12,37 +13,38 @@ namespace WarriorsSnuggery.Scripting
 	{
 		static readonly Dictionary<string, Assembly> loadedAssemblies = new Dictionary<string, Assembly>();
 
-		readonly string file;
-		readonly string path;
-		string cachePath => path + ".cache";
+		readonly PackageFile packageFile;
+		readonly string filePath;
+
+		string cachePath => filePath + ".cache";
 
 		readonly Assembly assembly;
 		readonly Type type;
 
-		public MissionScriptLoader(string path, string file)
+		public MissionScriptLoader(PackageFile packageFile)
 		{
-			this.file = file;
-			this.path = path;
+			this.packageFile = packageFile;
+			filePath = FileExplorer.FindIn(packageFile.Package.ScriptsDirectory, packageFile.File, ".cs");
 
-			Log.Debug("Loading new mission script: " + path);
+			Log.Debug("Loading new mission script: " + filePath);
 
-			if (loadedAssemblies.ContainsKey(file))
+			if (loadedAssemblies.ContainsKey(filePath))
 			{
 				if (!Program.ReloadScripts)
 				{
-					assembly = loadedAssemblies[file];
+					assembly = loadedAssemblies[filePath];
 					type = assembly.GetTypes().Where(t => t.BaseType == typeof(MissionScriptBase)).FirstOrDefault();
 
 					Log.Debug("Mission script already in memory. Loaded.");
 					return;
 				}
 
-				loadedAssemblies.Remove(file);
+				loadedAssemblies.Remove(filePath);
 
 				Log.Debug("Mission script already in memory, but reload enabled. Reloading.");
 			}
 
-			if (File.Exists(cachePath) && File.GetLastWriteTimeUtc(cachePath) > File.GetLastWriteTimeUtc(path))
+			if (File.Exists(cachePath) && File.GetLastWriteTimeUtc(cachePath) > File.GetLastWriteTimeUtc(filePath))
 				Log.Debug("Script assembly compilation cached and not outdated. Loaded.");
 			else
 				compileAndCache();
@@ -53,14 +55,14 @@ namespace WarriorsSnuggery.Scripting
 
 			assembly = Assembly.Load(data);
 
-			timer.StopAndWrite("Loading script assembly: " + file);
+			timer.StopAndWrite("Loading script assembly: " + filePath);
 
 			type = assembly.GetTypes().Where(t => t.BaseType == typeof(MissionScriptBase)).FirstOrDefault();
 
 			if (type == null)
-				throw new MissingScriptException(file + ".cs");
+				throw new MissingScriptException(packageFile.ToString());
 
-			loadedAssemblies.Add(file, assembly);
+			loadedAssemblies.Add(filePath, assembly);
 
 			Log.Debug("Mission script successfully loaded.");
 		}
@@ -69,13 +71,13 @@ namespace WarriorsSnuggery.Scripting
 		{
 			var timer = Timer.Start();
 
-			using var reader = new StreamReader(path);
+			using var reader = new StreamReader(filePath);
 			var content = reader.ReadToEnd();
 			reader.Close();
 
 			var assemblyLocation = System.Runtime.InteropServices.RuntimeEnvironment.GetRuntimeDirectory() + FileExplorer.Separator;
 
-			var compilation = CSharpCompilation.Create(file)
+			var compilation = CSharpCompilation.Create(packageFile.ToString())
 			.WithOptions(new CSharpCompilationOptions(OutputKind.DynamicallyLinkedLibrary))
 			.AddReferences(
 				MetadataReference.CreateFromFile(typeof(object).GetTypeInfo().Assembly.Location),
@@ -97,7 +99,7 @@ namespace WarriorsSnuggery.Scripting
 				foreach (var compilerMessage in compilation.GetDiagnostics())
 					Log.Exeption(compilerMessage);
 
-				throw new Exception($"The script '{file + ".cs"}' could not be loaded. See console or error.log for more details.");
+				throw new Exception($"The script '{packageFile + ".cs"}' could not be loaded. See console or error.log for more details.");
 			}
 			ms.Seek(0, SeekOrigin.Begin);
 
@@ -105,13 +107,13 @@ namespace WarriorsSnuggery.Scripting
 			using var fileStream = File.Create(cachePath);
 			ms.WriteTo(fileStream);
 
-			timer.StopAndWrite("Compiling script assembly: " + file);
+			timer.StopAndWrite("Compiling script assembly: " + packageFile);
 			Log.Debug("Script assembly compilation not cached or cache outdated. (Re-)Compiled.");
 		}
 
 		public MissionScriptBase Start(Game game)
 		{
-			return (MissionScriptBase)Activator.CreateInstance(type, new object[] { file, game });
+			return (MissionScriptBase)Activator.CreateInstance(type, new object[] { packageFile, game });
 		}
 	}
 }

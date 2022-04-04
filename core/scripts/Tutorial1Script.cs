@@ -1,6 +1,7 @@
 using WarriorsSnuggery;
 using WarriorsSnuggery.Scripting;
 using System;
+using WarriorsSnuggery.Loader;
 using WarriorsSnuggery.UI.Objects;
 using WarriorsSnuggery.Objects.Actors;
 using WarriorsSnuggery.Audio;
@@ -9,7 +10,7 @@ namespace Mission
 {
 	public class Tutorial1Script : MissionScriptBase
 	{
-		public Tutorial1Script(string file, Game game) : base(file, game)
+		public Tutorial1Script(PackageFile packageFile, Game game) : base(packageFile, game)
 		{
 			OnStart += onStart;
 			Tick += tickSimpleMovement;

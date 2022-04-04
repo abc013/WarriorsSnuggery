@@ -83,6 +83,10 @@ namespace WarriorsSnuggery.Loader
 			{
 				return value;
 			}
+			else if (t == typeof(PackageFile))
+			{
+				return new PackageFile(value);
+			}
 			else if (t.IsArray && t.GetElementType().IsEnum)
 			{
 				var parts = value.Split(',');
@@ -138,6 +142,16 @@ namespace WarriorsSnuggery.Loader
 					parts[i] = parts[i].Trim();
 
 				return parts;
+			}
+			else if (t == typeof(PackageFile[]))
+			{
+				var parts = value.Split(',');
+
+				var packageFiles = new PackageFile[parts.Length];
+				for (int i = 0; i < parts.Length; i++)
+					packageFiles[i] = new PackageFile(parts[i].Trim());
+
+				return packageFiles;
 			}
 			else if (t == typeof(bool[]))
 			{
@@ -260,7 +274,7 @@ namespace WarriorsSnuggery.Loader
 			else if (t == typeof(TextureInfo))
 			{
 				var size = MPos.Zero;
-				var name = value;
+				var name = new PackageFile(value);
 				var randomTexture = false;
 				var tick = 20;
 				bool searchFile = true;

@@ -170,7 +170,7 @@ namespace WarriorsSnuggery
 		public bool Hardcore { get; private set; }
 
 		// Script Values
-		public string Script { get; private set; }
+		public PackageFile Script { get; private set; }
 		public TextNode[] ScriptState { get; private set; }
 
 		GameSave(GameSave save)
@@ -248,7 +248,7 @@ namespace WarriorsSnuggery
 
 						break;
 					case nameof(Script):
-						Script = node.Convert<string>();
+						Script = node.Convert<PackageFile>();
 						ScriptState = node.Children.ToArray();
 
 						break;
@@ -364,7 +364,7 @@ namespace WarriorsSnuggery
 				writer.WriteLine($"{nameof(UnlockedActors)}={string.Join(',', UnlockedActors)}");
 				writer.WriteLine($"{nameof(UnlockedTrophies)}={string.Join(',', UnlockedTrophies)}");
 
-				if (!string.IsNullOrEmpty(Script))
+				if (Script != null)
 				{
 					writer.WriteLine($"{nameof(Script)}={Script}");
 					for (var i = 0; i < scriptState.Length; i++)

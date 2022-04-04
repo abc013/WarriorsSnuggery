@@ -25,7 +25,7 @@ namespace WarriorsSnuggery.Maps.Generators
 		public readonly int NoiseMapID = -1;
 
 		[Desc("Pieces of which one is chosen to be spawned.")]
-		public readonly string[] Pieces = Array.Empty<string>();
+		public readonly PackageFile[] Pieces = Array.Empty<PackageFile>();
 
 		[Desc("Sets where to spawn the piece. This option only works if PositionType is set to 'POSITION'.")]
 		public readonly MPos Position = MPos.Zero;

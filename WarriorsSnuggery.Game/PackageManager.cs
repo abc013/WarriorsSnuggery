@@ -33,9 +33,9 @@ namespace WarriorsSnuggery
 				{
 					ActivePackages.Add(package);
 					if (package.Outdated)
-						Log.LoaderWarning("Mods", $"Enabling outdated package '{package.InternalName}' (Version '{package.GameVersion}').");
+						Log.LoaderWarning("Mods", $"Enabling outdated package '{package}' (Version '{package.GameVersion}').");
 					else
-						Log.LoaderDebug("Mods", $"Enabling package '{package.InternalName}'.");
+						Log.LoaderDebug("Mods", $"Enabling package '{package}'.");
 				}
 				else
 				{

@@ -1,4 +1,6 @@
-﻿namespace WarriorsSnuggery.Graphics
+﻿using WarriorsSnuggery.Loader;
+
+namespace WarriorsSnuggery.Graphics
 {
 	public enum TextureType
 	{
@@ -18,13 +20,13 @@
 		public readonly int Width;
 		public readonly int Height;
 
-		public TextureInfo(string fileName) : this(fileName, TextureType.IMAGE, 0, 0, 0) { }
+		public TextureInfo(PackageFile packageFile) : this(packageFile, TextureType.IMAGE, 0, 0, 0) { }
 
-		public TextureInfo(string fileName, TextureType type, MPos bounds, int tick = 0, bool load = true) : this(fileName, type, bounds.X, bounds.Y, tick, load) { }
+		public TextureInfo(PackageFile packageFile, TextureType type, MPos bounds, int tick = 0, bool load = true) : this(packageFile, type, bounds.X, bounds.Y, tick, load) { }
 
-		public TextureInfo(string fileName, TextureType type, int width, int height, int tick = 0, bool load = true)
+		public TextureInfo(PackageFile packageFile, TextureType type, int width, int height, int tick = 0, bool load = true)
 		{
-			filepath = FileExplorer.FindIn(FileExplorer.ResolvePackage(fileName).ContentDirectory, FileExplorer.ResolveFile(fileName), ".png");
+			filepath = FileExplorer.FindIn(packageFile.Package.ContentDirectory, packageFile.File, ".png");
 
 			Type = type;
 			Tick = tick;

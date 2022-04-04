@@ -14,7 +14,7 @@ namespace WarriorsSnuggery.Maps.Generators
 		public readonly MPos Size = MPos.Zero;
 
 		[Desc("A selection of pieces. The game will choose a random one.")]
-		public readonly string[] Pieces;
+		public readonly PackageFile[] Pieces;
 
 		public GridPiece(List<TextNode> nodes)
 		{
@@ -219,7 +219,7 @@ namespace WarriorsSnuggery.Maps.Generators
 			return cells;
 		}
 
-		Piece getPiece(string[] choices)
+		Piece getPiece(PackageFile[] choices)
 		{
 			var choice = choices[Random.Next(choices.Length)];
 

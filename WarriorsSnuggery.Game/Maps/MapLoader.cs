@@ -73,7 +73,7 @@ namespace WarriorsSnuggery.Maps
 			// Check whether from save first. Saves must have a OverridePiece: the saved map.
 			if (map.Type.IsSave)
 			{
-				var input = new Piece(map.Type.OverridePiece, FileExplorer.Saves, null);
+				var input = new Piece(map.Type.OverridePiece.ToString(), FileExplorer.Saves, null);
 				GenerateCrucialPiece(input, MPos.Zero);
 
 				// Local player should be somewhere within the piece
@@ -82,7 +82,7 @@ namespace WarriorsSnuggery.Maps
 				return;
 			}
 
-			if (!string.IsNullOrEmpty(map.Type.OverridePiece))
+			if (map.Type.OverridePiece != null)
 				GenerateCrucialPiece(PieceManager.GetPiece(map.Type.OverridePiece), MPos.Zero);
 			else
 				map.Type.TerrainGenerationBase.GetGenerator(Random, this).Generate();

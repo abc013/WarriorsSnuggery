@@ -30,32 +30,6 @@ namespace WarriorsSnuggery
 			Fonts = MainDirectory + "fonts" + Separator;
 		}
 
-		public static Package ResolvePackage(string packageFile)
-		{
-			var split = packageFile.Split('|');
-
-			if (split.Length == 1)
-				return PackageManager.Core;
-
-			if (split.Length == 2)
-				return PackageManager.ActivePackages.Find(package => package.InternalName == split[0]);
-
-			throw new InvalidDataException($"Filename contains multiple package indicators '|'.");
-		}
-
-		public static string ResolveFile(string packageFile)
-		{
-			var split = packageFile.Split('|');
-
-			if (split.Length == 1)
-				return split[0];
-
-			if (split.Length == 2)
-				return split[1];
-
-			throw new InvalidDataException($"Filename contains multiple package indicators '|'.");
-		}
-
 		public static string FileName(string filepath)
 		{
 			return Path.GetFileNameWithoutExtension(filepath);

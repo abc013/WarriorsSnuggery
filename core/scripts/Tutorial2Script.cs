@@ -1,6 +1,7 @@
 using WarriorsSnuggery;
 using WarriorsSnuggery.Scripting;
 using System.Linq;
+using WarriorsSnuggery.Loader;
 using WarriorsSnuggery.Objects.Actors;
 using WarriorsSnuggery.Objects.Weapons;
 using WarriorsSnuggery.UI.Objects;
@@ -18,7 +19,7 @@ namespace Mission
 
 		int explosionCountdown = 7 * 60;
 
-		public Tutorial2Script(string file, Game game) : base(file, game)
+		public Tutorial2Script(PackageFile packageFile, Game game) : base(packageFile, game)
 		{
 			OnStart = onStart;
 			Tick += tickAttackTraining1;

@@ -8,6 +8,7 @@ using WarriorsSnuggery.Spells;
 using WarriorsSnuggery.Scripting;
 using WarriorsSnuggery.UI.Screens;
 using WarriorsSnuggery.Objects.Actors;
+using WarriorsSnuggery.Loader;
 
 namespace WarriorsSnuggery
 {
@@ -127,9 +128,9 @@ namespace WarriorsSnuggery
 
 			World = new World(this, Seed, Save);
 
-			if (!string.IsNullOrEmpty(map.MissionScript) && !Program.DisableScripts)
+			if (map.MissionScript != null && !Program.DisableScripts)
 			{
-				var scriptLoader = new MissionScriptLoader(FileExplorer.FindIn(FileExplorer.ResolvePackage(map.MissionScript).ScriptsDirectory, FileExplorer.ResolveFile(map.MissionScript), ".cs"), map.MissionScript);
+				var scriptLoader = new MissionScriptLoader(map.MissionScript);
 				script = scriptLoader.Start(this);
 			}
 			else
@@ -151,7 +152,7 @@ namespace WarriorsSnuggery
 
 			World.Load();
 
-			if (!string.IsNullOrEmpty(MapType.Music))
+			if (MapType.Music != null)
 				MusicController.LoopSong(MapType.Music, MapType.IntenseMusic);
 			else
 				MusicController.LoopAllSongs();
@@ -445,14 +446,14 @@ namespace WarriorsSnuggery
 			}
 		}
 
-		public object[] GetScriptState(out string name)
+		public object[] GetScriptState(out PackageFile packageFile)
 		{
-			name = string.Empty;
+			packageFile = null;
 
 			if (script == null)
 				return null;
 
-			name = script.File;
+			packageFile = script.PackageFile;
 
 			return script.GetState();
 		}

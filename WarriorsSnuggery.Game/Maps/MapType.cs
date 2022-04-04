@@ -26,7 +26,7 @@ namespace WarriorsSnuggery.Maps
 		public readonly int ToLevel = int.MaxValue;
 
 		[Desc("Piece that has to be generated on the map at the coordinates 0,0.")]
-		public readonly string OverridePiece = string.Empty;
+		public readonly PackageFile OverridePiece;
 		[Desc("Custom size for the map.")]
 		public readonly MPos CustomSize = MPos.Zero;
 		[Desc("Spawn point of the player.", "If left at (0, 0, 0), the center of the map or a generated spawnpoint will be used.")]
@@ -56,16 +56,16 @@ namespace WarriorsSnuggery.Maps
 		public readonly WeatherEffect[] WeatherEffects = new WeatherEffect[0];
 
 		[Desc("Determines the file of a script that will be executed during the game.", "Ending of the filename must be '.cs'.")]
-		public readonly string MissionScript;
+		public readonly PackageFile MissionScript;
 
 		[Desc("Variable used to determine wether this map comes from an save. DO NOT ALTER.")]
 		public readonly bool IsSave;
 
 		[Desc("Song looping while being in the level.", "If left empty, music will cycle.")]
-		public readonly string Music;
+		public readonly PackageFile Music;
 
 		[Desc("Battle song looping while being low life or in combat.", "If left empty, there will be no battle music.", "Warning: do not choose the same song as battle song again. This will crash the game.")]
-		public readonly string IntenseMusic;
+		public readonly PackageFile IntenseMusic;
 
 		// For the DocWriter
 		public MapType() { }
@@ -119,7 +119,7 @@ namespace WarriorsSnuggery.Maps
 				throw new MissingNodeException(name, "BaseTerrainGeneration");
 		}
 
-		MapType(string overridePiece, int wall, MPos customSize, Color ambient, MissionType[] missionTypes, ObjectiveType[] availableObjectives, int level, int fromLevel, int toLevel, TerrainGeneratorInfo baseTerrainGeneration, IMapGeneratorInfo[] generators, CPos spawnPoint, bool isSave, bool allowWeapons, string missionScript)
+		MapType(PackageFile overridePiece, int wall, MPos customSize, Color ambient, MissionType[] missionTypes, ObjectiveType[] availableObjectives, int level, int fromLevel, int toLevel, TerrainGeneratorInfo baseTerrainGeneration, IMapGeneratorInfo[] generators, CPos spawnPoint, bool isSave, bool allowWeapons, PackageFile missionScript)
 		{
 			OverridePiece = overridePiece;
 			Wall = wall;
@@ -150,12 +150,12 @@ namespace WarriorsSnuggery.Maps
 			var type = save.CurrentMapType;
 			var mapGeneratorInfos = type == null ? new IMapGeneratorInfo[0] : type.Generators;
 
-			return new MapType(save.MapSaveName, 0, size, Color.White, new[] { save.CurrentMission }, new[] { save.CurrentObjective }, -1, 0, int.MaxValue, new TerrainGeneratorInfo(0, new List<TextNode>()), mapGeneratorInfos, CPos.Zero, true, true, save.Script);
+			return new MapType(new PackageFile(save.MapSaveName), 0, size, Color.White, new[] { save.CurrentMission }, new[] { save.CurrentObjective }, -1, 0, int.MaxValue, new TerrainGeneratorInfo(0, new List<TextNode>()), mapGeneratorInfos, CPos.Zero, true, true, save.Script);
 		}
 
 		public static MapType FromPiece(Piece piece, MissionType type = MissionType.TEST, ObjectiveType objective = ObjectiveType.NONE)
 		{
-			return new MapType(piece.InnerName, 0, piece.Size, Color.White, new[] { type }, new[] { objective }, -1, 0, int.MaxValue, new TerrainGeneratorInfo(0, new List<TextNode>()), new IMapGeneratorInfo[0], CPos.Zero, false, true, null);
+			return new MapType(new PackageFile(piece.InnerName), 0, piece.Size, Color.White, new[] { type }, new[] { objective }, -1, 0, int.MaxValue, new TerrainGeneratorInfo(0, new List<TextNode>()), new IMapGeneratorInfo[0], CPos.Zero, false, true, null);
 		}
 	}
 }

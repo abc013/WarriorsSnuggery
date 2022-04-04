@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using WarriorsSnuggery;
+using WarriorsSnuggery.Loader;
 using WarriorsSnuggery.Objects.Particles;
 using WarriorsSnuggery.Scripting;
 
@@ -12,7 +13,7 @@ namespace WarriorsSnuggeryScripts
 
 		readonly List<ParticleEntity> entities = new List<ParticleEntity>();
 
-		public MainMenuScript(string file, Game game) : base(file, game)
+		public MainMenuScript(PackageFile packageFile, Game game) : base(packageFile, game)
 		{
 			const int count = 3;
 			static ParticleType particleType() => ParticleCache.Types[particleTypes[Program.SharedRandom.Next(particleTypes.Length)]];

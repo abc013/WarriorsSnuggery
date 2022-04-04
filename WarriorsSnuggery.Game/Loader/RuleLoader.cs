@@ -35,8 +35,8 @@ namespace WarriorsSnuggery.Loader
 			timer.StopAndWrite($"Loading Game Rules");
 			timer.Restart();
 
-			ShroudTexture = new TextureInfo("shroud").GetTextures();
-			Questionmark = new TextureInfo("questionmark").GetTextures();
+			ShroudTexture = new TextureInfo(new PackageFile("shroud")).GetTextures();
+			Questionmark = new TextureInfo(new PackageFile("questionmark")).GetTextures();
 
 			loadUIRules();
 
@@ -49,8 +49,8 @@ namespace WarriorsSnuggery.Loader
 
 			foreach (var node in getFiles(rule))
 			{
-				var file = node.Key;
-				loader.Load(FileExplorer.FindPath(FileExplorer.ResolvePackage(file).RulesDirectory, FileExplorer.FileName(FileExplorer.ResolveFile(file)), FileExplorer.FileExtension(FileExplorer.ResolveFile(file))), FileExplorer.ResolveFile(file));
+				var packageFile = new PackageFile(node.Key);
+				loader.Load(FileExplorer.FindPath(packageFile.Package.RulesDirectory, FileExplorer.FileName(packageFile.File), FileExplorer.FileExtension(packageFile.File)), packageFile.File);
 			}
 
 			return loader.Finish();
@@ -72,53 +72,60 @@ namespace WarriorsSnuggery.Loader
 
 		static void loadUIRules()
 		{
-			UISpriteManager.Add("UI_inactiveConnection", new TextureInfo("UI_inactiveConnection", TextureType.ANIMATION, 5, 3, 10));
-			UISpriteManager.Add("UI_activeConnection", new TextureInfo("UI_activeConnection", TextureType.ANIMATION, 5, 3, 10));
-			UISpriteManager.Add("UI_save", "UI_save");
-			UISpriteManager.Add("UI_gear", "UI_gear");
-			UISpriteManager.Add("UI_map", "UI_map");
-			UISpriteManager.Add("UI_money", "UI_money");
-			UISpriteManager.Add("UI_key", "UI_key");
-			UISpriteManager.Add("UI_heart", "UI_heart");
-			UISpriteManager.Add("keyboard", new TextureInfo("keyboard", TextureType.ANIMATION, 24, 24));
-			UISpriteManager.Add("UI_selector1", "UI_selector1");
-			UISpriteManager.Add("UI_selector2", "UI_selector2");
-			UISpriteManager.Add("UI_enemy_arrow", "UI_enemy_arrow");
-			UISpriteManager.Add("cursor_default", "cursor_default");
-			UISpriteManager.Add("cursor_select", "cursor_select");
-			UISpriteManager.Add("cursor_money", "cursor_money");
-			UISpriteManager.Add("cursor_attack", "cursor_attack");
-			UISpriteManager.Add("logo", "logo");
+			UISpriteManager.Add("UI_inactiveConnection", new TextureInfo(new PackageFile("UI_inactiveConnection"), TextureType.ANIMATION, 5, 3, 10));
+			UISpriteManager.Add("UI_activeConnection", new TextureInfo(new PackageFile("UI_activeConnection"), TextureType.ANIMATION, 5, 3, 10));
+			UISpriteManager.Add(new PackageFile("UI_save"));
+			UISpriteManager.Add(new PackageFile("UI_gear"));
+			UISpriteManager.Add(new PackageFile("UI_map"));
+			UISpriteManager.Add(new PackageFile("UI_money"));
+			UISpriteManager.Add(new PackageFile("UI_key"));
+			UISpriteManager.Add(new PackageFile("UI_heart"));
+			UISpriteManager.Add("keyboard", new TextureInfo(new PackageFile("keyboard"), TextureType.ANIMATION, 24, 24));
+			UISpriteManager.Add(new PackageFile("UI_selector1"));
+			UISpriteManager.Add(new PackageFile("UI_selector2"));
+			UISpriteManager.Add(new PackageFile("UI_enemy_arrow"));
+			UISpriteManager.Add(new PackageFile("cursor_default"));
+			UISpriteManager.Add(new PackageFile("cursor_select"));
+			UISpriteManager.Add(new PackageFile("cursor_money"));
+			UISpriteManager.Add(new PackageFile("cursor_attack"));
+			UISpriteManager.Add(new PackageFile("logo"));
 
-			PanelCache.Add(new PanelType(getTexture("UI_wood1"), getTexture("UI_wood2"), getTexture("UI_wood3"), 72), "wooden");
-			PanelCache.Add(new PanelType(getTexture("UI_stone1"), getTexture("UI_wood3"), getTexture("UI_stone2"), 72), "stone");
+			PanelCache.Add(panel(new PackageFile("UI_wood1"), new PackageFile("UI_wood2"), new PackageFile("UI_wood3"), 72), "wooden");
+			PanelCache.Add(panel(new PackageFile("UI_stone1"), new PackageFile("UI_wood3"), new PackageFile("UI_stone2"), 72), "stone");
 
-			CheckBoxCache.Add(checkBox("check"), "wooden");
+			CheckBoxCache.Add(checkBox(new PackageFile("check")), "wooden");
 
-			CheckBoxCache.Add(checkBox("check_terrain"), "terrain_editor");
-			CheckBoxCache.Add(checkBox("check_actor"), "actor_editor");
-			CheckBoxCache.Add(checkBox("check_object"), "object_editor");
-			CheckBoxCache.Add(checkBox("check_wall"), "wall_editor");
+			CheckBoxCache.Add(checkBox(new PackageFile("check_terrain")), "terrain_editor");
+			CheckBoxCache.Add(checkBox(new PackageFile("check_actor")), "actor_editor");
+			CheckBoxCache.Add(checkBox(new PackageFile("check_object")), "object_editor");
+			CheckBoxCache.Add(checkBox(new PackageFile("check_wall")), "wall_editor");
 
-			CheckBoxCache.Add(checkBox("check_menu"), "menu");
+			CheckBoxCache.Add(checkBox(new PackageFile("check_menu")), "menu");
 
-			foreach (var sound in new [] { "money_spent1", "money_spent2", "money_spent3" })
-				AudioManager.LoadSound(sound, FileExplorer.FindPath(FileExplorer.ResolvePackage(sound).ContentDirectory, FileExplorer.ResolveFile(sound), ".wav"));
+			foreach (var sound in new [] { new PackageFile("money_spent1"), new PackageFile("money_spent2"), new PackageFile("money_spent3") })
+				AudioManager.LoadSound(sound);
 
-			AudioManager.LoadSound("click", FileExplorer.FindPath(PackageManager.Core.ContentDirectory, "click", ".wav"));
-			AudioManager.LoadSound("ping", FileExplorer.FindPath(PackageManager.Core.ContentDirectory, "ping", ".wav"));
+			AudioManager.LoadSound(new PackageFile("click"));
+			AudioManager.LoadSound(new PackageFile("ping"));
 
-			AudioManager.LoadSound("life_lost", FileExplorer.FindPath(PackageManager.Core.ContentDirectory, "life_lost", ".wav"));
+			AudioManager.LoadSound(new PackageFile("life_lost"));
 		}
 
-		static CheckBoxType checkBox(string name)
+		static CheckBoxType checkBox(PackageFile packageFile)
 		{
-			return new CheckBoxType(getTexture(name), getTexture(name + "_hover"), getTexture(name + "_click"));
+			var hoverFile = new PackageFile(packageFile.Package, packageFile.File + "_hover");
+			var clickFile = new PackageFile(packageFile.Package, packageFile.File + "_click");
+			return new CheckBoxType(getTexture(packageFile), getTexture(hoverFile), getTexture(clickFile));
 		}
 
-		static Texture getTexture(string file)
+		static PanelType panel(PackageFile bgFile, PackageFile bg2File, PackageFile borderFile, int borderWidth)
 		{
-			return new TextureInfo(file).GetTextures()[0];
+			return new PanelType(getTexture(bgFile), getTexture(bg2File), getTexture(borderFile), borderWidth);
+		}
+
+		static Texture getTexture(PackageFile packageFile)
+		{
+			return new TextureInfo(packageFile).GetTextures()[0];
 		}
 	}
 }

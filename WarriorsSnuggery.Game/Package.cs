@@ -33,5 +33,10 @@ namespace WarriorsSnuggery
 			TypeLoader.SetValues(this, rules.Find(n => n.Key == "Package").Children);
 			Rules = rules.Find(n => n.Key == "Rules").Children;
 		}
+
+		public override string ToString()
+		{
+			return InternalName;
+		}
 	}
 }

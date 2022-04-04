@@ -21,7 +21,7 @@ namespace WarriorsSnuggery
 		public readonly float RandomPitch = 0f;
 
 		[Desc("Name of the audio file.")]
-		public readonly string Name;
+		public readonly PackageFile Name;
 
 		public readonly GameAudioBuffer Buffer;
 
@@ -30,10 +30,7 @@ namespace WarriorsSnuggery
 			TypeLoader.SetValues(this, nodes);
 
 			if (!isDocumentation)
-			{
-				AudioManager.LoadSound(Name, FileExplorer.FindPath(FileExplorer.ResolvePackage(Name).ContentDirectory, FileExplorer.ResolveFile(Name), ".wav"));
-				Buffer = AudioManager.GetBuffer(Name);
-			}
+				Buffer = AudioManager.LoadSound(Name);
 		}
 	}
 

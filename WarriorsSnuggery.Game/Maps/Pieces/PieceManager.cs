@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using WarriorsSnuggery.Loader;
 
 namespace WarriorsSnuggery.Maps.Pieces
 {
@@ -39,12 +40,11 @@ namespace WarriorsSnuggery.Maps.Pieces
 			return piece;
 		}
 
-		public static Piece ReloadPiece(string innerName, Package package)
+		public static Piece ReloadPiece(PackageFile packageFile)
 		{
-			var existingPiece = getPieceSoft(innerName, package);
-
+			var existingPiece = getPieceSoft(packageFile.File, packageFile.Package);
 			if (existingPiece == null)
-				throw new MissingPieceException(innerName);
+				throw new MissingPieceException(packageFile.ToString());
 
 			Pieces.Remove(existingPiece);
 
@@ -54,11 +54,11 @@ namespace WarriorsSnuggery.Maps.Pieces
 			return piece;
 		}
 
-		public static Piece GetPiece(string packageFile)
+		public static Piece GetPiece(PackageFile packageFile)
 		{
-			var existingPiece = getPieceSoft(FileExplorer.ResolveFile(packageFile), FileExplorer.ResolvePackage(packageFile));
+			var existingPiece = getPieceSoft(packageFile.File, packageFile.Package);
 			if (existingPiece == null)
-				throw new MissingPieceException(packageFile);
+				throw new MissingPieceException(packageFile.ToString());
 
 			return existingPiece;
 		}
