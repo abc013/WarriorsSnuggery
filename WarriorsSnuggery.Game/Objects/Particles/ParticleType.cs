@@ -40,6 +40,8 @@ namespace WarriorsSnuggery.Objects.Particles
 
 		[Desc("Show shadow of the particle.")]
 		public readonly bool ShowShadow = false;
+		[Desc("Stops any rotation or position changes while on ground.")]
+		public readonly bool StickToGround = false;
 		[Desc("Regulates whether force can be applied on the particle from other objects.")]
 		public readonly bool AffectedByObjects = false;
 

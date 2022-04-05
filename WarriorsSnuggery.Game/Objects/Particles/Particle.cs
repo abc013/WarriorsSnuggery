@@ -153,6 +153,12 @@ namespace WarriorsSnuggery.Objects.Particles
 
 			Height += velocity.Z;
 
+			if (Type.StickToGround && Height <= 0)
+			{
+				velocity = CPos.Zero;
+				rotate_velocity = VAngle.Zero;
+			}
+
 			if (current-- <= 0)
 			{
 				if (dissolve-- <= 0)

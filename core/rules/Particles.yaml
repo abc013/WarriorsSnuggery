@@ -48,8 +48,9 @@ wood_debris=
 		Random=true
 	Duration=30
 	DissolveDuration=20
-	RandomVelocity=20,20,0
+	RandomVelocity=20,20,40
 	RandomRotation=0,0,10
+	StickToGround=true
 
 colored_star=
 	Texture=colored_star
@@ -79,6 +80,7 @@ slime_damage=
 	Duration=20
 	DissolveDuration=200
 	RandomVelocity=10,10,40
+	StickToGround=true
 
 slime_trail=
 	Color=63,255,63,127
@@ -96,6 +98,7 @@ barrel_splash=
 	Duration=20
 	DissolveDuration=30
 	RandomVelocity=30,30,70
+	StickToGround=true
 
 mana_splash=
 	Color=63,63,255,196
@@ -104,6 +107,7 @@ mana_splash=
 	DissolveDuration=30
 	RandomVelocity=20,20,40
 	IgnoreAmbience=true
+	StickToGround=true
 
 nebula1=
 	Texture=smoke_large
@@ -139,6 +143,7 @@ blood=
 	Duration=60
 	DissolveDuration=30
 	RandomVelocity=10,10,40
+	StickToGround=true
 
 leaf=
 	Texture=leaf
@@ -150,6 +155,7 @@ leaf=
 	RandomVelocity=4,4,0
 	ShowShadow=true
 	AffectedByObjects=true
+	StickToGround=true
 
 fire=
 	Texture=fire
