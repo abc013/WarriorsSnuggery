@@ -50,8 +50,8 @@ namespace WarriorsSnuggery.UI.Objects
 
 		public void Update()
 		{
-			foreach (var content in Container)
-				((SpellListItem)content).Update();
+			Container.Clear();
+			addSpells();
 		}
 
 		public override void Tick()
@@ -81,13 +81,13 @@ namespace WarriorsSnuggery.UI.Objects
 			readonly Game game;
 
 			readonly int manaCost;
+			readonly bool unlocked;
 
 			int tick;
-			bool unlocked;
 			float progress;
 			int graphicProgress;
 
-			public SpellListItem(Game game, MPos size, SpellCasterType node, SpellCaster caster) : base(new BatchSequence(node.Icon), size, node.Name, node.GetDescription(), null)
+			public SpellListItem(Game game, MPos size, SpellCasterType node, SpellCaster caster) : base(new BatchSequence(node.Icon), size, (caster.Unlocked() ? Color.White : Color.Red) + node.Name, caster.Unlocked() ? node.GetDescription() : new[] { new Color(128, 0, 0) + "Unlock cost: " + node.Cost }, null)
 			{
 				this.caster = caster;
 				this.game = game;
@@ -125,11 +125,6 @@ namespace WarriorsSnuggery.UI.Objects
 					}
 					SetColor(disabled);
 				}
-			}
-
-			public void Update()
-			{
-				unlocked = caster.Unlocked();
 			}
 
 			public override void Render()

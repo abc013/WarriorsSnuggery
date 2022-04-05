@@ -70,7 +70,7 @@ namespace WarriorsSnuggery.UI.Objects
 			var sprite = actorType.GetPreviewSprite();
 			var scale = Constants.PixelSize / (float)Math.Max(sprite.Width, sprite.Height) - 0.1f;
 
-			var title = available ? actorType.Playable.Name : Color.Red + "Locked";
+			var title = (available ? Color.White : Color.Red) + actorType.Playable.Name;
 			var description = available ? new[] { Color.Grey + "Changing cost: " + Color.Yellow + actorType.Playable.Cost } : new[] { new Color(128, 0, 0) + "Unlock cost: " + actorType.Playable.UnlockCost };
 
 			var item = new PanelListItem(new BatchObject(sprite), ItemSize, title, description, () => { changePlayer(actorType); }) { Scale = scale };
