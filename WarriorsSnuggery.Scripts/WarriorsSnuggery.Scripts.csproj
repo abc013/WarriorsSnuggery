@@ -6,6 +6,7 @@
 
   <ItemGroup>
     <Compile Include="..\core\scripts\*.cs" Link="%(Filename).cs" />
+	<Compile Include="..\mods\**\scripts\*.cs" Link="mods\%(Filename).cs" />
     <ProjectReference Include="..\WarriorsSnuggery.Game\WarriorsSnuggery.Game.csproj" />
   </ItemGroup>
 
