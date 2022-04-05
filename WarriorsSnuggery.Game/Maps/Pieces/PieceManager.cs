@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.IO;
 using WarriorsSnuggery.Loader;
 
 namespace WarriorsSnuggery.Maps.Pieces
@@ -11,6 +12,9 @@ namespace WarriorsSnuggery.Maps.Pieces
 		{
 			foreach (var package in PackageManager.ActivePackages)
 			{
+				if (!Directory.Exists(package.PiecesDirectory))
+					continue;
+
 				foreach (var filepath in FileExplorer.FilesIn(package.PiecesDirectory, ".yaml", true))
 				{
 					var name = FileExplorer.FileName(filepath);

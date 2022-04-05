@@ -53,12 +53,12 @@ namespace WarriorsSnuggery.Loader
 
 					if (existing != null)
 					{
-						Log.LoaderDebug(loaderName, $"Merging duplicate key entry '{node.Key}'.");
+						Log.LoaderDebug(loaderName, $"Merging duplicate key entry '{node.Key[1..]}'.");
 						combine(existing, node, false);
 						continue;
 					}
 
-					Log.LoaderWarning(loaderName, $"[{node.Origin}] Unable to merge new key entry '{node.Key}'. Are you missing something?");
+					Log.LoaderWarning(loaderName, $"[{node.Origin}] Unable to merge new key entry '{node.Key[1..]}'. Are you missing something?");
 					continue;
 				}
 
