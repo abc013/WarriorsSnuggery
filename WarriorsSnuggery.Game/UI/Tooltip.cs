@@ -48,10 +48,13 @@ namespace WarriorsSnuggery.UI
 
 		void setPosition(CPos pos)
 		{
-			if (pos.X + bounds.X + margin > WindowInfo.UnitWidth * 512)
-				pos -= new CPos(bounds.X, 0, 0);
-			if (pos.Y + bounds.Y + margin > WindowInfo.UnitHeight * 512)
-				pos -= new CPos(0, bounds.Y, 0);
+			var posX = pos.X + bounds.X + margin;
+			if (posX > WindowInfo.UnitWidth * 512)
+				pos -= new CPos(posX - ((int)WindowInfo.UnitWidth * 512), 0, 0);
+
+			var posY = pos.Y + bounds.Y + margin;
+			if (posY > WindowInfo.UnitHeight * 512)
+				pos -= new CPos(0, posY - ((int)WindowInfo.UnitHeight * 512), 0);
 
 			position = pos;
 			title.Position = position + new CPos(0, font.MaxHeight, 0);
