@@ -51,7 +51,7 @@ namespace WarriorsSnuggery
 					if (string.IsNullOrEmpty(key))
 						key = prop.Name;
 
-					var value = prop.MemberType == MemberTypes.Property ? typeof(T).GetProperty(prop.Name).GetValue(@object) : typeof(T).GetField(prop.Name).GetValue(@object);
+					var value = prop.MemberType == MemberTypes.Property ? typeof(T).GetProperty(prop.Name, flags).GetValue(@object) : typeof(T).GetField(prop.Name, flags).GetValue(@object);
 
 					if (!omitDefaults)
 					{
