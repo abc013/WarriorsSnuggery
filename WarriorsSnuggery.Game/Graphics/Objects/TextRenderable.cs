@@ -114,7 +114,7 @@ namespace WarriorsSnuggery.Graphics
 				// If nothing comes after this color, then just discard it and stop
 				if (endindex >= text.Length)
 				{
-					text = text.Remove(index, endindex - 1);
+					text = text[..index];
 					break;
 				}
 
