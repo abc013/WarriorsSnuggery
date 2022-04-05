@@ -123,7 +123,7 @@ namespace WarriorsSnuggery.Objects.Weapons
 
 				var pos = new CPos(offset.X * i, offset.Y * i, 0);
 
-				renderable.SetRotation(new VAngle(0, 0, 270 - angle));
+				renderable.SetRotation(new VAngle(0, 0, 90) - new VAngle(0, 0, angle));
 				renderable.SetPosition(originGraphicPosition + pos);
 				renderable.Render();
 
