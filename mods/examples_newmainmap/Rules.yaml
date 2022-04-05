@@ -1,0 +1,10 @@
+Package=
+	Name=Map Override Mod
+	InternalName=mainMapOverride
+	Description=Overrides the original Main Map with a custom one.
+	Author=abc013
+	Version=v1.0
+	GameVersion=(Release) 2.5
+Rules=
+	Maps=
+		mainMapOverride|Maps_menus.yaml=
