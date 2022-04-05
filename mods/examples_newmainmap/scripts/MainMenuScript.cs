@@ -1,11 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using WarriorsSnuggery;
 using WarriorsSnuggery.Loader;
 using WarriorsSnuggery.Objects.Particles;
 using WarriorsSnuggery.Scripting;
 
-namespace WarriorsSnuggeryScripts
+namespace WarriorsSnuggery.Scripts.Mods.MainmapOverride
 {
 	public class MainMenuScript : MissionScriptBase
 	{

@@ -1,11 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using WarriorsSnuggery;
 using WarriorsSnuggery.Loader;
 using WarriorsSnuggery.Objects.Particles;
 using WarriorsSnuggery.Scripting;
 
-namespace WarriorsSnuggeryScripts
+namespace WarriorsSnuggery.Scripts.Core
 {
 	public class MainMenuScript : MissionScriptBase
 	{
@@ -69,7 +68,7 @@ namespace WarriorsSnuggeryScripts
 			public void Tick()
 			{
 				angle += angleVelocity;
-				var anglePos = withAngle(angle, 256);
+				var anglePos = CPos.FromFlatAngle(angle, 256);
 				var x = position.X + anglePos.X + random.Next(-64, 64);
 				var y = position.Y + anglePos.Y + random.Next(-64, 64);
 
@@ -77,12 +76,7 @@ namespace WarriorsSnuggeryScripts
 				var init = new ParticleInit(type, pos, 512);
 				world.Add(new Particle(world, init));
 
-				position += withAngle((position - world.LocalPlayer.Position).FlatAngle + MathF.PI / 2, (negate ? -1 : 1) * radiusVelocity);
-			}
-
-			static CPos withAngle(float angle, int number)
-			{
-				return new CPos((int)(MathF.Cos(angle) * number), (int)(MathF.Sin(angle) * number), 0);
+				position += CPos.FromFlatAngle((position - world.LocalPlayer.Position).FlatAngle + MathF.PI / 2, (negate ? -1 : 1) * radiusVelocity);
 			}
 		}
 	}

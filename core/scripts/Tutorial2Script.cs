@@ -1,14 +1,13 @@
-using WarriorsSnuggery;
-using WarriorsSnuggery.Scripting;
 using System.Linq;
+using WarriorsSnuggery.Audio;
 using WarriorsSnuggery.Loader;
 using WarriorsSnuggery.Objects.Actors;
-using WarriorsSnuggery.Objects.Weapons;
-using WarriorsSnuggery.UI.Objects;
 using WarriorsSnuggery.Objects.Particles;
-using WarriorsSnuggery.Audio;
+using WarriorsSnuggery.Objects.Weapons;
+using WarriorsSnuggery.Scripting;
+using WarriorsSnuggery.UI.Objects;
 
-namespace Mission
+namespace WarriorsSnuggery.Scripts.Core
 {
 	public class Tutorial2Script : MissionScriptBase
 	{

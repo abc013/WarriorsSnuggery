@@ -1,11 +1,10 @@
-using WarriorsSnuggery;
 using WarriorsSnuggery.Loader;
-using WarriorsSnuggery.Scripting;
 using WarriorsSnuggery.Objects.Actors;
-using WarriorsSnuggery.UI.Objects;
 using WarriorsSnuggery.Objects.Weapons;
+using WarriorsSnuggery.Scripting;
+using WarriorsSnuggery.UI.Objects;
 
-namespace Mission
+namespace WarriorsSnuggery.Scripts.Core
 {
 	public class Tutorial4Script : MissionScriptBase
 	{
