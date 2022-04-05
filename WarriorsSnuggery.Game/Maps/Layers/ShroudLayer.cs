@@ -236,8 +236,7 @@ namespace WarriorsSnuggery.Maps.Layers
 
 			var triangles = new List<Triangle>();
 
-			var walls = world.WallLayer.GetRange(pos1, pos2);
-			foreach (var wall in walls)
+			foreach (var wall in world.WallLayer.GetRange(pos1, pos2))
 			{
 				if (wall.Physics.IsEmpty || wall.Type.IsTransparent)
 					continue;

@@ -28,7 +28,7 @@ namespace WarriorsSnuggery.Maps.Layers
 			Walls = new Wall[Bounds.X, Bounds.Y];
 		}
 
-		public List<Wall> GetRange(CPos position, int radius)
+		public IEnumerable<Wall> GetRange(CPos position, int radius)
 		{
 			var topleft = position - new CPos(radius, radius, 0) - Map.Offset;
 			var botright = position + new CPos(radius, radius, 0) - Map.Offset;
@@ -39,12 +39,12 @@ namespace WarriorsSnuggery.Maps.Layers
 			return GetRange(pos1, pos2);
 		}
 
-		public List<Wall> GetRange(MPos topleft, MPos botright)
+		public IEnumerable<Wall> GetRange(MPos topleft, MPos botright)
 		{
 			var pos1 = new MPos(Math.Clamp(topleft.X, 0, mapBounds.X + 1), Math.Clamp(topleft.Y, 0, mapBounds.Y + 1));
 			var pos2 = new MPos(Math.Clamp(botright.X, 0, mapBounds.X + 1), Math.Clamp(botright.Y, 0, mapBounds.Y + 1));
 
-			return WallList.Where(w => w.TerrainPosition.X >= pos1.X && w.TerrainPosition.X < pos2.X && w.TerrainPosition.Y >= pos1.Y && w.TerrainPosition.Y < pos2.Y).ToList();
+			return WallList.Where(w => w.TerrainPosition.X >= pos1.X && w.TerrainPosition.X < pos2.X && w.TerrainPosition.Y >= pos1.Y && w.TerrainPosition.Y < pos2.Y);
 		}
 
 		public void Set(Wall wall)
