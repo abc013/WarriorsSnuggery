@@ -403,7 +403,7 @@ namespace WarriorsSnuggery
 
 			var stats = game.Stats;
 
-			KeyFound = stats.KeyFound;
+			KeyFound = levelIncrease ? false : stats.KeyFound;
 			Money = stats.Money;
 			Mana = stats.Mana;
 			MaxMana = stats.MaxMana;
