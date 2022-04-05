@@ -1,0 +1,12 @@
+Package=
+	Name=Enhanced Crab Mod
+	InternalName=enhancedCrab
+	Description=Gives the crab a new, powerful weapon.
+	Author=abc013
+	Version=v1.0
+	GameVersion=(Release) 2.5
+Rules=
+	Actors=
+		enhancedCrab|Crab.yaml=
+	Weapons=
+		enhancedCrab|CrabWeapon.yaml=
