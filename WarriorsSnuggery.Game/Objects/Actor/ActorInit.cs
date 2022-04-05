@@ -54,8 +54,8 @@ namespace WarriorsSnuggery.Objects.Actors
 			Height = Convert("Height", 0);
 
 			Team = Convert("Team", (byte)0);
-			IsPlayer = Nodes.Any(n => n.Key == "PlayerPart");
-			IsBot = Nodes.Any(n => n.Key == "BotPart");
+			IsPlayer = Convert("IsPlayer", false);
+			IsBot = Convert("IsBot", false);
 
 			ScriptTag = Convert("ScriptTag", string.Empty);
 		}

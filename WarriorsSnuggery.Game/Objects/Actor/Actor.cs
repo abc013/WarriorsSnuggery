@@ -18,7 +18,9 @@ namespace WarriorsSnuggery.Objects.Actors
 
 		public readonly uint ID;
 
+		[Save, DefaultValue(false)]
 		public readonly bool IsPlayer;
+		[Save, DefaultValue(false)]
 		public readonly bool IsBot;
 		public readonly bool IsPlayerSwitch;
 
