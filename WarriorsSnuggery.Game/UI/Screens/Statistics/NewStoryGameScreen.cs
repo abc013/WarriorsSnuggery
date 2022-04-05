@@ -66,7 +66,7 @@ namespace WarriorsSnuggery.UI.Screens
 			Add(new Button("Cancel", "wooden", () => game.ShowScreen(ScreenType.DEFAULT, false)) { Position = new CPos(-4096, 6144, 0) });
 			Add(new Button("Proceed", "wooden", () =>
 			{
-				if (!string.IsNullOrWhiteSpace(nameInput.Text))
+				if (!string.IsNullOrWhiteSpace(nameInput.Text) && !string.IsNullOrWhiteSpace(seedInput.Text))
 					GameController.CreateNew(new GameSave((int)Math.Round(difficultyInput.Value * 10), hardcoreInput.Checked, nameInput.Text, int.Parse(seedInput.Text)), MissionType.STORY);
 			}) { Position = new CPos(4096, 6144, 0) });
 		}
