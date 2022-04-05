@@ -21,10 +21,11 @@ namespace WarriorsSnuggery.UI
 
 			this.title = new UIText(font);
 			this.title.SetText(title);
+			this.title.Scale = 1.1f;
 			this.text = new UIText(font, TextOffset.LEFT);
 			this.text.SetText(text);
 
-			var width = font.Measure(this.title.Text).width;
+			var width = (font.Measure(this.title.Text).width * 11) / 10;
 			var textWidth = font.Measure(this.text.Text).width;
 
 			if (textWidth > width)
@@ -58,7 +59,7 @@ namespace WarriorsSnuggery.UI
 
 			position = pos;
 			title.Position = position + new CPos(0, font.MaxHeight, 0);
-			text.Position = position + new CPos(0, 2 * (font.MaxHeight + font.HeightGap), 0);
+			text.Position = position + new CPos(0, 2 * font.MaxHeight + font.HeightGap, 0);
 		}
 	}
 }
