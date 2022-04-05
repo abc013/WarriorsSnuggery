@@ -148,7 +148,7 @@ instant_exit_pad=
 		Instant=true
 		Radius=512
 		OnlyByPlayer=yes
-		IncreaseLevel=yes
+		IncreaseLevel=no
 
 mainmenu_pad=
 	Sprite=
