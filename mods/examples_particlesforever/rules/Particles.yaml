@@ -1,0 +1,67 @@
++beam=
+	+Duration=40
+	+DissolveDuration=20
+
++glitter=
+	+Duration=10
+	+DissolveDuration=30
+
++grey=
+	+Duration=1000
+	+DissolveDuration=100
+
++firefly=
+	+Duration=5000
+	+DissolveDuration=1000
+
++wood_debris=
+	+Duration=40
+	+DissolveDuration=40
+
++colored_star=
+	+Duration=5000
+	+DissolveDuration=1000
+
++slime_splash=
+	+Duration=400
+	+DissolveDuration=400
+
++slime_damage=
+	+Duration=40
+	+DissolveDuration=400
+
++slime_trail=
+	+Duration=300
+	+DissolveDuration=300
+
++barrel_splash=
+	+Duration=20
+	+DissolveDuration=60
+
++mana_splash=
+	+Duration=20
+	+DissolveDuration=60
+
++nebula1=
+	+Duration=500
+	+DissolveDuration=300
+
++small_star=
+	+Duration=45
+	+DissolveDuration=45
+
++puff1=
+	+Duration=60
+	+DissolveDuration=60
+
++blood=
+	+Duration=120
+	+DissolveDuration=60
+
++leaf=
+	+Duration=100
+	+DissolveDuration=60
+
++fire=
+	+Duration=25
+	+DissolveDuration=25

@@ -1,4 +1,3 @@
-# This particle is hardcoded for playerswitching. Do not remove it, otherwise the game crashes!
 beam=
 	Texture=beam
 		Size=6,12

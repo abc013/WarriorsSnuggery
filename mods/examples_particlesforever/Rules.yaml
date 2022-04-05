@@ -1,0 +1,10 @@
+Package=
+	Name=Keep Particles Mod
+	InternalName=keepParticles
+	Description=Increases particle lifetime. This may require a beefy computer.
+	Author=abc013
+	Version=v1.0
+	GameVersion=(Release) 2.5
+Rules=
+	Particles=
+		keepParticles|Particles.yaml=
