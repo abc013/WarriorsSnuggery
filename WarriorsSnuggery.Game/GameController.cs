@@ -103,21 +103,24 @@ namespace WarriorsSnuggery
 			finishAndLoad(new Game(save, MapCache.FindMap(mission, save), mission, mode));
 		}
 
-		public static void CreateNew(GameSave save, MissionType type = MissionType.NORMAL, InteractionMode mode = InteractionMode.INGAME, MapType custom = null, bool loadStatsMap = false)
+		public static void CreateFromSave(GameSave save)
 		{
-			if (loadStatsMap)
+			var type = save.CurrentMission;
+			MapType custom = null;
+			try
 			{
-				type = save.CurrentMission;
-				try
-				{
-					custom = MapType.FromSave(save);
-				}
-				catch (System.IO.FileNotFoundException)
-				{
-					Log.Warning($"Unable to load saved map of save '{save.SaveName}'. Using a random map.");
-				}
+				custom = MapType.FromSave(save);
+			}
+			catch (System.IO.FileNotFoundException)
+			{
+				Log.Warning($"Unable to load saved map of save '{save.SaveName}'. Using a random map.");
 			}
 
+			CreateNew(save, type: type, custom: custom);
+		}
+
+		public static void CreateNew(GameSave save, MissionType type = MissionType.NORMAL, InteractionMode mode = InteractionMode.INGAME, MapType custom = null)
+		{
 			finishAndLoad(new Game(save, custom ?? MapCache.FindMap(type, save.Level, new Random(save.Seed + save.Level)), type, mode));
 		}
 

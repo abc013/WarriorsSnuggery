@@ -23,7 +23,7 @@ namespace WarriorsSnuggery.Scripting
 			world = game.World;
 		}
 
-		public virtual object[] GetState() => null;
+		public virtual object[] GetState() => new object[0];
 
 		public virtual void LoadState(TextNode[] nodes) { }
 	}

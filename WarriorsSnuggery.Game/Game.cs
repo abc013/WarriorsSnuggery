@@ -352,6 +352,16 @@ namespace WarriorsSnuggery
 
 					if (key == Keys.X)
 						SwitchEditor();
+
+					if (key == Keys.R)
+					{
+						var name = Save.Name;
+						GameSaveManager.SaveOnNewName(Save, "temp", this);
+						Save.SetName(name);
+						GameSaveManager.Reload();
+						var save = GameSaveManager.Saves.Find(g => g.SaveName == "temp");
+						GameController.CreateFromSave(save.Copy());
+					}
 				}
 			}
 		}
