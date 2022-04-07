@@ -80,7 +80,8 @@ namespace WarriorsSnuggery.Spells
 			duration = node.Duration;
 
 			currentEffects.Clear();
-			currentEffects.AddRange(actor.CastSpell(node.Spell));
+			foreach (var spell in node.Spells)
+				currentEffects.Add(actor.CastSpell(spell));
 
 			return true;
 		}

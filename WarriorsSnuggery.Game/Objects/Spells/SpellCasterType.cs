@@ -30,8 +30,8 @@ namespace WarriorsSnuggery.Spells
 		public readonly string InnerName;
 		public readonly string Name;
 
-		[Require, Desc("Spell effect.")]
-		public readonly Spell Spell;
+		[Require, Desc("Effects to cast on activation.")]
+		public readonly Spell[] Spells;
 
 		[Require, Desc("Icon of the spell.")]
 		public readonly TextureInfo Icon;
@@ -42,8 +42,8 @@ namespace WarriorsSnuggery.Spells
 		{
 			TypeLoader.SetValues(this, nodes);
 
-			if (Spell.Effects.Length > 0)
-				Duration = Spell.Effects.Max(e => e.Duration);
+			if (Spells.Length > 0)
+				Duration = Spells.Max(e => e.Effect.Duration);
 
 			InnerName = name;
 			Name = name.Replace('_', ' ');
@@ -51,7 +51,7 @@ namespace WarriorsSnuggery.Spells
 
 		public string[] GetDescription()
 		{
-			var effectCount = Spell.Effects.Length;
+			var effectCount = Spells.Length;
 			var descCount = string.IsNullOrWhiteSpace(Description) ? 0 : 2;
 
 			var array = new string[3 + effectCount + descCount];
@@ -61,7 +61,7 @@ namespace WarriorsSnuggery.Spells
 			array[2] = Color.White + $"This spell has {effectCount} effect{(effectCount > 1 ? "s" : "")}: ";
 			for (int i = 0; i < effectCount; i++)
 			{
-				var effect = Spell.Effects[i];
+				var effect = Spells[i].Effect;
 
 				var name = effect.Type.ToString().ToLower();
 

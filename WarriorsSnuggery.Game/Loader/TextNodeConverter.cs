@@ -416,12 +416,20 @@ namespace WarriorsSnuggery.Loader
 
 				return convert;
 			}
-			else if (t == typeof(Effect[]))
+			else if (t == typeof(Spell[]))
 			{
-				var convert = new Effect[node.Children.Count];
+				var parts = value.Split(',');
 
-				for (int i = 0; i < node.Children.Count; i++)
-					convert[i] = Convert<Effect>(node.Children[i]);
+				var convert = new Spell[parts.Length];
+
+				for (int i = 0; i < parts.Length; i++)
+				{
+					var type = parts[i];
+					if (!SpellCache.Types.ContainsKey(type))
+						throw new MissingInfoException(type);
+
+					convert[i] = SpellCache.Types[type];
+				}
 
 				return convert;
 			}

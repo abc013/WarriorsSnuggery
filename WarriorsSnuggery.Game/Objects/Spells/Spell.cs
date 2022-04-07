@@ -5,8 +5,8 @@ namespace WarriorsSnuggery.Spells
 {
 	public class Spell
 	{
-		[Require, Desc("Contains a list of all effects that the spell uses.")]
-		public readonly Effect[] Effects;
+		[Require, Desc("Effect to use.")]
+		public readonly Effect Effect;
 
 		public Spell(List<TextNode> nodes)
 		{

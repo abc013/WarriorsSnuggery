@@ -13,7 +13,6 @@ namespace WarriorsSnuggery.Objects.Actors
 
 		// HACK For saving
 		readonly Spell spell;
-		readonly int spellIndex;
 
 		public bool Sleeping;
 		public bool Active => !Sleeping && tick > 0;
@@ -21,14 +20,13 @@ namespace WarriorsSnuggery.Objects.Actors
 		int sleepTick;
 		int tick;
 
-		public ActorEffect(Actor self, Spell spell, int spellIndex)
+		public ActorEffect(Actor self, Spell spell)
 		{
 			this.self = self;
 
 			this.spell = spell;
-			this.spellIndex = spellIndex;
 
-			Effect = spell.Effects[spellIndex];
+			Effect = spell.Effect;
 
 			tick = Effect.Duration;
 			sleepTick = Effect.MaxSleepDuration;
@@ -57,10 +55,6 @@ namespace WarriorsSnuggery.Objects.Actors
 						spell = child.Convert<Spell>();
 
 						break;
-					case "SpellIndex":
-						spellIndex = child.Convert<int>();
-
-						break;
 					case "Tick":
 						tick = child.Convert<int>();
 
@@ -76,7 +70,7 @@ namespace WarriorsSnuggery.Objects.Actors
 				}
 			}
 
-			Effect = spell.Effects[spellIndex];
+			Effect = spell.Effect;
 
 			if (Effect.Sound != null)
 				sound = new Sound(Effect.Sound);
@@ -88,7 +82,6 @@ namespace WarriorsSnuggery.Objects.Actors
 			{
 				nameof(ActorEffect) + "=",
 				"\tSpell=" + SpellCache.Types[spell],
-				"\tSpellIndex=" + spellIndex,
 				"\tTick=" + tick,
 				"\tSleeping=" + Sleeping,
 				"\tSleepTick=" + sleepTick
