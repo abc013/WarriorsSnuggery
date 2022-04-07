@@ -1,4 +1,5 @@
 Boost=
+	Name=Boost
 	Before=
 	Unlocked=true
 	Position=0,4
@@ -9,6 +10,7 @@ Boost=
 		Size=12,12
 
 First_hit=
+	Name=First Hit
 	Before=
 	Unlocked=true
 	Position=0,0
@@ -19,6 +21,7 @@ First_hit=
 		Size=12,12
 
 Warm_up=
+	Name=Warm Up
 	Before=
 	Unlocked=false
 	Cost=50
@@ -30,6 +33,7 @@ Warm_up=
 		Size=12,12
 
 Anger=
+	Name=Anger
 	Before=First_hit
 	Unlocked=false
 	Cost=100
@@ -41,6 +45,7 @@ Anger=
 		Size=12,12
 
 Strength=
+	Name=Strength
 	Before=Warm_up,First_hit
 	Unlocked=false
 	Cost=150
@@ -52,6 +57,7 @@ Strength=
 		Size=12,12
 
 Bloodlust=
+	Name=Bloodlust
 	Before=Anger,Strength
 	Unlocked=false
 	Cost=125
@@ -63,6 +69,7 @@ Bloodlust=
 		Size=12,12
 
 Blood_thirstiness=
+	Name=Blood Thirstiness
 	Before=Anger,Strength
 	Unlocked=false
 	Cost=200
@@ -74,6 +81,7 @@ Blood_thirstiness=
 		Size=12,12
 
 Precision=
+	Name=Precision
 	Before=Bloodlust
 	Unlocked=false
 	Cost=200
@@ -85,6 +93,7 @@ Precision=
 		Size=12,12
 
 Range=
+	Name=Range
 	Before=Blood_thirstiness
 	Unlocked=false
 	Cost=150
@@ -96,6 +105,7 @@ Range=
 		Size=12,12
 
 Blood_pact=
+	Name=Blood Pact
 	Before=Precision,Range
 	Unlocked=false
 	Cost=350
@@ -107,6 +117,7 @@ Blood_pact=
 		Size=12,12
 
 Blood_armor=
+	Name=Blood Armor
 	Before=Precision,Range
 	Unlocked=false
 	Cost=350

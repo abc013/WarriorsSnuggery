@@ -28,6 +28,8 @@ namespace WarriorsSnuggery.Spells
 		public readonly int Duration;
 
 		public readonly string InnerName;
+
+		[Desc("Name of the spellcaster.")]
 		public readonly string Name;
 
 		[Require, Desc("Effects to cast on activation.")]
@@ -46,7 +48,6 @@ namespace WarriorsSnuggery.Spells
 				Duration = Effects.Max(e => e.Duration);
 
 			InnerName = name;
-			Name = name.Replace('_', ' ');
 		}
 
 		public string[] GetDescription()
