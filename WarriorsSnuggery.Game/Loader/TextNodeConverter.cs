@@ -416,6 +416,15 @@ namespace WarriorsSnuggery.Loader
 
 				return convert;
 			}
+			else if (t == typeof(Effect[]))
+			{
+				var convert = new Effect[node.Children.Count];
+
+				for (int i = 0; i < node.Children.Count; i++)
+					convert[i] = Convert<Effect>(node.Children[i]);
+
+				return convert;
+			}
 
 			throw new InvalidConversionException(node, t);
 		}
