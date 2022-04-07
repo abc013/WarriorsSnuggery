@@ -30,7 +30,7 @@ namespace WarriorsSnuggery.Objects.Actors
 
 			var save = new string[values.Count + 1];
 
-			save[0] = $"{part.GetType().Name}={internalName}";
+			save[0] = $"{part.GetType().Name}@{internalName}=";
 			for (int i = 0; i < values.Count; i++)
 				save[i + 1] = $"\t{values[i].Item1}={values[i].Item2}";
 

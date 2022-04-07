@@ -14,9 +14,9 @@ namespace WarriorsSnuggery.Objects.Actors
 			nodes = init.Nodes;
 		}
 
-		public List<TextNode> GetNodes(Type type, string internalName = null)
+		public List<TextNode> GetNodes(Type type, string specification = null)
 		{
-			var parent = nodes.FirstOrDefault(n => n.Key == type.Name && (internalName == null || internalName == n.Value));
+			var parent = nodes.FirstOrDefault(n => n.Key == type.Name && (specification == null || specification == n.Specification));
 
 			if (parent == null)
 				return new List<TextNode>();
