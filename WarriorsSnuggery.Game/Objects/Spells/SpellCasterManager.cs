@@ -1,8 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using WarriorsSnuggery.Objects.Actors;
-
-namespace WarriorsSnuggery.Spells
+﻿namespace WarriorsSnuggery.Spells
 {
 	public class SpellCasterManager : ITick
 	{

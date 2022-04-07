@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using WarriorsSnuggery.Graphics;
 using WarriorsSnuggery.Loader;
 
@@ -24,7 +25,7 @@ namespace WarriorsSnuggery.Spells
 
 		[Desc("Cooldown of the spell.")]
 		public readonly int Cooldown;
-		public int Duration => Spell.MaxDuration;
+		public readonly int Duration;
 
 		public readonly string InnerName;
 		public readonly string Name;
@@ -40,6 +41,9 @@ namespace WarriorsSnuggery.Spells
 		public SpellCasterType(List<TextNode> nodes, string name)
 		{
 			TypeLoader.SetValues(this, nodes);
+
+			if (Spell.Effects.Length > 0)
+				Duration = Spell.Effects.Max(e => e.Duration);
 
 			InnerName = name;
 			Name = name.Replace('_', ' ');

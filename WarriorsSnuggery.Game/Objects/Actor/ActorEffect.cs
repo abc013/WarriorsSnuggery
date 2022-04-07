@@ -36,6 +36,12 @@ namespace WarriorsSnuggery.Objects.Actors
 			if (Effect.Sound != null)
 				sound = new Sound(Effect.Sound);
 
+			if (Effect.StartSound != null)
+			{
+				var sound = new Sound(Effect.StartSound);
+				sound.Play(self.Position, false);
+			}
+
 			Sleeping = Effect.Activation != EffectActivationType.INSTANT;
 		}
 

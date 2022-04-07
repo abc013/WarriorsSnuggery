@@ -25,6 +25,8 @@ namespace WarriorsSnuggery.Spells
 		public readonly int ParticleTick = 1;
 		[Desc("Sound while the effect is active.")]
 		public readonly SoundType Sound;
+		[Desc("Play sound when the effect gets casted.")]
+		public readonly SoundType StartSound;
 
 		public Effect(List<TextNode> nodes)
 		{

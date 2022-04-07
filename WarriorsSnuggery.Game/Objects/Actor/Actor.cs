@@ -281,12 +281,6 @@ namespace WarriorsSnuggery.Objects.Actors
 			if (World.Game.Editor)
 				return list;
 
-			if (spell.Sound != null)
-			{
-				var sound = new Sound(spell.Sound);
-				sound.Play(Position, false);
-			}
-
 			for (int i = 0; i < spell.Effects.Length; i++)
 			{
 				var effect = new ActorEffect(this, spell, i);
