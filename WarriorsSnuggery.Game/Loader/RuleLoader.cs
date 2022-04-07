@@ -23,7 +23,7 @@ namespace WarriorsSnuggery.Loader
 			var timer = Timer.Start();
 
 			ParticleCache.Load(loadNodes("Particles"));
-			SpellCache.Load(loadNodes("Spells"));
+			EffectCache.Load(loadNodes("Spells"));
 			WeaponCache.Load(loadNodes("Weapons"));
 			ActorCache.Load(loadNodes("Actors"));
 			TerrainCache.Load(loadNodes("Terrain"));

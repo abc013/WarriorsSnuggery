@@ -1,14 +1,14 @@
 ﻿using System.Collections.Generic;
 using WarriorsSnuggery.Physics;
-using WarriorsSnuggery.Spells;
 using WarriorsSnuggery.Loader;
+using WarriorsSnuggery.Spells;
 
 namespace WarriorsSnuggery.Objects.Weapons.Warheads
 {
 	public class SpellWarhead : IWarhead
 	{
-		[Require, Desc("Spell to be casted on the actors.")]
-		public readonly Spell Spell;
+		[Require, Desc("Effect to be casted on the actors.")]
+		public readonly Effect Effect;
 
 		[Desc("Ignore walls that are inbetween detonation origin and actor.")]
 		public readonly bool IgnoreWalls;
@@ -36,11 +36,11 @@ namespace WarriorsSnuggery.Objects.Weapons.Warheads
 
 		public void Impact(World world, Weapon weapon, Target target)
 		{
-			if (Probability != 0 && Spell != null)
+			if (Probability != 0 && Effect != null)
 			{
 				if (target.Type == TargetType.ACTOR)
 				{
-					target.Actor.CastSpell(Spell);
+					target.Actor.CastEffect(Effect);
 					return;
 				}
 
@@ -78,7 +78,7 @@ namespace WarriorsSnuggery.Objects.Weapons.Warheads
 						if (probability == 0 || Program.SharedRandom.NextDouble() > probability)
 							continue;
 
-						actor.CastSpell(Spell);
+						actor.CastEffect(Effect);
 					}
 				}
 			}

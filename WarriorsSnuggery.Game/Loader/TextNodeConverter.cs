@@ -320,12 +320,12 @@ namespace WarriorsSnuggery.Loader
 			{
 				return new SimplePhysicsType(node.Children);
 			}
-			else if (t == typeof(Spell))
+			else if (t == typeof(Effect))
 			{
-				if (!SpellCache.Types.ContainsKey(value))
+				if (!EffectCache.Types.ContainsKey(value))
 					throw new MissingInfoException(value);
 
-				return SpellCache.Types[value];
+				return EffectCache.Types[value];
 			}
 			else if (t == typeof(Effect))
 			{
@@ -416,19 +416,19 @@ namespace WarriorsSnuggery.Loader
 
 				return convert;
 			}
-			else if (t == typeof(Spell[]))
+			else if (t == typeof(Effect[]))
 			{
 				var parts = value.Split(',');
 
-				var convert = new Spell[parts.Length];
+				var convert = new Effect[parts.Length];
 
 				for (int i = 0; i < parts.Length; i++)
 				{
 					var type = parts[i];
-					if (!SpellCache.Types.ContainsKey(type))
+					if (!EffectCache.Types.ContainsKey(type))
 						throw new MissingInfoException(type);
 
-					convert[i] = SpellCache.Types[type];
+					convert[i] = EffectCache.Types[type];
 				}
 
 				return convert;

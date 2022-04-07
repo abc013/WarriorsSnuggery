@@ -1,16 +1,13 @@
 minor_slowdown=
-	Effect=
-		Type=Speed
-		Duration=120
-		Value=0.9
+	Type=Speed
+	Duration=120
+	Value=0.9
 
 web_stun=
-	Effect=
-		Type=STUN
-		Duration=5
+	Type=STUN
+	Duration=5
 
 web_slowdown=
-	Effect=
-		Type=Speed
-		Duration=80
-		Value=0.6
+	Type=Speed
+	Duration=80
+	Value=0.6

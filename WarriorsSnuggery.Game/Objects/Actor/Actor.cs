@@ -274,15 +274,15 @@ namespace WarriorsSnuggery.Objects.Actors
 				part.OnStop();
 		}
 
-		public ActorEffect CastSpell(Spell spell)
+		public ActorEffect CastEffect(Effect effect)
 		{
 			if (World.Game.Editor)
 				return null;
 
-			var effect = new ActorEffect(this, spell);
-			effects.Add(effect);
+			var actorEffect = new ActorEffect(this, effect);
+			effects.Add(actorEffect);
 
-			return effect;
+			return actorEffect;
 		}
 
 		public IEnumerable<ActorEffect> GetActiveEffects(EffectType type) => effects.Where(e => e.Effect.Type == type && !e.Sleeping);
