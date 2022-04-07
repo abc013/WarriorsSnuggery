@@ -211,6 +211,13 @@ namespace WarriorsSnuggery.UI.Screens
 				}
 			}
 
+			public override void Tick()
+			{
+				tick++;
+
+				base.Tick();
+			}
+
 			public override void Render()
 			{
 				if (empty)
@@ -218,8 +225,7 @@ namespace WarriorsSnuggery.UI.Screens
 
 				const int rectWidth = 640;
 
-				// TODO: move
-				if (tick++ < start)
+				if (tick < start)
 					ColorManager.DrawRect(new CPos(Right, rectWidth, 0), new CPos(Left, -rectWidth, 0), new Color(0, 0, 0, 128));
 				else if (tick < start + duration)
 				{
