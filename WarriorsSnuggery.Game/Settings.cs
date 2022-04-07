@@ -147,7 +147,7 @@ namespace WarriorsSnuggery
 				{
 					case "Keys":
 						foreach (var key in node.Children)
-							KeyDictionary.Add(key.Key, KeyInput.ToKey(key.Value));
+							KeyDictionary.Add(key.Key, TextNodeConverter.Convert<Keys>(key));
 						break;
 					case "Packages":
 						foreach (var key in node.Children)

@@ -1,5 +1,4 @@
 using OpenTK.Windowing.GraphicsLibraryFramework;
-using System;
 using System.IO;
 
 namespace WarriorsSnuggery
@@ -26,11 +25,6 @@ namespace WarriorsSnuggery
 		public static void Tick()
 		{
 			Text = string.Empty;
-		}
-
-		public static Keys ToKey(string key)
-		{
-			return (Keys)Enum.Parse(typeof(Keys), key, true);
 		}
 
 		public static bool IsKeyDown(Keys key)

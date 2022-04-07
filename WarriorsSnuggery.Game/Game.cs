@@ -295,7 +295,11 @@ namespace WarriorsSnuggery
 
 			// Party mode
 			if (key == Keys.RightAlt)
+			{
 				Settings.PartyMode = !Settings.PartyMode;
+				if (!Settings.PartyMode)
+					WorldRenderer.Ambient = MapType.Ambient;
+			}
 
 			var screenTypeBefore = ScreenControl.FocusedType;
 			ScreenControl.KeyDown(key, isControl, isShift, isAlt);
