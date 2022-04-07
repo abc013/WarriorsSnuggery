@@ -37,7 +37,7 @@ namespace WarriorsSnuggery.Objects.Actors
 		[Save, DefaultValue(0.0f)]
 		public float Angle;
 
-		readonly List<ActorEffect> sleepingEffects = new List<ActorEffect>();
+		// Saved with custom method
 		readonly List<ActorEffect> effects = new List<ActorEffect>();
 
 		readonly PartManager partManager;
@@ -66,7 +66,7 @@ namespace WarriorsSnuggery.Objects.Actors
 
 		[Save, DefaultValue(ActionType.IDLE)]
 		public ActionType Actions { get; private set; } = ActionType.IDLE;
-		// TODO: save
+		// Saved with custom method
 		readonly List<ActorAction> actions = new List<ActorAction>();
 
 		bool allowAttackMove => Weapon == null || Weapon.AllowMoving;
@@ -192,8 +192,12 @@ namespace WarriorsSnuggery.Objects.Actors
 				part.OnLoad(partLoader);
 
 			var effectData = init.Nodes.Where(n => n.Key == nameof(ActorEffect));
-			foreach (var effect in effectData)
-				effects.Add(new ActorEffect(this, effect.Children));
+			foreach (var effectNode in effectData)
+				effects.Add(new ActorEffect(this, effectNode.Children));
+
+			var actorActions = init.Nodes.Where(n => n.Key == nameof(ActorAction));
+			foreach (var actorAction in actorActions)
+				actions.Add(new ActorAction(actorAction.Children));
 
 			init = null;
 		}
@@ -207,6 +211,9 @@ namespace WarriorsSnuggery.Objects.Actors
 
 			foreach (var effect in effects)
 				list.AddRange(effect.Save());
+
+			foreach (var action in actions)
+				list.AddRange(action.Save());
 
 			return list;
 		}

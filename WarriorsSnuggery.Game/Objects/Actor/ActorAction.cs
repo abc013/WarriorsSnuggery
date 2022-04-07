@@ -1,4 +1,7 @@
-﻿namespace WarriorsSnuggery.Objects.Actors
+﻿using System.Collections.Generic;
+using WarriorsSnuggery.Loader;
+
+namespace WarriorsSnuggery.Objects.Actors
 {
 	public enum ActionType
 	{
@@ -29,6 +32,28 @@
 			Following = following;
 		}
 
+		public ActorAction(List<TextNode> nodes)
+		{
+			foreach (var child in nodes)
+			{
+				switch (child.Key)
+				{
+					case "Following":
+						Following = new ActorAction(child.Children);
+
+						break;
+					case "Type":
+						Type = child.Convert<ActionType>();
+
+						break;
+					case "CurrentTick":
+						CurrentTick = child.Convert<int>();
+
+						break;
+				}
+			}
+		}
+
 		public void ExtendAction(int ticks)
 		{
 			CurrentTick += ticks;
@@ -51,6 +76,23 @@
 				return true;
 
 			return ActionOver;
+		}
+
+		public List<string> Save()
+		{
+			var list = new List<string>();
+			list.Add($"{nameof(ActorAction)}=");
+
+			if (Following != null)
+			{
+				var appends = Following.Save();
+				foreach (var append in appends)
+					list.Add("\t" + append);
+			}
+
+			list.Add($"\tType={Type}");
+			list.Add($"\tCurrentTick={CurrentTick}");
+			return list;
 		}
 
 		bool doesAction(ActionType actions, ActionType type)

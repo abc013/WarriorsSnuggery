@@ -55,19 +55,24 @@ namespace WarriorsSnuggery.Objects.Actors.Parts
 		{
 			foreach (var node in loader.GetNodes(typeof(WeaponPart), info.InternalName))
 			{
-				if (node.Key == "BeamWeapon")
+				switch (node.Key)
 				{
-					var id = node.Convert<int>();
-					beam = (BeamWeapon)self.World.WeaponLayer.Weapons.Find(w => w.ID == id);
-				}
-				else if (node.Key == "PreparationTick")
-					prep = node.Convert<int>();
-				else if (node.Key == nameof(Reload))
-					Reload = node.Convert<int>();
-				else if (node.Key == "Target")
-				{
-					var pos = node.Convert<CPos>();
-					target = new Target(new CPos(pos.X, pos.Y, 0), pos.Z);
+					case "BeamWeapon":
+						var id = node.Convert<int>();
+						beam = (BeamWeapon)self.World.WeaponLayer.Weapons.Find(w => w.ID == id);
+						break;
+					case "PreparationTick":
+						prep = node.Convert<int>();
+						if (prep > 0)
+							attackOrdered = true;
+						break;
+					case nameof(Reload):
+						Reload = node.Convert<int>();
+						break;
+					case "Target":
+						var pos = node.Convert<CPos>();
+						target = new Target(new CPos(pos.X, pos.Y, 0), pos.Z);
+						break;
 				}
 			}
 		}
