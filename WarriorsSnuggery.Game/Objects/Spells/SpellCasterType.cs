@@ -8,6 +8,11 @@ namespace WarriorsSnuggery.Spells
 {
 	public class SpellCasterType
 	{
+		public readonly string InnerName;
+
+		[Desc("Name of the spellcaster.")]
+		public readonly string Name;
+
 		[Desc("Spells that have to be unlocked before this one can be unlocked.")]
 		public readonly string[] Before;
 		[Require, Desc("Graphical position in the spelltree.")]
@@ -27,11 +32,6 @@ namespace WarriorsSnuggery.Spells
 		public readonly int Cooldown;
 		public readonly int Duration;
 
-		public readonly string InnerName;
-
-		[Desc("Name of the spellcaster.")]
-		public readonly string Name;
-
 		[Require, Desc("Effects to cast on activation.")]
 		public readonly Effect[] Effects;
 
@@ -40,14 +40,13 @@ namespace WarriorsSnuggery.Spells
 
 		public CPos VisualPosition => new CPos(-6584, -2048, 0) + new CPos(Position.X * 1024, Position.Y * 1024, 0);
 
-		public SpellCasterType(List<TextNode> nodes, string name)
+		public SpellCasterType(string innerName, List<TextNode> nodes)
 		{
+			InnerName = innerName;
 			TypeLoader.SetValues(this, nodes);
 
 			if (Effects.Length > 0)
 				Duration = Effects.Max(e => e.Duration);
-
-			InnerName = name;
 		}
 
 		public string[] GetDescription()

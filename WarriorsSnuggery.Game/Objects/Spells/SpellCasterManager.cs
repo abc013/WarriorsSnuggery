@@ -10,8 +10,10 @@
 			this.game = game;
 
 			Casters = new SpellCaster[SpellCasterCache.Types.Count];
-			for (int i = 0; i < Casters.Length; i++)
-				Casters[i] = new SpellCaster(game, SpellCasterCache.Types[i], game.Stats.GetSpellCaster(i));
+
+			var i = 0;
+			foreach (var caster in SpellCasterCache.Types.Values)
+				Casters[i++] = new SpellCaster(game, caster);
 		}
 
 		public void Tick()

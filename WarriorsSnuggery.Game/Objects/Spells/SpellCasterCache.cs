@@ -5,12 +5,12 @@ namespace WarriorsSnuggery.Spells
 {
 	public static class SpellCasterCache
 	{
-		public static readonly List<SpellCasterType> Types = new List<SpellCasterType>();
+		public static readonly Dictionary<string, SpellCasterType> Types = new Dictionary<string, SpellCasterType>();
 
 		public static void Load(List<TextNode> nodes)
 		{
 			foreach (var node in nodes)
-				Types.Add(new SpellCasterType(node.Children, node.Key));
+				Types.Add(node.Key, new SpellCasterType(node.Key, node.Children));
 		}
 	}
 }

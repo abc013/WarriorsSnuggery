@@ -43,9 +43,8 @@ namespace WarriorsSnuggery.UI.Objects
 
 		void addSpells()
 		{
-			int index = 0;
-			foreach (var spell in SpellCasterCache.Types)
-				Add(new SpellListItem(game, ItemSize, spell, game.SpellManager.Casters[index++]));
+			foreach (var caster in game.SpellManager.Casters)
+				Add(new SpellListItem(game, ItemSize, caster));
 		}
 
 		public void Update()
@@ -87,13 +86,13 @@ namespace WarriorsSnuggery.UI.Objects
 			float progress;
 			int graphicProgress;
 
-			public SpellListItem(Game game, MPos size, SpellCasterType node, SpellCaster caster) : base(new BatchSequence(node.Icon), size, (caster.Unlocked() ? Color.White : Color.Red) + node.Name, caster.Unlocked() ? node.GetDescription() : new[] { new Color(128, 0, 0) + "Unlock cost: " + node.Cost }, null)
+			public SpellListItem(Game game, MPos size, SpellCaster caster) : base(new BatchSequence(caster.Type.Icon), size, (caster.Unlocked() ? Color.White : Color.Red) + caster.Type.Name, caster.Unlocked() ? caster.Type.GetDescription() : new[] { new Color(128, 0, 0) + "Unlock cost: " + caster.Type.Cost }, null)
 			{
 				this.caster = caster;
 				this.game = game;
 				unlocked = caster.Unlocked();
 
-				manaCost = node.ManaCost;
+				manaCost = caster.Type.ManaCost;
 			}
 
 			public override void Tick()

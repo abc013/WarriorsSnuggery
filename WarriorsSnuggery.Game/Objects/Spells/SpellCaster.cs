@@ -6,34 +6,33 @@ namespace WarriorsSnuggery.Spells
 {
 	public class SpellCaster : ITick
 	{
+		public readonly SpellCasterType Type;
 		readonly Game game;
-		readonly SpellCasterType type;
+
+		public SpellCasterState State { get; private set; }
+
+		public float RemainingDuration => 1 - duration / (float)Type.Duration;
+		public float RechargeProgress => 1 - recharge / (float)Type.Cooldown;
+
+		readonly List<ActorEffect> currentEffects = new List<ActorEffect>();
 
 		int duration;
 		int recharge;
 
-		public SpellCasterState State { get; private set; }
-
-		public float RemainingDuration => 1 - duration / (float)type.Duration;
-		public float RechargeProgress => 1 - recharge / (float)type.Cooldown;
-
-		readonly List<ActorEffect> currentEffects = new List<ActorEffect>();
-
-		public SpellCaster(Game game, SpellCasterType type, (float, float) values)
+		public SpellCaster(Game game, SpellCasterType type)
 		{
 			this.game = game;
-			this.type = type;
+			this.Type = type;
 
-			if (values.Item1 != 0 || values.Item2 != 0)
-			{
-				duration = (int)((1 - values.Item1) * type.Duration);
-				if (duration > 0)
-					State = SpellCasterState.ACTIVE;
+			var (currentDuration, currentRecharge) = game.Stats.GetSpellCasterValues(type.InnerName);
 
-				recharge = (int)((1 - values.Item2) * type.Cooldown);
-				if (recharge > 0)
-					State = SpellCasterState.RECHARGING;
-			}
+			duration = (int)(currentDuration * type.Duration);
+			if (duration > 0)
+				State = SpellCasterState.ACTIVE;
+
+			recharge = (int)(currentRecharge * type.Cooldown);
+			if (recharge > 0)
+				State = SpellCasterState.RECHARGING;
 		}
 
 		public void Tick()
@@ -70,17 +69,17 @@ namespace WarriorsSnuggery.Spells
 			if (game.World.LocalPlayer.IsPlayerSwitch)
 				return false;
 
-			if (game.Stats.Mana < type.ManaCost)
+			if (game.Stats.Mana < Type.ManaCost)
 				return false;
 
-			game.Stats.Mana -= type.ManaCost;
+			game.Stats.Mana -= Type.ManaCost;
 
 			State = SpellCasterState.SLEEPING;
-			recharge = type.Cooldown;
-			duration = type.Duration;
+			recharge = Type.Cooldown;
+			duration = Type.Duration;
 
 			currentEffects.Clear();
-			foreach (var spell in type.Effects)
+			foreach (var spell in Type.Effects)
 				currentEffects.Add(actor.CastEffect(spell));
 
 			return true;
@@ -88,7 +87,7 @@ namespace WarriorsSnuggery.Spells
 
 		public bool Unlocked()
 		{
-			return type.Unlocked || game.Stats.SpellUnlocked(type);
+			return game.Stats.SpellUnlocked(Type);
 		}
 	}
 }

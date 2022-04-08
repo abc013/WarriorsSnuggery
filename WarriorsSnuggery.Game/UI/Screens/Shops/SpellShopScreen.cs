@@ -29,18 +29,20 @@ namespace WarriorsSnuggery.UI.Screens
 			var active = UISpriteManager.Get("UI_activeConnection");
 			var inactive = UISpriteManager.Get("UI_inactiveConnection");
 			tree = new SpellNode[SpellCasterCache.Types.Count];
-			for (int i = 0; i < tree.Length; i++)
+
+			var i = 0;
+			foreach (var origin in SpellCasterCache.Types.Values)
 			{
-				var origin = SpellCasterCache.Types[i];
 				var spell = new SpellNode(origin, game, this) { Position = origin.VisualPosition };
 				spell.CheckAvailability();
-				tree[i] = spell;
+				tree[i++] = spell;
+
 				foreach (var connection in origin.Before)
 				{
-					if (connection == "")
+					if (string.IsNullOrEmpty(connection))
 						continue;
 
-					var target = SpellCasterCache.Types.Find(s => s.InnerName == connection);
+					var target = SpellCasterCache.Types[connection];
 					var line = new SpellConnection(game, origin, target, active, inactive, 10);
 					lines.Add(line);
 				}
@@ -106,7 +108,7 @@ namespace WarriorsSnuggery.UI.Screens
 			}
 		}
 
-		readonly SpellCasterType node;
+		readonly SpellCasterType type;
 		readonly Game game;
 		readonly SpellShopScreen screen;
 
@@ -116,16 +118,16 @@ namespace WarriorsSnuggery.UI.Screens
 		bool available;
 		bool unlocked;
 
-		public SpellNode(SpellCasterType node, Game game, SpellShopScreen screen) : base(new MPos((int)(1024 * 8 * Constants.PixelMultiplier), (int)(1024 * 8 * Constants.PixelMultiplier)), "stone", true)
+		public SpellNode(SpellCasterType type, Game game, SpellShopScreen screen) : base(new MPos((int)(1024 * 8 * Constants.PixelMultiplier), (int)(1024 * 8 * Constants.PixelMultiplier)), "stone", true)
 		{
-			this.node = node;
+			this.type = type;
 			this.game = game;
 			this.screen = screen;
-			image = new BatchSequence(node.Icon);
+			image = new BatchSequence(type.Icon);
 
-			tooltip = new Tooltip(node.Name + " : " + node.Cost, node.GetDescription());
+			tooltip = new Tooltip($"{type.Name}: {type.Cost}", type.GetDescription());
 
-			unlocked = node.Unlocked || game.Stats.SpellUnlocked(node);
+			unlocked = game.Stats.SpellUnlocked(type);
 			HighlightVisible = unlocked;
 		}
 
@@ -158,27 +160,7 @@ namespace WarriorsSnuggery.UI.Screens
 
 		public void CheckAvailability()
 		{
-			available |= unlocked;
-
-			if (available)
-				return;
-
-			foreach (var before in node.Before)
-			{
-				if (string.IsNullOrWhiteSpace(before))
-					continue;
-
-				if (game.Stats.SpellUnlocked(before))
-					continue;
-
-				foreach (var node in SpellCasterCache.Types)
-				{
-					if (node.InnerName == before && !node.Unlocked)
-						return;
-				}
-			}
-
-			available = true;
+			available = game.Stats.SpellAvailable(type);
 		}
 
 		void checkMouse()
@@ -187,18 +169,18 @@ namespace WarriorsSnuggery.UI.Screens
 
 			mouseOnItem = mousePosition.X > Position.X - 512 && mousePosition.X < Position.X + 512 && mousePosition.Y > Position.Y - 512 && mousePosition.Y < Position.Y + 512;
 
-			if (mouseOnItem && !node.Unlocked && MouseInput.IsLeftClicked)
+			if (mouseOnItem && MouseInput.IsLeftClicked)
 			{
 				if (unlocked || !available)
 					return;
 
-				if (game.Stats.Money < node.Cost)
+				if (game.Stats.Money < type.Cost)
 					return;
 
 				UIUtils.PlaySellSound();
 
-				game.Stats.Money -= node.Cost;
-				game.Stats.AddSpell(node);
+				game.Stats.Money -= type.Cost;
+				game.Stats.AddSpell(type);
 
 				unlocked = true;
 				HighlightVisible = true;
@@ -249,7 +231,7 @@ namespace WarriorsSnuggery.UI.Screens
 
 		public void Render()
 		{
-			if (target.Unlocked || game.Stats.SpellUnlocked(target))
+			if (game.Stats.SpellUnlocked(target))
 				Active = true;
 
 			if (--curTick < 0)

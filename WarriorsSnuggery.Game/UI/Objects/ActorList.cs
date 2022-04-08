@@ -66,7 +66,7 @@ namespace WarriorsSnuggery.UI.Objects
 
 		PanelListItem updateSingle(ActorType actorType)
 		{
-			var available = game.Stats.ActorAvailable(actorType.Playable);
+			var available = game.Stats.ActorUnlocked(actorType.Playable);
 			var sprite = actorType.GetPreviewSprite();
 			var scale = Constants.PixelSize / (float)Math.Max(sprite.Width, sprite.Height) - 0.1f;
 
@@ -108,7 +108,7 @@ namespace WarriorsSnuggery.UI.Objects
 			if (game.World.LocalPlayer.Type == type)
 				return;
 
-			if (!game.Stats.ActorAvailable(type.Playable))
+			if (!game.Stats.ActorUnlocked(type.Playable))
 				return;
 
 			if (game.World.LocalPlayer.GetPartOrDefault<PlayablePart>() == null)
