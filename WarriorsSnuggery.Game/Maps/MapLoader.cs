@@ -167,7 +167,7 @@ namespace WarriorsSnuggery.Maps
 			if (id == 0 && health == 0)
 				return;
 
-			var wall = WallCache.Create(pos, world.WallLayer, id);
+			var wall = WallCache.Create(pos, world, id);
 			wall.Health = health;
 
 			world.WallLayer.Set(wall);

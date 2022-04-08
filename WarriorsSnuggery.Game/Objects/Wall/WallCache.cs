@@ -17,12 +17,12 @@ namespace WarriorsSnuggery.Objects
 			}
 		}
 
-		public static Wall Create(MPos position, WallLayer layer, short ID)
+		public static Wall Create(MPos position, World world, short ID)
 		{
 			if (!Types.ContainsKey(ID))
 				throw new MissingInfoException(ID.ToString());
 
-			return new Wall(position, layer, Types[ID]);
+			return new Wall(position, world, Types[ID]);
 		}
 	}
 }

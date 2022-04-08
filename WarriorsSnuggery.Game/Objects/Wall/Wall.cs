@@ -1,5 +1,6 @@
+using System;
 using WarriorsSnuggery.Graphics;
-using WarriorsSnuggery.Maps.Layers;
+using WarriorsSnuggery.Objects.Particles;
 using WarriorsSnuggery.Physics;
 
 namespace WarriorsSnuggery.Objects
@@ -28,7 +29,7 @@ namespace WarriorsSnuggery.Objects
 
 		public readonly bool IsHorizontal;
 
-		readonly WallLayer layer;
+		readonly World world;
 
 		public CPos EndPointA => Physics.Position - new CPos(Physics.Boundaries.X, Physics.Boundaries.Y, 0);
 		public CPos EndPointB => Physics.Position + new CPos(Physics.Boundaries.X, Physics.Boundaries.Y, 0);
@@ -58,9 +59,9 @@ namespace WarriorsSnuggery.Objects
 		byte neighborState;
 		DamageState damageState = DamageState.NONE;
 
-		public Wall(MPos position, WallLayer layer, WallType type) : base(CPos.Zero, null)
+		public Wall(MPos position, World world, WallType type) : base(CPos.Zero, null)
 		{
-			this.layer = layer;
+			this.world = world;
 
 			Type = type;
 			health = type.Health;
@@ -114,10 +115,11 @@ namespace WarriorsSnuggery.Objects
 			{
 				Dispose();
 				if (Type.WallOnDeath >= 0)
-					layer.Set(WallCache.Create(LayerPosition, layer, Type.WallOnDeath));
+					world.WallLayer.Set(WallCache.Create(LayerPosition, world, Type.WallOnDeath));
 				else
-					layer.Remove(LayerPosition);
+					world.WallLayer.Remove(LayerPosition);
 
+				spawnDamageParticles();
 				return;
 			}
 
@@ -126,6 +128,8 @@ namespace WarriorsSnuggery.Objects
 
 		void checkDamageState()
 		{
+			var previousDamageState = damageState;
+
 			bool newRenderable = false;
 			if (healthPercentage < 0.25f)
 			{
@@ -142,6 +146,33 @@ namespace WarriorsSnuggery.Objects
 
 			if (newRenderable)
 				setRenderable();
+
+			if (previousDamageState != damageState)
+				spawnDamageParticles();
+		}
+
+		void spawnDamageParticles()
+		{
+			if (Type.DebrisParticleCount == 0 || Type.DebrisParticles == null || Physics.IsEmpty)
+				return;
+
+			var particleSqrt = (int)Math.Sqrt(Type.DebrisParticleCount);
+
+			var distH = Type.Height / particleSqrt;
+			var distI = new CPos(Physics.Boundaries.X * 2 / particleSqrt, Physics.Boundaries.Y * 2 / particleSqrt, 0);
+
+			for (int h = 0; h < particleSqrt; h++)
+			{
+				var height = h * distH;
+				for (int i = 0; i < particleSqrt; i++)
+				{
+					var position = Physics.Position - new CPos(Physics.Boundaries.X, Physics.Boundaries.Y, 0) + distI * new CPos(i, i, 0);
+
+					var particle = ParticleCache.Create(world, Type.DebrisParticles, position, height);
+					particle.ZOffset += Type.Height / 2;
+					world.Add(particle);
+				}
+			}
 		}
 
 		public void SetNeighborState(byte nS, bool enabled)

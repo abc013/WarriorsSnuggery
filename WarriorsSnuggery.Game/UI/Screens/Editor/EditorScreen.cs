@@ -315,7 +315,7 @@ namespace WarriorsSnuggery.UI.Screens
 					if (currentWall != null && currentWall.Type.ID == type.ID && currentWall.Health == plannedHealth)
 						return;
 
-					var wall = WallCache.Create(mpos, wallLayer, type.ID);
+					var wall = WallCache.Create(mpos, game.World, type.ID);
 					wall.Health = plannedHealth;
 
 					wallLayer.Set(wall);

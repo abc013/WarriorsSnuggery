@@ -52,6 +52,16 @@ wood_debris=
 	RandomRotation=0,0,10
 	StickToGround=true
 
+stone_debris=
+	Texture=stone_debris
+		Size=4,8
+		Random=true
+	Duration=30
+	DissolveDuration=20
+	RandomVelocity=5,5,5
+	RandomRotation=0,0,3
+	StickToGround=true
+
 colored_star=
 	Texture=colored_star
 		Size=3,3

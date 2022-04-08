@@ -9,6 +9,8 @@
 	ConsiderWallsNearby=true
 	BlocksTerrainOverlap=true
 	WallOnDeath=10
+	DebrisParticles=wood_debris
+	DebrisParticleCount=64
 	Armor=wood
 
 1=
@@ -22,6 +24,8 @@
 	ConsiderWallsNearby=true
 	BlocksTerrainOverlap=true
 	WallOnDeath=9
+	DebrisParticles=stone_debris
+	DebrisParticleCount=16
 	Armor=stone
 
 2=
@@ -37,6 +41,8 @@
 	WallOnDeath=9
 	IsTransparent=true
 	BlocksTerrainOverlap=true
+	DebrisParticles=stone_debris
+	DebrisParticleCount=9
 	Armor=stone
 
 3=
@@ -52,6 +58,8 @@
 	WallOnDeath=10
 	IsTransparent=true
 	BlocksTerrainOverlap=true
+	DebrisParticles=wood_debris
+	DebrisParticleCount=16
 	Armor=wood
 
 8=

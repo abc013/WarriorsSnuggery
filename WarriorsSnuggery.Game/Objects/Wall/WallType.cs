@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using WarriorsSnuggery.Graphics;
 using WarriorsSnuggery.Loader;
+using WarriorsSnuggery.Objects.Particles;
 using WarriorsSnuggery.Physics;
 
 namespace WarriorsSnuggery.Objects
@@ -49,6 +50,12 @@ namespace WarriorsSnuggery.Objects
 
 		[Desc("Specifies the armor that the wall has.")]
 		public readonly string Armor;
+
+		[Desc("Specifies damage particles that get emitted every time the damage state changes.", "Particles only get spawned if the wall Blocks movement.")]
+		public readonly ParticleType DebrisParticles;
+
+		[Desc("Specifies the amount of damage particles.")]
+		public readonly int DebrisParticleCount;
 
 		public readonly SimplePhysicsType HorizontalPhysicsType;
 		public readonly SimplePhysicsType VerticalPhysicsType;
