@@ -9,7 +9,7 @@ namespace WarriorsSnuggery.Spells
 		public readonly SpellCasterType Type;
 		readonly Game game;
 
-		public SpellCasterState State { get; private set; }
+		public SpellCasterState State { get; private set; } = SpellCasterState.READY;
 
 		public float RemainingDuration => 1 - duration / (float)Type.Duration;
 		public float RechargeProgress => 1 - recharge / (float)Type.Cooldown;
@@ -22,16 +22,13 @@ namespace WarriorsSnuggery.Spells
 		public SpellCaster(Game game, SpellCasterType type)
 		{
 			this.game = game;
-			this.Type = type;
+			Type = type;
 
-			var (currentDuration, currentRecharge) = game.Stats.GetSpellCasterValues(type.InnerName);
+			(duration, recharge) = game.Save.GetSpellCasterValues(type.InnerName);
 
-			duration = (int)(currentDuration * type.Duration);
 			if (duration > 0)
 				State = SpellCasterState.ACTIVE;
-
-			recharge = (int)(currentRecharge * type.Cooldown);
-			if (recharge > 0)
+			else if (recharge > 0)
 				State = SpellCasterState.RECHARGING;
 		}
 
@@ -79,8 +76,8 @@ namespace WarriorsSnuggery.Spells
 			duration = Type.Duration;
 
 			currentEffects.Clear();
-			foreach (var spell in Type.Effects)
-				currentEffects.Add(actor.CastEffect(spell));
+			foreach (var effect in Type.Effects)
+				currentEffects.Add(actor.CastEffect(effect));
 
 			return true;
 		}
@@ -88,6 +85,19 @@ namespace WarriorsSnuggery.Spells
 		public bool Unlocked()
 		{
 			return game.Stats.SpellUnlocked(Type);
+		}
+
+		public List<string> Save()
+		{
+			var list = new List<string>();
+			if (State == SpellCasterState.READY)
+				return list;
+
+			list.Add($"{Type.InnerName}=");
+			list.Add($"\tRecharge={recharge}");
+			list.Add($"\tDuration={duration}");
+
+			return list;
 		}
 	}
 }

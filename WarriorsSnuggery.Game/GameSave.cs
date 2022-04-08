@@ -35,8 +35,6 @@ namespace WarriorsSnuggery
 
 		public bool KeyFound;
 
-		public readonly Dictionary<string, (float duration, float recharge)> SpellCasters;
-
 		public readonly List<string> UnlockedSpells;
 		public readonly List<string> UnlockedActors;
 		public readonly List<string> UnlockedTrophies;
@@ -53,8 +51,6 @@ namespace WarriorsSnuggery
 
 			KeyFound = save.KeyFound;
 
-			SpellCasters = new Dictionary<string, (float, float)>(save.SpellCasters);
-
 			UnlockedSpells = new List<string>();
 			if (save.UnlockedSpells != null)
 				UnlockedSpells.AddRange(save.UnlockedSpells);
@@ -66,14 +62,6 @@ namespace WarriorsSnuggery
 			UnlockedTrophies = new List<string>();
 			if (save.UnlockedTrophies != null)
 				UnlockedTrophies.AddRange(save.UnlockedTrophies);
-		}
-
-		public (float duration, float recharge) GetSpellCasterValues(string innerName)
-		{
-			if (!SpellCasters.ContainsKey(innerName))
-				return (0f, 0f);
-
-			return SpellCasters[innerName];
 		}
 
 		public void AddSpell(SpellCasterType type)
@@ -170,7 +158,7 @@ namespace WarriorsSnuggery
 		public int Lives { get; private set; }
 		public int MaxLives { get; private set; }
 
-		public Dictionary<string, (float duration, float recharge)> SpellCasters { get; private set; }
+		public Dictionary<string, (int duration, int recharge)> SpellCasters { get; private set; }
 
 		public string[] UnlockedSpells { get; private set; }
 		public string[] UnlockedActors { get; private set; }
@@ -206,7 +194,7 @@ namespace WarriorsSnuggery
 			}
 
 			// Create new dictionary and lists
-			SpellCasters = new Dictionary<string, (float, float)>(save.SpellCasters);
+			SpellCasters = new Dictionary<string, (int, int)>(save.SpellCasters);
 		}
 
 		public GameSave Copy()
@@ -248,18 +236,18 @@ namespace WarriorsSnuggery
 						{
 							var innerName = node2.Key;
 
-							var recharge = 0f;
-							var duration = 0f;
+							var recharge = 0;
+							var duration = 0;
 							foreach (var node3 in node2.Children)
 							{
 								switch (node3.Key)
 								{
 									case "Recharge":
-										recharge = node3.Convert<float>();
+										recharge = node3.Convert<int>();
 
 										break;
-									case "Remaining":
-										duration = node3.Convert<float>();
+									case "Duration":
+										duration = node3.Convert<int>();
 
 										break;
 								}
@@ -303,7 +291,15 @@ namespace WarriorsSnuggery
 
 		GameSave()
 		{
-			SpellCasters = new Dictionary<string, (float, float)>();
+			SpellCasters = new Dictionary<string, (int, int)>();
+		}
+
+		public (int duration, int recharge) GetSpellCasterValues(string innerName)
+		{
+			if (!SpellCasters.ContainsKey(innerName))
+				return (0, 0);
+
+			return SpellCasters[innerName];
 		}
 
 		public int CalculateScore()
@@ -366,14 +362,8 @@ namespace WarriorsSnuggery
 				writer.WriteLine($"{nameof(SpellCasters)}=");
 				foreach (var caster in game.SpellManager.Casters)
 				{
-					if (caster.State == SpellCasterState.READY)
-						continue;
-
-					writer.WriteLine($"\t{caster.Type.InnerName}=");
-					if (caster.RechargeProgress != 0f)
-						writer.WriteLine($"\t\tRecharge={1 - caster.RechargeProgress}");
-					else
-						writer.WriteLine($"\t\tRemaining={1 - caster.RemainingDuration}");
+					foreach (var @string in caster.Save())
+						writer.WriteLine("\t" + @string);
 				}
 
 				writer.WriteLine($"{nameof(Seed)}={Seed}");
@@ -432,8 +422,6 @@ namespace WarriorsSnuggery
 			Kills = stats.Kills;
 			Lives = stats.Lifes;
 			MaxLives = stats.MaxLifes;
-
-			SpellCasters = new Dictionary<string, (float, float)>(stats.SpellCasters);
 
 			UnlockedSpells = stats.UnlockedSpells.ToArray();
 			UnlockedActors = stats.UnlockedActors.ToArray();
