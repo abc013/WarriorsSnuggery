@@ -91,7 +91,7 @@ namespace WarriorsSnuggery
 
 		public bool SpellUnlocked(string innerName)
 		{
-			return UnlockedSpells.Contains(innerName);
+			return Program.IgnoreTech || UnlockedSpells.Contains(innerName);
 		}
 
 		public void AddActor(PlayablePartInfo playable)
@@ -104,7 +104,12 @@ namespace WarriorsSnuggery
 
 		public bool ActorAvailable(PlayablePartInfo playable)
 		{
-			return Program.IgnoreTech || playable.Unlocked || UnlockedActors.Contains(playable.InternalName);
+			return playable.Unlocked || ActorAvailable(playable.InternalName);
+		}
+
+		public bool ActorAvailable(string innerName)
+		{
+			return Program.IgnoreTech || UnlockedActors.Contains(innerName);
 		}
 
 		public void AddTrophy(string name)

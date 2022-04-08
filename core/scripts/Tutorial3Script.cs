@@ -125,7 +125,7 @@ namespace WarriorsSnuggery.Scripts.Core
 
 		void tickPostShop()
 		{
-			if (!game.Stats.UnlockedActors.Contains("Slime") || !game.Stats.UnlockedSpells.Contains("Warm_up"))
+			if (!game.Stats.ActorAvailable("Slime") || !game.Stats.SpellUnlocked("Warm_up"))
 				return;
 
 			Tick -= tickPostShop;

@@ -88,10 +88,7 @@ namespace WarriorsSnuggery.Spells
 
 		public bool Unlocked()
 		{
-			if (type.Unlocked || Program.IgnoreTech)
-				return true;
-
-			return game.Stats.SpellUnlocked(type);
+			return type.Unlocked || game.Stats.SpellUnlocked(type);
 		}
 	}
 }
