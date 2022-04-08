@@ -271,9 +271,10 @@ namespace WarriorsSnuggery
 			var renderDiff = GlobalRender - lastRender;
 			lastRender = GlobalRender;
 
-			var sleepTime = ((int)(1000 * Settings.ThreadSleepFactor) / Math.Max(Settings.UpdatesPerSecond, Settings.FrameLimiter == 0 ? ScreenInfo.ScreenRefreshRate : Settings.FrameLimiter)) - (int)(PerfInfo.TMS * tickDiff + PerfInfo.FMS * renderDiff);
+			var maxSleepTime = (1000 * Settings.ThreadSleepFactor) / Math.Max(UpdateFrequency, RenderFrequency);
+			var sleepTime = maxSleepTime - (PerfInfo.TMS * tickDiff + PerfInfo.FMS * renderDiff);
 			if (sleepTime > 0)
-				System.Threading.Thread.Sleep(sleepTime);
+				System.Threading.Thread.Sleep(TimeSpan.FromMilliseconds(sleepTime));
 		}
 
 		protected override void OnFocusedChanged(FocusedChangedEventArgs e)
