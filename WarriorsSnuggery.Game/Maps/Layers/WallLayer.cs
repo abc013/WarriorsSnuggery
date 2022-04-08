@@ -44,7 +44,7 @@ namespace WarriorsSnuggery.Maps.Layers
 			var pos1 = new MPos(Math.Clamp(topleft.X, 0, mapBounds.X + 1), Math.Clamp(topleft.Y, 0, mapBounds.Y + 1));
 			var pos2 = new MPos(Math.Clamp(botright.X, 0, mapBounds.X + 1), Math.Clamp(botright.Y, 0, mapBounds.Y + 1));
 
-			return WallList.Where(w => w.TerrainPosition.X >= pos1.X && w.TerrainPosition.X < pos2.X && w.TerrainPosition.Y >= pos1.Y && w.TerrainPosition.Y < pos2.Y);
+			return WallList.Where(w => w.TerrainPosition.X >= pos1.X && w.TerrainPosition.X < pos2.X && w.TerrainPosition.Y >= pos1.Y && w.TerrainPosition.Y < pos2.Y).ToList();
 		}
 
 		public void Set(Wall wall)
