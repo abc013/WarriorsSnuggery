@@ -14,10 +14,19 @@ namespace WarriorsSnuggery
 		{
 			Directory.CreateDirectory(FileExplorer.Logs);
 
-			exceptionWriter = new StreamWriter(File.Create(FileExplorer.Logs + "exception.log"));
-			Console.SetError(exceptionWriter);
+			try
+			{
+				exceptionWriter = new StreamWriter(File.Create(FileExplorer.Logs + "exception.log"));
+				Console.SetError(exceptionWriter);
 
-			debugWriter = new StreamWriter(File.Create(FileExplorer.Logs + "debug.log"));
+				debugWriter = new StreamWriter(File.Create(FileExplorer.Logs + "debug.log"));
+			}
+			catch
+			{
+				Console.WriteLine("Unable to create logs. Using console instead.");
+				exceptionWriter = Console.Out;
+				debugWriter = Console.Out;
+			}
 
 			Initialized = true;
 		}
