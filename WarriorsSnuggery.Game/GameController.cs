@@ -147,9 +147,10 @@ namespace WarriorsSnuggery
 
 		public static void Pause()
 		{
-			if (!game.Paused)
-				game.ShowScreen(ScreenType.PAUSED);
+			if (game.Paused)
+				return;
 
+			game.ShowScreen(ScreenType.PAUSED);
 			game.Pause(true);
 		}
 
