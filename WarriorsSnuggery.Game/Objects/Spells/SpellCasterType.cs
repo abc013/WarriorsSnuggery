@@ -33,7 +33,7 @@ namespace WarriorsSnuggery.Spells
 		public readonly int Duration;
 
 		[Require, Desc("Effects to cast on activation.")]
-		public readonly Effect[] Effects;
+		public readonly Effect[] Effects = new Effect[0];
 
 		[Require, Desc("Icon of the spell.")]
 		public readonly TextureInfo Icon;

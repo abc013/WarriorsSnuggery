@@ -69,10 +69,7 @@ namespace WarriorsSnuggery.Docs
 		public static void WriteSpells()
 		{
 			HTMLWriter.WriteHeader("SpellCaster");
-			TypeWriter.Write(typeof(WarriorsSnuggery.Spells.SpellCasterType), new object[] { emptyTextNodes, "" });
-
-			HTMLWriter.WriteHeader("Spell");
-			TypeWriter.Write(typeof(WarriorsSnuggery.Spells.Spell), new[] { emptyTextNodes });
+			TypeWriter.Write(typeof(WarriorsSnuggery.Spells.SpellCasterType), new object[] { "", emptyTextNodes });
 
 			HTMLWriter.WriteHeader("Effect");
 			TypeWriter.Write(typeof(WarriorsSnuggery.Spells.Effect), new[] { emptyTextNodes });
