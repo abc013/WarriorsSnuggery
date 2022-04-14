@@ -1,0 +1,29 @@
+name: Generate Documentation
+
+on: push
+
+jobs:
+  publish:
+    name: Publish Documentation
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: 6.0.x
+    - name: Restore dependencies
+      run: dotnet restore
+    - name: Build Documentation Writer
+      run: dotnet build --no-restore
+    - name: Generate documentation
+      run: |
+        dotnet DocWriter.dll -skip-styling
+        mkdir results
+        mv Documentation.html results/Documentation.md
+    - name: Show documentation (test)
+      uses: actions/upload-artifact@v2
+      with:
+        name: documentation
+        path: results
+        retention-days: 5
