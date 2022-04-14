@@ -39,7 +39,9 @@ namespace WarriorsSnuggery.Docs
 
 				cells.Add(new TableCell(varname, vartype, vardesc, value));
 			}
-			builder.AppendLine(DocumentationUtils.Table(cells, true));
+
+			if (cells.Count > 0)
+				builder.AppendLine(DocumentationUtils.Table(cells, true));
 
 			return builder.ToString();
 		}
