@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using System.Text;
 
 namespace WarriorsSnuggery.Docs
 {
@@ -16,12 +17,14 @@ namespace WarriorsSnuggery.Docs
 			Settings.IgnoreRequiredAttribute = true;
 		}
 
-		public static void Write(Type type, object[] args)
+		public static string Write(Type type, object[] args)
 		{
+			var builder = new StringBuilder();
+
 			var attrib = type.GetCustomAttribute<DescAttribute>();
 			var description = attrib?.Desc;
 			if (description != null)
-				HTMLWriter.WriteDescription(description);
+				builder.AppendLine(DocumentationUtils.Description(description));
 
 			var obj = Activator.CreateInstance(type, args);
 			var variables = type.GetFields().Where(f => f.IsInitOnly && (f.GetCustomAttribute<DescAttribute>() != null || f.GetCustomAttribute<RequireAttribute>() != null));
@@ -36,7 +39,9 @@ namespace WarriorsSnuggery.Docs
 
 				cells.Add(new TableCell(varname, vartype, vardesc, value));
 			}
-			HTMLWriter.WriteTable(cells, true);
+			builder.AppendLine(DocumentationUtils.Table(cells, true));
+
+			return builder.ToString();
 		}
 
 		static string[] getDescription(FieldInfo variable)
@@ -70,8 +75,10 @@ namespace WarriorsSnuggery.Docs
 			return array;
 		}
 
-		public static void WriteAll(string @namespace, string endsWith, object[] args)
+		public static string WriteAll(string @namespace, string endsWith, object[] args)
 		{
+			var builder = new StringBuilder();
+
 			var infos = assembly.GetTypes().Where(t => !t.IsAbstract && !t.IsInterface && t.Namespace == @namespace && t.Name.EndsWith(endsWith));
 
 			bool first = true;
@@ -80,14 +87,15 @@ namespace WarriorsSnuggery.Docs
 				var attrib = info.GetCustomAttribute(typeof(DescAttribute));
 				var name = info.Name.Replace(endsWith, "");
 
-				HTMLWriter.WriteHeader(name, 3);
-
-				Write(info, args);
+				builder.AppendLine(DocumentationUtils.Header(name, 3));
+				builder.AppendLine(Write(info, args));
 
 				Console.Write((first ? "" : ", ") + name);
 				first = false;
 			}
 			Console.WriteLine();
+
+			return builder.ToString();
 		}
 
 		static string getNameOfType(string name)

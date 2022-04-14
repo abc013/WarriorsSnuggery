@@ -1,5 +1,4 @@
-﻿using System;
-using System.IO;
+﻿using System.IO;
 
 namespace WarriorsSnuggery.Docs
 {
@@ -8,28 +7,35 @@ namespace WarriorsSnuggery.Docs
 		static readonly MemoryStream stream = new MemoryStream();
 		static readonly StreamWriter writer = new StreamWriter(stream);
 
-		public static void WriteIndex()
+		static int currentImportance = 0;
+
+		public static void BeginIndex()
 		{
-			var types = Enum.GetValues<DocumentationType>();
+			writer.WriteLine($"<ul>");
+			currentImportance++;
+		}
 
-			writer.WriteLine($"\t\t<ul>");
+		public static void WriteEntry(string text, int importance)
+		{
+			while (currentImportance > importance)
+				EndIndex();
+			while (currentImportance < importance)
+				BeginIndex();
 
-			int id = 1;
-			foreach (var type in types)
-			{
-				writer.WriteLine($"\t\t<li><h4><a href=\"#{id}\">");
-				writer.WriteLine($"\t\t\t{id}. {type.GetName()}");
-				writer.WriteLine($"\t\t</a></h4></li>");
+			writer.WriteLine($"<li><h4><a href=\"#{text}\">");
+			writer.WriteLine($"{text}");
+			writer.WriteLine($"</a></h4></li>");
+		}
 
-				id++;
-			}
-
-			writer.WriteLine($"\t\t</ul>");
-			writer.Flush();
+		public static void EndIndex()
+		{
+			writer.WriteLine($"</ul>");
+			currentImportance--;
 		}
 
 		public static string GetResult()
 		{
+			writer.Flush();
 			stream.Seek(0, SeekOrigin.Begin);
 			return new StreamReader(stream).ReadToEnd();
 		}

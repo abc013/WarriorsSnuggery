@@ -1,5 +1,4 @@
 ﻿using System;
-using System.IO;
 
 namespace WarriorsSnuggery.Docs
 {
@@ -39,26 +38,34 @@ namespace WarriorsSnuggery.Docs
 		static void start()
 		{
 			var types = Enum.GetValues<DocumentationType>();
-			using var writer = new StreamWriter(FileExplorer.MainDirectory + "Documentation.html");
 
 			Console.WriteLine("Generating document, please wait...");
-			HTMLWriter.BeginDocument(writer);
+			DocumentWriter.BeginDocument();
+			IndexWriter.BeginIndex();
 
-			HTMLWriter.WriteIndex();
-
-			int id = 1;
-			foreach (var type in types)
+			// First generate the chapters...
+			var chapters = new ChapterWriter[types.Length];
+			for (int i = 0; i < types.Length; i++)
 			{
+				var type = types[i];
+
 				Console.ForegroundColor = ConsoleColor.White;
-				Console.WriteLine("Reading " + type + "...");
+				Console.WriteLine($"Reading {type}...");
 				Console.ResetColor();
-				HTMLWriter.WriteDoc(type, id++);
+
+				var chapter = new ChapterWriter(type, i + 1);
+				chapter.WriteDocumentation();
+				chapters[i] = chapter;
 			}
 
-			HTMLWriter.EndDocument();
+			IndexWriter.EndIndex();
 
-			writer.Flush();
-			writer.Close();
+			// Then write index and then chapters
+			DocumentWriter.WriteIndex();
+			foreach (var chapter in chapters)
+				DocumentWriter.WriteChapter(chapter);
+
+			DocumentWriter.EndDocument();
 		}
 	}
 }
