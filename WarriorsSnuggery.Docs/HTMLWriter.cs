@@ -6,63 +6,39 @@ namespace WarriorsSnuggery.Docs
 {
 	public static class HTMLWriter
 	{
-		public static readonly string[] LightModeColors = new[]
+		public static readonly string[] Colors = new[]
 		{
 			"#EEEEEE",
 			"#DDDDDD",
 			"#CCCCCC"
 		};
-		public static readonly string[] DarkModeColors = new[]
-		{
-			"#111111",
-			"#222222",
-			"#333333"
-		};
-		public static string[] Colors;
 
 		static StreamWriter writer;
 
-		public static void SetWriter(StreamWriter writer)
+		public static void BeginDocument(StreamWriter writer)
 		{
 			HTMLWriter.writer = writer;
-		}
 
-		public static void WriteHead()
-		{
 			writer.WriteLine("<html>");
-			writer.WriteLine("\t<head>");
+			writer.WriteLine("<head>");
 
-			writer.WriteLine($"\t\t<title>{Program.Title}</title>");
+			writer.WriteLine($"<title>{Program.Title}</title>");
 
-			writer.WriteLine("\t\t<style>");
-			if (Program.DarkMode)
-			{
-				writer.WriteLine("body { background-color: #000000; color: #BBBBBB; }");
-				writer.WriteLine("table { margin: 10px; box-shadow: 1px 0px 10px " + Colors[0] + "; width: 70%; border-collapse: collapse; }");
-				writer.WriteLine("td { border: 1px solid " + Colors[2] + "; padding: 8px; }");
-				writer.WriteLine("th { border: 1px solid " + Colors[2] + "; padding: 8px; color: #DDDDFF; }");
-				writer.WriteLine("tr:nth-child(even) { background-color: " + Colors[0] + "; }");
-				writer.WriteLine("tr { background-color: " + Colors[1] + "; color: #DDDDDD; }");
-				writer.WriteLine("hr { color: " + Colors[2] + "; }");
-				writer.WriteLine("h1 { margin-bottom: 0px; color: #FFFFFF; }");
-				writer.WriteLine("h2 { margin-bottom: 0px; color: #FFFFFF; }");
-				writer.WriteLine("h3 { margin-bottom: 0px; color: #EEEEEE; }");
-			}
-			else
-			{
-				writer.WriteLine("table { margin: 10px; box-shadow: 1px 0px 10px " + Colors[0] + "; width: 70%; border-collapse: collapse; }");
-				writer.WriteLine("td { border: 1px solid " + Colors[1] + "; padding: 8px; }");
-				writer.WriteLine("th { border: 1px solid " + Colors[1] + "; padding: 8px; }");
-				writer.WriteLine("tr:nth-child(even) { background-color: " + Colors[0] + "; }");
-				writer.WriteLine("h1 { margin-bottom: 0px; }");
-				writer.WriteLine("h2 { margin-bottom: 0px; }");
-				writer.WriteLine("h3 { margin-bottom: 0px; }");
-			}
-			writer.WriteLine("\t\t</style>");
+			writer.WriteLine(
+				"<style>" +
+				"table { margin: 10px; box-shadow: 1px 0px 10px " + Colors[0] + "; width: 70%; border-collapse: collapse; }\n" +
+				"td { border: 1px solid " + Colors[1] + "; padding: 8px; }\n" +
+				"th { border: 1px solid " + Colors[1] + "; padding: 8px; }\n" +
+				"tr:nth-child(even) { background-color: " + Colors[0] + "; }\n" +
+				"h1 { margin-bottom: 0px; }\n" +
+				"h2 { margin-bottom: 0px; }\n" +
+				"h3 { margin-bottom: 0px; }\n" +
+				"img { filter: drop-shadow(0px 10px 5px #999); image-rendering: pixelated; }" +
+				"</style>");
 
 			writer.WriteLine("\t</head>");
 			writer.WriteLine("\t<body>");
-			writer.WriteLine("<img src=\"misc/UI/logo.png\"/>");
+			writer.WriteLine("<img src=\"core/contents/graphics/UI/logo.png\" width=100%/>");
 		}
 
 		public static void WriteIndex(DocumentationType[] types)
@@ -84,11 +60,11 @@ namespace WarriorsSnuggery.Docs
 			writer.WriteLine($"\t\t</ul>");
 		}
 
-		public static void WriteDoc(DocumentationType type, int id)
+		public static void WriteDoc(DocumentationType type, int number)
 		{
 			var name = type.GetName();
 
-			WriteHeader($"{id}. {name}", 1, id);
+			WriteHeader($"{number}. {name}", 1, number);
 
 			typeof(ObjectWriter).GetMethod($"Write{name}").Invoke(null, null);
 		}
@@ -103,7 +79,7 @@ namespace WarriorsSnuggery.Docs
 		public static void WriteDescription(string[] description)
 		{
 			foreach (var descLine in description)
-				writer.WriteLine("\t\t" + descLine + "<br><br>");
+				writer.WriteLine($"\t\t{descLine}<br><br>");
 			writer.WriteLine();
 		}
 
@@ -122,27 +98,27 @@ namespace WarriorsSnuggery.Docs
 		{
 			var style = "td";
 			if (head)
-				style = "th style=\"background-color: " + Colors[1] + ";\" ";
+				style = $"th style=\"background-color:{Colors[1]};\" ";
 
 			writer.WriteLine();
 			writer.WriteLine("\t\t\t<tr>");
 
-			writer.WriteLine("\t\t\t\t<" + style + ">" + cell.Name + "</td>");
+			writer.WriteLine($"\t\t\t\t<{style}>{cell.Name}</td>");
 
-			writer.WriteLine("\t\t\t\t<" + style + ">" + cell.Type + "</td>");
+			writer.WriteLine($"\t\t\t\t<{style}>{cell.Type}</td>");
 
 			var desc = "";
 			foreach (var desc1 in cell.Desc)
 				desc += desc1 + "<br>";
-			writer.WriteLine("\t\t\t\t<" + style + ">" + desc + "</td>");
+			writer.WriteLine($"\t\t\t\t<{style}>{desc}</td>");
 
 			if (showValues)
-				writer.WriteLine("\t\t\t\t<" + style + ">" + cell.Value + "</td>");
+				writer.WriteLine($"\t\t\t\t<{style}>{cell.Value}</td>");
 
 			writer.WriteLine("\t\t\t</tr>");
 		}
 
-		public static void WriteEnd()
+		public static void EndDocument()
 		{
 			writer.WriteLine($"\t<p>{Program.Title}. Generated for {Settings.Version} at {DateTime.Now}.</p>");
 			writer.WriteLine("\t</body>");
