@@ -34,17 +34,20 @@
     <ResolvedFileToPublish Include="..\AUTHORS.md">
       <RelativePath>AUTHORS.md</RelativePath>
     </ResolvedFileToPublish>
-    <ResolvedFileToPublish Include="..\pieces\**\*">
-      <RelativePath>pieces\%(RecursiveDir)%(Filename)%(Extension)</RelativePath>
+    <ResolvedFileToPublish Include="..\warsnu.png">
+      <RelativePath>warsnu.png</RelativePath>
     </ResolvedFileToPublish>
-    <ResolvedFileToPublish Include="..\scripts\**\*.cs">
-      <RelativePath>scripts\%(RecursiveDir)%(Filename)%(Extension)</RelativePath>
+    <ResolvedFileToPublish Include="..\warsnu.ico">
+      <RelativePath>warsnu.ico</RelativePath>
     </ResolvedFileToPublish>
-    <ResolvedFileToPublish Include="..\misc\**\*">
-      <RelativePath>misc\%(RecursiveDir)%(Filename)%(Extension)</RelativePath>
+    <ResolvedFileToPublish Include="..\core\**\*">
+      <RelativePath>core\%(RecursiveDir)%(Filename)%(Extension)</RelativePath>
     </ResolvedFileToPublish>
-    <ResolvedFileToPublish Include="..\rules\**\*">
-      <RelativePath>rules\%(RecursiveDir)%(Filename)%(Extension)</RelativePath>
+    <ResolvedFileToPublish Include="..\mods\**\*.cs">
+      <RelativePath>mods\%(RecursiveDir)%(Filename)%(Extension)</RelativePath>
+    </ResolvedFileToPublish>
+    <ResolvedFileToPublish Include="..\fonts\**\*">
+      <RelativePath>fonts\%(RecursiveDir)%(Filename)%(Extension)</RelativePath>
     </ResolvedFileToPublish>
     <ResolvedFileToPublish Include="..\saves\**\*">
       <RelativePath>saves\%(RecursiveDir)%(Filename)%(Extension)</RelativePath>
