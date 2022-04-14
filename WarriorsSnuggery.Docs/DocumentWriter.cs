@@ -16,17 +16,20 @@ namespace WarriorsSnuggery.Docs
 
 			writer.WriteLine($"<title>{Program.Title}</title>");
 
-			writer.WriteLine(
-				"<style>" +
-				"table { margin: 10px; box-shadow: 1px 0px 10px " + DocumentationUtils.Colors[0] + "; width: 70%; border-collapse: collapse; }\n" +
-				"td { border: 1px solid " + DocumentationUtils.Colors[1] + "; padding: 8px; }\n" +
-				"th { border: 1px solid " + DocumentationUtils.Colors[1] + "; padding: 8px; }\n" +
-				"tr:nth-child(even) { background-color: " + DocumentationUtils.Colors[0] + "; }\n" +
-				"h1 { margin-bottom: 0px; }\n" +
-				"h2 { margin-bottom: 0px; }\n" +
-				"h3 { margin-bottom: 0px; }\n" +
-				"img { filter: drop-shadow(0px 10px 5px #999); image-rendering: pixelated; }" +
-				"</style>");
+			if (!Program.SkipStyling)
+			{
+				writer.WriteLine(
+					"<style>" +
+					"table { margin: 10px; box-shadow: 1px 0px 10px " + DocumentationUtils.Colors[0] + "; width: 70%; border-collapse: collapse; }\n" +
+					"td { border: 1px solid " + DocumentationUtils.Colors[1] + "; padding: 8px; }\n" +
+					"th { border: 1px solid " + DocumentationUtils.Colors[1] + "; padding: 8px; }\n" +
+					"tr:nth-child(even) { background-color: " + DocumentationUtils.Colors[0] + "; }\n" +
+					"h1 { margin-bottom: 0px; }\n" +
+					"h2 { margin-bottom: 0px; }\n" +
+					"h3 { margin-bottom: 0px; }\n" +
+					"img { filter: drop-shadow(0px 10px 5px #999); image-rendering: pixelated; }" +
+					"</style>");
+			}
 
 			writer.WriteLine("</head>");
 			writer.WriteLine("<body>");

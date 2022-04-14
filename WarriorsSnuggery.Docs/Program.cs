@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 
 namespace WarriorsSnuggery.Docs
 {
@@ -6,9 +7,13 @@ namespace WarriorsSnuggery.Docs
 	{
 		public const string Title = WarriorsSnuggery.Program.Title + " - Rule Documentation";
 
-		public static void Main()
+		public static bool SkipStyling;
+
+		public static void Main(string[] args)
 		{
 			Console.Title = Title;
+
+			SkipStyling = args.Contains("-skip-styling");
 
 			FileExplorer.InitPaths();
 			TypeWriter.Initialize();
