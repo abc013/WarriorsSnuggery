@@ -6,6 +6,7 @@ jobs:
   publish:
     name: Publish Documentation
     runs-on: ubuntu-latest
+    environment: Wiki Access
     steps:
     - uses: actions/checkout@v2
     - name: Setup .NET
@@ -21,9 +22,13 @@ jobs:
         dotnet DocWriter.dll -skip-styling
         mkdir results
         mv Documentation.html results/Documentation.md
-    - name: Show documentation (test)
-      uses: actions/upload-artifact@v2
-      with:
-        name: documentation
-        path: results
-        retention-days: 5
+    - name: Upload documentation
+      uses: docker://decathlon/wiki-page-creator-action:latest
+      env:
+        GH_PAT: ${{ secrets.GH_PAT }}
+        MD_FOLDER: results
+        ACTION_MAIL: documentation@users.noreply.github.com
+        ACTION_NAME: documentation
+        OWNER: abc013
+        REPO_NAME: WarriorsSnuggery
+        WIKI_PUSH_MESSAGE: Update documentation to latest changes
