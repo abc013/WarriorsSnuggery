@@ -18,7 +18,6 @@ namespace WarriorsSnuggery.Docs
 
 			writer.WriteLine(
 				"<style>" +
-				"body { line-height: 0.6; }" +
 				"table { margin: 10px; box-shadow: 1px 0px 10px " + DocumentationUtils.Colors[0] + "; width: 70%; border-collapse: collapse; }\n" +
 				"td { border: 1px solid " + DocumentationUtils.Colors[1] + "; padding: 8px; }\n" +
 				"th { border: 1px solid " + DocumentationUtils.Colors[1] + "; padding: 8px; }\n" +

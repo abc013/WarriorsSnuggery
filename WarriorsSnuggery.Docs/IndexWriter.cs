@@ -22,9 +22,7 @@ namespace WarriorsSnuggery.Docs
 			while (currentImportance < importance)
 				BeginIndex();
 
-			writer.WriteLine($"<li><h4><a href=\"#{text}\">");
-			writer.WriteLine($"{text}");
-			writer.WriteLine($"</a></h4></li>");
+			writer.WriteLine($"<li><a href=\"#{text}\">{text}</a></li>");
 		}
 
 		public static void EndIndex()
