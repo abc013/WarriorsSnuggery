@@ -44,7 +44,7 @@ namespace WarriorsSnuggery.Docs
 			Console.WriteLine("Generating document, please wait...");
 			HTMLWriter.BeginDocument(writer);
 
-			HTMLWriter.WriteIndex(types);
+			HTMLWriter.WriteIndex();
 
 			int id = 1;
 			foreach (var type in types)

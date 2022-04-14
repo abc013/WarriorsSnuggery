@@ -41,23 +41,11 @@ namespace WarriorsSnuggery.Docs
 			writer.WriteLine("<img src=\"core/contents/graphics/UI/logo.png\" width=100%/>");
 		}
 
-		public static void WriteIndex(DocumentationType[] types)
+		public static void WriteIndex()
 		{
 			WriteHeader("Table of Contents", 1);
-
-			writer.WriteLine($"\t\t<ul>");
-
-			int id = 1;
-			foreach (var type in types)
-			{
-				writer.WriteLine($"\t\t<li><h4><a href=\"#{id}\">");
-				writer.WriteLine($"\t\t\t{id}. {type.GetName()}");
-				writer.WriteLine($"\t\t</a></h4></li>");
-
-				id++;
-			}
-
-			writer.WriteLine($"\t\t</ul>");
+			IndexWriter.WriteIndex();
+			writer.WriteLine(IndexWriter.GetResult());
 		}
 
 		public static void WriteDoc(DocumentationType type, int number)
