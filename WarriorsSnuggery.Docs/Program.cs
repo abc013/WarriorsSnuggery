@@ -7,13 +7,13 @@ namespace WarriorsSnuggery.Docs
 	{
 		public const string Title = WarriorsSnuggery.Program.Title + " - Rule Documentation";
 
-		public static bool SkipStyling;
+		public static bool SkipHeader;
 
 		public static void Main(string[] args)
 		{
 			Console.Title = Title;
 
-			SkipStyling = args.Contains("-skip-styling");
+			SkipHeader = args.Contains("-skip-header");
 
 			FileExplorer.InitPaths();
 			TypeWriter.Initialize();

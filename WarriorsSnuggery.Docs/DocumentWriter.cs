@@ -12,12 +12,12 @@ namespace WarriorsSnuggery.Docs
 			writer = new StreamWriter(FileExplorer.MainDirectory + "Documentation.html");
 
 			writer.WriteLine("<html>");
-			writer.WriteLine("<head>");
-
-			writer.WriteLine($"<title>{Program.Title}</title>");
-
-			if (!Program.SkipStyling)
+			if (!Program.SkipHeader)
 			{
+				writer.WriteLine("<head>");
+
+				writer.WriteLine($"<title>{Program.Title}</title>");
+
 				writer.WriteLine(
 					"<style>" +
 					"table { margin: 10px; box-shadow: 1px 0px 10px " + DocumentationUtils.Colors[0] + "; width: 70%; border-collapse: collapse; }\n" +
@@ -29,11 +29,14 @@ namespace WarriorsSnuggery.Docs
 					"h3 { margin-bottom: 0px; }\n" +
 					"img { filter: drop-shadow(0px 10px 5px #999); image-rendering: pixelated; }" +
 					"</style>");
+
+				writer.WriteLine("</head>");
 			}
 
-			writer.WriteLine("</head>");
 			writer.WriteLine("<body>");
-			writer.WriteLine("<img src=\"core/contents/graphics/UI/logo.png\" width=100%/>");
+
+			if (!Program.SkipHeader)
+				writer.WriteLine("<img src=\"core/contents/graphics/UI/logo.png\" width=100%/>");
 		}
 
 		public static void WriteIndex()

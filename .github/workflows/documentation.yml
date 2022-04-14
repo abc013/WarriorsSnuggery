@@ -19,7 +19,7 @@ jobs:
       run: dotnet build --no-restore
     - name: Generate documentation
       run: |
-        dotnet DocWriter.dll -skip-styling
+        dotnet DocWriter.dll -skip-header
         mkdir results
         mv Documentation.html results/Documentation.md
     - name: Upload documentation
