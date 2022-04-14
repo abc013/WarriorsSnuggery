@@ -2,7 +2,6 @@
 {
 	public enum DocumentationType
 	{
-		ALL,
 		ACTORS,
 		PARTICLES,
 		WEAPONS,

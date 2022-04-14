@@ -16,17 +16,9 @@ namespace WarriorsSnuggery.Docs
 
 			FileExplorer.InitPaths();
 			TypeWriter.Initialize();
+
 			Console.ForegroundColor = ConsoleColor.White;
-
 			Console.WriteLine("Welcome to the WarriorsSnuggery DocWriter. This program will search through the installation and create a documentation of the modding rules.");
-			Console.WriteLine("Available are: ALL, ACTORS, PARTICLES, WEAPONS, TERRAIN, WALLS, MAPS, SPELLS, TROPHIES and SOUNDS.");
-
-			Console.ForegroundColor = ConsoleColor.Yellow;
-
-			Console.Write("Please enter what content should be created (e.g. ACTORS, TERRAIN): ");
-			Console.ResetColor();
-
-			var input = Console.ReadLine();
 
 			Console.ForegroundColor = ConsoleColor.Yellow;
 			Console.Write("Write the documentation in dark mode? (y to accept): ");
@@ -39,34 +31,17 @@ namespace WarriorsSnuggery.Docs
 			Console.ForegroundColor = ConsoleColor.White;
 			Console.WriteLine("--------------------------------------------------------------");
 
-			DocumentationType[] types;
 			try
 			{
-				types = getTypes(input);
+				start();
 			}
-			catch (Exception)
+			catch (Exception e)
 			{
 				Console.ForegroundColor = ConsoleColor.Red;
-				Console.WriteLine("Invalid input.");
+				Console.WriteLine("Failed to write rules. Exception:");
+				Console.WriteLine(e);
 				Console.ReadKey();
 				return;
-			}
-
-			if (Debugger.IsAttached)
-				start(types);
-			else
-			{
-				try
-				{
-					start(types);
-				}
-				catch (Exception)
-				{
-					Console.ForegroundColor = ConsoleColor.Red;
-					Console.WriteLine("Failed to init document/write rules.");
-					Console.ReadKey();
-					return;
-				}
 			}
 
 			Console.ForegroundColor = ConsoleColor.White;
@@ -75,8 +50,9 @@ namespace WarriorsSnuggery.Docs
 			Console.ReadKey();
 		}
 
-		static void start(DocumentationType[] types)
+		static void start()
 		{
+			var types = Enum.GetValues<DocumentationType>();
 			using var writer = new StreamWriter(FileExplorer.MainDirectory + "Documentation.html");
 
 			HTMLWriter.SetWriter(writer);
@@ -99,20 +75,6 @@ namespace WarriorsSnuggery.Docs
 
 			writer.Flush();
 			writer.Close();
-		}
-
-		static DocumentationType[] getTypes(string input)
-		{
-			var strings = input.Split(',');
-
-			var types = new DocumentationType[strings.Length];
-			for (int i = 0; i < types.Length; i++)
-				types[i] = (DocumentationType)Enum.Parse(typeof(DocumentationType), strings[i].Trim(), true);
-
-			if (types.Contains(DocumentationType.ALL))
-				types = new DocumentationType[] { DocumentationType.ACTORS, DocumentationType.PARTICLES, DocumentationType.WEAPONS, DocumentationType.WALLS, DocumentationType.TERRAIN, DocumentationType.MAPS, DocumentationType.SPELLS, DocumentationType.SOUNDS };
-
-			return types;
 		}
 	}
 }
