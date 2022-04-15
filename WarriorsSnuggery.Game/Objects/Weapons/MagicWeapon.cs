@@ -20,10 +20,10 @@ namespace WarriorsSnuggery.Objects.Weapons
 		{
 			projectile = (MagicProjectile)type.Projectile;
 
-			Angle = (Position - TargetPosition).FlatAngle;
-			calculateSpeed();
-
 			TargetPosition += getInaccuracy(projectile.Inaccuracy);
+			Angle = (Position - TargetPosition).FlatAngle;
+
+			calculateSpeed();
 
 			ray = new PhysicsRay(world);
 		}

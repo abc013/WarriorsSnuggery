@@ -20,9 +20,8 @@ namespace WarriorsSnuggery.Objects.Weapons
 		{
 			projectile = (BulletProjectile)type.Projectile;
 
-			Angle = (Position - TargetPosition).FlatAngle;
-
 			TargetPosition += getInaccuracy(projectile.Inaccuracy);
+			Angle = (Position - TargetPosition).FlatAngle;
 
 			calculateStartSpeed();
 
