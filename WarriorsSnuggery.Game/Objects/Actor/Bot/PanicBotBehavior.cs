@@ -33,12 +33,12 @@ namespace WarriorsSnuggery.Objects.Actors.Bot
 			if (!CanMove && !CanAttack)
 				return;
 
-			if (Self.IsAlive && panic > Self.Health.HP * 2)
+			if (Self.IsAlive && (panic > 100 || Self.Health.RelativeHP < 0.2f))
 				inPanic = true;
 
 			if (inPanic)
 			{
-				if (panic-- <= 0)
+				if (!HasGoodTarget || panic-- <= 0)
 					inPanic = false;
 
 				if (panic % 20 == 0)
@@ -56,7 +56,7 @@ namespace WarriorsSnuggery.Objects.Actors.Bot
 			{
 				if (!HasGoodTarget)
 				{
-					if (Self.IsAlive && panic <= Self.Health.HP * 1.8f)
+					if (Self.IsAlive && panic <= 0)
 						panic++;
 
 					DefaultTickBehavior();
@@ -84,7 +84,7 @@ namespace WarriorsSnuggery.Objects.Actors.Bot
 		{
 			base.OnDamage(damager, damage);
 
-			panic += damage * 2;
+			panic += 10;
 		}
 
 		public override void OnKill(Actor killer)

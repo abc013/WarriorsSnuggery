@@ -24,7 +24,7 @@ namespace WarriorsSnuggery.Objects.Actors.Bot
 			get => moralVal;
 			set => moralVal = Math.Clamp(value, -50, 50);
 		}
-		int moralVal;
+		int moralVal = 50;
 
 		public MoralBotBehavior(Actor self, MoralBotBehaviorType type) : base(self)
 		{
@@ -55,13 +55,13 @@ namespace WarriorsSnuggery.Objects.Actors.Bot
 		{
 			base.OnDamage(damager, damage);
 
-			moral -= damage;
+			moral -= 5;
 		}
 
 		public override void OnKill(Actor killed)
 		{
 			base.OnKill(killed);
-			moral += 10;
+			moral += 50;
 		}
 	}
 }
