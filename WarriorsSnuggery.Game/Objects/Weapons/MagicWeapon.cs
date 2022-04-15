@@ -90,8 +90,8 @@ namespace WarriorsSnuggery.Objects.Weapons
 
 			var zDiff = TargetHeight - Height;
 			var dDiff = (int)(Position - TargetPosition).FlatDist;
-			if (dDiff > Type.MaxRange)
-				dDiff = Type.MaxRange;
+			if (dDiff > Type.MaxRange * RangeModifier)
+				dDiff = (int)(Type.MaxRange * RangeModifier);
 
 			var angle2 = new CPos(-dDiff, -zDiff, 0).FlatAngle;
 			var z = MathF.Sin(angle2) * projectile.Speed;

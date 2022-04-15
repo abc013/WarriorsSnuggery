@@ -117,7 +117,7 @@ namespace WarriorsSnuggery.Objects.Weapons
 			if (Height < 0 || !World.IsInWorld(Position))
 				Detonate(new Target(Position, 0));
 
-			if (!World.Game.Editor &&  DistanceTravelled >= Type.MaxRange)
+			if (!World.Game.Editor && DistanceTravelled >= Type.MaxRange * RangeModifier)
 				Detonate(new Target(Position, Height));
 		}
 

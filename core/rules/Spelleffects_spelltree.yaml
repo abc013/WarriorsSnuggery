@@ -57,7 +57,7 @@ Precision=
 
 Range=
 	Type=RANGE
-	Value=3084
+	Value=2
 	Duration=1800
 
 Blood_pact=
@@ -69,6 +69,12 @@ Blood_pact=
 		Type=blood
 		Count=3
 		Radius=256
+
+Blood_pact_range=
+	Activation=ON_ATTACK
+	Type=DAMAGERANGE
+	Value=2
+	Duration=300
 
 Blood_armor=
 	Type=SHIELD
