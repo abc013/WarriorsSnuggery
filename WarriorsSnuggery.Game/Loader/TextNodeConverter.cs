@@ -327,10 +327,6 @@ namespace WarriorsSnuggery.Loader
 
 				return EffectCache.Types[value];
 			}
-			else if (t == typeof(Effect))
-			{
-				return new Effect(node.Children);
-			}
 			else if (t == typeof(BotBehaviorType))
 			{
 				var type = Type.GetType($"WarriorsSnuggery.Objects.Actors.Bot.{value}BotBehaviorType", false, true);
@@ -424,7 +420,7 @@ namespace WarriorsSnuggery.Loader
 
 				for (int i = 0; i < parts.Length; i++)
 				{
-					var type = parts[i];
+					var type = parts[i].Trim();
 					if (!EffectCache.Types.ContainsKey(type))
 						throw new MissingInfoException(type);
 

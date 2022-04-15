@@ -45,6 +45,10 @@ Blood_thirstiness=
 	Type=HEALTH
 	Value=10
 	Duration=60
+	Particles=Area
+		Type=blood
+		Count=10
+		Radius=512
 
 Precision=
 	Type=INACCURACY
@@ -53,7 +57,7 @@ Precision=
 
 Range=
 	Type=RANGE
-	Value=1024
+	Value=3084
 	Duration=1800
 
 Blood_pact=
@@ -73,3 +77,7 @@ Blood_armor=
 	Particles=Point
 		Type=light_party_flash
 		Count=1
+
+Blood_armor_stun=
+	Type=STUN
+	Duration=480
