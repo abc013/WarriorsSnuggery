@@ -106,7 +106,7 @@ namespace WarriorsSnuggery.Maps.Generators
 
 		void generateKey(Piece piece, NoiseMap noise)
 		{
-			var exitExists = Loader.Exit == CPos.Zero;
+			var exitExists = Loader.Exit != CPos.Zero;
 			var mapLength = Bounds.Dist * 256;
 
 			var dist = Random.Next(8);
