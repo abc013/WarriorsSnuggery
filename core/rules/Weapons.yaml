@@ -91,7 +91,7 @@ cannon=
 			Strength=256
 
 slime_ball=
-	Reload=60
+	Reload=80
 	MaxRange=10240
 	FireSound=
 		Name=slimeball
@@ -125,7 +125,8 @@ slime_ball=
 			RangeSteps=0, 512, 1024, 2048
 
 slime_bullet=
-	Reload=15
+	Reload=30
+	MaxRange=6144
 	FireSound=
 		Name=slimeball
 		Volume=0.2
