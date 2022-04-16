@@ -92,7 +92,7 @@ namespace WarriorsSnuggery.Objects.Actors.Bot
 				Target = null; // Discard target if out of range
 		}
 
-		public void DefaultMoveBehavior(float rangeA = 0.8f, float rangeB = 0.9f)
+		public void DefaultMoveBehavior(float rangeA = 0.5f, float rangeB = 0.9f)
 		{
 			var range = 5120;
 			if (CanAttack)
@@ -297,7 +297,7 @@ namespace WarriorsSnuggery.Objects.Actors.Bot
 			var delta = target.Position - Self.Position;
 			var deltaMagnitude = delta.FlatDist;
 			var velTarget = target.Actor.Mobile.Velocity;
-			var velBullet = projectileType is BulletProjectile projectile ? projectile.MaxSpeed : ((MagicProjectile)projectileType).Speed;
+			var velBullet = projectileType is BulletProjectile projectile ? projectile.MaxSpeed : (projectileType is MagicProjectile mprojectile ? mprojectile.Speed : ((SplashProjectile)projectileType).DistancePerTick);
 
 			// See http://danikgames.com/blog/how-to-intersect-a-moving-target-in-2d/ for more information
 			// uj, ui: vectors for target velocity in projected space
