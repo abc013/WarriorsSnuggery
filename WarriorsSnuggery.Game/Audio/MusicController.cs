@@ -69,7 +69,7 @@ namespace WarriorsSnuggery.Audio
 		{
 			for (int i = 0; i < data.Length; i++)
 			{
-				if (data[i].name == music.ToString())
+				if (data[i].name == music.File)
 					return i;
 			}
 
