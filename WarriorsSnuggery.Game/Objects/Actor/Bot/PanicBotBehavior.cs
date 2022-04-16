@@ -33,16 +33,22 @@ namespace WarriorsSnuggery.Objects.Actors.Bot
 			if (!CanMove && !CanAttack)
 				return;
 
-			if (Self.IsAlive && (panic > 100 || Self.Health.RelativeHP < 0.2f))
+			if (Self.IsAlive && panic > 300 && Self.Health.RelativeHP < 0.5f)
 				inPanic = true;
+
+			if (!HasGoodTarget)
+			{
+				DefaultTickBehavior();
+				return;
+			}
 
 			if (inPanic)
 			{
-				if (!HasGoodTarget || panic-- <= 0)
+				if (panic-- <= 0)
 					inPanic = false;
 
-				if (panic % 20 == 0)
-					angle = (float)Self.World.Game.SharedRandom.NextDouble();
+				if (panic % 30 == 0)
+					angle = (float)Self.World.Game.SharedRandom.NextDouble() * Angle.MaxRange;
 
 				if (CanMove && DistToTarget > 512)
 					Self.AccelerateSelf(angle);
@@ -54,16 +60,6 @@ namespace WarriorsSnuggery.Objects.Actors.Bot
 			}
 			else
 			{
-				if (!HasGoodTarget)
-				{
-					if (Self.IsAlive && panic <= 0)
-						panic++;
-
-					DefaultTickBehavior();
-					return;
-				}
-				panic--;
-
 				if (CanAttack)
 					DefaultAttackBehavior();
 
@@ -84,7 +80,7 @@ namespace WarriorsSnuggery.Objects.Actors.Bot
 		{
 			base.OnDamage(damager, damage);
 
-			panic += 10;
+			panic += 200;
 		}
 
 		public override void OnKill(Actor killer)
