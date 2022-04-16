@@ -10,7 +10,7 @@ namespace WarriorsSnuggery.UI.Objects
 		Actor targetedEnemy;
 		bool enabled;
 
-		const int enableTick = 60 * 60;
+		const int enableTick = 60 * 30;
 		int showTick;
 
 		public EnemyPointer(Game game)
