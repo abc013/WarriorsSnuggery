@@ -79,9 +79,9 @@ namespace WarriorsSnuggery.UI.Objects.Editor
 				if (worldTrait != null && !(worldTrait as WorldPartInfo).ShowInEditor)
 					continue;
 
-				var sprite = actor.GetPreviewSprite();
+				var sprite = actor.GetPreviewSprite(out var color);
 				var scale = Constants.PixelSize / (float)Math.Max(sprite.Width, sprite.Height) - 0.1f;
-				list.Add(new PanelListItem(new BatchObject(sprite), new MPos(512, 512), actor.Playable == null ? key : actor.Playable.Name, new string[0], () => CurrentType = actor) { Scale = scale });
+				list.Add(new PanelListItem(new BatchObject(Mesh.Image(sprite, color)), new MPos(512, 512), actor.Playable == null ? key : actor.Playable.Name, new string[0], () => CurrentType = actor) { Scale = scale });
 			}
 			rasterizationCheck = new CheckBox("wooden");
 			rasterizationText = new UIText(FontManager.Default);

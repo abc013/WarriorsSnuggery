@@ -30,9 +30,9 @@ namespace WarriorsSnuggery.UI.Screens
 				if (a.Playable == null)
 					continue;
 
-				var sprite = a.GetPreviewSprite();
+				var sprite = a.GetPreviewSprite(out var color);
 				var scale = Constants.PixelSize / (float)Math.Max(sprite.Width, sprite.Height) - 0.1f;
-				var item = new PanelListItem(new BatchObject(sprite), new MPos(1024, 1024), a.Playable.Name, new string[0], () => selectActor(a)) { Scale = scale * 2 };
+				var item = new PanelListItem(new BatchObject(Mesh.Image(sprite, color)), new MPos(1024, 1024), a.Playable.Name, new string[0], () => selectActor(a)) { Scale = scale * 2 };
 
 				if (!game.Stats.ActorUnlocked(a.Playable))
 					item.SetColor(Color.Black);

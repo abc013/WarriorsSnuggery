@@ -6,7 +6,7 @@ namespace WarriorsSnuggery.Graphics
 {
 	public static class Mesh
 	{
-		static readonly Dictionary<Texture, Vertex[]> meshCache = new Dictionary<Texture, Vertex[]>();
+		static readonly Dictionary<(Texture, Color), Vertex[]> meshCache = new Dictionary<(Texture, Color), Vertex[]>();
 
 		public static Vertex[] Character(Font font, char c)
 		{
@@ -15,8 +15,13 @@ namespace WarriorsSnuggery.Graphics
 
 		public static Vertex[] Image(Texture texture)
 		{
-			if (meshCache.ContainsKey(texture))
-				return meshCache[texture];
+			return Image(texture, Color.White);
+		}
+
+		public static Vertex[] Image(Texture texture, Color color)
+		{
+			if (meshCache.ContainsKey((texture, color)))
+				return meshCache[(texture, color)];
 
 			var x = texture.X / (float)Settings.SheetSize + Settings.SheetHalfPixel;
 			var y = texture.Y / (float)Settings.SheetSize + Settings.SheetHalfPixel;
@@ -24,7 +29,6 @@ namespace WarriorsSnuggery.Graphics
 			var h = (texture.Y + texture.Height) / (float)Settings.SheetSize - Settings.SheetHalfPixel;
 			var scale = texture.Height * Constants.PixelMultiplier / 2;
 			var correction = texture.Width / (float)texture.Height;
-			var color = Color.White;
 			var id = SheetManager.SheetIndex(texture.SheetID);
 
 			Vertex[] vertices =
@@ -37,7 +41,7 @@ namespace WarriorsSnuggery.Graphics
 				new Vertex(new Vector(scale * correction,  scale,  0), new Vector2(w, y), id, color),
 			};
 
-			meshCache[texture] = vertices;
+			meshCache[(texture, color)] = vertices;
 
 			return vertices;
 		}

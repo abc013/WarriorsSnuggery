@@ -30,7 +30,7 @@ namespace WarriorsSnuggery.Graphics
 
 		public Vertex Modify(Vector3 offset, Vector3 scale, Quaternion rotation, Color color, TextureFlags textureFlags)
 		{
-			return new Vertex((Vector3.Transform(position.Xyz, rotation) * scale) + offset, textureCoordinate, texture, color, textureFlags);
+			return new Vertex((Vector3.Transform(position.Xyz, rotation) * scale) + offset, textureCoordinate, texture, this.color * color, textureFlags);
 		}
 
 		public override int GetHashCode()

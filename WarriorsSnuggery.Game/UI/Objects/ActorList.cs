@@ -67,13 +67,13 @@ namespace WarriorsSnuggery.UI.Objects
 		PanelListItem updateSingle(ActorType actorType)
 		{
 			var available = game.Stats.ActorUnlocked(actorType.Playable);
-			var sprite = actorType.GetPreviewSprite();
+			var sprite = actorType.GetPreviewSprite(out var color);
 			var scale = Constants.PixelSize / (float)Math.Max(sprite.Width, sprite.Height) - 0.1f;
 
 			var title = (available ? Color.White : Color.Red) + actorType.Playable.Name;
 			var description = available ? new[] { Color.Grey + "Changing cost: " + Color.Yellow + actorType.Playable.Cost } : new[] { new Color(128, 0, 0) + "Unlock cost: " + actorType.Playable.UnlockCost };
 
-			var item = new PanelListItem(new BatchObject(sprite), ItemSize, title, description, () => { changePlayer(actorType); }) { Scale = scale };
+			var item = new PanelListItem(new BatchObject(Mesh.Image(sprite, color)), ItemSize, title, description, () => { changePlayer(actorType); }) { Scale = scale };
 
 			if (!available)
 				item.SetColor(disabled);
