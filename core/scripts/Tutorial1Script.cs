@@ -39,7 +39,7 @@ namespace WarriorsSnuggery.Scripts.Core
 			{
 				$"Welcome to Warrior's Snuggery!",
 				$"First you'll learn how to {Color.Yellow}Move{Color.White}.",
-				$"You can move with the following keys: {Color.Yellow}{Settings.KeyDictionary["MoveUp"]}{Color.White},{Color.Yellow}{Settings.KeyDictionary["MoveLeft"]}{Color.White},{Color.Yellow}{Settings.KeyDictionary["MoveDown"]}{Color.White},{Color.Yellow}{Settings.KeyDictionary["MoveRight"]}{Color.White}.",
+				$"You can move with the following keys: {Color.Yellow}{Settings.GetKey("MoveUp")}{Color.White},{Color.Yellow}{Settings.GetKey("MoveLeft")}{Color.White},{Color.Yellow}{Settings.GetKey("MoveDown")}{Color.White},{Color.Yellow}{Settings.GetKey("MoveRight")}{Color.White}.",
 				$"Press {Color.Cyan}Continue {Color.White}to proceed."
 			}));
 		}

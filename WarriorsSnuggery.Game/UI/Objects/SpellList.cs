@@ -60,7 +60,7 @@ namespace WarriorsSnuggery.UI.Objects
 			if (!KeyInput.IsKeyDown(Keys.LeftShift))
 			{
 				CurrentSpell += MouseInput.WheelState;
-				if (KeyInput.IsKeyDown(Settings.KeyDictionary["Activate"]) || !KeyInput.IsKeyDown(Keys.LeftControl) && MouseInput.IsRightClicked)
+				if (KeyInput.IsKeyDown(Settings.GetKey("Activate")) || !KeyInput.IsKeyDown(Keys.LeftControl) && MouseInput.IsRightClicked)
 					game.SpellManager.Activate(CurrentSpell);
 
 				for (int i = 0; i < Math.Max(spellCount, 10); i++)
