@@ -102,7 +102,14 @@ namespace WarriorsSnuggery.Objects.Actors.Bot
 
 			if (target.Type == TargetType.POSITION || DistToTarget > range)
 			{
-				if (target.Type == TargetType.ACTOR && (target.Position - pathfindingTarget).SquaredFlatDist > range * range)
+				var squaredDist = (target.Position - pathfindingTarget).SquaredFlatDist;
+				if (target.Type == TargetType.ACTOR && squaredDist > range * range * 2) // Target has moved too far
+				{
+					Target = null;
+					return;
+				}
+
+				if (target.Type == TargetType.ACTOR && squaredDist > range * range)
 					calculatePathToTarget(); // Target has moved
 
 				if (Waypoints.Count > 0)
