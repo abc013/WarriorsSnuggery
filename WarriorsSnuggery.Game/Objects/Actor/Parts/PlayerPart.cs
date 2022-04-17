@@ -22,7 +22,7 @@ namespace WarriorsSnuggery.Objects.Actors.Parts
 		public void Tick()
 		{
 			var screenControl = self.World.Game.ScreenControl;
-			if (screenControl.ChatOpen || screenControl.CursorOnUI())
+			if (screenControl.ChatOpen)
 				return;
 
 			if (firstTick && Camera.LockedToPlayer)

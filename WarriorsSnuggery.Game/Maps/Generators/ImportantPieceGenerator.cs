@@ -132,6 +132,8 @@ namespace WarriorsSnuggery.Maps.Generators
 			}
 			while (!success);
 
+			Log.Debug($"(Maps) Generated key at {pos}");
+
 			if (info.IsWaypoint)
 				addWaypoint(piece, pos, location);
 		}
@@ -155,6 +157,8 @@ namespace WarriorsSnuggery.Maps.Generators
 					markDirty(pos, piece);
 			}
 			while (!success);
+
+			Log.Debug($"(Maps) Generated exit at {pos}");
 
 			Loader.Exit = pos.ToCPos() + new CPos(piece.Size.X * 512, piece.Size.Y * 512, 0);
 
