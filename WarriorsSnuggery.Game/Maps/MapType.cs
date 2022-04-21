@@ -12,6 +12,7 @@ namespace WarriorsSnuggery.Maps
 	public class MapType
 	{
 		public readonly string Name;
+		public readonly bool IsSave;
 
 		[Desc("Determines when to use the map.")]
 		public readonly MissionType[] MissionTypes = new MissionType[0];
@@ -41,8 +42,6 @@ namespace WarriorsSnuggery.Maps
 		[Desc("Wall type to use when surrounding the map with walls.")]
 		public readonly int Wall = 0;
 
-		[Desc("Terrain Generator as basis. Required for the game to function. This is the first generator to be used.")]
-		public readonly TerrainGeneratorInfo TerrainGenerationBase = null;
 		[Desc("Generators that determine how the map should look like", "The generators are used in the order in which they are written, which means from top to bottom.")]
 		public readonly IMapGeneratorInfo[] Generators = new IMapGeneratorInfo[0];
 
@@ -58,13 +57,10 @@ namespace WarriorsSnuggery.Maps
 		[Desc("Determines the file of a script that will be executed during the game.", "Ending of the filename must be '.cs'.")]
 		public readonly PackageFile MissionScript;
 
-		[Desc("Variable used to determine wether this map comes from an save. DO NOT ALTER.")]
-		public readonly bool IsSave;
-
 		[Desc("Song looping while being in the level.", "If left empty, music will cycle.")]
 		public readonly PackageFile Music;
 
-		[Desc("Battle song looping while being low life or in combat.", "If left empty, there will be no battle music.", "Warning: do not choose the same song as battle song again. This will crash the game.")]
+		[Desc("Battle song looping while being low life or in combat.", "If left empty, there will be no battle music and normal music keeps playing.", "Warning: do not choose the same song as battle song again. This will crash the game.")]
 		public readonly PackageFile IntenseMusic;
 
 		// For the DocWriter
@@ -80,10 +76,6 @@ namespace WarriorsSnuggery.Maps
 			{
 				switch (node.Key)
 				{
-					case nameof(TerrainGenerationBase):
-						TerrainGenerationBase = new TerrainGeneratorInfo(node.Convert<int>(), node.Children);
-
-						break;
 					case nameof(NoiseMaps):
 						NoiseMaps = new NoiseMapInfo[node.Children.Count];
 
@@ -114,12 +106,9 @@ namespace WarriorsSnuggery.Maps
 						break;
 				}
 			}
-
-			if (TerrainGenerationBase == null)
-				throw new MissingNodeException(name, "BaseTerrainGeneration");
 		}
 
-		MapType(PackageFile overridePiece, int wall, MPos customSize, Color ambient, MissionType[] missionTypes, ObjectiveType[] availableObjectives, int level, int fromLevel, int toLevel, TerrainGeneratorInfo baseTerrainGeneration, IMapGeneratorInfo[] generators, CPos spawnPoint, bool isSave, bool allowWeapons, PackageFile missionScript)
+		MapType(PackageFile overridePiece, int wall, MPos customSize, Color ambient, MissionType[] missionTypes, ObjectiveType[] availableObjectives, int level, int fromLevel, int toLevel, IMapGeneratorInfo[] generators, CPos spawnPoint, bool isSave, bool revealMap, bool allowWeapons, PackageFile missionScript, WeatherEffect[] weatherEffects, PackageFile music, PackageFile intenseMusic)
 		{
 			OverridePiece = overridePiece;
 			Wall = wall;
@@ -130,12 +119,15 @@ namespace WarriorsSnuggery.Maps
 			Level = level;
 			FromLevel = fromLevel;
 			ToLevel = toLevel;
-			TerrainGenerationBase = baseTerrainGeneration;
 			Generators = generators;
 			SpawnPoint = spawnPoint;
 			IsSave = isSave;
+			RevealMap = revealMap;
 			AllowWeapons = allowWeapons;
 			MissionScript = missionScript;
+			WeatherEffects = weatherEffects;
+			Music = music;
+			IntenseMusic = intenseMusic;
 		}
 
 		public static MapType FromRules(TextNode parent)
@@ -146,16 +138,14 @@ namespace WarriorsSnuggery.Maps
 		public static MapType FromSave(GameSave save)
 		{
 			var size = TextNodeLoader.FromFile(FileExplorer.Saves, save.MapSaveName + ".yaml").First(n => n.Key == "Size").Convert<MPos>();
-
 			var type = save.CurrentMapType;
-			var mapGeneratorInfos = type == null ? new IMapGeneratorInfo[0] : type.Generators;
 
-			return new MapType(new PackageFile(save.MapSaveName), 0, size, Color.White, new[] { save.CurrentMission }, new[] { save.CurrentObjective }, -1, 0, int.MaxValue, new TerrainGeneratorInfo(0, new List<TextNode>()), mapGeneratorInfos, CPos.Zero, true, true, save.Script);
+			return new MapType(new PackageFile(save.MapSaveName), type.Wall, size, type.Ambient, new[] { save.CurrentMission }, new[] { save.CurrentObjective }, -1, 0, int.MaxValue, type.Generators, CPos.Zero, true, type.RevealMap, type.AllowWeapons, save.Script, type.WeatherEffects, type.Music, type.IntenseMusic);
 		}
 
 		public static MapType FromPiece(Piece piece, MissionType type = MissionType.TEST, ObjectiveType objective = ObjectiveType.NONE)
 		{
-			return new MapType(piece.PackageFile, 0, piece.Size, Color.White, new[] { type }, new[] { objective }, -1, 0, int.MaxValue, new TerrainGeneratorInfo(0, new List<TextNode>()), new IMapGeneratorInfo[0], CPos.Zero, false, true, null);
+			return new MapType(piece.PackageFile, 0, piece.Size, Color.White, new[] { type }, new[] { objective }, -1, 0, int.MaxValue, new IMapGeneratorInfo[0], CPos.Zero, false, true, true, null, new WeatherEffect[0], null, null);
 		}
 	}
 }
