@@ -3,6 +3,15 @@ minor_slowdown=
 	Duration=120
 	Value=0.9
 
+aesthetic_fire=
+	Type=NONE
+	Duration=180
+	ParticleTick=20
+	Particles=Area
+		Type=still_fire
+		Count=1
+		Radius=512
+
 web_stun=
 	Type=STUN
 	Duration=5
