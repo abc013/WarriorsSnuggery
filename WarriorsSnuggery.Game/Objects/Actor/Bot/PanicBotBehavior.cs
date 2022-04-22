@@ -19,9 +19,9 @@ namespace WarriorsSnuggery.Objects.Actors.Bot
 	{
 		readonly PanicBotBehaviorType type;
 
-		int panic;
-		bool inPanic;
-		float angle;
+		int panicBuildup;
+		int panicDuration;
+		float panicAngle;
 
 		public PanicBotBehavior(Actor self, PanicBotBehaviorType type) : base(self)
 		{
@@ -33,59 +33,57 @@ namespace WarriorsSnuggery.Objects.Actors.Bot
 			if (!CanMove && !CanAttack)
 				return;
 
-			if (Self.IsAlive && panic > 300 && Self.Health.RelativeHP < 0.5f)
-				inPanic = true;
+			if (panicBuildup > 0)
+				panicBuildup--;
 
-			if (!HasGoodTarget)
+			if (panicDuration-- > 0)
 			{
-				DefaultTickBehavior();
-				return;
-			}
+				if (panicDuration % 20 == 0)
+					panicAngle = Angle.Cast(Self.World.Game.SharedRandom.Next(360));
 
-			if (inPanic)
-			{
-				if (panic-- <= 0)
-					inPanic = false;
+				Self.AccelerateSelf(panicAngle);
 
-				if (panic % 30 == 0)
-					angle = (float)Self.World.Game.SharedRandom.NextDouble() * Angle.MaxRange;
-
-				if (CanMove && DistToTarget > 512)
-					Self.AccelerateSelf(angle);
-
-				if (!HasGoodTarget && Self.World.Game.SharedRandom.Next(100) == 0)
-					PredictiveAttack(new Target(randomPosition(), 0));
-				else
-					PredictiveAttack(new Target((Target.Position + randomPosition()) / new CPos(2, 2, 2), Target.Height));
+				if (Self.World.Game.SharedRandom.Next(100) < 10)
+					PredictiveAttack(randomTarget());
+				else if (HasGoodTarget)
+					PredictiveAttack(Target);
 			}
 			else
 			{
-				if (CanAttack)
-					DefaultAttackBehavior();
+				if (!HasGoodTarget)
+				{
+					DefaultTickBehavior();
+					return;
+				}
 
-				if (CanMove)
-					DefaultMoveBehavior();
+				DefaultAttackBehavior();
+				DefaultMoveBehavior();
 			}
 		}
 
-		CPos randomPosition(int range = 5120)
+		Target randomTarget(int range = 5120, int height = 0)
 		{
-			var x = Self.World.Game.SharedRandom.Next(range);
-			var y = Self.World.Game.SharedRandom.Next(range);
+			var ranAngle = Angle.Cast(Self.World.Game.SharedRandom.Next(360));
+			var ranLength = Self.World.Game.SharedRandom.Next(range);
 
-			return Self.Position + new CPos(x, y, 0);
+			return new Target(Self.Position + CPos.FromFlatAngle(ranAngle, ranLength), height);
 		}
 
 		public override void OnDamage(Actor damager, int damage)
 		{
 			base.OnDamage(damager, damage);
 
-			panic += 200;
+			panicBuildup += damage * 8;
+			if (Self.IsAlive && panicBuildup > Self.Health.HP && Self.Health.RelativeHP < 0.5)
+			{
+				panicBuildup = 0;
+				panicDuration += 600;
+			}
 		}
 
 		public override void OnKill(Actor killer)
 		{
-			panic = 0;
+			panicBuildup = 0;
 		}
 	}
 }

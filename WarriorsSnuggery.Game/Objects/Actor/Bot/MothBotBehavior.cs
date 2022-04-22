@@ -40,11 +40,8 @@ namespace WarriorsSnuggery.Objects.Actors.Bot
 				return;
 			}
 
-			if (CanAttack)
-				DefaultAttackBehavior();
-
-			if (CanMove)
-				DefaultMoveBehavior();
+			DefaultAttackBehavior();
+			DefaultMoveBehavior();
 		}
 
 		CPos randomPosition()

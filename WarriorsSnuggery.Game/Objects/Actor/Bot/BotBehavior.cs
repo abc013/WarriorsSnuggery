@@ -84,26 +84,36 @@ namespace WarriorsSnuggery.Objects.Actors.Bot
 
 		public void DefaultAttackBehavior()
 		{
+			if (!Self.CanAttack)
+				return;
+
 			Self.Weapon.Target = Target.Position;
 			int range = Self.Weapon.Type.MaxRange;
 			if (DistToTarget < range * 1.1f)
+			{
 				PredictiveAttack(Target);
-			else if (!CanMove)
+				return;
+			}
+
+			if (!CanMove)
 				Target = null; // Discard target if out of range
 		}
 
 		public void DefaultMoveBehavior(float rangeA = 0.5f, float rangeB = 0.9f)
 		{
+			if (!Self.CanMove)
+				return;
+
 			var range = 5120;
 			if (CanAttack)
-				range = Self.Weapon.Type.MaxRange;
+				range = Math.Max(range, Self.Weapon.Type.MaxRange);
 			else if (Self.RevealsShroud != null)
-				range = Self.RevealsShroud.Range * 512;
+				range = Math.Max(range, Self.RevealsShroud.Range * 512);
 
 			if (target.Type == TargetType.POSITION || DistToTarget > range)
 			{
 				var squaredDist = (target.Position - pathfindingTarget).SquaredFlatDist;
-				if (target.Type == TargetType.ACTOR && squaredDist > range * range * 2) // Target has moved too far
+				if (target.Type == TargetType.ACTOR && squaredDist > range * range * 4) // Target has moved too far
 				{
 					Target = null;
 					return;
@@ -288,7 +298,7 @@ namespace WarriorsSnuggery.Objects.Actors.Bot
 
 		protected void PredictiveAttack(Target target)
 		{
-			if (target.Actor == null || target.Actor.Mobile == null || target.Actor.Mobile.Velocity == CPos.Zero)
+			if (target.Actor == null || !target.Actor.CanMove || target.Actor.Mobile.Velocity == CPos.Zero)
 			{
 				Self.PrepareAttack(target);
 				return;

@@ -42,11 +42,8 @@ namespace WarriorsSnuggery.Objects.Actors.Bot
 				return;
 			}
 
-			if (CanAttack)
-				DefaultAttackBehavior();
-
-			if (CanMove)
-				DefaultMoveBehavior(moral < 0 ? 0.8f : 0.3f, moral < 0 ? 1.0f : 0.8f);
+			DefaultAttackBehavior();
+			DefaultMoveBehavior(moral < 0 ? 0.8f : 0.3f, moral < 0 ? 1.0f : 0.8f);
 
 			moral++;
 		}
