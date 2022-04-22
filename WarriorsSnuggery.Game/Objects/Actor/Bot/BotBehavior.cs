@@ -305,7 +305,7 @@ namespace WarriorsSnuggery.Objects.Actors.Bot
 			}
 
 			var projectileType = Self.Weapon.Type.Projectile;
-			if (projectileType is BeamProjectile || projectileType is InstantHitProjectile)
+			if (!(projectileType is BulletProjectile) && !(projectileType is SplashProjectile))
 			{
 				Self.PrepareAttack(target);
 				return;
@@ -314,7 +314,7 @@ namespace WarriorsSnuggery.Objects.Actors.Bot
 			var delta = target.Position - Self.Position;
 			var deltaMagnitude = delta.FlatDist;
 			var velTarget = target.Actor.Mobile.Velocity;
-			var velBullet = projectileType is BulletProjectile projectile ? projectile.MaxSpeed : (projectileType is MagicProjectile mprojectile ? mprojectile.Speed : ((SplashProjectile)projectileType).DistancePerTick);
+			var velBullet = projectileType is BulletProjectile projectile ? projectile.MaxSpeed : ((SplashProjectile)projectileType).DistancePerTick;
 
 			// See http://danikgames.com/blog/how-to-intersect-a-moving-target-in-2d/ for more information
 			// uj, ui: vectors for target velocity in projected space

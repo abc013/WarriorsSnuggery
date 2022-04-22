@@ -66,15 +66,14 @@ namespace WarriorsSnuggery.Objects.Weapons
 
 		void calculateAngle()
 		{
-			if (projectile.Turbulence != 0)
-				calculateTurbulence();
-
-			var diff = (Position - TargetPosition).FlatAngle - Angle;
-
+			var diff = WarriorsSnuggery.Angle.Diff((Position - TargetPosition).FlatAngle, Angle);
 			if (Math.Abs(diff) > projectile.ArcTurnSpeed)
 				diff = Math.Sign(diff) * projectile.ArcTurnSpeed;
 
 			Angle += diff;
+
+			if (projectile.Turbulence != 0)
+				calculateTurbulence();
 		}
 
 		void calculateTurbulence()

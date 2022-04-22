@@ -27,12 +27,12 @@ namespace WarriorsSnuggery.Objects.Weapons.Projectiles
 		[Desc("Speed of the warhead.")]
 		public readonly int Speed = 32;
 
-		[Desc("Turnspeed of the warhead.")]
+		[Desc("Turnspeed of the warhead in degrees.")]
 		public readonly int TurnSpeed = 32;
 
 		public readonly float ArcTurnSpeed;
 
-		[Desc("Turbulence to build in.")]
+		[Desc("Turbulence to build in in degrees.")]
 		public readonly int Turbulence = 0;
 
 		public MagicProjectile(List<TextNode> nodes)
