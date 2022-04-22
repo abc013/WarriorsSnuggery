@@ -207,8 +207,8 @@ namespace WarriorsSnuggery.UI.Screens
 		void save()
 		{
 			Settings.FrameLimiter = int.Parse(frameLimiterWrite.Text);
-			Settings.ScrollSpeed = (int)(panningSlider.Value * 10);
-			Settings.EdgeScrolling = (int)(edgePanningSlider.Value * 10);
+			Settings.ScrollSpeed = (int)Math.Round(panningSlider.Value);
+			Settings.EdgeScrolling = (int)Math.Round(edgePanningSlider.Value);
 			Settings.DeveloperMode = developerModeCheck.Checked;
 			Settings.Fullscreen = fullscreenCheck.Checked;
 			Settings.Width = int.Parse(widthWrite.Text);
