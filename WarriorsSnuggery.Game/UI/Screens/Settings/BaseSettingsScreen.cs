@@ -108,16 +108,16 @@ namespace WarriorsSnuggery.UI.Screens
 			edgeScrolling.SetText("Edge Panning (0 = disabled):");
 			Add(edgeScrolling);
 
-			panningSlider = new SliderBar(4096, "wooden", () => Settings.ScrollSpeed = (int)(panningSlider.Value * 10))
+			panningSlider = new SliderBar(4096, "wooden", () => Settings.ScrollSpeed = (int)Math.Round(panningSlider.Value), 0, 10)
 			{
 				Position = new CPos(5120, -600, 0),
-				Value = Settings.ScrollSpeed / 10f
+				Value = Settings.ScrollSpeed
 			};
 			Add(panningSlider);
-			edgePanningSlider = new SliderBar(4096, "wooden", () => Settings.EdgeScrolling = (int)(edgePanningSlider.Value * 10))
+			edgePanningSlider = new SliderBar(4096, "wooden", () => Settings.EdgeScrolling = (int)Math.Round(edgePanningSlider.Value), 0, 10)
 			{
 				Position = new CPos(5120, 100, 0),
-				Value = Settings.EdgeScrolling / 10f
+				Value = Settings.EdgeScrolling
 			};
 			Add(edgePanningSlider);
 
@@ -163,7 +163,7 @@ namespace WarriorsSnuggery.UI.Screens
 			{
 				Settings.MasterVolume = (float)Math.Round(masterVolumeSlider.Value, 2);
 				MusicController.UpdateVolume();
-			})
+			}, tooltipDigits: 0, displayAsPercent: true)
 			{
 				Position = new CPos(5120, 2800, 0),
 				Value = Settings.MasterVolume
@@ -172,7 +172,7 @@ namespace WarriorsSnuggery.UI.Screens
 			effectVolumeSlider = new SliderBar(4096, "wooden", () =>
 			{
 				Settings.EffectsVolume = (float)Math.Round(effectVolumeSlider.Value, 2);
-			})
+			}, tooltipDigits: 0, displayAsPercent: true)
 			{
 				Position = new CPos(5120, 3700, 0),
 				Value = Settings.EffectsVolume
@@ -182,7 +182,7 @@ namespace WarriorsSnuggery.UI.Screens
 			{
 				Settings.MusicVolume = (float)Math.Round(musicVolumeSlider.Value, 2);
 				MusicController.UpdateVolume();
-			})
+			}, tooltipDigits: 0, displayAsPercent: true)
 			{
 				Position = new CPos(5120, 4600, 0),
 				Value = Settings.MusicVolume

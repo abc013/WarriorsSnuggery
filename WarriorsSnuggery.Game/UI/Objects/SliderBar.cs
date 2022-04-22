@@ -24,11 +24,11 @@ namespace WarriorsSnuggery.UI.Objects
 			set => slider.Value = value;
 		}
 
-		public SliderBar(int length, string typeName, Action onChanged = null) : this(length, PanelCache.Types[typeName], onChanged) { }
+		public SliderBar(int length, string typeName, Action onChanged = null, int tooltipDigits = 1, float valueMultiplier = 1f, bool displayAsPercent = false) : this(length, PanelCache.Types[typeName], onChanged, tooltipDigits, valueMultiplier, displayAsPercent) { }
 
-		public SliderBar(int length, PanelType type, Action onChanged = null) : base(new MPos(length / 2, (int)(1024 * Constants.PixelMultiplier)), type)
+		public SliderBar(int length, PanelType type, Action onChanged = null, int tooltipDigits = 1, float valueMultiplier = 1f, bool displayAsPercent = false) : base(new MPos(length / 2, (int)(1024 * Constants.PixelMultiplier)), type)
 		{
-			slider = new Slider(length, type, onChanged);
+			slider = new Slider(length, type, onChanged, tooltipDigits, valueMultiplier, displayAsPercent);
 		}
 
 		public override void Render()
@@ -71,20 +71,27 @@ namespace WarriorsSnuggery.UI.Objects
 
 		public float Value
 		{
-			get => (currentPosition / (float)length + 1f) / 2;
+			get => ((currentPosition / (float)length + 1f) / 2) * valueMultiplier;
 			set
 			{
+				value /= valueMultiplier;
 				currentPosition = (int)((value - 0.5f) * length) * 2;
 				Position = new CPos(CenterPosition.X + currentPosition, CenterPosition.Y, 0);
-				tooltip = new Tooltip(Math.Round(Value, 1).ToString());
+				tooltip = new Tooltip(Math.Round(displayAsPercent ? Value * 100 : Value, digits).ToString() + (displayAsPercent ? "%" : ""));
 			}
 		}
+		readonly int digits;
+		readonly float valueMultiplier;
+		readonly bool displayAsPercent;
 
-		public Slider(int length, PanelType type, Action onChanged) : base(new MPos((int)(1024 * Constants.PixelMultiplier), (int)(1024 * 4 * Constants.PixelMultiplier)), type)
+		public Slider(int length, PanelType type, Action onChanged, int digits = 1, float valueMultiplier = 1f, bool displayAsPercent = false) : base(new MPos((int)(1024 * Constants.PixelMultiplier), (int)(1024 * 4 * Constants.PixelMultiplier)), type)
 		{
 			SelectableBounds = Bounds;
 			this.onChanged = onChanged;
 			this.length = length / 2;
+			this.digits = digits;
+			this.valueMultiplier = valueMultiplier;
+			this.displayAsPercent = displayAsPercent;
 		}
 
 		public override void Tick()
@@ -124,7 +131,7 @@ namespace WarriorsSnuggery.UI.Objects
 
 			onChanged?.Invoke();
 			UIRenderer.DisableTooltip(tooltip);
-			tooltip = new Tooltip(Math.Round(Value, 1).ToString());
+			tooltip = new Tooltip(Math.Round(displayAsPercent ? Value * 100 : Value, digits).ToString() + (displayAsPercent ? "%" : ""));
 			UIRenderer.SetTooltip(tooltip);
 		}
 	}

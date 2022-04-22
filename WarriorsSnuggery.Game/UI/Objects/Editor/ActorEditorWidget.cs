@@ -95,14 +95,14 @@ namespace WarriorsSnuggery.UI.Objects.Editor
 			botText = new UIText(FontManager.Default);
 			botText.SetText("bot");
 
-			healthSlider = new SliderBar(3072, "wooden")
+			healthSlider = new SliderBar(3072, "wooden", tooltipDigits: 0, displayAsPercent: true)
 			{
 				Value = 1f
 			};
 			healthText = new UIText(FontManager.Default, TextOffset.MIDDLE);
 			healthText.SetText("health");
 
-			facingSlider = new SliderBar(3072, "wooden")
+			facingSlider = new SliderBar(3072, "wooden", tooltipDigits: 0, valueMultiplier: 360)
 			{
 				Value = 0f
 			};

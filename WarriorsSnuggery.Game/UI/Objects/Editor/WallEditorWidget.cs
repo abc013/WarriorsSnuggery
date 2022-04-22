@@ -50,7 +50,7 @@ namespace WarriorsSnuggery.UI.Objects.Editor
 
 			healthText = new UIText(FontManager.Default, TextOffset.MIDDLE);
 			healthText.SetText("health");
-			healthSlider = new SliderBar(3072, "wooden")
+			healthSlider = new SliderBar(3072, "wooden", tooltipDigits: 0, displayAsPercent: true)
 			{
 				Value = 1f
 			};

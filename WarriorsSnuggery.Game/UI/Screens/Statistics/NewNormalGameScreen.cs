@@ -38,7 +38,7 @@ namespace WarriorsSnuggery.UI.Screens
 			difficulty.SetText("Difficulty: ");
 			Add(difficulty);
 
-			difficultyInput = new SliderBar(4096, "wooden") { Position = new CPos(1024, 1024, 0) };
+			difficultyInput = new SliderBar(4096, "wooden", tooltipDigits: 0, valueMultiplier: 10) { Position = new CPos(1024, 1024, 0) };
 			Add(difficultyInput);
 
 			var hardcore = new UIText(FontManager.Default, TextOffset.RIGHT) { Position = new CPos(-2048, 2048, 0) };
@@ -64,7 +64,7 @@ namespace WarriorsSnuggery.UI.Screens
 			Add(new Button("Proceed", "wooden", () =>
 			{
 				if (!string.IsNullOrWhiteSpace(nameInput.Text) && !string.IsNullOrWhiteSpace(seedInput.Text))
-					GameController.CreateNew(new GameSave((int)Math.Round(difficultyInput.Value * 10), hardcoreInput.Checked, nameInput.Text, int.Parse(seedInput.Text)));
+					GameController.CreateNew(new GameSave((int)Math.Round(difficultyInput.Value), hardcoreInput.Checked, nameInput.Text, int.Parse(seedInput.Text)));
 			})
 			{ Position = new CPos(4096, 6144, 0) });
 		}
