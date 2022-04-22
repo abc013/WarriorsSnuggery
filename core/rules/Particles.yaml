@@ -215,3 +215,14 @@ still_fire=
 	Duration=25
 	DissolveDuration=10
 	RandomVelocity=8,8,4
+
+fire_sparkles=
+	Texture=firefly
+		Size=1,1
+		Tick=5
+	Color=255,128,0
+	IgnoreAmbience=true
+	Duration=25
+	DissolveDuration=10
+	Gravity=-1
+	RandomVelocity=5,5,0
