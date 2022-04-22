@@ -50,6 +50,10 @@ namespace WarriorsSnuggery.UI.Objects
 			base.Tick();
 
 			slider.Tick();
+
+			CheckMouse();
+			if (ContainsMouse && MouseInput.IsLeftClicked)
+				slider.CalculatePosition();
 		}
 	}
 
@@ -108,17 +112,20 @@ namespace WarriorsSnuggery.UI.Objects
 			}
 
 			if (drag)
-			{
-				var xPos = Math.Clamp(MouseInput.WindowPosition.X, CenterPosition.X - length, CenterPosition.X + length);
+				CalculatePosition();
+		}
 
-				currentPosition = xPos - CenterPosition.X;
-				Position = new CPos(xPos, Position.Y, Position.Z);
+		public void CalculatePosition()
+		{
+			var xPos = Math.Clamp(MouseInput.WindowPosition.X, CenterPosition.X - length, CenterPosition.X + length);
 
-				onChanged?.Invoke();
-				UIRenderer.DisableTooltip(tooltip);
-				tooltip = new Tooltip(Math.Round(Value, 1).ToString());
-				UIRenderer.SetTooltip(tooltip);
-			}
+			currentPosition = xPos - CenterPosition.X;
+			Position = new CPos(xPos, Position.Y, Position.Z);
+
+			onChanged?.Invoke();
+			UIRenderer.DisableTooltip(tooltip);
+			tooltip = new Tooltip(Math.Round(Value, 1).ToString());
+			UIRenderer.SetTooltip(tooltip);
 		}
 	}
 }
