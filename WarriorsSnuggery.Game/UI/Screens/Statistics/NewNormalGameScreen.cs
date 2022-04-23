@@ -9,7 +9,6 @@ namespace WarriorsSnuggery.UI.Screens
 	{
 		readonly Game game;
 
-		readonly TextBox nameInput;
 		readonly SliderBar difficultyInput;
 		readonly CheckBox hardcoreInput;
 		readonly TextBox seedInput;
@@ -22,17 +21,6 @@ namespace WarriorsSnuggery.UI.Screens
 			var create = new UIText(FontManager.Default, TextOffset.MIDDLE) { Position = new CPos(0, -2048, 0) };
 			create.SetText("Free play. Please adjust the parameters as you wish.");
 			Add(create);
-
-			var name = new UIText(FontManager.Default, TextOffset.RIGHT) { Position = new CPos(-2048, 0, 0) };
-			name.SetText("Name: ");
-			Add(name);
-
-			nameInput = new TextBox("wooden", 15, InputType.PATH)
-			{
-				Position = new CPos(1024, 0, 0),
-				EmptyText = "Your Name Here"
-			};
-			Add(nameInput);
 
 			var difficulty = new UIText(FontManager.Default, TextOffset.RIGHT) { Position = new CPos(-2048, 1024, 0) };
 			difficulty.SetText("Difficulty: ");
@@ -63,8 +51,8 @@ namespace WarriorsSnuggery.UI.Screens
 			Add(new Button("Cancel", "wooden", () => game.ShowScreen(ScreenType.DEFAULT, false)) { Position = new CPos(-4096, 6144, 0) });
 			Add(new Button("Proceed", "wooden", () =>
 			{
-				if (!string.IsNullOrWhiteSpace(nameInput.Text) && !string.IsNullOrWhiteSpace(seedInput.Text))
-					GameController.CreateNew(new GameSave((int)Math.Round(difficultyInput.Value), hardcoreInput.Checked, nameInput.Text, int.Parse(seedInput.Text)));
+				if (!string.IsNullOrWhiteSpace(seedInput.Text))
+					GameController.CreateNew(new GameSave((int)Math.Round(difficultyInput.Value), hardcoreInput.Checked, "New Game", int.Parse(seedInput.Text)));
 			})
 			{ Position = new CPos(4096, 6144, 0) });
 		}
