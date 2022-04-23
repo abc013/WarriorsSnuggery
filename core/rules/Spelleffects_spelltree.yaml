@@ -41,14 +41,28 @@ Bloodlust=
 		Count=2
 		Radius=256
 
-Blood_thirstiness=
+Blood_donation=
 	Type=HEALTH
-	Value=10
-	Duration=60
+	Value=2
+	Duration=120
+	Particles=Area
+		Type=blood
+		Count=5
+		Radius=512
+
+Blood_thirstiness=
+	Type=VAMPIRISM
+	Value=1
+	Duration=600
 	Particles=Area
 		Type=blood
 		Count=10
 		Radius=512
+
+Blood_thirstiness_health=
+	Type=HEALTH
+	Value=2
+	Duration=120
 
 Precision=
 	Type=INACCURACY
@@ -86,4 +100,4 @@ Blood_armor=
 
 Blood_armor_stun=
 	Type=STUN
-	Duration=480
+	Duration=160
