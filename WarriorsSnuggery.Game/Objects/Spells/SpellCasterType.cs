@@ -72,23 +72,29 @@ namespace WarriorsSnuggery.Spells
 				text += effect.Type != EffectType.NONE ? Color.Yellow + name + Color.Grey : Color.Grey + "Useless effect";
 
 				var direction = effect.Value > 1 ? "increased" : "decreased";
+				var seconds = Math.Round(effect.Duration / (float)Settings.UpdatesPerSecond, 2);
+				var duration = $"{Color.Cyan}{seconds}{Color.Grey} second{(seconds == 1 ? "" : "s")}";
 				switch (effect.Type)
 				{
 					case EffectType.HEALTH:
 					case EffectType.MANA:
-						text += $" {direction} by " + Color.Magenta + (int)(effect.Value * Settings.UpdatesPerSecond) + Color.Grey + " during " + Color.Cyan + Math.Round(effect.Duration / (float)Settings.UpdatesPerSecond, 2) + Color.Grey + " seconds";
+						text += $" {direction} by {Color.Magenta}{(int)(effect.Value * Settings.UpdatesPerSecond)}{Color.Grey} during {duration}";
+						break;
+					case EffectType.VAMPIRISM:
+						direction = effect.Value > 0 ? "gaining" : "loosing";
+						text += $" {direction} {Color.Magenta}{(int)(effect.Value * 100)}%{Color.Grey} of harm from others as health during {duration}";
 						break;
 					case EffectType.SHIELD:
-						text += $" protecting from " + Color.Magenta + (int)effect.Value + Color.Grey + " damage for " + Color.Cyan + Math.Round(effect.Duration / (float)Settings.UpdatesPerSecond, 2) + Color.Grey + " seconds";
+						text += $" protecting from {Color.Magenta}{(int)effect.Value}{Color.Grey} damage for {duration}";
 						break;
 					case EffectType.STUN:
 					case EffectType.INVISIBILITY:
-						text += " for " + Color.Cyan + Math.Round(effect.Duration / (float)Settings.UpdatesPerSecond, 2) + Color.Grey + " seconds";
+						text += $" for {duration}";
 						break;
 					case EffectType.NONE:
 						continue;
 					default:
-						text += $" {direction} by factor " + Color.Magenta + Math.Round(effect.Value, 2) + Color.Grey + " for " + Color.Cyan + Math.Round(effect.Duration / (float)Settings.UpdatesPerSecond, 2) + Color.Grey + " seconds";
+						text += $" {direction} by factor {Color.Magenta}{Math.Round(effect.Value, 2)}{Color.Grey} for {duration}";
 						break;
 				}
 

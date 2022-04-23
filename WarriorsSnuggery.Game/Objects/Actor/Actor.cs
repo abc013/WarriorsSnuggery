@@ -519,6 +519,15 @@ namespace WarriorsSnuggery.Objects.Actors
 				return;
 			}
 
+			if (!Health.ImmuneToVampirism && attacker.Health != null && attacker.EffectActive(EffectType.VAMPIRISM))
+			{
+				var healthGained = (float)damage;
+				foreach(var effect in attacker.GetActiveEffects(EffectType.VAMPIRISM))
+					healthGained *= effect.Effect.Value;
+
+				attacker.Health.HP += (int)healthGained;
+			}
+
 			if (WorldPart != null && WorldPart.ShowDamage)
 				World.AddText(Position, 50, ActionText.ActionTextType.SCALE, new Color(1f, 0.4f, 0).ToString() + damage);
 

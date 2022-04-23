@@ -10,6 +10,9 @@ namespace WarriorsSnuggery.Objects.Actors.Parts
 		[Desc("Health when the actor is spawned.")]
 		public readonly int StartHealth;
 
+		[Desc("Determines whether damage dealt to this actor can be received by another.")]
+		public readonly bool ImmuneToVampirism = true;
+
 		public HealthPartInfo(PartInitSet set) : base(set)
 		{
 			if (StartHealth <= 0 || StartHealth > MaxHealth)
@@ -28,6 +31,7 @@ namespace WarriorsSnuggery.Objects.Actors.Parts
 
 		public int MaxHP => info.MaxHealth;
 		public int StartHealth => info.StartHealth;
+		public bool ImmuneToVampirism => info.ImmuneToVampirism;
 
 		public float RelativeHP
 		{
