@@ -172,7 +172,7 @@ namespace WarriorsSnuggery.UI.Screens
 			}
 
 			var mouseInWorld = game.World.IsInWorld(MouseInput.GamePosition);
-			mousePosition.SetText((mouseInWorld ? Color.White : Color.Red) + "" + MouseInput.GamePosition.ToMPos() + (mouseInWorld ? Color.Grey : new Color(1f, 0.75f, 0.75f)) + " | " + MouseInput.GamePosition);
+			mousePosition.SetText($"{(mouseInWorld ? Color.White : Color.Red)}{MouseInput.GamePosition.ToMPos()}{(mouseInWorld ? Color.Grey : new Color(1f, 0.75f, 0.75f))} | {MouseInput.GamePosition}");
 
 			switch (currentSelected)
 			{
@@ -248,7 +248,7 @@ namespace WarriorsSnuggery.UI.Screens
 
 		void place()
 		{
-			if (currentSelected != Selected.WALL && !game.World.IsInWorld(MouseInput.GamePosition))
+			if ((currentSelected != Selected.WALL && (currentSelected != Selected.ACTOR || !actorWidget.Rasterization)) && !game.World.IsInWorld(MouseInput.GamePosition))
 				return;
 
 			var pos = MouseInput.GamePosition;
