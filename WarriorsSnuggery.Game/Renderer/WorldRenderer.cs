@@ -1,4 +1,3 @@
-using OpenTK.Graphics.OpenGL;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -131,7 +130,6 @@ namespace WarriorsSnuggery
 					ColorManager.DrawDot(point.Position.ToCPos(), Color.Red);
 
 				MasterRenderer.RenderBatch();
-				MasterRenderer.PrimitiveType = PrimitiveType.Lines;
 				CameraVisibility.GetClampedBounds(out var position, out var bounds);
 				var sectorPos = new MPos(position.X / PhysicsLayer.SectorSize, position.Y / PhysicsLayer.SectorSize);
 				var sectorBounds = new MPos((int)Math.Ceiling(bounds.X / (float)PhysicsLayer.SectorSize), (int)Math.Ceiling(bounds.Y / (float)PhysicsLayer.SectorSize));
@@ -153,8 +151,7 @@ namespace WarriorsSnuggery
 				foreach (var wall in world.WallLayer.VisibleWalls)
 					wall.Physics.RenderDebug();
 
-				MasterRenderer.RenderBatch();
-				MasterRenderer.PrimitiveType = PrimitiveType.Triangles;
+				MasterRenderer.RenderBatch(asLines: true);
 				MasterRenderer.SetRenderer(Renderer.DEFAULT);
 			}
 		}

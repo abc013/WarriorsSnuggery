@@ -82,7 +82,7 @@ namespace WarriorsSnuggery.Graphics
 
 			lock (MasterRenderer.GLLock)
 			{
-				GL.DrawArrays(MasterRenderer.PrimitiveType, 0, CurrentSize);
+				GL.DrawArrays(MasterRenderer.DrawAsLines ? PrimitiveType.Lines : PrimitiveType.Triangles, 0, CurrentSize);
 			}
 
 			MasterRenderer.Batches++;

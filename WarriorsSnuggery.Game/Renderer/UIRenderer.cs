@@ -105,12 +105,10 @@ namespace WarriorsSnuggery
 			if (Settings.DeveloperMode)
 			{
 				MasterRenderer.SetRenderer(Renderer.DEBUG);
-				MasterRenderer.PrimitiveType = PrimitiveType.Lines;
 
 				game.ScreenControl.DebugRender();
 
-				MasterRenderer.RenderBatch();
-				MasterRenderer.PrimitiveType = PrimitiveType.Triangles;
+				MasterRenderer.RenderBatch(asLines: true);
 				MasterRenderer.SetRenderer(Renderer.DEFAULT);
 			}
 		}

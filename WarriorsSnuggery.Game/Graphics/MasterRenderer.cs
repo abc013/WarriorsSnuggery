@@ -20,7 +20,7 @@ namespace WarriorsSnuggery.Graphics
 		public static bool PauseSequences;
 		public static object GLLock = new object();
 
-		public static PrimitiveType PrimitiveType = PrimitiveType.Triangles;
+		public static bool DrawAsLines;
 
 		static Renderer activeRenderer = Renderer.DEFAULT;
 
@@ -60,8 +60,9 @@ namespace WarriorsSnuggery.Graphics
 			}
 		}
 
-		public static void RenderBatch()
+		public static void RenderBatch(bool asLines = false)
 		{
+			DrawAsLines = asLines;
 			switch (activeRenderer)
 			{
 				case Renderer.DEFAULT:
@@ -76,6 +77,7 @@ namespace WarriorsSnuggery.Graphics
 					debugRenderer.Render();
 					break;
 			}
+			DrawAsLines = false;
 		}
 
 		public static void Initialize()
