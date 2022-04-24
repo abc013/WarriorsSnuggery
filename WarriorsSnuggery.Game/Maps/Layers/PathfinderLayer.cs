@@ -36,24 +36,36 @@ namespace WarriorsSnuggery.Maps.Layers
 					};
 
 					cells[x, y] = cell;
+
+					ClearWall(new MPos(x * 2, y), new MPos(x, y));
+					ClearWall(new MPos(x * 2 + 1, y), new MPos(x, y));
 				}
 			}
 
-			for (int x = 0; x < bounds.X; x++)
+			foreach (var wall in wallLayer.WallList)
 			{
-				for (int y = 0; y < bounds.Y; y++)
-				{
-					SetWall(wallLayer.Walls[(x + 1) * 2, y], new MPos((x + 1) * 2, y), new MPos(x, y));
-					SetWall(wallLayer.Walls[x * 2 + 1, y], new MPos(x * 2 + 1, y), new MPos(x, y));
-				}
+				SetWall(wall);
 			}
 		}
 
-		public void SetWall(Wall wall, MPos wallPosition, MPos position)
+		public void ClearWall(MPos wallPosition, MPos position)
+		{
+			setWall(null, wallPosition, position);
+		}
+
+		public void SetWall(Wall wall)
 		{
 			if (!initialized)
 				return;
 
+			var wallPosition = wall.LayerPosition;
+			var position = wall.TerrainPosition;
+
+			setWall(wall, wallPosition, position);
+		}
+
+		void setWall(Wall wall, MPos wallPosition, MPos position)
+		{
 			static void connect(Wall between, PathfinderCell a, PathfinderCell b)
 			{
 				var cost = (a.TerrainCost + b.TerrainCost) / 2;
@@ -74,12 +86,12 @@ namespace WarriorsSnuggery.Maps.Layers
 
 			if (wallPosition.X % 2 == 0)
 			{
-				if (x > 0 && x < bounds.X - 1)
+				if (x > 0 && x < bounds.X)
 					connect(wall, cells[x - 1, y], cells[x, y]);
 			}
 			else
 			{
-				if (y > 0 && y < bounds.Y - 1)
+				if (y > 0 && y < bounds.Y)
 					connect(wall, cells[x, y - 1], cells[x, y]);
 			}
 		}

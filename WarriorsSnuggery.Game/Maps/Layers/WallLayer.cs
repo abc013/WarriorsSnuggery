@@ -56,7 +56,7 @@ namespace WarriorsSnuggery.Maps.Layers
 			if (wall.CheckVisibility())
 				VisibleWalls.Add(wall);
 
-			pathfinderLayer.SetWall(wall, wall.LayerPosition, wall.TerrainPosition);
+			pathfinderLayer.SetWall(wall);
 			if (wall.IsHorizontal)
 				shroudLayer.SetWall(wall.TerrainPosition, wall.Type.Height, true);
 
@@ -77,7 +77,7 @@ namespace WarriorsSnuggery.Maps.Layers
 			Walls[pos.X, pos.Y] = null;
 			notifyNeighbors(pos, false, false);
 
-			pathfinderLayer.SetWall(null, wall.LayerPosition, wall.TerrainPosition);
+			pathfinderLayer.ClearWall(wall.LayerPosition, wall.TerrainPosition);
 			if (wall.IsHorizontal)
 				shroudLayer.SetWall(wall.TerrainPosition, wall.Type.Height, false);
 
