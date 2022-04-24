@@ -68,15 +68,10 @@ namespace WarriorsSnuggery.Maps.Layers
 			{
 				var point = points[i];
 
-				var x = point.X / (SectorSize * 1024f);
-				if (x < 0) x = 0;
-				if (x >= Bounds.X) x = Bounds.X - 1;
+				var x = Math.Clamp(point.X / (SectorSize * Constants.TileSize), 0, Bounds.X - 1);
+				var y = Math.Clamp(point.Y / (SectorSize * Constants.TileSize), 0, Bounds.Y - 1);
 
-				var y = point.Y / (SectorSize * 1024f);
-				if (y < 0) y = 0;
-				if (y >= Bounds.Y) y = Bounds.Y - 1;
-
-				sectorPositions[i] = new MPos((int)Math.Floor(x), (int)Math.Floor(y));
+				sectorPositions[i] = new MPos(x, y);
 			}
 
 			// Determine Size of the Sector field to enter and the sector with the smallest value (sector 3)

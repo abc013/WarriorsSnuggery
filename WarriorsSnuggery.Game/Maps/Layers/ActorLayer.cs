@@ -19,8 +19,6 @@ namespace WarriorsSnuggery.Maps.Layers
 		readonly ActorSector[,] sectors;
 		readonly MPos bounds;
 
-		bool firstTick = true;
-
 		public ActorLayer(MPos bounds)
 		{
 			this.bounds = new MPos((int)Math.Ceiling(bounds.X / (float)SectorSize), (int)Math.Ceiling(bounds.Y / (float)SectorSize));
@@ -110,12 +108,8 @@ namespace WarriorsSnuggery.Maps.Layers
 				actorsToAdd.Clear();
 			}
 
-			if (!firstTick)
-			{
-				foreach (var actor in Actors)
-					actor.Tick();
-			}
-			firstTick = false;
+			foreach (var actor in Actors)
+				actor.Tick();
 
 			if (actorsToRemove.Count != 0)
 			{

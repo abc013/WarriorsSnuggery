@@ -25,7 +25,6 @@ namespace WarriorsSnuggery.Objects.Actors
 		public readonly bool IsPlayerSwitch;
 
 		public bool IsAlive { get; private set; } = true;
-		public bool IsDisposed => Disposed;
 
 		public ActorSector Sector;
 
@@ -338,7 +337,13 @@ namespace WarriorsSnuggery.Objects.Actors
 			}
 
 			foreach (var part in tickParts)
+			{
 				part.Tick();
+
+				// It's possible that the actor may die because of specific traits, because of that, skip the others.
+				if (!IsAlive)
+					break;
+			}
 
 			processEffects();
 
