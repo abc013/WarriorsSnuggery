@@ -100,7 +100,7 @@ namespace WarriorsSnuggery.Maps.Layers
 				{
 					Actors.Add(actor);
 
-					if (actor.ScriptTag != string.Empty)
+					if (!string.IsNullOrEmpty(actor.ScriptTag))
 						TaggedActors.Add(actor);
 					if (actor.Team != Actor.NeutralTeam)
 						NonNeutralActors.Add(actor);
@@ -124,7 +124,7 @@ namespace WarriorsSnuggery.Maps.Layers
 					Actors.Remove(actor);
 					VisibleActors.Remove(actor);
 
-					if (actor.ScriptTag != string.Empty)
+					if (!string.IsNullOrEmpty(actor.ScriptTag))
 						TaggedActors.Remove(actor);
 					if (actor.Team != Actor.NeutralTeam)
 						NonNeutralActors.Remove(actor);
