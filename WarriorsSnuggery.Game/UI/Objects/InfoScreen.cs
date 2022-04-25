@@ -23,7 +23,7 @@ namespace WarriorsSnuggery.UI.Objects
 
 		public void Tick()
 		{
-			if (Visible || Window.GlobalTick % 10 != 0)
+			if (!Visible || Window.GlobalTick % 10 != 0)
 				return;
 
 			//memory.SetText("Memory " + (int) (System.Diagnostics.Process.GetCurrentProcess().PrivateMemorySize64 / 1024f) + " KB");
@@ -41,7 +41,7 @@ namespace WarriorsSnuggery.UI.Objects
 
 		public void Render()
 		{
-			if (Visible)
+			if (!Visible)
 				return;
 
 			var right = (int)(WindowInfo.UnitWidth * 512);
