@@ -34,7 +34,7 @@ namespace WarriorsSnuggery.UI.Objects
 			{
 				text = value;
 				if (!string.IsNullOrEmpty(value))
-					textline.SetText(value);
+					textline.SetText(value, false);
 				else
 					textline.SetText(Color.Grey + emptyText);
 			}

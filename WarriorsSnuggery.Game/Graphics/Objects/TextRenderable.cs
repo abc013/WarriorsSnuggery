@@ -32,10 +32,10 @@ namespace WarriorsSnuggery.Graphics
 				AddText((object)args[i]);
 		}
 
-		public void SetText(object obj)
+		public void SetText(object obj, bool interpretColors = true)
 		{
 			var text = obj.ToString();
-			var colorPairs = getColors(ref text);
+			var colorPairs = interpretColors ? getColors(ref text) : new Dictionary<int, Color>();
 
 			setText(text, colorPairs);
 		}
@@ -67,10 +67,10 @@ namespace WarriorsSnuggery.Graphics
 				AddText((object)args[i]);
 		}
 
-		public void AddText(object obj)
+		public void AddText(object obj, bool interpretColors = true)
 		{
 			var text = '\n' + obj.ToString();
-			var colorPairs = getColors(ref text);
+			var colorPairs = interpretColors ? getColors(ref text) : new Dictionary<int, Color>();
 
 			addText(text, colorPairs);
 		}
@@ -105,7 +105,7 @@ namespace WarriorsSnuggery.Graphics
 				var index = text.IndexOf("COLOR(");
 				var endindex = text.IndexOf(')') + 1;
 
-				if (endindex < 0)
+				if (endindex < index)
 				{
 					currentIndex = index + 6;
 					continue;

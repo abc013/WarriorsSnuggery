@@ -64,15 +64,15 @@ namespace WarriorsSnuggery.UI
 			text.SetText(lines);
 		}
 
-		public void SetText(object obj)
+		public void SetText(object obj, bool interpretColors = true)
 		{
-			text.SetText(obj);
+			text.SetText(obj, interpretColors);
 			recalculateBounds();
 		}
 
-		public void AddText(object obj)
+		public void AddText(object obj, bool interpretColors = true)
 		{
-			text.AddText(obj);
+			text.AddText(obj, interpretColors);
 			recalculateBounds();
 		}
 
