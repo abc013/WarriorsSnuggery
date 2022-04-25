@@ -8,7 +8,7 @@ namespace WarriorsSnuggery
 {
 	public static class Settings
 	{
-		public const string Version = "(Release) 2.5";
+		public const string Version = "(Release) 2.7";
 
 		public const int UpdatesPerSecond = 60;
 
