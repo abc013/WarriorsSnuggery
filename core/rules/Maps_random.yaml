@@ -1,8 +1,6 @@
 stones=
 	MissionTypes=STORY, NORMAL
 	AvailableObjectives=FIND_EXIT, KILL_ENEMIES, SURVIVE_WAVES
-	Music=caves
-	IntenseMusic=caves_b
 	FromLevel=7
 	NoiseMaps=
 		NoiseMap@1=1
