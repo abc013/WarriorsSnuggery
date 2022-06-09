@@ -20,7 +20,7 @@ namespace WarriorsSnuggery.Graphics
 				bufferID = GL.GenBuffer();
 				Program.CheckGraphicsError("BatchInit_1");
 
-				TextureBuffer.ConfigureBugger(vertexarrayID, bufferID, Size, IntPtr.Zero, BufferUsageHint.DynamicDraw);
+				TextureBuffer.ConfigureBugger(vertexarrayID, bufferID, Size, IntPtr.Zero, BufferUsageHint.StreamDraw);
 			}
 		}
 
