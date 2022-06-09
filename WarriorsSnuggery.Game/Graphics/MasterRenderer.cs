@@ -1,6 +1,5 @@
 using OpenTK.Graphics.OpenGL;
 using OpenTK.Mathematics;
-using System;
 
 namespace WarriorsSnuggery.Graphics
 {
@@ -28,9 +27,7 @@ namespace WarriorsSnuggery.Graphics
 		static readonly BatchRenderer lightRenderer = new BatchRenderer();
 		static readonly BatchRenderer debugRenderer = new BatchRenderer();
 
-		static int frameBuffer;
-		static TexturedRenderable renderable;
-		static Texture frameTexture;
+		static FrameBuffer pixelFrameBuffer;
 
 		public static void InitRenderer()
 		{
@@ -111,17 +108,7 @@ namespace WarriorsSnuggery.Graphics
 				var width = (int)(Camera.DefaultZoom * WindowInfo.Ratio * Constants.PixelSize);
 				var height = (int)(Camera.DefaultZoom * Constants.PixelSize);
 
-				var frameTextureID = GL.GenTexture();
-
-				GL.BindTexture(TextureTarget.Texture2D, frameTextureID);
-				GL.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.Rgb32f, width, height, 0, PixelFormat.Rgb, PixelType.Float, (IntPtr)null);
-
-				frameBuffer = GL.GenFramebuffer();
-				GL.BindFramebuffer(FramebufferTarget.Framebuffer, frameBuffer);
-				GL.FramebufferTexture2D(FramebufferTarget.Framebuffer, FramebufferAttachment.ColorAttachment0, TextureTarget.Texture2D, frameTextureID, 0);
-				frameTexture = new Texture(0, 0, width, height, frameTextureID);
-				renderable = new TexturedRenderable(Mesh.Frame(), frameTexture);
-				Program.CheckGraphicsError("GLFrameBuffer");
+				pixelFrameBuffer = new FrameBuffer(width, height);
 
 				GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMinFilter, (int)TextureMinFilter.Nearest);
 				GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMagFilter, (int)TextureMagFilter.Nearest);
@@ -139,35 +126,23 @@ namespace WarriorsSnuggery.Graphics
 				RenderCalls = 0;
 				BatchCalls = 0;
 				Batches = 0;
+
 				if (Settings.EnablePixeling)
 				{
-					GL.BindFramebuffer(FramebufferTarget.Framebuffer, frameBuffer);
-					GL.Clear(ClearBufferMask.ColorBufferBit);
-
-					var width = (int)(Camera.DefaultZoom * WindowInfo.Ratio * Constants.PixelSize);
-					var height = (int)(Camera.DefaultZoom * Constants.PixelSize);
-					GL.Viewport(0, 0, width, height);
-					GL.Scissor(0, 0, width, height);
+					pixelFrameBuffer.Use();
 
 					WorldRenderer.Render();
 
-					GL.BindFramebuffer(FramebufferTarget.Framebuffer, 0);
-					GL.Clear(ClearBufferMask.ColorBufferBit);
+					FrameBuffer.UseDefault();
 
 					UpdateViewport();
 
-					renderable.Bind();
-
-					var iden = Matrix4.CreateScale(1f);
-					Shaders.Uniform(Shaders.TextureShader, ref iden, Color.White);
-
-					renderable.Render();
+					pixelFrameBuffer.Render();
 					Program.CheckGraphicsError("GLRendering_World");
 				}
 				else
 				{
-					GL.BindFramebuffer(FramebufferTarget.Framebuffer, 0);
-					GL.Clear(ClearBufferMask.ColorBufferBit);
+					FrameBuffer.UseDefault();
 
 					WorldRenderer.Render();
 					Program.CheckGraphicsError("GLRendering_World");
@@ -208,12 +183,12 @@ namespace WarriorsSnuggery.Graphics
 
 		public static void UpdateViewport()
 		{
-			lock (GLLock)
+			if (pixelFrameBuffer != null)
 			{
-				GL.Viewport(0, 0, WindowInfo.Width, WindowInfo.Height);
-				Program.CheckGraphicsError("View_Viewport");
-				GL.Scissor(0, 0, WindowInfo.Width, WindowInfo.Height);
-				Program.CheckGraphicsError("View_Scissor");
+				var width = (int)(Camera.DefaultZoom * WindowInfo.Ratio * Constants.PixelSize);
+				var height = (int)(Camera.DefaultZoom * Constants.PixelSize);
+
+				pixelFrameBuffer.Resize(width, height);
 			}
 
 			Camera.Update();
@@ -233,19 +208,13 @@ namespace WarriorsSnuggery.Graphics
 
 		public static void Dispose()
 		{
-			lock (GLLock)
-			{
-				GL.DeleteFramebuffer(frameBuffer);
-			}
-
 			defaultRenderer.Dispose();
 			lightRenderer.Dispose();
 			debugRenderer.Dispose();
 
 			Shaders.Dispose();
 
-			TextureManager.Dispose(frameTexture.SheetID);
-			renderable.Dispose();
+			pixelFrameBuffer.Dispose();
 		}
 	}
 }
