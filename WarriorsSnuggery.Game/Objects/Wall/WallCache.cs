@@ -17,7 +17,7 @@ namespace WarriorsSnuggery.Objects
 			}
 		}
 
-		public static Wall Create(MPos position, World world, short ID)
+		public static Wall Create(WPos position, World world, short ID)
 		{
 			if (!Types.ContainsKey(ID))
 				throw new MissingInfoException(ID.ToString());

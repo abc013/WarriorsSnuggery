@@ -239,9 +239,7 @@ namespace WarriorsSnuggery.UI.Screens
 					if (pos.X < 0 || pos.Y < 0 || pos.X > bounds.X || pos.Y > bounds.Y)
 						return;
 
-					pos = new MPos(pos.X * 2 + (wallWidget.Horizontal ? 0 : 1), pos.Y);
-
-					game.World.WallLayer.Remove(pos);
+					game.World.WallLayer.Remove(new WPos(pos.X, pos.Y, wallWidget.Horizontal));
 					break;
 			}
 		}
@@ -295,14 +293,14 @@ namespace WarriorsSnuggery.UI.Screens
 					if (mpos.X < 0 || mpos.Y < 0 || mpos.X > bounds.X || mpos.Y > bounds.Y)
 						return;
 
-					mpos = new MPos(mpos.X * 2 + (wallWidget.Horizontal ? 0 : 1), mpos.Y);
+					var wpos = new WPos(mpos.X, mpos.Y, wallWidget.Horizontal);
 
 					var wallLayer = game.World.WallLayer;
 
-					if (mpos.X >= wallLayer.Bounds.X - 2)
+					if (wpos.X >= wallLayer.Bounds.X - 2)
 						return;
 
-					if (mpos.Y >= wallLayer.Bounds.Y - 2 && wallWidget.Horizontal)
+					if (wpos.Y >= wallLayer.Bounds.Y - 2 && wallWidget.Horizontal)
 						return;
 
 					var type = wallWidget.CurrentType;
@@ -311,11 +309,11 @@ namespace WarriorsSnuggery.UI.Screens
 					if (plannedHealth == 0 && type.Health != 0)
 						return;
 
-					var currentWall = wallLayer.Walls[mpos.X, mpos.Y];
+					var currentWall = wallLayer.Walls[wpos.X, wpos.Y];
 					if (currentWall != null && currentWall.Type.ID == type.ID && currentWall.Health == plannedHealth)
 						return;
 
-					var wall = WallCache.Create(mpos, game.World, type.ID);
+					var wall = WallCache.Create(wpos, game.World, type.ID);
 					wall.Health = plannedHealth;
 
 					wallLayer.Set(wall);

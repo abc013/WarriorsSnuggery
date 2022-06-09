@@ -45,7 +45,17 @@ namespace WarriorsSnuggery.Maps.Layers
 			shroudRevealed.Add(team, new bool[Bounds.X, Bounds.Y]);
 		}
 
-		public void SetWall(MPos pos, int height, bool exists)
+		public void ClearWall(Wall wall)
+		{
+			setWall(wall.TerrainPosition, wall.Height, false);
+		}
+
+		public void SetWall(Wall wall)
+		{
+			setWall(wall.TerrainPosition, wall.Height, true);
+		}
+
+		void setWall(MPos pos, int height, bool remove)
 		{
 			if (pos.Y == 0)
 				return;
@@ -72,7 +82,7 @@ namespace WarriorsSnuggery.Maps.Layers
 
 					listenerPositions[shroud.Listener].Remove(shroud);
 
-					shroud.Listener = exists ? new MPos(x, yPos) : new MPos(x, y);
+					shroud.Listener = remove ? new MPos(x, yPos) : new MPos(x, y);
 
 					var listener = shroud.Listener;
 					listenerPositions[listener].Add(shroud);

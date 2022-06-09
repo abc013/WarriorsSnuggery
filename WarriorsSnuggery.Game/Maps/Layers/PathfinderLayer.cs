@@ -37,8 +37,8 @@ namespace WarriorsSnuggery.Maps.Layers
 
 					cells[x, y] = cell;
 
-					ClearWall(new MPos(x * 2, y), new MPos(x, y));
-					ClearWall(new MPos(x * 2 + 1, y), new MPos(x, y));
+					ClearWall(new WPos(x, y, false));
+					ClearWall(new WPos(x, y, true));
 				}
 			}
 
@@ -48,9 +48,9 @@ namespace WarriorsSnuggery.Maps.Layers
 			}
 		}
 
-		public void ClearWall(MPos wallPosition, MPos position)
+		public void ClearWall(WPos wallPosition)
 		{
-			setWall(null, wallPosition, position);
+			setWall(null, wallPosition);
 		}
 
 		public void SetWall(Wall wall)
@@ -58,13 +58,10 @@ namespace WarriorsSnuggery.Maps.Layers
 			if (!initialized)
 				return;
 
-			var wallPosition = wall.LayerPosition;
-			var position = wall.TerrainPosition;
-
-			setWall(wall, wallPosition, position);
+			setWall(wall, wall.LayerPosition);
 		}
 
-		void setWall(Wall wall, MPos wallPosition, MPos position)
+		void setWall(Wall wall, WPos wallPosition)
 		{
 			static void connect(Wall between, PathfinderCell a, PathfinderCell b)
 			{
@@ -81,18 +78,19 @@ namespace WarriorsSnuggery.Maps.Layers
 				b.Connections.Add((cost, a));
 			};
 
-			var x = position.X;
-			var y = position.Y;
+			var terrainPosition = wallPosition.ToMPos();
+			var x = terrainPosition.X;
+			var y = terrainPosition.Y;
 
-			if (wallPosition.X % 2 == 0)
-			{
-				if (x > 0 && x < bounds.X)
-					connect(wall, cells[x - 1, y], cells[x, y]);
-			}
-			else
+			if (wallPosition.IsHorizontal())
 			{
 				if (y > 0 && y < bounds.Y)
 					connect(wall, cells[x, y - 1], cells[x, y]);
+			}
+			else
+			{
+				if (x > 0 && x < bounds.X)
+					connect(wall, cells[x - 1, y], cells[x, y]);
 			}
 		}
 		

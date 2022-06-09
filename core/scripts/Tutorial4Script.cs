@@ -75,7 +75,7 @@ namespace WarriorsSnuggery.Scripts.Core
 			world.ShroudLayer.RevealShroudRectangular(Actor.PlayerTeam, new CPos(18 * 1024, 0, 0), new CPos(24 * 1024, 16 * 1024, 0), true);
 
 			for (int i = 1; i < 5; i++)
-				world.WallLayer.Remove(new MPos(18 * 2, i));
+				world.WallLayer.Remove(new WPos(18, i, false));
 
 			game.ScreenControl.ShowMessage(new Message(() => { }, new[]
 			{
@@ -131,7 +131,7 @@ namespace WarriorsSnuggery.Scripts.Core
 			world.ShroudLayer.RevealShroudRectangular(Actor.PlayerTeam, new CPos(7 * 1024, 18 * 1024, 0), new CPos(24 * 1024, 24 * 1024, 0), true);
 
 			for (int i = 1; i < 5; i++)
-				world.WallLayer.Remove(new MPos((18 + i) * 2 + 1, 18));
+				world.WallLayer.Remove(new WPos(18 + i, 18, true));
 
 			Tick -= tickPreKill;
 
@@ -176,7 +176,7 @@ namespace WarriorsSnuggery.Scripts.Core
 			world.ShroudLayer.RevealShroudRectangular(Actor.PlayerTeam, new CPos(0, 6 * 1024, 0), new CPos(5 * 1024, 17 * 1024, 0), true);
 
 			for (int i = 1; i < 5; i++)
-				world.WallLayer.Remove(new MPos(i * 2 + 1, 7));
+				world.WallLayer.Remove(new WPos(i, 7, true));
 
 			void message2() => game.ScreenControl.ShowMessage(new Message(message3, new[]
 			{
@@ -232,7 +232,7 @@ namespace WarriorsSnuggery.Scripts.Core
 			Tick -= tickEnd;
 
 			for (int i = 1; i < 5; i++)
-				world.WallLayer.Remove(new MPos(6 * 2, 9 + i));
+				world.WallLayer.Remove(new WPos(6, 9 + i, false));
 
 			game.Stats.KeyFound = true;
 		}

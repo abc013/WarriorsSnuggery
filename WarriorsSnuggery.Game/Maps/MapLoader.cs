@@ -112,26 +112,13 @@ namespace WarriorsSnuggery.Maps
 					world.TerrainLayer.Set(TerrainCache.Create(world, new MPos(x, y), terrainInformation[x, y]));
 			}
 
-			for (int x = 0; x < Bounds.X; x++)
+			for (int x = 0; x <= Bounds.X; x++)
 			{
-				for (int y = 0; y < Bounds.Y; y++)
+				for (int y = 0; y <= Bounds.Y; y++)
 				{
-					for (int i = 0; i < 2; i++)
-						applyWall(new MPos(x * 2 + i, y));
+					applyWall(new WPos(x, y, false));
+					applyWall(new WPos(x, y, true));
 				}
-			}
-
-			// Generate walls that are at the edge of the map
-			for (int y = 0; y < Bounds.Y; y++)
-			{
-				for (int i = 0; i < 2; i++)
-					applyWall(new MPos(Bounds.X * 2 + i, y));
-			}
-
-			for (int x = 0; x < Bounds.X + 1; x++)
-			{
-				for (int i = 0; i < 2; i++)
-					applyWall(new MPos(x * 2 + i, Bounds.Y));
 			}
 
 			var actors = new List<Actor>();
@@ -158,7 +145,7 @@ namespace WarriorsSnuggery.Maps
 				world.Add(ParticleCache.Create(world, init));
 		}
 
-		void applyWall(MPos pos)
+		void applyWall(WPos pos)
 		{
 			var (id, health) = wallInformation[pos.X, pos.Y];
 

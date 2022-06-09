@@ -24,7 +24,7 @@ namespace WarriorsSnuggery.Objects
 
 		public readonly WallType Type;
 
-		public readonly MPos LayerPosition;
+		public readonly WPos LayerPosition;
 		public readonly MPos TerrainPosition;
 
 		public readonly bool IsHorizontal;
@@ -59,7 +59,7 @@ namespace WarriorsSnuggery.Objects
 		byte neighborState;
 		DamageState damageState = DamageState.NONE;
 
-		public Wall(MPos position, World world, WallType type) : base(CPos.Zero, null)
+		public Wall(WPos position, World world, WallType type) : base(CPos.Zero, null)
 		{
 			this.world = world;
 
@@ -67,11 +67,11 @@ namespace WarriorsSnuggery.Objects
 			health = type.Health;
 
 			LayerPosition = position;
-			TerrainPosition = LayerPosition / new MPos(2, 1);
 
-			IsHorizontal = LayerPosition.X % 2 != 0;
+			TerrainPosition = LayerPosition.ToMPos();
+			IsHorizontal = LayerPosition.IsHorizontal();
 
-			Position = LayerPosition.ToCPos() / new CPos(2, 1, 1);
+			Position = LayerPosition.ToCPos();
 
 			ZOffset -= 512;
 			if (!IsHorizontal)
@@ -80,17 +80,15 @@ namespace WarriorsSnuggery.Objects
 			if (type.IsOnFloor)
 				ZOffset = -2048;
 
-			Physics = getPhysics(position, type);
+			Physics = getPhysics(type);
 		}
 
-		SimplePhysics getPhysics(MPos position, WallType type)
+		SimplePhysics getPhysics(WallType type)
 		{
 			if (!type.Blocks || type.IsOnFloor)
 				return SimplePhysics.Empty;
 
-			var isHorizontal = position.X % 2 != 0;
-
-			return new SimplePhysics(this, isHorizontal ? type.HorizontalPhysicsType : type.VerticalPhysicsType);
+			return new SimplePhysics(this, IsHorizontal ? type.HorizontalPhysicsType : type.VerticalPhysicsType);
 		}
 
 		public override void Render()

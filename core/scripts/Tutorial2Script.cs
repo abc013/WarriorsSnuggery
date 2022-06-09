@@ -92,7 +92,7 @@ namespace WarriorsSnuggery.Scripts.Core
 			}));
 
 			for (int i = 0; i < 8; i++)
-				world.WallLayer.Remove(new MPos(i * 2, 21));
+				world.WallLayer.Remove(new WPos(i, 21, false));
 
 			targets = new[] { spawnTarget(new CPos(1536, 15872, 0)), spawnTarget(new CPos(5632 + 1024, 11776, 0)), spawnTarget(new CPos(1536, 8704, 0)), spawnTarget(new CPos(4608, 4608, 0)) };
 		}

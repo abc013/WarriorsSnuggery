@@ -58,13 +58,13 @@ namespace WarriorsSnuggery.Maps.Layers
 
 			pathfinderLayer.SetWall(wall);
 			if (wall.IsHorizontal)
-				shroudLayer.SetWall(wall.TerrainPosition, wall.Type.Height, true);
+				shroudLayer.SetWall(wall);
 
 			if (world.Game.Editor)
 				WorldRenderer.CheckTerrainAround(wall.TerrainPosition, true);
 		}
 
-		public void Remove(MPos pos)
+		public void Remove(WPos pos)
 		{
 			var wall = Walls[pos.X, pos.Y];
 
@@ -77,15 +77,15 @@ namespace WarriorsSnuggery.Maps.Layers
 			Walls[pos.X, pos.Y] = null;
 			notifyNeighbors(pos, false, false);
 
-			pathfinderLayer.ClearWall(wall.LayerPosition, wall.TerrainPosition);
+			pathfinderLayer.ClearWall(wall.LayerPosition);
 			if (wall.IsHorizontal)
-				shroudLayer.SetWall(wall.TerrainPosition, wall.Type.Height, false);
+				shroudLayer.ClearWall(wall);
 
 			if (world.Game.Editor)
 				WorldRenderer.CheckTerrainAround(wall.TerrainPosition, true);
 		}
 
-		void notifyNeighbors(MPos pos, bool added, bool ignoresNearby)
+		void notifyNeighbors(WPos pos, bool added, bool ignoresNearby)
 		{
 			byte s = 0;
 
@@ -123,7 +123,7 @@ namespace WarriorsSnuggery.Maps.Layers
 			*/
 
 			Wall wall;
-			if (pos.X % 2 != 0)
+			if (pos.IsHorizontal())
 			{
 				// Horizontal
 				if (top)
