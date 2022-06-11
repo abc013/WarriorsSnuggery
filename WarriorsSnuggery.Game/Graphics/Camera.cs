@@ -138,7 +138,7 @@ namespace WarriorsSnuggery.Graphics
 
 		static void calculateScale()
 		{
-			LookBounds = new MPos((int)(CurrentZoom * WindowInfo.Ratio * 1024), (int)(CurrentZoom * 1024));
+			LookBounds = new MPos((int)(CurrentZoom * WindowInfo.Ratio * Constants.TileSize), (int)(CurrentZoom * Constants.TileSize));
 			// cast to [-1;1] | we use 0f to stop things glitching out of sight
 			projection = Matrix4.CreateScale(2 / CurrentZoom / WindowInfo.Ratio, 2 / CurrentZoom, 0f);
 

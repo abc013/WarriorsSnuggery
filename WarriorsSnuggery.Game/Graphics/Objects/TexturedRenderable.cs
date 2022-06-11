@@ -54,15 +54,15 @@ namespace WarriorsSnuggery.Graphics
 				Program.CheckGraphicsError("Buffer_Configuration_3");
 
 				GL.EnableVertexAttribArray(Vertex.TextureCoordinateAttributeLocation);
-				GL.VertexAttribPointer(Vertex.TextureCoordinateAttributeLocation, 4, VertexAttribPointerType.Float, true, Vertex.Size, 16);
+				GL.VertexAttribPointer(Vertex.TextureCoordinateAttributeLocation, 2, VertexAttribPointerType.Float, true, Vertex.Size, 16);
 				Program.CheckGraphicsError("Buffer_Configuration_4");
 
 				GL.EnableVertexAttribArray(Vertex.TextureAttributeLocation);
-				GL.VertexAttribPointer(Vertex.TextureAttributeLocation, 1, VertexAttribPointerType.Int, true, Vertex.Size, 24);
+				GL.VertexAttribIPointer(Vertex.TextureAttributeLocation, 1, VertexAttribIntegerType.Int, Vertex.Size, (IntPtr)24);
 				Program.CheckGraphicsError("Buffer_Configuration_5");
 
 				GL.EnableVertexAttribArray(Vertex.TextureFlagsAttributeLocation);
-				GL.VertexAttribPointer(Vertex.TextureFlagsAttributeLocation, 1, VertexAttribPointerType.Int, true, Vertex.Size, 28);
+				GL.VertexAttribIPointer(Vertex.TextureFlagsAttributeLocation, 1, VertexAttribIntegerType.Int, Vertex.Size, (IntPtr)28);
 				Program.CheckGraphicsError("Buffer_Configuration_6");
 
 				GL.EnableVertexAttribArray(Vertex.ColorAttributeLocation);

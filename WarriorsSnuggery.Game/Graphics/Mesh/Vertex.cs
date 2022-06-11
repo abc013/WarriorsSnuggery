@@ -35,7 +35,7 @@ namespace WarriorsSnuggery.Graphics
 
 		public override int GetHashCode()
 		{
-			return position.GetHashCode() ^ textureCoordinate.GetHashCode() ^ color.GetHashCode();
+			return position.GetHashCode() ^ textureCoordinate.GetHashCode() ^ color.GetHashCode() ^ texture.GetHashCode() ^ textureFlags.GetHashCode();
 		}
 	}
 }
