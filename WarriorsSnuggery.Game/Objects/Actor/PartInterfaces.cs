@@ -58,5 +58,7 @@ namespace WarriorsSnuggery.Objects.Actors
 		Graphics.BatchRenderable GetRenderable(ActionType actions, int facing);
 
 		void SetColor(Color color);
+
+		void SetTextureFlags(Graphics.TextureFlags flags);
 	}
 }

@@ -114,6 +114,11 @@ namespace WarriorsSnuggery.Objects
 			Renderable?.SetColor(color);
 		}
 
+		public virtual void SetTextureFlags(TextureFlags flags)
+		{
+			Renderable?.SetTextureFlags(flags);
+		}
+
 		public void RenderShadow()
 		{
 			if (Height <= 0 || Renderable == null)

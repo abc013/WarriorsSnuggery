@@ -48,11 +48,6 @@ namespace WarriorsSnuggery
 				MasterRenderer.RenderBatch();
 			}
 
-			Shaders.Uniform(Shaders.TextureShader, ref Camera.Matrix, Ambient);
-
-			world.TerrainLayer.Render();
-			world.SmudgeLayer.Render();
-
 			var useAlpha = world.Game.Editor || world.PlayerAlive;
 
 			var pos = CPos.Zero;
@@ -69,25 +64,32 @@ namespace WarriorsSnuggery
 				}
 			}
 
+			Shaders.Uniform(Shaders.TextureShader, ref Camera.Matrix, Ambient, pos);
+
+			world.TerrainLayer.Render();
+			world.SmudgeLayer.Render();
+
 			foreach (var o in prepareRenderList())
 			{
-				if (useAlpha && ((o is Actor actor && actor.WorldPart != null && actor.WorldPart.Hideable) || (o is Wall wall && wall.IsHorizontal && wall.Type.Height >= 512)) && o.Position.Y > pos.Y && Math.Abs(o.Position.X - pos.X) < 4096)
+				var hiding = false;
+				if (useAlpha && o.Position.Y > pos.Y && Math.Abs(o.Position.X - pos.X) < 8144)
 				{
-					var alpha = o.Position.Y - pos.Y < 1024 ? 1 - (o.Position.Y - pos.Y) / 1024f : (o.Position.Y - pos.Y - 1024) / 1024f;
-					var sidealpha = Math.Abs(o.Position.X - pos.X) / 4096f;
-					alpha = Math.Clamp(Math.Max(sidealpha, alpha), 0.4f, 1f);
-
-					o.SetColor(Color.White.WithAlpha(alpha));
-					o.Render();
-					o.SetColor(Color.White);
+					if (o is Actor actor)
+						hiding = actor.WorldPart != null && actor.WorldPart.Hideable;
+					else if (o is Wall wall)
+						hiding = wall.IsHorizontal && wall.Type.Height >= 512;
 				}
-				else
-					o.Render();
+
+				if (hiding)
+					o.SetTextureFlags(TextureFlags.Hideable);
+				o.Render();
+				if (hiding)
+					o.SetTextureFlags(TextureFlags.None);
 			}
 
 			MasterRenderer.RenderBatch();
 
-			Shaders.Uniform(Shaders.TextureShader, ref Camera.Matrix, Color.White);
+			Shaders.Uniform(Shaders.TextureShader, ref Camera.Matrix, Color.White, CPos.Zero);
 			MasterRenderer.SetRenderer(Renderer.LIGHTS);
 			MasterRenderer.RenderBatch();
 			MasterRenderer.SetRenderer(Renderer.DEFAULT);

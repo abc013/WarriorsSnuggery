@@ -65,6 +65,7 @@ namespace WarriorsSnuggery.Objects.Actors.Parts
 		int currentFacing;
 		readonly Color variation;
 		Color cachedColor;
+		TextureFlags cachedFlags;
 		float angle;
 
 		public AnimatedSpritePart(Actor self, AnimatedSpritePartInfo info) : base(self)
@@ -83,7 +84,6 @@ namespace WarriorsSnuggery.Objects.Actors.Parts
 					anim[x] = info.Textures[i * frameCountPerIdleAnim + x];
 
 				renderables[i] = new BatchSequence(anim, info.Tick, startRandom: info.StartRandom);
-				renderables[i].SetTextureFlags(info.IgnoreAmbience ? TextureFlags.IgnoreAmbience : TextureFlags.None);
 			}
 
 			if (info.ColorVariation != Color.Black)
@@ -92,6 +92,7 @@ namespace WarriorsSnuggery.Objects.Actors.Parts
 				variation = new Color((float)(random.NextDouble() - 0.5f) * info.ColorVariation.R, (float)(random.NextDouble() - 0.5f) * info.ColorVariation.G, (float)(random.NextDouble() - 0.5f) * info.ColorVariation.B, 0f);
 			}
 			cachedColor = info.Color + variation;
+			cachedFlags = info.IgnoreAmbience ? TextureFlags.IgnoreAmbience : TextureFlags.None;
 
 			self.ZOffset = info.Offset.Z;
 		}
@@ -155,12 +156,18 @@ namespace WarriorsSnuggery.Objects.Actors.Parts
 
 			renderable.SetPosition(self.GraphicPosition + info.Offset);
 			renderable.SetColor(cachedColor);
+			renderable.SetTextureFlags(cachedFlags);
 			renderable.Render();
 		}
 
 		public void SetColor(Color color)
 		{
 			cachedColor = color * (info.Color + variation);
+		}
+
+		public void SetTextureFlags(TextureFlags flags)
+		{
+			cachedFlags = (info.IgnoreAmbience ? TextureFlags.IgnoreAmbience : TextureFlags.None) | flags;
 		}
 	}
 }

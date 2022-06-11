@@ -5,6 +5,7 @@ in vec2 vs_textureCoordinate;
 flat in int vs_texture;
 flat in int vs_textureFlags;
 in vec4 vs_color;
+in vec4 vs_hideDistance;
 
 uniform sampler2D texture0;
 uniform sampler2D texture1;
@@ -31,8 +32,14 @@ void main(void)
     color *= vs_color * objectColor;
 
 	// only consider ambience if enabled
-	if (vs_textureFlags == 0)
+	if (vs_textureFlags != 1 && vs_textureFlags != 3)
 		color *= proximityColor;
+
+	if (vs_textureFlags == 2 || vs_textureFlags == 3)
+	{
+		float hideDiff = length(vec2(vs_hideDistance.x, vs_hideDistance.y * 2));
+		color.a *= min(1, (hideDiff * hideDiff) / (4 * 4) + 0.3);
+	}
 
     if (color.a == 0.0)
         discard;

@@ -456,6 +456,12 @@ namespace WarriorsSnuggery.Objects.Actors
 				part.SetColor(color);
 		}
 
+		public override void SetTextureFlags(TextureFlags flags)
+		{
+			foreach (var part in partManager.GetPartsOrDefault<IPartRenderable>())
+				part.SetTextureFlags(flags);
+		}
+
 		public void PrepareAttack(Actor target)
 		{
 			PrepareAttack(new Target(target));

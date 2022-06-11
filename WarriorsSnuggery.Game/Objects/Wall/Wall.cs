@@ -36,6 +36,7 @@ namespace WarriorsSnuggery.Objects
 
 		BatchObject renderable;
 		Color color = Color.White;
+		TextureFlags flags = TextureFlags.None;
 
 		public int Health
 		{
@@ -100,6 +101,12 @@ namespace WarriorsSnuggery.Objects
 		{
 			this.color = color;
 			renderable.SetColor(color);
+		}
+
+		public override void SetTextureFlags(TextureFlags flags)
+		{
+			this.flags = flags;
+			renderable.SetTextureFlags(flags);
 		}
 
 		public void Damage(int damage)
@@ -202,6 +209,7 @@ namespace WarriorsSnuggery.Objects
 			renderable = new BatchObject(Type.GetTexture(IsHorizontal, neighborState, info));
 			renderable.SetPosition(Position + getTextureOffset(info, IsHorizontal));
 			renderable.SetColor(color);
+			renderable.SetTextureFlags(flags);
 		}
 
 		static CPos getTextureOffset(TextureInfo info, bool horizontal)

@@ -9,7 +9,7 @@ namespace WarriorsSnuggery.Graphics
 	public static class Shaders
 	{
 		public const int ShaderCount = 1;
-		public const int UniformCount = 4;
+		public const int UniformCount = 5;
 
 		public static int TextureShader { get; private set; }
 
@@ -32,6 +32,7 @@ namespace WarriorsSnuggery.Graphics
 					locations[num + 1] = GL.GetUniformLocation(shader, "modelView");
 					locations[num + 2] = GL.GetUniformLocation(shader, "proximityColor");
 					locations[num + 3] = GL.GetUniformLocation(shader, "objectColor");
+					locations[num + 4] = GL.GetUniformLocation(shader, "hidePosition");
 
 					GL.BindAttribLocation(shader, Vertex.PositionAttributeLocation, "position");
 
@@ -71,7 +72,7 @@ namespace WarriorsSnuggery.Graphics
 
 		public static int GetLocation(int shader, string name)
 		{
-			var shadernum = 4 * (shader - 1);
+			var shadernum = UniformCount * (shader - 1);
 			int num = 0;
 			switch (name)
 			{
@@ -84,17 +85,21 @@ namespace WarriorsSnuggery.Graphics
 				case "objectColor":
 					num = 3;
 					break;
+				case "hidePosition":
+					num = 4;
+					break;
 			}
 			return locations[num + shadernum];
 		}
 
-		public static void Uniform(int shader, ref Matrix4 projection, Color ambient)
+		public static void Uniform(int shader, ref Matrix4 projection, Color ambient, CPos hideOrigin)
 		{
 			lock (MasterRenderer.GLLock)
 			{
 				GL.UseProgram(shader);
 				GL.UniformMatrix4(GetLocation(shader, "projection"), false, ref projection);
 				GL.Uniform4(GetLocation(shader, "proximityColor"), ambient.ToColor4());
+				GL.Uniform4(GetLocation(shader, "hidePosition"), hideOrigin.ToVector());
 			}
 		}
 

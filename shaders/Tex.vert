@@ -15,16 +15,21 @@ in vec4 color;
 uniform mat4 projection;
 uniform mat4 modelView;
 
+uniform vec4 hidePosition;
+
 out vec2 vs_textureCoordinate;
 flat out int vs_texture;
 flat out int vs_textureFlags;
 out vec4 vs_color;
+out vec4 vs_hideDistance;
 
 void main(void)
 {
     gl_Position = projection * modelView * position;
+
     vs_textureCoordinate = textureCoordinate;
     vs_texture = texture;
     vs_textureFlags = textureFlags;
-    vs_color = color;
+	vs_color = color;
+	vs_hideDistance = position - hidePosition;
 }

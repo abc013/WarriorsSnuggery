@@ -75,7 +75,7 @@ namespace WarriorsSnuggery
 
 		public static void Render()
 		{
-			Shaders.Uniform(Shaders.TextureShader, ref matrix, Color.White);
+			Shaders.Uniform(Shaders.TextureShader, ref matrix, Color.White, CPos.Zero);
 
 			foreach (var r in beforeRender)
 				r.Render();

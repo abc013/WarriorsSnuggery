@@ -59,6 +59,7 @@ namespace WarriorsSnuggery.Objects.Actors.Parts
 		readonly BatchObject[] renderables;
 		readonly Color variation;
 		Color cachedColor;
+		TextureFlags cachedFlags;
 
 		public SpritePart(Actor self, SpritePartInfo info) : base(self)
 		{
@@ -83,7 +84,6 @@ namespace WarriorsSnuggery.Objects.Actors.Parts
 					index = self.World.Game.SharedRandom.Next(anim.Length);
 
 				renderables[i] = new BatchObject(anim[index]);
-				renderables[i].SetTextureFlags(info.IgnoreAmbience ? TextureFlags.IgnoreAmbience : TextureFlags.None);
 			}
 
 			if (info.ColorVariation != Color.Black)
@@ -92,6 +92,7 @@ namespace WarriorsSnuggery.Objects.Actors.Parts
 				variation = new Color((float)(random.NextDouble() - 0.5f) * info.ColorVariation.R, (float)(random.NextDouble() - 0.5f) * info.ColorVariation.G, (float)(random.NextDouble() - 0.5f) * info.ColorVariation.B, 0f);
 			}
 			cachedColor = info.Color + variation;
+			cachedFlags = info.IgnoreAmbience ? TextureFlags.IgnoreAmbience : TextureFlags.None;
 
 			self.ZOffset = info.Offset.Z;
 		}
@@ -129,6 +130,7 @@ namespace WarriorsSnuggery.Objects.Actors.Parts
 
 				renderable.SetPosition(self.GraphicPosition + info.Offset);
 				renderable.SetColor(cachedColor);
+				renderable.SetTextureFlags(cachedFlags);
 				renderable.Render();
 			}
 		}
@@ -136,6 +138,11 @@ namespace WarriorsSnuggery.Objects.Actors.Parts
 		public void SetColor(Color color)
 		{
 			cachedColor = color * (info.Color + variation);
+		}
+
+		public void SetTextureFlags(TextureFlags flags)
+		{
+			cachedFlags = (info.IgnoreAmbience ? TextureFlags.IgnoreAmbience : TextureFlags.None) | flags;
 		}
 	}
 }
