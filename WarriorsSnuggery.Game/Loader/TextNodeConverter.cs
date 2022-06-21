@@ -1,4 +1,7 @@
 ﻿using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.ComponentModel;
 using System.Globalization;
 using System.Linq;
 using WarriorsSnuggery.Graphics;
@@ -38,8 +41,11 @@ namespace WarriorsSnuggery.Loader
 
 		public static object Convert(TextNode node, Type t)
 		{
-			var value = node.Value;
+			return convert(node.Value, node, t);
+		}
 
+		static object convert(string value, TextNode node, Type t)
+		{
 			if (t.IsEnum)
 			{
 				if (Enum.TryParse(t, value, true, out var @enum))
@@ -65,6 +71,11 @@ namespace WarriorsSnuggery.Loader
 				if (short.TryParse(value, out var i))
 					return i;
 			}
+			else if (t == typeof(ushort))
+			{
+				if (ushort.TryParse(value, out var i))
+					return i;
+			}
 			else if (t == typeof(float))
 			{
 				if (float.TryParse(value, out var i))
@@ -86,121 +97,6 @@ namespace WarriorsSnuggery.Loader
 			else if (t == typeof(PackageFile))
 			{
 				return new PackageFile(value);
-			}
-			else if (t.IsArray && t.GetElementType().IsEnum)
-			{
-				var parts = value.Split(',');
-
-				var elementType = t.GetElementType();
-				var enums = Array.CreateInstance(elementType, parts.Length);
-
-				for (int i = 0; i < parts.Length; i++)
-				{
-					if (Enum.TryParse(elementType, parts[i], true, out var @enum))
-						enums.SetValue(@enum, i);
-					else
-						throw new InvalidConversionException(node, t);
-				}
-
-				return enums;
-			}
-			else if (t == typeof(int[]))
-			{
-				var parts = value.Split(',');
-				var res = new int[parts.Length];
-
-				for (int i = 0; i < parts.Length; i++)
-				{
-					if (int.TryParse(parts[i], out int convert))
-						res[i] = convert;
-					else
-						throw new InvalidConversionException(node, t);
-				}
-
-				return res;
-			}
-			else if (t == typeof(float[]))
-			{
-				var parts = value.Split(',');
-				var res = new float[parts.Length];
-
-				for (int i = 0; i < parts.Length; i++)
-				{
-					if (float.TryParse(parts[i], NumberStyles.Float, CultureInfo.InvariantCulture, out float convert))
-						res[i] = convert;
-					else
-						throw new InvalidConversionException(node, t);
-				}
-
-				return res;
-			}
-			else if (t == typeof(string[]))
-			{
-				var parts = value.Split(',');
-
-				for (int i = 0; i < parts.Length; i++)
-					parts[i] = parts[i].Trim();
-
-				return parts;
-			}
-			else if (t == typeof(PackageFile[]))
-			{
-				var parts = value.Split(',');
-
-				var packageFiles = new PackageFile[parts.Length];
-				for (int i = 0; i < parts.Length; i++)
-					packageFiles[i] = new PackageFile(parts[i].Trim());
-
-				return packageFiles;
-			}
-			else if (t == typeof(bool[]))
-			{
-				var parts = value.Split(',');
-				var res = new bool[parts.Length];
-
-				for (int i = 0; i < parts.Length; i++)
-				{
-					var part = parts[i].Trim();
-
-					if (trueBooleans.Contains(part))
-						res[i] = true;
-					else if (falseBooleans.Contains(part))
-						res[i] = false;
-					else
-						throw new InvalidConversionException(node, t);
-				}
-
-				return res;
-			}
-			else if (t == typeof(ushort[]))
-			{
-				var parts = value.Split(',');
-				var res = new ushort[parts.Length];
-
-				for (int i = 0; i < parts.Length; i++)
-				{
-					if (ushort.TryParse(parts[i], out ushort convert))
-						res[i] = convert;
-					else
-						throw new InvalidConversionException(node, t);
-				}
-
-				return res;
-			}
-			else if (t == typeof(short[]))
-			{
-				var parts = value.Split(',');
-				var res = new short[parts.Length];
-
-				for (int i = 0; i < parts.Length; i++)
-				{
-					if (short.TryParse(parts[i], out short convert))
-						res[i] = convert;
-					else
-						throw new InvalidConversionException(node, t);
-				}
-
-				return res;
 			}
 			else if (t == typeof(MPos))
 			{
@@ -273,36 +169,7 @@ namespace WarriorsSnuggery.Loader
 			}
 			else if (t == typeof(TextureInfo))
 			{
-				var size = MPos.Zero;
-				var name = new PackageFile(value);
-				var randomTexture = false;
-				var tick = 20;
-				bool searchFile = true;
-
-				var children = node.Children;
-				foreach (var child in children)
-				{
-					switch (child.Key)
-					{
-						case "AddDirectory":
-							searchFile = child.Convert<bool>();
-							break;
-						case "Random":
-							randomTexture = child.Convert<bool>();
-							break;
-						case "Tick":
-							tick = child.Convert<int>();
-							break;
-						case "Size":
-							size = child.Convert<MPos>();
-							break;
-						default:
-							throw new UnexpectedConversionChild(node, t, child.Key);
-					}
-				}
-
-				if (size != MPos.Zero)
-					return new TextureInfo(name, randomTexture ? TextureType.RANDOM : TextureType.ANIMATION, size, tick, searchFile);
+				return TextureInfo.Create(node);
 			}
 			else if (t == typeof(WeaponType))
 			{
@@ -412,22 +279,24 @@ namespace WarriorsSnuggery.Loader
 
 				return convert;
 			}
-			else if (t == typeof(Effect[]))
+			else if (t == typeof(Effect))
+			{
+				if (!EffectCache.Types.ContainsKey(value))
+					throw new MissingInfoException(value);
+
+				return EffectCache.Types[value];
+			}
+			else if (t.IsArray)
 			{
 				var parts = value.Split(',');
+				var elementType = t.GetElementType();
 
-				var convert = new Effect[parts.Length];
+				var array = Array.CreateInstance(elementType, parts.Length);
 
 				for (int i = 0; i < parts.Length; i++)
-				{
-					var type = parts[i].Trim();
-					if (!EffectCache.Types.ContainsKey(type))
-						throw new MissingInfoException(type);
+					array.SetValue(convert(parts[i].Trim(), node, elementType), i);
 
-					convert[i] = EffectCache.Types[type];
-				}
-
-				return convert;
+				return array;
 			}
 
 			throw new InvalidConversionException(node, t);
