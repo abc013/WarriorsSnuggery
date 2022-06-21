@@ -280,10 +280,14 @@ web=
 			Effect=web_stun
 			ProbabilityFalloff=0.1, 0.0
 			RangeSteps=256, 768
+			ArmorModifiers=
+				slime=0.1
 		Spell@slowdown=
 			Effect=web_slowdown
 			ProbabilityFalloff=1.0, 0.9, 0.8, 0.0
 			RangeSteps=0, 256, 768, 1536
+			ArmorModifiers=
+				slime=0.1
 
 poisoneggthrow=
 	Reload=150
@@ -345,6 +349,8 @@ poisoneggexplode=
 			Effect=minor_slowdown
 			ProbabilityFalloff=0.9, 0.5, 0.3, 0.0
 			RangeSteps=0, 512, 1024, 1536
+			ArmorModifiers=
+				slime=0.1
 		Screenshaker=
 			Strength=196
 

@@ -2,6 +2,7 @@
 using WarriorsSnuggery.Physics;
 using WarriorsSnuggery.Loader;
 using WarriorsSnuggery.Spells;
+using WarriorsSnuggery.Objects.Actors.Parts;
 
 namespace WarriorsSnuggery.Objects.Weapons.Warheads
 {
@@ -22,11 +23,29 @@ namespace WarriorsSnuggery.Objects.Weapons.Warheads
 		[Desc("Range steps used for falloff.", "Defines at which range the falloff points are defined.")]
 		public readonly int[] RangeSteps = new[] { 0, 256, 512, 1024, 2048, 3096 };
 
+		[Desc("Probabilites for each armor.", "The higher the value, the more likely it is for the spell to be casted. This value will be multiplied on top of the others.")]
+		public readonly Dictionary<string, float> ArmorModifiers = new Dictionary<string, float>();
+
 		readonly int maxRange;
 
 		public SpellWarhead(List<TextNode> nodes)
 		{
-			TypeLoader.SetValues(this, nodes);
+			var fields = TypeLoader.GetFields(this);
+
+			foreach (var node in nodes)
+			{
+				switch (node.Key)
+				{
+					case nameof(ArmorModifiers):
+						foreach (var node2 in node.Children)
+							ArmorModifiers.Add(node2.Key, node2.Convert<float>());
+
+						break;
+					default:
+						TypeLoader.SetValue(this, fields, node);
+						break;
+				}
+			}
 
 			if (RangeSteps.Length != ProbabilityFalloff.Length)
 				throw new InvalidNodeException($"Range step length ({RangeSteps.Length}) does not match with given falloff values ({ProbabilityFalloff.Length}).");
@@ -74,6 +93,11 @@ namespace WarriorsSnuggery.Objects.Weapons.Warheads
 
 							probability *= Probability;
 						}
+
+						var armor = actor.GetPartOrDefault<ArmorPart>();
+
+						if (armor != null && ArmorModifiers.ContainsKey(armor.Name))
+							probability *= Probability * ArmorModifiers[armor.Name];
 
 						if (probability == 0 || Program.SharedRandom.NextDouble() > probability)
 							continue;
