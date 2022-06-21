@@ -26,22 +26,7 @@ namespace WarriorsSnuggery.Graphics
 
 		public void SetData(Vertex[] data, int length)
 		{
-			if (length > Settings.BatchSize)
-			{
-				Log.Warning($"Unable to push vertices to batch: target ({length * Vertex.Size}) exceeds size of buffer ({Size}).");
-				return;
-			}
-
-			Bind();
-			lock (MasterRenderer.GLLock)
-			{
-				GL.BufferSubData(BufferTarget.ArrayBuffer, new IntPtr(0), length * Vertex.Size, data);
-				Program.CheckGraphicsError("BatchData_1");
-			}
-
-			CurrentSize = length;
-
-			MasterRenderer.BatchCalls++;
+			SetData(data, 0, length);
 		}
 
 		public void SetData(Vertex[] data, int start, int length)
@@ -56,7 +41,7 @@ namespace WarriorsSnuggery.Graphics
 			lock (MasterRenderer.GLLock)
 			{
 				GL.BufferSubData(BufferTarget.ArrayBuffer, new IntPtr(start * Vertex.Size), length * Vertex.Size, data);
-				Program.CheckGraphicsError("BatchData_2");
+				Program.CheckGraphicsError("BatchData");
 			}
 
 			if (CurrentSize < start + length)

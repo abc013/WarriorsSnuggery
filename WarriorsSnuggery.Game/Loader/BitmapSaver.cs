@@ -11,9 +11,13 @@ namespace WarriorsSnuggery.Loader
 			using var img = Image.LoadPixelData<Bgra32>(data, size.X, size.Y);
 
 			if (invertY)
-				img.Mutate(a => a.Flip(FlipMode.Horizontal));
+				img.Mutate(a => a.Flip(FlipMode.Vertical).ProcessPixelRowsAsVector4(row =>
+				{
+					for (int x = 0; x < row.Length; x++)
+						row[x].W = 1;
+				}));
 
-			img.Save(filename);
+			img.SaveAsync(filename);
 		}
 	}
 }
