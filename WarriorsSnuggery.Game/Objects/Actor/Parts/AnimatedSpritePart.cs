@@ -1,5 +1,4 @@
-﻿using System;
-using WarriorsSnuggery.Graphics;
+﻿using WarriorsSnuggery.Graphics;
 using WarriorsSnuggery.Loader;
 using WarriorsSnuggery.Objects.Conditions;
 using WarriorsSnuggery.Objects.Weapons;

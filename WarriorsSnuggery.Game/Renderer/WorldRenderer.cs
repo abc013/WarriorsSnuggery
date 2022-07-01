@@ -147,9 +147,6 @@ namespace WarriorsSnuggery
 				foreach (var actor in world.ActorLayer.VisibleActors)
 					actor.Physics.RenderDebug();
 
-				foreach (var weapon in world.WeaponLayer.VisibleWeapons)
-					weapon.Physics.RenderDebug();
-
 				foreach (var wall in world.WallLayer.VisibleWalls)
 					wall.Physics.RenderDebug();
 

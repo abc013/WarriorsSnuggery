@@ -5,7 +5,7 @@ using WarriorsSnuggery.Spells;
 
 namespace WarriorsSnuggery.Objects.Weapons
 {
-	public abstract class Weapon : PhysicsObject
+	public abstract class Weapon : PositionableObject
 	{
 		protected readonly World World;
 
