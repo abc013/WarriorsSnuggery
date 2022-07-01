@@ -13,12 +13,14 @@ namespace WarriorsSnuggery.Objects.Particles
 		public readonly ParticleType Type;
 		public readonly CPos Position;
 		public readonly int Height;
+		public readonly CPos InitialVelocity;
 
-		public ParticleInit(ParticleType type, CPos position, int height)
+		public ParticleInit(ParticleType type, CPos position, int height, CPos initialVelocity)
 		{
 			Type = type;
 			Position = position;
 			Height = height;
+			InitialVelocity = initialVelocity;
 
 			// Empty list
 			Nodes = new List<TextNode>();

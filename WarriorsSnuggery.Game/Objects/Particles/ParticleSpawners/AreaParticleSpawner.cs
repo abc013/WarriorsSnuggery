@@ -25,6 +25,9 @@ namespace WarriorsSnuggery.Objects.Particles
 		[Desc("Type of spawning area.")]
 		public readonly ParticleAreaSpawnType AreaType = ParticleAreaSpawnType.RANDOM;
 
+		[Desc("Initial velocity of the particles.")]
+		public readonly CPos InitialVelocity = CPos.Zero;
+
 		public AreaParticleSpawner(List<TextNode> nodes) : base(nodes) { }
 
 		public override Particle[] Create(World world, CPos position, int height)
@@ -48,7 +51,7 @@ namespace WarriorsSnuggery.Objects.Particles
 				var angle = Angle.RandomAngle(random);
 				var pos = CPos.FromFlatAngle(angle, ran);
 
-				particles[i] = ParticleCache.Create(world, Type, position + pos, height);
+				particles[i] = ParticleCache.Create(world, Type, position + pos, height, InitialVelocity);
 			}
 			return particles;
 		}
@@ -61,7 +64,7 @@ namespace WarriorsSnuggery.Objects.Particles
 			{
 				var pos = CPos.FromFlatAngle(step * i, Radius);
 
-				particles[i] = ParticleCache.Create(world, Type, position + pos, height);
+				particles[i] = ParticleCache.Create(world, Type, position + pos, height, InitialVelocity);
 			}
 			return particles;
 		}
@@ -99,7 +102,7 @@ namespace WarriorsSnuggery.Objects.Particles
 				}
 				var pos = new CPos(x, y, 0);
 
-				particles[i] = ParticleCache.Create(world, Type, position + pos, height);
+				particles[i] = ParticleCache.Create(world, Type, position + pos, height, InitialVelocity);
 			}
 			return particles;
 		}

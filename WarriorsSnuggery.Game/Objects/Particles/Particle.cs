@@ -37,6 +37,8 @@ namespace WarriorsSnuggery.Objects.Particles
 			dissolve = init.Convert("DissolveDuration", Type.DissolveDuration);
 
 			velocity = init.Convert("Velocity", ParticleUtils.Variety(Type.RandomVelocity));
+			velocity += init.InitialVelocity;
+
 			rotate_velocity = init.Convert("RotationVelocity", ParticleUtils.AngleVariety(Type.RandomRotation));
 
 			// Set invisible first and check later for visibility

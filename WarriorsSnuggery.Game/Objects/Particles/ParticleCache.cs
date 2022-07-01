@@ -13,14 +13,14 @@ namespace WarriorsSnuggery.Objects.Particles
 				Types.Add(node.Key, new ParticleType(node.Children));
 		}
 
-		public static Particle Create(World world, string name, CPos position, int height)
+		public static Particle Create(World world, string name, CPos position, int height, CPos initialVelocity = default)
 		{
-			return Create(world, Types[name], position, height);
+			return Create(world, Types[name], position, height, initialVelocity);
 		}
 
-		public static Particle Create(World world, ParticleType type, CPos position, int height)
+		public static Particle Create(World world, ParticleType type, CPos position, int height, CPos initialVelocity = default)
 		{
-			var init = new ParticleInit(type, position, height);
+			var init = new ParticleInit(type, position, height, initialVelocity);
 
 			return new Particle(world, init);
 		}

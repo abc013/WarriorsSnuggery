@@ -15,13 +15,16 @@ namespace WarriorsSnuggery.Objects.Particles
 		[Desc("Offset of the spawning point.")]
 		public readonly CPos Offset = CPos.Zero;
 
+		[Desc("Initial velocity of the particles.")]
+		public readonly CPos InitialVelocity = CPos.Zero;
+
 		public PointParticleSpawner(List<TextNode> nodes) : base(nodes) { }
 
 		public override Particle[] Create(World world, CPos position, int height)
 		{
 			var particles = new Particle[Count];
 			for (int i = 0; i < Count; i++)
-				particles[i] = ParticleCache.Create(world, Type, position + Offset, height);
+				particles[i] = ParticleCache.Create(world, Type, position + Offset, height, InitialVelocity);
 
 			return particles;
 		}

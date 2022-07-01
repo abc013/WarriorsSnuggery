@@ -18,6 +18,9 @@ namespace WarriorsSnuggery.Objects.Particles
 		[Desc("Angle of line in degrees.")]
 		public readonly int Angle = 0;
 
+		[Desc("Initial velocity of the particles.")]
+		public readonly CPos InitialVelocity = CPos.Zero;
+
 		public LineParticleSpawner(List<TextNode> nodes) : base(nodes) { }
 
 		public override Particle[] Create(World world, CPos position, int height)
@@ -29,7 +32,7 @@ namespace WarriorsSnuggery.Objects.Particles
 				var angle = WarriorsSnuggery.Angle.ToArc(Angle);
 				var pos = CPos.FromFlatAngle(angle, length * i);
 
-				particles[i] = ParticleCache.Create(world, Type, position + pos, height);
+				particles[i] = ParticleCache.Create(world, Type, position + pos, height, InitialVelocity);
 			}
 			return particles;
 		}
