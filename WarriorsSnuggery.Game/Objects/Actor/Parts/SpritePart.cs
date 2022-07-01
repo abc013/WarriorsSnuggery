@@ -97,17 +97,6 @@ namespace WarriorsSnuggery.Objects.Actors.Parts
 			self.ZOffset = info.Offset.Z;
 		}
 
-		public int FacingFromAngle(float angle)
-		{
-			float part = 360f / info.Facings;
-
-			int facing = (int)Math.Round(angle / part);
-			if (facing >= info.Facings)
-				facing = 0;
-
-			return facing;
-		}
-
 		public BatchRenderable GetRenderable(ActionType actions, int facing)
 		{
 			if (info.Condition != null && !info.Condition.True(self))
@@ -118,7 +107,7 @@ namespace WarriorsSnuggery.Objects.Actors.Parts
 
 		public void Render()
 		{
-			var renderable = GetRenderable(self.Actions, FacingFromAngle(self.Angle));
+			var renderable = GetRenderable(self.Actions, Angle.ToFacing(self.Angle, info.Facings));
 			if (renderable != null)
 			{
 				if (self.Height > 0)

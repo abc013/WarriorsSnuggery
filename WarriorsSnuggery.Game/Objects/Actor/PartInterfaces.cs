@@ -53,8 +53,6 @@ namespace WarriorsSnuggery.Objects.Actors
 
 	public interface IPartRenderable : IRenderable
 	{
-		int FacingFromAngle(float angle);
-
 		Graphics.BatchRenderable GetRenderable(ActionType actions, int facing);
 
 		void SetColor(Color color);

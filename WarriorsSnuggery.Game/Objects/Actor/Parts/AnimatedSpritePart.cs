@@ -97,17 +97,6 @@ namespace WarriorsSnuggery.Objects.Actors.Parts
 			self.ZOffset = info.Offset.Z;
 		}
 
-		public int FacingFromAngle(float angle)
-		{
-			var part = Angle.MaxRange / info.Facings;
-
-			var facing = (int)Math.Round(angle / part);
-			if (facing >= info.Facings)
-				facing = 0;
-
-			return facing;
-		}
-
 		public BatchRenderable GetRenderable(ActionType actions, int facing)
 		{
 			if (info.Condition != null && !info.Condition.True(self))
@@ -118,12 +107,12 @@ namespace WarriorsSnuggery.Objects.Actors.Parts
 
 		public void OnMove(CPos old, CPos speed)
 		{
-			currentFacing = FacingFromAngle(self.Angle);
+			currentFacing = Angle.ToFacing(angle, info.Facings);
 		}
 
 		public void OnAttack(CPos target, Weapon weapon)
 		{
-			currentFacing = FacingFromAngle(self.Angle);
+			currentFacing = Angle.ToFacing(angle, info.Facings);
 		}
 
 		public void Tick()
@@ -131,7 +120,7 @@ namespace WarriorsSnuggery.Objects.Actors.Parts
 			if (self.Angle != angle)
 			{
 				angle = self.Angle;
-				currentFacing = FacingFromAngle(angle);
+				currentFacing = Angle.ToFacing(angle, info.Facings);
 			}
 			var last = renderable;
 			renderable = (BatchSequence)GetRenderable(self.Actions, currentFacing);

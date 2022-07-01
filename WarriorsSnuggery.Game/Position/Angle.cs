@@ -11,6 +11,17 @@ namespace WarriorsSnuggery
 			return (float)random.NextDouble() * MaxRange;
 		}
 
+		public static int ToFacing(float degree, int totalFacings)
+		{
+			float part = MaxRange / totalFacings;
+
+			int facing = (int)Math.Round(degree / part);
+			if (facing >= totalFacings)
+				facing = 0;
+
+			return facing;
+		}
+
 		public static int ToDegree(float arc)
 		{
 			return Cast((int)(arc / MathF.PI * 180));
