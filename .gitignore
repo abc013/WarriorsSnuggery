@@ -53,6 +53,10 @@ scripts/*.cache
 *.pdb
 launchSettings.json
 
+# All mods except the example ones
+mods/*
+!mods/examples_*
+
 # All saves except the default one
 saves/*
 !saves/DEFAULT.yaml
