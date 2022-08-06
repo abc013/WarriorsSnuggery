@@ -1,5 +1,7 @@
 slime_spawner=
-	Reload=30
+	Reload=240
+	ShootDuration=15
+	BurstCount=5
 	MaxRange=15360
 	FireSound=
 		Name=slimeball
@@ -61,7 +63,9 @@ slime_ball=
 			RangeSteps=0, 512, 768, 1024
 
 slime_bullet=
-	Reload=30
+	Reload=90
+	ShootDuration=30
+	BurstCount=3
 	MaxRange=6144
 	FireSound=
 		Name=slimeball

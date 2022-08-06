@@ -398,6 +398,12 @@ namespace WarriorsSnuggery.Objects.Actors
 				actionTimings.Add(type, duration);
 		}
 
+		public void CancelAction(ActionType type)
+		{
+			if (actionTimings.ContainsKey(type))
+				actionTimings[type] = 0;
+		}
+
 		public override void SetColor(Color color)
 		{
 			foreach (var part in partManager.GetPartsOrDefault<IPartRenderable>())

@@ -120,15 +120,35 @@ namespace WarriorsSnuggery.Objects.Actors.Parts
 
 			stateTick = 0;
 
-			// Cancel preparation
 			if (state == WeaponState.PREPARING)
+			{
+				self.CancelAction(ActionType.PREPARE_ATTACK);
+				// Weapon wasn't fired yet
 				state = WeaponState.READY;
+			}
+			else
+			{
+				self.CancelAction(ActionType.ATTACK);
+			}
 		}
 
 		public void Tick()
 		{
 			if (state == WeaponState.READY)
 				return;
+
+			if (stateTick != 0 && state == WeaponState.ATTACKING)
+			{
+				int salvoIntervals = info.Type.ShootDuration / info.Type.BurstCount;
+
+				if (stateTick % salvoIntervals == 0)
+				{
+					var weapon = WeaponCache.Create(self.World, info.Type, Target, self);
+					beam = weapon as BeamWeapon;
+
+					self.AttackWith(Target, weapon);
+				}
+			}
 
 			if (stateTick-- == 0)
 			{
@@ -137,10 +157,6 @@ namespace WarriorsSnuggery.Objects.Actors.Parts
 					case WeaponState.PREPARING:
 						stateTick = info.Type.ShootDuration;
 						state = WeaponState.ATTACKING;
-
-						var weapon = WeaponCache.Create(self.World, info.Type, Target, self);
-						beam = weapon as BeamWeapon;
-						self.AttackWith(Target, weapon);
 
 						self.AddAction(ActionType.ATTACK, Type.ShootDuration);
 						break;
