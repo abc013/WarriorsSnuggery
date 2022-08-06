@@ -156,7 +156,7 @@ namespace WarriorsSnuggery.Objects.Actors.Parts
 					self.World.Add(particle);
 					break;
 				case SpawnPartTypes.WEAPON:
-					var weapon = WeaponCache.Create(self.World, info.Name, randomPosition(), self);
+					var weapon = WeaponCache.Create(self.World, info.Name, new Target(randomPosition(), 0), self);
 					weapon.Height = height;
 
 					self.World.Add(weapon);

@@ -23,7 +23,7 @@ namespace WarriorsSnuggery.Objects.Actors.Parts
 		}
 	}
 
-	public class WeaponPart : ActorPart, ITick, INoticeDispose, ISaveLoadable
+	public class WeaponPart : ActorPart, ITick, INoticeDispose, ISaveLoadable, INoticeMove
 	{
 		readonly WeaponPartInfo info;
 		public readonly WeaponType Type;
@@ -31,19 +31,26 @@ namespace WarriorsSnuggery.Objects.Actors.Parts
 		public bool AllowMoving => info.AllowMoving;
 
 		public CPos WeaponOffsetPosition => self.GraphicPositionWithoutHeight + info.Offset;
-		public int WeaponHeightPosition => self.Height + info.Height;
+		public int WeaponOffsetHeight => self.Height + info.Height;
 
-		public CPos Target;
-		public int TargetHeight;
+		public Target Target;
 
+		enum WeaponState
+		{
+			READY,
+			RELOADING,
+			PREPARING,
+			ATTACKING,
+			COOLDOWN
+		}
+
+		WeaponState state;
+		int stateTick; // time until state changes
+
+		public bool Ready => WeaponState.READY == state;
+
+		// Needs to be saved for controlling the beam.
 		BeamWeapon beam;
-
-		bool attackOrdered;
-		Target target;
-		int prep;
-
-		public int Reload;
-		public bool ReloadDone => Reload <= 0;
 
 		public WeaponPart(Actor self, WeaponPartInfo info) : base(self)
 		{
@@ -61,17 +68,15 @@ namespace WarriorsSnuggery.Objects.Actors.Parts
 						var id = node.Convert<int>();
 						beam = (BeamWeapon)self.World.WeaponLayer.Weapons.Find(w => w.ID == id);
 						break;
-					case "PreparationTick":
-						prep = node.Convert<int>();
-						if (prep > 0)
-							attackOrdered = true;
+					case "StateTick":
+						stateTick = node.Convert<int>();
 						break;
-					case nameof(Reload):
-						Reload = node.Convert<int>();
+					case "State":
+						state = node.Convert<WeaponState>();
 						break;
-					case "Target":
+					case nameof(Target):
 						var pos = node.Convert<CPos>();
-						target = new Target(new CPos(pos.X, pos.Y, 0), pos.Z);
+						Target = new Target(pos, 0);
 						break;
 				}
 			}
@@ -84,74 +89,94 @@ namespace WarriorsSnuggery.Objects.Actors.Parts
 			if (beam != null)
 				saver.Add("BeamWeapon", beam.ID, -1);
 
-			saver.Add("PreparationTick", prep, 0);
-			saver.Add(nameof(Reload), Reload, 0);
+			saver.Add("StateTick", stateTick, 0);
+			saver.Add("State", state, 0);
 
-			if (target != null)
+			if (Target != null)
 			{
 				// TODO: also support actor targeting
-				saver.Add("Target", target.Position + new CPos(0, 0, target.Height), CPos.Zero);
+				saver.Add(nameof(Target), Target.Position + new CPos(0, 0, Target.Height), CPos.Zero);
 			}
 			
 			return saver;
 		}
 
-		public void OnAttack(Target target)
+		public void OrderAttack(Target target)
 		{
-			attackOrdered = true;
-			this.target = target;
-
-			if (prep > 0)
+			if (state != WeaponState.READY)
 				return;
 
-			if (Type.PreparationDelay != 0)
-			{
-				self.AddAction(ActionType.PREPARE_ATTACK, Type.PreparationDelay);
-				prep = Type.PreparationDelay;
+			Target = target;
+
+			self.AddAction(ActionType.PREPARE_ATTACK, Type.PreparationDelay);
+			stateTick = Type.PreparationDelay;
+			state = WeaponState.PREPARING;
+		}
+
+		public void CancelAttack()
+		{
+			if (state != WeaponState.ATTACKING && state != WeaponState.PREPARING)
 				return;
-			}
-			
-			attack();
+
+			stateTick = 0;
+
+			// Cancel preparation
+			if (state == WeaponState.PREPARING)
+				state = WeaponState.READY; // TODO: this allows us to fire immediately, not nice
 		}
 
 		public void Tick()
 		{
-			Reload--;
+			if (state == WeaponState.READY)
+				return;
 
-			if (attackOrdered && --prep <= 0)
-				attack();
+			if (stateTick-- == 0)
+			{
+				switch (state)
+				{
+					case WeaponState.PREPARING:
+						stateTick = info.Type.ShootDuration;
+						state = WeaponState.ATTACKING;
+
+						var weapon = WeaponCache.Create(self.World, info.Type, Target, self);
+						beam = weapon as BeamWeapon;
+						self.AttackWith(Target, weapon);
+
+						self.AddAction(ActionType.ATTACK, Type.ShootDuration);
+						break;
+					case WeaponState.ATTACKING:
+						stateTick = info.Type.CooldownDelay;
+						state = WeaponState.COOLDOWN;
+
+						self.AddAction(ActionType.END_ATTACK, Type.CooldownDelay);
+						break;
+					case WeaponState.COOLDOWN:
+						var reloadModifier = 1f;
+						foreach (var effect in self.GetActiveEffects(EffectType.COOLDOWN))
+							reloadModifier *= effect.Effect.Value;
+
+						stateTick = (int)(Type.Reload * reloadModifier);
+						state = WeaponState.RELOADING;
+						break;
+					case WeaponState.RELOADING:
+						state = WeaponState.READY;
+						break;
+				}
+			}
 
 			if (beam != null)
 			{
 				if (beam.Disposed)
 					beam = null;
 				else
-					beam.Move(Target, TargetHeight);
+					beam.Move(Target.Position, Target.Height);
 			}
 		}
 
-		void attack()
+		public void OnMove(CPos old, CPos speed)
 		{
-			attackOrdered = false;
-
-			if (Type.PreparationDelay != 0 && !self.DoesAction(ActionType.PREPARE_ATTACK))
-				return; // Preparation has been canceled
-
-			var weapon = WeaponCache.Create(self.World, info.Type, target, self);
-			Target = weapon.TargetPosition;
-			beam = weapon as BeamWeapon;
-
-			if (self.AttackWith(target, weapon))
-			{
-				var reloadModifier = 1f;
-				foreach (var effect in self.GetActiveEffects(EffectType.COOLDOWN))
-					reloadModifier *= effect.Effect.Value;
-
-				Reload = (int)(Type.Reload * reloadModifier);
-
-				var cooldownAction = new ActorAction(ActionType.END_ATTACK, Type.CooldownDelay);
-				self.AddAction(ActionType.ATTACK, Type.ShootDuration, cooldownAction);
-			}
+			if (!info.AllowMoving)
+				CancelAttack();
 		}
 
 		public void OnDispose()

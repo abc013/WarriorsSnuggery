@@ -87,7 +87,7 @@ namespace WarriorsSnuggery.Objects.Actors.Bot
 			if (!Self.CanAttack)
 				return;
 
-			Self.Weapon.Target = Target.Position;
+			Self.Weapon.Target = Target;
 			int range = Self.Weapon.Type.MaxRange;
 			if (DistToTarget < range * 1.1f)
 			{

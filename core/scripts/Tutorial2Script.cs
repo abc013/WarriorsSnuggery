@@ -153,7 +153,7 @@ namespace WarriorsSnuggery.Scripts.Core
 
 			for (int i = 0; i < 2; i++)
 			{
-				var weapon = WeaponCache.Create(world, "cannon", new CPos(game.SharedRandom.Next(18 * 512, 22 * 512) * 2, game.SharedRandom.Next(9 * 512, 10 * 512) * 2, 0), targets[0]);
+				var weapon = WeaponCache.Create(world, "cannon", new Target(new CPos(game.SharedRandom.Next(18 * 512, 22 * 512) * 2, 0, 0), game.SharedRandom.Next(9 * 512, 10 * 512) * 2), targets[0]);
 				world.Add(weapon);
 
 				weapon.Detonate(weapon.Target);

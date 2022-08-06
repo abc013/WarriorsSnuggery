@@ -15,9 +15,9 @@ namespace WarriorsSnuggery.Objects.Weapons
 				Types.Add(node.Key, new WeaponType(node.Children));
 		}
 
-		public static Weapon Create(World world, string name, CPos target, Actor origin, uint id = uint.MaxValue)
+		public static Weapon Create(World world, string name, Target target, Actor origin, uint id = uint.MaxValue)
 		{
-			return Create(world, Types[name], new Target(target, 0), origin, id);
+			return Create(world, Types[name], target, origin, id);
 		}
 
 		public static Weapon Create(World world, WeaponType type, Target target, Actor origin, uint id = uint.MaxValue)

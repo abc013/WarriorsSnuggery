@@ -52,7 +52,7 @@ namespace WarriorsSnuggery.Objects.Weapons
 
 			ID = id;
 
-			Height = origin.Weapon != null ? origin.Weapon.WeaponHeightPosition : origin.Height;
+			Height = origin.Weapon != null ? origin.Weapon.WeaponOffsetHeight : origin.Height;
 
 			foreach (var effect in origin.GetActiveEffects(EffectType.INACCURACY))
 				InaccuracyModifier *= effect.Effect.Value;

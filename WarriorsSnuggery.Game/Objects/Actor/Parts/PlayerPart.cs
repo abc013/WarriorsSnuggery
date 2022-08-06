@@ -2,6 +2,7 @@
 using System;
 using WarriorsSnuggery.Audio;
 using WarriorsSnuggery.Graphics;
+using WarriorsSnuggery.Objects.Weapons;
 using WarriorsSnuggery.Spells;
 
 namespace WarriorsSnuggery.Objects.Actors.Parts
@@ -65,17 +66,7 @@ namespace WarriorsSnuggery.Objects.Actors.Parts
 			if (self.Weapon != null)
 			{
 				var actor = FindValidTarget(MouseInput.GamePosition);
-
-				if (actor == null)
-				{
-					self.Weapon.Target = MouseInput.GamePosition;
-					self.Weapon.TargetHeight = 0;
-				}
-				else
-				{
-					self.Weapon.Target = actor.Position;
-					self.Weapon.TargetHeight = actor.Height;
-				}
+				self.Weapon.Target = actor == null ? new Target(MouseInput.GamePosition, 0) : new Target(actor);
 			}
 
 			if (MouseInput.IsLeftDown && !self.World.Game.ScreenControl.CursorOnUI())

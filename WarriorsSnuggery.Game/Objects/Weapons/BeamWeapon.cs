@@ -214,7 +214,7 @@ namespace WarriorsSnuggery.Objects.Weapons
 		{
 			if (Origin != null)
 			{
-				originHeight = Origin.Weapon.WeaponHeightPosition;
+				originHeight = Origin.Weapon.WeaponOffsetHeight;
 				originPos = Origin.Weapon.WeaponOffsetPosition;
 			}
 			ray.Start = originPos;

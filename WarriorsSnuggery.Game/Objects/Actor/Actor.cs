@@ -98,7 +98,7 @@ namespace WarriorsSnuggery.Objects.Actors
 		{
 			get
 			{
-				if (Weapon == null || !Weapon.ReloadDone || !IsAlive)
+				if (Weapon == null || !Weapon.Ready || !IsAlive)
 					return false;
 
 				if (!ActionPossible(ActionType.PREPARE_ATTACK) && !ActionPossible(ActionType.ATTACK))
@@ -488,20 +488,15 @@ namespace WarriorsSnuggery.Objects.Actors
 					effect.Sleeping = false;
 			}
 
-			Weapon.OnAttack(target);
+			Weapon.OrderAttack(target);
 		}
 
-		public bool AttackWith(Target target, Weapon weapon)
+		public void AttackWith(Target target, Weapon weapon)
 		{
-			if (!World.Map.Type.AllowWeapons)
-				return false;
-
 			World.Add(weapon);
 
 			foreach (var part in partManager.GetPartsOrDefault<INoticeAttack>())
 				part.OnAttack(target.Position, weapon);
-
-			return true;
 		}
 
 		public void Kill(Actor killed)

@@ -37,7 +37,7 @@ namespace WarriorsSnuggery.Objects.Actors.Bot
 				return;
 			}
 
-			if (hide && hideDuration-- <= 0 && (Self.Weapon == null || Self.Weapon.ReloadDone))
+			if (hide && hideDuration-- <= 0 && (Self.Weapon == null || Self.Weapon.Ready))
 				hide = false;
 			else if (CanAttack)
 				DefaultAttackBehavior();
