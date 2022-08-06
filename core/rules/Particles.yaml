@@ -8,6 +8,22 @@ beam=
 	Gravity=-1
 	RandomVelocity=1,1,1
 
+party_stripes=
+	Texture=party_stripes
+		Size=3,4
+		Tick=3
+	Color=128,128,128
+	ColorVariety=255,255,255
+	Duration=120
+	DissolveDuration=60
+	RandomVelocity=16,16,32
+	Gravity=1
+	RandomScale=0.5
+	RandomRotation=0,0,5
+	ShowShadow=true
+	DissolveScaling=true
+	StickToGround=true
+
 glitter=
 	Texture=glitter
 		Size=12,12
