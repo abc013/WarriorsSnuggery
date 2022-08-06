@@ -29,6 +29,12 @@
 3=
 	Sprite=wood
 	OverlapHeight=20
+	EdgeSprite=wood_edges_h
+	EdgeSpriteBounds=24,2
+	VerticalEdgeSprite=wood_edges_v
+	VerticalEdgeSpriteBounds=24,2
+	CornerSprite=wood_corners
+	CornerSpriteBounds=2,2
 	Speed=1.1
 
 4=
