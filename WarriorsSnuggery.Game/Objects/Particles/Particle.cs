@@ -10,6 +10,7 @@ namespace WarriorsSnuggery.Objects.Particles
 		[Save]
 		public readonly ParticleType Type;
 		readonly World world;
+		readonly Color cachedColor;
 
 		public ParticleSector Sector;
 
@@ -32,6 +33,7 @@ namespace WarriorsSnuggery.Objects.Particles
 			Type = init.Type;
 
 			Height = init.Height;
+			cachedColor = Type.Color + ParticleUtils.Variety(Type.ColorVariety);
 
 			current = init.Convert("Duration", Type.Duration);
 			dissolve = init.Convert("DissolveDuration", Type.DissolveDuration);
@@ -165,16 +167,6 @@ namespace WarriorsSnuggery.Objects.Particles
 			{
 				if (dissolve-- <= 0)
 					Dispose();
-				else
-				{
-					if (Type.IsLight)
-						Renderable.SetColor((dissolve / (float)Type.DissolveDuration) * Type.Color);
-					else
-						Renderable.SetColor(Type.Color.WithAlpha(Type.Color.A * dissolve / Type.DissolveDuration));
-
-					if (Type.DissolveScaling)
-						Renderable.SetScale((dissolve / (float)Type.DissolveDuration));
-				}
 			}
 		}
 
@@ -190,6 +182,14 @@ namespace WarriorsSnuggery.Objects.Particles
 				MasterRenderer.SetRenderer(Renderer.DEFAULT);
 				return;
 			}
+
+			if (Type.IsLight)
+				SetColor((dissolve / (float)Type.DissolveDuration) * cachedColor);
+			else
+				SetColor(cachedColor.WithAlpha(cachedColor.A * dissolve / Type.DissolveDuration));
+
+			if (Type.DissolveScaling)
+				Renderable.SetScale((dissolve / (float)Type.DissolveDuration));
 
 			base.Render();
 		}

@@ -52,15 +52,12 @@ namespace WarriorsSnuggery.Objects.Particles
 
 		public BatchRenderable GetRenderable()
 		{
-			var color = Color + ParticleUtils.Variety(ColorVariety);
-
 			BatchRenderable renderable;
 			if (Texture == null)
 				renderable = new BatchObject(MeshSize * Constants.PixelMultiplier + ParticleUtils.Variety(MeshSizeVariety));
 			else
 				renderable = new BatchSequence(Texture);
 
-			renderable.SetColor(color);
 			renderable.SetTextureFlags(IgnoreAmbience ? TextureFlags.IgnoreAmbience : TextureFlags.None);
 			return renderable;
 		}
