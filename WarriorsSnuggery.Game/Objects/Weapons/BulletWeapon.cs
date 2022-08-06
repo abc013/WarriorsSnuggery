@@ -109,7 +109,7 @@ namespace WarriorsSnuggery.Objects.Weapons
 			ray.StartHeight = beforeHeight;
 			ray.Target = Position;
 			ray.TargetHeight = Height;
-			ray.CalculateEnd(new[] { Origin.Physics });
+			ray.CalculateEnd(new[] { Origin.Physics }, onlyToTarget: true);
 
 			if ((beforePos - ray.End).Dist < (beforePos - Position).Dist)
 				Detonate(new Target(ray.End, ray.EndHeight));

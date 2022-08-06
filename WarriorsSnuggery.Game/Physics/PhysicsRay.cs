@@ -35,8 +35,10 @@ namespace WarriorsSnuggery.Physics
 			};
 		}
 
-		public void CalculateEnd(SimplePhysics[] ignore = null, bool ignoreActors = false)
+		public void CalculateEnd(SimplePhysics[] ignore = null, bool ignoreActors = false, int maxSteps = int.MaxValue, bool onlyToTarget = false)
 		{
+			positions.Clear();
+
 			var diff = Target - Start;
 
 			if (diff == CPos.Zero)
@@ -46,68 +48,108 @@ namespace WarriorsSnuggery.Physics
 				return;
 			}
 
+			var stepLimit = maxSteps;
+			if (onlyToTarget)
+				stepLimit = (int)Math.Ceiling((Math.Abs(diff.X) + Math.Abs(diff.Y)) / 1024f) + 2; // MaxSteps are calculated with the Manhattan distance and a margin of 2
+
+			var bounds = world.Map.Bounds;
+
+			var sx = Math.Sign(diff.X);
+			var sy = Math.Sign(diff.Y);
+
 			var closestIntersect = new CPos(0, 0, int.MaxValue);
 			var closestT1 = double.MaxValue;
 
-			var sectors = new List<MPos>();
-			var bounds = world.Map.Bounds;
-			positions.Clear();
+			bool checkHeight(SimplePhysics physics, CPos end, double t1)
+			{
+				var height = calculateHeight(end);
+				if (height <= physics.Height + physics.Boundaries.Z && height >= physics.Height - physics.Boundaries.Z)
+				{
+					// HACK for damage: Don't hit the wall directly
+					closestIntersect = end - new CPos(sx * 4, sy * 4, 0);
+					closestT1 = t1;
+					EndHeight = height;
+					return true;
+				}
+
+				return true;
+			}
+
+			bool checkLinesIntersect(SimplePhysics physics)
+			{
+				bool hit = false;
+				foreach (var line in physics.GetLines())
+				{
+					var end = getIntersection(line.start, line.end, out var t1);
+					if (end != invalid && t1 < closestT1)
+						hit |= checkHeight(physics, end, t1);
+				}
+
+				return hit;
+			}
 
 			var x0 = (int)Math.Round(Start.X / 1024.0);
 			var y0 = (int)Math.Round(Start.Y / 1024.0);
+			MPos currentSector = new MPos(x0 / PhysicsLayer.SectorSize, y0 / PhysicsLayer.SectorSize);
+
 
 			if (x0 >= 0 && y0 >= 0 && x0 < bounds.X && y0 < bounds.Y)
 			{
-				var sx = Math.Sign(diff.X);
-				var sy = Math.Sign(diff.Y);
-
 				var tMaxX = Math.Abs((x0 * 1024.0 - Start.X + 512 * sx) / diff.X);
 				var tMaxY = Math.Abs((y0 * 1024.0 - Start.Y + 512 * sy) / diff.Y);
 				var tDeltaX = Math.Abs(1024.0 / diff.X);
 				var tDeltaY = Math.Abs(1024.0 / diff.Y);
 
-				while (true)
+				while (stepLimit-- > 0)
 				{
-					var walls = new Wall[2];
-					walls[0] = world.WallLayer.Walls[x0 * 2, y0];
-					walls[1] = world.WallLayer.Walls[x0 * 2 + 1, y0];
+					positions.Add(new MPos(x0, y0));
 
 					var hit = false;
-					foreach (var wall in walls)
+
+					var wall1 = world.WallLayer.Walls[x0 * 2, y0];
+					if (wall1 != null)
+						hit |= checkLinesIntersect(wall1.Physics);
+
+					var wall2 = world.WallLayer.Walls[x0 * 2 + 1, y0];
+					if (wall2 != null)
+						hit |= checkLinesIntersect(wall2.Physics);
+
+					// Check sectors with actors (even if wall was hit, because actor could be in front of it)
+					var newSector = new MPos(x0 / PhysicsLayer.SectorSize, y0 / PhysicsLayer.SectorSize);
+					if (!ignoreActors && (hit || currentSector != newSector))
 					{
-						if (wall == null)
+						if (!currentSector.InRange(MPos.Zero, new MPos(bounds.X / PhysicsLayer.SectorSize, bounds.Y / PhysicsLayer.SectorSize)))
 							continue;
 
-						var physics = wall.Physics;
+						var sector = world.PhysicsLayer.Sectors[currentSector.X, currentSector.Y];
 
-						foreach (var line in physics.GetLines())
+						var actorHit = false;
+						foreach (var physics in sector.GetObjects(ignore))
 						{
-							var end = getIntersection(line.start, line.end, out var t1);
-							if (end != invalid && t1 < closestT1)
+							if (physics.Shape != Shape.CIRCLE)
+								actorHit |= checkLinesIntersect(physics);
+							else
 							{
-								var height = calculateHeight(end);
-								if (height <= physics.Height + physics.Boundaries.Z && height >= physics.Height - physics.Boundaries.Z)
+								var end = getIntersection(physics.Position, physics.Boundaries.X, out var t1, out var t2, out var end2);
+								if (end != invalid && t1 < closestT1)
 								{
-									// HACK for damage: Don't hit the wall directly
-									closestIntersect = end - new CPos(sx * 4, sy * 4, 0);
-									closestT1 = t1;
-									EndHeight = height;
-									hit = true;
+									var firstCheck = checkHeight(physics, end, t1);
+									actorHit |= firstCheck;
+
+									if (!firstCheck && t2 < closestT1)
+										actorHit |= checkHeight(physics, end2, t2);
 								}
 							}
 						}
+
+						// We hit something, we won't need to check anything behind
+						if (actorHit) break;
+
+						currentSector = newSector;
 					}
 
-					// Add sectors that need to be checked for collision
-					var sector = new MPos(x0 / 2, y0 / 2);
-					if (!sectors.Contains(sector))
-						sectors.Add(sector);
-
-					positions.Add(new MPos(x0, y0));
-
 					// We hit something, therefore we can ignore the rest which is further away
-					if (hit)
-						break;
+					if (hit) break;
 
 					if (double.IsInfinity(tDeltaX))
 						y0 += sy;
@@ -145,71 +187,6 @@ namespace WarriorsSnuggery.Physics
 						if (sy > 0) break;
 						continue;
 					}
-				}
-			}
-
-			// Collision at actors
-			if (!ignoreActors)
-			{
-				foreach (var sectorPos in sectors)
-				{
-					if (sectorPos.X < 0 || sectorPos.Y < 0 || sectorPos.X >= world.Map.Bounds.X / PhysicsLayer.SectorSize || sectorPos.Y >= world.Map.Bounds.Y / PhysicsLayer.SectorSize)
-						continue;
-
-					var sector = world.PhysicsLayer.Sectors[sectorPos.X, sectorPos.Y];
-
-					var hit = false;
-					foreach (var physics in sector.GetObjects(ignore))
-					{
-						if (physics.Shape == Shape.CIRCLE)
-						{
-							var end = getIntersection(physics.Position, physics.Boundaries.X, out var t1, out var t2, out var end2);
-							if (end != invalid && t1 < closestT1)
-							{
-								var height = calculateHeight(end);
-								if (height <= physics.Height + physics.Boundaries.Z && height >= physics.Height - physics.Boundaries.Z)
-								{
-									closestIntersect = end;
-									closestT1 = t1;
-									EndHeight = height;
-									hit = true;
-								}
-								else if (t2 < closestT1)
-								{
-									height = calculateHeight(end2);
-									if (height <= physics.Height + physics.Boundaries.Z && height >= physics.Height - physics.Boundaries.Z)
-									{
-										closestIntersect = end2;
-										closestT1 = t2;
-										EndHeight = height;
-										hit = true;
-									}
-								}
-							}
-						}
-						else
-						{
-							foreach (var line in physics.GetLines())
-							{
-								var end = getIntersection(line.start, line.end, out var t1);
-								if (end != invalid && t1 < closestT1)
-								{
-									var height = calculateHeight(end);
-									if (height <= physics.Height + physics.Boundaries.Z && height >= physics.Height - physics.Boundaries.Z)
-									{
-										closestIntersect = end;
-										closestT1 = t1;
-										EndHeight = height;
-										hit = true;
-									}
-								}
-							}
-						}
-					}
-
-					// If we hit something, we won't need to check any sectors behind
-					if (hit)
-						break;
 				}
 			}
 

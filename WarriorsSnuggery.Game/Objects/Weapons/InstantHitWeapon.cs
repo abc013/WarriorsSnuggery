@@ -44,7 +44,7 @@ namespace WarriorsSnuggery.Objects.Weapons
 				Target = Target.Position,
 				TargetHeight = Target.Height
 			};
-			ray.CalculateEnd(ignoreActors: true);
+			ray.CalculateEnd(ignoreActors: true, onlyToTarget: true);
 
 			if ((ray.End - Position).Dist < (Position - Target.Position).Dist)
 				Detonate(new Target(ray.End, ray.EndHeight));

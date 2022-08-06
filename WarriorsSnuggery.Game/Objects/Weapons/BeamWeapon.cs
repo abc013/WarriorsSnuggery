@@ -158,7 +158,12 @@ namespace WarriorsSnuggery.Objects.Weapons
 
 			ray.Target = TargetPosition;
 			ray.TargetHeight = TargetHeight;
-			ray.CalculateEnd(new[] { Origin.Physics });
+
+			// calculate maxSteps (in tiles) for performance
+			var diffAngle = (TargetPosition - originPos).FlatAngle;
+			var diff = CPos.FromFlatAngle(diffAngle, Type.MaxRange * RangeModifier);
+			var stepLimit = (int)Math.Ceiling((Math.Abs(diff.X) + Math.Abs(diff.Y)) / 1024f) + 2; // MaxSteps are calculated with the Manhattan distance and a margin of 2
+			ray.CalculateEnd(new[] { Origin.Physics }, maxSteps: stepLimit);
 			Position = ray.End;
 			Height = ray.EndHeight;
 
