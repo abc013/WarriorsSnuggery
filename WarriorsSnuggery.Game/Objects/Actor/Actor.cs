@@ -262,7 +262,7 @@ namespace WarriorsSnuggery.Objects.Actors
 			Motor.AccelerateHeightSelf(up);
 		}
 
-		public void Move(CPos old)
+		internal void Move(CPos old)
 		{
 			foreach (var part in moveParts)
 				part.OnMove(old, Mobile.Velocity);
@@ -276,7 +276,7 @@ namespace WarriorsSnuggery.Objects.Actors
 			}
 		}
 
-		public void StopMove()
+		internal void StopMove()
 		{
 			foreach (var part in stopParts)
 				part.OnStop();
@@ -325,9 +325,9 @@ namespace WarriorsSnuggery.Objects.Actors
 
 		public void RenderDebug()
 		{
-			Graphics.ColorManager.DrawDot(Position, Color.Blue);
+			ColorManager.DrawDot(Position, Color.Blue);
 			if (Weapon != null)
-				Graphics.ColorManager.DrawCircle(Position, Weapon.Type.MaxRange / 1024f * 2, Color.Red);
+				ColorManager.DrawCircle(Position, Weapon.Type.MaxRange / 1024f * 2, Color.Red);
 		}
 
 		public override void Tick()
@@ -384,7 +384,7 @@ namespace WarriorsSnuggery.Objects.Actors
 
 		public bool DoesAction(ActionType type)
 		{
-			if (type == ActionType.IDLE && Actions == ActionType.IDLE)
+			if (type == Actions)
 				return true;
 
 			return (Actions & type) != 0;
@@ -439,7 +439,7 @@ namespace WarriorsSnuggery.Objects.Actors
 			Weapon.OrderAttack(target);
 		}
 
-		public void AttackWith(Target target, Weapon weapon)
+		internal void AttackWith(Target target, Weapon weapon)
 		{
 			World.Add(weapon);
 
@@ -447,7 +447,7 @@ namespace WarriorsSnuggery.Objects.Actors
 				part.OnAttack(target.Position, weapon);
 		}
 
-		public void Kill(Actor killed)
+		internal void Kill(Actor killed)
 		{
 			foreach (var part in partManager.GetPartsOrDefault<INoticeKill>())
 				part.OnKill(killed);
