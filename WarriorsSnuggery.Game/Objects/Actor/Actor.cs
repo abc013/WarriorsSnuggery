@@ -24,7 +24,12 @@ namespace WarriorsSnuggery.Objects.Actors
 		public readonly bool IsBot;
 		public readonly bool IsPlayerSwitch;
 
+		[Save, DefaultValue(true)]
 		public bool IsAlive { get; private set; } = true;
+		[Save, DefaultValue(false)]
+		bool spawning;
+		[Save, DefaultValue(false)]
+		bool despawning;
 
 		public ActorSector Sector;
 
@@ -84,7 +89,7 @@ namespace WarriorsSnuggery.Objects.Actors
 				if (EffectActive(EffectType.STUN))
 					return false;
 
-				return true;
+				return IsAlive;
 			}
 		}
 		public bool Pushable => !(Mobile == null || !IsAlive);
@@ -102,7 +107,7 @@ namespace WarriorsSnuggery.Objects.Actors
 				if (EffectActive(EffectType.STUN))
 					return false;
 
-				return true;
+				return IsAlive;
 			}
 		}
 
@@ -177,6 +182,13 @@ namespace WarriorsSnuggery.Objects.Actors
 			var hoverPart = GetPartOrDefault<HoverPart>();
 			if (hoverPart != null)
 				Height = hoverPart.DefaultHeight;
+
+			if (WorldPart != null && WorldPart.SpawnDelay > 0)
+			{
+				AddAction(ActionType.SPAWN, WorldPart.SpawnDelay);
+				IsAlive = false; // Set temporarily like this
+				spawning = true;
+			}
 		}
 
 		public void OnLoad()
@@ -331,7 +343,18 @@ namespace WarriorsSnuggery.Objects.Actors
 		public override void Tick()
 		{
 			if (!IsAlive)
-				return;
+			{
+				if (!spawning && !despawning)
+					return;
+
+				processActions();
+
+				if (spawning && !DoesAction(ActionType.SPAWN))
+					IsAlive = true; // Action is completed, we are alive
+
+				if (despawning && !DoesAction(ActionType.DESPAWN))
+					Dispose(); // Action is completed, disposing
+			}
 
 			base.Tick();
 
@@ -348,7 +371,8 @@ namespace WarriorsSnuggery.Objects.Actors
 				part.Tick();
 
 				// It's possible that the actor may die because of specific traits, because of that, skip the others.
-				if (!IsAlive)
+				// We still need the parts for spawning and despawning since render parts are tied to tick
+				if (!IsAlive && !spawning && !despawning)
 					break;
 			}
 
@@ -503,7 +527,7 @@ namespace WarriorsSnuggery.Objects.Actors
 			Damage(null, damage);
 		}
 
-		public void Killed(Actor killer, bool dispose = true)
+		public void Killed(Actor killer)
 		{
 			if (World.Game.Editor)
 				return;
@@ -516,7 +540,15 @@ namespace WarriorsSnuggery.Objects.Actors
 			foreach (var part in partManager.GetPartsOrDefault<INoticeKilled>())
 				part.OnKilled(killer);
 
-			if (dispose)
+			if (WorldPart != null && WorldPart.DespawnDelay > 0)
+			{
+				AddAction(ActionType.DESPAWN, WorldPart.DespawnDelay);
+
+				// Already disconnect physics
+				Physics.RemoveSectors();
+				despawning = true;
+			}
+			else
 				Dispose();
 		}
 

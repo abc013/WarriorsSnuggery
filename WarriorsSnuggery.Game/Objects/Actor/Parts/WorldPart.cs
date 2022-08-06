@@ -23,6 +23,11 @@
 		[Desc("Adds this actor the the selection list in the editor.")]
 		public readonly bool ShowInEditor = true;
 
+		[Desc("Amount of time to pass until the actor is fully spawned.", "If you want to have a spawn animation, you need to set this to the desired delay.")]
+		public readonly int SpawnDelay = 0;
+		[Desc("Amount of time to pass until the actor is fully disposed.", "If you want to have a despawn/death animation, you need to set this to the desired delay.")]
+		public readonly int DespawnDelay = 0;
+
 		public WorldPartInfo(PartInitSet set) : base(set) { }
 
 		public override ActorPart Create(Actor self)
@@ -44,6 +49,10 @@
 		public bool KillForVictory => info.KillForVictory;
 
 		public bool Hideable => info.Hideable;
+
+		public int SpawnDelay => info.SpawnDelay;
+
+		public int DespawnDelay => info.DespawnDelay;
 
 		public WorldPart(Actor self, WorldPartInfo info) : base(self)
 		{

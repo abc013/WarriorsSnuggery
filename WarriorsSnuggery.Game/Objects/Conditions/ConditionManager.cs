@@ -71,6 +71,10 @@ namespace WarriorsSnuggery.Objects.Conditions
 					return condition.Negate != actor.DoesAction(ActionType.ATTACK);
 				case "EndsAttacking":
 					return condition.Negate != actor.DoesAction(ActionType.END_ATTACK);
+				case "IsSpawning":
+					return condition.Negate != actor.DoesAction(ActionType.SPAWN);
+				case "IsDespawning":
+					return condition.Negate != actor.DoesAction(ActionType.DESPAWN);
 				case "IsAlive":
 					if (actor.Health == null)
 						return !condition.Negate;
