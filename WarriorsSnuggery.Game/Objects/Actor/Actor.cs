@@ -66,7 +66,7 @@ namespace WarriorsSnuggery.Objects.Actors
 		[Save, DefaultValue(ActionType.IDLE)]
 		public ActionType Actions { get; private set; } = ActionType.IDLE;
 		// Saved with custom method
-		readonly List<ActorAction> actions = new List<ActorAction>();
+		readonly Dictionary<ActionType, int> actionTimings = new Dictionary<ActionType, int>();
 
 		bool allowAttackMove => Weapon == null || Weapon.AllowMoving;
 
@@ -81,9 +81,6 @@ namespace WarriorsSnuggery.Objects.Actors
 					return false;
 
 				if (!Mobile.CanFly && Height > 0)
-					return false;
-
-				if (!ActionPossible(ActionType.PREPARE_MOVE) && !ActionPossible(ActionType.MOVE))
 					return false;
 
 				if (EffectActive(EffectType.STUN))
@@ -101,7 +98,7 @@ namespace WarriorsSnuggery.Objects.Actors
 				if (Weapon == null || !Weapon.Ready || !IsAlive)
 					return false;
 
-				if (!ActionPossible(ActionType.PREPARE_ATTACK) && !ActionPossible(ActionType.ATTACK))
+				if (DoesAction(ActionType.MOVE) && !Weapon.AllowMoving)
 					return false;
 
 				if (EffectActive(EffectType.STUN))
@@ -194,9 +191,17 @@ namespace WarriorsSnuggery.Objects.Actors
 			foreach (var effectNode in effectData)
 				effects.Add(new ActorEffect(this, effectNode.Children));
 
-			var actorActions = init.Nodes.Where(n => n.Key == nameof(ActorAction));
-			foreach (var actorAction in actorActions)
-				actions.Add(new ActorAction(actorAction.Children));
+			var actionData = init.Nodes.Where(n => n.Key == "ActionTiming");
+			if (actionData != null)
+			{
+				foreach (var actionTiming in actionData)
+				{
+					var type = actionTiming.Children.First(n => n.Key == "Action").Convert<ActionType>();
+					var timing = actionTiming.Children.First(n => n.Key == "Timing").Convert<int>();
+
+					actionTimings.Add(type, timing);
+				}
+			}
 
 			init = null;
 		}
@@ -211,8 +216,12 @@ namespace WarriorsSnuggery.Objects.Actors
 			foreach (var effect in effects)
 				list.AddRange(effect.Save());
 
-			foreach (var action in actions)
-				list.AddRange(action.Save());
+			foreach (var (action, timing) in actionTimings)
+			{
+				list.Add("ActionTiming=");
+				list.Add($"\tAction={action}");
+				list.Add($"\tTiming={timing}");
+			}
 
 			return list;
 		}
@@ -346,7 +355,6 @@ namespace WarriorsSnuggery.Objects.Actors
 			}
 
 			processEffects();
-
 			processActions();
 		}
 
@@ -362,69 +370,16 @@ namespace WarriorsSnuggery.Objects.Actors
 		{
 			var newActions = ActionType.IDLE;
 
-			if (actions.Count != 0)
+			foreach (var (action, timing) in actionTimings)
 			{
-				var toAdd = new List<ActorAction>();
-				var toRemove = new List<ActorAction>();
-
-				foreach (var action in actions)
+				if (timing > 0)
 				{
-					if (action.IsOverOrCanceled(Actions, allowAttackMove))
-					{
-						toRemove.Add(action);
-
-						if (action.ActionOver && action.Following != null && action.Following.CurrentTick != 0)
-						{
-							toAdd.Add(action.Following);
-
-							newActions |= action.Following.Type;
-						}
-					}
-					else
-					{
-						newActions |= action.Type;
-					}
+					actionTimings[action]--;
+					newActions |= action;
 				}
-
-				actions.RemoveAll(a => toRemove.Contains(a));
-				actions.AddRange(toAdd);
 			}
 
 			Actions = newActions;
-		}
-
-		public bool ActionPossible(ActionType type)
-		{
-			if (Actions == ActionType.IDLE || allowAttackMove)
-				return true;
-
-			if (Actions == type)
-				return true;
-
-			if (DoesAction(ActionType.END_ATTACK | ActionType.END_MOVE))
-				return false;
-
-			if (type == ActionType.END_ATTACK && DoesAction(ActionType.ATTACK))
-				return true;
-
-			if (type == ActionType.END_MOVE && DoesAction(ActionType.MOVE))
-				return true;
-
-			if ((type == ActionType.ATTACK || type == ActionType.PREPARE_MOVE || type == ActionType.MOVE) && DoesAction(ActionType.PREPARE_ATTACK))
-				return true;
-
-			if ((type == ActionType.MOVE || type == ActionType.PREPARE_ATTACK || type == ActionType.ATTACK) && DoesAction(ActionType.PREPARE_MOVE))
-				return true;
-
-			//c ATTACK: ENDATTACK
-			//c ENDATTACK: -
-			//c STARTATTACK: STARTMOVE, MOVE
-			//c MOVE: ENDMOVE
-			//c ENDMOVE: -
-			//c STARTMOVE: STARTATTACK, ATTACK
-			//c IDLE: ALL
-
-			return false;
 		}
 
 		public bool DoesAction(ActionType type)
@@ -435,19 +390,12 @@ namespace WarriorsSnuggery.Objects.Actors
 			return (Actions & type) != 0;
 		}
 
-		public bool AddAction(ActionType type, int duration, ActorAction following = null, bool interruptsOthers = false)
+		public void AddAction(ActionType type, int duration)
 		{
-			if (!ActionPossible(type))
-				return false;
-
-			var action = new ActorAction(type, duration, following);
-
-			if (interruptsOthers)
-				actions.Clear();
-
-			actions.Add(action);
-
-			return true;
+			if (actionTimings.ContainsKey(type))
+				actionTimings[type] = duration;
+			else
+				actionTimings.Add(type, duration);
 		}
 
 		public override void SetColor(Color color)

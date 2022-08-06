@@ -122,7 +122,7 @@ namespace WarriorsSnuggery.Objects.Actors.Parts
 
 			// Cancel preparation
 			if (state == WeaponState.PREPARING)
-				state = WeaponState.READY; // TODO: this allows us to fire immediately, not nice
+				state = WeaponState.READY;
 		}
 
 		public void Tick()
