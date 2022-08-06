@@ -298,6 +298,9 @@ namespace WarriorsSnuggery.Objects.Actors.Bot
 
 		protected void PredictiveAttack(Target target)
 		{
+			if (!CanAttack)
+				return;
+
 			if (target.Actor == null || !target.Actor.CanMove || target.Actor.Mobile.Velocity == CPos.Zero)
 			{
 				Self.PrepareAttack(target);
@@ -305,7 +308,7 @@ namespace WarriorsSnuggery.Objects.Actors.Bot
 			}
 
 			var projectileType = Self.Weapon.Type.Projectile;
-			if (!(projectileType is BulletProjectile) && !(projectileType is SplashProjectile))
+			if (projectileType is not BulletProjectile and not SplashProjectile)
 			{
 				Self.PrepareAttack(target);
 				return;

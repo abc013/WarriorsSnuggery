@@ -68,8 +68,6 @@ namespace WarriorsSnuggery.Objects.Actors
 		// Saved with custom method
 		readonly Dictionary<ActionType, int> actionTimings = new Dictionary<ActionType, int>();
 
-		bool allowAttackMove => Weapon == null || Weapon.AllowMoving;
-
 		public MPos TerrainPosition => Position.ToMPos();
 		public Terrain CurrentTerrain;
 
