@@ -8,11 +8,9 @@ namespace WarriorsSnuggery.Maps.Layers
 	public sealed class TerrainLayer : ITickRenderable
 	{
 		public Terrain[,] Terrain { get; private set; }
-		readonly MPos bounds;
 
 		public TerrainLayer(MPos bounds)
 		{
-			this.bounds = bounds;
 			Terrain = new Terrain[bounds.X, bounds.Y];
 		}
 

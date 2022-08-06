@@ -1,4 +1,3 @@
-using OpenTK.Graphics.OpenGL;
 using OpenTK.Mathematics;
 using System.Collections.Generic;
 using WarriorsSnuggery.Graphics;

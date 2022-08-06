@@ -17,15 +17,13 @@ namespace WarriorsSnuggery.Objects.Actors.Bot
 
 	public class PanicBotBehavior : BotBehavior
 	{
-		readonly PanicBotBehaviorType type;
-
 		int panicBuildup;
 		int panicDuration;
 		float panicAngle;
 
 		public PanicBotBehavior(Actor self, PanicBotBehaviorType type) : base(self)
 		{
-			this.type = type;
+
 		}
 
 		public override void Tick()

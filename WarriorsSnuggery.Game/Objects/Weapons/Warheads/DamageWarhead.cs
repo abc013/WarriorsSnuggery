@@ -61,7 +61,7 @@ namespace WarriorsSnuggery.Objects.Weapons.Warheads
 			{
 				if (target.Type == TargetType.ACTOR)
 				{
-					damageActor(world, weapon, target.Actor, Damage);
+					damageActor(weapon, target.Actor, Damage);
 					return;
 				}
 
@@ -92,7 +92,7 @@ namespace WarriorsSnuggery.Objects.Weapons.Warheads
 
 						var damage = (int)Math.Floor(damagemultiplier * Damage * weapon.DamageModifier * pen);
 
-						damageActor(world, weapon, actor, damage);
+						damageActor(weapon, actor, damage);
 					}
 				}
 			}
@@ -121,7 +121,7 @@ namespace WarriorsSnuggery.Objects.Weapons.Warheads
 			}
 		}
 
-		void damageActor(World world, Weapon weapon, Actor actor, int damage)
+		void damageActor(Weapon weapon, Actor actor, int damage)
 		{
 			var armor = actor.GetPartOrDefault<ArmorPart>();
 

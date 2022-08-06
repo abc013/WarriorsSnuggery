@@ -17,13 +17,11 @@ namespace WarriorsSnuggery.Objects.Actors.Bot
 
 	public class MothBotBehavior : BotBehavior
 	{
-		readonly MothBotBehaviorType type;
-
 		int tick;
 
 		public MothBotBehavior(Actor self, MothBotBehaviorType type) : base(self)
 		{
-			this.type = type;
+
 		}
 
 		public override void Tick()

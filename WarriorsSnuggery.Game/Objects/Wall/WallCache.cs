@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using WarriorsSnuggery.Loader;
-using WarriorsSnuggery.Maps.Layers;
 
 namespace WarriorsSnuggery.Objects
 {

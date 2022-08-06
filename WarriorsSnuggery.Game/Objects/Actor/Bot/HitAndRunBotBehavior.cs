@@ -16,14 +16,12 @@ namespace WarriorsSnuggery.Objects.Actors.Bot
 
 	public class HitAndRunBotBehavior : BotBehavior
 	{
-		readonly HitAndRunBotBehaviorType type;
-
 		bool hide;
 		int hideDuration;
 
 		public HitAndRunBotBehavior(Actor self, HitAndRunBotBehaviorType type) : base(self)
 		{
-			this.type = type;
+
 		}
 
 		public override void Tick()

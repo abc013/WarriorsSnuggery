@@ -61,7 +61,7 @@ namespace WarriorsSnuggery.Objects.Actors.Parts
 
 		readonly BatchObject renderable;
 		readonly Color variation = Color.Black;
-		Color additionalTint = Color.Black;
+		readonly Color additionalTint = Color.Black;
 		float fluctuationTint = 1f;
 		float fluctuation;
 		float randomFluctuationStrength;

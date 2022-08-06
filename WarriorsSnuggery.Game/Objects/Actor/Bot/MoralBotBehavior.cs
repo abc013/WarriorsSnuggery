@@ -17,8 +17,6 @@ namespace WarriorsSnuggery.Objects.Actors.Bot
 
 	public class MoralBotBehavior : BotBehavior
 	{
-		readonly MoralBotBehaviorType type;
-
 		int moral
 		{
 			get => moralVal;
@@ -28,7 +26,7 @@ namespace WarriorsSnuggery.Objects.Actors.Bot
 
 		public MoralBotBehavior(Actor self, MoralBotBehaviorType type) : base(self)
 		{
-			this.type = type;
+
 		}
 
 		public override void Tick()

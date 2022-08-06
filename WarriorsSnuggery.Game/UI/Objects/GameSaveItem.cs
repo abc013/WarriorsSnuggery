@@ -7,7 +7,7 @@ namespace WarriorsSnuggery.UI.Objects
 	{
 		readonly int width;
 		readonly int imagePathWidth;
-		int currentImageDelta;
+		readonly int currentImageDelta;
 		public override CPos Position
 		{
 			get => base.Position;

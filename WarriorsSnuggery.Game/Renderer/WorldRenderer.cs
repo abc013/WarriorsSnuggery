@@ -17,7 +17,7 @@ namespace WarriorsSnuggery
 
 		static readonly List<IRenderable> beforeRender = new List<IRenderable>();
 		static readonly List<IRenderable> afterRender = new List<IRenderable>();
-		static List<PositionableObject> renderables = new List<PositionableObject>();
+		readonly static List<PositionableObject> renderables = new List<PositionableObject>();
 
 		public static void Initialize()
 		{
