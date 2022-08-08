@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using WarriorsSnuggery.Loader;
 
 namespace WarriorsSnuggery.Objects
@@ -19,7 +20,7 @@ namespace WarriorsSnuggery.Objects
 		public static Terrain Create(World world, MPos position, ushort ID)
 		{
 			if (!Types.ContainsKey(ID))
-				throw new MissingInfoException(ID.ToString());
+				throw new MissingFieldException($"Terrain with ID '{ID}' does not exist.");
 
 			return new Terrain(world, position, Types[ID]);
 		}

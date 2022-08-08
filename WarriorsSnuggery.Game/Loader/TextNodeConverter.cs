@@ -160,8 +160,10 @@ namespace WarriorsSnuggery.Loader
 			{
 				var type = Type.GetType($"WarriorsSnuggery.Objects.Particles.{value}ParticleSpawner", false, true);
 
-				if (type != null && !type.IsInterface)
-					return Activator.CreateInstance(type, new[] { node.Children });
+				if (type == null || type.IsInterface)
+					throw new InvalidConversionException(node, t);
+
+				return Activator.CreateInstance(type, new[] { node.Children });
 			}
 			else if (t == typeof(TextureInfo))
 			{
@@ -186,7 +188,7 @@ namespace WarriorsSnuggery.Loader
 			else if (t == typeof(Effect))
 			{
 				if (!EffectCache.Types.ContainsKey(value))
-					throw new MissingInfoException(value);
+					throw new InvalidConversionException(node, t);
 
 				return EffectCache.Types[value];
 			}
@@ -194,15 +196,19 @@ namespace WarriorsSnuggery.Loader
 			{
 				var type = Type.GetType($"WarriorsSnuggery.Objects.Actors.Bot.{value}BotBehaviorType", false, true);
 
-				if (type != null && !type.IsInterface)
-					return Activator.CreateInstance(type, new[] { node.Children });
+				if (type == null || type.IsInterface)
+					throw new InvalidConversionException(node, t);
+
+				return Activator.CreateInstance(type, new[] { node.Children });
 			}
 			else if (t == typeof(IProjectile))
 			{
 				var type = Type.GetType($"WarriorsSnuggery.Objects.Weapons.Projectiles.{value}Projectile", false, true);
 
-				if (type != null && !type.IsInterface)
-					return Activator.CreateInstance(type, new[] { node.Children });
+				if (type == null || type.IsInterface)
+					throw new InvalidConversionException(node, t);
+
+				return Activator.CreateInstance(type, new[] { node.Children });
 			}
 			else if (t == typeof(IWarhead[]))
 			{
@@ -259,7 +265,7 @@ namespace WarriorsSnuggery.Loader
 				for (int i = 0; i < node.Children.Count; i++)
 				{
 					if (!ParticleCache.Types.ContainsKey(value))
-						throw new MissingInfoException(value);
+						throw new InvalidConversionException(node, t);
 
 					convert[i] = ParticleCache.Types[value];
 				}
@@ -278,7 +284,7 @@ namespace WarriorsSnuggery.Loader
 			else if (t == typeof(Effect))
 			{
 				if (!EffectCache.Types.ContainsKey(value))
-					throw new MissingInfoException(value);
+					throw new InvalidConversionException(node, t);
 
 				return EffectCache.Types[value];
 			}

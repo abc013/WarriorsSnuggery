@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using WarriorsSnuggery.Loader;
 
 namespace WarriorsSnuggery.Objects
@@ -19,7 +20,7 @@ namespace WarriorsSnuggery.Objects
 		public static Wall Create(WPos position, World world, short ID)
 		{
 			if (!Types.ContainsKey(ID))
-				throw new MissingInfoException(ID.ToString());
+				throw new MissingFieldException($"Wall with ID '{ID}' does not exist.");
 
 			return new Wall(position, world, Types[ID]);
 		}

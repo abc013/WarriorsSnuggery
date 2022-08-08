@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using WarriorsSnuggery.Loader;
 
 namespace WarriorsSnuggery
 {
@@ -22,7 +21,7 @@ namespace WarriorsSnuggery
 			get
 			{
 				if (!ContainsKey(key))
-					throw new MissingInfoException(key);
+					throw new MissingFieldException($"The key '{key}' does not exist.");
 
 				return types[key];
 			}

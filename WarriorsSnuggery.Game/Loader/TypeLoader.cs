@@ -10,21 +10,17 @@ namespace WarriorsSnuggery.Loader
 	{
 		public static void SetValues(object obj, List<TextNode> nodes, bool checkRequired = true)
 		{
-			var changedFields = new List<FieldInfo>();
-			var fields = GetFields(obj);
+			var fields = GetFields(obj).ToList();
 
 			foreach (var node in nodes)
-				changedFields.Add(SetValue(obj, fields, node));
+				fields.Remove(SetValue(obj, fields, node));
 
 			if (!checkRequired || Settings.IgnoreRequiredAttribute)
 				return;
 
-			var requiredFields = fields.Where(f => f.GetCustomAttribute<RequireAttribute>() != null);
-			foreach (var required in requiredFields)
-            {
-				if (!changedFields.Contains(required))
-					throw new MissingFieldException($"The field '{required.Name}' in '{obj.GetType()}' is required and must be defined!");
-            }
+			var missing = fields.FirstOrDefault(f => f.GetCustomAttribute<RequireAttribute>() != null);
+			if (missing != null)
+				throw new MissingFieldException($"The field '{missing.Name}' in '{obj.GetType()}' is required and must be defined!");
 		}
 
 		public static IEnumerable<FieldInfo> GetFields(object obj, bool onlyReadonly = true)
@@ -42,7 +38,7 @@ namespace WarriorsSnuggery.Loader
 			var field = fields.FirstOrDefault(f => f.Name == node.Key);
 
 			if (field == null)
-				throw new UnknownNodeException(node.Key, obj.GetType().Name);
+				throw new UnknownNodeException(node, obj.GetType().Name);
 
 			field.SetValue(obj, node.Convert(field.PropertyType));
 
@@ -54,7 +50,7 @@ namespace WarriorsSnuggery.Loader
 			var field = fields.FirstOrDefault(f => f.Name == node.Key);
 
 			if (field == null)
-				throw new UnknownNodeException(node.Key, obj.GetType().Name);
+				throw new UnknownNodeException(node, obj.GetType().Name);
 
 			field.SetValue(obj, node.Convert(field.FieldType));
 
@@ -78,7 +74,7 @@ namespace WarriorsSnuggery.Loader
 			}
 			catch (Exception e)
 			{
-				throw new UnknownPartException(parent.Key, e);
+				throw new UnknownPartException(parent, e);
 			}
 		}
 	}

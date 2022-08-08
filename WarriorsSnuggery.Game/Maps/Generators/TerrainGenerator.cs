@@ -52,7 +52,7 @@ namespace WarriorsSnuggery.Maps.Generators
 	[Desc("Information about objects that can be spawned with the TerrainGenerator.")]
 	public class ActorProbabilityInfo
 	{
-		[Desc("Type of the actor.")]
+		[Require, Desc("Type of the actor.")]
 		public readonly ActorType Type;
 
 		[Desc("Probability of spawning an actor on a field.")]
@@ -68,9 +68,6 @@ namespace WarriorsSnuggery.Maps.Generators
 		public ActorProbabilityInfo(List<TextNode> nodes)
 		{
 			TypeLoader.SetValues(this, nodes);
-
-			if (Type == null)
-				throw new MissingNodeException("SpawnActors", "Type");
 		}
 	}
 
