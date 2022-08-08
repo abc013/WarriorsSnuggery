@@ -138,12 +138,7 @@ namespace WarriorsSnuggery.Objects.Actors.Parts
 				int salvoIntervals = info.Type.ShootDuration / info.Type.BurstCount;
 
 				if (stateTick % salvoIntervals == 0)
-				{
-					var weapon = WeaponCache.Create(self.World, info.Type, Target, self);
-					beam = weapon as BeamWeapon;
-
-					self.AttackWith(Target, weapon);
-				}
+					fireWeapon();
 			}
 
 			if (stateTick-- == 0)
@@ -155,6 +150,13 @@ namespace WarriorsSnuggery.Objects.Actors.Parts
 						state = WeaponState.ATTACKING;
 
 						self.AddAction(ActionType.ATTACK, Type.ShootDuration);
+
+						// Special case: ShootDuration is 0.
+						if (Type.ShootDuration == 0)
+						{
+							for (int i = 0; i < info.Type.BurstCount; i++)
+								fireWeapon();
+						}
 						break;
 					case WeaponState.ATTACKING:
 						stateTick = info.Type.CooldownDelay;
@@ -183,6 +185,14 @@ namespace WarriorsSnuggery.Objects.Actors.Parts
 				else
 					beam.Move(Target.Position);
 			}
+		}
+
+		void fireWeapon()
+		{
+			var weapon = WeaponCache.Create(self.World, info.Type, Target, self);
+			beam = weapon as BeamWeapon;
+
+			self.AttackWith(Target, weapon);
 		}
 
 		public void OnMove(CPos old, CPos speed)
