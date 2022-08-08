@@ -8,10 +8,8 @@ namespace WarriorsSnuggery.Objects.Actors.Parts
 	{
 		[Require, Desc("Name of the weapon.")]
 		public readonly WeaponType Type;
-		[Desc("Offset of the shoot point relative to the object's center.")]
+		[Desc("Offset of the shoot point relative to the object's center.", "Z-Coordinate will be used for height.")]
 		public readonly CPos Offset;
-		[Desc("Height of the shoot point.")]
-		public readonly int Height;
 		[Desc("Determines whether to allow moving while firing.")]
 		public readonly bool AllowMoving;
 
@@ -30,8 +28,8 @@ namespace WarriorsSnuggery.Objects.Actors.Parts
 
 		public bool AllowMoving => info.AllowMoving;
 
-		public CPos WeaponOffsetPosition => self.GraphicPositionWithoutHeight + info.Offset;
-		public int WeaponOffsetHeight => self.Height + info.Height;
+		public CPos WeaponOffsetPosition => self.GraphicPositionWithoutHeight + new CPos(info.Offset.X, info.Offset.Y, 0);
+		public int WeaponOffsetHeight => self.Height + info.Offset.Z;
 
 		public Target Target;
 

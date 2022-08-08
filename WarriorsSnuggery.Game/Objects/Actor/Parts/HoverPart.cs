@@ -5,7 +5,7 @@ namespace WarriorsSnuggery.Objects.Actors.Parts
 	[Desc("Allows an actor to hover above the ground.")]
 	public class HoverPartInfo : PartInfo
 	{
-		[Require, Desc("Height of the actor.")]
+		[Require, Desc("Default height of the actor.")]
 		public readonly int Height;
 
 		[Desc("Hovering strength.", "This will create a hover-effect for flying actors.")]

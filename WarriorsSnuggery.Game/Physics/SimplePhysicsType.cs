@@ -11,10 +11,8 @@ namespace WarriorsSnuggery.Physics
 		[Desc("Physics radius boundaries.", "For LINE shape: either X or Y has to be 0.", "For CIRCLE shape: X and Y must be equal.")]
 		public readonly CPos Boundaries;
 
-		[Desc("Offset based of the position of the object the physics are attached to.")]
+		[Desc("Offset based of the position of the object the physics are attached to.", "Z-Coordinate is used for height.")]
 		public readonly CPos Offset;
-		[Desc("Height offset base of the height of the object the physics are attached to.")]
-		public readonly int HeightOffset;
 
 		public SimplePhysicsType(List<TextNode> nodes)
 		{
@@ -27,12 +25,11 @@ namespace WarriorsSnuggery.Physics
 				throw new InvalidNodeException($"Physics with shape CIRCLE must have the same values for X and Y dimensions (current: {Boundaries.X}, {Boundaries.Y})");
 		}
 
-		public SimplePhysicsType(Shape shape, CPos boundaries, CPos offset, int heightOffset = 0)
+		public SimplePhysicsType(Shape shape, CPos boundaries, CPos offset)
 		{
 			Shape = shape;
 			Boundaries = boundaries;
 			Offset = offset;
-			HeightOffset = heightOffset;
 		}
 	}
 }
