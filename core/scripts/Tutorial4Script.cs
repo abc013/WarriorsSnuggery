@@ -146,10 +146,8 @@ namespace WarriorsSnuggery.Scripts.Core
 
 		void tickKill()
 		{
-			target.Position = new CPos(game.SharedRandom.Next(7 * 1024, 24 * 1024), game.SharedRandom.Next(17 * 1024, 24 * 1024), 0);
-			var weapon = WeaponCache.Create(world, WeaponCache.Types["ninja_star"], new Target(world.LocalPlayer), target);
-			weapon.Height = game.SharedRandom.Next(50, 250);
-			world.Add(weapon);
+			target.Position = new CPos(game.SharedRandom.Next(7 * 1024, 24 * 1024), game.SharedRandom.Next(17 * 1024, 24 * 1024), game.SharedRandom.Next(50, 250));
+			world.Add(WeaponCache.Create(world, WeaponCache.Types["ninja_star"], new Target(world.LocalPlayer), target));
 
 			if (game.Stats.Lifes == 0)
 			{

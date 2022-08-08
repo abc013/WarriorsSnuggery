@@ -20,12 +20,6 @@ namespace WarriorsSnuggery.Objects
 		}
 		bool visible = true;
 
-		public virtual int Height
-		{
-			get => Position.Z;
-			set => Position = new CPos(Position.X, Position.Y, value);
-		}
-
 		[Save]
 		public virtual CPos Position
 		{
@@ -43,6 +37,8 @@ namespace WarriorsSnuggery.Objects
 		}
 		CPos position;
 
+		public bool OnGround => Position.Z == 0;
+
 		public virtual int ZOffset
 		{
 			get => zOffset;
@@ -56,7 +52,7 @@ namespace WarriorsSnuggery.Objects
 		int zOffset;
 
 		public virtual CPos GraphicPositionWithoutHeight => position + new CPos(0, 0, zOffset);
-		public virtual CPos GraphicPosition => GraphicPositionWithoutHeight + new CPos(0, -position.Z, position.Z);
+		public virtual CPos GraphicPosition => GraphicPositionWithoutHeight + new CPos(0, -position.Z, 0);
 
 		public virtual VAngle Rotation
 		{
@@ -110,7 +106,7 @@ namespace WarriorsSnuggery.Objects
 
 		public void RenderShadow()
 		{
-			if (Height <= 0 || Renderable == null)
+			if (OnGround || Renderable == null)
 				return;
 
 			Renderable.SetPosition(GraphicPositionWithoutHeight);

@@ -10,6 +10,6 @@ namespace WarriorsSnuggery.Objects.Particles
 			TypeLoader.SetValues(this, nodes);
 		}
 
-		public abstract Particle[] Create(World world, CPos position, int height);
+		public abstract Particle[] Create(World world, CPos position);
 	}
 }

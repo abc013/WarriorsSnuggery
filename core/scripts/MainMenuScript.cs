@@ -72,8 +72,8 @@ namespace WarriorsSnuggery.Scripts.Core
 				var x = position.X + anglePos.X + random.Next(-64, 64);
 				var y = position.Y + anglePos.Y + random.Next(-64, 64);
 
-				var pos = new CPos(x, y, 0);
-				var init = new ParticleInit(type, pos, 512);
+				var pos = new CPos(x, y, 512);
+				var init = new ParticleInit(type, pos);
 				world.Add(new Particle(world, init));
 
 				position += CPos.FromFlatAngle((position - world.LocalPlayer.Position).FlatAngle + MathF.PI / 2, (negate ? -1 : 1) * radiusVelocity);

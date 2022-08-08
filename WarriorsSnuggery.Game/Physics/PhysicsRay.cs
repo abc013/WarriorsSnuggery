@@ -11,11 +11,8 @@ namespace WarriorsSnuggery.Physics
 		static readonly CPos invalid = new CPos(int.MaxValue, int.MaxValue, 0);
 
 		public CPos Start;
-		public int StartHeight;
 		public CPos End { get; private set; }
-		public int EndHeight;
 		public CPos Target;
-		public int TargetHeight;
 
 		readonly CPos[][] mapBounds;
 		readonly List<MPos> positions = new List<MPos>();
@@ -37,14 +34,15 @@ namespace WarriorsSnuggery.Physics
 
 		public void CalculateEnd(SimplePhysics[] ignore = null, bool ignoreActors = false, int maxSteps = int.MaxValue, bool onlyToTarget = false)
 		{
+			CPos noIntersect = new CPos(0, 0, int.MaxValue);
+
 			positions.Clear();
 
 			var diff = Target - Start;
 
-			if (diff == CPos.Zero)
+			if (diff.Flat() == CPos.Zero)
 			{
 				End = Start;
-				EndHeight = StartHeight;
 				return;
 			}
 
@@ -57,18 +55,19 @@ namespace WarriorsSnuggery.Physics
 			var sx = Math.Sign(diff.X);
 			var sy = Math.Sign(diff.Y);
 
-			var closestIntersect = new CPos(0, 0, int.MaxValue);
+			var closestIntersect = noIntersect;
 			var closestT1 = double.MaxValue;
 
 			bool checkHeight(SimplePhysics physics, CPos end, double t1)
 			{
 				var height = calculateHeight(end);
-				if (height <= physics.Height + physics.Boundaries.Z && height >= physics.Height - physics.Boundaries.Z)
+
+				// Smart as we are, we use Z Boundaries to add them onto the height.
+				if (height <= physics.Height + physics.Boundaries.Z * 2 && height >= physics.Height)
 				{
 					// HACK for damage: Don't hit the wall directly
-					closestIntersect = end - new CPos(sx * 4, sy * 4, 0);
+					closestIntersect = end.Flat() + new CPos(0, 0, height) - new CPos(sx * 4, sy * 4, 0);
 					closestT1 = t1;
-					EndHeight = height;
 					return true;
 				}
 
@@ -91,7 +90,6 @@ namespace WarriorsSnuggery.Physics
 			var x0 = (int)Math.Round(Start.X / 1024.0);
 			var y0 = (int)Math.Round(Start.Y / 1024.0);
 			MPos currentSector = new MPos(x0 / PhysicsLayer.SectorSize, y0 / PhysicsLayer.SectorSize);
-
 
 			if (x0 >= 0 && y0 >= 0 && x0 < bounds.X && y0 < bounds.Y)
 			{
@@ -191,7 +189,7 @@ namespace WarriorsSnuggery.Physics
 			}
 
 			// Collision at map bounds, if nothing was hit
-			if (closestIntersect == new CPos(0, 0, int.MaxValue))
+			if (closestIntersect == noIntersect)
 			{
 				foreach (var line in mapBounds)
 				{
@@ -211,7 +209,7 @@ namespace WarriorsSnuggery.Physics
 		{
 			var diff = Target - Start;
 
-			if (diff == CPos.Zero)
+			if (diff.Flat() == CPos.Zero)
 				return 1f;
 
 			var walls = new List<Wall>();
@@ -249,7 +247,7 @@ namespace WarriorsSnuggery.Physics
 					foreach (var line in wall.Physics.GetLines())
 					{
 						var end = getIntersection(line.start, line.end, out var _);
-						if (end != invalid && (Start - end).Dist <= (Start - Target).Dist)
+						if (end != invalid && (Start - end).SquaredFlatDist <= (Start - Target).SquaredFlatDist)
 						{
 							walls.Add(wall);
 
@@ -368,9 +366,9 @@ namespace WarriorsSnuggery.Physics
 		int calculateHeight(CPos pos)
 		{
 			var diff = (Start - pos).SquaredFlatDist / (double)(Start - Target).SquaredFlatDist;
-			var hDiff = StartHeight - TargetHeight;
+			var hDiff = Start.Z - Target.Z;
 
-			return StartHeight - (int)(diff * hDiff);
+			return Start.Z - (int)(diff * hDiff);
 		}
 
 		public void RenderDebug()

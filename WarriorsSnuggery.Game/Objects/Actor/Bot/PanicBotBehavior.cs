@@ -59,12 +59,12 @@ namespace WarriorsSnuggery.Objects.Actors.Bot
 			}
 		}
 
-		Target randomTarget(int range = 5120, int height = 0)
+		Target randomTarget(int range = 5120)
 		{
 			var ranAngle = Angle.Cast(Self.World.Game.SharedRandom.Next(360));
 			var ranLength = Self.World.Game.SharedRandom.Next(range);
 
-			return new Target(Self.Position + CPos.FromFlatAngle(ranAngle, ranLength), height);
+			return new Target(Self.Position + CPos.FromFlatAngle(ranAngle, ranLength));
 		}
 
 		public override void OnDamage(Actor damager, int damage)

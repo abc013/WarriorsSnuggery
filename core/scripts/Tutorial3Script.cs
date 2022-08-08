@@ -20,11 +20,11 @@ namespace WarriorsSnuggery.Scripts.Core
 		{
 			game.Stats.KeyFound = false;
 
-			world.ShroudLayer.RevealShroudCircular(game.World, Actor.PlayerTeam, new CPos(5 * 1024, 1 * 1024, 0), 0, 16, true);
-			world.ShroudLayer.RevealShroudCircular(game.World, Actor.PlayerTeam, new CPos(5 * 1024, 10 * 1024, 0), 0, 16, true);
-			world.ShroudLayer.RevealShroudCircular(game.World, Actor.PlayerTeam, new CPos(5 * 1024, 20 * 1024, 0), 0, 24, true);
-			world.ShroudLayer.RevealShroudCircular(game.World, Actor.PlayerTeam, new CPos(5 * 1024, 28 * 1024, 0), 0, 16, true);
-			world.ShroudLayer.RevealShroudCircular(game.World, Actor.PlayerTeam, new CPos(5 * 1024, 34 * 1024, 0), 0, 16, true);
+			world.ShroudLayer.RevealShroudCircular(game.World, Actor.PlayerTeam, new CPos(5 * 1024, 1 * 1024, 0), 16, true);
+			world.ShroudLayer.RevealShroudCircular(game.World, Actor.PlayerTeam, new CPos(5 * 1024, 10 * 1024, 0), 16, true);
+			world.ShroudLayer.RevealShroudCircular(game.World, Actor.PlayerTeam, new CPos(5 * 1024, 20 * 1024, 0), 24, true);
+			world.ShroudLayer.RevealShroudCircular(game.World, Actor.PlayerTeam, new CPos(5 * 1024, 28 * 1024, 0), 16, true);
+			world.ShroudLayer.RevealShroudCircular(game.World, Actor.PlayerTeam, new CPos(5 * 1024, 34 * 1024, 0), 16, true);
 
 			void message2() => game.ScreenControl.ShowMessage(new Message(message3, new[]
 			{
@@ -85,7 +85,7 @@ namespace WarriorsSnuggery.Scripts.Core
 					var randomPos = () => new CPos(game.SharedRandom.Next(2048, 19200) - 512, height + game.SharedRandom.Next(1024), 0);
 
 					world.Add(ActorCache.Create(world, ActorCache.Types[money_types[game.SharedRandom.Next(money_types.Length)]], randomPos()));
-					world.Add(ParticleCache.Create(world, ParticleCache.Types["fire"], randomPos(), 10));
+					world.Add(ParticleCache.Create(world, ParticleCache.Types["fire"], randomPos()));
 				}
 			}
 		}
@@ -156,7 +156,7 @@ namespace WarriorsSnuggery.Scripts.Core
 				var randomPos = () => new CPos(game.SharedRandom.Next(2 * 1024, 10 * 1024) - 512, game.SharedRandom.Next(27 * 1024, 30 * 1024), 0);
 
 				world.Add(ActorCache.Create(world, ActorCache.Types["mana_splash"], randomPos()));
-				world.Add(ParticleCache.Create(world, ParticleCache.Types["mana_splash"], randomPos(), 30));
+				world.Add(ParticleCache.Create(world, ParticleCache.Types["mana_splash"], randomPos()));
 			}
 
 			game.ScreenControl.ShowMessage(new Message(() => { }, new[]

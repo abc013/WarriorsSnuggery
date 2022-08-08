@@ -83,7 +83,7 @@ namespace WarriorsSnuggery.Objects.Actors
 				if (!Pushable || Motor == null)
 					return false;
 
-				if (!Mobile.CanFly && Height > 0)
+				if (!Mobile.CanFly && !OnGround)
 					return false;
 
 				if (EffectActive(EffectType.STUN))
@@ -124,8 +124,6 @@ namespace WarriorsSnuggery.Objects.Actors
 			Team = init.Team;
 			IsPlayer = init.IsPlayer;
 			IsBot = init.IsBot;
-
-			Height = init.Height;
 
 			ID = init.ID;
 			this.init = init;
@@ -181,7 +179,7 @@ namespace WarriorsSnuggery.Objects.Actors
 
 			var hoverPart = GetPartOrDefault<HoverPart>();
 			if (hoverPart != null)
-				Height = hoverPart.DefaultHeight;
+				Position = new CPos(Position.X, Position.Y, hoverPart.DefaultHeight);
 
 			if (WorldPart != null && WorldPart.SpawnDelay > 0)
 			{
@@ -443,9 +441,9 @@ namespace WarriorsSnuggery.Objects.Actors
 			PrepareAttack(new Target(target));
 		}
 
-		public void PrepareAttack(CPos target, int height)
+		public void PrepareAttack(CPos target)
 		{
-			PrepareAttack(new Target(target, height));
+			PrepareAttack(new Target(target));
 		}
 
 		public void PrepareAttack(Target target)

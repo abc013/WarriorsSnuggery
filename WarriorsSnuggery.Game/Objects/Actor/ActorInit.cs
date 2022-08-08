@@ -12,7 +12,6 @@ namespace WarriorsSnuggery.Objects.Actors
 		public readonly ActorType Type;
 
 		public readonly CPos Position;
-		public readonly int Height;
 
 		public readonly byte Team;
 		public readonly bool IsBot;
@@ -23,13 +22,12 @@ namespace WarriorsSnuggery.Objects.Actors
 		// HACK: save health here temporarily.
 		public readonly float Health = -1f;
 
-		public ActorInit(uint id, ActorType type, CPos position, int height, byte team, bool isBot, bool isPlayer, string scriptTag = "", float health = -1f)
+		public ActorInit(uint id, ActorType type, CPos position, byte team, bool isBot, bool isPlayer, string scriptTag = "", float health = -1f)
 		{
 			ID = id;
 			Type = type;
 
 			Position = position;
-			Height = height;
 
 			Team = team;
 			IsBot = isBot;
@@ -51,7 +49,8 @@ namespace WarriorsSnuggery.Objects.Actors
 
 			Type = Convert<ActorType>("Type", null);
 			Position = Convert("Position", CPos.Zero);
-			Height = mapFormat > 1 ? Position.Z : Convert("Height", 0);
+			if (mapFormat < 2)
+				Position = new CPos(Position.X, Position.Y, Convert("Height", 0));
 
 			Team = Convert("Team", (byte)0);
 			IsPlayer = Convert("IsPlayer", false);

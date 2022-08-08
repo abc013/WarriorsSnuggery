@@ -28,15 +28,15 @@ namespace WarriorsSnuggery.Scripts.Core
 		{
 			game.Stats.KeyFound = false;
 			world.Add(trainer = ActorCache.Create(world, ActorCache.Types["ninja_trainer"], world.LocalPlayer.Position - new CPos(0, 4096, 0), Actor.PlayerTeam, true));
-			trainer.Bot.Target = new Target(world.LocalPlayer.Position - new CPos(0, 1024, 0), 0);
+			trainer.Bot.Target = new Target(world.LocalPlayer.Position - new CPos(0, 1024, 0));
 
 			world.ShroudLayer.RevealShroudRectangular(Actor.PlayerTeam, new CPos(0, 8 * 1024, 0), new CPos(8 * 1024, world.Map.Bounds.Y * 1024, 0), true);
-			world.ShroudLayer.RevealShroudCircular(game.World, Actor.PlayerTeam, new CPos(5 * 1024, 5 * 1024, 0), 0, 16, true);
+			world.ShroudLayer.RevealShroudCircular(game.World, Actor.PlayerTeam, new CPos(5 * 1024, 5 * 1024, 0), 16, true);
 			
 			void message2()
 			{
 				targets = new[] { spawnTarget(new CPos(3584, 33280, 0)) };
-				trainer.Bot.Target = new Target(targets[0].Position + new CPos(-1024, 0, 0), 0);
+				trainer.Bot.Target = new Target(targets[0].Position + new CPos(-1024, 0, 0));
 
 				game.ScreenControl.ShowMessage(new Message(() => { }, new[]
 				{
@@ -63,7 +63,7 @@ namespace WarriorsSnuggery.Scripts.Core
 			Tick -= tickAttackTraining1;
 			Tick += tickAttackTraining2;
 
-			game.ScreenControl.ShowMessage(new Message(() => { trainer.Bot.Target = new Target(targets[0].Position + new CPos(-1024, -8 * 1024, 0), 0); }, new[]
+			game.ScreenControl.ShowMessage(new Message(() => { trainer.Bot.Target = new Target(targets[0].Position + new CPos(-1024, -8 * 1024, 0)); }, new[]
 			{
 				$"Good! You see the {Color.Yellow}arrow{Color.White} that just appeared?",
 				$"It {Color.Yellow}points to a random enemy{Color.White}. When you get hurt,",
@@ -83,7 +83,7 @@ namespace WarriorsSnuggery.Scripts.Core
 			Tick -= tickAttackTraining2;
 			Tick += tickAttackTraining3;
 
-			game.ScreenControl.ShowMessage(new Message(() => { trainer.Bot.Target = new Target(new CPos(10 * 1024, 3 * 1024, 0), 0); }, new[]
+			game.ScreenControl.ShowMessage(new Message(() => { trainer.Bot.Target = new Target(new CPos(10 * 1024, 3 * 1024, 0)); }, new[]
 			{
 				$"Well done! Next, we will look at blocking objects.",
 				$"Walls and crates can block your projectiles!",
@@ -116,14 +116,14 @@ namespace WarriorsSnuggery.Scripts.Core
 			Tick -= tickAttackTraining3;
 			Tick += tickPreExplosion;
 
-			game.ScreenControl.ShowMessage(new Message(() => { trainer.Bot.Target = new Target(new CPos(26 * 1024, 9 * 1024, 0), 0); }, new[]
+			game.ScreenControl.ShowMessage(new Message(() => { trainer.Bot.Target = new Target(new CPos(26 * 1024, 9 * 1024, 0)); }, new[]
 			{
 				$"Very good! Time for some real enemies then!",
 				$"{Color.Cyan}Follow me{Color.White}! I just need to open the gate.",
 				$"It will take just a few seconds!"
 			}));
 
-			world.ShroudLayer.RevealShroudCircular(game.World, Actor.PlayerTeam, new CPos(26 * 1024, 3 * 1024, 0), 0, 20, true);
+			world.ShroudLayer.RevealShroudCircular(game.World, Actor.PlayerTeam, new CPos(26 * 1024, 3 * 1024, 0), 20, true);
 		}
 
 		void tickPreExplosion()
@@ -153,7 +153,7 @@ namespace WarriorsSnuggery.Scripts.Core
 
 			for (int i = 0; i < 2; i++)
 			{
-				var weapon = WeaponCache.Create(world, "cannon", new Target(new CPos(game.SharedRandom.Next(18 * 512, 22 * 512) * 2, 0, 0), game.SharedRandom.Next(9 * 512, 10 * 512) * 2), targets[0]);
+				var weapon = WeaponCache.Create(world, "cannon", new Target(new CPos(game.SharedRandom.Next(18 * 512, 22 * 512) * 2, 0, game.SharedRandom.Next(9 * 512, 10 * 512) * 2)), targets[0]);
 				world.Add(weapon);
 
 				weapon.Detonate(weapon.Target);
@@ -161,7 +161,7 @@ namespace WarriorsSnuggery.Scripts.Core
 
 			for (int i = 0; i < 600; i++)
 			{
-				var particle = ParticleCache.Create(world, "fire", new CPos(game.SharedRandom.Next(16 * 512, 26 * 512) * 2, game.SharedRandom.Next(4 * 512, 9 * 512) * 2, 0), 128);
+				var particle = ParticleCache.Create(world, "fire", new CPos(game.SharedRandom.Next(16 * 512, 26 * 512) * 2, game.SharedRandom.Next(4 * 512, 9 * 512) * 2, 128));
 				world.Add(particle);
 			}
 
@@ -175,7 +175,7 @@ namespace WarriorsSnuggery.Scripts.Core
 			if (world.LocalPlayer.Health.HP != world.LocalPlayer.Health.MaxHP && world.ActorLayer.Actors.Any(a => a.Type == ActorCache.Types["apple"] || a.Type == ActorCache.Types["portion_red"]))
 				return;
 
-			Tick += () => world.Add(ParticleCache.Create(world, ParticleCache.Types["blood"], trainer.Position, Program.SharedRandom.Next(10, 100)));
+			Tick += () => world.Add(ParticleCache.Create(world, ParticleCache.Types["blood"], trainer.Position + new CPos(0, 0, Program.SharedRandom.Next(10, 100))));
 
 			Tick -= tickPostExplosion;
 			Tick += tickFight1;

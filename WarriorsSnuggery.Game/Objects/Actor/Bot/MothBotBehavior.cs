@@ -32,7 +32,7 @@ namespace WarriorsSnuggery.Objects.Actors.Bot
 			if (!HasGoodTarget)
 			{
 				if (tick++ % 20 == 0)
-					Target = new Target(randomPosition(), 0);
+					Target = new Target(randomPosition());
 
 				DefaultTickBehavior();
 				return;

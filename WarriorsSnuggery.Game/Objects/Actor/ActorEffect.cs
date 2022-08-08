@@ -104,7 +104,7 @@ namespace WarriorsSnuggery.Objects.Actors
 				sound?.Stop();
 
 			if (Effect.Particles != null && tick % Effect.ParticleTick == 0)
-				self.World.Add(Effect.Particles.Create(self.World, self.Position, self.Height));
+				self.World.Add(Effect.Particles.Create(self.World, self.Position));
 		}
 
 		public void OnMove(CPos old, CPos velocity)

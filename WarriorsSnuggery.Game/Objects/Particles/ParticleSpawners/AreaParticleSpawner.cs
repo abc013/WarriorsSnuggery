@@ -33,17 +33,17 @@ namespace WarriorsSnuggery.Objects.Particles
 
 		public AreaParticleSpawner(List<TextNode> nodes) : base(nodes) { }
 
-		public override Particle[] Create(World world, CPos position, int height)
+		public override Particle[] Create(World world, CPos position)
 		{
 			return AreaType switch
 			{
-				ParticleAreaSpawnType.CIRCLE => createCircle(world, position, height),
-				ParticleAreaSpawnType.BOX => createBox(world, position, height),
-				_ => createRandom(world, position, height),
+				ParticleAreaSpawnType.CIRCLE => createCircle(world, position),
+				ParticleAreaSpawnType.BOX => createBox(world, position),
+				_ => createRandom(world, position),
 			};
 		}
 
-		Particle[] createRandom(World world, CPos position, int height)
+		Particle[] createRandom(World world, CPos position)
 		{
 			var random = Program.SharedRandom;
 
@@ -54,12 +54,12 @@ namespace WarriorsSnuggery.Objects.Particles
 				var angle = Angle.RandomAngle(random);
 				var pos = CPos.FromFlatAngle(angle, ran);
 
-				particles[i] = ParticleCache.Create(world, Type, position + pos + Offset, height + Offset.Z, InitialVelocity);
+				particles[i] = ParticleCache.Create(world, Type, position + pos + Offset, InitialVelocity);
 			}
 			return particles;
 		}
 
-		Particle[] createCircle(World world, CPos position, int height)
+		Particle[] createCircle(World world, CPos position)
 		{
 			var particles = new Particle[Count];
 			var step = Angle.MaxRange / Count;
@@ -67,12 +67,12 @@ namespace WarriorsSnuggery.Objects.Particles
 			{
 				var pos = CPos.FromFlatAngle(step * i, Radius);
 
-				particles[i] = ParticleCache.Create(world, Type, position + pos + Offset, height + Offset.Z, InitialVelocity);
+				particles[i] = ParticleCache.Create(world, Type, position + pos + Offset, InitialVelocity);
 			}
 			return particles;
 		}
 
-		Particle[] createBox(World world, CPos position, int height)
+		Particle[] createBox(World world, CPos position)
 		{
 			var particles = new Particle[Count];
 			var step = (Radius * 2) / (Count / 4);
@@ -105,7 +105,7 @@ namespace WarriorsSnuggery.Objects.Particles
 				}
 				var pos = new CPos(x, y, 0);
 
-				particles[i] = ParticleCache.Create(world, Type, position + pos + Offset, height + Offset.Z, InitialVelocity);
+				particles[i] = ParticleCache.Create(world, Type, position + pos + Offset, InitialVelocity);
 			}
 			return particles;
 		}

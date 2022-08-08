@@ -109,7 +109,7 @@ namespace WarriorsSnuggery.Objects.Actors.Parts
 			var renderable = GetRenderable(self.Actions, Angle.ToFacing(self.Angle, info.Facings));
 			if (renderable != null)
 			{
-				if (self.Height > 0)
+				if (!self.OnGround)
 				{
 					renderable.SetPosition(self.GraphicPositionWithoutHeight + info.Offset);
 					renderable.SetColor(Color.Shadow);

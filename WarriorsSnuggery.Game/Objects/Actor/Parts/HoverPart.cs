@@ -37,13 +37,13 @@ namespace WarriorsSnuggery.Objects.Actors.Parts
 		public void Tick()
 		{
 			if (info.Hover > 0)
-				self.Height += (int)(MathF.Sin(hoverTick++ / (float)info.HoverSpeed) * info.Hover);
+				self.Position += new CPos(0, 0, (int)(MathF.Sin(hoverTick++ / (float)info.HoverSpeed) * info.Hover));
 
 			if (self.Mobile != null && self.Mobile.CanFly)
 			{
-				if (self.Height > DefaultHeight + info.Hover * 64)
+				if (self.Position.Z > DefaultHeight + info.Hover * 64)
 					self.AccelerateHeightSelf(false);
-				else if (self.Height < DefaultHeight - info.Hover * 64)
+				else if (self.Position.Z < DefaultHeight - info.Hover * 64)
 					self.AccelerateHeightSelf(true);
 			}
 		}

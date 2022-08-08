@@ -25,7 +25,7 @@ namespace WarriorsSnuggery.Objects.Weapons.Warheads
 
 		public void Impact(World world, Weapon weapon, Target target)
 		{
-			if (world.TerrainAt(target.Position) != null && world.TerrainAt(target.Position).Type.SpawnSmudge && (SpawnInAir || weapon.Height == 0))
+			if (world.TerrainAt(target.Position) != null && world.TerrainAt(target.Position).Type.SpawnSmudge && (SpawnInAir || weapon.OnGround))
 				world.SmudgeLayer.Add(new Smudge(new CPos(target.Position.X, target.Position.Y, 0), new BatchSequence(Texture), DissolveDuration, StartDissolve));
 		}
 	}

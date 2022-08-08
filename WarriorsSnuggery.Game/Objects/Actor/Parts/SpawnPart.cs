@@ -137,7 +137,6 @@ namespace WarriorsSnuggery.Objects.Actors.Parts
 			if (self.World.Game.SharedRandom.NextDouble() > info.Probability)
 				return;
 
-			var height = self.Height + info.Offset.Z;
 			switch (info.Type)
 			{
 				case SpawnPartTypes.ACTOR:
@@ -145,19 +144,16 @@ namespace WarriorsSnuggery.Objects.Actors.Parts
 
 					if (info.InheritsBot && self.IsBot)
 						actor.Bot.Target = self.Bot.Target;
-					actor.Height = height;
 
 					self.World.Add(actor);
 					break;
 				case SpawnPartTypes.PARTICLE:
-					var particle = ParticleCache.Create(self.World, info.Name, randomPosition(), self.Height + info.Offset.Z);
-					particle.Height = height;
+					var particle = ParticleCache.Create(self.World, info.Name, randomPosition());
 
 					self.World.Add(particle);
 					break;
 				case SpawnPartTypes.WEAPON:
-					var weapon = WeaponCache.Create(self.World, info.Name, new Target(randomPosition(), 0), self);
-					weapon.Height = height;
+					var weapon = WeaponCache.Create(self.World, info.Name, new Target(randomPosition()), self);
 
 					self.World.Add(weapon);
 					break;
@@ -169,7 +165,7 @@ namespace WarriorsSnuggery.Objects.Actors.Parts
 		CPos randomPosition()
 		{
 			if (info.AtCenter)
-				return self.Position + new CPos(info.Offset.X, info.Offset.Y, 0);
+				return self.Position + info.Offset;
 
 			var sizeX = info.Radius;
 			var sizeY = info.Radius;
@@ -182,7 +178,7 @@ namespace WarriorsSnuggery.Objects.Actors.Parts
 
 			var x = self.World.Game.SharedRandom.Next(-sizeX, sizeX);
 			var y = self.World.Game.SharedRandom.Next(-sizeY, sizeY);
-			return self.Position + new CPos(x, y, 0) + new CPos(info.Offset.X, info.Offset.Y, 0);
+			return self.Position + new CPos(x, y, 0) + info.Offset;
 		}
 	}
 }

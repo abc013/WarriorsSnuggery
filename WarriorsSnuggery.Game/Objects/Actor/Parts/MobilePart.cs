@@ -66,14 +66,14 @@ namespace WarriorsSnuggery.Objects.Actors.Parts
 
 		public void Tick()
 		{
-			if (self.Height > 0 && !CanFly)
+			if (!self.OnGround && !CanFly)
 				Force += info.Gravity;
 
 			wasMoving = Velocity != CPos.Zero;
 
 			if (wasMoving)
 			{
-				var friction = self.Height == 0 ? info.Friction : info.AirFriction;
+				var friction = self.OnGround ? info.Friction : info.AirFriction;
 				var x = Velocity.X > 0 ? (int)Math.Ceiling(Velocity.X * friction) : (int)Math.Floor(Velocity.X * friction);
 				var y = Velocity.Y > 0 ? (int)Math.Ceiling(Velocity.Y * friction) : (int)Math.Floor(Velocity.Y * friction);
 				var z = Velocity.Z > 0 ? (int)Math.Ceiling(Velocity.Z * friction) : (int)Math.Floor(Velocity.Z * friction);
@@ -101,7 +101,7 @@ namespace WarriorsSnuggery.Objects.Actors.Parts
 		void moveTick()
 		{
 			var speedModifier = 1f;
-			if (self.Height == 0 && self.World.TerrainAt(self.Position) != null)
+			if (self.OnGround && self.World.TerrainAt(self.Position) != null)
 				speedModifier = self.World.TerrainAt(self.Position).Type.Speed;
 
 			foreach (var effect in self.GetActiveEffects(EffectType.SPEED))
@@ -112,79 +112,73 @@ namespace WarriorsSnuggery.Objects.Actors.Parts
 			if (currentVelocity == CPos.Zero)
 				return;
 
-			var height = self.Height + currentVelocity.Z;
-
 			// Move only in z direction
-			if (currentVelocity.X == 0 && currentVelocity.Y == 0 && checkMove(self.Position, height, Velocity))
+			if (currentVelocity.X == 0 && currentVelocity.Y == 0 && checkMove(self.Position + new CPos(0, 0, currentVelocity.Z), Velocity))
 				return;
 
-			// Move in both x and y direction
+			// Move in all directions
 			if (currentVelocity.X != 0 && currentVelocity.Y != 0)
 			{
-				var pos = self.Position + new CPos(currentVelocity.X, currentVelocity.Y, 0);
-				if (checkMove(pos, height, Velocity))
+				var pos = self.Position + currentVelocity;
+				if (checkMove(pos, Velocity))
 					return;
 			}
 
-			// Move only in x direction
+			// Move only in x,z direction
 			if (currentVelocity.X != 0)
 			{
-				var posX = self.Position + new CPos(currentVelocity.X, 0, 0);
-				if (checkMove(posX, height, new CPos(Velocity.X, 0, Velocity.Z)))
+				var posX = self.Position + new CPos(currentVelocity.X, 0, currentVelocity.Z);
+				if (checkMove(posX, new CPos(Velocity.X, 0, Velocity.Z)))
 					return;
 			}
 
-			// Move only in y direction
+			// Move only in y,z direction
 			if (currentVelocity.Y != 0)
 			{
-				var posY = self.Position + new CPos(0, currentVelocity.Y, 0);
-				if (checkMove(posY, height, new CPos(0, Velocity.Y, Velocity.Z)))
+				var posY = self.Position + new CPos(0, currentVelocity.Y, currentVelocity.Z);
+				if (checkMove(posY, new CPos(0, Velocity.Y, Velocity.Z)))
 					return;
 			}
 
 			denyMove();
 		}
 
-		bool checkMove(CPos pos, int height, CPos velocity, bool evading = false)
+		bool checkMove(CPos pos, CPos velocity, bool evading = false)
 		{
 			if (!self.World.IsInWorld(pos))
 				return false;
 
 			var oldPos = self.Position;
-			var oldHeight = self.Height;
 
-			self.Height = height;
 			self.Position = pos;
 
 			var intersects = self.World.CheckCollision(self.Physics, out var collision);
 
 			self.Position = oldPos;
-			self.Height = oldHeight;
 
 			if (intersects)
 			{
 				if (collision != null && !evading)
 				{
 					var newVelocity = CPos.FromFlatAngle(collision.Angle, velocity.FlatDist);
-					return checkMove(self.Position + newVelocity, self.Height, newVelocity, true);
+					return checkMove(self.Position + newVelocity, newVelocity, true);
 				}
 				return false;
 			}
 
 			var terrain = self.World.TerrainAt(pos);
-			if (terrain != null && height == 0 && terrain.Type.Speed == 0)
+			if (terrain != null && pos.Z == 0 && terrain.Type.Speed == 0)
 				return false;
 
-			acceptMove(pos, height, terrain, evading);
+			acceptMove(pos, terrain, evading);
 			Velocity = velocity;
 
 			return true;
 		}
 
-		void acceptMove(CPos position, int height, Terrain terrain, bool evading = false)
+		void acceptMove(CPos position, Terrain terrain, bool evading = false)
 		{
 			var old = self.Position;
-			self.Height = height;
 			self.Position = position;
 			self.CurrentTerrain = terrain;
 

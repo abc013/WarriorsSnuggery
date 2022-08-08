@@ -52,7 +52,7 @@ namespace WarriorsSnuggery.Objects.Actors
 
 		public static ActorInit CreateInit(World world, ActorType type, CPos position, byte team = 0, bool isBot = false, bool isPlayer = false, string scriptTag = "", float health = -1f)
 		{
-			return new ActorInit(world.Game.NextActorID, type, position, 0, team, isBot, isPlayer, scriptTag, health);
+			return new ActorInit(world.Game.NextActorID, type, position, team, isBot, isPlayer, scriptTag, health);
 		}
 	}
 }

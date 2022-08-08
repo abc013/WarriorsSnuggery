@@ -50,7 +50,7 @@ namespace WarriorsSnuggery.Objects.Weapons
 		{
 			var flatSpeed = Vector.FromFlatAngle(Angle, projectile.Speed);
 
-			var zDiff = TargetHeight - Height;
+			var zDiff = TargetPosition.Z - Position.Z;
 			var dDiff = (int)(Position - TargetPosition).FlatDist;
 			if (dDiff > Type.MaxRange * RangeModifier)
 				dDiff = (int)(Type.MaxRange * RangeModifier);
@@ -75,13 +75,12 @@ namespace WarriorsSnuggery.Objects.Weapons
 			Move();
 
 			if (projectile.TrailParticles != null)
-				World.Add(projectile.TrailParticles.Create(World, Position, Height));
+				World.Add(projectile.TrailParticles.Create(World, Position));
 		}
 
 		public void Move()
 		{
 			var beforePos = Position;
-			var beforeHeight = Height;
 
 			var curSpeed = speed + speedLeft;
 			var x = (int)curSpeed.X;
@@ -91,8 +90,7 @@ namespace WarriorsSnuggery.Objects.Weapons
 
 			speedLeft = new Vector(curSpeed.X - x, curSpeed.Y - y, curSpeed.Z - z);
 
-			Position += new CPos(x, y, 0);
-			Height += z;
+			Position += new CPos(x, y, z);
 			speed += new Vector(projectile.Force.X, projectile.Force.Y, projectile.Force.Z);
 
 			if (Math.Abs(speed.X) > projectile.MaxSpeed)
@@ -102,17 +100,15 @@ namespace WarriorsSnuggery.Objects.Weapons
 			if (Math.Abs(speed.Z) > projectile.MaxSpeed)
 				speed = new Vector(speed.X, speed.Y, Math.Sign(speed.Z) * projectile.MaxSpeed);
 
-			if (Height == 0 && z < 0 || !World.IsInWorld(Position))
-				Detonate(new Target(Position, 0));
+			if (OnGround && z < 0 || !World.IsInWorld(Position))
+				Detonate(new Target(Position));
 
 			ray.Start = beforePos;
-			ray.StartHeight = beforeHeight;
 			ray.Target = Position;
-			ray.TargetHeight = Height;
 			ray.CalculateEnd(new[] { Origin.Physics }, onlyToTarget: true);
 
-			if ((beforePos - ray.End).Dist < (beforePos - Position).Dist)
-				Detonate(new Target(ray.End, ray.EndHeight));
+			if ((beforePos - ray.End).SquaredFlatDist < (beforePos - Position).SquaredFlatDist)
+				Detonate(new Target(ray.End));
 		}
 
 		public override List<string> Save()

@@ -63,37 +63,33 @@ namespace WarriorsSnuggery.Objects.Weapons
 			{
 				repetitionDelay = projectile.RepetitionDelay;
 				var random = CPos.FromFlatAngle(WarriorsSnuggery.Angle.RandomAngle(World.Game.SharedRandom), projectile.Inaccuracy);
-				Detonate(new Target(Position + random, Height), repetition-- == 0);
+				Detonate(new Target(Position + random), repetition-- == 0);
 			}
 
 			if (projectile.TrailParticles != null)
-				World.Add(projectile.TrailParticles.Create(World, Position, Height));
+				World.Add(projectile.TrailParticles.Create(World, Position));
 		}
 
 		public void Move()
 		{
 			var beforePos = Position;
-			var beforeHeight = Height;
 
 			DistanceTravelled += (int)speed.FlatDist;
 
 			Position += speed;
-			Height += speed.Z;
 
-			if (Height == 0 && speed.Z < 0 || !World.IsInWorld(Position))
-				Detonate(new Target(Position, 0));
+			if (OnGround && speed.Z < 0 || !World.IsInWorld(Position))
+				Detonate(new Target(Position));
 
 			if (projectile.IgnoreCollisions)
 				return;
 
 			ray.Start = beforePos;
-			ray.StartHeight = beforeHeight;
 			ray.Target = Position;
-			ray.TargetHeight = Height;
 			ray.CalculateEnd(new[] { Origin.Physics }, onlyToTarget: true);
 
-			if ((beforePos - ray.End).Dist < (beforePos - Position).Dist)
-				Detonate(new Target(ray.End, ray.EndHeight));
+			if ((beforePos - ray.End).SquaredFlatDist < (beforePos - Position).SquaredFlatDist)
+				Detonate(new Target(ray.End));
 		}
 
 		public override List<string> Save()

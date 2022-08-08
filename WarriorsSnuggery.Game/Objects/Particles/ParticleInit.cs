@@ -15,11 +15,10 @@ namespace WarriorsSnuggery.Objects.Particles
 		public readonly int Height;
 		public readonly CPos InitialVelocity;
 
-		public ParticleInit(ParticleType type, CPos position, int height, CPos initialVelocity = default)
+		public ParticleInit(ParticleType type, CPos position, CPos initialVelocity = default)
 		{
 			Type = type;
 			Position = position;
-			Height = height;
 			InitialVelocity = initialVelocity;
 
 			// Empty list
@@ -34,7 +33,8 @@ namespace WarriorsSnuggery.Objects.Particles
 
 			Type = Convert<ParticleType>("Type", null);
 			Position = Convert("Position", CPos.Zero);
-			Height = mapFormat > 1 ? Position.Z : Convert("Height", 0);
+			if (mapFormat < 2)
+				Position = new CPos(Position.X, Position.Y, Convert("Height", 0));
 		}
 
 		public T Convert<T>(string rule, T @default)

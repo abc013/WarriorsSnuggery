@@ -16,7 +16,7 @@ namespace WarriorsSnuggery.Objects.Weapons.Warheads
 
 		public void Impact(World world, Weapon weapon, Target target)
 		{
-			world.Add(Spawner.Create(world, target.Position, target.Height));
+			world.Add(Spawner.Create(world, target.Position));
 		}
 	}
 }

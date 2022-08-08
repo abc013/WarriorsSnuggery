@@ -45,14 +45,11 @@ namespace WarriorsSnuggery.Objects.Weapons
 
 			Target = target;
 			TargetPosition = target.Position;
-			TargetHeight = target.Height;
 
 			Origin = origin;
 			Team = origin == null ? Actor.NeutralTeam : origin.Team;
 
 			ID = id;
-
-			Height = origin.Weapon != null ? origin.Weapon.WeaponOffsetHeight : origin.Height;
 
 			foreach (var effect in origin.GetActiveEffects(EffectType.INACCURACY))
 				InaccuracyModifier *= effect.Effect.Value;
@@ -79,8 +76,6 @@ namespace WarriorsSnuggery.Objects.Weapons
 			Type = init.Type;
 			ID = init.ID;
 
-			Height = init.Height;
-
 			var originID = init.Convert("Origin", uint.MaxValue);
 			Origin = world.ActorLayer.ToAdd().FirstOrDefault(a => a.ID == originID);
 
@@ -90,8 +85,7 @@ namespace WarriorsSnuggery.Objects.Weapons
 			if (TargetActor == null)
 			{
 				var targetPos = init.Convert("OriginalTargetPosition", CPos.Zero);
-				var targetHeight = init.Convert("OriginalTargetHeight", 0);
-				Target = new Target(targetPos, targetHeight);
+				Target = new Target(targetPos);
 			}
 			else
 				Target = new Target(TargetActor);
@@ -100,7 +94,6 @@ namespace WarriorsSnuggery.Objects.Weapons
 			DistanceTravelled = init.Convert("DistanceTravelled", 0);
 
 			TargetPosition = init.Convert("TargetPosition", CPos.Zero);
-			TargetHeight = init.Convert("TargetHeight", 0);
 			
 			Team = init.Convert("Team", Team);
 
@@ -114,11 +107,8 @@ namespace WarriorsSnuggery.Objects.Weapons
 		{
 			base.Tick();
 
-			if (Height < 0 || !World.IsInWorld(Position))
-				Detonate(new Target(Position, 0));
-
-			if (!World.Game.Editor && DistanceTravelled >= Type.MaxRange * RangeModifier)
-				Detonate(new Target(Position, Height));
+			if (!World.IsInWorld(Position) || !World.Game.Editor && DistanceTravelled >= Type.MaxRange * RangeModifier)
+				Detonate(new Target(Position));
 		}
 
 		public override void Render()
@@ -182,7 +172,6 @@ namespace WarriorsSnuggery.Objects.Weapons
 				list.Add("TargetActor=" + Target.Actor.ID);
 
 			list.Add("OriginalTargetPosition=" + Target.Position);
-			list.Add("OriginalTargetHeight=" + Target.Height);
 
 			return list;
 		}

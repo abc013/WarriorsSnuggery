@@ -41,15 +41,12 @@ namespace WarriorsSnuggery.Objects.Actors.Parts
 		public void OnLoad(PartLoader loader)
 		{
 			var position = self.Position;
-			var height = self.Height;
 			var targetID = uint.MaxValue;
 
 			foreach (var node in loader.GetNodes(typeof(BotPart)))
 			{
 				if (node.Key == "TargetPosition")
 					position = node.Convert<CPos>();
-				if (node.Key == "TargetHeight")
-					height = node.Convert<int>();
 				if (node.Key == "TargetActor")
 					targetID = node.Convert<uint>();
 			}
@@ -66,7 +63,6 @@ namespace WarriorsSnuggery.Objects.Actors.Parts
 				return saver;
 
 			saver.Add("TargetPosition", Target.Position, self.Position);
-			saver.Add("TargetHeight", Target.Height, self.Height);
 			if (Target.Actor != null)
 				saver.Add("TargetActor", Target.Actor.ID, uint.MaxValue);
 

@@ -32,7 +32,6 @@ namespace WarriorsSnuggery.Objects.Particles
 			this.world = world;
 			Type = init.Type;
 
-			Height = init.Height;
 			cachedColor = Type.Color + ParticleUtils.Variety(Type.ColorVariety);
 
 			current = init.Convert("Duration", Type.Duration);
@@ -47,12 +46,12 @@ namespace WarriorsSnuggery.Objects.Particles
 			Visible = false;
 		}
 
-		public void AffectVelocity(ParticleForce force, float ratio, CPos origin, int originHeight)
+		public void AffectVelocity(ParticleForce force, float ratio, CPos origin)
 		{
 			var random = ParticleUtils.Random;
 
-			var useZ = force.UseHeight && Height != originHeight;
-			var zinvert = Height > originHeight;
+			var useZ = force.UseHeight && Position.Z != origin.Z;
+			var zinvert = Position.Z > origin.Z;
 
 			var angle = (Position - origin).FlatAngle;
 			var xFloat = 0f;
@@ -150,14 +149,12 @@ namespace WarriorsSnuggery.Objects.Particles
 			velocity += new CPos(0, 0, -Type.Gravity);
 			Rotation += rotate_velocity;
 
-			Position += new CPos(velocity.X, velocity.Y, 0);
+			Position += velocity;
 
 			if (velocity != CPos.Zero)
 				world.ParticleLayer.Update(this);
 
-			Height += velocity.Z;
-
-			if (Type.StickToGround && Height <= 0)
+			if (Type.StickToGround && OnGround)
 			{
 				velocity = CPos.Zero;
 				rotate_velocity = VAngle.Zero;

@@ -66,7 +66,7 @@ namespace WarriorsSnuggery.Objects.Actors.Parts
 			if (self.Weapon != null)
 			{
 				var actor = FindValidTarget(MouseInput.GamePosition);
-				self.Weapon.Target = actor == null ? new Target(MouseInput.GamePosition, 0) : new Target(actor);
+				self.Weapon.Target = actor == null ? new Target(MouseInput.GamePosition) : new Target(actor);
 			}
 
 			if (MouseInput.IsLeftDown && !self.World.Game.ScreenControl.CursorOnUI())
@@ -113,13 +113,13 @@ namespace WarriorsSnuggery.Objects.Actors.Parts
 		void attackTarget(CPos pos)
 		{
 			if (KeyInput.IsKeyDown(Keys.LeftShift))
-				self.PrepareAttack(pos, 0);
+				self.PrepareAttack(pos);
 			else
 			{
 				var actor = FindValidTarget(pos);
 
 				if (actor == null)
-					self.PrepareAttack(pos, 0);
+					self.PrepareAttack(pos);
 				else
 					self.PrepareAttack(actor);
 			}

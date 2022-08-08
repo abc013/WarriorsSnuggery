@@ -28,8 +28,7 @@ namespace WarriorsSnuggery.Objects.Actors.Parts
 
 		public bool AllowMoving => info.AllowMoving;
 
-		public CPos WeaponOffsetPosition => self.GraphicPositionWithoutHeight + new CPos(info.Offset.X, info.Offset.Y, 0);
-		public int WeaponOffsetHeight => self.Height + info.Offset.Z;
+		public CPos WeaponOffsetPosition => self.Position + info.Offset;
 
 		public Target Target;
 
@@ -73,8 +72,7 @@ namespace WarriorsSnuggery.Objects.Actors.Parts
 						state = node.Convert<WeaponState>();
 						break;
 					case nameof(Target):
-						var pos = node.Convert<CPos>();
-						Target = new Target(pos, 0);
+						Target = new Target(node.Convert<CPos>());
 						break;
 				}
 			}
@@ -93,7 +91,7 @@ namespace WarriorsSnuggery.Objects.Actors.Parts
 			if (Target != null)
 			{
 				// TODO: also support actor targeting
-				saver.Add(nameof(Target), Target.Position + new CPos(0, 0, Target.Height), CPos.Zero);
+				saver.Add(nameof(Target), Target.Position, CPos.Zero);
 			}
 			
 			return saver;
@@ -183,7 +181,7 @@ namespace WarriorsSnuggery.Objects.Actors.Parts
 				if (beam.Disposed)
 					beam = null;
 				else
-					beam.Move(Target.Position, Target.Height);
+					beam.Move(Target.Position, Target.Position.Z);
 			}
 		}
 

@@ -11,12 +11,12 @@ namespace WarriorsSnuggery.Objects.Particles
 
 		public ListParticleSpawner(List<TextNode> nodes) : base(nodes) { }
 
-		public override Particle[] Create(World world, CPos position, int height)
+		public override Particle[] Create(World world, CPos position)
 		{
 			var particleList = new List<Particle>();
 
 			foreach(var spawner in Spawners)
-				particleList.AddRange(spawner.Create(world, position, height));
+				particleList.AddRange(spawner.Create(world, position));
 
 			return particleList.ToArray();
 		}

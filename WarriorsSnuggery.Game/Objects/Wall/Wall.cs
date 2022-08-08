@@ -76,7 +76,7 @@ namespace WarriorsSnuggery.Objects
 
 			ZOffset -= 512;
 			if (!IsHorizontal)
-				ZOffset += Height;
+				ZOffset += type.Height;
 
 			if (type.IsOnFloor)
 				ZOffset = -2048;
@@ -171,9 +171,9 @@ namespace WarriorsSnuggery.Objects
 				var height = h * distH;
 				for (int i = 0; i < particleSqrt; i++)
 				{
-					var position = Physics.Position - new CPos(Physics.Boundaries.X, Physics.Boundaries.Y, 0) + distI * new CPos(i, i, 0);
+					var position = Physics.Position - new CPos(Physics.Boundaries.X, Physics.Boundaries.Y, height) + distI * new CPos(i, i, 0);
 
-					var particle = ParticleCache.Create(world, Type.DebrisParticles, position, height);
+					var particle = ParticleCache.Create(world, Type.DebrisParticles, position);
 					particle.ZOffset += Type.Height / 2;
 					world.Add(particle);
 				}

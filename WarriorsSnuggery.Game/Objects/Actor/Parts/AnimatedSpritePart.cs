@@ -135,7 +135,7 @@ namespace WarriorsSnuggery.Objects.Actors.Parts
 			if (renderable == null)
 				return;
 
-			if (self.Height > 0)
+			if (!self.OnGround)
 			{
 				renderable.SetPosition(self.GraphicPositionWithoutHeight + info.Offset);
 				renderable.SetColor(Color.Shadow);

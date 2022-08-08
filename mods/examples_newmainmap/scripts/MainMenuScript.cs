@@ -34,7 +34,7 @@ namespace WarriorsSnuggery.Scripts.Mods.MainmapOverride
 			var bounds = world.Map.Bounds.ToCPos();
 			var clamp = 4096;
 
-			entities.Add(new ParticleEntity(world, randomPosition(random, bounds, clamp), ((float)random.NextDouble()) * Angle.MaxRange));
+			entities.Add(new ParticleEntity(world, randomPosition(random, bounds, clamp) + new CPos(0, 0, 10240), ((float)random.NextDouble()) * Angle.MaxRange));
 		}
 
 		class ParticleEntity
@@ -45,12 +45,11 @@ namespace WarriorsSnuggery.Scripts.Mods.MainmapOverride
 			readonly ParticleType flame;
 
 			CPos position;
-			int height;
 
 			readonly float angle;
 			const int speed = 32;
 
-			public bool Alive => height > 0;
+			public bool Alive => position.Z > 0;
 
 			public ParticleEntity(World world, CPos position, float angle)
 			{
@@ -58,19 +57,16 @@ namespace WarriorsSnuggery.Scripts.Mods.MainmapOverride
 				this.position = position;
 				this.angle = angle;
 
-				height = 10240;
 				smoke = ParticleCache.Types["blood"];
 				flame = ParticleCache.Types["puff1"];
 			}
 
 			public void Tick()
 			{
-				position += CPos.FromFlatAngle(angle, speed);
-				height -= speed;
+				position += CPos.FromFlatAngle(angle, speed) - new CPos(0, 0, -speed);
 
-				world.Add(new Particle(world, new ParticleInit(smoke, position, height)));
-
-				world.Add(new Particle(world, new ParticleInit(flame, position, height)));
+				world.Add(new Particle(world, new ParticleInit(smoke, position)));
+				world.Add(new Particle(world, new ParticleInit(flame, position)));
 			}
 		}
 	}

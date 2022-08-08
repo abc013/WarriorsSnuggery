@@ -36,7 +36,7 @@ namespace WarriorsSnuggery.Objects.Weapons
 			if (IsDissolving)
 			{
 				if (currentDissolve-- > 0)
-					renderable.SetColor(new Color(1f, 1f, 1f, currentDissolve / (float)dissolveDuration));
+					renderable.SetColor(Color.White.WithAlpha(currentDissolve / (float)dissolveDuration));
 				else
 					Dissolved = true;
 			}

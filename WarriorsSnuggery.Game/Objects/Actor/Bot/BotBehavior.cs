@@ -166,7 +166,7 @@ namespace WarriorsSnuggery.Objects.Actors.Bot
 
 			if (!HasGoodTarget)
 			{
-				var target = new Target(damager.Position, damager.Height);
+				var target = new Target(damager.Position);
 				if (IsLeader)
 					Target = target;
 				else
@@ -182,7 +182,7 @@ namespace WarriorsSnuggery.Objects.Actors.Bot
 			if (killed == Target.Actor)
 			{
 				if (Target.Actor.FollowupActor == null)
-					Target = new Target(killed.Position, killed.Height);
+					Target = new Target(killed.Position);
 				else
 					Target = new Target(Target.Actor.FollowupActor);
 			}
@@ -356,7 +356,7 @@ namespace WarriorsSnuggery.Objects.Actors.Bot
 
 			var t = Math.Abs(delta.X / (float)(velTarget.X - direction.X));
 
-			var newTarget = new Target(new CPos(Self.Position.X + (int)(direction.X * t), Self.Position.Y + (int)(direction.Y * t), 0), target.Height);
+			var newTarget = new Target(new CPos(Self.Position.X + (int)(direction.X * t), Self.Position.Y + (int)(direction.Y * t), target.Position.Z));
 
 			Self.PrepareAttack(newTarget);
 		}

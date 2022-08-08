@@ -47,12 +47,12 @@ namespace WarriorsSnuggery.Maps.Layers
 
 		public void ClearWall(Wall wall)
 		{
-			setWall(wall.TerrainPosition, wall.Height, false);
+			setWall(wall.TerrainPosition, wall.Type.Height, false);
 		}
 
 		public void SetWall(Wall wall)
 		{
-			setWall(wall.TerrainPosition, wall.Height, true);
+			setWall(wall.TerrainPosition, wall.Type.Height, true);
 		}
 
 		void setWall(MPos pos, int height, bool remove)
@@ -161,7 +161,7 @@ namespace WarriorsSnuggery.Maps.Layers
 				WorldRenderer.CheckVisibility(Camera.LookAt, Camera.DefaultZoom);
 		}
 
-		public void RevealShroudCircular(World world, byte team, CPos position, int height, int radius, bool ignoreLock = false)
+		public void RevealShroudCircular(World world, byte team, CPos position, int radius, bool ignoreLock = false)
 		{
 			if (RevealAll)
 				return;
@@ -175,7 +175,7 @@ namespace WarriorsSnuggery.Maps.Layers
 
 			var radiusSquared = radius * radius;
 
-			var triangles = getTriangles(world, position, height, shroudPos, radius);
+			var triangles = getTriangles(world, position, shroudPos, radius);
 
 			for (int x = shroudPos.X - radius; x < shroudPos.X + radius; x++)
 			{
@@ -236,7 +236,7 @@ namespace WarriorsSnuggery.Maps.Layers
 				CameraVisibility.ShroudRevealed(x / 2, y / 2);
 		}
 
-		List<Triangle> getTriangles(World world, CPos position, int height, MPos shroudPos, int radius)
+		List<Triangle> getTriangles(World world, CPos position, MPos shroudPos, int radius)
 		{
 			var outerRadius = MathF.Sqrt(2) * radius * 1024;
 
@@ -251,7 +251,7 @@ namespace WarriorsSnuggery.Maps.Layers
 				if (wall.Physics.IsEmpty || wall.Type.IsTransparent)
 					continue;
 
-				if (height > wall.Type.Height)
+				if (position.Z > wall.Type.Height)
 					continue;
 
 				var angleA = (position - wall.EndPointA).FlatAngle;

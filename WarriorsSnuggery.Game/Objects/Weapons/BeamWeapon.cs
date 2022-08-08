@@ -21,8 +21,6 @@ namespace WarriorsSnuggery.Objects.Weapons
 
 		[Save("OriginPosition")]
 		CPos originPos;
-		[Save("OriginHeight")]
-		int originHeight;
 
 		[Save("ImpactInterval")]
 		int impactInterval;
@@ -39,8 +37,7 @@ namespace WarriorsSnuggery.Objects.Weapons
 			impactInterval = projectile.ImpactInterval;
 			ray = new PhysicsRay(world)
 			{
-				Target = TargetPosition,
-				TargetHeight = TargetHeight
+				Target = TargetPosition
 			};
 
 			setPosition();
@@ -66,12 +63,10 @@ namespace WarriorsSnuggery.Objects.Weapons
 			projectile = (BeamProjectile)Type.Projectile;
 			ray = new PhysicsRay(world)
 			{
-				Target = TargetPosition,
-				TargetHeight = TargetHeight
+				Target = TargetPosition
 			};
 
 			originPos = init.Convert("OriginPosition", TargetPosition);
-			originHeight = init.Convert("OriginHeight", TargetHeight);
 			setPosition();
 
 			impactInterval = init.Convert("ImpactInterval", projectile.ImpactInterval);
@@ -109,7 +104,7 @@ namespace WarriorsSnuggery.Objects.Weapons
 
 		public override void Render()
 		{
-			var originGraphicPosition = originPos - new CPos(0, originHeight, -originHeight);
+			var originGraphicPosition = originPos - new CPos(0, originPos.Z, -originPos.Z);
 			var distance = originGraphicPosition - GraphicPosition;
 			var angle = distance.FlatAngle;
 			var fit = distance.FlatDist / renderabledistance;
@@ -157,7 +152,6 @@ namespace WarriorsSnuggery.Objects.Weapons
 			setPosition();
 
 			ray.Target = TargetPosition;
-			ray.TargetHeight = TargetHeight;
 
 			// calculate maxSteps (in tiles) for performance
 			var diffAngle = (TargetPosition - originPos).FlatAngle;
@@ -165,21 +159,14 @@ namespace WarriorsSnuggery.Objects.Weapons
 			var stepLimit = (int)Math.Ceiling((Math.Abs(diff.X) + Math.Abs(diff.Y)) / 1024f) + 2; // MaxSteps are calculated with the Manhattan distance and a margin of 2
 			ray.CalculateEnd(new[] { Origin.Physics }, maxSteps: stepLimit);
 			Position = ray.End;
-			Height = ray.EndHeight;
 
 			var dist = (originPos - Position).SquaredFlatDist;
 
 			if (dist > (Type.MaxRange * RangeModifier) * (Type.MaxRange * RangeModifier))
-			{
 				Position = clampToMaxRange(originPos, (originPos - TargetPosition).FlatAngle);
-				Height = 0;
-			}
 
 			if (projectile.Directed && dist > (originPos - TargetPosition).SquaredFlatDist)
-			{
 				Position = TargetPosition;
-				Height = 0;
-			}
 
 			var distance = originPos - Position;
 
@@ -191,17 +178,17 @@ namespace WarriorsSnuggery.Objects.Weapons
 				{
 					var angle = distance.FlatAngle;
 					var fit = distance.FlatDist / projectile.BeamParticleDistance;
-					var heightdiff = (originHeight - Height) / projectile.BeamParticleDistance;
+					var heightdiff = (originPos.Z - Position.Z) / projectile.BeamParticleDistance;
 
 					var offset = CPos.FromFlatAngle(angle, projectile.BeamParticleDistance);
 
 					for (int i = 0; i < fit; i++)
-						World.Add(projectile.BeamParticles.Create(World, originPos + new CPos(offset.X * i, offset.Y * i, 0), originHeight + heightdiff * i));
+						World.Add(projectile.BeamParticles.Create(World, originPos + new CPos(offset.X * i, offset.Y * i, heightdiff * i)));
 				}
 
 				if (impactInterval-- <= 0)
 				{
-					Detonate(new Target(Position, Height), false);
+					Detonate(new Target(Position), false);
 					impactInterval = projectile.ImpactInterval;
 				}
 			}
@@ -218,17 +205,14 @@ namespace WarriorsSnuggery.Objects.Weapons
 		void setPosition()
 		{
 			if (Origin != null)
-			{
-				originHeight = Origin.Weapon.WeaponOffsetHeight;
 				originPos = Origin.Weapon.WeaponOffsetPosition;
-			}
+
 			ray.Start = originPos;
-			ray.StartHeight = originHeight;
 		}
 
 		public void Move(CPos target, int height)
 		{
-			TargetHeight = height;
+			TargetPosition = new CPos(target.X, target.Y, height);
 
 			if (Position == target)
 				return;

@@ -20,11 +20,11 @@ namespace WarriorsSnuggery.Objects.Particles
 
 		public PointParticleSpawner(List<TextNode> nodes) : base(nodes) { }
 
-		public override Particle[] Create(World world, CPos position, int height)
+		public override Particle[] Create(World world, CPos position)
 		{
 			var particles = new Particle[Count];
 			for (int i = 0; i < Count; i++)
-				particles[i] = ParticleCache.Create(world, Type, position + Offset, height + Offset.Z, InitialVelocity);
+				particles[i] = ParticleCache.Create(world, Type, position + Offset, InitialVelocity);
 
 			return particles;
 		}

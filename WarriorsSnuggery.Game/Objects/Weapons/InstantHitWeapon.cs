@@ -17,7 +17,7 @@ namespace WarriorsSnuggery.Objects.Weapons
 			{
 				var angle = diff.FlatAngle;
 				TargetPosition = clampToMaxRange(Position, angle);
-				Target = new Target(TargetPosition, 0);
+				Target = new Target(TargetPosition);
 			}
 		}
 
@@ -40,16 +40,14 @@ namespace WarriorsSnuggery.Objects.Weapons
 			var ray = new PhysicsRay(World)
 			{
 				Start = Position,
-				StartHeight = Height,
 				Target = Target.Position,
-				TargetHeight = Target.Height
 			};
 			ray.CalculateEnd(ignoreActors: true, onlyToTarget: true);
 
-			if ((ray.End - Position).Dist < (Position - Target.Position).Dist)
-				Detonate(new Target(ray.End, ray.EndHeight));
+			if ((ray.End - Position).SquaredFlatDist < (Position - Target.Position).SquaredFlatDist)
+				Detonate(new Target(ray.End));
 			else if (projectile.Splash)
-				Detonate(new Target(Target.Position, Target.Height));
+				Detonate(new Target(Target.Position));
 			else
 				Detonate(Target);
 		}

@@ -12,7 +12,6 @@ namespace WarriorsSnuggery.Objects.Weapons
 		public readonly WeaponType Type;
 
 		public readonly CPos Position;
-		public readonly int Height;
 
 		public WeaponInit(uint id, List<TextNode> nodes, int mapFormat)
 		{
@@ -21,7 +20,8 @@ namespace WarriorsSnuggery.Objects.Weapons
 
 			Type = Convert<WeaponType>("Type", null);
 			Position = Convert("Position", CPos.Zero);
-			Height = mapFormat > 1 ? Position.Z : Convert("Height", 0);
+			if (mapFormat < 2)
+				Position = new CPos(Position.X, Position.Y, Convert("Height", 0));
 		}
 
 		public T Convert<T>(string rule, T @default)

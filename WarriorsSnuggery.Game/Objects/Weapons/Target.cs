@@ -25,24 +25,10 @@ namespace WarriorsSnuggery.Objects.Weapons
 		}
 		readonly CPos position;
 
-		public int Height
-		{
-			get
-			{
-				if (Type == TargetType.POSITION)
-					return height;
-				else
-					return Actor.Height;
-			}
-		}
-		readonly int height;
-
 		public readonly Actor Actor;
-
-		public Target(CPos target, int height)
+		public Target(CPos target)
 		{
 			position = target;
-			this.height = height;
 			Type = TargetType.POSITION;
 		}
 

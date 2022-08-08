@@ -55,6 +55,11 @@ namespace WarriorsSnuggery
 			return new MPos(round(X), round(Y));
 		}
 
+		public CPos Flat()
+		{
+			return new CPos(X, Y, 0);
+		}
+
 		int round(int value)
 		{
 			var ans = value / Constants.TileSize;

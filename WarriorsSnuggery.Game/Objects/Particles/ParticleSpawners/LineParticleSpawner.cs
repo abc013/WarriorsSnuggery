@@ -26,7 +26,7 @@ namespace WarriorsSnuggery.Objects.Particles
 
 		public LineParticleSpawner(List<TextNode> nodes) : base(nodes) { }
 
-		public override Particle[] Create(World world, CPos position, int height)
+		public override Particle[] Create(World world, CPos position)
 		{
 			var particles = new Particle[Count];
 			var length = Radius / (float)Count;
@@ -35,7 +35,7 @@ namespace WarriorsSnuggery.Objects.Particles
 				var angle = WarriorsSnuggery.Angle.ToArc(Angle);
 				var pos = CPos.FromFlatAngle(angle, length * i);
 
-				particles[i] = ParticleCache.Create(world, Type, position + pos + Offset, height + Offset.Z, InitialVelocity);
+				particles[i] = ParticleCache.Create(world, Type, position + pos + Offset, InitialVelocity);
 			}
 			return particles;
 		}
