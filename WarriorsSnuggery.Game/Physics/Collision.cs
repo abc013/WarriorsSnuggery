@@ -6,13 +6,11 @@ namespace WarriorsSnuggery.Physics
 	{
 		public readonly float Angle;
 		public readonly CPos Position;
-		public readonly int Height;
 
-		public Collision(float angle, CPos position, int height = -1)
+		public Collision(float angle, CPos position)
 		{
 			Angle = angle;
 			Position = position;
-			Height = height;
 		}
 
 		public static bool CheckCollision(SimplePhysics a, SimplePhysics b, out Collision collision)
@@ -25,7 +23,7 @@ namespace WarriorsSnuggery.Physics
 			if (a.IsEmpty || b.IsEmpty)
 				return false;
 
-			if (Math.Abs(a.Height - b.Height) >= a.Boundaries.Z + b.Boundaries.Z)
+			if (Math.Abs(a.Position.Z - b.Position.Z) >= a.Boundaries.Z + b.Boundaries.Z)
 				return false;
 
 			// Collision between lines are not considered

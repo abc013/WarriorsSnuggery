@@ -14,13 +14,11 @@ namespace WarriorsSnuggery.Physics
 
 		public PhysicsSector[] Sectors = new PhysicsSector[0];
 
-		public CPos Position => positionable.Position + new CPos(type.Offset.X, type.Offset.Y, 0);
-		public int Height => positionable.Position.Z + type.Offset.Z;
-
-		public bool IsEmpty => type.Shape == Shape.NONE;
-
+		public CPos Position => positionable.Position + type.Offset;
 		public CPos Boundaries => type.Boundaries;
 		public Shape Shape => type.Shape;
+
+		public bool IsEmpty => type.Shape == Shape.NONE;
 
 		public SimplePhysics(PositionableObject positionable, SimplePhysicsType type)
 		{

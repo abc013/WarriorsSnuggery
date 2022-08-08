@@ -181,7 +181,7 @@ namespace WarriorsSnuggery.Objects.Actors.Parts
 				if (beam.Disposed)
 					beam = null;
 				else
-					beam.Move(Target.Position, Target.Position.Z);
+					beam.Move(Target.Position);
 			}
 		}
 

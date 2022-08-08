@@ -35,10 +35,7 @@ namespace WarriorsSnuggery.Objects.Weapons
 		{
 			projectile = (BeamProjectile)type.Projectile;
 			impactInterval = projectile.ImpactInterval;
-			ray = new PhysicsRay(world)
-			{
-				Target = TargetPosition
-			};
+			ray = new PhysicsRay(world);
 
 			setPosition();
 
@@ -61,10 +58,7 @@ namespace WarriorsSnuggery.Objects.Weapons
 		public BeamWeapon(World world, WeaponInit init) : base(world, init)
 		{
 			projectile = (BeamProjectile)Type.Projectile;
-			ray = new PhysicsRay(world)
-			{
-				Target = TargetPosition
-			};
+			ray = new PhysicsRay(world);
 
 			originPos = init.Convert("OriginPosition", TargetPosition);
 			setPosition();
@@ -104,7 +98,7 @@ namespace WarriorsSnuggery.Objects.Weapons
 
 		public override void Render()
 		{
-			var originGraphicPosition = originPos - new CPos(0, originPos.Z, -originPos.Z);
+			var originGraphicPosition = originPos + new CPos(0, -originPos.Z, 0);
 			var distance = originGraphicPosition - GraphicPosition;
 			var angle = distance.FlatAngle;
 			var fit = distance.FlatDist / renderabledistance;
@@ -178,12 +172,12 @@ namespace WarriorsSnuggery.Objects.Weapons
 				{
 					var angle = distance.FlatAngle;
 					var fit = distance.FlatDist / projectile.BeamParticleDistance;
-					var heightdiff = (originPos.Z - Position.Z) / projectile.BeamParticleDistance;
+					var heightFit = distance.Z / projectile.BeamParticleDistance;
 
 					var offset = CPos.FromFlatAngle(angle, projectile.BeamParticleDistance);
 
 					for (int i = 0; i < fit; i++)
-						World.Add(projectile.BeamParticles.Create(World, originPos + new CPos(offset.X * i, offset.Y * i, heightdiff * i)));
+						World.Add(projectile.BeamParticles.Create(World, originPos + new CPos(offset.X * i, offset.Y * i, heightFit * i)));
 				}
 
 				if (impactInterval-- <= 0)
@@ -210,13 +204,8 @@ namespace WarriorsSnuggery.Objects.Weapons
 			ray.Start = originPos;
 		}
 
-		public void Move(CPos target, int height)
+		public void Move(CPos target)
 		{
-			TargetPosition = new CPos(target.X, target.Y, height);
-
-			if (Position == target)
-				return;
-
 			var length = (originPos - target).FlatDist;
 
 			var oldangle = (originPos - TargetPosition).FlatAngle;
@@ -226,7 +215,8 @@ namespace WarriorsSnuggery.Objects.Weapons
 
 			diff = Math.Clamp(-diff, -projectile.ArcTurnSpeed, projectile.ArcTurnSpeed);
 
-			TargetPosition = originPos + CPos.FromFlatAngle(oldangle + diff, length);
+			var newTarget = originPos.Flat() + CPos.FromFlatAngle(oldangle + diff, length);
+			TargetPosition = newTarget + new CPos(0, 0, target.Z);
 		}
 
 		public override List<string> Save()

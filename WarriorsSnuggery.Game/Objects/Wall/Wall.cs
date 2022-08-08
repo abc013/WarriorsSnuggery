@@ -31,8 +31,8 @@ namespace WarriorsSnuggery.Objects
 
 		readonly World world;
 
-		public CPos EndPointA => Physics.Position - new CPos(Physics.Boundaries.X, Physics.Boundaries.Y, 0);
-		public CPos EndPointB => Physics.Position + new CPos(Physics.Boundaries.X, Physics.Boundaries.Y, 0);
+		public CPos EndPointA => Physics.Position - Physics.Boundaries;
+		public CPos EndPointB => Physics.Position + Physics.Boundaries;
 
 		BatchObject renderable;
 		Color color = Color.White;

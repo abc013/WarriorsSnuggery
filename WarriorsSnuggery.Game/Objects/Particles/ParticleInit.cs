@@ -12,7 +12,6 @@ namespace WarriorsSnuggery.Objects.Particles
 
 		public readonly ParticleType Type;
 		public readonly CPos Position;
-		public readonly int Height;
 		public readonly CPos InitialVelocity;
 
 		public ParticleInit(ParticleType type, CPos position, CPos initialVelocity = default)

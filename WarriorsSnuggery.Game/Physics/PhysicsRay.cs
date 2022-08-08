@@ -62,8 +62,8 @@ namespace WarriorsSnuggery.Physics
 			{
 				var height = calculateHeight(end);
 
-				// Smart as we are, we use Z Boundaries to add them onto the height.
-				if (height <= physics.Height + physics.Boundaries.Z * 2 && height >= physics.Height)
+				// TODO: something is fucked with the z boundary calculations (TL;DR Boundaries.Z too small in first part of check, doubling solves the issue. Fix!
+				if (height <= physics.Position.Z + physics.Boundaries.Z && height >= physics.Position.Z - physics.Boundaries.Z)
 				{
 					// HACK for damage: Don't hit the wall directly
 					closestIntersect = end.Flat() + new CPos(0, 0, height) - new CPos(sx * 4, sy * 4, 0);
