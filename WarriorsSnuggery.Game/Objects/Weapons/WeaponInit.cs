@@ -14,14 +14,14 @@ namespace WarriorsSnuggery.Objects.Weapons
 		public readonly CPos Position;
 		public readonly int Height;
 
-		public WeaponInit(uint id, List<TextNode> nodes)
+		public WeaponInit(uint id, List<TextNode> nodes, int mapFormat)
 		{
 			ID = id;
 			Nodes = nodes;
 
 			Type = Convert<WeaponType>("Type", null);
 			Position = Convert("Position", CPos.Zero);
-			Height = Convert("Height", 0);
+			Height = mapFormat > 1 ? Position.Z : Convert("Height", 0);
 		}
 
 		public T Convert<T>(string rule, T @default)

@@ -43,15 +43,15 @@ namespace WarriorsSnuggery.Objects.Actors
 			Nodes = new List<TextNode>();
 		}
 
-		// MapFormat 1
-		public ActorInit(uint id, List<TextNode> nodes)
+		// MapFormat 1 & 2
+		public ActorInit(uint id, List<TextNode> nodes, int mapFormat)
 		{
 			ID = id;
 			Nodes = nodes;
 
 			Type = Convert<ActorType>("Type", null);
 			Position = Convert("Position", CPos.Zero);
-			Height = Convert("Height", 0);
+			Height = mapFormat > 1 ? Position.Z : Convert("Height", 0);
 
 			Team = Convert("Team", (byte)0);
 			IsPlayer = Convert("IsPlayer", false);

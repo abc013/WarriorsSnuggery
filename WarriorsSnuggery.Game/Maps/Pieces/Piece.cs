@@ -56,7 +56,7 @@ namespace WarriorsSnuggery.Maps.Pieces
 							{
 								var id = uint.Parse(actor.Key);
 
-								var init = MapFormat == 0 ? new ActorInit(id, actor) : new ActorInit(id, actor.Children);
+								var init = MapFormat == 0 ? new ActorInit(id, actor) : new ActorInit(id, actor.Children, MapFormat);
 
 								if (init.Type != null)
 									actors.Add(init);
@@ -77,7 +77,7 @@ namespace WarriorsSnuggery.Maps.Pieces
 							try
 							{
 								var id = uint.Parse(weapon.Key);
-								var init = new WeaponInit(id, weapon.Children);
+								var init = new WeaponInit(id, weapon.Children, MapFormat);
 
 								if (init.Type != null)
 									weapons.Add(init);
@@ -98,7 +98,7 @@ namespace WarriorsSnuggery.Maps.Pieces
 						{
 							try
 							{
-								var init = new ParticleInit(particle.Children);
+								var init = new ParticleInit(particle.Children, MapFormat);
 
 								if (init.Type != null)
 									particles.Add(init);

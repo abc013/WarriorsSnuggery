@@ -1,5 +1,4 @@
-﻿using System;
-using WarriorsSnuggery.Graphics;
+﻿using WarriorsSnuggery.Graphics;
 
 namespace WarriorsSnuggery.Objects
 {
@@ -21,22 +20,11 @@ namespace WarriorsSnuggery.Objects
 		}
 		bool visible = true;
 
-		[Save, DefaultValue(0)]
 		public virtual int Height
 		{
-			get => height;
-			set
-			{
-				height = value;
-
-				// make it impossible to be underground.
-				if (height < 0)
-					height = 0;
-
-				Renderable?.SetPosition(GraphicPosition);
-			}
+			get => Position.Z;
+			set => Position = new CPos(Position.X, Position.Y, value);
 		}
-		int height;
 
 		[Save]
 		public virtual CPos Position
@@ -44,8 +32,9 @@ namespace WarriorsSnuggery.Objects
 			get => position;
 			set
 			{
-				if (value.Z != 0)
-					throw new InvalidOperationException($"PositionableObject: Position is not allowed to have any non-zero z values.");
+				// make it impossible to be underground.
+				if (value.Z < 0)
+					value = new CPos(value.X, value.Y, 0);
 
 				position = value;
 
@@ -67,7 +56,7 @@ namespace WarriorsSnuggery.Objects
 		int zOffset;
 
 		public virtual CPos GraphicPositionWithoutHeight => position + new CPos(0, 0, zOffset);
-		public virtual CPos GraphicPosition => GraphicPositionWithoutHeight + new CPos(0, -height, height);
+		public virtual CPos GraphicPosition => GraphicPositionWithoutHeight + new CPos(0, -position.Z, position.Z);
 
 		public virtual VAngle Rotation
 		{
