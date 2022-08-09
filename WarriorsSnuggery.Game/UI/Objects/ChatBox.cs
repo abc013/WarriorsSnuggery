@@ -12,20 +12,20 @@ namespace WarriorsSnuggery.UI.Objects
 		public bool MouseOnChat => ContainsMouse;
 		public bool Visible;
 
-		public ChatBox(CPos position)
+		public ChatBox(UIPos position)
 		{
-			panel = new TextPanel(new MPos(8120, 2048), FontManager.Default, "stone") { Position = position };
+			panel = new TextPanel(new UIPos(8120, 2048), FontManager.Default, "stone") { Position = position };
 
 			input = new TextBox("wooden", 45)
 			{
-				Position = position + new CPos(-800, 2048 + 512, 0),
+				Position = position + new UIPos(-800, 2048 + 512),
 				OnEnter = SendText,
 				EmptyText = "Type here..."
 			};
-			send = new Button("send", "wooden", SendText) { Position = position + new CPos(8120 - 800, 2048 + 512, 0) };
+			send = new Button("send", "wooden", SendText) { Position = position + new UIPos(8120 - 800, 2048 + 512) };
 
-			Position += new CPos(0, 5632, 0);
-			Bounds = new MPos(8120 + 512, 4096);
+			Position += new UIPos(0, 5632);
+			Bounds = new UIPos(8120 + 512, 4096);
 			SelectableBounds = Bounds;
 		}
 

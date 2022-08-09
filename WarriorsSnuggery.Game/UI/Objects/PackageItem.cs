@@ -8,15 +8,15 @@ namespace WarriorsSnuggery.UI.Objects
 		readonly int width;
 		readonly int imagePathWidth;
 		int currentImageDelta;
-		public override CPos Position
+		public override UIPos Position
 		{
 			get => base.Position;
 			set
 			{
 				base.Position = value;
-				content.Position = value - new CPos(width - 256, 512 - FontManager.Default.MaxHeight, 0);
-				outdated.Position = value + new CPos(width - 256, 0, 0);
-				image.Position = value + new CPos(currentImageDelta, 0, 0);
+				content.Position = value - new UIPos(width - 256, 512 - FontManager.Default.MaxHeight);
+				outdated.Position = value + new UIPos(width - 256, 0);
+				image.Position = value + new UIPos(currentImageDelta, 0);
 			}
 		}
 
@@ -26,7 +26,7 @@ namespace WarriorsSnuggery.UI.Objects
 		readonly UIText outdated;
 		readonly UIImage image;
 
-		public PackageItem(Package package, int width, Action action) : base(new BatchObject(0f), new MPos(width, PackageList.ItemHeight), package.Name + Color.Grey + " | " + package.Version, new[] { Color.Grey + package.Description }, action)
+		public PackageItem(Package package, int width, Action action) : base(new BatchObject(0f), new UIPos(width, PackageList.ItemHeight), package.Name + Color.Grey + " | " + package.Version, new[] { Color.Grey + package.Description }, action)
 		{
 			this.width = width;
 			imagePathWidth = width - 1024;
@@ -50,7 +50,7 @@ namespace WarriorsSnuggery.UI.Objects
 			};
 			currentImageDelta = width - 1024;
 
-			Position = CPos.Zero;
+			Position = UIPos.Zero;
 		}
 
 		public override void Render()
@@ -61,7 +61,7 @@ namespace WarriorsSnuggery.UI.Objects
 				currentImageDelta = Position.X - image.Position.X;
 				var delta = Math.Abs(currentImageDelta / (float)imagePathWidth);
 				var speed = Math.Max(4, (int)((1f - delta * delta) * 256));
-				image.Position = new CPos(Math.Clamp(image.Position.X + (ContainsMouse ? -speed : speed), Position.X - imagePathWidth, Position.X + imagePathWidth), image.Position.Y, image.Position.Z);
+				image.Position = new UIPos(Math.Clamp(image.Position.X + (ContainsMouse ? -speed : speed), Position.X - imagePathWidth, Position.X + imagePathWidth), image.Position.Y);
 				image.Rotation = new VAngle(0, 0, Math.Clamp(image.Rotation.Z + (ContainsMouse ? -speed : speed), -delta * Angle.MaxRange, 0));
 				image.Render();
 				outdated.Render();

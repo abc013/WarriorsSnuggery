@@ -64,7 +64,7 @@ namespace WarriorsSnuggery.Graphics
 			return vertices;
 		}
 
-		public static Vertex[] UIPanel(Texture texture, MPos bounds)
+		public static Vertex[] UIPanel(Texture texture, UIPos bounds)
 		{
 			var color = Color.White;
 			var size = new Vector(bounds.X / 1024f, bounds.Y / 1024f, 0);

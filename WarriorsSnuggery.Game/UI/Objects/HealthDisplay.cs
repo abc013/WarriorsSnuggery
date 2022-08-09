@@ -5,7 +5,7 @@ namespace WarriorsSnuggery.UI.Objects
 {
 	public class HealthDisplay : Panel
 	{
-		public override CPos Position
+		public override UIPos Position
 		{
 			get => base.Position;
 			set
@@ -48,7 +48,7 @@ namespace WarriorsSnuggery.UI.Objects
 		const int maxTick = 120;
 		int tick;
 
-		public HealthDisplay(Game game) : base(new MPos(712 + 128, 512), PanelCache.Types["wooden"])
+		public HealthDisplay(Game game) : base(new UIPos(712 + 128, 512), PanelCache.Types["wooden"])
 		{
 			this.game = game;
 
@@ -86,7 +86,7 @@ namespace WarriorsSnuggery.UI.Objects
 			var x = -512 + 512 * (i % 3);
 			var y = hearts.Count > 3 ? -256 + 512 * (i / 3) : 0;
 
-			hearts[i].SetPosition(Position + new CPos(x, y, 0));
+			hearts[i].SetPosition(Position + new UIPos(x, y));
 		}
 
 		public override void Render()

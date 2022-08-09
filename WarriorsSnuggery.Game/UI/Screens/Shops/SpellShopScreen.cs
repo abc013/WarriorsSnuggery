@@ -18,13 +18,13 @@ namespace WarriorsSnuggery.UI.Screens
 		public SpellShopScreen(Game game) : base("Spell Shop")
 		{
 			this.game = game;
-			Title.Position = new CPos(0, -4096, 0);
+			Title.Position = new UIPos(0, -4096);
 
-			Add(new Button("Resume", "wooden", () => game.ShowScreen(ScreenType.DEFAULT, false)) { Position = new CPos(0, 6144, 0) });
+			Add(new Button("Resume", "wooden", () => game.ShowScreen(ScreenType.DEFAULT, false)) { Position = new UIPos(0, 6144) });
 
-			Add(new Panel(new MPos(8 * 1024, 3 * 1024), "wooden") { Position = new CPos(0, 256, 0) });
+			Add(new Panel(new UIPos(8 * 1024, 3 * 1024), "wooden") { Position = new UIPos(0, 256) });
 
-			money = new MoneyDisplay(game) { Position = new CPos(Left + 2048, Bottom - 1024, 0) };
+			money = new MoneyDisplay(game) { Position = new UIPos(Left + 2048, Bottom - 1024) };
 
 			var active = UISpriteManager.Get("UI_activeConnection");
 			var inactive = UISpriteManager.Get("UI_inactiveConnection");
@@ -97,7 +97,7 @@ namespace WarriorsSnuggery.UI.Screens
 
 	class SpellNode : Panel
 	{
-		public override CPos Position
+		public override UIPos Position
 		{
 			get => base.Position;
 			set
@@ -118,7 +118,7 @@ namespace WarriorsSnuggery.UI.Screens
 		bool available;
 		bool unlocked;
 
-		public SpellNode(SpellCasterType type, Game game, SpellShopScreen screen) : base(new MPos((int)(1024 * 8 * Constants.PixelMultiplier), (int)(1024 * 8 * Constants.PixelMultiplier)), "stone", true)
+		public SpellNode(SpellCasterType type, Game game, SpellShopScreen screen) : base(new UIPos((int)(1024 * 8 * Constants.PixelMultiplier), (int)(1024 * 8 * Constants.PixelMultiplier)), "stone", true)
 		{
 			this.type = type;
 			this.game = game;

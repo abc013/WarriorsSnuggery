@@ -6,13 +6,13 @@ namespace WarriorsSnuggery.UI.Screens
 {
 	public abstract class Screen : ITickRenderable
 	{
-		protected static int Width => (int)(WindowInfo.UnitWidth * 1024);
-		protected const int Height = (int)(WindowInfo.UnitHeight * 1024);
+		protected static int Width => (int)(WindowInfo.UnitWidth * Constants.TileSize);
+		protected const int Height = (int)(WindowInfo.UnitHeight * Constants.TileSize);
 
-		protected static int Right => (int)(WindowInfo.UnitWidth * 512);
+		protected static int Right => (int)(WindowInfo.UnitWidth * Constants.TileSize / 2);
 		protected static int Left => -Right;
 
-		protected const int Top = -(int)(WindowInfo.UnitHeight * 512);
+		protected const int Top = -(int)(WindowInfo.UnitHeight * Constants.TileSize / 2);
 		protected const int Bottom = -Top;
 
 		protected readonly UIText Title;
@@ -28,7 +28,7 @@ namespace WarriorsSnuggery.UI.Screens
 			Title = new UIText(FontManager.Header, TextOffset.MIDDLE) { Scale = 1.2f };
 			Title.SetText(title);
 
-			this.darkness = new Color(0, 0, 0, darkness);
+			this.darkness = Color.Black.WithAlpha(darkness);
 		}
 
 		public virtual bool CursorOnUI()

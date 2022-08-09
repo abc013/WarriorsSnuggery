@@ -8,7 +8,7 @@ namespace WarriorsSnuggery.UI.Objects
 		const int width = 1024;
 		const int height = 256;
 
-		public override CPos Position
+		public override UIPos Position
 		{
 			get => base.Position;
 			set
@@ -35,15 +35,15 @@ namespace WarriorsSnuggery.UI.Objects
 
 		public Keys Key { get; private set; }
 
-		public KeyboardButton(Keys key, PanelType type) : base(new MPos(width + 512, height), type)
+		public KeyboardButton(Keys key, PanelType type) : base(new UIPos(width + 512, height), type)
 		{
 			Key = key;
 
 			keyDisplay = new UIText(FontManager.Default, TextOffset.MIDDLE);
 			keyDisplay.SetText(key);
 
-			Bounds = new MPos(width + 512, height);
-			SelectableBounds = new MPos(width, height);
+			Bounds = new UIPos(width + 512, height);
+			SelectableBounds = new UIPos(width, height);
 		}
 
 		public override void Render()

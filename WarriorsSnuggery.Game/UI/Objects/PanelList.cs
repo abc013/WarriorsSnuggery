@@ -7,7 +7,7 @@ namespace WarriorsSnuggery.UI.Objects
 {
 	public class PanelList : Panel, IDisableTooltip
 	{
-		public override CPos Position
+		public override UIPos Position
 		{
 			get => base.Position;
 			set
@@ -20,8 +20,8 @@ namespace WarriorsSnuggery.UI.Objects
 
 		public readonly List<PanelListItem> Container = new List<PanelListItem>();
 
-		public readonly MPos Size;
-		protected readonly MPos ItemSize;
+		public readonly UIPos Size;
+		protected readonly UIPos ItemSize;
 
 		readonly BatchObject highlightRenderable;
 		protected (int x, int y) HighlightedPos = (-1, -1);
@@ -34,11 +34,11 @@ namespace WarriorsSnuggery.UI.Objects
 
 		int currentScroll;
 
-		public PanelList(MPos size, MPos itemSize, string type, bool autoHighlight = true) : this(size, itemSize, PanelCache.Types[type], autoHighlight) { }
+		public PanelList(UIPos size, UIPos itemSize, string type, bool autoHighlight = true) : this(size, itemSize, PanelCache.Types[type], autoHighlight) { }
 
-		public PanelList(MPos size, MPos itemSize, PanelType type, bool autoHighlight = true) : base(size, type)
+		public PanelList(UIPos size, UIPos itemSize, PanelType type, bool autoHighlight = true) : base(size, type)
 		{
-			Size = new MPos((int)Math.Floor(size.X / (float)itemSize.X), (int)Math.Floor(size.Y / (float)itemSize.Y));
+			Size = new UIPos((int)Math.Floor(size.X / (float)itemSize.X), (int)Math.Floor(size.Y / (float)itemSize.Y));
 			ItemSize = itemSize;
 
 			this.autoHighlight = autoHighlight;
@@ -53,7 +53,7 @@ namespace WarriorsSnuggery.UI.Objects
 			o.Position = Position + pos;
 		}
 
-		CPos getOffset(int pos)
+		UIPos getOffset(int pos)
 		{
 			var x = pos % Size.X;
 			var y = pos / Size.X;
@@ -61,12 +61,12 @@ namespace WarriorsSnuggery.UI.Objects
 			return getOffset(x, y);
 		}
 
-		CPos getOffset(int x, int y)
+		UIPos getOffset(int x, int y)
 		{
 			var posX = (x * 2 + 1) * ItemSize.X - SelectableBounds.X;
 			var posY = ((y - currentScroll) * 2 + 1) * ItemSize.Y - SelectableBounds.Y;
 
-			return new CPos(posX, posY, 0);
+			return new UIPos(posX, posY);
 		}
 
 		PanelListItem getItem(int x, int y)
@@ -164,7 +164,7 @@ namespace WarriorsSnuggery.UI.Objects
 					pos += Position;
 
 					var radius = (int)(MathF.Sin(Window.GlobalTick / 32f) * 32) + 64;
-					ColorManager.DrawGlowingFilledLineRect(pos - new CPos(ItemSize.X, ItemSize.Y, 0), pos + new CPos(ItemSize.X, ItemSize.Y, 0), 16, Color.White, radius, 8);
+					ColorManager.DrawGlowingFilledLineRect(pos - ItemSize, pos + ItemSize, 16, Color.White, radius, 8);
 				}
 			}
 		}

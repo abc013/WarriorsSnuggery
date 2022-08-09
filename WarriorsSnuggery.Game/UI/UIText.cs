@@ -10,7 +10,7 @@ namespace WarriorsSnuggery.UI
 		public Font Font => text.Font;
 		public string Text => text.Text;
 
-		public override CPos Position
+		public override UIPos Position
 		{
 			get => base.Position;
 			set
@@ -92,7 +92,7 @@ namespace WarriorsSnuggery.UI
 		{
 			var (width, height) = Font.Measure(Text);
 
-			Bounds = new MPos(width / 2, height);
+			Bounds = new UIPos(width / 2, height);
 		}
 
 		public override void Tick() => text.Tick();
@@ -102,15 +102,15 @@ namespace WarriorsSnuggery.UI
 		{
 			var position = Position;
 			if (text.Offset == TextOffset.LEFT)
-				position += new CPos(Bounds.X, 0, 0);
+				position += new UIPos(Bounds.X, 0);
 			else if (text.Offset == TextOffset.RIGHT)
-				position -= new CPos(Bounds.X, 0, 0);
+				position -= new UIPos(Bounds.X, 0);
 
-			if (Bounds != MPos.Zero)
-				ColorManager.DrawLineQuad(position, new CPos(Bounds.X, Bounds.Y, 0), Color.Red);
+			if (!Bounds.IsEmpty())
+				ColorManager.DrawLineQuad(position, Bounds, Color.Red);
 
-			if (SelectableBounds != MPos.Zero)
-				ColorManager.DrawLineQuad(position, new CPos(SelectableBounds.X, SelectableBounds.Y, 0), Color.Blue);
+			if (!SelectableBounds.IsEmpty())
+				ColorManager.DrawLineQuad(position, SelectableBounds, Color.Blue);
 		}
 	}
 }

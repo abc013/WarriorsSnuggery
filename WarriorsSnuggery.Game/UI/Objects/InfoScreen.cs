@@ -14,11 +14,11 @@ namespace WarriorsSnuggery.UI.Objects
 			var corner = (int)(WindowInfo.UnitWidth * 512) - 128;
 			version = new UIText(FontManager.Default, TextOffset.RIGHT)
 			{
-				Position = new CPos(corner, 6192, 0),
+				Position = new UIPos(corner, 6192),
 				Color = Color.Yellow
 			};
 			version.SetText(Settings.Version);
-			debug = new UIText(FontManager.Default, TextOffset.RIGHT) { Position = new CPos(corner, 6692, 0) };
+			debug = new UIText(FontManager.Default, TextOffset.RIGHT) { Position = new UIPos(corner, 6692) };
 		}
 
 		public void Tick()

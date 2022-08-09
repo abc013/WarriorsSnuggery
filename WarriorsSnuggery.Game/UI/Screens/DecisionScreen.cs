@@ -16,7 +16,7 @@ namespace WarriorsSnuggery.UI.Screens
 
 		public DecisionScreen(Game game) : base("Are you sure?")
 		{
-			Title.Position = new CPos(0, -2048, 0);
+			Title.Position = new UIPos(0, -2048);
 
 			text = new UIText(FontManager.Default, TextOffset.MIDDLE);
 			Add(text);
@@ -32,8 +32,8 @@ namespace WarriorsSnuggery.UI.Screens
 			Remove(decline);
 			Remove(agree);
 
-			decline = new Button("Nope", "wooden", onDecline) { Position = new CPos(-2048, 1024, 0) };
-			agree = new Button("Yup", "wooden", onAgree) { Position = new CPos(2048, 1024, 0) };
+			decline = new Button("Nope", "wooden", onDecline) { Position = new UIPos(-2048, 1024) };
+			agree = new Button("Yup", "wooden", onAgree) { Position = new UIPos(2048, 1024) };
 
 			Add(decline);
 			Add(agree);

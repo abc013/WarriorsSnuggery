@@ -16,13 +16,13 @@ namespace WarriorsSnuggery.UI.Objects
 	{
 		const int margin = UIUtils.TextMargin;
 
-		public override CPos Position
+		public override UIPos Position
 		{
 			get => base.Position;
 			set
 			{
 				base.Position = value;
-				textline.Position = value + new CPos(margin - SelectableBounds.X, 0, 0);
+				textline.Position = value + new UIPos(margin - SelectableBounds.X, 0);
 			}
 		}
 
@@ -68,12 +68,12 @@ namespace WarriorsSnuggery.UI.Objects
 			MaximumLength = maximumLength;
 			Type = type;
 
-			textline = new UIText(FontManager.Default, TextOffset.LEFT) { Position = new CPos(margin - SelectableBounds.X, 0, 0) };
+			textline = new UIText(FontManager.Default, TextOffset.LEFT) { Position = new UIPos(margin - SelectableBounds.X, 0) };
 		}
 
-		static MPos calculateBounds(int maximumLength)
+		static UIPos calculateBounds(int maximumLength)
 		{
-			return new MPos((2 * margin + (FontManager.Default.MaxWidth + FontManager.Default.WidthGap) * maximumLength) / 2, margin / 2 + FontManager.Default.MaxHeight);
+			return new UIPos((2 * margin + (FontManager.Default.MaxWidth + FontManager.Default.WidthGap) * maximumLength) / 2, margin / 2 + FontManager.Default.MaxHeight);
 		}
 
 		public override void Render()

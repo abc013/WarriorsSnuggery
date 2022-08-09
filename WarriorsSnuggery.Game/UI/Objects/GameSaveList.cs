@@ -8,7 +8,7 @@
 
 		public GameSaveList(int height, string typeName) : this(height, PanelCache.Types[typeName]) { }
 
-		public GameSaveList(int height, PanelType type) : base(new MPos(SaveWidth, height), new MPos(SaveWidth, 1024), type)
+		public GameSaveList(int height, PanelType type) : base(new UIPos(SaveWidth, height), new UIPos(SaveWidth, 1024), type)
 		{
 			Refresh();
 		}

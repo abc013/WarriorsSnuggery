@@ -3,14 +3,14 @@ using WarriorsSnuggery.Graphics;
 
 namespace WarriorsSnuggery.UI
 {
-	public class UIObject : IPositionable, ITickRenderable
+	public class UIObject : ITickRenderable
 	{
-		public virtual CPos Position
+		public virtual UIPos Position
 		{
 			get => position;
 			set => position = value;
 		}
-		CPos position;
+		UIPos position;
 
 		public virtual VAngle Rotation
 		{
@@ -33,9 +33,11 @@ namespace WarriorsSnuggery.UI
 		}
 		Color color = Color.White;
 
-		public virtual MPos Bounds { get; protected set; }
+		public virtual UIPos Bounds { get => bounds; set => bounds = value; }
+		UIPos bounds;
 
-		protected MPos SelectableBounds;
+		public UIPos SelectableBounds { get => selectableBounds; set => selectableBounds = value; }
+		UIPos selectableBounds;
 
 		protected bool ContainsMouse;
 
@@ -45,11 +47,11 @@ namespace WarriorsSnuggery.UI
 
 		public virtual void DebugRender()
 		{
-			if (Bounds != MPos.Zero)
-				ColorManager.DrawLineQuad(Position, new CPos(Bounds.X, Bounds.Y, 0), Color.Red);
+			if (!Bounds.IsEmpty())
+				ColorManager.DrawLineQuad(Position, Bounds, Color.Red);
 
-			if (SelectableBounds != MPos.Zero)
-				ColorManager.DrawLineQuad(Position, new CPos(SelectableBounds.X, SelectableBounds.Y, 0), Color.Blue);
+			if (!SelectableBounds.IsEmpty())
+				ColorManager.DrawLineQuad(Position, SelectableBounds, Color.Blue);
 		}
 
 		protected void CheckMouse()

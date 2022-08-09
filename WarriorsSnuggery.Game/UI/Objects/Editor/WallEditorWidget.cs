@@ -5,24 +5,24 @@ namespace WarriorsSnuggery.UI.Objects.Editor
 {
 	public class WallEditorWidget : UIObject
 	{
-		public override CPos Position
+		public override UIPos Position
 		{
 			get => base.Position;
 			set
 			{
 				base.Position = value;
 
-				list.Position = value + new CPos(0, 2048, 0);
+				list.Position = value + new UIPos(0, 2048);
 
 				var offset = 6144 + 512;
 
-				placementCheck.Position = value + new CPos(-1536, offset, 0);
-				placementText.Position = value + new CPos(-1024, offset, 0);
+				placementCheck.Position = value + new UIPos(-1536, offset);
+				placementText.Position = value + new UIPos(-1024, offset);
 
 				offset += 776;
 
-				healthText.Position = value + new CPos(0, offset, 0);
-				healthSlider.Position = value + new CPos(0, offset + 512, 0);
+				healthText.Position = value + new UIPos(0, offset);
+				healthSlider.Position = value + new UIPos(0, offset + 512);
 			}
 		}
 
@@ -40,9 +40,9 @@ namespace WarriorsSnuggery.UI.Objects.Editor
 
 		public WallEditorWidget() : base()
 		{
-			list = new PanelList(new MPos(2048, 4096), new MPos(512, 1024), "wooden");
+			list = new PanelList(new UIPos(2048, 4096), new UIPos(512, 1024), "wooden");
 			foreach (var a in WallCache.Types.Values)
-				list.Add(new PanelListItem(new BatchObject(a.GetTexture(true, 0, a.Texture)), new MPos(512, 512), a.ID.ToString(), new string[0], () => CurrentType = a));
+				list.Add(new PanelListItem(new BatchObject(a.GetTexture(true, 0, a.Texture)), new UIPos(512, 512), a.ID.ToString(), new string[0], () => CurrentType = a));
 
 			placementCheck = new CheckBox("wooden");
 			placementText = new UIText(FontManager.Default);

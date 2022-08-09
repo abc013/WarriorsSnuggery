@@ -16,16 +16,16 @@ namespace WarriorsSnuggery.UI.Screens
 		public TrophyScreen(Game game) : base("Trophy Collection")
 		{
 			this.game = game;
-			Title.Position = new CPos(0, -4096, 0);
+			Title.Position = new UIPos(0, -4096);
 
-			trophies = new PanelList(new MPos(8120, 1024), new MPos(512, 1024), "wooden") { Position = new CPos(0, -1024, 0) };
+			trophies = new PanelList(new UIPos(8120, 1024), new UIPos(512, 1024), "wooden") { Position = new UIPos(0, -1024) };
 			foreach (var key in TrophyCache.Trophies.Keys)
 			{
 				var value = TrophyCache.Trophies[key];
 
 				var sprite = value.Image.GetTextures()[0];
 				var scale = Constants.PixelSize / (float)Math.Max(sprite.Width, sprite.Height) - 0.1f;
-				var item = new PanelListItem(new BatchObject(sprite), new MPos(512, 1024), value.Name, new string[0], () => selectTrophy(key, value)) { Scale = scale * 2f };
+				var item = new PanelListItem(new BatchObject(sprite), new UIPos(512, 1024), value.Name, new string[0], () => selectTrophy(key, value)) { Scale = scale * 2f };
 				if (!game.Stats.TrophyUnlocked(key))
 					item.SetColor(Color.Black);
 
@@ -33,12 +33,12 @@ namespace WarriorsSnuggery.UI.Screens
 			}
 			Add(trophies);
 
-			Add(new Panel(new MPos(8 * 1024, 1024), "stone") { Position = new CPos(0, 1024, 0) });
+			Add(new Panel(new UIPos(8 * 1024, 1024), "stone") { Position = new UIPos(0, 1024) });
 
-			information = new UIText(FontManager.Default, TextOffset.LEFT, "Select a trophy for further information.", "", "", "") { Position = new CPos(-7900, 512 - 128, 0) };
+			information = new UIText(FontManager.Default, TextOffset.LEFT, "Select a trophy for further information.", "", "", "") { Position = new UIPos(-7900, 512 - 128) };
 			Add(information);
 
-			Add(new Button("Resume", "wooden", () => game.ShowScreen(ScreenType.DEFAULT, false)) { Position = new CPos(0, 6144, 0) });
+			Add(new Button("Resume", "wooden", () => game.ShowScreen(ScreenType.DEFAULT, false)) { Position = new UIPos(0, 6144) });
 		}
 
 		void selectTrophy(string name, Trophy trophy)

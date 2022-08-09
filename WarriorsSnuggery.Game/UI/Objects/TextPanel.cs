@@ -14,11 +14,11 @@ namespace WarriorsSnuggery.UI.Objects
 		readonly int lineCount;
 		int lineScroll;
 
-		CPos textPosition => Position - new CPos(SelectableBounds.X - font.WidthGap, -SelectableBounds.Y + font.HeightGap, 0);
+		UIPos textPosition => Position - new UIPos(SelectableBounds.X - font.WidthGap, -SelectableBounds.Y + font.HeightGap);
 
-		public TextPanel(MPos bounds, Font font, string typeName) : this(bounds, font, PanelCache.Types[typeName]) { }
+		public TextPanel(UIPos bounds, Font font, string typeName) : this(bounds, font, PanelCache.Types[typeName]) { }
 
-		public TextPanel(MPos bounds, Font font, PanelType type) : base(bounds, type)
+		public TextPanel(UIPos bounds, Font font, PanelType type) : base(bounds, type)
 		{
 			this.font = font;
 			lineHeight = font.MaxHeight;
@@ -54,7 +54,7 @@ namespace WarriorsSnuggery.UI.Objects
 		void moveLines()
 		{
 			for(int i = lines.Count; i > 0; i--)
-				lines[^i].Position = textPosition + new CPos(0, -((i - 1) - lineScroll) * lineHeight * 2, 0);
+				lines[^i].Position = textPosition + new UIPos(0, -((i - 1) - lineScroll) * lineHeight * 2);
 		}
 
 		public override void Tick()

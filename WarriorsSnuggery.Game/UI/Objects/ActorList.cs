@@ -32,9 +32,9 @@ namespace WarriorsSnuggery.UI.Objects
 		}
 		int currentActor;
 
-		public ActorList(Game game, MPos bounds, MPos itemSize, string typeName) : this(game, bounds, itemSize, PanelCache.Types[typeName]) { }
+		public ActorList(Game game, UIPos bounds, UIPos itemSize, string typeName) : this(game, bounds, itemSize, PanelCache.Types[typeName]) { }
 
-		public ActorList(Game game, MPos bounds, MPos itemSize, PanelType type) : base(bounds, itemSize, type, false)
+		public ActorList(Game game, UIPos bounds, UIPos itemSize, PanelType type) : base(bounds, itemSize, type, false)
 		{
 			this.game = game;
 

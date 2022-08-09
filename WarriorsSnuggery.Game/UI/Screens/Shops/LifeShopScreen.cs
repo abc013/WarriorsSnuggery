@@ -12,19 +12,19 @@ namespace WarriorsSnuggery.UI.Screens
 		public LifeShopScreen(Game game) : base("Lifes")
 		{
 			this.game = game;
-			Title.Position = new CPos(0, -4096, 0);
+			Title.Position = new UIPos(0, -4096);
 
-			Add(new MoneyDisplay(game) { Position = new CPos(Left + 2048, Bottom - 1024, 0) });
-			Add(new HealthDisplay(game) { Position = new CPos(0, -2048, 0) });
+			Add(new MoneyDisplay(game) { Position = new UIPos(Left + 2048, Bottom - 1024) });
+			Add(new HealthDisplay(game) { Position = new UIPos(0, -2048) });
 
-			information = new UIText(FontManager.Default, TextOffset.MIDDLE) { Position = new CPos(0, -2048 - 712, 0) };
+			information = new UIText(FontManager.Default, TextOffset.MIDDLE) { Position = new UIPos(0, -2048 - 712) };
 			Add(information);
 
-			price = new UIText(FontManager.Default, TextOffset.MIDDLE) { Position = new CPos(0, 0, 0) };
+			price = new UIText(FontManager.Default, TextOffset.MIDDLE) { Position = UIPos.Zero };
 			Add(price);
 
-			Add(new Button("Buy life", "wooden", buyLife) { Position = new CPos(0, 1024, 0) });
-			Add(new Button("Resume", "wooden", () => game.ShowScreen(ScreenType.DEFAULT, false)) { Position = new CPos(0, 6144, 0) });
+			Add(new Button("Buy life", "wooden", buyLife) { Position = new UIPos(0, 1024) });
+			Add(new Button("Resume", "wooden", () => game.ShowScreen(ScreenType.DEFAULT, false)) { Position = new UIPos(0, 6144) });
 
 			updateInformation();
 		}

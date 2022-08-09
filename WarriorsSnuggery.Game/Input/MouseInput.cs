@@ -9,7 +9,7 @@ namespace WarriorsSnuggery
 		static Window window;
 
 		public static int WheelState { get; private set; }
-		public static CPos WindowPosition { get; private set; }
+		public static UIPos WindowPosition { get; private set; }
 		public static CPos GamePosition { get; private set; }
 		static Vector vPos;
 
@@ -55,7 +55,7 @@ namespace WarriorsSnuggery
 		{
 			vPos = new Vector((x / WindowInfo.Width - 0.5f) * WindowInfo.Ratio, y / WindowInfo.Height - 0.5f, 0);
 
-			WindowPosition = (vPos * new Vector(Camera.UIZoom, Camera.UIZoom, 1)).ToCPos();
+			WindowPosition = UIPos.FromRelativePosition(vPos.X, vPos.Y);
 			GamePosition = (vPos * new Vector(Camera.CurrentZoom, Camera.CurrentZoom, 1)).ToCPos() + Camera.LookAt;
 		}
 

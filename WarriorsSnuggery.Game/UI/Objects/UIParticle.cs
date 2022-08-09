@@ -8,8 +8,8 @@ namespace WarriorsSnuggery.UI.Objects
 		readonly int duration;
 		int tick;
 
-		public CPos Velocity;
-		public CPos Force;
+		public UIPos Velocity;
+		public UIPos Force;
 
 		public int Radius;
 
@@ -29,7 +29,7 @@ namespace WarriorsSnuggery.UI.Objects
 
 		public override void Render()
 		{
-			ColorManager.DrawQuad(Position, Radius, Color * new Color(1f, 1f, 1f, tick/(float)duration));
+			ColorManager.DrawQuad(Position, Radius, Color.WithAlpha(tick/(float)duration));
 		}
 	}
 }

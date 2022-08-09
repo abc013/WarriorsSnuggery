@@ -29,8 +29,8 @@ namespace WarriorsSnuggery.UI.Screens
 		{
 			this.game = game;
 
-			chat = new ChatBox(new CPos(0, 4096, 0));
-			message = new MessageBox(new CPos(0, 4096, 0));
+			chat = new ChatBox(new UIPos(0, 4096));
+			message = new MessageBox(new UIPos(0, 4096));
 		}
 
 		public void Load()
@@ -219,7 +219,7 @@ namespace WarriorsSnuggery.UI.Screens
 			{
 				var darkness = (byte)((256 / maxFade) * fade);
 				if (darkness > 0)
-					ColorManager.DrawFullscreenRect(new Color(0, 0, 0, darkness));
+					ColorManager.DrawFullscreenRect(Color.Black.WithAlpha(darkness));
 			}
 
 			public void FadeIn() => fadeOut = false;

@@ -29,7 +29,7 @@ namespace WarriorsSnuggery.UI.Screens
 
 			lineHeight = FontManager.Default.MaxHeight * 2;
 
-			wsImage = new UIImage(new BatchObject(UISpriteManager.Get("logo")[0])) { Color = new Color(0, 0, 0, 0) };
+			wsImage = new UIImage(new BatchObject(UISpriteManager.Get("logo")[0])) { Color = Color.Black };
 		}
 
 		public override void Tick()
@@ -42,7 +42,7 @@ namespace WarriorsSnuggery.UI.Screens
 
 			foreach (var line in lines)
 			{
-				line.Position -= new CPos(0, movement, 0);
+				line.Position -= new UIPos(0, movement);
 				if (line.Position.Y <= Top - lineHeight / 2)
 					toRemove.Add(line);
 			}
@@ -55,7 +55,7 @@ namespace WarriorsSnuggery.UI.Screens
 			{
 				var newLine = new UIText(FontManager.Default, TextOffset.MIDDLE)
 				{
-					Position = new CPos(0, Bottom + lineHeight / 2, 0)
+					Position = new UIPos(0, Bottom + lineHeight / 2)
 				};
 				newLine.SetText(lineData[currentLine++]);
 
@@ -79,7 +79,7 @@ namespace WarriorsSnuggery.UI.Screens
 					var text = new UIText(FontManager.Default, TextOffset.MIDDLE)
 					{
 						Color = Color.Green,
-						Position = new CPos(0, 2048, 0)
+						Position = new UIPos(0, 2048)
 					};
 					text.SetText("Press any key to continue");
 

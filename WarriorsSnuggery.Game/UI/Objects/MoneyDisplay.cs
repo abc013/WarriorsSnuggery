@@ -4,15 +4,15 @@ namespace WarriorsSnuggery.UI.Objects
 {
 	public class MoneyDisplay : Panel
 	{
-		public override CPos Position
+		public override UIPos Position
 		{
 			get => base.Position;
 			set
 			{
 				base.Position = value;
 
-				money.SetPosition(value - new CPos(1024, 0, 0));
-				moneyText.Position = value + new CPos(512, 64, 0);
+				money.SetPosition(value - new UIPos(1024, 0));
+				moneyText.Position = value + new UIPos(512, 64);
 			}
 		}
 
@@ -46,7 +46,7 @@ namespace WarriorsSnuggery.UI.Objects
 		int cashCooldown;
 		int lastCash;
 
-		public MoneyDisplay(Game game) : base(new MPos(1536, 512), PanelCache.Types["wooden"])
+		public MoneyDisplay(Game game) : base(new UIPos(1536, 512), PanelCache.Types["wooden"])
 		{
 			this.game = game;
 			money = new BatchObject(UISpriteManager.Get("UI_money")[0]);

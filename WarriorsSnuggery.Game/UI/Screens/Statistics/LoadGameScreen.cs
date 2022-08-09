@@ -13,11 +13,11 @@ namespace WarriorsSnuggery.UI.Screens
 		public LoadGameScreen(Game game) : base("Load Game")
 		{
 			this.game = game;
-			Title.Position = new CPos(0, -4096, 0);
+			Title.Position = new UIPos(0, -4096);
 
-			list = new GameSaveList(4096, "wooden") { Position = new CPos(0, 1024, 0) };
+			list = new GameSaveList(4096, "wooden") { Position = new UIPos(0, 1024) };
 
-			Add(new Button("Back", "wooden", () => game.ShowScreen(ScreenType.MENU)) { Position = new CPos(4096, 6144, 0) });
+			Add(new Button("Back", "wooden", () => game.ShowScreen(ScreenType.MENU)) { Position = new UIPos(4096, 6144) });
 			void loadAction()
 			{
 				var save = list.SelectedSave;
@@ -30,7 +30,7 @@ namespace WarriorsSnuggery.UI.Screens
 					}, "Are you sure you want to load this save? Unsaved progress will be lost!");
 				}
 			}
-			Add(new Button("Load", "wooden", loadAction) { Position = new CPos(0, 6144, 0) });
+			Add(new Button("Load", "wooden", loadAction) { Position = new UIPos(0, 6144) });
 
 			void deleteAction()
 			{
@@ -46,7 +46,7 @@ namespace WarriorsSnuggery.UI.Screens
 					}, "Are you sure you want to delete this save?");
 				}
 			}
-			Add(new Button("Delete", "wooden", deleteAction) { Position = new CPos(-4096, 6144, 0) });
+			Add(new Button("Delete", "wooden", deleteAction) { Position = new UIPos(-4096, 6144) });
 
 			Add(list);
 		}

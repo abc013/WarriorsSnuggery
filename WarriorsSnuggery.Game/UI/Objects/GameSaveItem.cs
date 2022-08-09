@@ -8,15 +8,15 @@ namespace WarriorsSnuggery.UI.Objects
 		readonly int width;
 		readonly int imagePathWidth;
 		readonly int currentImageDelta;
-		public override CPos Position
+		public override UIPos Position
 		{
 			get => base.Position;
 			set
 			{
 				base.Position = value;
-				content.Position = value - new CPos(width - 256, 1024 - FontManager.Default.MaxHeight, 0);
-				type.Position = value + new CPos(width - 256, 0, 0);
-				image.Position = value + new CPos(currentImageDelta, 0, 0);
+				content.Position = value - new UIPos(width - 256, 1024 - FontManager.Default.MaxHeight);
+				type.Position = value + new UIPos(width - 256, 0);
+				image.Position = value + new UIPos(currentImageDelta, 0);
 			}
 		}
 
@@ -26,7 +26,7 @@ namespace WarriorsSnuggery.UI.Objects
 		readonly UIText type;
 		readonly UIImage image;
 
-		public GameSaveItem(GameSave save, int width, Action action) : base(new BatchObject(0f), new MPos(width, 1024), save.Name, new[] { Color.Grey + "Difficulty: " + save.Difficulty, Color.Grey + "Money: " + save.Money }, action)
+		public GameSaveItem(GameSave save, int width, Action action) : base(new BatchObject(0f), new UIPos(width, 1024), save.Name, new[] { Color.Grey + "Difficulty: " + save.Difficulty, Color.Grey + "Money: " + save.Money }, action)
 		{
 			this.width = width;
 			imagePathWidth = width - 1024;
@@ -50,7 +50,7 @@ namespace WarriorsSnuggery.UI.Objects
             };
 			currentImageDelta = width - 1024;
 
-			Position = CPos.Zero;
+			Position = UIPos.Zero;
 		}
 
 		public override void Render()
@@ -60,7 +60,7 @@ namespace WarriorsSnuggery.UI.Objects
 			{
 				var delta = Math.Abs(image.Position.X / (float)imagePathWidth);
 				var speed = Math.Max(4, (int)((1f - delta * delta) * 256));
-				image.Position = new CPos(Math.Clamp(image.Position.X + (ContainsMouse ? -speed : speed), -imagePathWidth, imagePathWidth), image.Position.Y, image.Position.Z);
+				image.Position = new UIPos(Math.Clamp(image.Position.X + (ContainsMouse ? -speed : speed), -imagePathWidth, imagePathWidth), image.Position.Y);
 				image.Render();
 				type.Render();
 				content.Render();

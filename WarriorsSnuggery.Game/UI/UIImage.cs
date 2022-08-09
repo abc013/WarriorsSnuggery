@@ -4,7 +4,7 @@ namespace WarriorsSnuggery.UI
 {
 	public class UIImage : UIObject
 	{
-		public override CPos Position
+		public override UIPos Position
 		{
 			get => base.Position;
 			set

@@ -38,35 +38,35 @@ namespace WarriorsSnuggery.UI.Screens
 		public EditorScreen(Game game) : base("Editor", 0)
 		{
 			this.game = game;
-			Title.Position += new CPos(0, -7120, 0);
+			Title.Position += new UIPos(0, -7120);
 
-			mousePosition = new UIText(FontManager.Default, TextOffset.RIGHT) { Position = new CPos(Right - 1024, -7172, 0) };
+			mousePosition = new UIText(FontManager.Default, TextOffset.RIGHT) { Position = new UIPos(Right - 1024, -7172) };
 			Add(mousePosition);
 
 			if (game.MapType.OverridePiece != null)
 			{
-				var pieceName = new UIText(FontManager.Default, TextOffset.RIGHT) { Position = new CPos(Right - 1024, -7684, 0) };
+				var pieceName = new UIText(FontManager.Default, TextOffset.RIGHT) { Position = new UIPos(Right - 1024, -7684) };
 				pieceName.SetText("Piece name: " + Color.Green + game.MapType.OverridePiece.File);
 				Add(pieceName);
 			}
 
-			save = new Button("Save", "wooden", savePiece) { Position = new CPos(Right - 2048, -5120, 0) };
+			save = new Button("Save", "wooden", savePiece) { Position = new UIPos(Right - 2048, -5120) };
 
-			var checkBoxPosition = new CPos(Right - 1024, -6144, 0);
+			var checkBoxPosition = new UIPos(Right - 1024, -6144);
 
-			showNone = new CheckBox("wooden", true, (b) => deselectBoxes(Selected.NONE)) { Position = checkBoxPosition - new CPos(736 * 3, 0, 0) };
+			showNone = new CheckBox("wooden", true, (b) => deselectBoxes(Selected.NONE)) { Position = checkBoxPosition - new UIPos(736 * 3, 0) };
 			Add(showNone);
 
-			showTiles = new CheckBox("terrain_editor", onTicked: (b) => deselectBoxes(Selected.TILE)) { Position = checkBoxPosition - new CPos(736 * 2, 0, 0) };
+			showTiles = new CheckBox("terrain_editor", onTicked: (b) => deselectBoxes(Selected.TILE)) { Position = checkBoxPosition - new UIPos(736 * 2, 0) };
 			Add(showTiles);
 
-			showActors = new CheckBox("actor_editor", onTicked: (b) => deselectBoxes(Selected.ACTOR)) { Position = checkBoxPosition - new CPos(736 * 1, 0, 0) };
+			showActors = new CheckBox("actor_editor", onTicked: (b) => deselectBoxes(Selected.ACTOR)) { Position = checkBoxPosition - new UIPos(736 * 1, 0) };
 			Add(showActors);
 
 			showWalls = new CheckBox("wall_editor", onTicked: (b) => deselectBoxes(Selected.WALL)) { Position = checkBoxPosition };
 			Add(showWalls);
 
-			var widgetPosition = new CPos(Right - 2048, -3584, 0);
+			var widgetPosition = new UIPos(Right - 2048, -3584);
 
 			terrainWidget = new TerrainEditorWidget() { Position = widgetPosition };
 			actorWidget = new ActorEditorWidget() { Position = widgetPosition };

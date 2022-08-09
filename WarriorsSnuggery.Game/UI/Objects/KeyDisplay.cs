@@ -4,7 +4,7 @@ namespace WarriorsSnuggery.UI.Objects
 {
 	public class KeyDisplay : Panel
 	{
-		public override CPos Position
+		public override UIPos Position
 		{
 			get => base.Position;
 			set
@@ -42,7 +42,7 @@ namespace WarriorsSnuggery.UI.Objects
 		bool keyFound;
 		int scaleCooldown;
 
-		public KeyDisplay(Game game) : base(new MPos(712, 512), PanelCache.Types["wooden"])
+		public KeyDisplay(Game game) : base(new UIPos(712, 512), PanelCache.Types["wooden"])
 		{
 			this.game = game;
 

@@ -4,7 +4,7 @@ namespace WarriorsSnuggery.UI.Objects
 {
 	public class DisplayBar : Panel
 	{
-		public override CPos Position
+		public override UIPos Position
 		{
 			get => base.Position;
 			set
@@ -39,9 +39,9 @@ namespace WarriorsSnuggery.UI.Objects
 
 		public float DisplayPercentage;
 
-		public DisplayBar(MPos bounds, string typeName, Color fillColor) : this(bounds, PanelCache.Types[typeName], fillColor) { }
+		public DisplayBar(UIPos bounds, string typeName, Color fillColor) : this(bounds, PanelCache.Types[typeName], fillColor) { }
 
-		public DisplayBar(MPos bounds, PanelType type, Color fillColor) : base(bounds, type)
+		public DisplayBar(UIPos bounds, PanelType type, Color fillColor) : base(bounds, type)
 		{
 			this.fillColor = fillColor;
 

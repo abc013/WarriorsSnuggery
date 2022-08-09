@@ -6,7 +6,7 @@ namespace WarriorsSnuggery.UI.Objects
 	{
 		readonly Slider slider;
 
-		public override CPos Position
+		public override UIPos Position
 		{
 			get => base.Position;
 			set
@@ -26,7 +26,7 @@ namespace WarriorsSnuggery.UI.Objects
 
 		public SliderBar(int length, string typeName, Action onChanged = null, int tooltipDigits = 1, float valueMultiplier = 1f, bool displayAsPercent = false) : this(length, PanelCache.Types[typeName], onChanged, tooltipDigits, valueMultiplier, displayAsPercent) { }
 
-		public SliderBar(int length, PanelType type, Action onChanged = null, int tooltipDigits = 1, float valueMultiplier = 1f, bool displayAsPercent = false) : base(new MPos(length / 2, (int)(1024 * Constants.PixelMultiplier)), type)
+		public SliderBar(int length, PanelType type, Action onChanged = null, int tooltipDigits = 1, float valueMultiplier = 1f, bool displayAsPercent = false) : base(new UIPos(length / 2, (int)(1024 * Constants.PixelMultiplier)), type)
 		{
 			slider = new Slider(length, type, onChanged, tooltipDigits, valueMultiplier, displayAsPercent);
 		}
@@ -59,7 +59,7 @@ namespace WarriorsSnuggery.UI.Objects
 
 	class Slider : Panel
 	{
-		public CPos CenterPosition;
+		public UIPos CenterPosition;
 		readonly int length;
 
 		readonly Action onChanged;
@@ -76,7 +76,7 @@ namespace WarriorsSnuggery.UI.Objects
 			{
 				value /= valueMultiplier;
 				currentPosition = (int)((value - 0.5f) * length) * 2;
-				Position = new CPos(CenterPosition.X + currentPosition, CenterPosition.Y, 0);
+				Position = CenterPosition + new UIPos(currentPosition, 0);
 				tooltip = new Tooltip(Math.Round(displayAsPercent ? Value * 100 : Value, digits).ToString() + (displayAsPercent ? "%" : ""));
 			}
 		}
@@ -84,7 +84,7 @@ namespace WarriorsSnuggery.UI.Objects
 		readonly float valueMultiplier;
 		readonly bool displayAsPercent;
 
-		public Slider(int length, PanelType type, Action onChanged, int digits = 1, float valueMultiplier = 1f, bool displayAsPercent = false) : base(new MPos((int)(1024 * Constants.PixelMultiplier), (int)(1024 * 4 * Constants.PixelMultiplier)), type)
+		public Slider(int length, PanelType type, Action onChanged, int digits = 1, float valueMultiplier = 1f, bool displayAsPercent = false) : base(new UIPos((int)(1024 * Constants.PixelMultiplier), (int)(1024 * 4 * Constants.PixelMultiplier)), type)
 		{
 			SelectableBounds = Bounds;
 			this.onChanged = onChanged;
@@ -127,7 +127,7 @@ namespace WarriorsSnuggery.UI.Objects
 			var xPos = Math.Clamp(MouseInput.WindowPosition.X, CenterPosition.X - length, CenterPosition.X + length);
 
 			currentPosition = xPos - CenterPosition.X;
-			Position = new CPos(xPos, Position.Y, Position.Z);
+			Position = new UIPos(xPos, Position.Y);
 
 			onChanged?.Invoke();
 			UIRenderer.DisableTooltip(tooltip);

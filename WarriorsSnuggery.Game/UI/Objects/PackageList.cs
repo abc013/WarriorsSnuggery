@@ -10,7 +10,7 @@
 
 		public PackageList(int height, string typeName, bool useActive) : this(height, PanelCache.Types[typeName], useActive) { }
 
-		public PackageList(int height, PanelType type, bool useActive) : base(new MPos(ItemWidth, height), new MPos(ItemWidth, ItemHeight), type)
+		public PackageList(int height, PanelType type, bool useActive) : base(new UIPos(ItemWidth, height), new UIPos(ItemWidth, ItemHeight), type)
 		{
 			this.useActive = useActive;
 

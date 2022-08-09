@@ -20,11 +20,11 @@ namespace WarriorsSnuggery.UI.Screens
 		public ActorShopScreen(Game game) : base("Actor Shop")
 		{
 			this.game = game;
-			Title.Position = new CPos(0, -4096, 0);
+			Title.Position = new UIPos(0, -4096);
 
-			Add(new Panel(new MPos(8 * 1024, 2 * 1024), "wooden") { Position = new CPos(0, 920, 0) });
+			Add(new Panel(new UIPos(8 * 1024, 2 * 1024), "wooden") { Position = new UIPos(0, 920) });
 
-			actors = new PanelList(new MPos(8120, 1024), new MPos(1024, 1024), "stone") { Position = new CPos(0, -2048, 0) };
+			actors = new PanelList(new UIPos(8120, 1024), new UIPos(1024, 1024), "stone") { Position = new UIPos(0, -2048) };
 			foreach (var a in ActorCache.Types.Values)
 			{
 				if (a.Playable == null)
@@ -32,7 +32,7 @@ namespace WarriorsSnuggery.UI.Screens
 
 				var sprite = a.GetPreviewSprite(out var color);
 				var scale = Constants.PixelSize / (float)Math.Max(sprite.Width, sprite.Height) - 0.1f;
-				var item = new PanelListItem(new BatchObject(Mesh.Image(sprite, color)), new MPos(1024, 1024), a.Playable.Name, new string[0], () => selectActor(a)) { Scale = scale * 2 };
+				var item = new PanelListItem(new BatchObject(Mesh.Image(sprite, color)), new UIPos(1024, 1024), a.Playable.Name, new string[0], () => selectActor(a)) { Scale = scale * 2 };
 
 				if (!game.Stats.ActorUnlocked(a.Playable))
 					item.SetColor(Color.Black);
@@ -42,13 +42,13 @@ namespace WarriorsSnuggery.UI.Screens
 			}
 			Add(actors);
 
-			Add(new Button("Buy", "wooden", () => buyActor(selected)) { Position = new CPos(-6144, 3072, 0) });
-			Add(new Button("Resume", "wooden", () => game.ShowScreen(ScreenType.DEFAULT, false)) { Position = new CPos(0, 6144, 0) });
+			Add(new Button("Buy", "wooden", () => buyActor(selected)) { Position = new UIPos(-6144, 3072) });
+			Add(new Button("Resume", "wooden", () => game.ShowScreen(ScreenType.DEFAULT, false)) { Position = new UIPos(0, 6144) });
 
-			information = new UIText(FontManager.Default, TextOffset.LEFT, "Select an actor for further information.", "", "", "Cost: -") { Position = new CPos(-7900, 0, 0) };
+			information = new UIText(FontManager.Default, TextOffset.LEFT, "Select an actor for further information.", "", "", "Cost: -") { Position = new UIPos(-7900, 0) };
 			Add(information);
 
-			Add(new MoneyDisplay(game) { Position = new CPos(Left + 2048, Bottom - 1024, 0) });
+			Add(new MoneyDisplay(game) { Position = new UIPos(Left + 2048, Bottom - 1024) });
 		}
 
 		void selectActor(ActorType actor)

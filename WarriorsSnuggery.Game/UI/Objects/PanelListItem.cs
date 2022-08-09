@@ -11,7 +11,7 @@ namespace WarriorsSnuggery.UI.Objects
 			set => renderable.Visible = value;
 		}
 
-		public override CPos Position
+		public override UIPos Position
 		{
 			get => base.Position;
 			set
@@ -45,7 +45,7 @@ namespace WarriorsSnuggery.UI.Objects
 		readonly Action action;
 		readonly Tooltip tooltip;
 
-		public PanelListItem(BatchRenderable renderable, MPos bounds, string title, string[] text, Action action)
+		public PanelListItem(BatchRenderable renderable, UIPos bounds, string title, string[] text, Action action)
 		{
 			tooltip = new Tooltip(title, text);
 			this.renderable = renderable;

@@ -16,7 +16,7 @@ namespace WarriorsSnuggery.UI.Objects
 		public void Tick()
 		{
 			if (infoTextDuration-- < 100)
-				infoText.Position -= new CPos(64, 0, 0);
+				infoText.Position -= new UIPos(64, 0);
 
 			infoText.Tick();
 		}
@@ -38,7 +38,7 @@ namespace WarriorsSnuggery.UI.Objects
 				UIUtils.PlayPingSound();
 
 			var corner = (int)(WindowInfo.UnitWidth * 512);
-			infoText.Position = new CPos(-corner + 512, -6144 - 256, 0);
+			infoText.Position = new UIPos(-corner + 512, -6144 - 256);
 			infoText.SetText(text);
 			infoTextDuration = duration;
 		}

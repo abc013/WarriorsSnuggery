@@ -9,39 +9,39 @@ namespace WarriorsSnuggery.UI.Objects.Editor
 {
 	public class ActorEditorWidget : UIObject
 	{
-		public override CPos Position
+		public override UIPos Position
 		{
 			get => base.Position;
 			set
 			{
 				base.Position = value;
 
-				list.Position = value + new CPos(0, 2048, 0);
+				list.Position = value + new UIPos(0, 2048);
 
 				var offset = 6144 + 512; 
 
-				rasterizationCheck.Position = value + new CPos(-1536, offset, 0);
-				rasterizationText.Position = value + new CPos(-1024, offset, 0);
+				rasterizationCheck.Position = value + new UIPos(-1536, offset);
+				rasterizationText.Position = value + new UIPos(-1024, offset);
 
 				offset += 776;
 
-				teamTextBox.Position = value + new CPos(-1536, offset, 0);
-				teamTextText.Position = value + new CPos(-1024, offset, 0);
+				teamTextBox.Position = value + new UIPos(-1536, offset);
+				teamTextText.Position = value + new UIPos(-1024, offset);
 
 				offset += 776;
 
-				botCheck.Position = value + new CPos(-1536, offset, 0);
-				botText.Position = value + new CPos(-1024, offset, 0);
+				botCheck.Position = value + new UIPos(-1536, offset);
+				botText.Position = value + new UIPos(-1024, offset);
 
 				offset += 776;
 
-				healthText.Position = value + new CPos(0, offset, 0);
-				healthSlider.Position = value + new CPos(0, offset + 512, 0);
+				healthText.Position = value + new UIPos(0, offset);
+				healthSlider.Position = value + new UIPos(0, offset + 512);
 
 				offset += 1536;
 
-				facingText.Position = value + new CPos(0, offset, 0);
-				facingSlider.Position = value + new CPos(0, offset + 512, 0);
+				facingText.Position = value + new UIPos(0, offset);
+				facingSlider.Position = value + new UIPos(0, offset + 512);
 			}
 		}
 
@@ -70,7 +70,7 @@ namespace WarriorsSnuggery.UI.Objects.Editor
 
 		public ActorEditorWidget() : base()
 		{
-			list = new PanelList(new MPos(2048, 4096), new MPos(512, 512), "wooden");
+			list = new PanelList(new UIPos(2048, 4096), new UIPos(512, 512), "wooden");
 			foreach (var key in ActorCache.Types.Keys)
 			{
 				var actor = ActorCache.Types[key];
@@ -81,7 +81,7 @@ namespace WarriorsSnuggery.UI.Objects.Editor
 
 				var sprite = actor.GetPreviewSprite(out var color);
 				var scale = Constants.PixelSize / (float)Math.Max(sprite.Width, sprite.Height) - 0.1f;
-				list.Add(new PanelListItem(new BatchObject(Mesh.Image(sprite, color)), new MPos(512, 512), actor.Playable == null ? key : actor.Playable.Name, new string[0], () => CurrentType = actor) { Scale = scale });
+				list.Add(new PanelListItem(new BatchObject(Mesh.Image(sprite, color)), new UIPos(512, 512), actor.Playable == null ? key : actor.Playable.Name, new string[0], () => CurrentType = actor) { Scale = scale });
 			}
 			rasterizationCheck = new CheckBox("wooden");
 			rasterizationText = new UIText(FontManager.Default);

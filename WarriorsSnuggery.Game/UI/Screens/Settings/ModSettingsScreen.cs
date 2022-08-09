@@ -14,28 +14,28 @@ namespace WarriorsSnuggery.UI.Screens
 		public ModSettingsScreen(Game game) : base("")
 		{
 			this.game = game;
-			Title.Position = new CPos(0, -4096, 0);
-			Add(new SettingsChooser(game, new CPos(0, -5120, 0), ScreenType.MODSETTINGS, save));
+			Title.Position = new UIPos(0, -4096);
+			Add(new SettingsChooser(game, new UIPos(0, -5120), ScreenType.MODSETTINGS, save));
 
-			var inactiveText = new UIText(FontManager.Default, TextOffset.MIDDLE) { Position = new CPos(-4096, -4096, 0) };
+			var inactiveText = new UIText(FontManager.Default, TextOffset.MIDDLE) { Position = new UIPos(-4096, -4096) };
 			inactiveText.SetText("Inactive Mods");
 			Add(inactiveText);
-			inactive = new PackageList(4096, "wooden", false) { Position = new CPos(-4096, 512, 0) };
+			inactive = new PackageList(4096, "wooden", false) { Position = new UIPos(-4096, 512) };
 
-			var activeText = new UIText(FontManager.Default, TextOffset.MIDDLE) { Position = new CPos(4096, -4096, 0) };
+			var activeText = new UIText(FontManager.Default, TextOffset.MIDDLE) { Position = new UIPos(4096, -4096) };
 			activeText.SetText("Active Mods");
 			Add(activeText);
-			active = new PackageList(4096, "wooden", true) { Position = new CPos(4096, 512, 0) };
+			active = new PackageList(4096, "wooden", true) { Position = new UIPos(4096, 512) };
 
 			Add(inactive);
 			Add(active);
 
-			Add(new Button("→", "wooden", () => switchPackage(inactive)) { Position = new CPos(0, -1024, 0) });
-			Add(new Button("←", "wooden", () => switchPackage(active)) { Position = new CPos(0, 1024, 0) });
+			Add(new Button("→", "wooden", () => switchPackage(inactive)) { Position = new UIPos(0, -1024) });
+			Add(new Button("←", "wooden", () => switchPackage(active)) { Position = new UIPos(0, 1024) });
 
 			var warning = new UIText(FontManager.Default, TextOffset.MIDDLE)
 			{
-				Position = new CPos(0, 5450, 0),
+				Position = new UIPos(0, 5450),
 				Color = Color.Red
 			};
 			warning.SetText("Mods changes take effect after restarting and may corrupt saved games.");

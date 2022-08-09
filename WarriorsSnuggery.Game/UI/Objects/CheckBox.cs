@@ -11,7 +11,7 @@ namespace WarriorsSnuggery.UI.Objects
 			{
 				base.Scale = value;
 
-				SelectableBounds = new MPos((int)(value * 256), (int)(value * 256));
+				SelectableBounds = new UIPos((int)(value * 256), (int)(value * 256));
 				Bounds = SelectableBounds;
 			}
 		}

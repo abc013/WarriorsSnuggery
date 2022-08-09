@@ -5,13 +5,13 @@ namespace WarriorsSnuggery.UI.Objects
 {
 	public class Button : Panel
 	{
-		public override CPos Position
+		public override UIPos Position
 		{
 			get => base.Position;
 			set
 			{
 				base.Position = value;
-				text.Position = value + new CPos(margin, 0, 0);
+				text.Position = value + new UIPos(margin, 0);
 			}
 		}
 
@@ -22,9 +22,9 @@ namespace WarriorsSnuggery.UI.Objects
 
 		public Button(string text, string typeName, Action action = null) : this(text, PanelCache.Types[typeName], action) { }
 
-		public Button(string text, PanelType type, Action action = null) : base(new MPos(margin + FontManager.Default.Measure(text).width / 2, margin + FontManager.Default.Measure(text).height / 2), type, true)
+		public Button(string text, PanelType type, Action action = null) : base(new UIPos(margin + FontManager.Default.Measure(text).width / 2, margin + FontManager.Default.Measure(text).height / 2), type, true)
 		{
-			this.text = new UIText(FontManager.Default, TextOffset.MIDDLE) { Position = new CPos(margin, 0, 0) };
+			this.text = new UIText(FontManager.Default, TextOffset.MIDDLE) { Position = new UIPos(margin, 0) };
 			this.text.SetText(text);
 			this.action = action;
 		}

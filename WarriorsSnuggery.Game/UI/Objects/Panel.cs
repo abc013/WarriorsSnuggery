@@ -4,7 +4,7 @@ namespace WarriorsSnuggery.UI.Objects
 {
 	public class Panel : UIObject
 	{
-		public override CPos Position
+		public override UIPos Position
 		{
 			get => base.Position;
 			set
@@ -58,14 +58,14 @@ namespace WarriorsSnuggery.UI.Objects
 
 		public bool HighlightVisible;
 
-		public Panel(MPos bounds, string typeName, bool useHighlight = false) : this(bounds, PanelCache.Types[typeName], useHighlight) { }
+		public Panel(UIPos bounds, string typeName, bool useHighlight = false) : this(bounds, PanelCache.Types[typeName], useHighlight) { }
 
-		public Panel(MPos bounds, PanelType type, bool useHighlight = false)
+		public Panel(UIPos bounds, PanelType type, bool useHighlight = false)
 		{
 			SelectableBounds = bounds;
 			background = new BatchObject(Mesh.UIPanel(type.Background, bounds));
 
-			Bounds = new MPos(bounds.X + type.BorderWidth, bounds.Y + type.BorderWidth);
+			Bounds = bounds + new UIPos(type.BorderWidth, type.BorderWidth);
 			border = new BatchObject(Mesh.UIPanel(type.Border, Bounds));
 
 			if (useHighlight && type.Background2 != null)

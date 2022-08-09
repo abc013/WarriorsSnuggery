@@ -33,31 +33,31 @@ namespace WarriorsSnuggery.UI.Screens
 			const int shift = margin;
 
 			// Actors
-			actorList = new ActorList(game, new MPos(512, 11 * 512), new MPos(512, 512), "wooden") { Position = new CPos(Left + 512 + margin, 768 + shift, 0) };
+			actorList = new ActorList(game, new UIPos(512, 11 * 512), new UIPos(512, 512), "wooden") { Position = new UIPos(Left + 512 + margin, 768 + shift) };
 			Add(actorList);
 
 			// Spells
-			spellList = new SpellList(game, new MPos(512, 13 * 512), new MPos(512, 512), "stone") { Position = new CPos(Right - 512 - margin, 0, 0) };
+			spellList = new SpellList(game, new UIPos(512, 13 * 512), new UIPos(512, 512), "stone") { Position = new UIPos(Right - 512 - margin, 0) };
 			Add(spellList);
 
-			manaBar = new DisplayBar(new MPos(Width / 2 - 1536, 256), PanelCache.Types["stone"], new Color(0, 0, 255, 196)) { Position = new CPos(0, Bottom - 2048 + margin, 0) };
+			manaBar = new DisplayBar(new UIPos(Width / 2 - 1536, 256), PanelCache.Types["stone"], new Color(0, 0, 255, 196)) { Position = new UIPos(0, Bottom - 2048 + margin) };
 			Add(manaBar);
-			healthBar = new DisplayBar(new MPos(Width / 2 - 256, 512), PanelCache.Types["wooden"], new Color(255, 0, 0, 196)) { Position = new CPos(0, Bottom - 1024 + margin, 0) };
+			healthBar = new DisplayBar(new UIPos(Width / 2 - 256, 512), PanelCache.Types["wooden"], new Color(255, 0, 0, 196)) { Position = new UIPos(0, Bottom - 1024 + margin) };
 			Add(healthBar);
 
 			var top = Top + 512 + margin;
 
-			Add(new MoneyDisplay(game) { Position = new CPos(Left + 1536 + shift, top, 0) });
-			Add(new HealthDisplay(game) { Position = new CPos(Left + 4096 + shift + margin, top, 0) });
+			Add(new MoneyDisplay(game) { Position = new UIPos(Left + 1536 + shift, top) });
+			Add(new HealthDisplay(game) { Position = new UIPos(Left + 4096 + shift + margin, top) });
 
 			if (game.ObjectiveType == ObjectiveType.FIND_EXIT)
-				Add(new KeyDisplay(game) { Position = new CPos(Left + 712 + shift, top + 1536 + shift + 128, 0) });
+				Add(new KeyDisplay(game) { Position = new UIPos(Left + 712 + shift, top + 1536 + shift + 128) });
 			else if (game.ObjectiveType == ObjectiveType.SURVIVE_WAVES)
-				Add(new WaveDisplay(game) { Position = new CPos(Left + 1280 + shift, top + 1536 + shift + 128, 0) });
+				Add(new WaveDisplay(game) { Position = new UIPos(Left + 1280 + shift, top + 1536 + shift + 128) });
 
 			var menu = new CheckBox("menu", onTicked: (t) => game.ShowScreen(ScreenType.MENU, true))
 			{
-				Position = new CPos(Right - 512 - margin, Top + 512 + margin, 0),
+				Position = new UIPos(Right - 512 - margin, Top + 512 + margin),
 				Scale = 2.5f
 			};
 			Add(menu);
@@ -146,9 +146,9 @@ namespace WarriorsSnuggery.UI.Screens
 				var particle = new UIParticle(random.Next(200, 400))
 				{
 					Radius = random.Next(200, 500),
-					Position = new CPos(width, random.Next(-500, 500), 0),
-					Velocity = new CPos(random.Next(-50, 50) + randomX, -random.Next(150) - 250, 0),
-					Force = new CPos(0, random.Next(5, 15), 0)
+					Position = new UIPos(width, random.Next(-500, 500)),
+					Velocity = new UIPos(random.Next(-50, 50) + randomX, -random.Next(150) - 250),
+					Force = new UIPos(0, random.Next(5, 15))
 				};
 
 				static int invert(bool invert, int color) => invert ? 255 - color : color;
@@ -175,8 +175,8 @@ namespace WarriorsSnuggery.UI.Screens
 				var particle = new UIParticle((int)(percentage * 200) + 300)
 				{
 					Radius = random.Next(10, 160) + (int)(inverse * inverse * 3000),
-					Position = new CPos(random.Next(Width) - Width / 2, invert * Top, 0),
-					Velocity = new CPos(random.Next(-2, 2), invert * random.Next(10, 20), 0),
+					Position = new UIPos(random.Next(Width) - Width / 2, invert * Top),
+					Velocity = new UIPos(random.Next(-2, 2), invert * random.Next(10, 20)),
 					Color = new Color(random.Next(128, 192), 0, 0, 192)
 				};
 
@@ -232,7 +232,7 @@ namespace WarriorsSnuggery.UI.Screens
 					var top = Top + 512 + margin;
 					var linearTime = (((tick - start) / (float)duration) - 0.5f) * 2f;
 					var squaredTime = -0.25f * (linearTime * linearTime * linearTime) + 0.75f * linearTime + 0.5f;
-					Position = new CPos(0, (int)(top * squaredTime), 0);
+					Position = new UIPos(0, (int)(top * squaredTime));
 					ColorManager.DrawRect(new CPos(Right, rectWidth, 0) + Position, new CPos(Left, -rectWidth, 0) + Position, new Color(0, 0, 0, (int)(128 * (1f - (linearTime + 1f) / 2f))));
 				}
 

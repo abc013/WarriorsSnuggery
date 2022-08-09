@@ -38,7 +38,7 @@ namespace WarriorsSnuggery.Spells
 		[Require, Desc("Icon of the spell.")]
 		public readonly TextureInfo Icon;
 
-		public CPos VisualPosition => new CPos(-6584, -2048, 0) + new CPos(Position.X * 1024, Position.Y * 1024, 0);
+		public UIPos VisualPosition => new UIPos(-6584, -2048) + new UIPos(Position.X * 1024, Position.Y * 1024);
 
 		public SpellCasterType(string innerName, List<TextNode> nodes)
 		{

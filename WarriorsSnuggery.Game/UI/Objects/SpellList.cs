@@ -28,9 +28,9 @@ namespace WarriorsSnuggery.UI.Objects
 		}
 		int currentSpell;
 
-		public SpellList(Game game, MPos bounds, MPos itemSize, string typeName) : this(game, bounds, itemSize, PanelCache.Types[typeName]) { }
+		public SpellList(Game game, UIPos bounds, UIPos itemSize, string typeName) : this(game, bounds, itemSize, PanelCache.Types[typeName]) { }
 
-		public SpellList(Game game, MPos bounds, MPos itemSize, PanelType type) : base(bounds, itemSize, type, false)
+		public SpellList(Game game, UIPos bounds, UIPos itemSize, PanelType type) : base(bounds, itemSize, type, false)
 		{
 			this.game = game;
 
@@ -86,7 +86,7 @@ namespace WarriorsSnuggery.UI.Objects
 			float progress;
 			int graphicProgress;
 
-			public SpellListItem(Game game, MPos size, SpellCaster caster) : base(new BatchSequence(caster.Type.Icon), size, (caster.Unlocked() ? Color.White : Color.Red) + caster.Type.Name, caster.Unlocked() ? caster.Type.GetDescription() : new[] { new Color(128, 0, 0) + "Unlock cost: " + caster.Type.Cost }, null)
+			public SpellListItem(Game game, UIPos size, SpellCaster caster) : base(new BatchSequence(caster.Type.Icon), size, (caster.Unlocked() ? Color.White : Color.Red) + caster.Type.Name, caster.Unlocked() ? caster.Type.GetDescription() : new[] { new Color(128, 0, 0) + "Unlock cost: " + caster.Type.Cost }, null)
 			{
 				this.caster = caster;
 				this.game = game;
@@ -132,8 +132,8 @@ namespace WarriorsSnuggery.UI.Objects
 				{
 					var recharging = caster.State == SpellCasterState.RECHARGING;
 
-					var pointA = Position - new CPos(Bounds.X, Bounds.Y, 0);
-					var pointB = Position + new CPos(Bounds.X, graphicProgress, 0);
+					var pointA = Position - new UIPos(Bounds.X, Bounds.Y);
+					var pointB = Position + new UIPos(Bounds.X, graphicProgress);
 
 					var color = recharging ? new Color(0, 0, 0, 127) : new Color(255, 255, 255, 63);
 					ColorManager.DrawRect(pointA, pointB, color);
