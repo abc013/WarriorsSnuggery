@@ -20,17 +20,6 @@ namespace WarriorsSnuggery.UI
 			}
 		}
 
-		public VAngle Rotation
-		{
-			get => rotation;
-			set
-			{
-				rotation = value;
-				text.SetRotation(value);
-			}
-		}
-		VAngle rotation;
-
 		public float Scale
 		{
 			get => scale;
