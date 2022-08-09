@@ -2,24 +2,20 @@
 
 namespace WarriorsSnuggery.UI.Objects
 {
-	public class UIParticleManager : UIObject
+	public class UIParticleManager : UIPositionable, ITick, IRenderable
 	{
 		readonly List<UIParticle> particles = new List<UIParticle>();
 
-		public override void Tick()
+		public void Tick()
 		{
-			base.Tick();
-
 			foreach (var particle in particles)
 				particle.Tick();
 
 			particles.RemoveAll(p => p.IsDone);
 		}
 
-		public override void Render()
+		public void Render()
 		{
-			base.Render();
-
 			foreach (var particle in particles)
 				particle.Render();
 		}

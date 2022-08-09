@@ -2,19 +2,20 @@ using System;
 
 namespace WarriorsSnuggery.UI.Objects
 {
-	public class CheckBox : UIObject
+	public class CheckBox : UIPositionable, ITick, IRenderable
 	{
-		public override float Scale
+		public float Scale
 		{
-			get => base.Scale;
+			get => scale;
 			set
 			{
-				base.Scale = value;
+				scale = value;
 
 				SelectableBounds = new UIPos((int)(value * 256), (int)(value * 256));
 				Bounds = SelectableBounds;
 			}
 		}
+		float scale;
 
 		public bool Checked;
 
@@ -34,11 +35,9 @@ namespace WarriorsSnuggery.UI.Objects
 			action = onTicked;
 		}
 
-		public override void Tick()
+		public void Tick()
 		{
-			CheckMouse();
-
-			if (MouseInput.IsLeftClicked && ContainsMouse)
+			if (MouseInput.IsLeftClicked && UIUtils.ContainsMouse(this))
 			{
 				UIUtils.PlayClickSound();
 				Checked = !Checked;
@@ -46,16 +45,15 @@ namespace WarriorsSnuggery.UI.Objects
 			}
 		}
 
-		public override void Render()
+		public void Render()
 		{
 			var renderable = Checked ? type.Checked : type.Default;
 
-			if (ContainsMouse && MouseInput.IsLeftDown)
+			if (MouseInput.IsLeftDown && UIUtils.ContainsMouse(this))
 				renderable = type.Click;
 
 			renderable.SetPosition(Position);
 			renderable.SetScale(Scale);
-			renderable.SetRotation(Rotation);
 			renderable.Render();
 		}
 	}

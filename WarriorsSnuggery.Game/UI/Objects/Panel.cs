@@ -2,7 +2,7 @@
 
 namespace WarriorsSnuggery.UI.Objects
 {
-	public class Panel : UIObject
+	public class Panel : UIPositionable, IRenderable
 	{
 		public override UIPos Position
 		{
@@ -16,41 +16,18 @@ namespace WarriorsSnuggery.UI.Objects
 			}
 		}
 
-		public override VAngle Rotation
+		public virtual Color Color
 		{
-			get => base.Rotation;
+			get => color;
 			set
 			{
-				base.Rotation = value;
-				background.SetRotation(value);
-				border.SetRotation(value);
-				highlight?.SetRotation(value);
-			}
-		}
-
-		public override float Scale
-		{
-			get => base.Scale;
-			set
-			{
-				base.Scale = value;
-				background.SetScale(value);
-				border.SetScale(value);
-				highlight?.SetScale(value);
-			}
-		}
-
-		public override Color Color
-		{
-			get => base.Color;
-			set
-			{
-				base.Color = value;
+				color = value;
 				background.SetColor(value);
 				border.SetColor(value);
 				highlight?.SetColor(value);
 			}
 		}
+		Color color;
 
 		readonly BatchObject background;
 		readonly BatchObject border;
@@ -72,7 +49,7 @@ namespace WarriorsSnuggery.UI.Objects
 				highlight = new BatchObject(Mesh.UIPanel(type.Background2, bounds));
 		}
 
-		public override void Render()
+		public virtual void Render()
 		{
 			border.Render();
 			background.Render();

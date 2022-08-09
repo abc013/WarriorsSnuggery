@@ -2,12 +2,13 @@
 
 namespace WarriorsSnuggery.UI.Objects
 {
-	public class UIParticle : UIObject
+	public class UIParticle : UIPositionable, ITick, IRenderable
 	{
 		public bool IsDone => tick <= 0;
 		readonly int duration;
 		int tick;
 
+		public Color Color;
 		public UIPos Velocity;
 		public UIPos Force;
 
@@ -19,7 +20,7 @@ namespace WarriorsSnuggery.UI.Objects
 			tick = duration;
 		}
 
-		public override void Tick()
+		public void Tick()
 		{
 			Position += Velocity;
 			Velocity += Force;
@@ -27,7 +28,7 @@ namespace WarriorsSnuggery.UI.Objects
 			tick--;
 		}
 
-		public override void Render()
+		public void Render()
 		{
 			ColorManager.DrawQuad(Position, Radius, Color.WithAlpha(tick/(float)duration));
 		}

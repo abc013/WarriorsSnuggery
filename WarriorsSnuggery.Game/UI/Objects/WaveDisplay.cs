@@ -1,6 +1,6 @@
 ﻿namespace WarriorsSnuggery.UI.Objects
 {
-	class WaveDisplay : DisplayBar
+	class WaveDisplay : DisplayBar, ITick
 	{
 		readonly Game game;
 		int currentWave = -1;
@@ -10,10 +10,8 @@
 			this.game = game;
 		}
 
-		public override void Tick()
+		public virtual void Tick()
 		{
-			base.Tick();
-
 			if (game.CurrentWave != currentWave)
 			{
 				currentWave = game.CurrentWave;

@@ -89,7 +89,9 @@ namespace WarriorsSnuggery.UI.Screens
 
 		public bool CursorOnUI()
 		{
-			return ChatOpen && chat.MouseOnChat || message.Visible && message.MouseOnBox || Focused != null && Focused.CursorOnUI();
+			return chat.Visible && UIUtils.ContainsMouse(chat)
+				|| message.Visible && UIUtils.ContainsMouse(message)
+				|| Focused != null && Focused.CursorOnUI();
 		}
 
 		public void RefreshSaveGameScreens()
@@ -164,9 +166,6 @@ namespace WarriorsSnuggery.UI.Screens
 
 			if (ChatOpen)
 				chat.DebugRender();
-
-			if (message.Visible)
-				message.DebugRender();
 
 			infoText.DebugRender();
 		}

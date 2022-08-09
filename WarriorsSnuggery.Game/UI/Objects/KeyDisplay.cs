@@ -2,7 +2,7 @@
 
 namespace WarriorsSnuggery.UI.Objects
 {
-	public class KeyDisplay : Panel
+	public sealed class KeyDisplay : Panel, ITick
 	{
 		public override UIPos Position
 		{
@@ -10,30 +10,7 @@ namespace WarriorsSnuggery.UI.Objects
 			set
 			{
 				base.Position = value;
-
 				key.SetPosition(value);
-			}
-		}
-
-		public override VAngle Rotation
-		{
-			get => base.Rotation;
-			set
-			{
-				base.Rotation = value;
-
-				key.SetRotation(value);
-			}
-		}
-
-		public override float Scale
-		{
-			get => base.Scale;
-			set
-			{
-				base.Scale = value;
-
-				key.SetScale(value);
 			}
 		}
 
@@ -50,10 +27,8 @@ namespace WarriorsSnuggery.UI.Objects
 			key.SetColor(Color.Black);
 		}
 
-		public override void Tick()
+		public void Tick()
 		{
-			base.Tick();
-
 			if (!keyFound && game.Stats.KeyFound)
 			{
 				keyFound = true;

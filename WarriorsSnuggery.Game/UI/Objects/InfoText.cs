@@ -2,7 +2,7 @@
 
 namespace WarriorsSnuggery.UI.Objects
 {
-	public class InfoText : ITickRenderable
+	public sealed class InfoText : ITick, IRenderable
 	{
 		readonly UIText infoText;
 

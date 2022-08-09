@@ -5,7 +5,7 @@ using WarriorsSnuggery.Graphics;
 
 namespace WarriorsSnuggery.UI.Objects
 {
-	public class PanelList : Panel, IDisableTooltip
+	public class PanelList : Panel, IDisableTooltip, ITick
 	{
 		public override UIPos Position
 		{
@@ -13,7 +13,6 @@ namespace WarriorsSnuggery.UI.Objects
 			set
 			{
 				base.Position = value;
-
 				UpdatePositions();
 			}
 		}
@@ -88,14 +87,12 @@ namespace WarriorsSnuggery.UI.Objects
 				o.DisableTooltip();
 		}
 
-		public override void Tick()
+		public virtual void Tick()
 		{
-			base.Tick();
 			foreach (var o in Container)
 				o.Tick();
 
-			CheckMouse();
-			if (ContainsMouse)
+			if (UIUtils.ContainsMouse(this))
 			{
 				if (autoHighlight)
 				{

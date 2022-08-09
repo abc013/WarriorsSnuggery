@@ -2,7 +2,7 @@
 
 namespace WarriorsSnuggery.UI
 {
-	public class UIImage : UIObject
+	public class UIImage : UIPositionable, IRenderable
 	{
 		public override UIPos Position
 		{
@@ -14,35 +14,38 @@ namespace WarriorsSnuggery.UI
 			}
 		}
 
-		public override VAngle Rotation
+		public virtual VAngle Rotation
 		{
-			get => base.Rotation;
+			get => rotation;
 			set
 			{
-				base.Rotation = value;
+				rotation = value;
 				@object.SetRotation(value);
 			}
 		}
+		VAngle rotation;
 
-		public override float Scale
+		public virtual float Scale
 		{
-			get => base.Scale;
+			get => scale;
 			set
 			{
-				base.Scale = value;
+				scale = value;
 				@object.SetScale(value);
 			}
 		}
+		float scale;
 
-		public override Color Color
+		public virtual Color Color
 		{
-			get => base.Color;
+			get => color;
 			set
 			{
-				base.Color = value;
+				color = value;
 				@object.SetColor(value);
 			}
 		}
+		Color color;
 
 		readonly BatchObject @object;
 
@@ -51,7 +54,7 @@ namespace WarriorsSnuggery.UI
 			this.@object = @object;
 		}
 
-		public override void Render()
+		public void Render()
 		{
 			@object.Render();
 		}

@@ -3,7 +3,7 @@ using WarriorsSnuggery.Graphics;
 
 namespace WarriorsSnuggery.UI.Objects
 {
-	public class HealthDisplay : Panel
+	public sealed class HealthDisplay : Panel, ITick
 	{
 		public override UIPos Position
 		{
@@ -14,30 +14,6 @@ namespace WarriorsSnuggery.UI.Objects
 
 				for (var i = 0; i < hearts.Count; i++)
 					setPosition(i);
-			}
-		}
-
-		public override VAngle Rotation
-		{
-			get => base.Rotation;
-			set
-			{
-				base.Rotation = value;
-
-				for (var i = 0; i < hearts.Count; i++)
-					hearts[i].SetRotation(value);
-			}
-		}
-
-		public override float Scale
-		{
-			get => base.Scale;
-			set
-			{
-				base.Scale = value;
-
-				for (var i = 0; i < hearts.Count; i++)
-					hearts[i].SetScale(value);
 			}
 		}
 
@@ -57,10 +33,8 @@ namespace WarriorsSnuggery.UI.Objects
 			bigHeart = new BatchObject(UISpriteManager.Get("UI_heart")[0]);
 		}
 
-		public override void Tick()
+		public void Tick()
 		{
-			base.Tick();
-
 			while (hearts.Count < game.Stats.MaxLifes)
 			{
 				var heart = new BatchObject(UISpriteManager.Get("UI_heart")[0]);

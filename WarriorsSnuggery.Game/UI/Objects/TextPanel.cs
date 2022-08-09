@@ -57,11 +57,9 @@ namespace WarriorsSnuggery.UI.Objects
 				lines[^i].Position = textPosition + new UIPos(0, -((i - 1) - lineScroll) * lineHeight * 2);
 		}
 
-		public override void Tick()
+		public virtual void Tick()
 		{
-			CheckMouse();
-
-			if (ContainsMouse && MouseInput.WheelState != 0)
+			if (UIUtils.ContainsMouse(this) && MouseInput.WheelState != 0)
 			{
 				lineScroll -= MouseInput.WheelState;
 

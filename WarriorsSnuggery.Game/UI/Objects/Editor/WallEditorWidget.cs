@@ -3,7 +3,7 @@ using WarriorsSnuggery.Objects;
 
 namespace WarriorsSnuggery.UI.Objects.Editor
 {
-	public class WallEditorWidget : UIObject
+	public class WallEditorWidget : UIPositionable, ITick, IRenderable
 	{
 		public override UIPos Position
 		{
@@ -61,7 +61,7 @@ namespace WarriorsSnuggery.UI.Objects.Editor
 			list.DisableTooltip();
 		}
 
-		public override void Render()
+		public void Render()
 		{
 			list.Render();
 			placementCheck.Render();
@@ -81,7 +81,7 @@ namespace WarriorsSnuggery.UI.Objects.Editor
 			healthText.DebugRender();
 		}
 
-		public override void Tick()
+		public void Tick()
 		{
 			list.Tick();
 			placementCheck.Tick();

@@ -3,7 +3,7 @@ using WarriorsSnuggery.UI.Screens;
 
 namespace WarriorsSnuggery.UI.Objects
 {
-	public class SettingsChooser : UIObject
+	public class SettingsChooser : UIPositionable, ITick, IRenderable, IDebugRenderable
 	{
 		readonly Button[] chooserButtons = new Button[3 + 2];
 
@@ -23,26 +23,20 @@ namespace WarriorsSnuggery.UI.Objects
 			chooserButtons[4] = new Button("Save & Back", "wooden", () => game.ShowScreen(ScreenType.MENU)) { Position = new UIPos(5120, 6144) };
 		}
 
-		public override void Tick()
+		public void Tick()
 		{
-			base.Tick();
-
 			foreach (var button in chooserButtons)
 				button.Tick();
 		}
 
-		public override void Render()
+		public void Render()
 		{
-			base.Render();
-
 			foreach (var button in chooserButtons)
 				button.Render();
 		}
 
 		public override void DebugRender()
 		{
-			base.DebugRender();
-
 			foreach (var button in chooserButtons)
 				button.DebugRender();
 		}

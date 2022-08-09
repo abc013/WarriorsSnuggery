@@ -3,7 +3,7 @@ using WarriorsSnuggery.Graphics;
 
 namespace WarriorsSnuggery.UI.Objects
 {
-	public class KeyboardButton : Panel
+	public class KeyboardButton : Panel, ITick, ICheckKeys
 	{
 		const int width = 1024;
 		const int height = 256;
@@ -15,16 +15,6 @@ namespace WarriorsSnuggery.UI.Objects
 			{
 				base.Position = value;
 				keyDisplay.Position = value;
-			}
-		}
-
-		public override Color Color
-		{
-			get => base.Color;
-			set
-			{
-				base.Color = value;
-				keyDisplay.Color = value;
 			}
 		}
 
@@ -53,15 +43,11 @@ namespace WarriorsSnuggery.UI.Objects
 				keyDisplay.Render();
 		}
 
-		public override void Tick()
+		public void Tick()
 		{
-			base.Tick();
-
-			CheckMouse();
-
 			if (MouseInput.IsLeftClicked)
 			{
-				selected = ContainsMouse;
+				selected = UIUtils.ContainsMouse(this);
 				if (selected)
 					UIUtils.PlayClickSound();
 				else
@@ -72,7 +58,7 @@ namespace WarriorsSnuggery.UI.Objects
 				blinkTick = 20;
 		}
 
-		public override void KeyDown(Keys key, bool isControl, bool isShift, bool isAlt)
+		public void KeyDown(Keys key, bool isControl, bool isShift, bool isAlt)
 		{
 			if (!selected)
 				return;

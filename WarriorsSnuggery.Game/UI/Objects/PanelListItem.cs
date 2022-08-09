@@ -3,9 +3,9 @@ using WarriorsSnuggery.Graphics;
 
 namespace WarriorsSnuggery.UI.Objects
 {
-	public class PanelListItem : UIObject, IDisableTooltip
+	public class PanelListItem : UIPositionable, IDisableTooltip, ITick, IRenderable
 	{
-		public virtual bool Visible
+		public bool Visible
 		{
 			get => renderable.Visible;
 			set => renderable.Visible = value;
@@ -21,25 +21,16 @@ namespace WarriorsSnuggery.UI.Objects
 			}
 		}
 
-		public override VAngle Rotation
+		public float Scale
 		{
-			get => base.Rotation;
+			get => scale;
 			set
 			{
-				base.Rotation = value;
-				renderable.SetRotation(value);
-			}
-		}
-
-		public override float Scale
-		{
-			get => base.Scale;
-			set
-			{
-				base.Scale = value;
+				scale = value;
 				renderable.SetScale(value);
 			}
 		}
+		float scale;
 
 		readonly BatchRenderable renderable;
 		readonly Action action;
@@ -60,19 +51,17 @@ namespace WarriorsSnuggery.UI.Objects
 			renderable.SetColor(color);
 		}
 
-		public override void Render()
+		public virtual void Render()
 		{
 			renderable.Render();
 		}
 
-		public override void Tick()
+		public virtual void Tick()
 		{
 			if (!Visible)
 				return;
 
-			CheckMouse();
-
-			if (ContainsMouse)
+			if (UIUtils.ContainsMouse(this))
 			{
 				UIRenderer.SetTooltip(tooltip);
 

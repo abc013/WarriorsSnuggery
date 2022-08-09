@@ -12,7 +12,7 @@ namespace WarriorsSnuggery.UI.Objects
 		PATH
 	}
 
-	public class TextBox : Panel
+	public class TextBox : Panel, ITick, ICheckKeys
 	{
 		const int margin = UIUtils.TextMargin;
 
@@ -82,10 +82,9 @@ namespace WarriorsSnuggery.UI.Objects
 			textline.Render();
 		}
 
-		public override void Tick()
+		public virtual void Tick()
 		{
-			CheckMouse();
-			if (ContainsMouse && MouseInput.IsLeftClicked)
+			if (UIUtils.ContainsMouse(this) && MouseInput.IsLeftClicked)
 			{
 				UIUtils.PlayClickSound();
 				Selected = true;
@@ -128,7 +127,7 @@ namespace WarriorsSnuggery.UI.Objects
 			}
 		}
 
-		public override void KeyDown(Keys key, bool isControl, bool isShift, bool isAlt)
+		public virtual void KeyDown(Keys key, bool isControl, bool isShift, bool isAlt)
 		{
 			if (!Selected)
 				return;

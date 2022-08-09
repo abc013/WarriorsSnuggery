@@ -3,7 +3,7 @@ using WarriorsSnuggery.Objects.Actors;
 
 namespace WarriorsSnuggery.UI.Objects
 {
-	class EnemyPointer : UIObject
+	class EnemyPointer : UIPositionable, ITick, IRenderable
 	{
 		readonly Game game;
 		readonly BatchObject pointer;
@@ -19,10 +19,8 @@ namespace WarriorsSnuggery.UI.Objects
 			pointer = new BatchObject(UISpriteManager.Get("UI_enemy_arrow")[0]);
 		}
 
-		public override void Tick()
+		public void Tick()
 		{
-			base.Tick();
-
 			if (game.IsCampaign && !game.IsMenu && showTick++ == enableTick)
 				ShowArrow();
 
@@ -64,10 +62,8 @@ namespace WarriorsSnuggery.UI.Objects
 			pointer.SetPosition(CPos.FromFlatAngle(angle, 2048) - Camera.CameraPlayerOffset);
 		}
 
-		public override void Render()
+		public void Render()
 		{
-			base.Render();
-
 			if (targetedEnemy != null)
 				pointer.Render();
 		}

@@ -95,7 +95,7 @@ namespace WarriorsSnuggery.UI.Screens
 		}
 	}
 
-	class SpellNode : Panel
+	class SpellNode : Panel, ITick
 	{
 		public override UIPos Position
 		{
@@ -114,7 +114,6 @@ namespace WarriorsSnuggery.UI.Screens
 
 		readonly BatchSequence image;
 		readonly Tooltip tooltip;
-		bool mouseOnItem;
 		bool available;
 		bool unlocked;
 
@@ -136,14 +135,32 @@ namespace WarriorsSnuggery.UI.Screens
 			UIRenderer.DisableTooltip(tooltip);
 		}
 
-		public override void Tick()
+		public void Tick()
 		{
-			base.Tick();
+			if (UIUtils.ContainsMouse(this))
+			{
+				// TODO: custom bounds 512, 512
+				if (MouseInput.IsLeftClicked)
+				{
+					if (unlocked || !available)
+						return;
 
-			checkMouse();
+					if (game.Stats.Money < type.Cost)
+						return;
 
-			if (mouseOnItem)
+					UIUtils.PlaySellSound();
+
+					game.Stats.Money -= type.Cost;
+					game.Stats.AddSpell(type);
+
+					unlocked = true;
+					HighlightVisible = true;
+
+					screen.UpdateAvailability();
+				}
+
 				UIRenderer.SetTooltip(tooltip);
+			}
 			else
 				UIRenderer.DisableTooltip(tooltip);
 
@@ -161,32 +178,6 @@ namespace WarriorsSnuggery.UI.Screens
 		public void CheckAvailability()
 		{
 			available = game.Stats.SpellAvailable(type);
-		}
-
-		void checkMouse()
-		{
-			var mousePosition = MouseInput.WindowPosition;
-
-			mouseOnItem = mousePosition.X > Position.X - 512 && mousePosition.X < Position.X + 512 && mousePosition.Y > Position.Y - 512 && mousePosition.Y < Position.Y + 512;
-
-			if (mouseOnItem && MouseInput.IsLeftClicked)
-			{
-				if (unlocked || !available)
-					return;
-
-				if (game.Stats.Money < type.Cost)
-					return;
-
-				UIUtils.PlaySellSound();
-
-				game.Stats.Money -= type.Cost;
-				game.Stats.AddSpell(type);
-
-				unlocked = true;
-				HighlightVisible = true;
-
-				screen.UpdateAvailability();
-			}
 		}
 	}
 

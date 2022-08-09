@@ -3,7 +3,7 @@ using WarriorsSnuggery.Graphics;
 
 namespace WarriorsSnuggery.UI.Objects
 {
-	public class Button : Panel
+	public sealed class Button : Panel, ITick
 	{
 		public override UIPos Position
 		{
@@ -20,6 +20,8 @@ namespace WarriorsSnuggery.UI.Objects
 		readonly UIText text;
 		readonly Action action;
 
+		bool containsMouse;
+
 		public Button(string text, string typeName, Action action = null) : this(text, PanelCache.Types[typeName], action) { }
 
 		public Button(string text, PanelType type, Action action = null) : base(new UIPos(margin + FontManager.Default.Measure(text).width / 2, margin + FontManager.Default.Measure(text).height / 2), type, true)
@@ -31,7 +33,7 @@ namespace WarriorsSnuggery.UI.Objects
 
 		public override void Render()
 		{
-			if (ContainsMouse)
+			if (containsMouse)
 			{
 				if (MouseInput.IsLeftDown)
 					Color = new Color(0.5f, 0.5f, 0.5f);
@@ -51,13 +53,11 @@ namespace WarriorsSnuggery.UI.Objects
 			text.Render();
 		}
 
-		public override void Tick()
+		public void Tick()
 		{
-			base.Tick();
+			containsMouse = UIUtils.ContainsMouse(this);
 
-			CheckMouse();
-
-			if (MouseInput.IsLeftClicked && ContainsMouse && action != null)
+			if (MouseInput.IsLeftClicked && containsMouse && action != null)
 			{
 				UIUtils.PlayClickSound();
 				action?.Invoke();

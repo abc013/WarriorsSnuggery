@@ -61,8 +61,9 @@ namespace WarriorsSnuggery.UI.Objects
 				currentImageDelta = Position.X - image.Position.X;
 				var delta = Math.Abs(currentImageDelta / (float)imagePathWidth);
 				var speed = Math.Max(4, (int)((1f - delta * delta) * 256));
-				image.Position = new UIPos(Math.Clamp(image.Position.X + (ContainsMouse ? -speed : speed), Position.X - imagePathWidth, Position.X + imagePathWidth), image.Position.Y);
-				image.Rotation = new VAngle(0, 0, Math.Clamp(image.Rotation.Z + (ContainsMouse ? -speed : speed), -delta * Angle.MaxRange, 0));
+				var containsMouse = UIUtils.ContainsMouse(this);
+				image.Position = new UIPos(Math.Clamp(image.Position.X + (containsMouse ? -speed : speed), Position.X - imagePathWidth, Position.X + imagePathWidth), image.Position.Y);
+				image.Rotation = new VAngle(0, 0, Math.Clamp(image.Rotation.Z + (containsMouse ? -speed : speed), -delta * Angle.MaxRange, 0));
 				image.Render();
 				outdated.Render();
 				content.Render();

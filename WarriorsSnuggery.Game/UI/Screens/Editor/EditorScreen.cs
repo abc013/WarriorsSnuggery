@@ -199,19 +199,8 @@ namespace WarriorsSnuggery.UI.Screens
 
 			switch (currentSelected)
 			{
-				case Selected.TILE:
-					terrainWidget.KeyDown(key, isControl, isShift, isAlt);
-					break;
 				case Selected.ACTOR:
 					actorWidget.KeyDown(key, isControl, isShift, isAlt);
-					break;
-				case Selected.WALL:
-					wallWidget.KeyDown(key, isControl, isShift, isAlt);
-					break;
-				default:
-					if (game.InteractionMode == InteractionMode.EDITOR)
-						save.KeyDown(key, isControl, isShift, isAlt);
-
 					break;
 			}
 		}

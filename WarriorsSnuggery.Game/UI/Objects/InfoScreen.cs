@@ -2,7 +2,7 @@
 
 namespace WarriorsSnuggery.UI.Objects
 {
-	public class InfoScreen : ITickRenderable
+	public class InfoScreen : ITick, IRenderable
 	{
 		public bool Visible => Settings.EnableInfoScreen;
 

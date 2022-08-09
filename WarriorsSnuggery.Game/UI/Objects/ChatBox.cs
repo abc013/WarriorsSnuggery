@@ -3,13 +3,12 @@ using WarriorsSnuggery.Graphics;
 
 namespace WarriorsSnuggery.UI.Objects
 {
-	public class ChatBox : UIObject
+	public sealed class ChatBox : UIPositionable, ITick, IRenderable, ICheckKeys
 	{
 		readonly TextPanel panel;
 		readonly TextBox input;
 		readonly Button send;
 
-		public bool MouseOnChat => ContainsMouse;
 		public bool Visible;
 
 		public ChatBox(UIPos position)
@@ -56,18 +55,17 @@ namespace WarriorsSnuggery.UI.Objects
 			panel.Add(message);
 		}
 
-		public override void Tick()
+		public void Tick()
 		{
 			if (!Visible)
 				return;
 
-			CheckMouse();
 			panel.Tick();
 			input.Tick();
 			send.Tick();
 		}
 
-		public override void Render()
+		public void Render()
 		{
 			if (!Visible)
 				return;
@@ -78,7 +76,7 @@ namespace WarriorsSnuggery.UI.Objects
 			send.Render();
 		}
 
-		public override void KeyDown(Keys key, bool isControl, bool isShift, bool isAlt)
+		public void KeyDown(Keys key, bool isControl, bool isShift, bool isAlt)
 		{
 			if (!Visible)
 				return;

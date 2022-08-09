@@ -7,7 +7,7 @@ using WarriorsSnuggery.Objects.Actors.Parts;
 
 namespace WarriorsSnuggery.UI.Objects.Editor
 {
-	public class ActorEditorWidget : UIObject
+	public class ActorEditorWidget : UIPositionable, IDisableTooltip, IRenderable, ITick, ICheckKeys
 	{
 		public override UIPos Position
 		{
@@ -115,7 +115,7 @@ namespace WarriorsSnuggery.UI.Objects.Editor
 			list.DisableTooltip();
 		}
 
-		public override void Render()
+		public void Render()
 		{
 			list.Render();
 			rasterizationCheck.Render();
@@ -153,7 +153,7 @@ namespace WarriorsSnuggery.UI.Objects.Editor
 			facingText.DebugRender();
 		}
 
-		public override void Tick()
+		public void Tick()
 		{
 			list.Tick();
 			rasterizationCheck.Tick();
@@ -172,10 +172,8 @@ namespace WarriorsSnuggery.UI.Objects.Editor
 			facingText.Tick();
 		}
 
-		public override void KeyDown(Keys key, bool isControl, bool isShift, bool isAlt)
+		public void KeyDown(Keys key, bool isControl, bool isShift, bool isAlt)
 		{
-			base.KeyDown(key, isControl, isShift, isAlt);
-
 			teamTextBox.KeyDown(key, isControl, isShift, isAlt);
 		}
 	}

@@ -3,7 +3,7 @@ using WarriorsSnuggery.Objects;
 
 namespace WarriorsSnuggery.UI.Objects.Editor
 {
-	public class TerrainEditorWidget : UIObject
+	public sealed class TerrainEditorWidget : UIPositionable, IDisableTooltip, ITick, IRenderable
 	{
 		public override UIPos Position
 		{
@@ -32,7 +32,7 @@ namespace WarriorsSnuggery.UI.Objects.Editor
 			list.DisableTooltip();
 		}
 
-		public override void Render()
+		public void Render()
 		{
 			list.Render();
 		}
@@ -42,7 +42,7 @@ namespace WarriorsSnuggery.UI.Objects.Editor
 			list.DebugRender();
 		}
 
-		public override void Tick()
+		public void Tick()
 		{
 			list.Tick();
 		}

@@ -42,7 +42,7 @@ namespace WarriorsSnuggery.UI.Objects
 		}
 	}
 
-	public class MessageBox : UIObject
+	public sealed class MessageBox : UIPositionable, IRenderable, ITick
 	{
 		readonly Panel background;
 		readonly UIText text;
@@ -50,7 +50,6 @@ namespace WarriorsSnuggery.UI.Objects
 		Button decline, agree;
 		Button @continue;
 
-		public bool MouseOnBox => ContainsMouse;
 		public bool Visible;
 
 		public MessageBox(UIPos position)
@@ -90,19 +89,17 @@ namespace WarriorsSnuggery.UI.Objects
 			}
 		}
 
-		public override void Tick()
+		public void Tick()
 		{
 			if (!Visible)
 				return;
-
-			CheckMouse();
 
 			decline?.Tick();
 			agree?.Tick();
 			@continue?.Tick();
 		}
 
-		public override void Render()
+		public void Render()
 		{
 			if (!Visible)
 				return;

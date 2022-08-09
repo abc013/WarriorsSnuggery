@@ -29,5 +29,15 @@ namespace WarriorsSnuggery.UI
 		{
 			AudioManager.PlaySound("life_lost");
 		}
+
+		public static bool ContainsMouse(UIPositionable positionable)
+		{
+			var pos = positionable.Position;
+			var bounds = positionable.SelectableBounds;
+
+			var mouse = MouseInput.WindowPosition;
+
+			return mouse.X > pos.X - bounds.X && mouse.X < pos.X + bounds.X && mouse.Y > pos.Y - bounds.Y && mouse.Y < pos.Y + bounds.Y;
+		}
 	}
 }

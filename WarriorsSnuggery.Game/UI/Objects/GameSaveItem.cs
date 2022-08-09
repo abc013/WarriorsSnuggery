@@ -60,7 +60,7 @@ namespace WarriorsSnuggery.UI.Objects
 			{
 				var delta = Math.Abs(image.Position.X / (float)imagePathWidth);
 				var speed = Math.Max(4, (int)((1f - delta * delta) * 256));
-				image.Position = new UIPos(Math.Clamp(image.Position.X + (ContainsMouse ? -speed : speed), -imagePathWidth, imagePathWidth), image.Position.Y);
+				image.Position = new UIPos(Math.Clamp(image.Position.X + (UIUtils.ContainsMouse(this) ? -speed : speed), -imagePathWidth, imagePathWidth), image.Position.Y);
 				image.Render();
 				type.Render();
 				content.Render();

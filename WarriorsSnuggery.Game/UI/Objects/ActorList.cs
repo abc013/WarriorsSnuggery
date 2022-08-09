@@ -7,12 +7,11 @@ using WarriorsSnuggery.Objects.Actors.Parts;
 
 namespace WarriorsSnuggery.UI.Objects
 {
-	public class ActorList : PanelList
+	public sealed class ActorList : PanelList
 	{
 		static readonly Color disabled = new Color(0f, 0f, 0f, 0.3f);
 
 		readonly Game game;
-
 		readonly List<ActorType> actorTypes = new List<ActorType>();
 
 		public int CurrentActor
@@ -21,7 +20,6 @@ namespace WarriorsSnuggery.UI.Objects
 			set
 			{
 				currentActor = value;
-
 				currentActor %= actorTypes.Count;
 
 				if (currentActor < 0)

@@ -2,7 +2,7 @@
 
 namespace WarriorsSnuggery.UI.Objects
 {
-	public class SliderBar : Panel
+	public class SliderBar : Panel, ITick
 	{
 		readonly Slider slider;
 
@@ -38,26 +38,16 @@ namespace WarriorsSnuggery.UI.Objects
 			slider.Render();
 		}
 
-		public override void DebugRender()
+		public void Tick()
 		{
-			base.DebugRender();
-
-			slider.DebugRender();
-		}
-
-		public override void Tick()
-		{
-			base.Tick();
-
 			slider.Tick();
 
-			CheckMouse();
-			if (ContainsMouse && MouseInput.IsLeftClicked)
+			if (UIUtils.ContainsMouse(this) && MouseInput.IsLeftClicked)
 				slider.CalculatePosition();
 		}
 	}
 
-	class Slider : Panel
+	class Slider : Panel, ITick
 	{
 		public UIPos CenterPosition;
 		readonly int length;
@@ -94,18 +84,15 @@ namespace WarriorsSnuggery.UI.Objects
 			this.displayAsPercent = displayAsPercent;
 		}
 
-		public override void Tick()
+		public void Tick()
 		{
-			base.Tick();
-
-			CheckMouse();
-
-			if (ContainsMouse)
+			var containsMouse = UIUtils.ContainsMouse(this);
+			if (containsMouse)
 				UIRenderer.SetTooltip(tooltip);
 			else
 				UIRenderer.DisableTooltip(tooltip);
 
-			if (MouseInput.IsLeftDown && ContainsMouse)
+			if (MouseInput.IsLeftDown && containsMouse)
 			{
 				if (!drag)
 					UIUtils.PlayClickSound();

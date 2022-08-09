@@ -14,26 +14,6 @@ namespace WarriorsSnuggery.UI.Objects
 			}
 		}
 
-		public override VAngle Rotation
-		{
-			get => base.Rotation;
-			set
-			{
-				base.Rotation = value;
-				text.Rotation = value;
-			}
-		}
-
-		public override float Scale
-		{
-			get => base.Scale;
-			set
-			{
-				base.Scale = value;
-				text.Scale = value;
-			}
-		}
-
 		readonly Color fillColor;
 		readonly UIText text;
 

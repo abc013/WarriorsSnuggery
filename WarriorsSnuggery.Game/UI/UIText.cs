@@ -2,7 +2,7 @@
 
 namespace WarriorsSnuggery.UI
 {
-	public class UIText : UIObject
+	public class UIText : UIPositionable, ITick, IRenderable
 	{
 		readonly TextRenderable text;
 
@@ -16,43 +16,42 @@ namespace WarriorsSnuggery.UI
 			set
 			{
 				base.Position = value;
-
 				text.SetPosition(value);
 			}
 		}
 
-		public override VAngle Rotation
+		public VAngle Rotation
 		{
-			get => base.Rotation;
+			get => rotation;
 			set
 			{
-				base.Rotation = value;
-
+				rotation = value;
 				text.SetRotation(value);
 			}
 		}
+		VAngle rotation;
 
-		public override float Scale
+		public float Scale
 		{
-			get => base.Scale;
+			get => scale;
 			set
 			{
-				base.Scale = value;
-
+				scale = value;
 				text.SetScale(value);
 			}
 		}
+		float scale;
 
-		public override Color Color
+		public Color Color
 		{
-			get => base.Color;
+			get => color;
 			set
 			{
-				base.Color = value;
-
+				color = value;
 				text.SetColor(value);
 			}
 		}
+		Color color;
 
 		public UIText(Font font, TextOffset offset = TextOffset.LEFT)
 		{
@@ -95,8 +94,8 @@ namespace WarriorsSnuggery.UI
 			Bounds = new UIPos(width / 2, height);
 		}
 
-		public override void Tick() => text.Tick();
-		public override void Render() => text.Render();
+		public virtual void Tick() => text.Tick();
+		public virtual void Render() => text.Render();
 
 		public override void DebugRender()
 		{
