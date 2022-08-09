@@ -71,6 +71,9 @@ namespace WarriorsSnuggery.UI.Screens
 
 		protected void Add(object @object)
 		{
+			if (@object == null)
+				return;
+
 			if (@object is not UIPositionable)
 				throw new InvalidOperationException($"Unable to add object of type '{@object.GetType()}' to Screen.");
 
@@ -89,6 +92,9 @@ namespace WarriorsSnuggery.UI.Screens
 
 		protected void Remove(object @object)
 		{
+			if (@object == null)
+				return;
+
 			if (@object is not UIPositionable)
 				throw new InvalidOperationException($"Unable to remove object of type '{@object.GetType()}' to Screen.");
 
