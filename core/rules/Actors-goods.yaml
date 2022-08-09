@@ -103,7 +103,7 @@ box1=
 	Physics=
 		Type=
 			Shape=Rectangle
-			Boundaries=341,341,128
+			Boundaries=341,341,256
 
 box2=
 	Inherits=_box
@@ -117,7 +117,7 @@ box2=
 	Physics=
 		Type=
 			Shape=Rectangle
-			Boundaries=597,341,128
+			Boundaries=597,341,256
 
 box1_debris=
 	Sprite=
