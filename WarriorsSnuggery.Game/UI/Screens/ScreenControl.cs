@@ -50,7 +50,7 @@ namespace WarriorsSnuggery.UI.Screens
 		public void SetDecision(Action OnDecline, Action OnAgree, string text)
 		{
 			if (!cachedScreens.ContainsKey(ScreenType.DECISION))
-				cachedScreens.Add(ScreenType.DECISION, new DecisionScreen(game));
+				createScreen(ScreenType.DECISION);
 
 			(cachedScreens[ScreenType.DECISION] as DecisionScreen).SetAction(OnDecline, OnAgree, text);
 		}
@@ -92,6 +92,15 @@ namespace WarriorsSnuggery.UI.Screens
 			return chat.Visible && UIUtils.ContainsMouse(chat)
 				|| message.Visible && UIUtils.ContainsMouse(message)
 				|| Focused != null && Focused.CursorOnUI();
+		}
+
+		public void ReloadScreenCache()
+		{
+			var type = FocusedType;
+
+			ShowScreen(ScreenType.EMPTY);
+			cachedScreens.Clear();
+			ShowScreen(type);
 		}
 
 		public void RefreshSaveGameScreens()
@@ -216,9 +225,9 @@ namespace WarriorsSnuggery.UI.Screens
 
 			public void Render()
 			{
-				var darkness = (byte)((256 / maxFade) * fade);
+				var darkness = (byte)((255 / maxFade) * fade);
 				if (darkness > 0)
-					ColorManager.DrawFullscreenRect(Color.Black.WithAlpha(darkness));
+					ColorManager.DrawFullscreenRect(Color.Black.WithAlpha(darkness / 255f));
 			}
 
 			public void FadeIn() => fadeOut = false;

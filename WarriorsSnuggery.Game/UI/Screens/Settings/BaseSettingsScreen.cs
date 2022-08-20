@@ -206,6 +206,10 @@ namespace WarriorsSnuggery.UI.Screens
 
 		void save()
 		{
+			var height = Settings.Height;
+			var width = Settings.Width;
+			var fullscreen = Settings.Fullscreen;
+
 			Settings.FrameLimiter = int.Parse(frameLimiterWrite.Text);
 			Settings.ScrollSpeed = (int)Math.Round(panningSlider.Value);
 			Settings.EdgeScrolling = (int)Math.Round(edgePanningSlider.Value);
@@ -224,7 +228,11 @@ namespace WarriorsSnuggery.UI.Screens
 
 			Settings.Save();
 
-			Window.UpdateScreen();
+			if ((Settings.Fullscreen != fullscreen) || (height != Settings.Height) || (width != Settings.Width))
+			{
+				Window.UpdateScreen();
+				game.ScreenControl.ReloadScreenCache();
+			}
 
 			game.AddInfoMessage(150, "Settings saved!");
 			Log.Debug("Saved settings.");
