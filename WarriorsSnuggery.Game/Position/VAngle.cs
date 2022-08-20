@@ -24,21 +24,16 @@ namespace WarriorsSnuggery
 			Z = Angle.ToArc(zDeg);
 		}
 
-		public static VAngle operator +(VAngle lhs, VAngle rhs) { return new VAngle(lhs.X + rhs.X, lhs.Y + rhs.Y, lhs.Z + rhs.Z); }
+		public static VAngle operator +(in VAngle lhs, in VAngle rhs) { return new VAngle(lhs.X + rhs.X, lhs.Y + rhs.Y, lhs.Z + rhs.Z); }
+		public static VAngle operator -(in VAngle lhs, in VAngle rhs) { return new VAngle(lhs.X - rhs.X, lhs.Y - rhs.Y, lhs.Z - rhs.Z); }
+		public static VAngle operator *(in VAngle lhs, in VAngle rhs) { return new VAngle(lhs.X * rhs.X, lhs.Y * rhs.Y, lhs.Z * rhs.Z); }
+		public static VAngle operator /(in VAngle lhs, in VAngle rhs) { return new VAngle(lhs.X / rhs.X, lhs.Y / rhs.Y, lhs.Z / rhs.Z); }
+		public static VAngle operator -(in VAngle pos) { return new VAngle(-pos.X, -pos.Y, -pos.Z); }
 
-		public static VAngle operator -(VAngle lhs, VAngle rhs) { return new VAngle(lhs.X - rhs.X, lhs.Y - rhs.Y, lhs.Z - rhs.Z); }
+		public static bool operator ==(in VAngle lhs, in VAngle rhs) { return lhs.X == rhs.X && lhs.Y == rhs.Y && lhs.Z == rhs.Z; }
+		public static bool operator !=(in VAngle lhs, in VAngle rhs) { return !(lhs == rhs); }
 
-		public static VAngle operator *(VAngle lhs, VAngle rhs) { return new VAngle(lhs.X * rhs.X, lhs.Y * rhs.Y, lhs.Z * rhs.Z); }
-
-		public static VAngle operator /(VAngle lhs, VAngle rhs) { return new VAngle(lhs.X / rhs.X, lhs.Y / rhs.Y, lhs.Z / rhs.Z); }
-
-		public static VAngle operator -(VAngle pos) { return new VAngle(-pos.X, -pos.Y, -pos.Z); }
-
-		public static bool operator ==(VAngle lhs, VAngle rhs) { return lhs.X == rhs.X && lhs.Y == rhs.Y && lhs.Z == rhs.Z; }
-
-		public static bool operator !=(VAngle lhs, VAngle rhs) { return !(lhs == rhs); }
-
-		public bool Equals(VAngle pos) { return pos == this; }
+		public bool Equals(in VAngle pos) { return pos == this; }
 		public override bool Equals(object obj) { return obj is VAngle angle && Equals(angle); }
 
 		public override int GetHashCode() { return X.GetHashCode() ^ Y.GetHashCode() ^ Z.GetHashCode(); }
@@ -55,12 +50,12 @@ namespace WarriorsSnuggery
 			return new CPos(Angle.ToDegree(X), Angle.ToDegree(Y), Angle.ToDegree(Z));
 		}
 
-		public static implicit operator Vector3(VAngle angle)
+		public static implicit operator Vector3(in VAngle angle)
 		{
 			return new Vector3(angle.X, angle.Y, angle.Z);
 		}
 
-		public static implicit operator Quaternion(VAngle angle)
+		public static implicit operator Quaternion(in VAngle angle)
 		{
 			return Quaternion.FromEulerAngles(angle.X, angle.Y, angle.Z);
 		}

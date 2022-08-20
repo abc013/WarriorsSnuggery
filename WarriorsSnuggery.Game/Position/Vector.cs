@@ -20,41 +20,37 @@ namespace WarriorsSnuggery
 			Z = z;
 		}
 
-		public static Vector operator +(Vector lhs, Vector rhs) { return new Vector(lhs.X + rhs.X, lhs.Y + rhs.Y, lhs.Z + rhs.Z); }
+		public static Vector operator +(in Vector lhs, in Vector rhs) { return new Vector(lhs.X + rhs.X, lhs.Y + rhs.Y, lhs.Z + rhs.Z); }
+		public static Vector operator -(in Vector lhs, in Vector rhs) { return new Vector(lhs.X - rhs.X, lhs.Y - rhs.Y, lhs.Z - rhs.Z); }
+		public static Vector operator *(in Vector lhs, in Vector rhs) { return new Vector(lhs.X * rhs.X, lhs.Y * rhs.Y, lhs.Z * rhs.Z); }
+		public static Vector operator /(in Vector lhs, in Vector rhs) { return new Vector(lhs.X / rhs.X, lhs.Y / rhs.Y, lhs.Z / rhs.Z); }
+		public static Vector operator -(in Vector vec) { return new Vector(-vec.X, -vec.Y, -vec.Z); }
 
-		public static Vector operator -(Vector lhs, Vector rhs) { return new Vector(lhs.X - rhs.X, lhs.Y - rhs.Y, lhs.Z - rhs.Z); }
+		public static bool operator ==(in Vector lhs, in Vector rhs) { return lhs.X == rhs.X && lhs.Y == rhs.Y && lhs.Z == rhs.Z; }
+		public static bool operator !=(in Vector lhs, in Vector rhs) { return !(lhs == rhs); }
 
-		public static Vector operator *(Vector lhs, Vector rhs) { return new Vector(lhs.X * rhs.X, lhs.Y * rhs.Y, lhs.Z * rhs.Z); }
 
-		public static Vector operator /(Vector lhs, Vector rhs) { return new Vector(lhs.X / rhs.X, lhs.Y / rhs.Y, lhs.Z / rhs.Z); }
-
-		public static Vector operator -(Vector vec) { return new Vector(-vec.X, -vec.Y, -vec.Z); }
-
-		public static implicit operator Vector(Vector4 vec)
+		public static implicit operator Vector(in Vector4 vec)
 		{
 			return new Vector(vec.X, vec.Y, vec.Z);
 		}
 
-		public static implicit operator Vector4(Vector vec)
+		public static implicit operator Vector4(in Vector vec)
 		{
 			return new Vector4(vec.X, vec.Y, vec.Z, 1f);
 		}
 
-		public static implicit operator Vector(Vector3 vec)
+		public static implicit operator Vector(in Vector3 vec)
 		{
 			return new Vector(vec.X, vec.Y, vec.Z);
 		}
 
-		public static implicit operator Vector3(Vector vec)
+		public static implicit operator Vector3(in Vector vec)
 		{
 			return new Vector3(vec.X, vec.Y, vec.Z);
 		}
 
-		public static bool operator ==(Vector lhs, Vector rhs) { return lhs.X == rhs.X && lhs.Y == rhs.Y && lhs.Z == rhs.Z; }
-
-		public static bool operator !=(Vector lhs, Vector rhs) { return !(lhs == rhs); }
-
-		public bool Equals(Vector pos) { return pos == this; }
+		public bool Equals(in Vector pos) { return pos == this; }
 		public override bool Equals(object obj) { return obj is Vector vector && Equals(vector); }
 
 		public override int GetHashCode() { return X.GetHashCode() ^ Y.GetHashCode() ^ Z.GetHashCode(); }

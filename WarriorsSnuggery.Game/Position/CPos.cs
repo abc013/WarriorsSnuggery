@@ -24,21 +24,21 @@ namespace WarriorsSnuggery
 			Z = z;
 		}
 
-		public static CPos operator +(CPos lhs, CPos rhs) { return new CPos(lhs.X + rhs.X, lhs.Y + rhs.Y, lhs.Z + rhs.Z); }
+		public static CPos operator +(in CPos lhs, in CPos rhs) { return new CPos(lhs.X + rhs.X, lhs.Y + rhs.Y, lhs.Z + rhs.Z); }
 
-		public static CPos operator -(CPos lhs, CPos rhs) { return new CPos(lhs.X - rhs.X, lhs.Y - rhs.Y, lhs.Z - rhs.Z); }
+		public static CPos operator -(in CPos lhs, in CPos rhs) { return new CPos(lhs.X - rhs.X, lhs.Y - rhs.Y, lhs.Z - rhs.Z); }
 
-		public static CPos operator *(CPos lhs, CPos rhs) { return new CPos(lhs.X * rhs.X, lhs.Y * rhs.Y, lhs.Z * rhs.Z); }
+		public static CPos operator *(in CPos lhs, in CPos rhs) { return new CPos(lhs.X * rhs.X, lhs.Y * rhs.Y, lhs.Z * rhs.Z); }
 
-		public static CPos operator /(CPos lhs, CPos rhs) { return new CPos(lhs.X / rhs.X, lhs.Y / rhs.Y, lhs.Z / rhs.Z); }
+		public static CPos operator /(in CPos lhs, in CPos rhs) { return new CPos(lhs.X / rhs.X, lhs.Y / rhs.Y, lhs.Z / rhs.Z); }
 
-		public static CPos operator -(CPos pos) { return new CPos(-pos.X, -pos.Y, -pos.Z); }
+		public static CPos operator -(in CPos pos) { return new CPos(-pos.X, -pos.Y, -pos.Z); }
 
-		public static bool operator ==(CPos lhs, CPos rhs) { return lhs.X == rhs.X && lhs.Y == rhs.Y && lhs.Z == rhs.Z; }
+		public static bool operator ==(in CPos lhs, in CPos rhs) { return lhs.X == rhs.X && lhs.Y == rhs.Y && lhs.Z == rhs.Z; }
 
-		public static bool operator !=(CPos lhs, CPos rhs) { return !(lhs == rhs); }
+		public static bool operator !=(in CPos lhs, in CPos rhs) { return !(lhs == rhs); }
 
-		public bool Equals(CPos pos) { return pos == this; }
+		public bool Equals(in CPos pos) { return pos == this; }
 		public override bool Equals(object obj) { return obj is CPos pos && Equals(pos); }
 
 		public override int GetHashCode() { return X ^ Y ^ Z; }

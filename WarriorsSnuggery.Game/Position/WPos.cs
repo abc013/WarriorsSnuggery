@@ -24,13 +24,11 @@ namespace WarriorsSnuggery
 			Y = terrainY;
 		}
 
-		public static WPos operator +(WPos lhs, WPos rhs) { return new WPos(lhs.X + rhs.X, lhs.Y + rhs.Y); }
+		public static WPos operator +(in WPos lhs, in WPos rhs) { return new WPos(lhs.X + rhs.X, lhs.Y + rhs.Y); }
+		public static WPos operator -(in WPos lhs, in WPos rhs) { return new WPos(lhs.X - rhs.X, lhs.Y - rhs.Y); }
 
-		public static WPos operator -(WPos lhs, WPos rhs) { return new WPos(lhs.X - rhs.X, lhs.Y - rhs.Y); }
-
-		public static bool operator ==(WPos lhs, WPos rhs) { return lhs.X == rhs.X && lhs.Y == rhs.Y; }
-
-		public static bool operator !=(WPos lhs, WPos rhs) { return !(lhs == rhs); }
+		public static bool operator ==(in WPos lhs, in WPos rhs) { return lhs.X == rhs.X && lhs.Y == rhs.Y; }
+		public static bool operator !=(in WPos lhs, in WPos rhs) { return !(lhs == rhs); }
 
 		public bool Equals(WPos pos) { return pos == this; }
 		public override bool Equals(object obj) { return obj is WPos pos && Equals(pos); }

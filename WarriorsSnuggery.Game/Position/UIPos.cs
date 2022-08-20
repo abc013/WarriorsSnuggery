@@ -15,25 +15,21 @@ namespace WarriorsSnuggery
 			intern = new CPos(x, y, 0);
 		}
 
-		public static UIPos operator +(UIPos lhs, UIPos rhs) { return new UIPos(lhs.X + rhs.X, lhs.Y + rhs.Y); }
+		public static UIPos operator +(in UIPos lhs, in UIPos rhs) { return new UIPos(lhs.X + rhs.X, lhs.Y + rhs.Y); }
+		public static UIPos operator -(in UIPos lhs, in UIPos rhs) { return new UIPos(lhs.X - rhs.X, lhs.Y - rhs.Y); }
+		public static UIPos operator *(in UIPos lhs, float rhs) { return new UIPos((int)(lhs.X * rhs), (int)(lhs.Y * rhs)); }
+		public static UIPos operator *(float lhs, in UIPos rhs) { return rhs * lhs; }
+		public static UIPos operator /(in UIPos lhs, float rhs) { return new UIPos((int)(lhs.X / rhs), (int)(lhs.Y / rhs)); }
 
-		public static UIPos operator -(UIPos lhs, UIPos rhs) { return new UIPos(lhs.X - rhs.X, lhs.Y - rhs.Y); }
+		public static bool operator ==(in UIPos lhs, in UIPos rhs) { return lhs.X == rhs.X && lhs.Y == rhs.Y; }
+		public static bool operator !=(in UIPos lhs, in UIPos rhs) { return !(lhs == rhs); }
 
-		public static UIPos operator *(UIPos lhs, float rhs) { return new UIPos((int)(lhs.X * rhs), (int)(lhs.Y * rhs)); }
-		public static UIPos operator *(float lhs, UIPos rhs) { return rhs * lhs; }
-
-		public static UIPos operator /(UIPos lhs, float rhs) { return new UIPos((int)(lhs.X / rhs), (int)(lhs.Y / rhs)); }
-
-		public static bool operator ==(UIPos lhs, UIPos rhs) { return lhs.X == rhs.X && lhs.Y == rhs.Y; }
-
-		public static bool operator !=(UIPos lhs, UIPos rhs) { return !(lhs == rhs); }
-
-		public static implicit operator CPos(UIPos pos)
+		public static implicit operator CPos(in UIPos pos)
 		{
 			return pos.intern;
 		}
 
-		public bool Equals(UIPos pos) { return pos == this; }
+		public bool Equals(in UIPos pos) { return pos == this; }
 		public override bool Equals(object obj) { return obj is UIPos pos && Equals(pos); }
 
 		public override int GetHashCode() { return X ^ Y; }

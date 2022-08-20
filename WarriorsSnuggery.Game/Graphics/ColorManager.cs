@@ -37,7 +37,7 @@ namespace WarriorsSnuggery.Graphics
 			filled_rect = new BatchObject(1f);
 		}
 
-		public static void DrawLineQuad(CPos pos, CPos radius, Color color)
+		public static void DrawLineQuad(in CPos pos, in CPos radius, in Color color)
 		{
 			DrawLine(pos - radius, pos + new CPos(-radius.X, radius.Y, 0), color);
 			DrawLine(pos - radius, pos + new CPos(radius.X, -radius.Y, 0), color);
@@ -45,7 +45,7 @@ namespace WarriorsSnuggery.Graphics
 			DrawLine(pos - new CPos(radius.X, -radius.Y, 0), pos + radius, color);
 		}
 
-		public static void DrawLine(CPos start, CPos end, Color color)
+		public static void DrawLine(in CPos start, in CPos end, in Color color)
 		{
 			var s = (start - end).FlatDist / 1024f;
 			line.SetScale(new Vector(s, s, s));
@@ -56,7 +56,7 @@ namespace WarriorsSnuggery.Graphics
 			line.Render();
 		}
 
-		public static void DrawCircle(CPos center, float radius, Color color)
+		public static void DrawCircle(in CPos center, float radius, in Color color)
 		{
 			circle.SetScale(new Vector(radius * 2, radius * 2, radius * 2));
 			circle.SetPosition(center);
@@ -65,14 +65,14 @@ namespace WarriorsSnuggery.Graphics
 			circle.Render();
 		}
 
-		public static void DrawFullscreenRect(Color color)
+		public static void DrawFullscreenRect(in Color color)
 		{
 			fullscreen_rect.SetScale(WindowInfo.Ratio);
 			fullscreen_rect.SetColor(color);
 			fullscreen_rect.Render();
 		}
 
-		public static void DrawFilledLine(CPos start, CPos end, int width, Color color)
+		public static void DrawFilledLine(in CPos start, in CPos end, int width, in Color color)
 		{
 			var diff = start - end;
 			filled_rect.SetScale(new CPos(width, (int)diff.FlatDist, 0).ToVector());
@@ -82,7 +82,7 @@ namespace WarriorsSnuggery.Graphics
 			filled_rect.Render();
 		}
 
-		public static void DrawGlowingFilledLineRect(CPos pointA, CPos pointB, int width, Color color, int radius, int count)
+		public static void DrawGlowingFilledLineRect(in CPos pointA, in CPos pointB, int width, in Color color, int radius, int count)
 		{
 			var alpha = color.A / count;
 
@@ -93,7 +93,7 @@ namespace WarriorsSnuggery.Graphics
 			}
 		}
 
-		public static void DrawFilledLineRect(CPos pointA, CPos pointB, int width, Color color)
+		public static void DrawFilledLineRect(in CPos pointA, in CPos pointB, int width, in Color color)
 		{
 			var bottomLeft = new CPos(Math.Min(pointA.X, pointB.X), Math.Min(pointA.Y, pointB.Y), 0);
 			var topRight = new CPos(Math.Max(pointA.X, pointB.X), Math.Max(pointA.Y, pointB.Y), 0);
@@ -106,7 +106,7 @@ namespace WarriorsSnuggery.Graphics
 			DrawRect(bottomRight + new CPos(width, -width, 0), topRight + new CPos(-width, width, 0), color);
 		}
 
-		public static void DrawFilledLineQuad(CPos center, int radius, int width, Color color)
+		public static void DrawFilledLineQuad(in CPos center, int radius, int width, in Color color)
 		{
 			var topLeft = center - new CPos(radius, radius, 0);
 			var bottomRight = center + new CPos(radius, radius, 0);
@@ -114,7 +114,7 @@ namespace WarriorsSnuggery.Graphics
 			DrawFilledLineRect(topLeft, bottomRight, width, color);
 		}
 
-		public static void DrawRect(CPos pointA, CPos pointB, Color color)
+		public static void DrawRect(in CPos pointA, in CPos pointB, in Color color)
 		{
 			filled_rect.SetScale(new CPos(Math.Abs(pointA.X - pointB.X), Math.Abs(pointA.Y - pointB.Y), 0).ToVector());
 			filled_rect.SetPosition(new CPos((pointA.X + pointB.X) / 2, (pointA.Y + pointB.Y) / 2, 0));
@@ -123,12 +123,12 @@ namespace WarriorsSnuggery.Graphics
 			filled_rect.Render();
 		}
 
-		public static void DrawDot(CPos position, Color color)
+		public static void DrawDot(in CPos position, in Color color)
 		{
 			DrawQuad(position, 128, color);
 		}
 
-		public static void DrawQuad(CPos center, int radius, Color color)
+		public static void DrawQuad(in CPos center, int radius, in Color color)
 		{
 			filled_rect.SetScale(radius / 1024f);
 			filled_rect.SetPosition(center);

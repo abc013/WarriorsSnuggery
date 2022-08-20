@@ -19,7 +19,7 @@ namespace WarriorsSnuggery.Graphics
 		readonly TextureFlags textureFlags;
 		readonly Color color;
 
-		public Vertex(Vector3 position, Vector2 textureCoordinate, int texture, Color color, TextureFlags textureFlags = TextureFlags.None)
+		public Vertex(in Vector3 position, in Vector2 textureCoordinate, int texture, in Color color, TextureFlags textureFlags = TextureFlags.None)
 		{
 			this.position = new Vector4(position, 1.0f);
 			this.textureCoordinate = textureCoordinate;
@@ -28,7 +28,7 @@ namespace WarriorsSnuggery.Graphics
 			this.color = color;
 		}
 
-		public Vertex Modify(Vector3 offset, Vector3 scale, Quaternion rotation, Color color, TextureFlags textureFlags)
+		public Vertex Modify(in Vector3 offset, in Vector3 scale, in Quaternion rotation, in Color color, TextureFlags textureFlags)
 		{
 			return new Vertex((Vector3.Transform(position.Xyz, rotation) * scale) + offset, textureCoordinate, texture, this.color * color, textureFlags);
 		}

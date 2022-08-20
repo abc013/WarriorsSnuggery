@@ -18,19 +18,19 @@ namespace WarriorsSnuggery
 			Y = y;
 		}
 
-		public static MPos operator +(MPos lhs, MPos rhs) { return new MPos(lhs.X + rhs.X, lhs.Y + rhs.Y); }
+		public static MPos operator +(in MPos lhs, in MPos rhs) { return new MPos(lhs.X + rhs.X, lhs.Y + rhs.Y); }
 
-		public static MPos operator -(MPos lhs, MPos rhs) { return new MPos(lhs.X - rhs.X, lhs.Y - rhs.Y); }
+		public static MPos operator -(in MPos lhs, in MPos rhs) { return new MPos(lhs.X - rhs.X, lhs.Y - rhs.Y); }
 
-		public static MPos operator *(MPos lhs, MPos rhs) { return new MPos(lhs.X * rhs.X, lhs.Y * rhs.Y); }
+		public static MPos operator *(in MPos lhs, in MPos rhs) { return new MPos(lhs.X * rhs.X, lhs.Y * rhs.Y); }
 
-		public static MPos operator /(MPos lhs, MPos rhs) { return new MPos(lhs.X / rhs.X, lhs.Y / rhs.Y); }
+		public static MPos operator /(in MPos lhs, in MPos rhs) { return new MPos(lhs.X / rhs.X, lhs.Y / rhs.Y); }
 
-		public static bool operator ==(MPos lhs, MPos rhs) { return lhs.X == rhs.X && lhs.Y == rhs.Y; }
+		public static bool operator ==(in MPos lhs, in MPos rhs) { return lhs.X == rhs.X && lhs.Y == rhs.Y; }
 
-		public static bool operator !=(MPos lhs, MPos rhs) { return !(lhs == rhs); }
+		public static bool operator !=(in MPos lhs, in MPos rhs) { return !(lhs == rhs); }
 
-		public bool Equals(MPos pos) { return pos == this; }
+		public bool Equals(in MPos pos) { return pos == this; }
 		public override bool Equals(object obj) { return obj is MPos pos && Equals(pos); }
 
 		public override int GetHashCode() { return X ^ Y; }
