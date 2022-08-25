@@ -100,9 +100,12 @@ namespace WarriorsSnuggery.Objects.Actors.Parts
 
 		void moveTick()
 		{
+			if (self.Disposed) // Prevent readding physics sectors if already disposed
+				return;
+
 			var speedModifier = 1f;
-			if (self.OnGround && self.World.TerrainAt(self.Position) != null)
-				speedModifier = self.World.TerrainAt(self.Position).Type.Speed;
+			if (self.OnGround && self.CurrentTerrain != null)
+				speedModifier = self.CurrentTerrain.Type.Speed;
 
 			foreach (var effect in self.GetActiveEffects(EffectType.SPEED))
 				speedModifier *= effect.Effect.Value;
@@ -158,12 +161,14 @@ namespace WarriorsSnuggery.Objects.Actors.Parts
 
 			if (intersects)
 			{
-				if (collision != null && !evading)
-				{
-					var newVelocity = CPos.FromFlatAngle(collision.Angle, velocity.FlatDist);
-					return checkMove(self.Position + newVelocity, newVelocity, true);
-				}
-				return false;
+				if (collision == null || evading)
+					return false;
+
+				var newVelocity = CPos.FromFlatAngle(collision.Angle, velocity.FlatDist);
+				if (newVelocity == CPos.Zero)
+					return false;
+
+				return checkMove(self.Position + newVelocity, newVelocity, true);
 			}
 
 			var terrain = self.World.TerrainAt(pos);
