@@ -11,9 +11,9 @@ namespace WarriorsSnuggery.Graphics
 		public const int ColorAttributeLocation = 4;
 
 		// strange behaviour in shader answered: https://stackoverflow.com/questions/4635913/explicit-vs-automatic-attribute-location-binding-for-opengl-shaders#4638906
-		public const int Size = (4 + 2 + 1 + 1 + 4) * 4;
+		public const int Size = (3 + 2 + 1 + 1 + 4) * 4;
 
-		readonly Vector4 position;
+		readonly Vector3 position;
 		readonly Vector2 textureCoordinate;
 		readonly int texture;
 		readonly TextureFlags textureFlags;
@@ -21,7 +21,7 @@ namespace WarriorsSnuggery.Graphics
 
 		public Vertex(in Vector3 position, in Vector2 textureCoordinate, int texture, in Color color, TextureFlags textureFlags = TextureFlags.None)
 		{
-			this.position = new Vector4(position, 1.0f);
+			this.position = position;
 			this.textureCoordinate = textureCoordinate;
 			this.texture = texture;
 			this.textureFlags = textureFlags;
@@ -31,7 +31,7 @@ namespace WarriorsSnuggery.Graphics
 		public Vertex Modify(in Vector3 offset, in Vector3 scale, in Quaternion rotation, in Color color, TextureFlags textureFlags)
 		{
 			// Prevent calculations if no rotation is required
-			var pos = position.Xyz;
+			var pos = position;
 			if (rotation != Quaternion.Identity)
 				pos = Vector3.Transform(pos, rotation);
 

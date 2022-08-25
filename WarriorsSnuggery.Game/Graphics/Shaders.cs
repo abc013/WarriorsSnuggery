@@ -99,7 +99,7 @@ namespace WarriorsSnuggery.Graphics
 				GL.UseProgram(shader);
 				GL.UniformMatrix4(GetLocation(shader, "projection"), false, ref projection);
 				GL.Uniform4(GetLocation(shader, "proximityColor"), ambient.ToColor4());
-				GL.Uniform4(GetLocation(shader, "hidePosition"), hideOrigin.ToVector());
+				GL.Uniform3(GetLocation(shader, "hidePosition"), hideOrigin.ToVector());
 			}
 		}
 

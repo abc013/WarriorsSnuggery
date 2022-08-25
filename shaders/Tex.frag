@@ -5,7 +5,7 @@ in vec2 vs_textureCoordinate;
 flat in int vs_texture;
 flat in int vs_textureFlags;
 in vec4 vs_color;
-in vec4 vs_hideDistance;
+in vec3 vs_hideDistance;
 
 uniform sampler2D texture0;
 uniform sampler2D texture1;
