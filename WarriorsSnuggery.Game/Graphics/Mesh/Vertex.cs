@@ -30,7 +30,19 @@ namespace WarriorsSnuggery.Graphics
 
 		public Vertex Modify(in Vector3 offset, in Vector3 scale, in Quaternion rotation, in Color color, TextureFlags textureFlags)
 		{
-			return new Vertex((Vector3.Transform(position.Xyz, rotation) * scale) + offset, textureCoordinate, texture, this.color * color, textureFlags);
+			// Prevent calculations if no rotation is required
+			var pos = position.Xyz;
+			if (rotation != Quaternion.Identity)
+				pos = Vector3.Transform(pos, rotation);
+
+			// Prevent calculations if one or both colors are white
+			var col = color;
+			if (col == Color.White)
+				col = this.color;
+			else if (this.color != Color.White)
+				col *= this.color;
+
+			return new Vertex((pos * scale) + offset, textureCoordinate, texture, col, textureFlags);
 		}
 
 		public override int GetHashCode()
