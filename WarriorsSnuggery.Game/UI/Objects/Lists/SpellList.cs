@@ -132,7 +132,7 @@ namespace WarriorsSnuggery.UI.Objects
 				{
 					var recharging = caster.State == SpellCasterState.RECHARGING;
 
-					var pointA = Position - new UIPos(Bounds.X, Bounds.Y);
+					var pointA = Position - Bounds;
 					var pointB = Position + new UIPos(Bounds.X, graphicProgress);
 
 					var color = recharging ? new Color(0, 0, 0, 127) : new Color(255, 255, 255, 63);
@@ -143,8 +143,8 @@ namespace WarriorsSnuggery.UI.Objects
 				{
 					var sleeping = caster.State == SpellCasterState.SLEEPING;
 
-					var pointA = Position - new CPos(Bounds.X, Bounds.Y, 0);
-					var pointB = Position + new CPos(Bounds.X, Bounds.Y, 0);
+					var pointA = Position - Bounds;
+					var pointB = Position + Bounds;
 
 					var glowRadius = (int)(MathF.Sin(Window.GlobalTick / (sleeping ? 32f : 8f)) * 32) + 64;
 					ColorManager.DrawGlowingFilledLineRect(pointA, pointB, 32, (sleeping ? new Color(0.5f, 0.5f, 1f, 1f) : new Color(1f, 0.5f, 0.5f, 1f)), glowRadius, 4);

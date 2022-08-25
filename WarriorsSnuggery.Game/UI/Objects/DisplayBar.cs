@@ -37,8 +37,8 @@ namespace WarriorsSnuggery.UI.Objects
 		{
 			base.Render();
 
-			var offset = Position - new CPos(SelectableBounds.X, SelectableBounds.Y, 0);
-			ColorManager.DrawRect(offset, offset + new CPos((int)(2 * SelectableBounds.X * DisplayPercentage), 2 * SelectableBounds.Y, 0), fillColor);
+			var offset = Position - SelectableBounds;
+			ColorManager.DrawRect(offset, offset + new UIPos((int)(2 * SelectableBounds.X * DisplayPercentage), 2 * SelectableBounds.Y), fillColor);
 
 			text.Render();
 		}

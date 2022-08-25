@@ -87,7 +87,7 @@ namespace WarriorsSnuggery.Physics
 				return false;
 
 			var angle = diff.FlatAngle;
-			var position = b.Position + new CPos(diff.X / 2, diff.Y / 2, diff.Z / 2);
+			var position = b.Position + diff / 2;
 			collision = new Collision(angle, position);
 
 			return true;
@@ -122,7 +122,7 @@ namespace WarriorsSnuggery.Physics
 			if (corner <= (circle.Boundaries.Y * circle.Boundaries.Y))
 			{
 				var angle = (box.Position - circle.Position).FlatAngle;
-				var position = circle.Position + (circle.Position - box.Position) / new CPos(2, 2, 2);
+				var position = circle.Position + (circle.Position - box.Position) / 2;
 				collision = new Collision(angle, position);
 				return true;
 			}

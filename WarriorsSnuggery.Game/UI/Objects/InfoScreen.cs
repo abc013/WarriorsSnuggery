@@ -45,7 +45,7 @@ namespace WarriorsSnuggery.UI.Objects
 				return;
 
 			var right = (int)(WindowInfo.UnitWidth * 512);
-			ColorManager.DrawRect(new CPos(right, 8192, 0), new CPos(right - 6144, 8192 - 2560, 0), new Color(0, 0, 0, 128));
+			ColorManager.DrawRect(new UIPos(right, 8192), new UIPos(right - 6144, 8192 - 2560), new Color(0, 0, 0, 128));
 			
 			version.Render();
 			debug.Render();

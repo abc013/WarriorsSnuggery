@@ -42,8 +42,8 @@ namespace WarriorsSnuggery.Maps
 			Bounds = determineBounds(difficulty, level);
 
 			// Cache positions
-			Center = Bounds / new MPos(2, 2);
-			DefaultEdgeDistance = Bounds / new MPos(8, 8);
+			Center = Bounds / 2;
+			DefaultEdgeDistance = Bounds / 8;
 
 			TopLeftCorner = Offset;
 			TopRightCorner = new CPos(Offset.X + (Bounds.X * 1024), Offset.Y, 0);

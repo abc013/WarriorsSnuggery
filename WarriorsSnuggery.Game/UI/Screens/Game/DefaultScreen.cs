@@ -226,14 +226,14 @@ namespace WarriorsSnuggery.UI.Screens
 				const int rectWidth = 640;
 
 				if (tick < start)
-					ColorManager.DrawRect(new CPos(Right, rectWidth, 0), new CPos(Left, -rectWidth, 0), new Color(0, 0, 0, 128));
+					ColorManager.DrawRect(new UIPos(Right, rectWidth), new UIPos(Left, -rectWidth), new Color(0, 0, 0, 128));
 				else if (tick < start + duration)
 				{
 					var top = Top + 512 + margin;
 					var linearTime = (((tick - start) / (float)duration) - 0.5f) * 2f;
 					var squaredTime = -0.25f * (linearTime * linearTime * linearTime) + 0.75f * linearTime + 0.5f;
 					Position = new UIPos(0, (int)(top * squaredTime));
-					ColorManager.DrawRect(new CPos(Right, rectWidth, 0) + Position, new CPos(Left, -rectWidth, 0) + Position, new Color(0, 0, 0, (int)(128 * (1f - (linearTime + 1f) / 2f))));
+					ColorManager.DrawRect(new UIPos(Right, rectWidth) + Position, new UIPos(Left, -rectWidth) + Position, new Color(0, 0, 0, (int)(128 * (1f - (linearTime + 1f) / 2f))));
 				}
 
 				base.Render();

@@ -209,7 +209,7 @@ namespace WarriorsSnuggery
 				var diff = oldPos - newPos;
 				var greaterDiff = Math.Max(Math.Abs(diff.X), Math.Abs(diff.Y));
 				var checkZoom = zoom + greaterDiff / 2048f;
-				CheckVisibility(oldPos + diff / new CPos(2, 2, 2), checkZoom);
+				CheckVisibility(oldPos + diff / 2, checkZoom);
 			}
 			else
 			{

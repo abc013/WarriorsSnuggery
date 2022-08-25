@@ -92,8 +92,8 @@ namespace WarriorsSnuggery.Maps.Generators
 		void generateSpawn(Piece piece)
 		{
 			var spawnArea = Bounds - piece.Size;
-			var half = spawnArea / new MPos(2, 2);
-			var eigth = spawnArea / new MPos(8, 8);
+			var half = spawnArea / 2;
+			var eigth = spawnArea / 8;
 			var pos = half + new MPos(Random.Next(eigth.X) - eigth.X / 2, Random.Next(eigth.Y) - eigth.Y / 2);
 
 			Loader.GenerateCrucialPiece(piece, pos);

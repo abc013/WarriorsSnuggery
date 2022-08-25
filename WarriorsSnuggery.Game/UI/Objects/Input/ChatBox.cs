@@ -70,7 +70,7 @@ namespace WarriorsSnuggery.UI.Objects
 			if (!Visible)
 				return;
 
-			ColorManager.DrawRect(new CPos(Position.X - 8120 - 512, Position.Y + 2560 - 512, 0), new CPos(Position.X + 8120 + 512, Position.Y - 4606 + 512, 0), new Color(0, 0, 0, 0.25f));
+			ColorManager.DrawRect(new UIPos(Position.X - 8120 - 512, Position.Y + 2560 - 512), new UIPos(Position.X + 8120 + 512, Position.Y - 4606 + 512), new Color(0, 0, 0, 0.25f));
 			panel.Render();
 			input.Render();
 			send.Render();

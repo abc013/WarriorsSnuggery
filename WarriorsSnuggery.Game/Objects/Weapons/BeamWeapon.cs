@@ -164,7 +164,7 @@ namespace WarriorsSnuggery.Objects.Weapons
 
 			var distance = originPos - Position;
 
-			sound?.SetPosition(Position + distance / new CPos(2, 2, 1));
+			sound?.SetPosition(Position + distance / 2);
 
 			if (duration > 0 && buildupduration <= 0)
 			{

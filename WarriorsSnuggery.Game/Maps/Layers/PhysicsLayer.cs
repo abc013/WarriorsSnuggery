@@ -136,7 +136,7 @@ namespace WarriorsSnuggery.Maps.Layers
 
 		public void RenderDebug()
 		{
-			var pos = (Position * new MPos(2, 2)).ToCPos() - new CPos(512, 512, 0);
+			var pos = (Position * PhysicsLayer.SectorSize).ToCPos() - new CPos(512, 512, 0);
 			ColorManager.DrawLine(pos, pos + new CPos(0, 512, 0), Color.White.WithAlpha(0.3f));
 			ColorManager.DrawLine(pos, pos + new CPos(512, 0, 0), Color.White.WithAlpha(0.3f));
 		}

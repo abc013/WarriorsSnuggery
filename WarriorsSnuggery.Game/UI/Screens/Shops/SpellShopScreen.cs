@@ -190,9 +190,9 @@ namespace WarriorsSnuggery.UI.Screens
 
 		readonly Game game;
 
-		readonly CPos originPos;
+		readonly UIPos originPos;
 		readonly SpellCasterType target;
-		readonly CPos targetPos;
+		readonly UIPos targetPos;
 
 		readonly int renderabledistance;
 		readonly BatchRenderable[] inactive;

@@ -29,8 +29,11 @@ namespace WarriorsSnuggery
 		public static CPos operator -(in CPos lhs, in CPos rhs) { return new CPos(lhs.X - rhs.X, lhs.Y - rhs.Y, lhs.Z - rhs.Z); }
 
 		public static CPos operator *(in CPos lhs, in CPos rhs) { return new CPos(lhs.X * rhs.X, lhs.Y * rhs.Y, lhs.Z * rhs.Z); }
+		public static CPos operator *(in CPos lhs, int rhs) { return new CPos(lhs.X * rhs, lhs.Y * rhs, lhs.Z * rhs); }
+		public static CPos operator *(int lhs, in CPos rhs) { return rhs * lhs; }
 
 		public static CPos operator /(in CPos lhs, in CPos rhs) { return new CPos(lhs.X / rhs.X, lhs.Y / rhs.Y, lhs.Z / rhs.Z); }
+		public static CPos operator /(in CPos lhs, int rhs) { return new CPos(lhs.X / rhs, lhs.Y / rhs, lhs.Z / rhs); }
 
 		public static CPos operator -(in CPos pos) { return new CPos(-pos.X, -pos.Y, -pos.Z); }
 

@@ -167,7 +167,7 @@ namespace WarriorsSnuggery.Maps.Generators
 			// Pieces
 			foreach (var piece in pieceCells)
 			{
-				var size = piece.Size / new MPos(info.CellSize, info.CellSize);
+				var size = piece.Size / info.CellSize;
 
 				var fitting = info.Pieces.FirstOrDefault(p => p.Size == size);
 

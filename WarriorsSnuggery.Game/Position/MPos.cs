@@ -23,8 +23,11 @@ namespace WarriorsSnuggery
 		public static MPos operator -(in MPos lhs, in MPos rhs) { return new MPos(lhs.X - rhs.X, lhs.Y - rhs.Y); }
 
 		public static MPos operator *(in MPos lhs, in MPos rhs) { return new MPos(lhs.X * rhs.X, lhs.Y * rhs.Y); }
+		public static MPos operator *(in MPos lhs, int rhs) { return new MPos(lhs.X * rhs, lhs.Y * rhs); }
+		public static MPos operator *(int lhs, in MPos rhs) { return rhs * lhs; }
 
 		public static MPos operator /(in MPos lhs, in MPos rhs) { return new MPos(lhs.X / rhs.X, lhs.Y / rhs.Y); }
+		public static MPos operator /(in MPos lhs, int rhs) { return new MPos(lhs.X / rhs, lhs.Y / rhs); }
 
 		public static bool operator ==(in MPos lhs, in MPos rhs) { return lhs.X == rhs.X && lhs.Y == rhs.Y; }
 

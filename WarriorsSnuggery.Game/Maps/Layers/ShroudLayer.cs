@@ -20,7 +20,7 @@ namespace WarriorsSnuggery.Maps.Layers
 
 		public ShroudLayer(MPos bounds)
 		{
-			Bounds = bounds * new MPos(2, 2);
+			Bounds = bounds * 2;
 
 			Shroud = new Shroud[Bounds.X, Bounds.Y];
 			for (int x = 0; x < Bounds.X; x++)
@@ -138,8 +138,8 @@ namespace WarriorsSnuggery.Maps.Layers
 
 			var isPlayerTeam = team == Actor.PlayerTeam;
 
-			var shroudTopLeft = (topleft * new CPos(2, 2, 0)).ToMPos();
-			var shroudBottomRight = (bottomright * new CPos(2, 2, 0)).ToMPos();
+			var shroudTopLeft = (topleft * 2).ToMPos();
+			var shroudBottomRight = (bottomright * 2).ToMPos();
 
 			for (int x = shroudTopLeft.X ; x < shroudBottomRight.X; x++)
 			{
@@ -171,7 +171,7 @@ namespace WarriorsSnuggery.Maps.Layers
 
 			var isPlayerTeam = team == Actor.PlayerTeam;
 
-			var shroudPos = (position * new CPos(2, 2, 0)).ToMPos();
+			var shroudPos = (position * 2).ToMPos();
 
 			var radiusSquared = radius * radius;
 
@@ -240,9 +240,9 @@ namespace WarriorsSnuggery.Maps.Layers
 		{
 			var outerRadius = MathF.Sqrt(2) * radius * 1024;
 
-			var pos1 = (shroudPos - new MPos(radius, radius)) / new MPos(2, 2);
+			var pos1 = (shroudPos - new MPos(radius, radius)) / 2;
 			// Why MPos(1, 1) here? -> when 7/2=3, but we want 4. Thus (7+1)/2=4. (8+1)/2=4 so works for this case as well.
-			var pos2 = (shroudPos + new MPos(radius, radius) + new MPos(1, 1)) / new MPos(2, 2);
+			var pos2 = (shroudPos + new MPos(radius, radius) + new MPos(1, 1)) / 2;
 
 			var triangles = new List<Triangle>();
 

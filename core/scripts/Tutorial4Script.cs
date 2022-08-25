@@ -218,7 +218,7 @@ namespace WarriorsSnuggery.Scripts.Core
 					}));
 
 					world.Add(target = ActorCache.Create(world, ActorCache.Types["dummy_hard"], new CPos(2 * 1024 + 512, 15 * 1024 + 512, 0), 1));
-					world.Add(ActorCache.Create(world, ActorCache.Types["mainmenu_pad"], world.Map.BottomRightCorner / new CPos(2, 2, 2) - new CPos(256, 256, 0)));
+					world.Add(ActorCache.Create(world, ActorCache.Types["mainmenu_pad"], world.Map.BottomRightCorner / 2 - new CPos(256, 256, 0)));
 				}
 				else
 					return;

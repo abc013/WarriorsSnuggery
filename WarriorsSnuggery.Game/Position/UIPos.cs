@@ -1,4 +1,5 @@
-﻿using WarriorsSnuggery.Graphics;
+﻿using System;
+using WarriorsSnuggery.Graphics;
 
 namespace WarriorsSnuggery
 {
@@ -9,6 +10,10 @@ namespace WarriorsSnuggery
 		readonly CPos intern;
 		public int X => intern.X;
 		public int Y => intern.Y;
+
+		public long SquaredFlatDist => X * (long)X + Y * (long)Y;
+		public float FlatDist => MathF.Sqrt(SquaredFlatDist);
+		public float FlatAngle => Angle.FromVector(X, Y);
 
 		public UIPos(int x, int y)
 		{

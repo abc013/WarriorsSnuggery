@@ -76,7 +76,7 @@ namespace WarriorsSnuggery.Graphics
 		{
 			var diff = start - end;
 			filled_rect.SetScale(new CPos(width, (int)diff.FlatDist, 0).ToVector());
-			filled_rect.SetPosition((start + end) / new CPos(2, 2, 2));
+			filled_rect.SetPosition((start + end) / 2);
 			filled_rect.SetRotation(new VAngle(0, 0, -diff.FlatAngle) - new VAngle(0, 0, 90));
 			filled_rect.SetColor(color);
 			filled_rect.Render();

@@ -171,7 +171,7 @@ namespace WarriorsSnuggery.Objects
 				var height = h * distH;
 				for (int i = 0; i < particleSqrt; i++)
 				{
-					var position = Physics.Position - new CPos(Physics.Boundaries.X, Physics.Boundaries.Y, height) + distI * new CPos(i, i, 0);
+					var position = Physics.Position - new CPos(Physics.Boundaries.X, Physics.Boundaries.Y, height) + distI * i;
 
 					var particle = ParticleCache.Create(world, Type.DebrisParticles, position);
 					particle.ZOffset += Type.Height / 2;
