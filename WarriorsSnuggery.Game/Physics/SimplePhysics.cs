@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using WarriorsSnuggery.Graphics;
 using WarriorsSnuggery.Maps.Layers;
 using WarriorsSnuggery.Objects;
@@ -12,7 +13,7 @@ namespace WarriorsSnuggery.Physics
 
 		readonly PositionableObject positionable;
 
-		public PhysicsSector[] Sectors = new PhysicsSector[0];
+		public List<PhysicsSector> Sectors = new List<PhysicsSector>();
 
 		public CPos Position => positionable.Position + type.Offset;
 		public CPos Boundaries => type.Boundaries;

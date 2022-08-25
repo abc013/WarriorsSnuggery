@@ -8,7 +8,7 @@ namespace WarriorsSnuggery.Maps.Layers
 {
 	public sealed class PhysicsLayer
 	{
-		public const int SectorSize = 2;
+		public const int SectorSize = 4;
 		public PhysicsSector[,] Sectors;
 		public MPos Bounds { get; private set; }
 
@@ -27,25 +27,22 @@ namespace WarriorsSnuggery.Maps.Layers
 			if (physics.IsEmpty)
 				return;
 
-			var oldSectors = physics.Sectors;
-			physics.Sectors = GetSectors(physics);
-
 			if (!@new)
 			{
-				foreach (var sector in oldSectors)
-				{
-					if (!physics.Sectors.Contains(sector))
-						sector.Remove(physics);
-				}
+				foreach (var sector in physics.Sectors)
+					sector.Remove(physics);
+				physics.Sectors.Clear();
 			}
+			SetSectors(physics);
+
 			foreach (var sector in physics.Sectors)
 				sector.Add(physics);
 		}
 
-		public PhysicsSector[] GetSectors(SimplePhysics physics)
+		public void SetSectors(SimplePhysics physics)
 		{
 			if (physics.IsEmpty)
-				return new PhysicsSector[0];
+				return;
 
 			var position = physics.Position - Map.Offset;
 
@@ -80,18 +77,15 @@ namespace WarriorsSnuggery.Maps.Layers
 			var xSize = (sectorPositions[1].X - sectorPositions[2].X) + 1;
 			var ySize = (sectorPositions[3].Y - sectorPositions[2].Y) + 1;
 
-			var sectors = new List<PhysicsSector>();
 			for (int x = 0; x < xSize; x++)
 			{
 				for (int y = 0; y < ySize; y++)
 				{
 					var sector = Sectors[startPosition.X + x, startPosition.Y + y];
-					if (!sectors.Contains(sector))
-						sectors.Add(sector);
+					if (!physics.Sectors.Contains(sector))
+						physics.Sectors.Add(sector);
 				}
 			}
-
-			return sectors.ToArray();
 		}
 	}
 
