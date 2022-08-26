@@ -64,7 +64,18 @@ namespace WarriorsSnuggery
 				}
 			}
 
-			Shaders.Uniform(Shaders.TextureShader, ref Camera.Matrix, Ambient, pos);
+			var ambient = Ambient;
+			if (Settings.PartyMode)
+			{
+				var tick = world.Game.LocalTick / 8f;
+				var sin1 = MathF.Sin(tick) / 2 + 0.8f;
+				var sin2 = MathF.Sin(tick + Angle.MaxRange / 3) / 2 + 0.8f;
+				var sin3 = MathF.Sin(tick + 2 * Angle.MaxRange / 3) / 2 + 0.8f;
+
+				ambient *= new Color(sin1, sin2, sin3);
+			}
+
+			Shaders.Uniform(Shaders.TextureShader, ref Camera.Matrix, ambient, pos);
 
 			world.TerrainLayer.Render();
 			world.SmudgeLayer.Render();

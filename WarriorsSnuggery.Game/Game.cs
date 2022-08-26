@@ -208,7 +208,7 @@ namespace WarriorsSnuggery
 					else if (counterTick % Settings.UpdatesPerSecond == 0)
 					{
 						var seconds = counterTick / Settings.UpdatesPerSecond;
-						AddInfoMessage(200, Color.Yellow + "Transfer in " + seconds + " second" + (seconds > 1 ? "s" : string.Empty));
+						AddInfoMessage(200, $"{Color.Yellow}Transfer in {seconds} second{(seconds > 1 ? "s" : "")}");
 					}
 
 					counterTick--;
@@ -255,16 +255,6 @@ namespace WarriorsSnuggery
 						Camera.Zoom(Settings.ScrollSpeed * ((Camera.DefaultZoom - Camera.CurrentZoom) / 40));
 				}
 
-				// party mode
-				if (Settings.PartyMode)
-				{
-					var sin1 = MathF.Sin(LocalTick / 8f) / 2 + 0.8f;
-					var sin2 = MathF.Sin(LocalTick / 8f + Angle.MaxRange / 3) / 2 + 0.8f;
-					var sin3 = MathF.Sin(LocalTick / 8f + 2 * Angle.MaxRange / 3) / 2 + 0.8f;
-
-					WorldRenderer.Ambient = new Color(sin1, sin2, sin3);
-				}
-
 				SpellManager.Tick();
 				ConditionManager.Tick();
 				World.Tick();
@@ -295,11 +285,7 @@ namespace WarriorsSnuggery
 
 			// Party mode
 			if (key == Keys.RightAlt)
-			{
 				Settings.PartyMode = !Settings.PartyMode;
-				if (!Settings.PartyMode)
-					WorldRenderer.Ambient = MapType.Ambient;
-			}
 
 			var screenTypeBefore = ScreenControl.FocusedType;
 			ScreenControl.KeyDown(key, isControl, isShift, isAlt);
