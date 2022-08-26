@@ -13,8 +13,10 @@
 
 		[Desc("Displayed name of the actor.")]
 		public readonly string Name;
-		[Desc("Description of the actor.")]
-		public readonly string Description;
+		[Desc("Description of the actor as shown in the tooltip ingame.")]
+		public readonly string[] ShortDescription = new string[0];
+		[Desc("Description of the actor in the actor shop.")]
+		public readonly string[] Description = new string[0];
 
 		[Desc("Determines an actor that is used when switching to another actor.", "When left empty, the switch to the next actor will be instant.")]
 		public readonly string PlayerSwitchActor = string.Empty;

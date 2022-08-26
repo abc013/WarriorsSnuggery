@@ -14,6 +14,7 @@ namespace WarriorsSnuggery.UI.Screens
 		readonly List<string> actorTypes = new List<string>();
 		readonly PanelList actors;
 
+		readonly UIText actorName;
 		readonly UIText information;
 		ActorType selected;
 
@@ -45,7 +46,9 @@ namespace WarriorsSnuggery.UI.Screens
 			Add(new Button("Buy", "wooden", () => buyActor(selected)) { Position = new UIPos(-6144, 3072) });
 			Add(new Button("Resume", "wooden", () => game.ShowScreen(ScreenType.DEFAULT, false)) { Position = new UIPos(0, 6144) });
 
-			information = new UIText(FontManager.Default, TextOffset.LEFT, "Select an actor for further information.", "", "", "Cost: -") { Position = new UIPos(-7900, 0) };
+			actorName = new UIText(FontManager.Default, TextOffset.LEFT, $"{Color.Cyan}None selected.") { Position = new UIPos(-7900, -512), Scale = 2 };
+			Add(actorName);
+			information = new UIText(FontManager.Default, TextOffset.LEFT) { Position = new UIPos(-7900, 0) };
 			Add(information);
 
 			Add(new MoneyDisplay(game) { Position = new UIPos(Left + 2048, Bottom - 1024) });
@@ -54,12 +57,13 @@ namespace WarriorsSnuggery.UI.Screens
 		void selectActor(ActorType actor)
 		{
 			selected = actor;
+			actorName.SetText(actor.Playable.Name);
+			information.Color = Color.Grey;
 			information.SetText(
-				actor.Playable.Name,
-				Color.Grey + actor.Playable.Description,
-				string.Empty,
-				Color.White + "Cost: " + (game.Stats.ActorUnlocked(actor.Playable) ? Color.Green + "Bought" : Color.Yellow.ToString() + actor.Playable.UnlockCost)
+				(game.Stats.ActorUnlocked(actor.Playable) ? $"{Color.White}Status: {Color.Green}Bought" : $"{Color.White}Status: {Color.Red}Locked{Color.White}, Cost: {Color.Yellow}{actor.Playable.UnlockCost}"),
+				string.Empty
 			);
+			information.AddText(actor.Playable.Description);
 		}
 
 		void buyActor(ActorType actor)
