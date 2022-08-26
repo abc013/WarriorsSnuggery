@@ -37,11 +37,11 @@ namespace WarriorsSnuggery.Objects.Actors.Parts
 		public readonly bool InheritsBot;
 
 		[Desc("Type of the object.")]
-		public readonly SpawnPartTypes Type;
+		public readonly SpawnPartTypes Type = SpawnPartTypes.NONE;
 		[Desc("Condition to spawn.")]
 		public readonly Condition Condition;
 		[Desc("Defines when the objects should be spawned.")]
-		public readonly Occasion Occasion;
+		public readonly Occasion Occasion = Occasion.TICK;
 
 		[Desc("Offset from the center of idling object where the objects spawn.", "Z-coordinate will be used for height.")]
 		public readonly CPos Offset;
@@ -52,6 +52,8 @@ namespace WarriorsSnuggery.Objects.Actors.Parts
 
 		[Desc("Sound to play when spawning.")]
 		public readonly SoundType Sound;
+		[Desc("Particles to emit when spawning.")]
+		public readonly ParticleSpawner Particles;
 
 		[Desc("Spawn object at center of actor, not random.")]
 		public readonly bool AtCenter;
@@ -106,9 +108,6 @@ namespace WarriorsSnuggery.Objects.Actors.Parts
 
 		public void Tick()
 		{
-			if (info.Type != SpawnPartTypes.PARTICLE)
-				return;
-
 			if (info.Occasion == Occasion.TICK && curTick-- < 0)
 				create();
 		}
@@ -122,6 +121,10 @@ namespace WarriorsSnuggery.Objects.Actors.Parts
 				{
 					var sound = new Sound(info.Sound);
 					sound.Play(self.Position, false);
+				}
+				if (info.Particles != null)
+				{
+					self.World.Add(info.Particles.Create(self.World, self.Position));
 				}
 				for (int i = 0; i < info.Count; i++)
 					createObject();
