@@ -116,7 +116,7 @@ namespace WarriorsSnuggery.Scripts.Core
 			Tick -= tickAttackTraining3;
 			Tick += tickPreExplosion;
 
-			game.ScreenControl.ShowMessage(new Message(() => { trainer.Bot.Target = new Target(new CPos(26 * 1024, 9 * 1024, 0)); }, new[]
+			game.ScreenControl.ShowMessage(new Message(() => { trainer.Bot.Target = new Target(new CPos(17 * 1024, 5 * 1024, 0)); }, new[]
 			{
 				$"Very good! Time for some real enemies then!",
 				$"{Color.Cyan}Follow me{Color.White}! I just need to open the gate.",
@@ -133,8 +133,7 @@ namespace WarriorsSnuggery.Scripts.Core
 
 			game.ScreenControl.ShowMessage(new Message(() => { Tick -= tickPreExplosion; Tick += tickExplosion; }, new[]
 			{
-				$"Okay, there we go.",
-				$"Almost there, just another button..."
+				$"Okay, there we go. Gate should open any time soon."
 			}));
 		}
 
@@ -145,15 +144,17 @@ namespace WarriorsSnuggery.Scripts.Core
 
 			game.ScreenControl.ShowMessage(new Message(() => { }, new[]
 			{
-				$"Ouch! Damn. I can't move any further, it hurts.",
-				$"Luckily, we regenerate health over time.",
-				$"There are some healing potions and apples and a",
-				$"healing pad on the right! {Color.Cyan}Go and use them{Color.White}!"
+				$"Ouch! Damn. I can't move any further, it hurts!",
+				$"At least we regenerate some health over time.",
+				$"There are some healing potions, apples and a healing",
+				$"pad on the right! {Color.Cyan}Use them to gain health{Color.White}!"
 			}));
+
+			var random = game.SharedRandom;
 
 			for (int i = 0; i < 2; i++)
 			{
-				var weapon = WeaponCache.Create(world, "cannon", new Target(new CPos(game.SharedRandom.Next(18 * 512, 22 * 512) * 2, 0, game.SharedRandom.Next(9 * 512, 10 * 512) * 2)), targets[0]);
+				var weapon = WeaponCache.Create(world, "cannon", new Target(new CPos(random.Next(18 * 512, 22 * 512), random.Next(9 * 512, 10 * 512), 0) * 2), targets[0]);
 				world.Add(weapon);
 
 				weapon.Detonate(weapon.Target);
@@ -161,13 +162,13 @@ namespace WarriorsSnuggery.Scripts.Core
 
 			for (int i = 0; i < 600; i++)
 			{
-				var particle = ParticleCache.Create(world, "fire", new CPos(game.SharedRandom.Next(16 * 512, 26 * 512) * 2, game.SharedRandom.Next(4 * 512, 9 * 512) * 2, 128));
+				var particle = ParticleCache.Create(world, "fire", new CPos(random.Next(16 * 512, 26 * 512), random.Next(4 * 512, 9 * 512), 64) * 2);
 				world.Add(particle);
 			}
 
 			world.LocalPlayer.Health.HP = 100;
 
-			MusicController.FadeIntenseIn(60 * 60);
+			MusicController.FadeIntenseIn(60 * Settings.UpdatesPerSecond);
 		}
 
 		void tickPostExplosion()
@@ -233,7 +234,7 @@ namespace WarriorsSnuggery.Scripts.Core
 
 		void tickFight3()
         {
-			if (world.LocalPlayer.Position.X > 8192 && world.LocalPlayer.Position.Y >= 8192)
+			if (world.LocalPlayer.Position.X > 7120 && world.LocalPlayer.Position.Y >= 8192)
 				return;
 
 			Tick -= tickFight3;

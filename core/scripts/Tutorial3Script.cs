@@ -100,8 +100,8 @@ namespace WarriorsSnuggery.Scripts.Core
 
 			void message2() => game.ScreenControl.ShowMessage(new Message(message3, new[]
 			{
-				$"Further down to the left, there is the {Color.Yellow}life pad{Color.White}.",
-				$"You can buy {Color.Yellow}extra lifes{Color.White} there. And finally, ",
+				$"Further down to the left, there is the {Color.Red}life pad{Color.White}.",
+				$"You can buy {Color.Red}extra lifes{Color.White} there. And finally, ",
 				$"there's the {Color.Yellow}trophy pad{Color.White}, which shows you your {Color.Yellow}trophies{Color.White}.",
 				$"Press {Color.Cyan}Continue {Color.White}to proceed."
 			}));
