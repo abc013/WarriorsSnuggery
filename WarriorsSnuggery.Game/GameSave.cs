@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using WarriorsSnuggery.Loader;
 using WarriorsSnuggery.Maps;
 using WarriorsSnuggery.Maps.Pieces;
@@ -143,6 +144,8 @@ namespace WarriorsSnuggery
 		public string SaveName { get; private set; }
 		public string MapSaveName => SaveName + "_map";
 
+		public string[] ActiveMods { get; private set; }
+
 		// Changing Values
 		public int Level { get; private set; }
 		public int Money { get; private set; }
@@ -205,6 +208,7 @@ namespace WarriorsSnuggery
 		public GameSave(string filepath) : this()
 		{
 			SaveName = FileExplorer.FileName(filepath);
+			ActiveMods = new string[0];
 
 			var properties = typeof(GameSave).GetProperties();
 
@@ -275,6 +279,8 @@ namespace WarriorsSnuggery
 			GameSaveFormat = Constants.CurrentGameSaveFormat;
 			SetName(name);
 
+			ActiveMods = PackageManager.ActivePackages.Select(p => p.InternalName).ToArray();
+
 			Hardcore = hardcore;
 			Difficulty = difficulty;
 
@@ -333,6 +339,7 @@ namespace WarriorsSnuggery
 			{
 				writer.WriteLine($"{nameof(GameSaveFormat)}={Constants.CurrentGameSaveFormat}");
 				writer.WriteLine($"{nameof(Name)}={Name}");
+				writer.WriteLine($"{nameof(ActiveMods)}={string.Join(',', ActiveMods)}");
 				writer.WriteLine($"{nameof(Level)}={Level}");
 				writer.WriteLine($"{nameof(Difficulty)}={Difficulty}");
 				writer.WriteLine($"{nameof(Hardcore)}={Hardcore}");
@@ -394,6 +401,8 @@ namespace WarriorsSnuggery
 			if (levelIncrease)
 				Level++;
 
+			ActiveMods = PackageManager.ActivePackages.Select(p => p.InternalName).ToArray();
+
 			var player = game.World.LocalPlayer;
 
 			Actor = ActorCache.Types[player.Type];
@@ -435,6 +444,17 @@ namespace WarriorsSnuggery
 
 			if (File.Exists(FileExplorer.Saves + MapSaveName + ".yaml"))
 				File.Delete(FileExplorer.Saves + MapSaveName + ".yaml");
+		}
+
+		public bool OutdatedVersion()
+		{
+			return GameSaveFormat < Constants.CurrentGameSaveFormat;
+		}
+
+		public bool InvalidMods()
+		{
+			// string comparison. Order of mods may be important.
+			return string.Join(',', ActiveMods) != string.Join(',', PackageManager.ActivePackages.Select(p => p.InternalName));
 		}
 
 		public void SetName(string name)
