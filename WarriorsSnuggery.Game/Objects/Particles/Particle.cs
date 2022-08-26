@@ -27,10 +27,11 @@ namespace WarriorsSnuggery.Objects.Particles
 		[Save("RotationVelocity")]
 		VAngle rotate_velocity;
 
-		public Particle(World world, ParticleInit init) : base(init.Position, init.Type.GetRenderable())
+		public Particle(World world, ParticleInit init) : base(init.Type.GetRenderable())
 		{
 			this.world = world;
 			Type = init.Type;
+			Position = init.Position;
 
 			cachedColor = Type.Color + ParticleUtils.Variety(Type.ColorVariety);
 

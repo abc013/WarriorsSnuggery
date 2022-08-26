@@ -116,9 +116,10 @@ namespace WarriorsSnuggery.Objects.Actors
 			ID = overrideID;
 		}
 
-		public Actor(World world, ActorInit init) : base(init.Position, null)
+		public Actor(World world, ActorInit init) : base()
 		{
 			World = world;
+			Position = init.Position;
 
 			Type = init.Type;
 			Team = init.Team;

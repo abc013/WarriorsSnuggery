@@ -78,10 +78,9 @@ namespace WarriorsSnuggery.Objects
 		}
 		float scale = 1f;
 
-		public PositionableObject(CPos pos, BatchRenderable renderable)
+		public PositionableObject(BatchRenderable renderable = null)
 		{
 			Renderable = renderable;
-			Position = pos;
 		}
 
 		public virtual void Tick()

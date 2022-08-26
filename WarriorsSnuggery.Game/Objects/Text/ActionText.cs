@@ -17,8 +17,10 @@ namespace WarriorsSnuggery.Objects
 		readonly TextObject text;
 		readonly ActionTextType type;
 
-		public ActionText(CPos pos, CPos velocity, int tick, ActionTextType type, params string[] lines) : base(pos, null)
+		public ActionText(CPos pos, CPos velocity, int tick, ActionTextType type, params string[] lines) : base()
 		{
+			Position = pos;
+
 			current = tick;
 			length = tick;
 			this.velocity = velocity;

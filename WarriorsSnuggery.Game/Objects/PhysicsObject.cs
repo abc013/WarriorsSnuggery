@@ -7,10 +7,7 @@ namespace WarriorsSnuggery.Objects
 	{
 		public SimplePhysics Physics { get; protected set; } = SimplePhysics.Empty;
 
-		public PhysicsObject(CPos pos, BatchRenderable renderable) : base(pos, renderable)
-		{
-
-		}
+		public PhysicsObject(BatchRenderable renderable = null) : base(renderable) { }
 
 		public override void Dispose()
 		{
