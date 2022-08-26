@@ -32,8 +32,6 @@ namespace WarriorsSnuggery.Maps.Generators
 		public readonly int CellSize = 4;
 		[Desc("Size of the edges of the grid.")]
 		public readonly int LineSize = 2;
-		[Desc("Decides wether the grid is aligned rectangular or has random roads.")]
-		public readonly bool Rectangular = true;
 
 		public int Ratio => CellSize / LineSize;
 

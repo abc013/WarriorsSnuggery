@@ -66,7 +66,7 @@ namespace WarriorsSnuggery
 		public void Load()
 		{
 			Map.Load();
-			PathfinderLayer.Update(WallLayer, TerrainLayer);
+			PathfinderLayer.Update(this);
 
 			if (Game.InteractionMode != InteractionMode.EDITOR)
 			{

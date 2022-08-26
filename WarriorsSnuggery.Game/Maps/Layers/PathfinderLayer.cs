@@ -21,7 +21,7 @@ namespace WarriorsSnuggery.Maps.Layers
 			cells = new PathfinderCell[bounds.X, bounds.Y];
 		}
 
-		public void Update(WallLayer wallLayer, TerrainLayer terrainLayer)
+		public void Update(World world)
 		{
 			// Generate navigatable mesh
 			initialized = true;
@@ -32,20 +32,34 @@ namespace WarriorsSnuggery.Maps.Layers
 				{
 					var cell = new PathfinderCell(new MPos(x, y))
 					{
-						TerrainCost = 1f / terrainLayer.Terrain[x, y].Type.Speed
+						TerrainCost = 1f / world.TerrainLayer.Terrain[x, y].Type.Speed
 					};
 
 					cells[x, y] = cell;
+				}
+			}
 
+			foreach (var actor in world.ActorLayer.ToAdd())
+			{
+				// TODO keep track of actors and remove influence if required
+				if (actor.IsAlive && !actor.CanMove && !actor.Physics.IsEmpty)
+				{
+					var pos = actor.TerrainPosition;
+					cells[pos.X, pos.Y].Degraded = true;
+				}
+			}
+
+			for (int x = 0; x < bounds.X; x++)
+			{
+				for (int y = 0; y < bounds.Y; y++)
+				{
 					ClearWall(new WPos(x, y, false));
 					ClearWall(new WPos(x, y, true));
 				}
 			}
 
-			foreach (var wall in wallLayer.WallList)
-			{
+			foreach (var wall in world.WallLayer.WallList)
 				SetWall(wall);
-			}
 		}
 
 		public void ClearWall(WPos wallPosition)
@@ -65,7 +79,7 @@ namespace WarriorsSnuggery.Maps.Layers
 		{
 			static void connect(Wall between, PathfinderCell a, PathfinderCell b)
 			{
-				var cost = (a.TerrainCost + b.TerrainCost) / 2;
+				var cost = (a.TotalCost + b.TotalCost) / 2;
 
 				if (between != null && between.Type.Blocks || float.IsInfinity(a.TerrainCost) || float.IsInfinity(b.TerrainCost))
 				{
@@ -201,6 +215,9 @@ namespace WarriorsSnuggery.Maps.Layers
 					var cell = cells[x, y];
 					foreach (var (cost, target) in cell.Connections)
 						ColorManager.DrawLine(cell.Position.ToCPos(), target.Position.ToCPos(), new Color(1f, cost / 5f, 0f, 0.2f));
+
+					if (cell.Degraded)
+						ColorManager.DrawQuad(cell.Position.ToCPos(), 256, Color.Red.WithAlpha(0.5f));
 				}
 			}
 		}
@@ -208,7 +225,10 @@ namespace WarriorsSnuggery.Maps.Layers
 		class PathfinderCell
 		{
 			public readonly MPos Position;
+
+			public float TotalCost => TerrainCost + (Degraded ? 8f : 0f);
 			public float TerrainCost;
+			public bool Degraded;
 
 			public PathfinderCell Before;
 			public float MovementCost;
