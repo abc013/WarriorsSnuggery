@@ -77,9 +77,6 @@ namespace WarriorsSnuggery
 
 		public static void CreateFirst()
 		{
-			createLocalServer();
-			Connect("127.0.0.1", password: "1234");
-
 			var mission = MissionType.MAIN_MENU;
 			var mode = InteractionMode.NONE;
 			var map = MapCache.FindMap(mission, 0, Program.SharedRandom);

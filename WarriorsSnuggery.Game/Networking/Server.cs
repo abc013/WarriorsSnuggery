@@ -27,6 +27,8 @@ namespace WarriorsSnuggery.Networking
 		public Server(string name, string password, int port = NetworkUtils.DefaultPort, int playerCount = 20)
 		{
 			server = new TcpListener(IPAddress.Any, port);
+			server.Start(playerCount);
+
 			this.name = name;
 			this.password = password;
 			this.playerCount = playerCount;
@@ -36,8 +38,6 @@ namespace WarriorsSnuggery.Networking
 
 		void loop()
 		{
-			server.Start();
-
 			while (isActive)
 			{
 				if (AllowConnections)
@@ -92,13 +92,13 @@ namespace WarriorsSnuggery.Networking
 
 		void connect(ServerClient client)
 		{
-			Log.WriteDebug($"New client detected (ID: {client.ID}).");
+			Log.Debug($"New client detected (ID: {client.ID}).");
 
 			pending.Add(client);
 
 			if (requiresPassword)
 			{
-				Log.WriteDebug("Sending password request...");
+				Log.Debug("Sending password request...");
 				client.Send(new NetworkPackage(PackageType.WELCOME, new byte[] { 1 }));
 				return;
 			}
@@ -111,7 +111,7 @@ namespace WarriorsSnuggery.Networking
 		{
 			if (password != NetworkUtils.ToString(package.Content))
 			{
-				Log.WriteDebug($"Client {client.ID}: disconnected. wrong password.");
+				Log.Debug($"Client {client.ID}: disconnected. wrong password.");
 				client.Disconnect("Wrong password.");
 				return;
 			}
@@ -121,7 +121,7 @@ namespace WarriorsSnuggery.Networking
 
 		void accept(ServerClient client)
 		{
-			Log.WriteDebug($"Client {client.ID}: connected. Sending data...");
+			Log.Debug($"Client {client.ID}: connected. Sending data...");
 
 			var bytes = BitConverter.GetBytes(client.ID);
 			var data = new byte[bytes.Length + 1];
@@ -138,17 +138,17 @@ namespace WarriorsSnuggery.Networking
 			switch (package.Type)
 			{
 				case PackageType.GOODBYE:
-					Log.WriteDebug($"Client {client.ID}: Closing.");
+					Log.Debug($"Client {client.ID}: Closing.");
 					client.Disconnect("Client requested disconnect.");
 					return;
 				case PackageType.CHAT:
 					var msg = NetworkUtils.ToString(package.Content);
-					Log.WriteDebug($"Client {client.ID}: Message received: {msg}");
+					Log.Debug($"Client {client.ID}: Message received: {msg}");
 					broadcast(package);
 					break;
 				case PackageType.PAUSE:
 					var pause = package.Content[0] == 1;
-					Log.WriteDebug($"Client {client.ID}: Requested {(pause ? "" : "un")}pause.");
+					Log.Debug($"Client {client.ID}: Requested {(pause ? "" : "un")}pause.");
 					broadcast(package);
 					break;
 			}
