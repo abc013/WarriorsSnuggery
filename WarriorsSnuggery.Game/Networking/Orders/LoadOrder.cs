@@ -55,7 +55,5 @@ namespace WarriorsSnuggery.Networking.Orders
 
 			return new NetworkPackage(type, concat(fileA, fileB));
 		}
-
-
 	}
 }

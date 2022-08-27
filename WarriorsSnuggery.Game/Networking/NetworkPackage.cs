@@ -41,14 +41,12 @@ namespace WarriorsSnuggery.Networking
 
 		public IOrder ToOrder()
 		{
-			return Type switch
-			{
-				NetworkPackageType.CHAT => new ChatOrder(Content),
-				NetworkPackageType.LOAD => new LoadOrder(Content),
-				NetworkPackageType.PAUSE => new PauseOrder(Content),
-				NetworkPackageType.PARTYMODE => new PartyModeOrder(Content),
-				_ => throw new NotSupportedException($"Can't convert PackageType {Type} to a valid order.")
-			};
+			var type = System.Type.GetType($"WarriorsSnuggery.Networking.Orders.{Type}Order", false, true);
+
+			if (type == null || type.IsInterface)
+				throw new NotSupportedException($"Can't convert PackageType {Type} to a valid order.");
+
+			return (IOrder)Activator.CreateInstance(type, new[] { Content });
 		}
 	}
 }
