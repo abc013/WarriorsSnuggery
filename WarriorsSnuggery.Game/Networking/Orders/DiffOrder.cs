@@ -5,7 +5,7 @@ namespace WarriorsSnuggery.Networking.Orders
 {
 	internal class DiffOrder : IOrder
 	{
-		const NetworkPackageType type = NetworkPackageType.LOAD;
+		const NetworkPackageType type = NetworkPackageType.DIFF;
 
 		public bool Immediate => false;
 

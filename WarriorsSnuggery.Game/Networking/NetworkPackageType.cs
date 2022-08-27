@@ -6,6 +6,7 @@
 		LOAD,
 		GOODBYE,
 		ERROR,
+		DIFF,
 		CHAT,
 		PAUSE,
 		PARTYMODE

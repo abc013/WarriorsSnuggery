@@ -58,20 +58,29 @@ namespace WarriorsSnuggery.Networking
 					if (!client.Connected)
 					{
 						client.Disconnecting = true;
+						Log.Debug($"(Networking) Client {client.ID}: Disconnected.");
 						broadcastMessage($"Client (ID {client.ID}) has disconnected.");
 
 						continue;
 					}
 
-					if (client != localClient)
-						client.Send(diffPackage);
+					try
+					{
+						if (client != localClient)
+							client.Send(diffPackage);
 
-					if (!client.PackageAvailable)
-						continue;
+						if (!client.PackageAvailable)
+							continue;
 
-					foreach (var package in client.GetPackages())
-						receive(client, package);
+						foreach (var package in client.GetPackages())
+							receive(client, package);
+					}
+					catch(Exception ex)
+					{
+						Log.Warning($"(Networking) Unexpected error while talking to Client {client.ID}: {ex.Message}");
+					}
 				}
+
 				connected.RemoveAll(c => c.Disconnecting);
 			}
 
@@ -178,7 +187,7 @@ namespace WarriorsSnuggery.Networking
 			switch (package.Type)
 			{
 				case NetworkPackageType.GOODBYE:
-					Log.Debug($"(Networking) Client {client.ID}: Closing.");
+					Log.Debug($"(Networking) Client {client.ID}: Client requested disconnect.");
 					client.Disconnect("Client requested disconnect.");
 					return;
 				case NetworkPackageType.CHAT:
