@@ -9,7 +9,8 @@ namespace WarriorsSnuggery.Networking
 		GOODBYE,
 		ERROR,
 		CHAT,
-		PAUSE
+		PAUSE,
+		PARTYMODE
 	}
 
 	public class NetworkPackage

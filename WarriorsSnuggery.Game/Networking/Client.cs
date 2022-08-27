@@ -59,10 +59,10 @@ namespace WarriorsSnuggery.Networking
 
 		void checkPending()
 		{
-			var package = new NetworkPackage(stream);
-
 			if (!IsPending)
 				return;
+
+			var package = new NetworkPackage(stream);
 
 			if (checkDisconnect(package))
 				return;
@@ -71,7 +71,7 @@ namespace WarriorsSnuggery.Networking
 				return;
 
 			// Needs password
-			if (package.Content[0] == 1)
+			if (NetworkUtils.ToString(package.Content) == "pwd?")
 			{
 				Log.Debug("(Networking) Password required. Sending password...");
 				var response = new NetworkPackage(PackageType.WELCOME, NetworkUtils.ToBytes(password));

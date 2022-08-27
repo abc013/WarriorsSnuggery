@@ -20,16 +20,14 @@ namespace WarriorsSnuggery.Networking
 
 		public static IOrder ToOrder(NetworkPackage package)
 		{
-			switch(package.Type)
+			return package.Type switch
 			{
-				case PackageType.CHAT:
-					return new ChatOrder(package.Content);
-				case PackageType.PAUSE:
-					return new PauseOrder(package.Content);
-			}
-
-			// TODO crash
-			return null;
+				PackageType.CHAT => new ChatOrder(package.Content),
+				PackageType.PAUSE => new PauseOrder(package.Content),
+				PackageType.PARTYMODE => new PartyModeOrder(package.Content),
+				// TODO crash
+				_ => null,
+			};
 		}
 	}
 }

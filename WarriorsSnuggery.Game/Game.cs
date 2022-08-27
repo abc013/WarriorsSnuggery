@@ -136,6 +136,12 @@ namespace WarriorsSnuggery
 
 		public void ReceivePause(bool paused)
 		{
+			var ingameScreens = ScreenControl.FocusedType == ScreenType.EMPTY || ScreenControl.FocusedType == ScreenType.DEFAULT;
+			if (paused && ingameScreens)
+				ScreenControl.ShowScreen(ScreenType.PAUSED);
+			else if (!paused && !ingameScreens)
+				ScreenControl.ShowScreen(ScreenType.DEFAULT);
+
 			Paused = paused;
 			AudioController.PauseAll(paused, true);
 			MasterRenderer.PauseSequences = Paused;
@@ -250,7 +256,7 @@ namespace WarriorsSnuggery
 
 			// Party mode
 			if (key == Keys.RightAlt)
-				Settings.PartyMode = !Settings.PartyMode;
+				GameController.SendOrder(new PartyModeOrder(!Settings.PartyMode));
 
 			var screenTypeBefore = ScreenControl.FocusedType;
 			ScreenControl.KeyDown(key, isControl, isShift, isAlt);

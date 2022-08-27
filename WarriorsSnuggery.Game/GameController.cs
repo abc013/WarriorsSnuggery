@@ -35,7 +35,7 @@ namespace WarriorsSnuggery
 		{
 			game.Tick();
 
-			Receive();
+			ProcessReceivedOrders();
 		}
 
 		static void openServer(string address = NetworkUtils.DefaultAddress, int port = NetworkUtils.DefaultPort, string password = "", int playerCount = 10)
@@ -56,7 +56,7 @@ namespace WarriorsSnuggery
 			connection.Send(order);
 		}
 
-		public static void Receive()
+		public static void ProcessReceivedOrders()
 		{
 			foreach (var order in connection.Receive())
 			{
@@ -67,6 +67,12 @@ namespace WarriorsSnuggery
 						break;
 					case PauseOrder p:
 						game.ReceivePause(p.Paused);
+						break;
+					case PartyModeOrder p:
+						Settings.PartyMode = p.PartyMode;
+
+						if (!Settings.PartyMode)
+							WorldRenderer.Ambient = game.MapType.Ambient;
 						break;
 				}
 			}

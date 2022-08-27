@@ -77,13 +77,21 @@ namespace WarriorsSnuggery.Networking
 
 				foreach (var client in connected)
 				{
-					if (!client.Connected || !client.PackageAvailable)
+					if (!client.Connected)
+					{
+						client.Disconnecting = true;
+						broadcastMessage($"Client (ID {client.ID}) has disconnected.");
+
+						continue;
+					}
+
+					if (!client.PackageAvailable)
 						continue;
 
-					foreach(var package in client.GetPackages())
+					foreach (var package in client.GetPackages())
 						receive(client, package);
 				}
-				connected.RemoveAll(c => !c.Connected);
+				connected.RemoveAll(c => c.Disconnecting);
 			}
 
 			foreach (var client in pending)
@@ -104,7 +112,7 @@ namespace WarriorsSnuggery.Networking
 			if (requiresPassword)
 			{
 				Log.Debug("(Networking) Sending password request...");
-				client.Send(new NetworkPackage(PackageType.WELCOME, new byte[] { 1 }));
+				client.Send(new NetworkPackage(PackageType.WELCOME, NetworkUtils.ToBytes("pwd?")));
 				return;
 			}
 
@@ -136,6 +144,8 @@ namespace WarriorsSnuggery.Networking
 			client.Send(new NetworkPackage(PackageType.WELCOME, data));
 
 			connected.Add(client);
+
+			broadcastMessage($"Client (ID {client.ID}) has connected.");
 		}
 
 		void receive(ServerClient client, NetworkPackage package)
@@ -156,7 +166,19 @@ namespace WarriorsSnuggery.Networking
 					Log.Debug($"(Networking) Client {client.ID}: Requested {(pause ? "" : "un")}pause.");
 					broadcast(package);
 					break;
+				case PackageType.PARTYMODE:
+					var partymode = package.Content[0] == 1;
+					Log.Debug($"(Networking) Client {client.ID}: Requested {(partymode ? "en" : "dis")}abling Partymode.");
+					broadcast(package);
+					break;
 			}
+		}
+
+		void broadcastMessage(string message)
+		{
+			var text = $"{Color.Yellow}<Server> {message}";
+			var package = new Orders.ChatOrder(text).GeneratePackage();
+			broadcast(package);
 		}
 
 		void broadcast(NetworkPackage package)
@@ -179,7 +201,9 @@ namespace WarriorsSnuggery.Networking
 		{
 			public readonly int ID;
 
-			public bool Connected => client.Connected;
+			public bool Disconnecting;
+			public bool Connected => client.Connected && !closed;
+			bool closed;
 
 			public bool PackageAvailable => stream.DataAvailable;
 
@@ -203,8 +227,17 @@ namespace WarriorsSnuggery.Networking
 				if (!Connected)
 					return packages;
 
-				while (stream.DataAvailable)
-					packages.Add(new NetworkPackage(stream));
+				try
+				{
+					while (stream.DataAvailable)
+						packages.Add(new NetworkPackage(stream));
+				}
+				catch
+				{
+					// In case of network error, close client.
+					client.Close();
+					closed = true;
+				}
 
 				return packages;
 			}
@@ -214,7 +247,16 @@ namespace WarriorsSnuggery.Networking
 				if (!Connected)
 					return;
 
-				stream.Write(package.AsBytes());
+				try
+				{
+					stream.Write(package.AsBytes());
+				}
+				catch
+				{
+					// In case of network error, close client.
+					client.Close();
+					closed = true;
+				}
 			}
 
 			public void Disconnect(string message)
@@ -226,6 +268,7 @@ namespace WarriorsSnuggery.Networking
 
 				Send(package);
 				client.Close();
+				closed = true;
 			}
 		}
 	}

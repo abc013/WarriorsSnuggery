@@ -47,13 +47,13 @@ namespace WarriorsSnuggery.UI.Objects
 			if (string.IsNullOrWhiteSpace(input.Text))
 				return;
 
-			GameController.SendOrder(new ChatOrder(Settings.Name + ':' + input.Text));
+			SendText(input.Text);
 			input.Text = string.Empty;
 		}
 
 		public void SendText(string message)
 		{
-			GameController.SendOrder(new ChatOrder(Settings.Name + ':' + message));
+			GameController.SendOrder(new ChatOrder($"{Settings.Name}: {Color.White.WithAlpha(0.8f)}{message}"));
 		}
 
 		public void ReceiveText(string message)
