@@ -26,6 +26,13 @@ namespace WarriorsSnuggery
 			RuleLoader.Load();
 			PieceManager.Load();
 
+			var watch = Timer.Start();
+
+			createLocalServer();
+			Connect("127.0.0.1");
+
+			Log.Performance(watch.Stop(), "Loading Network");
+
 			GameSaveManager.Load();
 		}
 
@@ -36,7 +43,7 @@ namespace WarriorsSnuggery
 
 		static void createLocalServer()
 		{
-			localServer = new Server("localhost", "1234", playerCount: 1);
+			localServer = new Server("localhost", string.Empty, playerCount: 10);
 		}
 
 		public static void Connect(string address, int port = 5050, string password = "")
@@ -93,8 +100,6 @@ namespace WarriorsSnuggery
 
 			game = new Game(GameSaveManager.DefaultSave.Clone(), map, mission, mode);
 			game.Load();
-
-			client.GameReady = true;
 		}
 
 		public static void CreateMainMenu()
@@ -212,6 +217,7 @@ namespace WarriorsSnuggery
 				game.Dispose();
 			}
 
+			client.Close();
 			localServer.Close();
 		}
 	}
