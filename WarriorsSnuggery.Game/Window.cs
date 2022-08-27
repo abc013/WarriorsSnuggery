@@ -14,6 +14,9 @@ namespace WarriorsSnuggery
 {
 	public static class ScreenInfo
 	{
+		public static int ScreenOffsetX;
+		public static int ScreenOffsetY;
+
 		public static int ScreenHeight;
 		public static int ScreenWidth;
 
@@ -103,19 +106,12 @@ namespace WarriorsSnuggery
 			// Initialize values
 			unsafe
 			{
-				if (Program.Monitor >= 0)
-				{
-					var monitors = Monitors.GetMonitors();
-					if (Program.Monitor < monitors.Count)
-						CurrentMonitor = monitors[Program.Monitor].Handle;
-					else
-						Log.Warning($"Tried to set window to Monitor {Program.Monitor}, yet this one doesn't exist.");
-				}
-
-				var mode = GLFW.GetVideoMode(CurrentMonitor.ToUnsafePtr<Monitor>());
+				var ptr = CurrentMonitor.ToUnsafePtr<Monitor>();
+				var mode = GLFW.GetVideoMode(ptr);
 				ScreenInfo.ScreenWidth = mode->Width;
 				ScreenInfo.ScreenHeight = mode->Height;
 				ScreenInfo.ScreenRefreshRate = mode->RefreshRate;
+				GLFW.GetMonitorPos(ptr, out ScreenInfo.ScreenOffsetX, out ScreenInfo.ScreenOffsetY);
 			}
 
 			setScreen();
@@ -150,8 +146,8 @@ namespace WarriorsSnuggery
 			{
 				WindowBorder = WindowBorder.Fixed;
 				WindowState = WindowState.Normal;
-				var offsetX = (ScreenInfo.ScreenWidth - Settings.Width) / 2;
-				var offsetY = (ScreenInfo.ScreenHeight - Settings.Height) / 2;
+				var offsetX = ScreenInfo.ScreenOffsetX + (ScreenInfo.ScreenWidth - Settings.Width) / 2;
+				var offsetY = ScreenInfo.ScreenOffsetY + (ScreenInfo.ScreenHeight - Settings.Height) / 2;
 				ClientRectangle = new Box2i(offsetX, offsetY + 1, Settings.Width + offsetX, Settings.Height + offsetY);
 			}
 
@@ -289,7 +285,7 @@ namespace WarriorsSnuggery
 		protected override void OnFocusedChanged(FocusedChangedEventArgs e)
 		{
 			WindowInfo.Focused = e.IsFocused;
-			if (!e.IsFocused && !Settings.DeveloperMode && Ready)
+			if (!e.IsFocused && (!Settings.DeveloperMode || Program.IsDebug) && Ready)
 				GameController.Pause();
 		}
 

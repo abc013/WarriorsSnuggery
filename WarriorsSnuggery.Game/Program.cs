@@ -119,6 +119,16 @@ namespace WarriorsSnuggery
 				APIVersion = new Version(3, 2),
 				Size = new OpenTK.Mathematics.Vector2i(Settings.Width, Settings.Height),
 			};
+
+			if (Monitor >= 0)
+			{
+				var monitors = Monitors.GetMonitors();
+				if (Monitor < monitors.Count)
+					settings2.CurrentMonitor = monitors[Monitor].Handle;
+				else
+					Log.Warning($"Tried to set window to Monitor {Monitor}, yet this one doesn't exist.");
+			}
+
 			window = new Window(settings1, settings2);
 
 			if (GL.GetInteger(GetPName.MajorVersion) < 3 && GL.GetInteger(GetPName.MinorVersion) < 2)
