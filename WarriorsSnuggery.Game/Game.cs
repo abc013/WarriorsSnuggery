@@ -50,6 +50,9 @@ namespace WarriorsSnuggery
 
 		public bool ForceTempSave;
 
+		GameDiff currentDiff;
+		bool diffSaveRequested;
+
 		MissionType nextLevelType;
 		InteractionMode nextInteractionMode;
 		bool nextLevelIncrease;
@@ -250,6 +253,12 @@ namespace WarriorsSnuggery
 				Save.SetName(name);
 				ForceTempSave = false;
 			}
+
+			if (diffSaveRequested)
+			{
+				currentDiff = new GameDiff(this, LocalTick);
+				diffSaveRequested = false;
+			}
 		}
 
 		public void KeyDown(Keys key, bool isControl, bool isShift, bool isAlt)
@@ -420,6 +429,16 @@ namespace WarriorsSnuggery
 				ScreenControl.FadeOut();
 				MusicController.FadeIntenseOut();
 			}
+		}
+
+		public GameDiff AwaitGameDiff()
+		{
+			diffSaveRequested = true;
+
+			// HACK: Wait until the next diff has been generated
+			while (diffSaveRequested) ;
+
+			return currentDiff;
 		}
 
 		public void ShowScreen(ScreenType screen, bool pause)

@@ -26,6 +26,12 @@ namespace WarriorsSnuggery.Maps.Pieces
 
 		public static void SaveWorld(World world, string directory, string name, bool gameSave = false)
 		{
+			using var writer = new FileStream(directory + name + ".yaml", FileMode.OpenOrCreate);
+			SaveWorld(world, writer, name, gameSave);
+		}
+
+		public static void SaveWorld(World world, Stream stream, string name, bool gameSave = false)
+		{
 			var saver = new TextNodeSaver();
 			saver.Add("MapFormat", Constants.CurrentMapFormat);
 			saver.Add("Name", name);
@@ -33,13 +39,9 @@ namespace WarriorsSnuggery.Maps.Pieces
 
 			saver.Append(world.Save(gameSave));
 
-			using var writer = new StreamWriter(directory + name + ".yaml", false);
-
+			using var writer = new StreamWriter(stream);
 			foreach (var savedString in saver.GetStrings())
 				writer.WriteLine(savedString);
-
-			writer.Flush();
-			writer.Close();
 		}
 	}
 }

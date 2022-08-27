@@ -156,6 +156,22 @@ namespace WarriorsSnuggery
 
 		public void Save(Game game)
 		{
+			using var writer = new StreamWriter(FileExplorer.Saves + SaveName + ".yaml", false);
+			save(game, writer);
+
+			PieceSaver.SaveWorld(game.World, FileExplorer.Saves, MapSaveName, true);
+		}
+
+		public void SaveInMemory(Game game, MemoryStream saveStream, MemoryStream mapStream)
+		{
+			using var writer = new StreamWriter(saveStream);
+			save(game, writer);
+
+			PieceSaver.SaveWorld(game.World, mapStream, MapSaveName);
+		}
+
+		void save(Game game, StreamWriter writer)
+		{
 			Update(game);
 
 			var saver = new TextNodeSaver();
@@ -174,13 +190,11 @@ namespace WarriorsSnuggery
 
 			saver.AddChildren(nameof(CustomConditions), game.ConditionManager.Save(), true);
 
-			using (var writer = new StreamWriter(FileExplorer.Saves + SaveName + ".yaml", false))
-			{
-				foreach (var savedString in saver.GetStrings())
-					writer.WriteLine(savedString);
-			}
+			foreach (var savedString in saver.GetStrings())
+				writer.WriteLine(savedString);
 
-			PieceSaver.SaveWorld(game.World, FileExplorer.Saves, MapSaveName, true);
+			writer.Flush();
+			writer.Close();
 		}
 
 		public void Update(Game game, bool levelIncrease = false)

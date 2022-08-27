@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Net;
 using System.Net.Sockets;
 using System.Threading;
@@ -49,6 +50,9 @@ namespace WarriorsSnuggery.Networking
 				if (AllowConnections)
 					checkPendingConnections();
 
+				var diffOrder = new Orders.DiffOrder(game.AwaitGameDiff());
+				var diffPackage = diffOrder.GeneratePackage();
+
 				foreach (var client in connected)
 				{
 					if (!client.Connected)
@@ -58,6 +62,9 @@ namespace WarriorsSnuggery.Networking
 
 						continue;
 					}
+
+					if (client != localClient)
+						client.Send(diffPackage);
 
 					if (!client.PackageAvailable)
 						continue;

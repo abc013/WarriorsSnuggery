@@ -78,6 +78,13 @@ namespace WarriorsSnuggery
 						maintainConnection = true;
 						CreateFromSave(new GameSave(FileExplorer.Saves + l.SaveName + ".yaml"));
 						break;
+					case DiffOrder d:
+						// TODO replace with in-memory-loading
+						maintainConnection = true;
+						var save = new GameSave(FileExplorer.Saves + d.SaveName + ".yaml");
+						CreateFromSave(save);
+						save.Delete();
+						break;
 					case ChatOrder c:
 						game.ScreenControl.ReceiveChat(c.Message);
 						break;
