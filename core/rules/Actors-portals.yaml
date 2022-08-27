@@ -1,3 +1,16 @@
+join_network_game_pad=
+	Sprite=
+		Texture=
+			Name=exit
+			Dimensions=24,24
+		Offset=0,0,-2048
+		UseAsPreview=true
+		Color=0,255,255
+	OpenScreen=
+		Type=JOIN_NETWORK_GAME
+		Radius=512
+		OnlyByPlayer=yes
+
 new_story_game_pad=
 	Sprite=
 		Texture=
