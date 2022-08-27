@@ -4,7 +4,7 @@ namespace WarriorsSnuggery.Networking.Orders
 {
 	class PauseOrder : IOrder
 	{
-		const PackageType type = PackageType.PAUSE;
+		const NetworkPackageType type = NetworkPackageType.PAUSE;
 
 		public bool Immediate => false;
 

@@ -6,7 +6,7 @@ using WarriorsSnuggery.Networking.Orders;
 
 namespace WarriorsSnuggery.Networking
 {
-	public class Client
+	internal class RemoteClient
 	{
 		public int ID { get; private set; } = -1;
 
@@ -21,7 +21,7 @@ namespace WarriorsSnuggery.Networking
 		public bool IsPending { get; private set; } = true;
 		public bool IsActive { get; private set; } = true;
 
-		public Client(string address, int port, string password)
+		public RemoteClient(string address, int port, string password)
 		{
 			Log.Debug($"(Networking) Connecting to server at {address}:{port}.");
 			client = new TcpClient(address, port) { NoDelay = true };
@@ -67,14 +67,14 @@ namespace WarriorsSnuggery.Networking
 			if (checkDisconnect(package))
 				return;
 
-			if (package.Type != PackageType.WELCOME)
+			if (package.Type != NetworkPackageType.WELCOME)
 				return;
 
 			// Needs password
 			if (NetworkUtils.ToString(package.Content) == "pwd?")
 			{
 				Log.Debug("(Networking) Password required. Sending password...");
-				var response = new NetworkPackage(PackageType.WELCOME, NetworkUtils.ToBytes(password));
+				var response = new NetworkPackage(NetworkPackageType.WELCOME, NetworkUtils.ToBytes(password));
 				stream.Write(response.AsBytes());
 				return;
 			}
@@ -92,12 +92,12 @@ namespace WarriorsSnuggery.Networking
 			if (checkDisconnect(package))
 				return;
 
-			receivedOrders.Add(NetworkUtils.ToOrder(package));
+			receivedOrders.Add(package.ToOrder());
 		}
 
 		bool checkDisconnect(NetworkPackage package)
 		{
-			if (package.Type == PackageType.GOODBYE)
+			if (package.Type == NetworkPackageType.GOODBYE)
 			{
 				var message = NetworkUtils.ToString(package.Content);
 				Log.Debug($"(Networking) Connection closed: {message}");
@@ -105,7 +105,7 @@ namespace WarriorsSnuggery.Networking
 				return true;
 			}
 
-			if (package.Type == PackageType.ERROR)
+			if (package.Type == NetworkPackageType.ERROR)
 			{
 				var message = NetworkUtils.ToString(package.Content);
 				Log.Debug($"(Networking) Server error. Error message: {message}");
@@ -150,7 +150,7 @@ namespace WarriorsSnuggery.Networking
 
 		public void Close()
 		{
-			var package = new NetworkPackage(PackageType.GOODBYE, new byte[0]);
+			var package = new NetworkPackage(NetworkPackageType.GOODBYE, new byte[0]);
 			stream.Write(package.AsBytes());
 
 			IsActive = false;

@@ -46,34 +46,7 @@ namespace WarriorsSnuggery.Networking
 			while (isActive)
 			{
 				if (AllowConnections)
-				{
-					if (server.Pending())
-						connect(new ServerClient(nextID++, server.AcceptTcpClient()));
-
-					pending.RemoveAll(c => connected.Contains(c) || !c.Connected);
-
-					foreach (var client in pending)
-					{
-						if (playerCount == connected.Count)
-						{
-							client.Disconnect("Server is full.");
-							continue;
-						}
-
-						if (!client.PackageAvailable)
-							continue;
-
-						var packages = client.GetPackages();
-
-						if (packages.Count > 1)
-						{
-							client.Disconnect("Received more than one packages while pending.");
-							continue;
-						}
-
-						checkPassword(client, packages[0]);
-					}
-				}
+					checkPendingConnections();
 
 				foreach (var client in connected)
 				{
@@ -103,21 +76,51 @@ namespace WarriorsSnuggery.Networking
 			server.Stop();
 		}
 
+		void checkPendingConnections()
+		{
+			if (server.Pending())
+				connect(new ServerClient(nextID++, server.AcceptTcpClient()));
+
+			pending.RemoveAll(c => connected.Contains(c) || !c.Connected);
+
+			foreach (var client in pending)
+			{
+				if (playerCount == connected.Count)
+				{
+					client.Disconnect("Server is full.");
+					continue;
+				}
+
+				if (!client.PackageAvailable)
+					continue;
+
+				var packages = client.GetPackages();
+
+				if (packages.Count > 1)
+				{
+					client.Disconnect("Received more than one packages while pending.");
+					continue;
+				}
+
+				checkPassword(client, packages[0]);
+			}
+		}
+
 		void connect(ServerClient client)
 		{
 			Log.Debug($"(Networking) New client detected (ID: {client.ID}).");
-
 			pending.Add(client);
 
 			if (requiresPassword)
 			{
 				Log.Debug("(Networking) Sending password request...");
-				client.Send(new NetworkPackage(PackageType.WELCOME, NetworkUtils.ToBytes("pwd?")));
-				return;
+				client.Send(new NetworkPackage(NetworkPackageType.WELCOME, NetworkUtils.ToBytes("pwd?")));
 			}
-
-			// No password required. We can send the data directly...
-			accept(client);
+			else
+			{
+				// No password required. We can send the data directly...
+				accept(client);
+			}
 		}
 
 		void checkPassword(ServerClient client, NetworkPackage package)
@@ -141,7 +144,7 @@ namespace WarriorsSnuggery.Networking
 			data[0] = 0;
 			Array.Copy(bytes, 0, data, 1, bytes.Length);
 
-			client.Send(new NetworkPackage(PackageType.WELCOME, data));
+			client.Send(new NetworkPackage(NetworkPackageType.WELCOME, data));
 
 			connected.Add(client);
 
@@ -152,21 +155,21 @@ namespace WarriorsSnuggery.Networking
 		{
 			switch (package.Type)
 			{
-				case PackageType.GOODBYE:
+				case NetworkPackageType.GOODBYE:
 					Log.Debug($"(Networking) Client {client.ID}: Closing.");
 					client.Disconnect("Client requested disconnect.");
 					return;
-				case PackageType.CHAT:
+				case NetworkPackageType.CHAT:
 					var msg = NetworkUtils.ToString(package.Content);
 					Log.Debug($"(Networking) Client {client.ID}: Message received: {msg}");
 					broadcast(package);
 					break;
-				case PackageType.PAUSE:
+				case NetworkPackageType.PAUSE:
 					var pause = package.Content[0] == 1;
 					Log.Debug($"(Networking) Client {client.ID}: Requested {(pause ? "" : "un")}pause.");
 					broadcast(package);
 					break;
-				case PackageType.PARTYMODE:
+				case NetworkPackageType.PARTYMODE:
 					var partymode = package.Content[0] == 1;
 					Log.Debug($"(Networking) Client {client.ID}: Requested {(partymode ? "en" : "dis")}abling Partymode.");
 					broadcast(package);
@@ -184,92 +187,12 @@ namespace WarriorsSnuggery.Networking
 		void broadcast(NetworkPackage package)
 		{
 			foreach (var client in connected)
-				send(client, package);
-		}
-
-		void send(ServerClient client, NetworkPackage package)
-		{
-			client.Send(package);
+				client.Send(package);
 		}
 
 		public void Close()
 		{
 			isActive = false;
-		}
-
-		class ServerClient
-		{
-			public readonly int ID;
-
-			public bool Disconnecting;
-			public bool Connected => client.Connected && !closed;
-			bool closed;
-
-			public bool PackageAvailable => stream.DataAvailable;
-
-			readonly TcpClient client;
-			readonly NetworkStream stream;
-
-			public ServerClient(int id, TcpClient client)
-			{
-				ID = id;
-				this.client = client;
-
-				client.NoDelay = true;
-
-				stream = client.GetStream();
-			}
-
-			public List<NetworkPackage> GetPackages()
-			{
-				var packages = new List<NetworkPackage>();
-
-				if (!Connected)
-					return packages;
-
-				try
-				{
-					while (stream.DataAvailable)
-						packages.Add(new NetworkPackage(stream));
-				}
-				catch
-				{
-					// In case of network error, close client.
-					client.Close();
-					closed = true;
-				}
-
-				return packages;
-			}
-
-			public void Send(NetworkPackage package)
-			{
-				if (!Connected)
-					return;
-
-				try
-				{
-					stream.Write(package.AsBytes());
-				}
-				catch
-				{
-					// In case of network error, close client.
-					client.Close();
-					closed = true;
-				}
-			}
-
-			public void Disconnect(string message)
-			{
-				if (!Connected)
-					return;
-
-				var package = new NetworkPackage(PackageType.GOODBYE, NetworkUtils.ToBytes(message));
-
-				Send(package);
-				client.Close();
-				closed = true;
-			}
 		}
 	}
 }

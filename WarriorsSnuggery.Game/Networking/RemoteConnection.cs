@@ -4,11 +4,11 @@ namespace WarriorsSnuggery.Networking
 {
 	public class RemoteConnection : IConnection
 	{
-		readonly Client client;
+		readonly RemoteClient client;
 
 		public RemoteConnection(string address, int port, string password)
 		{
-			client = new Client(address, port, password);
+			client = new RemoteClient(address, port, password);
 		}
 
 		public bool IsActive()

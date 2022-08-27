@@ -17,17 +17,5 @@ namespace WarriorsSnuggery.Networking
 		{
 			return Encoding.ASCII.GetString(data);
 		}
-
-		public static IOrder ToOrder(NetworkPackage package)
-		{
-			return package.Type switch
-			{
-				PackageType.CHAT => new ChatOrder(package.Content),
-				PackageType.PAUSE => new PauseOrder(package.Content),
-				PackageType.PARTYMODE => new PartyModeOrder(package.Content),
-				// TODO crash
-				_ => null,
-			};
-		}
 	}
 }

@@ -1,21 +1,12 @@
 ﻿using System;
 using System.Net.Sockets;
+using WarriorsSnuggery.Networking.Orders;
 
 namespace WarriorsSnuggery.Networking
 {
-	public enum PackageType : byte
-	{
-		WELCOME,
-		GOODBYE,
-		ERROR,
-		CHAT,
-		PAUSE,
-		PARTYMODE
-	}
-
 	public class NetworkPackage
 	{
-		public readonly PackageType Type;
+		public readonly NetworkPackageType Type;
 		public readonly int Length;
 		public readonly byte[] Content;
 
@@ -24,14 +15,14 @@ namespace WarriorsSnuggery.Networking
 			var header = new byte[5];
 			stream.Read(header);
 
-			Type = (PackageType)header[0];
+			Type = (NetworkPackageType)header[0];
 			Length = BitConverter.ToInt32(header, 1);
 
 			Content = new byte[Length];
 			stream.Read(Content);
 		}
 
-		public NetworkPackage(PackageType type, byte[] content)
+		public NetworkPackage(NetworkPackageType type, byte[] content)
 		{
 			Type = type;
 			Length = content.Length;
@@ -46,6 +37,17 @@ namespace WarriorsSnuggery.Networking
 			Array.Copy(Content, 0, data, 5, Length);
 
 			return data;
+		}
+
+		public IOrder ToOrder()
+		{
+			return Type switch
+			{
+				NetworkPackageType.CHAT => new ChatOrder(Content),
+				NetworkPackageType.PAUSE => new PauseOrder(Content),
+				NetworkPackageType.PARTYMODE => new PartyModeOrder(Content),
+				_ => throw new NotSupportedException($"Can't convert PackageType {Type} to a valid order.")
+			};
 		}
 	}
 }

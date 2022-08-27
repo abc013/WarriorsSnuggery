@@ -2,7 +2,7 @@
 {
 	class ChatOrder : IOrder
 	{
-		const PackageType type = PackageType.CHAT;
+		const NetworkPackageType type = NetworkPackageType.CHAT;
 
 		public bool Immediate => true;
 

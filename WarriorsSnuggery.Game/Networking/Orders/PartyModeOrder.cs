@@ -4,7 +4,7 @@ namespace WarriorsSnuggery.Networking.Orders
 {
 	class PartyModeOrder : IOrder
 	{
-		const PackageType type = PackageType.PARTYMODE;
+		const NetworkPackageType type = NetworkPackageType.PARTYMODE;
 
 		public bool Immediate => false;
 
