@@ -349,10 +349,16 @@ namespace WarriorsSnuggery.Objects.Actors
 				processActions();
 
 				if (spawning && !DoesAction(ActionType.SPAWN))
+				{
 					IsAlive = true; // Action is completed, we are alive
+					spawning = false;
+				}
 
 				if (despawning && !DoesAction(ActionType.DESPAWN))
+				{
 					Dispose(); // Action is completed, disposing
+					despawning = false;
+				}
 			}
 
 			base.Tick();
@@ -529,6 +535,9 @@ namespace WarriorsSnuggery.Objects.Actors
 		public void Killed(Actor killer)
 		{
 			if (World.Game.Editor)
+				return;
+
+			if (!IsAlive)
 				return;
 
 			if (killer != null)
