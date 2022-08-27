@@ -23,7 +23,7 @@ namespace WarriorsSnuggery.Networking
 
 		public Client(string address, int port, string password)
 		{
-			Log.Debug("Connecting to server...");
+			Log.Debug($"(Networking) Connecting to server at {address}:{port}.");
 			client = new TcpClient(address, port) { NoDelay = true };
 			stream = client.GetStream();
 			this.password = password;
@@ -73,7 +73,7 @@ namespace WarriorsSnuggery.Networking
 			// Needs password
 			if (package.Content[0] == 1)
 			{
-				Log.Debug("Password required. Sending password...");
+				Log.Debug("(Networking) Password required. Sending password...");
 				var response = new NetworkPackage(PackageType.WELCOME, NetworkUtils.ToBytes(password));
 				stream.Write(response.AsBytes());
 				return;
@@ -81,8 +81,7 @@ namespace WarriorsSnuggery.Networking
 
 			ID = BitConverter.ToInt32(package.Content, 1);
 
-			// Server connection established
-			Log.Debug($"Connection established (ID: {ID}).");
+			Log.Debug($"(Networking) Connection established (ID: {ID}).");
 			IsPending = false;
 		}
 
@@ -101,7 +100,7 @@ namespace WarriorsSnuggery.Networking
 			if (package.Type == PackageType.GOODBYE)
 			{
 				var message = NetworkUtils.ToString(package.Content);
-				Log.Debug($"Connection closed: {message}");
+				Log.Debug($"(Networking) Connection closed: {message}");
 				Close();
 				return true;
 			}
@@ -109,7 +108,7 @@ namespace WarriorsSnuggery.Networking
 			if (package.Type == PackageType.ERROR)
 			{
 				var message = NetworkUtils.ToString(package.Content);
-				Log.Debug($"Server error. Error message: {message}");
+				Log.Debug($"(Networking) Server error. Error message: {message}");
 				Close();
 				return true;
 			}

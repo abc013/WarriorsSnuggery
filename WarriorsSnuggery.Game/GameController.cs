@@ -28,10 +28,6 @@ namespace WarriorsSnuggery
 			RuleLoader.Load();
 			PieceManager.Load();
 
-			var watch = Timer.Start();
-
-			Log.Performance(watch.Stop(), "Loading Network");
-
 			GameSaveManager.Load();
 		}
 
@@ -42,10 +38,11 @@ namespace WarriorsSnuggery
 			Receive();
 		}
 
-		static void openServer()
+		static void openServer(string address = NetworkUtils.DefaultAddress, int port = NetworkUtils.DefaultPort, string password = "", int playerCount = 10)
 		{
-			localServer = new Server(game, "localhost", string.Empty, playerCount: 10);
+			localServer = new Server(game, address, password, port, playerCount);
 			ServerRunning = true;
+			Connect(address, port, password);
 		}
 
 		public static void Connect(string address = NetworkUtils.DefaultAddress, int port = NetworkUtils.DefaultPort, string password = "")
@@ -78,13 +75,6 @@ namespace WarriorsSnuggery
 
 		public static void CreateFirst()
 		{
-			if (!string.IsNullOrEmpty(Program.ServerAddress))
-			{
-				var split = Program.ServerAddress.Split(":");
-				Connect(split[0], int.Parse(split[1]));
-				// TODO: return here;
-			}
-
 			var mission = MissionType.MAIN_MENU;
 			var mode = InteractionMode.NONE;
 			var map = MapCache.FindMap(mission, 0, Program.SharedRandom);
@@ -105,10 +95,17 @@ namespace WarriorsSnuggery
 			if (Program.StartEditor)
 				mode = InteractionMode.EDITOR;
 
-			connection = new LocalConnection();
-
 			game = new Game(GameSaveManager.DefaultSave.Clone(), map, mission, mode);
 			game.Load();
+
+			connection = new LocalConnection();
+
+			if (!string.IsNullOrEmpty(Program.ServerAddress))
+			{
+				var split = Program.ServerAddress.Split(":");
+				Connect(split[0], int.Parse(split[1]));
+				// TODO: return here;
+			}
 
 			if (Program.StartServer)
 				openServer();
@@ -195,12 +192,12 @@ namespace WarriorsSnuggery
 		{
 			game.Dispose();
 
-			connection = new LocalConnection();
-
 			game = nextGame;
 			game.Load();
 
 			nextGame = null;
+
+			connection = new LocalConnection();
 		}
 
 		public static void Pause()
