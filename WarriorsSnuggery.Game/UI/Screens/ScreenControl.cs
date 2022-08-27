@@ -130,6 +130,7 @@ namespace WarriorsSnuggery.UI.Screens
 
 		public void ShowMessage(Message message) => this.message.OpenMessage(message);
 		public void ShowInformation(int duration, string message) => infoText.ShowInformation(duration, message);
+		public void ReceiveChat(string message) => chat.ReceiveText(message);
 		public bool ChatOpen => chat.Visible;
 
 		public void FadeIn() => fader.FadeIn();

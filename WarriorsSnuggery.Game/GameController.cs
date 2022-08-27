@@ -63,7 +63,7 @@ namespace WarriorsSnuggery
 				switch (order)
 				{
 					case ChatOrder c:
-						game.ScreenControl.ShowInformation(100, c.Message); // TODO
+						game.ScreenControl.ReceiveChat(c.Message);
 						break;
 					case PauseOrder p:
 						game.ReceivePause(p.Paused);
