@@ -17,6 +17,7 @@ namespace WarriorsSnuggery
 		public static bool IsDebug;
 		public static bool NoFullscreen;
 		public static bool OnlyLoad;
+		public static int Monitor = -1;
 
 		public static bool StartEditor;
 		public static bool DisableShroud;
@@ -57,6 +58,9 @@ namespace WarriorsSnuggery
 				{
 					case "-no-fullscreen":
 						NoFullscreen = true;
+						break;
+					case "-use-monitor":
+						Monitor = int.Parse(args[++i]);
 						break;
 					case "-new-settings":
 						newSettings = true;

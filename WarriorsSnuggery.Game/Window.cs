@@ -103,6 +103,15 @@ namespace WarriorsSnuggery
 			// Initialize values
 			unsafe
 			{
+				if (Program.Monitor >= 0)
+				{
+					var monitors = Monitors.GetMonitors();
+					if (Program.Monitor < monitors.Count)
+						CurrentMonitor = monitors[Program.Monitor].Handle;
+					else
+						Log.Warning($"Tried to set window to Monitor {Program.Monitor}, yet this one doesn't exist.");
+				}
+
 				var mode = GLFW.GetVideoMode(CurrentMonitor.ToUnsafePtr<Monitor>());
 				ScreenInfo.ScreenWidth = mode->Width;
 				ScreenInfo.ScreenHeight = mode->Height;
