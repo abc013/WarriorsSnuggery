@@ -45,10 +45,20 @@ namespace WarriorsSnuggery
 			Connect(address, port, password);
 		}
 
-		public static void Connect(string address = NetworkUtils.DefaultAddress, int port = NetworkUtils.DefaultPort, string password = "")
+		public static bool Connect(string address = NetworkUtils.DefaultAddress, int port = NetworkUtils.DefaultPort, string password = "")
 		{
-			connection = new RemoteConnection(address, port, password);
-			RemoteConnection = true;
+			try
+			{
+				connection = new RemoteConnection(address, port, password);
+				RemoteConnection = true;
+			}
+			catch (Exception ex)
+			{
+				Log.Warning($"(Networking) Failed to connect. Reason: {ex.Message}.");
+				RemoteConnection = false;
+			}
+
+			return RemoteConnection;
 		}
 
 		public static void SendOrder(IOrder order)

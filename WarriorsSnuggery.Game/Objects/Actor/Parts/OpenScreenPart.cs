@@ -11,7 +11,8 @@ namespace WarriorsSnuggery.Objects.Actors.Parts
 		ACTOR_SHOP,
 		LIFE_SHOP,
 		TROPHY_COLLECTION,
-		CREDITS
+		CREDITS,
+		JOIN_NETWORK_GAME
 	}
 
 	[Desc("Attach to an actor to open a screen when an actor gets near.")]
@@ -127,6 +128,10 @@ namespace WarriorsSnuggery.Objects.Actors.Parts
 						return true;
 					case ScreenType.CREDITS:
 						game.ShowScreen(UI.Screens.ScreenType.CREDITS);
+
+						return true;
+					case ScreenType.JOIN_NETWORK_GAME:
+						game.ShowScreen(UI.Screens.ScreenType.JOINNETWORKGAME);
 
 						return true;
 				}
