@@ -16,7 +16,7 @@ namespace WarriorsSnuggery.Scripts.Core
 		Actor[] targets;
 		bool targetsDead => targets != null && !targets.Any(a => a.IsAlive);
 
-		int explosionCountdown = 7 * 60;
+		int explosionCountdown = 7 * Settings.UpdatesPerSecond;
 
 		public Tutorial2Script(PackageFile packageFile, Game game) : base(packageFile, game)
 		{
@@ -90,9 +90,6 @@ namespace WarriorsSnuggery.Scripts.Core
 				$"Now, go ahead and {Color.Cyan}kill the next 4 targets {Color.White}!",
 				$"Then, {Color.Cyan}move further upward{Color.White}, I'll see you there."
 			}));
-
-			for (int i = 0; i < 8; i++)
-				world.WallLayer.Remove(new WPos(i, 21, false));
 
 			targets = new[] { spawnTarget(new CPos(1536, 15872, 0)), spawnTarget(new CPos(5632 + 1024, 11776, 0)), spawnTarget(new CPos(1536, 8704, 0)), spawnTarget(new CPos(4608, 4608, 0)) };
 		}
