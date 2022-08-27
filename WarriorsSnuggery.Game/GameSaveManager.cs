@@ -5,6 +5,7 @@ namespace WarriorsSnuggery
 	public static class GameSaveManager
 	{
 		public const string DefaultSaveName = "DEFAULT";
+		public const string TempSaveName = "TEMP";
 		public static GameSave DefaultSave;
 
 		public static readonly List<GameSave> Saves = new List<GameSave>();
@@ -13,7 +14,7 @@ namespace WarriorsSnuggery
 		{
 			foreach (var file in FileExplorer.FilesIn(FileExplorer.Saves, ".yaml"))
 			{
-				if (file != DefaultSaveName && !file.EndsWith("_map.yaml")) //make sure that we don't add any maps
+				if (file != DefaultSaveName && file != TempSaveName && !file.EndsWith("_map.yaml")) //make sure that we don't add any maps
 					Saves.Add(new GameSave(file));
 			}
 

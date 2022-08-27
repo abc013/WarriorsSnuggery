@@ -14,6 +14,7 @@ namespace WarriorsSnuggery.Networking
 		readonly List<ServerClient> connected = new List<ServerClient>();
 
 		readonly Game game;
+		ServerClient localClient;
 
 		readonly string name;
 		readonly string password;
@@ -148,7 +149,21 @@ namespace WarriorsSnuggery.Networking
 
 			connected.Add(client);
 
+			// First connected client is the local client. Otherwise, send world state
+			if (localClient == null)
+				localClient = client;
+			else
+			{
+				// HACK: Wait until the next save game has been generated
+				game.ForceTempSave = true;
+				while (game.ForceTempSave) ;
+
+				client.Send(new Orders.LoadOrder(game).GeneratePackage());
+			}
+
 			broadcastMessage($"Client (ID {client.ID}) has connected.");
+			if (localClient == client)
+				broadcastMessage($"Client (ID {client.ID}) is local client.");
 		}
 
 		void receive(ServerClient client, NetworkPackage package)

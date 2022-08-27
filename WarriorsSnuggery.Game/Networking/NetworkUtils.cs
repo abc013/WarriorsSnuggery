@@ -1,5 +1,4 @@
 ﻿using System.Text;
-using WarriorsSnuggery.Networking.Orders;
 
 namespace WarriorsSnuggery.Networking
 {

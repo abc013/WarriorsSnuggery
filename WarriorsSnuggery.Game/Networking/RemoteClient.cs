@@ -143,6 +143,13 @@ namespace WarriorsSnuggery.Networking
 			if (IsPending || !IsActive)
 				return false;
 
+			// Connection has been surprisingly closed
+			if (!stream.Socket.Connected)
+			{
+				IsActive = false;
+				return false;
+			}
+
 			var package = order.GeneratePackage();
 			stream.Write(package.AsBytes());
 			return true;

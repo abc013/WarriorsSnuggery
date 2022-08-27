@@ -17,6 +17,8 @@ namespace WarriorsSnuggery
 
 		public static bool RemoteConnection { get; private set; }
 		static IConnection connection;
+		// Used when remotely loading a map.
+		static bool maintainConnection;
 
 		static Game game;
 		static Game nextGame;
@@ -72,6 +74,10 @@ namespace WarriorsSnuggery
 			{
 				switch (order)
 				{
+					case LoadOrder l:
+						maintainConnection = true;
+						CreateFromSave(new GameSave(FileExplorer.Saves + l.SaveName + ".yaml"));
+						break;
 					case ChatOrder c:
 						game.ScreenControl.ReceiveChat(c.Message);
 						break;
@@ -120,7 +126,7 @@ namespace WarriorsSnuggery
 			{
 				var split = Program.ServerAddress.Split(":");
 				Connect(split[0], int.Parse(split[1]));
-				// TODO: return here;
+				return;
 			}
 
 			if (Program.StartServer)
@@ -213,7 +219,12 @@ namespace WarriorsSnuggery
 
 			nextGame = null;
 
-			connection = new LocalConnection();
+			if (!maintainConnection)
+			{
+				connection.Close();
+				connection = new LocalConnection();
+				maintainConnection = false;
+			}
 		}
 
 		public static void Pause()
