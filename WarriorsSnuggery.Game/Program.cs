@@ -27,6 +27,9 @@ namespace WarriorsSnuggery
 		public static string Piece;
 		public static string MapType;
 
+		public static bool StartServer;
+		public static string ServerAddress;
+
 		static bool noGLErrors;
 
 		static Window window;
@@ -94,6 +97,12 @@ namespace WarriorsSnuggery
 						break;
 					case "-only-load":
 						OnlyLoad = true;
+						break;
+					case "-join-server":
+						ServerAddress = args[++i];
+						break;
+					case "-start-server":
+						StartServer = true;
 						break;
 					default:
 						throw new ArgumentException($"Unknown command line argument {arg}.");

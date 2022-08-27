@@ -13,6 +13,7 @@ namespace WarriorsSnuggery.Networking
 		readonly List<ServerClient> pending = new List<ServerClient>();
 		readonly List<ServerClient> connected = new List<ServerClient>();
 
+		readonly Game game;
 		readonly string name;
 		readonly string password;
 		bool requiresPassword => !string.IsNullOrEmpty(password);
@@ -24,14 +25,15 @@ namespace WarriorsSnuggery.Networking
 
 		bool isActive = true;
 
-		public Server(string name, string password, int port = NetworkUtils.DefaultPort, int playerCount = 20)
+		public Server(Game game, string name, string password, int port = NetworkUtils.DefaultPort, int playerCount = 20)
 		{
-			server = new TcpListener(IPAddress.Any, port);
-			server.Start(playerCount);
-
+			this.game = game;
 			this.name = name;
 			this.password = password;
 			this.playerCount = playerCount;
+
+			server = new TcpListener(IPAddress.Any, port);
+			server.Start(playerCount);
 
 			new Thread(new ThreadStart(loop)) { IsBackground = true }.Start();
 		}

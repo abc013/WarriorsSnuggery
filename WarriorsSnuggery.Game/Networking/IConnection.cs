@@ -2,8 +2,7 @@
 
 namespace WarriorsSnuggery.Networking
 {
-	// Class will be used later for simulating networking in singleplayer
-	public abstract class Connection
+	public interface IConnection
 	{
 		public abstract bool IsActive();
 

@@ -12,9 +12,11 @@ namespace WarriorsSnuggery
 {
 	public static class GameController
 	{
+		public static bool ServerRunning { get; private set; }
 		static Server localServer;
 
-		static Connection connection;
+		public static bool RemoteConnection { get; private set; }
+		static IConnection connection;
 
 		static Game game;
 		static Game nextGame;
@@ -28,9 +30,6 @@ namespace WarriorsSnuggery
 
 			var watch = Timer.Start();
 
-			createLocalServer();
-			Connect("127.0.0.1");
-
 			Log.Performance(watch.Stop(), "Loading Network");
 
 			GameSaveManager.Load();
@@ -43,14 +42,16 @@ namespace WarriorsSnuggery
 			Receive();
 		}
 
-		static void createLocalServer()
+		static void openServer()
 		{
-			localServer = new Server("localhost", string.Empty, playerCount: 10);
+			localServer = new Server(game, "localhost", string.Empty, playerCount: 10);
+			ServerRunning = true;
 		}
 
 		public static void Connect(string address = NetworkUtils.DefaultAddress, int port = NetworkUtils.DefaultPort, string password = "")
 		{
-			connection = new ServerConnection(address, port, password);
+			connection = new RemoteConnection(address, port, password);
+			RemoteConnection = true;
 		}
 
 		public static void SendOrder(IOrder order)
@@ -77,6 +78,13 @@ namespace WarriorsSnuggery
 
 		public static void CreateFirst()
 		{
+			if (!string.IsNullOrEmpty(Program.ServerAddress))
+			{
+				var split = Program.ServerAddress.Split(":");
+				Connect(split[0], int.Parse(split[1]));
+				// TODO: return here;
+			}
+
 			var mission = MissionType.MAIN_MENU;
 			var mode = InteractionMode.NONE;
 			var map = MapCache.FindMap(mission, 0, Program.SharedRandom);
@@ -97,8 +105,13 @@ namespace WarriorsSnuggery
 			if (Program.StartEditor)
 				mode = InteractionMode.EDITOR;
 
+			connection = new LocalConnection();
+
 			game = new Game(GameSaveManager.DefaultSave.Clone(), map, mission, mode);
 			game.Load();
+
+			if (Program.StartServer)
+				openServer();
 		}
 
 		public static void CreateMainMenu()
@@ -182,6 +195,8 @@ namespace WarriorsSnuggery
 		{
 			game.Dispose();
 
+			connection = new LocalConnection();
+
 			game = nextGame;
 			game.Load();
 
@@ -217,7 +232,8 @@ namespace WarriorsSnuggery
 			}
 
 			connection.Close();
-			localServer.Close();
+			if (ServerRunning)
+				localServer.Close();
 		}
 	}
 }

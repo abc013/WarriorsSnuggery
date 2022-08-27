@@ -2,31 +2,31 @@
 
 namespace WarriorsSnuggery.Networking
 {
-	public class ServerConnection : Connection
+	public class RemoteConnection : IConnection
 	{
 		readonly Client client;
 
-		public ServerConnection(string address, int port, string password)
+		public RemoteConnection(string address, int port, string password)
 		{
 			client = new Client(address, port, password);
 		}
 
-		public override bool IsActive()
+		public bool IsActive()
 		{
 			return client.IsActive && !client.IsPending;
 		}
 
-		public override void Send(IOrder order)
+		public void Send(IOrder order)
 		{
 			client.Send(order);
 		}
 
-		public override IOrder[] Receive()
+		public IOrder[] Receive()
 		{
 			return client.Receive();
 		}
 
-		public override void Close()
+		public void Close()
 		{
 			client.Close();
 		}
