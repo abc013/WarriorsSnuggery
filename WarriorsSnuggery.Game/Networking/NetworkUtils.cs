@@ -1,4 +1,5 @@
 ﻿using System.Text;
+using WarriorsSnuggery.Networking.Orders;
 
 namespace WarriorsSnuggery.Networking
 {
@@ -15,6 +16,20 @@ namespace WarriorsSnuggery.Networking
 		public static string ToString(byte[] data)
 		{
 			return Encoding.ASCII.GetString(data);
+		}
+
+		public static IOrder ToOrder(NetworkPackage package)
+		{
+			switch(package.Type)
+			{
+				case PackageType.CHAT:
+					return new ChatOrder(package.Content);
+				case PackageType.PAUSE:
+					return new PauseOrder(package.Content);
+			}
+
+			// TODO crash
+			return null;
 		}
 	}
 }

@@ -14,7 +14,7 @@ namespace WarriorsSnuggery
 	{
 		static Server localServer;
 
-		static Client client;
+		static Connection connection;
 
 		static Game game;
 		static Game nextGame;
@@ -39,6 +39,8 @@ namespace WarriorsSnuggery
 		public static void Tick()
 		{
 			game.Tick();
+
+			Receive();
 		}
 
 		static void createLocalServer()
@@ -46,29 +48,29 @@ namespace WarriorsSnuggery
 			localServer = new Server("localhost", string.Empty, playerCount: 10);
 		}
 
-		public static void Connect(string address, int port = 5050, string password = "")
+		public static void Connect(string address = NetworkUtils.DefaultAddress, int port = NetworkUtils.DefaultPort, string password = "")
 		{
-			client = new Client(address, port, password);
+			connection = new ServerConnection(address, port, password);
 		}
 
 		public static void SendOrder(IOrder order)
 		{
-			client.Send(order);
+			connection.Send(order);
 		}
 
-		public static void Receive(NetworkPackage package)
+		public static void Receive()
 		{
-			switch (package.Type)
+			foreach (var order in connection.Receive())
 			{
-				case PackageType.MESSAGE:
-					var message = NetworkUtils.ToString(package.Content);
-					game.ScreenControl.ShowInformation(100, message); // TODO
-					break;
-				case PackageType.PAUSE:
-					var pause = package.Content[0] == 1;
-					game.ReceivePause(pause);
-
-					break;
+				switch (order)
+				{
+					case ChatOrder c:
+						game.ScreenControl.ShowInformation(100, c.Message); // TODO
+						break;
+					case PauseOrder p:
+						game.ReceivePause(p.Paused);
+						break;
+				}
 			}
 		}
 
@@ -217,7 +219,7 @@ namespace WarriorsSnuggery
 				game.Dispose();
 			}
 
-			client.Close();
+			connection.Close();
 			localServer.Close();
 		}
 	}

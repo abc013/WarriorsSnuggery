@@ -15,12 +15,13 @@ namespace WarriorsSnuggery.Networking
 
 		readonly string password;
 
-		readonly List<IOrder> orders = new List<IOrder>();
+		readonly List<IOrder> dispatchOrders = new List<IOrder>();
+		readonly List<IOrder> receivedOrders = new List<IOrder>();
 
-		bool isPending = true;
-		bool isActive = true;
+		public bool IsPending { get; private set; } = true;
+		public bool IsActive { get; private set; } = true;
 
-		public Client(string address = NetworkUtils.DefaultAddress, int port = NetworkUtils.DefaultPort, string password = "")
+		public Client(string address, int port, string password)
 		{
 			Log.WriteDebug("Connecting to server...");
 			client = new TcpClient(address, port) { NoDelay = true };
@@ -32,10 +33,10 @@ namespace WarriorsSnuggery.Networking
 
 		void loop()
 		{
-			while (isActive && client.Connected)
+			while (IsActive && client.Connected)
 			{
 				// If pending, wait for possible answer.
-				if (isPending)
+				if (IsPending)
 				{
 					if (client.Available > 0)
 						checkPending();
@@ -46,21 +47,21 @@ namespace WarriorsSnuggery.Networking
 				while (client.Available > 0)
 					receiveOrder();
 
-				lock (orders)
+				lock (dispatchOrders)
 				{
-					foreach (var order in orders)
+					foreach (var order in dispatchOrders)
 						dispatchOrder(order);
-					orders.Clear();
+					dispatchOrders.Clear();
 				}
 			}
-			isActive = false;
+			IsActive = false;
 		}
 
 		void checkPending()
 		{
 			var package = new NetworkPackage(stream);
 
-			if (!isPending)
+			if (!IsPending)
 				return;
 
 			if (checkDisconnect(package))
@@ -82,7 +83,7 @@ namespace WarriorsSnuggery.Networking
 
 			// Server connection established
 			Log.WriteDebug($"Connection established (ID: {ID}).");
-			isPending = false;
+			IsPending = false;
 		}
 
 		void receiveOrder()
@@ -92,7 +93,7 @@ namespace WarriorsSnuggery.Networking
 			if (checkDisconnect(package))
 				return;
 
-			GameController.Receive(package);
+			receivedOrders.Add(NetworkUtils.ToOrder(package));
 		}
 
 		bool checkDisconnect(NetworkPackage package)
@@ -116,6 +117,14 @@ namespace WarriorsSnuggery.Networking
 			return false;
 		}
 
+		public IOrder[] Receive()
+		{
+			var array = receivedOrders.ToArray();
+			receivedOrders.Clear();
+
+			return array;
+		}
+
 		public void Send(IOrder order)
 		{
 			if (order.Immediate)
@@ -124,15 +133,15 @@ namespace WarriorsSnuggery.Networking
 				return;
 			}
 
-			lock (orders)
+			lock (dispatchOrders)
 			{
-				orders.Add(order);
+				dispatchOrders.Add(order);
 			}
 		}
 
 		bool dispatchOrder(IOrder order)
 		{
-			if (isPending || !isActive)
+			if (IsPending || !IsActive)
 				return false;
 
 			var package = order.GeneratePackage();
@@ -145,7 +154,7 @@ namespace WarriorsSnuggery.Networking
 			var package = new NetworkPackage(PackageType.GOODBYE, new byte[0]);
 			stream.Write(package.AsBytes());
 
-			isActive = false;
+			IsActive = false;
 		}
 	}
 }
