@@ -1,4 +1,6 @@
-﻿using System.IO;
+﻿using System.Collections.Generic;
+using System.IO;
+using WarriorsSnuggery.Loader;
 
 namespace WarriorsSnuggery
 {
@@ -8,6 +10,9 @@ namespace WarriorsSnuggery
 
         public readonly byte[] SaveData;
         public readonly byte[] MapData;
+
+        public readonly List<TextNode> SaveNodes;
+        public readonly List<TextNode> MapNodes;
 
         public GameDiff(Game game, uint diffTick)
         {
@@ -19,6 +24,12 @@ namespace WarriorsSnuggery
 
             SaveData = saveStream.ToArray();
             MapData = mapStream.ToArray();
+        }
+
+        public GameDiff(List<TextNode> saveNodes, List<TextNode> mapNodes)
+        {
+            SaveNodes = saveNodes;
+            MapNodes = mapNodes;
         }
     }
 }

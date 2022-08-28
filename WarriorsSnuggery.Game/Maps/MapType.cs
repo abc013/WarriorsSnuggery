@@ -14,6 +14,7 @@ namespace WarriorsSnuggery.Maps
 	{
 		public readonly string Name;
 		public readonly bool IsSave;
+		public readonly List<TextNode> MapSaveNodes;
 
 		[Desc("Determines when to use the map.")]
 		public readonly MissionType[] MissionTypes = new MissionType[0];
@@ -115,7 +116,7 @@ namespace WarriorsSnuggery.Maps
 			}
 		}
 
-		MapType(PackageFile overridePiece, int wall, MPos customSize, Color ambient, MissionType[] missionTypes, ObjectiveType[] availableObjectives, int level, int fromLevel, int toLevel, IMapGeneratorInfo[] generators, CPos spawnPoint, bool isSave, bool revealMap, bool allowWeapons, PackageFile missionScript, WeatherEffect[] weatherEffects, PackageFile music, PackageFile intenseMusic)
+		MapType(PackageFile overridePiece, int wall, MPos customSize, Color ambient, MissionType[] missionTypes, ObjectiveType[] availableObjectives, int level, int fromLevel, int toLevel, IMapGeneratorInfo[] generators, CPos spawnPoint, bool isSave, bool revealMap, bool allowWeapons, PackageFile missionScript, WeatherEffect[] weatherEffects, PackageFile music, PackageFile intenseMusic, List<TextNode> mapSaveNodes)
 		{
 			OverridePiece = overridePiece;
 			Wall = wall;
@@ -135,6 +136,7 @@ namespace WarriorsSnuggery.Maps
 			WeatherEffects = weatherEffects;
 			Music = music;
 			IntenseMusic = intenseMusic;
+			MapSaveNodes = mapSaveNodes;
 		}
 
 		public Color GetAmbience(Random random)
@@ -152,15 +154,15 @@ namespace WarriorsSnuggery.Maps
 
 		public static MapType FromSave(GameSave save)
 		{
-			var size = TextNodeLoader.FromFile(FileExplorer.Saves, save.MapSaveName + ".yaml").First(n => n.Key == "Size").Convert<MPos>();
+			var size = save.MapSaveNodes.First(n => n.Key == "Size").Convert<MPos>();
 			var type = save.CurrentMapType;
 
-			return new MapType(new PackageFile(save.MapSaveName), type.Wall, size, save.CurrentAmbience, new[] { save.CurrentMission }, new[] { save.CurrentObjective }, -1, 0, int.MaxValue, type.Generators, CPos.Zero, true, type.RevealMap, type.AllowWeapons, save.Script, type.WeatherEffects, type.Music, type.IntenseMusic);
+			return new MapType(new PackageFile(save.MapSaveName), type.Wall, size, save.CurrentAmbience, new[] { save.CurrentMission }, new[] { save.CurrentObjective }, -1, 0, int.MaxValue, type.Generators, CPos.Zero, true, type.RevealMap, type.AllowWeapons, save.Script, type.WeatherEffects, type.Music, type.IntenseMusic, save.MapSaveNodes);
 		}
 
 		public static MapType FromPiece(Piece piece, MissionType type = MissionType.TEST, ObjectiveType objective = ObjectiveType.NONE)
 		{
-			return new MapType(piece.PackageFile, 0, piece.Size, Color.White, new[] { type }, new[] { objective }, -1, 0, int.MaxValue, new IMapGeneratorInfo[0], CPos.Zero, false, true, true, null, new WeatherEffect[0], null, null);
+			return new MapType(piece.PackageFile, 0, piece.Size, Color.White, new[] { type }, new[] { objective }, -1, 0, int.MaxValue, new IMapGeneratorInfo[0], CPos.Zero, false, true, true, null, new WeatherEffect[0], null, null, null);
 		}
 	}
 }

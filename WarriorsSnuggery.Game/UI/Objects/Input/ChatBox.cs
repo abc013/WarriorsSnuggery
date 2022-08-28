@@ -53,7 +53,7 @@ namespace WarriorsSnuggery.UI.Objects
 
 		public void SendText(string message)
 		{
-			GameController.SendOrder(new ChatOrder($"{Settings.Name}: {Color.White.WithAlpha(0.8f)}{message}"));
+			OrderProcessor.SendOrder(new ChatOrder($"{Settings.Name}: {Color.White.WithAlpha(0.8f)}{message}"));
 		}
 
 		public void ReceiveText(string message)

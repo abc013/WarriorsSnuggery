@@ -30,12 +30,13 @@ namespace WarriorsSnuggery.Maps.Pieces
 		readonly List<WeaponInit> weapons = new List<WeaponInit>();
 		readonly List<ParticleInit> particles = new List<ParticleInit>();
 
-		public Piece(PackageFile packageFile, string filepath)
+		public Piece(PackageFile packageFile, string filepath) : this(packageFile, filepath, TextNodeLoader.FromFilepath(filepath)) { }
+
+		public Piece(PackageFile packageFile, string filepath, List<TextNode> nodes)
 		{
 			PackageFile = packageFile;
 			Filepath = filepath;
 
-			var nodes = TextNodeLoader.FromFilepath(filepath);
 			var fields = TypeLoader.GetFields(this);
 
 			foreach (var node in nodes)

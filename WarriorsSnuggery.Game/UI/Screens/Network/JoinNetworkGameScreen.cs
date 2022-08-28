@@ -76,7 +76,7 @@ namespace WarriorsSnuggery.UI.Screens
 		{
 			if (!string.IsNullOrWhiteSpace(address) && !string.IsNullOrWhiteSpace(port))
 			{
-				if (!GameController.Connect(address, int.Parse(port), password.Text))
+				if (!OrderProcessor.Connect(address, int.Parse(port), password.Text))
 					connection.SetText($"{Color.Red}Failed to connect. Check logs for more details.");
 			}
 		}

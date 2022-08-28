@@ -12,10 +12,18 @@ namespace WarriorsSnuggery.Loader
 			return FromFile(FileExplorer.FileDirectory(filepath), FileExplorer.FileName(filepath) + FileExplorer.FileExtension(filepath));
 		}
 
+		public static List<TextNode> FromArray(byte[] data, string origin)
+		{
+			return fromLines(Networking.NetworkUtils.ToString(data).Split('\n'), origin);
+		}
+
 		public static List<TextNode> FromFile(string directory, string file)
 		{
-			var lines = File.ReadAllLines(directory + file);
+			return fromLines(File.ReadAllLines(directory + file), file);
+		}
 
+		static List<TextNode> fromLines(string[] lines, string file)
+		{
 			var list = new List<TextNode>();
 
 			TextNode before = null;

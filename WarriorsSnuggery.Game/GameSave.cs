@@ -19,6 +19,7 @@ namespace WarriorsSnuggery
 		public string Name { get; private set; }
 		public string SaveName { get; private set; }
 		public string MapSaveName => SaveName + "_map";
+		public List<TextNode> MapSaveNodes { get; private set; } = new List<TextNode>();
 
 		[Save]
 		public string[] ActiveMods { get; private set; } = new string[0];
@@ -84,13 +85,15 @@ namespace WarriorsSnuggery
 			return new GameSave(this);
 		}
 
-		public GameSave(string filepath) : this()
+		public GameSave(string filepath) : this(TextNodeLoader.FromFilepath(filepath), FileExplorer.FileName(filepath)) { }
+
+		public GameSave(List<TextNode> nodes, string name, List<TextNode> mapNodes = default) : this()
 		{
-			SaveName = FileExplorer.FileName(filepath);
+			SaveName = name;
 
 			var properties = typeof(GameSave).GetProperties();
 
-			foreach (var node in TextNodeLoader.FromFilepath(filepath))
+			foreach (var node in nodes)
 			{
 				switch (node.Key)
 				{
@@ -117,6 +120,11 @@ namespace WarriorsSnuggery
 						break;
 				}
 			}
+
+			if (mapNodes == default && File.Exists(FileExplorer.Saves + MapSaveName + ".yaml"))
+				MapSaveNodes = TextNodeLoader.FromFile(FileExplorer.Saves, MapSaveName + ".yaml");
+			else
+				MapSaveNodes = mapNodes;
 		}
 
 		public GameSave(int difficulty, bool hardcore, string name, int seed) : this()

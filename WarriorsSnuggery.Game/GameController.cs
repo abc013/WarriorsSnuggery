@@ -1,25 +1,16 @@
 ﻿using OpenTK.Windowing.GraphicsLibraryFramework;
 using System;
 using WarriorsSnuggery.Graphics;
+using System.Collections.Generic;
 using WarriorsSnuggery.Loader;
 using WarriorsSnuggery.Maps;
 using WarriorsSnuggery.Maps.Pieces;
-using WarriorsSnuggery.Networking;
-using WarriorsSnuggery.Networking.Orders;
 using WarriorsSnuggery.UI.Screens;
 
 namespace WarriorsSnuggery
 {
 	public static class GameController
 	{
-		public static bool ServerRunning { get; private set; }
-		static Server localServer;
-
-		public static bool RemoteConnection { get; private set; }
-		static IConnection connection;
-		// Used when remotely loading a map.
-		static bool maintainConnection;
-
 		static Game game;
 		static Game nextGame;
 
@@ -37,70 +28,8 @@ namespace WarriorsSnuggery
 		{
 			game.Tick();
 
-			ProcessReceivedOrders();
+			OrderProcessor.ProcessReceivedOrders(game);
 		}
-
-		static void openServer(string address = NetworkUtils.DefaultAddress, int port = NetworkUtils.DefaultPort, string password = "", int playerCount = 10)
-		{
-			localServer = new Server(game, address, password, port, playerCount);
-			ServerRunning = true;
-			Connect(address, port, password);
-		}
-
-		public static bool Connect(string address = NetworkUtils.DefaultAddress, int port = NetworkUtils.DefaultPort, string password = "")
-		{
-			try
-			{
-				connection = new RemoteConnection(address, port, password);
-				RemoteConnection = true;
-			}
-			catch (Exception ex)
-			{
-				Log.Warning($"(Networking) Failed to connect. Reason: {ex.Message}.");
-				RemoteConnection = false;
-			}
-
-			return RemoteConnection;
-		}
-
-		public static void SendOrder(IOrder order)
-		{
-			connection.Send(order);
-		}
-
-		public static void ProcessReceivedOrders()
-		{
-			foreach (var order in connection.Receive())
-			{
-				switch (order)
-				{
-					case LoadOrder l:
-						maintainConnection = true;
-						CreateFromSave(new GameSave(FileExplorer.Saves + l.SaveName + ".yaml"));
-						break;
-					case DiffOrder d:
-						// TODO replace with in-memory-loading
-						maintainConnection = true;
-						var save = new GameSave(FileExplorer.Saves + d.SaveName + ".yaml");
-						CreateFromSave(save);
-						save.Delete();
-						break;
-					case ChatOrder c:
-						game.ScreenControl.ReceiveChat(c.Message);
-						break;
-					case PauseOrder p:
-						game.ReceivePause(p.Paused);
-						break;
-					case PartyModeOrder p:
-						Settings.PartyMode = p.PartyMode;
-
-						if (!Settings.PartyMode)
-							WorldRenderer.Ambient = game.MapType.Ambient;
-						break;
-				}
-			}
-		}
-
 
 		public static void CreateFirst()
 		{
@@ -127,17 +56,7 @@ namespace WarriorsSnuggery
 			game = new Game(GameSaveManager.DefaultSave.Clone(), map, mission, mode);
 			game.Load();
 
-			connection = new LocalConnection();
-
-			if (!string.IsNullOrEmpty(Program.ServerAddress))
-			{
-				var split = Program.ServerAddress.Split(":");
-				Connect(split[0], int.Parse(split[1]));
-				return;
-			}
-
-			if (Program.StartServer)
-				openServer();
+			OrderProcessor.Load(game);
 		}
 
 		public static void CreateMainMenu()
@@ -206,6 +125,14 @@ namespace WarriorsSnuggery
 			CreateNew(save, type: type, custom: custom);
 		}
 
+		public static void CreateFromNodes(GameSave save, List<TextNode> map)
+		{
+			var type = save.CurrentMission;
+			MapType custom = MapType.FromSave(save);
+
+			CreateNew(save, type: type, custom: custom);
+		}
+
 		public static void CreateNew(GameSave save, MissionType type = MissionType.NORMAL, InteractionMode mode = InteractionMode.INGAME, MapType custom = null)
 		{
 			finishAndLoad(new Game(save, custom ?? MapCache.FindMap(type, save.Level, new Random(save.Seed + save.Level)), type, mode));
@@ -226,12 +153,7 @@ namespace WarriorsSnuggery
 
 			nextGame = null;
 
-			if (!maintainConnection)
-			{
-				connection.Close();
-				connection = new LocalConnection();
-				maintainConnection = false;
-			}
+			OrderProcessor.LoadNext();
 		}
 
 		public static void Pause()
@@ -262,9 +184,7 @@ namespace WarriorsSnuggery
 				game.Dispose();
 			}
 
-			connection.Close();
-			if (ServerRunning)
-				localServer.Close();
+			OrderProcessor.Exit();
 		}
 	}
 }

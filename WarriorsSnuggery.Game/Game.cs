@@ -136,7 +136,7 @@ namespace WarriorsSnuggery
 
 		public void Pause(bool paused)
 		{
-			GameController.SendOrder(new PauseOrder(paused));
+			OrderProcessor.SendOrder(new PauseOrder(paused));
 		}
 
 		public void ReceivePause(bool paused)
@@ -275,7 +275,7 @@ namespace WarriorsSnuggery
 
 			// Party mode
 			if (key == Keys.RightAlt)
-				GameController.SendOrder(new PartyModeOrder(!Settings.PartyMode));
+				OrderProcessor.SendOrder(new PartyModeOrder(!Settings.PartyMode));
 
 			var screenTypeBefore = ScreenControl.FocusedType;
 			ScreenControl.KeyDown(key, isControl, isShift, isAlt);

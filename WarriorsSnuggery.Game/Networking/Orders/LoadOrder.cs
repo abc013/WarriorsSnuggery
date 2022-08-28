@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
+using WarriorsSnuggery.Loader;
 
 namespace WarriorsSnuggery.Networking.Orders
 {
@@ -11,6 +13,8 @@ namespace WarriorsSnuggery.Networking.Orders
 
 		readonly Game game;
 		public readonly string SaveName = GameSaveManager.TempSaveName;
+		public readonly List<TextNode> SaveNodes;
+		public readonly List<TextNode> MapNodes;
 
 		public LoadOrder(Game game)
 		{
@@ -23,10 +27,10 @@ namespace WarriorsSnuggery.Networking.Orders
 
 			var fileALength = BitConverter.ToInt32(data, 0);
 			var index = intOffset;
-			File.WriteAllBytes(FileExplorer.Saves + SaveName + ".yaml", data[index..(index + fileALength)]);
+			SaveNodes = TextNodeLoader.FromArray(data[index..(index + fileALength)], "LoadOrder");
 			var fileBLength = BitConverter.ToInt32(data, fileALength + intOffset);
 			index = intOffset + fileALength + intOffset;
-			File.WriteAllBytes(FileExplorer.Saves + SaveName + "_map.yaml", data[index..(index + fileBLength)]);
+			MapNodes = TextNodeLoader.FromArray(data[index..(index + fileBLength)], "LoadOrder");
 		}
 
 		public NetworkPackage GeneratePackage()
