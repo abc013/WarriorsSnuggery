@@ -62,7 +62,7 @@ namespace WarriorsSnuggery.UI.Screens
 			};
 			Add(menu);
 
-			if (game.IsCampaign)
+			if (game.MissionType.IsCampaign())
 				Add(new MissionTextLine(game.ObjectiveType));
 
 			pointer = new EnemyPointer(game);

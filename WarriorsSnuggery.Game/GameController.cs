@@ -62,7 +62,7 @@ namespace WarriorsSnuggery
 
 		public static void CreateMenu()
 		{
-			var mission = game.MenuType;
+			var mission = game.MissionType.GetMenuType();
 			var save = game.Save;
 
 			finishAndLoad(new Game(save, MapCache.FindMap(mission, save), mission, InteractionMode.INGAME));
@@ -82,7 +82,7 @@ namespace WarriorsSnuggery
 
 		public static void CreateNext()
 		{
-			var mission = game.CampaignType;
+			var mission = game.MissionType.GetCampaignType();
 			var save = game.Save;
 
 			finishAndLoad(new Game(save, MapCache.FindMap(mission, save), mission, InteractionMode.INGAME));
@@ -90,7 +90,7 @@ namespace WarriorsSnuggery
 
 		public static void CreateNextMenu()
 		{
-			var mission = game.MenuType;
+			var mission = game.MissionType.GetMenuType();
 			var save = game.Save;
 
 			finishAndLoad(new Game(save, MapCache.FindMap(mission, save), mission, InteractionMode.INGAME));

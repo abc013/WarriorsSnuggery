@@ -89,7 +89,7 @@ namespace WarriorsSnuggery
 				if (LocalPlayer.Health != null && Game.Save.Health > 0)
 					LocalPlayer.Health.RelativeHP = Game.Save.Health;
 
-				if (Game.IsCampaign && !Game.IsMenu)
+				if (Game.MissionType.IsCampaign() && !Game.MissionType.IsMenu())
 					AddText(LocalPlayer.Position, 300, ActionText.ActionTextType.TRANSFORM, $"Level {Game.Save.Level}");
 
 				ShroudLayer.RevealAll = Program.DisableShroud || Game.MapType.RevealMap;

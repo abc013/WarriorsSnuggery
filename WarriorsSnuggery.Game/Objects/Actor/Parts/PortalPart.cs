@@ -113,7 +113,7 @@ namespace WarriorsSnuggery.Objects.Actors.Parts
 
 						if (info.Instant)
 						{
-							game.ChangeLevelAfterTick(game.CampaignType, increaseLevel: info.IncreaseLevel);
+							game.ChangeLevelAfterTick(game.MissionType.GetCampaignType(), increaseLevel: info.IncreaseLevel);
 							return true;
 						}
 
@@ -125,7 +125,7 @@ namespace WarriorsSnuggery.Objects.Actors.Parts
 						return true;
 					case PortalType.MAIN_LEVEL:
 
-						game.ChangeLevelAfterTick(game.MenuType, increaseLevel: info.IncreaseLevel);
+						game.ChangeLevelAfterTick(game.MissionType.GetMenuType(), increaseLevel: info.IncreaseLevel);
 
 						return true;
 					case PortalType.MAINMENU_LEVEL:

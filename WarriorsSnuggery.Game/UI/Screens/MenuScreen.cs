@@ -52,7 +52,7 @@ namespace WarriorsSnuggery.UI.Screens
 					break;
 			}
 
-			if (game.IsCampaign || game.MissionType == MissionType.MAIN_MENU)
+			if (game.MissionType.IsCampaign() || game.MissionType == MissionType.MAIN_MENU)
 			{
 				height += 1024;
 				Add(new Button("Load Game", "wooden", () => game.ShowScreen(ScreenType.LOADGAME)) { Position = new UIPos(game.MissionType == MissionType.MAIN_MENU ? 0 : -2048, height) });

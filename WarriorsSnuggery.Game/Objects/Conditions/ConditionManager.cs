@@ -21,7 +21,7 @@ namespace WarriorsSnuggery.Objects.Conditions
 				{ "MissionKillEnemies", game.ObjectiveType == ObjectiveType.KILL_ENEMIES },
 				{ "MissionFindExit", game.ObjectiveType == ObjectiveType.FIND_EXIT },
 				{ "MissionWaves", game.ObjectiveType == ObjectiveType.SURVIVE_WAVES },
-				{ "IsMenu", game.IsMenu },
+				{ "IsMenu", game.MissionType.IsMenu() },
 				{ "KeyFound", game.Stats.KeyFound }
 			};
 		}

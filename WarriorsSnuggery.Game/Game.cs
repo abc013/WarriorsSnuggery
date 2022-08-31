@@ -26,44 +26,6 @@ namespace WarriorsSnuggery
 
 		public readonly MissionType MissionType;
 
-		public bool IsMenu => MissionType == MissionType.MAIN_MENU || MissionType == MissionType.STORY_MENU || MissionType == MissionType.NORMAL_MENU || MissionType == MissionType.TUTORIAL_MENU;
-		public bool IsCampaign => MissionType == MissionType.STORY || MissionType == MissionType.STORY_MENU || MissionType == MissionType.NORMAL || MissionType == MissionType.NORMAL_MENU;
-		public bool IsTutorial => MissionType == MissionType.TUTORIAL || MissionType == MissionType.TUTORIAL_MENU;
-
-		public MissionType MenuType
-		{
-			get
-			{
-				if (MissionType == MissionType.STORY || MissionType == MissionType.STORY_MENU)
-					return MissionType.STORY_MENU;
-
-				if (MissionType == MissionType.NORMAL || MissionType == MissionType.NORMAL_MENU)
-					return MissionType.NORMAL_MENU;
-
-				if (MissionType == MissionType.TUTORIAL || MissionType == MissionType.TUTORIAL_MENU)
-					return MissionType.TUTORIAL_MENU;
-
-				return MissionType;
-			}
-		}
-
-		public MissionType CampaignType
-		{
-			get
-			{
-				if (MissionType == MissionType.STORY || MissionType == MissionType.STORY_MENU)
-					return MissionType.STORY;
-
-				if (MissionType == MissionType.NORMAL || MissionType == MissionType.NORMAL_MENU)
-					return MissionType.NORMAL;
-
-				if (MissionType == MissionType.TUTORIAL || MissionType == MissionType.TUTORIAL_MENU)
-					return MissionType.TUTORIAL;
-
-				return MissionType;
-			}
-		}
-
 		public readonly InteractionMode InteractionMode;
 
 		public readonly ObjectiveType ObjectiveType;

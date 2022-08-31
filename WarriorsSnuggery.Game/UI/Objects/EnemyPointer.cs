@@ -21,7 +21,7 @@ namespace WarriorsSnuggery.UI.Objects
 
 		public void Tick()
 		{
-			if (game.IsCampaign && !game.IsMenu && showTick++ == enableTick)
+			if (game.MissionType.IsCampaign() && !game.MissionType.IsMenu() && showTick++ == enableTick)
 				ShowArrow();
 
 			if (enabled)
