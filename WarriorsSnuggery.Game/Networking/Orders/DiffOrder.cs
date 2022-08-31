@@ -10,13 +10,13 @@ namespace WarriorsSnuggery.Networking.Orders
 
 		public bool Immediate => false;
 
-		readonly GameDiff diff;
+		readonly GameDiffData diff;
 
 		// Only for receiving
 		public readonly List<TextNode> SaveNodes;
 		public readonly List<TextNode> MapNodes;
 
-		public DiffOrder(GameDiff diff)
+		public DiffOrder(GameDiffData diff)
 		{
 			this.diff = diff;
 		}

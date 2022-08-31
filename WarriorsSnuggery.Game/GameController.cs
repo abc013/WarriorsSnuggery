@@ -1,7 +1,6 @@
 ﻿using OpenTK.Windowing.GraphicsLibraryFramework;
 using System;
 using WarriorsSnuggery.Graphics;
-using System.Collections.Generic;
 using WarriorsSnuggery.Loader;
 using WarriorsSnuggery.Maps;
 using WarriorsSnuggery.Maps.Pieces;
@@ -56,7 +55,7 @@ namespace WarriorsSnuggery
 			game = new Game(GameSaveManager.DefaultSave.Clone(), map, mission, mode);
 			game.Load();
 
-			OrderProcessor.Load(game);
+			OrderProcessor.CreateFirst(game);
 		}
 
 		public static void CreateMainMenu()
@@ -121,14 +120,6 @@ namespace WarriorsSnuggery
 			{
 				Log.Warning($"Unable to load saved map of save '{save.SaveName}'. Using a random map.");
 			}
-
-			CreateNew(save, type: type, custom: custom);
-		}
-
-		public static void CreateFromNodes(GameSave save, List<TextNode> map)
-		{
-			var type = save.CurrentMission;
-			MapType custom = MapType.FromSave(save);
 
 			CreateNew(save, type: type, custom: custom);
 		}

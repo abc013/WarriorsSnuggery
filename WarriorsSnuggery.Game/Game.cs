@@ -48,9 +48,10 @@ namespace WarriorsSnuggery
 		public bool WinConditionsMet { get; private set; }
 		public bool Finished { get; private set; }
 
-		GameDiff currentDiff;
+		GameSaveData currentSave;
+		bool gameSaveRequested;
+		GameDiffData currentDiff;
 		bool diffSaveRequested;
-		bool fullDiffSaveRequested;
 
 		MissionType nextLevelType;
 		InteractionMode nextInteractionMode;
@@ -247,8 +248,14 @@ namespace WarriorsSnuggery
 
 			if (diffSaveRequested)
 			{
-				currentDiff = new GameDiff(this, LocalTick, fullDiffSaveRequested);
+				currentDiff = new GameDiffData(this, LocalTick);
 				diffSaveRequested = false;
+			}
+
+			if (gameSaveRequested)
+			{
+				currentSave = new GameSaveData(this);
+				gameSaveRequested = false;
 			}
 		}
 
@@ -422,10 +429,19 @@ namespace WarriorsSnuggery
 			}
 		}
 
-		public GameDiff AwaitGameDiff(bool fullSave = false)
+		public GameSaveData AwaitGameSave()
+		{
+			gameSaveRequested = true;
+
+			// HACK: Wait until the next diff has been generated
+			while (gameSaveRequested) ;
+
+			return currentSave;
+		}
+
+		public GameDiffData AwaitGameDiff()
 		{
 			diffSaveRequested = true;
-			fullDiffSaveRequested = fullSave;
 
 			// HACK: Wait until the next diff has been generated
 			while (diffSaveRequested) ;

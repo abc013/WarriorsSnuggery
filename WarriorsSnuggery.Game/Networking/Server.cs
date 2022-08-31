@@ -169,7 +169,7 @@ namespace WarriorsSnuggery.Networking
 				localClient = client;
 			else
 			{
-				client.Send(new Orders.LoadOrder(game.AwaitGameDiff(true)).GeneratePackage());
+				client.Send(new Orders.LoadOrder(game.AwaitGameSave()).GeneratePackage());
 			}
 
 			broadcastMessage($"Client (ID {client.ID}) has connected.");

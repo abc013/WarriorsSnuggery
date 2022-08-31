@@ -14,7 +14,7 @@ namespace WarriorsSnuggery
 		// Used when remotely loading a map.
 		static bool maintainConnection;
 
-		public static void Load(Game game)
+		public static void CreateFirst(Game game)
 		{
 			connection = new LocalConnection();
 
@@ -71,7 +71,7 @@ namespace WarriorsSnuggery
 						maintainConnection = true;
 						// TODO: don't load!
 						GameController.CreateFromSave(new GameSave(d.SaveNodes, GameSaveManager.TempSaveName, d.MapNodes));
-						var diff = new GameDiff(d.SaveNodes, d.MapNodes);
+						var diff = new GameSaveData(d.SaveNodes, d.MapNodes);
 						break;
 					case ChatOrder c:
 						game.ScreenControl.ReceiveChat(c.Message);
