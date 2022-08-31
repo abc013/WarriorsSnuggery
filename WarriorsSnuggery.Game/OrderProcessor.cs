@@ -68,10 +68,7 @@ namespace WarriorsSnuggery
 						GameController.CreateFromSave(new GameSave(l.SaveNodes, GameSaveManager.TempSaveName, l.MapNodes));
 						break;
 					case DiffOrder d:
-						maintainConnection = true;
-						// TODO: don't load!
-						GameController.CreateFromSave(new GameSave(d.SaveNodes, GameSaveManager.TempSaveName, d.MapNodes));
-						var diff = new GameSaveData(d.SaveNodes, d.MapNodes);
+						game.ReceiveDiff(new GameDiffData(d.SaveNodes, d.MapNodes));
 						break;
 					case ChatOrder c:
 						game.ScreenControl.ReceiveChat(c.Message);
@@ -81,9 +78,6 @@ namespace WarriorsSnuggery
 						break;
 					case PartyModeOrder p:
 						Settings.PartyMode = p.PartyMode;
-
-						if (!Settings.PartyMode)
-							WorldRenderer.Ambient = game.MapType.Ambient;
 						break;
 				}
 			}
@@ -95,8 +89,9 @@ namespace WarriorsSnuggery
 			{
 				connection.Close();
 				connection = new LocalConnection();
-				maintainConnection = false;
 			}
+
+			maintainConnection = false;
 		}
 
 		public static void Exit()

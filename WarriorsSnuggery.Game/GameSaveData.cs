@@ -21,11 +21,5 @@ namespace WarriorsSnuggery
 			SaveData = saveStream.ToArray();
 			MapData = mapStream.ToArray();
 		}
-
-		public GameSaveData(List<TextNode> saveNodes, List<TextNode> mapNodes)
-		{
-			SaveNodes = saveNodes;
-			MapNodes = mapNodes;
-		}
 	}
 }

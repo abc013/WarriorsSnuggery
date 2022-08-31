@@ -449,6 +449,11 @@ namespace WarriorsSnuggery
 			return currentDiff;
 		}
 
+		public void ReceiveDiff(GameDiffData data)
+        {
+			World.ApplyDiff(data);
+        }
+
 		public void ShowScreen(ScreenType screen, bool pause)
 		{
 			Pause(pause);

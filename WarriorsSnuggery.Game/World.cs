@@ -340,18 +340,37 @@ namespace WarriorsSnuggery
 		public TextNodeSaver Save(PieceSaverType saverType)
 		{
 			var saver = new TextNodeSaver();
-			saver.Append(TerrainLayer.Save());
-			saver.AddChildren("Walls", WallLayer.Save(), true);
+			if (saverType != PieceSaverType.DIFF)
+				saver.Append(TerrainLayer.Save());
+			if (saverType != PieceSaverType.DIFF)
+				saver.AddChildren("Walls", WallLayer.Save(), true); // TODO: we need to check whether walls have been destroyed
 			saver.AddChildren("Actors", ActorLayer.Save(saverType != PieceSaverType.EDITOR), true);
 
 			if (saverType != PieceSaverType.EDITOR)
 				saver.AddChildren("Weapons", WeaponLayer.Save(), true);
-			if (saverType != PieceSaverType.SAVE)
+			if (saverType == PieceSaverType.SAVE)
 				saver.AddChildren("Particles", ParticleLayer.Save(), true);
 			if (saverType != PieceSaverType.SAVE)
 				saver.AddChildren("Shroud", ShroudLayer.Save(), true);
 
 			return saver;
+		}
+
+		public void ApplyDiff(GameDiffData data)
+		{
+			// var save = new GameSave(data.SaveNodes, "DIFF", data.MapNodes);
+			var piece = new GameDiffPiece(data.MapNodes);
+
+			foreach (var actor in ActorLayer.Actors)
+			{
+				var init = piece.actorInits.FirstOrDefault(a => a.ID == actor.ID);
+
+				// Desync?
+				if (init == null)
+					ActorLayer.Remove(actor);
+
+				actor.Position = init.Position;
+			}
 		}
 	}
 }

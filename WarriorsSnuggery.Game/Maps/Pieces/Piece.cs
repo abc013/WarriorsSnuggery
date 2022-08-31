@@ -46,6 +46,9 @@ namespace WarriorsSnuggery.Maps.Pieces
 					case "Terrain":
 						groundData = node.Convert<ushort[]>();
 
+						if (groundData.Length != Size.X * Size.Y)
+							throw new InvalidPieceException($"The count of given terrains ({groundData.Length}) is not the size ({Size.X * Size.Y}) of the piece '{Name}'");
+
 						break;
 					case "Walls":
 						if (MapFormat < 4)
@@ -159,9 +162,6 @@ namespace WarriorsSnuggery.Maps.Pieces
 						break;
 				}
 			}
-
-			if (groundData.Length != Size.X * Size.Y)
-				throw new InvalidPieceException($"The count of given terrains ({groundData.Length}) is not the size ({Size.X * Size.Y}) of the piece '{Name}'");
 		}
 
 		public void PlacePiece(MPos position, MapLoader loader)
