@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using WarriorsSnuggery.Loader;
 
 namespace WarriorsSnuggery.Networking.Orders
@@ -11,14 +10,15 @@ namespace WarriorsSnuggery.Networking.Orders
 
 		public bool Immediate => false;
 
-		readonly Game game;
-		public readonly string SaveName = GameSaveManager.TempSaveName;
+		readonly GameDiff diff;
+
+		// Only for receiving
 		public readonly List<TextNode> SaveNodes;
 		public readonly List<TextNode> MapNodes;
 
-		public LoadOrder(Game game)
+		public LoadOrder(GameDiff diff)
 		{
-			this.game = game;
+			this.diff = diff;
 		}
 
 		public LoadOrder(byte[] data)
@@ -27,37 +27,31 @@ namespace WarriorsSnuggery.Networking.Orders
 
 			var fileALength = BitConverter.ToInt32(data, 0);
 			var index = intOffset;
-			SaveNodes = TextNodeLoader.FromArray(data[index..(index + fileALength)], "LoadOrder");
+			SaveNodes = TextNodeLoader.FromArray(data[index..(index + fileALength)], "DiffOrder");
 			var fileBLength = BitConverter.ToInt32(data, fileALength + intOffset);
 			index = intOffset + fileALength + intOffset;
-			MapNodes = TextNodeLoader.FromArray(data[index..(index + fileBLength)], "LoadOrder");
+			MapNodes = TextNodeLoader.FromArray(data[index..(index + fileBLength)], "DiffOrder");
 		}
 
 		public NetworkPackage GeneratePackage()
 		{
-			static byte[] concat(byte[] fileA, byte[] fileB)
-			{
-				var fileALength = BitConverter.GetBytes(fileA.Length);
-				var fileBLength = BitConverter.GetBytes(fileB.Length);
+			const int intOffset = 4;
 
-				var array = new byte[fileA.Length + fileALength.Length + fileB.Length + fileBLength.Length];
+			var saveSize = diff.SaveData.Length;
+			var mapSize = diff.MapData.Length;
 
-				var index = 0;
-				Array.Copy(fileALength, array, fileALength.Length);
-				index += fileALength.Length;
-				Array.Copy(fileA, 0, array, index, fileA.Length);
-				index += fileA.Length;
-				Array.Copy(fileBLength, 0, array, index, fileBLength.Length);
-				index += fileBLength.Length;
-				Array.Copy(fileB, 0, array, index, fileB.Length);
+			var array = new byte[saveSize + intOffset + mapSize + intOffset];
+			var index = 0;
 
-				return array;
-			}
+			Array.Copy(BitConverter.GetBytes(saveSize), array, intOffset);
+			index += intOffset;
+			Array.Copy(diff.SaveData, 0, array, index, saveSize);
+			index += saveSize;
+			Array.Copy(BitConverter.GetBytes(mapSize), 0, array, index, intOffset);
+			index += intOffset;
+			Array.Copy(diff.MapData, 0, array, index, mapSize);
 
-			var fileA = File.ReadAllBytes(FileExplorer.Saves + SaveName + ".yaml");
-			var fileB = File.ReadAllBytes(FileExplorer.Saves + SaveName + "_map.yaml");
-
-			return new NetworkPackage(type, concat(fileA, fileB));
+			return new NetworkPackage(type, array);
 		}
 	}
 }

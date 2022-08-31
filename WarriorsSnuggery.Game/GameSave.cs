@@ -167,15 +167,24 @@ namespace WarriorsSnuggery
 			using var writer = new StreamWriter(FileExplorer.Saves + SaveName + ".yaml", false);
 			save(game, writer);
 
-			PieceSaver.SaveWorld(game.World, FileExplorer.Saves, MapSaveName, true);
+			PieceSaver.SaveWorld(game.World, FileExplorer.Saves, MapSaveName, PieceSaverType.SAVE);
 		}
 
-		public void SaveInMemory(Game game, MemoryStream saveStream, MemoryStream mapStream)
+		public void Save(Game game, MemoryStream saveStream, MemoryStream mapStream)
 		{
 			using var writer = new StreamWriter(saveStream);
 			save(game, writer);
 
-			PieceSaver.SaveWorld(game.World, mapStream, MapSaveName);
+			PieceSaver.SaveWorld(game.World, mapStream, MapSaveName, PieceSaverType.SAVE);
+		}
+
+		public void Diff(Game game, MemoryStream saveStream, MemoryStream mapStream)
+		{
+			using var writer = new StreamWriter(saveStream);
+			// There'll be a time where we need this, but not yet
+			save(game, writer);
+
+			PieceSaver.SaveWorld(game.World, mapStream, MapSaveName, PieceSaverType.DIFF);
 		}
 
 		void save(Game game, StreamWriter writer)

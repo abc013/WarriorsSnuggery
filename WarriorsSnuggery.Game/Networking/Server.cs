@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Net;
 using System.Net.Sockets;
 using System.Threading;
@@ -170,11 +169,7 @@ namespace WarriorsSnuggery.Networking
 				localClient = client;
 			else
 			{
-				// HACK: Wait until the next save game has been generated
-				game.ForceTempSave = true;
-				while (game.ForceTempSave) ;
-
-				client.Send(new Orders.LoadOrder(game).GeneratePackage());
+				client.Send(new Orders.LoadOrder(game.AwaitGameDiff(true)).GeneratePackage());
 			}
 
 			broadcastMessage($"Client (ID {client.ID}) has connected.");

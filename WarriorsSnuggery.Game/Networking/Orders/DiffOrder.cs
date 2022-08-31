@@ -13,7 +13,6 @@ namespace WarriorsSnuggery.Networking.Orders
 		readonly GameDiff diff;
 
 		// Only for receiving
-		public readonly string SaveName = GameSaveManager.TempSaveName;
 		public readonly List<TextNode> SaveNodes;
 		public readonly List<TextNode> MapNodes;
 
@@ -24,7 +23,6 @@ namespace WarriorsSnuggery.Networking.Orders
 
 		public DiffOrder(byte[] data)
 		{
-			SaveName += Window.GlobalTick;
 			const int intOffset = 4;
 
 			var fileALength = BitConverter.ToInt32(data, 0);

@@ -48,10 +48,9 @@ namespace WarriorsSnuggery
 		public bool WinConditionsMet { get; private set; }
 		public bool Finished { get; private set; }
 
-		public bool ForceTempSave;
-
 		GameDiff currentDiff;
 		bool diffSaveRequested;
+		bool fullDiffSaveRequested;
 
 		MissionType nextLevelType;
 		InteractionMode nextInteractionMode;
@@ -246,17 +245,9 @@ namespace WarriorsSnuggery
 
 			ScreenControl.Tick();
 
-			if (ForceTempSave)
-			{
-				var name = Save.Name;
-				GameSaveManager.SaveOnNewName(Save, GameSaveManager.TempSaveName, this);
-				Save.SetName(name);
-				ForceTempSave = false;
-			}
-
 			if (diffSaveRequested)
 			{
-				currentDiff = new GameDiff(this, LocalTick);
+				currentDiff = new GameDiff(this, LocalTick, fullDiffSaveRequested);
 				diffSaveRequested = false;
 			}
 		}
@@ -431,9 +422,10 @@ namespace WarriorsSnuggery
 			}
 		}
 
-		public GameDiff AwaitGameDiff()
+		public GameDiff AwaitGameDiff(bool fullSave = false)
 		{
 			diffSaveRequested = true;
+			fullDiffSaveRequested = fullSave;
 
 			// HACK: Wait until the next diff has been generated
 			while (diffSaveRequested) ;

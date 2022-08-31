@@ -65,14 +65,13 @@ namespace WarriorsSnuggery
 				{
 					case LoadOrder l:
 						maintainConnection = true;
-						GameController.CreateFromSave(new GameSave(l.SaveNodes, l.SaveName, l.MapNodes));
+						GameController.CreateFromSave(new GameSave(l.SaveNodes, GameSaveManager.TempSaveName, l.MapNodes));
 						break;
 					case DiffOrder d:
 						maintainConnection = true;
 						// TODO: don't load!
-						GameController.CreateFromSave(new GameSave(d.SaveNodes, d.SaveName, d.MapNodes));
+						GameController.CreateFromSave(new GameSave(d.SaveNodes, GameSaveManager.TempSaveName, d.MapNodes));
 						var diff = new GameDiff(d.SaveNodes, d.MapNodes);
-						Log.Debug($"Received Diff@{d.SaveName}.");
 						break;
 					case ChatOrder c:
 						game.ScreenControl.ReceiveChat(c.Message);

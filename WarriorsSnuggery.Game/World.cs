@@ -12,6 +12,7 @@ using WarriorsSnuggery.Objects.Actors;
 using WarriorsSnuggery.Maps;
 using WarriorsSnuggery.Maps.Layers;
 using WarriorsSnuggery.Loader;
+using WarriorsSnuggery.Maps.Pieces;
 
 namespace WarriorsSnuggery
 {
@@ -335,20 +336,20 @@ namespace WarriorsSnuggery
 			return ShroudLayer.ShroudRevealed(eye.Team, (int)(target.Position.X / 512f), (int)(target.Position.Y / 512f));
 		}
 
-		public TextNodeSaver Save() => Save(false);
-		public TextNodeSaver Save(bool gameSave)
+		public TextNodeSaver Save() => Save(PieceSaverType.EDITOR);
+		public TextNodeSaver Save(PieceSaverType saverType)
 		{
 			var saver = new TextNodeSaver();
 			saver.Append(TerrainLayer.Save());
 			saver.AddChildren("Walls", WallLayer.Save(), true);
-			saver.AddChildren("Actors", ActorLayer.Save(gameSave), true);
+			saver.AddChildren("Actors", ActorLayer.Save(saverType != PieceSaverType.EDITOR), true);
 
-			if (gameSave)
-			{
+			if (saverType != PieceSaverType.EDITOR)
 				saver.AddChildren("Weapons", WeaponLayer.Save(), true);
+			if (saverType != PieceSaverType.SAVE)
 				saver.AddChildren("Particles", ParticleLayer.Save(), true);
+			if (saverType != PieceSaverType.SAVE)
 				saver.AddChildren("Shroud", ShroudLayer.Save(), true);
-			}
 
 			return saver;
 		}
