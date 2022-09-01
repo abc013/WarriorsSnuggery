@@ -160,7 +160,7 @@ namespace WarriorsSnuggery.Loader
 			{
 				var type = Type.GetType($"WarriorsSnuggery.Objects.Particles.{value}ParticleSpawner", false, true);
 
-				if (type == null || type.IsInterface)
+				if (type == null || type.IsInterface || type.IsAbstract)
 					throw new InvalidConversionException(node, t);
 
 				return Activator.CreateInstance(type, new[] { node.Children });
@@ -196,7 +196,7 @@ namespace WarriorsSnuggery.Loader
 			{
 				var type = Type.GetType($"WarriorsSnuggery.Objects.Actors.Bot.{value}BotBehaviorType", false, true);
 
-				if (type == null || type.IsInterface)
+				if (type == null || type.IsInterface || type.IsAbstract)
 					throw new InvalidConversionException(node, t);
 
 				return Activator.CreateInstance(type, new[] { node.Children });
@@ -205,7 +205,7 @@ namespace WarriorsSnuggery.Loader
 			{
 				var type = Type.GetType($"WarriorsSnuggery.Objects.Weapons.Projectiles.{value}Projectile", false, true);
 
-				if (type == null || type.IsInterface)
+				if (type == null || type.IsInterface || type.IsAbstract)
 					throw new InvalidConversionException(node, t);
 
 				return Activator.CreateInstance(type, new[] { node.Children });
@@ -218,7 +218,7 @@ namespace WarriorsSnuggery.Loader
 				{
 					var type = Type.GetType($"WarriorsSnuggery.Objects.Weapons.Warheads.{child.Key}Warhead", false, true);
 
-					if (type == null || type.IsInterface)
+					if (type == null || type.IsInterface || type.IsAbstract)
 						throw new InvalidConversionException(child, t);
 
 					array[i++] = (IWarhead)Activator.CreateInstance(type, new[] { child.Children });
@@ -233,7 +233,7 @@ namespace WarriorsSnuggery.Loader
 				{
 					var type = Type.GetType($"WarriorsSnuggery.Maps.Generators.{child.Key}Info", true, true);
 
-					if (type == null || type.IsInterface)
+					if (type == null || type.IsInterface || type.IsAbstract)
 						throw new InvalidConversionException(child, t);
 
 					array[i++] = (IMapGeneratorInfo)Activator.CreateInstance(type, new object[] { child.Convert<int>(), child.Children });

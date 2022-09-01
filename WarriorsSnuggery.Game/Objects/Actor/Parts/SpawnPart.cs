@@ -1,5 +1,4 @@
 ﻿using WarriorsSnuggery.Objects.Conditions;
-using WarriorsSnuggery.Objects.Particles;
 using WarriorsSnuggery.Objects.Weapons;
 
 namespace WarriorsSnuggery.Objects.Actors.Parts
@@ -14,7 +13,6 @@ namespace WarriorsSnuggery.Objects.Actors.Parts
 	public enum SpawnPartTypes
 	{
 		ACTOR,
-		PARTICLE,
 		WEAPON,
 		NONE
 	}
@@ -52,8 +50,6 @@ namespace WarriorsSnuggery.Objects.Actors.Parts
 
 		[Desc("Sound to play when spawning.")]
 		public readonly SoundType Sound;
-		[Desc("Particles to emit when spawning.")]
-		public readonly ParticleSpawner Particles;
 
 		[Desc("Spawn object at center of actor, not random.")]
 		public readonly bool AtCenter;
@@ -122,10 +118,7 @@ namespace WarriorsSnuggery.Objects.Actors.Parts
 					var sound = new Sound(info.Sound);
 					sound.Play(self.Position, false);
 				}
-				if (info.Particles != null)
-				{
-					self.World.Add(info.Particles.Create(self.World, self.Position));
-				}
+
 				for (int i = 0; i < info.Count; i++)
 					createObject();
 
@@ -149,11 +142,6 @@ namespace WarriorsSnuggery.Objects.Actors.Parts
 						actor.Bot.Target = self.Bot.Target;
 
 					self.World.Add(actor);
-					break;
-				case SpawnPartTypes.PARTICLE:
-					var particle = ParticleCache.Create(self.World, info.Name, randomPosition());
-
-					self.World.Add(particle);
 					break;
 				case SpawnPartTypes.WEAPON:
 					var weapon = WeaponCache.Create(self.World, info.Name, new Target(randomPosition()), self);

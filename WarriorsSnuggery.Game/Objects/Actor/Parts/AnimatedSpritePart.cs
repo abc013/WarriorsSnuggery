@@ -26,7 +26,7 @@ namespace WarriorsSnuggery.Objects.Actors.Parts
 		public readonly bool StartRandom = false;
 
 		[Desc("Activate only by the following Condition.")]
-		public readonly Condition Condition = new Condition("True");
+		public readonly Condition Condition;
 
 		[Desc("Offset of the sprite.")]
 		public readonly CPos Offset;
