@@ -257,6 +257,7 @@ namespace WarriorsSnuggery
 
 		public void Add(Actor actor)
 		{
+			EnsureInBounds(actor);
 			ActorLayer.Add(actor);
 			PhysicsLayer.UpdateSectors(actor.Physics, true);
 		}
@@ -316,6 +317,21 @@ namespace WarriorsSnuggery
 			var Y = actor.Physics.Boundaries.Y;
 
 			return pos.X >= -512 + X && pos.X < bounds.X - 512 - X && pos.Y >= -512 + Y && pos.Y < bounds.Y - 512 - Y;
+		}
+
+		public void EnsureInBounds(Actor actor)
+		{
+			var pos = actor.Position;
+			var empty = actor.Physics.IsEmpty;
+
+			var bounds = Map.Bounds.ToCPos();
+			var offset = Map.Offset;
+			var X = empty ? 0 : actor.Physics.Boundaries.X;
+			var Y = empty ? 0 : actor.Physics.Boundaries.Y;
+
+			var x = Math.Clamp(pos.X, offset.X + X, bounds.X + offset.X - X);
+			var y = Math.Clamp(pos.Y, offset.Y + Y, bounds.Y + offset.Y - Y);
+			actor.Position = new CPos(x, y, pos.Z);
 		}
 
 		public bool IsVisibleTo(Actor eye, Actor target)
