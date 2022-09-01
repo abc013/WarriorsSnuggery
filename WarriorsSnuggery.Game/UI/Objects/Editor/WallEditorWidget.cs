@@ -46,7 +46,7 @@ namespace WarriorsSnuggery.UI.Objects.Editor
 
 			placementCheck = new CheckBox("wooden");
 			placementText = new UIText(FontManager.Default);
-			placementText.SetText("vertical");
+			placementText.SetText("horizontal");
 
 			healthText = new UIText(FontManager.Default, TextOffset.MIDDLE);
 			healthText.SetText("health");
