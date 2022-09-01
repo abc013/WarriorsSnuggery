@@ -86,7 +86,7 @@ namespace WarriorsSnuggery.Objects.Actors.Parts
 				saver.Add("BeamWeapon", beam.ID, -1);
 
 			saver.Add("StateTick", stateTick, 0);
-			saver.Add("State", state, 0);
+			saver.Add("State", state, WeaponState.READY);
 
 			if (Target != null)
 			{
