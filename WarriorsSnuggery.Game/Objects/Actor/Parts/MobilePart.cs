@@ -185,6 +185,7 @@ namespace WarriorsSnuggery.Objects.Actors.Parts
 		{
 			var old = self.Position;
 			self.Position = position;
+			self.World.EnsureInBounds(self);
 			self.CurrentTerrain = terrain;
 
 			if (!evading)
