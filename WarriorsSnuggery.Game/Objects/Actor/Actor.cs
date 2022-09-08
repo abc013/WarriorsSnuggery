@@ -341,12 +341,12 @@ namespace WarriorsSnuggery.Objects.Actors
 
 		public override void Tick()
 		{
+			processActions();
+
 			if (!IsAlive)
 			{
 				if (!spawning && !despawning)
 					return;
-
-				processActions();
 
 				if (spawning && !DoesAction(ActionType.SPAWN))
 				{
@@ -382,7 +382,6 @@ namespace WarriorsSnuggery.Objects.Actors
 			}
 
 			processEffects();
-			processActions();
 		}
 
 		void processEffects()
