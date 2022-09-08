@@ -123,16 +123,16 @@ namespace WarriorsSnuggery.Maps.Layers
 			return false;
 		}
 
-		public IEnumerable<SimplePhysics> GetObjects(SimplePhysics[] ignore)
+		public IEnumerable<SimplePhysics> GetObjects(SimplePhysics ignore)
 		{
-			return physicsList.Where((o) => ignore == null || !ignore.Contains(o));
+			return physicsList.Where((o) => o != ignore);
 		}
 
 		public void RenderDebug()
 		{
-			var pos = (Position * PhysicsLayer.SectorSize).ToCPos() - new CPos(512, 512, 0);
-			ColorManager.DrawLine(pos, pos + new CPos(0, 512, 0), Color.White.WithAlpha(0.3f));
-			ColorManager.DrawLine(pos, pos + new CPos(512, 0, 0), Color.White.WithAlpha(0.3f));
+			var pos = (Position * PhysicsLayer.SectorSize).ToCPos() + Map.Offset;
+			ColorManager.DrawLine(pos, pos - new CPos(0, Map.Offset.Y, 0), Color.White.WithAlpha(0.3f));
+			ColorManager.DrawLine(pos, pos - new CPos(Map.Offset.X, 0, 0), Color.White.WithAlpha(0.3f));
 		}
 	}
 }

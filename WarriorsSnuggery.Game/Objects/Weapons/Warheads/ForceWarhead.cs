@@ -40,7 +40,7 @@ namespace WarriorsSnuggery.Objects.Weapons.Warheads
 				var sectors = world.ActorLayer.GetSectors(target.Position, (int)maxDist);
 				foreach (var sector in sectors)
 				{
-					foreach (var actor in world.ActorLayer.Actors)
+					foreach (var actor in sector.Actors)
 					{
 						if (!actor.IsAlive || actor.Health == null || actor == weapon.Origin)
 							continue;

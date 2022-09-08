@@ -151,7 +151,7 @@ namespace WarriorsSnuggery.Objects.Weapons
 			var diffAngle = (TargetPosition - originPos).FlatAngle;
 			var diff = CPos.FromFlatAngle(diffAngle, Type.MaxRange * RangeModifier);
 			var stepLimit = (int)Math.Ceiling((Math.Abs(diff.X) + Math.Abs(diff.Y)) / 1024f) + 2; // MaxSteps are calculated with the Manhattan distance and a margin of 2
-			ray.CalculateEnd(new[] { Origin.Physics }, maxSteps: stepLimit);
+			ray.CalculateEnd(Origin.Physics, maxSteps: stepLimit);
 			Position = ray.End;
 
 			var dist = (originPos - Position).SquaredFlatDist;

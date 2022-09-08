@@ -8,6 +8,7 @@ namespace WarriorsSnuggery.Maps.Layers
 	public sealed class ActorLayer
 	{
 		public const int SectorSize = 4;
+
 		public readonly List<Actor> Actors = new List<Actor>();
 		public readonly List<Actor> TaggedActors = new List<Actor>();
 		public readonly List<Actor> NonNeutralActors = new List<Actor>();
@@ -55,8 +56,8 @@ namespace WarriorsSnuggery.Maps.Layers
 		ActorSector getSector(Actor actor)
 		{
 			var position = actor.Position - Map.Offset;
-			var x = (int)Math.Floor(position.X / 4096f);
-			var y = (int)Math.Floor(position.Y / 4096f);
+			var x = (int)Math.Floor(position.X / (float)(Constants.TileSize * SectorSize));
+			var y = (int)Math.Floor(position.Y / (float)(Constants.TileSize * SectorSize));
 			x = Math.Clamp(x, 0, bounds.X - 1);
 			y = Math.Clamp(y, 0, bounds.Y - 1);
 
@@ -73,8 +74,8 @@ namespace WarriorsSnuggery.Maps.Layers
 
 		ActorSector[] getSectors(CPos topleft, CPos botright)
 		{
-			var pos1 = new MPos((int)Math.Clamp(Math.Floor(topleft.X / 4096f), 0, bounds.X - 1), (int)Math.Clamp(Math.Floor(topleft.Y / 4096f), 0, bounds.Y - 1));
-			var pos2 = new MPos((int)Math.Clamp(Math.Ceiling(botright.X / 4096f), 0, bounds.X - 1), (int)Math.Clamp(Math.Ceiling(botright.Y / 4096f), 0, bounds.Y - 1));
+			var pos1 = new MPos((int)Math.Clamp(Math.Floor(topleft.X / (float)(Constants.TileSize * SectorSize)), 0, bounds.X - 1), (int)Math.Clamp(Math.Floor(topleft.Y / (float)(Constants.TileSize * SectorSize)), 0, bounds.Y - 1));
+			var pos2 = new MPos((int)Math.Clamp(Math.Ceiling(botright.X / (float)(Constants.TileSize * SectorSize)), 0, bounds.X - 1), (int)Math.Clamp(Math.Ceiling(botright.Y / (float)(Constants.TileSize * SectorSize)), 0, bounds.Y - 1));
 
 			var sectors = new ActorSector[(pos2.X - pos1.X + 1) * (pos2.Y - pos1.Y + 1)];
 			var i = 0;
@@ -164,12 +165,15 @@ namespace WarriorsSnuggery.Maps.Layers
 		}
 	}
 
-	public class ActorSector
+	public sealed class ActorSector
 	{
-		public IEnumerable<Actor> Actors => actors.AsReadOnly();
 		readonly List<Actor> actors = new List<Actor>();
+		public readonly IEnumerable<Actor> Actors;
 
-		internal ActorSector() { }
+		internal ActorSector()
+		{
+			Actors = actors.AsReadOnly();
+		}
 
 		internal void Enter(Actor actor)
 		{

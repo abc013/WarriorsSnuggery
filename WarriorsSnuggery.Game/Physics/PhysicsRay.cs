@@ -32,7 +32,7 @@ namespace WarriorsSnuggery.Physics
 			};
 		}
 
-		public void CalculateEnd(SimplePhysics[] ignore = null, bool ignoreActors = false, int maxSteps = int.MaxValue, bool onlyToTarget = false)
+		public void CalculateEnd(SimplePhysics ignore = null, bool ignoreActors = false, int maxSteps = int.MaxValue, bool onlyToTarget = false)
 		{
 			CPos noIntersect = new CPos(0, 0, int.MaxValue);
 

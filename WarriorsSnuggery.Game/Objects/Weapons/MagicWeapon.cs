@@ -116,7 +116,7 @@ namespace WarriorsSnuggery.Objects.Weapons
 
 			ray.Start = beforePos;
 			ray.Target = Position;
-			ray.CalculateEnd(new[] { Origin.Physics }, onlyToTarget: true);
+			ray.CalculateEnd(Origin.Physics, onlyToTarget: true);
 
 			if ((beforePos - ray.End).SquaredFlatDist < (beforePos - Position).SquaredFlatDist)
 				Detonate(new Target(ray.End));

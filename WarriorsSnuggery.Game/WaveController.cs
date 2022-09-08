@@ -50,8 +50,7 @@ namespace WarriorsSnuggery
 			if (!awaitingNextWave)
 			{
 				// In case of a savegame
-				if (waveActors == null)
-					waveActors = game.World.ActorLayer.Actors.Where(a => a.Team != Actor.PlayerTeam && a.IsBot && a.WorldPart != null && a.WorldPart.KillForVictory).ToList();
+				waveActors ??= game.World.ActorLayer.NonNeutralActors.Where(a => a.Team != Actor.PlayerTeam && a.IsBot && a.WorldPart != null && a.WorldPart.KillForVictory).ToList();
 
 				if (waveActors.Any(a => a.IsAlive))
 					return;
