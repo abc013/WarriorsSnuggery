@@ -26,7 +26,7 @@ namespace WarriorsSnuggery.Maps.Layers
 			sectors = new ActorSector[this.bounds.X, this.bounds.Y];
 			for (var x = 0; x < this.bounds.X; x++)
 				for (var y = 0; y < this.bounds.Y; y++)
-					sectors[x, y] = new ActorSector(new MPos(x, y));
+					sectors[x, y] = new ActorSector();
 		}
 
 		public void Add(Actor actor)
@@ -166,23 +166,19 @@ namespace WarriorsSnuggery.Maps.Layers
 
 	public class ActorSector
 	{
-		public readonly MPos Position;
+		public IEnumerable<Actor> Actors => actors.AsReadOnly();
+		readonly List<Actor> actors = new List<Actor>();
 
-		public readonly List<Actor> Actors = new List<Actor>();
+		internal ActorSector() { }
 
-		public ActorSector(MPos position)
+		internal void Enter(Actor actor)
 		{
-			Position = position;
+			actors.Add(actor);
 		}
 
-		public void Enter(Actor actor)
+		internal void Leave(Actor actor)
 		{
-			Actors.Add(actor);
-		}
-
-		public void Leave(Actor actor)
-		{
-			Actors.Remove(actor);
+			actors.Remove(actor);
 		}
 	}
 }

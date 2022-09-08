@@ -1,5 +1,6 @@
 using OpenTK.Windowing.GraphicsLibraryFramework;
 using System;
+using System.Linq;
 using WarriorsSnuggery.Graphics;
 using WarriorsSnuggery.Maps.Pieces;
 using WarriorsSnuggery.Objects;
@@ -213,7 +214,7 @@ namespace WarriorsSnuggery.UI.Screens
 					var removeSectors = game.World.ActorLayer.GetSectors(MouseInput.GamePosition, 512);
 					foreach (var sector in removeSectors)
 					{
-						var remove = sector.Actors.Find(a => !a.IsPlayer && (a.Position - MouseInput.GamePosition).SquaredFlatDist < 512 * 512);
+						var remove = sector.Actors.First(a => !a.IsPlayer && (a.Position - MouseInput.GamePosition).SquaredFlatDist < 512 * 512);
 						if (remove != null)
 						{
 							remove.Dispose();
