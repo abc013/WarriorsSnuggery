@@ -13,12 +13,14 @@ namespace WarriorsSnuggery.Maps
 		public readonly MapType Type;
 		public readonly int Seed;
 
-		public static readonly CPos Offset = new CPos(-512, -512, 0);
+		public static readonly CPos Offset = new CPos(-Constants.TileSize / 2, -Constants.TileSize / 2, 0);
+		public readonly MPos PlayableOffset;
 
 		public CPos PlayerSpawn;
 		public CPos Exit;
 
 		public readonly MPos Bounds;
+		public readonly MPos PlayableBounds;
 		public readonly MPos Center;
 		public readonly MPos DefaultEdgeDistance;
 
@@ -39,16 +41,18 @@ namespace WarriorsSnuggery.Maps
 			Seed = seed;
 			random = new Random(seed);
 
-			Bounds = determineBounds(difficulty, level);
+			PlayableBounds = determineBounds(difficulty, level);
+			PlayableOffset = new MPos(type.WorldBorder, type.WorldBorder);
+			Bounds = PlayableBounds + PlayableOffset * 2;
 
 			// Cache positions
 			Center = Bounds / 2;
 			DefaultEdgeDistance = Bounds / 8;
 
 			TopLeftCorner = Offset;
-			TopRightCorner = new CPos(Offset.X + (Bounds.X * 1024), Offset.Y, 0);
-			BottomLeftCorner = new CPos(Offset.X, Offset.Y + (Bounds.Y * 1024), 0);
-			BottomRightCorner = new CPos(Offset.X + (Bounds.X * 1024), Offset.Y + (Bounds.Y * 1024), 0);
+			TopRightCorner = Offset + new CPos(Bounds.X * Constants.TileSize, 0, 0);
+			BottomLeftCorner = Offset + new CPos(0, Bounds.Y * Constants.TileSize, 0);
+			BottomRightCorner = Offset + new CPos(Bounds.X * Constants.TileSize, Bounds.Y * Constants.TileSize, 0);
 
 			PlayerSpawn = type.SpawnPoint;
 			if (PlayerSpawn == CPos.Zero)

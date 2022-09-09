@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using WarriorsSnuggery.Graphics;
+using WarriorsSnuggery.Maps;
 using WarriorsSnuggery.Maps.Layers;
 using WarriorsSnuggery.Objects;
 using WarriorsSnuggery.Objects.Actors;
@@ -105,18 +106,47 @@ namespace WarriorsSnuggery
 			MasterRenderer.RenderBatch();
 			MasterRenderer.SetRenderer(Renderer.DEFAULT);
 
+			bool anotherBatch = false;
 			if (Settings.EnableWeatherEffects)
 			{
 				world.WeatherManager.Render();
-				MasterRenderer.RenderBatch();
+				anotherBatch = true;
 			}
 
-			if (afterRender.Count != 0)
+			var map = world.Map;
+			if (map.Type.WorldBorder > 0)
 			{
-				foreach (var o in afterRender)
-					o.Render();
+				CameraVisibility.GetClampedBounds(out var position, out var bounds);
+				var bottom = (position.Y + bounds.Y) * Constants.TileSize + Map.Offset.Y;
+				var top = position.Y * Constants.TileSize + Map.Offset.Y;
+				var left = position.X * Constants.TileSize + Map.Offset.X;
+				var right = (position.X + bounds.X) * Constants.TileSize + Map.Offset.X;
 
-				MasterRenderer.RenderBatch();
+				var offset = Constants.TileSize * (map.Type.WorldBorder + 2);
+				var color = world.Game.Editor ? Color.Black.WithAlpha(0.5f) : Color.Black;
+				// Cut the rects to fit to screen to save GPU from some useless work
+				if (top < offset)
+				{
+					ColorManager.DrawRect(new CPos(left, map.TopLeftCorner.Y, 0), new CPos(right, map.TopRightCorner.Y, 0) - new CPos(-offset, offset, 0), Color.Black);
+					ColorManager.DrawGradientRect(new CPos(left, map.TopLeftCorner.Y, 0), new CPos(right, map.TopRightCorner.Y, 0) + new CPos(0, offset, 0), color, 2);
+				}
+				if (right >= map.TopRightCorner.X - offset)
+				{
+					ColorManager.DrawRect(new CPos(map.TopRightCorner.X, top, 0), new CPos(map.BottomRightCorner.X, bottom, 0) + new CPos(offset, offset, 0), Color.Black);
+					ColorManager.DrawGradientRect(new CPos(map.TopRightCorner.X, top, 0), new CPos(map.BottomRightCorner.X, bottom, 0) - new CPos(offset, 0, 0), color, 3);
+				}
+				if (bottom >= map.BottomRightCorner.Y - offset)
+				{
+					ColorManager.DrawRect(new CPos(right, map.BottomRightCorner.Y, 0), new CPos(left, map.BottomLeftCorner.Y, 0) + new CPos(-offset, offset, 0), Color.Black);
+					ColorManager.DrawGradientRect(new CPos(right, map.BottomRightCorner.Y, 0), new CPos(left, map.BottomLeftCorner.Y, 0) - new CPos(0, offset, 0), color, 0);
+				}
+				if (left < offset)
+				{
+					ColorManager.DrawRect(new CPos(map.BottomLeftCorner.X, bottom, 0), new CPos(map.TopLeftCorner.X, top, 0) - new CPos(offset, offset, 0), Color.Black);
+					ColorManager.DrawGradientRect(new CPos(map.BottomLeftCorner.X, bottom, 0), new CPos(map.TopLeftCorner.X, top, 0) + new CPos(offset, 0, 0), color, 1);
+				}
+
+				anotherBatch = true;
 			}
 
 			if (!world.ShroudLayer.RevealAll)
@@ -129,8 +159,19 @@ namespace WarriorsSnuggery
 						world.ShroudLayer.Shroud[x, y].Render();
 				}
 
-				MasterRenderer.RenderBatch();
+				anotherBatch = true;
 			}
+
+			if (afterRender.Count != 0)
+			{
+				foreach (var o in afterRender)
+					o.Render();
+
+				anotherBatch = true;
+			}
+
+			if (anotherBatch)
+				MasterRenderer.RenderBatch();
 
 			if (Settings.DeveloperMode)
 			{

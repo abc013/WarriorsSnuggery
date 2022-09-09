@@ -148,7 +148,7 @@ namespace WarriorsSnuggery.Objects.Actors.Parts
 
 		bool checkMove(CPos pos, CPos velocity, bool evading = false)
 		{
-			if (!self.World.IsInWorld(pos))
+			if (!self.World.IsInPlayableWorld(pos))
 				return false;
 
 			var oldPos = self.Position;

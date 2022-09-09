@@ -68,7 +68,7 @@ namespace WarriorsSnuggery.Maps
 		{
 			this.random = random;
 			this.world = world;
-			bounds = world.Map.Bounds;
+			bounds = world.Map.PlayableBounds;
 			this.info = info;
 		}
 
@@ -82,13 +82,16 @@ namespace WarriorsSnuggery.Maps
 			var actors = new List<Actor>();
 
 			// TODO: rework in spawnbound areas
-			positions.AddRange(world.Map.PatrolSpawnLocations);
+			var map = world.Map;
+			positions.AddRange(map.PatrolSpawnLocations);
+			// Clean up the available positions
+			positions.RemoveAll(p => p.InRange(map.PlayableOffset, map.PlayableBounds + map.PlayableOffset));
 
-			for (int a = 0; a < Math.Floor(bounds.X / (float)info.SpawnBounds); a++)
+			for (int a = (int)Math.Ceiling(map.PlayableOffset.X / (float)info.SpawnBounds); a < (map.PlayableOffset.X + bounds.X) / info.SpawnBounds; a++)
 			{
-				for (int b = 0; b < Math.Floor(bounds.X / (float)info.SpawnBounds); b++)
+				for (int b = (int)Math.Ceiling(map.PlayableOffset.Y / (float)info.SpawnBounds); b < (map.PlayableOffset.Y + bounds.Y) / info.SpawnBounds; b++)
 				{
-					var pos = new MPos(a * info.SpawnBounds, b * info.SpawnBounds);
+					var pos = new MPos(a, b) * info.SpawnBounds;
 					if (!areaBlocked(a, b) && !positions.Contains(pos))
 						positions.Add(pos);
 				}
@@ -111,7 +114,6 @@ namespace WarriorsSnuggery.Maps
 				positions.RemoveAt(posIndex);
 			}
 
-			var map = world.Map;
 			foreach (var spawn in spawns)
 			{
 				var mid = spawn.ToCPos();

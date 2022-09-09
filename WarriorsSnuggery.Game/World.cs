@@ -298,25 +298,34 @@ namespace WarriorsSnuggery
 			return TerrainLayer.Terrain[pos.X, pos.Y];
 		}
 
-		public bool IsInWorld(CPos pos)
+		public bool IsInPlayableWorld(CPos pos)
 		{
-			var bounds = Map.Bounds.ToCPos();
+			var offset = Map.PlayableOffset.ToCPos() + Map.Offset;
+			var bounds = Map.PlayableBounds.ToCPos() + offset;
 
-			return pos.X >= -512 && pos.X < bounds.X - 512 && pos.Y >= -512 && pos.Y < bounds.Y - 512;
+			return pos.X >= offset.X && pos.X < bounds.X && pos.Y >= offset.Y && pos.Y < bounds.Y;
 		}
 
-		public bool IsInWorld(Actor actor)
+		public bool IsInWorld(CPos pos)
+		{
+			var bounds = Map.Bounds.ToCPos() + Map.Offset;
+
+			return pos.X >= Map.Offset.X && pos.X < bounds.X && pos.Y >= Map.Offset.Y && pos.Y < bounds.Y;
+		}
+
+		public bool IsInPlayableWorld(Actor actor)
 		{
 			var pos = actor.Position;
 
 			if (actor.Physics.IsEmpty)
-				return IsInWorld(pos);
+				return IsInPlayableWorld(pos);
 
-			var bounds = Map.Bounds.ToCPos();
+			var offset = Map.PlayableOffset.ToCPos() + Map.Offset;
+			var bounds = Map.PlayableBounds.ToCPos() + offset;
 			var X = actor.Physics.Boundaries.X;
 			var Y = actor.Physics.Boundaries.Y;
 
-			return pos.X >= -512 + X && pos.X < bounds.X - 512 - X && pos.Y >= -512 + Y && pos.Y < bounds.Y - 512 - Y;
+			return pos.X >= offset.X + X && pos.X < bounds.X - X && pos.Y >= offset.Y + Y && pos.Y < bounds.Y - Y;
 		}
 
 		public void EnsureInBounds(Actor actor)

@@ -16,6 +16,8 @@ namespace WarriorsSnuggery.Maps
 		readonly World world;
 		readonly Map map;
 
+		public MPos PlayableOffset => map.PlayableOffset;
+		public MPos PlayableBounds => map.PlayableBounds;
 		public MPos Bounds => map.Bounds;
 		public MPos Center => map.Center;
 		public CPos TopLeftCorner => map.TopLeftCorner;

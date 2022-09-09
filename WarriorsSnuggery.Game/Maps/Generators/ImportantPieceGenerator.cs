@@ -91,13 +91,12 @@ namespace WarriorsSnuggery.Maps.Generators
 
 		void generateSpawn(Piece piece)
 		{
-			var spawnArea = Bounds - piece.Size;
-			var half = spawnArea / 2;
+			var spawnArea = PlayableBounds - piece.Size;
 			var eigth = spawnArea / 8;
-			var pos = half + new MPos(Random.Next(eigth.X) - eigth.X / 2, Random.Next(eigth.Y) - eigth.Y / 2);
+			var pos = Center + new MPos(Random.Next(-eigth.X, eigth.X), Random.Next(-eigth.Y, eigth.Y));
 
 			Loader.GenerateCrucialPiece(piece, pos);
-			Loader.PlayerSpawn = new CPos(pos.X * 1024 + piece.Size.X * 512, pos.Y * 1024 + piece.Size.Y * 512, 0);
+			Loader.PlayerSpawn = pos.ToCPos() + piece.Size.ToCPos() / 2;
 			markDirty(pos, piece);
 
 			if (info.IsWaypoint)
@@ -107,10 +106,10 @@ namespace WarriorsSnuggery.Maps.Generators
 		void generateKey(Piece piece, NoiseMap noise)
 		{
 			var exitExists = Loader.Exit != CPos.Zero;
-			var mapLength = Bounds.Dist * 256;
+			var mapLength = PlayableBounds.Dist * 256;
 
 			var dist = Random.Next(8);
-			var spawnArea = Bounds - (piece.Size + new MPos(dist, dist));
+			var spawnArea = PlayableBounds - (piece.Size + new MPos(dist, dist));
 
 			MPos pos;
 			WaypointLocation location;
@@ -140,7 +139,7 @@ namespace WarriorsSnuggery.Maps.Generators
 
 		void generateExit(Piece piece, NoiseMap noise)
 		{
-			var spawnArea = Bounds - piece.Size;
+			var spawnArea = PlayableBounds - piece.Size;
 
 			MPos pos;
 			WaypointLocation location;
@@ -160,7 +159,7 @@ namespace WarriorsSnuggery.Maps.Generators
 
 			Log.Debug($"(Maps) Generated exit at {pos}");
 
-			Loader.Exit = pos.ToCPos() + new CPos(piece.Size.X * 512, piece.Size.Y * 512, 0);
+			Loader.Exit = pos.ToCPos() + piece.Size.ToCPos() / 2;
 
 			if (info.IsWaypoint)
 				addWaypoint(piece, pos, location);
@@ -181,19 +180,19 @@ namespace WarriorsSnuggery.Maps.Generators
 			switch (side)
 			{
 				case 0:
-					pos = new MPos(Random.Next(2), Random.Next(spawnArea.X));
+					pos = PlayableOffset + new MPos(Random.Next(2), Random.Next(spawnArea.X));
 					location = WaypointLocation.TOP;
 					break;
 				case 1:
-					pos = new MPos(Random.Next(spawnArea.Y), Random.Next(2));
+					pos = PlayableOffset + new MPos(Random.Next(spawnArea.Y), Random.Next(2));
 					location = WaypointLocation.LEFT;
 					break;
 				case 2:
-					pos = new MPos(spawnArea.X - Random.Next(2), Random.Next(spawnArea.X));
+					pos = PlayableOffset + new MPos(spawnArea.X - Random.Next(2), Random.Next(spawnArea.X));
 					location = WaypointLocation.BOTTOM;
 					break;
 				case 3:
-					pos = new MPos(Random.Next(spawnArea.X), spawnArea.Y - Random.Next(2));
+					pos = PlayableOffset + new MPos(Random.Next(spawnArea.X), spawnArea.Y - Random.Next(2));
 					location = WaypointLocation.RIGHT;
 					break;
 			}

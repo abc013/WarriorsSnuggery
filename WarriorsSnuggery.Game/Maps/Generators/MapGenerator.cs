@@ -11,6 +11,8 @@ namespace WarriorsSnuggery.Maps.Generators
 
 	public abstract class MapGenerator
 	{
+		protected MPos PlayableOffset => Loader.PlayableOffset;
+		protected MPos PlayableBounds => Loader.PlayableBounds;
 		protected MPos Bounds => Loader.Bounds;
 		protected MPos Center => Loader.Center;
 		protected CPos TopLeftCorner => Loader.TopLeftCorner;

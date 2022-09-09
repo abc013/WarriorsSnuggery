@@ -226,7 +226,9 @@ namespace WarriorsSnuggery.Maps.Generators
 						var ran = Random.Next(info.Types.Length);
 						Loader.SetTerrain(x, y, info.Types[ran]);
 
-						Loader.PatrolSpawnLocations.Add(new MPos(x, y));
+						var pos = new MPos(x, y);
+
+						Loader.PatrolSpawnLocations.Add(pos);
 					}
 				}
 			}

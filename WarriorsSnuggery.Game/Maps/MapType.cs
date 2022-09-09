@@ -41,6 +41,8 @@ namespace WarriorsSnuggery.Maps
 		public readonly Color Ambient = Color.White;
 		[Desc("Wall type to use when surrounding the map with walls.")]
 		public readonly int Wall = 0;
+		[Desc("Amount of terrain cells to use for a world border.", "This border can't be accessed and fades out into black visually.")]
+		public readonly int WorldBorder = 0;
 
 		[Desc("Generators that determine how the map should look like", "The generators are used in the order in which they are written, which means from top to bottom.")]
 		public readonly IMapGeneratorInfo[] Generators = new IMapGeneratorInfo[0];

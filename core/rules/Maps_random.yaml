@@ -2,6 +2,7 @@ stones=
 	MissionTypes=STORY, NORMAL
 	AvailableObjectives=FIND_EXIT, KILL_ENEMIES, SURVIVE_WAVES
 	FromLevel=7
+	WorldBorder=4
 	NoiseMaps=
 		NoiseMap@1=1
 			NoiseType=CLOUDS
