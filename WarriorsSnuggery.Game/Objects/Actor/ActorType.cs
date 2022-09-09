@@ -38,7 +38,7 @@ namespace WarriorsSnuggery.Objects.Actors
 			}
 
 			customColor = Color.White;
-			return RuleLoader.Questionmark[0];
+			return RuleLoader.Questionmark;
 		}
 
 		public override string ToString()

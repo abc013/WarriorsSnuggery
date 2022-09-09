@@ -5,11 +5,13 @@ namespace WarriorsSnuggery.Objects
 {
 	public class Shroud : ITickRenderable
 	{
+		public static BatchObject BigShroudRenderable;
 		static BatchObject shroudRenderable;
 
 		public static void Load()
 		{
-			shroudRenderable = new BatchObject(RuleLoader.ShroudTexture[0]);
+			BigShroudRenderable = new BatchObject(RuleLoader.BigShroudTexture);
+			shroudRenderable = new BatchObject(RuleLoader.ShroudTexture);
 		}
 
 		public MPos Listener;

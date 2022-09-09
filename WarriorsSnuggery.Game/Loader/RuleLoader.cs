@@ -15,8 +15,9 @@ namespace WarriorsSnuggery.Loader
 {
 	public static class RuleLoader
 	{
-		public static Texture[] ShroudTexture;
-		public static Texture[] Questionmark;
+		public static Texture ShroudTexture;
+		public static Texture BigShroudTexture;
+		public static Texture Questionmark;
 
 		public static void Load()
 		{
@@ -35,8 +36,9 @@ namespace WarriorsSnuggery.Loader
 			timer.StopAndWrite($"Loading Game Rules");
 			timer.Restart();
 
-			ShroudTexture = new TextureInfo(new PackageFile("shroud")).GetTextures();
-			Questionmark = new TextureInfo(new PackageFile("questionmark")).GetTextures();
+			ShroudTexture = new TextureInfo(new PackageFile("shroud")).GetTextures()[0];
+			BigShroudTexture = new TextureInfo(new PackageFile("bigshroud")).GetTextures()[0];
+			Questionmark = new TextureInfo(new PackageFile("questionmark")).GetTextures()[0];
 
 			loadUIRules();
 

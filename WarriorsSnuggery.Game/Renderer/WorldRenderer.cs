@@ -18,7 +18,6 @@ namespace WarriorsSnuggery
 
 		static readonly List<IRenderable> beforeRender = new List<IRenderable>();
 		static readonly List<IRenderable> afterRender = new List<IRenderable>();
-		readonly static List<PositionableObject> renderables = new List<PositionableObject>();
 
 		public static void Initialize()
 		{
@@ -153,10 +152,25 @@ namespace WarriorsSnuggery
 			{
 				CameraVisibility.GetClampedBounds(out var position, out var bounds);
 
-				for (int x = position.X * 2; x < (position.X + bounds.X) * 2; x++)
+
+				for (int x = position.X; x < position.X + bounds.X; x++)
 				{
-					for (int y = position.Y * 2; y < (position.Y + bounds.Y) * 2; y++)
-						world.ShroudLayer.Shroud[x, y].Render();
+					for (int y = position.Y; y < position.Y + bounds.Y; y++)
+					{
+						if (!CameraVisibility.IsVisible(new MPos(x, y)))
+						{
+							// Save 4 calls to shroud and render a big piece instead
+							Shroud.BigShroudRenderable.SetPosition(new MPos(x, y).ToCPos());
+							Shroud.BigShroudRenderable.Render();
+
+							continue;
+						}
+
+						world.ShroudLayer.Shroud[x * 2, y * 2].Render();
+						world.ShroudLayer.Shroud[x * 2 + 1, y * 2].Render();
+						world.ShroudLayer.Shroud[x * 2, y * 2 + 1].Render();
+						world.ShroudLayer.Shroud[x * 2 + 1, y * 2 + 1].Render();
+					}
 				}
 
 				anotherBatch = true;
@@ -207,9 +221,10 @@ namespace WarriorsSnuggery
 			}
 		}
 
-		static IOrderedEnumerable<PositionableObject> prepareRenderList()
+		static IEnumerable<PositionableObject> prepareRenderList()
 		{
-			renderables.Clear();
+			var count = world.Objects.Count + world.ActorLayer.VisibleActors.Count + world.WeaponLayer.VisibleWeapons.Count + world.ParticleLayer.VisibleParticles.Count + world.WallLayer.VisibleWalls.Count;
+			var renderables = new List<PositionableObject>(count);
 			renderables.AddRange(world.Objects);
 			renderables.AddRange(world.ActorLayer.VisibleActors);
 			renderables.AddRange(world.WeaponLayer.VisibleWeapons);
