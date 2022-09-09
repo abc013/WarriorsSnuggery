@@ -22,6 +22,7 @@ namespace WarriorsSnuggery.Graphics
 
 		static BatchObject fullscreen_rect;
 		static BatchObject filled_rect;
+		static BatchObject gradient_rect;
 
 		public static void ResetLineWidth()
 		{
@@ -35,6 +36,7 @@ namespace WarriorsSnuggery.Graphics
 			fullscreen_rect = new BatchObject(WindowInfo.UnitHeight);
 
 			filled_rect = new BatchObject(1f);
+			gradient_rect = new BatchObject(Mesh.GradientPlane(1f, Color.White, Color.White.WithAlpha(0f)));
 		}
 
 		public static void DrawLineQuad(in CPos pos, in CPos radius, in Color color)
@@ -121,6 +123,15 @@ namespace WarriorsSnuggery.Graphics
 			filled_rect.SetRotation(VAngle.Zero);
 			filled_rect.SetColor(color);
 			filled_rect.Render();
+		}
+
+		public static void DrawGradientRect(in CPos pointA, in CPos pointB, in Color color, int gradientDirection = 0)
+		{
+			gradient_rect.SetScale(new CPos(Math.Abs(pointA.X - pointB.X), Math.Abs(pointA.Y - pointB.Y), 0).ToVector());
+			gradient_rect.SetPosition(new CPos((pointA.X + pointB.X) / 2, (pointA.Y + pointB.Y) / 2, 0));
+			gradient_rect.SetRotation(new VAngle(0, 0, gradientDirection * Angle.MaxRange / 4));
+			gradient_rect.SetColor(color);
+			gradient_rect.Render();
 		}
 
 		public static void DrawDot(in CPos position, in Color color)

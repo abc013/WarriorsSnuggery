@@ -132,17 +132,21 @@ namespace WarriorsSnuggery.Graphics
 
 		public static Vertex[] Plane(float scale)
 		{
-			var color = Color.White;
+			return GradientPlane(scale, Color.White, Color.White);
+		}
+
+		public static Vertex[] GradientPlane(float scale, Color from, Color to)
+		{
 			scale /= 2;
 
 			Vertex[] vertices =
 			{
-				new Vertex(new Vector(scale,  scale,  0), Vector2.Zero, -1, color),
-				new Vertex(new Vector(-scale, -scale, 0), Vector2.Zero, -1, color),
-				new Vertex(new Vector(scale,  -scale, 0), Vector2.Zero, -1, color),
-				new Vertex(new Vector(-scale, scale,  0), Vector2.Zero, -1, color),
-				new Vertex(new Vector(-scale, -scale, 0), Vector2.Zero, -1, color),
-				new Vertex(new Vector(scale,  scale,  0), Vector2.Zero, -1, color),
+				new Vertex(new Vector(scale,  scale,  0), Vector2.Zero, -1, from),
+				new Vertex(new Vector(-scale, -scale, 0), Vector2.Zero, -1, to),
+				new Vertex(new Vector(scale,  -scale, 0), Vector2.Zero, -1, to),
+				new Vertex(new Vector(-scale, scale,  0), Vector2.Zero, -1, from),
+				new Vertex(new Vector(-scale, -scale, 0), Vector2.Zero, -1, to),
+				new Vertex(new Vector(scale,  scale,  0), Vector2.Zero, -1, from),
 			};
 
 			return vertices;
