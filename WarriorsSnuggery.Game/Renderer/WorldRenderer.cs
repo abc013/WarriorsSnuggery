@@ -206,9 +206,18 @@ namespace WarriorsSnuggery
 
 		public static void CheckVisibilityAll()
 		{
-			checkAllTerrain(true);
-			checkAll();
-			checkAllWalls();
+			foreach (Terrain t in world.TerrainLayer.Terrain)
+				t.CheckVisibility(true);
+
+			world.WallLayer.CheckVisibility();
+			world.ActorLayer.CheckVisibility();
+			world.ParticleLayer.CheckVisibility();
+			world.WeaponLayer.CheckVisibility();
+
+			world.SmudgeLayer.CheckVisibility();
+
+			foreach (var o in world.Objects)
+				o.CheckVisibility();
 		}
 
 		public static void CheckVisibility(CPos oldPos, CPos newPos, bool tinyMove = true)
@@ -239,48 +248,20 @@ namespace WarriorsSnuggery
 		{
 			var zoomPos = new CPos((int)(zoom * WindowInfo.Ratio * 512), (int)(zoom * 512), 0);
 
-			var margin = new CPos(Settings.VisbilityMargin, Settings.VisbilityMargin, 0);
+			var margin = new CPos(Settings.VisibilityMargin, Settings.VisibilityMargin, 0);
 			var topLeft = pos - zoomPos - margin;
 			var bottomRight = pos + zoomPos + margin;
 			check(topLeft, bottomRight);
 
-			var botLeft = CameraVisibility.LookAt(pos, zoom);
-			var topRight = botLeft + CameraVisibility.Zoom(zoom);
+			CameraVisibility.GetClampedBounds(out var position, out var bounds);
 
-			if (botLeft.X < 0) botLeft = new MPos(0, botLeft.Y);
-			if (botLeft.X > world.Map.Bounds.X) botLeft = new MPos(world.Map.Bounds.X, botLeft.Y);
-			if (botLeft.Y < 0) botLeft = new MPos(botLeft.X, 0);
-			if (botLeft.Y > world.Map.Bounds.Y) botLeft = new MPos(botLeft.X, world.Map.Bounds.Y);
+			for (int x = position.X; x < position.X + bounds.X; x++)
+			{
+				for (int y = position.Y; y < position.Y + bounds.Y; y++)
+					world.TerrainLayer.Terrain[x, y].CheckVisibility();
+			}
 
-			if (topRight.X < 0) topRight = new MPos(0, topRight.Y);
-			if (topRight.X > world.Map.Bounds.X) topRight = new MPos(world.Map.Bounds.X, topRight.Y);
-			if (topRight.Y < 0) topRight = new MPos(topRight.X, 0);
-			if (topRight.Y > world.Map.Bounds.Y) topRight = new MPos(topRight.X, world.Map.Bounds.Y);
-
-			checkTerrain(botLeft, topRight);
-			checkWalls(botLeft, topRight);
-		}
-
-		static void checkAllWalls()
-		{
-			world.WallLayer.CheckVisibility();
-		}
-
-		static void checkWalls(MPos bottomleft, MPos topright)
-		{
-			world.WallLayer.CheckVisibility(bottomleft, topright);
-		}
-
-		static void checkAll()
-		{
-			world.ActorLayer.CheckVisibility();
-			world.ParticleLayer.CheckVisibility();
-			world.WeaponLayer.CheckVisibility();
-
-			world.SmudgeLayer.CheckVisibility();
-
-			foreach (var o in world.Objects)
-				o.CheckVisibility();
+			world.WallLayer.CheckVisibility(position, position + bounds);
 		}
 
 		static void check(CPos topLeft, CPos bottomRight)
@@ -294,27 +275,6 @@ namespace WarriorsSnuggery
 			var objects = world.Objects.Where(a => a.GraphicPosition.X > topLeft.X && a.GraphicPosition.X < bottomRight.X && a.GraphicPosition.Y > topLeft.Y && a.GraphicPosition.Y < bottomRight.Y);
 			foreach (var o in objects)
 				o.CheckVisibility();
-		}
-
-		static void checkAllTerrain(bool checkEdges = false)
-		{
-			if (world.TerrainLayer == null)
-				return;
-
-			foreach (Terrain t in world.TerrainLayer.Terrain)
-				t.CheckVisibility(checkEdges);
-		}
-
-		static void checkTerrain(MPos bottomleft, MPos topright, bool checkEdges = false)
-		{
-			if (world.TerrainLayer == null)
-				return;
-
-			for (int x = bottomleft.X; x < topright.X; x++)
-			{
-				for (int y = bottomleft.Y; y < topright.Y; y++)
-					world.TerrainLayer.Terrain[x, y].CheckVisibility(checkEdges);
-			}
 		}
 
 		public static void CheckTerrainAround(MPos pos, bool checkEdges = false)

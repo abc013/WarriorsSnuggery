@@ -35,44 +35,37 @@ namespace WarriorsSnuggery.Graphics
 		public static void ZoomUpdated()
 		{
 			var zoom = Camera.CurrentZoom;
-			lastCameraZoom = Zoom(zoom);
+			lastCameraZoom = new MPos((int)Math.Ceiling(zoom * WindowInfo.Ratio), (int)Math.Ceiling(zoom));
 
 			LookAtUpdated();
-		}
-
-		public static MPos Zoom(float zoom)
-		{
-			return new MPos((int)Math.Ceiling(zoom * WindowInfo.Ratio + 2), (int)Math.Ceiling(zoom + 2));
 		}
 
 		public static void LookAtUpdated()
 		{
 			var pos = Camera.LookAt;
 			var zoom = Camera.CurrentZoom;
-			lastCameraPosition = LookAt(pos, zoom);
+
+			var xPos = (int)Math.Floor(pos.X / (float)Constants.TileSize - (zoom * WindowInfo.Ratio / 2));
+			var yPos = (int)Math.Floor(pos.Y / (float)Constants.TileSize - (zoom / 2));
+			lastCameraPosition = new MPos(xPos, yPos);
+
+			// lookat can be updated while no map is loaded
+			if (map == null)
+				return;
 
 			Array.Clear(visible, 0, visible.Length);
 			ShroudUpdated();
 		}
 
-		public static MPos LookAt(CPos pos, float zoom)
-		{
-			var xPos = (int)Math.Floor(pos.X / 1024f - (zoom * WindowInfo.Ratio / 2));
-			var yPos = (int)Math.Floor(pos.Y / 1024f - (zoom / 2));
-			return new MPos(xPos, yPos);
-		}
-
 		public static void GetClampedBounds(out MPos position, out MPos bounds)
 		{
-			position = new MPos(Math.Clamp(lastCameraPosition.X, 0, mapBounds.X), Math.Clamp(lastCameraPosition.Y, 0, mapBounds.Y));
-			bounds = new MPos(Math.Clamp(lastCameraZoom.X + lastCameraPosition.X, 0, mapBounds.X) - position.X, Math.Clamp(lastCameraZoom.Y + lastCameraPosition.Y, 0, mapBounds.Y) - position.Y);
+			var offset = Settings.VisibilityMargin / Constants.TileSize;
+			position = new MPos(Math.Clamp(lastCameraPosition.X - offset, 0, mapBounds.X), Math.Clamp(lastCameraPosition.Y - offset, 0, mapBounds.Y));
+			bounds = new MPos(Math.Clamp(lastCameraZoom.X + lastCameraPosition.X + offset, 0, mapBounds.X) - position.X, Math.Clamp(lastCameraZoom.Y + lastCameraPosition.Y + offset, 0, mapBounds.Y) - position.Y);
 		}
 
 		public static void ShroudUpdated()
 		{
-			if (map == null)
-				return;
-
 			GetClampedBounds(out var position, out var bounds);
 
 			for (int x = position.X; x < position.X + bounds.X; x++)
@@ -84,9 +77,6 @@ namespace WarriorsSnuggery.Graphics
 
 		public static void ShroudRevealed(int x, int y)
 		{
-			if (map == null)
-				return;
-
 			visible[x, y] = true;
 		}
 
@@ -104,40 +94,18 @@ namespace WarriorsSnuggery.Graphics
 
 		public static bool IsVisible(MPos position)
 		{
-			if (map == null)
+			var offset = new MPos(Settings.VisibilityMargin / Constants.TileSize, Settings.VisibilityMargin / Constants.TileSize);
+			if (!position.InRange(lastCameraPosition - offset, lastCameraPosition + lastCameraZoom + offset))
 				return false;
 
-			if (shroud.RevealAll)
-				return true;
-
-			if (!position.InRange(lastCameraPosition, lastCameraPosition + lastCameraZoom))
-				return false;
-
-			return visible[position.X, position.Y];
+			return shroud.RevealAll || visible[position.X, position.Y];
 		}
 
 		public static bool IsVisibleIgnoringBounds(MPos position)
 		{
-			if (map == null)
-				return false;
+			position = new MPos(Math.Clamp(position.X, 0, mapBounds.X - 1), Math.Clamp(position.Y, 0, mapBounds.Y - 1));
 
-			if (shroud.RevealAll)
-				return true;
-
-			if (!position.InRange(lastCameraPosition, lastCameraPosition + lastCameraZoom))
-				return false;
-
-			if (position.X < 0)
-				position = new MPos(0, position.Y);
-			else if (position.X >= mapBounds.X)
-				position = new MPos(mapBounds.X - 1, position.Y);
-
-			if (position.Y < 0)
-				position = new MPos(position.X, 0);
-			else if (position.Y >= mapBounds.Y)
-				position = new MPos(position.X, mapBounds.Y - 1);
-
-			return visible[position.X, position.Y];
+			return IsVisible(position);
 		}
 
 		public static bool IsVisible(CPos position)

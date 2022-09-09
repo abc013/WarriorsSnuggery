@@ -7,7 +7,7 @@ namespace WarriorsSnuggery.Maps.Layers
 {
 	public sealed class TerrainLayer : ITickRenderable
 	{
-		public Terrain[,] Terrain { get; private set; }
+		public readonly Terrain[,] Terrain;
 
 		public TerrainLayer(MPos bounds)
 		{
@@ -35,6 +35,7 @@ namespace WarriorsSnuggery.Maps.Layers
 		public void Render()
 		{
 			CameraVisibility.GetClampedBounds(out var position, out var bounds);
+
 			var renderList = new List<Terrain>();
 
 			for (int x = position.X; x < position.X + bounds.X; x++)

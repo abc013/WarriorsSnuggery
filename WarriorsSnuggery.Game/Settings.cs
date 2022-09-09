@@ -32,8 +32,8 @@ namespace WarriorsSnuggery
 		public static int SheetSize;
 		public static float SheetHalfPixel => 0.1f / SheetSize;
 
-		[DefaultValue(3072)]
-		public static int VisbilityMargin;
+		[DefaultValue(2048)]
+		public static int VisibilityMargin;
 
 		[DefaultValue(true)]
 		public static bool LoadSoft;
