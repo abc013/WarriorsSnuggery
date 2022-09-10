@@ -10,12 +10,16 @@ namespace WarriorsSnuggery.Maps
 	[Desc("Used for spawning actor patrols on the map.")]
 	public class PatrolPlacerInfo
 	{
-		[Desc("Bounds of the patrol group to determine a valid spawnlocation.")]
-		public readonly int SpawnBounds = 3;
+		[Desc("Finetuning of determining a valid spawnlocation.", "The lower, the more spawn locations will be found.")]
+		public readonly int ScanSize = 3;
 		[Desc("Minimum number of patrols per 32x32 field.")]
 		public readonly int MinimumPatrols = 1;
 		[Desc("Maximum number of patrols per 32x32 field.")]
 		public readonly int MaximumPatrols = 4;
+		[Desc("Team that these patrols belong to.")]
+		public readonly byte Team = 1;
+		[Desc("Decides whether these patrols are bots.")]
+		public readonly bool AreBots = true;
 		[Desc("Patrols to possibly spawn.")]
 		public readonly PatrolProbabilityInfo[] Patrols = new PatrolProbabilityInfo[0];
 		public readonly float PatrolProbabilities;
@@ -35,12 +39,10 @@ namespace WarriorsSnuggery.Maps
 	[Desc("Information used for determining what actors will be spawned in the PatrolGenerator.")]
 	public class PatrolProbabilityInfo
 	{
-		[Desc("Distance between the spawned objects in CPos size.", "Should be smaller than half of the size of the SpawnBounds.")]
-		public readonly int DistanceBetweenObjects = 1024;
+		[Desc("Targeted distance between the spawned objects.", "Note that this will not be guaranteed in almost all cases.")]
+		public readonly int ObjectMargin = 256;
 		[Desc("What the patrol consists of.")]
-		public readonly string[] ActorTypes = new string[0];
-		[Desc("Team that the patrol belongs to.")]
-		public readonly byte Team = 1;
+		public readonly ActorType[] ActorTypes = new ActorType[0];
 		[Desc("Probability that this patrol will be spawned.", "This value will be set in relation with all other patrol probabilities.")]
 		public readonly float Probability = 1f;
 
@@ -53,51 +55,41 @@ namespace WarriorsSnuggery.Maps
 	public class PatrolPlacer
 	{
 		readonly Random random;
-
 		readonly World world;
-		readonly MPos bounds;
 
 		readonly PatrolPlacerInfo info;
+		readonly bool[,] invalidTerrain;
 
-		bool[,] invalidTerrain;
-
-		readonly List<MPos> positions = new List<MPos>();
-		MPos[] spawns;
-
-		public PatrolPlacer(Random random, World world, PatrolPlacerInfo info)
+		public PatrolPlacer(Random random, World world, PatrolPlacerInfo info, in bool[,] invalidTerrain = default)
 		{
 			this.random = random;
 			this.world = world;
-			bounds = world.Map.PlayableBounds;
 			this.info = info;
-		}
-
-		public void SetInvalid(bool[,] invalidTerrain)
-		{
 			this.invalidTerrain = invalidTerrain;
 		}
 
 		public List<Actor> PlacePatrols()
 		{
-			var actors = new List<Actor>();
-
-			// TODO: rework in spawnbound areas
+			var positions = new List<MPos>();
 			var map = world.Map;
+
 			positions.AddRange(map.PatrolSpawnLocations);
 			// Clean up the available positions
 			positions.RemoveAll(p => p.InRange(map.PlayableOffset, map.PlayableBounds + map.PlayableOffset));
 
-			for (int a = (int)Math.Ceiling(map.PlayableOffset.X / (float)info.SpawnBounds); a < (map.PlayableOffset.X + bounds.X) / info.SpawnBounds; a++)
+			for (int x = info.ScanSize; x < map.PlayableBounds.X - info.ScanSize; x += info.ScanSize)
 			{
-				for (int b = (int)Math.Ceiling(map.PlayableOffset.Y / (float)info.SpawnBounds); b < (map.PlayableOffset.Y + bounds.Y) / info.SpawnBounds; b++)
+				for (int y = info.ScanSize; y < map.PlayableBounds.Y - info.ScanSize; y += info.ScanSize)
 				{
-					var pos = new MPos(a, b) * info.SpawnBounds;
-					if (!areaBlocked(a, b) && !positions.Contains(pos))
-						positions.Add(pos);
+					var pos = map.PlayableOffset + new MPos(x, y);
+					if (positions.Contains(pos) || (invalidTerrain != null && invalidTerrain[x, y]))
+						continue;
+
+					positions.Add(pos);
 				}
 			}
 
-			var multiplier = bounds.X * bounds.Y / (float)(32 * 32) + (world.Game.Save.Difficulty - 5) / 10f;
+			var multiplier = map.PlayableBounds.X * map.PlayableBounds.Y / (float)(32 * 32) + (world.Game.Save.Difficulty - 5) / 10f;
 			var count = random.Next((int)(info.MinimumPatrols * multiplier), (int)(info.MaximumPatrols * multiplier));
 			if (positions.Count < count)
 			{
@@ -105,56 +97,43 @@ namespace WarriorsSnuggery.Maps
 				count = positions.Count;
 			}
 
-			spawns = new MPos[count];
-
-			for (int i = 0; i < count; i++)
+			CPos selectRandomSpawn()
 			{
-				var posIndex = random.Next(positions.Count);
-				spawns[i] = positions[posIndex];
-				positions.RemoveAt(posIndex);
+				var index = random.Next(positions.Count);
+				var spawn = positions[index];
+				positions.RemoveAt(index);
+
+				return spawn.ToCPos();
 			}
 
-			foreach (var spawn in spawns)
+			var actors = new List<Actor>();
+
+			var maxAttempts = 10 * count;
+			var failedAttempts = 0;
+			while (count-- > 0)
 			{
-				var mid = spawn.ToCPos();
+				var mid = selectRandomSpawn();
 				var patrol = getPatrol();
 				var unitCount = patrol.ActorTypes.Length;
 
-				var group = new List<Actor>();
+				var types = new List<ActorType>(patrol.ActorTypes);
+				var group = ActorDistribution.DistributeAround(world, mid, types, patrol.ObjectMargin, info.Team, info.AreBots);
 
-				for (int j = 0; j < unitCount; j++)
+				if (group.Count == 0)
 				{
-					var spawnPosition = CPos.Zero;
-					if (j == 0)
-						spawnPosition = mid;
-					else if (j < 7)
+					count++;
+					failedAttempts++;
+
+					if (failedAttempts > maxAttempts)
 					{
-						var angle = Angle.ToArc(60 * j);
-						spawnPosition = mid + CPos.FromFlatAngle(angle, patrol.DistanceBetweenObjects);
-					}
-					else if (j < 19)
-					{
-						var angle = Angle.ToArc(30 * (j - 6));
-						spawnPosition = mid + CPos.FromFlatAngle(angle, 2 * patrol.DistanceBetweenObjects);
+						Log.Warning($"Unable to spawn remaining patrols ({count}) because the map is too crowded.");
+						break;
 					}
 
-					if (spawnPosition.X < map.TopLeftCorner.X + patrol.DistanceBetweenObjects / 2)
-						spawnPosition = new CPos(map.TopLeftCorner.X + patrol.DistanceBetweenObjects / 2, spawnPosition.Y, 0);
-					else if (spawnPosition.X >= map.BottomRightCorner.X - patrol.DistanceBetweenObjects / 2)
-						spawnPosition = new CPos(map.BottomRightCorner.X - patrol.DistanceBetweenObjects / 2, spawnPosition.Y, 0);
-
-					if (spawnPosition.Y < map.TopLeftCorner.Y + patrol.DistanceBetweenObjects / 2)
-						spawnPosition = new CPos(spawnPosition.X, map.TopLeftCorner.Y + patrol.DistanceBetweenObjects / 2, 0);
-					else if (spawnPosition.Y >= map.BottomRightCorner.Y - patrol.DistanceBetweenObjects / 2)
-						spawnPosition = new CPos(spawnPosition.X, map.BottomRightCorner.Y - patrol.DistanceBetweenObjects / 2, 0);
-
-					var actor = ActorCache.Create(world, patrol.ActorTypes[j], spawnPosition, patrol.Team, true);
-
-					group.Add(actor);
-
-					world.Add(actor);
-					actors.Add(actor);
+					continue;
 				}
+
+				actors.AddRange(group);
 
 				var groupPatrol = new Patrol(group);
 				foreach (var actor in group)
@@ -165,30 +144,6 @@ namespace WarriorsSnuggery.Maps
 			}
 
 			return actors;
-		}
-
-		bool areaBlocked(int a, int b)
-		{
-			if (invalidTerrain == null)
-				return false;
-
-			var map = world.Map;
-			for (int x = a * info.SpawnBounds; x < a * info.SpawnBounds + info.SpawnBounds; x++)
-			{
-				if (x < map.TopLeftCorner.X || x >= map.TopRightCorner.X)
-					continue;
-
-				for (int y = b * info.SpawnBounds; y < b * info.SpawnBounds + info.SpawnBounds; y++)
-				{
-					if (y < map.TopLeftCorner.Y || y >= map.BottomLeftCorner.Y)
-						continue;
-
-					if (invalidTerrain[x, y])
-						return true;
-				}
-			}
-
-			return false;
 		}
 
 		PatrolProbabilityInfo getPatrol()

@@ -91,19 +91,6 @@ namespace WarriorsSnuggery.Maps
 			// Generators
 			foreach (var info in map.Type.Generators)
 				info.GetGenerator(Random, this)?.Generate();
-
-			if (world.Game.ObjectiveType != ObjectiveType.SURVIVE_WAVES)
-			{
-				foreach (var info in map.Type.PatrolPlacers)
-				{
-					if (info.UseForWaves)
-						continue;
-
-					var placer = new PatrolPlacer(Random, world, info);
-					placer.SetInvalid(invalidForPatrols);
-					placer.PlacePatrols();
-				}
-			}
 		}
 
 		public void Apply()
@@ -145,6 +132,18 @@ namespace WarriorsSnuggery.Maps
 
 			foreach (var init in particleInformation)
 				world.Add(ParticleCache.Create(world, init));
+
+			if (world.Game.ObjectiveType != ObjectiveType.SURVIVE_WAVES)
+			{
+				foreach (var info in map.Type.PatrolPlacers)
+				{
+					if (info.UseForWaves)
+						continue;
+
+					var placer = new PatrolPlacer(Random, world, info, invalidForPatrols);
+					placer.PlacePatrols();
+				}
+			}
 		}
 
 		void applyWall(WPos pos)
@@ -160,7 +159,7 @@ namespace WarriorsSnuggery.Maps
 			world.WallLayer.Set(wall);
 		}
 
-		public bool AcquireCell(MPos pos, int id, bool check = true, bool removeActors = true, bool denyPatrols = true)
+		public bool AcquireCell(MPos pos, int id, bool check = true, bool removeActors = true, bool denyPatrols = false)
 		{
 			if (check && !CanAcquireCell(pos, id))
 				return false;
@@ -267,7 +266,7 @@ namespace WarriorsSnuggery.Maps
 			return GeneratePiece(piece, position, ID, true);
 		}
 
-		public bool GeneratePiece(Piece piece, MPos position, int ID, bool important = false, bool idInclusive = false)
+		public bool GeneratePiece(Piece piece, MPos position, int ID, bool important = false, bool idInclusive = false, bool denyPatrols = false)
 		{
 			if (!piece.IsInMap(position, Bounds))
 			{
@@ -288,7 +287,7 @@ namespace WarriorsSnuggery.Maps
 
 			for (int x = position.X; x < (piece.Size.X + position.X); x++)
 				for (int y = position.Y; y < (piece.Size.Y + position.Y); y++)
-					AcquireCell(new MPos(x, y), ID, false);
+					AcquireCell(new MPos(x, y), ID, denyPatrols);
 
 			piece.PlacePiece(position, this);
 
