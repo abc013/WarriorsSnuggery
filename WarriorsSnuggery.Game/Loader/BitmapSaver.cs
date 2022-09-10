@@ -6,7 +6,7 @@ namespace WarriorsSnuggery.Loader
 {
 	public class BitmapSaver
 	{
-		public static void Save(string filename, byte[] data, MPos size, bool invertY = false)
+		public static void Save(string filename, in byte[] data, MPos size, bool invertY = false)
 		{
 			using var img = Image.LoadPixelData<Bgra32>(data, size.X, size.Y);
 

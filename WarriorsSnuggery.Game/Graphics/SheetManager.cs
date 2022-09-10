@@ -71,7 +71,7 @@ namespace WarriorsSnuggery.Graphics
 			return textures;
 		}
 
-		static Texture addTexture(float[] data, string filepath, int width, int height)
+		static Texture addTexture(in float[] data, string filepath, int width, int height)
 		{
 			var hash = filepath.GetHashCode() ^ width ^ height;
 
