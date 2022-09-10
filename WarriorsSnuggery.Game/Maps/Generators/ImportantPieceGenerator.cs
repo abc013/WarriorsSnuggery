@@ -37,6 +37,8 @@ namespace WarriorsSnuggery.Maps.Generators
 
 		[Desc("Allows this piece to be a waypoint as well. This means that any PathGenerator will take the piece under consideration for pathing.")]
 		public readonly bool IsWaypoint = false;
+		[Desc("Denies spawning patrols where the piece is situated.")]
+		public readonly bool DenyPatrols = true;
 
 		public ImportantPieceGeneratorInfo(int id, List<TextNode> nodes)
 		{
@@ -72,7 +74,7 @@ namespace WarriorsSnuggery.Maps.Generators
 			switch (info.PositionType)
 			{
 				case PositionType.POSITION:
-					Loader.GenerateCrucialPiece(piece, info.Position, info.ID);
+					Loader.GenerateCrucialPiece(piece, info.Position, info.ID, info.DenyPatrols);
 					markDirty(info.Position, piece);
 					break;
 				case PositionType.SPAWN:
@@ -95,7 +97,7 @@ namespace WarriorsSnuggery.Maps.Generators
 			var eigth = spawnArea / 8;
 			var pos = Center + new MPos(Random.Next(-eigth.X, eigth.X), Random.Next(-eigth.Y, eigth.Y));
 
-			Loader.GenerateCrucialPiece(piece, pos);
+			Loader.GenerateCrucialPiece(piece, pos, denyPatrols: info.DenyPatrols);
 			Loader.PlayerSpawn = pos.ToCPos() + piece.Size.ToCPos() / 2;
 			markDirty(pos, piece);
 
@@ -125,7 +127,7 @@ namespace WarriorsSnuggery.Maps.Generators
 				if (info.NoiseMapID >= 0 && Random.NextDouble() > noise[pos.X, pos.Y] + 0.1f)
 					continue;
 
-				success = Loader.GenerateCrucialPiece(piece, pos);
+				success = Loader.GenerateCrucialPiece(piece, pos, denyPatrols: info.DenyPatrols);
 				if (success)
 					markDirty(pos, piece);
 			}
@@ -151,7 +153,7 @@ namespace WarriorsSnuggery.Maps.Generators
 				if (info.NoiseMapID >= 0 && Random.NextDouble() > noise[pos.X, pos.Y] + 0.1f)
 					continue;
 
-				success = Loader.GenerateCrucialPiece(piece, pos);
+				success = Loader.GenerateCrucialPiece(piece, pos, denyPatrols: info.DenyPatrols);
 				if (success)
 					markDirty(pos, piece);
 			}

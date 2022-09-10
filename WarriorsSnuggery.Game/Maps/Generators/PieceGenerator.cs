@@ -31,6 +31,9 @@ namespace WarriorsSnuggery.Maps.Generators
 		[Desc("Maximum count of pieces on the map per 32x32 field.")]
 		public readonly int MaximumCount = 4;
 
+		[Desc("Denies spawning patrols where the piece is situated.")]
+		public readonly bool DenyPatrols = false;
+
 		public PieceGeneratorInfo(int id, List<TextNode> nodes)
 		{
 			this.id = id;
@@ -202,7 +205,7 @@ namespace WarriorsSnuggery.Maps.Generators
 
 				var position = Random.Next(possiblePlaces.Count);
 
-				if (!Loader.GeneratePiece(input, possiblePlaces[position], info.ID))
+				if (!Loader.GeneratePiece(input, possiblePlaces[position], info.ID, denyPatrols: info.DenyPatrols))
 					i--;
 				else
 					markDirty(possiblePlaces[position], input);

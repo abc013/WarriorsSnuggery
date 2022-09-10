@@ -261,9 +261,9 @@ namespace WarriorsSnuggery.Maps
 			return true;
 		}
 
-		public bool GenerateCrucialPiece(Piece piece, MPos position, int ID = int.MaxValue)
+		public bool GenerateCrucialPiece(Piece piece, MPos position, int ID = int.MaxValue, bool denyPatrols = false)
 		{
-			return GeneratePiece(piece, position, ID, true);
+			return GeneratePiece(piece, position, ID, true, denyPatrols: denyPatrols);
 		}
 
 		public bool GeneratePiece(Piece piece, MPos position, int ID, bool important = false, bool idInclusive = false, bool denyPatrols = false)
