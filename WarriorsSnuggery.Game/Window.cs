@@ -101,7 +101,7 @@ namespace WarriorsSnuggery
 		public Window(GameWindowSettings settings1, NativeWindowSettings settings2) : base(settings1, settings2)
 		{
 			current = this;
-			CursorVisible = false;
+			CursorState = CursorState.Hidden;
 
 			// Initialize values
 			unsafe
