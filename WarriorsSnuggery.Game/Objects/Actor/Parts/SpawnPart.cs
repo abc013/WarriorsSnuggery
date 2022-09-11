@@ -1,5 +1,9 @@
-﻿using WarriorsSnuggery.Objects.Conditions;
+﻿using System.Collections.Generic;
+using System;
+using WarriorsSnuggery.Maps;
+using WarriorsSnuggery.Objects.Conditions;
 using WarriorsSnuggery.Objects.Weapons;
+using System.Linq;
 
 namespace WarriorsSnuggery.Objects.Actors.Parts
 {
@@ -136,12 +140,25 @@ namespace WarriorsSnuggery.Objects.Actors.Parts
 			switch (info.Type)
 			{
 				case SpawnPartTypes.ACTOR:
-					var actor = ActorCache.Create(self.World, info.Name, randomPosition(), info.InheritsTeam ? self.Team : Actor.NeutralTeam, info.InheritsBot && self.IsBot);
+					Actor actor = null;
+
+					if (!info.AtCenter)
+					{
+						var radius = info.Radius == 0 ? Math.Max(self.Physics.Boundaries.X, self.Physics.Boundaries.Y) : info.Radius;
+						var types = new List<ActorType>() { ActorCache.Types[info.Name] };
+						var actors = ActorDistribution.DistributeAround(self.World, self.Position + info.Offset, radius, types, info.InheritsTeam ? self.Team : Actor.NeutralTeam, info.InheritsBot && self.IsBot);
+
+						actor = actors.FirstOrDefault();
+					}
+
+					if (actor == null)
+					{
+						actor = ActorCache.Create(self.World, info.Name, randomPosition(), info.InheritsTeam ? self.Team : Actor.NeutralTeam, info.InheritsBot && self.IsBot);
+						self.World.Add(actor);
+					}
 
 					if (info.InheritsBot && self.IsBot)
 						actor.Bot.Target = self.Bot.Target;
-
-					self.World.Add(actor);
 					break;
 				case SpawnPartTypes.WEAPON:
 					var weapon = WeaponCache.Create(self.World, info.Name, new Target(randomPosition()), self);
