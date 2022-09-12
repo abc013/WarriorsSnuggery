@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using WarriorsSnuggery.Graphics;
 using WarriorsSnuggery.Loader;
+using WarriorsSnuggery.Objects.Particles;
 
 namespace WarriorsSnuggery.Objects
 {
@@ -56,6 +57,11 @@ namespace WarriorsSnuggery.Objects
 		public readonly int OverlapHeight;
 		[Desc("If true, weapons will leave behind smudge on impact.")]
 		public readonly bool SpawnSmudge = true;
+
+		[Desc("Particles to spawn on this terrain.")]
+		public readonly ParticleSpawner Particles;
+		[Desc("Probability to spawn particles each tick.")]
+		public readonly float ParticleProbability = 1f;
 
 		public TerrainType(ushort id, List<TextNode> nodes, bool documentation = false)
 		{

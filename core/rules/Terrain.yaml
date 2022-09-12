@@ -96,6 +96,10 @@
 	Sprite=lava_stone
 	Speed=0.3
 	Damage=1
+	Particles=Area
+		Radius=512
+		Type=fire_sparkles
+	ParticleProbability=0.05
 
 12=
 	Sprite=brickstone2

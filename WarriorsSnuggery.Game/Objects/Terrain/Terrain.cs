@@ -48,6 +48,12 @@ namespace WarriorsSnuggery.Objects
 
 		public void Tick()
 		{
+			if (!world.Game.Editor && Type.Particles != null)
+			{
+				if (Program.SharedRandom.NextDouble() <= Type.ParticleProbability)
+					world.Add(Type.Particles.Create(world, Position.ToCPos()));
+			}
+
 			if (overlay == null)
 				return;
 
