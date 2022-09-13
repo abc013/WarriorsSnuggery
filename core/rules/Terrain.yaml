@@ -25,6 +25,10 @@
 		Tick=10
 	Speed=0
 	SpawnSmudge=false
+	Particles=Area
+		Radius=488
+		Type=water_bubble
+	ParticleProbability=0.01
 
 3=
 	Sprite=wood
@@ -98,7 +102,7 @@
 	Damage=1
 	Particles=Area
 		Radius=512
-		Type=fire_sparkles
+		Type=fire_sparkle
 	ParticleProbability=0.05
 
 12=

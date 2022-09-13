@@ -85,7 +85,7 @@ lamp2=
 		Tick=10
 		Particles=Area
 			Count=1
-			Type=fire_sparkles
+			Type=fire_sparkle
 			Radius=128
 			Offset=0,0,64
 

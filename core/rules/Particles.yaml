@@ -232,7 +232,7 @@ still_fire=
 	DissolveDuration=10
 	RandomVelocity=8,8,4
 
-fire_sparkles=
+fire_sparkle=
 	Texture=firefly
 		Size=1,1
 		Tick=5
@@ -242,3 +242,11 @@ fire_sparkles=
 	DissolveDuration=10
 	Gravity=-1
 	RandomVelocity=5,5,0
+
+water_bubble=
+	Texture=bubble
+		Size=3,5
+		Tick=5
+	Duration=20
+	DissolveDuration=10
+	RandomVelocity=3,3,0
