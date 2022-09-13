@@ -171,6 +171,7 @@ namespace WarriorsSnuggery
 		public ObjectiveType CurrentObjective { get; private set; }
 		public MissionType CurrentMission { get; private set; }
 		public MapType CurrentMapType { get; private set; }
+		public Color CurrentAmbience { get; private set; }
 		public int Waves { get; private set; }
 		public bool KeyFound { get; private set; }
 		public Dictionary<byte, bool[]> Shroud { get; private set; }
@@ -209,6 +210,7 @@ namespace WarriorsSnuggery
 		{
 			SaveName = FileExplorer.FileName(filepath);
 			ActiveMods = new string[0];
+			CurrentAmbience = Color.White;
 
 			var properties = typeof(GameSave).GetProperties();
 
@@ -353,6 +355,11 @@ namespace WarriorsSnuggery
 				writer.WriteLine($"{nameof(CurrentObjective)}={CurrentObjective}");
 				writer.WriteLine($"{nameof(CurrentMission)}={CurrentMission}");
 				writer.WriteLine($"{nameof(CurrentMapType)}={MapCache.Types[CurrentMapType]}");
+				if (CurrentAmbience != Color.White)
+				{
+					var color = CurrentAmbience.ToSysColor();
+					writer.WriteLine($"{nameof(CurrentAmbience)}={color.R}, {color.G}, {color.B}, {color.A}");
+				}
 				if (Waves != 0)
 					writer.WriteLine($"{nameof(Waves)}={Waves}");
 				if (KeyFound)
@@ -418,6 +425,7 @@ namespace WarriorsSnuggery
 			var save = game.Save;
 			var mapType = game.MapType;
 			CurrentMapType = mapType.IsSave ? save.CurrentMapType : mapType;
+			CurrentAmbience = WorldRenderer.Ambient;
 
 			Waves = game.CurrentWave;
 

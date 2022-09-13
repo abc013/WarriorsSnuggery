@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using WarriorsSnuggery.Loader;
 using WarriorsSnuggery.Maps.Generators;
@@ -39,6 +40,10 @@ namespace WarriorsSnuggery.Maps
 
 		[Desc("Ambient color of the map.", "Note: lowering this factor to below a quarter of strength will get weird results with lights.")]
 		public readonly Color Ambient = Color.White;
+		[Desc("Varying ambient color of the map that will be randomized and added upon the normal Ambient.", "Note: lowering this factor to below a quarter of strength will get weird results with lights.")]
+		public readonly float AmbientVariance = 0f;
+		[Desc("Varying ambient color of the map that will be randomized per-channel and added upon the normal Ambient.", "Note: lowering this factor to below a quarter of strength will get weird results with lights.")]
+		public readonly Color AmbientColorVariance = Color.Black;
 		[Desc("Wall type to use when surrounding the map with walls.")]
 		public readonly int Wall = 0;
 		[Desc("Amount of terrain cells to use for a world border.", "This border can't be accessed and fades out into black visually.")]
@@ -132,6 +137,14 @@ namespace WarriorsSnuggery.Maps
 			IntenseMusic = intenseMusic;
 		}
 
+		public Color GetAmbience(Random random)
+		{
+			var variance = (float)(random.NextDouble() * AmbientVariance) * Color.White.WithAlpha(0f);
+			var colorVariance = new Color(AmbientColorVariance.R * (float)random.NextDouble(), AmbientColorVariance.G * (float)random.NextDouble(), AmbientColorVariance.B * (float)random.NextDouble(), 0f);
+
+			return Ambient + variance + colorVariance;
+		}
+
 		public static MapType FromRules(TextNode parent)
 		{
 			return new MapType(parent.Key, parent.Children);
@@ -142,7 +155,7 @@ namespace WarriorsSnuggery.Maps
 			var size = TextNodeLoader.FromFile(FileExplorer.Saves, save.MapSaveName + ".yaml").First(n => n.Key == "Size").Convert<MPos>();
 			var type = save.CurrentMapType;
 
-			return new MapType(new PackageFile(save.MapSaveName), type.Wall, size, type.Ambient, new[] { save.CurrentMission }, new[] { save.CurrentObjective }, -1, 0, int.MaxValue, type.Generators, CPos.Zero, true, type.RevealMap, type.AllowWeapons, save.Script, type.WeatherEffects, type.Music, type.IntenseMusic);
+			return new MapType(new PackageFile(save.MapSaveName), type.Wall, size, save.CurrentAmbience, new[] { save.CurrentMission }, new[] { save.CurrentObjective }, -1, 0, int.MaxValue, type.Generators, CPos.Zero, true, type.RevealMap, type.AllowWeapons, save.Script, type.WeatherEffects, type.Music, type.IntenseMusic);
 		}
 
 		public static MapType FromPiece(Piece piece, MissionType type = MissionType.TEST, ObjectiveType objective = ObjectiveType.NONE)

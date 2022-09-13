@@ -28,7 +28,8 @@ namespace WarriorsSnuggery
 		{
 			game = @new;
 			world = game.World;
-			Ambient = world.Map.Type.Ambient;
+
+			Ambient = world.Map.Type.GetAmbience(@new.SharedRandom);
 
 			CameraVisibility.Reset();
 			Camera.Reset();
