@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
+using WarriorsSnuggery.Graphics;
 using WarriorsSnuggery.Loader;
 using WarriorsSnuggery.Objects.Actors.Parts;
 
@@ -106,6 +107,11 @@ namespace WarriorsSnuggery.Docs
 		void writeSounds()
 		{
 			writer.WriteLine(TypeWriter.Write(typeof(SoundType), new object[] { emptyTextNodes, true }));
+		}
+
+		void writeTextures()
+		{
+			writer.WriteLine(TypeWriter.Write(typeof(TextureInfo), new object[] { emptyTextNodes }));
 		}
 #pragma warning restore IDE0051
 

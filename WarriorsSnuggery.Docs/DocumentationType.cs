@@ -10,7 +10,8 @@
 		MAPS,
 		SPELLS,
 		TROPHIES,
-		SOUNDS
+		SOUNDS,
+		TEXTURES
 	}
 
 	static class DocumentationTypeExts

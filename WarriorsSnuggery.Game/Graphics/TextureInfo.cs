@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using WarriorsSnuggery.Loader;
 
 namespace WarriorsSnuggery.Graphics
@@ -26,9 +27,13 @@ namespace WarriorsSnuggery.Graphics
 		public int Width => Dimensions.X;
 		public int Height => Dimensions.Y;
 
-		public TextureInfo(TextNode node)
+		public TextureInfo(List<TextNode> nodes)
 		{
-			TypeLoader.SetValues(this, node.Children);
+			TypeLoader.SetValues(this, nodes);
+
+			if (Name == null) // For documentation
+				return;
+
 			filepath = FileExplorer.FindIn(Name.Package.ContentDirectory, Name.File, ".png");
 			textures = SheetManager.AddSprite(filepath, Width, Height);
 

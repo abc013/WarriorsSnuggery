@@ -20,7 +20,7 @@ namespace WarriorsSnuggery
 		[Desc("Maximum random pitch in percent.")]
 		public readonly float RandomPitch = 0f;
 
-		[Desc("Name of the audio file.")]
+		[Require, Desc("Name of the audio file.")]
 		public readonly PackageFile Name;
 
 		public readonly GameAudioBuffer Buffer;

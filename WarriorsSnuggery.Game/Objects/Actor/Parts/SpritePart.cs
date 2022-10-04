@@ -38,7 +38,8 @@ namespace WarriorsSnuggery.Objects.Actors.Parts
 
 		public SpritePartInfo(PartInitSet set) : base(set)
 		{
-			Textures = Texture.GetTextures();
+			if (Texture != null)
+				Textures = Texture.GetTextures();
 		}
 
 		public override ActorPart Create(Actor self)
