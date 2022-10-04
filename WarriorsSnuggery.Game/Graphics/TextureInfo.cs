@@ -1,4 +1,4 @@
-﻿using System.Linq;
+﻿using System;
 using WarriorsSnuggery.Loader;
 
 namespace WarriorsSnuggery.Graphics
@@ -40,6 +40,9 @@ namespace WarriorsSnuggery.Graphics
 
 				textures = finalTextures;
 			}
+
+			if (ReverseAnimation)
+				Array.Reverse(textures);
 		}
 
 		public TextureInfo(PackageFile packageFile) : this(packageFile, new MPos(0, 0), load: false)
@@ -48,10 +51,10 @@ namespace WarriorsSnuggery.Graphics
 			Dimensions = new MPos(width, height);
 		}
 
-		public TextureInfo(PackageFile packageFile, MPos bounds, bool randomized = false, int tick = 0) : this(packageFile, bounds, randomized, tick, load: true) { }
-		public TextureInfo(PackageFile packageFile, int width, int height, bool randomized = false, int tick = 0) : this(packageFile, new MPos(width, height), randomized, tick, load: true) { }
+		public TextureInfo(PackageFile packageFile, MPos bounds, bool randomized = false, int tick = 20) : this(packageFile, bounds, randomized, tick, load: true) { }
+		public TextureInfo(PackageFile packageFile, int width, int height, bool randomized = false, int tick = 20) : this(packageFile, new MPos(width, height), randomized, tick, load: true) { }
 
-		TextureInfo(PackageFile packageFile, MPos bounds, bool randomized = false, int tick = 0, bool load = true)
+		TextureInfo(PackageFile packageFile, MPos bounds, bool randomized = false, int tick = 20, bool load = true)
 		{
 			Name = packageFile;
 			filepath = FileExplorer.FindIn(Name.Package.ContentDirectory, Name.File, ".png");
@@ -73,7 +76,7 @@ namespace WarriorsSnuggery.Graphics
 			if (Randomized)
 				return new[] { textures[Program.SharedRandom.Next(textures.Length)] };
 
-			return ReverseAnimation ? textures.Reverse().ToArray() : textures;
+			return textures;
 		}
 	}
 }
