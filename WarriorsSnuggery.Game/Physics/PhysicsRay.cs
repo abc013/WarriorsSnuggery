@@ -62,7 +62,6 @@ namespace WarriorsSnuggery.Physics
 			{
 				var height = calculateHeight(end);
 
-				// TODO: something is fucked with the z boundary calculations (TL;DR Boundaries.Z too small in first part of check, doubling solves the issue. Fix!
 				if (height <= physics.Position.Z + physics.Boundaries.Z && height >= physics.Position.Z - physics.Boundaries.Z)
 				{
 					// HACK for damage: Don't hit the wall directly
@@ -89,7 +88,7 @@ namespace WarriorsSnuggery.Physics
 
 			var x0 = (int)Math.Round(Start.X / 1024.0);
 			var y0 = (int)Math.Round(Start.Y / 1024.0);
-			MPos currentSector = new MPos(x0 / PhysicsLayer.SectorSize, y0 / PhysicsLayer.SectorSize);
+			MPos currentSector = new MPos(-1, -1);
 
 			if (x0 >= 0 && y0 >= 0 && x0 < bounds.X && y0 < bounds.Y)
 			{
@@ -116,6 +115,8 @@ namespace WarriorsSnuggery.Physics
 					var newSector = new MPos(x0 / PhysicsLayer.SectorSize, y0 / PhysicsLayer.SectorSize);
 					if (!ignoreActors && (hit || currentSector != newSector))
 					{
+						currentSector = newSector;
+
 						if (!currentSector.InRange(MPos.Zero, new MPos(bounds.X / PhysicsLayer.SectorSize, bounds.Y / PhysicsLayer.SectorSize)))
 							continue;
 
@@ -142,8 +143,6 @@ namespace WarriorsSnuggery.Physics
 
 						// We hit something, we won't need to check anything behind
 						if (actorHit) break;
-
-						currentSector = newSector;
 					}
 
 					// We hit something, therefore we can ignore the rest which is further away
