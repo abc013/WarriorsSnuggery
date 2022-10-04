@@ -9,14 +9,8 @@ namespace WarriorsSnuggery.Objects.Actors.Parts
 	{
 		public readonly Texture[] Textures;
 
-		[Require, Desc("Name of the texture file.")]
-		public readonly PackageFile Name;
-
-		[Require, Desc("Size of a single frame.")]
-		public readonly MPos Dimensions;
-
-		[Desc("Frame rate (Speed of animation).")]
-		public readonly int Tick = 20;
+		[Require, Desc("The texture details.")]
+		public readonly TextureInfo Texture;
 
 		[Desc("If true, a random start frame of the animation will be picked.")]
 		public readonly bool StartRandom = false;
@@ -29,9 +23,6 @@ namespace WarriorsSnuggery.Objects.Actors.Parts
 
 		[Desc("Offset of the sprite.")]
 		public readonly CPos Offset;
-
-		[Desc("use a random image in the sprite sequence.")]
-		public readonly bool Random;
 
 		[Desc("Use Sprite as preview in e.g. the editor.")]
 		public readonly bool UseAsPreview;
@@ -47,8 +38,7 @@ namespace WarriorsSnuggery.Objects.Actors.Parts
 
 		public SpritePartInfo(PartInitSet set) : base(set)
 		{
-			if (Name != null)
-				Textures = new TextureInfo(Name, Dimensions).GetTextures();
+			Textures = Texture.GetTextures();
 		}
 
 		public override ActorPart Create(Actor self)
@@ -88,17 +78,17 @@ namespace WarriorsSnuggery.Objects.Actors.Parts
 				if (anim.Length == 0)
 					throw new InvalidNodeException("Animation Frame count is zero. Make sure you set the bounds properly.");
 
-				if (anim.Length == 1 || info.Random)
+				if (anim.Length == 1 || info.Texture.Randomized)
 				{
 					var index = 0;
-					if (info.Random)
+					if (info.Texture.Randomized)
 						index = self.World.Game.SharedRandom.Next(anim.Length);
 
 					renderables[i] = new BatchObject(anim[index]);
 				}
 				else
 				{
-					renderables[i] = new BatchSequence(anim, info.Tick, startRandom: info.StartRandom);
+					renderables[i] = new BatchSequence(anim, info.Texture.Tick, startRandom: info.StartRandom);
 				}
 			}
 
