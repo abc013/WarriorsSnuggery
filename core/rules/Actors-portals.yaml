@@ -218,6 +218,7 @@ heal_pad=
 	Sprite@overlay=
 		Texture=
 			Name=heal_pad
+			AnimationIndeces=0,1,2,3,3
 			Dimensions=12,10
 		Offset=0,0,-2048
 		UseAsPreview=true

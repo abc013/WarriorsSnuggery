@@ -354,6 +354,7 @@ poisonegg=
 	Sprite=
 		Texture=
 			Name=poisoneggmine
+			AnimationIndeces=0,0,0,0,1,2,1
 			Dimensions=9,6
 		UseAsPreview=true
 		Condition=IsIdling
