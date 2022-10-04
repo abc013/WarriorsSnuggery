@@ -82,8 +82,8 @@ namespace WarriorsSnuggery.Objects
 
 		void checkTextures(TextureInfo info)
 		{
-			if (info.Type != TextureType.ANIMATION)
-				throw new InvalidNodeException($"Texture '{info}' of Wall '{ID}' has to be defined as ANIMATION.");
+			if (info.Random)
+				throw new InvalidNodeException($"Texture '{info}' of Wall '{ID}' must have 'Random' set to 'false'.");
 
 			var textureCount = info.GetTextures().Length;
 			var wallCount = ConsiderWallsNearby ? 6 : 2;

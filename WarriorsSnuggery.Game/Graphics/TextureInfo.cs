@@ -1,79 +1,64 @@
-﻿using WarriorsSnuggery.Loader;
+﻿using System.Linq;
+using WarriorsSnuggery.Loader;
 
 namespace WarriorsSnuggery.Graphics
 {
-	public enum TextureType
-	{
-		IMAGE,
-		ANIMATION,
-		RANDOM
-	}
-
 	public sealed class TextureInfo
 	{
 		readonly string filepath;
 		readonly Texture[] textures;
 
-		public readonly TextureType Type;
-		public readonly int Tick;
+		[Desc("Use if you want to select a random texture out of the range.")]
+		public readonly bool Random = false;
+		[Desc("Sets the time it takes to change texture sprites.")]
+		public readonly int Tick = 20;
 
-		public readonly int Width;
-		public readonly int Height;
+		[Desc("Use if you want to customize the animation sequence.", "If no customization is done, indeces will be 0,1,2,...,n.")]
+		public readonly int[] AnimationIndeces;
+		[Desc("Reverses the animation sequence.")]
+		public readonly bool ReverseAnimation;
 
-		public static TextureInfo Create(TextNode node)
+		[Require, Desc("Dimensions of the sprite.")]
+		public readonly MPos Size;
+
+		public int Width => Size.X;
+		public int Height => Size.Y;
+
+		public TextureInfo(TextNode node) : this(new PackageFile(node.Value), new MPos(0, 0), load: false)
 		{
-			var name = new PackageFile(node.Value);
-			var size = MPos.Zero;
-			var randomTexture = false;
-			var tick = 20;
-			bool searchFile = true;
+			TypeLoader.SetValues(this, node.Children);
+			textures = SheetManager.AddSprite(filepath, Width, Height);
 
-			var children = node.Children;
-			foreach (var child in children)
+			if (AnimationIndeces != null)
 			{
-				switch (child.Key)
-				{
-					case "AddDirectory":
-						searchFile = child.Convert<bool>();
-						break;
-					case "Random":
-						randomTexture = child.Convert<bool>();
-						break;
-					case "Tick":
-						tick = child.Convert<int>();
-						break;
-					case "Size":
-						size = child.Convert<MPos>();
-						break;
-					default:
-						throw new UnexpectedConversionChild(node, typeof(TextureInfo), child.Key);
-				}
-			}
+				var finalTextures = new Texture[AnimationIndeces.Length];
+				for (int i = 0; i < AnimationIndeces.Length; i++)
+					finalTextures[i] = textures[AnimationIndeces[i]];
 
-			return new TextureInfo(name, randomTexture ? TextureType.RANDOM : TextureType.ANIMATION, size, tick, searchFile);
+				textures = finalTextures;
+			}
 		}
 
-		public TextureInfo(PackageFile packageFile) : this(packageFile, TextureType.IMAGE, 0, 0, 0) { }
+		public TextureInfo(PackageFile packageFile) : this(packageFile, new MPos(0, 0), load: false)
+		{
+			textures = SheetManager.AddTexture(filepath, out var width, out var height);
+			Size = new MPos(width, height);
+		}
 
-		public TextureInfo(PackageFile packageFile, TextureType type, MPos bounds, int tick = 0, bool load = true) : this(packageFile, type, bounds.X, bounds.Y, tick, load) { }
+		public TextureInfo(PackageFile packageFile, MPos bounds, bool randomized = false, int tick = 0) : this(packageFile, bounds, randomized, tick, load: true) { }
+		public TextureInfo(PackageFile packageFile, int width, int height, bool randomized = false, int tick = 0) : this(packageFile, new MPos(width, height), randomized, tick, load: true) { }
 
-		public TextureInfo(PackageFile packageFile, TextureType type, int width, int height, int tick = 0, bool load = true)
+		TextureInfo(PackageFile packageFile, MPos bounds, bool randomized = false, int tick = 0, bool load = true)
 		{
 			filepath = FileExplorer.FindIn(packageFile.Package.ContentDirectory, packageFile.File, ".png");
 
-			Type = type;
+			Random = randomized;
 			Tick = tick;
 
-			Width = width;
-			Height = height;
+			Size = bounds;
 
 			if (load)
-			{
-				if (Type == TextureType.IMAGE)
-					textures = SheetManager.AddTexture(filepath, out Width, out Height);
-				else
-					textures = SheetManager.AddSprite(filepath, width, height);
-			}
+				textures = SheetManager.AddSprite(filepath, Width, Height);
 		}
 
 		public Texture[] GetTextures()
@@ -81,10 +66,10 @@ namespace WarriorsSnuggery.Graphics
 			if (textures == null)
 				throw new System.Exception($"Tried to fetch textures from unloaded TextureInfo ({filepath}).");
 
-			if (Type == TextureType.RANDOM)
+			if (Random)
 				return new[] { textures[Program.SharedRandom.Next(textures.Length)] };
 
-			return textures;
+			return ReverseAnimation ? textures.Reverse().ToArray() : textures;
 		}
 	}
 }

@@ -74,17 +74,17 @@ namespace WarriorsSnuggery.Objects
 			if (documentation)
 				return;
 
-			baseTextureInfo = new TextureInfo(Sprite, TextureType.RANDOM, Constants.PixelSize, Constants.PixelSize);
+			baseTextureInfo = new TextureInfo(Sprite, Constants.PixelSize, Constants.PixelSize, randomized: true);
 			if (Overlaps)
 			{
 				if (EdgeSprite != null)
-					edgeTextureInfo = new TextureInfo(EdgeSprite, TextureType.RANDOM, EdgeSpriteBounds);
+					edgeTextureInfo = new TextureInfo(EdgeSprite, EdgeSpriteBounds, randomized: true);
 
 				if (CornerSprite != null)
-					cornerTextureInfo = new TextureInfo(CornerSprite, TextureType.RANDOM, CornerSpriteBounds);
+					cornerTextureInfo = new TextureInfo(CornerSprite, CornerSpriteBounds, randomized: true);
 
 				if (VerticalEdgeSprite != null)
-					verticalTextureInfo = new TextureInfo(VerticalEdgeSprite, TextureType.RANDOM, VerticalEdgeSpriteBounds);
+					verticalTextureInfo = new TextureInfo(VerticalEdgeSprite, VerticalEdgeSpriteBounds, randomized: true);
 			}
 		}
 

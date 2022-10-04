@@ -167,7 +167,7 @@ namespace WarriorsSnuggery.Loader
 			}
 			else if (t == typeof(TextureInfo))
 			{
-				return TextureInfo.Create(node);
+				return new TextureInfo(node);
 			}
 			else if (t == typeof(WeaponType))
 			{
