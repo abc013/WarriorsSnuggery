@@ -47,7 +47,7 @@ namespace WarriorsSnuggery.Objects.Actors.Parts
 		}
 	}
 
-	public class SpritePart : ActorPart, IPartRenderable, ITick
+	public class SpritePart : ActorPart, IPartRenderable, ITick, ITickInEditor
 	{
 		readonly SpritePartInfo info;
 
