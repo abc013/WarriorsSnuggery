@@ -82,7 +82,7 @@ namespace WarriorsSnuggery.Objects
 
 		void checkTextures(TextureInfo info)
 		{
-			if (info.Random)
+			if (info.Randomized)
 				throw new InvalidNodeException($"Texture '{info}' of Wall '{ID}' must have 'Random' set to 'false'.");
 
 			var textureCount = info.GetTextures().Length;

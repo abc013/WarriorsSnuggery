@@ -17,6 +17,8 @@ namespace WarriorsSnuggery.Spells
 		public readonly string[] Before;
 		[Require, Desc("Graphical position in the spelltree.")]
 		public readonly MPos Position;
+		[Desc("Trophies that are required to unlock this spell.")]
+		public readonly string[] TrophyRequirements;
 
 		[Desc("Determines the amount of money which has to be spent in order to buy this spell.")]
 		public readonly int Cost;

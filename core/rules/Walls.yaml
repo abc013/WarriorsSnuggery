@@ -1,10 +1,13 @@
 0=
-	Texture=walls1
-		Size=24,48
-	SlightDamageTexture=walls1_dam1
-		Size=24,48
-	HeavyDamageTexture=walls1_dam2
-		Size=24,48
+	Texture=
+		Name=walls1
+		Dimensions=24,48
+	SlightDamageTexture=
+		Name=walls1_dam1
+		Dimensions=24,48
+	HeavyDamageTexture=
+		Name=walls1_dam2
+		Dimensions=24,48
 	Health=400
 	ConsiderWallsNearby=true
 	BlocksTerrainOverlap=true
@@ -14,12 +17,15 @@
 	Armor=wood
 
 1=
-	Texture=walls0
-		Size=24,48
-	SlightDamageTexture=walls0_dam1
-		Size=24,48
-	HeavyDamageTexture=walls0_dam2
-		Size=24,48
+	Texture=
+		Name=walls0
+		Dimensions=24,48
+	SlightDamageTexture=
+		Name=walls0_dam1
+		Dimensions=24,48
+	HeavyDamageTexture=
+		Name=walls0_dam2
+		Dimensions=24,48
 	Health=400
 	ConsiderWallsNearby=true
 	BlocksTerrainOverlap=true
@@ -29,12 +35,15 @@
 	Armor=stone
 
 2=
-	Texture=handrails
-		Size=24,32
-	SlightDamageTexture=handrails_dam1
-		Size=24,31
-	HeavyDamageTexture=handrails_dam2
-		Size=24,29
+	Texture=
+		Name=handrails
+		Dimensions=24,32
+	SlightDamageTexture=
+		Name=handrails_dam1
+		Dimensions=24,31
+	HeavyDamageTexture=
+		Name=handrails_dam2
+		Dimensions=24,29
 	DamagePenetration=0.8
 	Height=256
 	Health=200
@@ -46,12 +55,15 @@
 	Armor=stone
 
 3=
-	Texture=fence0
-		Size=24,33
-	SlightDamageTexture=fence0_dam1
-		Size=24,33
-	HeavyDamageTexture=fence0_dam2
-		Size=24,30
+	Texture=
+		Name=fence0
+		Dimensions=24,33
+	SlightDamageTexture=
+		Name=fence0_dam1
+		Dimensions=24,33
+	HeavyDamageTexture=
+		Name=fence0_dam2
+		Dimensions=24,30
 	DamagePenetration=0.8
 	Height=256
 	Health=150
@@ -63,12 +75,15 @@
 	Armor=wood
 
 8=
-	Texture=walls0_gate
-		Size=24,48
-	SlightDamageTexture=walls0_gate_dam1
-		Size=24,48
-	HeavyDamageTexture=walls0_gate_dam2
-		Size=24,48
+	Texture=
+		Name=walls0_gate
+		Dimensions=24,48
+	SlightDamageTexture=
+		Name=walls0_gate_dam1
+		Dimensions=24,48
+	HeavyDamageTexture=
+		Name=walls0_gate_dam2
+		Dimensions=24,48
 	Blocks=false
 	DamagePenetration=1
 	Health=250
@@ -76,8 +91,9 @@
 	Armor=stone
 
 9=
-	Texture=walls_rubble0
-		Size=24,26
+	Texture=
+		Name=walls_rubble0
+		Dimensions=24,26
 	Blocks=false
 	DamagePenetration=0
 	IgnoreForNearby=true
@@ -85,8 +101,9 @@
 	IsOnFloor=true
 
 10=
-	Texture=walls_rubble1
-		Size=24,24
+	Texture=
+		Name=walls_rubble1
+		Dimensions=24,24
 	Blocks=false
 	DamagePenetration=0
 	IgnoreForNearby=true
@@ -94,17 +111,18 @@
 	IsOnFloor=true
 
 11=
-	Texture=ironfence
-		Size=24,48
-	SlightDamageTexture=ironfence_dam1
-		Size=24,48
-	HeavyDamageTexture=ironfence_dam2
-		Size=24,48
+	Texture=
+		Name=ironfence
+		Dimensions=24,48
+	SlightDamageTexture=
+		Name=ironfence_dam1
+		Dimensions=24,48
+	HeavyDamageTexture=
+		Name=ironfence_dam2
+		Dimensions=24,48
 	DamagePenetration=0.5
 	IsTransparent=true
 	ConsiderWallsNearby=true
 	Health=300
 	WallOnDeath=9
 	Armor=stone
-
-

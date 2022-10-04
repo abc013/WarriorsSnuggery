@@ -8,8 +8,13 @@ namespace WarriorsSnuggery.Graphics
 		readonly string filepath;
 		readonly Texture[] textures;
 
+		[Require, Desc("Name of the sprite file.")]
+		public readonly PackageFile Name;
+		[Require, Desc("Dimensions of the sprite.")]
+		public readonly MPos Dimensions;
+
 		[Desc("Use if you want to select a random texture out of the range.")]
-		public readonly bool Random = false;
+		public readonly bool Randomized = false;
 		[Desc("Sets the time it takes to change texture sprites.")]
 		public readonly int Tick = 20;
 
@@ -18,15 +23,13 @@ namespace WarriorsSnuggery.Graphics
 		[Desc("Reverses the animation sequence.")]
 		public readonly bool ReverseAnimation;
 
-		[Require, Desc("Dimensions of the sprite.")]
-		public readonly MPos Size;
+		public int Width => Dimensions.X;
+		public int Height => Dimensions.Y;
 
-		public int Width => Size.X;
-		public int Height => Size.Y;
-
-		public TextureInfo(TextNode node) : this(new PackageFile(node.Value), new MPos(0, 0), load: false)
+		public TextureInfo(TextNode node)
 		{
 			TypeLoader.SetValues(this, node.Children);
+			filepath = FileExplorer.FindIn(Name.Package.ContentDirectory, Name.File, ".png");
 			textures = SheetManager.AddSprite(filepath, Width, Height);
 
 			if (AnimationIndeces != null)
@@ -42,7 +45,7 @@ namespace WarriorsSnuggery.Graphics
 		public TextureInfo(PackageFile packageFile) : this(packageFile, new MPos(0, 0), load: false)
 		{
 			textures = SheetManager.AddTexture(filepath, out var width, out var height);
-			Size = new MPos(width, height);
+			Dimensions = new MPos(width, height);
 		}
 
 		public TextureInfo(PackageFile packageFile, MPos bounds, bool randomized = false, int tick = 0) : this(packageFile, bounds, randomized, tick, load: true) { }
@@ -50,12 +53,13 @@ namespace WarriorsSnuggery.Graphics
 
 		TextureInfo(PackageFile packageFile, MPos bounds, bool randomized = false, int tick = 0, bool load = true)
 		{
-			filepath = FileExplorer.FindIn(packageFile.Package.ContentDirectory, packageFile.File, ".png");
+			Name = packageFile;
+			filepath = FileExplorer.FindIn(Name.Package.ContentDirectory, Name.File, ".png");
 
-			Random = randomized;
+			Randomized = randomized;
 			Tick = tick;
 
-			Size = bounds;
+			Dimensions = bounds;
 
 			if (load)
 				textures = SheetManager.AddSprite(filepath, Width, Height);
@@ -66,7 +70,7 @@ namespace WarriorsSnuggery.Graphics
 			if (textures == null)
 				throw new System.Exception($"Tried to fetch textures from unloaded TextureInfo ({filepath}).");
 
-			if (Random)
+			if (Randomized)
 				return new[] { textures[Program.SharedRandom.Next(textures.Length)] };
 
 			return ReverseAnimation ? textures.Reverse().ToArray() : textures;

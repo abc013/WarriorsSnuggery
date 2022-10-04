@@ -5,6 +5,8 @@
 	{
 		[Desc("When true, this actor is unlocked from the beginning of the Game.")]
 		public readonly bool Unlocked;
+		[Desc("Trophies that are required to unlock this actor.")]
+		public readonly string[] TrophyRequirements;
 
 		[Desc("Cost to unlock this actor.")]
 		public readonly int UnlockCost;
