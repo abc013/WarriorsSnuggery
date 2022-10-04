@@ -74,7 +74,7 @@ namespace WarriorsSnuggery.Objects.Weapons.Warheads
 						if (!actor.IsAlive || actor.Health == null || actor == weapon.Origin)
 							continue;
 
-						if (actor.Team == weapon.Team)
+						if (weapon.Team != Actor.NeutralTeam && actor.Team == weapon.Team)
 							continue;
 
 						var dist = (target.Position - actor.Position).FlatDist;
