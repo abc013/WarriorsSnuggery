@@ -121,7 +121,7 @@ portion_green=
 		ConsiderWorldAmbient=false
 
 gold=
-	AnimatedSprite=
+	Sprite=
 		Name=money_gold
 		Dimensions=8,8
 		Tick=10
@@ -145,7 +145,7 @@ gold=
 			Radius=512
 
 silver=
-	AnimatedSprite=
+	Sprite=
 		Name=money_silver
 		Dimensions=8,8
 		Tick=10
@@ -169,7 +169,7 @@ silver=
 			Radius=512
 
 blue=
-	AnimatedSprite=
+	Sprite=
 		Name=money_blue
 		Dimensions=8,8
 		Tick=10

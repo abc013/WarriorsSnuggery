@@ -29,13 +29,6 @@ namespace WarriorsSnuggery.Objects.Actors
 				customColor = image.Color;
 				return image.Textures[0];
 			}
-			var rawsprite = PartInfos.Where(s => s is AnimatedSpritePartInfo).FirstOrDefault(s => (s as AnimatedSpritePartInfo).UseAsPreview);
-			if (rawsprite != null)
-			{
-				var image = rawsprite as AnimatedSpritePartInfo;
-				customColor = image.Color;
-				return image.Textures[0];
-			}
 
 			customColor = Color.White;
 			return RuleLoader.Questionmark;

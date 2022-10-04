@@ -62,7 +62,7 @@ lamp1=
 		Color=128,128,96
 
 lamp2=
-	AnimatedSprite=
+	Sprite=
 		Name=lamp2
 		Dimensions=9,15
 		Offset=0,-64,0

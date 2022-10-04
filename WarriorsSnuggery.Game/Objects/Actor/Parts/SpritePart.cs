@@ -15,6 +15,12 @@ namespace WarriorsSnuggery.Objects.Actors.Parts
 		[Require, Desc("Size of a single frame.")]
 		public readonly MPos Dimensions;
 
+		[Desc("Frame rate (Speed of animation).")]
+		public readonly int Tick = 20;
+
+		[Desc("If true, a random start frame of the animation will be picked.")]
+		public readonly bool StartRandom = false;
+
 		[Desc("Count of facings that the sprite has.")]
 		public readonly int Facings = 1;
 
@@ -51,19 +57,23 @@ namespace WarriorsSnuggery.Objects.Actors.Parts
 		}
 	}
 
-	public class SpritePart : ActorPart, IPartRenderable
+	public class SpritePart : ActorPart, IPartRenderable, ITick
 	{
 		readonly SpritePartInfo info;
 
-		readonly BatchObject[] renderables;
+		readonly BatchRenderable[] renderables;
+		BatchRenderable renderable;
 		readonly Color variation;
 		Color cachedColor;
 		TextureFlags cachedFlags;
 
+		int currentFacing;
+		float angle;
+
 		public SpritePart(Actor self, SpritePartInfo info) : base(self)
 		{
 			this.info = info;
-			renderables = new BatchObject[info.Facings];
+			renderables = new BatchRenderable[info.Facings];
 			var frameCountPerIdleAnim = info.Textures.Length / info.Facings;
 
 			if (frameCountPerIdleAnim * info.Facings != info.Textures.Length)
@@ -78,11 +88,18 @@ namespace WarriorsSnuggery.Objects.Actors.Parts
 				if (anim.Length == 0)
 					throw new InvalidNodeException("Animation Frame count is zero. Make sure you set the bounds properly.");
 
-				var index = 0;
-				if (info.Random)
-					index = self.World.Game.SharedRandom.Next(anim.Length);
+				if (anim.Length == 1 || info.Random)
+				{
+					var index = 0;
+					if (info.Random)
+						index = self.World.Game.SharedRandom.Next(anim.Length);
 
-				renderables[i] = new BatchObject(anim[index]);
+					renderables[i] = new BatchObject(anim[index]);
+				}
+				else
+				{
+					renderables[i] = new BatchSequence(anim, info.Tick, startRandom: info.StartRandom);
+				}
 			}
 
 			if (info.ColorVariation != Color.Black)
@@ -106,7 +123,6 @@ namespace WarriorsSnuggery.Objects.Actors.Parts
 
 		public void Render()
 		{
-			var renderable = GetRenderable(self.Actions, Angle.ToFacing(self.Angle, info.Facings));
 			if (renderable != null)
 			{
 				if (!self.OnGround)
@@ -121,6 +137,22 @@ namespace WarriorsSnuggery.Objects.Actors.Parts
 				renderable.SetTextureFlags(cachedFlags);
 				renderable.Render();
 			}
+		}
+
+		public void Tick()
+		{
+			if (self.Angle != angle)
+			{
+				angle = self.Angle;
+				currentFacing = Angle.ToFacing(angle, info.Facings);
+			}
+			var last = renderable;
+			renderable = GetRenderable(self.Actions, currentFacing);
+
+			if (last == null && renderable is BatchSequence sequence)
+				sequence.Reset();
+
+			renderable?.Tick();
 		}
 
 		public void SetColor(Color color)
