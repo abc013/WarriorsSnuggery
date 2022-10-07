@@ -2,6 +2,7 @@
 using System;
 using WarriorsSnuggery.Audio.Music;
 using WarriorsSnuggery.Graphics;
+using WarriorsSnuggery.Networking.Orders;
 using WarriorsSnuggery.Objects.Weapons;
 using WarriorsSnuggery.Spells;
 
@@ -34,31 +35,24 @@ namespace WarriorsSnuggery.Objects.Actors.Parts
 			if (screenControl.ChatOpen)
 				return;
 
-			var vertical = 0;
+			byte vertical = 0;
 			if (KeyInput.IsKeyDown(Settings.GetKey("MoveUp")))
 				vertical += 1;
 			if (KeyInput.IsKeyDown(Settings.GetKey("MoveDown")))
 				vertical -= 1;
 
-			var horizontal = 0;
+			byte horizontal = 0;
 			if (KeyInput.IsKeyDown(Settings.GetKey("MoveRight")))
 				horizontal -= 1;
 			if (KeyInput.IsKeyDown(Settings.GetKey("MoveLeft")))
 				horizontal += 1;
 
-			if (vertical != 0 && horizontal != 0)
-			{
-				var verticalAngle = (2 + vertical) * 0.5f * MathF.PI;
-				var horizontalAngle = (1 + horizontal) * 0.5f * MathF.PI;
-				Self.AccelerateSelf(Angle.Cast(horizontalAngle + Angle.Diff(verticalAngle, horizontalAngle) / 2));
-			}
-			else if (vertical != 0)
-				Self.AccelerateSelf((2 + vertical) * 0.5f * MathF.PI);
-			else if (horizontal != 0)
-				Self.AccelerateSelf((1 + horizontal) * 0.5f * MathF.PI);
+			if (vertical != 0 || horizontal != 0)
+				OrderProcessor.SendOrder(new MovementOrder(vertical, horizontal));
 
 			if (Settings.DeveloperMode)
 			{
+				// TODO: not synced with server
 				if (KeyInput.IsKeyDown(Settings.GetKey("MoveAbove")))
 					Self.AccelerateHeightSelf(true);
 				if (KeyInput.IsKeyDown(Settings.GetKey("MoveBelow")))
@@ -68,7 +62,7 @@ namespace WarriorsSnuggery.Objects.Actors.Parts
 			if (Self.Weapon != null)
 			{
 				var actor = FindValidTarget(MouseInput.GamePosition);
-				Self.Weapon.Target = actor == null ? new Target(MouseInput.GamePosition) : new Target(actor);
+				// self.Weapon.Target = actor == null ? new Target(MouseInput.GamePosition) : new Target(actor);
 			}
 
 			if (MouseInput.IsLeftDown && !Self.World.Game.ScreenControl.CursorOnUI())
@@ -76,6 +70,23 @@ namespace WarriorsSnuggery.Objects.Actors.Parts
 
 			foreach (var effect in Self.GetActiveEffects(EffectType.MANA))
 				Self.World.Game.Player.Mana += (int)effect.Effect.Value;
+		}
+
+		public void OrderMovement(byte vertical, byte horizontal)
+		{
+			var v = vertical == 255 ? -1 : vertical;
+            var h = horizontal == 255 ? -1 : horizontal;
+
+            if (v != 0 && h != 0)
+			{
+				var verticalAngle = (2 + v) * 0.5f * MathF.PI;
+				var horizontalAngle = (1 + h) * 0.5f * MathF.PI;
+				Self.AccelerateSelf(Angle.Cast(horizontalAngle + Angle.Diff(verticalAngle, horizontalAngle) / 2));
+			}
+			else if (v != 0)
+				Self.AccelerateSelf((2 + v) * 0.5f * MathF.PI);
+			else if (h != 0)
+				Self.AccelerateSelf((1 + h) * 0.5f * MathF.PI);
 		}
 
 		public Actor FindValidTarget(CPos pos, int team = Actor.PlayerTeam)
@@ -114,18 +125,23 @@ namespace WarriorsSnuggery.Objects.Actors.Parts
 
 		void attackTarget(CPos pos)
 		{
-			if (KeyInput.IsKeyDown(Keys.LeftShift))
-				Self.PrepareAttack(pos);
-			else
-			{
-				var actor = FindValidTarget(pos);
-
-				if (actor == null)
-					Self.PrepareAttack(pos);
-				else
-					Self.PrepareAttack(actor);
-			}
+			OrderProcessor.SendOrder(new AttackOrder(pos));
 		}
+
+		public void OrderAttack(CPos pos)
+        {
+            if (false /*KeyInput.IsKeyDown(Keys.LeftShift)*/)
+                Self.PrepareAttack(pos);
+            else
+            {
+                var actor = FindValidTarget(pos);
+
+                if (actor == null)
+                    Self.PrepareAttack(pos);
+                else
+                    Self.PrepareAttack(actor);
+            }
+        }
 
 		void positionCamera(bool tinyMove)
 		{

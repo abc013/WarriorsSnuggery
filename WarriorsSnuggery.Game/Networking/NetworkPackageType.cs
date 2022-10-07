@@ -9,7 +9,9 @@
 		DIFF,
 		CHAT,
 		PAUSE,
-		PARTYMODE
+		PARTYMODE,
+		MOVEMENT,
+		ATTACK
 	}
 
 	/* TODO: NetworkPackageTypes should look like this:

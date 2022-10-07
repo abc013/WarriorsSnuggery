@@ -200,7 +200,15 @@ namespace WarriorsSnuggery.Networking
 					Log.Debug($"(Networking) Client {client.ID}: Requested {(partymode ? "en" : "dis")}abling Partymode.");
 					broadcast(package);
 					break;
-			}
+				case NetworkPackageType.MOVEMENT:
+					Log.Debug($"(Networking) Client {client.ID}: Movement '{package.Content[0]}, {package.Content[1]}' requested.");
+					broadcast(package);
+					break;
+                case NetworkPackageType.ATTACK:
+                    Log.Debug($"(Networking) Client {client.ID}: Weapon fire requested.");
+                    broadcast(package);
+                    break;
+            }
 		}
 
 		void broadcastMessage(string message)

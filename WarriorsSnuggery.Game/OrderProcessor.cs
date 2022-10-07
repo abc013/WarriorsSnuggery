@@ -1,6 +1,7 @@
 ﻿using System;
 using WarriorsSnuggery.Networking;
 using WarriorsSnuggery.Networking.Orders;
+using WarriorsSnuggery.Objects.Actors.Parts;
 
 namespace WarriorsSnuggery
 {
@@ -79,7 +80,13 @@ namespace WarriorsSnuggery
 					case PartyModeOrder p:
 						Settings.PartyMode = p.PartyMode;
 						break;
-				}
+					case MovementOrder m:
+						game.World.LocalPlayer.GetPart<PlayerPart>().OrderMovement(m.Vertical, m.Horizontal);
+						break;
+                    case AttackOrder a:
+                        game.World.LocalPlayer.GetPart<PlayerPart>().OrderAttack(a.Target);
+                        break;
+                }
 			}
 		}
 
