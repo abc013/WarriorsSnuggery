@@ -35,7 +35,8 @@ void main(void)
 	if (vs_textureFlags != 1 && vs_textureFlags != 3)
 		color *= proximityColor;
 
-	if (vs_textureFlags == 2 || vs_textureFlags == 3)
+	// check whether we have a shadow and whether hiding is enabled
+	if (!(color.r == 0.0 && color.g == 0.0 && color.b == 0.0 && color.a < 1.0) && (vs_textureFlags == 2 || vs_textureFlags == 3))
 	{
 		float hideDiff = length(vec2(vs_hideDistance.x, vs_hideDistance.y * 2));
 		color.a *= min(1, (hideDiff * hideDiff) / (4 * 4) + 0.3);
