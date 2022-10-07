@@ -32,6 +32,7 @@ namespace WarriorsSnuggery.Maps
 		public readonly Dictionary<int, NoiseMap> NoiseMaps = new Dictionary<int, NoiseMap>();
 		public readonly List<Waypoint> Waypoints = new List<Waypoint>();
 		public readonly List<MPos> PatrolSpawnLocations = new List<MPos>();
+		public readonly List<MPos> PatrolSpawnedLocations = new List<MPos>();
 
 		public Map(World world, MapType type, int seed, int level, int difficulty)
 		{

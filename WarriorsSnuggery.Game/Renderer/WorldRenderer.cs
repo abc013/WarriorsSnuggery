@@ -196,7 +196,13 @@ namespace WarriorsSnuggery
 					world.Map.NoiseMaps[Settings.CurrentMap].Render();
 
 				foreach (var point in world.Map.Waypoints)
-					ColorManager.DrawDot(point.Position.ToCPos(), Color.Red);
+					ColorManager.DrawDot(point.Position.ToCPos(), Color.Cyan);
+
+				foreach (var point in world.Map.PatrolSpawnLocations)
+					ColorManager.DrawDot(point.ToCPos(), Color.Yellow);
+
+				foreach (var point in world.Map.PatrolSpawnedLocations)
+					ColorManager.DrawDot(point.ToCPos(), Color.Red);
 
 				MasterRenderer.RenderBatch();
 				CameraVisibility.GetClampedBounds(out var position, out var bounds);

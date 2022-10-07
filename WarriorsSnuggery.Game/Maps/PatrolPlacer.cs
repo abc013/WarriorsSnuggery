@@ -97,13 +97,13 @@ namespace WarriorsSnuggery.Maps
 				count = positions.Count;
 			}
 
-			CPos selectRandomSpawn()
+			MPos selectRandomSpawn()
 			{
 				var index = random.Next(positions.Count);
 				var spawn = positions[index];
 				positions.RemoveAt(index);
 
-				return spawn.ToCPos();
+				return spawn;
 			}
 
 			var actors = new List<Actor>();
@@ -117,7 +117,7 @@ namespace WarriorsSnuggery.Maps
 				var unitCount = patrol.ActorTypes.Length;
 
 				var types = new List<ActorType>(patrol.ActorTypes);
-				var group = ActorDistribution.DistributeAround(world, mid, types, patrol.ObjectMargin, info.Team, info.AreBots);
+				var group = ActorDistribution.DistributeAround(world, mid.ToCPos(), types, patrol.ObjectMargin, info.Team, info.AreBots);
 
 				if (group.Count == 0)
 				{
@@ -141,6 +141,8 @@ namespace WarriorsSnuggery.Maps
 					if (actor.Bot != null)
 						actor.Bot.Patrol = groupPatrol;
 				}
+
+				map.PatrolSpawnedLocations.Add(mid);
 			}
 
 			return actors;

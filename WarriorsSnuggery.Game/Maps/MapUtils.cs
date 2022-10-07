@@ -6,8 +6,8 @@ namespace WarriorsSnuggery.Maps
 {
 	public static class MapUtils
 	{
-		public static readonly MPos MinimumMapBounds = new MPos(32, 32);
-		public static readonly MPos MaximumMapBounds = new MPos(512, 512);
+		public static readonly MPos MinimumMapBounds = new MPos(24, 24);
+		public static readonly MPos MaximumMapBounds = new MPos(128, 128);
 
 		public static MPos[] FindValuesInArea(MPos position, int searchRadius, int[] value, int[,] array, MPos bounds)
 		{
