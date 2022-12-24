@@ -23,8 +23,8 @@ namespace WarriorsSnuggery.Maps.Pieces
 		public uint MaxWeaponID => weapons.Count > 0 ? weapons.Max(n => n.ID) : 0;
 
 		readonly ushort[] groundData;
-		readonly short[] wallData;
 
+		readonly List<WallInit> walls = new List<WallInit>();
 		readonly List<ActorInit> actors = new List<ActorInit>();
 		readonly List<WeaponInit> weapons = new List<WeaponInit>();
 		readonly List<ParticleInit> particles = new List<ParticleInit>();
@@ -46,7 +46,31 @@ namespace WarriorsSnuggery.Maps.Pieces
 
 						break;
 					case "Walls":
-						wallData = node.Convert<short[]>();
+						if (MapFormat < 4)
+						{
+							var wallData = node.Convert<short[]>();
+
+							for (uint i = 0; i < wallData.Length; i += 2)
+							{
+								if (wallData[i] < 0)
+									continue;
+
+								var wallID = i / 2;
+								var x = ((int)wallID % ((Size.X + 1) * 2));
+								var y = ((int)wallID / ((Size.X + 1) * 2));
+
+								walls.Add(new WallInit(wallID, new WPos(x / 2, y, x % 2 == 1), wallData[i], wallData[i + 1]));
+							}
+						}
+						else
+						{
+							foreach (var wall in node.Children)
+							{
+								var id = uint.Parse(wall.Key);
+
+								walls.Add(new WallInit(id, wall.Children, MapFormat));
+							}
+						}
 
 						break;
 					case "Actors":
@@ -129,9 +153,6 @@ namespace WarriorsSnuggery.Maps.Pieces
 
 			if (groundData.Length != Size.X * Size.Y)
 				throw new InvalidPieceException($"The count of given terrains ({groundData.Length}) is not the size ({Size.X * Size.Y}) of the piece '{Name}'");
-
-			if (wallData.Length != (Size.X + 1) * (Size.Y + 1) * 2 * 2)
-				throw new InvalidPieceException($"The count of given walls ({groundData.Length}) is smaller as the size ({Size.X * Size.Y}) on the piece '{Name}'");
 		}
 
 		public void PlacePiece(MPos position, MapLoader loader)
@@ -153,33 +174,28 @@ namespace WarriorsSnuggery.Maps.Pieces
 			}
 
 			// generate Walls
-			if (wallData.Length != 0)
+			var offset = new WPos(position.X, position.Y, false);
+			var maxX = (Size.X + 1) * 2 + offset.X;
+			var maxY = (Size.Y + 1) + offset.Y;
+
+			foreach (var wall in walls)
 			{
-				var maxX = (Size.X + 1 + position.X) * 2;
-				var maxY = (Size.Y + 1 + position.Y);
-				for (int y = position.Y; y < maxY; y++)
+				var x = offset.X + wall.Position.X;
+				var y = offset.Y + wall.Position.Y;
+				var id = wall.TypeID;
+
+				if (id >= 0)
 				{
-					for (int x = position.X * 2; x < maxX; x++)
+					if (Settings.LoadSoft && !WallCache.Types.ContainsKey(id))
 					{
-						var dataPos = (y - position.Y) * (Size.X + 1) * 2 + (x - position.X * 2);
-						dataPos *= 2;
-
-						var id = wallData[dataPos];
-
-						if (id >= 0)
-						{
-							if (Settings.LoadSoft && !WallCache.Types.ContainsKey(id))
-							{
-								Log.LoaderWarning("Pieces", $"[{PackageFile}] Attempted to load wall of nonexistent type {id}. Skipping.");
-								continue;
-							}
-
-							loader.SetWall(x, y, id, wallData[dataPos + 1]);
-						}
-						else if (loader.WallExists(x, y) && x != position.X * 2 && y != position.Y && y != maxY - 1 && !(x >= maxX - 2))
-							loader.SetWall(x, y, 0, 0);
+						Log.LoaderWarning("Pieces", $"[{PackageFile}] Attempted to load wall of nonexistent type {id}. Skipping.");
+						continue;
 					}
+
+					loader.SetWall(x, y, id, wall.Health);
 				}
+				else if (loader.WallExists(x, y) && x != offset.X && y != offset.Y && y != maxY - 1 && !(x >= maxX - 2))
+					loader.SetWall(x, y, 0, 0);
 			}
 
 			// generate Actors

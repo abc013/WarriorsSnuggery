@@ -96,16 +96,13 @@ namespace WarriorsSnuggery.Maps.Layers
 			var x = terrainPosition.X;
 			var y = terrainPosition.Y;
 
+			if (!(y > 0 && y < bounds.Y && x > 0 && x < bounds.X))
+				return;
+
 			if (wallPosition.IsHorizontal())
-			{
-				if (y > 0 && y < bounds.Y)
-					connect(wall, cells[x, y - 1], cells[x, y]);
-			}
+				connect(wall, cells[x, y - 1], cells[x, y]);
 			else
-			{
-				if (x > 0 && x < bounds.X)
-					connect(wall, cells[x - 1, y], cells[x, y]);
-			}
+				connect(wall, cells[x - 1, y], cells[x, y]);
 		}
 		
 		public List<MPos> CalculatePath(MPos start, MPos end, bool flying = false)

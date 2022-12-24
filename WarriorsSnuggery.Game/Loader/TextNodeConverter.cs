@@ -104,6 +104,16 @@ namespace WarriorsSnuggery.Loader
 						return new MPos(x, y);
 				}
 			}
+			else if (t == typeof(WPos))
+			{
+				var parts = value.Split(',');
+
+				if (parts.Length == 2)
+				{
+					if (int.TryParse(parts[0], out int x) && int.TryParse(parts[1], out int y))
+						return new WPos(x / 2, y, x % 2 == 1);
+				}
+			}
 			else if (t == typeof(CPos))
 			{
 				var parts = value.Split(',');

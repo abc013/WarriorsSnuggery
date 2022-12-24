@@ -23,9 +23,6 @@ namespace WarriorsSnuggery.Maps.Pieces
 
 				var terrain = string.Join(",", Enumerable.Repeat("0", size.X * size.Y));
 				stream.WriteLine("Terrain=" + terrain);
-
-				var walls = string.Join(",", Enumerable.Repeat("-1", (size.X + 1) * (size.Y + 1) * 2 * 2));
-				stream.WriteLine("Walls=" + walls);
 			}
 
 			// Load piece into cache, overwrite the old if there is one.
@@ -86,28 +83,20 @@ namespace WarriorsSnuggery.Maps.Pieces
 
 		void writeWallLayer(StreamWriter writer)
 		{
-			const string text = "Walls=";
+			if (world.WallLayer.WallList.Count == 0)
+				return;
 
-			var wallSize = world.WallLayer.Bounds;
-			var builder = new StringBuilder(text.Length + wallSize.X * wallSize.Y * 5, text.Length + wallSize.X * wallSize.Y * 12);
+			writer.WriteLine("Walls=");
 
-			builder.Append(text);
-			for (int y = 0; y < wallSize.Y - 1; y++)
+			var i = 0u;
+			foreach (var wall in world.WallLayer.WallList)
 			{
-				for (int x = 0; x < wallSize.X - 1; x++)
-				{
-					var wall = world.WallLayer.Walls[x, y];
-					if (wall == null)
-						builder.Append("-1,0,");
-					else
-						builder.Append(wall.Type.ID + "," + wall.Health + ",");
-				}
+				writer.WriteLine($"\t{i++}=");
+				writer.WriteLine($"\t\tType={wall.Type.ID}");
+				writer.WriteLine($"\t\tPosition={wall.LayerPosition}");
+				if (wall.Health != 0)
+					writer.WriteLine($"\t\tHealth={wall.Health}");
 			}
-
-			builder.Remove(builder.Length - 1, 1);
-
-			writer.WriteLine(builder);
-			builder.Clear();
 		}
 
 		void writeActorLayer(StreamWriter writer)
