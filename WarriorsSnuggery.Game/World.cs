@@ -358,18 +358,13 @@ namespace WarriorsSnuggery
 
 		public void ApplyDiff(GameDiffData data)
 		{
-			// var save = new GameSave(data.SaveNodes, "DIFF", data.MapNodes);
 			var piece = new GameDiffPiece(data.MapNodes);
 
 			foreach (var actor in ActorLayer.Actors)
 			{
 				var init = piece.actorInits.FirstOrDefault(a => a.ID == actor.ID);
-
-				// Desync?
-				if (init == null)
-					ActorLayer.Remove(actor);
-
-				actor.Position = init.Position;
+				if (init != null)
+					actor.Position = init.Position;
 			}
 		}
 	}

@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using WarriorsSnuggery.Graphics;
@@ -62,6 +63,8 @@ namespace WarriorsSnuggery.Objects.Actors
 		public readonly WeaponPart Weapon;
 		public readonly WorldPart WorldPart;
 		public readonly BotPart Bot;
+
+		public event Action<Actor> OnPropertyChanged;
 
 		[Save, DefaultValue(null)]
 		public readonly string ScriptTag;
@@ -333,6 +336,8 @@ namespace WarriorsSnuggery.Objects.Actors
 
 		internal void Move(CPos old)
 		{
+			OnPropertyChanged?.Invoke(this);
+
 			foreach (var part in moveParts)
 				part.OnMove(old, Mobile.Velocity);
 

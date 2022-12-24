@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using WarriorsSnuggery.Loader;
+using WarriorsSnuggery.Maps.Pieces;
 using WarriorsSnuggery.Objects.Actors;
 
 namespace WarriorsSnuggery.Maps.Layers
@@ -9,6 +10,8 @@ namespace WarriorsSnuggery.Maps.Layers
 	public sealed class ActorLayer : ISaveable
 	{
 		public const int SectorSize = 4;
+
+		public readonly HashSet<Actor> ChangedActors = new HashSet<Actor>();
 
 		public readonly List<Actor> Actors = new List<Actor>();
 		public readonly List<Actor> TaggedActors = new List<Actor>();
@@ -33,6 +36,7 @@ namespace WarriorsSnuggery.Maps.Layers
 		public void Add(Actor actor)
 		{
 			actorsToAdd.Add(actor);
+			actor.OnPropertyChanged += OnActorPropertyChanged;
 		}
 
 		public void Update(Actor actor, bool first = false)
@@ -49,6 +53,11 @@ namespace WarriorsSnuggery.Maps.Layers
 			
 			actor.Sector = newSector;
 		}
+
+		public void OnActorPropertyChanged(Actor actor)
+		{
+            ChangedActors.Add(actor);
+        }
 
 		ActorSector getSector(Actor actor)
 		{
@@ -86,7 +95,8 @@ namespace WarriorsSnuggery.Maps.Layers
 		public void Remove(Actor actor)
 		{
 			actorsToRemove.Add(actor);
-		}
+            actor.OnPropertyChanged -= OnActorPropertyChanged;
+        }
 
 		public void Tick()
 		{
@@ -142,14 +152,17 @@ namespace WarriorsSnuggery.Maps.Layers
 			return actorsToAdd;
 		}
 
-		public TextNodeSaver Save() => Save(false);
+		public TextNodeSaver Save() => Save(PieceSaverType.EDITOR);
 
-		public TextNodeSaver Save(bool gameSave)
+		public TextNodeSaver Save(PieceSaverType saverType)
 		{
 			var saver = new TextNodeSaver();
-			for (int i = 0; i < Actors.Count; i++)
-				saver.AddChildren($"{(gameSave ? Actors[i].ID : i)}", Actors[i].Save());
 
+			IEnumerable<Actor> actors = saverType == PieceSaverType.DIFF ? ChangedActors : Actors;
+			for (int i = 0; i < actors.Count(); i++)
+				saver.AddChildren($"{(saverType != PieceSaverType.EDITOR ? actors.ElementAt(i).ID : i)}", actors.ElementAt(i).Save());
+
+			ChangedActors.Clear();
 			return saver;
 		}
 	}
