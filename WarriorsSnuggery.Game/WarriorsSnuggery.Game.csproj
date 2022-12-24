@@ -10,7 +10,7 @@
   </PropertyGroup>
 
   <PropertyGroup>
-    <TargetFramework>net6.0</TargetFramework>
+    <TargetFramework>net7.0</TargetFramework>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <ApplicationIcon>warsnu.ico</ApplicationIcon>
     <OutDir>..\</OutDir>
@@ -19,7 +19,7 @@
 
   <ItemGroup>
     <Content Include="warsnu.ico" />
-    <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="4.3.0" />
+    <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="4.4.0" />
     <PackageReference Include="OpenAL.Soft" Version="1.19.1" />
     <PackageReference Include="OpenTK" Version="4.7.5" />
     <PackageReference Include="SixLabors.ImageSharp" Version="2.1.3" />
