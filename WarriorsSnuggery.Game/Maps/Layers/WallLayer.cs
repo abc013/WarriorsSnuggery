@@ -8,7 +8,6 @@ namespace WarriorsSnuggery.Maps.Layers
 	public sealed class WallLayer : IRenderable
 	{
 		public readonly List<Wall> WallList = new List<Wall>();
-		public readonly List<Wall> VisibleWalls = new List<Wall>();
 		readonly World world;
 		readonly ShroudLayer shroudLayer;
 		readonly PathfinderLayer pathfinderLayer;
@@ -53,8 +52,6 @@ namespace WarriorsSnuggery.Maps.Layers
 			Walls[wall.LayerPosition.X, wall.LayerPosition.Y] = wall;
 			notifyNeighbors(wall.LayerPosition, true, wall.Type.IgnoreForNearby);
 			WallList.Add(wall);
-			if (wall.CheckVisibility())
-				VisibleWalls.Add(wall);
 
 			pathfinderLayer.SetWall(wall);
 			if (wall.IsHorizontal)
@@ -73,7 +70,6 @@ namespace WarriorsSnuggery.Maps.Layers
 
 			wall.Dispose();
 			WallList.Remove(wall);
-			VisibleWalls.Remove(wall);
 			Walls[pos.X, pos.Y] = null;
 			notifyNeighbors(pos, false, false);
 
@@ -254,25 +250,21 @@ namespace WarriorsSnuggery.Maps.Layers
 				Walls[pos.X, pos.Y].SetNeighborState(s, true);
 		}
 
-		public void CheckVisibility()
+		public HashSet<Wall> GetVisible(MPos bottomleft, MPos topright)
 		{
-			VisibleWalls.Clear();
-			VisibleWalls.AddRange(WallList.Where(w => w.CheckVisibility()));
-		}
-
-		public void CheckVisibility(MPos bottomleft, MPos topright)
-		{
-			VisibleWalls.Clear();
+			var visibleWalls = new HashSet<Wall>();
 
 			for (int x = bottomleft.X; x < topright.X * 2 + 1; x++)
 			{
 				for (int y = bottomleft.Y; y < topright.Y + 1; y++)
 				{
 					var wall = Walls[x, y];
-					if (wall != null && wall.CheckVisibility())
-						VisibleWalls.Add(wall);
+					if (wall != null)
+						visibleWalls.Add(wall);
 				}
 			}
+
+			return visibleWalls;
 		}
 
 		public void Render()

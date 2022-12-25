@@ -206,6 +206,9 @@ namespace WarriorsSnuggery
 
 				MasterRenderer.RenderBatch();
 				CameraVisibility.GetClampedBounds(out var position, out var bounds);
+				var topLeft = position.ToCPos();
+				var bottomRight = position.ToCPos() + bounds.ToCPos();
+
 				var sectorPos = new MPos(position.X / PhysicsLayer.SectorSize, position.Y / PhysicsLayer.SectorSize);
 				var sectorBounds = new MPos((int)Math.Ceiling(bounds.X / (float)PhysicsLayer.SectorSize), (int)Math.Ceiling(bounds.Y / (float)PhysicsLayer.SectorSize));
 
@@ -217,10 +220,10 @@ namespace WarriorsSnuggery
 
 				world.PathfinderLayer.RenderDebug();
 
-				foreach (var actor in world.ActorLayer.VisibleActors)
+				foreach (var actor in world.ActorLayer.GetVisible(topLeft, bottomRight))
 					actor.Physics.RenderDebug();
 
-				foreach (var wall in world.WallLayer.VisibleWalls)
+				foreach (var wall in world.WallLayer.GetVisible(position, position + bounds))
 					wall.Physics.RenderDebug();
 
 				MasterRenderer.RenderBatch(asLines: true);
@@ -230,13 +233,16 @@ namespace WarriorsSnuggery
 
 		static IEnumerable<PositionableObject> prepareRenderList()
 		{
-			var count = world.Objects.Count + world.ActorLayer.VisibleActors.Count + world.WeaponLayer.VisibleWeapons.Count + world.ParticleLayer.VisibleParticles.Count + world.WallLayer.VisibleWalls.Count;
-			var renderables = new List<PositionableObject>(count);
+			CameraVisibility.GetClampedBounds(out var position, out var bounds);
+			var topLeft = position.ToCPos();
+			var bottomRight = position.ToCPos() + bounds.ToCPos();
+
+			var renderables = new List<PositionableObject>(world.Objects.Count);
 			renderables.AddRange(world.Objects);
-			renderables.AddRange(world.ActorLayer.VisibleActors);
-			renderables.AddRange(world.WeaponLayer.VisibleWeapons);
-			renderables.AddRange(world.ParticleLayer.VisibleParticles);
-			renderables.AddRange(world.WallLayer.VisibleWalls);
+			renderables.AddRange(world.ActorLayer.GetVisible(topLeft, bottomRight));
+			renderables.AddRange(world.WeaponLayer.GetVisible());
+			renderables.AddRange(world.ParticleLayer.GetVisible(topLeft, bottomRight));
+			renderables.AddRange(world.WallLayer.GetVisible(position, position + bounds));
 
 			return renderables.OrderBy(e => e.GraphicPosition.Z + (e.Position.Y - 512) * 2);
 		}
@@ -269,16 +275,6 @@ namespace WarriorsSnuggery
 
 		public static void CheckVisibilityAll()
 		{
-			foreach (Terrain t in world.TerrainLayer.Terrain)
-				t.CheckVisibility(true);
-
-			world.WallLayer.CheckVisibility();
-			world.ActorLayer.CheckVisibility();
-			world.ParticleLayer.CheckVisibility();
-			world.WeaponLayer.CheckVisibility();
-
-			world.SmudgeLayer.CheckVisibility();
-
 			foreach (var o in world.Objects)
 				o.CheckVisibility();
 		}
@@ -314,26 +310,6 @@ namespace WarriorsSnuggery
 			var margin = new CPos(Settings.VisibilityMargin, Settings.VisibilityMargin, 0);
 			var topLeft = pos - zoomPos - margin;
 			var bottomRight = pos + zoomPos + margin;
-			check(topLeft, bottomRight);
-
-			CameraVisibility.GetClampedBounds(out var position, out var bounds);
-
-			for (int x = position.X; x < position.X + bounds.X; x++)
-			{
-				for (int y = position.Y; y < position.Y + bounds.Y; y++)
-					world.TerrainLayer.Terrain[x, y].CheckVisibility();
-			}
-
-			world.WallLayer.CheckVisibility(position, position + bounds);
-		}
-
-		static void check(CPos topLeft, CPos bottomRight)
-		{
-			world.ActorLayer.CheckVisibility(topLeft, bottomRight);
-			world.ParticleLayer.CheckVisibility(topLeft, bottomRight);
-			world.WeaponLayer.CheckVisibility(topLeft, bottomRight);
-
-			world.SmudgeLayer.CheckVisibility(topLeft, bottomRight);
 
 			var objects = world.Objects.Where(a => a.GraphicPosition.X > topLeft.X && a.GraphicPosition.X < bottomRight.X && a.GraphicPosition.Y > topLeft.Y && a.GraphicPosition.Y < bottomRight.Y);
 			foreach (var o in objects)

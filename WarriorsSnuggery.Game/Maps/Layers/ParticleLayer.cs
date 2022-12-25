@@ -9,15 +9,12 @@ namespace WarriorsSnuggery.Maps.Layers
 	{
 		public const int SectorSize = 4;
 		public readonly List<Particle> Particles = new List<Particle>();
-		public readonly List<Particle> VisibleParticles = new List<Particle>();
 
 		readonly List<Particle> particlesToRemove = new List<Particle>();
 		readonly List<Particle> particlesToAdd = new List<Particle>();
 
 		readonly ParticleSector[,] sectors;
 		readonly MPos bounds;
-
-		bool firstTick = true;
 
 		public ParticleLayer(MPos bounds)
 		{
@@ -50,10 +47,6 @@ namespace WarriorsSnuggery.Maps.Layers
 					oldSector.Leave(particle);
 				newSector.Enter(particle);
 			}
-
-			var wasVisible = particle.Visible;
-			if (particle.CheckVisibility() && !wasVisible)
-				VisibleParticles.Add(particle);
 
 			particle.Sector = newSector;
 		}
@@ -108,19 +101,14 @@ namespace WarriorsSnuggery.Maps.Layers
 				particlesToAdd.Clear();
 			}
 
-			if (!firstTick)
-			{
-				foreach (var particle in Particles)
-					particle.Tick();
-			}
-			firstTick = false;
+			foreach (var particle in Particles)
+				particle.Tick();
 
 			if (particlesToRemove.Count != 0)
 			{
 				foreach (var particle in particlesToRemove)
 				{
 					Particles.Remove(particle);
-					VisibleParticles.Remove(particle);
 
 					particle.Sector.Leave(particle);
 				}
@@ -128,27 +116,15 @@ namespace WarriorsSnuggery.Maps.Layers
 			}
 		}
 
-		public void CheckVisibility()
+		public HashSet<Particle> GetVisible(CPos topleft, CPos bottomright)
 		{
-			VisibleParticles.Clear();
-			VisibleParticles.AddRange(Particles.Where(p => p.CheckVisibility()));
-		}
-
-		public void CheckVisibility(CPos topleft, CPos bottomright)
-		{
+			var visibleParticles = new List<Particle>();
 			var sectors = getSectors(topleft, bottomright);
 
 			foreach (var sector in sectors)
-			{
-				foreach (var p in sector.Particles)
-				{
-					var wasVisible = p.Visible;
-					if (p.CheckVisibility() && !wasVisible)
-						VisibleParticles.Add(p);
-				}
-			}
+				visibleParticles.AddRange(sector.Particles);
 
-			VisibleParticles.RemoveAll(p => !p.Visible);
+			return visibleParticles.ToHashSet();
 		}
 
 		public void Dispose()

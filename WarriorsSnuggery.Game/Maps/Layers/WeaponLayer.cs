@@ -8,7 +8,6 @@ namespace WarriorsSnuggery.Maps.Layers
 	{
 		// There are not many weapons ingame, so no sectors are needed
 		public readonly List<Weapon> Weapons = new List<Weapon>();
-		public readonly List<Weapon> VisibleWeapons = new List<Weapon>();
 
 		readonly List<Weapon> weaponsToRemove = new List<Weapon>();
 		readonly List<Weapon> weaponsToAdd = new List<Weapon>();
@@ -31,10 +30,6 @@ namespace WarriorsSnuggery.Maps.Layers
 		{
 			if (weaponsToAdd.Count != 0)
 			{
-				foreach (var weapon in weaponsToAdd)
-					if (weapon.CheckVisibility())
-						VisibleWeapons.Add(weapon);
-
 				Weapons.AddRange(weaponsToAdd);
 				weaponsToAdd.Clear();
 			}
@@ -49,29 +44,14 @@ namespace WarriorsSnuggery.Maps.Layers
 			if (weaponsToRemove.Count != 0)
 			{
 				foreach (var weapon in weaponsToRemove)
-				{
 					Weapons.Remove(weapon);
-					VisibleWeapons.Remove(weapon);
-				}
 				weaponsToRemove.Clear();
 			}
 		}
 
-		public void CheckVisibility()
+		public HashSet<Weapon> GetVisible()
 		{
-			VisibleWeapons.Clear();
-			VisibleWeapons.AddRange(Weapons.Where(w => w.CheckVisibility()));
-		}
-
-		public void CheckVisibility(CPos topLeft, CPos bottomRight)
-		{
-			VisibleWeapons.Clear();
-
-			foreach (var w in Weapons.Where(a => a.GraphicPosition.X > topLeft.X && a.GraphicPosition.X < bottomRight.X && a.GraphicPosition.Y > topLeft.Y && a.GraphicPosition.Y < bottomRight.Y))
-			{
-				if (w.CheckVisibility())
-					VisibleWeapons.Add(w);
-			}
+			return Weapons.Where(w => w.CheckVisibility()).ToHashSet();
 		}
 
 		public void Dispose()

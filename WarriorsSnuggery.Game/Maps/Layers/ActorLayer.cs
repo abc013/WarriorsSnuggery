@@ -12,7 +12,6 @@ namespace WarriorsSnuggery.Maps.Layers
 		public readonly List<Actor> Actors = new List<Actor>();
 		public readonly List<Actor> TaggedActors = new List<Actor>();
 		public readonly List<Actor> NonNeutralActors = new List<Actor>();
-		public readonly List<Actor> VisibleActors = new List<Actor>();
 
 		readonly List<Actor> actorsToRemove = new List<Actor>();
 		readonly List<Actor> actorsToAdd = new List<Actor>();
@@ -46,9 +45,6 @@ namespace WarriorsSnuggery.Maps.Layers
 					oldSector.Leave(actor);
 				newSector.Enter(actor);
 			}
-
-			if (actor.CheckVisibility() && !VisibleActors.Contains(actor))
-				VisibleActors.Add(actor);
 			
 			actor.Sector = newSector;
 		}
@@ -117,7 +113,6 @@ namespace WarriorsSnuggery.Maps.Layers
 				foreach (var actor in actorsToRemove)
 				{
 					Actors.Remove(actor);
-					VisibleActors.Remove(actor);
 
 					if (!string.IsNullOrEmpty(actor.ScriptTag))
 						TaggedActors.Remove(actor);
@@ -130,25 +125,15 @@ namespace WarriorsSnuggery.Maps.Layers
 			}
 		}
 
-		public void CheckVisibility()
+		public HashSet<Actor> GetVisible(CPos topleft, CPos bottomright)
 		{
-			VisibleActors.Clear();
-			VisibleActors.AddRange(Actors.Where(a => a.CheckVisibility()));
-		}
-
-		public void CheckVisibility(CPos topleft, CPos bottomright)
-		{
-			VisibleActors.Clear();
+			var visibleActors = new List<Actor>();
 			var sectors = getSectors(topleft, bottomright);
 
 			foreach (var sector in sectors)
-			{
-				foreach (var a in sector.Actors)
-				{
-					if (a.CheckVisibility())
-						VisibleActors.Add(a);
-				}
-			}
+				visibleActors.AddRange(sector.Actors);
+
+			return visibleActors.ToHashSet();
 		}
 
 		public List<Actor> ToAdd()
