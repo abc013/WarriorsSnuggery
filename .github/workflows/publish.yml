@@ -12,7 +12,7 @@ jobs:
     - name: Setup .NET
       uses: actions/setup-dotnet@v1
       with:
-        dotnet-version: 6.0.x
+        dotnet-version: 7.0.x
     - name: Publish
       run: dotnet publish /p:PublishProfile=windows_x64 --nologo
     - name: Archive published binaries
@@ -31,7 +31,7 @@ jobs:
     - name: Setup .NET
       uses: actions/setup-dotnet@v1
       with:
-        dotnet-version: 6.0.x
+        dotnet-version: 7.0.x
     - name: Publish
       run: dotnet publish /p:PublishProfile=linux_x64 --nologo
     - name: Archive published binaries
@@ -50,7 +50,7 @@ jobs:
     - name: Setup .NET
       uses: actions/setup-dotnet@v1
       with:
-        dotnet-version: 6.0.x
+        dotnet-version: 7.0.x
     - name: Publish
       run: dotnet publish /p:PublishProfile=osx_x64 --nologo
     - name: Archive published binaries
