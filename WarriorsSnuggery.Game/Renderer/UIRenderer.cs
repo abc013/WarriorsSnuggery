@@ -1,5 +1,4 @@
 using OpenTK.Mathematics;
-using System.Collections.Generic;
 using WarriorsSnuggery.Graphics;
 using WarriorsSnuggery.Objects.Actors.Parts;
 using WarriorsSnuggery.UI;
@@ -11,9 +10,6 @@ namespace WarriorsSnuggery
 		static Game game;
 
 		static Matrix4 matrix;
-
-		static readonly List<IRenderable> beforeRender = new List<IRenderable>();
-		static readonly List<IRenderable> afterRender = new List<IRenderable>();
 
 		static Tooltip tooltip;
 
@@ -31,8 +27,6 @@ namespace WarriorsSnuggery
 
 			Update();
 
-			beforeRender.Clear();
-			afterRender.Clear();
 			tooltip = null;
 		}
 
@@ -52,37 +46,11 @@ namespace WarriorsSnuggery
 				UIRenderer.tooltip = null;
 		}
 
-		public static void RenderAfter(IRenderable renderable)
-		{
-			afterRender.Add(renderable);
-		}
-
-		public static void RenderBefore(IRenderable renderable)
-		{
-			beforeRender.Add(renderable);
-		}
-
-		public static void RemoveRenderAfter(IRenderable renderable)
-		{
-			afterRender.Remove(renderable);
-		}
-
-		public static void RemoveRenderBefore(IRenderable renderable)
-		{
-			beforeRender.Remove(renderable);
-		}
-
 		public static void Render()
 		{
 			Shaders.Uniform(Shaders.TextureShader, ref matrix, Color.White, CPos.Zero);
 
-			foreach (var r in beforeRender)
-				r.Render();
-
 			game.ScreenControl.Render();
-
-			foreach (var r in afterRender)
-				r.Render();
 
 			var possibleTarget = game.MapType.AllowWeapons && game.World.LocalPlayer != null && game.World.LocalPlayer.GetPart<PlayerPart>().FindValidTarget(MouseInput.GamePosition) != null;
 
