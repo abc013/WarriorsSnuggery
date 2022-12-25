@@ -31,11 +31,9 @@ namespace WarriorsSnuggery
 		public readonly ParticleLayer ParticleLayer;
 
 		public readonly PathfinderLayer PathfinderLayer;
+		public readonly EffectLayer EffectLayer;
 
 		public readonly WeatherManager WeatherManager;
-
-		public readonly List<PositionableObject> Objects = new List<PositionableObject>();
-		readonly List<PositionableObject> objectsToAdd = new List<PositionableObject>();
 
 		public Actor LocalPlayer;
 		public bool PlayerAlive => LocalPlayer != null && LocalPlayer.IsAlive;
@@ -59,6 +57,8 @@ namespace WarriorsSnuggery
 			ActorLayer = new ActorLayer(bounds);
 			WeaponLayer = new WeaponLayer();
 			ParticleLayer = new ParticleLayer(bounds);
+
+			EffectLayer = new EffectLayer();
 
 			WeatherManager = new WeatherManager(this, game.MapType);
 		}
@@ -101,20 +101,11 @@ namespace WarriorsSnuggery
 				Camera.Position(Map.Center.ToCPos(), true);
 			}
 
-			// First tick, does only add objects, TODO replace with direct call to Tick()
-			ActorLayer.Tick();
-			WeaponLayer.Tick();
-			ParticleLayer.Tick();
-			addObjects();
-
-			WorldRenderer.CheckVisibilityAll();
+			TerrainLayer.CheckBorders();
 		}
 
 		public void Tick()
 		{
-			foreach (var @object in Objects)
-				@object.Tick();
-
 			ActorLayer.Tick();
 			ParticleLayer.Tick();
 			WeaponLayer.Tick();
@@ -123,24 +114,9 @@ namespace WarriorsSnuggery
 			SmudgeLayer.Tick();
 			ShroudLayer.Tick();
 
+			EffectLayer.Tick();
+
 			WeatherManager.Tick();
-
-			addObjects();
-		}
-
-		void addObjects()
-		{
-			Objects.RemoveAll(o => o.Disposed);
-
-			if (objectsToAdd.Count != 0)
-			{
-				foreach (var @object in objectsToAdd)
-				{
-					@object.CheckVisibility();
-					Objects.Add(@object);
-				}
-				objectsToAdd.Clear();
-			}
 		}
 
 		public void TrophyCollected(string collected)
@@ -274,7 +250,7 @@ namespace WarriorsSnuggery
 
 		public void Add(PositionableObject @object)
 		{
-			objectsToAdd.Add(@object);
+			EffectLayer.Add(@object);
 		}
 
 		public void AddText(CPos position, int duration, ActionText.ActionTextType type, params string[] text)
@@ -353,10 +329,6 @@ namespace WarriorsSnuggery
 
 		public void Dispose()
 		{
-			foreach (var o in Objects)
-				o.Dispose();
-			Objects.Clear();
-
 			ActorLayer.Dispose();
 			ParticleLayer.Dispose();
 			WeaponLayer.Dispose();

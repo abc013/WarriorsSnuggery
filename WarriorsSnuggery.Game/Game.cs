@@ -297,10 +297,7 @@ namespace WarriorsSnuggery
 						Stats.Money += 100;
 
 					if (key == Keys.Period)
-					{
 						World.ShroudLayer.RevealAll = !World.ShroudLayer.RevealAll;
-						WorldRenderer.CheckVisibility(Camera.LookAt, Camera.DefaultZoom);
-					}
 
 					if (key == Keys.X)
 						SwitchEditor();

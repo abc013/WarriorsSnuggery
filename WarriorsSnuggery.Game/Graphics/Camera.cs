@@ -70,8 +70,6 @@ namespace WarriorsSnuggery.Graphics
 			if (!ignoreLock && Locked || add == 0)
 				return;
 
-			var oldZoom = CurrentZoom;
-
 			CurrentZoom += add;
 			if (CurrentZoom < DefaultZoom)
 				CurrentZoom = DefaultZoom;
@@ -80,16 +78,12 @@ namespace WarriorsSnuggery.Graphics
 
 			calculateScale();
 			updateView();
-
-			WorldRenderer.CheckVisibility(oldZoom, CurrentZoom);
 		}
 
 		public static void Move(CPos add, bool ignoreLock = false)
 		{
 			if (!ignoreLock && Locked || add == CPos.Zero)
 				return;
-
-			var oldLookAt = LookAt;
 
 			LookAt = new CPos(LookAt.X + (int)(Settings.ScrollSpeed * 20 * add.X), LookAt.Y + (int)(Settings.ScrollSpeed * 20 * add.Y), 0);
 
@@ -110,8 +104,6 @@ namespace WarriorsSnuggery.Graphics
 
 			calculatePosition();
 			updateView();
-
-			WorldRenderer.CheckVisibility(oldLookAt, LookAt);
 		}
 
 		public static void Position(CPos pos, bool ignoreLock = false, bool tinyMove = false)
@@ -119,13 +111,10 @@ namespace WarriorsSnuggery.Graphics
 			if (!ignoreLock && Locked || LookAt == pos)
 				return;
 
-			var oldLookAt = LookAt;
 			LookAt = pos;
 
 			calculatePosition();
 			updateView();
-
-			WorldRenderer.CheckVisibility(oldLookAt, LookAt, tinyMove);
 		}
 
 		static void calculatePosition()

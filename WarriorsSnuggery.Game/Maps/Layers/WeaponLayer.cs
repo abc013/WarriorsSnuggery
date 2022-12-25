@@ -12,8 +12,6 @@ namespace WarriorsSnuggery.Maps.Layers
 		readonly List<Weapon> weaponsToRemove = new List<Weapon>();
 		readonly List<Weapon> weaponsToAdd = new List<Weapon>();
 
-		bool firstTick = true;
-
 		public WeaponLayer() { }
 
 		public void Add(Weapon weapon)
@@ -34,12 +32,8 @@ namespace WarriorsSnuggery.Maps.Layers
 				weaponsToAdd.Clear();
 			}
 
-			if (!firstTick)
-			{
-				foreach (var weapon in Weapons)
-					weapon.Tick();
-			}
-			firstTick = false;
+			foreach (var weapon in Weapons)
+				weapon.Tick();
 
 			if (weaponsToRemove.Count != 0)
 			{

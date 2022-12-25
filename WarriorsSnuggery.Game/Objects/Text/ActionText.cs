@@ -28,7 +28,6 @@ namespace WarriorsSnuggery.Objects
 
 			text = new TextObject(pos, FontManager.Default, TextOffset.MIDDLE);
 			text.SetText(lines);
-			WorldRenderer.RenderAfter(text);
 		}
 
 		public override void Tick()
@@ -39,7 +38,6 @@ namespace WarriorsSnuggery.Objects
 			if (current-- <= 0)
 			{
 				Dispose();
-				WorldRenderer.RemoveRenderAfter(text);
 				return;
 			}
 
@@ -53,6 +51,11 @@ namespace WarriorsSnuggery.Objects
 				var linear = Math.Sign(time) * time;
 				text.Scale = MathF.Pow(1 - linear, 2);
 			}
+		}
+
+		public override void Render()
+		{
+			text.Render();
 		}
 	}
 }

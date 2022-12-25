@@ -155,10 +155,6 @@ namespace WarriorsSnuggery.Maps.Layers
 					}
 				}
 			}
-
-			// Camera automatically updates shroud, so we don't want to do that if we move anyways 
-			if (!Camera.LockedToPlayer || ignoreLock)
-				WorldRenderer.CheckVisibility(Camera.LookAt, Camera.DefaultZoom);
 		}
 
 		public void RevealShroudCircular(World world, byte team, CPos position, int radius, bool ignoreLock = false)
@@ -218,10 +214,6 @@ namespace WarriorsSnuggery.Maps.Layers
 					}
 				}
 			}
-
-			// Camera automatically updates shroud, so we don't want to do that if we move anyways 
-			if (!Camera.LockedToPlayer || ignoreLock)
-				WorldRenderer.CheckVisibility(Camera.LookAt, Camera.DefaultZoom);
 		}
 
 		void changeState(int x, int y, bool value)

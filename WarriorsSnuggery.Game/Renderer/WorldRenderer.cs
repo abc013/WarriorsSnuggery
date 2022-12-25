@@ -16,9 +16,6 @@ namespace WarriorsSnuggery
 
 		public static Color Ambient = Color.White;
 
-		static readonly List<IRenderable> beforeRender = new List<IRenderable>();
-		static readonly List<IRenderable> afterRender = new List<IRenderable>();
-
 		public static void Initialize()
 		{
 			Shroud.Load();
@@ -33,21 +30,11 @@ namespace WarriorsSnuggery
 
 			CameraVisibility.Reset();
 			Camera.Reset();
-
-			ClearRenderLists();
 		}
 
 		public static void Render()
 		{
 			game.LocalRender++;
-
-			if (beforeRender.Count != 0)
-			{
-				foreach (var o in beforeRender)
-					o.Render();
-
-				MasterRenderer.RenderBatch();
-			}
 
 			var useAlpha = world.Game.Editor || world.PlayerAlive;
 
@@ -106,12 +93,8 @@ namespace WarriorsSnuggery
 			MasterRenderer.RenderBatch();
 			MasterRenderer.SetRenderer(Renderer.DEFAULT);
 
-			bool anotherBatch = false;
 			if (Settings.EnableWeatherEffects)
-			{
 				world.WeatherManager.Render();
-				anotherBatch = true;
-			}
 
 			var map = world.Map;
 			if (map.Type.WorldBorder > 0)
@@ -145,14 +128,11 @@ namespace WarriorsSnuggery
 					ColorManager.DrawRect(new CPos(map.BottomLeftCorner.X, bottom, 0), new CPos(map.TopLeftCorner.X, top, 0) - new CPos(offset, offset, 0), Color.Black);
 					ColorManager.DrawGradientRect(new CPos(map.BottomLeftCorner.X, bottom, 0), new CPos(map.TopLeftCorner.X, top, 0) + new CPos(offset, 0, 0), color, 1);
 				}
-
-				anotherBatch = true;
 			}
 
 			if (!world.ShroudLayer.RevealAll)
 			{
 				CameraVisibility.GetClampedBounds(out var position, out var bounds);
-
 
 				for (int x = position.X; x < position.X + bounds.X; x++)
 				{
@@ -173,20 +153,11 @@ namespace WarriorsSnuggery
 						world.ShroudLayer.Shroud[x * 2 + 1, y * 2 + 1].Render();
 					}
 				}
-
-				anotherBatch = true;
 			}
 
-			if (afterRender.Count != 0)
-			{
-				foreach (var o in afterRender)
-					o.Render();
+			world.EffectLayer.Render();
 
-				anotherBatch = true;
-			}
-
-			if (anotherBatch)
-				MasterRenderer.RenderBatch();
+			MasterRenderer.RenderBatch();
 
 			if (Settings.DeveloperMode)
 			{
@@ -237,83 +208,13 @@ namespace WarriorsSnuggery
 			var topLeft = position.ToCPos();
 			var bottomRight = position.ToCPos() + bounds.ToCPos();
 
-			var renderables = new List<PositionableObject>(world.Objects.Count);
-			renderables.AddRange(world.Objects);
+			var renderables = new List<PositionableObject>();
 			renderables.AddRange(world.ActorLayer.GetVisible(topLeft, bottomRight));
 			renderables.AddRange(world.WeaponLayer.GetVisible());
 			renderables.AddRange(world.ParticleLayer.GetVisible(topLeft, bottomRight));
 			renderables.AddRange(world.WallLayer.GetVisible(position, position + bounds));
 
 			return renderables.OrderBy(e => e.GraphicPosition.Z + (e.Position.Y - 512) * 2);
-		}
-
-		public static void ClearRenderLists()
-		{
-			beforeRender.Clear();
-			afterRender.Clear();
-		}
-
-		public static void RenderAfter(IRenderable renderable)
-		{
-			afterRender.Add(renderable);
-		}
-
-		public static void RenderBefore(IRenderable renderable)
-		{
-			beforeRender.Add(renderable);
-		}
-
-		public static void RemoveRenderAfter(IRenderable renderable)
-		{
-			afterRender.Remove(renderable);
-		}
-
-		public static void RemoveRenderBefore(IRenderable renderable)
-		{
-			beforeRender.Remove(renderable);
-		}
-
-		public static void CheckVisibilityAll()
-		{
-			foreach (var o in world.Objects)
-				o.CheckVisibility();
-		}
-
-		public static void CheckVisibility(CPos oldPos, CPos newPos, bool tinyMove = true)
-		{
-			var zoom = Camera.CurrentZoom;
-
-			if (tinyMove)
-			{
-				var diff = oldPos - newPos;
-				var greaterDiff = Math.Max(Math.Abs(diff.X), Math.Abs(diff.Y));
-				var checkZoom = zoom + greaterDiff / 2048f;
-				CheckVisibility(oldPos + diff / 2, checkZoom);
-			}
-			else
-			{
-				CheckVisibility(oldPos, zoom);
-				CheckVisibility(newPos, zoom);
-			}
-		}
-
-		public static void CheckVisibility(float oldZoom, float newZoom)
-		{
-			var zoom = Math.Max(oldZoom, newZoom);
-			CheckVisibility(Camera.LookAt, zoom);
-		}
-
-		public static void CheckVisibility(CPos pos, float zoom)
-		{
-			var zoomPos = new CPos((int)(zoom * WindowInfo.Ratio * 512), (int)(zoom * 512), 0);
-
-			var margin = new CPos(Settings.VisibilityMargin, Settings.VisibilityMargin, 0);
-			var topLeft = pos - zoomPos - margin;
-			var bottomRight = pos + zoomPos + margin;
-
-			var objects = world.Objects.Where(a => a.GraphicPosition.X > topLeft.X && a.GraphicPosition.X < bottomRight.X && a.GraphicPosition.Y > topLeft.Y && a.GraphicPosition.Y < bottomRight.Y);
-			foreach (var o in objects)
-				o.CheckVisibility();
 		}
 
 		public static void CheckTerrainAround(MPos pos, bool checkEdges = false)

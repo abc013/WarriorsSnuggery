@@ -47,5 +47,11 @@ namespace WarriorsSnuggery.Maps.Layers
 			foreach (var terrain in renderList.OrderBy(t => t.Type.OverlapHeight))
 				terrain.Render();
 		}
+
+		public void CheckBorders()
+		{
+			foreach (var terrain in Terrain)
+				terrain.CheckEdgeVisibility();
+		}
 	}
 }
