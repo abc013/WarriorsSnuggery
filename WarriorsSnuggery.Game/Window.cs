@@ -254,9 +254,6 @@ namespace WarriorsSnuggery
 			{
 				if (Settings.LogTimeMeasuring)
 					Log.Performance(PerfInfo.FMS, " render " + GlobalRender);
-
-				if (Settings.DeveloperMode || Program.IsDebug)
-					Title = $"{Program.Title} [{MasterRenderer.RenderCalls} Calls, {MasterRenderer.Batches} Batches]";
 			}
 
 			GlobalRender++;

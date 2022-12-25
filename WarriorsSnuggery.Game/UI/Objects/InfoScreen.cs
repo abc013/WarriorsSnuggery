@@ -14,11 +14,11 @@ namespace WarriorsSnuggery.UI.Objects
 			var corner = (int)(WindowInfo.UnitWidth * 512) - 128;
 			version = new UIText(FontManager.Default, TextOffset.RIGHT)
 			{
-				Position = new UIPos(corner, 6192),
+				Position = new UIPos(corner, 5120),
 				Color = Color.Yellow
 			};
 			version.SetText(Settings.Version);
-			debug = new UIText(FontManager.Default, TextOffset.RIGHT) { Position = new UIPos(corner, 6692) };
+			debug = new UIText(FontManager.Default, TextOffset.RIGHT) { Position = new UIPos(corner, 5120 + 768) };
 		}
 
 		public void Tick()
@@ -28,7 +28,8 @@ namespace WarriorsSnuggery.UI.Objects
 
 			//memory.SetText("Memory " + (int) (System.Diagnostics.Process.GetCurrentProcess().PrivateMemorySize64 / 1024f) + " KB");
 			//memory.SetText("Public Memory " + (int)(GC.GetTotalMemory(false) / 1024f) + " KB");
-			debug.SetText(CameraVisibility.TilesVisible() + " Tiles visible");
+			debug.SetText($"{MasterRenderer.Batches} Batches");
+			debug.AddText($"{CameraVisibility.TilesVisible()} Tiles visible");
 
 			var tps = PerfInfo.AverageTPS();
 			debug.AddText(getColor(tps, Settings.UpdatesPerSecond) + $"Tick {tps:00.0} @ {PerfInfo.TMS:00.0} ms");
@@ -45,7 +46,7 @@ namespace WarriorsSnuggery.UI.Objects
 				return;
 
 			var right = (int)(WindowInfo.UnitWidth * 512);
-			ColorManager.DrawRect(new UIPos(right, 8192), new UIPos(right - 6144, 8192 - 2560), new Color(0, 0, 0, 128));
+			ColorManager.DrawRect(new UIPos(right, 8192), new UIPos(right - 6144 - 256, 5120 - 256), new Color(0, 0, 0, 128));
 			
 			version.Render();
 			debug.Render();
