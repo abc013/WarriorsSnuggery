@@ -63,7 +63,7 @@ namespace WarriorsSnuggery
 				ambient *= new Color(sin1, sin2, sin3);
 			}
 
-			Shaders.Uniform(Shaders.TextureShader, ref Camera.Matrix, ambient, pos);
+			Shader.TextureShader.Uniform(ref Camera.Matrix, ambient, pos);
 
 			world.TerrainLayer.Render();
 			world.SmudgeLayer.Render();
@@ -88,7 +88,7 @@ namespace WarriorsSnuggery
 
 			MasterRenderer.RenderBatch();
 
-			Shaders.Uniform(Shaders.TextureShader, ref Camera.Matrix, Color.White, CPos.Zero);
+			Shader.TextureShader.Uniform(ref Camera.Matrix, Color.White, CPos.Zero);
 			MasterRenderer.SetRenderer(Renderer.LIGHTS);
 			MasterRenderer.RenderBatch();
 			MasterRenderer.SetRenderer(Renderer.DEFAULT);

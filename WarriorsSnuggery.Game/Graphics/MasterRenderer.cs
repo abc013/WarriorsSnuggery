@@ -83,7 +83,7 @@ namespace WarriorsSnuggery.Graphics
 
 			initializeGL();
 
-			Shaders.Initialize();
+			Shader.Initialize();
 			ColorManager.Initialize();
 
 			watch.StopAndWrite("Configuring GL");
@@ -212,7 +212,7 @@ namespace WarriorsSnuggery.Graphics
 			lightRenderer.Dispose();
 			debugRenderer.Dispose();
 
-			Shaders.Dispose();
+			Shader.DisposeShaders();
 
 			pixelFrameBuffer.Dispose();
 		}

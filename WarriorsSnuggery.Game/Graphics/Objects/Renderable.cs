@@ -5,14 +5,14 @@ namespace WarriorsSnuggery.Graphics
 {
 	public abstract class Renderable : IDisposable
 	{
-		public readonly int ProgramID;
+		public readonly Shader Shader;
 		protected readonly int VertexArrayID;
 		protected readonly int BufferID;
 		protected readonly int VerticeCount;
 
-		public Renderable(int program, int vertexCount)
+		public Renderable(Shader shader, int vertexCount)
 		{
-			ProgramID = program;
+			Shader = shader;
 			VerticeCount = vertexCount;
 
 			lock (MasterRenderer.GLLock)
@@ -31,7 +31,7 @@ namespace WarriorsSnuggery.Graphics
 		{
 			lock (MasterRenderer.GLLock)
 			{
-				GL.UseProgram(ProgramID);
+				GL.UseProgram(Shader.ID);
 				GL.BindVertexArray(VertexArrayID);
 				Program.CheckGraphicsError("Renderable_Bind");
 			}

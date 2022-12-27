@@ -77,11 +77,11 @@ namespace WarriorsSnuggery.Graphics
 
 			lock (MasterRenderer.GLLock)
 			{
-				GL.UseProgram(Shaders.TextureShader);
+				GL.UseProgram(Shader.TextureShader.ID);
 
 				var mat = Matrix4.Identity;
-				GL.UniformMatrix4(Shaders.GetLocation(Shaders.TextureShader, "modelView"), false, ref mat);
-				GL.Uniform4(Shaders.GetLocation(Shaders.TextureShader, "objectColor"), Color.White);
+				GL.UniformMatrix4(Shader.TextureShader.GetLocation("modelView"), false, ref mat);
+				GL.Uniform4(Shader.TextureShader.GetLocation("objectColor"), Color.White);
 				Program.CheckGraphicsError("BatchRenderer_Uniform");
 				for (int i = 0; i < textureIDs.Length; i++)
 				{

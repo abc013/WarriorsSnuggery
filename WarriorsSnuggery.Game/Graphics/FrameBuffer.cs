@@ -61,7 +61,7 @@ namespace WarriorsSnuggery.Graphics
 			renderable.Bind();
 
 			var iden = Matrix4.Identity;
-			Shaders.Uniform(Shaders.TextureShader, ref iden, Color.White, CPos.Zero);
+			Shader.TextureShader.Uniform(ref iden, Color.White, CPos.Zero);
 
 			renderable.Render();
 		}

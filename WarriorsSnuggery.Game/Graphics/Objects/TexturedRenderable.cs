@@ -8,7 +8,7 @@ namespace WarriorsSnuggery.Graphics
 	{
 		readonly Texture texture;
 
-		public TexturedRenderable(Vertex[] vertices, Texture texture) : base(Shaders.TextureShader, vertices.Length)
+		public TexturedRenderable(Vertex[] vertices, Texture texture) : base(Graphics.Shader.TextureShader, vertices.Length)
 		{
 			this.texture = texture;
 
@@ -28,7 +28,7 @@ namespace WarriorsSnuggery.Graphics
 		{
 			lock (MasterRenderer.GLLock)
 			{
-				GL.UseProgram(ProgramID);
+				GL.UseProgram(Shader.ID);
 				GL.BindVertexArray(VertexArrayID);
 				GL.BindTexture(TextureTarget.Texture2D, texture.SheetID);
 				Program.CheckGraphicsError("Image_Bind");

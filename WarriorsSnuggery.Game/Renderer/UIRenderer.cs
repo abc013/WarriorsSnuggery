@@ -48,7 +48,7 @@ namespace WarriorsSnuggery
 
 		public static void Render()
 		{
-			Shaders.Uniform(Shaders.TextureShader, ref matrix, Color.White, CPos.Zero);
+			Shader.TextureShader.Uniform(ref matrix, Color.White, CPos.Zero);
 
 			game.ScreenControl.Render();
 
