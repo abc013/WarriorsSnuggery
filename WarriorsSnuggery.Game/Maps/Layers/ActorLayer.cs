@@ -56,8 +56,9 @@ namespace WarriorsSnuggery.Maps.Layers
 
 		public void OnActorPropertyChanged(Actor actor)
 		{
-            ChangedActors.Add(actor);
-        }
+			if (OrderProcessor.ServerRunning)
+				ChangedActors.Add(actor);
+		}
 
 		ActorSector getSector(Actor actor)
 		{
@@ -95,8 +96,8 @@ namespace WarriorsSnuggery.Maps.Layers
 		public void Remove(Actor actor)
 		{
 			actorsToRemove.Add(actor);
-            actor.OnPropertyChanged -= OnActorPropertyChanged;
-        }
+			actor.OnPropertyChanged -= OnActorPropertyChanged;
+		}
 
 		public void Tick()
 		{

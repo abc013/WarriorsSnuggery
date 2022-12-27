@@ -344,7 +344,7 @@ namespace WarriorsSnuggery
 				saver.Append(TerrainLayer.Save());
 			if (saverType != PieceSaverType.DIFF)
 				saver.AddChildren("Walls", WallLayer.Save(), true); // TODO: we need to check whether walls have been destroyed
-			saver.AddChildren("Actors", ActorLayer.Save(saverType != PieceSaverType.EDITOR), true);
+			saver.AddChildren("Actors", ActorLayer.Save(saverType), true);
 
 			if (saverType != PieceSaverType.EDITOR)
 				saver.AddChildren("Weapons", WeaponLayer.Save(), true);
@@ -365,6 +365,18 @@ namespace WarriorsSnuggery
 				var init = piece.actorInits.FirstOrDefault(a => a.ID == actor.ID);
 				if (init != null)
 					actor.Position = init.Position;
+			}
+
+			foreach (var wall in WallLayer.WallList)
+			{
+				var init = piece.wallInits.FirstOrDefault(w => w.Position == wall.LayerPosition);
+				if (init != null)
+				{
+					if (wall.Type.ID != init.TypeID)
+						Console.Write("IDs differing. ");
+					wall.Health = init.Health;
+					Console.WriteLine($"{wall.LayerPosition}->{wall.Health}");
+				}
 			}
 		}
 	}

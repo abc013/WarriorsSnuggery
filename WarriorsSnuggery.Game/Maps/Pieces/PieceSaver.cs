@@ -2,16 +2,17 @@
 using System.IO;
 using System.Linq;
 using WarriorsSnuggery.Loader;
+using WarriorsSnuggery.Objects;
 using WarriorsSnuggery.Objects.Actors;
 
 namespace WarriorsSnuggery.Maps.Pieces
 {
 	public enum PieceSaverType
-    {
+	{
 		EDITOR,
 		SAVE,
 		DIFF
-    }
+	}
 
 	public static class PieceSaver
 	{

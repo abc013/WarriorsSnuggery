@@ -15,6 +15,8 @@ namespace WarriorsSnuggery.Networking.Orders
 		// Only for receiving
 		public readonly List<TextNode> SaveNodes;
 		public readonly List<TextNode> MapNodes;
+		public GameSave Save => new GameSave(SaveNodes, GameSaveManager.TempSaveName, MapNodes);
+
 
 		public LoadOrder(GameSaveData diff)
 		{

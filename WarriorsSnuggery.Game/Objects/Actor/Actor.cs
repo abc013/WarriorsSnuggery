@@ -336,7 +336,7 @@ namespace WarriorsSnuggery.Objects.Actors
 
 		internal void Move(CPos old)
 		{
-			OnPropertyChanged?.Invoke(this);
+			PropertyChanged();
 
 			foreach (var part in moveParts)
 				part.OnMove(old, Mobile.Velocity);
@@ -354,6 +354,11 @@ namespace WarriorsSnuggery.Objects.Actors
 		{
 			foreach (var part in stopParts)
 				part.OnStop();
+		}
+
+		public void PropertyChanged()
+		{
+			OnPropertyChanged?.Invoke(this);
 		}
 
 		public ActorEffect CastEffect(Effect effect)

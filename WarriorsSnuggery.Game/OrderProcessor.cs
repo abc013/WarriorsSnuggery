@@ -66,10 +66,10 @@ namespace WarriorsSnuggery
 				{
 					case LoadOrder l:
 						maintainConnection = true;
-						GameController.CreateFromSave(new GameSave(l.SaveNodes, GameSaveManager.TempSaveName, l.MapNodes));
+						GameController.CreateFromSave(l.Save);
 						break;
 					case DiffOrder d:
-						game.ReceiveDiff(new GameDiffData(d.SaveNodes, d.MapNodes));
+						game.ReceiveDiff(d.DiffData);
 						break;
 					case ChatOrder c:
 						game.ScreenControl.ReceiveChat(c.Message);

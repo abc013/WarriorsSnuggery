@@ -3,11 +3,14 @@ using System.Linq;
 using System.Collections.Generic;
 using WarriorsSnuggery.Objects;
 using WarriorsSnuggery.Loader;
+using WarriorsSnuggery.Maps.Pieces;
 
 namespace WarriorsSnuggery.Maps.Layers
 {
 	public sealed class WallLayer : ISaveable
 	{
+		public readonly HashSet<Wall> ChangedWalls = new HashSet<Wall>();
+
 		public readonly List<Wall> WallList = new List<Wall>();
 		readonly World world;
 		readonly ShroudLayer shroudLayer;
@@ -47,12 +50,20 @@ namespace WarriorsSnuggery.Maps.Layers
 			return WallList.Where(w => w.TerrainPosition.X >= pos1.X && w.TerrainPosition.X < pos2.X && w.TerrainPosition.Y >= pos1.Y && w.TerrainPosition.Y < pos2.Y).ToList();
 		}
 
+		public void OnWallPropertyChanged(Wall wall)
+		{
+			if (OrderProcessor.ServerRunning)
+				ChangedWalls.Add(wall);
+		}
+
 		public void Set(Wall wall)
 		{
 			Remove(wall.LayerPosition);
 			Walls[wall.LayerPosition.X, wall.LayerPosition.Y] = wall;
 			notifyNeighbors(wall.LayerPosition, true, wall.Type.IgnoreForNearby);
 			WallList.Add(wall);
+			wall.OnPropertyChanged += OnWallPropertyChanged;
+			OnWallPropertyChanged(wall);
 
 			pathfinderLayer.SetWall(wall);
 			if (wall.IsHorizontal)
@@ -71,6 +82,8 @@ namespace WarriorsSnuggery.Maps.Layers
 
 			wall.Dispose();
 			WallList.Remove(wall);
+			wall.OnPropertyChanged -= OnWallPropertyChanged;
+			OnWallPropertyChanged(wall);
 			Walls[pos.X, pos.Y] = null;
 			notifyNeighbors(pos, false, false);
 
@@ -116,7 +129,7 @@ namespace WarriorsSnuggery.Maps.Layers
 				   4|
 
 			BYTE 012 345 67
-			     000 000 --
+				 000 000 --
 			*/
 
 			Wall wall;
@@ -268,11 +281,14 @@ namespace WarriorsSnuggery.Maps.Layers
 			return visibleWalls;
 		}
 
-		public TextNodeSaver Save()
+		public TextNodeSaver Save() => Save(PieceSaverType.EDITOR);
+		public TextNodeSaver Save(PieceSaverType saverType)
 		{
 			var saver = new TextNodeSaver();
-			for (int i = 0; i < WallList.Count; i++)
-				saver.AddChildren($"{i}", WallList[i].Save());
+
+			IEnumerable<Wall> walls = saverType == PieceSaverType.DIFF ? ChangedWalls : WallList;
+			for (int i = 0; i < walls.Count(); i++)
+				saver.AddChildren($"{i}", walls.ElementAt(i).Save());
 
 			return saver;
 		}

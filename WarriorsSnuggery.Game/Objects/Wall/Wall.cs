@@ -60,6 +60,8 @@ namespace WarriorsSnuggery.Objects
 		byte neighborState;
 		DamageState damageState = DamageState.NONE;
 
+		public event Action<Wall> OnPropertyChanged;
+
 		public Wall(WPos position, World world, WallType type)
 		{
 			this.world = world;
@@ -98,6 +100,7 @@ namespace WarriorsSnuggery.Objects
 				return;
 
 			health -= damage;
+			OnPropertyChanged?.Invoke(this);
 
 			if (health <= 0)
 			{
