@@ -47,6 +47,7 @@ namespace WarriorsSnuggery.Graphics
 		{
 			lock (MasterRenderer.GLLock)
 			{
+				GL.UseProgram(ID);
 				locations[0] = GL.GetUniformLocation(ID, "projection");
 				locations[1] = GL.GetUniformLocation(ID, "modelView");
 				locations[2] = GL.GetUniformLocation(ID, "proximityColor");

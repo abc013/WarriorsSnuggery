@@ -71,7 +71,7 @@ namespace WarriorsSnuggery.Graphics
 			for (int x = position.X; x < position.X + bounds.X; x++)
 			{
 				for (int y = position.Y; y < position.Y + bounds.Y; y++)
-					visible[x, y] = checkShroud(x, y);
+					visible[x, y] = IsShrouded(x, y);
 			}
 		}
 
@@ -80,7 +80,7 @@ namespace WarriorsSnuggery.Graphics
 			visible[x, y] = true;
 		}
 
-		static bool checkShroud(int x, int y)
+		public static bool IsShrouded(int x, int y)
 		{
 			if (shroud.RevealAll)
 				return true;

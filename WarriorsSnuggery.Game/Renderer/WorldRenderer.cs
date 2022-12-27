@@ -86,6 +86,9 @@ namespace WarriorsSnuggery
 					o.SetTextureFlags(TextureFlags.None);
 			}
 
+			drawMapBorder();
+			drawShroud();
+
 			MasterRenderer.RenderBatch();
 
 			Shader.TextureShader.Uniform(ref Camera.Matrix, Color.White, CPos.Zero);
@@ -95,65 +98,6 @@ namespace WarriorsSnuggery
 
 			if (Settings.EnableWeatherEffects)
 				world.WeatherManager.Render();
-
-			var map = world.Map;
-			if (map.Type.WorldBorder > 0)
-			{
-				CameraVisibility.GetClampedBounds(out var position, out var bounds);
-				var bottom = (position.Y + bounds.Y) * Constants.TileSize + Map.Offset.Y;
-				var top = position.Y * Constants.TileSize + Map.Offset.Y;
-				var left = position.X * Constants.TileSize + Map.Offset.X;
-				var right = (position.X + bounds.X) * Constants.TileSize + Map.Offset.X;
-
-				var offset = Constants.TileSize * (map.Type.WorldBorder + 2);
-				var color = world.Game.Editor ? Color.Black.WithAlpha(0.5f) : Color.Black;
-				// Cut the rects to fit to screen to save GPU from some useless work
-				if (top < offset)
-				{
-					ColorManager.DrawRect(new CPos(left, map.TopLeftCorner.Y, 0), new CPos(right, map.TopRightCorner.Y, 0) - new CPos(-offset, offset, 0), Color.Black);
-					ColorManager.DrawGradientRect(new CPos(left, map.TopLeftCorner.Y, 0), new CPos(right, map.TopRightCorner.Y, 0) + new CPos(0, offset, 0), color, 2);
-				}
-				if (right >= map.TopRightCorner.X - offset)
-				{
-					ColorManager.DrawRect(new CPos(map.TopRightCorner.X, top, 0), new CPos(map.BottomRightCorner.X, bottom, 0) + new CPos(offset, offset, 0), Color.Black);
-					ColorManager.DrawGradientRect(new CPos(map.TopRightCorner.X, top, 0), new CPos(map.BottomRightCorner.X, bottom, 0) - new CPos(offset, 0, 0), color, 3);
-				}
-				if (bottom >= map.BottomRightCorner.Y - offset)
-				{
-					ColorManager.DrawRect(new CPos(right, map.BottomRightCorner.Y, 0), new CPos(left, map.BottomLeftCorner.Y, 0) + new CPos(-offset, offset, 0), Color.Black);
-					ColorManager.DrawGradientRect(new CPos(right, map.BottomRightCorner.Y, 0), new CPos(left, map.BottomLeftCorner.Y, 0) - new CPos(0, offset, 0), color, 0);
-				}
-				if (left < offset)
-				{
-					ColorManager.DrawRect(new CPos(map.BottomLeftCorner.X, bottom, 0), new CPos(map.TopLeftCorner.X, top, 0) - new CPos(offset, offset, 0), Color.Black);
-					ColorManager.DrawGradientRect(new CPos(map.BottomLeftCorner.X, bottom, 0), new CPos(map.TopLeftCorner.X, top, 0) + new CPos(offset, 0, 0), color, 1);
-				}
-			}
-
-			if (!world.ShroudLayer.RevealAll)
-			{
-				CameraVisibility.GetClampedBounds(out var position, out var bounds);
-
-				for (int x = position.X; x < position.X + bounds.X; x++)
-				{
-					for (int y = position.Y; y < position.Y + bounds.Y; y++)
-					{
-						if (!CameraVisibility.IsVisible(new MPos(x, y)))
-						{
-							// Save 4 calls to shroud and render a big piece instead
-							Shroud.BigShroudRenderable.SetPosition(new MPos(x, y).ToCPos());
-							Shroud.BigShroudRenderable.Render();
-
-							continue;
-						}
-
-						world.ShroudLayer.Shroud[x * 2, y * 2].Render();
-						world.ShroudLayer.Shroud[x * 2 + 1, y * 2].Render();
-						world.ShroudLayer.Shroud[x * 2, y * 2 + 1].Render();
-						world.ShroudLayer.Shroud[x * 2 + 1, y * 2 + 1].Render();
-					}
-				}
-			}
 
 			world.EffectLayer.Render();
 
@@ -215,6 +159,71 @@ namespace WarriorsSnuggery
 			renderables.AddRange(world.WallLayer.GetVisible(position, position + bounds));
 
 			return renderables.OrderBy(e => e.GraphicPosition.Z + (e.Position.Y - 512) * 2);
+		}
+
+		static void drawMapBorder()
+		{
+			var map = world.Map;
+			if (map.Type.WorldBorder <= 0)
+				return;
+
+			CameraVisibility.GetClampedBounds(out var position, out var bounds);
+			var bottom = (position.Y + bounds.Y) * Constants.TileSize + Map.Offset.Y;
+			var top = position.Y * Constants.TileSize + Map.Offset.Y;
+			var left = position.X * Constants.TileSize + Map.Offset.X;
+			var right = (position.X + bounds.X) * Constants.TileSize + Map.Offset.X;
+
+			var offset = Constants.TileSize * (map.Type.WorldBorder + 2);
+			var color = world.Game.Editor ? Color.Black.WithAlpha(0.5f) : Color.Black;
+			// Cut the rects to fit to screen to save GPU from some useless work
+			if (top < offset)
+			{
+				ColorManager.DrawRect(new CPos(left, map.TopLeftCorner.Y, 0), new CPos(right, map.TopRightCorner.Y, 0) - new CPos(-offset, offset, 0), Color.Black);
+				ColorManager.DrawGradientRect(new CPos(left, map.TopLeftCorner.Y, 0), new CPos(right, map.TopRightCorner.Y, 0) + new CPos(0, offset, 0), color, 2);
+			}
+			if (right >= map.TopRightCorner.X - offset)
+			{
+				ColorManager.DrawRect(new CPos(map.TopRightCorner.X, top, 0), new CPos(map.BottomRightCorner.X, bottom, 0) + new CPos(offset, offset, 0), Color.Black);
+				ColorManager.DrawGradientRect(new CPos(map.TopRightCorner.X, top, 0), new CPos(map.BottomRightCorner.X, bottom, 0) - new CPos(offset, 0, 0), color, 3);
+			}
+			if (bottom >= map.BottomRightCorner.Y - offset)
+			{
+				ColorManager.DrawRect(new CPos(right, map.BottomRightCorner.Y, 0), new CPos(left, map.BottomLeftCorner.Y, 0) + new CPos(-offset, offset, 0), Color.Black);
+				ColorManager.DrawGradientRect(new CPos(right, map.BottomRightCorner.Y, 0), new CPos(left, map.BottomLeftCorner.Y, 0) - new CPos(0, offset, 0), color, 0);
+			}
+			if (left < offset)
+			{
+				ColorManager.DrawRect(new CPos(map.BottomLeftCorner.X, bottom, 0), new CPos(map.TopLeftCorner.X, top, 0) - new CPos(offset, offset, 0), Color.Black);
+				ColorManager.DrawGradientRect(new CPos(map.BottomLeftCorner.X, bottom, 0), new CPos(map.TopLeftCorner.X, top, 0) + new CPos(offset, 0, 0), color, 1);
+			}
+		}
+
+		static void drawShroud()
+		{
+			if (world.ShroudLayer.RevealAll)
+				return;
+
+			CameraVisibility.GetClampedBounds(out var position, out var bounds);
+
+			for (int x = position.X; x < position.X + bounds.X; x++)
+			{
+				for (int y = position.Y; y < position.Y + bounds.Y; y++)
+				{
+					if (!CameraVisibility.IsShrouded(x, y))
+					{
+						// Save 4 calls to shroud and render a big piece instead
+						Shroud.BigShroudRenderable.SetPosition(new MPos(x, y).ToCPos());
+						Shroud.BigShroudRenderable.Render();
+
+						continue;
+					}
+
+					world.ShroudLayer.Shroud[x * 2, y * 2].Render();
+					world.ShroudLayer.Shroud[x * 2 + 1, y * 2].Render();
+					world.ShroudLayer.Shroud[x * 2, y * 2 + 1].Render();
+					world.ShroudLayer.Shroud[x * 2 + 1, y * 2 + 1].Render();
+				}
+			}
 		}
 
 		public static void CheckTerrainAround(MPos pos, bool checkEdges = false)
