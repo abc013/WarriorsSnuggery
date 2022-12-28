@@ -13,7 +13,6 @@ in int textureFlags;
 in vec4 color;
 
 uniform mat4 projection;
-uniform mat4 modelView;
 
 uniform vec3 hidePosition;
 
@@ -25,7 +24,7 @@ out vec3 vs_hideDistance;
 
 void main(void)
 {
-    gl_Position = projection * modelView * vec4(position, 1.0);
+    gl_Position = projection * vec4(position, 1.0);
 
     vs_textureCoordinate = textureCoordinate;
     vs_texture = texture;

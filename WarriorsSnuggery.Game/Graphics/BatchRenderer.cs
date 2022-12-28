@@ -1,5 +1,4 @@
 ﻿using OpenTK.Graphics.OpenGL;
-using OpenTK.Mathematics;
 using System;
 using System.Collections.Generic;
 
@@ -49,21 +48,18 @@ namespace WarriorsSnuggery.Graphics
 
 		void push()
 		{
-			if (offset != bufferSize)
-				Array.Clear(buffer, offset, bufferSize - offset);
-
 			foreach (var batch in batches)
 			{
-				if (batch.CurrentSize >= Settings.BatchSize)
+				if (batch.CurrentSize + offset >= Settings.BatchSize)
 					continue;
 
-				batch.SetData(buffer, batch.CurrentSize, bufferSize);
+				batch.SetData(buffer, batch.CurrentSize, offset);
 				offset = 0;
 				return;
 			}
 
 			var @new = new Batch();
-			@new.SetData(buffer, bufferSize);
+			@new.SetData(buffer, offset);
 			batches.Add(@new);
 			offset = 0;
 		}
@@ -79,9 +75,6 @@ namespace WarriorsSnuggery.Graphics
 			{
 				GL.UseProgram(Shader.TextureShader.ID);
 
-				var mat = Matrix4.Identity;
-				GL.UniformMatrix4(Shader.TextureShader.GetLocation("modelView"), false, ref mat);
-				GL.Uniform4(Shader.TextureShader.GetLocation("objectColor"), Color.White);
 				Program.CheckGraphicsError("BatchRenderer_Uniform");
 				for (int i = 0; i < textureIDs.Length; i++)
 				{
@@ -89,7 +82,6 @@ namespace WarriorsSnuggery.Graphics
 					GL.BindTexture(TextureTarget.Texture2D, textureIDs[i]);
 					Program.CheckGraphicsError("BatchRenderer_Texture" + i);
 				}
-				GL.ActiveTexture(TextureUnit.Texture0);
 			}
 
 			foreach (var batch in batches)

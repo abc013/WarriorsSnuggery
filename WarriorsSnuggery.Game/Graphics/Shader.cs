@@ -49,10 +49,8 @@ namespace WarriorsSnuggery.Graphics
 			{
 				GL.UseProgram(ID);
 				locations[0] = GL.GetUniformLocation(ID, "projection");
-				locations[1] = GL.GetUniformLocation(ID, "modelView");
-				locations[2] = GL.GetUniformLocation(ID, "proximityColor");
-				locations[3] = GL.GetUniformLocation(ID, "objectColor");
-				locations[4] = GL.GetUniformLocation(ID, "hidePosition");
+				locations[1] = GL.GetUniformLocation(ID, "proximityColor");
+				locations[2] = GL.GetUniformLocation(ID, "hidePosition");
 
 				GL.BindAttribLocation(ID, Vertex.PositionAttributeLocation, "position");
 
@@ -78,17 +76,11 @@ namespace WarriorsSnuggery.Graphics
 			int num = 0;
 			switch (name)
 			{
-				case "modelView":
+				case "proximityColor":
 					num = 1;
 					break;
-				case "proximityColor":
-					num = 2;
-					break;
-				case "objectColor":
-					num = 3;
-					break;
 				case "hidePosition":
-					num = 4;
+					num = 2;
 					break;
 			}
 			return locations[num];

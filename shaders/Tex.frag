@@ -12,7 +12,6 @@ uniform sampler2D texture1;
 uniform sampler2D texture2;
 uniform sampler2D texture3;
 uniform vec4 proximityColor;
-uniform vec4 objectColor;
 
 out vec4 color;
 
@@ -29,7 +28,7 @@ void main(void)
     else
         color = vec4(1);
 
-    color *= vs_color * objectColor;
+    color *= vs_color;
 
 	// only consider ambience if enabled
 	if (vs_textureFlags != 1 && vs_textureFlags != 3)
