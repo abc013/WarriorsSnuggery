@@ -223,12 +223,5 @@ namespace WarriorsSnuggery.Objects
 
 			return new CPos(x, y, 0);
 		}
-
-		public override bool CheckVisibility()
-		{
-			renderable.Visible = CameraVisibility.IsVisibleIgnoringBounds(TerrainPosition) || CameraVisibility.IsVisibleIgnoringBounds(TerrainPosition - new MPos(0, 1));
-
-			return renderable.Visible;
-		}
 	}
 }

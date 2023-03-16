@@ -5,7 +5,7 @@ using WarriorsSnuggery.Objects;
 
 namespace WarriorsSnuggery.Maps.Layers
 {
-	public sealed class WallLayer : IRenderable
+	public sealed class WallLayer
 	{
 		public readonly List<Wall> WallList = new List<Wall>();
 		readonly World world;
@@ -265,12 +265,6 @@ namespace WarriorsSnuggery.Maps.Layers
 			}
 
 			return visibleWalls;
-		}
-
-		public void Render()
-		{
-			foreach (var wall in WallList)
-				wall.Render();
 		}
 	}
 }

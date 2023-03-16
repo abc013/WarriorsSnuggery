@@ -87,7 +87,7 @@ namespace WarriorsSnuggery.Objects.Actors.Parts
 			{
 				foreach (var actor in sector.Actors)
 				{
-					if (actor.Team == team || actor.WorldPart == null || !CameraVisibility.IsVisible(actor.Position))
+					if (actor.Team == team || actor.WorldPart == null || !self.World.IsVisibleTo(self, actor))
 						continue;
 
 					var targetPart = actor.GetPartOrDefault<TargetablePart>();
@@ -123,7 +123,6 @@ namespace WarriorsSnuggery.Objects.Actors.Parts
 
 		void positionCamera(bool tinyMove)
 		{
-			Log.Debug("hihi");
 			Camera.Position(self.Position, tinyMove: tinyMove);
 		}
 

@@ -43,9 +43,28 @@ namespace WarriorsSnuggery.Maps.Layers
 			}
 		}
 
-		public HashSet<Weapon> GetVisible()
+		public HashSet<Weapon> GetVisible(CPos topleft, CPos bottomright)
 		{
-			return Weapons.Where(w => w.CheckVisibility()).ToHashSet();
+			var visibleWeapons = new HashSet<Weapon>();
+
+			foreach (var weapon in Weapons)
+			{
+				if (weapon is BeamWeapon)
+				{
+					visibleWeapons.Add(weapon);
+					continue;
+				}
+
+				if (weapon.Position.X >= bottomright.X || weapon.Position.X < topleft.X)
+					continue;
+
+				if (weapon.Position.Y >= bottomright.Y || weapon.Position.Y < topleft.Y)
+					continue;
+
+				visibleWeapons.Add(weapon);
+			}
+
+			return visibleWeapons;
 		}
 	}
 }

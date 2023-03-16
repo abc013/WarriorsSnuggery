@@ -305,24 +305,8 @@ namespace WarriorsSnuggery.Objects.Actors
 		public IEnumerable<ActorEffect> GetActiveEffects(EffectType type) => effects.Where(e => e.Effect.Type == type && !e.Sleeping);
 		public bool EffectActive(EffectType type) => effects.Any(e => e.Effect.Type == type);
 
-		public override bool CheckVisibility()
-		{
-			if (Disposed)
-				return false;
-
-			if (WorldPart != null)
-				Visible = CameraVisibility.IsVisible(GraphicPosition + WorldPart.VisibilityBoxOffset, WorldPart.VisibilityBox);
-			else
-				Visible = CameraVisibility.IsVisible(GraphicPosition, new MPos(512, 512));
-
-			return Visible;
-		}
-
 		public override void Render()
 		{
-			if (!Visible)
-				return;
-
 			if (EffectActive(EffectType.INVISIBILITY))
 				return;
 

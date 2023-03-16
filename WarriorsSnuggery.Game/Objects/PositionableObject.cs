@@ -2,23 +2,10 @@
 
 namespace WarriorsSnuggery.Objects
 {
-	public class PositionableObject : ITickRenderable, ICheckVisible, IPositionable
+	public class PositionableObject : ITickRenderable, IPositionable
 	{
 		protected readonly BatchRenderable Renderable;
 		public bool Disposed;
-
-		public virtual bool Visible
-		{
-			get => visible;
-			set
-			{
-				if (Renderable != null)
-					Renderable.Visible = value;
-
-				visible = value;
-			}
-		}
-		bool visible = true;
 
 		[Save]
 		public virtual CPos Position
@@ -116,22 +103,9 @@ namespace WarriorsSnuggery.Objects
 			Renderable.SetPosition(GraphicPosition);
 		}
 
-		public virtual bool CheckVisibility()
-		{
-			if (Renderable == null || Disposed)
-			{
-				Visible = false;
-				return Visible;
-			}
-
-			Visible = CameraVisibility.IsVisible(Position);
-			return Visible;
-		}
-
 		public virtual void Dispose()
 		{
 			Disposed = true;
-			Visible = false;
 		}
 	}
 }

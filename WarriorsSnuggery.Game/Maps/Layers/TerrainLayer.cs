@@ -5,8 +5,10 @@ using WarriorsSnuggery.Objects;
 
 namespace WarriorsSnuggery.Maps.Layers
 {
-	public sealed class TerrainLayer : ITickRenderable
+	public sealed class TerrainLayer
 	{
+		public static int TilesVisible { get; private set; }
+
 		public readonly Terrain[,] Terrain;
 
 		public TerrainLayer(MPos bounds)
@@ -43,6 +45,8 @@ namespace WarriorsSnuggery.Maps.Layers
 				for (int y = position.Y; y < position.Y + bounds.Y; y++)
 					renderList.Add(Terrain[x, y]);
 			}
+
+			TilesVisible = renderList.Count;
 
 			foreach (var terrain in renderList.OrderBy(t => t.Type.OverlapHeight))
 				terrain.Render();

@@ -42,9 +42,6 @@ namespace WarriorsSnuggery.Objects.Particles
 			velocity += init.InitialVelocity;
 
 			rotate_velocity = init.Convert("RotationVelocity", ParticleUtils.AngleVariety(Type.RandomRotation));
-
-			// Set invisible first and check later for visibility
-			Visible = true;
 		}
 
 		public void AffectVelocity(ParticleForce force, float ratio, CPos origin)
@@ -91,7 +88,7 @@ namespace WarriorsSnuggery.Objects.Particles
 					}
 					break;
 				case ParticleForceType.VORTEX:
-					angle -= MathF.PI / 2; // Rotate 90°
+					angle -= MathF.PI / 2; // Rotate 90ï¿½
 					xFloat = (force.Strength * MathF.Cos(angle)) * ratio;
 					yFloat = (force.Strength * MathF.Sin(angle)) * ratio;
 					zFloat = 0; // Vortex is only 2D

@@ -7,7 +7,6 @@ namespace WarriorsSnuggery.Objects.Weapons
 		public readonly CPos Position;
 		readonly BatchRenderable renderable;
 
-		public bool Visible;
 
 		public bool IsDissolving { get; private set; }
 		public bool Dissolved;
@@ -44,22 +43,10 @@ namespace WarriorsSnuggery.Objects.Weapons
 
 		public void Render()
 		{
-			if (Dissolved || !Visible)
+			if (Dissolved)
 				return;
 
 			renderable.Render();
-		}
-
-		public bool CheckVisibility()
-		{
-			if (renderable == null || Dissolved)
-			{
-				Visible = false;
-				return Visible;
-			}
-
-			Visible = CameraVisibility.IsVisible(Position);
-			return Visible;
 		}
 
 		public void BeginDissolve()

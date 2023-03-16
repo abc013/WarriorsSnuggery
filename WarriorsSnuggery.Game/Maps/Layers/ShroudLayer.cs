@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using WarriorsSnuggery.Graphics;
 using WarriorsSnuggery.Objects;
 using WarriorsSnuggery.Objects.Actors;
 
@@ -87,7 +86,7 @@ namespace WarriorsSnuggery.Maps.Layers
 					var listener = shroud.Listener;
 					listenerPositions[listener].Add(shroud);
 
-					if (shroud.ChangeState(ShroudRevealed(Actor.PlayerTeam, listener)))
+					if (shroud.ChangeState(ShroudRevealed(Actor.PlayerTeam, listener.X, listener.Y)))
 						changingShroud.Add(shroud);
 				}
 			}
@@ -101,9 +100,21 @@ namespace WarriorsSnuggery.Maps.Layers
 			return RevealAll || shroudRevealed[team][x, y];
 		}
 
-		public bool ShroudRevealed(byte team, MPos position)
+		public bool ShroudRevealedOnTile(byte team, MPos position)
 		{
-			return ShroudRevealed(team, position.X, position.Y);
+			return ShroudRevealedOnTile(team, position.X, position.Y);
+		}
+
+		public bool ShroudRevealedOnTile(byte team, int x, int y)
+		{
+			if (RevealAll)
+				return true;
+
+			// As shroud has a doubled tilesize, we have to check 4 tiles.
+			return ShroudRevealed(team, x * 2, y * 2)
+				|| ShroudRevealed(team, x * 2 + 1, y * 2)
+				|| ShroudRevealed(team, x * 2 + 1, y * 2 + 1)
+				|| ShroudRevealed(team, x * 2, y * 2 + 1);
 		}
 
 		public void RevealShroudList(byte team, bool[] values)
@@ -223,9 +234,6 @@ namespace WarriorsSnuggery.Maps.Layers
 				if (shroud.ChangeState(value))
 					changingShroud.Add(shroud);
 			}
-
-			if (value)
-				CameraVisibility.ShroudRevealed(x / 2, y / 2);
 		}
 
 		List<Triangle> getTriangles(World world, CPos position, MPos shroudPos, int radius)

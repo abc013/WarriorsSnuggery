@@ -1,4 +1,5 @@
 ﻿using WarriorsSnuggery.Graphics;
+using WarriorsSnuggery.Maps.Layers;
 
 namespace WarriorsSnuggery.UI.Objects
 {
@@ -29,7 +30,7 @@ namespace WarriorsSnuggery.UI.Objects
 			//memory.SetText("Memory " + (int) (System.Diagnostics.Process.GetCurrentProcess().PrivateMemorySize64 / 1024f) + " KB");
 			//memory.SetText("Public Memory " + (int)(GC.GetTotalMemory(false) / 1024f) + " KB");
 			debug.SetText($"{MasterRenderer.Batches} Batches");
-			debug.AddText($"{CameraVisibility.TilesVisible()} Tiles visible");
+			debug.AddText($"{TerrainLayer.TilesVisible} Tiles rendered");
 
 			var tps = PerfInfo.AverageTPS();
 			debug.AddText(getColor(tps, Settings.UpdatesPerSecond) + $"Tick {tps:00.0} @ {PerfInfo.TMS:00.0} ms");

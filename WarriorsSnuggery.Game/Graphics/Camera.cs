@@ -35,6 +35,7 @@ namespace WarriorsSnuggery.Graphics
 		public static void SetBounds(MPos bounds)
 		{
 			Camera.bounds = (bounds - new MPos(1, 1)).ToCPos();
+			CameraVisibility.SetBounds(bounds);
 		}
 
 		public static bool IsVisible(CPos pos, float scaleX, float scaleY)
@@ -61,6 +62,7 @@ namespace WarriorsSnuggery.Graphics
 
 		public static void Reset()
 		{
+			CameraVisibility.Reset();
 			LookAt = CPos.Zero;
 			Locked = false;
 			CurrentZoom = DefaultZoom;

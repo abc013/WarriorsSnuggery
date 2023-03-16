@@ -191,11 +191,6 @@ namespace WarriorsSnuggery.Objects.Weapons
 				Dispose();
 		}
 
-		public override bool CheckVisibility()
-		{
-			return CameraVisibility.IsVisible(GraphicPosition) || CameraVisibility.IsVisible(originPos);
-		}
-
 		void setPosition()
 		{
 			if (Origin != null)

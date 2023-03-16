@@ -7,6 +7,8 @@ namespace WarriorsSnuggery.Maps.Layers
 {
 	public sealed class SmudgeLayer
 	{
+		public const int MaxSmudgeCount = 256;
+
 		public readonly List<Smudge> Smudge = new List<Smudge>();
 		readonly List<Smudge> toRemove = new List<Smudge>();
 
@@ -16,7 +18,7 @@ namespace WarriorsSnuggery.Maps.Layers
 		{
 			Smudge.Add(smudge);
 
-			if (Smudge.Count > 256)
+			if (Smudge.Count > MaxSmudgeCount)
 			{
 				for (int i = 0; i < Smudge.Count; i++)
 				{
@@ -35,8 +37,16 @@ namespace WarriorsSnuggery.Maps.Layers
 			var topLeft = pos.ToCPos();
 			var bottomRight = pos.ToCPos() + bounds.ToCPos();
 
-			foreach (var smudge in Smudge.Where(a => a.CheckVisibility()))
+			foreach (var smudge in Smudge)
+			{
+				if (smudge.Position.X >= bottomRight.X || smudge.Position.X < topLeft.X)
+					continue;
+
+				if (smudge.Position.Y >= bottomRight.Y || smudge.Position.Y < topLeft.Y)
+					continue;
+
 				smudge.Render();
+			}
 		}
 
 		public void Tick()

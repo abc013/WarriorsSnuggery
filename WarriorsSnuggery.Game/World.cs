@@ -140,8 +140,6 @@ namespace WarriorsSnuggery
 			LocalPlayer.FollowupActor = @new;
 			LocalPlayer = @new;
 			Add(@new);
-
-			CameraVisibility.ShroudUpdated();
 		}
 
 		public void BeginPlayerSwitch(ActorType to)

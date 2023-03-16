@@ -28,7 +28,6 @@ namespace WarriorsSnuggery
 
 			Ambient = world.Map.Type.GetAmbience(@new.SharedRandom);
 
-			CameraVisibility.Reset();
 			Camera.Reset();
 		}
 
@@ -152,7 +151,7 @@ namespace WarriorsSnuggery
 
 			var renderables = new List<PositionableObject>();
 			renderables.AddRange(world.ActorLayer.GetVisible(topLeft, bottomRight));
-			renderables.AddRange(world.WeaponLayer.GetVisible());
+			renderables.AddRange(world.WeaponLayer.GetVisible(topLeft, bottomRight));
 			renderables.AddRange(world.ParticleLayer.GetVisible(topLeft, bottomRight));
 			renderables.AddRange(world.WallLayer.GetVisible(position, position + bounds));
 
@@ -207,7 +206,7 @@ namespace WarriorsSnuggery
 			{
 				for (int y = position.Y; y < position.Y + bounds.Y; y++)
 				{
-					if (!CameraVisibility.IsShrouded(x, y))
+					if (!world.ShroudLayer.ShroudRevealedOnTile(Actor.PlayerTeam, x, y))
 					{
 						// Save 4 calls to shroud and render a big piece instead
 						Shroud.BigShroudRenderable.SetPosition(new MPos(x, y).ToCPos());
