@@ -140,14 +140,6 @@ namespace WarriorsSnuggery.Maps.Layers
 		{
 			return actorsToAdd;
 		}
-
-		public void Dispose()
-		{
-			foreach (var actor in Actors)
-				actor.Dispose();
-			Actors.Clear();
-			NonNeutralActors.Clear();
-		}
 	}
 
 	public sealed class ActorSector

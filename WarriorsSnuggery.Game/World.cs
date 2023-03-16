@@ -14,7 +14,7 @@ using WarriorsSnuggery.Maps.Layers;
 
 namespace WarriorsSnuggery
 {
-	public sealed class World : ITick, IDisposable
+	public sealed class World : ITick
 	{
 		public readonly Map Map;
 		public readonly Game Game;
@@ -324,16 +324,6 @@ namespace WarriorsSnuggery
 				return true;
 
 			return ShroudLayer.ShroudRevealed(eye.Team, (int)(target.Position.X / 512f), (int)(target.Position.Y / 512f));
-		}
-
-		public void Dispose()
-		{
-			ActorLayer.Dispose();
-			ParticleLayer.Dispose();
-			WeaponLayer.Dispose();
-
-			WallLayer.Dispose();
-			SmudgeLayer.Dispose();
 		}
 	}
 }

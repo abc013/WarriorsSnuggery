@@ -272,16 +272,5 @@ namespace WarriorsSnuggery.Maps.Layers
 			foreach (var wall in WallList)
 				wall.Render();
 		}
-
-		public void Dispose()
-		{
-			foreach (var wall in WallList)
-				wall.Dispose();
-			WallList.Clear();
-
-			Walls = new Wall[0, 0];
-			mapBounds = MPos.Zero;
-			Bounds = MPos.Zero;
-		}
 	}
 }

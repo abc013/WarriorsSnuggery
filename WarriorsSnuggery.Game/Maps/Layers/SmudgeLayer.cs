@@ -55,12 +55,5 @@ namespace WarriorsSnuggery.Maps.Layers
 				toRemove.Clear();
 			}
 		}
-
-		public void Dispose()
-		{
-			foreach (var smudge in Smudge)
-				smudge.Dissolved = true;
-			Smudge.Clear();
-		}
 	}
 }

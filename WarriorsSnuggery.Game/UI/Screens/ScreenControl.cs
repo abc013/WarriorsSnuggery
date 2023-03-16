@@ -197,13 +197,6 @@ namespace WarriorsSnuggery.UI.Screens
 			}
 		}
 
-		public void DisposeScreens()
-		{
-			cachedScreens.Clear();
-			Focused = null;
-			FocusedType = ScreenType.EMPTY;
-		}
-
 		class GameTransitionFader
 		{
 			public bool FadeDone => fadeOut ? maxFade == fade : 0 == fade;

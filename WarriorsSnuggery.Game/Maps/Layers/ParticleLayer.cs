@@ -126,13 +126,6 @@ namespace WarriorsSnuggery.Maps.Layers
 
 			return visibleParticles.ToHashSet();
 		}
-
-		public void Dispose()
-		{
-			foreach (var particle in Particles)
-				particle.Dispose();
-			Particles.Clear();
-		}
 	}
 
 	public class ParticleSector

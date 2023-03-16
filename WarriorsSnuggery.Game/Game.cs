@@ -452,10 +452,6 @@ namespace WarriorsSnuggery
 			if (!Finished)
 				throw new Exception("Game has not been finished before dispose call.");
 
-			World.Dispose();
-
-			ScreenControl.DisposeScreens();
-
 			AudioController.StopAll(true);
 
 			Log.Debug("Current game disposed!");

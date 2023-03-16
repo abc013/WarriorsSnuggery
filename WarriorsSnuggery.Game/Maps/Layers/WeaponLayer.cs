@@ -47,12 +47,5 @@ namespace WarriorsSnuggery.Maps.Layers
 		{
 			return Weapons.Where(w => w.CheckVisibility()).ToHashSet();
 		}
-
-		public void Dispose()
-		{
-			foreach (var weapon in Weapons)
-				weapon.Dispose();
-			Weapons.Clear();
-		}
 	}
 }
