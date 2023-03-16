@@ -272,8 +272,7 @@ namespace WarriorsSnuggery.UI.Screens
 
 					var terrain = TerrainCache.Create(game.World, mpos, terrainWidget.CurrentType.ID);
 					game.World.TerrainLayer.Set(terrain);
-
-					WorldRenderer.CheckTerrainAround(mpos, true);
+					game.World.TerrainLayer.CheckBordersAround(mpos);
 
 					break;
 				case Selected.WALL:

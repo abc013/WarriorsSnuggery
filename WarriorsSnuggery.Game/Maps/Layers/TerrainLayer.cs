@@ -48,6 +48,23 @@ namespace WarriorsSnuggery.Maps.Layers
 				terrain.Render();
 		}
 
+		public void CheckBordersAround(MPos pos)
+		{
+			for (int x = pos.X - 1; x < pos.X + 2; x++)
+			{
+				if (x >= 0 && x < Terrain.GetLength(0))
+				{
+					for (int y = pos.Y - 1; y < pos.Y + 2; y++)
+					{
+						if (y >= 0 && y < Terrain.GetLength(1))
+						{
+							Terrain[x, y].CheckEdgeVisibility();
+						}
+					}
+				}
+			}
+		}
+
 		public void CheckBorders()
 		{
 			foreach (var terrain in Terrain)

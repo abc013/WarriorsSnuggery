@@ -58,7 +58,7 @@ namespace WarriorsSnuggery.Maps.Layers
 				shroudLayer.SetWall(wall);
 
 			if (world.Game.Editor)
-				WorldRenderer.CheckTerrainAround(wall.TerrainPosition, true);
+				world.TerrainLayer.CheckBordersAround(wall.TerrainPosition);
 		}
 
 		public void Remove(WPos pos)
@@ -78,7 +78,7 @@ namespace WarriorsSnuggery.Maps.Layers
 				shroudLayer.ClearWall(wall);
 
 			if (world.Game.Editor)
-				WorldRenderer.CheckTerrainAround(wall.TerrainPosition, true);
+				world.TerrainLayer.CheckBordersAround(wall.TerrainPosition);
 		}
 
 		void notifyNeighbors(WPos pos, bool added, bool ignoresNearby)

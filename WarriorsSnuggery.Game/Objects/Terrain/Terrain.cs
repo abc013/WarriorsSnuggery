@@ -2,7 +2,7 @@ using WarriorsSnuggery.Graphics;
 
 namespace WarriorsSnuggery.Objects
 {
-	public class Terrain : ITickRenderable, ICheckVisible
+	public class Terrain : ITickRenderable
 	{
 		readonly StaticBatchRenderable renderable;
 		readonly BatchSequence overlay;
@@ -28,7 +28,6 @@ namespace WarriorsSnuggery.Objects
 		readonly World world;
 		public readonly MPos Position;
 		public readonly TerrainType Type;
-		bool firstChecked;
 
 		public Terrain(World world, MPos position, TerrainType type)
 		{
@@ -65,9 +64,6 @@ namespace WarriorsSnuggery.Objects
 
 		public void Render()
 		{
-			if (!renderable.Visible)
-				return;
-
 			if (Type.Overlaps)
 			{
 				for (int i = 0; i < 4; i++)
@@ -84,23 +80,6 @@ namespace WarriorsSnuggery.Objects
 			}
 			renderable.PushToBatchRenderer();
 			overlay?.Render();
-		}
-
-		public bool CheckVisibility()
-		{
-			return CheckVisibility(false);
-		}
-
-		public bool CheckVisibility(bool checkEdges = false)
-		{
-			renderable.Visible = CameraVisibility.IsVisible(Position);
-			if (!firstChecked || checkEdges)
-			{
-				CheckEdgeVisibility();
-				firstChecked = true;
-			}
-
-			return renderable.Visible;
 		}
 
 		public void CheckEdgeVisibility()
