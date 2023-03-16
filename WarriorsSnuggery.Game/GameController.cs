@@ -1,5 +1,6 @@
 ﻿using OpenTK.Windowing.GraphicsLibraryFramework;
 using System;
+using WarriorsSnuggery.Graphics;
 using WarriorsSnuggery.Loader;
 using WarriorsSnuggery.Maps;
 using WarriorsSnuggery.Maps.Pieces;
@@ -140,11 +141,6 @@ namespace WarriorsSnuggery
 			nextGame = null;
 		}
 
-		public static void AddInfoMessage(int duration, string text)
-		{
-			game.AddInfoMessage(duration, text);
-		}
-
 		public static void Pause()
 		{
 			if (game.Paused)
@@ -156,6 +152,12 @@ namespace WarriorsSnuggery
 
 		public static void KeyDown(Keys key, bool isControl, bool isShift, bool isAlt)
 		{
+			if (isControl && key == Keys.P)
+			{
+				MasterRenderer.CreateScreenshot();
+				game.AddInfoMessage(150, "Screenshot!");
+			}
+
 			game.KeyDown(key, isControl, isShift, isAlt);
 		}
 

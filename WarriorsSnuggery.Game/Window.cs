@@ -333,12 +333,6 @@ namespace WarriorsSnuggery
 			if (e.Alt && e.Key == Keys.F4)
 				Program.Exit();
 
-			if (e.Control && e.Key == Keys.P)
-			{
-				MasterRenderer.CreateScreenshot();
-				GameController.AddInfoMessage(150, "Screenshot!");
-			}
-
 			GameController.KeyDown(e.Key, e.Control, e.Shift, e.Alt);
 		}
 	}

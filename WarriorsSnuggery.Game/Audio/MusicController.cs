@@ -149,6 +149,7 @@ namespace WarriorsSnuggery.Audio
 
 		public static void ResetIntense()
 		{
+			intenseActive = false;
 			intenseDuration = 0;
 			intenseVolume = 0;
 		}
