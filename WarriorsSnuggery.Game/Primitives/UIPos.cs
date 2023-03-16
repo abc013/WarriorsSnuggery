@@ -51,10 +51,20 @@ namespace WarriorsSnuggery
 
 		public static UIPos FromRelativePosition(float x, float y)
 		{
-			var uX = (int)(x * Camera.UIZoom * Constants.TileSize);
-			var uY = (int)(y * Camera.UIZoom * Constants.TileSize);
+			var uX = (int)(x * UICamera.Zoom * Constants.TileSize);
+			var uY = (int)(y * UICamera.Zoom * Constants.TileSize);
 
 			return new UIPos(uX, uY);
+		}
+
+		public static UIPos FromGameCoordinates(CPos gamePos)
+		{
+			var diff = gamePos - Camera.LookAt;
+
+			var x = diff.X / Camera.CurrentZoom * UICamera.Zoom;
+			var y = diff.Y / Camera.CurrentZoom * UICamera.Zoom;
+
+			return new UIPos((int)x, (int)y);
 		}
 
 		public bool IsEmpty() => X == 0 && Y == 0;

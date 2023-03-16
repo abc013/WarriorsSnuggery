@@ -112,7 +112,7 @@ namespace WarriorsSnuggery.UI.Screens
 					if (actorWidget.Rasterization && !CursorOnUI())
 					{
 						var pos = rasterizedPosition(MouseInput.GamePosition);
-						ColorManager.DrawQuad(Camera.GetWindowCoordinates(pos), 64, Color.Blue);
+						ColorManager.DrawQuad(UIPos.FromGameCoordinates(pos), 64, Color.Blue);
 					}
 
 					actorWidget.Render();

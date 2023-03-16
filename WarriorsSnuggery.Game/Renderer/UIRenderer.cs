@@ -9,8 +9,6 @@ namespace WarriorsSnuggery
 	{
 		static Game game;
 
-		static Matrix4 matrix;
-
 		static Tooltip tooltip;
 
 		public static Cursor Cursor;
@@ -25,14 +23,9 @@ namespace WarriorsSnuggery
 			Cursor.Current = CursorType.DEFAULT;
 			UIRenderer.game = game;
 
-			Update();
+			UICamera.Update();
 
 			tooltip = null;
-		}
-
-		public static void Update()
-		{
-			matrix = Matrix4.CreateScale(1 / Camera.UIZoom * 2 / WindowInfo.Ratio, 1 / Camera.UIZoom * 2, 1f);
 		}
 
 		public static void SetTooltip(Tooltip tooltip)
@@ -48,7 +41,7 @@ namespace WarriorsSnuggery
 
 		public static void Render()
 		{
-			Shader.TextureShader.Uniform(ref matrix, Color.White, CPos.Zero);
+			Shader.TextureShader.Uniform(ref UICamera.Matrix, Color.White, CPos.Zero);
 
 			game.ScreenControl.Render();
 

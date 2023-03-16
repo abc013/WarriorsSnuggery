@@ -192,7 +192,7 @@ namespace WarriorsSnuggery.Graphics
 			}
 
 			Camera.Update();
-			UIRenderer.Update();
+			UICamera.Update();
 		}
 
 		public static void CreateScreenshot()

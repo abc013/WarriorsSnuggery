@@ -1,4 +1,5 @@
 ﻿using System;
+using WarriorsSnuggery.Graphics;
 
 namespace WarriorsSnuggery
 {
@@ -79,6 +80,14 @@ namespace WarriorsSnuggery
 			var y = (int)(MathF.Sin(angle) * magnitude);
 
 			return new CPos(x, y, 0);
+		}
+
+		public static CPos FromWindowCoordinates(UIPos uipos)
+		{
+			var x = uipos.X / UICamera.Zoom * Camera.CurrentZoom;
+			var y = uipos.Y / UICamera.Zoom * Camera.CurrentZoom;
+
+			return new CPos((int)x, (int)y, 0) + Camera.LookAt;
 		}
 	}
 }

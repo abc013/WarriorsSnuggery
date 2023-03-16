@@ -2,6 +2,18 @@ using OpenTK.Mathematics;
 
 namespace WarriorsSnuggery.Graphics
 {
+	public static class UICamera
+	{
+		public const float Zoom = 16f;
+
+		public static Matrix4 Matrix = Matrix4.Zero;
+
+		public static void Update()
+		{
+			Matrix = Matrix4.CreateScale(2 / (Zoom * WindowInfo.Ratio), 2 / Zoom, 1f);
+		}
+	}
+
 	public static class Camera
 	{
 		public static CPos LookAt { get; private set; }
@@ -9,7 +21,6 @@ namespace WarriorsSnuggery.Graphics
 
 		public static bool Locked;
 
-		public const float UIZoom = 16f;
 		public const float DefaultZoom = 12f;
 		public const float MaxZoom = DefaultZoom * 2;
 		public static float CurrentZoom { get; private set; } = DefaultZoom;
@@ -138,24 +149,6 @@ namespace WarriorsSnuggery.Graphics
 			Matrix = view * projection;
 
 			MouseInput.RecalculateMousePosition();
-		}
-
-		public static CPos GetWindowCoordinates(CPos gamePos)
-		{
-			var diff = gamePos - LookAt;
-
-			var x = diff.X / CurrentZoom * UIZoom;
-			var y = diff.Y / CurrentZoom * UIZoom;
-
-			return new CPos((int)x, (int)y, 0);
-		}
-
-		public static CPos GetGameCoordinates(CPos windowPos)
-		{
-			var x = windowPos.X / UIZoom * CurrentZoom;
-			var y = windowPos.Y / UIZoom * CurrentZoom;
-
-			return new CPos((int)x, (int)y, 0) + LookAt;
 		}
 	}
 }
