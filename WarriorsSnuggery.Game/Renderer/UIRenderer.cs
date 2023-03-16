@@ -1,4 +1,3 @@
-using OpenTK.Mathematics;
 using WarriorsSnuggery.Graphics;
 using WarriorsSnuggery.Objects.Actors.Parts;
 using WarriorsSnuggery.UI;
@@ -46,17 +45,8 @@ namespace WarriorsSnuggery
 			game.ScreenControl.Render();
 
 			var possibleTarget = game.MapType.AllowWeapons && game.World.LocalPlayer != null && game.World.LocalPlayer.GetPart<PlayerPart>().FindValidTarget(MouseInput.GamePosition) != null;
-
-			if (Settings.DeveloperMode)
-			{
-				ColorManager.DrawRect(new CPos(-64, -64, 0), new CPos(64, 64, 0), Color.Cyan);
-				ColorManager.DrawRect(MouseInput.WindowPosition + new CPos(-64, -64, 0), MouseInput.WindowPosition + new CPos(64, 64, 0), possibleTarget ? Color.Red : Color.Blue);
-			}
-			else
-			{
-				Cursor.Current = possibleTarget ? CursorType.ATTACK : CursorType.DEFAULT;
-				Cursor.Render();
-			}
+			Cursor.Current = possibleTarget ? CursorType.ATTACK : CursorType.DEFAULT;
+			Cursor.Render();
 
 			tooltip?.Render();
 

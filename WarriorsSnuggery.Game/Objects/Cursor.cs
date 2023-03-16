@@ -32,6 +32,16 @@ namespace WarriorsSnuggery
 
 		public void Render()
 		{
+			if (Settings.DeveloperMode)
+			{
+				const int radius = 64;
+				var color = Current == CursorType.ATTACK ? Color.Red : Color.Blue;
+
+				ColorManager.DrawQuad(UIPos.Zero, radius, Color.Cyan);
+				ColorManager.DrawQuad(MouseInput.WindowPosition, radius, color);
+				return;
+			}
+
 			switch (Current)
 			{
 				case CursorType.DEFAULT:
