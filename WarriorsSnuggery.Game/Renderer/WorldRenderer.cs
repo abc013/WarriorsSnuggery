@@ -34,8 +34,6 @@ namespace WarriorsSnuggery
 
 		public static void Render()
 		{
-			game.LocalRender++;
-
 			var useAlpha = world.Game.Editor || world.PlayerAlive;
 
 			var pos = CPos.Zero;

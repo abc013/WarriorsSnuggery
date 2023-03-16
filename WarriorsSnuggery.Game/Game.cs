@@ -14,7 +14,7 @@ namespace WarriorsSnuggery
 {
 	public sealed class Game : ITick, IDisposable
 	{
-		public Random SharedRandom;
+		public readonly Random SharedRandom;
 
 		public readonly ScreenControl ScreenControl;
 		public readonly World World;
@@ -33,21 +33,17 @@ namespace WarriorsSnuggery
 		public readonly SpellCasterManager SpellManager;
 		public readonly ConditionManager ConditionManager;
 
-		readonly WaveController waveController;
-
-		public int CurrentWave => waveController != null ? waveController.CurrentWave : 0;
-		public int Waves => waveController != null ? waveController.Waves : 0;
+		public readonly WaveController WaveController;
 
 		readonly MissionScriptBase script;
 
-		public uint LocalTick;
-		public uint LocalRender;
+		public uint LocalTick { get; private set; }
 
-		public bool Paused;
-		public bool Editor;
+		public bool Paused { get; private set; }
+		public bool Editor { get; private set; }
 
-		public bool WinConditionsMet;
-		public bool Finished;
+		public bool WinConditionsMet { get; private set; }
+		public bool Finished { get; private set; }
 
 		MissionType nextLevelType;
 		InteractionMode nextInteractionMode;
@@ -99,7 +95,7 @@ namespace WarriorsSnuggery
 				Log.Debug(Program.DisableScripts ? "Mission scripts are disabled." : "No mission script existing.");
 
 			if (ObjectiveType == ObjectiveType.SURVIVE_WAVES)
-				waveController = new WaveController(this);
+				WaveController = new WaveController(this);
 		}
 
 		public void Load()
@@ -224,7 +220,7 @@ namespace WarriorsSnuggery
 				script?.Tick();
 
 				if (ObjectiveType == ObjectiveType.SURVIVE_WAVES)
-					waveController.Tick();
+					WaveController.Tick();
 			}
 
 			if (Window.GlobalTick == 0 && Settings.FirstStarted)
@@ -316,7 +312,7 @@ namespace WarriorsSnuggery
 			{
 				// FIND_EXIT will meet conditions when entering the exit
 				case ObjectiveType.SURVIVE_WAVES:
-					if (waveController.Done)
+					if (WaveController.Done)
 						VictoryConditionsMet();
 
 					break;

@@ -427,7 +427,7 @@ namespace WarriorsSnuggery
 			CurrentMapType = mapType.IsSave ? save.CurrentMapType : mapType;
 			CurrentAmbience = WorldRenderer.Ambient;
 
-			Waves = game.CurrentWave;
+			Waves = game.WaveController == null ? 0 : game.WaveController.CurrentWave;
 
 			var stats = game.Stats;
 

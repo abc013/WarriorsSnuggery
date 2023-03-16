@@ -2,21 +2,21 @@
 {
 	class WaveDisplay : DisplayBar, ITick
 	{
-		readonly Game game;
+		readonly WaveController controller;
 		int currentWave = -1;
 
 		public WaveDisplay(Game game) : base(new UIPos(1280, 512), PanelCache.Types["wooden"], new Color(0, 255, 0, 64))
 		{
-			this.game = game;
+			controller = game.WaveController;
 		}
 
 		public virtual void Tick()
 		{
-			if (game.CurrentWave != currentWave)
+			if (controller.CurrentWave != currentWave)
 			{
-				currentWave = game.CurrentWave;
-				SetText($"Wave {game.CurrentWave}/{game.Waves}");
-				DisplayPercentage = game.CurrentWave / (float)game.Waves;
+				currentWave = controller.CurrentWave;
+				SetText($"Wave {controller.CurrentWave}/{controller.Waves}");
+				DisplayPercentage = controller.CurrentWave / (float)controller.Waves;
 			}
 		}
 	}
