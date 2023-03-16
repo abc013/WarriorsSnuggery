@@ -51,7 +51,7 @@ namespace WarriorsSnuggery.Scripting
 
 			var data = File.ReadAllBytes(cachePath);
 
-			var timer = Timer.Start();
+			var timer = Timer.StartNew();
 
 			assembly = Assembly.Load(data);
 
@@ -69,7 +69,7 @@ namespace WarriorsSnuggery.Scripting
 
 		void compileAndCache()
 		{
-			var timer = Timer.Start();
+			var timer = Timer.StartNew();
 
 			using var reader = new StreamReader(filePath);
 			var content = reader.ReadToEnd();

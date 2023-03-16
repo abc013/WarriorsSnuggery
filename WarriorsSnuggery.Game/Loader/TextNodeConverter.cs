@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Linq;
+using WarriorsSnuggery.Conditions;
 using WarriorsSnuggery.Graphics;
 using WarriorsSnuggery.Maps;
 using WarriorsSnuggery.Maps.Generators;
 using WarriorsSnuggery.Objects.Actors;
 using WarriorsSnuggery.Objects.Actors.Bot;
-using WarriorsSnuggery.Objects.Conditions;
 using WarriorsSnuggery.Objects.Particles;
 using WarriorsSnuggery.Objects.Weapons;
 using WarriorsSnuggery.Objects.Weapons.Projectiles;

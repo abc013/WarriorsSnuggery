@@ -79,7 +79,7 @@ namespace WarriorsSnuggery.Graphics
 
 		public static void Initialize()
 		{
-			var watch = Timer.Start();
+			var watch = Timer.StartNew();
 
 			initializeGL();
 

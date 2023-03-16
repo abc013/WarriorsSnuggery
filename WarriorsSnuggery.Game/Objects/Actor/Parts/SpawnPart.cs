@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System;
+using WarriorsSnuggery.Conditions;
 using WarriorsSnuggery.Maps;
-using WarriorsSnuggery.Objects.Conditions;
 using WarriorsSnuggery.Objects.Weapons;
 using System.Linq;
 

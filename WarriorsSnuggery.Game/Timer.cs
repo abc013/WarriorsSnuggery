@@ -2,35 +2,26 @@ using System.Diagnostics;
 
 namespace WarriorsSnuggery
 {
-	public sealed class Timer
+	public sealed class Timer : Stopwatch
 	{
-		readonly Stopwatch watch;
-
-		Timer()
+		public static new Timer StartNew()
 		{
-			watch = Stopwatch.StartNew();
-		}
+			var timer = new Timer();
+			timer.Start();
 
-		public static Timer Start()
-		{
-			return new Timer();
+			return timer;
 		}
 
 		public void StopAndWrite(string text)
 		{
-			watch.Stop();
-			Log.Performance(watch.Elapsed.TotalMilliseconds, text);
+			Stop();
+			Log.Performance(Elapsed.TotalMilliseconds, text);
 		}
 
-		public double Stop()
+		public double StopAndGetMilliseconds()
 		{
-			watch.Stop();
-			return watch.Elapsed.TotalMilliseconds;
-		}
-
-		public void Restart()
-		{
-			watch.Restart();
+			Stop();
+			return Elapsed.TotalMilliseconds;
 		}
 	}
 }

@@ -167,7 +167,7 @@ namespace WarriorsSnuggery
 
 		public static void Exit()
 		{
-			var watch = Timer.Start();
+			var watch = Timer.StartNew();
 
 			GameController.Exit();
 			AudioController.Dispose();

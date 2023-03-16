@@ -1,4 +1,4 @@
-﻿using WarriorsSnuggery.Objects.Conditions;
+﻿using WarriorsSnuggery.Conditions;
 using WarriorsSnuggery.Objects.Particles;
 
 namespace WarriorsSnuggery.Objects.Actors.Parts

@@ -1,7 +1,7 @@
 ﻿using System;
+using WarriorsSnuggery.Conditions;
 using WarriorsSnuggery.Graphics;
 using WarriorsSnuggery.Loader;
-using WarriorsSnuggery.Objects.Conditions;
 
 namespace WarriorsSnuggery.Objects.Actors.Parts
 {

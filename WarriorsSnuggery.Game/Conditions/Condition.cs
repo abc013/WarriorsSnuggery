@@ -1,6 +1,6 @@
 ﻿using WarriorsSnuggery.Objects.Actors;
 
-namespace WarriorsSnuggery.Objects.Conditions
+namespace WarriorsSnuggery.Conditions
 {
 	public class Condition
 	{

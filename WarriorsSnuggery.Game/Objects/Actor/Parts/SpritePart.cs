@@ -1,5 +1,5 @@
-﻿using WarriorsSnuggery.Graphics;
-using WarriorsSnuggery.Objects.Conditions;
+﻿using WarriorsSnuggery.Conditions;
+using WarriorsSnuggery.Graphics;
 using WarriorsSnuggery.Loader;
 
 namespace WarriorsSnuggery.Objects.Actors.Parts

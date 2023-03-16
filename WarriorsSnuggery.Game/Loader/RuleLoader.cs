@@ -21,7 +21,7 @@ namespace WarriorsSnuggery.Loader
 
 		public static void Load()
 		{
-			var timer = Timer.Start();
+			var timer = Timer.StartNew();
 
 			ParticleCache.Load(loadNodes("Particles"));
 			EffectCache.Load(loadNodes("Spelleffects"));

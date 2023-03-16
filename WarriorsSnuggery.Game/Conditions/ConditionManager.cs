@@ -4,7 +4,7 @@ using System.Linq;
 using WarriorsSnuggery.Objects.Actors;
 using WarriorsSnuggery.Trophies;
 
-namespace WarriorsSnuggery.Objects.Conditions
+namespace WarriorsSnuggery.Conditions
 {
 	public class ConditionManager
 	{

@@ -1,9 +1,9 @@
 using OpenTK.Windowing.GraphicsLibraryFramework;
 using System;
 using WarriorsSnuggery.Audio;
+using WarriorsSnuggery.Conditions;
 using WarriorsSnuggery.Graphics;
 using WarriorsSnuggery.Maps;
-using WarriorsSnuggery.Objects.Conditions;
 using WarriorsSnuggery.Spells;
 using WarriorsSnuggery.Scripting;
 using WarriorsSnuggery.UI.Screens;
@@ -104,7 +104,7 @@ namespace WarriorsSnuggery
 
 		public void Load()
 		{
-			var timer = Timer.Start();
+			var timer = Timer.StartNew();
 
 			MasterRenderer.PauseSequences = false;
 			WorldRenderer.Reset(this);

@@ -1,5 +1,5 @@
-﻿using WarriorsSnuggery.Maps.Layers;
-using WarriorsSnuggery.Objects.Conditions;
+﻿using WarriorsSnuggery.Conditions;
+using WarriorsSnuggery.Maps.Layers;
 using WarriorsSnuggery.Objects.Particles;
 
 namespace WarriorsSnuggery.Objects.Actors.Parts

@@ -117,7 +117,7 @@ namespace WarriorsSnuggery
 			setScreen();
 			setVSync();
 
-			timer = Timer.Start();
+			timer = Timer.StartNew();
 			timer.Stop();
 		}
 
@@ -228,7 +228,7 @@ namespace WarriorsSnuggery
 			MouseInput.Tick();
 			KeyInput.Tick();
 
-			PerfInfo.UpdateLoop(timer.Stop(), 1 / e.Time);
+			PerfInfo.UpdateLoop(timer.StopAndGetMilliseconds(), 1 / e.Time);
 			if (Settings.LogTimeMeasuring && GlobalTick % 20 == 0)
 				Log.Performance(PerfInfo.TMS, " tick " + GlobalTick);
 
@@ -249,7 +249,7 @@ namespace WarriorsSnuggery
 				SwapBuffers();
 			}
 
-			PerfInfo.RenderLoop(timer.Stop(), 1 / e.Time);
+			PerfInfo.RenderLoop(timer.StopAndGetMilliseconds(), 1 / e.Time);
 			if (GlobalRender % 20 == 0)
 			{
 				if (Settings.LogTimeMeasuring)
