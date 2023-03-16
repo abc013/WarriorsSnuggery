@@ -208,7 +208,7 @@ namespace WarriorsSnuggery.Maps
 
 		public void AddActor(CPos pos, ActorProbabilityInfo info)
 		{
-			var init = ActorCache.CreateInit(world, info.Type, pos, info.Team, info.IsBot, health: info.Health);
+			var init = ActorCache.CreateInit(world, info.Type, pos, info.Team, info.IsBot);
 
 			AddActor(init, CPos.Zero);
 		}

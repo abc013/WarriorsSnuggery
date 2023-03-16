@@ -116,7 +116,7 @@ namespace WarriorsSnuggery.Objects.Actors
 			ID = overrideID;
 		}
 
-		public Actor(World world, ActorInit init) : base()
+		public Actor(World world, ActorInit init)
 		{
 			World = world;
 			Position = init.Position;
@@ -174,9 +174,6 @@ namespace WarriorsSnuggery.Objects.Actors
 			stopParts = partManager.GetPartsOrDefault<INoticeStop>();
 
 			Physics = Type.Physics == null ? SimplePhysics.Empty : new SimplePhysics(this, Type.Physics.Type);
-
-			if (Health != null && init.Health >= 0f)
-				Health.RelativeHP = init.Health;
 
 			var hoverPart = GetPartOrDefault<HoverPart>();
 			if (hoverPart != null)
@@ -547,6 +544,11 @@ namespace WarriorsSnuggery.Objects.Actors
 		public T GetPartOrDefault<T>() => partManager.GetPartOrDefault<T>();
 		public List<T> GetParts<T>() => partManager.GetParts<T>();
 		public List<T> GetPartsOrDefault<T>() => partManager.GetPartsOrDefault<T>();
+
+		public override string ToString()
+		{
+			return ID.ToString();
+		}
 
 		public override void Dispose()
 		{

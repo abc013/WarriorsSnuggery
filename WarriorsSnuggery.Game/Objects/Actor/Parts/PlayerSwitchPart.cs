@@ -62,7 +62,8 @@
 
 		void switchPlayer()
 		{
-			var actor = ActorCache.Create(self.World, ActorType, self.Position, self.Team, isPlayer: true, health: RelativeHP);
+			var actor = ActorCache.Create(self.World, ActorType, self.Position, self.Team, isPlayer: true);
+			actor.Health.RelativeHP = RelativeHP;
 			self.World.FinishPlayerSwitch(actor);
 			self.Dispose();
 		}

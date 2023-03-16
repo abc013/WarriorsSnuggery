@@ -19,10 +19,7 @@ namespace WarriorsSnuggery.Objects.Actors
 
 		public readonly string ScriptTag;
 
-		// HACK: save health here temporarily.
-		public readonly float Health = -1f;
-
-		public ActorInit(uint id, ActorType type, CPos position, byte team, bool isBot, bool isPlayer, string scriptTag = "", float health = -1f)
+		public ActorInit(uint id, ActorType type, CPos position, byte team, bool isBot, bool isPlayer, string scriptTag = "")
 		{
 			ID = id;
 			Type = type;
@@ -35,13 +32,11 @@ namespace WarriorsSnuggery.Objects.Actors
 
 			ScriptTag = scriptTag;
 
-			Health = health;
-
 			// Empty list
 			Nodes = new List<TextNode>();
 		}
 
-		// MapFormat 1 & 2
+		// MapFormat 1-current
 		public ActorInit(uint id, List<TextNode> nodes, int mapFormat)
 		{
 			ID = id;

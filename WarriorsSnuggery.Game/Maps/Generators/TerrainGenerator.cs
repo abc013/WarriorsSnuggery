@@ -58,8 +58,6 @@ namespace WarriorsSnuggery.Maps.Generators
 		[Desc("Probability of spawning an actor on a field.")]
 		public readonly float Probability = 1f;
 
-		[Desc("Health in percentage, if the Healthpart is given in the actor's definitions.")]
-		public readonly float Health = 1f;
 		[Desc("Team of the actor.")]
 		public readonly byte Team = Actor.NeutralTeam;
 		[Desc("Determines whether the actor spawned is a bot.")]

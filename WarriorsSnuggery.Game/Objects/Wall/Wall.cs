@@ -60,7 +60,7 @@ namespace WarriorsSnuggery.Objects
 		byte neighborState;
 		DamageState damageState = DamageState.NONE;
 
-		public Wall(WPos position, World world, WallType type) : base()
+		public Wall(WPos position, World world, WallType type)
 		{
 			this.world = world;
 

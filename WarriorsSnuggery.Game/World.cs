@@ -151,7 +151,10 @@ namespace WarriorsSnuggery
 
 			if (playablePart.PlayerSwitchActor == null)
 			{
-				FinishPlayerSwitch(ActorCache.Create(this, to, LocalPlayer.Position, LocalPlayer.Team, isPlayer: true, health: health));
+				var player = ActorCache.Create(this, to, LocalPlayer.Position, LocalPlayer.Team, isPlayer: true);
+				if (player.Health != null)
+					player.Health.RelativeHP = health;
+				FinishPlayerSwitch(player);
 				LocalPlayer.Dispose();
 				return;
 			}

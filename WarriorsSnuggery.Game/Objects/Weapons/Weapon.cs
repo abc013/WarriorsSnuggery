@@ -11,6 +11,7 @@ namespace WarriorsSnuggery.Objects.Weapons
 
 		public readonly uint ID;
 
+		[Save, DefaultValue(null)]
 		public readonly Actor Origin;
 		[Save]
 		public readonly byte Team;
@@ -170,8 +171,6 @@ namespace WarriorsSnuggery.Objects.Weapons
 		{
 			var list = SaveAttribute.GetFields(this);
 
-			if (Origin != null)
-				list.Add("Origin=" + Origin.ID);
 			if (Target.Type == TargetType.ACTOR)
 				list.Add("TargetActor=" + Target.Actor.ID);
 
