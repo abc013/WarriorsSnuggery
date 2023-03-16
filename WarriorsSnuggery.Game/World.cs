@@ -72,6 +72,7 @@ namespace WarriorsSnuggery
 				if (!Map.Type.IsSave)
 				{
 					LocalPlayer = ActorCache.Create(this, Game.Save.Actor, Map.PlayerSpawn, Actor.PlayerTeam, isPlayer: true);
+					LocalPlayer.OnLoad();
 					Add(LocalPlayer);
 				}
 				else

@@ -186,7 +186,7 @@ namespace WarriorsSnuggery
 				}
 
 				// camera input
-				if (!ScreenControl.CursorOnUI() && !(Camera.LockedToPlayer && World.PlayerAlive && !Editor))
+				if (!ScreenControl.CursorOnUI())
 				{
 					var mouse = MouseInput.WindowPosition;
 
@@ -269,12 +269,7 @@ namespace WarriorsSnuggery
 
 			// Player lock
 			if (key == Settings.GetKey("CameraLock"))
-			{
-				if (!Camera.LockedToPlayer && World.LocalPlayer != null)
-					Camera.Position(World.LocalPlayer.Position + Camera.CameraPlayerOffset);
-
-				Camera.LockedToPlayer = !Camera.LockedToPlayer;
-			}
+				Settings.LockCameraToPlayer = !Settings.LockCameraToPlayer;
 
 			// Cheats
 			if (Settings.EnableCheats && isAlt)

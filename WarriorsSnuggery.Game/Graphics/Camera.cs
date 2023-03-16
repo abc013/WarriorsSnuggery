@@ -5,17 +5,14 @@ namespace WarriorsSnuggery.Graphics
 	public static class Camera
 	{
 		public static CPos LookAt { get; private set; }
-
 		public static MPos LookBounds { get; private set; }
 
 		public static bool Locked;
-		public static bool LockedToPlayer = true;
-		public static readonly CPos CameraPlayerOffset = new CPos(0, 512, 0);
 
 		public const float UIZoom = 16f;
 		public const float DefaultZoom = 12f;
-		public const float MaxZoom = 24f;
-		public static float CurrentZoom = DefaultZoom;
+		public const float MaxZoom = DefaultZoom * 2;
+		public static float CurrentZoom { get; private set; } = DefaultZoom;
 
 		public static Matrix4 Matrix = Matrix4.Zero;
 
@@ -31,8 +28,10 @@ namespace WarriorsSnuggery.Graphics
 
 		public static bool IsVisible(CPos pos, float scaleX, float scaleY)
 		{
-			var halfzoomX = LookBounds.X / 2 + 512;
-			var halfzoomY = LookBounds.Y / 2 + 512;
+			const int margin = Constants.TileSize / 2;
+
+			var halfzoomX = LookBounds.X / 2 + margin;
+			var halfzoomY = LookBounds.Y / 2 + margin;
 
 			if (pos.X + scaleX < LookAt.X - halfzoomX)
 				return false;

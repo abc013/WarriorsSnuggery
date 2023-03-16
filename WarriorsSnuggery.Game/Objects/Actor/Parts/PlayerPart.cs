@@ -9,11 +9,13 @@ namespace WarriorsSnuggery.Objects.Actors.Parts
 {
 	class PlayerPart : ActorPart, ITick, INoticeDamage, INoticeKilled, INoticeKill, INoticeMove, ISaveLoadable
 	{
-		bool firstTick = true;
-
 		public PlayerPart(Actor self) : base(self) { }
 
-		public void OnLoad(PartLoader loader) { }
+		public void OnLoad(PartLoader loader)
+		{
+			if (Settings.LockCameraToPlayer)
+				positionCamera(false);
+		}
 
 		public PartSaver OnSave()
 		{
@@ -25,12 +27,6 @@ namespace WarriorsSnuggery.Objects.Actors.Parts
 			var screenControl = self.World.Game.ScreenControl;
 			if (screenControl.ChatOpen)
 				return;
-
-			if (firstTick && Camera.LockedToPlayer)
-			{
-				firstTick = false;
-				positionCamera(false);
-			}
 
 			var vertical = 0;
 			if (KeyInput.IsKeyDown(Settings.GetKey("MoveUp")))
@@ -127,7 +123,8 @@ namespace WarriorsSnuggery.Objects.Actors.Parts
 
 		void positionCamera(bool tinyMove)
 		{
-			Camera.Position(self.Position + Camera.CameraPlayerOffset, tinyMove: tinyMove);
+			Log.Debug("hihi");
+			Camera.Position(self.Position, tinyMove: tinyMove);
 		}
 
 		public void OnDamage(Actor damager, int damage)
@@ -148,7 +145,7 @@ namespace WarriorsSnuggery.Objects.Actors.Parts
 
 		public void OnMove(CPos old, CPos speed)
 		{
-			if (Camera.LockedToPlayer)
+			if (Settings.LockCameraToPlayer)
 				positionCamera(true);
 		}
 	}

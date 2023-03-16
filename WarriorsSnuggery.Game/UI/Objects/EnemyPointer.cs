@@ -51,7 +51,7 @@ namespace WarriorsSnuggery.UI.Objects
 
 		void reaimPointer()
 		{
-			var pos = Camera.LookAt - Camera.CameraPlayerOffset - targetedEnemy.GraphicPosition;
+			var pos = game.World.LocalPlayer.GraphicPosition - targetedEnemy.GraphicPosition;
 
 			pointer.Visible = pos.SquaredFlatDist > 6120 * 6120;
 			if (!pointer.Visible)
@@ -59,7 +59,7 @@ namespace WarriorsSnuggery.UI.Objects
 
 			var angle = pos.FlatAngle;
 			pointer.SetRotation(new VAngle(0, 0, -angle) + new VAngle(0, 0, 270));
-			pointer.SetPosition(CPos.FromFlatAngle(angle, 2048) - Camera.CameraPlayerOffset);
+			pointer.SetPosition(CPos.FromFlatAngle(angle, 2048));
 		}
 
 		public void Render()
