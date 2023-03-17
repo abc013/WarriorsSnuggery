@@ -23,14 +23,14 @@ namespace WarriorsSnuggery
 		[Require, Desc("Name of the audio file.")]
 		public readonly PackageFile Name;
 
-		public readonly GameAudioBuffer Buffer;
+		public readonly SoundAudioBuffer Buffer;
 
 		public SoundType(List<TextNode> nodes, bool isDocumentation = false)
 		{
 			TypeLoader.SetValues(this, nodes);
 
 			if (!isDocumentation)
-				Buffer = AudioManager.LoadSound(Name);
+				Buffer = SoundController.LoadSound(Name);
 		}
 	}
 
@@ -40,7 +40,7 @@ namespace WarriorsSnuggery
 		readonly bool inGame;
 		readonly float defaultVolume;
 		readonly float defaultPitch;
-		GameAudioSource source;
+		SoundAudioSource source;
 		float dist;
 
 		public Sound(SoundType info, bool inGame = true)

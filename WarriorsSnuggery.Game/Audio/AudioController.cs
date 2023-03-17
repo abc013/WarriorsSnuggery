@@ -12,7 +12,7 @@
 			device = new AudioDevice();
 		}
 
-		internal static GameAudioSource Play(GameAudioBuffer buffer, bool inGame, float volume, float pitch, Vector position, bool loops)
+		internal static SoundAudioSource Play(SoundAudioBuffer buffer, bool inGame, float volume, float pitch, Vector position, bool loops)
 		{
 			return device.Play(buffer, inGame, volume, pitch, position, loops);
 		}
@@ -30,7 +30,7 @@
 		public static void Dispose()
 		{
 			device.Dispose();
-			AudioManager.Dispose();
+			SoundController.Dispose();
 		}
 	}
 }

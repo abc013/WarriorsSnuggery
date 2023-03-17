@@ -11,8 +11,8 @@ namespace WarriorsSnuggery.Audio
 		public readonly ALContext context;
 		public readonly MusicAudioSource MusicSource;
 		public readonly MusicAudioSource IntenseMusicSource;
-		public readonly GameAudioSource[] MiscSources;
-		public readonly GameAudioSource[] GameSources;
+		public readonly SoundAudioSource[] MiscSources;
+		public readonly SoundAudioSource[] GameSources;
 		readonly bool initialized;
 
 		public AudioDevice()
@@ -32,18 +32,18 @@ namespace WarriorsSnuggery.Audio
 			MusicSource = new MusicAudioSource();
 			IntenseMusicSource = new MusicAudioSource();
 
-			MiscSources = new GameAudioSource[miscSourceCount];
+			MiscSources = new SoundAudioSource[miscSourceCount];
 			for (int i = 0; i < miscSourceCount; i++)
-				MiscSources[i] = new GameAudioSource();
+				MiscSources[i] = new SoundAudioSource();
 
-			GameSources = new GameAudioSource[gameSourceCount];
+			GameSources = new SoundAudioSource[gameSourceCount];
 			for (int i = 0; i < gameSourceCount; i++)
-				GameSources[i] = new GameAudioSource();
+				GameSources[i] = new SoundAudioSource();
 
 			initialized = true;
 		}
 
-		public GameAudioSource Play(GameAudioBuffer buffer, bool inGame, float volume, float pitch, Vector position, bool loops)
+		public SoundAudioSource Play(SoundAudioBuffer buffer, bool inGame, float volume, float pitch, Vector position, bool loops)
 		{
 			var source = Find(inGame);
 			if (source == null)
@@ -56,7 +56,7 @@ namespace WarriorsSnuggery.Audio
 			return source;
 		}
 
-		public GameAudioSource Find(bool inGame)
+		public SoundAudioSource Find(bool inGame)
 		{
 			if (!initialized)
 				return null;

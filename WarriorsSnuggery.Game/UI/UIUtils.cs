@@ -12,22 +12,22 @@ namespace WarriorsSnuggery.UI
 		{
 			var sellSound = sellSounds[Program.SharedRandom.Next(sellSounds.Length)];
 
-			AudioManager.PlaySound(sellSound);
+			SoundController.PlaySound(sellSound);
 		}
 
 		public static void PlayClickSound()
 		{
-			AudioManager.PlaySound("click");
+			SoundController.PlaySound("click");
 		}
 
 		public static void PlayPingSound()
 		{
-			AudioManager.PlaySound("ping");
+			SoundController.PlaySound("ping");
 		}
 
 		public static void PlayLifeLostSound()
 		{
-			AudioManager.PlaySound("life_lost");
+			SoundController.PlaySound("life_lost");
 		}
 
 		public static bool ContainsMouse(UIPositionable positionable)

@@ -105,12 +105,12 @@ namespace WarriorsSnuggery.Loader
 			CheckBoxCache.Add(checkBox(new PackageFile("check_menu")), "menu");
 
 			foreach (var sound in new [] { new PackageFile("money_spent1"), new PackageFile("money_spent2"), new PackageFile("money_spent3") })
-				AudioManager.LoadSound(sound);
+				SoundController.LoadSound(sound);
 
-			AudioManager.LoadSound(new PackageFile("click"));
-			AudioManager.LoadSound(new PackageFile("ping"));
+			SoundController.LoadSound(new PackageFile("click"));
+			SoundController.LoadSound(new PackageFile("ping"));
 
-			AudioManager.LoadSound(new PackageFile("life_lost"));
+			SoundController.LoadSound(new PackageFile("life_lost"));
 		}
 
 		static CheckBoxType checkBox(PackageFile packageFile)

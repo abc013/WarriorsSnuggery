@@ -2,7 +2,7 @@
 
 namespace WarriorsSnuggery.Audio
 {
-	public class GameAudioSource : AudioSource
+	public class SoundAudioSource : AudioSource
 	{
 		public void Start(AudioBuffer buffer, bool loops)
 		{

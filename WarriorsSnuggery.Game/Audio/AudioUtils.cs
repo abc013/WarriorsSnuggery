@@ -2,7 +2,7 @@
 
 namespace WarriorsSnuggery.Audio
 {
-	public static class AudioUtils
+	internal static class AudioUtils
 	{
 		public static float GetLengthInSeconds(int size, int channels, int sampleRate, int bitDepth)
 		{

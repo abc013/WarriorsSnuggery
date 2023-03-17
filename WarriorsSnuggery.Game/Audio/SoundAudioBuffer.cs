@@ -3,12 +3,12 @@ using WarriorsSnuggery.Loader;
 
 namespace WarriorsSnuggery.Audio
 {
-	public class GameAudioBuffer : AudioBuffer
+	public class SoundAudioBuffer : AudioBuffer
 	{
 		public override int BufferID => bufferID;
 		readonly int bufferID;
 
-		public GameAudioBuffer(string path)
+		public SoundAudioBuffer(string path)
 		{
 			bufferID = AL.GenBuffer();
 
