@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
+using WarriorsSnuggery.Audio.Sound;
 using WarriorsSnuggery.Graphics;
 using WarriorsSnuggery.Loader;
 using WarriorsSnuggery.Objects.Actors.Parts;

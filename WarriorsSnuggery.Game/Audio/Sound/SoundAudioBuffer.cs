@@ -1,7 +1,7 @@
 ﻿using OpenTK.Audio.OpenAL;
 using WarriorsSnuggery.Loader;
 
-namespace WarriorsSnuggery.Audio
+namespace WarriorsSnuggery.Audio.Sound
 {
 	public class SoundAudioBuffer : AudioBuffer
 	{

@@ -1,7 +1,7 @@
 ﻿using OpenTK.Audio.OpenAL;
 using System.IO;
 
-namespace WarriorsSnuggery.Audio
+namespace WarriorsSnuggery.Audio.Music
 {
 	public class Music
 	{

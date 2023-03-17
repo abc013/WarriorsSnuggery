@@ -1,9 +1,8 @@
 ﻿using System.Collections.Generic;
-using WarriorsSnuggery.Audio;
 using WarriorsSnuggery.Graphics;
 using WarriorsSnuggery.Loader;
 
-namespace WarriorsSnuggery
+namespace WarriorsSnuggery.Audio.Sound
 {
 	[Desc("Needed to play sound on specific events.")]
 	public class SoundType
@@ -23,7 +22,7 @@ namespace WarriorsSnuggery
 		[Require, Desc("Name of the audio file.")]
 		public readonly PackageFile Name;
 
-		public readonly SoundAudioBuffer Buffer;
+		internal readonly SoundAudioBuffer Buffer;
 
 		public SoundType(List<TextNode> nodes, bool isDocumentation = false)
 		{

@@ -1,6 +1,6 @@
 ﻿using OpenTK.Audio.OpenAL;
 
-namespace WarriorsSnuggery.Audio
+namespace WarriorsSnuggery.Audio.Music
 {
 	public class MusicAudioBuffer : AudioBuffer
 	{

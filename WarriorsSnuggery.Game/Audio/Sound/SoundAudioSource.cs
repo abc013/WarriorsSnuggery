@@ -1,6 +1,6 @@
 ﻿using OpenTK.Audio.OpenAL;
 
-namespace WarriorsSnuggery.Audio
+namespace WarriorsSnuggery.Audio.Sound
 {
 	public class SoundAudioSource : AudioSource
 	{

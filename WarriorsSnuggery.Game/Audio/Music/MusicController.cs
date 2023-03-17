@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using WarriorsSnuggery.Loader;
 
-namespace WarriorsSnuggery.Audio
+namespace WarriorsSnuggery.Audio.Music
 {
 	public static class MusicController
 	{

@@ -1,4 +1,4 @@
-﻿using WarriorsSnuggery.Audio;
+﻿using WarriorsSnuggery.Audio.Sound;
 
 namespace WarriorsSnuggery.UI
 {

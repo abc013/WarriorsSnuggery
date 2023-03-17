@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using WarriorsSnuggery.Audio;
+using WarriorsSnuggery.Audio.Music;
 using WarriorsSnuggery.Maps;
 using WarriorsSnuggery.Objects.Actors;
 

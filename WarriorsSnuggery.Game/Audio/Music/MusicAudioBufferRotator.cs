@@ -1,9 +1,9 @@
 ﻿using OpenTK.Audio.OpenAL;
 using System;
 
-namespace WarriorsSnuggery.Audio
+namespace WarriorsSnuggery.Audio.Music
 {
-	public class MusicAudioBufferRotator
+	internal class MusicAudioBufferRotator
 	{
 		public const int BufferCount = 3;
 

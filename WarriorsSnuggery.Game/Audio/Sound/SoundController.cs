@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using WarriorsSnuggery.Loader;
 
-namespace WarriorsSnuggery.Audio
+namespace WarriorsSnuggery.Audio.Sound
 {
 	public static class SoundController
 	{

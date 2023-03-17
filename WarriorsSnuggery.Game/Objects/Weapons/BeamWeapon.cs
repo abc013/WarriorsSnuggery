@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using WarriorsSnuggery.Audio.Sound;
 using WarriorsSnuggery.Graphics;
 using WarriorsSnuggery.Objects.Actors;
 using WarriorsSnuggery.Objects.Weapons.Projectiles;

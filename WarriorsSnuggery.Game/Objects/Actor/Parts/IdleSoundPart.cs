@@ -1,4 +1,6 @@
-﻿namespace WarriorsSnuggery.Objects.Actors.Parts
+﻿using WarriorsSnuggery.Audio.Sound;
+
+namespace WarriorsSnuggery.Objects.Actors.Parts
 {
 	[Desc("Plays a sound while the actor is alive.")]
 	public class IdleSoundPartInfo : PartInfo

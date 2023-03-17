@@ -4,6 +4,7 @@ using OpenTK.Windowing.GraphicsLibraryFramework;
 using OpenTK.Windowing.Desktop;
 using System;
 using WarriorsSnuggery.Audio;
+using WarriorsSnuggery.Audio.Music;
 using WarriorsSnuggery.Graphics;
 using OpenTK.Windowing.Common.Input;
 using Image = OpenTK.Windowing.Common.Input.Image;

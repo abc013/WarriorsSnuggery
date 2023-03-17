@@ -1,6 +1,6 @@
 ﻿using OpenTK.Windowing.GraphicsLibraryFramework;
 using System;
-using WarriorsSnuggery.Audio;
+using WarriorsSnuggery.Audio.Music;
 using WarriorsSnuggery.Graphics;
 using WarriorsSnuggery.Objects.Weapons;
 using WarriorsSnuggery.Spells;

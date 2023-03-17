@@ -1,4 +1,6 @@
 ﻿using OpenTK.Audio.OpenAL;
+using WarriorsSnuggery.Audio.Music;
+using WarriorsSnuggery.Audio.Sound;
 
 namespace WarriorsSnuggery.Audio
 {
