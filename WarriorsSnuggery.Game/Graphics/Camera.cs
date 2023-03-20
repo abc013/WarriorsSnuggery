@@ -1,4 +1,5 @@
 using OpenTK.Mathematics;
+using WarriorsSnuggery.Maps;
 
 namespace WarriorsSnuggery.Graphics
 {
@@ -34,7 +35,7 @@ namespace WarriorsSnuggery.Graphics
 
 		public static void SetBounds(MPos bounds)
 		{
-			Camera.bounds = (bounds - new MPos(1, 1)).ToCPos();
+			Camera.bounds = bounds.ToCPos();
 			CameraVisibility.SetBounds(bounds);
 		}
 
@@ -99,20 +100,17 @@ namespace WarriorsSnuggery.Graphics
 
 			LookAt = new CPos(LookAt.X + (int)(Settings.ScrollSpeed * 20 * add.X), LookAt.Y + (int)(Settings.ScrollSpeed * 20 * add.Y), 0);
 
-			if (bounds != CPos.Zero)
-			{
-				if (LookAt.X < -512)
-					LookAt = new CPos(-512, LookAt.Y, 0);
+			if (LookAt.X < Map.Offset.X)
+				LookAt = new CPos(Map.Offset.X, LookAt.Y, 0);
 
-				if (LookAt.Y < -512)
-					LookAt = new CPos(LookAt.X, -512, 0);
+			if (LookAt.Y < Map.Offset.Y)
+				LookAt = new CPos(LookAt.X, Map.Offset.Y, 0);
 
-				if (LookAt.X > bounds.X + 512)
-					LookAt = new CPos(bounds.X + 512, LookAt.Y, 0);
+			if (LookAt.X > bounds.X + Map.Offset.X)
+				LookAt = new CPos(bounds.X + Map.Offset.X, LookAt.Y, 0);
 
-				if (LookAt.Y > bounds.Y + 512)
-					LookAt = new CPos(LookAt.X, bounds.Y + 512, 0);
-			}
+			if (LookAt.Y > bounds.Y + Map.Offset.Y)
+				LookAt = new CPos(LookAt.X, bounds.Y + Map.Offset.Y, 0);
 
 			calculatePosition();
 			updateView();

@@ -224,12 +224,14 @@ namespace WarriorsSnuggery.UI.Screens
 					break;
 				case Selected.WALL:
 					var bounds = game.World.Map.Bounds;
-					var pos = MouseInput.GamePosition.ToMPos();
 
-					if (pos.X < 0 || pos.Y < 0 || pos.X > bounds.X || pos.Y > bounds.Y)
+					var mpos = MouseInput.GamePosition.ToMPos();
+					var wpos = new WPos(mpos, wallWidget.Horizontal);
+
+					if (!game.World.IsInWorld(wpos))
 						return;
 
-					game.World.WallLayer.Remove(new WPos(pos.X, pos.Y, wallWidget.Horizontal));
+					game.World.WallLayer.Remove(wpos);
 					break;
 			}
 		}
@@ -266,7 +268,7 @@ namespace WarriorsSnuggery.UI.Screens
 					if (terrainWidget.CurrentType == null)
 						return;
 
-					if (mpos.X < 0 || mpos.Y < 0 || mpos.X >= bounds.X || mpos.Y >= bounds.Y)
+					if (!game.World.IsInWorld(mpos))
 						return;
 
 					if (game.World.TerrainLayer.Terrain[mpos.X, mpos.Y].Type == terrainWidget.CurrentType)
@@ -281,17 +283,9 @@ namespace WarriorsSnuggery.UI.Screens
 					if (wallWidget.CurrentType == null)
 						return;
 
-					if (mpos.X < 0 || mpos.Y < 0 || mpos.X > bounds.X || mpos.Y > bounds.Y)
-						return;
+					var wpos = new WPos(mpos, wallWidget.Horizontal);
 
-					var wpos = new WPos(mpos.X, mpos.Y, wallWidget.Horizontal);
-
-					var wallLayer = game.World.WallLayer;
-
-					if (wpos.X >= wallLayer.Bounds.X - 2)
-						return;
-
-					if (wpos.Y >= wallLayer.Bounds.Y - 2 && wallWidget.Horizontal)
+					if (!game.World.IsInWorld(wpos))
 						return;
 
 					var type = wallWidget.CurrentType;
@@ -300,22 +294,22 @@ namespace WarriorsSnuggery.UI.Screens
 					if (plannedHealth == 0 && type.Health != 0)
 						return;
 
-					var currentWall = wallLayer.Walls[wpos.X, wpos.Y];
+					var currentWall = game.World.WallLayer.Walls[wpos.X, wpos.Y];
 					if (currentWall != null && currentWall.Type.ID == type.ID && currentWall.Health == plannedHealth)
 						return;
 
 					var wall = WallCache.Create(wpos, game.World, type.ID);
 					wall.Health = plannedHealth;
 
-					wallLayer.Set(wall);
+					game.World.WallLayer.Set(wall);
 					break;
 			}
 		}
 
 		CPos rasterizedPosition(CPos pos)
 		{
-			pos += new CPos(256, 256, 0);
-			return new CPos(pos.X - pos.X % 512, pos.Y - pos.Y % 512, 0);
+			pos += new CPos(Constants.TileSize / 4, Constants.TileSize / 4, 0);
+			return new CPos(pos.X - pos.X % (Constants.TileSize / 2), pos.Y - pos.Y % (Constants.TileSize / 2), 0);
 		}
 
 		void savePiece()

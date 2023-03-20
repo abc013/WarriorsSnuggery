@@ -217,7 +217,7 @@ namespace WarriorsSnuggery.Physics
 			var x0 = (int)Math.Round(Start.X / 1024.0);
 			var y0 = (int)Math.Round(Start.Y / 1024.0);
 
-			if (x0 < 0 || y0 < 0 || x0 >= world.Map.Bounds.X || y0 >= world.Map.Bounds.Y)
+			if (!world.IsInWorld(new MPos(x0, y0)))
 				return 1f;
 
 			var sx = Math.Sign(diff.X);

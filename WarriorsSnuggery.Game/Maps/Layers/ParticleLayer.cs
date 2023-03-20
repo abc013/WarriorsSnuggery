@@ -54,8 +54,8 @@ namespace WarriorsSnuggery.Maps.Layers
 		ParticleSector getSector(Particle particle)
 		{
 			var position = particle.Position - Map.Offset;
-			var x = (int)Math.Floor(position.X / 4096f);
-			var y = (int)Math.Floor(position.Y / 4096f);
+			var x = (int)Math.Floor(position.X / (float)(SectorSize * Constants.TileSize));
+			var y = (int)Math.Floor(position.Y / (float)(SectorSize * Constants.TileSize));
 			x = Math.Clamp(x, 0, bounds.X - 1);
 			y = Math.Clamp(y, 0, bounds.Y - 1);
 
@@ -72,8 +72,8 @@ namespace WarriorsSnuggery.Maps.Layers
 
 		ParticleSector[] getSectors(CPos topleft, CPos botright)
 		{
-			var pos1 = new MPos((int)Math.Clamp(Math.Floor(topleft.X / 4096f), 0, bounds.X - 1), (int)Math.Clamp(Math.Floor(topleft.Y / 4096f), 0, bounds.Y - 1));
-			var pos2 = new MPos((int)Math.Clamp(Math.Ceiling(botright.X / 4096f), 0, bounds.X - 1), (int)Math.Clamp(Math.Ceiling(botright.Y / 4096f), 0, bounds.Y - 1));
+			var pos1 = new MPos((int)Math.Clamp(Math.Floor(topleft.X / (float)(SectorSize * Constants.TileSize)), 0, bounds.X - 1), (int)Math.Clamp(Math.Floor(topleft.Y / (float)(SectorSize * Constants.TileSize)), 0, bounds.Y - 1));
+			var pos2 = new MPos((int)Math.Clamp(Math.Ceiling(botright.X / (float)(SectorSize * Constants.TileSize)), 0, bounds.X - 1), (int)Math.Clamp(Math.Ceiling(botright.Y / (float)(SectorSize * Constants.TileSize)), 0, bounds.Y - 1));
 
 			var sectors = new ParticleSector[(pos2.X - pos1.X + 1) * (pos2.Y - pos1.Y + 1)];
 			var i = 0;

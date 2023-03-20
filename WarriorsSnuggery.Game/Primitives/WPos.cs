@@ -18,6 +18,8 @@ namespace WarriorsSnuggery
 			Y = y;
 		}
 
+		public WPos (MPos terrainPos, bool horizontal) : this(terrainPos.X, terrainPos.Y, horizontal) { }
+
 		public WPos(int terrainX, int terrainY, bool horizontal)
 		{
 			X = 2 * terrainX + (horizontal ? 1 : 0);

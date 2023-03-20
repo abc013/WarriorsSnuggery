@@ -285,9 +285,17 @@ namespace WarriorsSnuggery
 
 		public bool IsInWorld(CPos pos)
 		{
-			var bounds = Map.Bounds.ToCPos() + Map.Offset;
+			return pos.X >= Map.TopLeftCorner.X && pos.X < Map.BottomRightCorner.X && pos.Y >= Map.TopLeftCorner.Y && pos.Y < Map.BottomRightCorner.Y;
+		}
 
-			return pos.X >= Map.Offset.X && pos.X < bounds.X && pos.Y >= Map.Offset.Y && pos.Y < bounds.Y;
+		public bool IsInWorld(MPos pos)
+		{
+			return pos.X >= 0 && pos.X < Map.Bounds.X && pos.Y >= 0 && pos.Y < Map.Bounds.Y;
+		}
+
+		public bool IsInWorld(WPos pos)
+		{
+			return pos.X >= 0 && pos.X < WallLayer.Bounds.X && pos.Y >= 0 && pos.Y < WallLayer.Bounds.Y;
 		}
 
 		public bool IsInPlayableWorld(Actor actor)

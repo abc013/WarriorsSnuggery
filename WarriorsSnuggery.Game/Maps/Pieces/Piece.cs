@@ -174,7 +174,7 @@ namespace WarriorsSnuggery.Maps.Pieces
 			}
 
 			// generate Walls
-			var offset = new WPos(position.X, position.Y, false);
+			var offset = new WPos(position, false);
 			var maxX = (Size.X + 1) * 2 + offset.X;
 			var maxY = (Size.Y + 1) + offset.Y;
 
