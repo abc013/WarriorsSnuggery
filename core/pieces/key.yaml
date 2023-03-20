@@ -1,7 +1,8 @@
+MapFormat=4
 Name=key
-Size=1,1
+Size=1, 1
 Terrain=4
-Walls=-1,0,-1,0,-1,0,-1,0,-1,0,-1,0,-1,0,-1,0
 Actors=
-	25=0,0,0
+	0=
+		Position=0, 0, 0
 		Type=key
