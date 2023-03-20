@@ -7,6 +7,7 @@
 
 		public const int TileSize = 1024;
 
+		public const int UnsupportedMapFormat = 0;
 		public const int CurrentMapFormat = 4;
 		public const int CurrentGameSaveFormat = 1;
 	}

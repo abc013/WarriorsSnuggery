@@ -80,7 +80,7 @@ namespace WarriorsSnuggery.Maps.Pieces
 							{
 								var id = uint.Parse(actor.Key);
 
-								var init = MapFormat == 0 ? new ActorInit(id, actor) : new ActorInit(id, actor.Children, MapFormat);
+								var init = new ActorInit(id, actor.Children, MapFormat);
 
 								if (init.Type != null)
 									actors.Add(init);
@@ -140,8 +140,10 @@ namespace WarriorsSnuggery.Maps.Pieces
 					case "MapFormat":
 						TypeLoader.SetValue(this, fields, node);
 
-						if (MapFormat != Constants.CurrentMapFormat)
+						if (MapFormat < Constants.CurrentMapFormat)
 							Log.LoaderWarning("Pieces", $"[{PackageFile}] Attempting to load old map format {MapFormat} (current: {Constants.CurrentMapFormat})");
+						if (MapFormat <= Constants.UnsupportedMapFormat || MapFormat > Constants.CurrentMapFormat)
+							throw new Exception($"Tried to load a piece with an unsupported or unknown map format (Format: {MapFormat}. Unsupported formats are {Constants.UnsupportedMapFormat} and below. Otherwise, supported formats are {Constants.CurrentMapFormat} and below).");
 
 						break;
 					default:
