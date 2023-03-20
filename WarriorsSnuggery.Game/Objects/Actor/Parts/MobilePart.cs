@@ -171,18 +171,17 @@ namespace WarriorsSnuggery.Objects.Actors.Parts
 			if (terrain != null && pos.Z == 0 && terrain.Type.Speed == 0)
 				return false;
 
-			acceptMove(pos, terrain, evading);
+			acceptMove(pos, evading);
 			Velocity = velocity;
 
 			return true;
 		}
 
-		void acceptMove(CPos position, Terrain terrain, bool evading = false)
+		void acceptMove(CPos position, bool evading = false)
 		{
 			var old = self.Position;
 			self.Position = position;
 			self.World.EnsureInBounds(self);
-			self.CurrentTerrain = terrain;
 
 			if (!evading)
 				self.Angle = (old - position).FlatAngle;

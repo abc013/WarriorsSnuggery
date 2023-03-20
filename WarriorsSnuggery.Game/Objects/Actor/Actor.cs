@@ -74,9 +74,6 @@ namespace WarriorsSnuggery.Objects.Actors
 		// Saved with custom method
 		readonly Dictionary<ActionType, int> actionTimings = new Dictionary<ActionType, int>();
 
-		public MPos TerrainPosition => Position.ToMPos();
-		public Terrain CurrentTerrain;
-
 		public bool CanMove
 		{
 			get
@@ -118,10 +115,16 @@ namespace WarriorsSnuggery.Objects.Actors
 			{
 				base.Position = value;
 
+				TerrainPosition = Position.ToMPos();
+				CurrentTerrain = World.TerrainAt(TerrainPosition);
+
 				foreach (var part in basicChangesParts)
 					part.SetPosition(value);
 			}
 		}
+
+		public MPos TerrainPosition { get; private set; }
+		public Terrain CurrentTerrain { get; private set; }
 
         public override float Scale
 		{
@@ -183,8 +186,6 @@ namespace WarriorsSnuggery.Objects.Actors
 
 			ID = init.ID;
 			this.init = init;
-
-			CurrentTerrain = world.TerrainAt(TerrainPosition);
 
 			// Parts
 			partManager = new PartManager();
