@@ -77,10 +77,10 @@ namespace WarriorsSnuggery
 				}
 
 				if (hiding)
-					o.SetTextureFlags(TextureFlags.Hideable);
+					o.TextureFlags = TextureFlags.Hideable;
 				o.Render();
 				if (hiding)
-					o.SetTextureFlags(TextureFlags.None);
+					o.TextureFlags = TextureFlags.None;
 			}
 
 			drawMapBorder();

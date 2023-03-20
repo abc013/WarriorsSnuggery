@@ -27,20 +27,18 @@ namespace WarriorsSnuggery.Objects.Particles
 		[Save("RotationVelocity")]
 		VAngle rotate_velocity;
 
-		public Particle(World world, ParticleInit init) : base(init.Type.GetRenderable())
+		public Particle(World world, ParticleInit init)
 		{
 			this.world = world;
 			Type = init.Type;
+			Renderable = init.Type.GetRenderable();
 			Position = init.Position;
 
 			cachedColor = Type.Color + ParticleUtils.Variety(Type.ColorVariety);
 
 			current = init.Convert("Duration", Type.Duration);
 			dissolve = init.Convert("DissolveDuration", Type.DissolveDuration);
-
-			velocity = init.Convert("Velocity", ParticleUtils.Variety(Type.RandomVelocity));
-			velocity += init.InitialVelocity;
-
+			velocity = init.Convert("Velocity", ParticleUtils.Variety(Type.RandomVelocity) + init.InitialVelocity);
 			rotate_velocity = init.Convert("RotationVelocity", ParticleUtils.AngleVariety(Type.RandomRotation));
 		}
 
@@ -179,9 +177,9 @@ namespace WarriorsSnuggery.Objects.Particles
 			}
 
 			if (Type.IsLight)
-				SetColor((dissolve / (float)Type.DissolveDuration) * cachedColor);
+				Color = (dissolve / (float)Type.DissolveDuration) * cachedColor;
 			else
-				SetColor(cachedColor.WithAlpha(cachedColor.A * dissolve / Type.DissolveDuration));
+				Color = cachedColor.WithAlpha(cachedColor.A * dissolve / Type.DissolveDuration);
 
 			if (Type.DissolveScaling)
 				Renderable.SetScale((dissolve / (float)Type.DissolveDuration));

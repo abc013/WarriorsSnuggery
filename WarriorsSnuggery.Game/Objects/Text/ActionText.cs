@@ -3,7 +3,7 @@ using WarriorsSnuggery.Graphics;
 
 namespace WarriorsSnuggery.Objects
 {
-	public class ActionText : PositionableObject
+	public class ActionText : TextObject
 	{
 		public enum ActionTextType
 		{
@@ -14,24 +14,22 @@ namespace WarriorsSnuggery.Objects
 		int current;
 		readonly int length;
 		readonly CPos velocity;
-		readonly TextObject text;
 		readonly ActionTextType type;
 
-		public ActionText(CPos pos, CPos velocity, int tick, ActionTextType type, params string[] lines) : base()
+		public ActionText(CPos velocity, int tick, ActionTextType type, params string[] lines) : base(FontManager.Default, TextOffset.MIDDLE)
 		{
-			Position = pos;
-
 			current = tick;
 			length = tick;
 			this.velocity = velocity;
 			this.type = type;
 
-			text = new TextObject(pos, FontManager.Default, TextOffset.MIDDLE);
-			text.SetText(lines);
+			SetText(lines);
 		}
 
 		public override void Tick()
 		{
+			base.Tick();
+
 			if (Disposed)
 				return;
 
@@ -43,19 +41,14 @@ namespace WarriorsSnuggery.Objects
 
 			if (type == ActionTextType.TRANSFORM)
 			{
-				text.Position += velocity;
+				Position += velocity;
 			}
 			else
 			{
 				var time = current / (float)length - 0.75f;
 				var linear = Math.Sign(time) * time;
-				text.Scale = MathF.Pow(1 - linear, 2);
+				Scale = MathF.Pow(1 - linear, 2);
 			}
-		}
-
-		public override void Render()
-		{
-			text.Render();
 		}
 	}
 }

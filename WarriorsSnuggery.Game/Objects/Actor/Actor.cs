@@ -49,6 +49,7 @@ namespace WarriorsSnuggery.Objects.Actors
 		readonly List<ITick> tickParts;
 		readonly List<ITickInEditor> editorTickParts;
 		readonly List<IRenderable> renderParts;
+		readonly List<INoticeBasicChanges> basicChangesParts;
 		readonly List<INoticeAcceleration> accelerationParts;
 		readonly List<INoticeMove> moveParts;
 		readonly List<INoticeStop> stopParts;
@@ -111,6 +112,61 @@ namespace WarriorsSnuggery.Objects.Actors
 			}
 		}
 
+		public override CPos Position
+		{
+			set
+			{
+				base.Position = value;
+
+				foreach (var part in basicChangesParts)
+					part.SetPosition(value);
+			}
+		}
+
+        public override float Scale
+		{
+			set
+			{
+				base.Scale = value;
+
+				foreach (var part in basicChangesParts)
+					part.SetScale(value);
+			}
+		}
+
+		public override VAngle Rotation
+		{
+			set
+			{
+				base.Rotation = value;
+
+				foreach (var part in basicChangesParts)
+					part.SetRotation(value);
+			}
+		}
+
+		public override Color Color
+		{
+			set
+			{
+				base.Color = value;
+
+				foreach (var part in basicChangesParts)
+					part.SetColor(value);
+			}
+		}
+
+		public override TextureFlags TextureFlags
+		{
+			set
+			{
+				base.TextureFlags = value;
+
+				foreach (var part in basicChangesParts)
+					part.SetTextureFlags(value);
+			}
+		}
+
 		public Actor(World world, ActorInit init, uint overrideID) : this(world, init)
 		{
 			ID = overrideID;
@@ -119,7 +175,6 @@ namespace WarriorsSnuggery.Objects.Actors
 		public Actor(World world, ActorInit init)
 		{
 			World = world;
-			Position = init.Position;
 
 			Type = init.Type;
 			Team = init.Team;
@@ -169,11 +224,14 @@ namespace WarriorsSnuggery.Objects.Actors
 			tickParts = partManager.GetPartsOrDefault<ITick>();
 			editorTickParts = partManager.GetPartsOrDefault<ITickInEditor>();
 			renderParts = partManager.GetPartsOrDefault<IRenderable>();
+			basicChangesParts = partManager.GetPartsOrDefault<INoticeBasicChanges>();
 			accelerationParts = partManager.GetPartsOrDefault<INoticeAcceleration>();
 			moveParts = partManager.GetPartsOrDefault<INoticeMove>();
 			stopParts = partManager.GetPartsOrDefault<INoticeStop>();
 
 			Physics = Type.Physics == null ? SimplePhysics.Empty : new SimplePhysics(this, Type.Physics.Type);
+
+			Position = init.Position;
 
 			var hoverPart = GetPartOrDefault<HoverPart>();
 			if (hoverPart != null)
@@ -409,18 +467,6 @@ namespace WarriorsSnuggery.Objects.Actors
 		{
 			if (actionTimings.ContainsKey(type))
 				actionTimings[type] = 0;
-		}
-
-		public override void SetColor(Color color)
-		{
-			foreach (var part in partManager.GetPartsOrDefault<IPartRenderable>())
-				part.SetColor(color);
-		}
-
-		public override void SetTextureFlags(TextureFlags flags)
-		{
-			foreach (var part in partManager.GetPartsOrDefault<IPartRenderable>())
-				part.SetTextureFlags(flags);
 		}
 
 		public void PrepareAttack(Actor target)

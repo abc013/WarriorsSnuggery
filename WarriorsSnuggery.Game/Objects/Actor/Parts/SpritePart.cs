@@ -48,18 +48,17 @@ namespace WarriorsSnuggery.Objects.Actors.Parts
 		}
 	}
 
-	public class SpritePart : ActorPart, IPartRenderable, ITick, ITickInEditor
+	public class SpritePart : ActorPart, INoticeBasicChanges, IRenderable, ITick, ITickInEditor
 	{
 		readonly SpritePartInfo info;
 
 		readonly BatchRenderable[] renderables;
-		BatchRenderable renderable;
+		readonly ActorObject renderObject = new ActorObject(); // used to prevent code duplication.
 		readonly Color variation;
-		Color cachedColor;
-		TextureFlags cachedFlags;
 
 		int currentFacing;
 		float angle;
+		bool wasVisible;
 
 		public SpritePart(Actor self, SpritePartInfo info) : base(self)
 		{
@@ -98,13 +97,11 @@ namespace WarriorsSnuggery.Objects.Actors.Parts
 				var random = Program.SharedRandom;
 				variation = new Color((float)(random.NextDouble() - 0.5f) * info.ColorVariation.R, (float)(random.NextDouble() - 0.5f) * info.ColorVariation.G, (float)(random.NextDouble() - 0.5f) * info.ColorVariation.B, 0f);
 			}
-			cachedColor = info.Color + variation;
-			cachedFlags = info.IgnoreAmbience ? TextureFlags.IgnoreAmbience : TextureFlags.None;
 
-			self.ZOffset = info.Offset.Z;
+			changeRenderable(null);
 		}
 
-		public BatchRenderable GetRenderable(ActionType actions, int facing)
+		BatchRenderable getRenderable(ActionType actions, int facing)
 		{
 			if (info.Condition != null && !info.Condition.True(self))
 				return null;
@@ -112,22 +109,15 @@ namespace WarriorsSnuggery.Objects.Actors.Parts
 			return renderables[facing];
 		}
 
+		void changeRenderable(BatchRenderable renderable)
+		{
+			renderObject.setRenderable(renderable);
+		}
+
 		public void Render()
 		{
-			if (renderable != null)
-			{
-				if (!self.OnGround)
-				{
-					renderable.SetPosition(self.GraphicPositionWithoutHeight + info.Offset);
-					renderable.SetColor(Color.Shadow);
-					renderable.Render();
-				}
-
-				renderable.SetPosition(self.GraphicPosition + info.Offset);
-				renderable.SetColor(cachedColor);
-				renderable.SetTextureFlags(cachedFlags);
-				renderable.Render();
-			}
+			renderObject.RenderShadow();
+			renderObject.Render();
 		}
 
 		public void Tick()
@@ -137,23 +127,49 @@ namespace WarriorsSnuggery.Objects.Actors.Parts
 				angle = self.Angle;
 				currentFacing = Angle.ToFacing(angle, info.Facings);
 			}
-			var last = renderable;
-			renderable = GetRenderable(self.Actions, currentFacing);
 
-			if (last == null && renderable is BatchSequence sequence)
+			var renderable = getRenderable(self.Actions, currentFacing);
+			changeRenderable(renderable);
+
+			if (wasVisible && renderable is BatchSequence sequence)
 				sequence.Reset();
 
-			renderable?.Tick();
+			wasVisible = renderable == null;
+
+			renderObject.Tick();
+		}
+
+		public void SetPosition(CPos pos)
+		{
+			renderObject.Position = pos + info.Offset;
+		}
+
+		public void SetScale(float scale)
+		{
+			renderObject.Scale = scale;
+		}
+
+		public void SetRotation(VAngle rotation)
+		{
+			renderObject.Rotation = rotation;
 		}
 
 		public void SetColor(Color color)
 		{
-			cachedColor = color * (info.Color + variation);
+			renderObject.Color = color * (info.Color + variation);
 		}
 
 		public void SetTextureFlags(TextureFlags flags)
 		{
-			cachedFlags = (info.IgnoreAmbience ? TextureFlags.IgnoreAmbience : TextureFlags.None) | flags;
+			renderObject.TextureFlags = (info.IgnoreAmbience ? TextureFlags.IgnoreAmbience : TextureFlags.None) | flags;
+		}
+
+		class ActorObject : PositionableObject
+		{
+			internal void setRenderable(BatchRenderable renderable)
+			{
+				Renderable = renderable;
+			}
 		}
 	}
 }

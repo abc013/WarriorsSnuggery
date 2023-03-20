@@ -256,8 +256,11 @@ namespace WarriorsSnuggery
 
 		public void AddText(CPos position, int duration, ActionText.ActionTextType type, params string[] text)
 		{
-			var @object = new ActionText(position, new CPos(0, -15, 30), duration, type, text);
-			@object.ZOffset += 1024;
+			var @object = new ActionText(new CPos(0, -8, 16), duration, type, text)
+			{
+				Position = position,
+				ZOffset = 1024
+			};
 
 			Add(@object);
 		}

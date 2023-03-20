@@ -4,7 +4,21 @@ namespace WarriorsSnuggery.Objects
 {
 	public class PositionableObject : ITickRenderable, IPositionable
 	{
-		protected readonly BatchRenderable Renderable;
+		protected virtual BatchRenderable Renderable
+		{
+			get => renderable;
+			set
+			{
+				renderable = value;
+
+				renderable?.SetPosition(Position);
+				renderable?.SetScale(Scale);
+				renderable?.SetRotation(Rotation);
+				renderable?.SetColor(Color);
+				renderable?.SetTextureFlags(TextureFlags);
+			}
+		}
+		BatchRenderable renderable;
 		public bool Disposed;
 
 		[Save]
@@ -65,10 +79,31 @@ namespace WarriorsSnuggery.Objects
 		}
 		float scale = 1f;
 
-		public PositionableObject(BatchRenderable renderable = null)
+		public virtual Color Color
 		{
-			Renderable = renderable;
+			get => color;
+			set
+			{
+				color = value;
+
+				Renderable?.SetColor(color);
+			}
 		}
+		Color color = Color.White;
+
+		public virtual TextureFlags TextureFlags
+		{
+			get => textureFlags;
+			set
+			{
+				textureFlags = value;
+
+				Renderable?.SetTextureFlags(textureFlags);
+			}
+		}
+		TextureFlags textureFlags = TextureFlags.None;
+
+		public PositionableObject() { }
 
 		public virtual void Tick()
 		{
@@ -80,16 +115,6 @@ namespace WarriorsSnuggery.Objects
 			Renderable?.Render();
 		}
 
-		public virtual void SetColor(Color color)
-		{
-			Renderable?.SetColor(color);
-		}
-
-		public virtual void SetTextureFlags(TextureFlags flags)
-		{
-			Renderable?.SetTextureFlags(flags);
-		}
-
 		public void RenderShadow()
 		{
 			if (OnGround || Renderable == null)
@@ -97,10 +122,12 @@ namespace WarriorsSnuggery.Objects
 
 			Renderable.SetPosition(GraphicPositionWithoutHeight);
 			Renderable.SetColor(Color.Shadow);
+			Renderable.SetTextureFlags(TextureFlags.None);
 			Renderable.Render();
 
-			Renderable.SetColor(Color.White);
 			Renderable.SetPosition(GraphicPosition);
+			Renderable.SetColor(Color);
+			Renderable.SetTextureFlags(TextureFlags);
 		}
 
 		public virtual void Dispose()

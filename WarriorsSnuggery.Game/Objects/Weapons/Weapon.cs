@@ -40,8 +40,9 @@ namespace WarriorsSnuggery.Objects.Weapons
 		[Save]
 		public readonly float RangeModifier = 1f;
 
-		protected Weapon(World world, WeaponType type, Target target, Actor origin, uint id) : base(type.Projectile.GetTexture())
+		protected Weapon(World world, WeaponType type, Target target, Actor origin, uint id)
 		{
+			Renderable = type.Projectile.GetTexture();
 			World = world;
 			Type = type;
 
@@ -74,8 +75,9 @@ namespace WarriorsSnuggery.Objects.Weapons
 			}
 		}
 
-		protected Weapon(World world, WeaponInit init) : base(init.Type.Projectile.GetTexture())
+		protected Weapon(World world, WeaponInit init)
 		{
+			Renderable = init.Type.Projectile.GetTexture();
 			World = world;
 			Type = init.Type;
 			ID = init.ID;

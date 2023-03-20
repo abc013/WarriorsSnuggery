@@ -51,9 +51,13 @@ namespace WarriorsSnuggery.Objects.Actors
 		PartSaver OnSave();
 	}
 
-	public interface IPartRenderable : IRenderable
+	public interface INoticeBasicChanges
 	{
-		Graphics.BatchRenderable GetRenderable(ActionType actions, int facing);
+		void SetPosition(CPos pos);
+
+		void SetScale(float scale);
+
+		void SetRotation(VAngle rotation);
 
 		void SetColor(Color color);
 

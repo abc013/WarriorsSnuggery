@@ -34,7 +34,6 @@ namespace WarriorsSnuggery.Objects
 		public CPos EndPointA => Physics.Position - Physics.Boundaries;
 		public CPos EndPointB => Physics.Position + Physics.Boundaries;
 
-		BatchObject renderable;
 		Color color = Color.White;
 		TextureFlags flags = TextureFlags.None;
 
@@ -90,23 +89,6 @@ namespace WarriorsSnuggery.Objects
 				return SimplePhysics.Empty;
 
 			return new SimplePhysics(this, IsHorizontal ? type.HorizontalPhysicsType : type.VerticalPhysicsType);
-		}
-
-		public override void Render()
-		{
-			renderable.Render();
-		}
-
-		public override void SetColor(Color color)
-		{
-			this.color = color;
-			renderable.SetColor(color);
-		}
-
-		public override void SetTextureFlags(TextureFlags flags)
-		{
-			this.flags = flags;
-			renderable.SetTextureFlags(flags);
 		}
 
 		public void Damage(int damage)
@@ -206,10 +188,10 @@ namespace WarriorsSnuggery.Objects
 					info = Type.SlightDamageTexture;
 			}
 
-			renderable = new BatchObject(Type.GetTexture(IsHorizontal, neighborState, info));
-			renderable.SetPosition(Position + getTextureOffset(info, IsHorizontal));
-			renderable.SetColor(color);
-			renderable.SetTextureFlags(flags);
+			Renderable = new BatchObject(Type.GetTexture(IsHorizontal, neighborState, info));
+			Renderable.SetPosition(Position + getTextureOffset(info, IsHorizontal));
+			Renderable.SetColor(color);
+			Renderable.SetTextureFlags(flags);
 		}
 
 		static CPos getTextureOffset(TextureInfo info, bool horizontal)

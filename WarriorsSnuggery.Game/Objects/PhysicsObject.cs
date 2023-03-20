@@ -6,8 +6,6 @@ namespace WarriorsSnuggery.Objects
 	{
 		public SimplePhysics Physics { get; protected set; } = SimplePhysics.Empty;
 
-		public PhysicsObject() : base(null) { }
-
 		public override void Dispose()
 		{
 			Physics.RemoveSectors();
