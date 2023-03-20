@@ -2,7 +2,7 @@
 
 namespace WarriorsSnuggery.Objects
 {
-	public class PositionableObject : ITickRenderable, IPositionable
+	public class PositionableObject : ITick, IRenderable
 	{
 		protected virtual BatchRenderable Renderable
 		{

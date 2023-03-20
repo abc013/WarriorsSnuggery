@@ -15,8 +15,6 @@ namespace WarriorsSnuggery
 		bool CheckVisibility();
 	}
 
-	public interface ITickRenderable : ITick, IRenderable { }
-
 	public interface IDisableTooltip
 	{
 		void DisableTooltip();

@@ -3,7 +3,7 @@ using WarriorsSnuggery.Loader;
 
 namespace WarriorsSnuggery.Objects
 {
-	public class Shroud : ITickRenderable
+	public class Shroud : ITick, IRenderable
 	{
 		public static BatchObject BigShroudRenderable;
 		static BatchObject shroudRenderable;

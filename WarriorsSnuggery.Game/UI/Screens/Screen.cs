@@ -5,7 +5,7 @@ using WarriorsSnuggery.Graphics;
 
 namespace WarriorsSnuggery.UI.Screens
 {
-	public abstract class Screen : ITickRenderable
+	public abstract class Screen : ITick, IRenderable
 	{
 		protected static int Width => (int)(WindowInfo.UnitWidth * Constants.TileSize);
 		protected const int Height = (int)(WindowInfo.UnitHeight * Constants.TileSize);

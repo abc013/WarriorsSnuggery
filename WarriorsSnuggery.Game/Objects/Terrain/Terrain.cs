@@ -2,7 +2,7 @@ using WarriorsSnuggery.Graphics;
 
 namespace WarriorsSnuggery.Objects
 {
-	public class Terrain : ITickRenderable
+	public class Terrain : ITick, IRenderable
 	{
 		readonly StaticBatchRenderable renderable;
 		readonly BatchSequence overlay;

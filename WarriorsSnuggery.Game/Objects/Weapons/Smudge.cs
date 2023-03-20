@@ -2,7 +2,7 @@ using WarriorsSnuggery.Graphics;
 
 namespace WarriorsSnuggery.Objects.Weapons
 {
-	public class Smudge : ITickRenderable
+	public class Smudge : ITick, IRenderable
 	{
 		public readonly CPos Position;
 		readonly BatchRenderable renderable;
