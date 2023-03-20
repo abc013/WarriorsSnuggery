@@ -239,17 +239,6 @@ namespace WarriorsSnuggery.Objects.Actors
 			Physics = Type.Physics == null ? SimplePhysics.Empty : new SimplePhysics(this, Type.Physics.Type);
 
 			Position = init.Position;
-
-			var hoverPart = GetPartOrDefault<HoverPart>();
-			if (hoverPart != null)
-				Position = new CPos(Position.X, Position.Y, hoverPart.DefaultHeight);
-
-			if (WorldPart != null && WorldPart.SpawnDelay > 0)
-			{
-				AddAction(ActionType.SPAWN, WorldPart.SpawnDelay);
-				IsAlive = false; // Set temporarily like this
-				spawning = true;
-			}
 		}
 
 		public void OnLoad()
@@ -272,6 +261,17 @@ namespace WarriorsSnuggery.Objects.Actors
 
 					actionTimings.Add(type, timing);
 				}
+			}
+
+			var hoverPart = GetPartOrDefault<HoverPart>();
+			if (hoverPart != null)
+				Position = new CPos(Position.X, Position.Y, hoverPart.DefaultHeight);
+
+			if (!DoesAction(ActionType.SPAWN) && WorldPart != null && WorldPart.SpawnDelay > 0)
+			{
+				AddAction(ActionType.SPAWN, WorldPart.SpawnDelay);
+				IsAlive = false; // Set temporarily like this
+				spawning = true;
 			}
 
 			init = null;
