@@ -19,7 +19,7 @@
 
 			foreach (var save in GameSaveManager.Saves)
 			{
-				if (save.Name != GameSaveManager.DefaultSaveName)
+				if (save.Name != GameSaveManager.DefaultSaveName && !string.IsNullOrEmpty(save.Name))
 					Add(new GameSaveItem(save, SaveWidth, () => { }));
 			}
 		}

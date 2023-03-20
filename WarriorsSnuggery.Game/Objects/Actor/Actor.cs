@@ -109,8 +109,10 @@ namespace WarriorsSnuggery.Objects.Actors
 			}
 		}
 
+		[Save]
 		public override CPos Position
 		{
+			get => base.Position;
 			set
 			{
 				base.Position = value;
@@ -128,6 +130,7 @@ namespace WarriorsSnuggery.Objects.Actors
 
         public override float Scale
 		{
+			get => base.Scale;
 			set
 			{
 				base.Scale = value;
@@ -139,6 +142,7 @@ namespace WarriorsSnuggery.Objects.Actors
 
 		public override VAngle Rotation
 		{
+			get => base.Rotation;
 			set
 			{
 				base.Rotation = value;
@@ -150,6 +154,7 @@ namespace WarriorsSnuggery.Objects.Actors
 
 		public override Color Color
 		{
+			get => base.Color;
 			set
 			{
 				base.Color = value;
@@ -161,6 +166,7 @@ namespace WarriorsSnuggery.Objects.Actors
 
 		public override TextureFlags TextureFlags
 		{
+			get => base.TextureFlags;
 			set
 			{
 				base.TextureFlags = value;

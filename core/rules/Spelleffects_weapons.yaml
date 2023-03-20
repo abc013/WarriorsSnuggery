@@ -3,6 +3,11 @@ minor_slowdown=
 	Duration=120
 	Value=0.9
 
+slowdown=
+	Type=Speed
+	Duration=120
+	Value=0.7
+
 aesthetic_fire=
 	Type=NONE
 	Duration=180

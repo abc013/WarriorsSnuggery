@@ -356,10 +356,7 @@ namespace WarriorsSnuggery
 				writer.WriteLine($"{nameof(CurrentMission)}={CurrentMission}");
 				writer.WriteLine($"{nameof(CurrentMapType)}={MapCache.Types[CurrentMapType]}");
 				if (CurrentAmbience != Color.White)
-				{
-					var color = CurrentAmbience.ToSysColor();
-					writer.WriteLine($"{nameof(CurrentAmbience)}={color.R}, {color.G}, {color.B}, {color.A}");
-				}
+					writer.WriteLine($"{nameof(CurrentAmbience)}={(int)(CurrentAmbience.R * 255)}, {(int)(CurrentAmbience.G * 255)}, {(int)(CurrentAmbience.B * 255)}, {(int)(CurrentAmbience.A * 255)}");
 				if (Waves != 0)
 					writer.WriteLine($"{nameof(Waves)}={Waves}");
 				if (KeyFound)

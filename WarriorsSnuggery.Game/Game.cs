@@ -173,8 +173,6 @@ namespace WarriorsSnuggery
 					counterTick--;
 				}
 
-				CheckVictory();
-
 				// screenshaker
 				if (Screenshaker.ShakeStrength > 0)
 				{
@@ -217,6 +215,8 @@ namespace WarriorsSnuggery
 				SpellManager.Tick();
 				ConditionManager.Tick();
 				World.Tick();
+
+				CheckVictory();
 
 				script?.Tick();
 
@@ -309,6 +309,9 @@ namespace WarriorsSnuggery
 
 		public void CheckVictory()
 		{
+			if (Editor)
+				return;
+
 			switch (ObjectiveType)
 			{
 				// FIND_EXIT will meet conditions when entering the exit

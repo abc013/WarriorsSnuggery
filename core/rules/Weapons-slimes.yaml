@@ -205,7 +205,7 @@ blueslime_thongue_big=
 			Falloff=1.0, 1.0, 0.7, 0.0
 			RangeSteps=0, 512, 768, 1024
 		Spell=
-			Effect=minor_slowdown
+			Effect=slowdown
 			ProbabilityFalloff=0.8, 0.1, 0.0
 			RangeSteps=0, 512, 768
 

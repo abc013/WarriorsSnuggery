@@ -24,6 +24,9 @@ namespace WarriorsSnuggery.Objects.Actors.Parts
 		[Desc("Offset of the sprite.")]
 		public readonly CPos Offset;
 
+		[Desc("Offset of the sprite regarding depth.")]
+		public readonly int ZOffset;
+
 		[Desc("Use Sprite as preview in e.g. the editor.")]
 		public readonly bool UseAsPreview;
 
@@ -100,6 +103,7 @@ namespace WarriorsSnuggery.Objects.Actors.Parts
 			SetTextureFlags(self.TextureFlags);
 
 			renderObject.setRenderable(null);
+			self.ZOffset = info.ZOffset;
 		}
 
 		BatchRenderable getRenderable(ActionType actions, int facing)
