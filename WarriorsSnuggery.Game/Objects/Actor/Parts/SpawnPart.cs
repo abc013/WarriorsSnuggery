@@ -60,11 +60,6 @@ namespace WarriorsSnuggery.Objects.Actors.Parts
 		public readonly bool AtCenter;
 
 		public SpawnPartInfo(PartInitSet set) : base(set) { }
-
-		public override ActorPart Create(Actor self)
-		{
-			return new SpawnPart(self, this);
-		}
 	}
 
 	public class SpawnPart : ActorPart, ITick, INoticeDamage, INoticeKilled, ISaveLoadable

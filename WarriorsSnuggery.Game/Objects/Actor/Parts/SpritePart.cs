@@ -41,11 +41,6 @@ namespace WarriorsSnuggery.Objects.Actors.Parts
 			if (Texture != null)
 				Textures = Texture.GetTextures();
 		}
-
-		public override ActorPart Create(Actor self)
-		{
-			return new SpritePart(self, this);
-		}
 	}
 
 	public class SpritePart : ActorPart, INoticeBasicChanges, IRenderable, ITick, ITickInEditor
@@ -98,7 +93,7 @@ namespace WarriorsSnuggery.Objects.Actors.Parts
 				variation = new Color((float)(random.NextDouble() - 0.5f) * info.ColorVariation.R, (float)(random.NextDouble() - 0.5f) * info.ColorVariation.G, (float)(random.NextDouble() - 0.5f) * info.ColorVariation.B, 0f);
 			}
 
-			changeRenderable(null);
+			renderObject.setRenderable(null);
 		}
 
 		BatchRenderable getRenderable(ActionType actions, int facing)
@@ -107,11 +102,6 @@ namespace WarriorsSnuggery.Objects.Actors.Parts
 				return null;
 
 			return renderables[facing];
-		}
-
-		void changeRenderable(BatchRenderable renderable)
-		{
-			renderObject.setRenderable(renderable);
 		}
 
 		public void Render()
@@ -129,7 +119,7 @@ namespace WarriorsSnuggery.Objects.Actors.Parts
 			}
 
 			var renderable = getRenderable(self.Actions, currentFacing);
-			changeRenderable(renderable);
+			renderObject.setRenderable(renderable);
 
 			if (wasVisible && renderable is BatchSequence sequence)
 				sequence.Reset();

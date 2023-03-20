@@ -18,11 +18,6 @@ namespace WarriorsSnuggery.Objects.Actors.Parts
 			if (StartHealth <= 0 || StartHealth > MaxHealth)
 				StartHealth = MaxHealth;
 		}
-
-		public override ActorPart Create(Actor self)
-		{
-			return new HealthPart(self, this);
-		}
 	}
 
 	public class HealthPart : ActorPart, ITick, ISaveLoadable

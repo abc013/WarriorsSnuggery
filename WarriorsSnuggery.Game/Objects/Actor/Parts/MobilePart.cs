@@ -19,11 +19,6 @@ namespace WarriorsSnuggery.Objects.Actors.Parts
 		public readonly SoundType Sound;
 
 		public MobilePartInfo(PartInitSet set) : base(set) { }
-
-		public override ActorPart Create(Actor self)
-		{
-			return new MobilePart(self, this);
-		}
 	}
 
 	public class MobilePart : ActorPart, ITick, INoticeDispose, ISaveLoadable

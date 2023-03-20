@@ -14,11 +14,6 @@ namespace WarriorsSnuggery.Objects.Actors.Parts
 		public readonly int HoverSpeed = 32;
 
 		public HoverPartInfo(PartInitSet set) : base(set) { }
-
-		public override HoverPart Create(Actor self)
-		{
-			return new HoverPart(self, this);
-		}
 	}
 
 	public class HoverPart : ActorPart, ITick

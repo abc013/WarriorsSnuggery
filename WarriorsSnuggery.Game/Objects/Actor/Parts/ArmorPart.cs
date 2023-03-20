@@ -6,11 +6,6 @@
 		[Require, Desc("Name of the armor.")]
 		public readonly string Name;
 
-		public override ActorPart Create(Actor self)
-		{
-			return new ArmorPart(self, this);
-		}
-
 		public ArmorPartInfo(PartInitSet set) : base(set) { }
 	}
 

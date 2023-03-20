@@ -31,11 +31,6 @@ namespace WarriorsSnuggery.Objects.Actors.Parts
 		public readonly Condition Condition;
 
 		public OpenScreenPartInfo(PartInitSet set) : base(set) { }
-
-		public override ActorPart Create(Actor self)
-		{
-			return new OpenScreenPart(self, this);
-		}
 	}
 
 	public class OpenScreenPart : ActorPart, ITick, INoticeMove

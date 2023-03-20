@@ -9,11 +9,6 @@ namespace WarriorsSnuggery.Objects.Actors.Parts
 		public readonly SimplePhysicsType Type;
 
 		public PhysicsPartInfo(PartInitSet set) : base(set) { }
-
-		public override ActorPart Create(Actor self)
-		{
-			return new PhysicsPart(self, this);
-		}
 	}
 
 	public class PhysicsPart : ActorPart

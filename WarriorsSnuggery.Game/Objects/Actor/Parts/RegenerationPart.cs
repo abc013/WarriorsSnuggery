@@ -13,11 +13,6 @@ namespace WarriorsSnuggery.Objects.Actors.Parts
 		public readonly int TimeAfterHit;
 
 		public RegenerationPartInfo(PartInitSet set) : base(set) { }
-
-		public override ActorPart Create(Actor self)
-		{
-			return new RegenerationPart(self, this);
-		}
 	}
 
 	public class RegenerationPart : ActorPart, ITick, INoticeDamage, ISaveLoadable

@@ -31,11 +31,6 @@ namespace WarriorsSnuggery.Objects.Actors.Parts
 		public readonly Condition Condition;
 
 		public PortalPartInfo(PartInitSet set) : base(set) { }
-
-		public override ActorPart Create(Actor self)
-		{
-			return new PortalPart(self, this);
-		}
 	}
 
 	public class PortalPart : ActorPart, ITick, INoticeMove

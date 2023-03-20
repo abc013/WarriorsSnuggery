@@ -29,11 +29,6 @@
 		public readonly int DespawnDelay = 0;
 
 		public WorldPartInfo(PartInitSet set) : base(set) { }
-
-		public override ActorPart Create(Actor self)
-		{
-			return new WorldPart(self, this);
-		}
 	}
 
 	public class WorldPart : ActorPart

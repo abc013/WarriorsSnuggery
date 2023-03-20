@@ -10,11 +10,6 @@ namespace WarriorsSnuggery.Objects.Actors.Parts
 		public readonly BotBehaviorType Behavior;
 
 		public BotPartInfo(PartInitSet set) : base(set) { }
-
-		public override ActorPart Create(Actor self)
-		{
-			return new BotPart(self, this);
-		}
 	}
 
 	public class BotPart : ActorPart, ITick, INoticeDamage, INoticeKill, INoticeKilled, ISaveLoadable

@@ -48,11 +48,6 @@ namespace WarriorsSnuggery.Objects.Actors.Parts
 		public readonly string[] Text;
 
 		public CollectablePartInfo(PartInitSet set) : base(set) { }
-
-		public override ActorPart Create(Actor self)
-		{
-			return new CollectablePart(self, this);
-		}
 	}
 
 	public class CollectablePart : ActorPart, ITick, INoticeMove, ISaveLoadable

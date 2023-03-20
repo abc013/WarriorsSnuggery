@@ -34,11 +34,6 @@ namespace WarriorsSnuggery.Objects.Actors.Parts
 			MaxRangeSquared = MaxRange * MaxRange;
 			MinRangeSquared = MinRange * MinRange;
 		}
-
-		public override ActorPart Create(Actor self)
-		{
-			return new ParticleForcePart(self, this);
-		}
 	}
 
 	public class ParticleForcePart : ActorPart, ITick, INoticeMove

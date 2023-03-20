@@ -10,11 +10,6 @@
 		public readonly int Interval = 0;
 
 		public RevealsShroudPartInfo(PartInitSet set) : base(set) { }
-
-		public override ActorPart Create(Actor self)
-		{
-			return new RevealsShroudPart(self, this);
-		}
 	}
 
 	public class RevealsShroudPart : ActorPart, ITick, INoticeMove, ISaveLoadable

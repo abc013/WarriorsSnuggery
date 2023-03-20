@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using WarriorsSnuggery.Loader;
 
 namespace WarriorsSnuggery.Objects.Actors.Parts
@@ -19,7 +20,13 @@ namespace WarriorsSnuggery.Objects.Actors.Parts
 	{
 		public readonly string InternalName;
 
-		public abstract ActorPart Create(Actor self);
+		public ActorPart Create(Actor self)
+		{
+			var infoType = this.GetType();
+			var type = Type.GetType(infoType.FullName[0..^4], true, true);
+
+			return (ActorPart)Activator.CreateInstance(type, new object[] { self, this });
+		}
 
 		protected PartInfo(PartInitSet set)
 		{

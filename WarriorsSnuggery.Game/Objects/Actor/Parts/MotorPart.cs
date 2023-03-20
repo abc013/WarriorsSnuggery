@@ -19,11 +19,6 @@
 			if (Acceleration == 0)
 				Acceleration = Speed;
 		}
-
-		public override ActorPart Create(Actor self)
-		{
-			return new MotorPart(self, this);
-		}
 	}
 
 	public class MotorPart : ActorPart, ITick, INoticeStop

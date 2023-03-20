@@ -14,11 +14,6 @@ namespace WarriorsSnuggery.Objects.Actors.Parts
 		public readonly bool AllowMoving;
 
 		public WeaponPartInfo(PartInitSet set) : base(set) { }
-
-		public override ActorPart Create(Actor self)
-		{
-			return new WeaponPart(self, this);
-		}
 	}
 
 	public class WeaponPart : ActorPart, ITick, INoticeDispose, ISaveLoadable, INoticeMove

@@ -24,11 +24,6 @@
 		public readonly string PlayerSwitchActor = string.Empty;
 
 		public PlayablePartInfo(PartInitSet set) : base(set) { }
-
-		public override ActorPart Create(Actor self)
-		{
-			return new PlayablePart(self, this);
-		}
 	}
 
 	public class PlayablePart : ActorPart

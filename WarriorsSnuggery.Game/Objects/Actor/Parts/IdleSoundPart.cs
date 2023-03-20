@@ -9,11 +9,6 @@ namespace WarriorsSnuggery.Objects.Actors.Parts
 		public readonly SoundType Sound;
 
 		public IdleSoundPartInfo(PartInitSet set) : base(set) { }
-
-		public override ActorPart Create(Actor self)
-		{
-			return new IdleSoundPart(self, this);
-		}
 	}
 
 	public class IdleSoundPart : ActorPart, INoticeMove, INoticeDispose

@@ -7,11 +7,6 @@
 		public readonly int SwitchDuration = 120;
 
 		public PlayerSwitchPartInfo(PartInitSet set) : base(set) { }
-
-		public override ActorPart Create(Actor self)
-		{
-			return new PlayerSwitchPart(self, this);
-		}
 	}
 
 	public class PlayerSwitchPart : ActorPart, ITick, INoticeKilled, ISaveLoadable

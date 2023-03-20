@@ -48,11 +48,6 @@ namespace WarriorsSnuggery.Objects.Actors.Parts
 			if (Name != null)
 				Textures = new TextureInfo(Name).GetTextures();
 		}
-
-		public override ActorPart Create(Actor self)
-		{
-			return new LightPart(self, this);
-		}
 	}
 
 	public class LightPart : ActorPart, IRenderable, ITick

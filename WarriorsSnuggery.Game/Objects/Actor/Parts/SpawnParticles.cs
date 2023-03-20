@@ -20,11 +20,6 @@ namespace WarriorsSnuggery.Objects.Actors.Parts
 		public readonly int Tick;
 
 		public SpawnParticlesPartInfo(PartInitSet set) : base(set) { }
-
-		public override ActorPart Create(Actor self)
-		{
-			return new SpawnParticlesPart(self, this);
-		}
 	}
 
 	public class SpawnParticlesPart : ActorPart, ITick, INoticeDamage, INoticeKilled, ISaveLoadable

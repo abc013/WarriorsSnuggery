@@ -10,11 +10,6 @@
 		public readonly CPos TargetBoxCorner2 = new CPos(256, -256, 0);
 
 		public TargetablePartInfo(PartInitSet set) : base(set) { }
-
-		public override ActorPart Create(Actor self)
-		{
-			return new TargetablePart(self, this);
-		}
 	}
 
 	public class TargetablePart : ActorPart
