@@ -28,7 +28,7 @@ namespace WarriorsSnuggery.Objects
 		public Shroud(MPos pos)
 		{
 			Listener = pos;
-			graphicPosition = new CPos(pos.X * 512 - 256, pos.Y * 512 - 256, 0);
+			graphicPosition = new CPos((pos.X * Constants.TileSize - Constants.TileSize / 2) / 2, (pos.Y * Constants.TileSize - Constants.TileSize / 2) / 2, 0);
 		}
 
 		public bool ChangeState(bool revealed)

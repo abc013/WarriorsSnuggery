@@ -93,6 +93,12 @@ namespace WarriorsSnuggery.Objects.Actors.Parts
 				variation = new Color((float)(random.NextDouble() - 0.5f) * info.ColorVariation.R, (float)(random.NextDouble() - 0.5f) * info.ColorVariation.G, (float)(random.NextDouble() - 0.5f) * info.ColorVariation.B, 0f);
 			}
 
+			SetPosition(self.Position);
+			SetScale(self.Scale);
+			SetRotation(self.Rotation);
+			SetColor(self.Color);
+			SetTextureFlags(self.TextureFlags);
+
 			renderObject.setRenderable(null);
 		}
 
