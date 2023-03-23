@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using WarriorsSnuggery.Loader;
 using WarriorsSnuggery.Objects.Actors;
 using WarriorsSnuggery.Trophies;
 
 namespace WarriorsSnuggery.Conditions
 {
-	public class ConditionManager
+	public class ConditionManager : ISaveable
 	{
 		readonly Game game;
 		readonly Dictionary<string, bool> items;
@@ -114,14 +115,13 @@ namespace WarriorsSnuggery.Conditions
 			customItems[name] = value;
 		}
 
-		public List<string> SaveConditions()
+		public TextNodeSaver Save()
 		{
-			var list = new List<string>();
-
+			var saver = new TextNodeSaver();
 			foreach (var condition in customItems)
-				list.Add($"\t{condition.Key}={condition.Value}");
+				saver.Add(condition.Key, condition.Value);
 
-			return list;
+			return saver;
 		}
 	}
 }

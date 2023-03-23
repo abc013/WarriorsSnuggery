@@ -1,6 +1,8 @@
-﻿namespace WarriorsSnuggery.Spells
+﻿using WarriorsSnuggery.Loader;
+
+namespace WarriorsSnuggery.Spells
 {
-	public class SpellCasterManager : ITick
+	public class SpellCasterManager : ITick, ISaveable
 	{
 		readonly Game game;
 		public readonly SpellCaster[] Casters;
@@ -36,6 +38,15 @@
 		public bool Unlocked(int caster)
 		{
 			return Casters[caster].Unlocked();
+		}
+
+		public TextNodeSaver Save()
+		{
+			var saver = new TextNodeSaver();
+			foreach (var caster in game.SpellManager.Casters)
+				saver.AddChildren(caster.Type.InnerName, caster.Save());
+
+			return saver;
 		}
 	}
 }

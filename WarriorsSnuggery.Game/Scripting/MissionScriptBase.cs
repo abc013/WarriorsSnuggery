@@ -3,7 +3,7 @@ using WarriorsSnuggery.Loader;
 
 namespace WarriorsSnuggery.Scripting
 {
-	public abstract class MissionScriptBase
+	public abstract class MissionScriptBase : ISaveable
 	{
 		public readonly PackageFile PackageFile;
 
@@ -23,8 +23,7 @@ namespace WarriorsSnuggery.Scripting
 			world = game.World;
 		}
 
-		public virtual object[] GetState() => new object[0];
-
-		public virtual void LoadState(TextNode[] nodes) { }
+		public virtual TextNodeSaver Save() => new TextNodeSaver();
+		public virtual void Load(TextNode[] nodes) { }
 	}
 }

@@ -52,6 +52,7 @@ namespace WarriorsSnuggery
 						key = prop.Name;
 
 					var value = prop.MemberType == MemberTypes.Property ? typeof(T).GetProperty(prop.Name, flags).GetValue(@object) : typeof(T).GetField(prop.Name, flags).GetValue(@object);
+					var type = prop.MemberType == MemberTypes.Property ? typeof(T).GetProperty(prop.Name, flags).PropertyType : typeof(T).GetField(prop.Name, flags).FieldType;
 
 					if (!omitDefaults)
 					{
@@ -67,7 +68,20 @@ namespace WarriorsSnuggery
 						}
 					}
 
-					list.Add($"{key}={value}");
+					if (type.IsArray)
+					{
+						var enumeration = string.Empty;
+						foreach (var intern in (Array)value)
+						{
+							enumeration += intern + ",";
+						}
+
+						list.Add($"{key}={enumeration.TrimEnd(',')}");
+					}
+					else
+					{
+						list.Add($"{key}={value}");
+					}
 				}
 			}
 

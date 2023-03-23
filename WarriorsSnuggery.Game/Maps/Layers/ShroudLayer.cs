@@ -1,11 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using WarriorsSnuggery.Loader;
 using WarriorsSnuggery.Objects;
 using WarriorsSnuggery.Objects.Actors;
 
 namespace WarriorsSnuggery.Maps.Layers
 {
-	public sealed class ShroudLayer
+	public sealed class ShroudLayer : ISaveable
 	{
 		public bool RevealAll;
 		public MPos Bounds { get; private set; }
@@ -275,15 +276,21 @@ namespace WarriorsSnuggery.Maps.Layers
 			changingShroud.RemoveAll(s => s.StateAchieved);
 		}
 
-		public string ToString(byte team)
+		public TextNodeSaver Save()
 		{
-			var shroud = team + "=";
+			var saver = new TextNodeSaver();
+			foreach (var team in UsedTeams)
+			{
+				var shroud = string.Empty;
 
-			for (int x = 0; x < Bounds.X; x++)
-				for (int y = 0; y < Bounds.Y; y++)
-					shroud += ShroudRevealed(team, x, y).GetHashCode() + ",";
+				for (int x = 0; x < Bounds.X; x++)
+					for (int y = 0; y < Bounds.Y; y++)
+						shroud += ShroudRevealed(team, x, y).GetHashCode() + ",";
 
-			return shroud.TrimEnd(',');
+				saver.Add(team.ToString(), shroud[0..^1]);
+			}
+			
+			return saver;
 		}
 
 		class Triangle

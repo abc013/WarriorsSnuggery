@@ -8,7 +8,7 @@ namespace WarriorsSnuggery.Loader
 
 		public TextNodeSaver() { }
 
-		public void GetSaveFields(object obj, bool inherit = true, bool omitDefaults = false)
+		public void AddSaveFields<T>(T obj, bool inherit = true, bool omitDefaults = false)
 		{
 			content.AddRange(SaveAttribute.GetFields(obj, inherit, omitDefaults));
 		}
@@ -36,9 +36,17 @@ namespace WarriorsSnuggery.Loader
 			content.Add(generateContentString(name, specification, value));
 		}
 
-		public void AddChildren(string parentName, string specification, TextNodeSaver children)
+		public void AddChildren(string parentName, TextNodeSaver children, bool ignoreIfNoChildren = false)
 		{
-            Add(parentName, string.Empty);
+			AddChildren(parentName, string.Empty, children, ignoreIfNoChildren);
+		}
+
+		public void AddChildren(string parentName, string specification, TextNodeSaver children, bool ignoreIfNoChildren = false)
+		{
+			if (children.content.Count == 0 && ignoreIfNoChildren)
+				return;
+
+            Add(parentName, specification, string.Empty);
             foreach (var contentString in children.content)
                 content.Add($"\t{contentString}");
 		}
@@ -47,5 +55,10 @@ namespace WarriorsSnuggery.Loader
         {
             return $"{name}{(string.IsNullOrEmpty(specification) ? string.Empty : $"@{specification}")}={value}";
         }
+
+		public List<string> GetStrings()
+		{
+			return content;
+		}
 	}
 }

@@ -36,7 +36,7 @@ namespace WarriorsSnuggery
 
 		public readonly WaveController WaveController;
 
-		readonly MissionScriptBase script;
+		public readonly MissionScriptBase Script;
 
 		public uint LocalTick { get; private set; }
 
@@ -90,7 +90,7 @@ namespace WarriorsSnuggery
 			if (map.MissionScript != null && !Program.DisableScripts)
 			{
 				var scriptLoader = new MissionScriptLoader(map.MissionScript);
-				script = scriptLoader.Start(this);
+				Script = scriptLoader.Start(this);
 			}
 			else
 				Log.Debug(Program.DisableScripts ? "Mission scripts are disabled." : "No mission script existing.");
@@ -120,9 +120,9 @@ namespace WarriorsSnuggery
 			ScreenControl.FadeIn();
 
 			if (World.Map.Type.IsSave)
-				script?.LoadState(Save.ScriptState);
+				Script?.Load(Save.ScriptState);
 			else
-				script?.OnStart();
+				Script?.OnStart();
 
 			timer.StopAndWrite("Loading Game");
 			Log.Debug("Loading successful!");
@@ -218,7 +218,7 @@ namespace WarriorsSnuggery
 
 				CheckVictory();
 
-				script?.Tick();
+				Script?.Tick();
 
 				if (ObjectiveType == ObjectiveType.SURVIVE_WAVES)
 					WaveController.Tick();
@@ -336,7 +336,7 @@ namespace WarriorsSnuggery
 
 			WinConditionsMet = true;
 
-			script?.OnWin();
+			Script?.OnWin();
 			Save.Update(this, true);
 
 			if (instantFinish)
@@ -363,7 +363,7 @@ namespace WarriorsSnuggery
 
 		public void DefeatConditionsMet()
 		{
-			script?.OnLose();
+			Script?.OnLose();
 			Finish(false);
 
 			ShowScreen(ScreenType.DEFEAT);
@@ -389,7 +389,7 @@ namespace WarriorsSnuggery
 
 		public void Finish(bool fade = true)
 		{
-			script?.OnFinish();
+			Script?.OnFinish();
 			Finished = true;
 			Pause(true);
 
@@ -398,18 +398,6 @@ namespace WarriorsSnuggery
 				ScreenControl.FadeOut();
 				MusicController.FadeIntenseOut();
 			}
-		}
-
-		public object[] GetScriptState(out PackageFile packageFile)
-		{
-			packageFile = null;
-
-			if (script == null)
-				return null;
-
-			packageFile = script.PackageFile;
-
-			return script.GetState();
 		}
 
 		public void ShowScreen(ScreenType screen, bool pause)

@@ -1,10 +1,11 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using WarriorsSnuggery.Loader;
 using WarriorsSnuggery.Objects.Actors;
 
 namespace WarriorsSnuggery.Spells
 {
-	public class SpellCaster : ITick
+	public class SpellCaster : ITick, ISaveable
 	{
 		public readonly SpellCasterType Type;
 		readonly Game game;
@@ -16,7 +17,9 @@ namespace WarriorsSnuggery.Spells
 
 		readonly List<ActorEffect> currentEffects = new List<ActorEffect>();
 
+		[Save("Duration"), DefaultValue(0)]
 		int duration;
+		[Save("Recharge"), DefaultValue(0)]
 		int recharge;
 
 		public SpellCaster(Game game, SpellCasterType type)
@@ -87,17 +90,12 @@ namespace WarriorsSnuggery.Spells
 			return game.Stats.SpellUnlocked(Type);
 		}
 
-		public List<string> Save()
+		public TextNodeSaver Save()
 		{
-			var list = new List<string>();
-			if (State == SpellCasterState.READY)
-				return list;
+			var saver = new TextNodeSaver();
+			saver.AddSaveFields(this);
 
-			list.Add($"{Type.InnerName}=");
-			list.Add($"\tRecharge={recharge}");
-			list.Add($"\tDuration={duration}");
-
-			return list;
+			return saver;
 		}
 	}
 }
