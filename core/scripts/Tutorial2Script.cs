@@ -1,5 +1,6 @@
 using System.Linq;
 using WarriorsSnuggery.Audio;
+using WarriorsSnuggery.Audio.Music;
 using WarriorsSnuggery.Loader;
 using WarriorsSnuggery.Objects.Actors;
 using WarriorsSnuggery.Objects.Particles;
