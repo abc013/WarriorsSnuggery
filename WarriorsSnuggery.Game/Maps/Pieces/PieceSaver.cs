@@ -49,23 +49,31 @@ namespace WarriorsSnuggery.Maps.Pieces
 			writer.WriteLine("Name=" + name);
 			writer.WriteLine("Size=" + bounds);
 
-			writeTerrainLayer(writer);
-			writeWallLayer(writer);
+			var saver = new TextNodeSaver();
+			writeTerrainLayer(saver);
+			saver.AddChildren("Walls", world.WallLayer.Save(), true);
+			foreach (var savedString in saver.GetStrings())
+				writer.WriteLine(savedString);
 
 			writeActorLayer(writer);
-			writeWeaponLayer(writer);
-			writeParticleLayer(writer);
+			if (gameSave)
+			{
+				saver = new TextNodeSaver();
+				saver.AddChildren("Weapons", world.WeaponLayer.Save(), true);
+				saver.AddChildren("Particles", world.ParticleLayer.Save(), true);
+				foreach (var savedString in saver.GetStrings())
+					writer.WriteLine(savedString);
+			}
 
 			writer.Flush();
 			writer.Close();
 		}
 
-		void writeTerrainLayer(StreamWriter writer)
+		void writeTerrainLayer(TextNodeSaver saver)
 		{
-			const string text = "Terrain=";
+			const string text = "Terrain";
 
-			var builder = new StringBuilder(text.Length + bounds.X * bounds.Y * 2, text.Length + bounds.X * bounds.Y * 4);
-			builder.Append(text);
+			var builder = new StringBuilder(bounds.X * bounds.Y * 2, text.Length + bounds.X * bounds.Y * 4);
 
 			for (int y = 0; y < bounds.Y; y++)
 			{
@@ -77,20 +85,8 @@ namespace WarriorsSnuggery.Maps.Pieces
 			}
 
 			builder.Remove(builder.Length - 1, 1);
-			writer.WriteLine(builder);
+			saver.Add(text, builder);
 			builder.Clear();
-		}
-
-		void writeWallLayer(StreamWriter writer)
-		{
-			if (world.WallLayer.WallList.Count == 0)
-				return;
-
-			var saver = world.WallLayer.Save();
-
-			writer.WriteLine("Walls=");
-			foreach (var savedString in saver.GetStrings())
-				writer.WriteLine($"\t{savedString}");
 		}
 
 		void writeActorLayer(StreamWriter writer)
@@ -106,40 +102,6 @@ namespace WarriorsSnuggery.Maps.Pieces
 				writer.WriteLine("\t" + (gameSave ? a.ID : i++) + "=");
 
 				foreach (var node in a.Save())
-					writer.WriteLine("\t\t" + node);
-			}
-		}
-
-		void writeWeaponLayer(StreamWriter writer)
-		{
-			if (!gameSave || world.WeaponLayer.Weapons.Count == 0)
-				return;
-
-			writer.WriteLine("Weapons=");
-
-			var i = 0;
-			foreach(var weapon in world.WeaponLayer.Weapons)
-			{
-				writer.WriteLine("\t" + i++ + "=");
-
-				foreach(var node in weapon.Save())
-					writer.WriteLine("\t\t" + node);
-			}
-		}
-
-		void writeParticleLayer(StreamWriter writer)
-		{
-			if (!gameSave || world.ParticleLayer.Particles.Count == 0)
-				return;
-
-			writer.WriteLine("Particles=");
-
-			var i = 0;
-			foreach (var particle in world.ParticleLayer.Particles)
-			{
-				writer.WriteLine("\t" + i++ + "=");
-
-				foreach (var node in particle.Save())
 					writer.WriteLine("\t\t" + node);
 			}
 		}

@@ -1,12 +1,12 @@
-﻿using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using WarriorsSnuggery.Audio.Sound;
+using WarriorsSnuggery.Loader;
 using WarriorsSnuggery.Objects.Actors;
 using WarriorsSnuggery.Spells;
 
 namespace WarriorsSnuggery.Objects.Weapons
 {
-	public abstract class Weapon : PositionableObject
+	public abstract class Weapon : PositionableObject, ISaveable
 	{
 		protected readonly World World;
 		[Save]
@@ -172,16 +172,17 @@ namespace WarriorsSnuggery.Objects.Weapons
 			World.WeaponLayer.Remove(this);
 		}
 
-		public virtual List<string> Save()
+		public virtual TextNodeSaver Save()
 		{
-			var list = SaveAttribute.GetFields(this);
+			var saver = new TextNodeSaver();
+			saver.AddSaveFields(this);
 
 			if (Target.Type == TargetType.ACTOR)
-				list.Add("TargetActor=" + Target.Actor.ID);
+				saver.Add("TargetActor", Target.Actor.ID);
 
-			list.Add("OriginalTargetPosition=" + Target.Position);
+			saver.Add("OriginalTargetPosition", Target.Position);
 
-			return list;
+			return saver;
 		}
 	}
 }

@@ -1,10 +1,10 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
+using WarriorsSnuggery.Loader;
 using WarriorsSnuggery.Objects.Weapons;
 
 namespace WarriorsSnuggery.Maps.Layers
 {
-	public sealed class WeaponLayer
+	public sealed class WeaponLayer : ISaveable
 	{
 		// There are not many weapons ingame, so no sectors are needed
 		public readonly List<Weapon> Weapons = new List<Weapon>();
@@ -65,6 +65,15 @@ namespace WarriorsSnuggery.Maps.Layers
 			}
 
 			return visibleWeapons;
+		}
+
+		public TextNodeSaver Save()
+		{
+			var saver = new TextNodeSaver();
+			for (int i = 0; i < Weapons.Count; i++)
+				saver.AddChildren($"{i}", Weapons[i].Save());
+
+			return saver;
 		}
 	}
 }

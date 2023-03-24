@@ -1,11 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using WarriorsSnuggery.Loader;
 using WarriorsSnuggery.Objects.Particles;
 
 namespace WarriorsSnuggery.Maps.Layers
 {
-	public sealed class ParticleLayer
+	public sealed class ParticleLayer : ISaveable
 	{
 		public const int SectorSize = 4;
 		public readonly List<Particle> Particles = new List<Particle>();
@@ -125,6 +126,15 @@ namespace WarriorsSnuggery.Maps.Layers
 				visibleParticles.AddRange(sector.Particles);
 
 			return visibleParticles.ToHashSet();
+		}
+
+		public TextNodeSaver Save()
+		{
+			var saver = new TextNodeSaver();
+			for (int i = 0; i < Particles.Count; i++)
+				saver.AddChildren($"{i}", Particles[i].Save());
+
+			return saver;
 		}
 	}
 

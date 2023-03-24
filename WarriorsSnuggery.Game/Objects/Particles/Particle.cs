@@ -1,11 +1,11 @@
 using System;
-using System.Collections.Generic;
 using WarriorsSnuggery.Graphics;
+using WarriorsSnuggery.Loader;
 using WarriorsSnuggery.Maps.Layers;
 
 namespace WarriorsSnuggery.Objects.Particles
 {
-	public sealed class Particle : PositionableObject
+	public sealed class Particle : PositionableObject, ISaveable
 	{
 		[Save]
 		public readonly ParticleType Type;
@@ -196,9 +196,12 @@ namespace WarriorsSnuggery.Objects.Particles
 			world.ParticleLayer.Remove(this);
 		}
 
-		public List<string> Save()
+		public TextNodeSaver Save()
 		{
-			return SaveAttribute.GetFields(this);
+			var saver = new TextNodeSaver();
+			saver.AddSaveFields(this);
+
+			return saver;
 		}
 	}
 }

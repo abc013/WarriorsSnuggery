@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+﻿using WarriorsSnuggery.Loader;
 using WarriorsSnuggery.Objects.Actors;
 using WarriorsSnuggery.Objects.Weapons.Projectiles;
 using WarriorsSnuggery.Physics;
@@ -92,12 +92,12 @@ namespace WarriorsSnuggery.Objects.Weapons
 				Detonate(new Target(ray.End));
 		}
 
-		public override List<string> Save()
+		public override TextNodeSaver Save()
 		{
-			var list = base.Save();
-			list.AddRange(SaveAttribute.GetFields(this, false));
+			var saver = base.Save();
+			saver.AddSaveFields(this, false);
 
-			return list;
+			return saver;
 		}
 	}
 }

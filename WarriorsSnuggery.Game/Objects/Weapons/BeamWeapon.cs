@@ -1,7 +1,7 @@
 using System;
-using System.Collections.Generic;
 using WarriorsSnuggery.Audio.Sound;
 using WarriorsSnuggery.Graphics;
+using WarriorsSnuggery.Loader;
 using WarriorsSnuggery.Objects.Actors;
 using WarriorsSnuggery.Objects.Weapons.Projectiles;
 using WarriorsSnuggery.Physics;
@@ -215,12 +215,12 @@ namespace WarriorsSnuggery.Objects.Weapons
 			TargetPosition = newTarget + new CPos(0, 0, target.Z);
 		}
 
-		public override List<string> Save()
+		public override TextNodeSaver Save()
 		{
-			var list = base.Save();
-			list.AddRange(SaveAttribute.GetFields(this, false));
+			var saver = base.Save();
+			saver.AddSaveFields(this, false);
 
-			return list;
+			return saver;
 		}
 
 		public override void Dispose()
