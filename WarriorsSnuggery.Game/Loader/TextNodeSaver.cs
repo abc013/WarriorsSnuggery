@@ -36,6 +36,11 @@ namespace WarriorsSnuggery.Loader
 			content.Add(generateContentString(name, specification, value));
 		}
 
+		public void Append(TextNodeSaver other)
+		{
+			content.AddRange(other.content);
+		}
+
 		public void AddChildren(string parentName, TextNodeSaver children, bool ignoreIfNoChildren = false)
 		{
 			AddChildren(parentName, string.Empty, children, ignoreIfNoChildren);

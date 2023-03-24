@@ -1,19 +1,23 @@
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using WarriorsSnuggery.Graphics;
+using WarriorsSnuggery.Loader;
 using WarriorsSnuggery.Objects;
 
 namespace WarriorsSnuggery.Maps.Layers
 {
-	public sealed class TerrainLayer
+	public sealed class TerrainLayer : ISaveable
 	{
 		public static int TilesVisible { get; private set; }
 
 		public readonly Terrain[,] Terrain;
+		readonly MPos bounds;
 
 		public TerrainLayer(MPos bounds)
 		{
 			Terrain = new Terrain[bounds.X, bounds.Y];
+			this.bounds = bounds;
 		}
 
 		public void Set(Terrain terrain)
@@ -56,11 +60,11 @@ namespace WarriorsSnuggery.Maps.Layers
 		{
 			for (int x = pos.X - 1; x < pos.X + 2; x++)
 			{
-				if (x >= 0 && x < Terrain.GetLength(0))
+				if (x >= 0 && x < bounds.X)
 				{
 					for (int y = pos.Y - 1; y < pos.Y + 2; y++)
 					{
-						if (y >= 0 && y < Terrain.GetLength(1))
+						if (y >= 0 && y < bounds.Y)
 						{
 							Terrain[x, y].CheckEdgeVisibility();
 						}
@@ -73,6 +77,21 @@ namespace WarriorsSnuggery.Maps.Layers
 		{
 			foreach (var terrain in Terrain)
 				terrain.CheckEdgeVisibility();
+		}
+
+		public TextNodeSaver Save()
+		{
+			var saver = new TextNodeSaver();
+			
+			var builder = new StringBuilder(bounds.X * bounds.Y * 2, bounds.X * bounds.Y * 4);
+
+			for (int y = 0; y < bounds.Y; y++)
+				for (int x = 0; x < bounds.X; x++)
+					builder.Append($"{Terrain[x, y].Type.ID},");
+
+			builder.Remove(builder.Length - 1, 1);
+			saver.Add("Terrain", builder);
+			return saver;
 		}
 	}
 }

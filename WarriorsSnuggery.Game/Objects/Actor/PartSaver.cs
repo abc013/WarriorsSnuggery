@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+﻿using WarriorsSnuggery.Loader;
 using WarriorsSnuggery.Objects.Actors.Parts;
 
 namespace WarriorsSnuggery.Objects.Actors
@@ -7,7 +7,7 @@ namespace WarriorsSnuggery.Objects.Actors
 	{
 		readonly ActorPart part;
 		readonly string internalName;
-		readonly List<(string, object)> values = new List<(string, object)>();
+		readonly TextNodeSaver saver = new TextNodeSaver();
 
 		public PartSaver(ActorPart part, string internalName)
 		{
@@ -17,24 +17,12 @@ namespace WarriorsSnuggery.Objects.Actors
 
 		public void Add(string name, object value, object defaultValue)
 		{
-			if (value.Equals(defaultValue))
-				return;
-
-			values.Add((name, value));
+			saver.Add(name, value, defaultValue);
 		}
 
-		public string[] GetSave()
+		public void SaveUsing(TextNodeSaver parentSaver)
 		{
-			if (values.Count == 0)
-				return new string[0];
-
-			var save = new string[values.Count + 1];
-
-			save[0] = $"{part.GetType().Name[..^4]}@{internalName}=";
-			for (int i = 0; i < values.Count; i++)
-				save[i + 1] = $"\t{values[i].Item1}={values[i].Item2}";
-
-			return save;
+			parentSaver.AddChildren($"{part.GetType().Name[..^4]}", internalName, saver, true);
 		}
 	}
 }

@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using WarriorsSnuggery.Graphics;
+using WarriorsSnuggery.Loader;
 using WarriorsSnuggery.Maps.Layers;
 using WarriorsSnuggery.Objects.Actors.Parts;
 using WarriorsSnuggery.Objects.Weapons;
@@ -277,24 +278,27 @@ namespace WarriorsSnuggery.Objects.Actors
 			init = null;
 		}
 
-		public List<string> Save()
+		public TextNodeSaver Save()
 		{
-			var list = SaveAttribute.GetFields(this);
+			var saver = new TextNodeSaver();
+			saver.AddSaveFields(this);
 
 			foreach (var part in partManager.GetPartsOrDefault<ISaveLoadable>())
-				list.AddRange(part.OnSave().GetSave());
+				part.OnSave().SaveUsing(saver);
 
 			foreach (var effect in effects)
-				list.AddRange(effect.Save());
+				saver.AddChildren(nameof(ActorEffect), effect.Save());
 
 			foreach (var (action, timing) in actionTimings)
 			{
-				list.Add("ActionTiming=");
-				list.Add($"\tAction={action}");
-				list.Add($"\tTiming={timing}");
+				var actionSaver = new TextNodeSaver();
+				actionSaver.Add("Action", action);
+				actionSaver.Add("Timing", timing);
+
+				saver.AddChildren("ActionTiming", actionSaver);
 			}
 
-			return list;
+			return saver;
 		}
 
 		public void Push(float angle, int power)

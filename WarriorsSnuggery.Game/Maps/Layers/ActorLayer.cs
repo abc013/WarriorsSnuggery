@@ -1,11 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using WarriorsSnuggery.Loader;
 using WarriorsSnuggery.Objects.Actors;
 
 namespace WarriorsSnuggery.Maps.Layers
 {
-	public sealed class ActorLayer
+	public sealed class ActorLayer : ISaveable
 	{
 		public const int SectorSize = 4;
 
@@ -139,6 +140,17 @@ namespace WarriorsSnuggery.Maps.Layers
 		public List<Actor> ToAdd()
 		{
 			return actorsToAdd;
+		}
+
+		public TextNodeSaver Save() => Save(false);
+
+		public TextNodeSaver Save(bool gameSave)
+		{
+			var saver = new TextNodeSaver();
+			for (int i = 0; i < Actors.Count; i++)
+				saver.AddChildren($"{(gameSave ? Actors[i].ID : i)}", Actors[i].Save());
+
+			return saver;
 		}
 	}
 

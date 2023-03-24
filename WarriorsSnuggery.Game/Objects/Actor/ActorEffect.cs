@@ -5,17 +5,21 @@ using WarriorsSnuggery.Spells;
 
 namespace WarriorsSnuggery.Objects.Actors
 {
-	public class ActorEffect : ITick, INoticeMove
+	public class ActorEffect : ITick, INoticeMove, ISaveable
 	{
+		// Saved separately
 		public readonly Effect Effect;
 		readonly Actor self;
 
 		readonly Sound sound;
 
+		[Save("Sleeping")]
 		public bool Sleeping;
 		public bool Active => !Sleeping && tick > 0;
 
+		[Save("SleepTick")]
 		int sleepTick;
+		[Save("Tick")]
 		int tick;
 
 		public ActorEffect(Actor self, Effect effect)
@@ -70,16 +74,13 @@ namespace WarriorsSnuggery.Objects.Actors
 				sound = new Sound(Effect.Sound);
 		}
 
-		public List<string> Save()
+		public TextNodeSaver Save()
 		{
-			return new List<string>
-			{
-				nameof(ActorEffect) + "=",
-				"\tType=" + EffectCache.Types[Effect],
-				"\tTick=" + tick,
-				"\tSleeping=" + Sleeping,
-				"\tSleepTick=" + sleepTick
-			};
+			var saver = new TextNodeSaver();
+			saver.AddSaveFields(this);
+			saver.Add("Type", EffectCache.Types[Effect]);
+
+			return saver;
 		}
 
 		public void Tick()

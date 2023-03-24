@@ -43,67 +43,28 @@ namespace WarriorsSnuggery.Maps.Pieces
 
 		void save(string directory, string name)
 		{
+			var saver = new TextNodeSaver();
+			saver.Add("MapFormat", Constants.CurrentMapFormat);
+			saver.Add("Name", name);
+			saver.Add("Size", bounds);
+
+			saver.Append(world.TerrainLayer.Save());
+			saver.AddChildren("Walls", world.WallLayer.Save(), true);
+			saver.AddChildren("Actors", world.ActorLayer.Save(gameSave), true);
+
+			if (gameSave)
+			{
+				saver.AddChildren("Weapons", world.WeaponLayer.Save(), true);
+				saver.AddChildren("Particles", world.ParticleLayer.Save(), true);
+			}
+
 			using var writer = new StreamWriter(directory + name + ".yaml", false);
 
-			writer.WriteLine("MapFormat=" + Constants.CurrentMapFormat);
-			writer.WriteLine("Name=" + name);
-			writer.WriteLine("Size=" + bounds);
-
-			var saver = new TextNodeSaver();
-			writeTerrainLayer(saver);
-			saver.AddChildren("Walls", world.WallLayer.Save(), true);
 			foreach (var savedString in saver.GetStrings())
 				writer.WriteLine(savedString);
 
-			writeActorLayer(writer);
-			if (gameSave)
-			{
-				saver = new TextNodeSaver();
-				saver.AddChildren("Weapons", world.WeaponLayer.Save(), true);
-				saver.AddChildren("Particles", world.ParticleLayer.Save(), true);
-				foreach (var savedString in saver.GetStrings())
-					writer.WriteLine(savedString);
-			}
-
 			writer.Flush();
 			writer.Close();
-		}
-
-		void writeTerrainLayer(TextNodeSaver saver)
-		{
-			const string text = "Terrain";
-
-			var builder = new StringBuilder(bounds.X * bounds.Y * 2, text.Length + bounds.X * bounds.Y * 4);
-
-			for (int y = 0; y < bounds.Y; y++)
-			{
-				for (int x = 0; x < bounds.X; x++)
-				{
-					builder.Append(world.TerrainLayer.Terrain[x, y].Type.ID);
-					builder.Append(',');
-				}
-			}
-
-			builder.Remove(builder.Length - 1, 1);
-			saver.Add(text, builder);
-			builder.Clear();
-		}
-
-		void writeActorLayer(StreamWriter writer)
-		{
-			if (world.ActorLayer.Actors.Count == 0)
-				return;
-
-			writer.WriteLine("Actors=");
-
-			var i = 0u;
-			foreach (var a in world.ActorLayer.Actors)
-			{
-				writer.WriteLine("\t" + (gameSave ? a.ID : i++) + "=");
-
-				foreach (var node in a.Save())
-					writer.WriteLine("\t\t" + node);
-			}
 		}
 	}
 }
