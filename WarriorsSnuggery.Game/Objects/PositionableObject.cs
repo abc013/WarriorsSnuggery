@@ -21,7 +21,6 @@ namespace WarriorsSnuggery.Objects
 		BatchRenderable renderable;
 		public bool Disposed;
 
-		[Save]
 		public virtual CPos Position
 		{
 			get => position;

@@ -2,10 +2,11 @@
 using System.Linq;
 using System.Collections.Generic;
 using WarriorsSnuggery.Objects;
+using WarriorsSnuggery.Loader;
 
 namespace WarriorsSnuggery.Maps.Layers
 {
-	public sealed class WallLayer
+	public sealed class WallLayer : ISaveable
 	{
 		public readonly List<Wall> WallList = new List<Wall>();
 		readonly World world;
@@ -265,6 +266,15 @@ namespace WarriorsSnuggery.Maps.Layers
 			}
 
 			return visibleWalls;
+		}
+
+		public TextNodeSaver Save()
+		{
+			var saver = new TextNodeSaver();
+			for (int i = 0; i < WallList.Count; i++)
+				saver.AddChildren($"{i}", WallList[i].Save());
+
+			return saver;
 		}
 	}
 }

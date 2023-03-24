@@ -1,11 +1,12 @@
 using System;
 using WarriorsSnuggery.Graphics;
+using WarriorsSnuggery.Loader;
 using WarriorsSnuggery.Objects.Particles;
 using WarriorsSnuggery.Physics;
 
 namespace WarriorsSnuggery.Objects
 {
-	public class Wall : PhysicsObject
+	public class Wall : PhysicsObject, ISaveable
 	{
 		enum NeighborState : byte
 		{
@@ -22,8 +23,10 @@ namespace WarriorsSnuggery.Objects
 			HEAVY
 		}
 
+		// Saved separately
 		public readonly WallType Type;
 
+		[Save("Position")]
 		public readonly WPos LayerPosition;
 		public readonly MPos TerrainPosition;
 
@@ -34,9 +37,7 @@ namespace WarriorsSnuggery.Objects
 		public CPos EndPointA => Physics.Position - Physics.Boundaries;
 		public CPos EndPointB => Physics.Position + Physics.Boundaries;
 
-		Color color = Color.White;
-		TextureFlags flags = TextureFlags.None;
-
+		[Save, DefaultValue(0)]
 		public int Health
 		{
 			get => health;
@@ -190,8 +191,8 @@ namespace WarriorsSnuggery.Objects
 
 			Renderable = new BatchObject(Type.GetTexture(IsHorizontal, neighborState, info));
 			Renderable.SetPosition(Position + getTextureOffset(info, IsHorizontal));
-			Renderable.SetColor(color);
-			Renderable.SetTextureFlags(flags);
+			Renderable.SetColor(Color);
+			Renderable.SetTextureFlags(TextureFlags);
 		}
 
 		static CPos getTextureOffset(TextureInfo info, bool horizontal)
@@ -204,6 +205,15 @@ namespace WarriorsSnuggery.Objects
 			var y = (int)-(Constants.PixelMultiplier * 512 * height) + 512 * (horizontal ? -1 : 1);
 
 			return new CPos(x, y, 0);
+		}
+
+		public TextNodeSaver Save()
+		{
+			var saver = new TextNodeSaver();
+			saver.AddSaveFields(this);
+			saver.Add(nameof(Type), Type.ID);
+
+			return saver;
 		}
 	}
 }

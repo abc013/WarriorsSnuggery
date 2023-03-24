@@ -86,17 +86,11 @@ namespace WarriorsSnuggery.Maps.Pieces
 			if (world.WallLayer.WallList.Count == 0)
 				return;
 
-			writer.WriteLine("Walls=");
+			var saver = world.WallLayer.Save();
 
-			var i = 0u;
-			foreach (var wall in world.WallLayer.WallList)
-			{
-				writer.WriteLine($"\t{i++}=");
-				writer.WriteLine($"\t\tType={wall.Type.ID}");
-				writer.WriteLine($"\t\tPosition={wall.LayerPosition}");
-				if (wall.Health != 0)
-					writer.WriteLine($"\t\tHealth={wall.Health}");
-			}
+			writer.WriteLine("Walls=");
+			foreach (var savedString in saver.GetStrings())
+				writer.WriteLine($"\t{savedString}");
 		}
 
 		void writeActorLayer(StreamWriter writer)

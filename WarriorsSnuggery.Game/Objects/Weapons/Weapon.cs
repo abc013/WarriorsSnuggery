@@ -9,6 +9,8 @@ namespace WarriorsSnuggery.Objects.Weapons
 	public abstract class Weapon : PositionableObject
 	{
 		protected readonly World World;
+		[Save]
+		public override CPos Position { get => base.Position; set => base.Position = value; }
 
 		public readonly uint ID;
 

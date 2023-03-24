@@ -9,6 +9,8 @@ namespace WarriorsSnuggery.Objects.Particles
 	{
 		[Save]
 		public readonly ParticleType Type;
+		[Save]
+		public override CPos Position { get => base.Position; set => base.Position = value; }
 		readonly World world;
 		readonly Color cachedColor;
 
