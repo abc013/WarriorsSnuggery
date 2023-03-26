@@ -4,12 +4,8 @@ using WarriorsSnuggery.Loader;
 
 namespace WarriorsSnuggery.Maps.Pieces
 {
-	public class PieceSaver
+	public static class PieceSaver
 	{
-		readonly World world;
-		MPos bounds => world.Map.Bounds;
-		readonly bool gameSave;
-
 		public static Piece SaveEmpty(MPos size, string name)
 		{
 			var filepath = PackageManager.Core.PiecesDirectory + name + ".yaml";
@@ -30,22 +26,10 @@ namespace WarriorsSnuggery.Maps.Pieces
 
 		public static void SaveWorld(World world, string directory, string name, bool gameSave = false)
 		{
-			var saver = new PieceSaver(world, gameSave);
-			saver.save(directory, name);
-		}
-
-		PieceSaver(World world, bool gameSave)
-		{
-			this.world = world;
-			this.gameSave = gameSave;
-		}
-
-		void save(string directory, string name)
-		{
 			var saver = new TextNodeSaver();
 			saver.Add("MapFormat", Constants.CurrentMapFormat);
 			saver.Add("Name", name);
-			saver.Add("Size", bounds);
+			saver.Add("Size", world.Map.Bounds);
 
 			saver.Append(world.Save(gameSave));
 
