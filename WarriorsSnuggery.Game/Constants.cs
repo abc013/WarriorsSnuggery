@@ -9,6 +9,6 @@
 
 		public const int UnsupportedMapFormat = 0;
 		public const int CurrentMapFormat = 4;
-		public const int CurrentGameSaveFormat = 1;
+		public const int CurrentGameSaveFormat = 2;
 	}
 }

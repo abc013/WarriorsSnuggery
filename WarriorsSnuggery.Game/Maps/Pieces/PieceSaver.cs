@@ -1,6 +1,5 @@
 ﻿using System.IO;
 using System.Linq;
-using System.Text;
 using WarriorsSnuggery.Loader;
 
 namespace WarriorsSnuggery.Maps.Pieces
@@ -48,15 +47,7 @@ namespace WarriorsSnuggery.Maps.Pieces
 			saver.Add("Name", name);
 			saver.Add("Size", bounds);
 
-			saver.Append(world.TerrainLayer.Save());
-			saver.AddChildren("Walls", world.WallLayer.Save(), true);
-			saver.AddChildren("Actors", world.ActorLayer.Save(gameSave), true);
-
-			if (gameSave)
-			{
-				saver.AddChildren("Weapons", world.WeaponLayer.Save(), true);
-				saver.AddChildren("Particles", world.ParticleLayer.Save(), true);
-			}
+			saver.Append(world.Save(gameSave));
 
 			using var writer = new StreamWriter(directory + name + ".yaml", false);
 

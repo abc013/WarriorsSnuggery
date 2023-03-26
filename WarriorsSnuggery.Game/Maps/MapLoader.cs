@@ -48,6 +48,7 @@ namespace WarriorsSnuggery.Maps
 		readonly Dictionary<MPos, List<(ActorInit init, CPos offset)>> actorInformation = new Dictionary<MPos, List<(ActorInit init, CPos offset)>>();
 		readonly List<WeaponInit> weaponInformation = new List<WeaponInit>();
 		readonly List<ParticleInit> particleInformation = new List<ParticleInit>();
+		readonly Dictionary<byte, bool[]> shroudInformation = new Dictionary<byte, bool[]>();
 
 		public MapLoader(World world, Map map)
 		{
@@ -144,6 +145,11 @@ namespace WarriorsSnuggery.Maps
 					placer.PlacePatrols();
 				}
 			}
+
+			foreach (var (team, values) in shroudInformation)
+				world.ShroudLayer.RevealShroudList(team, values);
+
+			world.PathfinderLayer.Update(world);
 		}
 
 		void applyWall(WPos pos)
@@ -250,6 +256,18 @@ namespace WarriorsSnuggery.Maps
 		public void AddParticle(ParticleInit init)
 		{
 			particleInformation.Add(init);
+		}
+
+		public void RevealShroud(byte team, MPos offset, MPos bounds, bool[] values)
+		{
+			if (!shroudInformation.ContainsKey(team))
+				shroudInformation.Add(team, new bool[Bounds.X * 2 * Bounds.Y * 2]);
+
+			for (int y = offset.Y; y < offset.Y + bounds.Y; y++)
+			{
+				var xOffset = y * (Bounds.X * 2) + offset.X;
+				Array.Copy(values, y * bounds.X, shroudInformation[team], xOffset, bounds.X);
+			}
 		}
 
 		public bool WallExists(int x, int y)

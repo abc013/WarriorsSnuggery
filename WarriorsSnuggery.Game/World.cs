@@ -11,6 +11,7 @@ using WarriorsSnuggery.Trophies;
 using WarriorsSnuggery.Objects.Actors;
 using WarriorsSnuggery.Maps;
 using WarriorsSnuggery.Maps.Layers;
+using WarriorsSnuggery.Loader;
 
 namespace WarriorsSnuggery
 {
@@ -65,34 +66,29 @@ namespace WarriorsSnuggery
 		public void Load()
 		{
 			Map.Load();
-			PathfinderLayer.Update(this);
 
 			if (Game.InteractionMode != InteractionMode.EDITOR)
 			{
 				if (!Map.Type.IsSave)
 				{
 					LocalPlayer = ActorCache.Create(this, Game.Save.Actor, Map.PlayerSpawn, Actor.PlayerTeam, isPlayer: true);
+					if (LocalPlayer.Health != null && Game.Save.Health > 0)
+						LocalPlayer.Health.RelativeHP = Game.Save.Health;
+
 					LocalPlayer.OnLoad();
 					Add(LocalPlayer);
 				}
 				else
 				{
-					foreach (var team in Game.Save.Shroud.Keys)
-						ShroudLayer.RevealShroudList(team, Game.Save.Shroud[team]);
-
-					foreach (var condition in Game.Save.CustomConditions)
-						Game.ConditionManager.SetCondition(condition.Key, condition.Value);
-
 					LocalPlayer = ActorLayer.ToAdd().First(a => a.IsPlayer);
 				}
-
-				if (LocalPlayer.Health != null && Game.Save.Health > 0)
-					LocalPlayer.Health.RelativeHP = Game.Save.Health;
 
 				if (Game.MissionType.IsCampaign() && !Game.MissionType.IsMenu())
 					AddText(LocalPlayer.Position, 300, ActionText.ActionTextType.TRANSFORM, $"Level {Game.Save.Level}");
 
 				ShroudLayer.RevealAll = Program.DisableShroud || Game.MapType.RevealMap;
+
+				Camera.Position(LocalPlayer.Position, true);
 			}
 			else
 			{
@@ -337,6 +333,24 @@ namespace WarriorsSnuggery
 				return true;
 
 			return ShroudLayer.ShroudRevealed(eye.Team, (int)(target.Position.X / 512f), (int)(target.Position.Y / 512f));
+		}
+
+		public TextNodeSaver Save() => Save(false);
+		public TextNodeSaver Save(bool gameSave)
+		{
+			var saver = new TextNodeSaver();
+			saver.Append(TerrainLayer.Save());
+			saver.AddChildren("Walls", WallLayer.Save(), true);
+			saver.AddChildren("Actors", ActorLayer.Save(gameSave), true);
+
+			if (gameSave)
+			{
+				saver.AddChildren("Weapons", WeaponLayer.Save(), true);
+				saver.AddChildren("Particles", ParticleLayer.Save(), true);
+				saver.AddChildren("Shroud", ShroudLayer.Save(), true);
+			}
+
+			return saver;
 		}
 	}
 }

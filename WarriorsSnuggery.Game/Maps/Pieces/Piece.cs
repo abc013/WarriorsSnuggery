@@ -23,6 +23,7 @@ namespace WarriorsSnuggery.Maps.Pieces
 		public uint MaxWeaponID => weapons.Count > 0 ? weapons.Max(n => n.ID) : 0;
 
 		readonly ushort[] groundData;
+		readonly Dictionary<byte, bool[]> shroudData = new Dictionary<byte, bool[]>();
 
 		readonly List<WallInit> walls = new List<WallInit>();
 		readonly List<ActorInit> actors = new List<ActorInit>();
@@ -137,6 +138,11 @@ namespace WarriorsSnuggery.Maps.Pieces
 							}
 						}
 						break;
+					case "Shroud":
+						foreach (var node2 in node.Children)
+							shroudData.Add(byte.Parse(node2.Key), node2.Convert<bool[]>());
+
+						break;
 					case "MapFormat":
 						TypeLoader.SetValue(this, fields, node);
 
@@ -211,6 +217,10 @@ namespace WarriorsSnuggery.Maps.Pieces
 			// generate Particles
 			foreach (var init in particles)
 				loader.AddParticle(init);
+
+			// set shroud
+			foreach (var (team, values) in shroudData)
+				loader.RevealShroud(team, position * 2, Size * 2, values);
 		}
 
 		public bool IsInMap(MPos position, MPos mapSize)

@@ -198,8 +198,6 @@ namespace WarriorsSnuggery
 		[Save, DefaultValue(false)]
 		public bool KeyFound { get; private set; }
 		// Saved separately
-		public Dictionary<byte, bool[]> Shroud { get; private set; } = new Dictionary<byte, bool[]>();
-		// Saved separately
 		public Dictionary<string, bool> CustomConditions { get; private set; } = new Dictionary<string, bool>();
 
 		// Static Values
@@ -247,11 +245,6 @@ namespace WarriorsSnuggery
 			{
 				switch (node.Key)
 				{
-					case nameof(Shroud):
-						foreach (var node2 in node.Children)
-							Shroud.Add(byte.Parse(node2.Key), node2.Convert<bool[]>());
-
-						break;
 					case nameof(CustomConditions):
 						foreach (var node2 in node.Children)
 							CustomConditions.Add(node2.Key, node2.Convert<bool>());
@@ -369,7 +362,6 @@ namespace WarriorsSnuggery
 
 			saver.AddChildren(nameof(SpellCasters), game.SpellManager.Save(), true);
 			saver.AddChildren(nameof(CustomConditions), game.ConditionManager.Save(), true);
-			saver.AddChildren(nameof(Shroud), game.World.ShroudLayer.Save(), true);
 
 			using (var writer = new StreamWriter(FileExplorer.Saves + SaveName + ".yaml", false))
 			{
