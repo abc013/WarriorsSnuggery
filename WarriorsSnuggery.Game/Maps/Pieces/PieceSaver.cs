@@ -1,9 +1,6 @@
-﻿using System.Collections.Generic;
-using System.IO;
+﻿using System.IO;
 using System.Linq;
 using WarriorsSnuggery.Loader;
-using WarriorsSnuggery.Objects;
-using WarriorsSnuggery.Objects.Actors;
 
 namespace WarriorsSnuggery.Maps.Pieces
 {
@@ -54,7 +51,10 @@ namespace WarriorsSnuggery.Maps.Pieces
 
 			using var writer = new StreamWriter(stream);
 			foreach (var savedString in saver.GetStrings())
+			{
 				writer.WriteLine(savedString);
+				writer.Flush();
+			}
 		}
 	}
 }
