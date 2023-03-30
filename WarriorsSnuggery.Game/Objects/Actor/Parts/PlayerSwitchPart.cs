@@ -35,7 +35,7 @@
 
 		public PartSaver OnSave()
 		{
-			var saver = new PartSaver(this, Specification);
+			var saver = new PartSaver(this);
 
 			saver.Add("RelativeHP", RelativeHP, 1f);
 			saver.Add("ActorType", ActorCache.Types[ActorType], null);

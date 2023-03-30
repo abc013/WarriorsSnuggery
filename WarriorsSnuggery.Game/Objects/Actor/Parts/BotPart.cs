@@ -1,4 +1,5 @@
-﻿using WarriorsSnuggery.Objects.Actors.Bot;
+﻿using WarriorsSnuggery.Loader;
+using WarriorsSnuggery.Objects.Actors.Bot;
 using WarriorsSnuggery.Objects.Weapons;
 
 namespace WarriorsSnuggery.Objects.Actors.Parts
@@ -16,12 +17,14 @@ namespace WarriorsSnuggery.Objects.Actors.Parts
 	{
 		readonly BotBehavior bot;
 
+		// Saved separately
 		public Target Target
 		{
 			get => bot.Target;
 			set => bot.Target = value;
 		}
 
+		// TODO: save
 		public Patrol Patrol
 		{
 			get => bot.Patrol;
@@ -35,31 +38,19 @@ namespace WarriorsSnuggery.Objects.Actors.Parts
 
 		public void OnLoad(PartLoader loader)
 		{
-			var position = Self.Position;
-			var targetID = uint.MaxValue;
-
 			foreach (var node in loader.GetNodes(typeof(BotPart)))
 			{
-				if (node.Key == "TargetPosition")
-					position = node.Convert<CPos>();
-				if (node.Key == "TargetActor")
-					targetID = node.Convert<uint>();
+				if (node.Key == nameof(Target))
+					Target = new Target(new TextNodeInitializer(node.Children), Self.World);
 			}
-
-			if (targetID != uint.MaxValue)
-				Target = new Target(Self.World.ActorLayer.ToAdd().Find(a => a.ID == targetID));
 		}
 
 		public PartSaver OnSave()
 		{
-			var saver = new PartSaver(this, string.Empty);
+			var saver = new PartSaver(this);
 
-			if (Target == null)
-				return saver;
-
-			saver.Add("TargetPosition", Target.Position, Self.Position);
-			if (Target.Actor != null && Target.Actor.IsAlive)
-				saver.Add("TargetActor", Target.Actor.ID, uint.MaxValue);
+			if (Target != null)
+				saver.AddChildren(nameof(Target), Target.Save());
 
 			return saver;
 		}

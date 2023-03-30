@@ -37,7 +37,7 @@
 
 		public PartSaver OnSave()
 		{
-			var saver = new PartSaver(this, Specification);
+			var saver = new PartSaver(this);
 
 			saver.Add("Tick", tick, 0);
 

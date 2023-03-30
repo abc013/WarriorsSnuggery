@@ -25,7 +25,7 @@ namespace WarriorsSnuggery.Objects.Actors.Parts
 
 		public PartSaver OnSave()
 		{
-			return new PartSaver(this, string.Empty);
+			return new PartSaver(this);
 		}
 
 		public void Tick()

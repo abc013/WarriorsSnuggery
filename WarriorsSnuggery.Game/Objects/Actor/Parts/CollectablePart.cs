@@ -77,7 +77,7 @@ namespace WarriorsSnuggery.Objects.Actors.Parts
 
 		public PartSaver OnSave()
 		{
-			var saver = new PartSaver(this, Specification);
+			var saver = new PartSaver(this);
 
 			saver.Add("Activated", activated, false);
 			saver.Add("Cooldown", cooldown, 0);

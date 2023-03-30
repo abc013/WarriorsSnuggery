@@ -1,4 +1,5 @@
-﻿using WarriorsSnuggery.Objects.Weapons;
+﻿using WarriorsSnuggery.Loader;
+using WarriorsSnuggery.Objects.Weapons;
 using WarriorsSnuggery.Spells;
 
 namespace WarriorsSnuggery.Objects.Actors.Parts
@@ -67,7 +68,7 @@ namespace WarriorsSnuggery.Objects.Actors.Parts
 						state = node.Convert<WeaponState>();
 						break;
 					case nameof(Target):
-						Target = new Target(node.Convert<CPos>());
+						Target = new Target(new TextNodeInitializer(node.Children), Self.World);
 						break;
 				}
 			}
@@ -75,7 +76,7 @@ namespace WarriorsSnuggery.Objects.Actors.Parts
 
 		public PartSaver OnSave()
 		{
-			var saver = new PartSaver(this, Specification);
+			var saver = new PartSaver(this);
 
 			if (beam != null)
 				saver.Add("BeamWeapon", beam.ID, -1);
@@ -84,10 +85,7 @@ namespace WarriorsSnuggery.Objects.Actors.Parts
 			saver.Add("State", state, WeaponState.READY);
 
 			if (Target != null)
-			{
-				// TODO: also support actor targeting
-				saver.Add(nameof(Target), Target.Position, CPos.Zero);
-			}
+				saver.AddChildren(nameof(Target), Target.Save());
 
 			return saver;
 		}
