@@ -5,7 +5,7 @@ using WarriorsSnuggery.Maps.Layers;
 
 namespace WarriorsSnuggery.Objects.Particles
 {
-	public sealed class Particle : PositionableObject, ISaveable
+	public sealed class Particle : PositionableObject, ILoadable, ISaveable
 	{
 		[Save]
 		public readonly ParticleType Type;
@@ -38,10 +38,17 @@ namespace WarriorsSnuggery.Objects.Particles
 
 			cachedColor = Type.Color + ParticleUtils.Variety(Type.ColorVariety);
 
-			current = init.Convert("Duration", Type.Duration);
-			dissolve = init.Convert("DissolveDuration", Type.DissolveDuration);
-			velocity = init.Convert("Velocity", ParticleUtils.Variety(Type.RandomVelocity) + init.InitialVelocity);
-			rotate_velocity = init.Convert("RotationVelocity", ParticleUtils.AngleVariety(Type.RandomRotation));
+			current = Type.Duration;
+			dissolve = Type.DissolveDuration;
+			velocity = ParticleUtils.Variety(Type.RandomVelocity) + init.InitialVelocity;
+			rotate_velocity = ParticleUtils.AngleVariety(Type.RandomRotation);
+
+			Load(init);
+		}
+
+		public void Load(TextNodeInitializer initializer)
+		{
+			initializer.SetSaveFields(this);
 		}
 
 		public void AffectVelocity(ParticleForce force, float ratio, CPos origin)

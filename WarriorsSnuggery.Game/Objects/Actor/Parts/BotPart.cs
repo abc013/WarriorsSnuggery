@@ -58,7 +58,7 @@ namespace WarriorsSnuggery.Objects.Actors.Parts
 				return saver;
 
 			saver.Add("TargetPosition", Target.Position, self.Position);
-			if (Target.Actor != null)
+			if (Target.Actor != null && Target.Actor.IsAlive)
 				saver.Add("TargetActor", Target.Actor.ID, uint.MaxValue);
 
 			return saver;
