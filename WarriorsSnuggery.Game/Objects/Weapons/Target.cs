@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Linq;
+using WarriorsSnuggery.Loader;
 using WarriorsSnuggery.Objects.Actors;
 
 namespace WarriorsSnuggery.Objects.Weapons
@@ -9,7 +11,7 @@ namespace WarriorsSnuggery.Objects.Weapons
 		POSITION
 	}
 
-	public class Target
+	public class Target : ISaveable
 	{
 		public readonly TargetType Type;
 
@@ -19,8 +21,8 @@ namespace WarriorsSnuggery.Objects.Weapons
 			{
 				if (Type == TargetType.POSITION)
 					return position;
-				else
-					return Actor.Position;
+
+				return Actor.Position;
 			}
 		}
 		readonly CPos position;
@@ -39,6 +41,26 @@ namespace WarriorsSnuggery.Objects.Weapons
 
 			Actor = target;
 			Type = TargetType.ACTOR;
+		}
+
+		public Target(TextNodeInitializer initializer, World world)
+		{
+			var actorID = initializer.Convert(nameof(Actor), uint.MaxValue);
+			Actor = world.ActorLayer.ToAdd().FirstOrDefault(a => a.ID == actorID);
+			if (Actor == null)
+				position = initializer.Convert(nameof(Position), CPos.Zero);
+		}
+
+		public TextNodeSaver Save()
+		{
+			var saver = new TextNodeSaver();
+
+			if (Actor != null)
+				saver.Add(nameof(Actor), Actor.ID);
+			else
+				saver.Add(nameof(Position), Position, CPos.Zero);
+
+			return saver;
 		}
 	}
 }

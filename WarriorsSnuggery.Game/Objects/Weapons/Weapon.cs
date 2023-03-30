@@ -28,8 +28,6 @@ namespace WarriorsSnuggery.Objects.Weapons
 		public Target Target;
 		[Save]
 		public CPos TargetPosition;
-		[Save]
-		public int TargetHeight;
 
 		[Save]
 		protected readonly WeaponType Type;
@@ -91,16 +89,7 @@ namespace WarriorsSnuggery.Objects.Weapons
 			var originID = initializer.Convert(nameof(Origin), uint.MaxValue);
 			Origin = World.ActorLayer.ToAdd().FirstOrDefault(a => a.ID == originID);
 
-			var targetID = initializer.Convert("TargetActor", uint.MaxValue);
-			var TargetActor = World.ActorLayer.ToAdd().FirstOrDefault(a => a.ID == targetID);
-
-			if (TargetActor == null)
-			{
-				var targetPos = initializer.Convert("OriginalTargetPosition", CPos.Zero);
-				Target = new Target(targetPos);
-			}
-			else
-				Target = new Target(TargetActor);
+			Target = new Target(initializer.MakeInitializerWith(nameof(Target)), World);
 
 			initializer.SetSaveFields(this);
 		}
@@ -171,10 +160,7 @@ namespace WarriorsSnuggery.Objects.Weapons
 			if (Origin != null)
 				saver.Add(nameof(Origin), Origin.ID);
 
-			if (Target.Type == TargetType.ACTOR)
-				saver.Add("TargetActor", Target.Actor.ID);
-
-			saver.Add("OriginalTargetPosition", Target.Position);
+			saver.AddChildren(nameof(Target), Target.Save());
 
 			return saver;
 		}
