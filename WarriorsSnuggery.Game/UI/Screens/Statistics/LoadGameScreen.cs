@@ -26,7 +26,7 @@ namespace WarriorsSnuggery.UI.Screens
 					humanAgreeOnLoad(() =>
 					{
 						Log.Debug($"Loading game save '{save.SaveName}'.");
-						GameController.CreateFromSave(save.Copy());
+						GameController.CreateFromSave(save.Clone());
 					}, "Are you sure you want to load this save? Unsaved progress will be lost!");
 				}
 			}

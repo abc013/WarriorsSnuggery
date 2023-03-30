@@ -29,7 +29,7 @@ namespace WarriorsSnuggery.UI.Objects
 
 		public void Tick()
 		{
-			if (!keyFound && game.Stats.KeyFound)
+			if (!keyFound && game.Save.KeyFound)
 			{
 				keyFound = true;
 

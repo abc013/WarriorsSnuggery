@@ -36,9 +36,9 @@ namespace WarriorsSnuggery.UI.Screens
 
 		void buyLife()
 		{
-			var stats = game.Stats;
+			var stats = game.Player;
 
-			var nextPrice = stats.NextLifePrice();
+			var nextPrice = stats.NextLifePrice;
 
 			if (nextPrice > stats.Money)
 				return;
@@ -53,7 +53,7 @@ namespace WarriorsSnuggery.UI.Screens
 
 		void updateInformation()
 		{
-			var stats = game.Stats;
+			var stats = game.Player;
 
 			if (stats.Lifes == stats.MaxLifes)
 			{
@@ -66,7 +66,7 @@ namespace WarriorsSnuggery.UI.Screens
 				information.SetText($"Current: {stats.Lifes}/{stats.MaxLifes}");
 			}
 
-			var nextPrice = stats.NextLifePrice();
+			var nextPrice = stats.NextLifePrice;
 			price.Color = nextPrice > stats.Money ? Color.Red : Color.Green;
 			price.SetText($"Current Price: {nextPrice}");
 		}

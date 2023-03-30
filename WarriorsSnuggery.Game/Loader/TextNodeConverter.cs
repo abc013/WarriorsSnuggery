@@ -269,20 +269,6 @@ namespace WarriorsSnuggery.Loader
 
 				return convert;
 			}
-			else if (t == typeof(ParticleType[]))
-			{
-				var convert = new ParticleType[node.Children.Count];
-
-				for (int i = 0; i < node.Children.Count; i++)
-				{
-					if (!ParticleCache.Types.ContainsKey(value))
-						throw new InvalidConversionException(node, t);
-
-					convert[i] = ParticleCache.Types[value];
-				}
-
-				return convert;
-			}
 			else if (t == typeof(ParticleSpawner[]))
 			{
 				var convert = new ParticleSpawner[node.Children.Count];

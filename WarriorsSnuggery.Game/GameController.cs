@@ -49,8 +49,7 @@ namespace WarriorsSnuggery
 			if (Program.StartEditor)
 				mode = InteractionMode.EDITOR;
 
-
-			game = new Game(GameSaveManager.DefaultSave.Copy(), map, mission, mode);
+			game = new Game(GameSaveManager.DefaultSave.Clone(), map, mission, mode);
 			game.Load();
 		}
 
@@ -71,7 +70,7 @@ namespace WarriorsSnuggery
 
 		public static void CreateRestart()
 		{
-			var save = game.Save;
+			var save = game.OriginalSave;
 			var mapType = game.MapType;
 
 			// Don't start at last saved position, start right from the beginning

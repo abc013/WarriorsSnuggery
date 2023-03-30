@@ -125,8 +125,11 @@ namespace WarriorsSnuggery.UI.Screens
 					generateBloodParticles(percentage);
 			}
 
-			manaBar.SetText($"{game.Stats.Mana}/{game.Stats.MaxMana}");
-			manaBar.DisplayPercentage = game.Stats.Mana / (float)game.Stats.MaxMana;
+			manaBar.SetText($"{game.Player.Mana}/{game.Player.MaxMana}");
+			if (game.Player.MaxMana != 0)
+				manaBar.DisplayPercentage = game.Player.Mana / (float)game.Player.MaxMana;
+			else
+				manaBar.DisplayPercentage = 0;
 		}
 
 		void generateWinParticles()

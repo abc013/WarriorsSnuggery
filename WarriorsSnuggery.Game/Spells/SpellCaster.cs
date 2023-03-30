@@ -69,10 +69,10 @@ namespace WarriorsSnuggery.Spells
 			if (game.World.LocalPlayer.IsPlayerSwitch)
 				return false;
 
-			if (game.Stats.Mana < Type.ManaCost)
+			if (game.Player.Mana < Type.ManaCost)
 				return false;
 
-			game.Stats.Mana -= Type.ManaCost;
+			game.Player.Mana -= Type.ManaCost;
 
 			State = SpellCasterState.SLEEPING;
 			recharge = Type.Cooldown;
@@ -87,7 +87,7 @@ namespace WarriorsSnuggery.Spells
 
 		public bool Unlocked()
 		{
-			return game.Stats.SpellUnlocked(Type);
+			return game.Player.HasSpellUnlocked(Type);
 		}
 
 		public TextNodeSaver Save()

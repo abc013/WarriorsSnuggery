@@ -1,5 +1,4 @@
 using System.Linq;
-using WarriorsSnuggery.Audio;
 using WarriorsSnuggery.Audio.Music;
 using WarriorsSnuggery.Loader;
 using WarriorsSnuggery.Objects.Actors;
@@ -27,7 +26,7 @@ namespace WarriorsSnuggery.Scripts.Core
 
 		void onStart()
 		{
-			game.Stats.KeyFound = false;
+			game.Save.KeyFound = false;
 			world.Add(trainer = ActorCache.Create(world, ActorCache.Types["ninja_trainer"], world.LocalPlayer.Position - new CPos(0, 4096, 0), Actor.PlayerTeam, true));
 			trainer.Bot.Target = new Target(world.LocalPlayer.Position - new CPos(0, 1024, 0));
 
@@ -187,7 +186,7 @@ namespace WarriorsSnuggery.Scripts.Core
 				$"There are some enemies! Good luck!"
 			}));
 
-			game.Stats.KeyFound = true;
+			game.Save.KeyFound = true;
 		}
 
 		void tickFight1()

@@ -37,7 +37,7 @@ namespace WarriorsSnuggery.UI.Screens
 			if (save == null)
 				return;
 
-			var @new = game.Save.Copy();
+			var @new = game.Save.Clone();
 
 			void action1()
 			{

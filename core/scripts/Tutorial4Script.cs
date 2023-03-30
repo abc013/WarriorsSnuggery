@@ -14,12 +14,12 @@ namespace WarriorsSnuggery.Scripts.Core
 		public Tutorial4Script(PackageFile packageFile, Game game) : base(packageFile, game)
 		{
 			OnStart = onStart;
-			game.Stats.Lifes = 1;
+			game.Player.Lifes = 1;
 		}
 
 		void onStart()
 		{
-			game.Stats.KeyFound = false;
+			game.Save.KeyFound = false;
 
 			world.ShroudLayer.RevealShroudRectangular(Actor.PlayerTeam, CPos.Zero, new CPos(18 * 1024, 5 * 1024, 0), true);
 
@@ -149,7 +149,7 @@ namespace WarriorsSnuggery.Scripts.Core
 			target.Position = new CPos(game.SharedRandom.Next(7 * 1024, 24 * 1024), game.SharedRandom.Next(17 * 1024, 24 * 1024), game.SharedRandom.Next(50, 250));
 			world.Add(WeaponCache.Create(world, WeaponCache.Types["ninja_star"], new Target(world.LocalPlayer), target));
 
-			if (game.Stats.Lifes == 0)
+			if (game.Player.Lifes == 0)
 			{
 				Tick -= tickKill;
 				Tick += tickChangeCreature;
@@ -232,7 +232,7 @@ namespace WarriorsSnuggery.Scripts.Core
 			for (int i = 1; i < 5; i++)
 				world.WallLayer.Remove(new WPos(6, 9 + i, false));
 
-			game.Stats.KeyFound = true;
+			game.Save.KeyFound = true;
 		}
 	}
 }

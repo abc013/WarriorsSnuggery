@@ -13,7 +13,7 @@ namespace WarriorsSnuggery.UI.Screens
 			score.SetText("Achieved Score: " + Color.Blue + game.Save.CalculateScore());
 			Add(score);
 			var deaths = new UIText(FontManager.Default, TextOffset.MIDDLE) { Position = new UIPos(0, 2048) };
-			deaths.SetText(Color.Red + "Deaths: " + game.Save.Deaths);
+			deaths.SetText(Color.Red + "Deaths: " + game.Save.Player.Deaths);
 			Add(deaths);
 
 			if (game.Save.Hardcore)

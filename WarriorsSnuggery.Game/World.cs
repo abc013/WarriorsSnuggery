@@ -117,18 +117,18 @@ namespace WarriorsSnuggery
 
 		public void TrophyCollected(string collected)
 		{
-			if (Game.Stats.TrophyUnlocked(collected))
+			if (Game.Player.HasTrophyUnlocked(collected))
 				return;
 
 			if (!TrophyCache.Trophies.ContainsKey(collected))
 				throw new NullReferenceException($"Unable to get Trophy with internal name '{collected}'.");
 
 			Game.AddInfoMessage(250, "Trophy collected!");
-			Game.Stats.AddTrophy(collected);
+			Game.Player.UnlockTrophy(collected);
 
 			var trophy = TrophyCache.Trophies[collected];
-			Game.Stats.MaxMana += trophy.MaxManaIncrease;
-			Game.Stats.MaxLifes += trophy.MaxLifesIncrease;
+			Game.Player.MaxMana += trophy.MaxManaIncrease;
+			Game.Player.MaxLifes += trophy.MaxLifesIncrease;
 		}
 
 		public void FinishPlayerSwitch(Actor @new)
@@ -168,16 +168,16 @@ namespace WarriorsSnuggery
 
 		public void PlayerKilled()
 		{
-			Game.Stats.Deaths++;
-			Game.Save.IncreaseDeathCount();
-
-			if (Game.Stats.Lifes == 0)
+			if (Game.Player.Lifes == 0)
 			{
+				Game.Player.Deaths++;
 				Game.DefeatConditionsMet();
 				return;
 			}
 
-			Game.Stats.Lifes--;
+			Game.Save.Player.IncreaseDeathCount();
+			Game.Player.IncreaseDeathCount();
+
 			LocalPlayer = ActorCache.Create(this, Game.Save.Actor, Map.PlayerSpawn, Actor.PlayerTeam, isPlayer: true);
 			Add(LocalPlayer);
 		}

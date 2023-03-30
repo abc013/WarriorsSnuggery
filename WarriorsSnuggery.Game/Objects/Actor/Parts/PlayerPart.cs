@@ -69,7 +69,7 @@ namespace WarriorsSnuggery.Objects.Actors.Parts
 				attackTarget(MouseInput.GamePosition);
 
 			foreach (var effect in self.GetActiveEffects(EffectType.MANA))
-				self.World.Game.Stats.Mana += (int)effect.Effect.Value;
+				self.World.Game.Player.Mana += (int)effect.Effect.Value;
 		}
 
 		public Actor FindValidTarget(CPos pos, int team = Actor.PlayerTeam)
@@ -139,7 +139,7 @@ namespace WarriorsSnuggery.Objects.Actors.Parts
 
 		public void OnKill(Actor killed)
 		{
-			self.World.Game.Stats.Kills++;
+			self.World.Game.Player.Kills++;
 		}
 
 		public void OnMove(CPos old, CPos speed)

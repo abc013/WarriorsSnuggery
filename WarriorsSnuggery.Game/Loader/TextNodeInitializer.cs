@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 
 namespace WarriorsSnuggery.Loader
 {
@@ -11,6 +12,36 @@ namespace WarriorsSnuggery.Loader
 		public TextNodeInitializer(List<TextNode> nodes)
 		{
 			this.nodes = nodes;
+		}
+
+		public void SetSaveFields<T>(T @object, bool inherit = true, bool omitDefaults = false)
+		{
+			const BindingFlags flags = BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance;
+
+			var props = typeof(T).GetFields(flags).Cast<MemberInfo>().Concat(typeof(T).GetProperties(flags));
+			foreach (var prop in props)
+			{
+				var attributes = prop.GetCustomAttributes(inherit);
+				var saveAttribute = attributes.FirstOrDefault(a => a is SaveAttribute);
+				if (saveAttribute == null)
+					continue;
+
+				var key = ((SaveAttribute)saveAttribute).Name;
+				if (string.IsNullOrEmpty(key))
+					key = prop.Name;
+
+				var node = nodes.FirstOrDefault(n => n.Key == key);
+				if (node == null)
+					continue;
+
+				var type = prop.MemberType == MemberTypes.Property ? typeof(T).GetProperty(prop.Name, flags).PropertyType : typeof(T).GetField(prop.Name, flags).FieldType;
+				var value = node.Convert(type);
+				
+				if (prop.MemberType == MemberTypes.Property)
+					typeof(T).GetProperty(prop.Name, flags).SetValue(@object, value);
+				else
+					typeof(T).GetField(prop.Name, flags).SetValue(@object, value);
+			}
 		}
 
 		public T Convert<T>(string rule, T @default)

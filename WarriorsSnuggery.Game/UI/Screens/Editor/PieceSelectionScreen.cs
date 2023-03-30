@@ -25,7 +25,7 @@ namespace WarriorsSnuggery.UI.Screens
 				mapSelection.Add(new PanelListItem(new BatchObject(UISpriteManager.Get("UI_map")[0]), new UIPos(512, 512), piece.Name, new[] { Color.Grey + "[" + piece.Size.X + "," + piece.Size.Y + "]" },
 				() =>
 				{
-					GameController.CreateNew(GameSaveManager.DefaultSave.Copy(), MissionType.TEST, InteractionMode.EDITOR, custom: MapType.FromPiece(piece));
+					GameController.CreateNew(GameSaveManager.DefaultSave.Clone(), MissionType.TEST, InteractionMode.EDITOR, custom: MapType.FromPiece(piece));
 					Hide();
 				}));
 			}
@@ -145,7 +145,7 @@ namespace WarriorsSnuggery.UI.Screens
 			var name2 = name.Text;
 
 			var piece = PieceSaver.SaveEmpty(size, name2);
-			GameController.CreateNew(GameSaveManager.DefaultSave.Copy(), MissionType.TEST, InteractionMode.EDITOR, custom: MapType.FromPiece(piece));
+			GameController.CreateNew(GameSaveManager.DefaultSave.Clone(), MissionType.TEST, InteractionMode.EDITOR, custom: MapType.FromPiece(piece));
 		}
 	}
 }

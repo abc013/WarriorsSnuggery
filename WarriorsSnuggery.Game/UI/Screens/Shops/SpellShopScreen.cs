@@ -126,7 +126,7 @@ namespace WarriorsSnuggery.UI.Screens
 
 			tooltip = new Tooltip($"{type.Name}: {type.Cost}", type.GetDescription());
 
-			unlocked = game.Stats.SpellUnlocked(type);
+			unlocked = game.Player.HasSpellUnlocked(type);
 			HighlightVisible = unlocked;
 		}
 
@@ -145,13 +145,13 @@ namespace WarriorsSnuggery.UI.Screens
 					if (unlocked || !available)
 						return;
 
-					if (game.Stats.Money < type.Cost)
+					if (game.Player.Money < type.Cost)
 						return;
 
 					UIUtils.PlaySellSound();
 
-					game.Stats.Money -= type.Cost;
-					game.Stats.AddSpell(type);
+					game.Player.Money -= type.Cost;
+					game.Player.AddSpell(type);
 
 					unlocked = true;
 					HighlightVisible = true;
@@ -177,7 +177,7 @@ namespace WarriorsSnuggery.UI.Screens
 
 		public void CheckAvailability()
 		{
-			available = game.Stats.SpellAvailable(type);
+			available = game.Player.IsSpellUnlockable(type);
 		}
 	}
 
@@ -222,7 +222,7 @@ namespace WarriorsSnuggery.UI.Screens
 
 		public void Render()
 		{
-			if (game.Stats.SpellUnlocked(target))
+			if (game.Player.HasSpellUnlocked(target))
 				Active = true;
 
 			if (--curTick < 0)

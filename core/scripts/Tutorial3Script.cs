@@ -18,7 +18,7 @@ namespace WarriorsSnuggery.Scripts.Core
 
 		void onStart()
 		{
-			game.Stats.KeyFound = false;
+			game.Save.KeyFound = false;
 
 			world.ShroudLayer.RevealShroudCircular(game.World, Actor.PlayerTeam, new CPos(5 * 1024, 1 * 1024, 0), 16, true);
 			world.ShroudLayer.RevealShroudCircular(game.World, Actor.PlayerTeam, new CPos(5 * 1024, 10 * 1024, 0), 16, true);
@@ -125,7 +125,7 @@ namespace WarriorsSnuggery.Scripts.Core
 
 		void tickPostShop()
 		{
-			if (!game.Stats.ActorUnlocked("slime_big_playable") || !game.Stats.SpellUnlocked("Warm_up"))
+			if (!game.Player.HasActorUnlocked("slime_big_playable") || !game.Player.HasSpellUnlocked("Warm_up"))
 				return;
 
 			Tick -= tickPostShop;

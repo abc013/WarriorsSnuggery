@@ -26,7 +26,7 @@ namespace WarriorsSnuggery.UI.Screens
 				var sprite = value.Image.GetTextures()[0];
 				var scale = Constants.PixelSize / (float)Math.Max(sprite.Width, sprite.Height) - 0.1f;
 				var item = new PanelListItem(new BatchObject(sprite), new UIPos(512, 1024), value.Name, new string[0], () => selectTrophy(key, value)) { Scale = scale * 2f };
-				if (!game.Stats.TrophyUnlocked(key))
+				if (!game.Player.HasTrophyUnlocked(key))
 					item.SetColor(Color.Black);
 
 				trophies.Add(item);
@@ -43,7 +43,7 @@ namespace WarriorsSnuggery.UI.Screens
 
 		void selectTrophy(string name, Trophy trophy)
 		{
-			if (!game.Stats.TrophyUnlocked(name))
+			if (!game.Player.HasTrophyUnlocked(name))
 			{
 				information.SetText(Color.Red + "Trophy Locked.");
 				return;
@@ -69,7 +69,7 @@ namespace WarriorsSnuggery.UI.Screens
 			var i = 0;
 			foreach (var key in TrophyCache.Trophies.Keys)
 			{
-				if (!game.Stats.TrophyUnlocked(key))
+				if (!game.Player.HasTrophyUnlocked(key))
 					trophies.Container[i].SetColor(Color.Black);
 				else
 					trophies.Container[i].SetColor(Color.White);

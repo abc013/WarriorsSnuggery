@@ -35,7 +35,7 @@ namespace WarriorsSnuggery.UI.Screens
 				var scale = Constants.PixelSize / (float)Math.Max(sprite.Width, sprite.Height) - 0.1f;
 				var item = new PanelListItem(new BatchObject(Mesh.Image(sprite, color)), new UIPos(1024, 1024), a.Playable.Name, new string[0], () => selectActor(a)) { Scale = scale * 2 };
 
-				if (!game.Stats.ActorUnlocked(a.Playable))
+				if (!game.Player.HasActorUnlocked(a.Playable))
 					item.SetColor(Color.Black);
 
 				actors.Add(item);
@@ -60,7 +60,7 @@ namespace WarriorsSnuggery.UI.Screens
 			actorName.SetText(actor.Playable.Name);
 			information.Color = Color.Grey;
 			information.SetText(
-				(game.Stats.ActorUnlocked(actor.Playable) ? $"{Color.White}Status: {Color.Green}Bought" : $"{Color.White}Status: {Color.Red}Locked{Color.White}, Cost: {Color.Yellow}{actor.Playable.UnlockCost}"),
+				(game.Player.HasActorUnlocked(actor.Playable) ? $"{Color.White}Status: {Color.Green}Bought" : $"{Color.White}Status: {Color.Red}Locked{Color.White}, Cost: {Color.Yellow}{actor.Playable.UnlockCost}"),
 				string.Empty
 			);
 			information.AddText(actor.Playable.Description);
@@ -71,17 +71,17 @@ namespace WarriorsSnuggery.UI.Screens
 			if (actor == null)
 				return;
 
-			if (game.Stats.ActorUnlocked(actor.Playable))
+			if (game.Player.HasActorUnlocked(actor.Playable))
 				return;
 
-			if (game.Stats.Money < actor.Playable.UnlockCost)
+			if (game.Player.Money < actor.Playable.UnlockCost)
 				return;
 
 			UIUtils.PlaySellSound();
 
-			game.Stats.Money -= actor.Playable.UnlockCost;
+			game.Player.Money -= actor.Playable.UnlockCost;
 
-			game.Stats.AddActor(actor.Playable);
+			game.Player.UnlockActor(actor.Playable);
 
 			actors.Container[actorTypes.IndexOf(actor.Playable.InternalName)].SetColor(Color.White);
 			selectActor(actor);

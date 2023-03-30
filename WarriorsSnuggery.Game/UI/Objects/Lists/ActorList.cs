@@ -64,7 +64,7 @@ namespace WarriorsSnuggery.UI.Objects
 
 		PanelListItem updateSingle(ActorType actorType)
 		{
-			var available = game.Stats.ActorUnlocked(actorType.Playable);
+			var available = game.Player.HasActorUnlocked(actorType.Playable);
 			var sprite = actorType.GetPreviewSprite(out var color);
 			var scale = Constants.PixelSize / (float)Math.Max(sprite.Width, sprite.Height) - 0.1f;
 
@@ -109,19 +109,19 @@ namespace WarriorsSnuggery.UI.Objects
 
 		void changePlayer(ActorType type)
 		{
-			if (game.Stats.Money < type.Playable.Cost)
+			if (game.Player.Money < type.Playable.Cost)
 				return;
 
 			if (game.World.LocalPlayer.Type == type)
 				return;
 
-			if (!game.Stats.ActorUnlocked(type.Playable))
+			if (!game.Player.HasActorUnlocked(type.Playable))
 				return;
 
 			if (game.World.LocalPlayer.GetPartOrDefault<PlayablePart>() == null)
 				return;
 
-			game.Stats.Money -= type.Playable.Cost;
+			game.Player.Money -= type.Playable.Cost;
 
 			game.World.BeginPlayerSwitch(type);
 		}

@@ -28,14 +28,14 @@ namespace WarriorsSnuggery.UI.Objects
 		{
 			this.game = game;
 
-			lifes = game.Stats.Lifes;
+			lifes = game.Player.Lifes;
 
 			bigHeart = new BatchObject(UISpriteManager.Get("UI_heart")[0]);
 		}
 
 		public void Tick()
 		{
-			while (hearts.Count < game.Stats.MaxLifes)
+			while (hearts.Count < game.Player.MaxLifes)
 			{
 				var heart = new BatchObject(UISpriteManager.Get("UI_heart")[0]);
 				hearts.Add(heart);
@@ -44,7 +44,7 @@ namespace WarriorsSnuggery.UI.Objects
 					setPosition(i);
 			}
 
-			var currentLifes = game.Stats.Lifes;
+			var currentLifes = game.Player.Lifes;
 			if (lifes > currentLifes)
 			{
 				UIUtils.PlayLifeLostSound();
@@ -71,7 +71,7 @@ namespace WarriorsSnuggery.UI.Objects
 			{
 				var heart = hearts[i];
 
-				heart.SetColor(i < game.Stats.Lifes ? Color.White : Color.Black);
+				heart.SetColor(i < game.Player.Lifes ? Color.White : Color.Black);
 				heart.Render();
 
 				if (i == lifes && tick-- > 0)

@@ -9,7 +9,6 @@ using WarriorsSnuggery.Spells;
 using WarriorsSnuggery.Scripting;
 using WarriorsSnuggery.UI.Screens;
 using WarriorsSnuggery.Objects.Actors;
-using WarriorsSnuggery.Loader;
 
 namespace WarriorsSnuggery
 {
@@ -21,7 +20,9 @@ namespace WarriorsSnuggery
 		public readonly World World;
 
 		public readonly GameSave Save;
-		public readonly GameStats Stats;
+		public Player Player => Save.Player;
+		public readonly GameSave OriginalSave;
+
 		public readonly MapType MapType;
 		public readonly int Seed;
 
@@ -76,7 +77,7 @@ namespace WarriorsSnuggery
 			ObjectiveType = MapType.AvailableObjectives[SharedRandom.Next(map.AvailableObjectives.Length)];
 
 			Save = save;
-			Stats = new GameStats(save);
+			OriginalSave = save.Clone();
 
 			Editor = InteractionMode == InteractionMode.EDITOR;
 
@@ -283,10 +284,10 @@ namespace WarriorsSnuggery
 						World.LocalPlayer.Health.HP += 100;
 
 					if (key == Keys.N)
-						Stats.Mana += 100;
+						Player.Mana += 100;
 
 					if (key == Keys.M)
-						Stats.Money += 100;
+						Player.Money += 100;
 
 					if (key == Keys.Period)
 						World.ShroudLayer.RevealAll = !World.ShroudLayer.RevealAll;
@@ -301,7 +302,7 @@ namespace WarriorsSnuggery
 						Save.SetName(name);
 						GameSaveManager.Reload();
 						var save = GameSaveManager.Saves.Find(g => g.SaveName == "temp");
-						GameController.CreateFromSave(save.Copy());
+						GameController.CreateFromSave(save.Clone());
 					}
 				}
 			}

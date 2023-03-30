@@ -169,11 +169,11 @@ namespace WarriorsSnuggery.Objects.Actors.Parts
 
 						return true;
 					case CollectableType.MANA:
-						a.World.Game.Stats.Mana += info.Value;
+						a.World.Game.Player.Mana += info.Value;
 
 						return true;
 					case CollectableType.MONEY:
-						a.World.Game.Stats.Money += info.Value;
+						a.World.Game.Player.Money += info.Value;
 
 						return true;
 					case CollectableType.TEXT:
@@ -181,7 +181,7 @@ namespace WarriorsSnuggery.Objects.Actors.Parts
 
 						return true;
 					case CollectableType.KEY:
-						a.World.Game.Stats.KeyFound = true;
+						a.World.Game.Save.KeyFound = true;
 
 						return true;
 					case CollectableType.TROPHY:
@@ -189,7 +189,7 @@ namespace WarriorsSnuggery.Objects.Actors.Parts
 
 						return true;
 					case CollectableType.LIFE:
-						a.World.Game.Stats.Lifes += info.Value;
+						a.World.Game.Player.Lifes += info.Value;
 
 						return true;
 					default:

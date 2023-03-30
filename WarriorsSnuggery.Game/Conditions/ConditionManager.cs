@@ -23,14 +23,14 @@ namespace WarriorsSnuggery.Conditions
 				{ "MissionFindExit", game.ObjectiveType == ObjectiveType.FIND_EXIT },
 				{ "MissionWaves", game.ObjectiveType == ObjectiveType.SURVIVE_WAVES },
 				{ "IsMenu", game.MissionType.IsMenu() },
-				{ "KeyFound", game.Stats.KeyFound }
+				{ "KeyFound", game.Save.KeyFound }
 			};
 		}
 
 		public void Tick()
 		{
 			items["Enemies"] = game.World.ActorLayer.NonNeutralActors.Any(a => a.Team != Actor.PlayerTeam);
-			items["KeyFound"] = game.Stats.KeyFound;
+			items["KeyFound"] = game.Save.KeyFound;
 		}
 
 		public bool CheckCondition(Condition condition, Actor actor)
@@ -98,7 +98,7 @@ namespace WarriorsSnuggery.Conditions
 			{
 				var trophy = TrophyCache.Trophies[key];
 				if (!string.IsNullOrEmpty(trophy.ConditionName) && condition.Type == trophy.ConditionName)
-					return condition.Negate != game.Stats.TrophyUnlocked(key);
+					return condition.Negate != game.Player.HasTrophyUnlocked(key);
 			}
 
 			throw new Exception($"Invalid condition: {condition.Type}");

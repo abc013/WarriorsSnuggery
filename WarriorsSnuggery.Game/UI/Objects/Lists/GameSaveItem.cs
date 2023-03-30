@@ -63,9 +63,9 @@ namespace WarriorsSnuggery.UI.Objects
 				$"{Color.Grey}Difficulty: {save.Difficulty}",
 				$"{Color.Grey}Hardcore: {(save.Hardcore ? "Yes" : "No")}",
 				$"{Color.White}- Stats -",
-				$"{Color.Grey}Mana: {save.Mana}",
-				$"{Color.Grey}Money: {save.Money}",
-				$"{Color.Grey}Lifes: {save.Lives}"
+				$"{Color.Grey}Mana: {save.Player.Mana}",
+				$"{Color.Grey}Money: {save.Player.Money}",
+				$"{Color.Grey}Lifes: {save.Player.Lifes}"
 			};
 
 			if (save.OutdatedVersion())

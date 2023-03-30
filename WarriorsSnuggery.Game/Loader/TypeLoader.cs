@@ -8,12 +8,12 @@ namespace WarriorsSnuggery.Loader
 {
 	public static class TypeLoader
 	{
-		public static void SetValues(object obj, List<TextNode> nodes, bool checkRequired = true)
+		public static void SetValues(object obj, List<TextNode> nodes, bool checkRequired = true, bool onlyWithSaveAttribute = false)
 		{
-			var fields = GetFields(obj).ToList();
+			var fields = GetFields(obj).Where(f => !onlyWithSaveAttribute || f.GetCustomAttribute<SaveAttribute>() != null).ToList();
 
 			foreach (var node in nodes)
-				fields.Remove(SetValue(obj, fields, node));
+				fields.Remove(SetValue(obj, fields, node, onlyWithSaveAttribute));
 
 			if (!checkRequired || Settings.IgnoreRequiredAttribute)
 				return;
@@ -33,9 +33,9 @@ namespace WarriorsSnuggery.Loader
 			return type.GetFields().Where(f => !onlyReadonly || f.IsInitOnly);
 		}
 
-		public static PropertyInfo SetValue(object obj, IEnumerable<PropertyInfo> fields, TextNode node)
+		public static PropertyInfo SetValue(object obj, IEnumerable<PropertyInfo> fields, TextNode node, bool withSaveAttribute = false)
 		{
-			var field = fields.FirstOrDefault(f => f.Name == node.Key);
+			var field = fields.FirstOrDefault(f => f.Name == node.Key || (withSaveAttribute && f.GetCustomAttribute<SaveAttribute>().Name == node.Key));
 
 			if (field == null)
 				throw new UnknownNodeException(node, obj.GetType().Name);
@@ -45,9 +45,9 @@ namespace WarriorsSnuggery.Loader
 			return field;
 		}
 
-		public static FieldInfo SetValue(object obj, IEnumerable<FieldInfo> fields, TextNode node)
+		public static FieldInfo SetValue(object obj, IEnumerable<FieldInfo> fields, TextNode node, bool withSaveAttribute = false)
 		{
-			var field = fields.FirstOrDefault(f => f.Name == node.Key);
+			var field = fields.FirstOrDefault(f => f.Name == node.Key || (withSaveAttribute && f.GetCustomAttribute<SaveAttribute>().Name == node.Key));
 
 			if (field == null)
 				throw new UnknownNodeException(node, obj.GetType().Name);

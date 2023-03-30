@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -7,138 +6,12 @@ using WarriorsSnuggery.Maps;
 using WarriorsSnuggery.Maps.Pieces;
 using WarriorsSnuggery.Objects.Actors;
 using WarriorsSnuggery.Objects.Actors.Parts;
-using WarriorsSnuggery.Spells;
 
 namespace WarriorsSnuggery
 {
-	public sealed class GameStats
-	{
-		public int Money;
-
-		public int Mana
-		{
-			get => mana;
-			set => mana = Math.Clamp(value, 0, MaxMana);
-		}
-		int mana;
-		public int MaxMana;
-
-		public int Lifes
-		{
-			get => lifes;
-			set => lifes = Math.Clamp(value, 0, MaxLifes);
-		}
-		int lifes;
-		public int MaxLifes;
-
-		public int Kills;
-		public int Deaths;
-
-		public bool KeyFound;
-
-		public readonly List<string> UnlockedSpells;
-		public readonly List<string> UnlockedActors;
-		public readonly List<string> UnlockedTrophies;
-
-		public GameStats(GameSave save)
-		{
-			Money = save.Money;
-			mana = save.Mana;
-			MaxMana = save.MaxMana;
-			Kills = save.Kills;
-			Deaths = save.Deaths;
-			lifes = save.Lives;
-			MaxLifes = save.MaxLives;
-
-			KeyFound = save.KeyFound;
-
-			UnlockedSpells = new List<string>();
-			if (save.UnlockedSpells != null)
-				UnlockedSpells.AddRange(save.UnlockedSpells);
-
-			UnlockedActors = new List<string>();
-			if (save.UnlockedActors != null)
-				UnlockedActors.AddRange(save.UnlockedActors);
-
-			UnlockedTrophies = new List<string>();
-			if (save.UnlockedTrophies != null)
-				UnlockedTrophies.AddRange(save.UnlockedTrophies);
-		}
-
-		public void AddSpell(SpellCasterType type)
-		{
-			if (SpellUnlocked(type))
-				return;
-
-			UnlockedSpells.Add(type.InnerName);
-		}
-
-		public bool SpellUnlocked(string innerName)
-		{
-			return SpellUnlocked(SpellCasterCache.Types[innerName]);
-		}
-
-		public bool SpellUnlocked(SpellCasterType type)
-		{
-			return Program.IgnoreTech || type.Unlocked || UnlockedSpells.Contains(type.InnerName);
-		}
-
-		public bool SpellAvailable(SpellCasterType type)
-		{
-			if (SpellUnlocked(type))
-				return true;
-
-			foreach (var before in type.Before)
-			{
-				if (string.IsNullOrEmpty(before))
-					continue;
-
-				if (!SpellUnlocked(before))
-					return false;
-			}
-
-			return true;
-		}
-
-		public void AddActor(PlayablePartInfo playable)
-		{
-			if (UnlockedActors.Contains(playable.InternalName))
-				return;
-
-			UnlockedActors.Add(playable.InternalName);
-		}
-
-		public bool ActorUnlocked(string innerName)
-		{
-			return ActorUnlocked(ActorCache.Types[innerName].Playable);
-		}
-
-		public bool ActorUnlocked(PlayablePartInfo playable)
-		{
-			return playable.Unlocked || Program.IgnoreTech || UnlockedActors.Contains(playable.InternalName);
-		}
-
-		public void AddTrophy(string name)
-		{
-			if (TrophyUnlocked(name))
-				return;
-
-			UnlockedTrophies.Add(name);
-		}
-
-		public bool TrophyUnlocked(string name)
-		{
-			return UnlockedTrophies.Contains(name);
-		}
-
-		public int NextLifePrice()
-		{
-			return 100 * lifes * lifes + 50;
-		}
-	}
-
 	public sealed class GameSave
 	{
+		public Player Player { get; private set; }
 		// Saved separately
 		public int GameSaveFormat { get; private set; }
 		[Save]
@@ -152,37 +25,14 @@ namespace WarriorsSnuggery
 		// Changing Values
 		[Save]
 		public int Level { get; private set; }
-		[Save]
-		public int Money { get; private set; }
-		[Save]
-		public int Kills { get; private set; }
-		[Save]
-		public int Deaths { get; private set; }
 
 		[Save]
 		public string Actor { get; private set; }
 		[Save]
 		public float Health { get; private set; }
 
-		[Save]
-		public int Mana { get; private set; }
-		[Save]
-		public int MaxMana { get; private set; }
-
-		[Save]
-		public int Lives { get; private set; }
-		[Save]
-		public int MaxLives { get; private set; }
-
 		// Saved separately
 		public Dictionary<string, (int duration, int recharge)> SpellCasters { get; private set; } = new Dictionary<string, (int, int)>();
-
-		[Save]
-		public string[] UnlockedSpells { get; private set; }
-		[Save]
-		public string[] UnlockedActors { get; private set; }
-		[Save]
-		public string[] UnlockedTrophies { get; private set; }
 
 		// Level Values
 		[Save]
@@ -195,8 +45,9 @@ namespace WarriorsSnuggery
 		public Color CurrentAmbience { get; private set; } = Color.White;
 		[Save, DefaultValue(0)]
 		public int Waves { get; private set; }
+
 		[Save, DefaultValue(false)]
-		public bool KeyFound { get; private set; }
+		public bool KeyFound;
 		// Saved separately
 		public Dictionary<string, bool> CustomConditions { get; private set; } = new Dictionary<string, bool>();
 
@@ -228,9 +79,10 @@ namespace WarriorsSnuggery
 
 			// Create new dictionary and lists
 			SpellCasters = new Dictionary<string, (int, int)>(save.SpellCasters);
+			Player = save.Player.Clone();
 		}
 
-		public GameSave Copy()
+		public GameSave Clone()
 		{
 			return new GameSave(this);
 		}
@@ -245,6 +97,10 @@ namespace WarriorsSnuggery
 			{
 				switch (node.Key)
 				{
+					case nameof(Player):
+						Player = new Player(new TextNodeInitializer(node.Children));
+
+						break;
 					case nameof(CustomConditions):
 						foreach (var node2 in node.Children)
 							CustomConditions.Add(node2.Key, node2.Convert<bool>());
@@ -301,16 +157,16 @@ namespace WarriorsSnuggery
 
 			Hardcore = hardcore;
 			Difficulty = difficulty;
+			Seed = seed;
 
 			Level = 1;
 			FinalLevel = (difficulty + 1) * 5;
-			Money = 100 - difficulty * 10;
-			MaxMana = GameSaveManager.DefaultSave.MaxMana;
-			Actor = GameSaveManager.DefaultSave.Actor;
-			Seed = seed;
 
-			Lives = hardcore ? 1 : 3;
-			MaxLives = Lives;
+			Actor = GameSaveManager.DefaultSave.Actor;
+			Health = GameSaveManager.DefaultSave.Health;
+
+			Player = new Player(2, 0, "Player");
+			Player.InitializeWith(this);
 		}
 
 		GameSave() { }
@@ -327,20 +183,12 @@ namespace WarriorsSnuggery
 		{
 			// Positive Points
 			var score = Level * 100 / FinalLevel;
-			score += Kills * 5;
-			score += Money * 2;
-			score += Lives * 25;
+			score += Player.Kills * 5;
+			score += Player.Money * 2;
+			score += Player.Lifes * 25;
 			// Negative Points
-			score -= Deaths * 25;
+			score -= Player.Deaths * 25;
 			return score;
-		}
-
-		public void IncreaseDeathCount()
-		{
-			if (Lives > 0)
-				Lives--;
-
-			Deaths++;
 		}
 
 		public void Save(Game game)
@@ -348,6 +196,7 @@ namespace WarriorsSnuggery
 			Update(game);
 
 			var saver = new TextNodeSaver();
+			saver.AddChildren(nameof(Player), Player.Save());
 			saver.Add(nameof(GameSaveFormat), Constants.CurrentGameSaveFormat);
 			saver.Add(nameof(CurrentMapType), MapCache.Types[CurrentMapType]);
 			saver.Add(nameof(CurrentAmbience), $"{(int)(CurrentAmbience.R * 255)}, {(int)(CurrentAmbience.G * 255)}, {(int)(CurrentAmbience.B * 255)}, {(int)(CurrentAmbience.A * 255)}");
@@ -398,20 +247,10 @@ namespace WarriorsSnuggery
 
 			Waves = game.WaveController == null ? 0 : game.WaveController.CurrentWave;
 
-			var stats = game.Stats;
+			var stats = game.Player;
 
-			KeyFound = !levelIncrease && stats.KeyFound;
-			Money = stats.Money;
-			Mana = stats.Mana;
-			MaxMana = stats.MaxMana;
-			Deaths = stats.Deaths;
-			Kills = stats.Kills;
-			Lives = stats.Lifes;
-			MaxLives = stats.MaxLifes;
-
-			UnlockedSpells = stats.UnlockedSpells.ToArray();
-			UnlockedActors = stats.UnlockedActors.ToArray();
-			UnlockedTrophies = stats.UnlockedTrophies.ToArray();
+			KeyFound = !levelIncrease && KeyFound;
+			Player = game.Player;
 		}
 
 		public void Delete()

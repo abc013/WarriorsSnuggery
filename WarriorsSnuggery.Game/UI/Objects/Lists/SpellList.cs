@@ -117,7 +117,7 @@ namespace WarriorsSnuggery.UI.Objects
 				{
 					if (unlocked)
 					{
-						var enoughMana = game.Stats.Mana - manaCost > 0;
+						var enoughMana = game.Player.Mana - manaCost > 0;
 
 						SetColor(enoughMana ? Color.White : inactive);
 						return;

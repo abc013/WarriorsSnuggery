@@ -32,7 +32,6 @@ namespace WarriorsSnuggery.Maps
 		public string MapTypeName => map.Type.Name;
 
 		public ObjectiveType ObjectiveType => world.Game.ObjectiveType;
-		public GameSave Save => world.Game.Save;
 
 		public readonly Random Random;
 
