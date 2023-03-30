@@ -49,7 +49,7 @@
 
 		public int DespawnDelay => info.DespawnDelay;
 
-		public WorldPart(Actor self, WorldPartInfo info) : base(self)
+		public WorldPart(Actor self, WorldPartInfo info) : base(self, info)
 		{
 			this.info = info;
 		}

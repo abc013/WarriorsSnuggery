@@ -20,7 +20,7 @@
 
 		public int Range => info.Range;
 
-		public RevealsShroudPart(Actor self, RevealsShroudPartInfo info) : base(self)
+		public RevealsShroudPart(Actor self, RevealsShroudPartInfo info) : base(self, info)
 		{
 			this.info = info;
 			firstActive = true;
@@ -28,7 +28,7 @@
 
 		public void OnLoad(PartLoader loader)
 		{
-			foreach (var node in loader.GetNodes(typeof(RevealsShroudPart), info.InternalName))
+			foreach (var node in loader.GetNodes(typeof(RevealsShroudPart), Specification))
 			{
 				if (node.Key == "Tick")
 					tick = node.Convert<int>();
@@ -37,7 +37,7 @@
 
 		public PartSaver OnSave()
 		{
-			var saver = new PartSaver(this, info.InternalName);
+			var saver = new PartSaver(this, Specification);
 
 			saver.Add("Tick", tick, 0);
 
@@ -48,10 +48,10 @@
 		{
 			if (tick < 0)
 			{
-				if (old.X / 512 - self.Position.X / 512 == 0 && old.Y / 512 - self.Position.Y / 512 == 0)
+				if (old.X / 512 - Self.Position.X / 512 == 0 && old.Y / 512 - Self.Position.Y / 512 == 0)
 					return;
 
-				self.World.ShroudLayer.RevealShroudCircular(self.World, self.Team, self.Position, info.Range);
+				Self.World.ShroudLayer.RevealShroudCircular(Self.World, Self.Team, Self.Position, info.Range);
 				tick = info.Interval;
 			}
 		}
@@ -61,7 +61,7 @@
 			tick--;
 			if (firstActive)
 			{
-				self.World.ShroudLayer.RevealShroudCircular(self.World, self.Team, self.Position, info.Range, true);
+				Self.World.ShroudLayer.RevealShroudCircular(Self.World, Self.Team, Self.Position, info.Range, true);
 				firstActive = false;
 			}
 		}

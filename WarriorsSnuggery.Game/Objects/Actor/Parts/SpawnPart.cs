@@ -67,14 +67,14 @@ namespace WarriorsSnuggery.Objects.Actors.Parts
 		readonly SpawnPartInfo info;
 		int curTick;
 
-		public SpawnPart(Actor self, SpawnPartInfo info) : base(self)
+		public SpawnPart(Actor self, SpawnPartInfo info) : base(self, info)
 		{
 			this.info = info;
 		}
 
 		public void OnLoad(PartLoader loader)
 		{
-			foreach (var node in loader.GetNodes(typeof(SpawnPart), info.InternalName))
+			foreach (var node in loader.GetNodes(typeof(SpawnPart), Specification))
 			{
 				if (node.Key == "Tick")
 					curTick = node.Convert<int>();
@@ -83,7 +83,7 @@ namespace WarriorsSnuggery.Objects.Actors.Parts
 
 		public PartSaver OnSave()
 		{
-			var saver = new PartSaver(this, info.InternalName);
+			var saver = new PartSaver(this, Specification);
 
 			saver.Add("Tick", curTick, 0);
 
@@ -110,13 +110,13 @@ namespace WarriorsSnuggery.Objects.Actors.Parts
 
 		void create()
 		{
-			if (info.Condition == null || info.Condition.True(self))
+			if (info.Condition == null || info.Condition.True(Self))
 			{
 				curTick = info.Tick;
 				if (info.Sound != null)
 				{
 					var sound = new Sound(info.Sound);
-					sound.Play(self.Position, false);
+					sound.Play(Self.Position, false);
 				}
 
 				for (int i = 0; i < info.Count; i++)
@@ -130,7 +130,7 @@ namespace WarriorsSnuggery.Objects.Actors.Parts
 
 		void createObject()
 		{
-			if (self.World.Game.SharedRandom.NextDouble() > info.Probability)
+			if (Self.World.Game.SharedRandom.NextDouble() > info.Probability)
 				return;
 
 			switch (info.Type)
@@ -140,26 +140,26 @@ namespace WarriorsSnuggery.Objects.Actors.Parts
 
 					if (!info.AtCenter)
 					{
-						var radius = info.Radius == 0 ? Math.Max(self.Physics.Boundaries.X, self.Physics.Boundaries.Y) : info.Radius;
+						var radius = info.Radius == 0 ? Math.Max(Self.Physics.Boundaries.X, Self.Physics.Boundaries.Y) : info.Radius;
 						var types = new List<ActorType>() { ActorCache.Types[info.Name] };
-						var actors = ActorDistribution.DistributeAround(self.World, self.Position + info.Offset, radius, types, info.InheritsTeam ? self.Team : Actor.NeutralTeam, info.InheritsBot && self.IsBot);
+						var actors = ActorDistribution.DistributeAround(Self.World, Self.Position + info.Offset, radius, types, info.InheritsTeam ? Self.Team : Actor.NeutralTeam, info.InheritsBot && Self.IsBot);
 
 						actor = actors.FirstOrDefault();
 					}
 
 					if (actor == null)
 					{
-						actor = ActorCache.Create(self.World, info.Name, randomPosition(), info.InheritsTeam ? self.Team : Actor.NeutralTeam, info.InheritsBot && self.IsBot);
-						self.World.Add(actor);
+						actor = ActorCache.Create(Self.World, info.Name, randomPosition(), info.InheritsTeam ? Self.Team : Actor.NeutralTeam, info.InheritsBot && Self.IsBot);
+						Self.World.Add(actor);
 					}
 
-					if (info.InheritsBot && self.IsBot)
-						actor.Bot.Target = self.Bot.Target;
+					if (info.InheritsBot && Self.IsBot)
+						actor.Bot.Target = Self.Bot.Target;
 					break;
 				case SpawnPartTypes.WEAPON:
-					var weapon = WeaponCache.Create(self.World, info.Name, new Target(randomPosition()), self);
+					var weapon = WeaponCache.Create(Self.World, info.Name, new Target(randomPosition()), Self);
 
-					self.World.Add(weapon);
+					Self.World.Add(weapon);
 					break;
 				default:
 					return;
@@ -169,20 +169,20 @@ namespace WarriorsSnuggery.Objects.Actors.Parts
 		CPos randomPosition()
 		{
 			if (info.AtCenter)
-				return self.Position + info.Offset;
+				return Self.Position + info.Offset;
 
 			var sizeX = info.Radius;
 			var sizeY = info.Radius;
 
-			if (info.Radius == 0 && !self.Physics.IsEmpty)
+			if (info.Radius == 0 && !Self.Physics.IsEmpty)
 			{
-				sizeX = self.Physics.Boundaries.X;
-				sizeY = self.Physics.Boundaries.Y;
+				sizeX = Self.Physics.Boundaries.X;
+				sizeY = Self.Physics.Boundaries.Y;
 			}
 
-			var x = self.World.Game.SharedRandom.Next(-sizeX, sizeX);
-			var y = self.World.Game.SharedRandom.Next(-sizeY, sizeY);
-			return self.Position + new CPos(x, y, 0) + info.Offset;
+			var x = Self.World.Game.SharedRandom.Next(-sizeX, sizeX);
+			var y = Self.World.Game.SharedRandom.Next(-sizeY, sizeY);
+			return Self.Position + new CPos(x, y, 0) + info.Offset;
 		}
 	}
 }

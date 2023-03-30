@@ -58,7 +58,7 @@ namespace WarriorsSnuggery.Objects.Actors.Parts
 		float angle;
 		bool wasVisible;
 
-		public SpritePart(Actor self, SpritePartInfo info) : base(self)
+		public SpritePart(Actor self, SpritePartInfo info) : base(self, info)
 		{
 			this.info = info;
 			renderables = new BatchRenderable[info.Facings];
@@ -108,7 +108,7 @@ namespace WarriorsSnuggery.Objects.Actors.Parts
 
 		BatchRenderable getRenderable(ActionType actions, int facing)
 		{
-			if (info.Condition != null && !info.Condition.True(self))
+			if (info.Condition != null && !info.Condition.True(Self))
 				return null;
 
 			return renderables[facing];
@@ -122,13 +122,13 @@ namespace WarriorsSnuggery.Objects.Actors.Parts
 
 		public void Tick()
 		{
-			if (self.Angle != angle)
+			if (Self.Angle != angle)
 			{
-				angle = self.Angle;
+				angle = Self.Angle;
 				currentFacing = Angle.ToFacing(angle, info.Facings);
 			}
 
-			var renderable = getRenderable(self.Actions, currentFacing);
+			var renderable = getRenderable(Self.Actions, currentFacing);
 			renderObject.setRenderable(renderable);
 
 			if (wasVisible && renderable is BatchSequence sequence)

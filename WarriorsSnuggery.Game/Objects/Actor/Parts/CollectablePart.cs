@@ -59,14 +59,14 @@ namespace WarriorsSnuggery.Objects.Actors.Parts
 		ActorSector[] sectors;
 		bool firstTick = true;
 
-		public CollectablePart(Actor self, CollectablePartInfo info) : base(self)
+		public CollectablePart(Actor self, CollectablePartInfo info) : base(self, info)
 		{
 			this.info = info;
 		}
 
 		public void OnLoad(PartLoader loader)
 		{
-			foreach (var node in loader.GetNodes(typeof(CollectablePart), info.InternalName))
+			foreach (var node in loader.GetNodes(typeof(CollectablePart), Specification))
 			{
 				if (node.Key == "Activated")
 					activated = node.Convert<bool>();
@@ -77,7 +77,7 @@ namespace WarriorsSnuggery.Objects.Actors.Parts
 
 		public PartSaver OnSave()
 		{
-			var saver = new PartSaver(this, info.InternalName);
+			var saver = new PartSaver(this, Specification);
 
 			saver.Add("Activated", activated, false);
 			saver.Add("Cooldown", cooldown, 0);
@@ -100,7 +100,7 @@ namespace WarriorsSnuggery.Objects.Actors.Parts
 			{
 				if (info.Duration < 0)
 				{
-					if ((lastActor.Position - self.Position).SquaredFlatDist > info.Radius * info.Radius)
+					if ((lastActor.Position - Self.Position).SquaredFlatDist > info.Radius * info.Radius)
 						activated = false;
 				}
 				else
@@ -109,14 +109,14 @@ namespace WarriorsSnuggery.Objects.Actors.Parts
 				return;
 			}
 
-			if (info.Condition != null && !info.Condition.True(self))
+			if (info.Condition != null && !info.Condition.True(Self))
 				return;
 
 			if (info.OnlyByPlayer)
 			{
-				var localPlayer = self.World.LocalPlayer;
+				var localPlayer = Self.World.LocalPlayer;
 
-				if (localPlayer != null && localPlayer.IsAlive && localPlayer.WorldPart != null && localPlayer.WorldPart.CanTrigger && (localPlayer.Position - self.Position).SquaredFlatDist < info.Radius * info.Radius)
+				if (localPlayer != null && localPlayer.IsAlive && localPlayer.WorldPart != null && localPlayer.WorldPart.CanTrigger && (localPlayer.Position - Self.Position).SquaredFlatDist < info.Radius * info.Radius)
 					activate(localPlayer);
 			}
 			else
@@ -126,7 +126,7 @@ namespace WarriorsSnuggery.Objects.Actors.Parts
 				{
 					foreach (var actor in sector.Actors)
 					{
-						if (actor != self && actor.IsAlive && actor.WorldPart != null && actor.WorldPart.CanTrigger && (actor.Position - self.Position).SquaredFlatDist < squared)
+						if (actor != Self && actor.IsAlive && actor.WorldPart != null && actor.WorldPart.CanTrigger && (actor.Position - Self.Position).SquaredFlatDist < squared)
 							activate(actor);
 					}
 				}
@@ -142,16 +142,16 @@ namespace WarriorsSnuggery.Objects.Actors.Parts
 				cooldown = info.Duration;
 
 				if (info.ParticleSpawner != null)
-					self.World.Add(info.ParticleSpawner.Create(self.World, self.Position));
+					Self.World.Add(info.ParticleSpawner.Create(Self.World, Self.Position));
 
 				if (info.Sound != null)
 				{
 					var sound = new Sound(info.Sound);
-					sound.Play(self.Position, false);
+					sound.Play(Self.Position, false);
 				}
 
 				if (info.KillsSelf)
-					self.Killed(null);
+					Self.Killed(null);
 			}
 
 			bool invokeFunction(Actor a)
@@ -205,7 +205,7 @@ namespace WarriorsSnuggery.Objects.Actors.Parts
 
 		void updateSectors()
 		{
-			sectors = self.World.ActorLayer.GetSectors(self.Position, info.Radius);
+			sectors = Self.World.ActorLayer.GetSectors(Self.Position, info.Radius);
 		}
 	}
 }

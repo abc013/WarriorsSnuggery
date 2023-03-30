@@ -6,19 +6,19 @@ namespace WarriorsSnuggery.Objects.Actors.Parts
 {
 	public sealed class PartInitSet
 	{
-		public readonly string InternalName;
+		public readonly string Specification;
 		public readonly List<TextNode> Nodes;
 
-		public PartInitSet(string internalName, List<TextNode> nodes)
+		public PartInitSet(string specification, List<TextNode> nodes)
 		{
-			InternalName = internalName;
+			Specification = specification;
 			Nodes = nodes;
 		}
 	}
 
 	public abstract class PartInfo
 	{
-		public readonly string InternalName;
+		internal readonly string Specification;
 
 		public ActorPart Create(Actor self)
 		{
@@ -30,18 +30,20 @@ namespace WarriorsSnuggery.Objects.Actors.Parts
 
 		protected PartInfo(PartInitSet set)
 		{
-			InternalName = set.InternalName;
+			Specification = set.Specification;
 			TypeLoader.SetValues(this, set.Nodes);
 		}
 	}
 
 	public abstract class ActorPart
 	{
-		protected readonly Actor self;
+		protected readonly Actor Self;
+		internal readonly string Specification; 
 
-		protected ActorPart(Actor self)
+		protected ActorPart(Actor self, PartInfo info)
 		{
-			this.self = self;
+			Self = self;
+			Specification = info.Specification;
 		}
 	}
 }

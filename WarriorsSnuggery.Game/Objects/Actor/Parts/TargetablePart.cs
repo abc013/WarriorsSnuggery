@@ -16,14 +16,14 @@
 	{
 		readonly TargetablePartInfo info;
 
-		public TargetablePart(Actor self, TargetablePartInfo info) : base(self)
+		public TargetablePart(Actor self, TargetablePartInfo info) : base(self, info)
 		{
 			this.info = info;
 		}
 
 		public bool InTargetBox(CPos pos)
 		{
-			var diff = pos - self.Position;
+			var diff = pos - Self.Position;
 			return diff.X > info.TargetBoxCorner1.X && diff.X < info.TargetBoxCorner2.X && diff.Y > -info.TargetBoxCorner1.Y && diff.Y < -info.TargetBoxCorner2.Y;
 		}
 	}

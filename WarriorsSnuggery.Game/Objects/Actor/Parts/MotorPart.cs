@@ -30,14 +30,14 @@
 		float angle;
 		int prep;
 
-		public MotorPart(Actor self, MotorPartInfo info) : base(self)
+		public MotorPart(Actor self, MotorPartInfo info) : base(self, info)
 		{
 			this.info = info;
 		}
 
 		public void Tick()
 		{
-			if (accelerationOrdered && (--prep <= 0 || self.DoesAction(ActionType.MOVE)))
+			if (accelerationOrdered && (--prep <= 0 || Self.DoesAction(ActionType.MOVE)))
 				accelerateSelf();
 
 			movedThisTick = false;
@@ -51,10 +51,10 @@
 			if (prep > 0)
 				return;
 
-			if (!self.DoesAction(ActionType.MOVE) && info.PreparationDelay > 0)
+			if (!Self.DoesAction(ActionType.MOVE) && info.PreparationDelay > 0)
 			{
 				prep = info.PreparationDelay;
-				self.AddAction(ActionType.PREPARE_MOVE, info.PreparationDelay);
+				Self.AddAction(ActionType.PREPARE_MOVE, info.PreparationDelay);
 				return;
 			}
 
@@ -69,22 +69,22 @@
 			if (movedThisTick)
 				return;
 
-			if (!self.DoesAction(ActionType.MOVE) && info.PreparationDelay > 0 && !self.DoesAction(ActionType.PREPARE_MOVE))
+			if (!Self.DoesAction(ActionType.MOVE) && info.PreparationDelay > 0 && !Self.DoesAction(ActionType.PREPARE_MOVE))
 				return; // Preparation has been canceled
 
-			self.Push(angle, info.Acceleration);
+			Self.Push(angle, info.Acceleration);
 
 			movedThisTick = true;
 		}
 
 		public void AccelerateHeightSelf(bool up)
 		{
-			self.Lift(up ? info.HeightAcceleration : -info.HeightAcceleration);
+			Self.Lift(up ? info.HeightAcceleration : -info.HeightAcceleration);
 		}
 
 		public void OnStop()
 		{
-			self.AddAction(ActionType.END_MOVE, info.CooldownDelay);
+			Self.AddAction(ActionType.END_MOVE, info.CooldownDelay);
 		}
 	}
 }

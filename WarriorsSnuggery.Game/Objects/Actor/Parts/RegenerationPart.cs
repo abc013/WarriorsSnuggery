@@ -20,14 +20,14 @@ namespace WarriorsSnuggery.Objects.Actors.Parts
 		readonly RegenerationPartInfo info;
 		int tick;
 
-		public RegenerationPart(Actor self, RegenerationPartInfo info) : base(self)
+		public RegenerationPart(Actor self, RegenerationPartInfo info) : base(self, info)
 		{
 			this.info = info;
 		}
 
 		public void OnLoad(PartLoader loader)
 		{
-			foreach (var node in loader.GetNodes(typeof(RegenerationPart), info.InternalName))
+			foreach (var node in loader.GetNodes(typeof(RegenerationPart), Specification))
 			{
 				if (node.Key == "Tick")
 					tick = node.Convert<int>();
@@ -36,7 +36,7 @@ namespace WarriorsSnuggery.Objects.Actors.Parts
 
 		public PartSaver OnSave()
 		{
-			var saver = new PartSaver(this, info.InternalName);
+			var saver = new PartSaver(this, Specification);
 
 			saver.Add("Tick", tick, 0);
 
@@ -47,10 +47,10 @@ namespace WarriorsSnuggery.Objects.Actors.Parts
 		{
 			if (tick-- <= 0)
 			{
-				if (self.Health == null)
+				if (Self.Health == null)
 					throw new InvalidNodeException("RegenerationPart needs HealthPart to operate.");
 
-				self.Health.HP += info.Amount;
+				Self.Health.HP += info.Amount;
 				tick = info.Time;
 			}
 		}

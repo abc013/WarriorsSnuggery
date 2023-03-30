@@ -48,7 +48,7 @@ namespace WarriorsSnuggery.Objects.Actors.Parts
 		}
 		int health;
 
-		public HealthPart(Actor self, HealthPartInfo info) : base(self)
+		public HealthPart(Actor self, HealthPartInfo info) : base(self, info)
 		{
 			this.info = info;
 
@@ -57,7 +57,7 @@ namespace WarriorsSnuggery.Objects.Actors.Parts
 
 		public void OnLoad(PartLoader loader)
 		{
-			foreach (var node in loader.GetNodes(typeof(HealthPart), info.InternalName))
+			foreach (var node in loader.GetNodes(typeof(HealthPart), Specification))
 			{
 				if (node.Key == "Health")
 					HP = node.Convert<int>();
@@ -66,7 +66,7 @@ namespace WarriorsSnuggery.Objects.Actors.Parts
 
 		public PartSaver OnSave()
 		{
-			var saver = new PartSaver(this, info.InternalName);
+			var saver = new PartSaver(this, Specification);
 
 			saver.Add("Health", HP, StartHealth);
 
@@ -75,14 +75,14 @@ namespace WarriorsSnuggery.Objects.Actors.Parts
 
 		public void Tick()
 		{
-			foreach (var effect in self.GetActiveEffects(EffectType.HEALTH))
+			foreach (var effect in Self.GetActiveEffects(EffectType.HEALTH))
 				HP += (int)effect.Effect.Value;
 
-			if (self.World.Game.LocalTick % 2 == 0 && self.CurrentTerrain != null && self.CurrentTerrain.Type.Damage != 0)
-				HP -= self.CurrentTerrain.Type.Damage;
+			if (Self.World.Game.LocalTick % 2 == 0 && Self.CurrentTerrain != null && Self.CurrentTerrain.Type.Damage != 0)
+				HP -= Self.CurrentTerrain.Type.Damage;
 
 			if (HP <= 0)
-				self.Killed(null);
+				Self.Killed(null);
 		}
 	}
 }

@@ -61,7 +61,7 @@ namespace WarriorsSnuggery.Objects.Actors.Parts
 		float fluctuation;
 		float randomFluctuationStrength;
 
-		public LightPart(Actor self, LightPartInfo info) : base(self)
+		public LightPart(Actor self, LightPartInfo info) : base(self, info)
 		{
 			this.info = info;
 
@@ -107,10 +107,10 @@ namespace WarriorsSnuggery.Objects.Actors.Parts
 
 		public void Render()
 		{
-			if (info.Condition != null && !info.Condition.True(self))
+			if (info.Condition != null && !info.Condition.True(Self))
 				return;
 
-			renderable.SetPosition(self.GraphicPosition + info.Offset);
+			renderable.SetPosition(Self.GraphicPosition + info.Offset);
 
 			MasterRenderer.SetRenderer(Renderer.LIGHTS);
 			renderable.Render();

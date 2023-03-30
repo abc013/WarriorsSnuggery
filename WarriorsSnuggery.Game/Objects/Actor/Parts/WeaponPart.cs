@@ -23,7 +23,7 @@ namespace WarriorsSnuggery.Objects.Actors.Parts
 
 		public bool AllowMoving => info.AllowMoving;
 
-		public CPos WeaponOffsetPosition => self.Position + info.Offset;
+		public CPos WeaponOffsetPosition => Self.Position + info.Offset;
 
 		public Target Target;
 
@@ -44,7 +44,7 @@ namespace WarriorsSnuggery.Objects.Actors.Parts
 		// Needs to be saved for controlling the beam.
 		BeamWeapon beam;
 
-		public WeaponPart(Actor self, WeaponPartInfo info) : base(self)
+		public WeaponPart(Actor self, WeaponPartInfo info) : base(self, info)
 		{
 			this.info = info;
 			Type = info.Type;
@@ -52,13 +52,13 @@ namespace WarriorsSnuggery.Objects.Actors.Parts
 
 		public void OnLoad(PartLoader loader)
 		{
-			foreach (var node in loader.GetNodes(typeof(WeaponPart), info.InternalName))
+			foreach (var node in loader.GetNodes(typeof(WeaponPart), Specification))
 			{
 				switch (node.Key)
 				{
 					case "BeamWeapon":
 						var id = node.Convert<int>();
-						beam = (BeamWeapon)self.World.WeaponLayer.Weapons.Find(w => w.ID == id);
+						beam = (BeamWeapon)Self.World.WeaponLayer.Weapons.Find(w => w.ID == id);
 						break;
 					case "StateTick":
 						stateTick = node.Convert<int>();
@@ -75,7 +75,7 @@ namespace WarriorsSnuggery.Objects.Actors.Parts
 
 		public PartSaver OnSave()
 		{
-			var saver = new PartSaver(this, info.InternalName);
+			var saver = new PartSaver(this, Specification);
 
 			if (beam != null)
 				saver.Add("BeamWeapon", beam.ID, -1);
@@ -88,7 +88,7 @@ namespace WarriorsSnuggery.Objects.Actors.Parts
 				// TODO: also support actor targeting
 				saver.Add(nameof(Target), Target.Position, CPos.Zero);
 			}
-			
+
 			return saver;
 		}
 
@@ -99,7 +99,7 @@ namespace WarriorsSnuggery.Objects.Actors.Parts
 
 			Target = target;
 
-			self.AddAction(ActionType.PREPARE_ATTACK, Type.PreparationDelay);
+			Self.AddAction(ActionType.PREPARE_ATTACK, Type.PreparationDelay);
 			stateTick = Type.PreparationDelay;
 			state = WeaponState.PREPARING;
 		}
@@ -113,13 +113,13 @@ namespace WarriorsSnuggery.Objects.Actors.Parts
 
 			if (state == WeaponState.PREPARING)
 			{
-				self.CancelAction(ActionType.PREPARE_ATTACK);
+				Self.CancelAction(ActionType.PREPARE_ATTACK);
 				// Weapon wasn't fired yet
 				state = WeaponState.READY;
 			}
 			else
 			{
-				self.CancelAction(ActionType.ATTACK);
+				Self.CancelAction(ActionType.ATTACK);
 			}
 		}
 
@@ -144,7 +144,7 @@ namespace WarriorsSnuggery.Objects.Actors.Parts
 						stateTick = info.Type.ShootDuration;
 						state = WeaponState.ATTACKING;
 
-						self.AddAction(ActionType.ATTACK, Type.ShootDuration);
+						Self.AddAction(ActionType.ATTACK, Type.ShootDuration);
 
 						// Special case: ShootDuration is 0.
 						if (Type.ShootDuration == 0)
@@ -157,11 +157,11 @@ namespace WarriorsSnuggery.Objects.Actors.Parts
 						stateTick = info.Type.CooldownDelay;
 						state = WeaponState.COOLDOWN;
 
-						self.AddAction(ActionType.END_ATTACK, Type.CooldownDelay);
+						Self.AddAction(ActionType.END_ATTACK, Type.CooldownDelay);
 						break;
 					case WeaponState.COOLDOWN:
 						var reloadModifier = 1f;
-						foreach (var effect in self.GetActiveEffects(EffectType.COOLDOWN))
+						foreach (var effect in Self.GetActiveEffects(EffectType.COOLDOWN))
 							reloadModifier *= effect.Effect.Value;
 
 						stateTick = (int)(Type.Reload * reloadModifier);
@@ -184,10 +184,10 @@ namespace WarriorsSnuggery.Objects.Actors.Parts
 
 		void fireWeapon()
 		{
-			var weapon = WeaponCache.Create(self.World, info.Type, Target, self);
+			var weapon = WeaponCache.Create(Self.World, info.Type, Target, Self);
 			beam = weapon as BeamWeapon;
 
-			self.AttackWith(Target, weapon);
+			Self.AttackWith(Target, weapon);
 		}
 
 		public void OnMove(CPos old, CPos speed)

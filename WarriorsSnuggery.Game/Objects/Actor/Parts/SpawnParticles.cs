@@ -27,14 +27,14 @@ namespace WarriorsSnuggery.Objects.Actors.Parts
 		readonly SpawnParticlesPartInfo info;
 		int curTick;
 
-		public SpawnParticlesPart(Actor self, SpawnParticlesPartInfo info) : base(self)
+		public SpawnParticlesPart(Actor self, SpawnParticlesPartInfo info) : base(self, info)
 		{
 			this.info = info;
 		}
 
 		public void OnLoad(PartLoader loader)
 		{
-			foreach (var node in loader.GetNodes(typeof(SpawnPart), info.InternalName))
+			foreach (var node in loader.GetNodes(typeof(SpawnPart), Specification))
 			{
 				if (node.Key == "Tick")
 					curTick = node.Convert<int>();
@@ -43,7 +43,7 @@ namespace WarriorsSnuggery.Objects.Actors.Parts
 
 		public PartSaver OnSave()
 		{
-			var saver = new PartSaver(this, info.InternalName);
+			var saver = new PartSaver(this, Specification);
 			saver.Add("Tick", curTick, 0);
 			return saver;
 		}
@@ -68,8 +68,8 @@ namespace WarriorsSnuggery.Objects.Actors.Parts
 
 		void create()
 		{
-			if (info.Condition == null || info.Condition.True(self))
-				self.World.Add(info.Particles.Create(self.World, self.Position));
+			if (info.Condition == null || info.Condition.True(Self))
+				Self.World.Add(info.Particles.Create(Self.World, Self.Position));
 
 			curTick = info.Tick;
 		}

@@ -13,7 +13,7 @@ namespace WarriorsSnuggery.Objects.Actors.Parts
 
 	public class PhysicsPart : ActorPart
 	{
-		public PhysicsPart(Actor self, PhysicsPartInfo info) : base(self)
+		public PhysicsPart(Actor self, PhysicsPartInfo info) : base(self, info)
 		{
 			
 		}

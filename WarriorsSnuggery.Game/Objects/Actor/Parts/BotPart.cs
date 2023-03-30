@@ -28,14 +28,14 @@ namespace WarriorsSnuggery.Objects.Actors.Parts
 			set => bot.Patrol = value;
 		}
 
-		public BotPart(Actor self, BotPartInfo info) : base(self)
+		public BotPart(Actor self, BotPartInfo info) : base(self, info)
 		{
 			bot = info.Behavior.Create(self);
 		}
 
 		public void OnLoad(PartLoader loader)
 		{
-			var position = self.Position;
+			var position = Self.Position;
 			var targetID = uint.MaxValue;
 
 			foreach (var node in loader.GetNodes(typeof(BotPart)))
@@ -47,7 +47,7 @@ namespace WarriorsSnuggery.Objects.Actors.Parts
 			}
 
 			if (targetID != uint.MaxValue)
-				Target = new Target(self.World.ActorLayer.ToAdd().Find(a => a.ID == targetID));
+				Target = new Target(Self.World.ActorLayer.ToAdd().Find(a => a.ID == targetID));
 		}
 
 		public PartSaver OnSave()
@@ -57,7 +57,7 @@ namespace WarriorsSnuggery.Objects.Actors.Parts
 			if (Target == null)
 				return saver;
 
-			saver.Add("TargetPosition", Target.Position, self.Position);
+			saver.Add("TargetPosition", Target.Position, Self.Position);
 			if (Target.Actor != null && Target.Actor.IsAlive)
 				saver.Add("TargetActor", Target.Actor.ID, uint.MaxValue);
 
@@ -86,7 +86,7 @@ namespace WarriorsSnuggery.Objects.Actors.Parts
 
 		public void OnKilled(Actor killer)
 		{
-			Patrol?.ActorDied(self);
+			Patrol?.ActorDied(Self);
 		}
 	}
 }

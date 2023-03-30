@@ -15,7 +15,7 @@ namespace WarriorsSnuggery.Objects.Actors.Parts
 	{
 		readonly Sound sound;
 
-		public IdleSoundPart(Actor self, IdleSoundPartInfo info) : base(self)
+		public IdleSoundPart(Actor self, IdleSoundPartInfo info) : base(self, info)
 		{
 			sound = new Sound(info.Sound);
 			sound.Play(self.Position, true);
@@ -23,7 +23,7 @@ namespace WarriorsSnuggery.Objects.Actors.Parts
 
 		public void OnMove(CPos old, CPos speed)
 		{
-			sound?.SetPosition(self.Position);
+			sound?.SetPosition(Self.Position);
 		}
 
 		public void OnDispose()

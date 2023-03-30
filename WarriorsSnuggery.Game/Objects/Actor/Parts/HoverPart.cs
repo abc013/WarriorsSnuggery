@@ -24,7 +24,7 @@ namespace WarriorsSnuggery.Objects.Actors.Parts
 
 		int hoverTick;
 
-		public HoverPart(Actor self, HoverPartInfo info) : base(self)
+		public HoverPart(Actor self, HoverPartInfo info) : base(self, info)
 		{
 			this.info = info;
 		}
@@ -32,14 +32,14 @@ namespace WarriorsSnuggery.Objects.Actors.Parts
 		public void Tick()
 		{
 			if (info.Hover > 0)
-				self.Position += new CPos(0, 0, (int)(MathF.Sin(hoverTick++ / (float)info.HoverSpeed) * info.Hover));
+				Self.Position += new CPos(0, 0, (int)(MathF.Sin(hoverTick++ / (float)info.HoverSpeed) * info.Hover));
 
-			if (self.Mobile != null && self.Mobile.CanFly)
+			if (Self.Mobile != null && Self.Mobile.CanFly)
 			{
-				if (self.Position.Z > DefaultHeight + info.Hover * 64)
-					self.AccelerateHeightSelf(false);
-				else if (self.Position.Z < DefaultHeight - info.Hover * 64)
-					self.AccelerateHeightSelf(true);
+				if (Self.Position.Z > DefaultHeight + info.Hover * 64)
+					Self.AccelerateHeightSelf(false);
+				else if (Self.Position.Z < DefaultHeight - info.Hover * 64)
+					Self.AccelerateHeightSelf(true);
 			}
 		}
 	}

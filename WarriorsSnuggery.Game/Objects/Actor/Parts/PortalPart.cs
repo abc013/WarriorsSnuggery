@@ -41,7 +41,7 @@ namespace WarriorsSnuggery.Objects.Actors.Parts
 		ActorSector[] sectors;
 		bool firstTick = true;
 
-		public PortalPart(Actor self, PortalPartInfo info) : base(self)
+		public PortalPart(Actor self, PortalPartInfo info) : base(self, info)
 		{
 			this.info = info;
 		}
@@ -56,20 +56,20 @@ namespace WarriorsSnuggery.Objects.Actors.Parts
 
 			if (activated)
 			{
-				if ((lastActor.Position - self.Position).SquaredFlatDist > info.Radius * info.Radius)
+				if ((lastActor.Position - Self.Position).SquaredFlatDist > info.Radius * info.Radius)
 					activated = false;
 
 				return;
 			}
 
-			if (info.Condition != null && !info.Condition.True(self))
+			if (info.Condition != null && !info.Condition.True(Self))
 				return;
 
 			if (info.OnlyByPlayer)
 			{
-				var localPlayer = self.World.LocalPlayer;
+				var localPlayer = Self.World.LocalPlayer;
 
-				if (localPlayer != null && localPlayer.IsAlive && localPlayer.WorldPart != null && localPlayer.WorldPart.CanTrigger && (localPlayer.Position - self.Position).SquaredFlatDist < info.Radius * info.Radius)
+				if (localPlayer != null && localPlayer.IsAlive && localPlayer.WorldPart != null && localPlayer.WorldPart.CanTrigger && (localPlayer.Position - Self.Position).SquaredFlatDist < info.Radius * info.Radius)
 					activate(localPlayer);
 			}
 			else
@@ -79,7 +79,7 @@ namespace WarriorsSnuggery.Objects.Actors.Parts
 				{
 					foreach (var actor in sector.Actors)
 					{
-						if (actor != self && actor.IsAlive && actor.WorldPart != null && actor.WorldPart.CanTrigger && (actor.Position - self.Position).SquaredFlatDist < squared)
+						if (actor != Self && actor.IsAlive && actor.WorldPart != null && actor.WorldPart.CanTrigger && (actor.Position - Self.Position).SquaredFlatDist < squared)
 							activate(actor);
 					}
 				}
@@ -140,7 +140,7 @@ namespace WarriorsSnuggery.Objects.Actors.Parts
 
 		void updateSectors()
 		{
-			sectors = self.World.ActorLayer.GetSectors(self.Position, info.Radius);
+			sectors = Self.World.ActorLayer.GetSectors(Self.Position, info.Radius);
 		}
 	}
 }

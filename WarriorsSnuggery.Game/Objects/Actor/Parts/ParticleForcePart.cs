@@ -43,7 +43,7 @@ namespace WarriorsSnuggery.Objects.Actors.Parts
 
 		ParticleSector[] sectors;
 
-		public ParticleForcePart(Actor self, ParticleForcePartInfo info) : base(self)
+		public ParticleForcePart(Actor self, ParticleForcePartInfo info) : base(self, info)
 		{
 			this.info = info;
 			force = new ParticleForce(info.ForceType, info.Strength, info.UseHeight);
@@ -52,12 +52,12 @@ namespace WarriorsSnuggery.Objects.Actors.Parts
 
 		public void OnMove(CPos old, CPos speed)
 		{
-			sectors = self.World.ParticleLayer.GetSectors(self.Position, info.MaxRange);
+			sectors = Self.World.ParticleLayer.GetSectors(Self.Position, info.MaxRange);
 		}
 
 		public void Tick()
 		{
-			if (info.MaxRange <= 0 || (info.AffectOnlyWhenPlayer && !self.IsPlayer))
+			if (info.MaxRange <= 0 || (info.AffectOnlyWhenPlayer && !Self.IsPlayer))
 				return;
 
 			foreach (var sector in sectors)
@@ -67,7 +67,7 @@ namespace WarriorsSnuggery.Objects.Actors.Parts
 					if (!particle.Type.AffectedByObjects)
 						continue;
 
-					var dist = (particle.Position - self.GraphicPosition).SquaredFlatDist;
+					var dist = (particle.Position - Self.GraphicPosition).SquaredFlatDist;
 					if (dist > info.MaxRangeSquared || dist < info.MinRangeSquared)
 						continue;
 
@@ -77,9 +77,9 @@ namespace WarriorsSnuggery.Objects.Actors.Parts
 					var ratio = (float)(1 - dist / (double)info.MaxRangeSquared);
 
 					// rather cache affections (as own class) in particle and then apply all at once, saving performance
-					particle.AffectVelocity(force, ratio, self.GraphicPosition);
+					particle.AffectVelocity(force, ratio, Self.GraphicPosition);
 					if (info.AffectRotation)
-						particle.AffectRotation(force, ratio, self.GraphicPosition);
+						particle.AffectRotation(force, ratio, Self.GraphicPosition);
 				}
 			}
 		}

@@ -7,9 +7,15 @@ using WarriorsSnuggery.Spells;
 
 namespace WarriorsSnuggery.Objects.Actors.Parts
 {
+	[Desc("Only used for internal purposes. Do not use.")]
+	public class PlayerPartInfo : PartInfo
+	{
+		public PlayerPartInfo(PartInitSet set) : base(set) { }
+	}
+
 	class PlayerPart : ActorPart, ITick, INoticeDamage, INoticeKilled, INoticeKill, INoticeMove, ISaveLoadable
 	{
-		public PlayerPart(Actor self) : base(self) { }
+		public PlayerPart(Actor self, PlayerPartInfo info) : base(self, info) { }
 
 		public void OnLoad(PartLoader loader)
 		{
@@ -24,7 +30,7 @@ namespace WarriorsSnuggery.Objects.Actors.Parts
 
 		public void Tick()
 		{
-			var screenControl = self.World.Game.ScreenControl;
+			var screenControl = Self.World.Game.ScreenControl;
 			if (screenControl.ChatOpen)
 				return;
 
@@ -44,32 +50,32 @@ namespace WarriorsSnuggery.Objects.Actors.Parts
 			{
 				var verticalAngle = (2 + vertical) * 0.5f * MathF.PI;
 				var horizontalAngle = (1 + horizontal) * 0.5f * MathF.PI;
-				self.AccelerateSelf(Angle.Cast(horizontalAngle + Angle.Diff(verticalAngle, horizontalAngle) / 2));
+				Self.AccelerateSelf(Angle.Cast(horizontalAngle + Angle.Diff(verticalAngle, horizontalAngle) / 2));
 			}
 			else if (vertical != 0)
-				self.AccelerateSelf((2 + vertical) * 0.5f * MathF.PI);
+				Self.AccelerateSelf((2 + vertical) * 0.5f * MathF.PI);
 			else if (horizontal != 0)
-				self.AccelerateSelf((1 + horizontal) * 0.5f * MathF.PI);
+				Self.AccelerateSelf((1 + horizontal) * 0.5f * MathF.PI);
 
 			if (Settings.DeveloperMode)
 			{
 				if (KeyInput.IsKeyDown(Settings.GetKey("MoveAbove")))
-					self.AccelerateHeightSelf(true);
+					Self.AccelerateHeightSelf(true);
 				if (KeyInput.IsKeyDown(Settings.GetKey("MoveBelow")))
-					self.AccelerateHeightSelf(false);
+					Self.AccelerateHeightSelf(false);
 			}
 
-			if (self.Weapon != null)
+			if (Self.Weapon != null)
 			{
 				var actor = FindValidTarget(MouseInput.GamePosition);
-				self.Weapon.Target = actor == null ? new Target(MouseInput.GamePosition) : new Target(actor);
+				Self.Weapon.Target = actor == null ? new Target(MouseInput.GamePosition) : new Target(actor);
 			}
 
-			if (MouseInput.IsLeftDown && !self.World.Game.ScreenControl.CursorOnUI())
+			if (MouseInput.IsLeftDown && !Self.World.Game.ScreenControl.CursorOnUI())
 				attackTarget(MouseInput.GamePosition);
 
-			foreach (var effect in self.GetActiveEffects(EffectType.MANA))
-				self.World.Game.Player.Mana += (int)effect.Effect.Value;
+			foreach (var effect in Self.GetActiveEffects(EffectType.MANA))
+				Self.World.Game.Player.Mana += (int)effect.Effect.Value;
 		}
 
 		public Actor FindValidTarget(CPos pos, int team = Actor.PlayerTeam)
@@ -80,14 +86,14 @@ namespace WarriorsSnuggery.Objects.Actors.Parts
 				return null;
 
 			// Look for actors in range.
-			var sectors = self.World.ActorLayer.GetSectors(pos, range);
+			var sectors = Self.World.ActorLayer.GetSectors(pos, range);
 			var currentRange = long.MaxValue;
 			Actor validTarget = null;
 			foreach (var sector in sectors)
 			{
 				foreach (var actor in sector.Actors)
 				{
-					if (actor.Team == team || actor.WorldPart == null || !self.World.IsVisibleTo(self, actor))
+					if (actor.Team == team || actor.WorldPart == null || !Self.World.IsVisibleTo(Self, actor))
 						continue;
 
 					var targetPart = actor.GetPartOrDefault<TargetablePart>();
@@ -109,37 +115,37 @@ namespace WarriorsSnuggery.Objects.Actors.Parts
 		void attackTarget(CPos pos)
 		{
 			if (KeyInput.IsKeyDown(Keys.LeftShift))
-				self.PrepareAttack(pos);
+				Self.PrepareAttack(pos);
 			else
 			{
 				var actor = FindValidTarget(pos);
 
 				if (actor == null)
-					self.PrepareAttack(pos);
+					Self.PrepareAttack(pos);
 				else
-					self.PrepareAttack(actor);
+					Self.PrepareAttack(actor);
 			}
 		}
 
 		void positionCamera(bool tinyMove)
 		{
-			Camera.Position(self.Position, tinyMove: tinyMove);
+			Camera.Position(Self.Position, tinyMove: tinyMove);
 		}
 
 		public void OnDamage(Actor damager, int damage)
 		{
-			self.World.Game.ScreenControl.HideArrow();
+			Self.World.Game.ScreenControl.HideArrow();
 			MusicController.FadeIntenseIn(Settings.UpdatesPerSecond * 20);
 		}
 
 		public void OnKilled(Actor killer)
 		{
-			self.World.PlayerKilled();
+			Self.World.PlayerKilled();
 		}
 
 		public void OnKill(Actor killed)
 		{
-			self.World.Game.Player.Kills++;
+			Self.World.Game.Player.Kills++;
 		}
 
 		public void OnMove(CPos old, CPos speed)

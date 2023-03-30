@@ -59,16 +59,16 @@ namespace WarriorsSnuggery.Loader
 
 		public static PartInfo GetPart(int currentPart, TextNode parent)
 		{
-			var internalName = currentPart.ToString();
+			var specification = currentPart.ToString();
 
 			if (!string.IsNullOrWhiteSpace(parent.Specification))
-				internalName = parent.Specification;
+				specification = parent.Specification;
 
 			try
 			{
 				var type = Type.GetType("WarriorsSnuggery.Objects.Actors.Parts." + parent.Key + "PartInfo", true, true);
 
-				var set = new PartInitSet(internalName, parent.Children);
+				var set = new PartInitSet(specification, parent.Children);
 
 				return (PartInfo)Activator.CreateInstance(type, new [] { set });
 			}

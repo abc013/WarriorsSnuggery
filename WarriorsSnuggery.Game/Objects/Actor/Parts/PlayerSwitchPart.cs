@@ -15,14 +15,14 @@
 		public ActorType ActorType;
 		public int CurrentTick = 0;
 
-		public PlayerSwitchPart(Actor self, PlayerSwitchPartInfo info) : base(self)
+		public PlayerSwitchPart(Actor self, PlayerSwitchPartInfo info) : base(self, info)
 		{
 			CurrentTick = info.SwitchDuration;
 		}
 
 		public void OnLoad(PartLoader loader)
 		{
-			foreach (var node in loader.GetNodes(typeof(PlayerSwitchPart)))
+			foreach (var node in loader.GetNodes(typeof(PlayerSwitchPart), Specification))
 			{
 				if (node.Key == "RelativeHP")
 					RelativeHP = node.Convert<float>();
@@ -35,7 +35,7 @@
 
 		public PartSaver OnSave()
 		{
-			var saver = new PartSaver(this, string.Empty);
+			var saver = new PartSaver(this, Specification);
 
 			saver.Add("RelativeHP", RelativeHP, 1f);
 			saver.Add("ActorType", ActorCache.Types[ActorType], null);
@@ -46,7 +46,7 @@
 
 		public void Tick()
 		{
-			if (CurrentTick-- == 0 && !self.Disposed)
+			if (CurrentTick-- == 0 && !Self.Disposed)
 				switchPlayer();
 		}
 
@@ -57,10 +57,10 @@
 
 		void switchPlayer()
 		{
-			var actor = ActorCache.Create(self.World, ActorType, self.Position, self.Team, isPlayer: true);
+			var actor = ActorCache.Create(Self.World, ActorType, Self.Position, Self.Team, isPlayer: true);
 			actor.Health.RelativeHP = RelativeHP;
-			self.World.FinishPlayerSwitch(actor);
-			self.Dispose();
+			Self.World.FinishPlayerSwitch(actor);
+			Self.Dispose();
 		}
 	}
 }

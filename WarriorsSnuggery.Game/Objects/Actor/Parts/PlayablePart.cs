@@ -15,6 +15,8 @@
 
 		[Desc("Displayed name of the actor.")]
 		public readonly string Name;
+		[Desc("Internal name of the actor.")]
+		public readonly string InternalName;
 		[Desc("Description of the actor as shown in the tooltip ingame.")]
 		public readonly string[] ShortDescription = new string[0];
 		[Desc("Description of the actor in the actor shop.")]
@@ -32,7 +34,7 @@
 
 		public ActorType PlayerSwitchActor => string.IsNullOrEmpty(info.PlayerSwitchActor) ? null : ActorCache.Types[info.PlayerSwitchActor];
 
-		public PlayablePart(Actor self, PlayablePartInfo info) : base(self)
+		public PlayablePart(Actor self, PlayablePartInfo info) : base(self, info)
 		{
 			this.info = info;
 		}

@@ -15,7 +15,7 @@
 
 		public string Name => info.Name;
 
-		public ArmorPart(Actor self, ArmorPartInfo info) : base(self)
+		public ArmorPart(Actor self, ArmorPartInfo info) : base(self, info)
 		{
 			this.info = info;
 		}

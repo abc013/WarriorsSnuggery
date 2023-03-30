@@ -32,7 +32,7 @@ namespace WarriorsSnuggery.Objects.Actors.Parts
 
 		public bool CanFly => info.CanFly;
 
-		public MobilePart(Actor self, MobilePartInfo info) : base(self)
+		public MobilePart(Actor self, MobilePartInfo info) : base(self, info)
 		{
 			this.info = info;
 			if (info.Sound != null)
@@ -41,7 +41,7 @@ namespace WarriorsSnuggery.Objects.Actors.Parts
 
 		public void OnLoad(PartLoader loader)
 		{
-			foreach (var node in loader.GetNodes(typeof(MobilePart), info.InternalName))
+			foreach (var node in loader.GetNodes(typeof(MobilePart), Specification))
 			{
 				if (node.Key == nameof(Force))
 					Force = node.Convert<CPos>();
@@ -52,7 +52,7 @@ namespace WarriorsSnuggery.Objects.Actors.Parts
 
 		public PartSaver OnSave()
 		{
-			var saver = new PartSaver(this, info.InternalName);
+			var saver = new PartSaver(this, Specification);
 
 			saver.Add(nameof(Force), Force, CPos.Zero);
 			saver.Add(nameof(Velocity), Velocity, CPos.Zero);
@@ -62,14 +62,14 @@ namespace WarriorsSnuggery.Objects.Actors.Parts
 
 		public void Tick()
 		{
-			if (!self.OnGround && !CanFly)
+			if (!Self.OnGround && !CanFly)
 				Force += info.Gravity;
 
 			wasMoving = Velocity != CPos.Zero;
 
 			if (wasMoving)
 			{
-				var friction = self.OnGround ? info.Friction : info.AirFriction;
+				var friction = Self.OnGround ? info.Friction : info.AirFriction;
 				var x = Velocity.X > 0 ? (int)Math.Ceiling(Velocity.X * friction) : (int)Math.Floor(Velocity.X * friction);
 				var y = Velocity.Y > 0 ? (int)Math.Ceiling(Velocity.Y * friction) : (int)Math.Floor(Velocity.Y * friction);
 				var z = Velocity.Z > 0 ? (int)Math.Ceiling(Velocity.Z * friction) : (int)Math.Floor(Velocity.Z * friction);
@@ -84,26 +84,26 @@ namespace WarriorsSnuggery.Objects.Actors.Parts
 				moveTick();
 
 				if (!wasMoving)
-					sound?.Play(self.Position, true, false);
+					sound?.Play(Self.Position, true, false);
 			}
 			else if (wasMoving)
 			{
 				sound?.Stop();
 
-				self.StopMove();
+				Self.StopMove();
 			}
 		}
 
 		void moveTick()
 		{
-			if (self.Disposed) // Prevent readding physics sectors if already disposed
+			if (Self.Disposed) // Prevent readding physics sectors if already disposed
 				return;
 
 			var speedModifier = 1f;
-			if (self.OnGround && self.CurrentTerrain != null)
-				speedModifier = self.CurrentTerrain.Type.Speed;
+			if (Self.OnGround && Self.CurrentTerrain != null)
+				speedModifier = Self.CurrentTerrain.Type.Speed;
 
-			foreach (var effect in self.GetActiveEffects(EffectType.SPEED))
+			foreach (var effect in Self.GetActiveEffects(EffectType.SPEED))
 				speedModifier *= effect.Effect.Value;
 
 			var currentVelocity = new CPos((int)Math.Round(Velocity.X * speedModifier), (int)Math.Round(Velocity.Y * speedModifier), (int)Math.Round(Velocity.Z * speedModifier));
@@ -112,13 +112,13 @@ namespace WarriorsSnuggery.Objects.Actors.Parts
 				return;
 
 			// Move only in z direction
-			if (currentVelocity.X == 0 && currentVelocity.Y == 0 && checkMove(self.Position + new CPos(0, 0, currentVelocity.Z), Velocity))
+			if (currentVelocity.X == 0 && currentVelocity.Y == 0 && checkMove(Self.Position + new CPos(0, 0, currentVelocity.Z), Velocity))
 				return;
 
 			// Move in all directions
 			if (currentVelocity.X != 0 && currentVelocity.Y != 0)
 			{
-				var pos = self.Position + currentVelocity;
+				var pos = Self.Position + currentVelocity;
 				if (checkMove(pos, Velocity))
 					return;
 			}
@@ -126,7 +126,7 @@ namespace WarriorsSnuggery.Objects.Actors.Parts
 			// Move only in x,z direction
 			if (currentVelocity.X != 0)
 			{
-				var posX = self.Position + new CPos(currentVelocity.X, 0, currentVelocity.Z);
+				var posX = Self.Position + new CPos(currentVelocity.X, 0, currentVelocity.Z);
 				if (checkMove(posX, new CPos(Velocity.X, 0, Velocity.Z)))
 					return;
 			}
@@ -134,7 +134,7 @@ namespace WarriorsSnuggery.Objects.Actors.Parts
 			// Move only in y,z direction
 			if (currentVelocity.Y != 0)
 			{
-				var posY = self.Position + new CPos(0, currentVelocity.Y, currentVelocity.Z);
+				var posY = Self.Position + new CPos(0, currentVelocity.Y, currentVelocity.Z);
 				if (checkMove(posY, new CPos(0, Velocity.Y, Velocity.Z)))
 					return;
 			}
@@ -144,16 +144,16 @@ namespace WarriorsSnuggery.Objects.Actors.Parts
 
 		bool checkMove(CPos pos, CPos velocity, bool evading = false)
 		{
-			if (!self.World.IsInPlayableWorld(pos))
+			if (!Self.World.IsInPlayableWorld(pos))
 				return false;
 
-			var oldPos = self.Position;
+			var oldPos = Self.Position;
 
-			self.Position = pos;
+			Self.Position = pos;
 
-			var intersects = self.World.CheckCollision(self.Physics, out var collision);
+			var intersects = Self.World.CheckCollision(Self.Physics, out var collision);
 
-			self.Position = oldPos;
+			Self.Position = oldPos;
 
 			if (intersects)
 			{
@@ -164,10 +164,10 @@ namespace WarriorsSnuggery.Objects.Actors.Parts
 				if (newVelocity == CPos.Zero)
 					return false;
 
-				return checkMove(self.Position + newVelocity, newVelocity, true);
+				return checkMove(Self.Position + newVelocity, newVelocity, true);
 			}
 
-			var terrain = self.World.TerrainAt(pos);
+			var terrain = Self.World.TerrainAt(pos);
 			if (terrain != null && pos.Z == 0 && terrain.Type.Speed == 0)
 				return false;
 
@@ -179,28 +179,28 @@ namespace WarriorsSnuggery.Objects.Actors.Parts
 
 		void acceptMove(CPos position, bool evading = false)
 		{
-			var old = self.Position;
-			self.Position = position;
-			self.World.EnsureInBounds(self);
+			var old = Self.Position;
+			Self.Position = position;
+			Self.World.EnsureInBounds(Self);
 
 			if (!evading)
-				self.Angle = (old - position).FlatAngle;
-			self.World.PhysicsLayer.UpdateSectors(self.Physics);
-			self.World.ActorLayer.Update(self);
+				Self.Angle = (old - position).FlatAngle;
+			Self.World.PhysicsLayer.UpdateSectors(Self.Physics);
+			Self.World.ActorLayer.Update(Self);
 
-			self.Move(old);
+			Self.Move(old);
 
-			sound?.SetPosition(self.Position);
+			sound?.SetPosition(Self.Position);
 
 			// Sustain movement for at least one tick
-			self.AddAction(ActionType.MOVE, 1);
+			Self.AddAction(ActionType.MOVE, 1);
 		}
 
 		void denyMove()
 		{
 			Velocity = CPos.Zero;
 
-			self.StopMove();
+			Self.StopMove();
 		}
 
 		public int Accelerate(float angle, int acceleration)

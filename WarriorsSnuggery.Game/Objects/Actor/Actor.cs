@@ -227,7 +227,7 @@ namespace WarriorsSnuggery.Objects.Actors
 				IsBot = false; // BotPart is not there, thus there's no bot
 
 			if (IsPlayer)
-				partManager.Add(new PlayerPart(this));
+				partManager.Add(new PlayerPart(this, new PlayerPartInfo(new PartInitSet("PlayerPart", new List<TextNode>()))));
 
 			tickParts = partManager.GetPartsOrDefault<ITick>();
 			editorTickParts = partManager.GetPartsOrDefault<ITickInEditor>();
