@@ -32,7 +32,7 @@ namespace WarriorsSnuggery.UI.Objects
 			infoText.DebugRender();
 		}
 
-		public void SetMessage(int duration, string text)
+		public void ShowInformation(int duration, string text)
 		{
 			if (infoTextDuration < 100)
 				UIUtils.PlayPingSound();

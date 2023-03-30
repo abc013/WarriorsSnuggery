@@ -90,8 +90,6 @@ namespace WarriorsSnuggery.UI.Screens
 		{
 			foreach (var spell in tree)
 				spell.DisableTooltip();
-
-			game.ScreenControl.UpdateSpells();
 		}
 	}
 

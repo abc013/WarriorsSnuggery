@@ -3,14 +3,14 @@ using WarriorsSnuggery.Maps.Layers;
 
 namespace WarriorsSnuggery.UI.Objects
 {
-	public class InfoScreen : ITick, IRenderable
+	public class DebugBox : ITick, IRenderable
 	{
 		public bool Visible => Settings.EnableInfoScreen;
 
 		readonly UIText version;
 		readonly UIText debug;
 
-		public InfoScreen()
+		public DebugBox()
 		{
 			var corner = (int)(WindowInfo.UnitWidth * 512) - 128;
 			version = new UIText(FontManager.Default, TextOffset.RIGHT)

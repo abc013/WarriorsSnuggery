@@ -14,13 +14,9 @@ namespace WarriorsSnuggery.UI.Screens
 		public Screen Focused { get; private set; }
 		public ScreenType FocusedType { get; private set; } = ScreenType.EMPTY;
 
-		readonly ChatBox chat;
-		public bool ChatOpen => chat.Visible;
-
-		readonly MessageBox message;
-
-		readonly InfoScreen infoScreen = new InfoScreen();
-
+		readonly ChatBox chat = new ChatBox(new UIPos(0, 4096));
+		readonly MessageBox message = new MessageBox(new UIPos(0, 4096));
+		readonly DebugBox debugBox = new DebugBox();
 		readonly InfoText infoText = new InfoText();
 
 		readonly GameTransitionFader fader = new GameTransitionFader();
@@ -28,9 +24,6 @@ namespace WarriorsSnuggery.UI.Screens
 		public ScreenControl(Game game)
 		{
 			this.game = game;
-
-			chat = new ChatBox(new UIPos(0, 4096));
-			message = new MessageBox(new UIPos(0, 4096));
 		}
 
 		public void Load()
@@ -136,7 +129,8 @@ namespace WarriorsSnuggery.UI.Screens
 		}
 
 		public void ShowMessage(Message message) => this.message.OpenMessage(message);
-		public void ShowInformation(int duration, string message) => infoText.SetMessage(duration, message);
+		public void ShowInformation(int duration, string message) => infoText.ShowInformation(duration, message);
+		public bool ChatOpen => chat.Visible;
 
 		public void FadeIn() => fader.FadeIn();
 		public void FadeOut() => fader.FadeOut();
@@ -151,7 +145,7 @@ namespace WarriorsSnuggery.UI.Screens
 			message.Tick();
 
 			fader.Tick();
-			infoScreen.Tick();
+			debugBox.Tick();
 
 			infoText.Tick();
 		}
@@ -164,7 +158,7 @@ namespace WarriorsSnuggery.UI.Screens
 			message.Render();
 
 			fader.Render();
-			infoScreen.Render();
+			debugBox.Render();
 
 			infoText.Render();
 		}
