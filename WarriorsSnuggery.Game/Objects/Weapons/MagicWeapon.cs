@@ -32,12 +32,20 @@ namespace WarriorsSnuggery.Objects.Weapons
 		{
 			projectile = (MagicProjectile)Type.Projectile;
 
-			speed = init.Convert("Speed", Vector.Zero);
-			speedLeft = init.Convert("SpeedLeft", Vector.Zero);
-			if (speed == Vector.Zero)
-				calculateSpeed();
+			TargetPosition += getInaccuracy(projectile.Inaccuracy);
+			Angle = (Position - TargetPosition).FlatAngle;
+
+			calculateSpeed();
 
 			ray = new PhysicsRay(world);
+
+			Load(init);
+		}
+
+		public override void Load(TextNodeInitializer initializer)
+		{
+			base.Load(initializer);
+			initializer.SetSaveFields(this, false);
 		}
 
 		public override void Tick()

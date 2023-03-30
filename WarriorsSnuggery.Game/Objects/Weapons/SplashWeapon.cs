@@ -36,12 +36,20 @@ namespace WarriorsSnuggery.Objects.Weapons
 			projectile = (SplashProjectile)Type.Projectile;
 
 			Angle = (Position - TargetPosition).FlatAngle;
-			speed = init.Convert("Speed", CPos.Zero);
+			speed = calculateSpeed();
 
-			repetition = init.Convert("Repetition", 0);
-			repetitionDelay = init.Convert("RepetitionDelay", 0);
+			repetition = projectile.Repetitions;
+			repetitionDelay = projectile.RepetitionDelay;
 
 			ray = new PhysicsRay(world);
+
+			Load(init);
+		}
+
+		public override void Load(TextNodeInitializer initializer)
+		{
+			base.Load(initializer);
+			initializer.SetSaveFields(this, false);
 		}
 
 		CPos calculateSpeed()

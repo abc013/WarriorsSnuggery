@@ -6,7 +6,7 @@ using WarriorsSnuggery.Spells;
 
 namespace WarriorsSnuggery.Objects.Weapons
 {
-	public abstract class Weapon : PositionableObject, ISaveable
+	public abstract class Weapon : PositionableObject, ILoadable, ISaveable
 	{
 		protected readonly World World;
 		[Save]
@@ -14,8 +14,8 @@ namespace WarriorsSnuggery.Objects.Weapons
 
 		public readonly uint ID;
 
-		[Save, DefaultValue(null)]
-		public readonly Actor Origin;
+		// Saved separately
+		public Actor Origin { get; private set; }
 		[Save]
 		public readonly byte Team;
 
@@ -24,6 +24,7 @@ namespace WarriorsSnuggery.Objects.Weapons
 		[Save]
 		public int DistanceTravelled;
 
+		// Saved separately
 		public Target Target;
 		[Save]
 		public CPos TargetPosition;
@@ -83,34 +84,25 @@ namespace WarriorsSnuggery.Objects.Weapons
 			World = world;
 			Type = init.Type;
 			ID = init.ID;
+		}
 
-			Position = init.Position;
+		public virtual void Load(TextNodeInitializer initializer)
+		{
+			var originID = initializer.Convert(nameof(Origin), uint.MaxValue);
+			Origin = World.ActorLayer.ToAdd().FirstOrDefault(a => a.ID == originID);
 
-			var originID = init.Convert("Origin", uint.MaxValue);
-			Origin = world.ActorLayer.ToAdd().FirstOrDefault(a => a.ID == originID);
-
-			var targetID = init.Convert("TargetActor", uint.MaxValue);
-			var TargetActor = world.ActorLayer.ToAdd().FirstOrDefault(a => a.ID == targetID);
+			var targetID = initializer.Convert("TargetActor", uint.MaxValue);
+			var TargetActor = World.ActorLayer.ToAdd().FirstOrDefault(a => a.ID == targetID);
 
 			if (TargetActor == null)
 			{
-				var targetPos = init.Convert("OriginalTargetPosition", CPos.Zero);
+				var targetPos = initializer.Convert("OriginalTargetPosition", CPos.Zero);
 				Target = new Target(targetPos);
 			}
 			else
 				Target = new Target(TargetActor);
 
-			Angle = init.Convert("Angle", 0f);
-			DistanceTravelled = init.Convert("DistanceTravelled", 0);
-
-			TargetPosition = init.Convert("TargetPosition", CPos.Zero);
-			
-			Team = init.Convert("Team", Team);
-
-			InaccuracyModifier = init.Convert("InaccuracyModifier", InaccuracyModifier);
-			DamageModifier = init.Convert("DamageModifier", DamageModifier);
-			DamageRangeModifier = init.Convert("DamageRangeModifier", DamageRangeModifier);
-			RangeModifier = init.Convert("RangeModifier", RangeModifier);
+			initializer.SetSaveFields(this);
 		}
 
 		public override void Tick()
@@ -176,6 +168,8 @@ namespace WarriorsSnuggery.Objects.Weapons
 		{
 			var saver = new TextNodeSaver();
 			saver.AddSaveFields(this);
+			if (Origin != null)
+				saver.Add(nameof(Origin), Origin.ID);
 
 			if (Target.Type == TargetType.ACTOR)
 				saver.Add("TargetActor", Target.Actor.ID);

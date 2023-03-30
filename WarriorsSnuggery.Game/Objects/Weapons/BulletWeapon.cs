@@ -35,15 +35,23 @@ namespace WarriorsSnuggery.Objects.Weapons
 		{
 			projectile = (BulletProjectile)Type.Projectile;
 
-			speed = init.Convert("Speed", Vector.Zero);
-			speedLeft = init.Convert("SpeedLeft", Vector.Zero);
-			if (speed == Vector.Zero)
-				calculateStartSpeed();
+			TargetPosition += getInaccuracy(projectile.Inaccuracy);
+			Angle = (Position - TargetPosition).FlatAngle;
+
+			calculateStartSpeed();
 
 			if (projectile.OrientateToTarget)
 				Rotation = new VAngle(0, 0, Angle);
 
 			ray = new PhysicsRay(world);
+
+			Load(init);
+		}
+
+		public override void Load(TextNodeInitializer initializer)
+		{
+			base.Load(initializer);
+			initializer.SetSaveFields(this, false);
 		}
 
 		void calculateStartSpeed()

@@ -24,6 +24,8 @@ namespace WarriorsSnuggery.Objects.Weapons
 		public InstantHitWeapon(World world, WeaponInit init) : base(world, init)
 		{
 			projectile = (InstantHitProjectile)Type.Projectile;
+
+			Load(init);
 		}
 
 		public override void Tick()

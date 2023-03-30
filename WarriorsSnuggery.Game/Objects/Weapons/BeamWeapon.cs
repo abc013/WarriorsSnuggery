@@ -38,11 +38,11 @@ namespace WarriorsSnuggery.Objects.Weapons
 			impactInterval = projectile.ImpactInterval;
 			ray = new PhysicsRay(world);
 
-			setPosition();
-
 			duration = type.ShootDuration;
 			buildupduration = projectile.StartupDuration;
 			endduration = projectile.CooldownDuration;
+
+			setPosition();
 
 			if (buildupduration > 0 && projectile.BeamStartUp != null)
 				useTexture(projectile.BeamStartUp);
@@ -61,13 +61,9 @@ namespace WarriorsSnuggery.Objects.Weapons
 			projectile = (BeamProjectile)Type.Projectile;
 			ray = new PhysicsRay(world);
 
-			originPos = init.Convert("OriginPosition", TargetPosition);
-			setPosition();
+			Load(init);
 
-			impactInterval = init.Convert("ImpactInterval", projectile.ImpactInterval);
-			duration = init.Convert("Duration", Type.ShootDuration);
-			buildupduration = init.Convert("BuildupDuration", projectile.StartupDuration);
-			endduration = init.Convert("EndDuration", projectile.CooldownDuration);
+			setPosition();
 
 			if (buildupduration > 0 && projectile.BeamStartUp != null)
 				useTexture(projectile.BeamStartUp);
@@ -79,6 +75,12 @@ namespace WarriorsSnuggery.Objects.Weapons
 				sound = new Sound(projectile.BeamSound);
 				sound.Play(originPos, true);
 			}
+		}
+
+		public override void Load(TextNodeInitializer initializer)
+		{
+			base.Load(initializer);
+			initializer.SetSaveFields(this, false);
 		}
 
 		void useTexture(TextureInfo texture)
