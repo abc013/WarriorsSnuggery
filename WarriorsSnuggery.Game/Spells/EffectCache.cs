@@ -10,7 +10,7 @@ namespace WarriorsSnuggery.Spells
 		public static void Load(List<TextNode> nodes)
 		{
 			foreach (var node in nodes)
-				Types.Add(node.Key, new Effect(node.Children));
+				Types.Add(node.Key, new Effect(node.Key, node.Children));
 		}
 	}
 }

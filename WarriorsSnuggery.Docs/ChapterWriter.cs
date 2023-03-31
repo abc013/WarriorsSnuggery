@@ -94,10 +94,10 @@ namespace WarriorsSnuggery.Docs
 		void writeSpells()
 		{
 			writer.WriteLine(DocumentationUtils.Header("SpellCaster", 2));
-			writer.WriteLine(TypeWriter.Write(typeof(Spells.SpellCasterType), new object[] { "", emptyTextNodes }));
+			writer.WriteLine(TypeWriter.Write(typeof(Spells.SpellCasterType), new object[] { string.Empty, emptyTextNodes }));
 
 			writer.WriteLine(DocumentationUtils.Header("Effect", 2));
-			writer.WriteLine(TypeWriter.Write(typeof(Spells.Effect), new[] { emptyTextNodes }));
+			writer.WriteLine(TypeWriter.Write(typeof(Spells.Effect), new object[] { string.Empty, emptyTextNodes }));
 		}
 
 		void writeTrophies()

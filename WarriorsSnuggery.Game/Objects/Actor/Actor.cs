@@ -249,7 +249,7 @@ namespace WarriorsSnuggery.Objects.Actors
 
 			var effectData = init.Nodes.Where(n => n.Key == nameof(ActorEffect));
 			foreach (var effectNode in effectData)
-				effects.Add(new ActorEffect(this, effectNode.Children));
+				effects.Add(new ActorEffect(this, new TextNodeInitializer(effectNode.Children)));
 
 			var actionData = init.Nodes.Where(n => n.Key == "ActionTiming");
 			if (actionData != null)

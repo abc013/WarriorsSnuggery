@@ -7,11 +7,11 @@ namespace WarriorsSnuggery.Loader
 {
 	public class TextNodeInitializer
 	{
-		readonly List<TextNode> nodes;
+		protected readonly List<TextNode> Nodes;
 
 		public TextNodeInitializer(List<TextNode> nodes)
 		{
-			this.nodes = nodes;
+			Nodes = nodes;
 		}
 
 		public void SetSaveFields<T>(T @object, bool inherit = true, bool ignoreDefaults = false)
@@ -31,7 +31,7 @@ namespace WarriorsSnuggery.Loader
 
 				var type = prop.MemberType == MemberTypes.Property ? typeof(T).GetProperty(prop.Name, flags).PropertyType : typeof(T).GetField(prop.Name, flags).FieldType;
 
-				var node = nodes.FirstOrDefault(n => n.Key == key);
+				var node = Nodes.FirstOrDefault(n => n.Key == key);
 				object value;
 				if (node == null)
 				{
@@ -56,7 +56,7 @@ namespace WarriorsSnuggery.Loader
 
 		public T Convert<T>(string rule, T @default)
 		{
-			var node = nodes.FirstOrDefault(n => n.Key == rule);
+			var node = Nodes.FirstOrDefault(n => n.Key == rule);
 			if (node != null)
 				return node.Convert<T>();
 
@@ -65,18 +65,18 @@ namespace WarriorsSnuggery.Loader
 
 		public bool ContainsRule(string rule)
 		{
-			return nodes.Exists(n => n.Key == rule);
+			return Nodes.Exists(n => n.Key == rule);
 		}
 
         public TextNodeInitializer MakeInitializerWith(string rule)
         {
-			var node = nodes.FirstOrDefault(n => n.Key == rule);
+			var node = Nodes.FirstOrDefault(n => n.Key == rule);
 
             if (node == null)
             {
                 var origin = "unknown origin";
 
-                var firstnode = nodes.FirstOrDefault();
+                var firstnode = Nodes.FirstOrDefault();
                 if (firstnode != null)
                     origin = firstnode.Parent.Origin;
 

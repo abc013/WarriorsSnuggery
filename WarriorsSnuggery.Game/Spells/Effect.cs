@@ -7,6 +7,8 @@ namespace WarriorsSnuggery.Spells
 {
 	public class Effect
 	{
+		readonly string name;
+
 		[Desc("Decides when to activate the effect.")]
 		public readonly EffectActivationType Activation = EffectActivationType.INSTANT;
 		[Desc("Maximal time the effect can endure sleeping (in other words: is waiting for activation)", "0 means infinite sleeping time.")]
@@ -29,9 +31,15 @@ namespace WarriorsSnuggery.Spells
 		[Desc("Play sound when the effect gets casted.")]
 		public readonly SoundType StartSound;
 
-		public Effect(List<TextNode> nodes)
+		public Effect(string name, List<TextNode> nodes)
 		{
+			this.name = name;
 			TypeLoader.SetValues(this, nodes);
+		}
+
+		public override string ToString()
+		{
+			return name;
 		}
 	}
 }

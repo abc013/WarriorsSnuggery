@@ -7,7 +7,7 @@ namespace WarriorsSnuggery.Objects.Actors
 {
 	public class ActorEffect : ITick, INoticeMove, ISaveable
 	{
-		// Saved separately
+		[Save("Type")]
 		public readonly Effect Effect;
 		readonly Actor self;
 
@@ -43,32 +43,11 @@ namespace WarriorsSnuggery.Objects.Actors
 			Sleeping = Effect.Activation != EffectActivationType.INSTANT;
 		}
 
-		public ActorEffect(Actor self, List<TextNode> nodes)
+		public ActorEffect(Actor self, TextNodeInitializer initializer)
 		{
 			this.self = self;
 
-			foreach(var child in nodes)
-			{
-				switch (child.Key)
-				{
-					case "Type":
-						Effect = child.Convert<Effect>();
-
-						break;
-					case "Tick":
-						tick = child.Convert<int>();
-
-						break;
-					case "Sleeping":
-						Sleeping = child.Convert<bool>();
-
-						break;
-					case "SleepTick":
-						sleepTick = child.Convert<int>();
-
-						break;
-				}
-			}
+			initializer.SetSaveFields(this);
 
 			if (Effect.Sound != null)
 				sound = new Sound(Effect.Sound);
@@ -78,7 +57,6 @@ namespace WarriorsSnuggery.Objects.Actors
 		{
 			var saver = new TextNodeSaver();
 			saver.AddSaveFields(this);
-			saver.Add("Type", EffectCache.Types[Effect]);
 
 			return saver;
 		}
