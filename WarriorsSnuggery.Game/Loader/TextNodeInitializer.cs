@@ -14,28 +14,38 @@ namespace WarriorsSnuggery.Loader
 			this.nodes = nodes;
 		}
 
-		public void SetSaveFields<T>(T @object, bool inherit = true, bool omitDefaults = false)
+		public void SetSaveFields<T>(T @object, bool inherit = true, bool ignoreDefaults = false)
 		{
 			const BindingFlags flags = BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance;
 
 			var props = typeof(T).GetFields(flags).Cast<MemberInfo>().Concat(typeof(T).GetProperties(flags));
 			foreach (var prop in props)
 			{
-				var attributes = prop.GetCustomAttributes(inherit);
-				var saveAttribute = attributes.FirstOrDefault(a => a is SaveAttribute);
+				var saveAttribute = prop.GetCustomAttribute<SaveAttribute>();
 				if (saveAttribute == null)
 					continue;
 
-				var key = ((SaveAttribute)saveAttribute).Name;
+				var key = saveAttribute.Name;
 				if (string.IsNullOrEmpty(key))
 					key = prop.Name;
 
-				var node = nodes.FirstOrDefault(n => n.Key == key);
-				if (node == null)
-					continue;
-
 				var type = prop.MemberType == MemberTypes.Property ? typeof(T).GetProperty(prop.Name, flags).PropertyType : typeof(T).GetField(prop.Name, flags).FieldType;
-				var value = node.Convert(type);
+
+				var node = nodes.FirstOrDefault(n => n.Key == key);
+				object value;
+				if (node == null)
+				{
+					if (ignoreDefaults)
+						continue;
+
+					var defaultAttribute = prop.GetCustomAttribute<DefaultValueAttribute>();
+					if (defaultAttribute == null)
+						continue;
+
+					value = defaultAttribute.Default;
+				}
+				else
+					value = node.Convert(type);
 				
 				if (prop.MemberType == MemberTypes.Property)
 					typeof(T).GetProperty(prop.Name, flags).SetValue(@object, value);

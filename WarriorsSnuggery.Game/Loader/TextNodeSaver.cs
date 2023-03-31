@@ -18,46 +18,41 @@ namespace WarriorsSnuggery.Loader
 			var props = typeof(T).GetProperties(flags).Cast<MemberInfo>().Concat(typeof(T).GetFields(flags));
 			foreach (var prop in props)
 			{
-				var attributes = prop.GetCustomAttributes(inherit);
-				var saveAttribute = attributes.FirstOrDefault(a => a is SaveAttribute);
-				if (saveAttribute != null)
+				var saveAttribute = prop.GetCustomAttribute<SaveAttribute>();
+				if (saveAttribute == null)
+					continue;
+
+				var key = saveAttribute.Name;
+				if (string.IsNullOrEmpty(key))
+					key = prop.Name;
+
+				var value = prop.MemberType == MemberTypes.Property ? typeof(T).GetProperty(prop.Name, flags).GetValue(@object) : typeof(T).GetField(prop.Name, flags).GetValue(@object);
+				var type = prop.MemberType == MemberTypes.Property ? typeof(T).GetProperty(prop.Name, flags).PropertyType : typeof(T).GetField(prop.Name, flags).FieldType;
+
+				if (!omitDefaults)
 				{
-					var key = ((SaveAttribute)saveAttribute).Name;
-					if (string.IsNullOrEmpty(key))
-						key = prop.Name;
+					var defaultValue = prop.GetCustomAttribute<DefaultValueAttribute>();
 
-					var value = prop.MemberType == MemberTypes.Property ? typeof(T).GetProperty(prop.Name, flags).GetValue(@object) : typeof(T).GetField(prop.Name, flags).GetValue(@object);
-					var type = prop.MemberType == MemberTypes.Property ? typeof(T).GetProperty(prop.Name, flags).PropertyType : typeof(T).GetField(prop.Name, flags).FieldType;
-
-					if (!omitDefaults)
+					if (defaultValue != null)
 					{
-						var defaultValue = attributes.FirstOrDefault(a => a is DefaultValueAttribute);
+						if (value == null && defaultValue.Default == null)
+							continue;
 
-						if (defaultValue != null)
-						{
-							if (value == null && ((DefaultValueAttribute)defaultValue).Default == null)
-								continue;
-
-							if (value != null && value.Equals(((DefaultValueAttribute)defaultValue).Default))
-								continue;
-						}
-					}
-
-					if (type.IsArray)
-					{
-						var enumeration = string.Empty;
-						foreach (var intern in (Array)value)
-						{
-							enumeration += intern + ",";
-						}
-
-						content.Add($"{key}={enumeration.TrimEnd(',')}");
-					}
-					else
-					{
-						content.Add($"{key}={value}");
+						if (value != null && value.Equals(defaultValue.Default))
+							continue;
 					}
 				}
+
+				if (type.IsArray)
+				{
+					var enumeration = string.Empty;
+					foreach (var intern in (Array)value)
+						enumeration += intern + ",";
+
+					content.Add($"{key}={enumeration.TrimEnd(',')}");
+				}
+				else
+					content.Add($"{key}={value}");
 			}
 		}
 
