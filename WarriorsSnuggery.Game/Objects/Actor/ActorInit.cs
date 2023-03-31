@@ -1,14 +1,14 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using WarriorsSnuggery.Loader;
+using WarriorsSnuggery.Objects.Actors.Parts;
 
 namespace WarriorsSnuggery.Objects.Actors
 {
-	public class ActorInit
+	public class ActorInit : TextNodeInitializer
 	{
 		public readonly uint ID;
 
-		public readonly List<TextNode> Nodes;
 		public readonly ActorType Type;
 
 		public readonly CPos Position;
@@ -19,7 +19,7 @@ namespace WarriorsSnuggery.Objects.Actors
 
 		public readonly string ScriptTag;
 
-		public ActorInit(uint id, ActorType type, CPos position, byte team, bool isBot, bool isPlayer, string scriptTag = "")
+		public ActorInit(uint id, ActorType type, CPos position, byte team, bool isBot, bool isPlayer, string scriptTag = "") : base(new List<TextNode>())
 		{
 			ID = id;
 			Type = type;
@@ -31,16 +31,12 @@ namespace WarriorsSnuggery.Objects.Actors
 			IsPlayer = isPlayer;
 
 			ScriptTag = scriptTag;
-
-			// Empty list
-			Nodes = new List<TextNode>();
 		}
 
 		// MapFormat 1-current
-		public ActorInit(uint id, List<TextNode> nodes, int mapFormat)
+		public ActorInit(uint id, List<TextNode> nodes, int mapFormat) : base(nodes)
 		{
 			ID = id;
-			Nodes = nodes;
 
 			Type = Convert<ActorType>("Type", null);
 			Position = Convert("Position", CPos.Zero);
@@ -54,13 +50,28 @@ namespace WarriorsSnuggery.Objects.Actors
 			ScriptTag = Convert("ScriptTag", string.Empty);
 		}
 
-		public T Convert<T>(string rule, T @default)
-		{
-			var node = Nodes.FirstOrDefault(n => n.Key == rule);
-			if (node != null)
-				return node.Convert<T>();
+        public List<TextNodeInitializer> MakeInitializersWith(string rule)
+        {
+			var list = new List<TextNodeInitializer>();
 
-			return @default;
+			foreach (var node in Nodes.Where(n => n.Key == rule))
+				list.Add(new TextNodeInitializer(node.Children));
+
+            return list; 
+        }
+
+		public PartLoader MakeInitializerWith(ActorInit init, ActorPart part)
+		{
+			var type = part.GetType();
+			var specification = part.Specification;
+
+			// TODO: remove n.Key == type.Name, it is outdated from MapFormat 3.
+			var parent = init.Nodes.FirstOrDefault(n => (n.Key == type.Name || n.Key == type.Name[..^4]) && (specification == null || specification == n.Specification));
+
+			if (parent == null)
+				return new PartLoader(new List<TextNode>());
+
+			return new PartLoader(parent.Children);
 		}
 	}
 }

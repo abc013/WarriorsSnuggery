@@ -245,22 +245,17 @@ namespace WarriorsSnuggery.Objects.Actors
 		public void OnLoad()
 		{
 			foreach (var part in partManager.GetPartsOrDefault<ISaveLoadable>())
-				part.OnLoad(new PartLoader(init, (ActorPart)part));
+				part.OnLoad(init.MakeInitializerWith(init, (ActorPart)part));
 
-			var effectData = init.Nodes.Where(n => n.Key == nameof(ActorEffect));
-			foreach (var effectNode in effectData)
-				effects.Add(new ActorEffect(this, new TextNodeInitializer(effectNode.Children)));
+			foreach (var effectInit in init.MakeInitializersWith(nameof(ActorEffect)))
+				effects.Add(new ActorEffect(this, effectInit));
 
-			var actionData = init.Nodes.Where(n => n.Key == "ActionTiming");
-			if (actionData != null)
+			foreach (var actionTimingInit in init.MakeInitializersWith("ActionTiming"))
 			{
-				foreach (var actionTiming in actionData)
-				{
-					var type = actionTiming.Children.First(n => n.Key == "Action").Convert<ActionType>();
-					var timing = actionTiming.Children.First(n => n.Key == "Timing").Convert<int>();
+				var type = actionTimingInit.Convert("Action", ActionType.IDLE);
+				var timing = actionTimingInit.Convert("Timing", 0);
 
-					actionTimings.Add(type, timing);
-				}
+				actionTimings.Add(type, timing);
 			}
 
 			var hoverPart = GetPartOrDefault<HoverPart>();
