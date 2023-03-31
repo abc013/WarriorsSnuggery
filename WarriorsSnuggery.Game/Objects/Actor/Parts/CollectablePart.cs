@@ -53,7 +53,9 @@ namespace WarriorsSnuggery.Objects.Actors.Parts
 	public class CollectablePart : ActorPart, ITick, INoticeMove, ISaveLoadable
 	{
 		readonly CollectablePartInfo info;
+		[Save("Activated"), DefaultValue(false)]
 		bool activated;
+		[Save("Cooldown"), DefaultValue(0)]
 		int cooldown;
 		Actor lastActor;
 		ActorSector[] sectors;
@@ -66,21 +68,13 @@ namespace WarriorsSnuggery.Objects.Actors.Parts
 
 		public void OnLoad(PartLoader loader)
 		{
-			foreach (var node in loader.GetNodes(typeof(CollectablePart), Specification))
-			{
-				if (node.Key == "Activated")
-					activated = node.Convert<bool>();
-				if (node.Key == "Cooldown")
-					cooldown = node.Convert<int>();
-			}
+			loader.SetSaveFields(this);
 		}
 
 		public PartSaver OnSave()
 		{
 			var saver = new PartSaver(this);
-
-			saver.Add("Activated", activated, false);
-			saver.Add("Cooldown", cooldown, 0);
+			saver.AddSaveFields(this);
 
 			return saver;
 		}

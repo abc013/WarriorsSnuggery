@@ -1,5 +1,4 @@
-﻿using WarriorsSnuggery.Loader;
-using WarriorsSnuggery.Objects.Weapons;
+﻿using WarriorsSnuggery.Objects.Weapons;
 using WarriorsSnuggery.Spells;
 
 namespace WarriorsSnuggery.Objects.Actors.Parts
@@ -37,7 +36,9 @@ namespace WarriorsSnuggery.Objects.Actors.Parts
 			COOLDOWN
 		}
 
+		[Save("State")]
 		WeaponState state;
+		[Save("StateTick")]
 		int stateTick; // time until state changes
 
 		public bool Ready => WeaponState.READY == state;
@@ -53,25 +54,15 @@ namespace WarriorsSnuggery.Objects.Actors.Parts
 
 		public void OnLoad(PartLoader loader)
 		{
-			foreach (var node in loader.GetNodes(typeof(WeaponPart), Specification))
+			if (loader.ContainsRule(nameof(Target)))
+				Target = new Target(loader.MakeInitializerWith(nameof(Target)), Self.World);
+			if (loader.ContainsRule("BeamWeapon"))
 			{
-				switch (node.Key)
-				{
-					case "BeamWeapon":
-						var id = node.Convert<int>();
-						beam = (BeamWeapon)Self.World.WeaponLayer.Weapons.Find(w => w.ID == id);
-						break;
-					case "StateTick":
-						stateTick = node.Convert<int>();
-						break;
-					case "State":
-						state = node.Convert<WeaponState>();
-						break;
-					case nameof(Target):
-						Target = new Target(new TextNodeInitializer(node.Children), Self.World);
-						break;
-				}
+				var id = loader.Convert<int>("BeamWeapon", int.MaxValue);
+				beam = (BeamWeapon)Self.World.WeaponLayer.Weapons.Find(w => w.ID == id);
 			}
+
+			loader.SetSaveFields(this);
 		}
 
 		public PartSaver OnSave()
@@ -80,12 +71,10 @@ namespace WarriorsSnuggery.Objects.Actors.Parts
 
 			if (beam != null)
 				saver.Add("BeamWeapon", beam.ID, -1);
-
-			saver.Add("StateTick", stateTick, 0);
-			saver.Add("State", state, WeaponState.READY);
-
 			if (Target != null)
 				saver.AddChildren(nameof(Target), Target.Save());
+
+			saver.AddSaveFields(this);
 
 			return saver;
 		}

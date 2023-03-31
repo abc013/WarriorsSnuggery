@@ -26,7 +26,9 @@ namespace WarriorsSnuggery.Objects.Actors.Parts
 		readonly MobilePartInfo info;
 		readonly Sound sound;
 
+		[Save]
 		public CPos Force { get; private set; }
+		[Save]
 		public CPos Velocity { get; private set; }
 		bool wasMoving;
 
@@ -41,21 +43,13 @@ namespace WarriorsSnuggery.Objects.Actors.Parts
 
 		public void OnLoad(PartLoader loader)
 		{
-			foreach (var node in loader.GetNodes(typeof(MobilePart), Specification))
-			{
-				if (node.Key == nameof(Force))
-					Force = node.Convert<CPos>();
-				else if (node.Key == nameof(Velocity))
-					Velocity = node.Convert<CPos>();
-			}
+			loader.SetSaveFields(this);
 		}
 
 		public PartSaver OnSave()
 		{
 			var saver = new PartSaver(this);
-
-			saver.Add(nameof(Force), Force, CPos.Zero);
-			saver.Add(nameof(Velocity), Velocity, CPos.Zero);
+			saver.AddSaveFields(this);
 
 			return saver;
 		}

@@ -46,6 +46,7 @@ namespace WarriorsSnuggery.Objects.Actors.Parts
 					health = 0;
 			}
 		}
+		// saved separately
 		int health;
 
 		public HealthPart(Actor self, HealthPartInfo info) : base(self, info)
@@ -57,18 +58,15 @@ namespace WarriorsSnuggery.Objects.Actors.Parts
 
 		public void OnLoad(PartLoader loader)
 		{
-			foreach (var node in loader.GetNodes(typeof(HealthPart), Specification))
-			{
-				if (node.Key == "Health")
-					HP = node.Convert<int>();
-			}
+			loader.SetSaveFields(this);
+			health = loader.Convert("Health", info.StartHealth);
 		}
 
 		public PartSaver OnSave()
 		{
 			var saver = new PartSaver(this);
-
-			saver.Add("Health", HP, StartHealth);
+			saver.AddSaveFields(this);
+			saver.Add("Health", health, info.StartHealth);
 
 			return saver;
 		}

@@ -11,8 +11,11 @@
 
 	public class PlayerSwitchPart : ActorPart, ITick, INoticeKilled, ISaveLoadable
 	{
+		[Save, DefaultValue(1f)]
 		public float RelativeHP = 1f;
+		[Save]
 		public ActorType ActorType;
+		[Save, DefaultValue(0)]
 		public int CurrentTick = 0;
 
 		public PlayerSwitchPart(Actor self, PlayerSwitchPartInfo info) : base(self, info)
@@ -22,24 +25,13 @@
 
 		public void OnLoad(PartLoader loader)
 		{
-			foreach (var node in loader.GetNodes(typeof(PlayerSwitchPart), Specification))
-			{
-				if (node.Key == "RelativeHP")
-					RelativeHP = node.Convert<float>();
-				if (node.Key == "ActorType")
-					ActorType = node.Convert<ActorType>();
-				if (node.Key == "CurrentTick")
-					CurrentTick = node.Convert<int>();
-			}
+			loader.SetSaveFields(this);
 		}
 
 		public PartSaver OnSave()
 		{
 			var saver = new PartSaver(this);
-
-			saver.Add("RelativeHP", RelativeHP, 1f);
-			saver.Add("ActorType", ActorCache.Types[ActorType], null);
-			saver.Add("CurrentTick", CurrentTick, 0);
+			saver.AddSaveFields(this);
 
 			return saver;
 		}

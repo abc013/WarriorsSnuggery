@@ -53,6 +53,11 @@ namespace WarriorsSnuggery.Loader
 			return @default;
 		}
 
+		public bool ContainsRule(string rule)
+		{
+			return nodes.Exists(n => n.Key == rule);
+		}
+
         public TextNodeInitializer MakeInitializerWith(string rule)
         {
 			var node = nodes.FirstOrDefault(n => n.Key == rule);

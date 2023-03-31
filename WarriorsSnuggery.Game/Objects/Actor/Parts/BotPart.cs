@@ -1,5 +1,4 @@
-﻿using WarriorsSnuggery.Loader;
-using WarriorsSnuggery.Objects.Actors.Bot;
+﻿using WarriorsSnuggery.Objects.Actors.Bot;
 using WarriorsSnuggery.Objects.Weapons;
 
 namespace WarriorsSnuggery.Objects.Actors.Parts
@@ -38,17 +37,13 @@ namespace WarriorsSnuggery.Objects.Actors.Parts
 
 		public void OnLoad(PartLoader loader)
 		{
-			foreach (var node in loader.GetNodes(typeof(BotPart)))
-			{
-				if (node.Key == nameof(Target))
-					Target = new Target(new TextNodeInitializer(node.Children), Self.World);
-			}
+			if (loader.ContainsRule(nameof(Target)))
+				Target = new Target(loader.MakeInitializerWith(nameof(Target)), Self.World);
 		}
 
 		public PartSaver OnSave()
 		{
 			var saver = new PartSaver(this);
-
 			if (Target != null)
 				saver.AddChildren(nameof(Target), Target.Save());
 

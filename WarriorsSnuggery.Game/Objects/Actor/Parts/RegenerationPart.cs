@@ -18,6 +18,7 @@ namespace WarriorsSnuggery.Objects.Actors.Parts
 	public class RegenerationPart : ActorPart, ITick, INoticeDamage, ISaveLoadable
 	{
 		readonly RegenerationPartInfo info;
+		[Save("Tick"), DefaultValue(0)]
 		int tick;
 
 		public RegenerationPart(Actor self, RegenerationPartInfo info) : base(self, info)
@@ -27,18 +28,13 @@ namespace WarriorsSnuggery.Objects.Actors.Parts
 
 		public void OnLoad(PartLoader loader)
 		{
-			foreach (var node in loader.GetNodes(typeof(RegenerationPart), Specification))
-			{
-				if (node.Key == "Tick")
-					tick = node.Convert<int>();
-			}
+			loader.SetSaveFields(this);
 		}
 
 		public PartSaver OnSave()
 		{
 			var saver = new PartSaver(this);
-
-			saver.Add("Tick", tick, 0);
+			saver.AddSaveFields(this);
 
 			return saver;
 		}

@@ -244,9 +244,8 @@ namespace WarriorsSnuggery.Objects.Actors
 
 		public void OnLoad()
 		{
-			var partLoader = new PartLoader(init);
 			foreach (var part in partManager.GetPartsOrDefault<ISaveLoadable>())
-				part.OnLoad(partLoader);
+				part.OnLoad(new PartLoader(init, (ActorPart)part));
 
 			var effectData = init.Nodes.Where(n => n.Key == nameof(ActorEffect));
 			foreach (var effectNode in effectData)

@@ -1,23 +1,21 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using WarriorsSnuggery.Loader;
+using WarriorsSnuggery.Objects.Actors.Parts;
 
 namespace WarriorsSnuggery.Objects.Actors
 {
-	public class PartLoader
+	public class PartLoader : TextNodeInitializer
 	{
-		readonly List<TextNode> nodes;
+		public PartLoader(ActorInit init, ActorPart part) : base(getNodes(init, part)) { }
 
-		public PartLoader(ActorInit init)
+		static List<TextNode> getNodes(ActorInit init, ActorPart part)
 		{
-			nodes = init.Nodes;
-		}
+			var type = part.GetType();
+			var specification = part.Specification;
 
-		public List<TextNode> GetNodes(Type type, string specification = null)
-		{
 			// TODO: remove n.Key == type.Name, it is outdated from MapFormat 3.
-			var parent = nodes.FirstOrDefault(n => (n.Key == type.Name || n.Key == type.Name[..^4]) && (specification == null || specification == n.Specification));
+			var parent = init.Nodes.FirstOrDefault(n => (n.Key == type.Name || n.Key == type.Name[..^4]) && (specification == null || specification == n.Specification));
 
 			if (parent == null)
 				return new List<TextNode>();

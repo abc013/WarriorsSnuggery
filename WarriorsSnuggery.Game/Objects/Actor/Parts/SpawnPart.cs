@@ -65,6 +65,7 @@ namespace WarriorsSnuggery.Objects.Actors.Parts
 	public class SpawnPart : ActorPart, ITick, INoticeDamage, INoticeKilled, ISaveLoadable
 	{
 		readonly SpawnPartInfo info;
+		[Save("Tick"), DefaultValue(0)]
 		int curTick;
 
 		public SpawnPart(Actor self, SpawnPartInfo info) : base(self, info)
@@ -74,18 +75,13 @@ namespace WarriorsSnuggery.Objects.Actors.Parts
 
 		public void OnLoad(PartLoader loader)
 		{
-			foreach (var node in loader.GetNodes(typeof(SpawnPart), Specification))
-			{
-				if (node.Key == "Tick")
-					curTick = node.Convert<int>();
-			}
+			loader.SetSaveFields(this);
 		}
 
 		public PartSaver OnSave()
 		{
 			var saver = new PartSaver(this);
-
-			saver.Add("Tick", curTick, 0);
+			saver.AddSaveFields(this);
 
 			return saver;
 		}
