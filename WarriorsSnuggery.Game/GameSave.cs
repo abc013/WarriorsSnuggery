@@ -11,6 +11,7 @@ namespace WarriorsSnuggery
 {
 	public sealed class GameSave
 	{
+		// Saved separately
 		public Player Player { get; private set; }
 		// Saved separately
 		public int GameSaveFormat { get; private set; }

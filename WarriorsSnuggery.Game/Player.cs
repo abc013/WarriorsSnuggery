@@ -60,7 +60,6 @@ namespace WarriorsSnuggery
 
 		public Player(byte team, byte playerID, string name)
 		{
-			SpellCasters = new SpellCasterManager(this);
 			Team = team;
 			PlayerID = playerID;
 			Name = name;
@@ -79,19 +78,21 @@ namespace WarriorsSnuggery
 		{
 			SpellCasters = new SpellCasterManager(this);
 			initializer.SetSaveFields(this);
-			SpellCasters.Load(initializer.MakeInitializerWith(nameof(SpellCasters), true));
+			SpellCasters.Load(initializer.MakeInitializerWith(nameof(SpellCasters)));
 		}
 
-		Player(Player save)
+		Player(Player other)
 		{
 			// Copy all fields
 			var fields = typeof(Player).GetFields(BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Instance);
 			foreach (var field in fields)
-				field.SetValue(this, field.GetValue(save));
+				field.SetValue(this, field.GetValue(other));
 
 			unlockedSpells = new List<string>(UnlockedSpells);
 			unlockedActors = new List<string>(UnlockedActors);
 			unlockedTrophies = new List<string>(UnlockedTrophies);
+
+			SpellCasters = other.SpellCasters.Clone();
 		}
 
 		public Player Clone()

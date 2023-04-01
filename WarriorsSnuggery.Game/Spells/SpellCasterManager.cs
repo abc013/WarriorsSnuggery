@@ -16,6 +16,19 @@ namespace WarriorsSnuggery.Spells
 				Casters[i++] = new SpellCaster(player, casterType);
 		}
 
+		SpellCasterManager(SpellCasterManager other)
+		{
+			Casters = new SpellCaster[SpellCasterCache.Types.Count];
+
+			for (int i = 0; i < Casters.Length; i++)
+				Casters[i] = other.Casters[i].Clone();
+		}
+
+		public SpellCasterManager Clone()
+		{
+			return new SpellCasterManager(this);
+		}
+
 		public void Load(TextNodeInitializer initializer)
 		{
 			foreach (var caster in Casters)

@@ -15,6 +15,7 @@ namespace WarriorsSnuggery.Spells
 		public float RemainingDuration => 1 - duration / (float)Type.Duration;
 		public float RechargeProgress => 1 - recharge / (float)Type.Cooldown;
 
+		// TODO: save
 		readonly List<ActorEffect> currentEffects = new List<ActorEffect>();
 
 		[Save("Duration"), DefaultValue(0)]
@@ -26,6 +27,20 @@ namespace WarriorsSnuggery.Spells
 		{
 			this.player = player;
 			Type = type;
+		}
+
+		public SpellCaster(SpellCaster other)
+		{
+			player = other.player;
+			Type = other.Type;
+			State = other.State;
+			duration = other.duration;
+			recharge = other.recharge;
+		}
+
+		public SpellCaster Clone()
+		{
+			return new SpellCaster(this);
 		}
 
 		public void Load(TextNodeInitializer initializer)
