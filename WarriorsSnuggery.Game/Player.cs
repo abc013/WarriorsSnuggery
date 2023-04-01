@@ -55,8 +55,12 @@ namespace WarriorsSnuggery
 		readonly List<string> unlockedActors = new List<string>();
 		readonly List<string> unlockedTrophies = new List<string>();
 
+		// Saved separately
+		public readonly SpellCasterManager SpellCasters;
+
 		public Player(byte team, byte playerID, string name)
 		{
+			SpellCasters = new SpellCasterManager(this);
 			Team = team;
 			PlayerID = playerID;
 			Name = name;
@@ -73,7 +77,9 @@ namespace WarriorsSnuggery
 
 		public Player(TextNodeInitializer initializer)
 		{
+			SpellCasters = new SpellCasterManager(this);
 			initializer.SetSaveFields(this);
+			SpellCasters.Load(initializer.MakeInitializerWith(nameof(SpellCasters)));
 		}
 
 		Player(Player save)
@@ -177,6 +183,7 @@ namespace WarriorsSnuggery
 		{
 			var saver = new TextNodeSaver();
 			saver.AddSaveFields(this);
+			saver.AddChildren(nameof(SpellCasters), SpellCasters.Save());
 
 			return saver;
 		}

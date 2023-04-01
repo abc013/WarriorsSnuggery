@@ -1,21 +1,28 @@
 ﻿using WarriorsSnuggery.Loader;
+using WarriorsSnuggery.Objects.Actors;
 
 namespace WarriorsSnuggery.Spells
 {
-	public class SpellCasterManager : ITick, ISaveable
+	public class SpellCasterManager : ITick, ILoadable, ISaveable
 	{
-		readonly Game game;
 		public readonly SpellCaster[] Casters;
 
-		public SpellCasterManager(Game game)
+		public SpellCasterManager(Player player)
 		{
-			this.game = game;
-
 			Casters = new SpellCaster[SpellCasterCache.Types.Count];
 
 			var i = 0;
-			foreach (var caster in SpellCasterCache.Types.Values)
-				Casters[i++] = new SpellCaster(game, caster);
+			foreach (var casterType in SpellCasterCache.Types.Values)
+				Casters[i++] = new SpellCaster(player, casterType);
+		}
+
+		public void Load(TextNodeInitializer initializer)
+		{
+			foreach (var caster in Casters)
+			{
+				if (initializer.ContainsRule(caster.Type.InnerName))
+					caster.Load(initializer.MakeInitializerWith(caster.Type.InnerName));
+			}
 		}
 
 		public void Tick()
@@ -30,9 +37,9 @@ namespace WarriorsSnuggery.Spells
 				caster.CancelActive();
 		}
 
-		public bool Activate(int caster)
+		public bool Activate(int caster, Actor actor)
 		{
-			return Casters[caster].Activate(game.World.LocalPlayer);
+			return Casters[caster].Activate(actor);
 		}
 
 		public bool Unlocked(int caster)
@@ -43,8 +50,8 @@ namespace WarriorsSnuggery.Spells
 		public TextNodeSaver Save()
 		{
 			var saver = new TextNodeSaver();
-			foreach (var caster in game.SpellManager.Casters)
-				saver.AddChildren(caster.Type.InnerName, caster.Save());
+			foreach (var caster in Casters)
+				saver.AddChildren(caster.Type.InnerName, caster.Save(), true);
 
 			return saver;
 		}

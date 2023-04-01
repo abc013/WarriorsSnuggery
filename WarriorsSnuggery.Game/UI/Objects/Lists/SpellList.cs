@@ -61,12 +61,12 @@ namespace WarriorsSnuggery.UI.Objects
 			{
 				CurrentSpell += MouseInput.WheelState;
 				if (KeyInput.IsKeyDown(Settings.GetKey("Activate")) || !KeyInput.IsKeyDown(Keys.LeftControl) && MouseInput.IsRightClicked)
-					game.SpellManager.Activate(CurrentSpell);
+					game.SpellManager.Activate(CurrentSpell, game.World.LocalPlayer);
 
 				for (int i = 0; i < Math.Max(spellCount, 10); i++)
 				{
 					if (KeyInput.IsKeyDown(Keys.D0 + i))
-						game.SpellManager.Activate((i + 9) % 10);
+						game.SpellManager.Activate((i + 9) % 10, game.World.LocalPlayer);
 				}
 			}
 		}

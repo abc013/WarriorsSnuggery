@@ -31,9 +31,6 @@ namespace WarriorsSnuggery
 		[Save]
 		public float Health { get; private set; }
 
-		// Saved separately
-		public Dictionary<string, (int duration, int recharge)> SpellCasters { get; private set; } = new Dictionary<string, (int, int)>();
-
 		// Level Values
 		[Save]
 		public ObjectiveType CurrentObjective { get; private set; }
@@ -77,8 +74,7 @@ namespace WarriorsSnuggery
 					properties.SetValue(this, properties.GetValue(save));
 			}
 
-			// Create new dictionary and lists
-			SpellCasters = new Dictionary<string, (int, int)>(save.SpellCasters);
+			// Clone Player
 			Player = save.Player.Clone();
 		}
 
@@ -108,32 +104,6 @@ namespace WarriorsSnuggery
 						break;
 					case nameof(CurrentMapType):
 						CurrentMapType = MapCache.Types[node.Value];
-
-						break;
-					case nameof(SpellCasters):
-						foreach (var node2 in node.Children)
-						{
-							var innerName = node2.Key;
-
-							var recharge = 0;
-							var duration = 0;
-							foreach (var node3 in node2.Children)
-							{
-								switch (node3.Key)
-								{
-									case "Recharge":
-										recharge = node3.Convert<int>();
-
-										break;
-									case "Duration":
-										duration = node3.Convert<int>();
-
-										break;
-								}
-							}
-
-							SpellCasters.Add(innerName, (duration, recharge));
-						}
 
 						break;
 					case nameof(ScriptState):
@@ -171,14 +141,6 @@ namespace WarriorsSnuggery
 
 		GameSave() { }
 
-		public (int duration, int recharge) GetSpellCasterValues(string innerName)
-		{
-			if (!SpellCasters.ContainsKey(innerName))
-				return (0, 0);
-
-			return SpellCasters[innerName];
-		}
-
 		public int CalculateScore()
 		{
 			// Positive Points
@@ -209,7 +171,6 @@ namespace WarriorsSnuggery
 
 			saver.AddSaveFields(this);
 
-			saver.AddChildren(nameof(SpellCasters), game.SpellManager.Save(), true);
 			saver.AddChildren(nameof(CustomConditions), game.ConditionManager.Save(), true);
 
 			using (var writer = new StreamWriter(FileExplorer.Saves + SaveName + ".yaml", false))

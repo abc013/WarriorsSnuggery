@@ -21,6 +21,7 @@ namespace WarriorsSnuggery
 
 		public readonly GameSave Save;
 		public Player Player => Save.Player;
+		public SpellCasterManager SpellManager => Save.Player.SpellCasters;
 		public readonly GameSave OriginalSave;
 
 		public readonly MapType MapType;
@@ -32,7 +33,6 @@ namespace WarriorsSnuggery
 
 		public readonly ObjectiveType ObjectiveType;
 
-		public readonly SpellCasterManager SpellManager;
 		public readonly ConditionManager ConditionManager;
 
 		public readonly WaveController WaveController;
@@ -81,7 +81,6 @@ namespace WarriorsSnuggery
 
 			Editor = InteractionMode == InteractionMode.EDITOR;
 
-			SpellManager = new SpellCasterManager(this);
 			ConditionManager = new ConditionManager(this);
 
 			ScreenControl = new ScreenControl(this);

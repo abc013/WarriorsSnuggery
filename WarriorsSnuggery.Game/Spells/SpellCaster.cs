@@ -5,10 +5,10 @@ using WarriorsSnuggery.Objects.Actors;
 
 namespace WarriorsSnuggery.Spells
 {
-	public class SpellCaster : ITick, ISaveable
+	public class SpellCaster : ITick, ILoadable, ISaveable
 	{
 		public readonly SpellCasterType Type;
-		readonly Game game;
+		readonly Player player;
 
 		public SpellCasterState State { get; private set; } = SpellCasterState.READY;
 
@@ -22,13 +22,16 @@ namespace WarriorsSnuggery.Spells
 		[Save("Recharge"), DefaultValue(0)]
 		int recharge;
 
-		public SpellCaster(Game game, SpellCasterType type)
+		public SpellCaster(Player player, SpellCasterType type)
 		{
-			this.game = game;
+			this.player = player;
 			Type = type;
+		}
 
-			(duration, recharge) = game.Save.GetSpellCasterValues(type.InnerName);
-
+		public void Load(TextNodeInitializer initializer)
+		{
+			initializer.SetSaveFields(this);
+			
 			if (duration > 0)
 				State = SpellCasterState.ACTIVE;
 			else if (recharge > 0)
@@ -66,13 +69,13 @@ namespace WarriorsSnuggery.Spells
 			if (State != SpellCasterState.READY || !Unlocked())
 				return false;
 
-			if (game.World.LocalPlayer.IsPlayerSwitch)
+			if (actor.IsPlayerSwitch)
 				return false;
 
-			if (game.Player.Mana < Type.ManaCost)
+			if (player.Mana < Type.ManaCost)
 				return false;
 
-			game.Player.Mana -= Type.ManaCost;
+			player.Mana -= Type.ManaCost;
 
 			State = SpellCasterState.SLEEPING;
 			recharge = Type.Cooldown;
@@ -87,7 +90,7 @@ namespace WarriorsSnuggery.Spells
 
 		public bool Unlocked()
 		{
-			return game.Player.HasSpellUnlocked(Type);
+			return player.HasSpellUnlocked(Type);
 		}
 
 		public TextNodeSaver Save()

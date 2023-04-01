@@ -102,7 +102,7 @@ namespace WarriorsSnuggery.UI.Objects
 				for (int i = 0; i < Math.Max(actorTypes.Count, 10); i++)
 				{
 					if (KeyInput.IsKeyDown(Keys.D0 + i))
-						game.SpellManager.Activate((i + 9) % 10);
+						changePlayer(actorTypes[(i + 9) % 10]);
 				}
 			}
 		}
