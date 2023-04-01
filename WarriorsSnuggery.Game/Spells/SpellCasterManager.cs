@@ -19,10 +19,7 @@ namespace WarriorsSnuggery.Spells
 		public void Load(TextNodeInitializer initializer)
 		{
 			foreach (var caster in Casters)
-			{
-				if (initializer.ContainsRule(caster.Type.InnerName))
-					caster.Load(initializer.MakeInitializerWith(caster.Type.InnerName));
-			}
+				caster.Load(initializer.MakeInitializerWith(caster.Type.InnerName, true));
 		}
 
 		public void Tick()

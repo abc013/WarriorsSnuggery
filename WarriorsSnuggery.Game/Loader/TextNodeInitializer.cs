@@ -68,12 +68,15 @@ namespace WarriorsSnuggery.Loader
 			return Nodes.Exists(n => n.Key == rule);
 		}
 
-        public TextNodeInitializer MakeInitializerWith(string rule)
+        public TextNodeInitializer MakeInitializerWith(string rule, bool returnEmptyIfNull = false)
         {
 			var node = Nodes.FirstOrDefault(n => n.Key == rule);
 
             if (node == null)
             {
+				if (returnEmptyIfNull)
+					return new TextNodeInitializer(new List<TextNode>());
+
                 var origin = "unknown origin";
 
                 var firstnode = Nodes.FirstOrDefault();

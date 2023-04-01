@@ -79,7 +79,7 @@ namespace WarriorsSnuggery
 		{
 			SpellCasters = new SpellCasterManager(this);
 			initializer.SetSaveFields(this);
-			SpellCasters.Load(initializer.MakeInitializerWith(nameof(SpellCasters)));
+			SpellCasters.Load(initializer.MakeInitializerWith(nameof(SpellCasters), true));
 		}
 
 		Player(Player save)
@@ -183,7 +183,7 @@ namespace WarriorsSnuggery
 		{
 			var saver = new TextNodeSaver();
 			saver.AddSaveFields(this);
-			saver.AddChildren(nameof(SpellCasters), SpellCasters.Save());
+			saver.AddChildren(nameof(SpellCasters), SpellCasters.Save(), true);
 
 			return saver;
 		}
