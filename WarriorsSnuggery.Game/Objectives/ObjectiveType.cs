@@ -1,4 +1,4 @@
-﻿namespace WarriorsSnuggery
+﻿namespace WarriorsSnuggery.Objectives
 {
 	public enum ObjectiveType
 	{

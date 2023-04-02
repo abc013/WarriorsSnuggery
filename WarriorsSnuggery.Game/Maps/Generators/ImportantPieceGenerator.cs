@@ -4,6 +4,7 @@ using System.Linq;
 using WarriorsSnuggery.Loader;
 using WarriorsSnuggery.Maps.Noises;
 using WarriorsSnuggery.Maps.Pieces;
+using WarriorsSnuggery.Objectives;
 
 namespace WarriorsSnuggery.Maps.Generators
 {

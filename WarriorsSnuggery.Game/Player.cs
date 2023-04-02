@@ -60,6 +60,7 @@ namespace WarriorsSnuggery
 
 		public Player(byte team, byte playerID, string name)
 		{
+			SpellCasters = new SpellCasterManager(this);
 			Team = team;
 			PlayerID = playerID;
 			Name = name;
@@ -78,7 +79,7 @@ namespace WarriorsSnuggery
 		{
 			SpellCasters = new SpellCasterManager(this);
 			initializer.SetSaveFields(this);
-			SpellCasters.Load(initializer.MakeInitializerWith(nameof(SpellCasters)));
+			SpellCasters.Load(initializer.MakeInitializerWith(nameof(SpellCasters), true));
 		}
 
 		Player(Player other)

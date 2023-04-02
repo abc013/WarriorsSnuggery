@@ -1,5 +1,6 @@
 using System;
 using WarriorsSnuggery.Graphics;
+using WarriorsSnuggery.Objectives;
 using WarriorsSnuggery.UI.Objects;
 
 namespace WarriorsSnuggery.UI.Screens
@@ -53,7 +54,7 @@ namespace WarriorsSnuggery.UI.Screens
 			if (game.ObjectiveType == ObjectiveType.FIND_EXIT)
 				Add(new KeyDisplay(game) { Position = new UIPos(Left + 712 + shift, top + 1536 + shift + 128) });
 			else if (game.ObjectiveType == ObjectiveType.SURVIVE_WAVES)
-				Add(new WaveDisplay(game) { Position = new UIPos(Left + 1280 + shift, top + 1536 + shift + 128) });
+				Add(new WaveDisplay((WaveObjectiveController)game.ObjectiveController) { Position = new UIPos(Left + 1280 + shift, top + 1536 + shift + 128) });
 
 			var menu = new CheckBox("menu", onTicked: (t) => game.ShowScreen(ScreenType.MENU, true))
 			{
@@ -63,7 +64,7 @@ namespace WarriorsSnuggery.UI.Screens
 			Add(menu);
 
 			if (game.MissionType.IsCampaign())
-				Add(new MissionTextLine(game.ObjectiveType));
+				Add(new MissionTextLine(game));
 
 			pointer = new EnemyPointer(game);
 			Add(pointer);
@@ -195,23 +196,11 @@ namespace WarriorsSnuggery.UI.Screens
 
 			readonly bool empty;
 
-			public MissionTextLine(ObjectiveType type) : base(FontManager.Header, TextOffset.MIDDLE)
+			public MissionTextLine(Game game) : base(FontManager.Header, TextOffset.MIDDLE)
 			{
-				switch (type)
-				{
-					case ObjectiveType.FIND_EXIT:
-						SetText("Search for the exit and gain access to it!");
-						break;
-					case ObjectiveType.KILL_ENEMIES:
-						SetText("Wipe out all enemies on the map!");
-						break;
-					case ObjectiveType.SURVIVE_WAVES:
-						SetText("Defend your position from incoming waves!");
-						break;
-					default:
-						empty = true;
-						break;
-				}
+				empty = game.ObjectiveController == null; 
+				if (!empty)
+					SetText(game.ObjectiveController.MissionString);
 			}
 
 			public override void Tick()

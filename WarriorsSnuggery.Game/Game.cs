@@ -9,6 +9,7 @@ using WarriorsSnuggery.Spells;
 using WarriorsSnuggery.Scripting;
 using WarriorsSnuggery.UI.Screens;
 using WarriorsSnuggery.Objects.Actors;
+using WarriorsSnuggery.Objectives;
 
 namespace WarriorsSnuggery
 {
@@ -35,7 +36,7 @@ namespace WarriorsSnuggery
 
 		public readonly ConditionManager ConditionManager;
 
-		public readonly WaveController WaveController;
+		public readonly ObjectiveController ObjectiveController;
 
 		public readonly MissionScriptBase Script;
 
@@ -95,8 +96,7 @@ namespace WarriorsSnuggery
 			else
 				Log.Debug(Program.DisableScripts ? "Mission scripts are disabled." : "No mission script existing.");
 
-			if (ObjectiveType == ObjectiveType.SURVIVE_WAVES)
-				WaveController = new WaveController(this);
+			ObjectiveController = ObjectiveController.GetController(this, ObjectiveType);
 		}
 
 		public void Load()
@@ -119,10 +119,13 @@ namespace WarriorsSnuggery
 			ScreenControl.Load();
 			ScreenControl.FadeIn();
 
-			if (World.Map.Type.IsSave)
+			if (MapType.IsSave)
 				Script?.Load(Save.ScriptState);
 			else
 				Script?.OnStart();
+			
+			if (MapType.IsSave)
+				ObjectiveController.Load(Save.ObjectiveController);
 
 			timer.StopAndWrite("Loading Game");
 			Log.Debug("Loading successful!");
@@ -216,12 +219,9 @@ namespace WarriorsSnuggery
 				ConditionManager.Tick();
 				World.Tick();
 
-				CheckVictory();
-
 				Script?.Tick();
-
-				if (ObjectiveType == ObjectiveType.SURVIVE_WAVES)
-					WaveController.Tick();
+				if (!Editor)
+					ObjectiveController?.Tick();
 			}
 
 			if (Window.GlobalTick == 0 && Settings.FirstStarted)
@@ -304,28 +304,6 @@ namespace WarriorsSnuggery
 						GameController.CreateFromSave(save.Clone());
 					}
 				}
-			}
-		}
-
-		public void CheckVictory()
-		{
-			if (Editor)
-				return;
-
-			switch (ObjectiveType)
-			{
-				// FIND_EXIT will meet conditions when entering the exit
-				case ObjectiveType.SURVIVE_WAVES:
-					if (WaveController.Done)
-						VictoryConditionsMet();
-
-					break;
-				case ObjectiveType.KILL_ENEMIES:
-					var actor = World.ActorLayer.NonNeutralActors.Find(a => a.Team != Actor.PlayerTeam && a.WorldPart != null && a.WorldPart.KillForVictory && !(a.Team == Actor.PlayerTeam || a.Team == Actor.NeutralTeam));
-
-					if (actor == null)
-						VictoryConditionsMet();
-					break;
 			}
 		}
 

@@ -1,13 +1,15 @@
-﻿namespace WarriorsSnuggery.UI.Objects
+﻿using WarriorsSnuggery.Objectives;
+
+namespace WarriorsSnuggery.UI.Objects
 {
 	class WaveDisplay : DisplayBar, ITick
 	{
-		readonly WaveController controller;
+		readonly WaveObjectiveController controller;
 		int currentWave = -1;
 
-		public WaveDisplay(Game game) : base(new UIPos(1280, 512), PanelCache.Types["wooden"], new Color(0, 255, 0, 64))
+		public WaveDisplay(WaveObjectiveController controller) : base(new UIPos(1280, 512), PanelCache.Types["wooden"], new Color(0, 255, 0, 64))
 		{
-			controller = game.WaveController;
+			this.controller = controller;
 		}
 
 		public virtual void Tick()

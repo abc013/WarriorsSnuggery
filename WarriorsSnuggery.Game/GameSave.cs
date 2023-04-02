@@ -4,6 +4,7 @@ using System.Linq;
 using WarriorsSnuggery.Loader;
 using WarriorsSnuggery.Maps;
 using WarriorsSnuggery.Maps.Pieces;
+using WarriorsSnuggery.Objectives;
 using WarriorsSnuggery.Objects.Actors;
 using WarriorsSnuggery.Objects.Actors.Parts;
 
@@ -64,6 +65,8 @@ namespace WarriorsSnuggery
 		public PackageFile Script { get; private set; }
 		// Saved separately
 		public TextNode[] ScriptState { get; private set; }
+		// Saved separately
+		public TextNodeInitializer ObjectiveController { get; private set; } = new TextNodeInitializer(new List<TextNode>());
 
 		GameSave(GameSave save)
 		{
@@ -109,6 +112,10 @@ namespace WarriorsSnuggery
 						break;
 					case nameof(ScriptState):
 						ScriptState = node.Children.ToArray();
+
+						break;
+					case nameof(ObjectiveController):
+						ObjectiveController = new TextNodeInitializer(node.Children);
 
 						break;
 					default:
@@ -170,6 +177,9 @@ namespace WarriorsSnuggery
 				saver.AddChildren(nameof(ScriptState), game.Script.Save(), true);
 			}
 
+			if (game.ObjectiveController != null)
+				saver.AddChildren(nameof(ObjectiveController), game.ObjectiveController.Save(), true);
+
 			saver.AddSaveFields(this);
 
 			saver.AddChildren(nameof(CustomConditions), game.ConditionManager.Save(), true);
@@ -206,8 +216,6 @@ namespace WarriorsSnuggery
 			var mapType = game.MapType;
 			CurrentMapType = mapType.IsSave ? save.CurrentMapType : mapType;
 			CurrentAmbience = WorldRenderer.Ambient;
-
-			Waves = game.WaveController == null ? 0 : game.WaveController.CurrentWave;
 
 			var stats = game.Player;
 
