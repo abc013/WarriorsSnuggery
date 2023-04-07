@@ -27,7 +27,7 @@ namespace WarriorsSnuggery.Objects.Actors
 			{
 				var image = rawimage as SpritePartInfo;
 				customColor = image.Color;
-				return image.Textures[0];
+				return image.Texture.GetTextures()[0];
 			}
 
 			customColor = Color.White;

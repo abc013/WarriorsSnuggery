@@ -7,8 +7,6 @@ namespace WarriorsSnuggery.Objects.Actors.Parts
 	[Desc("This will add a sprite to an actor which will be rendered upon call.")]
 	public class SpritePartInfo : PartInfo
 	{
-		public readonly Texture[] Textures;
-
 		[Require, Desc("The texture details.")]
 		public readonly TextureInfo Texture;
 
@@ -39,11 +37,7 @@ namespace WarriorsSnuggery.Objects.Actors.Parts
 		[Desc("Determines whether to ignore ambient light.", "This can be used for 'glow in the dark' effects.")]
 		public readonly bool IgnoreAmbience;
 
-		public SpritePartInfo(PartInitSet set) : base(set)
-		{
-			if (Texture != null)
-				Textures = Texture.GetTextures();
-		}
+		public SpritePartInfo(PartInitSet set) : base(set) { }
 	}
 
 	public class SpritePart : ActorPart, INoticeBasicChanges, IRenderable, ITick, ITickInEditor
@@ -62,32 +56,25 @@ namespace WarriorsSnuggery.Objects.Actors.Parts
 		{
 			this.info = info;
 			renderables = new BatchRenderable[info.Facings];
-			var frameCountPerIdleAnim = info.Textures.Length / info.Facings;
+			var textures = info.Texture.GetTextures();
+			var framesPerFacing = textures.Length / info.Facings;
 
-			if (frameCountPerIdleAnim * info.Facings != info.Textures.Length)
-				throw new InvalidNodeException($"Idle Frame '{info.Textures.Length}' count cannot be matched with the given Facings '{info.Facings}'.");
+			if (framesPerFacing * info.Facings != textures.Length)
+				throw new InvalidNodeException($"Frame '{textures.Length}' count cannot be matched with the given Facings '{info.Facings}'.");
 
 			for (int i = 0; i < renderables.Length; i++)
 			{
-				var anim = new Texture[frameCountPerIdleAnim];
-				for (int x = 0; x < frameCountPerIdleAnim; x++)
-					anim[x] = info.Textures[i * frameCountPerIdleAnim + x];
+				var anim = new Texture[framesPerFacing];
+				for (int x = 0; x < framesPerFacing; x++)
+					anim[x] = textures[i * framesPerFacing + x];
 
 				if (anim.Length == 0)
 					throw new InvalidNodeException("Animation Frame count is zero. Make sure you set the bounds properly.");
 
-				if (anim.Length == 1 || info.Texture.Randomized)
-				{
-					var index = 0;
-					if (info.Texture.Randomized)
-						index = self.World.Game.SharedRandom.Next(anim.Length);
-
-					renderables[i] = new BatchObject(anim[index]);
-				}
+				if (anim.Length == 1)
+					renderables[i] = new BatchObject(anim[0]);
 				else
-				{
 					renderables[i] = new BatchSequence(anim, info.Texture.Tick, startRandom: info.StartRandom);
-				}
 			}
 
 			if (info.ColorVariation != Color.Black)
