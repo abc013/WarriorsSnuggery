@@ -66,7 +66,8 @@ namespace WarriorsSnuggery.UI.Screens
 			if (game.MissionType.IsCampaign())
 				Add(new MissionTextLine(game));
 
-			pointer = new EnemyPointer(game);
+			const int pointerMargin = margin + 512;
+			pointer = new EnemyPointer(game, new UIPos(Right - 1024 - pointerMargin, Bottom - 1024 - 512 - pointerMargin)) { Position = new UIPos(0, -512) };
 			Add(pointer);
 		}
 
