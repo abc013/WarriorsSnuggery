@@ -42,8 +42,8 @@ namespace WarriorsSnuggery.Maps
 			Seed = seed;
 			random = new Random(seed);
 
-			PlayableBounds = determineBounds(difficulty, level);
 			PlayableOffset = new MPos(type.WorldBorder, type.WorldBorder);
+			PlayableBounds = determineBounds(difficulty, level);
 			Bounds = PlayableBounds + PlayableOffset * 2;
 
 			// Cache positions
@@ -63,7 +63,7 @@ namespace WarriorsSnuggery.Maps
 		MPos determineBounds(int difficulty, int level)
 		{
 			if (Type.CustomSize != MPos.Zero)
-				return Type.CustomSize;
+				return Type.CustomSize - PlayableOffset * 2;
 
 			return MapUtils.RandomMapBounds(random, difficulty, level);
 		}
