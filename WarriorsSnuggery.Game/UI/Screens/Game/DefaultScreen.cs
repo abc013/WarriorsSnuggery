@@ -108,7 +108,7 @@ namespace WarriorsSnuggery.UI.Screens
 
 			if (game.WinConditionsMet)
 			{
-				if (game.LocalTick % 30 == 0 && winParticleCount-- > 0)
+				if (game.LocalTick % 20 == 0 && winParticleCount-- > 0)
 				{
 					for (int i = 0; i < 5; i++)
 						generateWinParticles();
@@ -148,11 +148,11 @@ namespace WarriorsSnuggery.UI.Screens
 
 			for (int i = 0; i < count; i++)
 			{
-				var particle = new UIParticle(random.Next(200, 400))
+				var particle = new UIParticle(random.Next(150, 300))
 				{
-					Radius = random.Next(200, 500),
+					Radius = random.Next(10, 160),
 					Position = new UIPos(width, random.Next(-500, 500)),
-					Velocity = new UIPos(random.Next(-50, 50) + randomX, -random.Next(150) - 250),
+					Velocity = new UIPos(random.Next(-50, 50) + randomX, -random.Next(120, 320)),
 					Force = new UIPos(0, random.Next(5, 15))
 				};
 
@@ -161,6 +161,8 @@ namespace WarriorsSnuggery.UI.Screens
 				var color = random.Next(255);
 				var inverse = random.Next(2) > 0;
 				particle.Color = new Color(invert(inverse, color), invert(!inverse, color), invert(random.Next(2) > 0, color), 255);
+
+				particleManager.Add(particle);
 			}
 		}
 
