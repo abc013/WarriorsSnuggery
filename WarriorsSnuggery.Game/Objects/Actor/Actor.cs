@@ -195,7 +195,7 @@ namespace WarriorsSnuggery.Objects.Actors
 			partManager = new PartManager();
 			foreach (var partinfo in init.Type.PartInfos)
 			{
-				if (partinfo is BotBehaviorPart && !IsBot)
+				if (partinfo is BotBehaviorPartInfo && !IsBot)
 					continue;
 
 				var part = partinfo.Create(this);
