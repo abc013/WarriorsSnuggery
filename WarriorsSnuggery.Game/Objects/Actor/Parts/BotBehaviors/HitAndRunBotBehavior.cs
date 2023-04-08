@@ -8,10 +8,26 @@
 
 	public class HitAndRunBotBehaviorPart : BotBehaviorPart
 	{
+		[Save("Hide"), DefaultValue(0)]
 		bool hide;
+		[Save("HideDuration"), DefaultValue(0)]
 		int hideDuration;
 
 		public HitAndRunBotBehaviorPart(Actor self, HitAndRunBotBehaviorPartInfo info) : base(self, info) { }
+
+		public override void OnLoad(PartLoader loader)
+		{
+			base.OnLoad(loader);
+			loader.SetSaveFields(this, false);
+		}
+
+		public override PartSaver OnSave()
+		{
+			var saver = base.OnSave();
+			saver.AddSaveFields(this, false);
+
+			return saver;
+		}
 
 		public override void Tick()
 		{

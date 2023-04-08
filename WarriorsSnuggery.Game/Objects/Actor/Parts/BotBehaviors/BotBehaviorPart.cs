@@ -53,13 +53,13 @@ namespace WarriorsSnuggery.Objects.Actors.Parts
 
 		public BotBehaviorPart(Actor self, BotBehaviorPartInfo info) : base(self, info) { }
 		
-		public void OnLoad(PartLoader loader)
+		public virtual void OnLoad(PartLoader loader)
 		{
 			if (loader.ContainsRule(nameof(Target)))
 				Target = new Target(loader.MakeInitializerWith(nameof(Target)), Self.World);
 		}
 
-		public PartSaver OnSave()
+		public virtual PartSaver OnSave()
 		{
 			var saver = new PartSaver(this);
 			if (Target != null)

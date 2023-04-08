@@ -10,11 +10,28 @@ namespace WarriorsSnuggery.Objects.Actors.Parts
 
 	public class PanicBotBehaviorPart : BotBehaviorPart
 	{
+		[Save("PanicBuildup"), DefaultValue(0)]
 		int panicBuildup;
+		[Save("PanicDuration"), DefaultValue(0)]
 		int panicDuration;
+		[Save("PanicAngle"), DefaultValue(0)]
 		float panicAngle;
 
 		public PanicBotBehaviorPart(Actor self, PanicBotBehaviorPartInfo info) : base(self, info) { }
+		
+		public override void OnLoad(PartLoader loader)
+		{
+			base.OnLoad(loader);
+			loader.SetSaveFields(this, false);
+		}
+
+		public override PartSaver OnSave()
+		{
+			var saver = base.OnSave();
+			saver.AddSaveFields(this, false);
+
+			return saver;
+		}
 
 		public override void Tick()
 		{

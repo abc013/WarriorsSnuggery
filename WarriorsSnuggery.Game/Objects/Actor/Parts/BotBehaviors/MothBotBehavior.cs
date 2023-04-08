@@ -10,9 +10,24 @@ namespace WarriorsSnuggery.Objects.Actors.Parts
 
 	public class MothBotBehaviorPart : BotBehaviorPart
 	{
+		[Save("Tick"), DefaultValue(0)]
 		int tick;
 
 		public MothBotBehaviorPart(Actor self, MothBotBehaviorPartInfo info) : base(self, info) {}
+		
+		public override void OnLoad(PartLoader loader)
+		{
+			base.OnLoad(loader);
+			loader.SetSaveFields(this, false);
+		}
+
+		public override PartSaver OnSave()
+		{
+			var saver = base.OnSave();
+			saver.AddSaveFields(this, false);
+
+			return saver;
+		}
 
 		public override void Tick()
 		{

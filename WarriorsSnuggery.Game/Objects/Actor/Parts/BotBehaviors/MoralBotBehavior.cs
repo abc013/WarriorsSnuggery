@@ -15,9 +15,24 @@ namespace WarriorsSnuggery.Objects.Actors.Parts
 			get => moralVal;
 			set => moralVal = Math.Clamp(value, -50, 50);
 		}
-		int moralVal = 50;
+		[Save("MoralValue"), DefaultValue(50)]
+		int moralVal;
 
 		public MoralBotBehaviorPart(Actor self, MoralBotBehaviorPartInfo info) : base(self, info) { }
+		
+		public override void OnLoad(PartLoader loader)
+		{
+			base.OnLoad(loader);
+			loader.SetSaveFields(this, false);
+		}
+
+		public override PartSaver OnSave()
+		{
+			var saver = base.OnSave();
+			saver.AddSaveFields(this, false);
+
+			return saver;
+		}
 
 		public override void Tick()
 		{
