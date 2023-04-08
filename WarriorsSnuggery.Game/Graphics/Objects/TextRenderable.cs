@@ -99,17 +99,11 @@ namespace WarriorsSnuggery.Graphics
 		{
 			var colorPairs = new Dictionary<int, Color>();
 			var currentIndex = 0;
+			var index = 0;
 
-			while (text.IndexOf("COLOR(", currentIndex) >= 0)
+			while ((index = text.IndexOf('#', currentIndex)) >= 0)
 			{
-				var index = text.IndexOf("COLOR(");
-				var endindex = text.IndexOf(')') + 1;
-
-				if (endindex < index)
-				{
-					currentIndex = index + 6;
-					continue;
-				}
+				var endindex = index + 9;
 
 				// If nothing comes after this color, then just discard it and stop
 				if (endindex >= text.Length)
@@ -119,7 +113,6 @@ namespace WarriorsSnuggery.Graphics
 				}
 
 				var success = Color.FromString(text[index..endindex], out var color);
-
 				if (!success)
 				{
 					currentIndex = endindex;

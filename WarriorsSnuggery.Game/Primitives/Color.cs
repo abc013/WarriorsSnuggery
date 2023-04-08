@@ -1,3 +1,4 @@
+using System.Globalization;
 using OpenTK.Mathematics;
 
 
@@ -82,40 +83,33 @@ namespace WarriorsSnuggery
 			return new Vector4(R, G, B, A);
 		}
 
-		public System.Drawing.Color ToSysColor()
-		{
-			return System.Drawing.Color.FromArgb((int)(A * 255f), (int)(R * 255f), (int)(G * 255f), (int)(B * 255f));
-		}
-
 		public override string ToString()
 		{
-			return $"COLOR({R} | {G} | {B} | {A})";
+			string convertSingle(float value) => ((byte)(value * 255)).ToString("X").PadLeft(2, '0');
+			var r = convertSingle(R);
+			var g = convertSingle(G);
+			var b = convertSingle(B);
+			var a = convertSingle(A);
+			return $"#{r}{g}{b}{a}";
 		}
 
 		public static bool FromString(string text, out Color color)
 		{
 			color = Black;
 
-			text = text.Remove(0, 6);
-			text = text.Replace(')', ' ');
-
-			var values = text.Split('|');
-
-
-			if (values.Length != 3 && values.Length != 4)
+			if (text.Length != 9 || text[0] != '#')
 				return false;
 
-			if (!float.TryParse(values[0], out var r))
+			if (!byte.TryParse(text[1..3], NumberStyles.HexNumber, null, out var r))
 				return false;
 
-			if (!float.TryParse(values[1], out var g))
+			if (!byte.TryParse(text[3..5], NumberStyles.HexNumber, null, out var g))
 				return false;
 
-			if (!float.TryParse(values[2], out var b))
+			if (!byte.TryParse(text[5..7], NumberStyles.HexNumber, null, out var b))
 				return false;
 
-			var a = 1.0f;
-			if (values.Length == 4 && !float.TryParse(values[3], out a))
+			if (!byte.TryParse(text[7..9], NumberStyles.HexNumber, null, out var a))
 				return false;
 
 			color = new Color(r, g, b, a);

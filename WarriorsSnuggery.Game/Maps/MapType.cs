@@ -164,5 +164,10 @@ namespace WarriorsSnuggery.Maps
 		{
 			return new MapType(piece.PackageFile, 0, 0, piece.Size, Color.White, new[] { type }, new[] { objective }, -1, 0, int.MaxValue, new IMapGeneratorInfo[0], CPos.Zero, false, true, true, null, new WeatherEffect[0], null, null);
 		}
+
+		public override string ToString()
+		{
+			return MapCache.Types[this];
+		}
 	}
 }

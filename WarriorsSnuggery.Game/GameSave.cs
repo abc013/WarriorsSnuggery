@@ -38,7 +38,7 @@ namespace WarriorsSnuggery
 		public ObjectiveType CurrentObjective { get; private set; }
 		[Save]
 		public MissionType CurrentMission { get; private set; }
-		// Saved separately
+		[Save]
 		public MapType CurrentMapType { get; private set; }
 		// TODO: save via [Save] attribute
 		public Color CurrentAmbience { get; private set; } = Color.White;
@@ -64,7 +64,7 @@ namespace WarriorsSnuggery
 		[Save, DefaultValue(null)]
 		public PackageFile Script { get; private set; }
 		// Saved separately
-		public TextNode[] ScriptState { get; private set; }
+		public TextNodeInitializer ScriptState { get; private set; } = new TextNodeInitializer(new List<TextNode>());
 		// Saved separately
 		public TextNodeInitializer ObjectiveController { get; private set; } = new TextNodeInitializer(new List<TextNode>());
 
@@ -106,12 +106,8 @@ namespace WarriorsSnuggery
 							CustomConditions.Add(node2.Key, node2.Convert<bool>());
 
 						break;
-					case nameof(CurrentMapType):
-						CurrentMapType = MapCache.Types[node.Value];
-
-						break;
 					case nameof(ScriptState):
-						ScriptState = node.Children.ToArray();
+						ScriptState = new TextNodeInitializer(node.Children);
 
 						break;
 					case nameof(ObjectiveController):
@@ -168,7 +164,6 @@ namespace WarriorsSnuggery
 			var saver = new TextNodeSaver();
 			saver.AddChildren(nameof(Player), Player.Save());
 			saver.Add(nameof(GameSaveFormat), Constants.CurrentGameSaveFormat);
-			saver.Add(nameof(CurrentMapType), MapCache.Types[CurrentMapType]);
 			saver.Add(nameof(CurrentAmbience), $"{(int)(CurrentAmbience.R * 255)}, {(int)(CurrentAmbience.G * 255)}, {(int)(CurrentAmbience.B * 255)}, {(int)(CurrentAmbience.A * 255)}");
 
 			if (game.Script != null)

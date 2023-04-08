@@ -192,6 +192,10 @@ namespace WarriorsSnuggery.Loader
 			{
 				return ActorCache.Types[value];
 			}
+			else if (t == typeof(MapType))
+			{
+				return MapCache.Types[value];
+			}
 			else if (t == typeof(SimplePhysicsType))
 			{
 				return new SimplePhysicsType(node.Children);

@@ -24,6 +24,6 @@ namespace WarriorsSnuggery.Scripting
 		}
 
 		public virtual TextNodeSaver Save() => new TextNodeSaver();
-		public virtual void Load(TextNode[] nodes) { }
+		public virtual void Load(TextNodeInitializer initializer) { }
 	}
 }
