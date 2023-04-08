@@ -1,30 +1,20 @@
-﻿using System.Collections.Generic;
-using WarriorsSnuggery.Loader;
-using WarriorsSnuggery.Objects.Weapons;
+﻿using WarriorsSnuggery.Objects.Weapons;
 
-namespace WarriorsSnuggery.Objects.Actors.Bot
+namespace WarriorsSnuggery.Objects.Actors.Parts
 {
-	[Desc("Type that aims to reproduce moth behavior.")]
-	public class PanicBotBehaviorType : BotBehaviorType
+	[Desc("Bot-Behavior type that aims to reproduce moth behavior.")]
+	public class PanicBotBehaviorPartInfo : BotBehaviorPartInfo
 	{
-		public PanicBotBehaviorType(List<TextNode> nodes) : base(nodes) { }
-
-		public override BotBehavior Create(Actor self)
-		{
-			return new PanicBotBehavior(self, this);
-		}
+		public PanicBotBehaviorPartInfo(PartInitSet set) : base(set) { }
 	}
 
-	public class PanicBotBehavior : BotBehavior
+	public class PanicBotBehaviorPart : BotBehaviorPart
 	{
 		int panicBuildup;
 		int panicDuration;
 		float panicAngle;
 
-		public PanicBotBehavior(Actor self, PanicBotBehaviorType type) : base(self)
-		{
-
-		}
+		public PanicBotBehaviorPart(Actor self, PanicBotBehaviorPartInfo info) : base(self, info) { }
 
 		public override void Tick()
 		{

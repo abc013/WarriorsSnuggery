@@ -82,6 +82,5 @@ ninja_trainer=
 	-Motor=
 	Motor@slow=
 		Speed=25
-	Bot=
-		Behavior=Soulless
+	SoullessBotBehavior=
 	-Playable=

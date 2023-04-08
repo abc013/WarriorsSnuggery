@@ -1,28 +1,17 @@
-﻿using System.Collections.Generic;
-using WarriorsSnuggery.Loader;
-
-namespace WarriorsSnuggery.Objects.Actors.Bot
+﻿namespace WarriorsSnuggery.Objects.Actors.Parts
 {
-	[Desc("Type that aims to reproduce a \"hit and run\" technique.")]
-	public class HitAndRunBotBehaviorType : BotBehaviorType
+	[Desc("Bot-Behavior type that aims to reproduce a \"hit and run\" technique.")]
+	public class HitAndRunBotBehaviorPartInfo : BotBehaviorPartInfo
 	{
-		public HitAndRunBotBehaviorType(List<TextNode> nodes) : base(nodes) { }
-
-		public override BotBehavior Create(Actor self)
-		{
-			return new HitAndRunBotBehavior(self, this);
-		}
+		public HitAndRunBotBehaviorPartInfo(PartInitSet set) : base(set) { }
 	}
 
-	public class HitAndRunBotBehavior : BotBehavior
+	public class HitAndRunBotBehaviorPart : BotBehaviorPart
 	{
 		bool hide;
 		int hideDuration;
 
-		public HitAndRunBotBehavior(Actor self, HitAndRunBotBehaviorType type) : base(self)
-		{
-
-		}
+		public HitAndRunBotBehaviorPart(Actor self, HitAndRunBotBehaviorPartInfo info) : base(self, info) { }
 
 		public override void Tick()
 		{

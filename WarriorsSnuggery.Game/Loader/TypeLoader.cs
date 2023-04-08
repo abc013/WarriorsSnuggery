@@ -68,6 +68,9 @@ namespace WarriorsSnuggery.Loader
 			{
 				var type = Type.GetType("WarriorsSnuggery.Objects.Actors.Parts." + parent.Key + "PartInfo", true, true);
 
+				if (type.IsInterface || type.IsAbstract || !type.IsSubclassOf(typeof(PartInfo)))
+					throw new Exception($"Type {type} can not be invoked or is not a subclass of {nameof(PartInfo)}.");
+
 				var set = new PartInitSet(specification, parent.Children);
 
 				return (PartInfo)Activator.CreateInstance(type, new [] { set });

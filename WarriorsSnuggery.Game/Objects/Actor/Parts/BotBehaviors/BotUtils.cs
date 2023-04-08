@@ -2,11 +2,11 @@ using System;
 using WarriorsSnuggery.Objects.Weapons;
 using WarriorsSnuggery.Objects.Weapons.Projectiles;
 
-namespace WarriorsSnuggery.Objects.Actors.Bot
+namespace WarriorsSnuggery.Objects.Actors.Parts
 {
 	internal static class BotUtils
 	{
-		internal static bool IsGoodTarget(Target target)
+		public static bool IsGoodTarget(Target target)
         {
             if (target == null || target.Type != TargetType.ACTOR)
                 return false;
@@ -14,7 +14,7 @@ namespace WarriorsSnuggery.Objects.Actors.Bot
             return target.Actor.IsAlive && !target.Actor.Disposed;
         }
 
-		internal static Actor GetNeighborActor(Actor self, bool sameTeam = true, int range = 1536)
+		public static Actor GetNeighborActor(Actor self, bool sameTeam = true, int range = 1536)
 		{
 			var sectors = self.World.ActorLayer.GetSectors(self.Position, range);
 			foreach (var sector in sectors)
@@ -33,7 +33,7 @@ namespace WarriorsSnuggery.Objects.Actors.Bot
 			return null;
 		}
 
-		internal static void PredictiveAttack(Actor self, Target target)
+		public static void PredictiveAttack(Actor self, Target target)
 		{
 			if (!self.CanAttack)
 				return;

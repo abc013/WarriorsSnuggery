@@ -1,21 +1,14 @@
 ﻿using System;
-using System.Collections.Generic;
-using WarriorsSnuggery.Loader;
 
-namespace WarriorsSnuggery.Objects.Actors.Bot
+namespace WarriorsSnuggery.Objects.Actors.Parts
 {
-	[Desc("Type uses a moral system to determine its strategy.")]
-	public class MoralBotBehaviorType : BotBehaviorType
+	[Desc("Bot-Behavior type uses a moral system to determine its strategy.")]
+	public class MoralBotBehaviorPartInfo : BotBehaviorPartInfo
 	{
-		public MoralBotBehaviorType(List<TextNode> nodes) : base(nodes) { }
-
-		public override BotBehavior Create(Actor self)
-		{
-			return new MoralBotBehavior(self, this);
-		}
+		public MoralBotBehaviorPartInfo(PartInitSet set) : base(set) { }
 	}
 
-	public class MoralBotBehavior : BotBehavior
+	public class MoralBotBehaviorPart : BotBehaviorPart
 	{
 		int moral
 		{
@@ -24,10 +17,7 @@ namespace WarriorsSnuggery.Objects.Actors.Bot
 		}
 		int moralVal = 50;
 
-		public MoralBotBehavior(Actor self, MoralBotBehaviorType type) : base(self)
-		{
-
-		}
+		public MoralBotBehaviorPart(Actor self, MoralBotBehaviorPartInfo info) : base(self, info) { }
 
 		public override void Tick()
 		{

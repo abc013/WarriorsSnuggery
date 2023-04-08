@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using WarriorsSnuggery.Objects.Weapons;
 
-namespace WarriorsSnuggery.Objects.Actors.Bot
+namespace WarriorsSnuggery.Objects.Actors.Parts
 {
 	public class Patrol
 	{

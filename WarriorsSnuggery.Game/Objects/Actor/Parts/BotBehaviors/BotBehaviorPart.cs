@@ -1,29 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
-using WarriorsSnuggery.Loader;
 using WarriorsSnuggery.Objects.Weapons;
 
-namespace WarriorsSnuggery.Objects.Actors.Bot
+namespace WarriorsSnuggery.Objects.Actors.Parts
 {
-	public abstract class BotBehaviorType
+	public abstract class BotBehaviorPartInfo : PartInfo
 	{
-		public readonly string InternalName;
-
-		protected BotBehaviorType(List<TextNode> nodes)
-		{
-			TypeLoader.SetValues(this, nodes);
-		}
-
-		public abstract BotBehavior Create(Actor self);
+		public BotBehaviorPartInfo(PartInitSet set) : base(set) { }
 	}
 
-	public abstract class BotBehavior
+	public abstract class BotBehaviorPart : ActorPart, ITick, INoticeDamage, INoticeKill, INoticeKilled, ISaveLoadable
 	{
 		protected const int SearchIntervall = 20;
 
-		protected readonly World World;
-		protected readonly Actor Self;
-
+		// Saved separately
 		public Target Target
 		{
 			get => target;
@@ -54,16 +44,28 @@ namespace WarriorsSnuggery.Objects.Actors.Bot
 
 		protected readonly Queue<CPos> Waypoints = new Queue<CPos>();
 
+		// TODO: save
 		public Patrol Patrol;
 		protected bool IsLeader => Patrol == null || Patrol.Leader == Self;
 
 		protected bool CanMove => Self.Mobile != null;
 		protected bool CanAttack => Self.Weapon != null;
 
-		protected BotBehavior(Actor self)
+		public BotBehaviorPart(Actor self, BotBehaviorPartInfo info) : base(self, info) { }
+		
+		public void OnLoad(PartLoader loader)
 		{
-			Self = self;
-			World = self.World;
+			if (loader.ContainsRule(nameof(Target)))
+				Target = new Target(loader.MakeInitializerWith(nameof(Target)), Self.World);
+		}
+
+		public PartSaver OnSave()
+		{
+			var saver = new PartSaver(this);
+			if (Target != null)
+				saver.AddChildren(nameof(Target), Target.Save());
+
+			return saver;
 		}
 
 		public abstract void Tick();
@@ -166,19 +168,24 @@ namespace WarriorsSnuggery.Objects.Actors.Bot
 				SearchTarget();
 		}
 
+		public void OnKilled(Actor killer)
+		{
+			Patrol?.ActorDied(Self);
+		}
+
 		protected virtual void SearchTarget()
 		{
-			if (World.Game.LocalTick % SearchIntervall != 0)
+			if (Self.World.Game.LocalTick % SearchIntervall != 0)
 				return;
 
 			var range = (Self.RevealsShroud == null ? 5 : Self.RevealsShroud.Range / 2) * 1024;
 
 			// Find all possible targets in range, find the best target
-			foreach (var sector in World.ActorLayer.GetSectors(Self.Position, range))
+			foreach (var sector in Self.World.ActorLayer.GetSectors(Self.Position, range))
 			{
 				foreach (var actor in sector.Actors)
 				{
-					if (!World.IsVisibleTo(Self, actor))
+					if (!Self.World.IsVisibleTo(Self, actor))
 						continue;
 
 					if ((actor.Position - Self.Position).SquaredFlatDist > range * range)

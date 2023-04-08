@@ -58,7 +58,7 @@ namespace WarriorsSnuggery.Objects.Actors
 		public readonly RevealsShroudPart RevealsShroud;
 		public readonly WeaponPart Weapon;
 		public readonly WorldPart WorldPart;
-		public readonly BotPart Bot;
+		public readonly BotBehaviorPart Bot;
 
 		[Save, DefaultValue(null)]
 		public readonly string ScriptTag;
@@ -195,7 +195,7 @@ namespace WarriorsSnuggery.Objects.Actors
 			partManager = new PartManager();
 			foreach (var partinfo in init.Type.PartInfos)
 			{
-				if (partinfo is BotPartInfo && !IsBot)
+				if (partinfo is BotBehaviorPart && !IsBot)
 					continue;
 
 				var part = partinfo.Create(this);
@@ -214,7 +214,7 @@ namespace WarriorsSnuggery.Objects.Actors
 					Weapon = weapon;
 				else if (part is WorldPart worldPart)
 					WorldPart = worldPart;
-				else if (part is BotPart botPart)
+				else if (part is BotBehaviorPart botPart)
 					Bot = botPart;
 				else if (part is PlayerSwitchPart)
 					IsPlayerSwitch = true;
