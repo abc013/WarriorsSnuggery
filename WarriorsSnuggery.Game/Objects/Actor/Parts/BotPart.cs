@@ -55,9 +55,9 @@ namespace WarriorsSnuggery.Objects.Actors.Parts
 			bot.Tick();
 		}
 
-		public void CheckTarget(Target target)
+		public bool CheckTarget(Target target)
 		{
-			bot.CheckTarget(target);
+			return bot.CheckTarget(target);
 		}
 
 		public void OnDamage(Actor damager, int damage)

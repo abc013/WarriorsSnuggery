@@ -27,9 +27,9 @@ namespace WarriorsSnuggery.Objects.Actors.Bot
 				newLeader();
 		}
 
-		public void NotifyNewTarget(Target target)
+		public bool LeaderCheckTarget(Target target)
 		{
-			Leader.Bot.CheckTarget(target);
+			return Leader.Bot.CheckTarget(target);
 		}
 
 		public void SetNewTarget(Target target)

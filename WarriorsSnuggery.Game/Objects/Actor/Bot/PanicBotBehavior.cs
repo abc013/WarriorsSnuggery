@@ -42,9 +42,9 @@ namespace WarriorsSnuggery.Objects.Actors.Bot
 				Self.AccelerateSelf(panicAngle);
 
 				if (Self.World.Game.SharedRandom.Next(100) < 10)
-					PredictiveAttack(randomTarget());
+					BotUtils.PredictiveAttack(Self, randomTarget());
 				else if (HasGoodTarget)
-					PredictiveAttack(Target);
+					BotUtils.PredictiveAttack(Self, Target);
 			}
 			else
 			{

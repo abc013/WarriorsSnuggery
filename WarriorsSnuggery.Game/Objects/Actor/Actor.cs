@@ -34,9 +34,6 @@ namespace WarriorsSnuggery.Objects.Actors
 
 		public ActorSector Sector;
 
-		// Used when changing player for bot targeting.
-		public Actor FollowupActor;
-
 		[Save, DefaultValue((byte)0)]
 		public byte Team;
 		[Save, DefaultValue(0.0f)]

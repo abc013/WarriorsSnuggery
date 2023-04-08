@@ -133,7 +133,6 @@ namespace WarriorsSnuggery
 
 		public void FinishPlayerSwitch(Actor @new)
 		{
-			LocalPlayer.FollowupActor = @new;
 			LocalPlayer = @new;
 			Add(@new);
 		}
@@ -161,7 +160,6 @@ namespace WarriorsSnuggery
 			switchPart.ActorType = to;
 			LocalPlayer.Dispose();
 
-			LocalPlayer.FollowupActor = switchActor;
 			LocalPlayer = switchActor;
 			Add(switchActor);
 		}

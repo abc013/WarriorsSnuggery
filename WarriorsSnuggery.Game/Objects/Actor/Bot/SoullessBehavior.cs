@@ -18,12 +18,6 @@ namespace WarriorsSnuggery.Objects.Actors.Bot
 	{
 		public SoullessBotBehavior(Actor self, SoullessBotBehaviorType type) : base(self) { }
 
-		public override void Tick()
-		{
-			if (!CanMove)
-				return;
-
-			DefaultMoveBehavior(0, 0.1f);
-		}
+		public override void Tick() { }
 	}
 }
