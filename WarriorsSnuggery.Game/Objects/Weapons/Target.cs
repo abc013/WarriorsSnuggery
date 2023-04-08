@@ -47,8 +47,12 @@ namespace WarriorsSnuggery.Objects.Weapons
 		{
 			var actorID = initializer.Convert(nameof(Actor), uint.MaxValue);
 			Actor = world.ActorLayer.ToAdd().FirstOrDefault(a => a.ID == actorID);
+			Type = TargetType.ACTOR;
 			if (Actor == null)
+			{
 				position = initializer.Convert(nameof(Position), CPos.Zero);
+				Type = TargetType.POSITION;
+			}
 		}
 
 		public TextNodeSaver Save()
