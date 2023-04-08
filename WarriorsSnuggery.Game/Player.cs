@@ -93,7 +93,7 @@ namespace WarriorsSnuggery
 			unlockedActors = new List<string>(UnlockedActors);
 			unlockedTrophies = new List<string>(UnlockedTrophies);
 
-			SpellCasters = other.SpellCasters.Clone();
+			SpellCasters = other.SpellCasters.Clone(this);
 		}
 
 		public Player Clone()

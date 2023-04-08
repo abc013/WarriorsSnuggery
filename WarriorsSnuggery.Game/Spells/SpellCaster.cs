@@ -29,18 +29,18 @@ namespace WarriorsSnuggery.Spells
 			Type = type;
 		}
 
-		public SpellCaster(SpellCaster other)
+		public SpellCaster(Player player, SpellCaster other)
 		{
-			player = other.player;
+			this.player = player;
 			Type = other.Type;
 			State = other.State;
 			duration = other.duration;
 			recharge = other.recharge;
 		}
 
-		public SpellCaster Clone()
+		public SpellCaster Clone(Player player)
 		{
-			return new SpellCaster(this);
+			return new SpellCaster(player, this);
 		}
 
 		public void Load(TextNodeInitializer initializer)

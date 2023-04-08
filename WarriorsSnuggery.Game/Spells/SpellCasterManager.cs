@@ -16,17 +16,17 @@ namespace WarriorsSnuggery.Spells
 				Casters[i++] = new SpellCaster(player, casterType);
 		}
 
-		SpellCasterManager(SpellCasterManager other)
+		SpellCasterManager(Player player, SpellCasterManager other)
 		{
 			Casters = new SpellCaster[SpellCasterCache.Types.Count];
 
 			for (int i = 0; i < Casters.Length; i++)
-				Casters[i] = other.Casters[i].Clone();
+				Casters[i] = other.Casters[i].Clone(player);
 		}
 
-		public SpellCasterManager Clone()
+		public SpellCasterManager Clone(Player player)
 		{
-			return new SpellCasterManager(this);
+			return new SpellCasterManager(player, this);
 		}
 
 		public void Load(TextNodeInitializer initializer)
