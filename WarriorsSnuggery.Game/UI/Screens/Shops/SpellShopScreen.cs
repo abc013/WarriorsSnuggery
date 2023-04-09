@@ -84,12 +84,16 @@ namespace WarriorsSnuggery.UI.Screens
 		{
 			foreach (var node in tree)
 				node.CheckAvailability();
+
+			game.ScreenControl.UpdateSpells();
 		}
 
 		public override void Hide()
 		{
 			foreach (var spell in tree)
 				spell.DisableTooltip();
+
+			game.ScreenControl.UpdateSpells();
 		}
 	}
 
@@ -155,6 +159,7 @@ namespace WarriorsSnuggery.UI.Screens
 					HighlightVisible = true;
 
 					screen.UpdateAvailability();
+
 				}
 
 				UIRenderer.SetTooltip(tooltip);
