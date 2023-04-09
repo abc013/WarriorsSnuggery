@@ -217,6 +217,7 @@ voidbullet=
 		Texture=
 			Name=bullet_blue
 			Dimensions=7,7
+			Tick=5
 		IgnoreAmbience=true
 		Speed=128
 		OrientateToTarget=true

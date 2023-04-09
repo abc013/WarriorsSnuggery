@@ -98,7 +98,7 @@ colored_star=
 	DissolveScaling=false
 
 slime_splash=
-	Color=63,255,63,24
+	Color=63,255,63,12
 	ColorVariety=0,63,0,8
 	MeshSize=4
 	MeshSizeVariety=0.1
@@ -107,12 +107,12 @@ slime_splash=
 
 redslime_splash=
 	Inherits=slime_splash
-	+Color=255,127,127,24
+	+Color=255,127,127,12
 	+ColorVariety=63,0,0,8
 
 blueslime_splash=
 	Inherits=slime_splash
-	+Color=127,127,255,24
+	+Color=127,127,255,12
 	+ColorVariety=0,0,63,8
 
 slime_damage=
@@ -127,7 +127,7 @@ slime_damage=
 
 redslime_damage=
 	Inherits=slime_damage
-	+Color=255,127,127,63
+	+Color=255,63,63,63
 	+ColorVariety=127,0,0,16
 
 blueslime_damage=
@@ -136,7 +136,7 @@ blueslime_damage=
 	+ColorVariety=0,0,127,16
 
 slime_trail=
-	Color=63,255,63,127
+	Color=63,195,63,31
 	ColorVariety=0,127,0,16
 	MeshSize=1
 	MeshSizeVariety=0.1
@@ -147,12 +147,12 @@ slime_trail=
 
 redslime_trail=
 	Inherits=slime_trail
-	+Color=255,127,127,127
+	+Color=195,127,127,63
 	+ColorVariety=127,0,0,16
 
 blueslime_trail=
 	Inherits=slime_trail
-	+Color=63,63,255,127
+	+Color=63,63,195,63
 	+ColorVariety=0,0,127,16
 
 barrel_splash=
