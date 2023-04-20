@@ -16,7 +16,7 @@ namespace WarriorsSnuggery.Objects.Actors.Parts
 		public WeaponPartInfo(PartInitSet set) : base(set) { }
 	}
 
-	public class WeaponPart : ActorPart, ITick, INoticeDispose, ISaveLoadable, INoticeMove
+	public class WeaponPart : ActorPart, ITick, INoticeKilled, INoticeDispose, ISaveLoadable, INoticeMove
 	{
 		readonly WeaponPartInfo info;
 		public readonly WeaponType Type;
@@ -181,6 +181,12 @@ namespace WarriorsSnuggery.Objects.Actors.Parts
 		{
 			if (!info.AllowMoving)
 				CancelAttack();
+		}
+
+		public void OnKilled(Actor killer)
+		{
+			if (beam != null && !beam.Disposed)
+				beam.Dispose();
 		}
 
 		public void OnDispose()
