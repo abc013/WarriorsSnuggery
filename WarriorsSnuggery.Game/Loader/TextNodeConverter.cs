@@ -126,6 +126,11 @@ namespace WarriorsSnuggery.Loader
 			}
 			else if (t == typeof(Color))
 			{
+				// Hex interpretation
+				if (value.StartsWith('#') && Color.FromString(value, out var color))
+					return color;
+
+				// Vector interpretation
 				var parts = value.Split(',');
 
 				if (parts.Length >= 3 && parts.Length <= 4)

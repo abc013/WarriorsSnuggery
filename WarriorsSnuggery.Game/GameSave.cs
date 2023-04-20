@@ -40,7 +40,7 @@ namespace WarriorsSnuggery
 		public MissionType CurrentMission { get; private set; }
 		[Save]
 		public MapType CurrentMapType { get; private set; }
-		// TODO: save via [Save] attribute
+		[Save]
 		public Color CurrentAmbience { get; private set; } = Color.White;
 		[Save, DefaultValue(0)]
 		public int Waves { get; private set; }
@@ -164,7 +164,6 @@ namespace WarriorsSnuggery
 			var saver = new TextNodeSaver();
 			saver.AddChildren(nameof(Player), Player.Save());
 			saver.Add(nameof(GameSaveFormat), Constants.CurrentGameSaveFormat);
-			saver.Add(nameof(CurrentAmbience), $"{(int)(CurrentAmbience.R * 255)}, {(int)(CurrentAmbience.G * 255)}, {(int)(CurrentAmbience.B * 255)}, {(int)(CurrentAmbience.A * 255)}");
 
 			if (game.Script != null)
 			{
