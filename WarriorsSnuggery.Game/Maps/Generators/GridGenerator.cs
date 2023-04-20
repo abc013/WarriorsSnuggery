@@ -148,7 +148,7 @@ namespace WarriorsSnuggery.Maps.Generators
 			}
 
 			// Roads
-			var type = Loader.Infos.FirstOrDefault(i => i.ID == info.PathGeneratorID && i is PathGeneratorInfo);
+			var type = Loader.Type.Generators.FirstOrDefault(i => i.ID == info.PathGeneratorID && i is PathGeneratorInfo);
 			if (type != null)
 			{
 				for (int x = 0; x < Bounds.X; x++)

@@ -73,7 +73,7 @@ namespace WarriorsSnuggery.Maps
 			var positions = new List<MPos>();
 			var map = world.Map;
 
-			positions.AddRange(map.PatrolSpawnLocations);
+			positions.AddRange(map.PossiblePatrolLocations);
 			// Clean up the available positions
 			positions.RemoveAll(p => p.InRange(map.PlayableOffset, map.PlayableBounds + map.PlayableOffset));
 
@@ -141,8 +141,6 @@ namespace WarriorsSnuggery.Maps
 					if (actor.Bot != null)
 						actor.Bot.Patrol = groupPatrol;
 				}
-
-				map.PatrolSpawnedLocations.Add(mid);
 			}
 
 			return actors;

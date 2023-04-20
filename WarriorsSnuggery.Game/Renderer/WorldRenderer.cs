@@ -104,17 +104,18 @@ namespace WarriorsSnuggery
 			{
 				MasterRenderer.SetRenderer(Renderer.DEBUG);
 
-				if (Settings.CurrentMap >= 0 && world.Map.NoiseMaps.ContainsKey(Settings.CurrentMap))
-					world.Map.NoiseMaps[Settings.CurrentMap].Render();
+				var debugInformation = world.Map.DebugInformation;
+				if (debugInformation != null)
+				{
+					if (Settings.CurrentMap >= 0 && debugInformation.NoiseMaps.ContainsKey(Settings.CurrentMap))
+						debugInformation.NoiseMaps[Settings.CurrentMap].Render();
 
-				foreach (var point in world.Map.Waypoints)
-					ColorManager.DrawDot(point.Position.ToCPos(), Color.Cyan);
+					foreach (var point in debugInformation.Waypoints)
+						ColorManager.DrawDot(point.Position.ToCPos(), Color.Cyan);
 
-				foreach (var point in world.Map.PatrolSpawnLocations)
-					ColorManager.DrawDot(point.ToCPos(), Color.Yellow);
-
-				foreach (var point in world.Map.PatrolSpawnedLocations)
-					ColorManager.DrawDot(point.ToCPos(), Color.Red);
+					foreach (var point in debugInformation.PatrolLocations)
+						ColorManager.DrawDot(point.ToCPos(), Color.Red);
+				}
 
 				MasterRenderer.RenderBatch();
 				CameraVisibility.GetClampedBounds(out var position, out var bounds);

@@ -84,7 +84,7 @@ namespace WarriorsSnuggery
 
 			ScreenControl = new ScreenControl(this);
 
-			World = new World(this, Seed, Save);
+			World = new World(this);
 
 			if (map.MissionScript != null && !Program.DisableScripts)
 			{

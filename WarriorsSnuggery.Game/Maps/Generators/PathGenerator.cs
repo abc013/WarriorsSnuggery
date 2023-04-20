@@ -228,7 +228,7 @@ namespace WarriorsSnuggery.Maps.Generators
 
 						var pos = new MPos(x, y);
 
-						Loader.PatrolSpawnLocations.Add(pos);
+						Loader.PatrolLocations.Add(pos);
 					}
 				}
 			}

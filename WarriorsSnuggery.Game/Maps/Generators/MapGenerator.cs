@@ -15,12 +15,6 @@ namespace WarriorsSnuggery.Maps.Generators
 		protected MPos PlayableBounds => Loader.PlayableBounds;
 		protected MPos Bounds => Loader.Bounds;
 		protected MPos Center => Loader.Center;
-		protected CPos TopLeftCorner => Loader.TopLeftCorner;
-		protected CPos TopRightCorner => Loader.TopRightCorner;
-		protected CPos BottomLeftCorner => Loader.BottomLeftCorner;
-		protected CPos BottomRightCorner => Loader.BottomRightCorner;
-		protected CPos PlayerSpawn => Loader.PlayerSpawn;
-		protected CPos Exit => Loader.Exit;
 
 		protected readonly Random Random;
 		protected readonly MapLoader Loader;

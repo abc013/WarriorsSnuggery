@@ -1,23 +1,16 @@
 using System;
 using System.Collections.Generic;
-using WarriorsSnuggery.Graphics;
-using WarriorsSnuggery.Maps.Noises;
 
 namespace WarriorsSnuggery.Maps
 {
 	public class Map
 	{
-		readonly World world;
-		readonly Random random;
-
 		public readonly MapType Type;
 		public readonly int Seed;
+		public MapDebugInformation DebugInformation { get; internal set; }
 
 		public static readonly CPos Offset = new CPos(-Constants.TileSize / 2, -Constants.TileSize / 2, 0);
 		public readonly MPos PlayableOffset;
-
-		public CPos PlayerSpawn;
-		public CPos Exit;
 
 		public readonly MPos Bounds;
 		public readonly MPos PlayableBounds;
@@ -29,21 +22,16 @@ namespace WarriorsSnuggery.Maps
 		public readonly CPos BottomLeftCorner;
 		public readonly CPos BottomRightCorner;
 
-		public readonly Dictionary<int, NoiseMap> NoiseMaps = new Dictionary<int, NoiseMap>();
-		public readonly List<Waypoint> Waypoints = new List<Waypoint>();
-		public readonly List<MPos> PatrolSpawnLocations = new List<MPos>();
-		public readonly List<MPos> PatrolSpawnedLocations = new List<MPos>();
+		public CPos PlayerSpawn { get; internal set; }
+		public List<MPos> PossiblePatrolLocations { get; internal set; }
 
-		public Map(World world, MapType type, int seed, int level, int difficulty)
+		public Map(Game game)
 		{
-			this.world = world;
+			Type = game.MapType;
+			Seed = game.Seed;
 
-			Type = type;
-			Seed = seed;
-			random = new Random(seed);
-
-			PlayableOffset = new MPos(type.WorldBorder, type.WorldBorder);
-			PlayableBounds = determineBounds(difficulty, level);
+			PlayableOffset = new MPos(Type.WorldBorder, Type.WorldBorder);
+			PlayableBounds = determineBounds(new Random(Seed), game.Save);
 			Bounds = PlayableBounds + PlayableOffset * 2;
 
 			// Cache positions
@@ -55,26 +43,17 @@ namespace WarriorsSnuggery.Maps
 			BottomLeftCorner = Offset + new CPos(0, Bounds.Y * Constants.TileSize, 0);
 			BottomRightCorner = Offset + new CPos(Bounds.X * Constants.TileSize, Bounds.Y * Constants.TileSize, 0);
 
-			PlayerSpawn = type.SpawnPoint;
+			PlayerSpawn = Type.SpawnPoint;
 			if (PlayerSpawn == CPos.Zero)
 				PlayerSpawn = Center.ToCPos();
 		}
 
-		MPos determineBounds(int difficulty, int level)
+		MPos determineBounds(Random random, GameSave save)
 		{
 			if (Type.CustomSize != MPos.Zero)
 				return Type.CustomSize - PlayableOffset * 2;
 
-			return MapUtils.RandomMapBounds(random, difficulty, level);
-		}
-
-		public void Load()
-		{
-			Camera.SetBounds(Bounds);
-
-			var mapLoader = new MapLoader(world, this);
-			mapLoader.Generate();
-			mapLoader.Apply();
+			return MapUtils.RandomMapBounds(random, save.Difficulty, save.Level);
 		}
 	}
 }

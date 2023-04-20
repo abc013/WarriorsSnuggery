@@ -38,11 +38,10 @@ namespace WarriorsSnuggery
 		public Actor LocalPlayer;
 		public bool PlayerAlive => LocalPlayer != null && LocalPlayer.IsAlive;
 
-		public World(Game game, int seed, GameSave save)
+		public World(Game game)
 		{
 			Game = game;
-
-			Map = new Map(this, game.MapType, seed, save.Level, save.Difficulty);
+			Map = new Map(game);
 
 			var bounds = Map.Bounds;
 			TerrainLayer = new TerrainLayer(bounds);
@@ -65,7 +64,9 @@ namespace WarriorsSnuggery
 
 		public void Load()
 		{
-			Map.Load();
+			Camera.SetBounds(Map.Bounds);
+
+			new MapLoader(this, Map).Generate();
 
 			if (Game.InteractionMode != InteractionMode.EDITOR)
 			{

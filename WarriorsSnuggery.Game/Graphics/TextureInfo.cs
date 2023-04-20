@@ -50,7 +50,7 @@ namespace WarriorsSnuggery.Graphics
 				Array.Reverse(textures);
 		}
 
-		public TextureInfo(PackageFile packageFile) : this(packageFile, new MPos(0, 0), load: false)
+		public TextureInfo(PackageFile packageFile) : this(packageFile, MPos.Zero, load: false)
 		{
 			textures = SheetManager.AddTexture(filepath, out var width, out var height);
 			Dimensions = new MPos(width, height);

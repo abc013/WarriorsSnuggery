@@ -21,24 +21,18 @@ namespace WarriorsSnuggery.Maps
 		public MPos PlayableBounds => map.PlayableBounds;
 		public MPos Bounds => map.Bounds;
 		public MPos Center => map.Center;
-		public CPos TopLeftCorner => map.TopLeftCorner;
-		public CPos TopRightCorner => map.TopRightCorner;
-		public CPos BottomLeftCorner => map.BottomLeftCorner;
-		public CPos BottomRightCorner => map.BottomRightCorner;
+
 		public CPos PlayerSpawn { get => map.PlayerSpawn; set => map.PlayerSpawn = value; }
-		public CPos Exit { get => map.Exit; set => map.Exit = value; }
+		public CPos Exit;
 
-		public IMapGeneratorInfo[] Infos => map.Type.Generators;
-		public bool FromSave => map.Type.IsSave;
-		public string MapTypeName => map.Type.Name;
-
+		public MapType Type => map.Type;
 		public ObjectiveType ObjectiveType => world.Game.ObjectiveType;
 
 		public readonly Random Random;
 
-		public Dictionary<int, NoiseMap> NoiseMaps => map.NoiseMaps;
-		public List<Waypoint> Waypoints => map.Waypoints;
-		public List<MPos> PatrolSpawnLocations => map.PatrolSpawnLocations;
+		public readonly Dictionary<int, NoiseMap> NoiseMaps = new Dictionary<int, NoiseMap>();
+		public readonly List<Waypoint> Waypoints = new List<Waypoint>();
+		public readonly List<MPos> PatrolLocations = new List<MPos>();
 
 		readonly int[,] generatorReservations;
 		readonly bool[,] invalidForPatrols;
@@ -92,10 +86,11 @@ namespace WarriorsSnuggery.Maps
 			// Generators
 			foreach (var info in map.Type.Generators)
 				info.GetGenerator(Random, this)?.Generate();
-		}
+			
+			map.DebugInformation = new MapDebugInformation(NoiseMaps, Waypoints, new List<MPos>(PatrolLocations));
+			map.PossiblePatrolLocations = new List<MPos>(PatrolLocations);
 
-		public void Apply()
-		{
+			// Applying the changes
 			for (int x = 0; x < Bounds.X; x++)
 			{
 				for (int y = 0; y < Bounds.Y; y++)
@@ -117,7 +112,7 @@ namespace WarriorsSnuggery.Maps
 			{
 				foreach (var (init, offset) in list)
 				{
-					var actor = ActorCache.Create(world, init, !FromSave);
+					var actor = ActorCache.Create(world, init, !Type.IsSave);
 					actor.Position += offset;
 
 					actors.Add(actor);
@@ -221,14 +216,7 @@ namespace WarriorsSnuggery.Maps
 		
 		public void AddActor(ActorInit init, CPos offset)
 		{
-			var pos = (init.Position + offset);
-
-			if (pos.X < 0 && pos.X >= -512)
-				pos = new CPos(0, pos.Y, pos.Z);
-			if (pos.Y < 0 && pos.Y >= -512)
-				pos = new CPos(pos.X, 0, pos.Z);
-
-			var mpos = pos.ToMPos();
+			var mpos = (init.Position + offset).ToMPos();
 			if (actorInformation.ContainsKey(mpos))
 			{
 				actorInformation[mpos].Add((init, offset));
@@ -297,7 +285,7 @@ namespace WarriorsSnuggery.Maps
 				if (!CanAcquireArea(position, piece.Size, ID, idInclusive))
 					return false;
 			}
-			else if (FromSave)
+			else if (Type.IsSave)
 			{
 				world.Game.CurrentActorID = piece.MaxActorID + 1;
 				world.Game.CurrentWeaponID = piece.MaxWeaponID + 1;
@@ -318,7 +306,7 @@ namespace WarriorsSnuggery.Maps
 				return NoiseMap.Empty;
 
 			if (!NoiseMaps.ContainsKey(id))
-				throw new Loader.InvalidNodeException($"Map type {MapTypeName} is missing a NoiseMap with ID {id}.");
+				throw new Loader.InvalidNodeException($"Map type {Type.Name} is missing a NoiseMap with ID {id}.");
 
 			return NoiseMaps[id];
 		}
