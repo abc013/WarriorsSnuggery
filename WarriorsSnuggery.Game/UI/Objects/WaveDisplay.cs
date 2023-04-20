@@ -12,8 +12,10 @@ namespace WarriorsSnuggery.UI.Objects
 			this.controller = controller;
 		}
 
-		public virtual void Tick()
+		public override void Tick()
 		{
+			base.Tick();
+
 			if (controller.CurrentWave != currentWave)
 			{
 				currentWave = controller.CurrentWave;
