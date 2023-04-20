@@ -50,7 +50,6 @@ namespace WarriorsSnuggery
 
 		MissionType nextLevelType;
 		InteractionMode nextInteractionMode;
-		bool nextLevelIncrease;
 		bool nextLevel;
 
 		bool counterStarted;
@@ -142,20 +141,14 @@ namespace WarriorsSnuggery
 
 		public void Tick()
 		{
-			if (Finished && GameController.NextGamePrepared && ScreenControl.FadeDone)
+			if ((nextLevel || Finished) && ScreenControl.FadeDone)
 			{
+				if (nextLevel)
+				{
+					Log.Debug("Instant game change requested. Executing now.");
+					GameController.CreateNext(nextLevelType, nextInteractionMode);
+				}
 				GameController.LoadNext();
-				return;
-			}
-
-			if (nextLevel)
-			{
-				Log.Debug("Instant game change requested. Executing now.");
-
-				Save.Update(this, nextLevelIncrease);
-				GameController.CreateNext(nextLevelType, nextInteractionMode);
-
-				nextLevel = false;
 				return;
 			}
 
@@ -204,15 +197,15 @@ namespace WarriorsSnuggery
 
 					if (add != CPos.Zero)
 						Camera.Move(add);
-				}
-
-				// Zooming
-				if (!ScreenControl.CursorOnUI() && !Editor && InteractionMode != InteractionMode.EDITOR)
-				{
-					if (KeyInput.IsKeyDown(Keys.Tab))
-						Camera.Zoom(Settings.ScrollSpeed * ((Camera.MaxZoom - Camera.CurrentZoom) / 40));
-					else
-						Camera.Zoom(Settings.ScrollSpeed * ((Camera.DefaultZoom - Camera.CurrentZoom) / 40));
+					
+					// Zooming
+					if (!Editor && InteractionMode != InteractionMode.EDITOR)
+					{
+						if (KeyInput.IsKeyDown(Keys.Tab))
+							Camera.Zoom(Settings.ScrollSpeed * ((Camera.MaxZoom - Camera.CurrentZoom) / 40));
+						else
+							Camera.Zoom(Settings.ScrollSpeed * ((Camera.DefaultZoom - Camera.CurrentZoom) / 40));
+					}
 				}
 
 				SpellManager.Tick();
@@ -361,8 +354,10 @@ namespace WarriorsSnuggery
 		{
 			nextLevelType = newType;
 			nextInteractionMode = newMode;
-			nextLevelIncrease = increaseLevel;
 			nextLevel = true;
+			
+			Save.Update(this, increaseLevel);
+			Finish();
 		}
 
 		public void Finish(bool fade = true)

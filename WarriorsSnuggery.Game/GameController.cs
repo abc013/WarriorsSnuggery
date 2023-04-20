@@ -13,8 +13,6 @@ namespace WarriorsSnuggery
 		static Game game;
 		static Game nextGame;
 
-		public static bool NextGamePrepared => nextGame != null;
-
 		public static void Load()
 		{
 			RuleLoader.Load();
@@ -142,7 +140,7 @@ namespace WarriorsSnuggery
 
 		public static void Pause()
 		{
-			if (game.Paused)
+			if (game != null && game.Paused)
 				return;
 
 			game.ShowScreen(ScreenType.PAUSED);
