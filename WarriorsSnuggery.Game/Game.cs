@@ -8,7 +8,6 @@ using WarriorsSnuggery.Maps;
 using WarriorsSnuggery.Spells;
 using WarriorsSnuggery.Scripting;
 using WarriorsSnuggery.UI.Screens;
-using WarriorsSnuggery.Objects.Actors;
 using WarriorsSnuggery.Objectives;
 
 namespace WarriorsSnuggery

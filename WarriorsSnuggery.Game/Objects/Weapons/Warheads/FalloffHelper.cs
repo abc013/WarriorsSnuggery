@@ -6,12 +6,15 @@
 		{
 			var start = (int)(steps[0] * modifier);
 
+			if (start > dist)
+				return falloff[0];
+
 			for (int i = 1; i < steps.Length; i++)
 			{
 				var end = (int)(steps[i] * modifier);
 
 				if (end > dist)
-					return (start - dist) / (end - start) * (falloff[i] - falloff[i - 1]) + falloff[i - 1];
+					return (dist - start) / (end - start) * (falloff[i] - falloff[i - 1]) + falloff[i - 1];
 
 				start = end;
 			}
